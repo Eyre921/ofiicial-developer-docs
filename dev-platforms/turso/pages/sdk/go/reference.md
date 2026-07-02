@@ -1,0 +1,288 @@
+---
+title: "Reference"
+source: https://docs.turso.tech/sdk/go/reference
+path: sdk/go/reference
+---
+
+Go Reference for Turso
+
+Turso offers two Go packages:
+
+|                       | `tursogo`                       | `libsql-client-go`            | `go-libsql`                                    |
+| --------------------- | ------------------------------- | ----------------------------- | ---------------------------------------------- |
+| **Use case**          | Local / embedded database, sync | Remote access (over-the-wire) | Existing libSQL codebases                      |
+| **Engine**            | Turso Database (rewrite)        | libSQL wire protocol          | libSQL (SQLite fork)                           |
+| **Concurrent writes** | Yes (MVCC)                      | N/A (remote)                  | Not supported                                  |
+| **Sync**              | push/pull (local-first)         | —                             | Embedded Replicas (writes go to cloud primary) |
+| **CGO**               | Not required                    | Not required                  | Required                                       |
+| **API**               | `database/sql`                  | `database/sql`                | `database/sql`                                 |
+
+**Starting a new project?** Use `tursogo` for local/embedded use or sync. Use `libsql-client-go` for remote access. Neither requires CGO.
+
+## tursogo
+
+For local and embedded use. Built on the Turso Database engine with concurrent writes (MVCC) and async I/O.
+
+### Installing
+
+```bash theme={null}
+go get turso.tech/database/tursogo
+```
+
+### Connecting
+
+```go theme={null}
+import (
+	"database/sql"
+	_ "turso.tech/database/tursogo"
+)
+
+db, err := sql.Open("turso", "app.db")
+```
+
+In-memory databases are also supported:
+
+```go theme={null}
+db, err := sql.Open("turso", ":memory:")
+```
+
+### Querying
+
+```go theme={null}
+_, err = db.Exec(`CREATE TABLE IF NOT EXISTS users (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	name TEXT NOT NULL
+)`)
+
+_, err = db.Exec("INSERT INTO users (name) VALUES (?)", "Alice")
+
+rows, err := db.Query("SELECT * FROM users")
+defer rows.Close()
+
+for rows.Next() {
+	var id int
+	var name string
+	rows.Scan(&id, &name)
+	fmt.Printf("User: %d %s\n", id, name)
+}
+```
+
+### Encryption
+
+Encrypt local databases at rest using DSN options:
+
+```go theme={null}
+import (
+	"database/sql"
+	"fmt"
+	_ "turso.tech/database/tursogo"
+)
+
+hexkey := "b1bbfda4f589dc9daaf004fe21111e00dc00c98237102f5c7002a5669fc76327"
+dsn := fmt.Sprintf("encrypted.db?experimental=encryption&encryption_cipher=aegis256&encryption_hexkey=%s", hexkey)
+
+db, err := sql.Open("turso", dsn)
+```
+
+Supported ciphers: `aegis256`, `aegis256x2`, `aegis128l`, `aegis128x2`, `aegis128x4`, `aes256gcm`, `aes128gcm`.
+
+Encrypted databases cannot be read as standard SQLite databases — you must use the Turso Database engine to open them.
+
+<Info>
+  Turso Cloud databases can also be encrypted with bring-your-own-key — [learn more](/cloud/encryption).
+</Info>
+
+### Sync (Push and Pull)
+
+For local database with cloud sync. All reads and writes happen locally; use `Push()` to send changes to the cloud and `Pull()` to fetch remote changes.
+
+```go theme={null}
+import (
+	"context"
+	"os"
+	turso "turso.tech/database/tursogo"
+)
+
+ctx := context.Background()
+
+syncDb, err := turso.NewTursoSyncDb(ctx, turso.TursoSyncDbConfig{
+	Path:      "app.db",
+	RemoteUrl: os.Getenv("TURSO_DATABASE_URL"),
+	AuthToken: os.Getenv("TURSO_AUTH_TOKEN"),
+})
+
+db, err := syncDb.Connect(ctx)
+```
+
+On the first run, the local database is automatically bootstrapped from the remote. See [Turso Sync](/sync/usage) for full details.
+
+#### Push and Pull
+
+```go theme={null}
+// Push local writes to Turso Cloud
+err := syncDb.Push(ctx)
+
+// Pull remote changes to local database
+changed, err := syncDb.Pull(ctx)
+```
+
+#### Checkpoint
+
+Compact the local WAL to bound disk usage while preserving sync state:
+
+```go theme={null}
+err := syncDb.Checkpoint(ctx)
+```
+
+#### Stats
+
+```go theme={null}
+stats, err := syncDb.Stats(ctx)
+fmt.Printf("CDC operations: %d\n", stats.CdcOperations)
+fmt.Printf("Main WAL size: %d\n", stats.MainWalSize)
+fmt.Printf("Network sent: %d bytes\n", stats.NetworkSentBytes)
+fmt.Printf("Network received: %d bytes\n", stats.NetworkReceivedBytes)
+fmt.Printf("Last pull: %d\n", stats.LastPullUnixTime)
+fmt.Printf("Last push: %d\n", stats.LastPushUnixTime)
+fmt.Printf("Revision: %s\n", stats.Revision)
+```
+
+## libsql-client-go (Remote)
+
+The recommended package for **any application that connects to a remote Turso Cloud database** over the network — web servers, Docker containers, serverless functions. Pure Go, no native dependencies.
+
+### Installing
+
+```bash theme={null}
+go get github.com/tursodatabase/libsql-client-go/libsql
+```
+
+### Connecting
+
+```go theme={null}
+import (
+	"database/sql"
+	"os"
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
+)
+
+url := os.Getenv("TURSO_DATABASE_URL") + "?authToken=" + os.Getenv("TURSO_AUTH_TOKEN")
+db, err := sql.Open("libsql", url)
+```
+
+### Querying
+
+Uses the standard `database/sql` interface — same as `tursogo`:
+
+```go theme={null}
+rows, err := db.Query("SELECT * FROM users WHERE id = ?", 1)
+```
+
+## go-libsql (libSQL)
+
+The `go-libsql` package is built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that powers Turso Cloud today. It is production-ready and battle-tested, and is the right choice when you are working with an existing `go-libsql`-based codebase.
+
+<Info>
+  With `go-libsql` Embedded Replicas, reads are local and writes are sent to the cloud primary, then reflected back to the replica. Embedded Replicas are fully supported. For new projects that need sync, we recommend `tursogo` with `NewTursoSyncDb` — see the [quickstart](/sdk/go/quickstart).
+</Info>
+
+### Embedded Replicas
+
+<Info>
+  For workloads that need **offline writes**, **bidirectional sync**, or **multi-writer convergence**, we recommend `tursogo` with `NewTursoSyncDb` — both reads and writes are local, and you sync explicitly with `Push()` / `Pull()`.
+</Info>
+
+You can work with [embedded replicas](/features/embedded-replicas) that can sync from the remote database to a local SQLite file, and delegate writes to the remote primary database:
+
+```go theme={null}
+package main
+
+import (
+  "database/sql"
+  "fmt"
+  "os"
+  "path/filepath"
+
+  "github.com/tursodatabase/go-libsql"
+)
+
+func main() {
+    dbName := "local.db"
+    primaryUrl := "libsql://[DATABASE].turso.io"
+    authToken := "..."
+
+    dir, err := os.MkdirTemp("", "libsql-*")
+    if err != nil {
+        fmt.Println("Error creating temporary directory:", err)
+        os.Exit(1)
+    }
+    defer os.RemoveAll(dir)
+
+    dbPath := filepath.Join(dir, dbName)
+
+    connector, err := libsql.NewEmbeddedReplicaConnector(dbPath, primaryUrl,
+      libsql.WithAuthToken(authToken)
+    )
+    if err != nil {
+        fmt.Println("Error creating connector:", err)
+        os.Exit(1)
+    }
+    defer connector.Close()
+
+    db := sql.OpenDB(connector)
+    defer db.Close()
+}
+```
+
+<Snippet />
+
+#### Manual Sync
+
+```go theme={null}
+if err := connector.Sync(); err != nil {
+    fmt.Println("Error syncing database:", err)
+}
+```
+
+#### Periodic Sync
+
+```go theme={null}
+syncInterval := time.Minute
+
+connector, err := libsql.NewEmbeddedReplicaConnector(dbPath, primaryUrl,
+    libsql.WithAuthToken(authToken),
+    libsql.WithSyncInterval(syncInterval),
+)
+```
+
+#### Read Your Writes
+
+By default, after a sync the server must fully catch up with your changes before returning — guaranteeing you always read your own writes. This is safer but **much slower**, since the server must process all pending changes. If you can tolerate eventually-consistent reads, disable this for significantly faster syncs:
+
+```go theme={null}
+connector, err := libsql.NewEmbeddedReplicaConnector(dbPath, primaryUrl,
+    libsql.WithAuthToken(authToken),
+    libsql.WithReadYourWrites(false),
+)
+```
+
+### Encryption
+
+<Warning>
+  For new projects, we recommend [`tursogo`](#tursogo) for local encryption — it is built on the Turso Database engine with better performance and concurrent write support.
+</Warning>
+
+To enable encryption on a SQLite file, pass the encryption key value as an argument to the constructor:
+
+```go theme={null}
+encryptionKey := "SuperSecretKey"
+
+connector, err := libsql.NewEmbeddedReplicaConnector(dbPath, primaryUrl,
+    libsql.WithAuthToken(authToken),
+    libsql.WithEncryption(encryptionKey),
+)
+```
+
+<Info>
+  Encrypted databases appear as raw data and cannot be read as standard SQLite databases. You must use the libSQL client for any operations — [learn more](/libsql#encryption-at-rest).
+</Info>

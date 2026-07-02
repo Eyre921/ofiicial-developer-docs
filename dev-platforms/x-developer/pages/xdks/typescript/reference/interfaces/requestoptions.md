@@ -1,0 +1,35 @@
+---
+title: "RequestOptions"
+source: https://docs.x.com/xdks/typescript/reference/interfaces/RequestOptions
+path: xdks/typescript/reference/interfaces/requestoptions
+---
+
+Reference for the RequestOptions TypeScript interface in the X API SDK. Request timeout in milliseconds Request signal for cancellation Return raw HTTP.
+
+Request options for API calls
+
+## Properties
+
+<ParamField name="timeout" type="number">
+  Request timeout in milliseconds
+</ParamField>
+
+<ParamField name="headers" type="Record<string, string>">
+  Additional headers
+</ParamField>
+
+<ParamField name="signal" type="AbortSignal">
+  Request signal for cancellation
+</ParamField>
+
+<ParamField name="body" type="string">
+  Request body
+</ParamField>
+
+<ParamField name="raw" type="boolean">
+  Return raw HTTP wrapper instead of parsed body
+</ParamField>
+
+<ParamField name="security" type="Record<string, string[]>[]">
+  Security requirements for the endpoint (from OpenAPI spec) - used for smart auth selection
+</ParamField>

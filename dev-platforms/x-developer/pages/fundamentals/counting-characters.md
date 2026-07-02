@@ -1,0 +1,126 @@
+---
+title: "Counting Characters"
+source: https://docs.x.com/fundamentals/counting-characters
+path: fundamentals/counting-characters
+---
+
+How X counts characters in Posts, including the 280-character limit, weighted code points, URL shortening, emoji and Unicode handling, and edge cases.
+
+Posts on X can contain up to **280 characters**. However, not all characters count equally—emojis, URLs, and certain Unicode ranges have special counting rules.
+
+***
+
+## Character weights
+
+X uses a weighted character counting system. Most characters count as 1, but some count as 2:
+
+| Character type                     | Weight      | Max characters |
+| :--------------------------------- | :---------- | :------------- |
+| Latin, punctuation, common symbols | 1           | 280            |
+| Emojis                             | 2           | 140 emojis     |
+| CJK (Chinese, Japanese, Korean)    | 2           | 140 characters |
+| Other Unicode                      | 2 (default) | Varies         |
+
+<Tip>
+  Use the open-source [twitter-text](https://github.com/twitter/twitter-text) library to accurately count characters in your app.
+</Tip>
+
+***
+
+## Emoji counting
+
+All emojis count as **2 characters**, regardless of complexity:
+
+| Emoji       | Display           | Character count | Unicode           |
+| :---------- | :---------------- | :-------------- | :---------------- |
+| 👾          | Single emoji      | 2               | U+1F47E           |
+| 🙋🏽        | With skin tone    | 2               | 🙋 + 🏽 modifier  |
+| 👨‍🎤       | Combined with ZWJ | 2               | 👨 + ZWJ + 🎤     |
+| 👨‍👩‍👧‍👦 | Family sequence   | 2               | 4 emojis + 3 ZWJs |
+
+Zero-width joiners (ZWJ) combine emojis visually but don't add to the count.
+
+***
+
+## URL handling
+
+All URLs are wrapped with `t.co` shortener and count as **23 characters**, regardless of the original length:
+
+```
+https://example.com                    → 23 characters
+https://example.com/very/long/path     → 23 characters
+```
+
+<Note>
+  This applies to any valid URL detected in post text.
+</Note>
+
+***
+
+## Special cases
+
+| Content                  | Counting rule                                                |
+| :----------------------- | :----------------------------------------------------------- |
+| **@mentions in replies** | Auto-populated @mentions at the start of replies don't count |
+| **New @mentions**        | @mentions you add manually count normally                    |
+| **Media**                | Attached media (via official clients) counts as 0 characters |
+| **Hashtags**             | Count normally (# + tag text)                                |
+
+***
+
+## Text encoding
+
+The X API requires **UTF-8** encoding. Character length is calculated using Unicode Normalization Form C (NFC).
+
+Example with `café`:
+
+| Form             | Bytes       | Characters |
+| :--------------- | :---------- | :--------- |
+| NFC (composed)   | `c a f é`   | 4          |
+| NFD (decomposed) | `c a f e ́` | 5          |
+
+X normalizes to NFC, so both encode to 4 characters.
+
+***
+
+## Implementation
+
+Use the official [twitter-text](https://github.com/twitter/twitter-text) library for accurate character counting:
+
+<Tabs>
+  <Tab title="JavaScript">
+    ```javascript theme={null}
+    import { parseTweet } from 'twitter-text';
+
+    const result = parseTweet('Hello, world! 👋');
+    console.log(result.weightedLength); // 16
+    console.log(result.valid);          // true
+    ```
+  </Tab>
+
+  <Tab title="Python">
+    ```python theme={null}
+    from twitter_text import parse_tweet
+
+    result = parse_tweet('Hello, world! 👋')
+    print(result.weightedLength)  # 16
+    print(result.valid)           # True
+    ```
+  </Tab>
+</Tabs>
+
+The library handles all edge cases including emoji sequences, URL detection, and Unicode normalization.
+
+***
+
+## Resources
+
+<CardGroup>
+  <Card title="twitter-text library" icon="github" href="https://github.com/twitter/twitter-text">
+    Official open-source library for text parsing.
+  </Card>
+
+  <Card title="Configuration file" icon="file-code" href="https://github.com/twitter/twitter-text/tree/master/config">
+    Character weight definitions and Unicode ranges.
+  </Card>
+</CardGroup>

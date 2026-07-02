@@ -1,0 +1,8 @@
+---
+title: "Get Feedback Formula Ep"
+source: https://docs.langchain.com/langsmith/smith-api/feedback/get-feedback-formula-ep
+path: langsmith/smith-api/feedback/get-feedback-formula-ep
+---
+
+/langsmith/langsmith-platform-openapi.json get /api/v1/feedback/formulas/{feedback_formula_id}
+Get a feedback formula by id

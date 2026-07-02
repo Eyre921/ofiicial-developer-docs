@@ -1,0 +1,212 @@
+---
+title: "Intent Recognition"
+source: https://developers.deepgram.com/docs/text-intention-recognition.md
+path: docs/text-intention-recognition
+---
+
+> For clean Markdown of any page, append .md to the page URL.
+> For a complete documentation index, see https://developers.deepgram.com/llms.txt.
+> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
+
+# Intent Recognition
+
+Deepgram API Playground
+Try this feature out in our API Playground.
+
+<br />
+
+`intents` *boolean*   Default: `false`
+
+&#x20;Text Intelligence
+
+&#x20;English (all available regions)
+
+Intent Recognition accepts an input text, divides it into a list of segments comprised of sections of the text, and assigns a description of intent to each text segment.
+
+```json JSON
+"results": {
+    "intents": {
+      "segments": [
+        {
+          "text":"Can I upgrade my phone?",
+          "start_word": 12,
+          "end_word": 16,
+          "intents": [
+            {
+              "intent": "Upgrade phone", "confidence_score": 0.9750028
+            }
+          ]
+        },
+        {
+          "text": "I also need to update my address.",
+          "start_word": 12,
+          "end_word": 18,
+          "intents": [
+            {
+              "intent": "Update address",
+              "confidence_score": 0.6320186
+            }
+          ]
+        }
+      ]
+    }
+  }
+```
+
+For example, if the input text comes from a chatbot interface for a banking application, one segment of text may include the statement "I need to check my account balance." Deepgram's intent recognition system would recognize that the user's intent is to inquire about their account balance and then assign a description of "Check balance".
+
+The intents that can be identified are not a fixed list; this TSLM powered feature is able to generate intents based on the context of the language content in the text. You may also choose to use the optional `custom-intent` parameter to provide a custom intent you want detected if present within the provided text.
+
+## Enable Feature
+
+To enable Intent Recognition, use the following parameter in the query string when you call Deepgram’s `/read` endpoint:
+
+`intents=true`
+
+### Basic Text Request
+
+To analyze text from a file on your computer, run the following curl command in a terminal or your favorite API client.
+
+```bash cURL
+curl -vX POST \
+ -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{"text": "YOUR_TEXT_INPUT"}' \
+ "https://api.deepgram.com/v1/read?intents=true&language=en"
+```
+
+Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+
+### Basic URL Request
+
+To analyze text from a hosted file, run the following curl command in a terminal or your favorite API client. (Try testing it out with the hosted file [https://static.deepgram.com/examples/aura.txt](https://static.deepgram.com/examples/aura.txt))
+
+```bash cURL
+curl -vX POST \
+ -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{"url": "https://YOUR_FILE_URL.txt"}' \
+ "https://api.deepgram.com/v1/read?intents=true&language=en"
+```
+
+### Custom Intent Request
+
+To tell the model to only return intents from your own custom list of intents, add `custom_intent_mode=strict` and `custom_intent=` followed by the list of intents. (Use the URL encoding`%20` to represent a space between each word in the list.)
+
+If you want to return your own custom list of intents *in addition* to Deegpram's list of intents, set `custom_intent_mode=extended` and add your custom list.
+
+```bash cURL
+curl -vX POST \
+ -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
+ -H "Content-Type: application/json" \
+ -d '{"text": "YOUR_TEXT_INPUT"}' \
+ "https://api.deepgram.com/v1/read?intents=true&language=en&custom_intent_mode=strict&custom_intent=Upgrade%20Phone"
+
+```
+
+Read our [Text Intelligence Getting Started guide](/docs/text-intelligence), which will walk you through making a basic text request and a basic URL request with the Deepgram SDKs.
+
+### Query Parameters
+
+| Parameter            | Value                       | Type    | Description                                                                                                                                                                                                                                                                                                            |
+| -------------------- | --------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `intents`            | `true`                      | boolean | Enables Intent Recognition                                                                                                                                                                                                                                                                                             |
+| `language`           | `en`                        | string  | The language of your input text (Only English is supported at this time)                                                                                                                                                                                                                                               |
+| `custom_intent`      | ex: `unsubscribe`           | string  | Optional. A custom intent you want the model to detect within your input text if present. Submit up to 100.                                                                                                                                                                                                            |
+| `custom_intent_mode` | `extended`(default)`strict` | string  | Optional. Sets how the model will interpret strings submitted to the `custom_intent` param. When `strict`, the model will only return intents submitted using the `custom_intent param`. When `extended`, the model will return its own detected intents in addition those submitted using the `custom_intents` param. |
+
+## Analyze Response
+
+When the file is finished processing, you’ll receive a JSON response that has the following basic structure:
+
+```json JSON
+{
+  "metadata": {
+    "request_id": "65be7382-9d92-4373-bf5e-ef3a3d0cf56c",
+    "created": "2024-01-19T17:52:23.970Z",
+    "language": "en",
+    "intents_info": {
+      "model_uuid": "ba5b22e4-b39a-4550-a4bc-d8655f5092bc",
+      "input_tokens": 22,
+      "output_tokens": 4
+    }
+  },
+  "results": {
+    "intents": {
+      "segments": [
+        {
+          "text": "Can I upgrade my phone?",
+          "start_word": 12,
+          "end_word": 16,
+          "intents": [
+            {
+              "intent": "Upgrade phone", "confidence_score": 0.9750028
+            }
+          ]
+        },
+        {
+          "text": "I also need to update my address.",
+          "start_word": 12,
+          "end_word": 18,
+          "intents": [
+            {
+              "intent": "Update address",
+              "confidence_score": 0.6320186
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
+```
+
+The response object values for `intents` are:
+
+* `segments`: The list of segments of text identified by the model as containing notable intents.
+* `intent`: The name of the intent detected by the model. This will always be in the form of a verb.
+* `confidence_score`: a floating point from 0 to 1 representing the models confidence in this prediction.
+
+## API Error Responses
+
+### Unsupported Language
+
+**Status** 400
+
+If you request Intent Recognition with an unsupported language by specifying a language code such as `intents=true&language=es` or `intents=true&detect_language=true` where the detected language is unsupported, you will get the error message below.
+
+```json JSON
+{
+  "err_code":"INVALID_QUERY_PARAMETER",
+  "err_msg":"Request specified unsupported language: <language_name>. Only English is supported.",
+  "request_id":"XXXX"
+}
+```
+
+### Token Limit Exceeded
+
+**Status** 400
+
+If the request's input length exceeded the 150k token rate limit per request, you will get the error message below.
+
+```json JSON
+{
+  "err_code": "TOKEN_LIMIT_EXCEEDED",
+  "err_msg": "Text input for <api_name> currently supports up to 150K tokens. Please revise your text input to fit within the defined token limit. For more information, please visit our API documentation.",
+  "request_id": "XXXX"
+}
+```
+
+### Missing Query Parameter
+
+**Status** 400
+
+If the request sent contained only the feature parameter (`intents`) but not the `language` parameter, you will receive this error.
+
+```json JSON
+{
+  "err_code":"INVALID_QUERY_PARAMETER",
+  "err_msg":"Failed to deserialize query parameters: missing field `language`",
+  "request_id":"XXX"
+}
+```

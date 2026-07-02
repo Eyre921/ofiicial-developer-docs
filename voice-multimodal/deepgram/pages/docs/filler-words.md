@@ -1,0 +1,66 @@
+---
+title: "Filler Words"
+source: https://developers.deepgram.com/docs/filler-words.md
+path: docs/filler-words
+---
+
+> For clean Markdown of any page, append .md to the page URL.
+> For a complete documentation index, see https://developers.deepgram.com/llms.txt.
+> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
+
+# Filler Words
+
+* [Try Filler Words in the Playground](https://playground.deepgram.com/?endpoint=listen-prerecorded\&filler_words=true\&language=en)
+
+`filler_words` *boolean* Default: `false`
+
+&#x20;Pre-recorded
+
+&#x20;Streaming:Nova
+
+Streaming: Flux
+
+&#x20;English (all available regions)
+
+Deepgram is capable of transcribing the following filler words:
+
+* uh
+* um
+* mhmm
+* mm-mm
+* uh-uh
+* uh-huh
+* nuh-uh
+
+These words will always be transcribed with the spelling listed above, regardless of their spoken duration (i.e., Deepgram will never transcribe "uhhhh" instead of "uh").
+
+## Enable Feature
+
+To enable Filler Words you can use the`filler_words` query parameter and set the value to `true`.
+
+When `filler_words=false` or the parameter is not set, the two most common fillers, "uh" and "um", are stripped out of the transcript to improve readability.
+
+Currently, Filler Words are only available for Deepgram's Nova, Nova-2 and Nova-3 general models.
+
+**Example**
+
+```bash cURL
+curl \
+  --request POST \
+  --header 'Authorization: Token YOUR_DEEPGRAM_API_KEY' \
+  --header 'Content-Type: audio/wav' \
+  --data-binary @youraudio.wav \
+  --url 'https://api.deepgram.com/v1/listen?model=nova-3&filler_words=true'
+```
+
+Replace `YOUR_DEEPGRAM_API_KEY` with your [Deepgram API Key](https://console.deepgram.com/signup?jump=keys).
+
+## Results
+
+Once applied, results will appear in the transcript.
+
+| Source                                                                                                                                                                     | With Filler Words                                                                                                                                                          | Without Filler Words                                                                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| uh-huh or you'd want something where uh so let's say you're trying to fine-tune a model to something very specific um so it's not as uh cut and dry as a more general task | uh-huh or you'd want something where uh so let's say you're trying to fine-tune a model to something very specific um so it's not as uh cut and dry as a more general task | uh-huh or you'd want something where so let's say you're trying to fine-tune a model to something very specific so it's not as cut and dry as a more general task |
+
+***

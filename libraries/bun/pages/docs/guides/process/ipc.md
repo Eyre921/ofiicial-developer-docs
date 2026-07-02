@@ -1,0 +1,69 @@
+---
+title: "Spawn a child process and communicate using IPC"
+source: https://bun.com/docs/guides/process/ipc
+path: docs/guides/process/ipc
+---
+
+Use [`Bun.spawn()`](/docs/runtime/child-process) to spawn a child process. When spawning a second `bun` process, you can open a direct inter-process communication (IPC) channel between the two processes.
+
+<Note>
+  This API is only compatible with other `bun` processes. Use `process.execPath` to get a path to the currently running
+  `bun` executable.
+</Note>
+
+```ts parent.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+const child = Bun.spawn(["bun", "child.ts"], {
+  ipc(message) {
+    /**
+     * The message received from the sub process
+     **/
+  },
+});
+```
+
+***
+
+The parent process sends messages to the subprocess with the `.send()` method on the returned `Subprocess` instance. The `ipc` handler also receives the subprocess as its second argument.
+
+```ts parent.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+const childProc = Bun.spawn(["bun", "child.ts"], {
+  ipc(message, childProc) {
+    /**
+     * The message received from the sub process
+     **/
+    childProc.send("Respond to child");
+  },
+});
+
+childProc.send("I am your father"); // The parent can send messages to the child as well
+```
+
+***
+
+The child process sends messages to its parent with `process.send()` and receives messages with `process.on("message")`. This is the same API used for `child_process.fork()` in Node.js.
+
+```ts child.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+process.send("Hello from child as string");
+process.send({ message: "Hello from child as object" });
+
+process.on("message", message => {
+  // print message from parent
+  console.log(message);
+});
+```
+
+***
+
+All messages are serialized with the JSC `serialize` API, which supports the same set of [transferrable types](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects) as `postMessage` and `structuredClone`, including strings, typed arrays, streams, and objects.
+
+```ts child.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+// send a string
+process.send("Hello from child as string");
+
+// send an object
+process.send({ message: "Hello from child as object" });
+```
+
+***
+
+See [Child processes](/docs/runtime/child-process).

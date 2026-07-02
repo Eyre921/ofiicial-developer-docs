@@ -1,0 +1,121 @@
+---
+title: "AccountActivityClient"
+source: https://docs.x.com/xdks/python/reference/xdk.account_activity.client
+path: xdks/python/reference/xdk.account_activity.client
+---
+
+Reference for the account_activity.client Python module in the X API SDK. Client class and methods for calling the account activity endpoints of the X API v2.
+
+## AccountActivityClient
+
+<Badge>Class</Badge>
+
+<Badge>Bases: object</Badge>
+
+Client for account activity operations
+
+## Constructors
+
+### `__init__`
+
+#### Parameters
+
+<ParamField type="Client" />
+
+### `create_replay_job`
+
+Create replay job
+Creates a replay job to retrieve activities from up to the past 5 days for all subscriptions associated with a given webhook.
+
+#### Parameters
+
+<ParamField type="Any">
+  The unique identifier for the webhook configuration.
+</ParamField>
+
+<ParamField type="str">
+  The oldest (starting) UTC timestamp (inclusive) from which events will be provided, in yyyymmddhhmm format.
+</ParamField>
+
+<ParamField type="str">
+  The latest (ending) UTC timestamp (exclusive) up to which events will be provided, in yyyymmddhhmm format.
+</ParamField>
+
+#### Returns
+
+`CreateReplayJobResponse` - Response data
+
+### `create_subscription`
+
+Create subscription
+Creates an Account Activity subscription for the user and the given webhook.
+
+#### Parameters
+
+<ParamField type="Any">
+  The webhook ID to check subscription against.
+</ParamField>
+
+<ParamField type="CreateSubscriptionRequest">
+  Request body
+</ParamField>
+
+### `delete_subscription`
+
+Delete subscription
+Deletes an Account Activity subscription for the given webhook and user ID.
+
+#### Parameters
+
+<ParamField type="Any">
+  The webhook ID to check subscription against.
+</ParamField>
+
+<ParamField type="Any">
+  User ID to unsubscribe from.
+</ParamField>
+
+#### Returns
+
+`DeleteSubscriptionResponse` - Response data
+
+### `get_subscription_count`
+
+Get subscription count
+Retrieves a count of currently active Account Activity subscriptions.
+:returns: Response data
+:rtype: GetSubscriptionCountResponse
+
+#### Returns
+
+`GetSubscriptionCountResponse`
+
+### `get_subscriptions`
+
+Get subscriptions
+Retrieves a list of all active subscriptions for a given webhook.
+
+#### Parameters
+
+<ParamField type="Any">
+  The webhook ID to pull subscriptions for.
+</ParamField>
+
+#### Returns
+
+`GetSubscriptionsResponse` - Response data
+
+### `validate_subscription`
+
+Validate subscription
+Checks a user’s Account Activity subscription for a given webhook.
+
+#### Parameters
+
+<ParamField type="Any">
+  The webhook ID to check subscription against.
+</ParamField>
+
+#### Returns
+
+`ValidateSubscriptionResponse` - Response data

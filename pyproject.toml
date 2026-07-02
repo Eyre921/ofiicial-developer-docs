@@ -1,0 +1,11 @@
+[project]
+name = "ai-official-docs"
+version = "0.1.0"
+description = "Anthropic / OpenAI / Google Gemini 官方文档镜像爬虫"
+requires-python = ">=3.10"
+# 零第三方依赖：爬虫只用 Python 标准库 + 系统 curl。保持依赖为空是刻意的——
+# 定时任务装依赖越少越快越省资源。
+dependencies = []
+
+[tool.uv]
+# uv run crawl.py 会用这个空环境直接跑，无需联网装包。

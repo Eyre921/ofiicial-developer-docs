@@ -1,0 +1,170 @@
+---
+title: "Turso Quickstart (Rust)"
+source: https://docs.turso.tech/sdk/rust/quickstart
+path: sdk/rust/quickstart
+---
+
+Get started with Turso and Rust in a few simple steps.
+
+In this Rust quickstart we will learn how to:
+
+* Install the Turso crate
+* Connect to a local or remote database
+* Execute a query using SQL
+* Sync changes to the cloud
+
+## Recommended: turso (Local + Cloud Sync)
+
+`turso` is the recommended crate for running a local database, including synchronizing it to and from Turso Cloud. It is built on the Turso Database engine — a ground-up rewrite of SQLite with concurrent writes (MVCC), async I/O, and native Rust async/await support.
+
+<Steps>
+  <Step title="Install">
+    ```bash theme={null}
+    cargo add turso tokio --features tokio/full
+    ```
+  </Step>
+
+  <Step title="Connect">
+    ```rust theme={null}
+    use turso::Builder;
+
+    #[tokio::main]
+    async fn main() -> Result<(), Box<dyn std::error::Error>> {
+        let db = Builder::new_local("app.db").build().await?;
+        let conn = db.connect()?;
+
+        conn.execute(
+            "CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL
+            )",
+            (),
+        ).await?;
+
+        conn.execute("INSERT INTO users (name) VALUES (?)", ("Alice",)).await?;
+
+        let mut rows = conn.query("SELECT * FROM users", ()).await?;
+        while let Some(row) = rows.next().await? {
+            let id: i64 = row.get(0)?;
+            let name: String = row.get(1)?;
+            println!("User: {} {}", id, name);
+        }
+
+        Ok(())
+    }
+    ```
+  </Step>
+
+  <Step title="Sync (push and pull)">
+    If you need to sync your local database with Turso Cloud, enable the `sync` feature:
+
+    ```bash theme={null}
+    cargo add turso --features sync
+    ```
+
+    ```rust theme={null}
+    use turso::sync::Builder;
+
+    #[tokio::main]
+    async fn main() -> Result<(), Box<dyn std::error::Error>> {
+        let db = Builder::new_remote("app.db")
+            .with_remote_url(&std::env::var("TURSO_DATABASE_URL")?)
+            .with_auth_token(&std::env::var("TURSO_AUTH_TOKEN")?)
+            .build()
+            .await?;
+
+        let conn = db.connect().await?;
+
+        conn.execute("INSERT INTO users (name) VALUES (?)", ("Bob",)).await?;
+
+        // Push local writes to Turso Cloud
+        db.push().await?;
+
+        // Pull remote changes to local database
+        db.pull().await?;
+
+        Ok(())
+    }
+    ```
+
+    All reads and writes happen against the local database file — fast, offline-capable. `push()` sends your changes to the cloud. `pull()` brings remote changes down. See the [reference](/sdk/rust/reference) for checkpoint, stats, and encryption. See [Turso Sync](/sync/usage) for details on conflict resolution and more.
+
+    <Info>
+      You can test sync locally without a Turso Cloud account by starting a local sync server:
+
+      ```bash theme={null}
+      tursodb :memory: --sync-server 127.0.0.1:8080
+      ```
+
+      Then use `http://127.0.0.1:8080` as the remote URL (no auth token needed). See [Turso Database quickstart](/tursodb/quickstart) for how to install `tursodb`.
+    </Info>
+  </Step>
+</Steps>
+
+## Remote Access (Over-the-Wire)
+
+If your application needs to query a Turso Cloud database directly over the network (e.g., from a web server or serverless function), use the `libsql` crate with the `remote` feature. It connects over HTTP — no local file needed, no C compiler required.
+
+<Info>
+  For most applications, we recommend running a local database with sync (`turso::sync`) instead — it gives you faster reads, offline support, and lower latency. Remote access is useful when you cannot store a local database file (e.g., stateless serverless environments).
+</Info>
+
+<Steps>
+  <Step title="Retrieve database credentials">
+    You will need an existing database to continue. If you don't have one, [create one](/quickstart).
+
+    <Snippet />
+
+    <Info>You will want to store these as environment variables.</Info>
+  </Step>
+
+  <Step title="Install">
+    ```bash theme={null}
+    cargo add libsql --features remote
+    ```
+  </Step>
+
+  <Step title="Connect and query">
+    ```rust theme={null}
+    use libsql::Builder;
+
+    #[tokio::main]
+    async fn main() -> Result<(), Box<dyn std::error::Error>> {
+        let url = std::env::var("TURSO_DATABASE_URL")?;
+        let token = std::env::var("TURSO_AUTH_TOKEN")?;
+
+        let db = Builder::new_remote(url, token).build().await?;
+        let conn = db.connect()?;
+
+        let mut rows = conn.query("SELECT * FROM users", ()).await?;
+        while let Some(row) = rows.next().await? {
+            let id: i64 = row.get(0)?;
+            let name: String = row.get(1)?;
+            println!("User: {} {}", id, name);
+        }
+
+        Ok(())
+    }
+    ```
+  </Step>
+</Steps>
+
+## Using an ORM
+
+[Toasty](/sdk/rust/orm/toasty), the async ORM from the Tokio project, has a native Turso driver. It speaks to the `turso` crate directly, so you get a typed model layer (`#[derive(toasty::Model)]`, derived queries, relations) over the same Turso Database engine used in the quickstart above.
+
+```bash theme={null}
+cargo add toasty --features turso
+```
+
+See the [Toasty + Turso guide](/sdk/rust/orm/toasty) for the full walkthrough.
+
+## Embedded Replicas (libsql)
+
+<Info>
+  Embedded Replicas give your Rust app a local read copy of a Turso Cloud database. Reads are served locally; writes go to the cloud primary and are reflected back to the replica. Embedded Replicas are fully supported in production.
+
+  For new projects that need sync, we recommend the `turso` crate with `turso::sync`: both reads and writes are local, you sync explicitly with `push()` / `pull()`, and the wire format is logical change-data-capture rather than page frames ([benchmark](https://turso.tech/blog/sync-benchmark)).
+</Info>
+
+See the [reference](/sdk/rust/reference) for full documentation on Embedded Replicas with `libsql`.

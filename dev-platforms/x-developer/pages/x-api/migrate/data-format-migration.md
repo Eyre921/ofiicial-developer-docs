@@ -1,0 +1,25 @@
+---
+title: "Data Formation Migration"
+source: https://docs.x.com/x-api/migrate/data-format-migration
+path: x-api/migrate/data-format-migration
+---
+
+Map fields from v1.1 Native, enterprise Native Enriched, and Activity Streams payloads to the X API v2 data format using fields and expansions.
+
+## Introduction
+
+With the launch of the v2 version of the X API, we have adopted a new data response format and method of requesting different objects and fields, which we are simply calling the X API v2 format. 
+
+In the general differences section, you can learn about some changes that are relevant to standard, and enterprise users. However, we also put together a specific guide for the [standard v1.1 Native format](https://developer.x.com/en/docs/x-api/v1/data-dictionary/overview), the enterprise [Native Enriched format](/x-api/enterprise-gnip-2.0/fundamentals/data-dictionary#native-enriched-tweet-object), and the enterprise [Activity Streams format](/x-api/enterprise-gnip-2.0/fundamentals/data-dictionary#activity-object) which helps to map fields and explains which fields and expansions you must use to request the new v2 fields. 
+
+* [Native format to X API v2 (standard v1.1)](/x-api/migrate/data-format-migration#migrating-from-standard-v1-1s-data-format-to-v2) 
+* [Native Enriched to X API v2 (enterprise)](/x-api/migrate/data-format-migration#migrating-from-native-enriched-data-format-to-v2)
+* [Activity Streams to X API v2 (enterprise)](/x-api/migrate/data-format-migration#migrating-from-activity-streams-data-format-to-v2)
+
+You may also be interested in our [visual data format migration tool](/x-api/migrate/data-format-migration#visual-data-format-migration-tool) to help you quickly see the differences between the [X API v1.1 data format](https://developer.x.com/en/docs/x-api/v1/data-dictionary/overview) and the [X API v2 format](/x-api/introduction).
+
+### General differences
+
+#### Requesting objects and fields
+
+One of the biggest changes between the pre-v2 endpoints and v2 is that the newer version only returns a few fields by default, whereas standard, premi

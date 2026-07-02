@@ -1,0 +1,37 @@
+---
+title: "upstash_qstash_topic_data"
+source: https://upstash.com/docs/devops/terraform/data_sources/upstash_qstash_topic_data
+path: docs/devops/terraform/data_sources/upstash_qstash_topic_data
+---
+
+<RequestExample>
+
+```hcl example.tf
+data "upstash_qstash_topic_data" "exampleQstashTopicData" {
+  topic_id = resource.upstash_qstash_topic.exampleQstashTopic.topic_id
+}
+```
+
+</RequestExample>
+
+## Schema
+
+### Required
+
+<ParamField query="topic_id" type="string" required>
+  Unique QStash Topic ID for requested topic
+</ParamField>
+
+### Read-Only
+
+<ResponseField name="endpoints" type="list(map(string))">
+  Endpoints for the QStash Topic
+</ResponseField>
+
+<ResponseField name="id" type="string">
+  The ID of this resource.
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  Name of the QStash Topic
+</ResponseField>

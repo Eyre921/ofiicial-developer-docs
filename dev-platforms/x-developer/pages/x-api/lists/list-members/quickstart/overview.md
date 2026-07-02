@@ -1,0 +1,94 @@
+---
+title: "List Members Overview"
+source: https://docs.x.com/x-api/lists/list-members/quickstart/overview
+path: x-api/lists/list-members/quickstart/overview
+---
+
+The List members endpoints let you look up members of a List and manage List membership. Reference for the X API v2 standard tier covering quickstart.
+
+The List members endpoints let you look up members of a List and manage List membership.
+
+<Note>
+  **Prerequisites**
+
+  Before you begin, you'll need:
+
+  * A [developer account](https://developer.x.com/en/portal/petition/essential/basic-info) with an approved App
+  * Your App's Bearer Token (for lookups)
+  * User Access Token (for managing members)
+</Note>
+
+***
+
+## Available endpoints
+
+<CardGroup>
+  <Card title="List members lookup" icon="users" href="/x-api/lists/list-members/quickstart/list-members-lookup">
+    Get members of a List
+  </Card>
+
+  <Card title="Manage List members" icon="user-plus" href="/x-api/lists/list-members/quickstart/manage-list-members">
+    Add and remove members
+  </Card>
+</CardGroup>
+
+***
+
+## Authentication
+
+| Operation          | Authentication                              |
+| :----------------- | :------------------------------------------ |
+| Look up members    | Bearer Token, OAuth 1.0a, or OAuth 2.0 PKCE |
+| Add/remove members | OAuth 1.0a or OAuth 2.0 PKCE                |
+
+***
+
+## Quick example
+
+<CodeGroup>
+  ```bash cURL theme={null}
+  # Get List members
+  curl "https://api.x.com/2/lists/84839422/members" \
+    -H "Authorization: Bearer $BEARER_TOKEN"
+  ```
+
+  ```python Python SDK theme={null}
+  from xdk import Client
+
+  client = Client(bearer_token="YOUR_BEARER_TOKEN")
+
+  # Get List members
+  for page in client.lists.get_members("84839422"):
+      for user in page.data:
+          print(f"{user.username}")
+  ```
+
+  ```javascript JavaScript SDK theme={null}
+  import { Client } from "@xdevplatform/xdk";
+
+  const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
+
+  // Get List members
+  const paginator = client.lists.getMembers("84839422");
+
+  for await (const page of paginator) {
+    page.data?.forEach((user) => {
+      console.log(user.username);
+    });
+  }
+  ```
+</CodeGroup>
+
+***
+
+## Next steps
+
+<CardGroup>
+  <Card title="List lookup" icon="list" href="/x-api/lists/list-lookup/quickstart">
+    Get List details
+  </Card>
+
+  <Card title="List Posts" icon="message" href="/x-api/lists/list-tweets/quickstart">
+    Get Posts from a List
+  </Card>
+</CardGroup>

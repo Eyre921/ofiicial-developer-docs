@@ -1,0 +1,45 @@
+---
+title: "Embedded profiles"
+source: https://docs.x.com/x-for-websites/timelines/guides/profile-timeline
+path: x-for-websites/timelines/guides/profile-timeline
+---
+
+Embed an X profile timeline displaying the latest Posts from a public account using anchor markup with the profile URL or twttr.widgets.createTimeline.
+
+A profile timeline displays the latest Posts ordered from newest to oldest from a specific public X account.
+
+## HTML markup
+
+A responsive profile timeline can be added to a webpage through a common HTML template. Generate markup for an embedded profile timeline on [publish.x.com](https://publish.x.com).
+
+A template example:
+
+```html theme={null}
+<a class="twitter-timeline"
+  href="https://x.com/{screen_name}">
+Posts by @{screen_name}
+</a>
+```
+
+```html theme={null}
+<a class="twitter-timeline"
+  href="https://x.com/XDevelopers">
+Posts by @XDevelopers
+</a>
+```
+
+## JavaScript factory function
+
+X's widget JavaScript library supports dynamic insertion of an embedded profile timeline using the `twttr.widgets.createTimeline` function. Pass a data source definition, target container element, and optional options object to insert an embedded timeline into your page.
+
+HTML `data-*` parameters are camelCased when passed as an options object property.
+
+```javascript theme={null}
+twttr.widgets.createTimeline(
+  {
+    sourceType: "profile",
+    screenName: "XDevelopers"
+  },
+  document.getElementById("container")
+);
+```

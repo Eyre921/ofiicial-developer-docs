@@ -1,0 +1,13 @@
+---
+title: "PreviewImage"
+source: https://docs.x.com/xdks/typescript/reference/interfaces/Schemas.PreviewImage
+path: xdks/typescript/reference/interfaces/schemas.previewimage
+---
+
+Reference for the Schemas.PreviewImage TypeScript interface in the X API SDK. Field definitions, types, and properties for X API request or response payloads.
+
+[Schemas](/xdks/typescript/reference/modules/Schemas).PreviewImage
+
+## Properties
+
+<ResponseField name="mediaKey" type="Record<string, any>" />

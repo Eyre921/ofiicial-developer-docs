@@ -1,0 +1,48 @@
+---
+title: "Deepgram UniMRCP Plugin"
+source: https://developers.deepgram.com/docs/deepgram-unimrcp-plugin.md
+path: docs/deepgram-unimrcp-plugin
+---
+
+> For clean Markdown of any page, append .md to the page URL.
+> For a complete documentation index, see https://developers.deepgram.com/llms.txt.
+> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
+
+# Deepgram UniMRCP Plugin
+
+## Deploying UniMRCP Self-Hosted
+
+In addition to the installation guide posted at [UMS Deepgram SR - Deb Installation Manual](https://docs.unispeech.io/en/ums/deepgram/speech-recog/install-deb), the following changes are required to successfully integrate `umsdeepgram` with a self-hosted deployment.
+
+### Adding a new `service-endpoint` for self-hosted
+
+In the `umsdeepgram.xml` configuration file, add a `service-endpoint` child element to the `service-endpoints` element. You must specify the self-hosted deployment’s IP address and port number in the `service-uri` attribute. The URI's path is `/v1/listen/stream`, and the protocol should use only a web socket (`ws`), not a secure web socket (`wss`).
+
+```xml XML
+<service-endpoints load-balancing="round-robin" fail-over="true">
+      <service-endpoint enable="true" service-uri="ws://SELF_HOSTED_IP_ADDRESS:SELF_HOSTED_PORT/v1/listen/stream"/>
+</service-endpoints>
+```
+
+This can coexist alongside a hosted service-endpoint.
+
+```xml XML
+<service-endpoints load-balancing="round-robin" fail-over="true">
+      <service-endpoint enable="true" service-uri="ws://SELF_HOSTED_IP_ADDRESS:SELF_HOSTED_PORT/v1/listen/stream"/>
+      <service-endpoint enable="true" service-uri="wss://api.deepgram.com/v1/listen"/>
+</service-endpoints>
+```
+
+### Deepgram License Key
+
+Authorization is performed at the request level for the hosted Deepgram API by including an API key in your request headers. In contrast, authorization for self-hosted Deepgram environments is performed at the container level, and individual requests that are able to hit your private self-hosted environment are assumed to be authorized already (possibly in some previous layer of your networking stack).
+
+For the UniMRCP plugin, the `deepgram.subscription.key` file must exist and match the schema specified in the plugin installation instructions. For the hosted Deepgram API, this means setting the `auth-key` field with a valid Deepgram API key. If you are using both the hosted API and your own self-hosted environment, make sure to set this value.
+
+If you are exclusively using your self-hosted environment, the `auth-key` value can be empty, such as:
+
+```json JSON
+{
+	"auth-key": ""
+}
+```

@@ -1,0 +1,82 @@
+---
+title: "Personalized Trends"
+source: https://docs.x.com/enterprise-api/trends/personalized-trends/introduction
+path: enterprise-api/trends/personalized-trends/introduction
+---
+
+The Personalized Trends endpoint returns trending topics tailored to the authenticated. Reference for the Enterprise X API tier covering personalized trends.
+
+The Personalized Trends endpoint returns trending topics tailored to the authenticated user, based on their location and interests.
+
+## Overview
+
+<CardGroup>
+  <Card title="Personalized" icon="user">
+    Trends tailored to the user
+  </Card>
+
+  <Card title="Location-aware" icon="location-dot">
+    Based on user's location
+  </Card>
+
+  <Card title="Real-time" icon="bolt">
+    Current trending topics
+  </Card>
+</CardGroup>
+
+***
+
+## Endpoint
+
+| Method | Endpoint                       | Description             |
+| :----- | :----------------------------- | :---------------------- |
+| GET    | `/2/users/personalized_trends` | Get personalized trends |
+
+***
+
+## Example request
+
+```bash theme={null}
+curl "https://api.x.com/2/users/personalized_trends" \
+  -H "Authorization: Bearer $USER_ACCESS_TOKEN"
+```
+
+## Example response
+
+```json theme={null}
+{
+  "data": [
+    {
+      "trend_name": "#AI",
+      "tweet_count": 125000
+    },
+    {
+      "trend_name": "Machine Learning",
+      "tweet_count": 85000
+    }
+  ]
+}
+```
+
+***
+
+## Getting started
+
+<Note>
+  **Prerequisites**
+
+  * An approved [developer account](https://developer.x.com/en/portal/petition/essential/basic-info)
+  * A [Project and App](/resources/fundamentals/developer-apps) in the Developer Console
+  * User Access Tokens via [OAuth 2.0 PKCE](/resources/fundamentals/authentication#oauth-2-0-authorization-code-flow-with-pkce-2)
+  * Premium User Subscription
+</Note>
+
+<CardGroup>
+  <Card title="Trends by WOEID" icon="globe" href="/x-api/trends/trends-by-woeid/introduction">
+    Get trends for a specific location
+  </Card>
+
+  <Card title="API Reference" icon="code" href="/x-api/trends/personalized-trends">
+    Full endpoint documentation
+  </Card>
+</CardGroup>

@@ -1,0 +1,33 @@
+---
+title: "Authentication"
+source: https://docs.turso.tech/sdk/authentication
+path: sdk/authentication
+---
+
+SDKs connect to Turso using the `libsql://` protocol, unless using the [HTTP API](/sdk/http).
+
+## Database URL
+
+You can find your database URL using the [Turso CLI](/cli/db/show) or [Platform API](/api-reference/databases/retrieve), it looks something like this:
+
+<CodeGroup>
+  ```bash libSQL theme={null}
+  libsql://[DB-NAME]-[ORG-NAME].turso.io
+  ```
+
+  ```bash HTTPS theme={null}
+  https://[DB-NAME]-[ORG-NAME].turso.io
+  ```
+</CodeGroup>
+
+<br />
+
+<Info>
+  WebSockets generally offer better performance when maintaining an open socket for multiple queries, whereas HTTP is typically more efficient for single queries due to reduced client-server round trips — it's advisable to benchmark both to ascertain the best option for your specific needs.
+</Info>
+
+## Auth Tokens
+
+SDKs require an auth token, unless [working locally](/local-development). You can create tokens using the [Turso CLI](/cli) or [Platform API](/api-reference), or let your authentication provider issue tokens via [JWKS](/sdk/authorization#jwks-authentication-providers).
+
+See [Authorization](/sdk/authorization) for full details on token creation, fine-grained permissions, and JWKS setup.

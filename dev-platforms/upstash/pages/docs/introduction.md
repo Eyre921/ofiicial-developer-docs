@@ -1,0 +1,54 @@
+---
+title: "Get Started"
+source: https://upstash.com/docs/introduction
+path: docs/introduction
+---
+
+<CardGroup cols={2}>
+  <Card title="Serverless Redis" href="/redis/overall/getstarted">
+    Create a Redis Database within seconds
+  </Card>
+  <Card title="Serverless Vector" href="/vector/overall/getstarted">
+    Create a Vector Database for AI & LLMs
+  </Card>
+  <Card title="QStash" href="/qstash/overall/getstarted">
+    Publish your first message
+  </Card>
+  <Card title="Upstash Workflow" href="/workflow/getstarted">
+    Write durable serverless functions
+  </Card>
+  <Card title="Upstash Box" href="/box/overall/quickstart">
+    Run AI agents and code in secure sandboxes
+  </Card>
+</CardGroup>
+
+## Concepts
+
+<CardGroup cols={2}>
+  <Card title="Serverless" href="/common/concepts/serverless">
+    Upstash is serverless. You don't need to provision any infrastructure. Just
+    create a database and start using it.
+  </Card>
+  <Card title="Scale to Zero" href="/common/concepts/scale-to-zero">
+    Price scales to zero. You don't pay for idle or unused resources. You pay
+    only for what you use.
+  </Card>
+  <Card title="Global Replication" href="/common/concepts/global-replication">
+    Upstash Redis replicates your data for the best latency all over the world.
+  </Card>
+  <Card title="Access Anywhere" href="/common/concepts/access-anywhere">
+    Upstash REST APIs enable access from all types of runtimes.
+  </Card>
+</CardGroup>
+
+## Get In touch
+
+<CardGroup cols={2}>
+  <Card title="X" icon="x-twitter" href="https://x.com/upstash">
+    Follow us on X for the latest news and updates.
+  </Card>
+  <Card title="Discord" icon="discord" href="https://upstash.com/discord">
+    Join our Discord Community and ask your questions to the team and other
+    developers.
+  </Card>
+</CardGroup>

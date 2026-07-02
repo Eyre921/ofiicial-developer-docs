@@ -1,0 +1,54 @@
+---
+title: "Enterprise"
+source: https://docs.x.com/x-api/enterprise-gnip-2.0/enterprise-gnip
+path: x-api/enterprise-gnip-2.0/enterprise-gnip
+---
+
+Overview of X enterprise APIs and Gnip products, including PowerTrack, Decahose, Search, Engagement, Account Activity, and Compliance Firehose access.
+
+Our enterprise APIs offer the highest level of access and reliability to those who depend on X data. They are designed for teams that scale beyond premium and need more reliable access, custom-tailored packages, or longer-term contracts. Enterprise API access comes with dedicated account managers and personalized technical support.
+
+If you’ve identified that the self-serve plan isn’t enough to support your needs, you can apply for access to the enterprise products at the following link:
+
+<Button href="https://docs.x.com/forms/enterprise-api-interest">
+  Apply for access
+</Button>
+
+## Available endpoints
+
+| Category   | Endpoint                                                                         | Description                                                                                                        |
+| :--------- | :------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| Real-time  | [PowerTrack API](/x-api/enterprise-gnip-2.0/powertrack-api)                      | Provides complete coverage of public Posts as they happen, filterable using a wide range of operators and rules.   |
+| Real-time  | [Decahose API](/x-api/enterprise-gnip-2.0/fundamentals/decahose-api)             | Stream a random sample of 10% of all public Posts and their likes.                                                 |
+| Real-time  | [Account Activity API](/x-api/enterprise-gnip-2.0/fundamentals/account-activity) | Subscribe to users and receive a variety of activities including Posts, Direct Messages, likes, follows, and more. |
+| Historical | [Search API](/x-api/enterprise-gnip-2.0/fundamentals/search-api)                 | Search either the previous 30 days or the full archive of public Posts using advanced filtering tools.             |
+| Historical | [Historical PowerTrack API](/x-api/enterprise-gnip-2.0/powertrack-api)           | Filter the full archive of public Posts using an economical batch access process.                                  |
+| Insights   | [Engagement API](/x-api/enterprise-gnip-2.0/fundamentals/engagement-api)         | Measure the volume of impressions and engagements for public Posts.                                                |
+| Compliance | [Compliance Firehose API](/x-api/enterprise-gnip-2.0/fundamentals/firehouse)     | Stream all compliance events.                                                                                      |
+| Usage      | [Usage API](/x-api/enterprise-gnip-2.0/fundamentals/usage)                       | Provides programmatic access to activity consumption across enterprise products.                                   |
+
+## Important concepts
+
+### Gnip console
+
+You can manage your enterprise products and account access via the [Gnip console](/x-api/enterprise-gnip-2.0/fundamentals/overview).
+
+### Enrichments
+
+We’ve added metadata to the response payload of the premium APIs for developers on a paid tier. Learn more about expanded URLs, poll data, and profile geo by visiting our [enrichments section](/x-api/enterprise-gnip-2.0/fundamentals/data-enrichments).
+
+### Advanced filtering tools
+
+The Premium Search API offers an advanced set of operators that are not available with the standard search endpoint. Many of these operators are available to free sandbox users, but you get a more robust set if you use a paid tier. Learn more by visiting our [rules and filters section](/x-api/enterprise-gnip-2.0/fundamentals/rules-filtering#getting-started-with-enterprise-rules-and-queries).
+
+## Explore X API v2
+
+Interested in exploring what's available now in v2? Check out our documentation to see what's new, and visit the migration hub for resources that will help you move to the X API v2. You can also access migration guides for each endpoint listed in the new v2 endpoint sections.
+
+[Learn more](/x-api/migrate/overview)
+
+## Need help?
+
+Check out our support section or reach out to your account manager to learn how to get in contact with our support team.
+
+[Support](https://developer.x.com/en/support/x-api)

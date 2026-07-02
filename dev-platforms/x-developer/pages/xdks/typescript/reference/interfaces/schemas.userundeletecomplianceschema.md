@@ -1,0 +1,13 @@
+---
+title: "UserUndeleteComplianceSchema"
+source: https://docs.x.com/xdks/typescript/reference/interfaces/Schemas.UserUndeleteComplianceSchema
+path: xdks/typescript/reference/interfaces/schemas.userundeletecomplianceschema
+---
+
+Schemas.UserUndeleteComplianceSchema TypeScript interface reference in the X API SDK. Field definitions, types, and properties for X API request or response.
+
+[Schemas](/xdks/typescript/reference/modules/Schemas).UserUndeleteComplianceSchema
+
+## Properties
+
+<ResponseField name="userUndelete" type="UserComplianceSchema" />

@@ -1,0 +1,100 @@
+---
+title: "Step-by-step guide"
+source: https://docs.x.com/x-ads-api/getting-started/step-by-step-guide
+path: x-ads-api/getting-started/step-by-step-guide
+---
+
+Step-by-step guide to getting started with the X Ads API, including account setup, app creation, applying for access, and authenticating requests.
+
+## How to get access to the Ads API
+
+1. Sign up for a [developer account](https://console.x.com).
+2. Create a [developer App](/fundamentals/developer-apps) and secure your token.
+3. Submit a request for Ads API access for each of your developer app(s) using the [Ads API Access Form](/forms/ads-api-access).
+
+<Note>**Note:** If you are already building on the X Developer Platform and have a developer account, skip to step three.</Note>
+
+### Step one: Sign up for a developer account
+
+To make a request to any of X's API products, you must first sign up for a developer account. Within the Developer Console, create an App and developer App. This will provide you a set of credentials that you will use to authenticate all requests to the API.
+
+<Button href="https://console.x.com">
+  Sign up for a developer account
+</Button>
+
+### Step two: Save your App's key and tokens and keep them secure
+
+Within your developer App, you will be provided a set of API Keys (also known as Consumer Keys). You will also have the chance to generate a set of Access Tokens that can be used to make requests on behalf of your personal X account, and a Bearer Token that can be used to authenticate endpoints that require OAuth 2.0 Bearer Token. As these keys and tokens do not expire unless regenerated, we suggest creating environment variables, or using a secure password manager.
+
+Please also take note of your App ID, which can be found in the URL of your App details. This will make it easier to request access to the Ads API in the next step.
+
+<Note>
+  **Note:** Your keys and tokens will only display once in the Developer Console, so it is important that you store these credentials in your password management system as soon as you generate them.
+
+  If you misplace or forget the keys and tokens, you will need to regenerate them, which creates new keys and tokens, and invalidates the old ones. This means that you will have to update any integrations that you may have set up with your prior credentials.
+
+  Learn more about our [authentication best practices](/fundamentals/authentication/guides/authentication-best-practices).
+</Note>
+
+### Step three: Apply for access to the Ads API
+
+At this point you will have basic access to the X API, but not specific X Ads API functionality. Next, you will need to request access and be approved for Ads API access. Use the [Ads API Access Form](/forms/ads-api-access) to submit a request for each of your developer app(s).
+
+### Access tiers
+
+As part of the application process, you'll need to specify what level of access you require. Learn more about [App-level and Ad Account-level permissions](/x-ads-api/fundamentals/accessing-ads-accounts#levels-of-access).
+
+#### Conversion Only
+
+Access to Mobile and Web Conversion endpoints with read & write access.
+
+#### Standard Access
+
+Access to Analytics, Campaign Management, Creatives, Custom Audiences, and Conversion endpoints with read & write access.
+
+<Note>**Note:** After your app is approved for Ads API access, you will need to [regenerate any user access tokens](/fundamentals/authentication/oauth-1-0a/obtaining-user-access-tokens) to make properly [authenticated Ads API requests](/x-ads-api/fundamentals/making-authenticated-requests).</Note>
+
+<Note>**Note:** Ads API developers who requested access prior to July 2023 may have different levels of access and permissions, and may be limited to five OAuth tokens. See our guide on [increasing access](/x-ads-api/getting-started/increasing-access) to access to additional endpoints or lift token limits for existing applications.</Note>
+
+## Make your first request
+
+To test your access to the Ads API make a request to the [GET accounts](/x-ads-api/campaign-management/reference#get-accounts) endpoint. This endpoint will return the ad accounts the currently authorized user has access to. Use the ad account IDs from this request in subsequent API requests to read and write data for a specific ad account. Using [Twurl](https://github.com/twitter/twurl) on the command line the request would look like the following.
+
+**Example Request**
+
+```bash theme={null}
+twurl -H ads-api.x.com "/11/accounts"
+```
+
+**Example Response**
+
+```json theme={null}
+{
+  "request": {
+    "params": {}
+  },
+  "data": [
+   {
+    "name": "Furni",
+    "business_name": null,
+    "timezone": "America/Los_Angeles",
+    "timezone_switch_at": "2016-04-06T07:00:00Z",
+    "id": "18ce54ayf0z",
+    "created_at": "2016-04-07T14:40:15Z",
+    "salt": "b88939e5cabbca720159cb3659d73c06",
+    "updated_at": "2017-02-08T08:49:53Z",
+    "business_id": null,
+    "approval_status": "ACCEPTED",
+    "deleted": false
+     }
+   ]
+}
+```
+
+## Up next . . .
+
+* Read through the [Ads API documentation](/x-ads-api/introduction) fundamentals such as [versioning](/x-ads-api/fundamentals/versioning) and [hierarchy](/x-ads-api/fundamentals/hierarchy-and-terminology).
+* Check out the various [Ads API tools & libraries](/x-ads-api/tools-and-libraries) to aid you in your Ads API integration.
+* Understand the steps to [increase Ads API access](/x-ads-api/getting-started/increasing-access).
+* Familiarize yourself with available [support resources](/support).
+* Follow [@API](https://x.com/API) for live updates on API changes, service issues and enhancements to X promoted products.

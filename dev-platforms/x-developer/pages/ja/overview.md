@@ -1,0 +1,93 @@
+---
+title: "X Developer Platform"
+source: https://docs.x.com/ja/overview
+path: ja/overview
+---
+
+X のリアルタイムなグローバルデータを活用して、構築、分析、イノベーションを実現します。投稿、ユーザー、トレンドなどに、柔軟な従量課金制のモダンな API でアクセスできます。
+
+## 製品
+
+ニーズに合ったアクセスレベルを選択してください。
+
+<CardGroup>
+  <Card title="X API — 従量課金" icon="coins" href="/x-api/introduction">
+    クレジットベースの料金体系、コミットメントなし。使った分だけお支払いいただきます。
+  </Card>
+
+  <Card title="X API — エンタープライズ" icon="building" href="/enterprise-api/introduction">
+    大容量エンドポイント、専任アカウントマネジメント、カスタムレート制限。
+  </Card>
+</CardGroup>
+
+<Tip>
+  X API クレジットを購入すると、無料の [xAI API](https://docs.x.ai) クレジットを獲得できます — 支出額に応じて最大 20% 還元。[詳細はこちら](/x-api/getting-started/pricing#free-xai-api-credits)
+</Tip>
+
+***
+
+## はじめる
+
+<Card title="従量課金制の料金変更: Owned Reads 機能を搭載" icon="bolt">
+  <div>
+    <div>
+      <img alt="X ロゴ" />
+    </div>
+
+    <div>
+      Owned Reads を使用すると、自分のデータに低コストでアクセスできます。自分の投稿、ブックマーク、フォロワー、いいねなどのリクエストは <span>リソースあたり \$0.001</span> です。
+
+      <br />
+
+      <br />
+
+      <Button href="/x-api/getting-started/pricing#owned-reads">詳細はこちら</Button>
+    </div>
+  </div>
+</Card>
+
+<CardGroup>
+  <Card title="クイックスタート" icon="rocket" href="/x-api/getting-started/make-your-first-request">
+    API キーを取得し、数分で最初のリクエストを送信できます。
+  </Card>
+
+  <Card title="API リファレンス" icon="code" href="/x-api/introduction">
+    投稿、ユーザー、スペース、DM、リストなど、各エンドポイントを確認できます。
+  </Card>
+
+  <Card title="SDK" icon="cube" href="/tools-and-libraries">
+    開発を加速する公式 Python・TypeScript SDK。
+  </Card>
+</CardGroup>
+
+***
+
+## リソース
+
+<CardGroup>
+  <Card title="チュートリアル" icon="book" href="/tutorials">
+    よくあるユースケースと連携のためのステップバイステップガイド。
+  </Card>
+
+  <Card title="ツール & ライブラリ" icon="screwdriver-wrench" href="/tools-and-libraries">
+    あらゆる言語に対応した公式 SDK とコミュニティライブラリ。
+  </Card>
+
+  <Card title="デベロッパーフォーラム" icon="comments" href="https://devcommunity.x.com">
+    コミュニティと X チームからサポートを受けられます。
+  </Card>
+
+  <Card title="エージェントリソース" icon="robot" href="/tools/ai">
+    llms.txt、skill.md、MCP サーバー、AI 駆動開発のためのリソース。
+  </Card>
+</CardGroup>
+
+***
+
+## その他の製品
+
+<CardGroup>
+  <Card title="X Ads API" icon="rectangle-ad" href="/x-ads-api/introduction">
+    広告キャンペーン、ターゲティング、クリエイティブ、アナリティクスをプログラムで管理。
+  </Card>
+</CardGroup>

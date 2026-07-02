@@ -1,0 +1,50 @@
+---
+title: "Set the system time in Bun's test runner"
+source: https://bun.com/docs/guides/test/mock-clock
+path: docs/guides/test/mock-clock
+---
+
+Set the system time in tests with the `setSystemTime` function from `bun:test`.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+import { test, expect, setSystemTime } from "bun:test";
+
+test("party like it's 1999", () => {
+  const date = new Date("1999-01-01T00:00:00.000Z");
+  setSystemTime(date); // it's now January 1, 1999
+
+  const now = new Date();
+  expect(now.getFullYear()).toBe(1999);
+  expect(now.getMonth()).toBe(0);
+  expect(now.getDate()).toBe(1);
+});
+```
+
+***
+
+Call `setSystemTime` in a [lifecycle hook](/docs/test/lifecycle) like `beforeAll` to give your tests a deterministic "fake clock".
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+import { test, expect, beforeAll, setSystemTime } from "bun:test";
+
+beforeAll(() => {
+  const date = new Date("1999-01-01T00:00:00.000Z");
+  setSystemTime(date); // it's now January 1, 1999
+});
+
+// tests...
+```
+
+***
+
+To reset the system clock to the actual time, call `setSystemTime` with no arguments.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+import { test, expect, beforeAll, setSystemTime } from "bun:test";
+
+setSystemTime(); // reset to actual time
+```
+
+***
+
+See [Dates and times](/docs/test/dates-times).

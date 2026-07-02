@@ -1,0 +1,46 @@
+# AI 官方文档镜像 —— CNB 流水线
+#
+# 触发：
+#   crontab     每天早晚黄金时间各拉一次（Asia/Shanghai 07:30 / 19:30）
+#   api_trigger 手动触发（初始化 / 临时刷新用）
+# 不配 push 触发：因为流水线自己会 commit 回仓库，配了 push 会 crawl→push→再触发 死循环。
+#
+# 省资源要点：cpus=2（纯下载/文本处理，IO 为主，多核无用）；内容无变化时不 commit。
+main:
+  "crontab: 30 7,19 * * *":
+    - &refresh
+      name: refresh-ai-docs
+      runner:
+        tags: cnb:arch:amd64
+        cpus: 2
+      docker:
+        image: python:3.12-slim
+      stages:
+        - name: install-tools
+          script: |
+            apt-get update -qq
+            apt-get install -y --no-install-recommends curl git ca-certificates >/dev/null
+        - name: crawl
+          script: |
+            export CRAWL_TIMESTAMP="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            export PYTHONUNBUFFERED=1   # 日志实时流出，方便看进度/定位卡住的源
+            # PROVIDER 由网页按钮面板注入（不设=定时任务=抓全部）；INCLUDE_ALL_SDK_LANGUAGES 同理
+            python -u crawl.py ${PROVIDER:-}
+        - name: commit-back
+          script: |
+            git config user.name "cnb-docs-bot"
+            git config user.email "docs-bot@cnb.cool"
+            git add -A
+            if git diff --cached --quiet; then
+              echo "上游文档无变化，跳过提交（省资源）"
+            else
+              git commit -m "docs: refresh AI official docs mirror ($(date -u +%Y-%m-%dT%H:%M:%SZ))"
+              git remote set-url origin "https://cnb:${CNB_TOKEN}@cnb.cool/${CNB_REPO_SLUG}.git"
+              git push origin "HEAD:${CNB_BRANCH}"
+              echo "已提交并推送更新"
+            fi
+  api_trigger:
+    - *refresh
+  # 网页自定义按钮（.cnb/web_trigger.yml）点击后触发
+  web_trigger_refresh:
+    - *refresh

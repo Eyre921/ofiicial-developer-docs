@@ -1,0 +1,175 @@
+---
+title: "List Members Lookup"
+source: https://docs.x.com/x-api/lists/list-members/quickstart/list-members-lookup
+path: x-api/lists/list-members/quickstart/list-members-lookup
+---
+
+Quickstart for retrieving the members of an X List with the X API v2 List members lookup endpoint, including authentication and sample requests.
+
+This guide walks you through retrieving members of a List.
+
+<Note>
+  **Prerequisites**
+
+  Before you begin, you'll need:
+
+  * A [developer account](https://developer.x.com/en/portal/petition/essential/basic-info) with an approved App
+  * Your App's Bearer Token
+</Note>
+
+***
+
+## Get List members
+
+<Steps>
+  <Step title="Find the List ID">
+    You can find the List ID in the URL when viewing a List:
+
+    ```
+    https://x.com/i/lists/84839422
+                          └── This is the List ID
+    ```
+  </Step>
+
+  <Step title="Request the List members">
+    <CodeGroup>
+      ```bash cURL theme={null}
+      curl "https://api.x.com/2/lists/84839422/members?\
+      user.fields=created_at,username,verified&\
+      max_results=100" \
+        -H "Authorization: Bearer $BEARER_TOKEN"
+      ```
+
+      ```python Python SDK theme={null}
+      from xdk import Client
+
+      client = Client(bearer_token="YOUR_BEARER_TOKEN")
+
+      # Get List members with pagination
+      for page in client.lists.get_members(
+          "84839422",
+          user_fields=["created_at", "username", "verified"],
+          max_results=100
+      ):
+          for user in page.data:
+              print(f"{user.username} - Joined: {user.created_at}")
+      ```
+
+      ```javascript JavaScript SDK theme={null}
+      import { Client } from "@xdevplatform/xdk";
+
+      const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
+
+      // Get List members with pagination
+      const paginator = client.lists.getMembers("84839422", {
+        userFields: ["created_at", "username", "verified"],
+        maxResults: 100,
+      });
+
+      for await (const page of paginator) {
+        page.data?.forEach((user) => {
+          console.log(`${user.username} - Joined: ${user.created_at}`);
+        });
+      }
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Review the response">
+    ```json theme={null}
+    {
+      "data": [
+        {
+          "id": "1319036828964454402",
+          "name": "Birdwatch",
+          "username": "birdwatch",
+          "created_at": "2020-10-21T22:04:47.000Z",
+          "verified": true
+        },
+        {
+          "id": "1065249714214457345",
+          "name": "Spaces",
+          "username": "TwitterSpaces",
+          "created_at": "2018-11-21T14:24:58.000Z",
+          "verified": true
+        }
+      ],
+      "meta": {
+        "result_count": 2,
+        "next_token": "5349804505549807616"
+      }
+    }
+    ```
+  </Step>
+</Steps>
+
+***
+
+## Include additional data
+
+Use expansions to get related data like pinned Posts:
+
+<CodeGroup>
+  ```bash cURL theme={null}
+  curl "https://api.x.com/2/lists/84839422/members?\
+  user.fields=created_at&\
+  expansions=pinned_tweet_id&\
+  tweet.fields=created_at" \
+    -H "Authorization: Bearer $BEARER_TOKEN"
+  ```
+
+  ```python Python SDK theme={null}
+  from xdk import Client
+
+  client = Client(bearer_token="YOUR_BEARER_TOKEN")
+
+  # Get List members with expansions
+  for page in client.lists.get_members(
+      "84839422",
+      user_fields=["created_at"],
+      expansions=["pinned_tweet_id"],
+      tweet_fields=["created_at"]
+  ):
+      for user in page.data:
+          print(f"{user.username}")
+      # Pinned Posts are in page.includes.tweets
+  ```
+
+  ```javascript JavaScript SDK theme={null}
+  import { Client } from "@xdevplatform/xdk";
+
+  const client = new Client({ bearerToken: "YOUR_BEARER_TOKEN" });
+
+  // Get List members with expansions
+  const paginator = client.lists.getMembers("84839422", {
+    userFields: ["created_at"],
+    expansions: ["pinned_tweet_id"],
+    tweetFields: ["created_at"],
+  });
+
+  for await (const page of paginator) {
+    page.data?.forEach((user) => {
+      console.log(user.username);
+    });
+    // Pinned Posts are in page.includes?.tweets
+  }
+  ```
+</CodeGroup>
+
+***
+
+## Next steps
+
+<CardGroup>
+  <Card title="Manage List members" icon="user-plus" href="/x-api/lists/list-members/quickstart/manage-list-members">
+    Add and remove members
+  </Card>
+
+  <Card title="List lookup" icon="list" href="/x-api/lists/list-lookup/quickstart">
+    Get List details
+  </Card>
+
+  <Card title="API Reference" icon="code" href="/x-api/lists/get-list-members">
+    Full endpoint documentation
+  </Card>
+</CardGroup>

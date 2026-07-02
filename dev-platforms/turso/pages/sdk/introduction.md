@@ -1,0 +1,117 @@
+---
+title: "Turso SDKs"
+source: https://docs.turso.tech/sdk/introduction
+path: sdk/introduction
+---
+
+## Which package should I use?
+
+| Use case                                                                    | TypeScript                  | Python                | Go                    | Rust                             |
+| --------------------------------------------------------------------------- | --------------------------- | --------------------- | --------------------- | -------------------------------- |
+| **Local database** (embedded, on-device, offline)                           | `@tursodatabase/database`   | `pyturso`             | `tursogo`             | `turso`                          |
+| **Local database + cloud sync** (push/pull)                                 | `@tursodatabase/sync`       | `pyturso` (with sync) | `tursogo` (with sync) | `turso` (with `sync` feature)    |
+| **Remote access** (servers, Docker, serverless, edge — any over-the-wire)   | `@tursodatabase/serverless` | `libsql`              | `libsql-client-go`    | `libsql` (with `remote` feature) |
+| **libSQL** — ORM support (Drizzle, Prisma), production-ready, battle-tested | `@libsql/client`            | `libsql`              | `go-libsql`           | `libsql`                         |
+
+**Starting a new project?** Use `@tursodatabase/database` (TypeScript), `pyturso` (Python), `tursogo` (Go), or `turso` (Rust). These are built on the Turso Database engine — the ground-up rewrite of SQLite with concurrent writes, async I/O, and local-first sync.
+
+**Need sync?** Use [Turso Sync](/sync/usage) for local reads and writes with explicit `push()` / `pull()` to Turso Cloud.
+
+**Using an ORM?**
+
+* **TypeScript** — Drizzle and Prisma run on `@libsql/client` with production-ready support from all major ORMs in the ecosystem.
+* **Rust** — [Toasty](/sdk/rust/orm/toasty), the async ORM from the Tokio project, has a native Turso driver built on the `turso` crate.
+* **Python** — see the [SQLAlchemy guide](/sdk/python/orm/sqlalchemy).
+
+**Migrating from SQLite?** Turso Database is a drop-in replacement. Your existing SQL, schema, and queries work unchanged.
+
+**Already using `@libsql/client`, `libsql`, or `go-libsql`?** These packages are built on [libSQL](https://github.com/tursodatabase/libsql), the open-source fork of SQLite that powers Turso Cloud today. They are production-ready and battle-tested. If your workload needs concurrent writes, push/pull sync, or local-first writes (offline / multi-writer / bidirectional), the Turso Database packages are also a good choice — pick the one that fits your workload.
+
+### Why multiple packages in TypeScript?
+
+Keeping `@tursodatabase/database` and `@tursodatabase/serverless` separate means minimal bundle size. `@tursodatabase/serverless` uses only `fetch` — zero native dependencies, so it works in Node.js, Docker containers, serverless functions, edge runtimes, and browsers.
+
+<Info>
+  **Need sync?** For new projects, use [Turso Sync](/sync/usage) — it gives you local reads and writes with explicit `push()` / `pull()` to the cloud. The libSQL-based SDKs below also support Embedded Replicas, where reads are local and writes are sent to the cloud primary.
+</Info>
+
+## Official SDKs
+
+<Snippet />
+
+## Community SDKs
+
+These SDKs are community-driven and don't come with official Turso support.
+
+<CardGroup>
+  <Card
+    title="Flutter / Dart"
+    icon={
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+  <path
+    fill="#1ebca1"
+    d="M429.5 236.3L291.7 374.1 429.5 512H272l-59.1-59.1-78.8-78.8L272 236.3H429.5zM272 0L16 256l78.8 78.8L429.5 0H272z"
+  />
+</svg>
+}
+    href="/sdk/flutter/quickstart"
+  />
+
+  <Card
+    title="Capacitor"
+    icon={
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <path
+    fill="#53b9ff"
+    d="M19.93 27.059.156 46.859l30.496 30.59L0 108.191l19.715 19.813L50.43 97.25l30.547 30.531 19.777-19.8Zm0 0"
+  />
+  <path
+    fill="#119eff"
+    d="M70.258 77.45 50.43 97.25l30.547 30.531 19.777-19.8Zm0 0"
+  />
+  <path fill-opacity=".2" d="M70.258 77.45 50.43 97.25l7.633 7.59Zm0 0" />
+  <path
+    fill="#53b9ff"
+    d="M97.285 50.492 128 19.738 108.215 0 77.512 30.691 46.957.156 27.184 19.957l80.82 80.922 19.777-19.8Zm0 0"
+  />
+  <path
+    fill="#119eff"
+    d="m57.68 50.492 19.828-19.8L46.957.155 27.184 19.957Zm0 0"
+  />
+  <path fill-opacity=".2" d="m57.68 50.492 19.828-19.8-7.633-7.594Zm0 0" />
+</svg>
+}
+    href="https://capawesome.io/plugins/libsql"
+  />
+
+  <Card title="React Native / OP-SQLite" icon="react" href="https://op-engineering.github.io/op-sqlite/" />
+
+  <Card
+    title="Laravel"
+    icon={
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  preserveAspectRatio="xMidYMid"
+  viewBox="0 0 256 264"
+>
+  <path
+    d="m255.9 59.6.1 1.1v56.6c0 1.4-.8 2.8-2 3.5l-47.6 27.4v54.2c0 1.4-.7 2.8-2 3.5l-99.1 57-.7.4-.3.1c-.7.2-1.4.2-2.1 0l-.4-.1-.6-.3L2 206c-1.3-.8-2.1-2.2-2.1-3.6V32.7l.1-1.1.2-.4.3-.6.2-.4.4-.5.4-.3c.2 0 .3-.2.5-.3L51.6.6c1.3-.8 2.9-.8 4.1 0L105.3 29c.2 0 .3.2.4.3l.5.3c0 .2.2.4.3.5l.3.4.3.6.1.4.2 1v106l41.2-23.7V60.7c0-.4 0-.7.2-1l.1-.4.3-.7.3-.3.3-.5.5-.3.4-.4 49.6-28.5c1.2-.7 2.8-.7 4 0L254 57l.5.4.4.3.4.5.2.3c.2.2.2.5.3.7l.2.3Zm-8.2 55.3v-47l-17.3 10-24 13.7v47l41.3-23.7Zm-49.5 85v-47l-23.6 13.5-67.2 38.4v47.5l90.8-52.3ZM8.2 39.9V200l90.9 52.3v-47.5l-47.5-26.9-.4-.4c-.2 0-.3-.1-.4-.3l-.4-.4-.3-.4-.2-.5-.2-.5v-.6l-.2-.5V63.6L25.6 49.8l-17.3-10Zm45.5-31L12.4 32.8l41.3 23.7 41.2-23.7L53.7 8.9ZM75 157.3l24-13.8V39.8l-17.3 10-24 13.8v103.6l17.3-10ZM202.3 36.9 161 60.7l41.3 23.8 41.3-23.8-41.3-23.8Zm-4.1 54.7-24-13.8-17.3-10v47l24 13.9 17.3 10v-47Zm-95 106 60.6-34.5 30.2-17.3-41.2-23.8-47.5 27.4L62 174.3l41.2 23.3Z"
+    fill="#1ebca1"
+  />
+</svg>
+}
+    href="https://github.com/richan-fongdasen/turso-laravel"
+  />
+
+  <Card title=".NET" icon="microsoft" href="https://github.com/tvandinther/libsql-client-dotnet" />
+
+  <Card title="Java" icon="java" href="https://github.com/dbeaver/dbeaver-jdbc-libsql" />
+
+  <Card title="Stateless libSQL" icon="github" href="https://github.com/DaBigBlob/libsql-stateless-easy" />
+</CardGroup>
+
+## SQL over HTTP
+
+<CardGroup>
+  <Snippet />
+</CardGroup>

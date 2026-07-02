@@ -1,0 +1,38 @@
+---
+title: "Monitor your usage"
+source: https://upstash.com/docs/redis/howto/monitoryourusage
+path: docs/redis/howto/monitoryourusage
+---
+
+We support the Redis `MONITOR` command, a debugging command that allows you to see all requests processed by your Redis instance in real-time.
+
+## Monitoring Your Usage - Video Guide
+
+In this video, we'll walk through setting up a monitor instance step-by-step.
+
+  <iframe
+    id="intro-video"
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/tWIm396WAkI?rel=0&disablekb=1"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; fullscreen; clipboard-write; encrypted-media; gyroscope"
+    allowfullscreen
+  ></iframe>
+
+<Note>
+  The `MONITOR`command expects a persistent connection and, therefore, does not work over HTTP.
+</Note>
+
+In this video, we use `ioredis` to connect to our Upstash Redis database. Using an event handler, we can define what should happen for each executed command against on Redis instance. For example, logging all data to the console.
+
+<RequestExample>
+```ts Example
+const monitor = await redis.monitor()
+
+monitor.on("monitor", (time, args, source, database) => {
+  console.log(time, args, source, database)
+})
+```
+</RequestExample>

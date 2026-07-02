@@ -1,0 +1,28 @@
+---
+title: "Basic authentication"
+source: https://docs.x.com/fundamentals/authentication/basic-auth
+path: fundamentals/authentication/basic-auth
+---
+
+Use HTTP Basic authentication to access X enterprise APIs like PowerTrack, Decahose, and Search by sending your email and password over HTTPS.
+
+## Basic authentication
+
+Many of X's enterprise APIs require the use of HTTP Basic Authentication. To make a successful request to an API that requires Basic Authentication, you must pass a valid email address and password combination as an authorization header for each request. The email and password combination are the same ones that you will use to access the [enterprise API console](https://console.gnip.com/), and can be edited from within this console. 
+
+When building a request using Basic Authentication, make sure you add the Authentication: Basic HTTP header with encoded credentials over HTTPS.
+
+In the following cURL request example, you would replace `<email_address>` and `<password>` with your credentials before sending the request:
+
+```bash theme={null}
+curl -v --compressed -u<email_address>:<password>
+    "https://gnip-api.x.com/search/30day/accounts/<account-name>/prod/counts.json?query=from%3Axdevelopers"
+```
+
+**APIs that require basic authentication:**
+
+* [PowerTrack API](/x-api/enterprise-gnip-2.0/powertrack-api) enterprise
+* [Decahose stream API](http://localhost:3000/x-api/enterprise-gnip-2.0/fundamentals/decahose-api) enterprise
+* [30-Day Search API](/x-api/enterprise-gnip-2.0/fundamentals/search-api) enterprise
+* [Full-Archive Search API](/x-api/enterprise-gnip-2.0/fundamentals/search-api) enterprise
+* [Usage API](/x-api/enterprise-gnip-2.0/fundamentals/usage) enterprise

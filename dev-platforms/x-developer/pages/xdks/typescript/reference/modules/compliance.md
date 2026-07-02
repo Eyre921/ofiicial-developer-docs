@@ -1,0 +1,55 @@
+---
+title: "Namespace: Compliance"
+source: https://docs.x.com/xdks/typescript/reference/modules/Compliance
+path: xdks/typescript/reference/modules/compliance
+---
+
+Reference for the Compliance module in the X API TypeScript SDK. Re-exported clients, types, and utilities provided by this SDK module for the X API v2.
+
+## Type Aliases
+
+### GetJobsByIdResponse
+
+Ƭ **GetJobsByIdResponse**: [`Get2ComplianceJobsIdResponse`](/xdks/typescript/reference/interfaces/Schemas.Get2ComplianceJobsIdResponse)
+
+Response for getJobsById
+
+#### Defined in
+
+[compliance/models.ts:18](https://github.com/xdevplatform/xdk-typescript/blob/81aacb165e0802e188f608bdf462b60fc4e713a2/src/compliance/models.ts#L18)
+
+***
+
+### GetJobsResponse
+
+Ƭ **GetJobsResponse**: [`Get2ComplianceJobsResponse`](/xdks/typescript/reference/interfaces/Schemas.Get2ComplianceJobsResponse)
+
+Response for getJobs
+
+#### Defined in
+
+[compliance/models.ts:24](https://github.com/xdevplatform/xdk-typescript/blob/81aacb165e0802e188f608bdf462b60fc4e713a2/src/compliance/models.ts#L24)
+
+***
+
+### CreateJobsRequest
+
+Ƭ **CreateJobsRequest**: [`CreateComplianceJobRequest`](/xdks/typescript/reference/interfaces/Schemas.CreateComplianceJobRequest)
+
+Request for createJobs
+
+#### Defined in
+
+[compliance/models.ts:30](https://github.com/xdevplatform/xdk-typescript/blob/81aacb165e0802e188f608bdf462b60fc4e713a2/src/compliance/models.ts#L30)
+
+***
+
+### CreateJobsResponse
+
+Ƭ **CreateJobsResponse**: [`CreateComplianceJobResponse`](/xdks/typescript/reference/interfaces/Schemas.CreateComplianceJobResponse)
+
+Response for createJobs
+
+#### Defined in
+
+[compliance/models.ts:36](https://github.com/xdevplatform/xdk-typescript/blob/81aacb165e0802e188f608bdf462b60fc4e713a2/src/compliance/models.ts#L36)

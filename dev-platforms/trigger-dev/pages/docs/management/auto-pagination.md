@@ -1,0 +1,43 @@
+---
+title: "Auto-pagination"
+source: https://trigger.dev/docs/management/auto-pagination
+path: docs/management/auto-pagination
+---
+
+Using auto-pagination with the Trigger.dev management API
+
+All list endpoints in the management API support auto-pagination.
+You can use `for await … of` syntax to iterate through items across all pages:
+
+```ts theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+async function fetchAllRuns() {
+  const allRuns = [];
+
+  for await (const run of runs.list({ limit: 10 })) {
+    allRuns.push(run);
+  }
+
+  return allRuns;
+}
+```
+
+You can also use helpers on the return value from any `list` method to get the next/previous page of results:
+
+```ts theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+async function main() {
+  let page = await runs.list({ limit: 10 });
+
+  for (const run of page.data) {
+    console.log(run);
+  }
+
+  while (page.hasNextPage()) {
+    page = await page.getNextPage();
+    // ... do something with the next page
+  }
+}
+```

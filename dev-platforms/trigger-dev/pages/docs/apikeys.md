@@ -1,0 +1,57 @@
+---
+title: "API keys"
+source: https://trigger.dev/docs/apikeys
+path: docs/apikeys
+---
+
+How to authenticate with Trigger.dev so you can trigger tasks.
+
+### Authentication and your secret keys
+
+When you [trigger a task](/docs/triggering) from your backend code, you need to set the `TRIGGER_SECRET_KEY` environment variable.
+
+Each environment has its own secret key. You can find the value on the API keys page in the Trigger.dev dashboard:
+
+<img alt="How to find your secret key" />
+
+<Note>
+  For preview branches, you need to also set the `TRIGGER_PREVIEW_BRANCH` environment variable as
+  well. You can find the value on the API keys page when you're on the preview branch.
+</Note>
+
+### Automatically Configuring the SDK
+
+To automatically configure the SDK with your secret key, you can set the `TRIGGER_SECRET_KEY` environment variable. The SDK will automatically use this value when calling API methods (like `trigger`).
+
+```bash .env theme={"theme":"css-variables"}
+TRIGGER_SECRET_KEY="tr_dev_…"
+TRIGGER_PREVIEW_BRANCH="my-branch" # Only needed for preview branches
+```
+
+You can do the same if you are self-hosting and need to change the default URL by using `TRIGGER_API_URL`.
+
+```bash .env theme={"theme":"css-variables"}
+TRIGGER_API_URL="https://trigger.example.com"
+TRIGGER_PREVIEW_BRANCH="my-branch" # Only needed for preview branches
+```
+
+The default URL is `https://api.trigger.dev`.
+
+### Manually Configuring the SDK
+
+If you prefer to manually configure the SDK, you can call the `configure` method:
+
+```ts theme={"theme":"css-variables"}
+import { configure } from "@trigger.dev/sdk";
+import { myTask } from "./trigger/myTasks";
+
+configure({
+  secretKey: "tr_dev_1234", // WARNING: Never actually hardcode your secret key like this
+  previewBranch: "my-branch", // Only needed for preview branches
+  baseURL: "https://mytrigger.example.com", // Optional
+});
+
+async function triggerTask() {
+  await myTask.trigger({ userId: "1234" }); // This will use the secret key and base URL you configured
+}
+```

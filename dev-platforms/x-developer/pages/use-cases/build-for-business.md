@@ -1,0 +1,81 @@
+---
+title: "Build for businesses"
+source: https://docs.x.com/use-cases/build-for-business
+path: use-cases/build-for-business
+---
+
+How businesses use the X API for social listening, customer service, brand monitoring, market intelligence, and data-driven decision making at scale.
+
+## Listen to the conversation on x
+
+<CardGroup>
+  <Card title="Monitor your brand" icon="eye">
+    Understand, track, and benchmark the conversations and perceptions surrounding your brand.
+
+    [**Learn more**](https://developer.x.com/en/use-cases/build-for-businesses/brand-monitoring) <Icon icon="arrow-right" />
+  </Card>
+
+  <Card title="Track events" icon="calendar">
+    Stay on top of breaking news and events to spot crises early that might impact your business and brand reputation.
+
+    [**Learn more**](https://developer.x.com/en/use-cases/build-for-businesses/track-events) <Icon icon="arrow-right" />
+  </Card>
+</CardGroup>
+
+## Use insights from X
+
+<CardGroup>
+  <Card title="Manage your social media" icon="share-nodes">
+    Manage and track every aspect of your social presence with targeted tooling and real-time ROI.
+
+    [**Learn more**](https://developer.x.com/en/use-cases/build-for-businesses/manage-social-media) <Icon icon="arrow-right" />
+  </Card>
+
+  <Card title="Oversee customer care" icon="globe">
+    Directly engage with your customers to quickly answer questions, resolve their issues, and provide exceptional service.
+
+    [**Learn more**](https://developer.x.com/en/use-cases/build-for-businesses/customer-care-management) <Icon icon="arrow-right" />
+  </Card>
+</CardGroup>
+
+## Discover new trends and opportunities
+
+<CardGroup>
+  <Card title="Uncover consumer insights" icon="magnifying-glass-chart">
+    Inform your business strategy with insights into emerging trends, customer preferences, and feedback.
+  </Card>
+
+  <Card title="Inform search results" icon="magnifying-glass">
+    Enhance your search results with what’s happening on X.
+  </Card>
+
+  <Card title="Research markets and audiences" icon="users">
+    Understand your audience and what they value by uncovering trends and surfacing important conversations on X.
+
+    [**Learn more**](https://developer.x.com/en/use-cases/build-for-businesses/market-research) <Icon icon="arrow-right" />
+  </Card>
+</CardGroup>
+
+## Expand what’s possible with X Ads
+
+<CardGroup>
+  <Card
+    title="Enrich advertising solutions on X
+"
+    icon="bullhorn"
+  >
+    Enhance the X Ads experience with unique innovations and efficiencies for advertisers.
+
+    [**Learn more**](https://developer.x.com/en/use-cases/build-for-businesses/advertise) <Icon icon="arrow-right" />
+  </Card>
+</CardGroup>
+
+## Build for publishers
+
+<CardGroup>
+  <Card title="Embed X content" icon="code">
+    Engage your users with live X content that brings context to what’s happening and links to the source. Amplify your efforts on X by embedding your X content into your website or app.
+
+    [**Learn more**](https://developer.x.com/en/products/x-for-websites) <Icon icon="arrow-right" />
+  </Card>
+</CardGroup>

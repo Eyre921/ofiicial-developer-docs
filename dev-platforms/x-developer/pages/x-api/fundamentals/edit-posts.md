@@ -1,0 +1,210 @@
+---
+title: "Edit Posts"
+source: https://docs.x.com/x-api/fundamentals/edit-posts
+path: x-api/fundamentals/edit-posts
+---
+
+Edit Posts on X within a 30-minute window up to five times and read the edit history, edit_controls, and editable metadata returned by the v2 API.
+
+Posts on X can be edited within 30 minutes of posting, up to 5 times. The X API provides full access to edit history and metadata.
+
+***
+
+## Edit rules
+
+| Rule            | Details                                       |
+| :-------------- | :-------------------------------------------- |
+| **Time window** | 30 minutes from original post                 |
+| **Edit limit**  | 5 edits maximum                               |
+| **ID behavior** | Each edit creates a new post ID               |
+| **Deletion**    | Deleting any version deletes the entire chain |
+
+***
+
+## What can't be edited
+
+Some post types are not editable:
+
+* Promoted posts (ads)
+* Posts with polls
+* Replies to others (non-self-thread)
+* Reposts (Quote posts *can* be edited)
+* Community posts
+* Collaborative posts
+* Scheduled posts
+
+***
+
+## Edit data in responses
+
+### Default fields
+
+All post responses include `edit_history_tweet_ids` by default:
+
+```json theme={null}
+{
+  "data": {
+    "id": "1234567891",
+    "text": "Updated text (edited)",
+    "edit_history_tweet_ids": ["1234567890", "1234567891"]
+  }
+}
+```
+
+* Single ID = never edited
+* Multiple IDs = edit history (oldest first)
+
+### Edit controls
+
+Request `edit_controls` for edit status:
+
+```bash theme={null}
+curl "https://api.x.com/2/tweets/1234567891?tweet.fields=edit_controls" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+```json theme={null}
+{
+  "data": {
+    "id": "1234567891",
+    "text": "Updated text (edited)",
+    "edit_history_tweet_ids": ["1234567890", "1234567891"],
+    "edit_controls": {
+      "is_edit_eligible": true,
+      "editable_until": "2024-01-15T12:30:00.000Z",
+      "edits_remaining": 3
+    }
+  }
+}
+```
+
+| Field              | Description                       |
+| :----------------- | :-------------------------------- |
+| `is_edit_eligible` | Whether the post can be edited    |
+| `editable_until`   | Timestamp when edit window closes |
+| `edits_remaining`  | Number of edits left (0-5)        |
+
+***
+
+## Getting edit history
+
+Use the `edit_history_tweet_ids` expansion to get full post objects for all versions:
+
+```bash theme={null}
+curl "https://api.x.com/2/tweets/1234567891?\
+tweet.fields=edit_controls&\
+expansions=edit_history_tweet_ids" \
+  -H "Authorization: Bearer $TOKEN"
+```
+
+```json theme={null}
+{
+  "data": {
+    "id": "1234567891",
+    "text": "Updated text (edited)",
+    "edit_history_tweet_ids": ["1234567890", "1234567891"],
+    "edit_controls": {
+      "is_edit_eligible": true,
+      "editable_until": "2024-01-15T12:30:00.000Z",
+      "edits_remaining": 3
+    }
+  },
+  "includes": {
+    "tweets": [{
+      "id": "1234567890",
+      "text": "Original text (with typo)",
+      "edit_history_tweet_ids": ["1234567890", "1234567891"],
+      "edit_controls": {
+        "is_edit_eligible": true,
+        "editable_until": "2024-01-15T12:30:00.000Z",
+        "edits_remaining": 3
+      }
+    }]
+  }
+}
+```
+
+***
+
+## Which version is returned?
+
+By default, the API returns the **most recent version** of an edited post.
+
+To get a specific version, request it by its post ID directly:
+
+```bash theme={null}
+# Get original version
+curl "https://api.x.com/2/tweets/1234567890" -H "Authorization: Bearer $TOKEN"
+
+# Get edited version  
+curl "https://api.x.com/2/tweets/1234567891" -H "Authorization: Bearer $TOKEN"
+```
+
+***
+
+## Metrics for edited posts
+
+Each version of an edited post has its own engagement metrics. The metrics are attributed to the version that was visible when the engagement occurred.
+
+***
+
+## Availability
+
+Edit metadata is available:
+
+* For all posts created since September 29, 2022
+* On all v2 endpoints that return posts
+* Including search, timelines, stream, and lookup
+
+Posts created before this date do not have edit metadata.
+
+***
+
+## Use cases
+
+<Tabs>
+  <Tab title="Track changes">
+    Monitor posts for edits and log the differences:
+
+    ```python theme={null}
+    def check_for_edits(post):
+        history = post.get("edit_history_tweet_ids", [])
+        if len(history) > 1:
+            print(f"Post {post['id']} has been edited {len(history) - 1} times")
+    ```
+  </Tab>
+
+  <Tab title="Show edit indicator">
+    Display an "edited" badge in your UI:
+
+    ```javascript theme={null}
+    const isEdited = post.edit_history_tweet_ids?.length > 1;
+    if (isEdited) {
+      showEditedBadge();
+    }
+    ```
+  </Tab>
+
+  <Tab title="Get original content">
+    Retrieve the original version of an edited post:
+
+    ```python theme={null}
+    original_id = post["edit_history_tweet_ids"][0]
+    original = api.get_tweet(original_id)
+    ```
+  </Tab>
+</Tabs>
+
+***
+
+## Next steps
+
+<CardGroup>
+  <Card title="Post lookup" icon="magnifying-glass" href="/x-api/posts/lookup/introduction">
+    Retrieve posts with edit history.
+  </Card>
+
+  <Card title="Data dictionary" icon="book" href="/x-api/fundamentals/data-dictionary">
+    Complete post object reference.
+  </Card>
+</CardGroup>

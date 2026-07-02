@@ -1,0 +1,8 @@
+---
+title: "Delete directory repository"
+source: https://docs.langchain.com/langsmith/smith-api/directories/delete-directory-repository
+path: langsmith/smith-api/directories/delete-directory-repository
+---
+
+/langsmith/langsmith-platform-openapi.json delete /v1/platform/hub/repos/{owner}/{repo}/directories
+Deletes an agent or skill repository and its owned child file repositories.

@@ -1,0 +1,48 @@
+---
+title: "Introduction"
+source: https://upstash.com/docs/redis/search/introduction
+path: docs/redis/search/introduction
+---
+
+Upstash Redis Search is our first extension beyond the official Redis spec. Using the Rust-based Tantivy under the hood, we provide an extremely fast way to search through Redis data.
+
+<img />
+
+* **Easy Integration**: Works with JSON, Hashes and Strings out of the box
+* **Auto-Synchronization**: Once you created an index, all write operations are automatically tracked
+* **Intuitive Query Language**: A type-safe JSON-based query syntax with boolean operators, fuzzy matching, phrase queries,
+  regex support, and more.
+* **Production-Ready Performance**: Built on Tantivy, a fast full-text search engine library written in Rust
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card
+    title="Getting Started"
+    icon="rocket"
+    href="/redis/search/getting-started"
+  >
+    Create your first index and run a query in a few lines of code
+  </Card>
+  <Card
+    title="Schema Definition"
+    icon="table-columns"
+    href="/redis/search/schema-definition"
+  >
+    Define the fields you want to index and how they are matched
+  </Card>
+  <Card
+    title="Querying"
+    icon="magnifying-glass"
+    href="/redis/search/querying"
+  >
+    Learn the JSON-based query language with filters and operators
+  </Card>
+  <Card
+    title="Recipes"
+    icon="book-open"
+    href="/redis/search/recipes/overview"
+  >
+    Complete, real-world examples you can adapt to your own use cases
+  </Card>
+</CardGroup>

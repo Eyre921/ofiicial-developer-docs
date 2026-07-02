@@ -1,0 +1,43 @@
+---
+title: "Agent Resources"
+source: https://docs.x.com/tools/ai
+path: tools/ai
+---
+
+Resources for AI agents using the X API, including llms.txt, skill.md, MCP servers, OpenAPI specs, and integration guides for Grok, Cursor, and Windsurf.
+
+Resources for connecting AI tools to the X API and its documentation.
+
+***
+
+## Use the X API from AI tools
+
+Give your AI agent the ability to call X API endpoints directly.
+
+**MCP Servers** — XMCP exposes 200+ X API endpoints as callable MCP tools. Docs MCP lets agents search and read these docs on the fly.
+
+**OpenAPI Spec** — Machine-readable API definition ([https://api.x.com/2/openapi.json](https://api.x.com/2/openapi.json)) for auto-generating clients or feeding into agents.
+
+| Resource         | What it does                                                                     | URL                                                          |
+| :--------------- | :------------------------------------------------------------------------------- | :----------------------------------------------------------- |
+| **X MCP**        | Hosted MCP server — agents can search, look up users, manage bookmarks, and more | [docs.x.com/tools/mcp](/tools/mcp)                           |
+| **OpenAPI Spec** | Machine-readable API definition for code generation and agent tooling            | [api.x.com/2/openapi.json](https://api.x.com/2/openapi.json) |
+
+***
+
+## Read X API docs from AI tools
+
+Give your AI agent context on how the X API works.
+
+**llms.txt / llms-full.txt** — Documentation index and full-content Markdown files for LLMs to ingest.
+
+**skill.md** — Capability summary (agentskills.io) that tells agents exactly what actions, parameters, and constraints exist.
+
+**Docs MCP** — Search and read any documentation page directly from your AI assistant via MCP.
+
+| Resource          | What it does                                                 | URL                                                          |
+| :---------------- | :----------------------------------------------------------- | :----------------------------------------------------------- |
+| **llms.txt**      | Documentation index — page titles, URLs, and descriptions    | [docs.x.com/llms.txt](https://docs.x.com/llms.txt)           |
+| **llms-full.txt** | Complete docs in a single file for full-context loading      | [docs.x.com/llms-full.txt](https://docs.x.com/llms-full.txt) |
+| **skill.md**      | Capability summary — actions, inputs, and constraints        | [docs.x.com/skill.md](https://docs.x.com/skill.md)           |
+| **Docs MCP**      | MCP server — agents can search and read doc pages on the fly | [docs.x.com/mcp](https://docs.x.com/mcp)                     |

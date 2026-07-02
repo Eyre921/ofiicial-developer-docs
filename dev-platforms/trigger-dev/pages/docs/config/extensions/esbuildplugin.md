@@ -1,0 +1,33 @@
+---
+title: "esbuild Plugin"
+source: https://trigger.dev/docs/config/extensions/esbuildPlugin
+path: docs/config/extensions/esbuildplugin
+---
+
+Use the esbuildPlugin build extension to add existing or custom esbuild plugins to your build process
+
+You can easily add existing or custom esbuild plugins to your build process using the `esbuildPlugin` extension:
+
+```ts theme={"theme":"css-variables"}
+import { defineConfig } from "@trigger.dev/sdk";
+import { esbuildPlugin } from "@trigger.dev/build/extensions";
+import { sentryEsbuildPlugin } from "@sentry/esbuild-plugin";
+
+export default defineConfig({
+  project: "<project ref>",
+  // Your other config settings...
+  build: {
+    extensions: [
+      esbuildPlugin(
+        sentryEsbuildPlugin({
+          org: process.env.SENTRY_ORG,
+          project: process.env.SENTRY_PROJECT,
+          authToken: process.env.SENTRY_AUTH_TOKEN,
+        }),
+        // optional - only runs during the deploy command, and adds the plugin to the end of the list of plugins
+        { placement: "last", target: "deploy" }
+      ),
+    ],
+  },
+});
+```

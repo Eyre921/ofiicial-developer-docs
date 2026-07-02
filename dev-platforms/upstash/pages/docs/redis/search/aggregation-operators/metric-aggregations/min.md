@@ -1,0 +1,65 @@
+---
+title: "$min"
+source: https://upstash.com/docs/redis/search/aggregation-operators/metric-aggregations/min
+path: docs/redis/search/aggregation-operators/metric-aggregations/min
+---
+
+`$min` returns the minimum field value across matching documents.
+
+If `missing` is set, missing fields are treated as that value.
+
+### Compatibility
+
+| Field Type | Supported |
+|------------|-----------|
+| TEXT | No |
+| U64/I64/F64 | Yes |
+| DATE | Yes |
+| BOOL | Yes |
+| KEYWORD | No |
+| FACET | No |
+
+Field must be `FAST`.
+
+### Arguments
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `field` | `string` | Yes | Field to aggregate. |
+| `missing` | `number` | No | Fallback value for missing fields. |
+
+<Tabs>
+
+<Tab title="TypeScript">
+```ts
+await index.aggregate({
+  aggregations: {
+    cheapest: { $min: { field: "price", missing: 0 } },
+  },
+});
+```
+</Tab>
+
+<Tab title="Python">
+```python
+index.aggregate(
+    aggregations={"cheapest": {"$min": {"field": "price", "missing": 0}}}
+)
+```
+</Tab>
+
+<Tab title="Redis CLI">
+```bash
+SEARCH.AGGREGATE products '{}' '{"cheapest": {"$min": {"field": "price", "missing": 0}}}'
+```
+</Tab>
+
+</Tabs>
+
+### Output
+
+```json
+{ "cheapest": { "value": 0 } }
+```
+
+`value` can be `null` when no values are available.

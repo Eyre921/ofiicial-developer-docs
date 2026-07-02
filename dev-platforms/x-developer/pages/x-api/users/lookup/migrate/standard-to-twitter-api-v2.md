@@ -1,0 +1,36 @@
+---
+title: "v1 to v2"
+source: https://docs.x.com/x-api/users/lookup/migrate/standard-to-twitter-api-v2
+path: x-api/users/lookup/migrate/standard-to-twitter-api-v2
+---
+
+If you have been working with the standard v1.1 GET users/show and GET users/lookup, the goal of. Reference for the X API v2 standard tier covering migrate.
+
+### Standard v1.1 compared to X API v2
+
+If you have been working with the standard v1.1 GET users/show and GET users/lookup, the goal of this guide is to help you understand the similarities and differences between the standard and X API v2 users lookup endpoints.
+
+* **Similarities**
+  * OAuth 1.0a User Context
+  * Users per request limits
+* **Differences**
+  * Endpoint URLs
+  * App and Project requirements
+  * Response data format
+  * Request parameters
+
+#### Similarities
+
+**OAuth 1.0a User Context authentication method**
+
+The standard endpoint supports [OAuth 1.0a User Context](/resources/fundamentals/authentication#oauth-1-0a-2), while the new X API v2 users lookup endpoints support both OAuth 1.0a User Context and [App only](/resources/fundamentals/authentication#oauth-2-0). Therefore, if you were previously using one of the standard v1.1 users lookup endpoints, you can continue using the same authentication method if you migrate to the X API v2 version.
+
+Depending on your authentication library/package of choice, App only authentication is probably the easiest way to get started and can be set with a simple request header. To learn how to generate an App only Access Token, see [this App only guide](/resources/fundamentals/authentication#bearer-token-also-known-as-app-only).
+
+**Users per request limits**
+
+The standard v1.1 GET users/lookup endpoint allows you to specify 100 users per request. This also goes for the GET /users and GET /users/by endpoints. To specify a full 100 users, you will need to pass the ids (GET /users) parameter or the username (GET /users/by) parameter as a query parameter, and include the list of user IDs/usernames in a comma-separated list.
+
+#### Differences
+
+**Endpoint URLs**

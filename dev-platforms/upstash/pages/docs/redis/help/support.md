@@ -1,0 +1,24 @@
+---
+title: "Support & Contact Us"
+source: https://upstash.com/docs/redis/help/support
+path: docs/redis/help/support
+---
+
+## Community
+
+[Upstash Discord Channel](https://upstash.com/discord) is the best way to
+interact with the community.
+
+## Team
+
+You can contact the team
+via [support@upstash.com](mailto:support@upstash.com) for technical support as
+well as questions and feedback.
+
+## Follow Us
+
+Follow us at [X](https://x.com/upstash).
+
+## Professional Support
+
+Get [Professional Support](/docs/common/help/prosupport) from the Upstash team.

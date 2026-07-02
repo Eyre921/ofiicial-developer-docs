@@ -1,0 +1,53 @@
+---
+title: "Anthropic"
+source: https://upstash.com/docs/workflow/integrations/anthropic
+path: docs/workflow/integrations/anthropic
+---
+
+The standard way to call a third-party endpoint in your workflow is by using [`context.call`](/docs/workflow/basics/context#context-call).
+
+However, if you need to call the Anthropic endpoint for text generation ([`/v1/messages`](https://docs.anthropic.com/en/api/messages)), you can leverage the type-safe method `context.api.anthropic.call` method:
+
+<Note>
+  `context.api.anthropic.call` is not yet available in
+  [workflow-py](https://github.com/upstash/workflow-py). You can use `context.call` instead to work with Anthropic. See our
+  [Roadmap](/docs/workflow/roadmap) for feature parity plans and
+  [Changelog](/docs/workflow/changelog) for updates.
+</Note>
+
+```ts
+const { status, body } = await context.api.anthropic.call(
+  "Call Anthropic",
+  {
+    token: "<ANTHROPIC_API_KEY>",
+    operation: "messages.create",
+    body: {
+      model: "claude-3-5-sonnet-20241022",
+      max_tokens: 1024,
+      messages: [
+          {"role": "user", "content": "Hello, world"}
+      ]
+    },
+  }
+);
+
+// get text:
+console.log(body.content[0].text)
+```
+
+The SDK provides predefined types for the body field in both the request parameters and the response, simplifying common use cases. If you need to customize these types, you can override them as shown below:
+
+```ts
+type ResponseBodyType = { ... }; // Define your response body type
+type RequestBodyType = { ... };  // Define your request body type
+
+const { status, body } = await context.api.anthropic.call<
+  ResponseBodyType,
+  RequestBodyType
+>(
+  "Call Anthropic",
+  {
+    ...
+  }
+);
+```

@@ -1,0 +1,7 @@
+---
+title: "Request a feature"
+source: https://trigger.dev/docs/request-feature
+path: docs/request-feature
+---
+
+If you have a feature request or idea for Trigger, we'd love to hear it! You can submit your ideas on our [public roadmap](https://feedback.trigger.dev/). We're always looking for feedback on what to build next, so feel free to submit your ideas or vote on existing ones.

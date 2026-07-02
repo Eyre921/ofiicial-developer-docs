@@ -1,0 +1,57 @@
+---
+title: "Security & Secrets"
+source: https://upstash.com/docs/box/overall/security
+path: docs/box/overall/security
+---
+
+## Isolation
+
+Every Upstash Box runs in its own isolated container with a dedicated filesystem, process tree, and network stack. Boxes cannot communicate with or observe each other. Network access is restricted — containers cannot reach private networks, cloud metadata services, or other internal infrastructure.
+
+## Environment Variables
+
+You can pass environment variables when creating a box. These are available to all code running inside the box, including your agent and any user-submitted code.
+
+<CodeGroup>
+```typescript box.ts
+const box = await Box.create({
+  runtime: "node",
+  env: {
+    DATABASE_URL: "postgres://...",
+    ANTHROPIC_API_KEY: "sk-ant-...",
+  },
+})
+```
+
+```python box.py
+box = Box.create(
+    runtime="node",
+    env={
+        "DATABASE_URL": "postgres://...",
+        "ANTHROPIC_API_KEY": "sk-ant-...",
+    },
+)
+```
+</CodeGroup>
+
+<Warning>
+Environment variables are visible to all code running inside the box. If you run untrusted code, those secrets can be read by the untrusted code. For sensitive credentials, use [Attach Headers](/docs/box/overall/attach-headers) instead.
+</Warning>
+
+## Attach Headers
+
+For injecting secret HTTP headers into outbound HTTPS requests without exposing them inside the container, see [Attach Headers](/docs/box/overall/attach-headers).
+
+## Blocked Environment Variables
+
+For system security, the following environment variables cannot be set:
+
+| Variable | Reason |
+|---|---|
+| `PATH` | Prevents binary hijacking |
+| `HOME` | Prevents home directory manipulation |
+| `LD_PRELOAD` | Prevents shared library injection |
+| `LD_LIBRARY_PATH` | Prevents library path hijacking |
+| `NODE_OPTIONS` | Prevents Node.js flag injection |
+
+All other environment variables — including `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`, and their `*_BASE_URL` variants — are allowed. The built-in agent runner uses its own isolated environment that overrides these per-run.

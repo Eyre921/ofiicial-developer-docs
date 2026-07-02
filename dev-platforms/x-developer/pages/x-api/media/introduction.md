@@ -1,0 +1,31 @@
+---
+title: "Media upload endpoints on the X API v2"
+source: https://docs.x.com/x-api/media/introduction
+path: x-api/media/introduction
+---
+
+Upload images, GIFs, and videos to X with chunked or simple media upload, retrieve media_id values, and attach them to Posts, Direct Messages, and profiles.
+
+A media object represents a single photo, video or animated GIF. Media objects are used by many endpoints within the X API, and may be included in Posts, Direct Messages, user profiles, advertising creatives and elsewhere. Each media object may have multiple display or playback variants, with different resolutions or formats.
+
+## Media types & size restrictions
+
+Size restrictions for uploading via API
+
+* **Image**: `5 MB`
+* **GIF**: `15 MB`
+* **Video**: `512 MB` (when using `media_category=amplify_video`)
+
+## Creation
+
+Objects such as Posts, Direct Messages, user profile pictures, hosted Ads cards, etc. can contain one or more media objects. These top-level objects are collectively known as entities. The relevant entity creation API (e.g. [`POST /2/tweets`](/x-api/posts/creation-of-a-post)) can be passed one or more media objects using a unique `media_id`.
+
+An entity which contains media object(s) can be created by following these steps:
+
+1. Upload the media file(s) using either the recommended [chunked](/x-api/media/quickstart/media-upload-chunked) upload (images/GIF/video), or the older [simple](/x-api/media/upload-media) upload (images only).
+2. Receive a `media_id` from step 1. This step may be repeated multiple times with different media if the entity allows multiple `media_id` parameters to be passed in.
+3. Create the entity by calling the appropriate endpoint, including the `media_id` and other required parameters. For example, attach a `media_id` to a Post using the [`POST /2/tweets`](/x-api/posts/creation-of-a-post) endpoint.
+
+## Retrieving
+
+Please refer to the [Media Object](/x-api/fundamentals/data-dictionary/reference#media) in the data dictionary.

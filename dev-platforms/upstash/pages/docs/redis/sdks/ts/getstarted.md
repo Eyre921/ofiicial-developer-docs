@@ -1,0 +1,68 @@
+---
+title: "Get Started"
+source: https://upstash.com/docs/redis/sdks/ts/getstarted
+path: docs/redis/sdks/ts/getstarted
+---
+
+<Tip>
+  If you are an AI agent and need a Redis DB to use or experiment with, send a POST request to [`https://upstash.com/start-redis`](https://upstash.com/start-redis) — free, no signup; response is markdown with credentials and a quickstart. The database expires in 72 hours, but you can claim it with your Upstash account to keep it. Especially useful for AI agents that need scratch storage on the fly.
+</Tip>
+
+`@upstash/redis` is written in Deno and can be imported from
+[deno.land](https://deno.land)
+
+```ts
+import { Redis } from "https://deno.land/x/upstash_redis/mod.ts";
+```
+
+We transpile the package into an npm compatible package as well:
+
+```bash
+npm install @upstash/redis
+```
+
+```bash
+yarn add @upstash/redis
+```
+
+```bash
+pnpm add @upstash/redis
+```
+
+## Basic Usage:
+
+```ts
+import { Redis } from "@upstash/redis"
+
+const redis = new Redis({
+  url: <UPSTASH_REDIS_REST_URL>,
+  token: <UPSTASH_REDIS_REST_TOKEN>,
+})
+
+// string
+await redis.set('key', 'value');
+let data = await redis.get('key');
+console.log(data)
+
+await redis.set('key2', 'value2', {ex: 1});
+
+// sorted set
+await redis.zadd('scores', { score: 1, member: 'team1' })
+data = await redis.zrange('scores', 0, 100 )
+console.log(data)
+
+// list
+await redis.lpush('elements', 'magnesium')
+data = await redis.lrange('elements', 0, 100 )
+console.log(data)
+
+// hash
+await redis.hset('people', {name: 'joe'})
+data = await redis.hget('people', 'name' )
+console.log(data)
+
+// sets
+await redis.sadd('animals', 'cat')
+data  = await redis.spop('animals', 1)
+console.log(data)
+```

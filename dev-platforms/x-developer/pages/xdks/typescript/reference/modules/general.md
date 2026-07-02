@@ -1,0 +1,19 @@
+---
+title: "Namespace: General"
+source: https://docs.x.com/xdks/typescript/reference/modules/General
+path: xdks/typescript/reference/modules/general
+---
+
+Reference for the General module in the X API TypeScript SDK. Re-exported clients, types, and utilities provided by this SDK module for the X API v2.
+
+## Type Aliases
+
+### GetOpenApiSpecResponse
+
+Ƭ **GetOpenApiSpecResponse**: `Record`\<`string`, `any`>
+
+Response for getOpenApiSpec
+
+#### Defined in
+
+[general/models.ts:19](https://github.com/xdevplatform/xdk-typescript/blob/81aacb165e0802e188f608bdf462b60fc4e713a2/src/general/models.ts#L19)

@@ -1,0 +1,28 @@
+---
+title: "Read stdout from a child process"
+source: https://bun.com/docs/guides/process/spawn-stdout
+path: docs/guides/process/spawn-stdout
+---
+
+When you spawn a child process with [`Bun.spawn()`](/docs/runtime/child-process), `proc.stdout` is a `ReadableStream` of the child's `stdout`.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+const proc = Bun.spawn(["echo", "hello"]);
+
+const output = await proc.stdout.text();
+output; // => "hello"
+```
+
+***
+
+To pipe the child process's `stdout` to the parent's `stdout` instead, set the `stdout` option to `"inherit"`.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+const proc = Bun.spawn(["echo", "hello"], {
+  stdout: "inherit",
+});
+```
+
+***
+
+See [Child processes](/docs/runtime/child-process).

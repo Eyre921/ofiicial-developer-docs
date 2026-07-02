@@ -1,0 +1,18 @@
+---
+title: "Convert a Uint8Array to a string"
+source: https://bun.com/docs/guides/binary/typedarray-to-string
+path: docs/guides/binary/typedarray-to-string
+---
+
+Bun implements the Web-standard [`TextDecoder`](https://developer.mozilla.org/en-US/docs/Web/API/TextDecoder) class for converting binary data types like `Uint8Array` to strings.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+const arr = new Uint8Array([104, 101, 108, 108, 111]);
+const decoder = new TextDecoder();
+const str = decoder.decode(arr);
+// => "hello"
+```
+
+***
+
+See [Binary Data](/docs/runtime/binary-data#conversion).

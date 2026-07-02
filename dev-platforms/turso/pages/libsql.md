@@ -1,0 +1,47 @@
+---
+title: "libSQL"
+source: https://docs.turso.tech/libsql
+path: libsql
+---
+
+libSQL is a production-ready fork of SQLite, maintained by Turso.
+
+libSQL is a fork of SQLite, created because SQLite is [open-source but not open-contribution](https://www.sqlite.org/copyright.html). libSQL is production-ready, fully backwards compatible with SQLite, and adds features like native vector search.
+
+<Note>
+  libSQL represents where we started. Today, our focus is [Turso Database](/tursodb/quickstart), a full rewrite of SQLite built from scratch, designed for the highest density of databases with no need for servers or connectivity. If you're starting a new project, we recommend [Turso Database](/tursodb/quickstart). For mission-critical workloads that need a battle-tested foundation today, libSQL is the right choice.
+</Note>
+
+<CardGroup>
+  <Card title="tursodatabase/libsql" icon="github" href="https://github.com/tursodatabase/libsql/">
+    Browse the libSQL source code on GitHub, report issues, feature requests and contribute using pull requests.
+  </Card>
+
+  <Card title="Discord" href="https://tur.so/discord" icon="discord">
+    Join the community on Discord to talk about the development of libSQL.
+  </Card>
+</CardGroup>
+
+## libSQL vs. Turso Database
+
+libSQL is a fork of SQLite. It maintains the same file format, the same API, and full backwards compatibility. It extends SQLite with features the ecosystem has long needed but couldn't contribute upstream.
+
+[Turso Database](/tursodb/quickstart) is a different approach: a ground-up rewrite of SQLite. It reimplements SQLite's semantics with a modern architecture designed for concurrent writes, async I/O, and the highest database density in the industry.
+
+|                      | libSQL                           | Turso Database                                              |
+| -------------------- | -------------------------------- | ----------------------------------------------------------- |
+| Approach             | Fork of SQLite                   | Full rewrite of SQLite                                      |
+| Maturity             | Production-ready                 | Evolving (beta)                                             |
+| SQLite compatibility | Full (same file format and API)  | Backwards compatible                                        |
+| Best for             | Mission-critical workloads today | New projects, agents, smart devices, high-density use cases |
+
+Both are open-contribution and maintained by Turso. [Turso Cloud](/turso-cloud) currently runs on libSQL and will integrate the Turso Database engine in the future.
+
+## Extensions
+
+<Info>
+  If you're looking to enable vector extensions, you should instead consider
+  using the native [libSQL vector datatype](/features/ai-and-embeddings).
+</Info>
+
+A full list of supported extensions can be found [here](/features/sqlite-extensions).

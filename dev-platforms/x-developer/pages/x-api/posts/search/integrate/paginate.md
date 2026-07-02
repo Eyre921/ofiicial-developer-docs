@@ -1,0 +1,125 @@
+---
+title: "Pagination"
+source: https://docs.x.com/x-api/posts/search/integrate/paginate
+path: x-api/posts/search/integrate/paginate
+---
+
+Search queries typically match on more Posts than can be returned in a single API response. Reference for the X API v2 standard tier covering integrate.
+
+### Recent search pagination
+
+#### Introduction
+
+Search queries typically match on more Posts than can be returned in a single API response. When that happens, the data is returned in a series of 'pages'. Pagination refers to methods for requesting all of the pages in order to retrieve the entire data set.
+
+Here are fundamental recent search pagination details:
+
+* The recent search endpoints will respond to a query with at least one page, and provide a next\_token in its JSON response if additional pages are available. To receive matching Posts, this process can be repeated until no token is included in the response.
+
+* The next\_token does not expire. Multiple requests using the same next\_token value will receive the same results, regardless of when the request is made.
+
+* Posts are delivered in reverse-chronological order, in the UTC timezone. This is true within individual pages, as well as across multiple pages: 
+  * The first Post in the first response will be the most recent one matching your query.
+  * The last Post in the last response will be the oldest one matching your query.
+
+* The max\_results request parameter enables you to configure the number of Posts returned per response. This defaults to 10 Posts and has a maximum of 100. 
+
+* Every pagination implementation will involve parsing next\_tokens from the response payload, and including them in the 'next page' search request. See below for more details on how to construct these 'next page' requests.
+   
+
+The recent search endpoint was designed to support two fundamental use patterns:
+
+* **Get historical** - Requesting matching Posts from a time period of interest. These are typically one-time requests in support of historical research. Search requests can be based on start\_time and end\_time request parameters. recent search endpoint respond with Posts delivered in reverse-chronological order, starting with the most recent matching Post. 
+
+* **Polling** - Requesting matching Posts that have been posted since the last Post received. These use cases often have a near-real-time focus and are characterized by frequent requests, "listening" for new Posts of interest. The recent search endpoint provide the since\_id request parameter in support of the 'polling' pattern. To help with navigating by Post IDs, the until\_id request parameter is also available.
+   
+
+Next, we'll discuss the historical mode. This is the default mode of the recent search endpoint and illustrates the fundamentals of pagination. Then we'll discuss examples of polling use cases. When polling triggers pagination, there is an additional step to manage search requests.
+ 
+
+#### Retrieving historical data
+
+This section outlines how you can retrieve Posts from a period of interest (currently limited to the last seven days) using the start\_time and end\_time request parameters. Historical requests are typically one-time requests in support of research and analysis. 
+
+Making requests for a period of data is the default mode of the recent search endpoint. If a search request does not specify a start\_time, end\_time, or since\_id request parameter, the end\_time will default to "now" (actually 30 seconds before the time of query) and the start\_time will default to seven days ago.
+
+The endpoint will respond with the first 'page' of Posts in reverse-chronological order, starting with the most recent Post. The response JSON payload will also include a next\_token if there are additional pages of data. To collect the entire set of matching Posts, regardless of the number of pages, requests are made until no next\_token is provided. 
+
+For example, here is an initial request for Posts with the keyword snow from the last week:
+
+[https://api.x.com/2/tweets/search/recent?query=snow](https://api.x.com/2/tweets/search/recent?query=snow)
+
+The response includes the most recent 10 Posts, along with these "meta" attributes in the JSON response:
+
+```
+"meta": {
+        "newest_id": "1204860593741553664",
+        "oldest_id": "1204860580630278147",
+        "next_token": "b26v89c19zqg8o3fobd8v73egzbdt3qao235oql",
+        "result_count": 10
+    }
+```
+
+To retrieve the next 10 Posts, this next\_token is added to the original request. The request would be:
+
+[https://api.x.com/2/tweets/search/recent?query=snow\&next\_token=b26v89c19zqg8o3fobd8v73egzbdt3qao235oql](https://api.x.com/2/tweets/search/recent?query=snow\&next_token=b26v89c19zqg8o3fobd8v73egzbdt3qao235oql)
+
+The process of looking for a next\_token and including it in a subsequent request can be repeated until all (or some number of) Posts are collected, or until a specified number of requests have been made. If data fidelity (collecting all matches of your query) is key to your use case, a simple "repeat until request.next\_token is null" design will suffice. 
+ 
+
+#### Polling and listening use cases
+
+This section outlines how you can retrieve recent Posts by polling the recent search endpoint with the since\_id request parameter. 
+
+With polling use cases, "any new Posts of interest?" queries are made on an on-going, frequent basis. Unlike historical use cases, that base requests on time, polling use cases typically base requests on Post IDs.
+
+Central to the polling use pattern is that every new Post has a [unique ID](/resources/fundamentals/x-ids) that is 'emitted' from the X platform generally in ascending order. If one Post has an ID smaller than another, it means it was posted earlier.
+
+The recent search endpoint support navigating the Post archive by Post ID. Responses from the endpoint include oldest\_id and newest\_id Post IDs. In the polling mode, requests are made with the since\_id set to the largest/newest ID received so far. 
+
+For example, say a query for new Posts about snow is made every five minutes, and the last Post we received had a Post ID of 10000. When it is time to poll, the request looks like:
+
+[https://api.x.com/2/tweets/search/recent?query=snow\&since\_id=10000](https://api.x.com/2/tweets/search/recent?query=snow\&since_id=10000)
+
+Next, let's say seven Posts were posted since our last request. Since all of these fit on a single data 'page', there is no next\_token. The response provides the Post ID of the most recent (newest) Post:
+
+```
+"meta": {
+        "newest_id": "12000",
+        "oldest_id": "10005",
+        "result_count": 7
+    }
+```
+
+To make the next polling query, this newest\_id value is used to set the next since\_id parameter:
+
+`https://api.x.com/2/tweets/search/recent?query=snow&since_id=12000`
+
+When there is more data available, and next tokens are provided, only th newest\_id value from the first page of results is needed. Each page of data will include newest\_id and oldest\_id values, but the value provided in the first page is the only one needed for the next, regularly scheduled, polling request. So, If you are implementing a polling design, or searching for Posts by ID range, pagination logic is slightly more complicated. 
+
+Now say that there are now 18 more matching Posts. The endpoint would respond with this initial response with a full data page and a next\_token for requesting the next page of data from this five minute period. It would also include the newest Post ID need for the next polling interval in five minutes.  
+
+```
+"meta": {
+        "newest_id": "13800",
+        "oldest_id": "12500",
+        "next_token": "fnsih9chihsnkjbvkjbsc",
+        "result_count": 10
+    }
+```
+
+To collect all the matching data for this five minute period, pass the next\_token in your next request, along with the same since\_id value as the previous request.
+
+[https://api.x.com/2/tweets/search/recent?query=snow\&since\\\_id=12000\&next\\\_token=fnsih9chihsnkjbvkjbsc](https://api.x.com/2/tweets/search/recent?query=snow\&since\\_id=12000\&next\\_token=fnsih9chihsnkjbvkjbsc)
+
+```
+"meta": {
+        "newest_id": "12300",
+        "oldest_id": "12010",
+        "result_count": 8
+    }
+```
+
+This second response provides the remaining eight Posts, and no next\_token. Note that we do not update our newest\_id value (12300), and instead base our next since\_id request on the first response's newest\_id value:
+
+[https://api.x.com/2/tweets/search/recent?query=snow\&since\_id=13800](https://api.x.com/2/tweets/search/recent?query=snow\&since_id=13800)

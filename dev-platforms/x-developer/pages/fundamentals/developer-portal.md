@@ -1,0 +1,108 @@
+---
+title: "Developer Console"
+source: https://docs.x.com/fundamentals/developer-portal
+path: fundamentals/developer-portal
+---
+
+Use the X Developer Console to manage projects and apps, monitor API usage, access credentials, invite team members, and view billing information.
+
+The [Developer Console](https://console.x.com) is your central hub for managing X API access. Create apps, generate credentials, monitor usage, and manage billing—all in one place.
+
+<Button href="https://console.x.com">Open Developer Console</Button>
+
+***
+
+## What you can do
+
+<CardGroup>
+  <Card title="Create & manage apps" icon="grid-2">
+    Set up apps to get API credentials. Configure authentication, permissions, and callback URLs.
+  </Card>
+
+  <Card title="Monitor usage & costs" icon="chart-line">
+    Track API usage in real-time. View costs per endpoint and manage your credit balance.
+  </Card>
+
+  <Card title="Generate credentials" icon="key">
+    Create API keys, access tokens, and OAuth credentials for your apps.
+  </Card>
+
+  <Card title="Purchase credits" icon="credit-card">
+    Buy credits for pay-per-usage billing. No subscriptions or commitments required.
+  </Card>
+</CardGroup>
+
+***
+
+## Getting started
+
+<Steps>
+  <Step title="Sign up for a developer account">
+    Go to [console.x.com](https://console.x.com) and sign in with your X account. Accept the Developer Agreement.
+  </Step>
+
+  <Step title="Create your first app">
+    Click **New App** and provide a name and description. This generates your API credentials.
+  </Step>
+
+  <Step title="Save your credentials">
+    Copy and securely store your API Key, API Secret, and Access Tokens. These won't be shown again.
+  </Step>
+
+  <Step title="Start building">
+    Use your credentials to authenticate API requests. Check out the [quickstart guide](/x-api/getting-started/make-your-first-request).
+  </Step>
+</Steps>
+
+<Warning>
+  **Store credentials securely.** API keys and tokens are only displayed once when generated. Use a password manager or secure vault. If lost, you'll need to regenerate them, which invalidates the old credentials.
+</Warning>
+
+***
+
+## Billing & credits
+
+The X API uses pay-per-usage pricing with a credit-based system:
+
+| Feature                  | Description                                                    |
+| :----------------------- | :------------------------------------------------------------- |
+| **No monthly fees**      | Pay only for what you use—no subscriptions                     |
+| **Credit-based**         | Purchase credits upfront, deducted as you use the API          |
+| **Real-time tracking**   | Monitor usage and costs in the console dashboard               |
+| **Per-endpoint pricing** | Different endpoints have different costs                       |
+| **Deduplication**        | Same resource requested twice in 24 hours is only charged once |
+
+View current pricing and purchase credits in the [Developer Console](https://console.x.com).
+
+[Learn more about pricing →](/x-api/getting-started/pricing)
+
+***
+
+## Team management
+
+<Note>
+  Team management is available for **Enterprise accounts** only.
+</Note>
+
+Enterprise accounts can invite team members to collaborate:
+
+| Role              | Capabilities                                               |
+| :---------------- | :--------------------------------------------------------- |
+| **Administrator** | Full access: manage apps, billing, team members, and roles |
+| **Developer**     | Manage own apps, read-only access to team apps             |
+
+To invite a team member, navigate to the Team page in your console and enter their X handle.
+
+***
+
+## Next steps
+
+<CardGroup>
+  <Card title="Create an app" icon="plus" href="/resources/fundamentals/developer-apps">
+    Learn about app settings, permissions, and credentials.
+  </Card>
+
+  <Card title="Make your first request" icon="rocket" href="/x-api/getting-started/make-your-first-request">
+    Use your credentials to call the API.
+  </Card>
+</CardGroup>

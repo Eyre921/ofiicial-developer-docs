@@ -1,0 +1,17 @@
+---
+title: "TweetComplianceSchema"
+source: https://docs.x.com/xdks/typescript/reference/interfaces/Schemas.TweetComplianceSchema
+path: xdks/typescript/reference/interfaces/schemas.tweetcomplianceschema
+---
+
+Reference for the Schemas.TweetComplianceSchema TypeScript interface in the X API SDK. Field definitions, types, and properties for X API request or response.
+
+[Schemas](/xdks/typescript/reference/modules/Schemas).TweetComplianceSchema
+
+## Properties
+
+<ResponseField name="eventAt" type="string" />
+
+<ResponseField name="quoteTweetId" type="string" />
+
+<ResponseField name="tweet" type="Record<string, any>" />

@@ -1,0 +1,87 @@
+---
+title: "client.notify"
+source: https://upstash.com/docs/workflow/basics/client/notify
+path: docs/workflow/basics/client/notify
+---
+
+The `notify` method notifies workflows that are waiting for a specific event.
+
+Workflows paused at a [`context.waitForEvent`](/docs/workflow/basics/context/waitForEvent) step with the matching `eventId` will be resumed, and the provided `eventData` will be passed back to them.
+
+## Arguments
+
+<ParamField body="eventId" type="string" required>
+    The identifier of the event to notify.
+</ParamField>
+
+<ParamField body="eventData" type="any" optional>
+    Data to deliver to the waiting workflow(s).
+    This value will be returned in the `eventData` field of `context.waitForEvent`.
+</ParamField>
+
+<ParamField body="workflowRunId" type="string" optional>
+    The workflow run ID to notify. When provided, enables **lookback functionality** - the notification will be stored and delivered even if `notify` is called before `waitForEvent`.
+
+    This solves race conditions where notifications might be sent before a workflow reaches its wait step.
+</ParamField>
+
+## Response
+
+Returns a list of `Waiter` objects representing the workflows that were notified:
+
+<ResponseField name="Waiter" type="object">
+  <Expandable>
+   	<ResponseField name="url" type="string" required>
+      URL to call upon notify
+    </ResponseField>
+   	<ResponseField name="deadline" type="number" required>
+      Unix timestamp for when the wait will time out
+    </ResponseField>
+   	<ResponseField name="headers" type="Record<string, string[]>" required>
+      Headers sent in case of notify
+    </ResponseField>
+   	<ResponseField name="timeoutUrl" type="string">
+      URL to call upon timeout
+    </ResponseField>
+   	<ResponseField name="timeoutBody" type="unknown">
+      Body used in timeout request
+    </ResponseField>
+   	<ResponseField name="timeoutHeaders" type="Record<string, string[]>">
+      Headers sent in case of time out
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+## Usage
+
+### Basic Notification
+
+```javascript
+import { Client } from "@upstash/workflow";
+
+const client = new Client({ token: "<QSTASH_TOKEN>" });
+
+await client.notify({
+  eventId: "my-event-id",
+  eventData: "my-data", // data passed to the workflow run
+});
+```
+
+### Notification with Lookback
+
+To prevent race conditions where a notification might arrive before the workflow reaches `waitForEvent`, you can provide a `workflowRunId`. This enables lookback - the notification will be stored and delivered even if sent before the wait step:
+
+```javascript
+import { Client } from "@upstash/workflow";
+
+const client = new Client({ token: "<QSTASH_TOKEN>" });
+
+// Notify a specific workflow run with lookback support
+await client.notify({
+  eventId: "payment-processed",
+  eventData: { amount: 100, status: "success" },
+  workflowRunId: "wfr_abc123", // Enables lookback for this workflow run
+});
+```
+
+This is particularly useful when you know which specific workflow run should receive the notification, such as after triggering a workflow and immediately sending it an event.

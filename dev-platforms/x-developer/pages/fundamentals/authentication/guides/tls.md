@@ -1,0 +1,29 @@
+---
+title: "Connection to X API using TLS"
+source: https://docs.x.com/fundamentals/authentication/guides/tls
+path: fundamentals/authentication/guides/tls
+---
+
+Connect securely to the X API over TLS 1.2, with guidance on trusted root stores, certificate revocation checks, and HTTPS verification practices.
+
+TLS connections are required in order to access X API endpoints. Communicating over TLS preserves user privacy and security by protecting information between the user and the X API as it travels across the public Internet. Connections to the X API require TLS version 1.2.
+
+## Verification
+
+### Use an up-to-date root store
+
+It's important that your application or library use a trustworthy and up-to-date root store when verifying the X certificate. Where possible, using the root store provided by your operating system may be the simplest approach here. Alternatively, the [Mozilla (NSS) root store](https://www.mozilla.org/en-US/about/governance/policies/security-group/certs/) is well maintained in a public and transparent manner. Curl also provides [a version of this store in PEM format](https://curl.haxx.se/docs/caextract.html).
+
+X currently issues the bulk of our certs from the [DigiCert High Assurance EV Root CA](https://www.digicert.com/digicert-root-certificates.htm), but this is not true for 100% of X-related certificates and may not hold true forever, so trusting only the currently-used Digicert roots may lead to issues with your app in the future.
+
+### Check CRLs and the OCSP status[](#check-crls-and-the-ocsp-status "Permalink to this headline")
+
+Many applications do not check the Certificate Revocation List for returned certificates or rely on the operating system to do so. Ensure that your application or TLS library is configured to force CRL and OCSP (Online Certificate Status Protocol) verification before accepting X’s certificate.
+
+### CDNs[](#cdns "Permalink to this headline")
+
+When showing Tweets that contain media, use the `media_url_https` attribute for the HTTPS URLs to use when showing images. In the future, all URLs served from API endpoints will provide HTTPS paths.
+
+## Provide an indication of security status
+
+If possible, you should show an indication of the current status between your application and X. Some web browsers indicate this by offering a Lock Icon, while others indicate the current connection state with descriptive messaging.

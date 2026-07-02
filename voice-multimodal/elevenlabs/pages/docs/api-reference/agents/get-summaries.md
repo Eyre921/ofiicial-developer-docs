@@ -1,0 +1,469 @@
+---
+title: "Get agent summaries"
+source: https://elevenlabs.io/docs/api-reference/agents/get-summaries.md
+path: docs/api-reference/agents/get-summaries
+---
+
+> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Get agent summaries
+
+GET https://api.elevenlabs.io/v1/convai/agents/summaries
+
+Returns summaries for the specified agents.
+
+Reference: https://elevenlabs.io/docs/api-reference/agents/get-summaries
+
+## OpenAPI Specification
+
+```yaml
+openapi: 3.1.0
+info:
+  title: api
+  version: 1.0.0
+paths:
+  /v1/convai/agents/summaries:
+    get:
+      operationId: get
+      summary: Get Agent Summaries
+      description: Returns summaries for the specified agents.
+      tags:
+        - subpackage_conversationalAi/agents/summaries
+      parameters:
+        - name: agent_ids
+          in: query
+          description: List of agent IDs to fetch summaries for
+          required: true
+          schema:
+            type: array
+            items:
+              type: string
+        - name: xi-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties:
+                  $ref: >-
+                    #/components/schemas/V1ConvaiAgentsSummariesGetResponsesContentApplicationJsonSchema
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+servers:
+  - url: https://api.elevenlabs.io
+    description: Production
+  - url: https://api.us.elevenlabs.io
+    description: Production US
+  - url: https://api.eu.residency.elevenlabs.io
+    description: Production EU
+  - url: https://api.in.residency.elevenlabs.io
+    description: Production India
+  - url: https://api.sg.residency.elevenlabs.io
+    description: Production Singapore
+components:
+  schemas:
+    ResourceAccessInfoRole:
+      type: string
+      enum:
+        - admin
+        - editor
+        - commenter
+        - viewer
+      description: The role of the user making the request
+      title: ResourceAccessInfoRole
+    ResourceAccessInfoAnonymousAccessLevelOverride:
+      type: string
+      enum:
+        - admin
+        - editor
+        - commenter
+        - viewer
+      description: >-
+        The access level for anonymous users. If None, the resource is not
+        shared publicly.
+      title: ResourceAccessInfoAnonymousAccessLevelOverride
+    ResourceAccessInfoAccessSource:
+      type: string
+      enum:
+        - creator
+        - explicit
+        - workspace_admin
+        - workspace_default
+      description: >-
+        Why the requesting user has access to this resource. 'creator' = caller
+        is the owner. 'explicit' = caller (or one of their workspace groups) is
+        listed in role_to_group_ids beyond the workspace-wide everyone group.
+        'workspace_default' = the workspace-wide everyone group is listed in
+        role_to_group_ids (every non-anon workspace member, including admins,
+        sees this resource). 'workspace_admin' = caller is a workspace admin and
+        the admin seat is the *only* path to access; reserved for docs nobody
+        else can see. Lets the UI disclose why an admin-bypass viewer sees a doc
+        that wasn't explicitly shared with them.
+      title: ResourceAccessInfoAccessSource
+    ResourceAccessInfo:
+      type: object
+      properties:
+        is_creator:
+          type: boolean
+          description: Whether the user making the request is the creator of the agent
+        creator_name:
+          type: string
+          description: Name of the agent's creator
+        creator_email:
+          type: string
+          description: Email of the agent's creator
+        role:
+          $ref: '#/components/schemas/ResourceAccessInfoRole'
+          description: The role of the user making the request
+        anonymous_access_level_override:
+          oneOf:
+            - $ref: >-
+                #/components/schemas/ResourceAccessInfoAnonymousAccessLevelOverride
+            - type: 'null'
+          description: >-
+            The access level for anonymous users. If None, the resource is not
+            shared publicly.
+        access_source:
+          oneOf:
+            - $ref: '#/components/schemas/ResourceAccessInfoAccessSource'
+            - type: 'null'
+          description: >-
+            Why the requesting user has access to this resource. 'creator' =
+            caller is the owner. 'explicit' = caller (or one of their workspace
+            groups) is listed in role_to_group_ids beyond the workspace-wide
+            everyone group. 'workspace_default' = the workspace-wide everyone
+            group is listed in role_to_group_ids (every non-anon workspace
+            member, including admins, sees this resource). 'workspace_admin' =
+            caller is a workspace admin and the admin seat is the *only* path to
+            access; reserved for docs nobody else can see. Lets the UI disclose
+            why an admin-bypass viewer sees a doc that wasn't explicitly shared
+            with them.
+      required:
+        - is_creator
+        - creator_name
+        - creator_email
+        - role
+      title: ResourceAccessInfo
+    AgentSummaryResponseModel:
+      type: object
+      properties:
+        agent_id:
+          type: string
+          description: The ID of the agent
+        name:
+          type: string
+          description: The name of the agent
+        tags:
+          type: array
+          items:
+            type: string
+          description: Agent tags used to categorize the agent
+        created_at_unix_secs:
+          type: integer
+          description: The creation time of the agent in unix seconds
+        access_info:
+          $ref: '#/components/schemas/ResourceAccessInfo'
+          description: The access information of the agent
+        last_call_time_unix_secs:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            The time of the most recent call in unix seconds, null if no calls
+            have been made
+        archived:
+          type: boolean
+          default: false
+          description: Whether the agent is archived
+      required:
+        - agent_id
+        - name
+        - tags
+        - created_at_unix_secs
+        - access_info
+      title: AgentSummaryResponseModel
+    V1ConvaiAgentsSummariesGetResponsesContentApplicationJsonSchema:
+      oneOf:
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - success
+              description: 'Discriminator value: success'
+            data:
+              $ref: '#/components/schemas/AgentSummaryResponseModel'
+          required:
+            - status
+            - data
+          description: AgentSummaryBatchSuccessfulResponseModel variant
+        - type: object
+          properties:
+            status:
+              type: string
+              enum:
+                - failure
+              description: 'Discriminator value: failure'
+            error_code:
+              type: integer
+            error_status:
+              type: string
+            error_message:
+              type: string
+          required:
+            - status
+            - error_code
+            - error_status
+            - error_message
+          description: BatchFailureResponseModel variant
+      discriminator:
+        propertyName: status
+      title: V1ConvaiAgentsSummariesGetResponsesContentApplicationJsonSchema
+    ValidationErrorLocItems:
+      oneOf:
+        - type: string
+        - type: integer
+      title: ValidationErrorLocItems
+    ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationErrorLocItems'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+    HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationError'
+      title: HTTPValidationError
+
+```
+
+## Examples
+
+
+
+**Request**
+
+```json
+{}
+```
+
+**Response**
+
+```json
+{
+  "J3Pbu5gP6NNKBscdCdwB": {
+    "status": "success",
+    "data": {
+      "agent_id": "J3Pbu5gP6NNKBscdCdwB",
+      "name": "Customer Support Bot",
+      "tags": [
+        "Customer Support",
+        "FAQ",
+        "Chatbot"
+      ],
+      "created_at_unix_secs": 1688208000,
+      "access_info": {
+        "is_creator": true,
+        "creator_name": "Alice Johnson",
+        "creator_email": "alice.johnson@company.com",
+        "role": "admin",
+        "anonymous_access_level_override": null,
+        "access_source": "creator"
+      },
+      "last_call_time_unix_secs": 1688294400,
+      "archived": false
+    }
+  },
+  "K4Qcu6hQ7OOLCtdeDeXC": {
+    "status": "success",
+    "data": {
+      "agent_id": "K4Qcu6hQ7OOLCtdeDeXC",
+      "name": "Technical Help Assistant",
+      "tags": [
+        "Technical Support",
+        "Troubleshooting",
+        "ElevenLabs"
+      ],
+      "created_at_unix_secs": 1688121600,
+      "access_info": {
+        "is_creator": false,
+        "creator_name": "Bob Smith",
+        "creator_email": "bob.smith@company.com",
+        "role": "editor",
+        "anonymous_access_level_override": "viewer",
+        "access_source": "explicit"
+      },
+      "last_call_time_unix_secs": null,
+      "archived": false
+    }
+  }
+}
+```
+
+**SDK Code**
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+async function main() {
+    const client = new ElevenLabsClient();
+    await client.conversationalAi.agents.summaries.get({
+        agentIds: [
+            "J3Pbu5gP6NNKBscdCdwB",
+            "K4Qcu6hQ7OOLCtdeDeXC",
+        ],
+    });
+}
+main();
+
+```
+
+```python
+from elevenlabs import ElevenLabs
+
+client = ElevenLabs()
+
+client.conversational_ai.agents.summaries.get(
+    agent_ids=[
+        "J3Pbu5gP6NNKBscdCdwB",
+        "K4Qcu6hQ7OOLCtdeDeXC"
+    ],
+)
+
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io"
+)
+
+func main() {
+
+	url := "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D"
+
+	payload := strings.NewReader("{}")
+
+	req, _ := http.NewRequest("GET", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+
+request = Net::HTTP::Get.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+```java
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")
+  .header("Content-Type", "application/json")
+  .body("{}")
+  .asString();
+```
+
+```php
+<?php
+require_once('vendor/autoload.php');
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D', [
+  'body' => '{}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+```csharp
+using RestSharp;
+
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D");
+var request = new RestRequest(Method.GET);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{}", ParameterType.RequestBody);
+IRestResponse response = client.Execute(request);
+```
+
+```swift
+import Foundation
+
+let headers = ["Content-Type": "application/json"]
+let parameters = [] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/agents/summaries?agent_ids=%5B%22J3Pbu5gP6NNKBscdCdwB%22%2C%22K4Qcu6hQ7OOLCtdeDeXC%22%5D")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "GET"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```

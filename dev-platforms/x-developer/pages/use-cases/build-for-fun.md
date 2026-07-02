@@ -1,0 +1,35 @@
+---
+title: "Build for fun"
+source: https://docs.x.com/use-cases/build-for-fun
+path: use-cases/build-for-fun
+---
+
+Hobbyist projects to build with the X API, from creative bots and IoT installations to art projects, games, and weekend hacks using real-time data.
+
+## Explore new ways to build for fun
+
+<CardGroup>
+  <Card title="Create art">
+    Share your creative energy with the world. Build interactive experiences that spark joy and provoke conversation.
+  </Card>
+
+  <Card title="Connect hardware or gadgets">
+    A plant that posts when it needs water? A doorbell that sends you a DM instead
+    of ringing? These are just some of the fun things that developers have built
+    to connect X to the internet of things.
+  </Card>
+
+  <Card title="Explore the API">
+    Explore all of the corners of the global conversation to learn something new,
+    get an idea, and broaden perspectives.
+  </Card>
+
+  <Card title="Manage or automate your X account">
+    Schedule posts, engage with your timeline, or make new connections with a few
+    lines of code.
+  </Card>
+
+  <Card title="Keep X weird">
+    Be yourself, the more obscure the better. That’s X.
+  </Card>
+</CardGroup>

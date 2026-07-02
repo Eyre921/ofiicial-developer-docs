@@ -1,0 +1,74 @@
+---
+title: "Mark a test as a \"todo\" with the Bun test runner"
+source: https://bun.com/docs/guides/test/todo-tests
+path: docs/guides/test/todo-tests
+---
+
+To remind yourself to write a test later, use the `test.todo` function. An implementation isn't required.
+
+```ts test.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+import { test, expect } from "bun:test";
+
+// write this later
+test.todo("unimplemented feature");
+```
+
+***
+
+The `bun test` output reports the number of `todo` tests.
+
+```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
+bun test
+```
+
+```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
+test.test.ts:
+✓ add [0.03ms]
+✓ multiply [0.02ms]
+✎ unimplemented feature
+
+ 2 pass
+ 1 todo
+ 0 fail
+ 2 expect() calls
+Ran 3 tests across 1 files. [74.00ms]
+```
+
+***
+
+You can provide a test implementation.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+import { test, expect } from "bun:test";
+
+test.todo("unimplemented feature", () => {
+  expect(Bun.isAwesome()).toBe(true);
+});
+```
+
+***
+
+Bun doesn't run the implementation unless you pass the `--todo` flag. With `--todo`, the test runs and is *expected to fail*. If a todo test passes, `bun test` returns a non-zero exit code.
+
+```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
+bun test --todo
+```
+
+```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
+my.test.ts:
+✗ unimplemented feature
+  ^ this test is marked as todo but passes. Remove `.todo` or check that test is correct.
+
+ 0 pass
+ 1 fail
+ 1 expect() calls
+$ echo $?
+1 # this is the exit code of the previous command
+```
+
+***
+
+See also:
+
+* [Skip a test](/docs/guides/test/skip-tests)
+* [Writing tests](/docs/test/writing-tests)

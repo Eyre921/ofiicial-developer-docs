@@ -1,0 +1,246 @@
+---
+title: "Quickstart"
+source: https://upstash.com/docs/box/overall/quickstart
+path: docs/box/overall/quickstart
+---
+
+**Upstash Box lets you give your AI agents a computer.**
+
+Every Upstash Box is a **secure, isolated cloud container with an AI Agent built-in**. Spin up as many as you want in parallel. Each one includes a full environment with a filesystem, shell, git, and a runtime. Your agent can read files, write code, and execute tasks inside it.
+
+<Note>Upstash Box is in developer preview — APIs and pricing may change.</Note>
+
+### 1. Get your API key
+
+Go to the [Upstash Console](https://console.upstash.com) and create an API key.
+
+  <img />
+
+### 2. Install the SDK
+
+<CodeGroup>
+```bash npm
+npm install @upstash/box
+```
+
+```bash yarn
+yarn add @upstash/box
+```
+
+```bash pnpm
+pnpm add @upstash/box
+```
+
+```bash bun
+bun install @upstash/box
+```
+
+```bash pip
+pip install upstash-box
+```
+
+</CodeGroup>
+
+### 3. Set API Key
+
+```bash title=".env"
+UPSTASH_BOX_API_KEY=box_xxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+### 4. Create a Box
+
+<CodeGroup>
+```typescript title="lib/box.ts"
+import { Box } from "@upstash/box"
+
+const box = await Box.create({
+  runtime: "node",
+})
+```
+
+```python box.py
+from upstash_box import Box
+
+box = Box.create(runtime="node")
+```
+</CodeGroup>
+
+<Tip>
+  The Python SDK ships both a synchronous `Box` (used here) and an asynchronous
+  `AsyncBox` (`box = await AsyncBox.create(...)`).
+</Tip>
+
+<Tip>
+  By default, runtimes use **Debian** (glibc). For smaller Alpine-based images, use `"node-alpine"`, `"python-alpine"`, etc.
+</Tip>
+
+Your box is ready to use! You can already use it as a standalone, secure, isolated sandbox with full shell access, git, and filesystem operations.
+
+<Tip>
+  You can also create a keep-alive box by setting `keepAlive: true`. Keep-alive boxes stay on between sessions and can run an `initCommand` at startup. See [Keep Alive](/docs/box/overall/keep-alive).
+</Tip>
+
+***
+
+### 5. Configure an Agent (optional)
+
+To configure an agent for your box, pass the model you want to use and the provider API key:
+
+<Tabs>
+<Tab title="Claude">
+<CodeGroup>
+```typescript box.ts {5-8}
+import { Agent, Box } from "@upstash/box"
+
+const box = await Box.create({
+  runtime: "node",
+  agent: {
+    harness: Agent.ClaudeCode,
+    model: "anthropic/claude-opus-4-6",
+    apiKey: process.env.ANTHROPIC_API_KEY,
+  },
+})
+```
+
+```python box.py {6-10}
+import os
+from upstash_box import Box, Agent
+
+box = Box.create(
+    runtime="node",
+    agent={
+        "harness": Agent.CLAUDE_CODE,
+        "model": "anthropic/claude-opus-4-6",
+        "api_key": os.environ["ANTHROPIC_API_KEY"],
+    },
+)
+```
+</CodeGroup>
+</Tab>
+
+<Tab title="Codex">
+<CodeGroup>
+```typescript box.ts {5-8}
+import { Agent, Box } from "@upstash/box"
+
+const box = await Box.create({
+  runtime: "node",
+  agent: {
+    harness: Agent.Codex,
+    model: "openai/gpt-5.3-codex",
+    apiKey: process.env.OPENAI_API_KEY,
+  },
+})
+```
+
+```python box.py {6-10}
+import os
+from upstash_box import Box, Agent
+
+box = Box.create(
+    runtime="node",
+    agent={
+        "harness": Agent.CODEX,
+        "model": "openai/gpt-5.3-codex",
+        "api_key": os.environ["OPENAI_API_KEY"],
+    },
+)
+```
+</CodeGroup>
+</Tab>
+</Tabs>
+
+### 6. Run Your First Task
+
+Your box is ready to use! It's a secure cloud environment to run agents, execute commands, or manage files. For example:
+
+<CodeGroup>
+```typescript box.ts
+import { Agent, Box } from "@upstash/box"
+
+const box = await Box.create({
+  runtime: "node",
+  agent: {
+    harness: Agent.ClaudeCode,
+    model: "anthropic/claude-opus-4-6",
+    apiKey: process.env.ANTHROPIC_API_KEY,
+  },
+})
+
+// 👇 execute OS-level commands
+await box.exec.command("node --version")
+
+// 👇 run agent
+await box.agent.run({
+  prompt: "create an index.txt saying 'hello world'",
+})
+```
+
+```python box.py
+import os
+from upstash_box import Box, Agent
+
+box = Box.create(
+    runtime="node",
+    agent={
+        "harness": Agent.CLAUDE_CODE,
+        "model": "anthropic/claude-opus-4-6",
+        "api_key": os.environ["ANTHROPIC_API_KEY"],
+    },
+)
+
+# 👇 execute OS-level commands
+box.exec.command("node --version")
+
+# 👇 run agent
+box.agent.run(prompt="create an index.txt saying 'hello world'")
+```
+</CodeGroup>
+
+### 7. Connect over SSH
+
+You can also connect directly to a box shell with SSH:
+
+```bash
+ssh <box-id>@us-east-1.box.upstash.com
+```
+
+When SSH asks for a password, enter your **Box API key**.
+
+You can copy the exact SSH command for a box from the **SSH** button on its details page in the Upstash Console.
+
+***
+
+## Use Cases
+
+The idea behind Upstash Box is simple: **give AI its own computer**. Your agent gets a full, isolated cloud environment it can control. Run commands, write files, or execute code independent of any user device. Freeze a box anytime, and continue days or even weeks later with perfect resumability.
+
+Great example use cases:
+
+<CardGroup cols={3}>
+  <Card title="Agent Servers" icon="server" href="/box/overall/how-it-works#1-agent-server">
+    One box per user with durable state. Personalized agents that remember context and improve over time.
+  </Card>
+
+  <Card title="Multi-Agent Orchestration" icon="diagram-project" href="/box/overall/how-it-works#2-multi-agent-orchestration">
+    Fan out to multiple boxes running specialized agents in parallel, then combine their results.
+  </Card>
+
+  <Card title="Parallel Testing" icon="flask-vial" href="/box/overall/how-it-works#3-parallel-testing--model-comparison">
+    Run the same inputs across isolated boxes and compare model output side by side.
+  </Card>
+</CardGroup>
+
+***
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="How Boxes work" href="/box/overall/how-it-works">
+    Learn the basics about using Upstash Box.
+  </Card>
+
+  <Card title="Agent" href="/box/overall/agent">
+    Boxes have Claude Code, Codex or OpenCode built-in.
+  </Card>
+</CardGroup>

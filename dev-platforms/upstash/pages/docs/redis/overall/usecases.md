@@ -1,0 +1,126 @@
+---
+title: "Use Cases"
+source: https://upstash.com/docs/redis/overall/usecases
+path: docs/redis/overall/usecases
+---
+
+The data store behind Upstash is [compatible](/docs/redis/overall/compatibility)
+with almost all Redis® API. So you can use Upstash for the Redis®' popular use
+cases such as:
+
+* General caching
+* Session caching
+* Rate limiting (see [`@upstash/ratelimit`](https://github.com/upstash/ratelimit))
+* Queues and background jobs (works with [Sidekiq](/docs/redis/integrations/sidekiq), [BullMQ](/docs/redis/integrations/bullmq), [Celery](/docs/redis/integrations/celery))
+* Distributed locking
+* Pub/Sub
+* Feature flags
+* Full-text search inside Redis with [Upstash Redis Search](/docs/redis/search/introduction) (auto-synced, works with JSON, Hashes, and Strings out of the box)
+* Leaderboards
+* Recommendations
+* Usage metering (counting)
+* Content filtering
+* LLM response caching, chat history, and agent memory for AI applications
+
+Upstash runs anywhere your application runs: traditional servers and containers (EC2, Render, Fly.io, Railway, Kubernetes) over native Redis TCP, serverless functions (AWS Lambda, Vercel Functions, Google Cloud Functions) over TCP or REST, and edge runtimes (Cloudflare Workers, Vercel Edge, Deno Deploy) over the REST API.
+
+Check Salvatore's [blog](http://antirez.com/post/take-advantage-of-redis-adding-it-to-your-stack.html) post. You can find lots of similar articles about the common use cases of Redis.
+
+## Key Value Store and Caching for Next.js Application
+
+Next.js is increasingly becoming the preferred method for developing dynamic and fast web applications in an agile manner. It owes its popularity to its server-side rendering capabilities and API routes supported by serverless functions, including Vercel serverless and edge functions. Upstash Redis is a great fit with Next.js applications due to its serverless model and its REST-based APIs. The REST API plays a critical role in enabling access from edge functions while also addressing connection issues in serverless functions.
+
+Check the blog post:
+[Speed up your Next.js application with Redis](https://upstash.com/blog/nextjs-caching-with-redis)
+
+## Redis for Vercel Functions
+
+Vercel stands out as one of the most popular cloud platform for web developers, offering continuous integration, deployment, CDN and serverless functions. However, when it comes to databases, you'll need to rely on external data services to support dynamic applications.
+
+That's where Upstash comes into play as one of the most favored data solutions within the Vercel platform. Here are some reasons that contribute to Upstash's popularity in the Vercel ecosystem:
+
+* No connection problems thanks to
+  [Upstash SDK](https://github.com/upstash/upstash-redis) built on Upstash REST
+  API.
+* Edge runtime does not allow TCP based connections. You can not use regular
+  Redis clients. [Upstash SDK](https://github.com/upstash/upstash-redis) works
+  on edge runtimes without a problem.
+* Upstash has a [Vercel add on](https://vercel.com/integrations/upstash) where
+  you can easily integrate Upstash to your Vercel projects.
+
+## Storage For Lambda Functions (FaaS)
+
+People use Lambda functions for various reasons, with one of the primary advantages being their cost-effectiveness – you only pay for what you actually use, which is great. However, when it comes to needing a storage layer, AWS recommends DynamoDB. DynamoDB does offer a serverless mode, which sounds promising until you encounter its latency when connecting and operating within Lambda Functions. Unfortunately, DynamoDB's latency may not be ideal for Lambda Functions, where every second of latency can have a significant impact on costs. At this point, AWS suggests using ElastiCache for low-latency data storage, which is also a Redis® cache as a service – a positive aspect. However, it's worth noting that ElastiCache is not serverless, and you have to pay based on what you provision, rather than what you use. To be honest, the pricing may not be the most budget-friendly option. This leaves you with two alternatives:
+
+* DynamoDB: Serverless but high latency
+* ElastiCache: Low latency but not serverless.
+
+Until you meet the Upstash. Our sole mission is to provide a Redis® API
+compatible database that you love in the serverless model. In Upstash, you pay
+per the number of requests you have sent to your database. So if you are not
+using the database you pay almost nothing. (Almost, because we charge for the
+storage. It is a very low amount but still it is there.)
+
+We believe that Upstash is the best storage for your Lambda Functions because:
+
+* Serverless just like Lambda functions itself
+* Designed for low latency data access
+* The lovely simple Redis® API
+
+## Detailed Tutorials
+
+<CardGroup cols={2}>
+  <Card
+    title="Building Analytics with Redis"
+    icon="chart-line"
+    href="https://upstash.com/blog/building-analytics-with-redis"
+  >
+    Count and query events with counters, bitmaps, and Redis Search
+  </Card>
+  <Card
+    title="Agent Memory with Redis Search"
+    icon="brain"
+    href="/redis/tutorials/agent_memory"
+  >
+    Short-term and long-term memory for AI agents on Upstash Redis
+  </Card>
+  <Card
+    title="Caching in Laravel with Redis"
+    icon="laravel"
+    href="/redis/tutorials/laravel_caching"
+  >
+    Speed up your Laravel application with Upstash Redis caching
+  </Card>
+  <Card
+    title="Cloudflare Workers with Websockets and Redis"
+    icon="cloudflare"
+    href="/redis/tutorials/cloudflare_websockets_redis"
+  >
+    Build realtime apps on Cloudflare Workers backed by Upstash Redis
+  </Card>
+</CardGroup>
+
+- [AWS Lambda](https://upstash.com/docs/redis/quickstarts/aws-lambda.md)
+- [Azure Functions](https://upstash.com/docs/redis/quickstarts/azure-functions.md)
+- [Cloudflare Workers](https://upstash.com/docs/redis/quickstarts/cloudflareworkers.md)
+- [Deno Deploy](https://upstash.com/docs/redis/quickstarts/deno-deploy.md)
+- [DigitalOcean](https://upstash.com/docs/redis/quickstarts/digitalocean.md)
+- [Django](https://upstash.com/docs/redis/quickstarts/django.md)
+- [Elixir](https://upstash.com/docs/redis/quickstarts/elixir.md): Tutorial on Using Upstash Redis In Your Phoenix App and Deploying it on Fly.
+- [FastAPI](https://upstash.com/docs/redis/quickstarts/fastapi.md)
+- [Fastly](https://upstash.com/docs/redis/quickstarts/fastlycompute.md)
+- [Flask](https://upstash.com/docs/redis/quickstarts/flask.md)
+- [Fly.io](https://upstash.com/docs/redis/quickstarts/fly.md)
+- [Google Cloud Functions](https://upstash.com/docs/redis/quickstarts/google-cloud-functions.md)
+- [Ion](https://upstash.com/docs/redis/quickstarts/ion.md)
+- [ioredis note](https://upstash.com/docs/redis/quickstarts/ioredisnote.md)
+- [Koyeb](https://upstash.com/docs/redis/quickstarts/koyeb.md)
+- [Laravel](https://upstash.com/docs/redis/quickstarts/laravel.md)
+- [App Router](https://upstash.com/docs/redis/quickstarts/nextjs-app-router.md)
+- [Pages Router](https://upstash.com/docs/redis/quickstarts/nextjs-pages-router.md)
+- [ AWS Lambda](https://upstash.com/docs/redis/quickstarts/python-aws-lambda.md)
+- [SST v2](https://upstash.com/docs/redis/quickstarts/sst-v2.md)
+- [Supabase Functions](https://upstash.com/docs/redis/quickstarts/supabase.md)
+- [App Router](https://upstash.com/docs/redis/quickstarts/vercel-functions-app-router.md)
+- [Pages Router](https://upstash.com/docs/redis/quickstarts/vercel-functions-pages-router.md)
+- [Vercel Python Runtime](https://upstash.com/docs/redis/quickstarts/vercel-python-runtime.md)

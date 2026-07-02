@@ -1,0 +1,137 @@
+---
+title: "Data Storage Location (US or EU)"
+source: https://docs.sentry.io/organization/data-storage-location.md
+path: organization/data-storage-location
+---
+
+---
+title: "Data Storage Location (US or EU)"
+description: "Choose where to store your data in the US or the EU."
+url: https://docs.sentry.io/organization/data-storage-location/
+---
+
+# Data Storage Location (US or EU)
+
+Sentry supports data storage in both the US and the EU.
+
+You can choose where to store your data when you’re setting up your Sentry account by selecting from the dropdown menu under "Data Storage Location" in the "Create a New Organization" section.
+
+**Please note that once selected, your data storage location can’t be changed. The only way to switch it is by creating a new organization.**
+
+New US organizations are automatically placed in either US or US2. You can check which region your organization is in by viewing your organization’s settings page.
+
+Your selection determines your data storage location only. Sentry will continue to access and process your data in accordance with your agreement with Sentry for the Sentry service and our [Privacy Policy](https://sentry.io/privacy/).
+
+The table below shows the location where your data will be stored at rest, based on your selection.
+
+| **Data Storage Location**     | **Region** | **Physical Location**  |
+| ----------------------------- | ---------- | ---------------------- |
+| United States of America (US) | US         | Iowa, USA              |
+| United States of America (US) | US2        | Las Vegas, Nevada, USA |
+| European Union (EU)           | EU         | Frankfurt, Germany     |
+
+## [What Types of Data Are Stored Where](https://docs.sentry.io/organization/data-storage-location.md#what-types-of-data-are-stored-where)
+
+Here’s a list of the types of data that will be stored in whichever data storage location (US or EU) you select.
+
+### [Data Stored In Selected Location (US, US2, or EU)](https://docs.sentry.io/organization/data-storage-location.md#data-stored-in-selected-location-us-us2-or-eu)
+
+* Error events, activity, and issue links
+* Transactions
+* Spans
+* Profiles
+* Logs
+* Metrics
+* Release health
+* Releases, debug symbols, and source maps
+* Debug symbol metadata and source map metadata
+* Session replays
+* Backups for these resources
+
+### [Data Stored in US](https://docs.sentry.io/organization/data-storage-location.md#data-stored-in-us)
+
+Here’s a list of the types of data that may be stored in the US, regardless of your selected Data Storage Location.
+
+* User accounts, notification settings, and 2FA authenticators (User accounts are shared by many organizations.)
+* Organization integration metadata (Integrations can be shared across organizations and many of our integrations only support sending their webhooks to a singular destination.)
+* Access tokens for users and organizations
+* Organization settings, configurations, and teams
+* Organization audit logs
+* Cron check-ins
+* Project metadata
+* DSN keys
+* Detailed usage data
+* Sentry applications
+* SSO, SAML, and SCIM metadata
+
+Metadata that lets Sentry identify an organization will be replicated out of the organization's data storage location to facilitate login, and backwards-compatible APIs. You can always confirm the location of your organization by viewing your organization's settings page.
+
+If you choose to share data in a support ticket, chat or other support interaction, the data will be stored in the US.
+
+### [Data Stored in All Locations (US, US2, and EU)](https://docs.sentry.io/organization/data-storage-location.md#data-stored-in-all-locations-us-us2-and-eu)
+
+Here’s a list of the types of data that will be stored in all data storage locations (US, US2, and EU).
+
+* Uptime checks
+
+##### Uptime Monitoring
+
+For uptime monitoring to work effectively, we perform uptime checks from multiple geolocations. As a result, uptime check data may be stored outside your selected data region, beyond the storage commitments outlined on this page.
+
+## [Using Data Storage Location APIs](https://docs.sentry.io/organization/data-storage-location.md#using-data-storage-location-apis)
+
+To ensure that your API requests are only processed within your selected data storage location, use the region-specific domain:
+
+| **Data Storage Location**     | **Region** | **API domain** |
+| ----------------------------- | ---------- | -------------- |
+| United States of America (US) | US         | us.sentry.io   |
+| United States of America (US) | US2        | us2.sentry.io  |
+| European Union (EU)           | EU         | de.sentry.io   |
+
+For [data stored in the US](https://docs.sentry.io/organization/data-storage-location.md#data-stored-in-us), your API domain should be `sentry.io`.
+
+## [Switching Data Storage Locations for Existing Organizations](https://docs.sentry.io/organization/data-storage-location.md#switching-data-storage-locations-for-existing-organizations)
+
+### [SaaS](https://docs.sentry.io/organization/data-storage-location.md#saas)
+
+At this time, your data storage location can’t be changed if you have an existing SaaS organization. The only way to switch it is by creating a new organization.
+
+### [Self-hosted](https://docs.sentry.io/organization/data-storage-location.md#self-hosted)
+
+If you have a self-hosted Sentry account, you can [follow these instructions](https://docs.sentry.io/concepts/migration.md) to migrate your data.
+
+**Supported for relocation:**
+
+* User accounts and settings
+* Organization settings and configuration
+* Projects and project settings
+* Teams and members
+* Dashboards
+* Alert rules, notifications and incidents
+* Saved searches
+
+**Unsupported for relocation:**
+
+* Error events, activity, and issue links
+* Transactions
+* Spans
+* Profiles
+* Logs
+* Metrics
+* Session Replays
+* Cron check-ins
+* Uptime checks
+* DSN keys
+* Release health
+* Releases, Debug Symbols, and source maps
+* Sentry Applications
+* Access Tokens for users and organizations
+* User notification settings, and 2FA authenticators
+* Project codeowners
+* Integrations
+* Organization Audit Logs
+
+## [For Users With Multiple Organizations](https://docs.sentry.io/organization/data-storage-location.md#for-users-with-multiple-organizations)
+
+If you have multiple organizations, they will be treated separately regardless of where data is stored. This means that subscriptions, usage, users, projects, and so on, will be managed separately for each organization.
+

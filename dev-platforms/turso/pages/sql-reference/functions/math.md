@@ -1,0 +1,617 @@
+---
+title: "Math Functions"
+source: https://docs.turso.tech/sql-reference/functions/math
+path: sql-reference/functions/math
+---
+
+Mathematical functions for trigonometry, logarithms, rounding, and arithmetic
+
+# Math Functions
+
+Turso provides all SQLite math functions. These functions operate on numeric values and return REAL unless otherwise noted. If any argument is NULL, the function returns NULL. If any argument is non-numeric and cannot be converted, the function returns NULL or 0.0 depending on the function.
+
+## Function Reference
+
+### Trigonometric Functions
+
+| Function      | Description                                                                                    | Return Type |
+| ------------- | ---------------------------------------------------------------------------------------------- | ----------- |
+| `acos(X)`     | Inverse cosine of X in radians. X must be between -1.0 and 1.0                                 | REAL        |
+| `asin(X)`     | Inverse sine of X in radians. X must be between -1.0 and 1.0                                   | REAL        |
+| `atan(X)`     | Inverse tangent of X in radians                                                                | REAL        |
+| `atan2(Y, X)` | Inverse tangent of Y/X in radians, using the signs of both arguments to determine the quadrant | REAL        |
+| `cos(X)`      | Cosine of X, where X is in radians                                                             | REAL        |
+| `sin(X)`      | Sine of X, where X is in radians                                                               | REAL        |
+| `tan(X)`      | Tangent of X, where X is in radians                                                            | REAL        |
+
+### Hyperbolic Functions
+
+| Function   | Description                                                     | Return Type |
+| ---------- | --------------------------------------------------------------- | ----------- |
+| `acosh(X)` | Inverse hyperbolic cosine of X. X must be >= 1.0                | REAL        |
+| `asinh(X)` | Inverse hyperbolic sine of X                                    | REAL        |
+| `atanh(X)` | Inverse hyperbolic tangent of X. X must be between -1.0 and 1.0 | REAL        |
+| `cosh(X)`  | Hyperbolic cosine of X                                          | REAL        |
+| `sinh(X)`  | Hyperbolic sine of X                                            | REAL        |
+| `tanh(X)`  | Hyperbolic tangent of X                                         | REAL        |
+
+### Angle Conversion
+
+| Function     | Description                       | Return Type |
+| ------------ | --------------------------------- | ----------- |
+| `degrees(X)` | Convert X from radians to degrees | REAL        |
+| `radians(X)` | Convert X from degrees to radians | REAL        |
+
+### Rounding and Truncation
+
+| Function     | Description                               | Return Type |
+| ------------ | ----------------------------------------- | ----------- |
+| `ceil(X)`    | Smallest integer not less than X          | INTEGER     |
+| `ceiling(X)` | Alias for `ceil(X)`                       | INTEGER     |
+| `floor(X)`   | Largest integer not greater than X        | INTEGER     |
+| `trunc(X)`   | Integer part of X (truncates toward zero) | INTEGER     |
+
+### Logarithmic and Exponential Functions
+
+| Function    | Description                                          | Return Type |
+| ----------- | ---------------------------------------------------- | ----------- |
+| `exp(X)`    | e raised to the power X                              | REAL        |
+| `ln(X)`     | Natural logarithm of X. X must be > 0                | REAL        |
+| `log(X)`    | Natural logarithm of X (same as `ln(X)`)             | REAL        |
+| `log(B, X)` | Logarithm of X with base B. Both must be > 0, B != 1 | REAL        |
+| `log10(X)`  | Base-10 logarithm of X. X must be > 0                | REAL        |
+| `log2(X)`   | Base-2 logarithm of X. X must be > 0                 | REAL        |
+
+<Info>
+  The single-argument `log(X)` returns the natural logarithm (base e), matching SQLite behavior. This differs from some other databases where `log(X)` returns the base-10 logarithm.
+</Info>
+
+### Arithmetic Functions
+
+| Function      | Description                                            | Return Type |
+| ------------- | ------------------------------------------------------ | ----------- |
+| `mod(X, Y)`   | Remainder of X divided by Y                            | REAL        |
+| `pow(X, Y)`   | X raised to the power Y                                | REAL        |
+| `power(X, Y)` | Alias for `pow(X, Y)`                                  | REAL        |
+| `sqrt(X)`     | Square root of X. X must be >= 0                       | REAL        |
+| `sign(X)`     | Returns -1, 0, or +1 for negative, zero, or positive X | INTEGER     |
+
+### Constants
+
+| Function | Description                                 | Return Type |
+| -------- | ------------------------------------------- | ----------- |
+| `pi()`   | Returns the value of pi (3.141592653589793) | REAL        |
+
+## Signatures
+
+### acos()
+
+```sql theme={null}
+acos(X)
+```
+
+| Parameter | Type            | Description                |
+| --------- | --------------- | -------------------------- |
+| `X`       | REAL or INTEGER | Value between -1.0 and 1.0 |
+
+**Returns:** REAL. The angle in radians whose cosine is X. Returns NULL if X is outside \[-1.0, 1.0].
+
+***
+
+### acosh()
+
+```sql theme={null}
+acosh(X)
+```
+
+| Parameter | Type            | Description  |
+| --------- | --------------- | ------------ |
+| `X`       | REAL or INTEGER | Value >= 1.0 |
+
+**Returns:** REAL. The inverse hyperbolic cosine of X. Returns NULL if X \< 1.0.
+
+***
+
+### asin()
+
+```sql theme={null}
+asin(X)
+```
+
+| Parameter | Type            | Description                |
+| --------- | --------------- | -------------------------- |
+| `X`       | REAL or INTEGER | Value between -1.0 and 1.0 |
+
+**Returns:** REAL. The angle in radians whose sine is X. Returns NULL if X is outside \[-1.0, 1.0].
+
+***
+
+### asinh()
+
+```sql theme={null}
+asinh(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** REAL. The inverse hyperbolic sine of X.
+
+***
+
+### atan()
+
+```sql theme={null}
+atan(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** REAL. The angle in radians whose tangent is X. Result is in the range (-pi/2, pi/2).
+
+***
+
+### atan2()
+
+```sql theme={null}
+atan2(Y, X)
+```
+
+| Parameter | Type            | Description      |
+| --------- | --------------- | ---------------- |
+| `Y`       | REAL or INTEGER | The y-coordinate |
+| `X`       | REAL or INTEGER | The x-coordinate |
+
+**Returns:** REAL. The angle in radians between the positive x-axis and the point (X, Y). Result is in the range (-pi, pi]. Unlike `atan(Y/X)`, `atan2` correctly handles all quadrants and the case where X is zero.
+
+***
+
+### atanh()
+
+```sql theme={null}
+atanh(X)
+```
+
+| Parameter | Type            | Description                            |
+| --------- | --------------- | -------------------------------------- |
+| `X`       | REAL or INTEGER | Value between -1.0 and 1.0 (exclusive) |
+
+**Returns:** REAL. The inverse hyperbolic tangent of X. Returns NULL if X is outside (-1.0, 1.0).
+
+***
+
+### ceil() / ceiling()
+
+```sql theme={null}
+ceil(X)
+ceiling(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** INTEGER. The smallest integer not less than X.
+
+```sql theme={null}
+SELECT ceil(3.2);    -- 4
+SELECT ceil(-3.2);   -- -3
+SELECT ceiling(5.0); -- 5
+```
+
+***
+
+### cos()
+
+```sql theme={null}
+cos(X)
+```
+
+| Parameter | Type            | Description      |
+| --------- | --------------- | ---------------- |
+| `X`       | REAL or INTEGER | Angle in radians |
+
+**Returns:** REAL. The cosine of X.
+
+***
+
+### cosh()
+
+```sql theme={null}
+cosh(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** REAL. The hyperbolic cosine of X.
+
+***
+
+### degrees()
+
+```sql theme={null}
+degrees(X)
+```
+
+| Parameter | Type            | Description      |
+| --------- | --------------- | ---------------- |
+| `X`       | REAL or INTEGER | Angle in radians |
+
+**Returns:** REAL. X converted from radians to degrees.
+
+```sql theme={null}
+SELECT degrees(pi());   -- 180.0
+SELECT degrees(pi()/2); -- 90.0
+```
+
+***
+
+### exp()
+
+```sql theme={null}
+exp(X)
+```
+
+| Parameter | Type            | Description |
+| --------- | --------------- | ----------- |
+| `X`       | REAL or INTEGER | Exponent    |
+
+**Returns:** REAL. The value of e raised to the power X.
+
+```sql theme={null}
+SELECT exp(0);   -- 1.0
+SELECT exp(1);   -- 2.718281828459045
+```
+
+***
+
+### floor()
+
+```sql theme={null}
+floor(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** INTEGER. The largest integer not greater than X.
+
+```sql theme={null}
+SELECT floor(3.7);   -- 3
+SELECT floor(-3.2);  -- -4
+SELECT floor(5.0);   -- 5
+```
+
+***
+
+### ln()
+
+```sql theme={null}
+ln(X)
+```
+
+| Parameter | Type            | Description |
+| --------- | --------------- | ----------- |
+| `X`       | REAL or INTEGER | Value > 0   |
+
+**Returns:** REAL. The natural logarithm (base e) of X. Returns NULL if X \<= 0.
+
+```sql theme={null}
+SELECT ln(1);         -- 0.0
+SELECT ln(exp(1));    -- 1.0
+SELECT ln(2);         -- 0.6931471805599453
+```
+
+***
+
+### log()
+
+```sql theme={null}
+log(X)
+log(B, X)
+```
+
+| Parameter | Type            | Description                  |
+| --------- | --------------- | ---------------------------- |
+| `X`       | REAL or INTEGER | Value > 0                    |
+| `B`       | REAL or INTEGER | Base > 0 and != 1 (optional) |
+
+**Returns:** REAL. With one argument, returns the natural logarithm of X (same as `ln(X)`). With two arguments, returns the logarithm of X in base B.
+
+```sql theme={null}
+SELECT log(10);      -- 2.302585... (natural log)
+SELECT log(10, 100); -- 2.0 (log base 10 of 100)
+SELECT log(2, 256);  -- 8.0 (log base 2 of 256)
+```
+
+***
+
+### log10()
+
+```sql theme={null}
+log10(X)
+```
+
+| Parameter | Type            | Description |
+| --------- | --------------- | ----------- |
+| `X`       | REAL or INTEGER | Value > 0   |
+
+**Returns:** REAL. The base-10 logarithm of X. Returns NULL if X \<= 0.
+
+```sql theme={null}
+SELECT log10(100);   -- 2.0
+SELECT log10(1000);  -- 3.0
+```
+
+***
+
+### log2()
+
+```sql theme={null}
+log2(X)
+```
+
+| Parameter | Type            | Description |
+| --------- | --------------- | ----------- |
+| `X`       | REAL or INTEGER | Value > 0   |
+
+**Returns:** REAL. The base-2 logarithm of X. Returns NULL if X \<= 0.
+
+```sql theme={null}
+SELECT log2(256);   -- 8.0
+SELECT log2(1024);  -- 10.0
+```
+
+***
+
+### mod()
+
+```sql theme={null}
+mod(X, Y)
+```
+
+| Parameter | Type            | Description |
+| --------- | --------------- | ----------- |
+| `X`       | REAL or INTEGER | Dividend    |
+| `Y`       | REAL or INTEGER | Divisor     |
+
+**Returns:** REAL. The remainder when X is divided by Y. Returns NULL if Y is 0.
+
+```sql theme={null}
+SELECT mod(10, 3);    -- 1.0
+SELECT mod(10.5, 3);  -- 1.5
+SELECT mod(-10, 3);   -- -1.0
+```
+
+***
+
+### pi()
+
+```sql theme={null}
+pi()
+```
+
+Takes no parameters.
+
+**Returns:** REAL. The mathematical constant pi (3.141592653589793).
+
+```sql theme={null}
+SELECT pi();           -- 3.141592653589793
+SELECT 2 * pi() * 5;  -- 31.41592653589793 (circumference of circle with radius 5)
+```
+
+***
+
+### pow() / power()
+
+```sql theme={null}
+pow(X, Y)
+power(X, Y)
+```
+
+| Parameter | Type            | Description |
+| --------- | --------------- | ----------- |
+| `X`       | REAL or INTEGER | Base        |
+| `Y`       | REAL or INTEGER | Exponent    |
+
+**Returns:** REAL. X raised to the power Y.
+
+```sql theme={null}
+SELECT pow(2, 10);      -- 1024.0
+SELECT power(3, 3);     -- 27.0
+SELECT pow(100, 0.5);   -- 10.0 (square root)
+```
+
+***
+
+### radians()
+
+```sql theme={null}
+radians(X)
+```
+
+| Parameter | Type            | Description      |
+| --------- | --------------- | ---------------- |
+| `X`       | REAL or INTEGER | Angle in degrees |
+
+**Returns:** REAL. X converted from degrees to radians.
+
+```sql theme={null}
+SELECT radians(180);   -- 3.141592653589793
+SELECT radians(90);    -- 1.5707963267948966
+```
+
+***
+
+### sign()
+
+```sql theme={null}
+sign(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** INTEGER. Returns -1 if X is negative, 0 if X is zero, and +1 if X is positive. Returns NULL if X is NULL.
+
+```sql theme={null}
+SELECT sign(-42);  -- -1
+SELECT sign(0);    -- 0
+SELECT sign(3.14); -- 1
+```
+
+***
+
+### sin()
+
+```sql theme={null}
+sin(X)
+```
+
+| Parameter | Type            | Description      |
+| --------- | --------------- | ---------------- |
+| `X`       | REAL or INTEGER | Angle in radians |
+
+**Returns:** REAL. The sine of X.
+
+***
+
+### sinh()
+
+```sql theme={null}
+sinh(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** REAL. The hyperbolic sine of X.
+
+***
+
+### sqrt()
+
+```sql theme={null}
+sqrt(X)
+```
+
+| Parameter | Type            | Description |
+| --------- | --------------- | ----------- |
+| `X`       | REAL or INTEGER | Value >= 0  |
+
+**Returns:** REAL. The square root of X. Returns NULL if X is negative.
+
+```sql theme={null}
+SELECT sqrt(144);  -- 12.0
+SELECT sqrt(2);    -- 1.4142135623730951
+```
+
+***
+
+### tan()
+
+```sql theme={null}
+tan(X)
+```
+
+| Parameter | Type            | Description      |
+| --------- | --------------- | ---------------- |
+| `X`       | REAL or INTEGER | Angle in radians |
+
+**Returns:** REAL. The tangent of X.
+
+***
+
+### tanh()
+
+```sql theme={null}
+tanh(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** REAL. The hyperbolic tangent of X. Result is always in the range (-1.0, 1.0).
+
+***
+
+### trunc()
+
+```sql theme={null}
+trunc(X)
+```
+
+| Parameter | Type            | Description       |
+| --------- | --------------- | ----------------- |
+| `X`       | REAL or INTEGER | Any numeric value |
+
+**Returns:** INTEGER. The integer part of X, removing any fractional digits. Truncates toward zero.
+
+```sql theme={null}
+SELECT trunc(3.7);   -- 3
+SELECT trunc(-3.7);  -- -3
+SELECT trunc(5.0);   -- 5
+```
+
+## Examples
+
+### Trigonometry
+
+```sql theme={null}
+-- Sine and cosine of 45 degrees
+SELECT sin(radians(45));  -- 0.7071067811865475
+SELECT cos(radians(45));  -- 0.7071067811865476
+
+-- Angle from coordinates
+SELECT degrees(atan2(1, 1));  -- 45.0
+
+-- Verify the Pythagorean identity: sin^2 + cos^2 = 1
+SELECT pow(sin(1.0), 2) + pow(cos(1.0), 2);  -- 1.0
+```
+
+### Rounding
+
+```sql theme={null}
+-- Different rounding behaviors
+SELECT ceil(2.3), floor(2.3), trunc(2.3);
+-- 3, 2, 2
+
+SELECT ceil(-2.3), floor(-2.3), trunc(-2.3);
+-- -2, -3, -2
+```
+
+### Logarithms
+
+```sql theme={null}
+-- Compute the number of bits needed to represent N
+SELECT ceil(log2(1000));  -- 10
+
+-- Decibel conversion
+SELECT 10 * log10(100);  -- 20.0
+
+-- Verify log identities
+SELECT ln(exp(5));  -- 5.0
+```
+
+### Distance Calculation
+
+```sql theme={null}
+-- Euclidean distance between two points
+SELECT sqrt(pow(3 - 0, 2) + pow(4 - 0, 2));
+-- 5.0 (3-4-5 triangle)
+```
+
+## See Also
+
+* [Expressions](/sql-reference/expressions) for arithmetic operators
+* [Aggregate Functions](/sql-reference/functions/aggregate) for SUM, AVG, MIN, MAX
+* [Data Types](/sql-reference/data-types) for REAL and INTEGER storage classes

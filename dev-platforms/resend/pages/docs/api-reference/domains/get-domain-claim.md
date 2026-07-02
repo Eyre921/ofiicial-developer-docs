@@ -1,0 +1,64 @@
+---
+title: "Get Domain Claim"
+source: https://resend.com/docs/api-reference/domains/get-domain-claim
+path: docs/api-reference/domains/get-domain-claim
+---
+
+GET /domains/:domain_id/claim
+Retrieve the latest claim for a domain.
+
+<Note>
+  Poll this endpoint to follow a claim's `status` after you [start a
+  claim](/docs/api-reference/domains/claim-domain). The `domain_id` is the
+  placeholder domain id returned in the `domain_claim` object.
+</Note>
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The placeholder Domain ID returned when the claim was created.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.domains.claims.get(
+    'd91cd9bd-1176-453e-8fc1-35364d380206',
+  );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/domains/d91cd9bd-1176-453e-8fc1-35364d380206/claim' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend domains claim get d91cd9bd-1176-453e-8fc1-35364d380206
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "domain_claim",
+    "id": "dacf4072-4119-4d88-932f-6c6126d3a9d1",
+    "name": "example.com",
+    "status": "pending",
+    "domain_id": "d91cd9bd-1176-453e-8fc1-35364d380206",
+    "region": "us-east-1",
+    "record": {
+      "type": "TXT",
+      "name": "example.com",
+      "value": "resend-domain-verification=3f8a1c2d4e5b6a7f8091a2b3c4d5e6f7",
+      "ttl": "Auto"
+    },
+    "blocked_reason": null,
+    "failure_reason": null,
+    "created_at": "2026-06-16 17:12:02.059593+00",
+    "expires_at": "2026-06-23 17:12:02.059593+00"
+  }
+  ```
+</ResponseExample>

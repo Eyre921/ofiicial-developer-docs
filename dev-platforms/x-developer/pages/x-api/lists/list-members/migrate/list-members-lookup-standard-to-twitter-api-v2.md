@@ -1,0 +1,38 @@
+---
+title: "List members lookup"
+source: https://docs.x.com/x-api/lists/list-members/migrate/list-members-lookup-standard-to-twitter-api-v2
+path: x-api/lists/list-members/migrate/list-members-lookup-standard-to-twitter-api-v2
+---
+
+If you have been working with the standard v1.1 GET lists/members and GET lists/memberships. Reference for the X API v2 standard tier covering migrate.
+
+### List members lookup: Standard v1.1 compared to X API v2
+
+If you have been working with the standard v1.1 [GET lists/members](https://developer.x.com/en/docs/twitter-api/v1/accounts-and-users/create-manage-lists/api-reference/get-lists-members) and [GET lists/memberships](https://developer.x.com/en/docs/twitter-api/v1/accounts-and-users/create-manage-lists/api-reference/get-lists-memberships) endpoints, the goal of this guide is to help you understand the similarities and differences between the standard v1.1 and X API v2 List member endpoints.
+
+* **Similarities**
+  * Authentication methods
+* **Differences**
+  * Endpoint URLs
+  * Rate limits
+  * App and Project requirements
+  * Data objects per request limits
+  * Response data formats
+  * Request parameters
+
+#### Similarities
+
+**Authentication**
+
+Both endpoint versions support both [OAuth 1.0a User Context](/resources/fundamentals/authentication#oauth-1-0a-2) and [App only](/resources/fundamentals/authentication#oauth-2-0). Therefore, if you were previously using one of the standard v1.1 List members endpoints, you can continue using the same authentication method if you migrate to the X API v2 version.
+
+Depending on your authentication library/package of choice, App only authentication is probably the easiest way to get started and can be set with a simple request header. To learn how to generate an App only Access Token, see [this App only guide](/resources/fundamentals/authentication#bearer-token-also-known-as-app-only).
+
+#### Differences
+
+**Endpoint URLs**
+
+* Standard v1.1 endpoints:
+  * GET [https://api.x.com/1.1/lists/members.json](https://api.x.com/1.1/lists/members.json)
+    (Lookup members of a specified List)
+  * GET [https://api.x.com/1.1/lists/mem](https://api.x.com/1.1/lists/mem)

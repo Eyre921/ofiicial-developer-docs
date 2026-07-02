@@ -1,0 +1,31 @@
+---
+title: "OpenLLMetry"
+source: https://docs.trychroma.com/integrations/frameworks/openllmetry
+path: integrations/frameworks/openllmetry
+---
+
+[OpenLLMetry](https://www.traceloop.com/openllmetry) provides observability for systems using Chroma. It allows tracing calls to Chroma, OpenAI, and other services.
+It gives visibility to query and index calls as well as LLM prompts and completions.
+For more information on how to use OpenLLMetry, see the [OpenLLMetry docs](https://www.traceloop.com/docs/openllmetry).
+
+<img alt="" />
+
+### Example
+
+Install OpenLLMetry SDK by running:
+
+```bash theme={null}
+pip install traceloop-sdk
+```
+
+Then, initialize the SDK in your application:
+
+```python theme={null}
+from traceloop.sdk import Traceloop
+
+Traceloop.init()
+```
+
+### Configuration
+
+OpenLLMetry can be configured to send traces to any observability platform that supports OpenTelemetry - Datadog, Honeycomb, Dynatrace, New Relic, etc. See the [OpenLLMetry docs](https://www.traceloop.com/openllmetry/provider/chroma) for more information.

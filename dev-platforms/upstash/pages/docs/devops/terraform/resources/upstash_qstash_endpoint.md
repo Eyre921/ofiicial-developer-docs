@@ -1,0 +1,42 @@
+---
+title: "upstash_qstash_endpoint"
+source: https://upstash.com/docs/devops/terraform/resources/upstash_qstash_endpoint
+path: docs/devops/terraform/resources/upstash_qstash_endpoint
+---
+
+<RequestExample>
+
+```hcl example.tf
+resource "upstash_qstash_endpoint" "exampleQStashEndpoint" {
+  url      = "https://***.***"
+  topic_id = resource.upstash_qstash_topic.exampleQstashTopic.topic_id
+}
+```
+
+</RequestExample>
+
+## Schema
+
+### Required
+
+<ParamField query="topic_id" type="string" required>
+  Topic ID that the endpoint is added to
+</ParamField>
+
+<ParamField query="url" type="string" required>
+  URL of the endpoint
+</ParamField>
+
+### Read-Only
+
+<ResponseField name="endpoint_id" type="string">
+  Unique QStash endpoint ID
+</ResponseField>
+
+<ResponseField name="id" type="string">
+  The ID of this resource.
+</ResponseField>
+
+<ResponseField name="topic_name" type="string">
+  Unique QStash topic name for endpoint
+</ResponseField>

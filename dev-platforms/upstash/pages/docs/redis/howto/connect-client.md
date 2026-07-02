@@ -1,0 +1,158 @@
+---
+title: "Connect Your Client"
+source: https://upstash.com/docs/redis/howto/connect-client
+path: docs/redis/howto/connect-client
+---
+
+Upstash works with Redis® API, that means you can use any Redis client with
+Upstash. At the [Redis Clients](https://redis.io/clients) page you can find the
+list of Redis clients in different languages.
+
+Simplest way to connect to your database is to use `redis-cli`.
+Because it is already covered in [Getting Started](../overall/getstarted), we
+will skip it here.
+
+## Database
+
+After completing the [getting started](../overall/getstarted) guide, you will
+see the database page as below:
+
+  <img />
+
+The connection details required for Redis clients are displayed here: **Endpoint**,
+**Port**, and **Token** (which is also the password of the database). You can also
+find the environment variables `UPSTASH_REDIS_REST_URL` and`UPSTASH_REDIS_REST_TOKEN`
+on this page.
+
+Below, we will provide examples from popular Redis clients, but the information above should help you configure all Redis clients similarly.
+
+<Note>
+  TLS is enabled by default for all Upstash Redis databases. It's not possible
+  to disable it.
+</Note>
+
+## @upstash/redis
+
+[@upstash/redis](https://github.com/upstash/redis-js) is the official SDK developed
+and maintained by Upstash. It is HTTP-based, which makes it ideal for serverless
+environments like Vercel and Cloudflare Workers. In highly concurrent serverless
+workloads, TCP-based clients can run into connection issues.
+
+```typescript
+import { Redis } from "@upstash/redis";
+
+const redis = new Redis({
+  url: "UPSTASH_REDIS_REST_URL",
+  token: "UPSTASH_REDIS_REST_TOKEN",
+});
+
+(async () => {
+  try {
+    const data = await redis.get("key");
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+  }
+})();
+```
+
+See the [Connect with @upstash/redis page](/docs/redis/howto/connect-with-upstash-redis) for more information.
+
+## Node.js
+
+**Library**: [ioredis](https://github.com/luin/ioredis)
+
+```javascript
+const Redis = require("ioredis");
+
+let client = new Redis("rediss://:YOUR_PASSWORD@YOUR_ENDPOINT:YOUR_PORT");
+await client.set("foo", "bar");
+let x = await client.get("foo");
+console.log(x);
+```
+
+## Python
+
+**Library**: [redis-py](https://github.com/andymccurdy/redis-py)
+
+```python
+import redis
+r = redis.Redis(
+host= 'YOUR_ENDPOINT',
+port= 'YOUR_PORT',
+password= 'YOUR_PASSWORD',
+ssl=True)
+r.set('foo','bar')
+print(r.get('foo'))
+```
+
+## Java
+
+**Library**: [jedis](https://github.com/xetorthio/jedis)
+
+```java
+Jedis jedis = new Jedis("YOUR_ENDPOINT", "YOUR_PORT", true);
+jedis.auth("YOUR_PASSWORD");
+jedis.set("foo", "bar");
+String value = jedis.get("foo");
+System.out.println(value);
+```
+
+<Info>
+  Jedis does not offer command level retry config by default, but you can handle
+  retries using connection pool. Check [Retrying a command after a connection
+  failure](https://redis.io/docs/latest/develop/clients/jedis/connect/#retrying-a-command-after-a-connection-failure)
+</Info>
+
+## PHP
+
+**Library**: [phpredis](https://github.com/phpredis/phpredis)
+
+```php
+<?php
+
+$redis = new Redis();
+
+$redis->connect("YOUR_ENDPOINT", "YOUR_PORT");
+$redis->auth("YOUR_PASSWORD");
+
+$redis->set("foo", "bar");
+
+print_r($redis->get("foo"));
+```
+
+<Info>
+  Phpredis supports connection level retries through `OPT_MAX_RETRIES`. However,
+  for command level retries, it only supports [SCAN
+  command](https://github.com/phpredis/phpredis?tab=readme-ov-file#example-29).
+</Info>
+
+## Go
+
+**Library**: [redigo](https://github.com/gomodule/redigo)
+
+```go
+func main() {
+  c, err := redis.Dial("tcp", "YOUR_ENDPOINT:YOUR_PORT", redis.DialUseTLS(true))
+  if err != nil {
+      panic(err)
+  }
+
+  _, err = c.Do("AUTH", "YOUR_PASSWORD")
+  if err != nil {
+      panic(err)
+  }
+
+  _, err = c.Do("SET", "foo", "bar")
+  if err != nil {
+      panic(err)
+  }
+
+  value, err := redis.String(c.Do("GET", "foo"))
+  if err != nil {
+      panic(err)
+  }
+
+  println(value)
+}
+```

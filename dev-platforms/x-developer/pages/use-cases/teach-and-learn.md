@@ -1,0 +1,44 @@
+---
+title: "Teach and learn"
+source: https://docs.x.com/use-cases/teach-and-learn
+path: use-cases/teach-and-learn
+---
+
+Use the X API in classrooms and curricula to teach API design, data analysis, social media research, and software engineering with real-world data.
+
+## Educators
+
+Bring the API into your classroom to teach students programming fundamentals and
+valuable data processing skills.
+
+**Resources:**
+
+Are you an educator looking to use X API in your course? This
+[guide to teaching with the X API](https://dev.to/suhemparack/a-guide-to-teaching-with-the-twitter-api-v2-3n08)
+will help you understand the X API, why it's used by educators, what type of
+classes are being taught with the API, and everything else you need to know to
+get started.
+
+**Spotlight:**
+
+The below curriculums are built and executed using the X API v2:
+
+* [Social Media Data Mining and Analysis](https://canvas.uw.edu/courses/1434897)
+  by Dr. Tanu Mitra
+
+* [Data Science & Society](https://dssoc.github.io/) by Dr. Chris Bail
+
+* [Introduction to Cultural Analytics & Python](https://melaniewalsh.github.io/Intro-Cultural-Analytics/welcome.html)
+  by Dr. Melanie Walsh
+
+* [Oxford Spring School in Advanced Research Methods, Analysing X Data](https://github.com/cjbarrie/oxspsch)
+  by Dr. Chris Barrie
+
+<hr />
+
+## Students
+
+Complete an assignment, learn to process and analyze data, or even post your
+first “Hello, world!”
+
+[Become a X Student Ambassador](https://developer.x.com/en/community/student-ambassadors)

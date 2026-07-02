@@ -1,0 +1,45 @@
+---
+title: "v1 to v2"
+source: https://docs.x.com/x-api/posts/manage-tweets/migrate/standard-to-twitter-api-v2
+path: x-api/posts/manage-tweets/migrate/standard-to-twitter-api-v2
+---
+
+If you have been working with the standard v1.1 POST statuses/update and POST. Reference for the X API v2 standard tier covering migrate.
+
+## Standard v1.1 compared to X API v2
+
+If you have been working with the standard v1.1 [POST statuses/update](https://developer.x.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-statuses-update) and [POST statuses/destroy/:id](https://developer.x.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-statuses-destroy-id) endpoints, the goal of this guide is to help you understand the similarities and differences between the standard and X API v2 manage Posts endpoints.
+
+* **Similarities**
+  * Authentication
+* **Differences**
+  * Endpoint URLs
+
+  * App and Project requirements
+
+  * Request parameters
+
+### Similarities
+
+**Authentication**
+
+Both the standard v1.1 and X API v2 manage Posts ([POST statuses/update](https://developer.x.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-statuses-update) and [POST statuses/destroy/:id](https://developer.x.com/en/docs/twitter-api/v1/tweets/post-and-engage/api-reference/post-statuses-destroy-id)) endpoints use [OAuth 1.0a User Context](https://developer.x.com/content/developer-twitter/resources/fundamentals/authentication). Therefore, if you were previously using one of the standard v1.1 endpoints, you can continue using the same authentication method if you migrate to the X API v2 version.
+
+### Differences
+
+**Endpoint URLs**
+
+* Standard v1.1 endpoints:
+  * [https://api.x.com/1.1/statuses/update.json](https://api.x.com/1.1/statuses/update.json)
+    (Creates a Post)
+  * `https://api.x.com/1.1/statuses/destroy/:id.json`
+    (Deletes a Post)
+* X API v2 endpoint:
+  * [https://api.x.com/2/tweets](https://api.x.com/2/tweets)
+    (Creates a Post)
+  * [https://api.x.com/2/tweets/:id](https://api.x.com/2/tweets/:id)
+    (Deletes a specified Post)
+
+### App and Project requirements
+
+The X API v2 endpoints require that you use credentials from a [developer App](/resources/fundamentals/developer-apps) that is associated to a [Project](/resources/fundamentals/developer-apps) when authenticating your requests.

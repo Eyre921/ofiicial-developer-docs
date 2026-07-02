@@ -1,0 +1,15 @@
+---
+title: "Privacy"
+source: https://docs.x.com/x-for-websites/privacy
+path: x-for-websites/privacy
+---
+
+Privacy information for X for Websites widgets, including what data X collects from embeds, how it is used, and how to control tracking on your site.
+
+## What information does X collect through X for Websites and how is that information used?
+
+When you view X content such as embedded Tweets, buttons, or timelines integrated into other websites using X for Websites, X may receive information, including the web page you visited, your IP address, browser type, operating system, and cookie information. This information helps us to improve our products and services. Learn more about the information we receive and how we use it in our [privacy policy](https://x.com/privacy) and [cookies policy](https://help.x.com/en/rules-and-policies/x-cookies).
+
+## How long do you keep this information?
+
+To protect privacy, we never associate this web browsing history we collect from X for Websites with customers’ names, email addresses, phone numbers, or X handles, and we delete, obfuscate, or aggregate it after no longer than 30 days, as explained in our [privacy policy](https://x.com/privacy). We don't store this web browsing history from certain domains such as .mil and .gov.

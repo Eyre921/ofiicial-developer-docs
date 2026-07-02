@@ -1,0 +1,10 @@
+---
+title: "Uptime Status"
+source: https://trigger.dev/docs/troubleshooting-uptime-status
+path: docs/troubleshooting-uptime-status
+---
+
+Subscribe to email notifications for Trigger.dev platform incidents and status updates.
+
+Get email notifications when Trigger.dev creates, updates or resolves a platform incident.
+[Subscribe](https://status.trigger.dev/)

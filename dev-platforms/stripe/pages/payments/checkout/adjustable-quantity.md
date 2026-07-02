@@ -1,0 +1,18 @@
+---
+title: "Make line item quantities adjustable"
+source: https://docs.stripe.com/payments/checkout/adjustable-quantity.md
+path: payments/checkout/adjustable-quantity
+---
+
+# Make line item quantities adjustable
+
+Enable your customers to adjust the quantity of items during checkout.
+
+## Index
+
+This article has multiple variants. Fetch one of the following URLs to view specific content for your use case:
+
+- [Full hosted page](https://docs.stripe.com/payments/checkout/adjustable-quantity.md?payment-ui=stripe-hosted)
+- [Full embedded page](https://docs.stripe.com/payments/checkout/adjustable-quantity.md?payment-ui=embedded-page)
+- [Embedded form](https://docs.stripe.com/payments/checkout/adjustable-quantity.md?payment-ui=checkout-form)
+

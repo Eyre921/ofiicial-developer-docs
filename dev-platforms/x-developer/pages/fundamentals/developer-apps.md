@@ -1,0 +1,171 @@
+---
+title: "Apps"
+source: https://docs.x.com/fundamentals/developer-apps
+path: fundamentals/developer-apps
+---
+
+Create and configure X developer apps to get API credentials, set OAuth 1.0a and OAuth 2.0 permissions, manage callback URLs, and rotate keys.
+
+Apps are containers for your API credentials. Each app has its own keys, tokens, and settings.
+
+***
+
+## App credentials
+
+When you create an app, you can generate these credentials:
+
+| Credential                | Use case                                                                     |
+| :------------------------ | :--------------------------------------------------------------------------- |
+| **API Key & Secret**      | Authenticate with OAuth 1.0a. Used to sign requests or generate user tokens. |
+| **Access Token & Secret** | Make requests on behalf of your own account (OAuth 1.0a).                    |
+| **Client ID & Secret**    | Authenticate with OAuth 2.0. Used for authorization code flow.               |
+| **Bearer Token**          | App-only authentication for public data endpoints.                           |
+
+<Tip>
+  Choose **OAuth 2.0** for new projects. It offers fine-grained scopes and is required for X API v2 user-context endpoints.
+</Tip>
+
+***
+
+## Creating an app
+
+<Steps>
+  <Step title="Open the Developer Console">
+    Go to [console.x.com](https://console.x.com) and sign in.
+  </Step>
+
+  <Step title="Click Create App">
+    Enter a name, description, and use case for your app.
+  </Step>
+
+  <Step title="Generate credentials">
+    After creation, generate the keys and tokens you need.
+  </Step>
+
+  <Step title="Store securely">
+    Save credentials immediately—they're only shown once.
+  </Step>
+</Steps>
+
+***
+
+## App permissions (OAuth 1.0a)
+
+OAuth 1.0a apps have three permission levels:
+
+<Tabs>
+  <Tab title="Read only">
+    * View posts, users, and public data
+    * Cannot post, like, or modify anything
+    * Cannot access Direct Messages
+  </Tab>
+
+  <Tab title="Read and write">
+    * All read permissions
+    * Post and delete posts
+    * Follow/unfollow users
+    * Like and repost
+    * Cannot access Direct Messages
+  </Tab>
+
+  <Tab title="Read, write, and DMs">
+    * All read and write permissions
+    * Send and read Direct Messages
+  </Tab>
+</Tabs>
+
+<Note>
+  Changing permissions requires users to re-authorize your app to get new tokens with the updated scope.
+</Note>
+
+***
+
+## OAuth 2.0 app types
+
+When configuring OAuth 2.0, select your app type:
+
+| Type                    | Client       | Use case                                                 |
+| :---------------------- | :----------- | :------------------------------------------------------- |
+| **Web App**             | Confidential | Server-side applications that can securely store secrets |
+| **Automated App / Bot** | Confidential | Bots and automated services running on servers           |
+| **Native App**          | Public       | Mobile or desktop apps that can't secure secrets         |
+| **Single Page App**     | Public       | Browser-based JavaScript apps                            |
+
+**Confidential clients** receive a Client Secret. **Public clients** use PKCE only.
+
+***
+
+## Callback URLs
+
+Callback URLs (redirect URIs) are required for OAuth flows. After a user authorizes your app, they're redirected to your callback URL with an authorization code.
+
+### Requirements
+
+* Add callback URLs to your app's allowlist in the Developer Console
+* URLs must match exactly (including trailing slashes)
+* Maximum of **10 callback URLs** per app
+* Use `https://` in production
+* For local development, use `http://127.0.0.1` (not `localhost`)
+
+### Disallowed protocols
+
+These protocols cannot be used: `javascript`, `data`, `file`, `ftp`, `mailto`, `telnet`, and other non-standard schemes.
+
+<Accordion title="Full list of disallowed protocols">
+  `vbscript`, `javascript`, `vbs`, `data`, `mocha`, `keyword`, `livescript`, `ftp`, `file`, `gopher`, `acrobat`, `callto`, `daap`, `itpc`, `itms`, `firefoxurl`, `hcp`, `ldap`, `mailto`, `mmst`, `mmsu`, `msbd`, `rtsp`, `mso-offdap`, `snews`, `news`, `nntp`, `outlook`, `stssync`, `rlogin`, `telnet`, `tn3270`, `shell`, `sip`
+</Accordion>
+
+***
+
+## Best practices
+
+<CardGroup>
+  <Card title="Use separate apps" icon="layer-group">
+    Create different apps for development, staging, and production.
+  </Card>
+
+  <Card title="Rotate credentials" icon="arrows-rotate">
+    Regenerate keys periodically and if you suspect a compromise.
+  </Card>
+
+  <Card title="Minimal permissions" icon="shield-check">
+    Request only the permissions your app actually needs.
+  </Card>
+
+  <Card title="Monitor usage" icon="chart-simple">
+    Check the Developer Console regularly to track API usage.
+  </Card>
+</CardGroup>
+
+***
+
+## Automated account labels
+
+If your app runs a bot account, you can label it as automated:
+
+1. Go to your bot account's **Settings**
+2. Select **Your account** → **Automation**
+3. Link your managing account
+
+This builds trust with users and distinguishes your bot from spam.
+
+***
+
+## Troubleshooting
+
+<Accordion title="Callback URL not approved error">
+  Ensure your callback URL is exactly as registered in the Developer Console, including protocol and any trailing slashes. HTTP-encode the URL when passing it as a query parameter.
+
+  ```json theme={null}
+  {
+    "errors": [{
+      "code": 415,
+      "message": "Callback URL not approved for this client application."
+    }]
+  }
+  ```
+</Accordion>
+
+<Accordion title="App suspended">
+  If your app shows as suspended, check your email for a notice from the X platform team. Use the [Platform Help Form](https://help.x.com/forms/platform) to appeal.
+</Accordion>

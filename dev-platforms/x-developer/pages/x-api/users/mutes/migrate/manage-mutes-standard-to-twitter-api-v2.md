@@ -1,0 +1,44 @@
+---
+title: "Manage mutes"
+source: https://docs.x.com/x-api/users/mutes/migrate/manage-mutes-standard-to-twitter-api-v2
+path: x-api/users/mutes/migrate/manage-mutes-standard-to-twitter-api-v2
+---
+
+If you have been working with the standard v1.1 POST mutes/users/create and POST. Reference for the X API v2 standard tier covering migrate.
+
+### Manage mutes: Standard v1.1 compared to X API v2
+
+If you have been working with the standard v1.1 [POST mutes/users/create](https://developer.x.com/en/docs/twitter-api/v1/accounts-and-users/mute-block-report-users/api-reference/post-mutes-users-create) and [POST mutes/users/destroy](https://developer.x.com/en/docs/twitter-api/v1/accounts-and-users/mute-block-report-users/api-reference/post-mutes-users-destroy) endpoints, the goal of this guide is to help you understand the similarities and differences between the standard v1.1 and X API v2 manage mutes endpoints.
+
+* **Similarities**
+  * OAuth 1.0a User Context
+* **Differences**
+  * Endpoint URLs
+  * App and Project requirements
+  * HTTP methods
+  * Request parameters
+
+#### Similarities
+
+**OAuth 1.0a User Context authentication method**
+
+Both the endpoint versions support [OAuth 1.0a User Context](https://developer.x.com/content/developer-twitter/resources/fundamentals/authentication). Therefore, if you were previously using one of the standard v1.1 manage mutes endpoints, you can continue using the same authentication method if you migrate to the X API v2 version.
+
+#### Differences
+
+**Endpoint URLs**
+
+* Standard v1.1 endpoints:
+  * POST [https://api.x.com/1.1/mutes/users/create.json](https://api.x.com/1.1/mutes/users/create.json)
+    (mute a user)
+  * POST [https://api.x.com/1.1/mutes/users/destroy.json](https://api.x.com/1.1/mutes/users/destroy.json)
+    (unmute a user)
+* X API v2 endpoint:
+  * POST [https://api.x.com/2/users/:id/muting](https://api.x.com/2/users/:id/muting)
+    (mute a user)
+  * DELETE [https://api.x.com/2/users/:source\\\_user\\\_id/muting/:target\\\_user\\\_id](https://api.x.com/2/users/:source\\_user\\_id/muting/:target\\_user\\_id)
+    (unmute a user)
+
+**App and Project requirements**
+
+The X API v2 endpoints require that you use credentials from a [developer App](/resources/fundamentals/developer-apps) that is associated with a \[Project

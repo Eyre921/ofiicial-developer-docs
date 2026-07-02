@@ -1,0 +1,201 @@
+---
+title: "Notify"
+source: https://upstash.com/docs/workflow/features/notify
+path: docs/workflow/features/notify
+---
+
+You can notify all the workflow runs waitingi for a specific event ID.
+There are two ways to send a notify request.
+
+## Notify within Workflow
+
+Notifies other workflows waiting for a specific event from within a workflow.
+
+<CodeGroup>
+```typescript TypeScript
+import { serve } from "@upstash/workflow/nextjs";
+
+export const { POST } = serve<string>(async (context) => {
+  const { orderId, processingResult } = context.requestPayload;
+
+  await context.run("process-order", async () => {
+    // ...
+  })
+
+  const { notifyResponse } = await context.notify(
+    "notify-processing-complete",
+    `order-${orderId}`,
+    {
+      orderId,
+      status: "completed",
+      result: processingResult,
+      completedAt: new Date().toISOString()
+    }
+  );
+
+});
+```
+
+```python Python
+from fastapi import FastAPI
+from upstash_workflow.fastapi import Serve
+from upstash_workflow import AsyncWorkflowContext
+from datetime import datetime
+
+app = FastAPI()
+serve = Serve(app)
+
+@serve.post("/api/order-processor")
+async def order_processor(context: AsyncWorkflowContext[str]) -> None:
+    order_id = context.request_payload["order_id"]
+    processing_result = context.request_payload["processing_result"]
+
+    # Process the order
+    async def _process_order():
+        return await process_order(order_id)
+
+    result = await context.run("process-order", _process_order)
+
+    # Notify waiting workflows that processing is complete
+    notify_response = await context.notify(
+        "notify-processing-complete",
+        f"order-{order_id}",
+        {
+            "order_id": order_id,
+            "status": "completed",
+            "result": processing_result,
+            "completed_at": datetime.utcnow().isoformat()
+        }
+    )
+
+    # Log notification results
+    async def _log_notification():
+        print(f"Notified {len(notify_response)} waiting workflows")
+        return notify_response
+
+    await context.run("log-notification", _log_notification)
+```
+</CodeGroup>
+
+## External Notification
+
+You can also notify workflows from external systems using the Workflow Client:
+
+<CodeGroup>
+```typescript TypeScript
+import { Client } from "@upstash/workflow";
+
+const client = new Client({ token: "<WORKFLOW_TOKEN>" });
+
+await client.notify({
+  eventId: "order-completed-123",
+  eventData: {
+    orderId: "123",
+    status: "completed",
+    deliveryTime: "2 days",
+    trackingNumber: "TRK123456"
+  }
+});
+```
+
+```python Python
+from upstash_workflow import Client
+
+client = Client("<WORKFLOW_TOKEN>")
+
+# Notify workflows waiting for a specific event
+await client.notify(
+    event_id="order-completed-123",
+    event_data={
+        "order_id": "123",
+        "status": "completed",
+        "delivery_time": "2 days",
+        "tracking_number": "TRK123456"
+    }
+)
+```
+</CodeGroup>
+
+## Lookback Functionality
+
+By default, if you call `notify` before a workflow reaches its `waitForEvent` step, the notification will be lost (race condition). To prevent this, you can provide a `workflowRunId` parameter which enables **lookback** - the notification will be stored and delivered even if sent before the wait step.
+
+This is particularly useful when:
+* You trigger a workflow and immediately want to send it an event
+* You have concurrent operations where timing is unpredictable
+* You want to eliminate race conditions in your event-driven workflows
+
+<CodeGroup>
+```typescript TypeScript
+import { Client } from "@upstash/workflow";
+
+const client = new Client({ token: "<WORKFLOW_TOKEN>" });
+
+// Trigger a workflow and get its run ID
+const { workflowRunId } = await client.trigger({
+  url: "https://your-app.com/api/process-order",
+  body: { orderId: "123" }
+});
+
+// Immediately notify it with lookback enabled
+// The notification will be delivered even if the workflow
+// hasn't reached waitForEvent yet
+await client.notify({
+  eventId: "payment-verified",
+  eventData: { verified: true, amount: 100 },
+  workflowRunId: workflowRunId, // Enables lookback
+});
+```
+
+```python Python
+from upstash_workflow import Client
+
+client = Client("<WORKFLOW_TOKEN>")
+
+# Trigger a workflow and get its run ID
+workflow_run = await client.trigger(
+    url="https://your-app.com/api/process-order",
+    body={"order_id": "123"}
+)
+
+# Immediately notify it with lookback enabled
+await client.notify(
+    event_id="payment-verified",
+    event_data={"verified": True, "amount": 100},
+    workflow_run_id=workflow_run.workflow_run_id  # Enables lookback
+)
+```
+</CodeGroup>
+
+The same also applies to `context.notify`
+
+<CodeGroup>
+```typescript TypeScript
+import { serve } from "@upstash/workflow/nextjs";
+
+export const { POST } = serve<string>(async (context) => {
+  const { orderId, processingResult } = context.requestPayload;
+
+  await context.run("process-order", async () => {
+    // ...
+  })
+
+  const { notifyResponse } = await context.notify(
+    "notify-processing-complete",
+    `order-${orderId}`,
+    {
+      orderId,
+      status: "completed",
+      result: processingResult,
+      completedAt: new Date().toISOString(),
+      workflowRunId: "targetWorkflowRunId"  // Enables lookback
+    }
+  );
+
+});
+```
+</CodeGroup>
+
+<Note>
+When using lookback with `workflowRunId`, the notification is targeted to a specific workflow run rather than all waiters with that event ID.
+</Note>

@@ -1,0 +1,199 @@
+---
+title: "Security"
+source: https://docs.x.com/fundamentals/security
+path: fundamentals/security
+---
+
+Security best practices for X API developers, including credential storage, OAuth handling, key rotation, secure callbacks, and vulnerability disclosure.
+
+Building secure applications protects both your users and the X platform. This guide covers essential security practices for X API developers.
+
+***
+
+## Core requirements
+
+<CardGroup>
+  <Card title="TLS required" icon="lock">
+    All API requests must use HTTPS. Plain HTTP is rejected.
+  </Card>
+
+  <Card title="Credential security" icon="key">
+    Never expose API keys or tokens in client-side code, logs, or repositories.
+  </Card>
+</CardGroup>
+
+***
+
+## Protecting credentials
+
+Your API keys and tokens are the keys to your app. Keep them secure:
+
+<Steps>
+  <Step title="Use environment variables">
+    Store credentials in environment variables, not in code.
+
+    ```bash theme={null}
+    export X_API_KEY="your-api-key"
+    export X_API_SECRET="your-api-secret"
+    ```
+  </Step>
+
+  <Step title="Never commit secrets">
+    Add credential files to `.gitignore`. Use tools like `git-secrets` to prevent accidental commits.
+  </Step>
+
+  <Step title="Rotate regularly">
+    Regenerate keys periodically and immediately if you suspect a compromise.
+  </Step>
+
+  <Step title="Use minimal permissions">
+    Only request the OAuth scopes your app actually needs.
+  </Step>
+</Steps>
+
+### If credentials are compromised
+
+1. **Regenerate immediately** in the [Developer Console](https://console.x.com)
+2. **Revoke old tokens** — regenerating automatically invalidates old credentials
+3. **Audit usage** — check for unauthorized API activity
+4. **Update your app** — deploy new credentials to all environments
+
+***
+
+## Application security
+
+### Input validation
+
+Never trust user input. Validate and sanitize all data before using it:
+
+```python theme={null}
+# Bad - vulnerable to injection
+query = f"from:{user_input}"
+
+# Good - validate input first
+import re
+if re.match(r'^[a-zA-Z0-9_]{1,15}$', user_input):
+    query = f"from:{user_input}"
+```
+
+### Output encoding
+
+Escape X API data before displaying in HTML to prevent XSS:
+
+```javascript theme={null}
+// Bad - vulnerable to XSS
+element.innerHTML = tweet.text;
+
+// Good - escape HTML
+element.textContent = tweet.text;
+```
+
+### Common vulnerabilities to prevent
+
+| Vulnerability      | Prevention                                                  |
+| :----------------- | :---------------------------------------------------------- |
+| **XSS**            | Escape all user-generated content before rendering          |
+| **CSRF**           | Use anti-CSRF tokens in forms; verify OAuth state parameter |
+| **SQL Injection**  | Use parameterized queries, never concatenate user input     |
+| **Open redirects** | Validate callback URLs against an allowlist                 |
+
+***
+
+## OAuth security
+
+### State parameter
+
+Always use the `state` parameter in OAuth flows to prevent CSRF:
+
+```python theme={null}
+import secrets
+
+# Generate state before authorization
+state = secrets.token_urlsafe(32)
+session['oauth_state'] = state
+
+# Verify state after callback
+if request.args.get('state') != session.get('oauth_state'):
+    abort(403)  # State mismatch - possible CSRF
+```
+
+### Token storage
+
+| Token type         | Storage recommendation                             |
+| :----------------- | :------------------------------------------------- |
+| **Access tokens**  | Encrypted database or secure vault                 |
+| **Refresh tokens** | Encrypted database with additional access controls |
+| **Bearer tokens**  | Environment variables or secure configuration      |
+
+***
+
+## Secure development practices
+
+<CardGroup>
+  <Card title="Security audits" icon="magnifying-glass">
+    Conduct regular security reviews and penetration testing.
+  </Card>
+
+  <Card title="Dependency scanning" icon="box">
+    Keep dependencies updated. Use tools to detect vulnerable packages.
+  </Card>
+
+  <Card title="Logging" icon="file-lines">
+    Log security events but never log credentials or sensitive data.
+  </Card>
+
+  <Card title="Monitoring" icon="chart-line">
+    Set up alerts for unusual API usage patterns.
+  </Card>
+</CardGroup>
+
+***
+
+## Reporting security issues
+
+If you discover a security vulnerability affecting X:
+
+<Warning>
+  **Report within 48 hours.** X Developer Platform users must notify X no more than 48 hours after suspecting a security incident.
+</Warning>
+
+<CardGroup>
+  <Card title="X Bug Bounty" icon="bug" href="https://hackerone.com/twitter">
+    Report vulnerabilities in X's systems through HackerOne.
+  </Card>
+
+  <Card title="Your app incident" icon="triangle-exclamation" href="https://hackerone.com/twitter">
+    If your app using X data is breached, report through the same channel.
+  </Card>
+</CardGroup>
+
+***
+
+## Compliance checklist
+
+<Accordion title="Security requirements for X API developers">
+  * [ ] All API requests use TLS/HTTPS
+  * [ ] Credentials stored securely (not in code or logs)
+  * [ ] User tokens encrypted at rest
+  * [ ] Input validation on all user-supplied data
+  * [ ] Output encoding to prevent XSS
+  * [ ] CSRF protection on OAuth flows
+  * [ ] Security logging enabled (without sensitive data)
+  * [ ] Incident response plan documented
+  * [ ] Dependencies regularly updated
+  * [ ] Minimal OAuth scopes requested
+</Accordion>
+
+***
+
+## Resources
+
+<CardGroup>
+  <Card title="Authentication guide" icon="key" href="/resources/fundamentals/authentication/overview">
+    Implement OAuth correctly.
+  </Card>
+
+  <Card title="App permissions" icon="shield-check" href="/resources/fundamentals/developer-apps#app-permissions">
+    Configure minimal required permissions.
+  </Card>
+</CardGroup>

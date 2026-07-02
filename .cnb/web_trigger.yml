@@ -1,0 +1,37 @@
+# CNB 网页自定义按钮 + 输入面板
+# 在仓库网页右上角显示按钮，点击触发 .cnb.yml 里的 web_trigger_refresh 事件。
+branch:
+  - buttons:
+      # 一键刷新全部（无输入面板，最快）
+      - name: 🔄 立即刷新全部文档
+        description: 手动重新抓取 Anthropic / OpenAI / Gemini 全部官方文档
+        event: web_trigger_refresh
+        isDefault: true
+
+      # 带输入面板的自定义刷新：选来源 + 是否全量八语言
+      - name: 🎛️ 自定义刷新
+        description: "刷新 ${PROVIDER}（全量八语言=${INCLUDE_ALL_SDK_LANGUAGES}）"
+        event: web_trigger_refresh
+        inputs:
+          PROVIDER:
+            name: 抓取范围
+            type: select
+            description: 全部，或只刷新某个分类 / 某个来源（也可手填单个 slug，如 dev-platforms/stripe）
+            default: all
+            options:
+              - { name: 全部来源, value: all }
+              - { name: AI 模型/平台, value: ai-models }
+              - { name: Agent 框架, value: agent-frameworks }
+              - { name: 语音/多模态, value: voice-multimodal }
+              - { name: 向量数据库, value: vector-db }
+              - { name: 编码 Agent, value: coding-agents }
+              - { name: 开发/基础设施平台, value: dev-platforms }
+              - { name: 框架/工具库, value: libraries }
+          INCLUDE_ALL_SDK_LANGUAGES:
+            name: Anthropic API 保留全部 8 种语言 SDK
+            type: switch
+            description: 打开则不过滤（体积从 ~14MB 涨到 ~87MB）；默认关，仅留 Python
+            default: "0"
+            options:
+              - { name: 开（全量，体积大）, value: "1" }
+              - { name: 关（默认，仅 Python）, value: "0" }

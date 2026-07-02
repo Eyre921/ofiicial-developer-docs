@@ -1,0 +1,449 @@
+---
+title: "Create environment variable"
+source: https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/create.md
+path: docs/eleven-agents/api-reference/environment-variables/create
+---
+
+> This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
+
+# Create environment variable
+
+POST https://api.elevenlabs.io/v1/convai/environment-variables
+Content-Type: application/json
+
+Create a new environment variable for the workspace
+
+Reference: https://elevenlabs.io/docs/eleven-agents/api-reference/environment-variables/create
+
+## OpenAPI Specification
+
+```yaml
+openapi: 3.1.0
+info:
+  title: api
+  version: 1.0.0
+paths:
+  /v1/convai/environment-variables:
+    post:
+      operationId: create
+      summary: Create Environment Variable
+      description: Create a new environment variable for the workspace
+      tags:
+        - subpackage_environmentVariables
+      parameters:
+        - name: xi-api-key
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type_:EnvironmentVariableResponse'
+        '400':
+          description: Invalid parameters
+          content:
+            application/json:
+              schema:
+                description: Any type
+        '409':
+          description: Environment variable with this label already exists
+          content:
+            application/json:
+              schema:
+                description: Any type
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/type_:HTTPValidationError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: >-
+                #/components/schemas/type_environmentVariables:EnvironmentVariablesCreateRequestBody
+servers:
+  - url: https://api.elevenlabs.io
+    description: Production
+  - url: https://api.us.elevenlabs.io
+    description: Production US
+  - url: https://api.eu.residency.elevenlabs.io
+    description: Production EU
+  - url: https://api.in.residency.elevenlabs.io
+    description: Production India
+  - url: https://api.sg.residency.elevenlabs.io
+    description: Production Singapore
+components:
+  schemas:
+    type_:EnvironmentVariableSecretValueRequest:
+      type: object
+      properties:
+        secret_id:
+          type: string
+      required:
+        - secret_id
+      title: EnvironmentVariableSecretValueRequest
+    type_:EnvironmentVariableAuthConnectionValueRequest:
+      type: object
+      properties:
+        auth_connection_id:
+          type: string
+      required:
+        - auth_connection_id
+      title: EnvironmentVariableAuthConnectionValueRequest
+    type_environmentVariables:EnvironmentVariablesCreateRequestBody:
+      oneOf:
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - string
+              description: 'Discriminator value: string'
+            label:
+              type: string
+              description: Unique label for the environment variable.
+            values:
+              type: object
+              additionalProperties:
+                type: string
+              description: Environment-specific values. Must include 'production' key.
+          required:
+            - type
+            - label
+            - values
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - secret
+              description: 'Discriminator value: secret'
+            label:
+              type: string
+              description: Unique label for the environment variable.
+            values:
+              type: object
+              additionalProperties:
+                $ref: >-
+                  #/components/schemas/type_:EnvironmentVariableSecretValueRequest
+              description: >-
+                Environment-specific secret references. Must include
+                'production' key.
+          required:
+            - type
+            - label
+            - values
+        - type: object
+          properties:
+            type:
+              type: string
+              enum:
+                - auth_connection
+              description: 'Discriminator value: auth_connection'
+            label:
+              type: string
+              description: Unique label for the environment variable.
+            values:
+              type: object
+              additionalProperties:
+                $ref: >-
+                  #/components/schemas/type_:EnvironmentVariableAuthConnectionValueRequest
+              description: >-
+                Environment-specific auth connection references. Must include
+                'production' key.
+          required:
+            - type
+            - label
+            - values
+      discriminator:
+        propertyName: type
+      title: EnvironmentVariablesCreateRequestBody
+    type_:EnvironmentVariableResponseType:
+      type: string
+      enum:
+        - string
+        - secret
+        - auth_connection
+      title: EnvironmentVariableResponseType
+    type_:EnvironmentVariableSecretValue:
+      type: object
+      properties:
+        secret_id:
+          type: string
+      required:
+        - secret_id
+      title: EnvironmentVariableSecretValue
+    type_:EnvironmentVariableAuthConnectionValue:
+      type: object
+      properties:
+        auth_connection_id:
+          type: string
+      required:
+        - auth_connection_id
+      title: EnvironmentVariableAuthConnectionValue
+    type_:EnvironmentVariableResponseValues:
+      oneOf:
+        - type: object
+          additionalProperties:
+            type: string
+        - type: object
+          additionalProperties:
+            $ref: '#/components/schemas/type_:EnvironmentVariableSecretValue'
+        - type: object
+          additionalProperties:
+            $ref: '#/components/schemas/type_:EnvironmentVariableAuthConnectionValue'
+      title: EnvironmentVariableResponseValues
+    type_:EnvironmentVariableResponse:
+      type: object
+      properties:
+        label:
+          type: string
+        created_at_unix_secs:
+          type: integer
+        updated_at_unix_secs:
+          type: integer
+        created_by_user_id:
+          type: string
+        type:
+          $ref: '#/components/schemas/type_:EnvironmentVariableResponseType'
+        id:
+          type: string
+        workspace_id:
+          type: string
+        values:
+          $ref: '#/components/schemas/type_:EnvironmentVariableResponseValues'
+      required:
+        - label
+        - created_at_unix_secs
+        - updated_at_unix_secs
+        - type
+        - id
+        - workspace_id
+        - values
+      title: EnvironmentVariableResponse
+    type_:ValidationErrorLocItem:
+      oneOf:
+        - type: string
+        - type: integer
+      title: ValidationErrorLocItem
+    type_:ValidationError:
+      type: object
+      properties:
+        loc:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:ValidationErrorLocItem'
+        msg:
+          type: string
+        type:
+          type: string
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+    type_:HTTPValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:ValidationError'
+      title: HTTPValidationError
+
+```
+
+## Examples
+
+**Request**
+
+```json
+{
+  "type": "string",
+  "label": "API_ENDPOINT_URL",
+  "values": {
+    "key": "https://api.production.example.com"
+  }
+}
+```
+
+**Response**
+
+```json
+{
+  "label": "API_ENDPOINT_URL",
+  "created_at_unix_secs": 1712000000,
+  "updated_at_unix_secs": 1712003600,
+  "type": "string",
+  "id": "envvar_1234567890abcdef",
+  "workspace_id": "workspace_9876543210fedcba",
+  "values": {
+    "key": "https://api.production.example.com"
+  },
+  "created_by_user_id": "user_7890abc"
+}
+```
+
+**SDK Code**
+
+```typescript
+import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
+
+async function main() {
+    const client = new ElevenLabsClient();
+    await client.environmentVariables.create({
+        type: "string",
+        label: "API_ENDPOINT_URL",
+        values: {
+            "key": "https://api.production.example.com",
+        },
+    });
+}
+main();
+
+```
+
+```python
+from elevenlabs import ElevenLabs
+from elevenlabs.environment_variables import EnvironmentVariablesCreateRequestBody_String
+
+client = ElevenLabs()
+
+client.environment_variables.create(
+    request=EnvironmentVariablesCreateRequestBody_String(
+        label="API_ENDPOINT_URL",
+        values={
+            "key": "https://api.production.example.com"
+        },
+    ),
+)
+
+```
+
+```go
+package main
+
+import (
+	"fmt"
+	"strings"
+	"net/http"
+	"io"
+)
+
+func main() {
+
+	url := "https://api.elevenlabs.io/v1/convai/environment-variables"
+
+	payload := strings.NewReader("{\n  \"type\": \"string\",\n  \"label\": \"API_ENDPOINT_URL\",\n  \"values\": {\n    \"key\": \"https://api.production.example.com\"\n  }\n}")
+
+	req, _ := http.NewRequest("POST", url, payload)
+
+	req.Header.Add("Content-Type", "application/json")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
+}
+```
+
+```ruby
+require 'uri'
+require 'net/http'
+
+url = URI("https://api.elevenlabs.io/v1/convai/environment-variables")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+
+request = Net::HTTP::Post.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{\n  \"type\": \"string\",\n  \"label\": \"API_ENDPOINT_URL\",\n  \"values\": {\n    \"key\": \"https://api.production.example.com\"\n  }\n}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+```java
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.Unirest;
+
+HttpResponse<String> response = Unirest.post("https://api.elevenlabs.io/v1/convai/environment-variables")
+  .header("Content-Type", "application/json")
+  .body("{\n  \"type\": \"string\",\n  \"label\": \"API_ENDPOINT_URL\",\n  \"values\": {\n    \"key\": \"https://api.production.example.com\"\n  }\n}")
+  .asString();
+```
+
+```php
+<?php
+require_once('vendor/autoload.php');
+
+$client = new \GuzzleHttp\Client();
+
+$response = $client->request('POST', 'https://api.elevenlabs.io/v1/convai/environment-variables', [
+  'body' => '{
+  "type": "string",
+  "label": "API_ENDPOINT_URL",
+  "values": {
+    "key": "https://api.production.example.com"
+  }
+}',
+  'headers' => [
+    'Content-Type' => 'application/json',
+  ],
+]);
+
+echo $response->getBody();
+```
+
+```csharp
+using RestSharp;
+
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/environment-variables");
+var request = new RestRequest(Method.POST);
+request.AddHeader("Content-Type", "application/json");
+request.AddParameter("application/json", "{\n  \"type\": \"string\",\n  \"label\": \"API_ENDPOINT_URL\",\n  \"values\": {\n    \"key\": \"https://api.production.example.com\"\n  }\n}", ParameterType.RequestBody);
+IRestResponse response = client.Execute(request);
+```
+
+```swift
+import Foundation
+
+let headers = ["Content-Type": "application/json"]
+let parameters = [
+  "type": "string",
+  "label": "API_ENDPOINT_URL",
+  "values": ["key": "https://api.production.example.com"]
+] as [String : Any]
+
+let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
+
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/environment-variables")! as URL,
+                                        cachePolicy: .useProtocolCachePolicy,
+                                    timeoutInterval: 10.0)
+request.httpMethod = "POST"
+request.allHTTPHeaderFields = headers
+request.httpBody = postData as Data
+
+let session = URLSession.shared
+let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in
+  if (error != nil) {
+    print(error as Any)
+  } else {
+    let httpResponse = response as? HTTPURLResponse
+    print(httpResponse)
+  }
+})
+
+dataTask.resume()
+```

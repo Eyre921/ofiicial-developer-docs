@@ -1,0 +1,13 @@
+---
+title: "StickerInfo"
+source: https://docs.x.com/xdks/typescript/reference/interfaces/Schemas.StickerInfo
+path: xdks/typescript/reference/interfaces/schemas.stickerinfo
+---
+
+Reference for the Schemas.StickerInfo TypeScript interface in the X API SDK. Field definitions, types, and properties for X API request or response payloads.
+
+[Schemas](/xdks/typescript/reference/modules/Schemas).StickerInfo
+
+## Properties
+
+<ResponseField name="stickers" type="Sticker[]" />

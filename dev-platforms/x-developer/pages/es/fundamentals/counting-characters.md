@@ -1,0 +1,126 @@
+---
+title: "Conteo de caracteres"
+source: https://docs.x.com/es/fundamentals/counting-characters
+path: es/fundamentals/counting-characters
+---
+
+Cómo cuenta X los caracteres en los Posts, incluyendo el límite de 280 caracteres, puntos de código ponderados, acortamiento de URLs, manejo de emojis y Unicode, y casos especiales.
+
+Los Posts en X pueden contener hasta **280 caracteres**. Sin embargo, no todos los caracteres cuentan igual: los emojis, las URLs y ciertos rangos de Unicode tienen reglas de conteo especiales.
+
+***
+
+## Ponderación de caracteres
+
+X usa un sistema de conteo de caracteres ponderado. La mayoría de los caracteres cuentan como 1, pero algunos cuentan como 2:
+
+| Tipo de carácter                    | Peso            | Máx. de caracteres |
+| :---------------------------------- | :-------------- | :----------------- |
+| Latín, puntuación, símbolos comunes | 1               | 280                |
+| Emojis                              | 2               | 140 emojis         |
+| CJK (chino, japonés, coreano)       | 2               | 140 caracteres     |
+| Otro Unicode                        | 2 (por defecto) | Varía              |
+
+<Tip>
+  Usa la biblioteca de código abierto [twitter-text](https://github.com/twitter/twitter-text) para contar los caracteres con precisión en tu app.
+</Tip>
+
+***
+
+## Conteo de emojis
+
+Todos los emojis cuentan como **2 caracteres**, sin importar su complejidad:
+
+| Emoji       | Visualización      | Conteo de caracteres | Unicode             |
+| :---------- | :----------------- | :------------------- | :------------------ |
+| 👾          | Un solo emoji      | 2                    | U+1F47E             |
+| 🙋🏽        | Con tono de piel   | 2                    | 🙋 + modificador 🏽 |
+| 👨‍🎤       | Combinado con ZWJ  | 2                    | 👨 + ZWJ + 🎤       |
+| 👨‍👩‍👧‍👦 | Secuencia familiar | 2                    | 4 emojis + 3 ZWJs   |
+
+Los uniones de ancho cero (ZWJ) combinan emojis visualmente, pero no se suman al conteo.
+
+***
+
+## Manejo de URLs
+
+Todas las URLs se envuelven con el acortador `t.co` y cuentan como **23 caracteres**, independientemente de la longitud original:
+
+```
+https://example.com                    → 23 caracteres
+https://example.com/very/long/path     → 23 caracteres
+```
+
+<Note>
+  Esto se aplica a cualquier URL válida detectada en el texto del post.
+</Note>
+
+***
+
+## Casos especiales
+
+| Contenido                    | Regla de conteo                                                        |
+| :--------------------------- | :--------------------------------------------------------------------- |
+| **@menciones en respuestas** | Las @menciones autocompletadas al inicio de las respuestas no cuentan  |
+| **Nuevas @menciones**        | Las @menciones que añadas manualmente cuentan normalmente              |
+| **Medios**                   | Los medios adjuntos (vía clientes oficiales) cuentan como 0 caracteres |
+| **Hashtags**                 | Cuentan normalmente (# + texto de la etiqueta)                         |
+
+***
+
+## Codificación de texto
+
+La X API requiere codificación **UTF-8**. La longitud de los caracteres se calcula usando la Forma de Normalización Unicode C (NFC).
+
+Ejemplo con `café`:
+
+| Forma              | Bytes       | Caracteres |
+| :----------------- | :---------- | :--------- |
+| NFC (compuesta)    | `c a f é`   | 4          |
+| NFD (descompuesta) | `c a f e ́` | 5          |
+
+X normaliza a NFC, así que ambas se codifican como 4 caracteres.
+
+***
+
+## Implementación
+
+Usa la biblioteca oficial [twitter-text](https://github.com/twitter/twitter-text) para contar caracteres con precisión:
+
+<Tabs>
+  <Tab title="JavaScript">
+    ```javascript theme={null}
+    import { parseTweet } from 'twitter-text';
+
+    const result = parseTweet('Hello, world! 👋');
+    console.log(result.weightedLength); // 16
+    console.log(result.valid);          // true
+    ```
+  </Tab>
+
+  <Tab title="Python">
+    ```python theme={null}
+    from twitter_text import parse_tweet
+
+    result = parse_tweet('Hello, world! 👋')
+    print(result.weightedLength)  # 16
+    print(result.valid)           # True
+    ```
+  </Tab>
+</Tabs>
+
+La biblioteca maneja todos los casos límite, incluidas las secuencias de emojis, la detección de URLs y la normalización Unicode.
+
+***
+
+## Recursos
+
+<CardGroup>
+  <Card title="Biblioteca twitter-text" icon="github" href="https://github.com/twitter/twitter-text">
+    Biblioteca oficial de código abierto para el análisis de texto.
+  </Card>
+
+  <Card title="Archivo de configuración" icon="file-code" href="https://github.com/twitter/twitter-text/tree/master/config">
+    Definiciones de pesos de caracteres y rangos Unicode.
+  </Card>
+</CardGroup>

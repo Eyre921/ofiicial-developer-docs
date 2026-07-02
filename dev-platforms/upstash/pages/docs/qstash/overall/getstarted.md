@@ -1,0 +1,153 @@
+---
+title: "Getting Started"
+source: https://upstash.com/docs/qstash/overall/getstarted
+path: docs/qstash/overall/getstarted
+---
+
+QStash is a **serverless messaging and scheduling solution**. It fits easily into your existing workflow and allows you to build reliable systems without managing infrastructure.
+
+Instead of calling an endpoint directly, QStash acts as a middleman between you and an API to guarantee delivery, perform automatic retries on failure, and more.
+
+  <img />
+
+<Tip href="/workflow/getstarted" >
+
+We have a new SDK called [Upstash Workflow](/docs/workflow/getstarted).
+
+**Upstash Workflow SDK** is **QStash** simplified for your complex applications
+
+* Skip the details of preparing a complex dependent endpoints.
+* Focus on the essential parts.
+* Enjoy automatic retries and delivery guarantees.
+* Avoid platform-specific timeouts.
+
+Check out [Upstash Workflow Getting Started](/docs/workflow/getstarted) for more.
+</Tip>
+
+## Quick Start
+
+Check out these Quick Start guides to get started with QStash in your application.
+
+<CardGroup cols={2}>
+  <Card title="Next.js" icon="node-js" href="/qstash/quickstarts/vercel-nextjs">
+    Build a Next application that uses QStash to start a long-running job on your platform
+  </Card>
+  <Card title="Python" icon="python" href="/qstash/quickstarts/python-vercel">
+    Build a Python application that uses QStash to schedule a daily job that clean up a database
+  </Card>
+</CardGroup>
+
+Or continue reading to learn how to send your first message!
+
+## Send your first message
+
+<Check>
+**Prerequisite**
+
+You need an Upstash account before publishing messages, create one
+[here](https://console.upstash.com).
+
+</Check>
+
+### Public API
+
+Make sure you have a publicly available HTTP API that you want to send your
+messages to. If you don't, you can use something like
+[requestcatcher.com](https://requestcatcher.com/), [webhook.site](https://webhook.site/) or
+[webhook-test.com](https://webhook-test.com/) to try it out.
+
+For example, you can use this URL to test your messages: [https://firstqstashmessage.requestcatcher.com](https://firstqstashmessage.requestcatcher.com)
+
+### Get your token
+
+Go to the [Upstash Console](https://console.upstash.com/qstash) and copy the
+`QSTASH_TOKEN`.
+
+  <img />
+
+### Publish a message
+
+A message can be any shape or form: json, xml, binary, anything, that can be
+transmitted in the http request body. We do not impose any restrictions other
+than a size limit of 1 MB (which can be customized at your request).
+
+In addition to the request body itself, you can also send HTTP headers. Learn
+more about this in the [message publishing section](/docs/qstash/howto/publishing).
+
+<CodeGroup>
+```bash cURL
+curl -XPOST \
+    -H 'Authorization: Bearer <QSTASH_TOKEN>' \
+    -H "Content-type: application/json" \
+    -d '{ "hello": "world" }' \
+    'https://qstash.upstash.io/v2/publish/https://<your-api-url>'
+```
+
+```bash cURL RequestCatcher
+curl -XPOST \
+    -H 'Authorization: Bearer <QSTASH_TOKEN>' \
+    -H "Content-type: application/json" \
+    -d '{ "hello": "world" }' \
+    'https://qstash.upstash.io/v2/publish/https://firstqstashmessage.requestcatcher.com/test'
+```
+
+</CodeGroup>
+
+Don't worry, we have SDKs for different languages so you don't
+have to make these requests manually.
+
+### Check Response
+
+You should receive a response with a unique message ID.
+
+  <img />
+
+### Check Message Status
+
+Head over to [Upstash Console](https://console.upstash.com/qstash) and go to the
+`Logs` tab where you can see your message activities.
+
+  <img />
+
+Learn more about different states [here](/docs/qstash/howto/debug-logs).
+
+## Features and Use Cases
+
+<CardGroup cols={2}>
+  <Card title="Background Jobs" icon="share-all" href="/qstash/features/background-jobs">
+    Run long-running tasks in the background, without blocking your application
+  </Card>
+  <Card title="Schedules" icon="calendar-days" href="/qstash/features/schedules">
+    Schedule messages to be delivered at a time in the future
+  </Card>
+  <Card title="Fan out" icon="arrows-maximize" href="/qstash/features/url-groups">
+    Publish messages to multiple endpoints, in parallel, using URL Groups
+  </Card>
+  <Card title="FIFO" icon="right-left" href="/qstash/features/queues#ordered-delivery">
+    Enqueue messages to be delivered one by one in the order they have enqueued.
+  </Card>
+  <Card
+    title="Flow Control"
+    icon="arrows-up-to-line"
+    href="/qstash/features/flowcontrol"
+  >
+    Custom rate per second and parallelism limits to avoid overflowing your endpoint.
+  </Card>
+  <Card title="Callbacks" icon="phone" href="/qstash/features/callbacks">
+    Get a response delivered to your API when a message is delivered
+  </Card>
+  <Card title="Retry Failed Jobs" icon="repeat" href="/qstash/features/dlq">
+    Use a Dead Letter Queue to have full control over failed messages
+  </Card>
+  <Card title="Deduplication" icon="copy" href="/qstash/features/deduplication">
+    Prevent duplicate messages from being delivered
+  </Card>
+  <Card
+    title="LLM Integrations"
+    icon="shapes"
+    href="/qstash/integrations/llm"
+  >
+    Publish, enqueue, or batch chat completion requests using large language models with QStash
+    features.
+  </Card>
+</CardGroup>

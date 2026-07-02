@@ -1,0 +1,43 @@
+---
+title: "OAuth FAQ"
+source: https://docs.x.com/fundamentals/authentication/faq
+path: fundamentals/authentication/faq
+---
+
+Answers to common questions about OAuth 1.0a, OAuth 2.0, access tokens, scopes, and authentication errors when working with the X API.
+
+## General
+
+<AccordionGroup>
+  <Accordion title="What is OAuth?">
+    OAuth is an authentication protocol that allows users to approve an application to act on their behalf without sharing their password. More information can be found at [oauth.net](http://oauth.net/).
+  </Accordion>
+
+  <Accordion title="How do I generate access tokens?">
+    You must have a [X app](/resources/fundamentals/developer-apps) to generate access tokens. Learn more about access tokens [here](/resources/fundamentals/authentication#oauth-1-0a-2). 
+  </Accordion>
+
+  <Accordion title="How do I create a X app?">
+    You must have a [developer account](/resources/fundamentals/developer-portal) to create a [X app](/resources/fundamentals/developer-apps). You can sign up for one [here](https://developer.x.com/en/portal/petition/essential/basic-info).
+  </Accordion>
+
+  <Accordion title="If I already have a X app, how do I view and edit that app?">
+    You can view and edit your app from the [X app dashboard](https://developer.x.com/content/developer-twitter/en/apps) if you are logged into your X account on developer.x.com.
+  </Accordion>
+</AccordionGroup>
+
+## Technical
+
+<AccordionGroup>
+  <Accordion title="How long does an access token last?">
+    Access tokens are not explicitly expired. An access token will be invalidated if a user explicitly revokes an application in their X account settings, or if X suspends an application. If an application is suspended, there will be a note in the [X app](/resources/fundamentals/developer-apps) dashboard stating that it has been suspended.
+  </Accordion>
+
+  <Accordion title="What if an access token becomes invalid?">
+    Assume a user’s access token *may* become invalid at any time. If this happens, prompt the user to re-authorize the application. Ensuring that this situation is handled gracefully is important for a good user experience.
+  </Accordion>
+
+  <Accordion title="The application registration page asks about read/write access. What constitutes a write?">
+    Many users trust an application to read their information, but not necessarily change their user profile information or post new statuses. Updating information via the X API - be it name, location or adding a new status - requires an HTTP POST. Any API method that requires an HTTP POST is considered a write method and requires read & write access.
+  </Accordion>
+</AccordionGroup>

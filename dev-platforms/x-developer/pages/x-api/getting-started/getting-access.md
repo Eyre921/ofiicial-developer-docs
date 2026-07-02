@@ -1,0 +1,137 @@
+---
+title: "Getting Access"
+source: https://docs.x.com/x-api/getting-started/getting-access
+path: x-api/getting-started/getting-access
+---
+
+Sign up for a developer account, create an app, and save the API keys, bearer token, and OAuth credentials you need to start calling the X API.
+
+Get started with the X API in three steps: sign up, create an app, and save your credentials.
+
+<Button href="https://console.x.com">Sign up now</Button>
+
+***
+
+## Step 1: Create a developer account
+
+<Steps>
+  <Step title="Go to the Developer Console">
+    Visit [console.x.com](https://console.x.com) and sign in with your X account.
+  </Step>
+
+  <Step title="Accept the Developer Agreement">
+    Review and accept the Developer Agreement and Policy.
+  </Step>
+
+  <Step title="Complete your profile">
+    Provide basic information about how you'll use the API.
+  </Step>
+</Steps>
+
+***
+
+## Step 2: Create an app
+
+After signing up, create an app to get your API credentials:
+
+<Steps>
+  <Step title="Click 'New App'">
+    From the Developer Console dashboard, create a new app.
+  </Step>
+
+  <Step title="Enter app details">
+    Provide a name, description, and use case for your app.
+  </Step>
+
+  <Step title="Generate credentials">
+    The console will generate your API keys and tokens.
+  </Step>
+</Steps>
+
+***
+
+## Step 3: Save your credentials
+
+You'll receive several credentials depending on your authentication needs:
+
+| Credential                | Purpose                                                                  |
+| :------------------------ | :----------------------------------------------------------------------- |
+| **API Key & Secret**      | Identify your app. Used to generate tokens and sign OAuth 1.0a requests. |
+| **Bearer Token**          | App-only authentication for reading public data.                         |
+| **Access Token & Secret** | Make requests on behalf of your own account (OAuth 1.0a).                |
+| **Client ID & Secret**    | OAuth 2.0 authentication for user-context requests.                      |
+
+<Warning>
+  **Save immediately.** Credentials are only displayed once. Store them in a password manager or secure vault. If you lose them, you'll need to regenerate (which invalidates the old ones).
+</Warning>
+
+***
+
+## Which credentials do you need?
+
+<Tabs>
+  <Tab title="Reading public data">
+    Use the **Bearer Token** for simple, read-only access to public data.
+
+    ```bash theme={null}
+    curl "https://api.x.com/2/users/by/username/xdevelopers" \
+      -H "Authorization: Bearer $BEARER_TOKEN"
+    ```
+
+    Best for: Searching posts, looking up users, reading trends.
+  </Tab>
+
+  <Tab title="Acting as a user">
+    Use **OAuth 2.0** (recommended) or **OAuth 1.0a** to act on behalf of users.
+
+    OAuth 2.0 offers fine-grained scopes—request only the permissions you need.
+
+    Best for: Posting, liking, following, accessing DMs.
+
+    [OAuth 2.0 guide →](/resources/fundamentals/authentication/oauth-2-0/overview)
+  </Tab>
+
+  <Tab title="Acting as yourself">
+    Use your **Access Token & Secret** to make requests as your own account.
+
+    These tokens represent the account that owns the app.
+
+    Best for: Testing, personal bots, your own automation.
+  </Tab>
+</Tabs>
+
+***
+
+## Credential security best practices
+
+<CardGroup>
+  <Card title="Use environment variables" icon="terminal">
+    Never hardcode credentials in your source code.
+  </Card>
+
+  <Card title="Don't commit to git" icon="code-branch">
+    Add credential files to `.gitignore`.
+  </Card>
+
+  <Card title="Rotate regularly" icon="arrows-rotate">
+    Regenerate credentials periodically as a security measure.
+  </Card>
+
+  <Card title="Use minimal scopes" icon="shield-check">
+    Only request the OAuth permissions your app needs.
+  </Card>
+</CardGroup>
+
+***
+
+## Next steps
+
+<CardGroup>
+  <Card title="Make your first request" icon="rocket" href="/x-api/getting-started/make-your-first-request">
+    Call the API with your new credentials.
+  </Card>
+
+  <Card title="Learn about authentication" icon="key" href="/resources/fundamentals/authentication/overview">
+    Understand OAuth 1.0a and OAuth 2.0.
+  </Card>
+</CardGroup>

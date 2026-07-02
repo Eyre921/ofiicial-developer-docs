@@ -1,0 +1,162 @@
+---
+title: "Getting started with Postman"
+source: https://docs.x.com/tutorials/postman-getting-started
+path: tutorials/postman-getting-started
+---
+
+Get started with Postman for the X API, including installing Postman, importing the X API collection, configuring OAuth, and sending your first request.
+
+## Introduction
+
+Postman is a desktop and web application that lets you make requests to an API from a graphical user interface. We recommend using Postman with the X API, X Ads API, and Labs endpoints when you explore API functionality or troubleshoot issues with your application.
+
+We currently have two Postman collections available:
+
+<CardGroup>
+  <Card title="X API v2 Collection" icon="code" href="https://www.postman.com/xapidevelopers/x-api-public-workspace/collection/34902927-2efc5689-99c6-4ab6-8091-996f35c2fd80" />
+
+  <Card title="X Ads API Collection" icon="code" href="https://app.getpostman.com/run-collection/1d12b9fc623b8e149f87" />
+</CardGroup>
+
+### Prerequisites
+
+Before you start with X's Postman collections, make sure you have the right access and credentials for the X developer platform tool you plan to use. See the [Getting started](/overview) page for more on access.
+
+You'll need the following before you continue:
+
+* A [developer account](https://developer.x.com/en/portal/petition/essential/basic-info).
+* A [developer App](/resources/fundamentals/developer-apps).
+* A set of [authentication](/resources/fundamentals/authentication) keys and tokens.
+* An environment configured to make requests to the API you plan to use.
+
+## Getting started with X's Postman collections
+
+### Step one: Add one of the X Postman collections to your account
+
+You could build out specific endpoints in Postman yourself, but we've done the heavy lifting for you. Select one of the links in the [Postman collections](#introduction) section above and a ready-to-use collection with all of the endpoints for the selected API is added to your Postman app. These collections are also available in the [Postman API network](https://explore.postman.com/).
+
+Each endpoint comes preconfigured with available parameters, example responses, and authentication type. You only need to add your credentials and parameter values to start exploring.
+
+In this example, we'll work with the X [API v2 collection](https://www.postman.com/xapidevelopers/x-api-public-workspace/collection/34902927-2efc5689-99c6-4ab6-8091-996f35c2fd80).
+
+### Step two: Add your keys and tokens as environmental variables
+
+When you add the collection to your Postman instance, it automatically creates an environment called "X API v2". You need to add your keys and tokens to this environment. In this step, we'll walk you through adding the keys and tokens from your developer App into the "X API v2" environment.
+
+To add your keys and tokens, select the "manage environments" button in the top right corner of Postman.
+
+<Frame>
+  <img alt="This image shows the &#x22;manage environments&#x22; button highlighted in the Postman console." />
+</Frame>
+
+From the list of environments, select "X API v2".
+
+Next, add a variable for each of the keys and tokens you generated in the Apps dashboard. Here is an example of what your table should look like:
+
+| VARIABLE         | INITIAL VALUE                                                     | CURRENT VALUE                                                     |
+| :--------------- | :---------------------------------------------------------------- | :---------------------------------------------------------------- |
+| consumer\_key    | `QAktM6W6DF6F7XXXXXX`                                             | `QAktM6W6DF6F7XXXXXX`                                             |
+| consumer\_secret | `AJX560A2Omgwyjr6Mml2esedujnZLHXXXXXX`                            | `AJX560A2Omgwyjr6Mml2esedujnZLHXXXXXX`                            |
+| access\_token    | `1995XXXXX-0NGqVhk3s96IX6SgT3H2bbjOPjcyQXXXXXXX`                  | `1995XXXXX-0NGqVhk3s96IX6SgT3H2bbjOPjcyQXXXXXXX`                  |
+| token\_secret    | `rHVuh7dgDuJCOGeoe4tndtjKwWiDjBZHLaZXXXXXX`                       | `rHVuh7dgDuJCOGeoe4tndtjKwWiDjBZHLaZXXXXXX`                       |
+| bearer\_token    | `AAAAAAAAAAAAAAAAAAAAAL9v6AAAAAAA99t03huuqRYg0mpYAAFRbPR3XXXXXXX` | `AAAAAAAAAAAAAAAAAAAAAL9v6AAAAAAA99t03huuqRYg0mpYAAFRbPR3XXXXXXX` |
+
+The keys and tokens in the table above are not real and will not work in a request.
+
+Once you've added your credentials as variables and made sure that the X API v2 environment is selected, you're ready to make requests to the X API v2 collection. Each endpoint's authorization tab inherits the variables from this environment automatically.
+
+To use Postman with user access tokens, skip ahead to [Generating a user access token with Postman](#generating-a-user-access-token-with-postman).
+
+### Step three: Select an endpoint
+
+Next, choose an endpoint from the collection and build your request. You can select an endpoint from the right-hand side navigation. Here is what this looks like:
+
+<Frame>
+  <img alt="This image shows the &#x22;Single Posts&#x22; request selected under the &#x22;Post Lookup&#x22; dropdown in the &#x22;X API v2&#x22; section." />
+</Frame>
+
+For this example, we'll use the X API v2 > Post Lookup > Single Post endpoint.
+
+#### Step four: Add values to the Params tab
+
+Next, navigate to the Params tab. You should see a set of inactive params with descriptions that explain what each parameter does and a list of the values you can pass with your request.
+
+In this example, we'll activate the `expansions` and `tweet.fields` query parameters and add the following values:
+
+|                |                          |
+| :------------- | :----------------------- |
+| **Key**        | **Value**                |
+| `tweet.fields` | `created_at,attachments` |
+| expansions     | author\_id               |
+
+In addition to the query parameters, you need to add the required path variable, `id`. Since this endpoint returns Posts, add a valid Post ID as the value.
+
+You can find the Post ID by navigating to x.com, selecting a Post, and looking at the URL. For example, the following URL's Post ID is `1228393702244134912`:
+
+`https://x.com/XDevelopers/status/1228393702244134912`
+
+On the Params tab, scroll down past the query parameters to display the "Path Variables" section. Add the Post ID you want to use as the value for the `id` key.
+
+If you entered everything correctly, the Params tab should look like the following:
+
+<Frame>
+  <img alt="This image shows the &#x22;Params&#x22; table filled out based on the instructions included earlier in the page." />
+</Frame>
+
+#### Step five: Send your request and review your response
+
+Now that your request is set up, select the "Send" button.
+
+If everything was set up properly, you should receive the following payload:
+
+```json theme={null}
+{
+    "data": {
+        "author_id": "2244994945",
+        "text": "What did the developer write in their Valentine's card?\n  \nwhile(true) {\n    I = Love(You);  \n}",
+        "id": "1228393702244134912",
+        "created_at": "2020-02-14T19:00:55.000Z"
+    },
+    "includes": {
+        "users": [
+            {
+                "username": "XDevelopers",
+                "name": "Developers",
+                "id": "2244994945"
+            }
+        ]
+    }
+}
+```
+
+### Generating a user access token with Postman
+
+#### Using OAuth 1.0a to generate a user access token
+
+Review the three-step process used in the [OAuth 1.0a flow test collection](https://www.postman.com/xapidevelopers/x-api-public-workspace/collection/34902927-2efc5689-99c6-4ab6-8091-996f35c2fd80).
+
+#### Using OAuth 2.0 to generate a user access token
+
+You can generate OAuth 2.0 access tokens to use with the X [API v2 Postman collection](https://www.postman.com/xapidevelopers/x-api-public-workspace/collection/34902927-2efc5689-99c6-4ab6-8091-996f35c2fd80).
+
+Select the collection in your workspace, go to the "Auth" tab, and set the type to "OAuth 2.0". Under "Configure New Token", find "Configuration Options" and update the "Grant Type" to "Authorization Code (With PKCE)".
+
+Update your Callback URL to match the callback URL associated with your application. Also update the following parameters:
+
+* Auth URL — `https://x.com/i/oauth2/authorize`
+* Access Token URL — `https://api.x.com/2/oauth2/token`
+* Client ID — Your OAuth 2.0 client ID from the Dev Portal
+* Client Secret — If you are using a confidential client
+* Scope — Scopes to match the endpoints you want to connect to. For example: `tweet.read users.read`
+* Your callback URL (also known as the redirect URL). This must match the value in your App's authentication settings.
+* State — state
+
+When you're ready, select "Get New Access Token" to generate an access token. If you see a dialog box that says something went wrong, you may need to select the back button to log in. You'll need to authorize your app to access your account by selecting "Authorize app" in the dialog box.
+
+After you authorize your app, you're directed back to Postman, where you can see your token and select the "Use Token" button to start making requests on behalf of an authorized user.
+
+You're now ready to use the Postman collection.
+
+## What's next
+
+Select the "Code" button in Postman to turn the request into the language of your choice, such as Python, Node, or Ruby, to help you get started. Postman has [great documentation](https://learning.getpostman.com/) that may be helpful. We also have [sample code on GitHub](https://github.com/xdevplatform) to help you integrate with the endpoints more quickly.

@@ -1,0 +1,131 @@
+---
+title: "Which model should I use?"
+source: https://docs.fireworks.ai/guides/recommended-models
+path: guides/recommended-models
+---
+
+Find the best open models for your use case or migrate from closed source models like Claude, GPT, and Gemini
+
+Looking for the right open source model? Whether you're exploring by use case or migrating from closed source models like Claude, GPT, or Gemini, this guide provides recommendations based on **Fireworks internal testing**, **customer deployments**, and **external benchmarks**. We update it regularly as new models emerge.
+
+<Tip>
+  Medium and small models typically offer faster responses and lower cost, with some tradeoff in capability for more complex tasks.
+</Tip>
+
+## Choose by Use Case
+
+<table>
+  <colgroup>
+    <col />
+
+    <col />
+
+    <col />
+  </colgroup>
+
+  <thead>
+    <tr>
+      <th>Category</th>
+      <th>Use Case</th>
+      <th>Recommended Models</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr>
+      <td><strong>Code & Development</strong></td>
+      <td><strong>Code generation, reasoning & agentic tasks</strong></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p1">GLM 5.1</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a></td>
+    </tr>
+
+    <tr>
+      <td><strong>AI Applications</strong></td>
+      <td><strong>AI agents with tool use</strong></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p1">GLM 5.1</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p7">MiniMax M2.7</a></td>
+    </tr>
+
+    <tr>
+      <td />
+
+      <td><strong>General reasoning & planning</strong></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p1">GLM 5.1</a>, <a href="https://app.fireworks.ai/models/fireworks/gpt-oss-120b">GPT-OSS 120B</a> <em>(medium)</em></td>
+    </tr>
+
+    <tr>
+      <td />
+
+      <td><strong>Long context & summarization</strong></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-pro">DeepSeek V4 Pro</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/qwen3p6-plus">Qwen3.6 Plus</a>, <a href="https://app.fireworks.ai/models/fireworks/glm-5p1">GLM 5.1</a>, <a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-flash">DeepSeek V4 Flash</a></td>
+    </tr>
+
+    <tr>
+      <td />
+
+      <td><strong>Fast extraction, classification & search</strong></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/deepseek-v4-flash">DeepSeek V4 Flash</a>, <a href="https://app.fireworks.ai/models/fireworks/minimax-m2p5">MiniMax M2.5</a>, <a href="https://app.fireworks.ai/models/fireworks/kimi-k2p5">Kimi K2.5</a>, <a href="https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4">Step 3.7 Flash</a>, <a href="https://app.fireworks.ai/models/fireworks/gpt-oss-20b">GPT-OSS 20B</a> <em>(small)</em></td>
+    </tr>
+
+    <tr>
+      <td><strong>Vision & Multimodal</strong></td>
+      <td><strong>Vision & document understanding</strong></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/kimi-k2p6">Kimi K2.6</a>, <a href="https://app.fireworks.ai/models/fireworks/qwen3p6-plus">Qwen3.6 Plus</a>, <a href="https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4">Step 3.7 Flash</a>, <a href="https://app.fireworks.ai/models/fireworks/gemma-4-31b-it">Gemma 4 31B</a> <em>(small)</em></td>
+    </tr>
+
+    <tr>
+      <td />
+
+      <td><strong>Audio & video understanding</strong></td>
+      <td><a href="https://fireworks.ai/models/fireworks/qwen3-omni-30b-a3b-instruct">Qwen3 Omni 30B A3B Instruct</a>, <a href="https://fireworks.ai/models/fireworks/nvidia-nemotron-3-nano-omni-30b-a3b">NVIDIA Nemotron 3 Nano Omni 30B A3B</a></td>
+    </tr>
+
+    <tr>
+      <td><strong>Search & Retrieval</strong></td>
+      <td><strong>Embeddings & reranking</strong></td>
+      <td><a href="https://app.fireworks.ai/models/fireworks/qwen3-embedding-8b">Qwen3 Embedding 8B</a>, <a href="https://app.fireworks.ai/models/fireworks/qwen3-reranker-8b">Qwen3 Reranker 8B</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<Tip>
+  For audio/video workloads, start with `Qwen3 Omni 30B A3B Instruct`. `NVIDIA Nemotron 3 Nano Omni 30B A3B` is a newer omni option, but its reasoning mode is currently limited to text+image inputs; use `enable_thinking: false` for video/audio requests.
+</Tip>
+
+***
+
+## Migrating from Closed Models?
+
+If you're currently using Claude, OpenAI / GPT, or Gemini models, here's a guide to the best open source alternatives on Fireworks by use case and latency requirements.
+
+### Claude Alternatives
+
+| **Closed Source**                | **Use Case**                                             | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                            |
+| -------------------------------- | -------------------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Opus 4.8 / Sonnet 4.6** | • Agentic use cases<br />• Coding<br />• Research agents | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)<br />• [Qwen3.6 Plus](https://app.fireworks.ai/models/fireworks/qwen3p6-plus) |
+| **Claude Haiku 4.5**             | • Agentic use cases<br />• Coding<br />• Research agents | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)<br />• [MiniMax M2.5](https://app.fireworks.ai/models/fireworks/minimax-m2p5)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em>                                  |
+
+### OpenAI GPT Alternatives
+
+| **Closed Source**         | **Use Case**                                          | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                           |
+| ------------------------- | ----------------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **GPT-5.5 / GPT-5.5 Pro** | • Agentic use cases<br />• Research agents            | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7)                                              |
+| **GPT-5.4 mini & nano**   | • Chatbots<br />• Intent classification<br />• Search | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)<br />• [MiniMax M2.5](https://app.fireworks.ai/models/fireworks/minimax-m2p5)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em> |
+
+### Google Gemini Alternatives
+
+| **Closed Source**                     | **Use Case**                                                 | **Latency Budget** | **Open Source Alternative**                                                                                                                                                                                                                                                                                                                                                            |
+| ------------------------------------- | ------------------------------------------------------------ | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gemini 3.1 Pro**                    | • Agentic use cases<br />• Research agents<br />• Multimodal | High               | • [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)<br />• [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)<br />• [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)<br />• [Qwen3.6 Plus](https://app.fireworks.ai/models/fireworks/qwen3p6-plus)<br />• [MiniMax M2.7](https://app.fireworks.ai/models/fireworks/minimax-m2p7) |
+| **Gemini 3.5 Flash & 3.1 Flash-Lite** | • Chatbots<br />• Intent classification<br />• Search        | Low                | • [Step 3.7 Flash](https://app.fireworks.ai/models/fireworks/step-3p7-flash-nvfp4)<br />• [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)<br />• [MiniMax M2.5](https://app.fireworks.ai/models/fireworks/minimax-m2p5)<br />• [GPT-OSS 20B](https://app.fireworks.ai/models/fireworks/gpt-oss-20b) <em>(small)</em>                                  |
+
+**Understanding Latency Budget:**
+
+* **High latency budget**: Quality is priority. Best for complex reasoning, multi-step workflows, and research tasks where accuracy matters more than speed.
+* **Low latency budget**: Speed is priority. Best for user-facing applications like chatbots, real-time search, and high-throughput classification.
+
+***
+
+<Tip>
+  You can explore and filter every available model in the [Fireworks Model Library](https://app.fireworks.ai/models).
+</Tip>
+
+*Last updated: June 2026*

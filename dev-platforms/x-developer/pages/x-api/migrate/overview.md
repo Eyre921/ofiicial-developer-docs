@@ -1,0 +1,78 @@
+---
+title: "Overview"
+source: https://docs.x.com/x-api/migrate/overview
+path: x-api/migrate/overview
+---
+
+The latest version of the X API v2 is a big deal. As such, we’ve broken this migration section into a few partitions: The X API v2 is now the primary X API.
+
+The latest version of the X API v2 is a big deal. As such, we’ve broken this migration section into a few partitions:
+
+| What’s new with X API v2    | Learn about the new endpoints and functionality that we’ve released to X API v2.                                  |
+| :-------------------------- | :---------------------------------------------------------------------------------------------------------------- |
+| Ready to migrate?           | Get started with your migration with a set of guides and instructions.                                            |
+| Data format migration guide | Learn how to rework your data parsers that previously worked with the standard v1.1, and enterprise data formats. |
+| X API endpoint map          | See how standard v1.1, and enterprise endpoints map to the new X API v2 endpoints.                                |
+
+***
+
+## What is the X API v2?
+
+The X API v2 is now the primary X API, and is where product investment and innovation are focused. We’ve partnered with developers to build the next generation of the X API to better serve our diverse community of developers. Based on developer feedback, we’ve re-built the API to better serve a broader collection of needs, introduced new features and endpoints, and improved upon the developer experience.
+
+The X API v2 is now the primary X API, and is where product investment and innovation are focused. Over the past few years, we partnered with developers and re-built the API to better serve a broader collection of needs, introduce new features and endpoints, and improve upon the developer experience. We are committed to continuing to build an open developer platform, and are excited to see what you build with the X API v2.
+
+## Why migrate?
+
+The X API v2 is built with a modern and more sustainable foundation and includes both improved replacement endpoints for the standard v1.1, and enterprise products, but also net-new functionality. We strongly encourage customers of legacy APIs (v1.1, and enterprise) to begin to migrate to v2 as we do intend to deprecate them eventually. Use the X API to listen to and analyze the public conversation, engage with people on X, and innovate.
+
+In this section, we will discuss the endpoints and functionality.
+
+## V2 endpoints
+
+You can see a full list of v2 endpoints and their pre-v2 equivalent via the following guide:
+
+<Button href="/x-api/migrate/x-api-endpoint-map">
+  X API Endpoint Map
+</Button>
+
+While most of the endpoints in X API v2 are replacements, we have introduced several new endpoints. Here are several examples of new endpoints that we’ve released to v2:
+
+* [Spaces endpoints](/x-api/spaces/introduction) to help people get more out of X Spaces, and to allow developers to help shape the future of audio conversations.
+* [Hide replies](/x-api/posts/hide-replies/introduction), which allows you to build tools that help limit the impact of abusive, distracting, or misleading replies at scale.
+* New Lists endpoints that allow you to [pin and unpin Lists](/x-api/lists/pinned-lists/introduction), or look up someone’s pinned Lists.
+* New [batch compliance endpoints](/x-api/compliance/batch-compliance/introduction) that allow you to ensure your stored user and Tweet data is in compliance.
+
+## New functionality
+
+X API v2 also includes new features that will help you find more value with the X API. A lot of what is new has been driven by your feedback and includes certain features that were reserved for enterprise customers previously.
+
+Some of the improvements to the API include:
+
+* [A consistent design across endpoints](/x-api/fundamentals/consistency)
+* [The ability to specify which fields and objects return in the response payload](/x-api/fundamentals/data-dictionary/reference#how-to-use-fields-and-expansions)
+* [New and more detailed data objects](/x-api/fundamentals/data-dictionary)
+* [Receive and filter data with new contextual information powered by Tweet annotations](/x-api/fundamentals/post-annotations)
+* [Access to new metrics](/x-api/fundamentals/metrics)
+* [Easily identify and filter for conversations that belong to a reply thread](/x-api/fundamentals/conversation-id)
+* [Advanced functionality and increased access to data for academic researchers](https://developer.x.com/content/developer-twitter/en/products/twitter-api/academic-research)
+* [Recovery and redundancy functionality for streaming endpoints](/x-api/fundamentals/recovery-and-redundancy)
+* [Easily return counts of Tweets that match a query](/x-api/posts/counts/introduction)
+* [Support for Edit Tweets](/x-api/fundamentals/edit-posts)
+* High confidence spam filtering
+* Shortened URLs are fully unwound for more effective filtering and analysis
+* Simplified JSON response objects by removing deprecated fields and modernizing labels
+* Return of 100% of matching public and available Tweets in search queries
+* Streaming "rules" so you can make changes without dropping connections
+* More expressive query language for search Tweets, Tweet counts, and filtered stream
+* OpenAPI spec to build new libraries & more transparently track changes
+
+### Discover new and updated response objects
+
+The following six data objects are available with the v2 endpoints:
+
+| Object                                                        | Description                                                                                                                                                                                                      |
+| :------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Tweet](/x-api/fundamentals/data-dictionary/reference#tweet)  | The Tweet object has a long list of root-level fields, such as `id`, `text`, and `created_at`. Tweet objects are also the parent object to several child objects including `user`, `media`, `poll`, and `place`. |
+| [User](/x-api/fundamentals/data-dictionary/reference#user)    | The user object contains X user account metadata describing the referenced user.                                                                                                                                 |
+| [Spaces](/x-api/fundamentals/data-dictionary/reference#space) | The Space object consists of fields such                                                                                                                                                                         |

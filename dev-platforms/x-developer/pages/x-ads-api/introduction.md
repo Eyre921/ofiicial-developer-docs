@@ -1,0 +1,41 @@
+---
+title: "X Ads API for campaign, audience, and creative management"
+source: https://docs.x.com/x-ads-api/introduction
+path: x-ads-api/introduction
+---
+
+Use the X Ads API to programmatically manage ad campaigns, audiences, creatives, and reporting on the X advertising platform with OAuth-authenticated endpoints.
+
+## Connect to the X Ads platform
+
+The X Ads API connects developers to X's advertising platform to build solutions to meet the needs of X's advertisers around the world.
+
+<Button href="/x-ads-api/getting-started">
+  Get started
+</Button>
+
+***
+
+<CardGroup>
+  <Card title="Campaign management" icon="list-check" href="/x-ads-api/campaign-management">Programmatically create, schedule, and manage ad campaigns to engage people on X.</Card>
+  <Card title="Custom audiences" href="/x-ads-api/audiences" icon="user-group">Create and manage Tailored Audiences using X, web or mobile data you provide.</Card>
+  <Card title="Creatives" href="/x-ads-api/creatives" icon="paintbrush">Draft and publish posts, extend the functionality of posts with Cards and manage and upload images and videos.</Card>
+  <Card title="Advertising analytics" href="/x-ads-api/analytics" icon="chart-pie">Use async and synchronous API endpoints to retrieve granular insights of ad campaigns by a full range of metrics.</Card>
+  <Card title="Tools and libraries" href="/x-ads-api/tools-and-libraries" icon="screwdriver-wrench">Check out our curated selection of X-built and community-supported client libraries.</Card>
+  <Card title="Postman collection" href="https://documenter.getpostman.com/view/7379786/SzRw1WTU" icon="code">Explore our v2 endpoints with a curated Postman collection and visual client.</Card>
+  <Card title="Command line tool" href="https://github.com/xdevplatform/xurl" icon="terminal">Work with our endpoints from your terminal using xurl.</Card>
+</CardGroup>
+
+## Get Ads API access
+
+To request Ads API access, submit the [Ads API Access Form](/forms/ads-api-access). Allow up to 3 business days for review.
+
+## Need help?
+
+Visit our support section for troubleshooting tips, contact details, a live API status monitor, and other resources.
+
+[Visit the Ads API support section](https://developer.x.com/en/support/twitter-ads-api.html)
+
+***
+
+Help us build the next generation of the X API: [Give us your product feedback >](https://twitterdevfeedback.uservoice.com/forums/930250-twitter-api)

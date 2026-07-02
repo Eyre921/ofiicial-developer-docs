@@ -1,0 +1,61 @@
+---
+title: "Configure Modal Resources"
+source: https://developers.deepgram.com/docs/modal-compute-and-autoscaling.md
+path: docs/modal-compute-and-autoscaling
+---
+
+> For clean Markdown of any page, append .md to the page URL.
+> For a complete documentation index, see https://developers.deepgram.com/llms.txt.
+> For AI client integration (Claude Code, Cursor, etc.), connect to the MCP server at https://developers.deepgram.com/_mcp/server.
+
+# Configure Modal Resources
+
+With Modal, hardware resources and autoscaling configuration are specified alongside your application code. Update the paraameters in this section by editing the values in `app.py` and redeploying.
+
+When you clone the repo, the values are configured for an STT deployment in `us-west`.
+
+```python
+# modal_deepgram/app.py
+
+@app.cls(
+    image=engine_base_image.env({"DEPLOY_LABEL": DEPLOY_LABEL}),
+    volumes={
+        MODELS_PATH: models_vol,
+        CACHE_PATH: cache_vol,
+    },
+    gpu="L4",
+    secrets=[modal.Secret.from_name("deepgram")],
+    timeout=30 * MINUTES,
+    cpu=4,
+    memory=32 * 1024,  # MB
+    min_containers=1,
+    region="us-west",
+)
+@modal.concurrent(target_inputs=64)
+@modal.experimental.http_server(port=API_PORT, proxy_regions=["us-west"])
+class DeepgramServer(DeepgramServerBase):
+    ...
+```
+
+## Configure hardware
+
+For Deepgram's hardware minimums, see [Deployment Environments → Engine](https://developers.deepgram.com/docs/self-hosted-deployment-environments#engine).
+
+For Modal's GPU options, see [Modal: GPU](https://modal.com/docs/guide/gpu).
+
+## Configure autoscaling
+
+Modal automatically scales the number of Deepgram containers up and down based on per-container concurrency.
+
+See their [Scaling Out guide](https://modal.com/docs/guide/scale) and [Input Conccurrency guide](https://modal.com/docs/guide/concurrent-inputs) for the different parameters and their functionality. Note that not all available parameters are surfaced in `app.py`.
+
+Deepgram recommends keeping at least one container active to ensure that lulls in traffic don't lead to queuing or 503s when scaling back up from zero. In Modal, set `min_containers = 1`.
+
+Web endpoints served with the `http_server` only accept a value for `target_inputs` and not `max_inputs`. This number should be set slightly below the active request limit in your `engine.toml` file (see [Auto-Scaling: Enforcing Limits](https://deepgram-preview-d6057290-1e55-43b9-8ea3-04ee19987964.docs.buildwithfern.com/docs/autoscaling-best-practices#enforcing-limits)).
+
+## Configure regions
+
+To optimize network latency, you will likely want to set the `PROXY_REGION` AND `SERVER_REGION` and route traffic from clients in those regions to that deployment.
+
+* `PROXY_REGION` specifies the location of the Modal proxy that routes requests to containers. It can take one of four values: `us-east`, `us-west`, `eu-west`, `ap-south`.
+* `SERVER_REGION` specifies which region(s) the server containers can reside in. See the Modal [Region Selection doc](https://modal.com/docs/guide/region-selection) for more information.

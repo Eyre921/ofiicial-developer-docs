@@ -1,0 +1,49 @@
+---
+title: "Overview"
+source: https://upstash.com/docs/redis/search/aggregation-operators/bucket-aggregations/overview
+path: docs/redis/search/aggregation-operators/bucket-aggregations/overview
+---
+
+Bucket aggregations group matching documents into buckets.
+
+Use bucket aggregations when you want segmented analytics (for example by category, price tier, or time window).
+
+### Available Operators
+
+| Operator | What it groups by |
+|----------|-------------------|
+| [`$terms`](./terms) | Distinct field values |
+| [`$range`](./range) | Explicit `from` / `to` ranges |
+| [`$histogram`](./histogram) | Fixed numeric intervals |
+| [`$dateHistogram`](./date-histogram) | Fixed date/time intervals |
+| [`$facet`](./facet) | Hierarchical FACET paths |
+
+### Input Format
+
+Every bucket operator takes an object with a `field` property and operator-specific parameters:
+
+**`$terms`** — group by distinct values:
+```json
+{"by_category": {"$terms": {"field": "category", "size": 10}}}
+```
+
+**`$range`** — custom range buckets:
+```json
+{"price_ranges": {"$range": {"field": "price", "ranges": [{"to": 50}, {"from": 50, "to": 100}, {"from": 100}]}}}
+```
+
+**`$histogram`** — fixed numeric intervals:
+```json
+{"price_buckets": {"$histogram": {"field": "price", "interval": 10}}}
+```
+
+**`$dateHistogram`** — fixed time intervals:
+```json
+{"by_month": {"$dateHistogram": {"field": "createdAt", "fixedInterval": "30d"}}}
+```
+
+### Behavior Notes
+
+* Bucket operators can contain nested `$aggs` for per-bucket metrics.
+* `$terms`, `$range`, `$histogram`, and `$dateHistogram` support nested `$aggs`.
+* `$facet` does not support nested `$aggs` and cannot be used as a sub-aggregation.

@@ -1,0 +1,66 @@
+---
+title: "Connect with @upstash/redis"
+source: https://upstash.com/docs/redis/howto/connect-with-upstash-redis
+path: docs/redis/howto/connect-with-upstash-redis
+---
+
+[@upstash/redis](https://github.com/upstash/redis-js)
+is an HTTP/REST based Redis client built on top of
+[Upstash REST API](/docs/redis/features/restapi). For more information,
+refer to the documentation of Upstash redis client ([TypeScript](/docs/redis/sdks/ts/overview) & [Python](/docs/redis/sdks/py/overview)).
+
+It is the only connectionless (HTTP based) Redis client and designed for:
+
+* Serverless functions (AWS Lambda)
+* Cloudflare Workers (see
+  [the example](https://github.com/upstash/redis-js/tree/main/examples/cloudflare-workers-with-typescript))
+* Fastly Compute@Edge (see
+  [the example](https://github.com/upstash/upstash-redis/tree/master/examples/fastly))
+* Next.js (see [the quickstart](/docs/redis/quickstarts/nextjs-app-router)), Jamstack
+* Client side web/mobile applications
+* WebAssembly
+* and other environments where HTTP is preferred over TCP.
+
+See
+[the list of APIs](https://upstash.com/docs/redis/features/restapi#rest-redis-api-compatibility)
+supported.
+
+## Quick Start
+
+### Install
+
+```bash
+npm install @upstash/redis
+```
+
+### Usage
+
+```typescript
+import { Redis } from "@upstash/redis";
+
+const redis = new Redis({
+  url: "UPSTASH_REDIS_REST_URL",
+  token: "UPSTASH_REDIS_REST_TOKEN",
+});
+
+const data = await redis.get("key");
+console.log(data);
+```
+
+<Tip>
+  You can find values to set as `UPSTASH_REDIS_REST_URL` and`UPSTASH_REDIS_REST_TOKEN`
+  on the details tab of your database on [Upstash Console](https://console.upstash.com/redis).
+  See [Connect Client page](/docs/redis/howto/connect-client#database) for more information.
+</Tip>
+
+If you define `UPSTASH_REDIS_REST_URL` and`UPSTASH_REDIS_REST_TOKEN` environment
+variables, you can load them automatically.
+
+```typescript
+import { Redis } from "@upstash/redis";
+
+const redis = Redis.fromEnv();
+
+const data = await redis.get("key");
+console.log(data);
+```

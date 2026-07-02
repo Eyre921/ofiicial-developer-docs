@@ -1,0 +1,33 @@
+---
+title: "Namespace: Trends"
+source: https://docs.x.com/xdks/typescript/reference/modules/Trends
+path: xdks/typescript/reference/modules/trends
+---
+
+Reference for the Trends module in the X API TypeScript SDK. Re-exported clients, types, and utilities provided by this SDK module for the X API v2.
+
+zedResponse]\(/xdks/typescript/reference/modules/Trends#getpersonalizedresponse)
+
+## Type Aliases
+
+### GetByWoeidResponse
+
+Ƭ **GetByWoeidResponse**: [`Get2TrendsByWoeidWoeidResponse`](/xdks/typescript/reference/interfaces/Schemas.Get2TrendsByWoeidWoeidResponse)
+
+Response for getByWoeid
+
+#### Defined in
+
+[trends/models.ts:18](https://github.com/xdevplatform/xdk-typescript/blob/81aacb165e0802e188f608bdf462b60fc4e713a2/src/trends/models.ts#L18)
+
+***
+
+### GetPersonalizedResponse
+
+Ƭ **GetPersonalizedResponse**: [`Get2UsersPersonalizedTrendsResponse`](/xdks/typescript/reference/interfaces/Schemas.Get2UsersPersonalizedTrendsResponse)
+
+Response for getPersonalized
+
+#### Defined in
+
+[trends/models.ts:24](https://github.com/xdevplatform/xdk-typescript/blob/81aacb165e0802e188f608bdf462b60fc4e713a2/src/trends/models.ts#L24)

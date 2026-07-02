@@ -1,0 +1,42 @@
+---
+title: "context.createWebhook"
+source: https://upstash.com/docs/workflow/steps/createWebhook
+path: docs/workflow/steps/createwebhook
+---
+
+`context.createWebhook()` creates a unique webhook that can be called by external services to trigger workflow continuation.
+
+The webhook URL generated can be called multiple times to resume multiple [`context.waitForWebhook`](/docs/workflow/basics/context/waitForWebhook) steps.
+
+## Arguments
+
+<ParamField body="stepName" type="string" required>
+    Name of the step.
+</ParamField>
+
+## Response
+
+<ResponseField name="webhookUrl" type="string">
+    The unique webhook URL that external services should call to resume the workflow.
+
+    Can be called multiple times to resume multiple [`context.waitForWebhook`](/docs/workflow/basics/context/waitForWebhook) steps.
+</ResponseField>
+
+<ResponseField name="eventId" type="string">
+    The internal event identifier associated with this webhook.
+    This is primarily used internally by [`context.waitForWebhook`](/docs/workflow/basics/context/waitForWebhook).
+</ResponseField>
+
+## Usage
+
+```typescript highlight={4}
+import { serve } from "@upstash/workflow/nextjs";
+
+export const { POST } = serve(async (context) => {
+  const webhook = await context.createWebhook("create webhook");
+
+  console.log(webhook.webhookUrl); // Use this URL with external services
+});
+```
+
+For more complete examples and use cases, see [the page on webhooks](/docs/workflow/features/webhooks).

@@ -1,0 +1,15 @@
+---
+title: "EvaluateNoteResponse"
+source: https://docs.x.com/xdks/typescript/reference/interfaces/Schemas.EvaluateNoteResponse
+path: xdks/typescript/reference/interfaces/schemas.evaluatenoteresponse
+---
+
+Reference for the Schemas.EvaluateNoteResponse TypeScript interface in the X API SDK. Field definitions, types, and properties for X API request or response.
+
+[Schemas](/xdks/typescript/reference/modules/Schemas).EvaluateNoteResponse
+
+## Properties
+
+<ResponseField name="data" type="Record<string, any>" />
+
+<ResponseField name="errors" type="Problem[]" />

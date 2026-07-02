@@ -1,0 +1,63 @@
+---
+title: "TypeScript XDK"
+source: https://docs.x.com/xdks/typescript/overview
+path: xdks/typescript/overview
+---
+
+Overview of the TypeScript XDK for the X API v2, with smart pagination, OAuth 1.0a, OAuth 2.0, bearer token auth, real-time streaming, and full type safety.
+
+A comprehensive TypeScript SDK for the X API (formerly Twitter API) with advanced features including smart pagination, multiple authentication methods, real-time streaming, and full type safety.
+
+## Key Features
+
+* **🔐 Authentication**: User Context (OAuth1.0a, OAuth2.0), and App-Only (Bearer token) authentication
+* **🔄 Pagination**: Automatic pagination with async iteration support
+* **📡 Streaming**: Event-driven streaming with automatic reconnection
+* **📚 Type Safety**: Complete TypeScript definitions for all endpoints and parameters
+* **🎯 Full X API Support**: Users, Posts, Lists, Bookmarks, Communities, and more
+
+## Quick Start
+
+<CodeGroup>
+  ```typescript quickstart.ts theme={null} theme={null}
+  import { 
+      Client, 
+      type ClientConfig,
+      type Users
+  } from '@xdevplatform/xdk';
+
+  const config: ClientConfig = { bearerToken: 'your-bearer-token' };
+
+  const client: Client = new Client(config);
+
+  async function main(): Promise<void> {
+    const userResponse: Users.GetByUsernameResponse = await client.users.getByUsername('XDevelopers');
+    const username: string = userResponse.data?.username!;
+    console.log(username);
+  }
+
+  main();
+  ```
+
+  ```javascript quickstart.js theme={null} theme={null}
+  import { Client } from '@xdevplatform/xdk';
+
+  const client = new Client({ bearerToken: 'your-bearer-token' });
+
+  const userResponse = await client.users.getByUsername('XDevelopers');
+  const username = userResponse.data.username;
+  console.log(username);
+  ```
+</CodeGroup>
+
+<Info>
+  For detailed code examples using the Javascript/TypeScript XDK, check out our [code samples GitHub repo](https://github.com/xdevplatform/samples/tree/main/javascript).
+</Info>
+
+## What's Next?
+
+* [Installation Guide](/xdks/typescript/install) - Set up the SDK in your project
+* [Authentication](/xdks/typescript/authentication) - Learn about different auth methods
+* [Pagination](/xdks/typescript/pagination) - Learn about data pagination
+* [Streaming](/xdks/typescript/streaming) - Learn about real-time data streaming
+* [API Reference](/xdks/typescript/reference/classes/Client) - Read the complete API documentation

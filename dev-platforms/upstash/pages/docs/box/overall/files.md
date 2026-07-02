@@ -1,0 +1,297 @@
+---
+title: "Filesystem"
+source: https://upstash.com/docs/box/overall/files
+path: docs/box/overall/files
+---
+
+Every box has its own isolated filesystem. Upload, write, read, list, and download files inside the box.
+
+***
+
+## API
+
+### Upload files
+
+Push local files into the box. Each entry maps a local path to a destination inside the box workspace.
+
+<CodeGroup>
+```typescript box.ts
+await box.files.upload([
+  { path: "./data/report.csv", destination: "/work/report.csv" },
+  { path: "./config.json", destination: "/work/config.json" },
+])
+```
+
+```python box.py
+box.files.upload([
+    {"path": "./data/report.csv", "destination": "/work/report.csv"},
+    {"path": "./config.json", "destination": "/work/config.json"},
+])
+```
+</CodeGroup>
+
+You can upload multiple files in a single call. All uploads run in parallel.
+
+***
+
+### Write files
+
+Create or overwrite a file directly from a string. Useful when you want to inject configuration, scripts, or generated content without a local file.
+
+<CodeGroup>
+```typescript box.ts
+await box.files.write({
+  path: "/work/script.js",
+  content: `console.log("hello from box")`,
+})
+```
+
+```python box.py
+box.files.write(
+    path="/work/script.js",
+    content='console.log("hello from box")',
+)
+```
+</CodeGroup>
+
+***
+
+### Read files
+
+Read the contents of a file as a string.
+
+<CodeGroup>
+```typescript box.ts
+const content = await box.files.read("/work/output.json")
+console.log(JSON.parse(content))
+```
+
+```python box.py
+import json
+
+content = box.files.read("/work/output.json")
+print(json.loads(content))
+```
+</CodeGroup>
+
+***
+
+### List files
+
+List the entries in a directory. Each entry includes the path, size, type, and last modified timestamp.
+
+<CodeGroup>
+```typescript box.ts
+const files = await box.files.list("/work")
+
+console.log(files)
+// [
+//   { path: "/work/report.csv", size: 1024, type: "file", modifiedAt: "2026-02-23T..." },
+//   { path: "/work/output", size: 4096, type: "directory", modifiedAt: "2026-02-23T..." },
+// ]
+```
+
+```python box.py
+files = box.files.list("/work")
+
+print(files)
+# [
+#   FileEntry(name="report.csv", path="/work/report.csv", size=1024, is_dir=False, mod_time="2026-02-23T..."),
+#   FileEntry(name="output", path="/work/output", size=4096, is_dir=True, mod_time="2026-02-23T..."),
+# ]
+```
+</CodeGroup>
+
+***
+
+### Download files
+
+Pull files from the box back to your local machine. Call with no arguments to download the entire workspace, or pass a `folder` to download a specific file or directory.
+
+<CodeGroup>
+```typescript box.ts
+await box.files.download()
+await box.files.download({ folder: "/work/output" })
+```
+
+```python box.py
+box.files.download()
+box.files.download(folder="/work/output")
+```
+</CodeGroup>
+
+***
+
+## Examples
+
+### Feed data to an agent
+
+Upload input files, run the agent, then read back the structured result.
+
+<CodeGroup>
+```typescript box.ts
+import { Agent, Box } from "@upstash/box"
+import { z } from "zod"
+
+const box = await Box.create({
+  runtime: "node",
+  agent: { harness: Agent.ClaudeCode, model: "anthropic/claude-opus-4-6", apiKey: process.env.ANTHROPIC_API_KEY },
+})
+
+await box.files.upload([
+  { path: "./resumes/candidate.pdf", destination: "/work/resume.pdf" },
+])
+
+const run = await box.agent.run({
+  prompt: "Read /work/resume.pdf. Extract the candidate's name, email, and skills.",
+  responseSchema: z.object({
+    name: z.string(),
+    email: z.string(),
+    skills: z.array(z.string()),
+  }),
+})
+
+console.log(run.result)
+// { name: "Jane Doe", email: "jane@example.com", skills: ["TypeScript", "PostgreSQL"] }
+
+await box.delete()
+```
+
+```python box.py
+import os
+from pydantic import BaseModel
+from upstash_box import Box, Agent
+
+class Candidate(BaseModel):
+    name: str
+    email: str
+    skills: list[str]
+
+box = Box.create(
+    runtime="node",
+    agent={"harness": Agent.CLAUDE_CODE, "model": "anthropic/claude-opus-4-6", "api_key": os.environ["ANTHROPIC_API_KEY"]},
+)
+
+box.files.upload([
+    {"path": "./resumes/candidate.pdf", "destination": "/work/resume.pdf"},
+])
+
+run = box.agent.run(
+    prompt="Read /work/resume.pdf. Extract the candidate's name, email, and skills.",
+    response_schema=Candidate,
+)
+
+print(run.result)
+# Candidate(name="Jane Doe", email="jane@example.com", skills=["TypeScript", "PostgreSQL"])
+
+box.delete()
+```
+</CodeGroup>
+
+### Inject config before a run
+
+Write environment-specific configuration into the box, then let the agent use it.
+
+<CodeGroup>
+```typescript box.ts
+import { Agent, Box } from "@upstash/box"
+
+const box = await Box.create({
+  runtime: "node",
+  agent: { harness: Agent.ClaudeCode, model: "anthropic/claude-opus-4-6", apiKey: process.env.ANTHROPIC_API_KEY },
+  git: { token: process.env.GITHUB_TOKEN },
+})
+
+await box.git.clone({ repo: "github.com/your-org/your-api" })
+
+await box.files.write({
+  path: "/work/your-api/.env.test",
+  content: `DATABASE_URL=postgres://localhost:5432/test\nREDIS_URL=redis://localhost:6379`,
+})
+
+await box.agent.run({
+  prompt: "Run the integration test suite using the config in .env.test",
+})
+```
+
+```python box.py
+import os
+from upstash_box import Box, Agent
+
+box = Box.create(
+    runtime="node",
+    agent={"harness": Agent.CLAUDE_CODE, "model": "anthropic/claude-opus-4-6", "api_key": os.environ["ANTHROPIC_API_KEY"]},
+    git={"token": os.environ["GITHUB_TOKEN"]},
+)
+
+box.git.clone(repo="github.com/your-org/your-api")
+
+box.files.write(
+    path="/work/your-api/.env.test",
+    content="DATABASE_URL=postgres://localhost:5432/test\nREDIS_URL=redis://localhost:6379",
+)
+
+box.agent.run(prompt="Run the integration test suite using the config in .env.test")
+```
+</CodeGroup>
+
+### Collect outputs from parallel boxes
+
+Fan out work across multiple boxes, then download each result locally.
+
+<CodeGroup>
+```typescript box.ts
+import { Agent, Box } from "@upstash/box"
+
+const prompts = [
+  "Analyze /work/data.csv and write a summary to /work/summary.md",
+  "Generate charts from /work/data.csv and save PNGs to /work/charts/",
+  "Find anomalies in /work/data.csv and write a report to /work/anomalies.md",
+]
+
+const results = await Promise.all(
+  prompts.map(async (prompt) => {
+    const box = await Box.create({
+      runtime: "node",
+      agent: { harness: Agent.ClaudeCode, model: "anthropic/claude-opus-4-6", apiKey: process.env.ANTHROPIC_API_KEY },
+    })
+
+    await box.files.upload([
+      { path: "./data.csv", destination: "/work/data.csv" },
+    ])
+
+    await box.agent.run({ prompt })
+    await box.files.download({ folder: "/work" })
+    await box.delete()
+  })
+)
+```
+
+```python box.py
+import asyncio
+import os
+from upstash_box import AsyncBox, Agent
+
+prompts = [
+    "Analyze /work/data.csv and write a summary to /work/summary.md",
+    "Generate charts from /work/data.csv and save PNGs to /work/charts/",
+    "Find anomalies in /work/data.csv and write a report to /work/anomalies.md",
+]
+
+async def run_one(prompt: str) -> None:
+    box = await AsyncBox.create(
+        runtime="node",
+        agent={"harness": Agent.CLAUDE_CODE, "model": "anthropic/claude-opus-4-6", "api_key": os.environ["ANTHROPIC_API_KEY"]},
+    )
+    await box.files.upload([{"path": "./data.csv", "destination": "/work/data.csv"}])
+    await box.agent.run(prompt=prompt)
+    await box.files.download(folder="/work")
+    await box.delete()
+
+async def main() -> None:
+    # fan out across boxes in parallel
+    await asyncio.gather(*(run_one(p) for p in prompts))
+
+asyncio.run(main())
+```
+</CodeGroup>
