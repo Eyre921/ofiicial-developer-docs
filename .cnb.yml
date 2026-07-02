@@ -15,9 +15,11 @@ main:
         cpus: 2
       docker:
         image: python:3.12-slim
-      # 密钥仓：GH_TOKEN 用于把 CNB 主仓镜像推到 github.com/Eyre921/ofiicial-developer-docs
-      # imports 精确到文件（密钥仓禁本地 clone/网页 raw，只有流水线能展开）
-      imports: https://cnb.cool/eyre/secret/-/blob/main/external-registries.yml
+      # 密钥仓：注入 GH_TOKEN 用于把 CNB 主仓镜像推到 github.com/Eyre921/ofiicial-developer-docs
+      # 注意 imports 用 slug:file 语法（不是浏览器 /-/blob/ URL）；
+      # 密钥文件里 allow_events 需包含 crontab / api_trigger / web_trigger_refresh，
+      # allow_slugs 需包含 lib/ofiicial-developer-docs（都已确认已加）。
+      imports: eyre/secret:external-registries.yml
       stages:
         - name: install-tools
           script: |
@@ -47,26 +49,22 @@ main:
           # 失败静默，不让 GitHub 抽风把整条流水线拉红（本职是抓文档并 commit 回 CNB，
           # GitHub 备份是 nice-to-have）。
           script: |
-            # 密钥仓的变量名探测（不打印值，只列名字，方便一次定位变量名）
-            echo "--- 从密钥仓导入的候选变量名 ---"
-            env | awk -F= '/^(GH|GITHUB|PAT|TOKEN|GHCR)/{print $1}' | sort -u
-
-            # 兜底：优先 GH_TOKEN，其次 GITHUB_TOKEN / PAT / GHCR_TOKEN
-            TOK="${GH_TOKEN:-${GITHUB_TOKEN:-${PAT:-${GHCR_TOKEN:-}}}}"
-            if [ -z "$TOK" ]; then
-              echo "跳过：密钥仓里没有识别到 GH 类 token（看上面变量列表补真名到脚本）"
+            if [ -z "${GH_TOKEN:-}" ]; then
+              echo "跳过：GH_TOKEN 未注入。检查密钥仓 external-registries.yml 的"
+              echo "  allow_events 是否包含当前触发事件"
+              echo "  allow_slugs 是否包含 ${CNB_REPO_SLUG:-lib/ofiicial-developer-docs}"
               exit 0
             fi
             GH_REPO="Eyre921/ofiicial-developer-docs"
             GH_BRANCH="${CNB_BRANCH:-main}"
             git remote remove github 2>/dev/null || true
-            git remote add github "https://x-access-token:${TOK}@github.com/${GH_REPO}.git"
+            git remote add github "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPO}.git"
             if git push -f github "HEAD:${GH_BRANCH}" 2>&1; then
               echo "✓ 已镜像到 github.com/${GH_REPO}@${GH_BRANCH}"
             else
-              echo "⚠️ 镜像到 GitHub 失败（不影响本职抓取，已存在 CNB 主仓）"
+              echo "⚠️ 镜像到 GitHub 失败（不影响本职抓取，CNB 主仓仍有全量）"
             fi
-            exit 0   # 强制成功，任何 GitHub 侧异常都不阻断流水线
+            exit 0   # 强制成功，GitHub 侧任何异常都不阻断流水线
   api_trigger:
     - *refresh
   # 网页自定义按钮（.cnb/web_trigger.yml）点击后触发
