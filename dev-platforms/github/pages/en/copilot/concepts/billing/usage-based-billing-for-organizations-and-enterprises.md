@@ -35,8 +35,6 @@ A user's included AI credits are pooled at the billing entity level. For example
 
 Adding licenses mid-cycle increases the pool immediately. Removing licenses mid-cycle doesn't shrink the pool: the decrease is reflected at the start of the next billing cycle.
 
-Included AI credits do not carry over between months. Unused credits are forfeited, and the pool resets to the full monthly amount at 00:00:00 UTC on the first day of each calendar month. This reset date is fixed and does not change based on when licenses are added, removed, or billed. See [Billing cycles](/en/billing/concepts/billing-cycles#billing-cycles-for-metered-products).
-
 <!-- expires 2026-09-01 -->
 
 ### Promotional amounts for existing customers

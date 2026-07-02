@@ -38859,36 +38859,37 @@ If you don't need real-time responses, some models are discounted up to 50% when
 
 Use our [Images](/reference/post-images-generations) endpoint for image models.
 
-| Organization      | Model name                             | Model string for API                     | Price per MP | Default steps |
-| :---------------- | :------------------------------------- | :--------------------------------------- | :----------- | :------------ |
-| Google            | Imagen 4.0 Preview                     | google/imagen-4.0-preview                | \$0.04       | -             |
-| Google            | Imagen 4.0 Fast                        | google/imagen-4.0-fast                   | \$0.02       | -             |
-| Google            | Imagen 4.0 Ultra                       | google/imagen-4.0-ultra                  | \$0.06       | -             |
-| Google            | Flash Image 2.5 (Nano Banana)          | google/flash-image-2.5                   | \$0.039      | -             |
-| Google            | Gemini 3 Pro Image (Nano Banana Pro)   | google/gemini-3-pro-image                | \$0.134      | -             |
-| Black Forest Labs | Flux.1 \[schnell] (Turbo)              | black-forest-labs/FLUX.1-schnell         | \$0.0027     | 4             |
-| Black Forest Labs | Flux1.1 \[pro]                         | black-forest-labs/FLUX.1.1-pro           | \$0.04       | -             |
-| Black Forest Labs | Flux.1 Kontext \[pro]                  | black-forest-labs/FLUX.1-kontext-pro     | \$0.04       | 28            |
-| Black Forest Labs | Flux.1 Kontext \[max]                  | black-forest-labs/FLUX.1-kontext-max     | \$0.08       | 28            |
-| Black Forest Labs | FLUX.2 \[pro]                          | black-forest-labs/FLUX.2-pro             | \$0.03       | -             |
-| Black Forest Labs | FLUX.2 \[dev]                          | black-forest-labs/FLUX.2-dev             | \$0.0154     | -             |
-| Black Forest Labs | FLUX.2 \[flex]                         | black-forest-labs/FLUX.2-flex            | \$0.03       | -             |
-| ByteDance         | Seedream 3.0                           | ByteDance-Seed/Seedream-3.0              | \$0.018      | -             |
-| ByteDance         | Seedream 4.0                           | ByteDance-Seed/Seedream-4.0              | \$0.03       | -             |
-| ByteDance         | Seedream 5.0 Lite                      | ByteDance/Seedream-5.0-lite              | -            | -             |
-| Qwen              | Qwen Image                             | Qwen/Qwen-Image                          | \$0.0058     | -             |
-| RunDiffusion      | Juggernaut Pro Flux                    | RunDiffusion/Juggernaut-pro-flux         | \$0.0049     | -             |
-| RunDiffusion      | Juggernaut Lightning Flux              | Rundiffusion/Juggernaut-Lightning-Flux   | \$0.0017     | -             |
-| Ideogram          | Ideogram 3.0                           | ideogram/ideogram-3.0                    | \$0.06       | -             |
-| Stability AI      | SD XL                                  | stabilityai/stable-diffusion-xl-base-1.0 | \$0.0019     | -             |
-| Black Forest Labs | FLUX.2 \[max]                          | black-forest-labs/FLUX.2-max             | \$0.07       | 50            |
-| Google            | Gemini 3.1 Flash Image (Nano Banana 2) | google/flash-image-3.1                   | \$0.05       | -             |
-| OpenAI            | GPT Image 1.5                          | openai/gpt-image-1.5                     | \$0.034      | -             |
-| Qwen              | Qwen Image 2.0                         | Qwen/Qwen-Image-2.0                      | \$0.035      | -             |
-| Qwen              | Qwen Image 2.0 Pro                     | Qwen/Qwen-Image-2.0-Pro                  | \$0.075      | -             |
-| Wan-AI            | Wan 2.6 Image                          | Wan-AI/Wan2.6-image                      | \$0.03       | -             |
-| ideogram          | Ideogram 4.0                           | ideogram/ideogram-4.0                    | -            | -             |
-| OpenAI            | GPT Image 2                            | openai/gpt-image-2                       | -            | -             |
+| Organization      | Model name                                       | Model string for API                     | Price per MP | Default steps |
+| :---------------- | :----------------------------------------------- | :--------------------------------------- | :----------- | :------------ |
+| Google            | Imagen 4.0 Preview                               | google/imagen-4.0-preview                | \$0.04       | -             |
+| Google            | Imagen 4.0 Fast                                  | google/imagen-4.0-fast                   | \$0.02       | -             |
+| Google            | Imagen 4.0 Ultra                                 | google/imagen-4.0-ultra                  | \$0.06       | -             |
+| Google            | Flash Image 2.5 (Nano Banana)                    | google/flash-image-2.5                   | \$0.039      | -             |
+| Google            | Gemini 3 Pro Image (Nano Banana Pro)             | google/gemini-3-pro-image                | \$0.134      | -             |
+| Black Forest Labs | Flux.1 \[schnell] (Turbo)                        | black-forest-labs/FLUX.1-schnell         | \$0.0027     | 4             |
+| Black Forest Labs | Flux1.1 \[pro]                                   | black-forest-labs/FLUX.1.1-pro           | \$0.04       | -             |
+| Black Forest Labs | Flux.1 Kontext \[pro]                            | black-forest-labs/FLUX.1-kontext-pro     | \$0.04       | 28            |
+| Black Forest Labs | Flux.1 Kontext \[max]                            | black-forest-labs/FLUX.1-kontext-max     | \$0.08       | 28            |
+| Black Forest Labs | FLUX.2 \[pro]                                    | black-forest-labs/FLUX.2-pro             | \$0.03       | -             |
+| Black Forest Labs | FLUX.2 \[dev]                                    | black-forest-labs/FLUX.2-dev             | \$0.0154     | -             |
+| Black Forest Labs | FLUX.2 \[flex]                                   | black-forest-labs/FLUX.2-flex            | \$0.03       | -             |
+| ByteDance         | Seedream 3.0                                     | ByteDance-Seed/Seedream-3.0              | \$0.018      | -             |
+| ByteDance         | Seedream 4.0                                     | ByteDance-Seed/Seedream-4.0              | \$0.03       | -             |
+| ByteDance         | Seedream 5.0 Lite                                | ByteDance/Seedream-5.0-lite              | -            | -             |
+| Qwen              | Qwen Image                                       | Qwen/Qwen-Image                          | \$0.0058     | -             |
+| RunDiffusion      | Juggernaut Pro Flux                              | RunDiffusion/Juggernaut-pro-flux         | \$0.0049     | -             |
+| RunDiffusion      | Juggernaut Lightning Flux                        | Rundiffusion/Juggernaut-Lightning-Flux   | \$0.0017     | -             |
+| Ideogram          | Ideogram 3.0                                     | ideogram/ideogram-3.0                    | \$0.06       | -             |
+| Stability AI      | SD XL                                            | stabilityai/stable-diffusion-xl-base-1.0 | \$0.0019     | -             |
+| Black Forest Labs | FLUX.2 \[max]                                    | black-forest-labs/FLUX.2-max             | \$0.07       | 50            |
+| Google            | Gemini 3.1 Flash Image (Nano Banana 2)           | google/flash-image-3.1                   | \$0.05       | -             |
+| OpenAI            | GPT Image 1.5                                    | openai/gpt-image-1.5                     | \$0.034      | -             |
+| Qwen              | Qwen Image 2.0                                   | Qwen/Qwen-Image-2.0                      | \$0.035      | -             |
+| Qwen              | Qwen Image 2.0 Pro                               | Qwen/Qwen-Image-2.0-Pro                  | \$0.075      | -             |
+| Wan-AI            | Wan 2.6 Image                                    | Wan-AI/Wan2.6-image                      | \$0.03       | -             |
+| ideogram          | Ideogram 4.0                                     | ideogram/ideogram-4.0                    | -            | -             |
+| OpenAI            | GPT Image 2                                      | openai/gpt-image-2                       | -            | -             |
+| Google            | Gemini 3.1 Flash-Lite Image (Nano Banana 2 Lite) | google/flash-image-3.1-lite              | -            | -             |
 
 <Note>
   Calling image models requires a positive credit balance.

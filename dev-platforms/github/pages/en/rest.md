@@ -24,11 +24,11 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  <p>Follow these best practices when using GitHub's API.</p>
+  Follow these best practices when using GitHub's API.
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 
-  <p>Learn about REST API rate limits, how to avoid exceeding them, and what to do if you do exceed them.</p>
+  Learn about REST API rate limits, how to avoid exceeding them, and what to do if you do exceed them.
 
 * [Keeping your API credentials secure](/en/rest/authentication/keeping-your-api-credentials-secure)
 
@@ -40,11 +40,11 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 
-  Learn how to diagnose and resolve common problems for the REST API.
+  <p>Learn how to diagnose and resolve common problems for the REST API.</p>
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 
-  Learn how to navigate through paginated responses from the REST API.
+  <p>Learn how to navigate through paginated responses from the REST API.</p>
 
 ## Links
 

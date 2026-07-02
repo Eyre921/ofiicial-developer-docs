@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1461 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1462 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -127,6 +127,7 @@
 - `langsmith/agent-server-api/threads/search-threads` — [Search Threads](pages/langsmith/agent-server-api/threads/search-threads.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/threads/search-threads)
 - `langsmith/agent-server-api/threads/update-thread-state` — [Update Thread State](pages/langsmith/agent-server-api/threads/update-thread-state.md) · [原文](https://docs.langchain.com/langsmith/agent-server-api/threads/update-thread-state)
 - `langsmith/agent-server-changelog` — [Agent Server changelog](pages/langsmith/agent-server-changelog.md) · [原文](https://docs.langchain.com/langsmith/agent-server-changelog)
+- `langsmith/agent-server-changelog-link` — [Agent Server changelog](pages/langsmith/agent-server-changelog-link.md) · [原文](https://docs.langchain.com/langsmith/agent-server-changelog-link)
 - `langsmith/agent-server-distributed-tracing` — [Distributed tracing with Agent Server](pages/langsmith/agent-server-distributed-tracing.md) · [原文](https://docs.langchain.com/langsmith/agent-server-distributed-tracing)
 - `langsmith/agent-server-feedback` — [How to collect user feedback for Agent Server runs](pages/langsmith/agent-server-feedback.md) · [原文](https://docs.langchain.com/langsmith/agent-server-feedback)
 - `langsmith/agent-server-scale` — [Configure Agent Server for scale](pages/langsmith/agent-server-scale.md) · [原文](https://docs.langchain.com/langsmith/agent-server-scale)
@@ -178,7 +179,6 @@
 - `langsmith/context-engineering-concepts` — [Context engineering concepts](pages/langsmith/context-engineering-concepts.md) · [原文](https://docs.langchain.com/langsmith/context-engineering-concepts)
 - `langsmith/context-hub` — [Context Hub](pages/langsmith/context-hub.md) · [原文](https://docs.langchain.com/langsmith/context-hub)
 - `langsmith/control-plane` — [LangSmith control plane](pages/langsmith/control-plane.md) · [原文](https://docs.langchain.com/langsmith/control-plane)
-- `langsmith/core-capabilities` — [Core capabilities overview](pages/langsmith/core-capabilities.md) · [原文](https://docs.langchain.com/langsmith/core-capabilities)
 - `langsmith/cost-tracking` — [Cost tracking](pages/langsmith/cost-tracking.md) · [原文](https://docs.langchain.com/langsmith/cost-tracking)
 - `langsmith/create-a-prompt` — [Create a prompt](pages/langsmith/create-a-prompt.md) · [原文](https://docs.langchain.com/langsmith/create-a-prompt)
 - `langsmith/create-account-api-key` — [Create an account and API key](pages/langsmith/create-account-api-key.md) · [原文](https://docs.langchain.com/langsmith/create-account-api-key)
@@ -477,6 +477,7 @@
 - `langsmith/self-host-user-management` — [Customize user management](pages/langsmith/self-host-user-management.md) · [原文](https://docs.langchain.com/langsmith/self-host-user-management)
 - `langsmith/self-host-using-an-existing-secret` — [Use an existing secret for your installation (Kubernetes)](pages/langsmith/self-host-using-an-existing-secret.md) · [原文](https://docs.langchain.com/langsmith/self-host-using-an-existing-secret)
 - `langsmith/self-hosted` — [Self-hosted LangSmith](pages/langsmith/self-hosted.md) · [原文](https://docs.langchain.com/langsmith/self-hosted)
+- `langsmith/self-hosted-agent-server-metrics` — [Agent Server metrics](pages/langsmith/self-hosted-agent-server-metrics.md) · [原文](https://docs.langchain.com/langsmith/self-hosted-agent-server-metrics)
 - `langsmith/self-hosted-changelog` — [Self-hosted LangSmith changelog](pages/langsmith/self-hosted-changelog.md) · [原文](https://docs.langchain.com/langsmith/self-hosted-changelog)
 - `langsmith/self-hosted-mission-control` — [Install Mission Control](pages/langsmith/self-hosted-mission-control.md) · [原文](https://docs.langchain.com/langsmith/self-hosted-mission-control)
 - `langsmith/self-hosted-platform-features` — [Self-hosted platform features](pages/langsmith/self-hosted-platform-features.md) · [原文](https://docs.langchain.com/langsmith/self-hosted-platform-features)

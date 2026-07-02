@@ -154945,6 +154945,23 @@ List a repository's tags.
 Full reference: https://vercel.com/docs/md/rest-api/vcr/list-repository-tags
 
 --------------------------------------------------------------------------------
+title: "Get a repository tag"
+description: "GET /v1/vcr/repository/{idOrName}/tags/{tag} — Fetch a single tag from a repository, including the backing image's metadata and VHS-readiness status."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/vcr/get-a-repository-tag"
+--------------------------------------------------------------------------------
+
+# Get a repository tag
+
+`GET /v1/vcr/repository/{idOrName}/tags/{tag}`
+
+**Authentication**: Bearer token
+
+Fetch a single tag from a repository, including the backing image's metadata and VHS-readiness status.
+
+Full reference: https://vercel.com/docs/md/rest-api/vcr/get-a-repository-tag
+
+--------------------------------------------------------------------------------
 title: "Get a repository image"
 description: "GET /v1/vcr/repository/{idOrName}/images/{imageId} — Fetch an individual image from a repository, including its tags and Dockerfile history entries with discriminated layer details for UI rendering."
 last_updated: "2018-10-20T01:46:40.000Z"

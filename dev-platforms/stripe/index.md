@@ -1,6 +1,6 @@
 # dev-platforms/stripe 文档索引
 
-> 共 472 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 473 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -499,6 +499,7 @@
 - `tax/subscriptions/update` — [Update existing subscriptions](pages/tax/subscriptions/update.md) · [原文](https://docs.stripe.com/tax/subscriptions/update.md)
 - `tax/supported-countries` — [Countries supported by Stripe Tax](pages/tax/supported-countries.md) · [原文](https://docs.stripe.com/tax/supported-countries.md)
 - `tax/supported-countries/asia-pacific` — [Tax in Asia Pacific](pages/tax/supported-countries/asia-pacific.md) · [原文](https://docs.stripe.com/tax/supported-countries/asia-pacific.md)
+- `tax/tax-codes` — [Product tax codes](pages/tax/tax-codes.md) · [原文](https://docs.stripe.com/tax/tax-codes.md)
 - `tax/tax-customizations` — [Tax customizations](pages/tax/tax-customizations.md) · [原文](https://docs.stripe.com/tax/tax-customizations.md)
 - `tax/tax-for-marketplaces` — [Tax for marketplaces](pages/tax/tax-for-marketplaces.md) · [原文](https://docs.stripe.com/tax/tax-for-marketplaces.md)
 - `tax/tax-for-platforms` — [Tax for software platforms](pages/tax/tax-for-platforms.md) · [原文](https://docs.stripe.com/tax/tax-for-platforms.md)

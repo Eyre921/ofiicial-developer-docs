@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 757 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 758 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -749,6 +749,7 @@
 - `docs/reception-ai/integrations/overview` — [Integrations](pages/docs/reception-ai/integrations/overview.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/overview.md)
 - `docs/reception-ai/integrations/webhooks` — [Webhooks](pages/docs/reception-ai/integrations/webhooks.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/webhooks.md)
 - `docs/reception-ai/integrations/zapier` — [Zapier](pages/docs/reception-ai/integrations/zapier.md) · [原文](https://elevenlabs.io/docs/reception-ai/integrations/zapier.md)
+- `docs/reception-ai/knowledge-base/file-uploads` — [File uploads](pages/docs/reception-ai/knowledge-base/file-uploads.md) · [原文](https://elevenlabs.io/docs/reception-ai/knowledge-base/file-uploads.md)
 - `docs/reception-ai/knowledge-base/overview` — [Knowledge base](pages/docs/reception-ai/knowledge-base/overview.md) · [原文](https://elevenlabs.io/docs/reception-ai/knowledge-base/overview.md)
 - `docs/reception-ai/knowledge-base/website-scraping` — [Website scraping](pages/docs/reception-ai/knowledge-base/website-scraping.md) · [原文](https://elevenlabs.io/docs/reception-ai/knowledge-base/website-scraping.md)
 - `docs/reception-ai/overview` — [Reception.ai](pages/docs/reception-ai/overview.md) · [原文](https://elevenlabs.io/docs/reception-ai/overview.md)

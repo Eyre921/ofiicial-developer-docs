@@ -103887,7 +103887,7 @@ The following parameters are available for overrides:
 
 Note: Parameters marked with **Restart: Yes** cause the CLI to automatically restart your database (and any read replicas) to apply the change. This may cause a brief interruption to active connections. You can use the [`--no-restart`](#managing-postgres-configuration-with-the-cli) flag to defer the restart.
 
-Use the examples below with `supabase --experimental --project-ref <project-ref> postgres-config update`:
+Use the examples below with `supabase postgres-config update --project-ref <project-ref> --experimental`:
 
 | Parameter                                                                                                                                                                                                                                           | Type      | Restart | Example                                       |
 | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | ------- | --------------------------------------------- |
@@ -103933,26 +103933,26 @@ To start:
 To update Postgres configurations, use the [`postgres config`](https://supabase.com/docs/reference/cli/supabase-postgres-config) command:
 
 ```bash
-supabase --experimental \
-postgres-config update --config shared_buffers=250MB \
---project-ref <project-ref>
+supabase postgres-config update --config shared_buffers=250MB \
+--project-ref <project-ref> \
+--experimental
 ```
 
 By default, the CLI will merge any provided config overrides with any existing ones. The `--replace-existing-overrides` flag can be used to instead force all existing overrides to be replaced with the ones being provided:
 
 ```bash
-supabase --experimental \
-postgres-config update --config max_parallel_workers=3 \
+supabase postgres-config update --config max_parallel_workers=3 \
 --replace-existing-overrides \
---project-ref <project-ref>
+--project-ref <project-ref> \
+--experimental
 ```
 
 To delete specific configuration overrides, use the `postgres-config delete` command:
 
 ```bash
-supabase --experimental \
-postgres-config delete --config shared_buffers,work_mem \
---project-ref <project-ref>
+supabase postgres-config delete --config shared_buffers,work_mem \
+--project-ref <project-ref> \
+--experimental
 ```
 
 By default, CLI v2 (≥ 2.0.0) checks the parameter’s context and requests the correct action (reload or restart):
@@ -103987,9 +103987,9 @@ Note: Postgres requires several parameters to be synchronized between the Primar
 By default, Supabase ensures that this propagation is executed correctly. However, if the `--no-restart` behavior is used in conjunction with parameters that cannot be reloaded without a restart, the user is responsible for ensuring that both the primaries and the read replicas get restarted in a timely manner to ensure a stable running state. Leaving the configuration updated, but not used (via a restart) in such a case can result in read replica failure if the primary, or a read replica, restarts in isolation (e.g. due to an out-of-memory event, or hardware failure).
 
 ```bash
-supabase --experimental \
+supabase postgres-config delete --config shared_buffers --no-restart \
 --project-ref <project-ref> \
-postgres-config delete --config shared_buffers --no-restart
+--experimental
 ```
 
 ### Resetting to default config
@@ -109944,7 +109944,7 @@ Most inspection commands are Postgres agnostic. You can run inspection routines 
 For example you can connect to your local Postgres instance:
 
 ```
-supabase --db-url postgresql://postgres:postgres@localhost:5432/postgres inspect db bloat
+supabase inspect db bloat --db-url postgresql://postgres:postgres@localhost:5432/postgres
 ```
 
 ### Connect to a Supabase instance
@@ -124123,8 +124123,9 @@ For your bot to seamlessly interact with Slack, you'll need to configure Slack A
 Deploy the following code as an Edge function using the CLI:
 
 ```bash
-supabase --project-ref nacho_slacker secrets \
-set SLACK_TOKEN=<xoxb-0000000000-0000000000-01010101010nacho101010>
+supabase secrets set \
+  SLACK_TOKEN=<xoxb-0000000000-0000000000-01010101010nacho101010> \
+  --project-ref nacho_slacker
 ```
 
 Here's the code of the Edge Function, you can change the response to handle the text received:
@@ -142750,7 +142751,7 @@ Assume your Supabase project's domain is `abcdefghijklmnopqrst.supabase.co` and 
 Use the [`vanity-subdomains check-availability`](https://supabase.com/docs/reference/cli/supabase-vanity-subdomains-check-availability) command of the CLI to check if your desired subdomain is available for use:
 
 ```bash
-supabase vanity-subdomains --project-ref abcdefghijklmnopqrst check-availability --desired-subdomain my-example-brand --experimental
+supabase vanity-subdomains check-availability --project-ref abcdefghijklmnopqrst --desired-subdomain my-example-brand --experimental
 ```
 
 ### Prepare to activate the subdomain
@@ -142782,7 +142783,7 @@ Once you've chosen an available subdomain and have done all the necessary prepar
 Use the [`vanity-subdomains activate`](https://supabase.com/docs/reference/cli/supabase-vanity-subdomains-activate) command to activate and claim your subdomain:
 
 ```bash
-supabase vanity-subdomains --project-ref abcdefghijklmnopqrst activate --desired-subdomain my-example-brand --experimental
+supabase vanity-subdomains activate --project-ref abcdefghijklmnopqrst --desired-subdomain my-example-brand --experimental
 ```
 
 If you wish to use the new domain in client code, you can set it up like so:
@@ -149234,7 +149235,7 @@ To get started:
 You can use the `get` subcommand of the CLI to check whether SSL is currently being enforced:
 
 ```bash
-supabase ssl-enforcement --project-ref {ref} get --experimental
+supabase ssl-enforcement get --project-ref {ref} --experimental
 ```
 
 Response if SSL is being enforced:
@@ -149254,13 +149255,13 @@ SSL is *NOT* being enforced.
 The `update` subcommand is used to change the SSL enforcement status for your project:
 
 ```bash
-supabase ssl-enforcement --project-ref {ref} update --enable-db-ssl-enforcement --experimental
+supabase ssl-enforcement update --project-ref {ref} --enable-db-ssl-enforcement --experimental
 ```
 
 Similarly, to disable SSL enforcement:
 
 ```bash
-supabase ssl-enforcement --project-ref {ref} update --disable-db-ssl-enforcement --experimental
+supabase ssl-enforcement update --project-ref {ref} --disable-db-ssl-enforcement --experimental
 ```
 
 ### A note about Postgres SSL modes

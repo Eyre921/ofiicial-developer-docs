@@ -233,7 +233,9 @@ Native Notion icons are built-in icons with a name and color. They appear in the
 
 ### Icon `name`
 
-The `name` field identifies the icon. Refer to the Notion icon picker for valid names (e.g. `"pizza"`, `"meeting"`, `"home"`).
+When setting a native icon, the `name` field accepts either Notion's internal API icon name or the name shown in the Notion icon picker tooltip. Responses return the internal API icon name.
+
+Icon picker names are case-insensitive, and spaces, underscores, and hyphens are treated equivalently. For example, `"token"`, `"star circle"`, `"star-circle"`, and `"STAR_CIRCLE"` set the same icon. `"redirect"`, `"arrow redirect heavy"`, and `"arrow_redirect_heavy"` also set the same icon.
 
 ### Icon `color`
 

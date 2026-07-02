@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="July 1, 2026">
+  ### Icon names and database icons
+
+  When setting a native icon, `name` now also accepts the icon picker name, so values like `"token"` and `"star circle"` can set the same Notion icon.
+
+  `databases.retrieve` now returns the icon set in the Notion UI, matching the icon surfaced by `dataSources.retrieve`.
+</Update>
+
 <Update label="June 29, 2026">
   ### Async page markdown writes
 

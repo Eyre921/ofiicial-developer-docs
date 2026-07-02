@@ -3472,6 +3472,15 @@ Source: https://docs.langchain.com/langsmith/agent-server-changelog
 
 [Agent Server](/langsmith/agent-server) is an API platform for creating and managing agent-based applications. It provides built-in persistence, a task queue, and supports deploying, configuring, and running assistants (agentic workflows) at scale. This changelog documents all notable updates, features, and fixes to Agent Server releases.
 
+<Update label="2026-06-30">
+  ## v0.11.0rc8
+
+  ### General Notes
+
+  * Agent Server metrics are now emitted through the OpenTelemetry/Prometheus client on the dedicated Prometheus scrape endpoint (`LSD_PROM_METRICS_PORT`, default 9464). Set `LSD_PROM_METRICS_ENABLED=true` to enable the endpoint and `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` to expose the internal metrics migrated from the main API `/metrics` path. By default, the Prometheus endpoint serves only LSD Deployment UI metrics.
+  * **Potentially breaking** for Prometheus scrapers and dashboards: point collectors at the OTLP Prometheus port instead of the main API `/metrics` path. `lg_api_http_requests_latency_seconds` is now `lg_api_http_requests_latency` and reports milliseconds instead of seconds. Pool request counters now use a `_total` suffix (`lg_api_pg_pool_requests_queued_total`, `lg_api_pg_pool_requests_errors_total`). The `lg_api_pending_runs_wait_time_*` gauges are removed in favor of the `lg_api_run_queue_wait_time_1st_attempt` latency histogram.
+</Update>
+
 <Update label="2026-06-25">
   ## v0.11.0rc5
 
@@ -5594,6 +5603,24 @@ Source: https://docs.langchain.com/langsmith/agent-server-changelog
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-changelog.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Agent Server changelog
+Source: https://docs.langchain.com/langsmith/agent-server-changelog-link
+
+
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/agent-server-changelog-link.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -9181,6 +9208,8 @@ To deploy with LangSmith, you need:
 
 In this example, the node functions (`my_app_node` for Python and `myAppNode` for JavaScript) can contain calls to any framework or library. The LangGraph structure simply provides the deployment interface and orchestration layer.
 
+For end-to-end examples, refer to the deployment guides for [Google ADK](/langsmith/deploy-google-adk) and [Claude Agent SDK, Strands, CrewAI, and AutoGen](/langsmith/deploy-other-frameworks). LangSmith added support for Google ADK through [`deployments-wrap-sdk`](https://pypi.org/project/deployments-wrap-sdk/), an extensible package for wrapping agent SDKs to run on LangSmith Deployment.
+
 ## Environment variables
 
 If you're working with a deployed LangGraph application [locally](/langsmith/local-dev-testing), you can configure environment variables in the `env` key of the [configuration file](#configuration-file-concepts).
@@ -12619,10 +12648,6 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability) and [LangSmith Fle
       * [Sandbox registries](/langsmith/sandbox-snapshots#private-registries) now support pulling private container images alongside existing sandbox and snapshot operations.
 
       ## Admin and billing
-
-      ### Administration
-
-      * [API keys](/langsmith/create-account-api-key) now default to a 90-day expiration, or to your organization's shorter maximum when one is enforced.
 
       ## Fixes
 
@@ -17947,74 +17972,6 @@ When a deployment is deleted, the traces and the tracing project are not deleted
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/control-plane.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
-  </Callout>
-</div>
-
-
-# Core capabilities overview
-Source: https://docs.langchain.com/langsmith/core-capabilities
-
-Agent Server capabilities including streaming, human-in-the-loop, MCP, A2A, distributed tracing, webhooks, and double-texting.
-
-Building on the [Agent Server](/langsmith/agent-server) runtime, these capabilities cover how runs stream, pause, expose endpoints, and react to events:
-
-<CardGroup>
-  <Card title="Streaming API" icon="player-play" href="/langsmith/streaming">
-    Stream outputs from your deployed agent in real time using the LangGraph SDK.
-  </Card>
-
-  <Card title="Human-in-the-loop" icon="user-check" href="/langsmith/add-human-in-the-loop">
-    Pause agent execution to review, edit, or approve tool calls before continuing.
-  </Card>
-
-  <Card title="Time travel" icon="clock" href="/langsmith/human-in-the-loop-time-travel">
-    Replay agent runs from any prior state to debug or explore alternative paths.
-  </Card>
-
-  <Card title="MCP endpoint" icon="plug" href="/langsmith/server-mcp">
-    Expose your agents as MCP tools, accessible to any MCP-compliant client.
-  </Card>
-
-  <Card title="A2A endpoint" icon="arrows-exchange" href="/langsmith/server-a2a">
-    Enable agent-to-agent communication using the A2A protocol.
-  </Card>
-
-  <Card title="Distributed tracing" icon="git-merge" href="/langsmith/agent-server-distributed-tracing">
-    Unify traces across services when calling Agent Server from external applications.
-  </Card>
-
-  <Card title="Webhooks" icon="webhook" href="/langsmith/use-webhooks">
-    Trigger external systems in response to run events from your deployed agent.
-  </Card>
-
-  <Card title="Double-texting" icon="messages" href="/langsmith/double-texting">
-    Control how Agent Server handles a new message while a run is already in progress.
-  </Card>
-</CardGroup>
-
-## Durable execution
-
-At its core, LangSmith Deployment is a durable execution engine. Your agents run on a managed task queue with automatic checkpointing, so any run can be retried, replayed, or resumed from the exact point of interruption, not from scratch.
-
-Because execution is durable, agents can do things that would be fragile or impossible in a stateless runtime:
-
-* **Wait for external input.** An agent calls [`interrupt()`](/langsmith/add-human-in-the-loop) and the runtime checkpoints its state, frees resources, and waits for a human to approve a transaction, a reviewer to edit a draft, or another system to return results. When [`Command(resume=...)`](/langsmith/add-human-in-the-loop) arrives hours or days later, execution picks up exactly where it stopped. This is the primitive underneath [human-in-the-loop](/langsmith/add-human-in-the-loop) workflows and [time-travel debugging](/langsmith/human-in-the-loop-time-travel).
-* **Run in the background.** [Background runs](/langsmith/background-run) execute without blocking the caller. The runtime manages the full lifecycle (queuing, execution, checkpointing, completion) while the client moves on.
-* **Run on a schedule.** [Cron jobs](/langsmith/cron-jobs) trigger agent execution on a recurring cadence. A daily summary agent, a weekly report, a periodic data sync. The runtime starts a new execution on schedule with the same durability guarantees.
-* **Handle concurrent input.** When a user sends new input while an agent is mid-run ([double-texting](/langsmith/double-texting)), the runtime can queue it, cancel the in-progress run, or process both in parallel without data races or corrupted state.
-* **Retry on failure.** Configurable [retry policies](/oss/python/langgraph/use-graph-api#add-retry-policies) control backoff, max attempts, and which exceptions trigger retries on a per-node basis. Runs survive process restarts, infrastructure failures, and code revisions mid-execution.
-
-For details on how containers, processes, and the task queue work together, see [Agent Server: Runtime architecture](/langsmith/agent-server#runtime-architecture). For scaling and throughput tuning, see [Configure Agent Server for scale](/langsmith/agent-server-scale).
-
-***
-
-<div>
-  <Callout icon="terminal-2">
-    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
-  </Callout>
-
-  <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/core-capabilities.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -26761,7 +26718,7 @@ LangChain ships the container images, Helm charts, and license; you provide the 
 
 ## Topologies
 
-LangSmith supports three self-hosted topologies that trade off setup complexity against control-plane features. Reference pages for [platform features](/langsmith/self-hosted-platform-features) and [diagnostics](/langsmith/diagnostics-self-hosted) apply to all three.
+LangSmith supports three self-hosted topologies that trade off setup complexity against control-plane features. Reference pages for [platform features](/langsmith/self-hosted-platform-features), [Agent Server metrics](/langsmith/self-hosted-agent-server-metrics), and [diagnostics](/langsmith/diagnostics-self-hosted) apply to all three.
 
 <CardGroup>
   <Card title="Full self-hosted platform" icon="buildings" href="/langsmith/deploy-with-control-plane">
@@ -26778,6 +26735,10 @@ LangSmith supports three self-hosted topologies that trade off setup complexity 
 
   <Card title="Platform features" icon="list-check" href="/langsmith/self-hosted-platform-features">
     Reference for self-hosted-only platform behavior: custom Postgres and Redis, listeners, and resource customization.
+  </Card>
+
+  <Card title="Agent Server metrics" icon="chart-line" href="/langsmith/self-hosted-agent-server-metrics">
+    Prometheus and Datadog export for Agent Server, including Deployment UI metrics and internal metrics.
   </Card>
 
   <Card title="Diagnostics" icon="stethoscope" href="/langsmith/diagnostics-self-hosted">
@@ -27354,9 +27315,15 @@ For a feature-level comparison and infrastructure setup, see [Platform setup](/l
 
 Once deployed, agents work with [Agent Server](/langsmith/assistants)'s execution model: **assistants** for configuration, **threads** for state, and **runs** for workloads. For capabilities, tutorials, server customization, and operations, see [Develop agents](/langsmith/develop-agents-overview).
 
-<Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/oHF6ZolKSFmH17u5/images/brand/engine-icon-dark.png?fit=max&auto=format&n=oHF6ZolKSFmH17u5&q=85&s=739a487161804691a14c36c2768d278d" href="/langsmith/engine-overview">
-  Once agents are in production, use LangSmith Engine to detect recurring failures in their traces, diagnose root causes, and resolve them.
-</Card>
+<CardGroup>
+  <Card title="Find and fix failures with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/oHF6ZolKSFmH17u5/images/brand/engine-icon-dark.png?fit=max&auto=format&n=oHF6ZolKSFmH17u5&q=85&s=739a487161804691a14c36c2768d278d" href="/langsmith/engine-overview">
+    Once agents are in production, use LangSmith Engine to detect recurring failures in their traces, diagnose root causes, and resolve them.
+  </Card>
+
+  <Card title="Interact with your deployment using RemoteGraph" icon="link" href="/langsmith/use-remote-graph">
+    Call your deployed graph from client code as if it were a local compiled graph.
+  </Card>
+</CardGroup>
 
 ## Full-stack web apps
 
@@ -83480,6 +83447,153 @@ To install, follow the [Kubernetes setup guide](/langsmith/kubernetes).
 </div>
 
 
+# Agent Server metrics
+Source: https://docs.langchain.com/langsmith/self-hosted-agent-server-metrics
+
+Reference for Agent Server OpenTelemetry metrics on self-hosted deployments, including Deployment UI metrics, internal metrics, and Datadog export.
+
+The [Agent Server](/langsmith/agent-server) emits metrics through an OpenTelemetry (OTel) client. Metrics use the `lg_api_` name prefix by default (override with `METRIC_PREFIX`).
+
+On self-hosted deployments, use this page to choose a scrape or push backend, enable the metric sets you need, and look up Prometheus names when building dashboards or alerts.
+
+## Metric backends
+
+Agent Server splits metrics into two sets:
+
+* **Deployment UI metrics**: Surfaced in the LangSmith Deployment UI and exposed on the Agent Server Prometheus scrape endpoint (`GET /metrics`, `format=prometheus`) by default.
+* **Internal metrics**: Operational and debugging metrics used by LangChain operators. Sent to Datadog when configured. On Prometheus, internal metrics appear only when you opt in.
+
+| Backend                                | Metric set                                                                                                                            | Enable                                                                                                                                                  |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Prometheus** (scrape `GET /metrics`) | Deployment UI metrics by default. Set `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` to also expose internal metrics on the same endpoint. | Available when the OTel Prometheus exporter is installed                                                                                                |
+| **Datadog** (OTLP push)                | Internal metrics only                                                                                                                 | Set `LSD_DD_API_KEY` (or `CUSTOM_LSD_DD_API_KEY`). Metrics push to `https://{LSD_DD_ENDPOINT}/v1/metrics` (default endpoint: `otlp.us5.datadoghq.com`). |
+
+Prometheus and Datadog can run at the same time. Datadog receives the internal complement so UI metrics are not duplicated in both backends.
+
+## Metric tiers
+
+Each metric is assigned a tier that controls whether internal metrics are recorded:
+
+| Tier            | Value | Purpose                                                                                                                          |
+| --------------- | ----- | -------------------------------------------------------------------------------------------------------------------------------- |
+| **CRITICAL**    | `1`   | Core health and failure signals. Always recorded when internal metrics are enabled, including on `dev` / `dev_free` deployments. |
+| **INFO**        | `2`   | Operational detail for production monitoring. Default ceiling in production (`METRIC_MAX_EMITTING_TIER=2`).                      |
+| **DEBUG**       | `3`   | Deeper diagnostics for troubleshooting. Omitted unless you raise `METRIC_MAX_EMITTING_TIER`.                                     |
+| **DEEP\_DEBUG** | `4`   | Verbose diagnostics. Omitted unless you raise `METRIC_MAX_EMITTING_TIER`.                                                        |
+
+Set `METRIC_MAX_EMITTING_TIER` to the highest tier you want recorded for internal metrics. Deployment UI metrics ignore this setting and always emit.
+
+## Configure export
+
+### Prometheus
+
+To scrape Deployment UI metrics:
+
+1. Point your Prometheus collector at the Agent Server `/metrics` endpoint (for example, `https://<agent-server-host>/metrics`).
+2. Use the default `format=prometheus` query parameter (or omit it).
+
+To also expose internal metrics on the same endpoint, set:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+EXPOSE_INTERNAL_METRICS_PROMETHEUS=true
+```
+
+### Datadog
+
+To push internal metrics to Datadog instead of (or alongside) Prometheus:
+
+1. Set `LSD_DD_API_KEY` to your Datadog API key. `DATADOG_METRICS_ENABLED` turns on automatically when the key is present.
+2. Optionally set `LSD_DD_ENDPOINT` (default: `otlp.us5.datadoghq.com`) or the legacy alias `CUSTOM_LSD_DD_API_KEY` / `CUSTOM_LSD_DD_ENDPOINT`.
+
+Datadog receives only internal metrics. Continue scraping `/metrics` for Deployment UI metrics in Prometheus or Grafana.
+
+## Deployment UI metrics
+
+These metrics have `lsd_web_metric=true`. They appear on the Prometheus `/metrics` scrape by default and power the LangSmith Deployment UI. Tier values are listed for reference; these metrics always emit regardless of `METRIC_MAX_EMITTING_TIER`.
+
+| Name                                     | Type                     | Tier     | Description                                                                                                                                             |
+| ---------------------------------------- | ------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lg_api_http_requests_total`             | Counter                  | INFO     | Total HTTP requests to the Agent Server.                                                                                                                |
+| `lg_api_http_requests_latency`           | Histogram (milliseconds) | INFO     | HTTP request latency.                                                                                                                                   |
+| `lg_api_run_queue_wait_time_1st_attempt` | Histogram (milliseconds) | INFO     | Time jobs spend waiting in the queue before first processing.                                                                                           |
+| `lg_api_num_pending_runs`                | Gauge                    | INFO     | Runs currently pending. On Postgres backends, the Go core is the source; on in-memory backends, the Python collector emits this gauge.                  |
+| `lg_api_num_running_runs`                | Gauge                    | INFO     | Runs currently running. Same runtime split as `lg_api_num_pending_runs`.                                                                                |
+| `lg_api_workers_max`                     | Gauge                    | CRITICAL | Maximum worker capacity. Emitted by the Python collector on in-memory runtimes; the Go core emits this on Postgres.                                     |
+| `lg_api_workers_active`                  | Gauge                    | CRITICAL | Workers currently executing runs.                                                                                                                       |
+| `lg_api_workers_available`               | Gauge                    | CRITICAL | Workers available to accept new runs.                                                                                                                   |
+| `lg_api_pg_pool_max`                     | Gauge                    | CRITICAL | Maximum Postgres connection pool size.                                                                                                                  |
+| `lg_api_pg_pool_size`                    | Gauge                    | CRITICAL | Connections currently managed by the Postgres pool (idle, in use, or being prepared).                                                                   |
+| `lg_api_pg_pool_available`               | Gauge                    | INFO     | Idle connections in the Postgres pool.                                                                                                                  |
+| `lg_api_pg_pool_requests_queued_total`   | Counter                  | CRITICAL | Postgres connection requests queued because a connection was not immediately available. The OTel Prometheus exporter appends `_total` to counter names. |
+| `lg_api_pg_pool_requests_errors_total`   | Counter                  | CRITICAL | Postgres connection request errors (timeouts, queue full, and similar failures).                                                                        |
+| `lg_api_redis_pool_max`                  | Gauge                    | INFO     | Maximum Redis connection pool size.                                                                                                                     |
+| `lg_api_redis_pool_size`                 | Gauge                    | INFO     | Redis connections currently in use.                                                                                                                     |
+| `lg_api_redis_pool_available`            | Gauge                    | INFO     | Idle connections in the Redis pool.                                                                                                                     |
+
+## Internal metrics
+
+These metrics have `lsd_web_metric=false`. By default they are exported to Datadog when `LSD_DD_API_KEY` is set. Set `EXPOSE_INTERNAL_METRICS_PROMETHEUS=true` to include them on the Prometheus `/metrics` scrape. Internal metrics at or below `METRIC_MAX_EMITTING_TIER` are recorded; higher-tier metrics are omitted.
+
+### Run lifecycle
+
+| Name                                              | Type                     | Tier     | Description                                                        |
+| ------------------------------------------------- | ------------------------ | -------- | ------------------------------------------------------------------ |
+| `lg_api_run_attempt_started_counter`              | Counter                  | CRITICAL | Run execution attempts started.                                    |
+| `lg_api_run_success_counter`                      | Counter                  | CRITICAL | Runs completed successfully.                                       |
+| `lg_api_run_canceled_by_request_counter`          | Counter                  | CRITICAL | Runs canceled by an explicit cancel request.                       |
+| `lg_api_run_failed_retriable_counter`             | Counter                  | CRITICAL | Runs failed with a retriable error.                                |
+| `lg_api_run_failed_after_retry_counter`           | Counter                  | CRITICAL | Runs that failed after exhausting retries.                         |
+| `lg_api_run_exceed_max_attempts_at_start_counter` | Counter                  | CRITICAL | Runs rejected at start because max attempts were already exceeded. |
+| `lg_api_run_abandoned_by_shutdown_counter`        | Counter                  | CRITICAL | Runs abandoned during server shutdown.                             |
+| `lg_api_run_set_status_error_counter`             | Counter                  | CRITICAL | Errors while updating run status.                                  |
+| `lg_api_failed_to_fetch_runs_counter`             | Counter                  | CRITICAL | Failures fetching runs from the queue.                             |
+| `lg_api_run_execution_latency`                    | Histogram (milliseconds) | INFO     | End-to-end run execution latency.                                  |
+| `lg_api_run_queue_wait_time_retry_attempt`        | Histogram (milliseconds) | INFO     | Queue wait time on retry attempts (after the first).               |
+
+### Streaming and protocol v2
+
+| Name                                                | Type                     | Tier     | Description                                                                                                                    |
+| --------------------------------------------------- | ------------------------ | -------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `lg_api_streaming_data_loss_counter`                | Counter                  | CRITICAL | Streaming data loss events.                                                                                                    |
+| `lg_api_stream_publish_latency`                     | Histogram (milliseconds) | INFO     | Latency publishing stream chunks.                                                                                              |
+| `lg_api_stream_data_size_bytes`                     | Histogram                | DEBUG    | Size of published stream payloads in bytes.                                                                                    |
+| `lg_api_protocol_v2_buffer_evicted_counter`         | Counter                  | INFO     | Event Streaming v2 replay buffer evictions.                                                                                    |
+| `lg_api_protocol_v2_event_emitted_counter`          | Counter                  | DEBUG    | Event Streaming v2 events emitted.                                                                                             |
+| `lg_api_protocol_v2_resume_gap_counter`             | Counter                  | INFO     | Event Streaming v2 resume gaps detected during replay.                                                                         |
+| `lg_api_protocol_v2_transport_send_failure_counter` | Counter                  | INFO     | Event Streaming v2 transport send failures.                                                                                    |
+| `lg_api_protocol_v2_buffer_size`                    | Gauge                    | DEBUG    | Current Event Streaming v2 replay buffer occupancy per run. Tune `LSD_PROTOCOL_V2_BUFFER_SIZE` when this approaches the limit. |
+| `lg_api_protocol_v2_replayed_events`                | Histogram                | DEBUG    | Number of events replayed on Event Streaming v2 reconnect.                                                                     |
+
+### Server and infrastructure
+
+| Name                                         | Type    | Tier     | Description                              |
+| -------------------------------------------- | ------- | -------- | ---------------------------------------- |
+| `lg_api_server_started_counter`              | Counter | INFO     | Server start events.                     |
+| `lg_api_server_requested_to_stop_counter`    | Counter | INFO     | Graceful shutdown requests received.     |
+| `lg_api_server_stopped_counter`              | Counter | INFO     | Server stop events.                      |
+| `lg_api_graph_recursion_limit_error_counter` | Counter | INFO     | Graph recursion limit errors.            |
+| `lg_api_publish_queue_availability`          | Gauge   | CRITICAL | Redis publish queue availability signal. |
+
+## See also
+
+* [Self-hosted overview](/langsmith/deploy-to-self-hosted-overview)
+* [Configure Agent Server for scale](/langsmith/agent-server-scale)
+* [Troubleshooting for self-hosted deployments](/langsmith/diagnostics-self-hosted)
+* [Agent Server changelog](/langsmith/agent-server-changelog)
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/self-hosted-agent-server-metrics.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Self-hosted LangSmith changelog
 Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 
@@ -83490,6 +83604,260 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 </Callout>
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
+
+<Update label="2026-07-01">
+  ## langsmith-0.16.0-rc.7
+
+  * Patched dependencies.
+
+  * Confirmed CI green :pray:.
+
+  * Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
+
+  * Included extended stats were made available to all organizations for code evaluators.
+
+  * Added two dedicated permissions `bulk-exports:read` and `bulk-exports:manage` for fetching and creating/updating bulk exports.
+
+  * Fixed the Engine "Connect GitHub" flow when the GitHub App was already installed via another workspace in the same organization.
+
+  * Bumped `@langchain/langgraph-sdk` to 1.9.4 in the `smith-frontend`.
+
+  * Added an opt-in Smith-ACE v2 sandbox implementation behind `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2`.
+
+  * Threads table showed the actual last output in the *Last Output* column and surfaced thread-level errors in a new *Last Error* column.
+
+  * Hid the \$0.00 cost badge for tool calls in the trace tree view.
+
+  * Users could now create multiple cron schedules with the same expression on the same agent.
+
+  * Agent Builder "View agent traces" and "View trace" links always opened in the fleet tracing project.
+
+  * Added LangSmith model pricing entry for `gemini-3.1-flash-lite`.
+
+  * LLM-as-judge evaluators could now opt into Include extended stats and map prompt variables from `run.*` fields.
+
+  * Default sandbox rootfs images included Docker Compose and started the Docker daemon automatically.
+
+  * Added cost tracking for `gemini-3.5-flash`.
+
+  * Gateway spend cap policies could now be configured with a weekly period.
+
+  * Added Centralize as an MCP marketplace integration.
+
+  * Sandbox-enabled agents now saw configured proxy profiles (hosts, injected header keys, network rule, OAuth providers) in their system prompt, replacing the older hosts-only auth-proxy section.
+
+  * Hid the Sandboxes nav entry and `/sandboxes` page in regions where `SANDBOX_FEATURE_ENABLED` was off.
+
+  * Self-hosted DockerHub images included Cosign signatures and signed SPDX SBOM attestations.
+
+  * Fixed a bug where special characters were not encoded in thread IDs, causing the UI to be unable to query these threads.
+
+  * Fixed "Query timeout exceeded" errors when opening large traces.
+
+  * Self-hosted OIDC: fixed SSO Groups Sync that silently no-op'ed during login.
+
+  * Managed Deep Agents private preview supported MCP server registration with header-based auth.
+
+  * Emitted Prometheus metrics from `queue` workers.
+
+  * Clarified the stats unavailable message when text filters are applied.
+
+  * Context repos now supported metadata updates and deletion from the Hub overflow menu.
+
+  * Typed responses and standard error envelope for Fleet `/v1/fleet/agents/{agent_id}/connections` (List/Create/Delete).
+
+  * Sandbox snapshots could now export a Docker image built inside a sandbox.
+
+  * Fixed ACE subprocess handling so early child-process exits returned request failures instead of crashing the service.
+
+  * Fixed large integer preservation in native run ingest payloads.
+
+  * Waterfall turn view took full height if available.
+
+  * Organization admins could now disable Engine even when their plan auto-enables it; their explicit choice persisted across the UI and the backend gates.
+
+  * Workspace admins could now override the workspace-default weekly spend cap on a per-evaluator-rule basis from the evaluator side panel; non-admins saw the resolved cap as read-only text.
+
+  * Fixed incorrect metadata facet suggestions and improved group stats latency for projects with rich run metadata.
+
+  * Alert rules for Run Count, Errors, Latency, and Cost now supported `<`, `<=`, `>`, and `>=` comparison operators (previously the UI only allowed `>=`).
+
+  * Fleet agent APIs required `thread_scoped_sandbox` or `agent_scoped_sandbox` for sandbox-backed agents.
+
+  * Allowed exporting all experiments in a workspace via the new `all_experiments` parameter for bulk exports; limited to 250 experiments per export, can be increased at request.
+
+  * Fleet used `langchain-fireworks 1.4.2` for Fireworks model calls.
+
+  * Enabled a redesign of the run details panel with improved readability and more robust message parsing.
+
+  * Fleet/Agent Builder included Gemini 3.5 Flash as a selectable built-in model.
+
+  * Computer use had an in-chat callout for eligible general chat users.
+
+  * Fixed a bug where the blob storage banner incorrectly flashed on page load.
+
+  * Enabled a new way to leave feedback on a run, directly within the run details panel.
+
+  * Added token pricing support for Claude Opus 4.8.
+
+  * Agent Builder offered Claude Opus 4.8 as a built-in Anthropic model.
+
+  * Organization admins could now update an existing API key's role via the service-keys API without rotating the key.
+
+  * Managed Deep Agents MCP server setup supported OAuth under the `/v1/deepagents` API namespace.
+
+  * Extra Parameters entered for Bedrock Nova 2 and other providers requiring camelCase API fields preserved their original key casing when the model configuration was saved and reloaded in the Playground.
+
+  * Self-hosted OIDC users received a display name resolved from the `name` / `given_name`+`family_name` id\_token claims.
+
+  * Fixed SSRF policy for `playground` service to respect `SSRF_ALLOW_K8S_INTERNAL`.
+
+  * Fixed an LLM gateway data-protection bug that could corrupt Anthropic images or documents when PII redaction was enabled.
+
+  * Hid sandbox file explorer controls while allowing explicit sandbox summary downloads.
+
+  * Engine supported an optional monthly LCU spend limit (set by finance, plan, or org admins) that paused new Engine runs once reached.
+
+  * Chat-input file uploads in agent builder/fleet reached the sandbox filesystem at `/tmp/uploads/` when sandboxes were enabled.
+
+  * Fleet Default appeared first in the model picker for eligible plans.
+
+  * Fixed the project stats sidebar trace count label and header layout.
+
+  * Workspace switcher on the data-plane no-access screen only listed current organization workspaces.
+
+  * Restored cron execution for enterprise Fleet agents that had been silently failing to fire since early March 2026.
+
+  * Run rules webhook payloads included a `trace_url` deep link for each run.
+
+  * Experiment loading progress bars showed the number of runs completed and evaluated within the experiments table.
+
+  * Sandboxes allowed password-based SSH for non-root users while keeping root SSH login key-only.
+
+  * Fixed security vulnerabilities. See CVE-2026-45736, CVE-2026-44664, CVE-2025-71176 for details.
+
+  **Download the Helm chart:** [`langsmith-0.16.0-rc.7.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.7/langsmith-0.16.0-rc.7.tgz)
+</Update>
+
+<Update label="2026-06-26">
+  ## langsmith-0.16.0-rc.6
+
+  * Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
+
+  * "Include extended stats" was made available to all organizations for code evaluators.
+
+  * Added two dedicated permissions, `bulk-exports:read` and `bulk-exports:manage`, for fetching and creating/updating bulk exports.
+
+  * Fixed the Engine "Connect GitHub" flow when the GitHub App was already installed via another workspace in the same organization.
+
+  * Added an opt-in Smith-ACE v2 sandbox implementation behind `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2`.
+
+  * Threads table now showed the actual last output in the *Last Output* column and surfaced thread-level errors in the new *Last Error* column.
+
+  * Hid the \$0.00 cost badge for tool calls in the trace tree view.
+
+  * Users could now create multiple cron schedules with the same expression on the same agent.
+
+  * Agent Builder's "View agent traces" and "View trace" links always opened in the fleet tracing project.
+
+  * Added LangSmith model pricing entry for `gemini-3.1-flash-lite`.
+
+  * LLM-as-judge evaluators could now opt into "Include extended stats" and map prompt variables from `run.*` fields.
+
+  * Default sandbox rootfs images now included Docker Compose and started the Docker daemon automatically.
+
+  * Added cost tracking for `gemini-3.5-flash`.
+
+  * Gateway spend cap policies could now be configured with a weekly period.
+
+  * Added Centralize as an MCP marketplace integration.
+
+  * Sandbox-enabled agents now saw configured proxy profiles (hosts, injected header keys, network rules, OAuth providers) in their system prompt, replacing the older hosts-only auth-proxy section.
+
+  * Hid the Sandboxes nav entry and `/sandboxes` page in regions where `SANDBOX_FEATURE_ENABLED` was off.
+
+  * Self-hosted DockerHub images now included Cosign signatures and signed SPDX SBOM attestations.
+
+  * Fixed a bug where special characters in thread IDs were not encoded, causing the UI to fail to query these threads.
+
+  * Fixed "Query timeout exceeded" errors when opening large traces.
+
+  * Self-hosted OIDC: fixed SSO Groups Sync silently no-op'ing during login.
+
+  * Managed Deep Agents private preview now supported MCP server registration with header-based auth.
+
+  * Emitted Prometheus metrics from `queue` workers.
+
+  * Clarified the stats unavailable message when text filters were applied.
+
+  * Typed responses and standard error envelope were added for Fleet `/v1/fleet/agents/{agent_id}/connections` (List / Create / Delete).
+
+  * Sandbox snapshots could now export a Docker image built inside a sandbox.
+
+  * Fixed ACE subprocess handling so early child-process exits returned request failures instead of crashing the service.
+
+  * Fixed large integer preservation in native run ingest payloads.
+
+  * Waterfall turn view now took full height if available.
+
+  * Organization admins could now disable Engine even when their plan auto-enabled it; their explicit choice persisted across the UI and the backend gates.
+
+  * Workspace admins could now override the workspace-default weekly spend cap on a per-evaluator-rule basis from the evaluator side panel; non-admins saw the resolved cap as read-only text.
+
+  * Fixed incorrect metadata facet suggestions and improved group stats latency for projects with rich run metadata.
+
+  * Alert rules for Run Count, Errors, Latency, and Cost now supported `<`, `<=`, `>`, and `>=` comparison operators (previously the UI only allowed `>=`).
+
+  * Fleet agent APIs now required `thread_scoped_sandbox` or `agent_scoped_sandbox` for sandbox-backed agents.
+
+  * Allowed exporting all experiments in a workspace via the new `all_experiments` parameter for bulk exports (limited to 250 experiments per export, with an option to increase upon request).
+
+  * Redesigned the run details panel with improved readability and more robust message parsing.
+
+  * Fleet/Agent Builder now included Gemini 3.5 Flash as a selectable built-in model.
+
+  * Computer use now had an in-chat callout for eligible general chat users.
+
+  * Fixed a bug where the blob storage banner incorrectly flashed on page load.
+
+  * Added a way to leave feedback on a run directly within the run details panel.
+
+  * Added token pricing support for Claude Opus 4.8.
+
+  * Agent Builder now offered Claude Opus 4.8 as a built-in Anthropic model.
+
+  * Org admins could now update an existing API key's role via the service-keys API without rotating the key.
+
+  * Managed Deep Agents MCP server setup now supported OAuth under the `/v1/deepagents` API namespace.
+
+  * Extra parameters entered for Bedrock Nova 2 (and any other provider requiring camelCase API fields) now preserved their original key casing when the model configuration was saved and reloaded in the Playground.
+
+  * Self-hosted OIDC users now got a display name resolved from the `name` / `given_name` + `family_name` id\_token claims.
+
+  * Fixed SSRF policy for `playground` service such that it respected `SSRF_ALLOW_K8S_INTERNAL`.
+
+  * Fixed an LLM gateway data-protection bug that could corrupt Anthropic images or documents when PII redaction was enabled.
+
+  * Hid sandbox file explorer controls while allowing explicit sandbox summary downloads.
+
+  * Engine now supported an optional monthly LCU spend limit (set by finance, plan, or org admins) that paused new Engine runs once reached.
+
+  * Chat-input file uploads in agent builder/fleet now reached the sandbox filesystem at `/tmp/uploads/` when sandboxes were enabled.
+
+  * Fleet Default now appeared first in the model picker for eligible plans.
+
+  * Fixed the project stats sidebar trace count label and header layout.
+
+  * Run rules webhook payloads now included a `trace_url` deep link for each run.
+
+  * Experiment loading progress bars displayed the number of runs completed and evaluated within the experiments table.
+
+  * Sandboxes now allowed password-based SSH for non-root users while keeping root SSH login key-only.
+
+  * Fixed security vulnerabilities. See CVE-2026-45736, CVE-2026-44664, CVE-2025-71176 for details.
+
+  **Download the Helm chart:** [`langsmith-0.16.0-rc.6.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.6/langsmith-0.16.0-rc.6.tgz)
+</Update>
 
 <Update label="2026-06-24">
   ## langsmith-0.15.12

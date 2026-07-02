@@ -31,10 +31,6 @@ Weekly updates to [LangSmith Cloud](/langsmith/observability) and [LangSmith Fle
 
       ## Admin and billing
 
-      ### Administration
-
-      * [API keys](/langsmith/create-account-api-key) now default to a 90-day expiration, or to your organization's shorter maximum when one is enforced.
-
       ## Fixes
 
       * Duplicate run create or update payloads now return clearer 409 Conflict messages that indicate whether the duplicate was a create or an update request when possible.
