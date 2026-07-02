@@ -16,7 +16,7 @@ If you need a DevKit device, you can [order up to five per user](https://docs.st
 
 > #### Verifone reader support
 > 
-> Verifone reader support is in **public preview** for the United States and Canada and **private preview** for Ireland and the United Kingdom (V660p, UX700, P630), Singapore (V660p, P630), and Australia (V660p, UX700, P630).
+> Verifone reader support is in **public preview** for the United States, Canada, Belgium, Italy, the Netherlands, Norway, Spain, and Sweden and **private preview** for Ireland and the United Kingdom (V660p, UX700, P630), France (V660p, UX700, P630), Singapore (V660p, P630), and Australia (V660p, UX700, P630).
 > 
 > To join either preview, you must [contact the Sales team to order the applicable reader](https://stripe.com/contact/sales).
 

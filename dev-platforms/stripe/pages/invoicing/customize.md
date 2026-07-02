@@ -67,7 +67,7 @@ For example, if one of your customers is a business named Typographic, you might
 
 Prefixes must be between 3 and 12 characters and can’t match any other customer prefix, including prefixes that are no longer in use.
 
-You can set prefixes on the [Customers page](https://dashboard.stripe.com/customers) in the Dashboard or using the API. If you model customers as customer-configured `Account` objects, use the [configuration.customer.billing.invoice.prefix](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer-billing-invoice-prefix) parameter. If you model customers as `Customer` objects, use the [invoice_prefix](https://docs.stripe.com/api/customers/create.md#create_customer-invoice_prefix) parameter.
+You can set prefixes on the [Customers page](https://dashboard.stripe.com/customers) in the Dashboard or using the API. If you represent customers as customer-configured `Account` objects, use the [configuration.customer.billing.invoice.prefix](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer-billing-invoice-prefix) parameter. If you represent customers as `Customer` objects, use the [invoice_prefix](https://docs.stripe.com/api/customers/create.md#create_customer-invoice_prefix) parameter.
 
 ### Account-level prefixes 
 
@@ -89,7 +89,7 @@ When creating invoices with the `on_behalf_of` parameter, Stripe uses the connec
 
 By default, invoice numbers start at `0001`. If you’d like to use a different starting invoice number, however, you can change it. For example, some users—when migrating existing customers to Stripe Invoicing—want their invoice numbers to continue where their old system left off. If the user left off at invoice number `123` in their old system, Stripe allows them to resume the invoice number at `124`.
 
-​​If you use customer-level prefixes, set the starting number on the **Customer details** page in your Dashboard or using the API. If you model customers as customer-configured `Account` objects, use the [configuration.customer.billing.invoice.next_sequence](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer-billing-invoice-next_sequence) parameter. If you model customers as `Customer` objects, use the [next_invoice_sequence](https://docs.stripe.com/api/customers/create.md#create_customer-next_invoice_sequence) parameter.
+​​If you use customer-level prefixes, set the starting number on the **Customer details** page in your Dashboard or using the API. If you represent customers as customer-configured `Account` objects, use the [configuration.customer.billing.invoice.next_sequence](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer-billing-invoice-next_sequence) parameter. If you represent customers as `Customer` objects, use the [next_invoice_sequence](https://docs.stripe.com/api/customers/create.md#create_customer-next_invoice_sequence) parameter.
 
 If you use account-level prefixes, set the starting number in the **Next invoice sequence** field on the [Invoice settings](https://dashboard.stripe.com/settings/billing/invoice) page in your Dashboard.
 

@@ -586,6 +586,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Control the use of Copilot CLI within your enterprise.
 
+* [Using Copilot CLI in GitHub Actions with GITHUB\_TOKEN](/en/copilot/how-tos/copilot-cli/use-copilot-cli-in-actions)
+
+  Run Copilot CLI in a GitHub Actions workflow using the built-in `GITHUB_TOKEN`, without a personal access token.
+
 * [Configuring local sandbox settings](/en/copilot/how-tos/cloud-and-local-sandboxes/configuring-local-sandbox-settings)
 
   Use the `/sandbox` slash command in Copilot CLI to control how the local sandbox restricts filesystem access, network connectivity, and system capabilities.
@@ -665,6 +669,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Remote sessions](/en/copilot/how-tos/copilot-sdk/features/remote-sessions)
 
   Remote sessions let users access their Copilot session from GitHub web and mobile via [Mission Control](https://github.com). When enabled, the SDK connects each session to Mission Control, producing a URL that can be shared as a link or QR code.
+
+* [Session limits](/en/copilot/how-tos/copilot-sdk/features/session-limits)
+
+  Session limits let an application set an AI Credits budget for a Copilot session. Use `sessionLimits` when creating or resuming a session to set a soft cap for the current accounting window.
 
 * [Session resume and persistence](/en/copilot/how-tos/copilot-sdk/features/session-persistence)
 

@@ -1,5 +1,5 @@
 ---
-title: "AgentKit for the Vercel AI SDK"
+title: "Vercel AI SDK Memory, RAG & Chat History with Redis"
 source: https://upstash.com/docs/redis/sdks/agentkit/ai-sdk
 path: docs/redis/sdks/agentkit/ai-sdk
 ---

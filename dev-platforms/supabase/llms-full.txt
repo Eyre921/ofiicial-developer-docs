@@ -69879,7 +69879,308 @@ Before running the MCP server, we recommend you read our [security best practice
 
 Choose your Supabase platform, project, and MCP client and follow the installation instructions:
 
+The hosted Supabase MCP server is available at `https://mcp.supabase.com/mcp`. If you're developing locally with the Supabase CLI, use `http://localhost:54321/mcp` instead.
 
+Find your client below and add the configuration shown. You can scope the server by appending URL query parameters: `?project_ref=<id>` to limit it to a single project, `?read_only=true` to allow only read queries, and `?features=database,docs` to enable specific tool groups.
+
+#### AI Agent CLI
+
+**Claude Code**
+
+Add the MCP server to your project config using the command line:
+
+```bash
+claude mcp add --scope project --transport http supabase "https://mcp.supabase.com/mcp"
+```
+
+Alternatively, add this configuration to `.mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+After configuring the MCP server, you need to authenticate. In a regular terminal (not the IDE extension) run:
+
+```bash
+claude /mcp
+```
+
+Select the "supabase" server, then "Authenticate" to begin the authentication flow.
+
+**Codex**
+
+Add the Supabase MCP server to Codex:
+
+```bash
+codex mcp add supabase --url "https://mcp.supabase.com/mcp"
+```
+
+Alternatively, add this configuration to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.supabase]
+url = "https://mcp.supabase.com/mcp"
+```
+
+Authenticate with the MCP server:
+
+```bash
+codex mcp login supabase
+```
+
+Finally, run `/mcp` inside Codex to verify authentication.
+
+**Gemini CLI**
+
+> **Warning:** Ensure you are running Gemini CLI version `0.20.2` or higher.
+
+Install the Supabase [extension](https://github.com/supabase-community/gemini-extension) for Gemini CLI. This bundles the Supabase MCP server connection, [agent skills](https://github.com/supabase/agent-skills), and other context.
+
+```bash
+gemini extensions install https://github.com/supabase-community/gemini-extension
+```
+
+Or add just the MCP server to Gemini CLI:
+
+```bash
+gemini mcp add -t http supabase "https://mcp.supabase.com/mcp"
+```
+
+Alternatively, add this configuration to `.gemini/settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "httpUrl": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+After installation, start the Gemini CLI and run the following command to authenticate the server:
+
+```bash
+/mcp auth supabase
+```
+
+**GitHub Copilot**
+
+Add the MCP server to your GitHub Copilot config using the command line:
+
+```bash
+copilot mcp add --transport http supabase "https://mcp.supabase.com/mcp"
+```
+
+Alternatively, add this configuration to `~/.copilot/mcp-config.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+After configuring the MCP server, authenticate by running:
+
+```bash
+copilot -i /mcp
+```
+
+Follow the on-screen instructions to complete the authentication flow.
+
+**OpenCode**
+
+Add this configuration to `~/.config/opencode/opencode.json`:
+
+```json
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "supabase": {
+      "type": "remote",
+      "url": "https://mcp.supabase.com/mcp",
+      "enabled": true
+    }
+  }
+}
+```
+
+After adding the configuration, run the following command to authenticate:
+
+```bash
+opencode mcp auth supabase
+```
+
+This will open your browser to complete the OAuth authentication flow.
+
+**Factory**
+
+Add Supabase MCP server to Factory:
+
+```bash
+droid mcp add supabase "https://mcp.supabase.com/mcp" --type http
+```
+
+Alternatively, add this configuration to `~/.factory/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+Restart Factory or type `/mcp` within droid to complete OAuth authentication flow.
+
+#### Web Clients
+
+**Claude.ai**
+
+Available as a connector. Install it from the [Claude.ai directory](https://claude.com/docs/connectors/overview).
+
+**ChatGPT**
+
+Available as a connector. Install it from the [ChatGPT directory](https://chatgpt.com/features/apps/).
+
+**Goose**
+
+Start a Goose session with the Supabase extension:
+
+```bash
+goose session --with-streamable-http-extension "https://mcp.supabase.com/mcp"
+```
+
+Alternatively, add this configuration to `~/.config/goose/config.yaml`:
+
+```yaml
+extensions:
+  supabase:
+    available_tools: []
+    bundled: null
+    description: 'Connect your Supabase projects to AI assistants. Manage tables, query data, deploy Edge Functions, and interact with your Supabase backend directly from your MCP client.'
+    enabled: true
+    env_keys: []
+    envs: {}
+    headers: {}
+    name: Supabase
+    timeout: 300
+    type: streamable_http
+    uri: 'https://mcp.supabase.com/mcp'
+```
+
+For more details, see [Using Extensions](https://block.github.io/goose/docs/getting-started/using-extensions) in Goose.
+
+#### IDE
+
+**Cursor**
+
+Add this configuration to `.cursor/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+**VS Code**
+
+Add this configuration to `.vscode/mcp.json`:
+
+```json
+{
+  "servers": {
+    "supabase": {
+      "type": "http",
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+**Antigravity**
+
+Add this configuration to `~/.gemini/antigravity/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "serverUrl": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+After saving the config, restart Antigravity. It will prompt you to complete the OAuth flow to authenticate with Supabase.
+
+To edit the config from within Antigravity, click the **···** menu at the top of the Agent pane > **MCP Servers** > **Manage MCP Servers** > **View raw config**. From the Manage MCP Servers page you can also **Refresh** server configs and enable/disable servers.
+
+If you run into authentication issues, open Agent Settings with **Cmd+,** (Mac) or **Ctrl+,** (Windows/Linux), navigate to the **Customizations** tab, and click the **Authenticate** button next to the Supabase server.
+
+**Kiro**
+
+Install the Supabase [power](https://kiro.dev/docs/powers/) for Kiro. This bundles the Supabase MCP server and steering files for best practices.
+
+Add this configuration to `~/.kiro/settings/mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp"
+    }
+  }
+}
+```
+
+**Windsurf**
+
+> **Warning:** Ensure you are running Windsurf version `0.1.37` or higher.
+
+Alternatively, add this configuration to `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.supabase.com/mcp"
+      ]
+    }
+  }
+}
+```
+
+Windsurf does not currently support remote MCP servers over HTTP transport. You need to use the mcp-remote package as a proxy.
+
+**Authentication**
+
+Some MCP clients automatically prompt you to log in during setup, while others require manual authentication steps. Either way, a browser window opens where you log in to your Supabase account and grant the MCP client access to your organization.
+
+A personal access token (PAT) was previously required, but is no longer needed.
 
 ### Next steps
 
@@ -88380,6 +88681,14 @@ await Supabase.initialize(
 final supabase = Supabase.instance.client;
 ```
 
+`supabase_flutter` performs the server side of the WebAuthn ceremony for you and delegates the platform prompt (FaceID/TouchID/security key) to an authenticator you supply, instead of depending on a passkey plugin directly. Add a passkey plugin to your own app and pass its authenticator to `registerPasskey()` and `signInWithPasskey()`. The [`passkeys`](https://pub.dev/packages/passkeys) plugin's `PasskeyAuthenticator` implements the `PasskeyAuthenticatorInterface` these methods expect (since `passkeys` `2.21.0`), but you can pass any implementation of that interface:
+
+```dart
+import 'package:passkeys/authenticator.dart';
+
+final authenticator = PasskeyAuthenticator();
+```
+
 Platform setup that the library cannot do for you (Associated Domains on iOS/macOS, Digital Asset Links on Android, and including the [`passkeys`](https://pub.dev/packages/passkeys) web SDK in `index.html` on web) is documented in the `supabase_flutter` package README.
 
 **Swift**
@@ -88417,7 +88726,7 @@ if (error) {
 
 ```dart
 try {
-  final Passkey passkey = await supabase.auth.registerPasskey();
+  final Passkey passkey = await supabase.auth.registerPasskey(authenticator);
   print('Registered passkey ${passkey.id}');
 } on AuthException catch (e) {
   // The Supabase server rejected the credential.
@@ -88481,7 +88790,7 @@ if (error) {
 
 ```dart
 try {
-  final AuthResponse res = await supabase.auth.signInWithPasskey();
+  final AuthResponse res = await supabase.auth.signInWithPasskey(authenticator);
   // res.session and res.user are set; the client also fires AuthChangeEvent.signedIn
   print('Signed in as ${res.user?.email}');
 } on AuthException catch (e) {
@@ -158408,7 +158717,8 @@ This is the initial message required to join a channel. The client sends this me
       "replay" : {
         "since": integer,
         "limit": integer
-      }
+      },
+      "replication_ready": boolean
     },
     "presence": {
       "enabled": boolean,
@@ -158419,7 +158729,8 @@ This is the initial message required to join a channel. The client sends this me
         "event": string,
         "schema": string,
         "table": string,
-        "filter": string
+        "filter": string,
+        "select": string[]
       }
     ]
     "private": boolean
@@ -158436,6 +158747,7 @@ This is the initial message required to join a channel. The client sends this me
     - `replay`: Configuration options for broadcast replay (Optional)
       - `since`: Replay messages since a specific timestamp in milliseconds
       - `limit`: Limit the number of replayed messages (Optional)
+    - `replication_ready`: When `true`, the server emits a `system` event once the Postgres replication connection backing this channel is established and ready to stream changes (Optional). See the [system](#system) event for the payload shape.
   - `presence`: Configuration options for presence tracking
     - `enabled`: Whether presence tracking is enabled for this channel
     - `key`: Key to be used for presence tracking, if not specified or empty, a UUID will be generated and used
@@ -158443,7 +158755,8 @@ This is the initial message required to join a channel. The client sends this me
     - `event`: Database change event to listen to, accepts `INSERT`, `UPDATE`, `DELETE`, or `*` to listen to all events.
     - `schema`: Schema of the table to listen to, accepts `*` wildcard to listen to all schemas
     - `table`: Table of the database to listen to, accepts `*` wildcard to listen to all tables
-    - `filter`: Filter to be used when pulling changes from database. Read more about filters in the usage docs for [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes?queryGroups=language\&language=js#filtering-for-specific-changes)
+    - `filter`: Filter to be used when pulling changes from the database. A filter is a `column=operator.value` expression (for example `id=eq.1` or `title=like.%foo%`). Multiple conditions can be combined with commas and are applied as an `AND` (for example `id=gt.0,id=lt.100`). Any operator can be negated with the `not.` prefix (for example `status=not.in.(draft,archived)`). Reserved characters (`,`, `(`, `)`) inside a value must be double-quoted PostgREST-style (for example `name=eq."a,b"`). See the [Postgres Changes subscription errors](#postgres-changes-subscription-errors) for the full list of supported operators, and the usage docs for [Postgres Changes](https://supabase.com/docs/guides/realtime/postgres-changes?queryGroups=language\&language=js#filtering-for-specific-changes).
+    - `select`: Optional array of column names to restrict the change payload to a subset of columns instead of receiving the full row. Reduces payload size and the data transferred per event. The listed columns must be selectable by the subscribing role. Not supported for wildcard (`*`) schema or table subscriptions — an explicit `schema` and `table` are required.
 - `access_token`: Optional access token for authentication, if not provided, the server will use the API key.
 
 Example on protocol version `2.0.0`:
@@ -158738,7 +159051,7 @@ The server sends system messages to inform clients about the status of their Rea
 
 - `message`: A human-readable message describing the status of the subscription.
 - `status`: The status of the subscription, can be `ok`, `error`, or `timeout`.
-- `extension`: The extension that sent the message.
+- `extension`: The extension that sent the message. `postgres_changes` for Postgres Changes subscription status, or `system` for connection-level messages such as the replication-ready notification.
 - `channel`: The channel to which the message belongs, such as `realtime:room1`.
 
 Example on protocol version `2.0.0`:
@@ -158753,6 +159066,23 @@ Example on protocol version `2.0.0`:
     "message": "Subscribed to PostgreSQL",
     "status": "ok",
     "extension": "postgres_changes",
+    "channel": "main"
+  }
+]
+```
+
+When a channel is joined with `config.broadcast.replication_ready` set to `true`, the server sends a `system` message with `extension: "system"` once the Postgres replication connection backing the channel is ready to stream changes. `status` is `"ok"` with `message: "Replication connection established"` on success, or `"error"` if the connection is not established in time (which also closes the channel — see [Channel-level system errors](#channel-level-system-errors)).
+
+```json
+[
+  "14",
+  null,
+  "realtime:chat-room",
+  "system",
+  {
+    "message": "Replication connection established",
+    "status": "ok",
+    "extension": "system",
     "channel": "main"
   }
 ]
@@ -158880,6 +159210,8 @@ The server sends this message when a database change occurs in a subscribed sche
   - `record`: An object representing the new values after the change, with keys as column names and values as their corresponding values.
   - `old_record`: An object representing the old values before the change, with keys as column names and values as their corresponding values.
   - `errors`: Any errors that occurred during the change, if applicable.
+
+When the subscription was joined with a `select` array (see [phx\_join](#phx_join)), `columns`, `record`, and `old_record` are restricted to the selected columns instead of the full row.
 
 ```json
 [
@@ -159086,15 +159418,16 @@ One exception: the `UnknownErrorOnChannel` code arrives as the bare human-readab
 
 `extension: "system"`, `status: "error"`. Match on the `message` field content — there is no machine-readable code field. Every channel-level system error is immediately followed by `phx_close`; the channel is closed. Client libraries should expose a way for users to subscribe to `system` events since there is no automatic handling.
 
-| Message contains                                   | Cause                      | Recovery                      |
-| -------------------------------------------------- | -------------------------- | ----------------------------- |
-| `Too many messages per second`                     | Broadcast/event rate limit | Throttle sends before rejoin  |
-| `Too many presence messages per second`            | Tenant presence rate limit | Reduce presence frequency     |
-| `Client presence rate limit exceeded`              | Per-client presence window | Longer cooldown before rejoin |
-| `Track message size exceeded`                      | Presence payload too large | Shrink payload                |
-| `Token has expired`                                | JWT expired mid-session    | Refresh token, rejoin         |
-| `Fields \`role\` and \`exp\` are required in JWT\` | Claims missing             | Fix token issuance            |
-| `Server requested disconnect`                      | Operational disconnect     | Reconnect after delay         |
+| Message contains                                     | Cause                                                                                              | Recovery                      |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ----------------------------- |
+| `Too many messages per second`                       | Broadcast/event rate limit                                                                         | Throttle sends before rejoin  |
+| `Too many presence messages per second`              | Tenant presence rate limit                                                                         | Reduce presence frequency     |
+| `Client presence rate limit exceeded`                | Per-client presence window                                                                         | Longer cooldown before rejoin |
+| `Track message size exceeded`                        | Presence payload too large                                                                         | Shrink payload                |
+| `Token has expired`                                  | JWT expired mid-session                                                                            | Refresh token, rejoin         |
+| `Fields \`role\` and \`exp\` are required in JWT\`   | Claims missing                                                                                     | Fix token issuance            |
+| `Server requested disconnect`                        | Operational disconnect                                                                             | Reconnect after delay         |
+| `Replication connection was not established in time` | Replication connection not ready before the deadline (only when `replication_ready` was requested) | Retry with backoff            |
 
 ### Postgres Changes subscription errors
 
@@ -159108,7 +159441,7 @@ One exception: the `UnknownErrorOnChannel` code arrives as the bare human-readab
 | Database error during subscription                     | Yes, every 5–10 s | Surface as degraded state                                                  |
 | `"Too many database timeouts"`                         | No                | Reduce subscription load; retry later                                      |
 
-Supported filter operators: `eq`, `neq`, `lt`, `lte`, `gt`, `gte`, `in`.
+Supported filter operators: `eq`, `neq`, `lt`, `lte`, `gt`, `gte`, `in`, `like`, `ilike`, `is`, `match`, `imatch`, `isdistinct`. Any operator can be negated with the `not.` prefix (for example `id=not.eq.5`). Multiple conditions are combined with commas and applied as an `AND` (for example `col1=eq.val,col2=gt.5`).
 
 The `ids` array on incoming `postgres_changes` payloads must match the subscription IDs returned in the `phx_join` reply. A mismatch means inconsistent server/client state — tear down and rejoin.
 
@@ -182930,6 +183263,30 @@ You can manage your RLS policies via the [Dashboard](https://supabase.com/dashbo
 
 ---
 
+# RLS policy causes infinite recursion
+
+If your Storage or database requests encounter an error and the corresponding Postgres logs show '*infinite recursion detected in policy for relation "table\_name"*', it is because of infinite recursion in your Row-Level Security (RLS) policies.
+
+**Why Does This Happen?**
+
+This error indicates a circular dependency between RLS policies. It occurs when an RLS policy queries a table with RLS enabled, and that table's policies end up triggering the original policy again.
+
+This can happen when:
+
+- A policy queries the same table.
+- A policy queries another table whose RLS policies eventually reference the original table, creating a circular dependency.
+
+Postgres detects the recursive policy evaluation and terminates the query to prevent infinite recursion. This error can also occur during Storage operations if a Storage RLS policy references a table with self-referencing or mutually recursive RLS policies.
+
+**How to Resolve This Issue:**
+
+Option 1: Update the table's RLS policies to ensure they do not directly or indirectly create a circular dependency.
+
+Option 2: Wrap the permission check in a SECURITY DEFINER function. This executes with the privileges of the user who created the function — if created with a role like postgres, it bypasses RLS on the target table and breaks the recursion. See [Use Security Definer Functions](https://supabase.com/docs/guides/database/postgres/row-level-security#use-security-definer-functions) for details.
+
+
+---
+
 # Supabase & Your Network: IPv4 and IPv6 compatibility
 
 ## Network compatibility with your Supabase database
@@ -192270,8 +192627,9 @@ await supabase.auth.signInWithSSO(
 Signs the user in with a passkey (WebAuthn).
 
 - Available on `supabase_flutter` 2.15.0 and later as an extension on `GoTrueClient`.
-- Drives the full WebAuthn ceremony end to end: starts the challenge with the Supabase server, prompts the user for biometrics or a security key via the platform passkey API, and verifies the credential with the server.
+- Drives the full WebAuthn ceremony end to end: starts the challenge with the Supabase server, calls the `authenticator` you supply to prompt the user for biometrics or a security key, and verifies the credential with the server.
 - Does not require an existing session. On success the session is persisted and an `AuthChangeEvent.signedIn` event is fired.
+- `supabase_flutter` does not depend on a passkey plugin directly. Pass an implementation of `PasskeyAuthenticatorInterface`, such as the [`passkeys`](https://pub.dev/packages/passkeys) plugin's `PasskeyAuthenticator` (since `passkeys` `2.21.0`).
 - For native flows or custom UI, use the lower-level [`auth.passkey`](https://supabase.com/docs/reference/dart/auth-passkey-api) namespace instead.
 - Passkeys are a BETA feature and must be enabled for your project in the Supabase Dashboard under Authentication > Configuration > Passkeys.
 - Platform setup the library cannot perform (Associated Domains on iOS/macOS, Digital Asset Links on Android, the `passkeys` web SDK on web) is documented in the `supabase_flutter` package README.
@@ -192281,7 +192639,11 @@ Signs the user in with a passkey (WebAuthn).
 #### Sign in with a passkey
 
 ```dart
-final AuthResponse res = await supabase.auth.signInWithPasskey();
+import 'package:passkeys/authenticator.dart';
+
+final authenticator = PasskeyAuthenticator();
+
+final AuthResponse res = await supabase.auth.signInWithPasskey(authenticator);
 final Session? session = res.session;
 final User? user = res.user;
 ```
@@ -192291,8 +192653,9 @@ final User? user = res.user;
 Registers a new passkey (WebAuthn credential) for the signed in user.
 
 - Available on `supabase_flutter` 2.15.0 and later as an extension on `GoTrueClient`.
-- Drives the full WebAuthn ceremony end to end: starts the registration with the Supabase server, prompts the user to create a credential on the device, and verifies it with the server.
+- Drives the full WebAuthn ceremony end to end: starts the registration with the Supabase server, calls the `authenticator` you supply to create a credential on the device, and verifies it with the server.
 - Requires a signed in (non-anonymous) user. If the user has verified MFA factors, the session has to be at `aal2` to manage passkeys.
+- `supabase_flutter` does not depend on a passkey plugin directly. Pass an implementation of `PasskeyAuthenticatorInterface`, such as the [`passkeys`](https://pub.dev/packages/passkeys) plugin's `PasskeyAuthenticator` (since `passkeys` `2.21.0`).
 - For native flows or custom UI, use the lower-level [`auth.passkey`](https://supabase.com/docs/reference/dart/auth-passkey-api) namespace instead.
 - Passkeys are a BETA feature and must be enabled for your project in the Supabase Dashboard under Authentication > Configuration > Passkeys.
 
@@ -192301,7 +192664,11 @@ Registers a new passkey (WebAuthn credential) for the signed in user.
 #### Register a passkey for the current user
 
 ```dart
-final Passkey passkey = await supabase.auth.registerPasskey();
+import 'package:passkeys/authenticator.dart';
+
+final authenticator = PasskeyAuthenticator();
+
+final Passkey passkey = await supabase.auth.registerPasskey(authenticator);
 ```
 
 ## signOut()

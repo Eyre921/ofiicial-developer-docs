@@ -2718,7 +2718,7 @@ Get runtime logs for a project or deployment. Runtime logs include application o
 
 **Sample prompt:** "Show me the runtime error logs for my project from the last hour"
 
-## Agent Runs observability tools
+## Agent Runs Observability Tools
 
 [Agent Runs](https://eve.dev/docs/guides/deployment) are the observability layer for agents built with the eve framework on Vercel. Use these tools to find projects with eve agent activity, list recent runs, inspect one run, and retrieve trace data for debugging agent behavior.
 
@@ -88044,7 +88044,13 @@ Store durable state, presence, counters, rooms, and pub/sub coordination in an e
 
 ## Use with frameworks
 
-Most Node.js server frameworks can serve WebSocket connections on Vercel without additional configuration. For example, you can serve a WebSocket echo endpoint with Express or Hono:
+Frameworks with native WebSocket support can serve WebSocket connections on Vercel Functions without additional configuration. If your app uses Nitro, either directly or through a framework like Nuxt, you can use Nitro’s native WebSocket support on Vercel.
+
+View the [Nitro](https://vercel.com/templates/nitro/nitro-websockets-starter) and [Nuxt](https://vercel.com/templates/nuxt/nuxt-websockets-starter) examples.
+
+### Node.js server frameworks
+
+Node.js server frameworks such as Express, Hono, and h3 can also serve WebSocket connections on Vercel:
 
 ```ts filename="api/server.ts" framework=express
 import { createServer } from 'node:http';
@@ -88090,7 +88096,51 @@ const server = serve({
 export default server;
 ```
 
-If your app uses Nitro, either directly or through a framework like Nuxt, you can use Nitro’s native WebSocket support on Vercel. View the [Nitro](https://vercel.com/templates/nitro/nitro-websockets-starter) and [Nuxt](https://vercel.com/templates/nuxt/nuxt-websockets-starter) examples.
+```ts filename="api/server.ts" framework=h3
+import { H3, serve, defineWebSocketHandler } from 'h3';
+import { plugin as ws } from 'crossws/server';
+
+const app = new H3();
+
+app.get(
+  '/ws',
+  defineWebSocketHandler({
+    message(peer, message) {
+      peer.send(message);
+    },
+  }),
+);
+
+export default serve(app, {
+  plugins: [ws({ resolve: async (req) => (await app.fetch(req)).crossws })],
+});
+```
+
+### Nitro
+
+Nitro has native WebSocket support powered by [crossws](https://crossws.h3.dev/guide). Enable it in your Nitro config:
+
+```ts filename="nitro.config.ts"
+import { defineConfig } from 'nitro';
+
+export default defineConfig({
+  features: {
+    websocket: true,
+  },
+});
+```
+
+Then export a handler with `defineWebSocketHandler()` from a route file. The route path is the connection path, so `routes/_ws.ts` handles connections on `/_ws`:
+
+```ts filename="routes/_ws.ts"
+import { defineWebSocketHandler } from 'nitro';
+
+export default defineWebSocketHandler({
+  message(peer, message) {
+    peer.send(message.text());
+  },
+});
+```
 
 ### Next.js
 
@@ -88110,8 +88160,6 @@ export async function GET() {
   });
 }
 ```
-
-Python ASGI apps don't need this workaround because Vercel Python runtime handles the connection upgrade natively.
 
 [Learn more about how to use this API with Next.js.](/docs/functions/functions-api-reference/vercel-functions-package#experimental_upgradewebsocket)
 
@@ -102021,6 +102069,10 @@ redeploying or promoting your app to production. This can be done through the
 dashboard when you click on the **Redeploy** button, and unchecking the **Use
 project's Ignore Build Step** checkbox.
 
+## Filtered installs
+
+You can speed up dependency installs by only installing the dependencies for the project being deployed and its workspace dependencies. Set a custom [Install Command](/docs/deployments/configure-a-build#install-command) in the project's `vercel.json` or [update your project's Build and Deployment settings](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Fsettings%2Fbuild-and-deployment%23framework-settings\&title=Build+and+Deployment+settings):
+
 ## How to link projects together in a monorepo
 
 When working in a monorepo with multiple applications (such as a frontend and a backend), it can be challenging to manage the connection strings between environments to ensure a seamless experience.
@@ -106525,9 +106577,9 @@ The Pro plan offers more resources and advanced features compared to the Hobby p
 | Edge Requests | Up to 1,000,000 requests | 10,000,000 requests included, then on-demand |
 | Projects | 200 | Unlimited |
 | Vercel Function maximum duration | 300s (5 minutes) | 300s (default) - [configurable up to 800s](/docs/functions/configuring-functions/duration); [extended max duration up to 1800s](/docs/functions/configuring-functions/duration#extended-max-duration-beta) (30 minutes, beta) |
-| Build vCPUs | 2 | 30 |
-| Build memory (GB) | 8 | 60 |
-| Build disk size | 32 GB | 32 GB up to [64 GB](/docs/builds/managing-builds#build-machine-types) |
+| Build vCPUs | 2 | 4, up to [30](/docs/builds/managing-builds#build-machine-types) |
+| Build memory (GB) | 8 | 8GB, up to [60GB](/docs/builds/managing-builds#build-machine-types) |
+| Build disk size | 32 GB | 32 GB, up to [64 GB](/docs/builds/managing-builds#build-machine-types) |
 | Team collaboration features | - | Yes |
 | Domains per project | 50 | Unlimited |
 | Deployments per day | 100 | 6,000 |
@@ -119062,6 +119114,63 @@ The `retry` callback can return:
 | `{ afterSeconds: number }` | Retry after the specified delay         |
 | `{ acknowledge: true }`    | Acknowledge the message (stop retrying) |
 | `undefined`                | Use default retry behavior              |
+
+## Framework integrations
+
+### Nitro
+
+[Nitro v3](https://nitro.build) and frameworks built on it integrate with Vercel Queues through the Vercel preset. You declare your topic triggers in `nitro.config.ts`, and Nitro generates the consumer function and its trigger configuration during the build, so you don't edit `vercel.json` yourself.
+
+Declare the topics you want to subscribe to under `vercel.queues.triggers`:
+
+```ts filename="nitro.config.ts"
+export default defineConfig({
+  vercel: {
+    queues: {
+      triggers: [
+        { topic: 'orders' },
+        {
+          topic: 'notifications',
+          retryAfterSeconds: 60,
+          initialDelaySeconds: 5,
+        },
+      ],
+    },
+  },
+});
+```
+
+Each trigger accepts the following options:
+
+| Option                | Type     | Required | Description                                               |
+| --------------------- | -------- | -------- | --------------------------------------------------------- |
+| `topic`               | `string` | Yes      | Topic to subscribe to                                     |
+| `retryAfterSeconds`   | `number` | No       | Delay before a failed message is retried                  |
+| `initialDelaySeconds` | `number` | No       | Delay before a newly published message is first delivered |
+
+Process incoming messages with the `vercel:queue` runtime hook in a [Nitro plugin](https://nitro.build/guide/plugins). The hook receives the decoded `message`, its `metadata`, and a `send` function for publishing follow-up messages:
+
+```ts filename="server/plugins/queues.ts"
+export default definePlugin((nitro) => {
+  nitro.hooks.hook('vercel:queue', ({ message, metadata }) => {
+    console.log(`[${metadata.topicName}] ${metadata.messageId}`, message);
+  });
+});
+```
+
+Send messages with `send` from `@vercel/queue` in any server route, the same as in other frameworks:
+
+```ts filename="server/routes/api/orders.post.ts"
+import { send } from '@vercel/queue';
+
+export default defineHandler(async (event) => {
+  const order = await event.req.json();
+  const { messageId } = await send('orders', order);
+  return { messageId };
+});
+```
+
+Queues also run in `nitro dev`. Run `vercel link` and `vercel env pull` first so the SDK can authenticate, then `send` delivers messages straight to your `vercel:queue` hook for local testing. If the hook throws, the message is retried locally, honoring `retryAfterSeconds` from the matching trigger.
 
 ## Error handling
 

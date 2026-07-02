@@ -481,7 +481,7 @@ app.listen(4242, () => console.log('Running on port 4242'));
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "concurrently \"yarn start-client\" \"yarn start-server\""
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\""
   },
   "eslintConfig": {
     "extends": "react-app"

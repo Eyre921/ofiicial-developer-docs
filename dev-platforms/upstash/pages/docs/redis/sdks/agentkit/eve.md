@@ -1,5 +1,5 @@
 ---
-title: "AgentKit for Vercel Eve"
+title: "Memory, RAG, Rate Limiting & Sandboxes for the Vercel Eve Agent Framework"
 source: https://upstash.com/docs/redis/sdks/agentkit/eve
 path: docs/redis/sdks/agentkit/eve
 ---
@@ -37,7 +37,7 @@ npm install @upstash/box
 
 AgentKit reads `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` from the environment by default.
 
-## How to add memory tools to Eve
+## How to add memory tools to Vercel Eve
 
 Long-term memory the model reads and writes itself: `recall_memory` and `save_memory`, one file each.
 
@@ -72,7 +72,7 @@ export default defineMemorySaveTool({
   are stored at `agentkit:memory:<userId>:<id>`.
 </Accordion>
 
-## How to add RAG to Eve
+## How to add RAG to Vercel Eve
 
 `search` / `aggregate` / `count` Eve tools over an Upstash Redis Search index. It is the counterpart to the
 [AI SDK adapter's](/docs/redis/sdks/agentkit/ai-sdk#how-to-add-rag-with-the-ai-sdk)
@@ -102,7 +102,7 @@ export default defineSearchTools({
   `defineTool`-branded.
 </Accordion>
 
-## How to add rate limiting to Eve
+## How to add rate limiting to Vercel Eve
 
 A ready `AuthFn` that throttles inbound requests. Drop it into your channel's
 [auth walk](https://eve.dev/docs/guides/auth-and-route-protection) ahead of your real authenticators.
@@ -147,7 +147,7 @@ export default eveChannel({
   </Accordion>
 </AccordionGroup>
 
-## How to add a sandbox to Eve
+## How to add a sandbox to Vercel Eve
 
 A drop-in replacement for Eve's `vercel()` backend, powered by
 [Upstash Box](https://github.com/upstash/box). Swap the import and keep the rest of your
@@ -234,7 +234,7 @@ export default defineSandbox({
   </Accordion>
 </AccordionGroup>
 
-## How to cache tools in Eve
+## How to cache tools in Vercel Eve
 
 Like Eve's `defineTool`, but the `execute` result is memoized in Redis.
 
@@ -274,7 +274,7 @@ does **not** include shared `agent/`-source modules (e.g. a `agent/lib/redis.ts`
 Shared app code (e.g. a seeder a page calls) lives in your project `lib/`, imported by the app — not by
 `agent/` files.
 
-## How to run the Eve example app
+## How to run the Vercel Eve example app
 
 A complete `eve` agent app (memory, search, cached tools, a rate-limit gate, and an Upstash Box sandbox,
 with a chat UI that renders tool calls inline) lives in

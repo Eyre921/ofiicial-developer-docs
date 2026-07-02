@@ -14502,7 +14502,7 @@ We hope you enjoyed this course. If you have any questions or feedback, don't he
 ---
 
 ---
-modificationDate: June 29, 2026
+modificationDate: July 2, 2026
 title: Additional resources
 description: A reference of resources that are useful to learn about Expo tooling and services.
 ---
@@ -14558,6 +14558,8 @@ The following resources are useful for learning about Expo tooling and services.
 
 [Expo keynote](https://www.youtube.com/watch?v=605Id2fhmXE) — Charlie Cheever — App.js Conf 2026
 
+[React Native without Cocoapods](https://www.youtube.com/watch?v=5nHDA39K4NE) — Riccardo Cipolleschi, Christian Falch — App.js Conf 2026
+
 [Screens & Routers: The Foundation of Navigation in React Native Apps](https://www.youtube.com/watch?v=WJ3B2aIah6Q) — Kacper Kafara, Kuba Tkacz — App.js Conf 2026
 
 [Keynote: streamline React Native development](https://www.youtube.com/watch?v=lnxanzsP1rM) — Charlie Cheever, Jon Samp — App.js Conf 2025
@@ -14577,8 +14579,6 @@ The following resources are useful for learning about Expo tooling and services.
 [Keynote: community & workflows](https://www.youtube.com/watch?v=xHMu4oT6-SQ) — Charlie Cheever, James Ide — App.js Conf 2023
 
 [EAS: Iterate with confidence](https://www.youtube.com/watch?v=LTui_5dqXyM) — Jon Samp — App.js Conf 2023
-
-[Expo Router: Write Once, Route Everywhere](https://www.youtube.com/watch?v=608r8etX_cg) — Evan Bacon — App.js Conf 2023
 
 ## Podcasts
 
@@ -14608,6 +14608,8 @@ The following resources are useful for learning about Expo tooling and services.
 
 ## Live streams recordings
 
+[Closing the loop: How to turn your website into a mobile app with AI](https://www.youtube.com/watch?v=9Sl6VXrj224) — Expo Live Stream
+
 [What's new in Expo SDK 56? Widgets, Expo UI, Router decoupling from React Navigation](https://www.youtube.com/watch?v=FOFPOEIyeag) — Expo Live Stream
 
 [Announcing the 2025 Expo App Award winners!](https://www.youtube.com/watch?v=KnZ3LWkXzSk) — Expo Live Stream
@@ -14629,8 +14631,6 @@ The following resources are useful for learning about Expo tooling and services.
 [Your 2025 React Native Tech Stack](https://www.youtube.com/watch?v=kqdrn-jEaXY) — Expo Live Stream
 
 [Radon IDE: the VS Code extension for React Native](https://www.youtube.com/watch?v=UeYmRKWhwFI) — Expo Live Stream
-
-[Building 4 apps in 4 weeks with Expo](https://www.youtube.com/watch?v=YOfLHtK8B04) — Expo Live Stream
 
 ## Video tutorials
 

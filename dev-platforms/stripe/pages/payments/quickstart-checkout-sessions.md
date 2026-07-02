@@ -360,7 +360,7 @@ You can prefill the customer’s email address in two ways:
 
 ### Require billing and shipping details
 
-Use [billing_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-billing_address_collection) and [shipping_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-shipping_address_collection) to require your customer’s address. [shipping_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-shipping_address_collection) requires a list of `allowed_countries`, which Checkout displays in a dropdown menu on the page.
+Use [billing_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-billing_address_collection) and [shipping_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-shipping_address_collection) to require your customer’s address. [shipping_address_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-shipping_address_collection) requires a list of `allowed_countries`, which Checkout displays in a dropdown menu on the page. The sample uses `US` and `CA` as an example. Replace these values with the two-letter ISO country codes for the countries you ship to.
 
 ### Collect billing and shipping details
 
@@ -530,7 +530,7 @@ app.get("/session-status", async (req, res) => {
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "concurrently \"yarn start-client\" \"yarn start-server\""
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -1182,37 +1182,19 @@ async function handleSubmit(e) {
     "express": "^4.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
     "react-router-dom": "^6.16.0",
     "stripe": "^8.202.0"
   },
   "devDependencies": {
-    "concurrently": "^8.2.0"
+    "@vitejs/plugin-react": "^4.3.0",
+    "concurrently": "^8.2.0",
+    "vite": "^5.2.11"
   },
-  "homepage": "http://localhost:3000/checkout",
-  "proxy": "http://localhost:4242",
   "scripts": {
-    "start-client": "react-scripts start",
+    "start-client": "vite",
     "start-server": "node server.js",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
+    "build": "vite build",
     "start": "concurrently \"yarn start-client\" \"yarn start-server\""
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
   }
 }
 {
@@ -1224,31 +1206,15 @@ async function handleSubmit(e) {
     "@stripe/stripe-js": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
     "react-router-dom": "^6.16.0"
   },
-  "homepage": "http://localhost:3000/checkout",
-  "proxy": "http://127.0.0.1:4242",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.0",
+    "vite": "^5.2.11"
+  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "start": "vite",
+    "build": "vite build"
   }
 }
 import React, { useMemo } from "react";

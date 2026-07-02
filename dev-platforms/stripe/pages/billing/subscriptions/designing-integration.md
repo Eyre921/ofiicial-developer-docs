@@ -46,12 +46,14 @@ In the following example, you offer lower rates for customers who use more proje
 
 **Credit burndown pricing**: You collect prepayment for your usage-based product or service, and allow customers to apply billing credits as they use your product or service.
 
-In the following example, you charge a flat rate per month for your service that includes a set number of tokens. You charge any usage above the included tokens at an additional rate per token. To learn more, see [Metronome](https://docs.stripe.com/billing/usage-based.md).
+In the following example, you charge a flat rate per month for your service that includes a set number of tokens. You charge any usage above the included tokens at an additional rate per token.
 
 |             | First unit | Last unit | Per unit  | Flat rate |
 | ----------- | ---------- | --------- | --------- | --------- |
 | First tier  | 0          | 100,000   | 0.001 USD | 1.00 USD  |
-| Second tier | 100,001    | ∞         | 0.002 USD | 2.00 USD  | |
+| Second tier | 100,001    | ∞         | 0.002 USD | 2.00 USD  |
+
+To get started with usage-based billing, see [Metronome](https://docs.stripe.com/billing/usage-based.md). |
 
 ## Decide how customers check out 
 

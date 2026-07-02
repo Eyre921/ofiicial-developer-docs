@@ -16,9 +16,9 @@ Unlike other ElevenLabs WebSocket channels where your client connects to ElevenL
 the Speech Engine reverses this relationship: **ElevenLabs is the WebSocket client and
 your server is the WebSocket server**.
 
-This page shows the WebSocket API shape, however we recommend using the provided server side SDKs 
+This page shows the WebSocket API shape, however we recommend using the provided server side SDKs
 instead of implementing this yourself. The SDKs include several helper methods and automatically
-handle auth for you. You can find SDK installation instructions and 
+handle auth for you. You can find SDK installation instructions and
 guides in the [Speech Engine quickstart](/docs/eleven-api/guides/cookbooks/speech-engine).
 
 Configure your server's publicly reachable WebSocket URL in the `wsUrl` field when
@@ -91,12 +91,12 @@ info:
 
 
     This page shows the WebSocket API shape, however we recommend using the
-    provided server side SDKs 
+    provided server side SDKs
 
     instead of implementing this yourself. The SDKs include several helper
     methods and automatically
 
-    handle auth for you. You can find SDK installation instructions and 
+    handle auth for you. You can find SDK installation instructions and
 
     guides in the [Speech Engine
     quickstart](/docs/eleven-api/guides/cookbooks/speech-engine).
@@ -212,12 +212,12 @@ channels:
 
 
       This page shows the WebSocket API shape, however we recommend using the
-      provided server side SDKs 
+      provided server side SDKs
 
       instead of implementing this yourself. The SDKs include several helper
       methods and automatically
 
-      handle auth for you. You can find SDK installation instructions and 
+      handle auth for you. You can find SDK installation instructions and
 
       guides in the [Speech Engine
       quickstart](/docs/eleven-api/guides/cookbooks/speech-engine).

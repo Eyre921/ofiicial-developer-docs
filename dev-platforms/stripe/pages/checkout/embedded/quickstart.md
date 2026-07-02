@@ -330,7 +330,7 @@ To always create customers whenever one isn’t provided, set [customer_creation
 
 ### Specify returning customers
 
-To associate a Checkout Session with a customer that already exists, provide the [customer](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer) when creating a session. If you model customers using Accounts v2, you can also pass an Account ID to the [customer_account](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_account) field to prefill the associated email address. Learn more about the [difference between using v1 Customers and v2 Accounts](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
+To associate a Checkout Session with a customer that already exists, provide the [customer](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer) when creating a session. If you represent customers as customer-configured Account objects, you can also pass an Account ID to the [customer_account](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_account) field to prefill the associated email address. Learn more about the [difference between using v1 Customers and v2 Accounts](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
 
 // This test secret API key is a placeholder. Don't include personal details in requests with this key.
 // To see your test secret API key embedded in code samples, sign in to your Stripe account.
@@ -411,7 +411,7 @@ app.get('/session-status', async (req, res) => {
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "concurrently \"yarn start-client\" \"yarn start-server\""
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\""
   },
   "eslintConfig": {
     "extends": "react-app"

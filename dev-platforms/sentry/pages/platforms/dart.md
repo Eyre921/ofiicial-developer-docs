@@ -31,7 +31,7 @@ Sentry captures data by using an SDK within your application's runtime.
 
 ```yml
 dependencies:
-  sentry: ^9.22.0
+  sentry: ^9.23.0
 ```
 
 ## [Configure](https://docs.sentry.io/platforms/dart.md#configure)

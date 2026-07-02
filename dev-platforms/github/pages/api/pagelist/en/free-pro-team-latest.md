@@ -1648,6 +1648,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/copilot-cli
 /en/copilot/concepts/agents/copilot-cli/about-copilot-cli
 /en/copilot/concepts/agents/copilot-cli/comparing-cli-features
+/en/copilot/concepts/agents/copilot-cli/copilot-cli-in-github-actions
 /en/copilot/concepts/agents/copilot-cli/cancel-and-roll-back
 /en/copilot/concepts/agents/copilot-cli/about-remote-control
 /en/copilot/concepts/agents/copilot-cli/about-custom-agents
@@ -1803,6 +1804,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-cli/customize-copilot/plugins-creating
 /en/copilot/how-tos/copilot-cli/customize-copilot/plugins-marketplace
 /en/copilot/how-tos/copilot-cli/administer-copilot-cli-for-your-enterprise
+/en/copilot/how-tos/copilot-cli/use-copilot-cli-in-actions
 /en/copilot/how-tos/cloud-and-local-sandboxes
 /en/copilot/how-tos/cloud-and-local-sandboxes/enabling-or-disabling-cloud-sandboxes-for-your-organization
 /en/copilot/how-tos/cloud-and-local-sandboxes/configuring-local-sandbox-settings
@@ -1829,6 +1831,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-sdk/features/mcp
 /en/copilot/how-tos/copilot-sdk/features/plugin-directories
 /en/copilot/how-tos/copilot-sdk/features/remote-sessions
+/en/copilot/how-tos/copilot-sdk/features/session-limits
 /en/copilot/how-tos/copilot-sdk/features/session-persistence
 /en/copilot/how-tos/copilot-sdk/features/skills
 /en/copilot/how-tos/copilot-sdk/features/steering-and-queueing

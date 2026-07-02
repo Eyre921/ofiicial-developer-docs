@@ -14,7 +14,7 @@ When you’re ready to use a physical reader, you only need to update the [reade
 
 > #### Verifone reader support
 > 
-> Verifone reader support is in **public preview** for the United States and Canada and **private preview** for Ireland and the United Kingdom (V660p, UX700, P630), Singapore (V660p, P630), and Australia (V660p, UX700, P630).
+> Verifone reader support is in **public preview** for the United States, Canada, Belgium, Italy, the Netherlands, Norway, Spain, and Sweden and **private preview** for Ireland and the United Kingdom (V660p, UX700, P630), France (V660p, UX700, P630), Singapore (V660p, P630), and Australia (V660p, UX700, P630).
 > 
 > To join either preview, you must [contact the Sales team to order the applicable reader](https://stripe.com/contact/sales).
 
@@ -1481,7 +1481,7 @@ app.post("/capture_payment_intent", async (req, res) => {
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "concurrently \"yarn start-client\" \"yarn start-server\""
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\""
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -1756,7 +1756,7 @@ def create_location():
     'address': {
       'line1': data['address']['line1'],
       'city': data['address']['city'],
-      'state': data['address']['state'],
+      'state': data['address'].get('state'),
       'country': data['address']['country'],
       'postal_code': data['address']['postal_code'],
     },
@@ -1920,13 +1920,13 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
 
   $location = $stripe->terminal->locations->create([
     'display_name' => $data['display_name'],
-    'address' => [
+    'address' => array_filter([
       'line1' => $data['address']['line1'],
       'city' => $data['address']['city'],
-      'state' => $data['address']['state'],
+      'state' => $data['address']['state'] ?? null,
       'country' => $data['address']['country'],
       'postal_code' => $data['address']['postal_code'],
-    ],
+    ]),
   ]);
   $location = $stripe->terminal->locations->create([
     'display_name' => '{{TERMINAL_LOCATION_NAME}}',
@@ -2396,7 +2396,7 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
           Type = "card_present"
       };
 
-      var reader = _client.TestHelpers.Terminal.Readers.PresentPaymentMethod(request.ReaderId, parameters);
+      var reader = _client.V1.TestHelpers.Terminal.Readers.PresentPaymentMethod(request.ReaderId, parameters);
       return Json(reader);
     }
 
@@ -2446,7 +2446,7 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
   http.HandleFunc("/process_payment", func(w http.ResponseWriter, r *http.Request) { handleProcessPayment(sc, w, r) })
   http.HandleFunc("/simulate_payment", handleSimulatePayment)
 func createLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Request) *stripe.TerminalLocation {
-  params := &stripe.TerminalLocationParams{
+  params := &stripe.TerminalLocationCreateParams{
     Address: &stripe.AddressParams{
       Line1: stripe.String("{{TERMINAL_LOCATION_LINE1}}"),
       Line2: stripe.String("{{TERMINAL_LOCATION_LINE2}}"),
@@ -2464,7 +2464,7 @@ func createLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Request) *
   return l
 }
 func createLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Request) *stripe.TerminalLocation {
-  params := &stripe.TerminalLocationParams{
+  params := &stripe.TerminalLocationCreateParams{
     AddressKana: &stripe.TerminalLocationAddressKanaParams{
       Line1: stripe.String("{{TERMINAL_LOCATION_LINE1KANA}}"),
       Line2: stripe.String("{{TERMINAL_LOCATION_LINE2KANA}}"),
@@ -2497,7 +2497,7 @@ func handleCreateLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Requ
     Address struct {
       Line1 string `json:"line1"`
       City string `json:"city"`
-      State string `json:"state"`
+      State *string `json:"state,omitempty"`
       Country string `json:"country"`
       PostalCode string `json:"postal_code"`
     } `json:"address"`
@@ -2509,11 +2509,11 @@ func handleCreateLocation(sc *stripe.Client, w http.ResponseWriter, r *http.Requ
     return
   }
 
-  params := &stripe.TerminalLocationParams{
+  params := &stripe.TerminalLocationCreateParams{
     Address: &stripe.AddressParams{
       Line1: stripe.String(req.Address.Line1),
       City: stripe.String(req.Address.City),
-      State: stripe.String(req.Address.State),
+      State: req.Address.State,
       Country: stripe.String(req.Address.Country),
       PostalCode: stripe.String(req.Address.PostalCode),
     },
@@ -2931,10 +2931,13 @@ post("/create_location", (request, response) -> {
         .setCurrency("{{TERMINAL_CURRENCY}}")
         .setAmount(postBody.getAmount())
         .setCaptureMethod(PaymentIntentCreateParams.CaptureMethod.AUTOMATIC)
-        .putPaymentMethodOption(
-          "card_present",
-          PaymentIntentCreateParams.PaymentMethodOptions.CardPresent.builder()
-            .setCaptureMethod(PaymentIntentCreateParams.PaymentMethodOptions.CardPresent.CaptureMethod.MANUAL_PREFERRED)
+        .setPaymentMethodOptions(
+          PaymentIntentCreateParams.PaymentMethodOptions.builder()
+            .setCardPresent(
+              PaymentIntentCreateParams.PaymentMethodOptions.CardPresent.builder()
+                .setCaptureMethod(PaymentIntentCreateParams.PaymentMethodOptions.CardPresent.CaptureMethod.MANUAL_PREFERRED)
+                .build()
+            )
             .build()
         )
         {{TERMINAL_PAYMENT_METHODS}}
@@ -4216,7 +4219,7 @@ composer install
 2. Run the server
 
 ~~~
-php -S 127.0.0.1:4242 --docroot=public
+php -S 127.0.0.1:4242 router.php
 ~~~
 1. Build the server
 

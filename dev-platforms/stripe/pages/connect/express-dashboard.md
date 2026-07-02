@@ -10,7 +10,7 @@ Learn about the features of the Express Dashboard.
 
 The Express Dashboard is a user interface that’s available to your platform’s connected accounts. They can use the Express Dashboard to monitor their available balance, view upcoming *payouts* (A payout is the transfer of funds to an external account, usually a bank account, in the form of a deposit), view payments, manage disputes, issue refunds, and track their earnings in real time. This guide outlines the features of the Express Dashboard and how your connected accounts can access it.
 
-## Express Dashboard features
+## Features
 
 The Express Dashboard displays the connected account’s balance transactions and net volume. You can [customize the features available to your connected accounts in the Express Dashboard](https://docs.stripe.com/connect/customize-express-dashboard.md#customize-features).
 
@@ -57,27 +57,27 @@ The task list shows a connected account’s outstanding tasks, such as confirmin
 
 In profile settings, you can change the preferred language and the color scheme, which can be `light`, `dark`, or `system`. The default color scheme is `system`, so the Express Dashboard uses the color scheme set on your device.
 
-## Accessing the Express Dashboard
+## Access the Express Dashboard
 
-There are two ways to access the Express Dashboard, login links and self-service. We recommend using login links.
+We recommend providing login links to your connected accounts to access their Express Dashboard. You can also give them direct access.
 
 ### Login links 
 
-You can generate single-use account-specific login links that redirect connected accounts from your platform application to the Express Dashboard login page. They then log into the Dashboard using SMS or email authentication.
+You can generate single-use account-specific login links that redirect your connected accounts from your platform application to the Express Dashboard login page. They can log in using SMS or email authentication.
 
-To learn about using login links, see [Integrate the Express Dashboard in your platform](https://docs.stripe.com/connect/integrate-express-dashboard.md).
+To learn how to create login links, see [Integrate the Express Dashboard in your platform](https://docs.stripe.com/connect/integrate-express-dashboard.md).
 
-### Self-serve access 
+### Direct access 
 
-Connected accounts can access the Express Dashboard by logging into <https://connect.stripe.com/express_login> using their account email and an authentication code sent to their phone by SMS or to their email.
+Connected accounts can access the Express Dashboard by logging into [`https://connect.stripe.com/express_login`](https://connect.stripe.com/express_login) using their account email and an authentication code sent to their phone by SMS or to their email.
 
-> Only live mode accounts can use <https://connect.stripe.com/express_login> to sign in to Express. To sign in to the Express Dashboard with a test mode or sandbox account, use [login links](https://docs.stripe.com/connect/integrate-express-dashboard.md).
+Only live mode accounts can log in to [`https://connect.stripe.com/express_login`](https://connect.stripe.com/express_login). Connected accounts using a sandbox account can only access the Express Dashboard through a [login link](https://docs.stripe.com/connect/integrate-express-dashboard.md).
 
-To learn more about self-serve access, see the [Stripe Express support article](https://support.stripe.com/express/questions/how-do-i-login-to-my-stripe-express-account).
+To learn more about direct access, see [Support](https://support.stripe.com/express/questions/how-do-i-login-to-my-stripe-express-account).
 
 ## Supported browsers
 
-The Express Dashboard supports the same browsers that the [full Stripe Dashboard supports](https://docs.stripe.com/dashboard/basics.md). Express users must access the Dashboard in a web browser, not in embedded web views inside mobile or desktop applications.
+The Express Dashboard supports the same browsers the [Stripe Dashboard supports](https://docs.stripe.com/dashboard/basics.md). Connected accounts must access the Dashboard in a web browser, and can’t use embedded web views inside mobile or desktop applications.
 
 ## See also
 

@@ -12,7 +12,7 @@ Get started with our sample app to run a full, working subscription integration 
 
 The sample app demonstrates redirecting your customers from your site to a prebuilt payment page hosted on Stripe. The Stripe Billing APIs create and manage subscriptions, invoices, and recurring payments, while Checkout provides the prebuilt, secure, Stripe-hosted UI for collecting payment details.
 
-You can model customers in your integration either as [customer-configured Account](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer) objects using the Accounts v2 API (recommended in most cases) or as [Customer](https://docs.stripe.com/api/customers/object.md) objects using the Customers v1 API. For details about the differences between these options, see [Use Accounts as customers](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
+You can represent customers in your integration either as [customer-configured Account](https://docs.stripe.com/api/v2/core/accounts/create.md#v2_create_accounts-configuration-customer) objects or as [Customer](https://docs.stripe.com/api/customers/object.md) objects. For details about the differences between these options, see [Use Accounts as customers](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
 
 Click each step to see the corresponding sample code. As you interact with the steps, such as adding pricing data, the builder updates the sample code.
 
@@ -771,7 +771,7 @@ app.post(
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "concurrently \"yarn start-client\" \"yarn start-server\""
+    "start": "concurrently \"npm run start-client\" \"npm run start-server\""
   },
   "eslintConfig": {
     "extends": "react-app"

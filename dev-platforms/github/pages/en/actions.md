@@ -28,7 +28,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
-  You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.
+  <p>You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.</p>
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 

@@ -161,7 +161,6 @@ Apply coupons to subscriptions in a Checkout Session by setting the `discounts` 
 ```bash
 curl https://api.stripe.com/v1/checkout/sessions \
   -u <<YOUR_SECRET_KEY>>: \
-  -d "payment_method_types[]"=card \
   -d "line_items[][price]"="{{PRICE_ID}}" \
   -d "line_items[][quantity]"=1 \
   -d mode=subscription \-d "discounts[][coupon]"="{{COUPON_ID}}" \
