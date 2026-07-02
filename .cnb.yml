@@ -15,6 +15,8 @@ main:
         cpus: 2
       docker:
         image: python:3.12-slim
+      # 密钥仓：GH_TOKEN 用于把 CNB 主仓镜像推到 github.com/Eyre921/ofiicial-developer-docs
+      imports: https://cnb.cool/eyre/secret
       stages:
         - name: install-tools
           script: |
@@ -39,6 +41,24 @@ main:
               git push origin "HEAD:${CNB_BRANCH}"
               echo "已提交并推送更新"
             fi
+        - name: mirror-to-github
+          # 把 CNB 主仓当前 HEAD 单向镜像推到 GitHub（force-push，GitHub 侧是纯镜像）。
+          # 失败静默，不让 GitHub 抽风把整条流水线拉红（本职是抓文档并 commit 回 CNB，
+          # GitHub 备份是 nice-to-have）。
+          script: |
+            if [ -z "${GH_TOKEN:-}" ]; then
+              echo "跳过：未导入 GH_TOKEN"; exit 0
+            fi
+            GH_REPO="Eyre921/ofiicial-developer-docs"
+            GH_BRANCH="${CNB_BRANCH:-main}"
+            git remote remove github 2>/dev/null || true
+            git remote add github "https://x-access-token:${GH_TOKEN}@github.com/${GH_REPO}.git"
+            if git push -f github "HEAD:${GH_BRANCH}" 2>&1; then
+              echo "✓ 已镜像到 github.com/${GH_REPO}@${GH_BRANCH}"
+            else
+              echo "⚠️ 镜像到 GitHub 失败（不影响本职抓取，已存在 CNB 主仓）"
+            fi
+            exit 0   # 强制成功，任何 GitHub 侧异常都不阻断流水线
   api_trigger:
     - *refresh
   # 网页自定义按钮（.cnb/web_trigger.yml）点击后触发
