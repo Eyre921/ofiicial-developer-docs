@@ -16,10 +16,11 @@ main:
       docker:
         image: python:3.12-slim
       # 密钥仓：注入 GH_TOKEN 用于把 CNB 主仓镜像推到 github.com/Eyre921/ofiicial-developer-docs
-      # 注意 imports 用 slug:file 语法（不是浏览器 /-/blob/ URL）；
+      # imports 必须是列表 + 完整 blob URL（见 CNB 官方 file-reference 文档）
       # 密钥文件里 allow_events 需包含 crontab / api_trigger / web_trigger_refresh，
       # allow_slugs 需包含 lib/ofiicial-developer-docs（都已确认已加）。
-      imports: eyre/secret:external-registries.yml
+      imports:
+        - https://cnb.cool/eyre/secret/-/blob/main/external-registries.yml
       stages:
         - name: install-tools
           script: |
