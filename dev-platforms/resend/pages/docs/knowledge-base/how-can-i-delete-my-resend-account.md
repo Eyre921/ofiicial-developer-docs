@@ -6,14 +6,23 @@ path: docs/knowledge-base/how-can-i-delete-my-resend-account
 
 How to request your Resend account and data to be deleted.
 
-To delete your Resend account:
+To delete your Resend account, navigate to your [Profile Settings](https://resend.com/profile) and scroll to the **Delete account** section.
 
-1. [Leave the team](/docs/dashboard/settings/team#leave-your-resend-team) associated with your Resend account.
-2. Select the **Delete account** button.
+If you're associated with any teams, you'll be automatically prompted to leave or delete them before you can delete your account. Once all teams are removed, you can proceed with account deletion.
 
-Upon confirmation, Resend will delete your account and all account data.
+After confirmation, your account and all associated data will be queued for permanent deletion.
 
 <Warning>
-  Please note that this action is not reversible, so please proceed with
-  caution.
+  This action is not reversible, so please proceed with caution.
 </Warning>
+
+## Understanding Accounts vs Teams
+
+A **Resend Account** is your login method (email address) used to access Resend. A **Resend Team** is the environment where your API keys, domains, and email data are stored.
+
+* You can only have one Account, but you can be part of multiple Teams
+* To delete your Account, you must first leave or delete all Teams you're associated with
+
+## Deleting a Team
+
+If you want to delete a team (rather than just leaving it), see [How can I delete my Resend team?](/docs/knowledge-base/how-can-i-delete-my-team).

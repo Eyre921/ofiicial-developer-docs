@@ -14,7 +14,7 @@ Instead of sending one email per HTTP request, we provide a batching endpoint th
 <ParamField type="string">
   Sender email address.
 
-  To include a friendly name, use the format `"Your Name <sender@domain.com>"`.
+  To include a friendly name, pass the sender as `Name <email@example.com>`, for example `Acme <onboarding@example.dev>`.
 </ParamField>
 
 <ParamField type="string | string[]">
@@ -162,6 +162,10 @@ Instead of sending one email per HTTP request, we provide a batching endpoint th
 ## Limitations
 
 The `attachments` and `scheduled_at` fields are not supported yet.
+
+## Response format
+
+When the request succeeds, each entry in `data` corresponds to the email at the same index in the batch payload (0-based). The first email in your request will be the first entry in `data`, and so on.
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}

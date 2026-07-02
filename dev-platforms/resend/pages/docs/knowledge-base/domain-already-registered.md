@@ -4,7 +4,7 @@ source: https://resend.com/docs/knowledge-base/domain-already-registered
 path: docs/knowledge-base/domain-already-registered
 ---
 
-Resolve the 403 domain already registered error by verifying domain ownership and requesting a release.
+Resolve the 403 domain already registered error by verifying domain ownership or starting a self-serve claim.
 
 ## Overview
 
@@ -21,11 +21,23 @@ Common reasons a domain may already be registered:
 
 ## How to Resolve It
 
-To resolve this issue, confirm ownership and account access:
+### Check your existing accounts first
 
 1. Check with your team to see if someone is already using Resend.
-2. Check to make sure you're logged into the right account.
-3. If you still cannot locate the domain, contact [Resend support](https://resend.com/help) and share the domain name so the team can help you recover access.
+2. Make sure you're logged into the right account.
+
+### Claim the domain
+
+If the domain belongs to a different team and you can prove ownership, you can claim it through a self-serve process:
+
+1. Go to [Domains](https://resend.com/domains) and click **Add Domain**.
+2. Enter the domain name and submit the form.
+3. A prompt will appear explaining that the domain is in use by another Resend team. Click **Start claim** to begin.
+4. Add the DNS TXT record provided to your domain's DNS settings to prove ownership.
+
+The claim expires in 7 days. If you started a claim previously, you can pick up where you left off by submitting the same domain name again and clicking **Continue claim**.
+
+If you cannot add DNS records or need further assistance, contact [Resend support](https://resend.com/help).
 
 ## Related Resources
 

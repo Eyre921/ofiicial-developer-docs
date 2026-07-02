@@ -986,7 +986,7 @@ Create a new broadcast to send to your contacts.
 <ParamField type="string">
   Sender email address.
 
-  To include a friendly name, use the format `"Your Name <sender@domain.com>"`.
+  To include a friendly name, pass the sender as `Name <email@example.com>`, for example `Acme <onboarding@example.dev>`.
 </ParamField>
 
 <ParamField type="string">
@@ -7593,7 +7593,7 @@ Instead of sending one email per HTTP request, we provide a batching endpoint th
 <ParamField type="string">
   Sender email address.
 
-  To include a friendly name, use the format `"Your Name <sender@domain.com>"`.
+  To include a friendly name, pass the sender as `Name <email@example.com>`, for example `Acme <onboarding@example.dev>`.
 </ParamField>
 
 <ParamField type="string | string[]">
@@ -7741,6 +7741,10 @@ Instead of sending one email per HTTP request, we provide a batching endpoint th
 ## Limitations
 
 The `attachments` and `scheduled_at` fields are not supported yet.
+
+## Response format
+
+When the request succeeds, each entry in `data` corresponds to the email at the same index in the batch payload (0-based). The first email in your request will be the first entry in `data`, and so on.
 
 <RequestExample>
   ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -8004,7 +8008,7 @@ Start sending emails through the Resend Email API.
 <ParamField type="string">
   Sender email address.
 
-  To include a friendly name, use the format `"Your Name <sender@domain.com>"`.
+  To include a friendly name, pass the sender as `Name <email@example.com>`, for example `Acme <onboarding@example.dev>`.
 </ParamField>
 
 <ParamField type="string | string[]">
@@ -9132,9 +9136,7 @@ Paginated endpoints return responses in the following format:
 {
   "object": "list",
   "has_more": true,
-  "data": [
-    /* Array of resources */
-  ]
+  "data": [/* Array of resources */]
 }
 ```
 
@@ -9538,7 +9540,7 @@ The response headers describe your current rate limit following every request in
 | `ratelimit-reset`     | How many seconds until the limits are reset.                        |
 | `retry-after`         | How many seconds you should wait before making a follow-up request. |
 
-The default maximum rate limit is **5 requests per second per team**. This limit applies across all API keys associated with your team. This number can be increased for trusted senders upon request. You can view your team's current rate limit on the [Settings Usage page](https://resend.com/settings/usage).
+The default maximum rate limit is **10 requests per second per team**. This limit applies across all API keys associated with your team. This number can be increased for trusted senders upon request. You can view your team's current rate limit on the [Settings Usage page](https://resend.com/settings/usage).
 
 After that, you'll hit the rate limit and receive a `429` response error code. You can find all 429 responses by filtering for 429 at the [Resend Logs page](https://resend.com/logs?status=429).
 
@@ -17893,7 +17895,7 @@ To start executing an Automation, you need to:
   <Tab title="Using the dashboard">
     ## 1. Create Automation
 
-    The [Automations page](https://resend.com/automations) shows all existing automations.
+    The [Automations page](https://resend.com/automations) shows all existing automations. You can search by name and filter by status (**All Statuses**, **Enabled**, or **Disabled**) to quickly find the automation you need.
 
     Click **Create automation** to start a new Automation.
 
@@ -17933,11 +17935,9 @@ To start executing an Automation, you need to:
 
     Once you select that step, you will be able to select an existing template.
 
-    <Note>
-      Note: Only `published` templates are available to be used in an Automation.
-    </Note>
-
     <img alt="Add Send Email Step" />
+
+    If you select a draft template, you can publish it directly from the Send Email node without leaving the workflow editor. Click the **Publish** button that appears when a draft template is selected.
 
     With the template selected, you will be able to configure the email subject and sender address.
 
@@ -18896,13 +18896,13 @@ A run tracks the execution of each step in the workflow, including its status an
 
 Each run has one of the following statuses:
 
-| Status      | Description                                                    |
-| ----------- | -------------------------------------------------------------- |
-| `running`   | The Automation is currently executing steps                    |
-| `completed` | All steps finished successfully                                |
-| `failed`    | A step encountered an error and the run stopped                |
-| `cancelled` | The run was cancelled before completing                        |
-| `skipped`   | An email step was skipped because the contact has unsubscribed |
+| Status      | Description                                                                                        |
+| ----------- | -------------------------------------------------------------------------------------------------- |
+| `running`   | The Automation is currently executing steps                                                        |
+| `completed` | All steps finished successfully                                                                    |
+| `failed`    | A step encountered an error and the run stopped                                                    |
+| `cancelled` | The run was cancelled before completing                                                            |
+| `skipped`   | A step was skipped because the contact has either unsubscribed or followed a different branch path |
 
 ### Skipped steps
 
@@ -21542,6 +21542,30 @@ To confirm DMARC passed, you can inspect the email headers and confirm there is 
 
 Once you have verified DMARC is passing across all your sending, you should upgrade your Policy to `p=quarantine;`. This policy gives mailbox providers greater confidence in your domain since your domain only allows authenticated email.
 
+Update the value of your existing `_dmarc` TXT record to use a stricter policy:
+
+| Name                | Type | Value                                                          |
+| ------------------- | ---- | -------------------------------------------------------------- |
+| \_dmarc.example.com | TXT  | `v=DMARC1; p=quarantine; rua=mailto:dmarcreports@example.com;` |
+
+Once you're confident that all legitimate email is passing DMARC, you can further tighten the policy to `reject`:
+
+| Name                | Type | Value                                                      |
+| ------------------- | ---- | ---------------------------------------------------------- |
+| \_dmarc.example.com | TXT  | `v=DMARC1; p=reject; rua=mailto:dmarcreports@example.com;` |
+
+<Info>
+  While tightening your policy, it's important to have visibility into your
+  DMARC failures to ensure you're not blocking legitimate email. We recommend
+  adding aggregate reporting (`rua`) to your DMARC record to help you monitor
+  and troubleshoot DMARC failures. For help analyzing your DMARC reports, see
+  our [guide on how to read a DMARC
+  report](https://resend.com/blog/how-to-read-a-dmarc-report) or use Resend's
+  [DMARC analyzer](/docs/dmarc-analyzer).
+</Info>
+
+Here is a summary of the available policies and their behavior:
+
 | Policy        | Value                                            |
 | ------------- | ------------------------------------------------ |
 | p=none;       | Allow all email. Monitoring for DMARC failures.  |
@@ -22347,6 +22371,10 @@ When recipients clicks a link, the request is redirected to your tracking subdom
 
 If we detect CAA records on your domain, we will show an additional CAA record that needs to be created. This ensures
 that we can issue a TLS certificate for your tracking subdomain.
+
+### Multiple tracking CNAME records
+
+When you change your tracking subdomain, you may see two CNAME records in the DNS Records table: one active and one inactive (shown dimmed). The inactive record is kept intentionally to avoid breaking links in emails that were already sent using the previous subdomain. You do not need to remove it.
 
 ### Changing the Tracking Subdomain
 
@@ -23451,6 +23479,7 @@ You can send up to 100 emails in a single API call using the batch endpoint. Eac
 ## Response format
 
 The batch endpoint returns an array of email IDs for successfully created emails.
+When the request succeeds, each entry in `data` corresponds to the email at the same index in the batch payload (0-based). The first email in your request will be the first entry in `data`, and so on.
 
 ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
@@ -23701,13 +23730,13 @@ Changes to your email that can improve deliverability.
 
 <img alt="Attention Insights" />
 
-#### Link URLs match sending domain
+#### Ensure link URLs match sending domain
 
 Ensure that the URLs in your email match the sending domain. Mismatched URLs can trigger spam filters.
 
 For example, if your sending domain is `@widgets.com`, ensure links within the message point back to `https://widgets.com`.
 
-#### DMARC Record is Valid
+#### Include valid DMARC record
 
 DMARC is a TXT record published in the DNS that specifies how email receivers should handle messages from your domain that don’t pass SPF or DKIM validation. [A valid DMARC record](/docs/dashboard/domains/dmarc) can help improve email deliverability.
 
@@ -23747,17 +23776,17 @@ If you're diagnosing a deliverability issue, changing your email practices could
 
 Using a subdomain instead of the root domain helps segment your sending by purpose. This protects different types of sending from impacting the reputation of others and clearly shows the sending purpose.
 
-#### Disable Click Tracking
+#### Use Custom Subdomain for Click Tracking
 
-Click tracking modifies links, sometimes causing spam filters to flag emails as suspicious or phishing attempts. Disabling click tracking can help with email deliverability, especially for sensitive transactional emails like login or email verification.
+You're using a shared tracking domain for click tracking. Shared tracking domains can hurt deliverability because spam filters may flag links rewritten through shared domains as suspicious. Configure a custom tracking subdomain to keep links on your own domain and improve deliverability.
 
-If on, you can [disable click tracking on your domain in Resend](https://resend.com/domains).
+Learn how to [configure a custom tracking subdomain](/docs/dashboard/domains/tracking#open-and-click-tracking).
 
-#### Disable Open Tracking
+#### Use Custom Subdomain for Open Tracking
 
-Spam filters are sensitive to tracking pixels, flagging them as potential spam. Without these tracking elements, emails may bypass these filters more effectively, especially for sensitive transactional emails like login or email verification.
+You're using a shared tracking domain for open tracking. Spam filters are sensitive to tracking pixels served from shared domains, and may flag them as potential spam. Configure a custom tracking subdomain to serve tracking pixels from your own domain and improve deliverability.
 
-If on, you can [disable open tracking on your domain in Resend](https://resend.com/domains).
+Learn how to [configure a custom tracking subdomain](/docs/dashboard/domains/tracking#open-and-click-tracking).
 
 <Info>
   Open rates are not always accurate. Learn more about [why open rates may not
@@ -24842,7 +24871,7 @@ See all the metadata associated with an email, including the sender address, rec
 
 <img alt="Email Details" />
 
-Each email contains a **Preview**, **Plain Text**, and **HTML** version to visualize the content of your sent email in its various formats.
+Each email contains a **Preview**, **Plain Text**, **HTML**, and **Raw** tab to visualize the content of your sent email in its various formats. The Raw tab displays the email data as formatted JSON matching the public API response structure, including headers and other metadata.
 
 ## Understand email events
 
@@ -24863,17 +24892,17 @@ Here are all the events that can be associated with an email:
 
 ## Share email link
 
-You can share a public link of a sent email, which is valid for 48 hours. Anyone with the link can visualize the email.
+You can share a public link of a sent email. Anyone with the link can visualize the email.
 
 To share a link, click on the **dropdown menu** <Icon icon="ellipsis" />, and select **Share email**.
 
 <img alt="Email - Share Link Option" />
 
-Then copy the URL and share it with your team members.
+Select how long the link should remain valid (10 minutes, 3 hours, 24 hours, or 48 hours), then click **Generate link**.
 
 <img alt="Email - Share Link Modal" />
 
-Anyone with the link can visualize the email without authenticating for 48 hours.
+Copy the URL and share it with your team members. Anyone with the link can visualize the email without authenticating until the link expires.
 
 <img alt="Email - Share Link Item" />
 
@@ -26194,6 +26223,7 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
 
     * SDK name (e.g., "Resend Node.js")
     * Version number
+    * Update notification when a newer SDK version is available
 
     ## Troubleshooting errors
 
@@ -31832,7 +31862,7 @@ Vercel creates a new Resend account for your Vercel project, connects the domain
 
 Add Resend to the linked project from your terminal. With the [Vercel CLI](https://vercel.com/docs/cli) installed:
 
-1. Run `vercel integration add resend`.
+1. Run `vc i resend -m domain=example.com`.
 2. Select your custom domain associated with your Vercel project (or purchase a domain from Vercel).
 3. Select a plan (free or paid).
 4. Click **Continue** and **Create** to complete the installation.
@@ -32088,6 +32118,12 @@ Here's how to build your own integration with Resend:
 Source: https://resend.com/docs/introduction
 
 Resend is the email API for developers.
+
+<Info>
+  For all documentation in an index, see
+  [llms.txt](https://resend.com/docs/llms.txt). To view the full text of the
+  documentation, see [llms-full.txt](https://resend.com/docs/llms-full.txt).
+</Info>
 
 ## Quickstart
 
@@ -32366,15 +32402,15 @@ Paid plans include pay-as-you-go overages, which allow you to continue sending e
 
 ## Rate Limits
 
-All accounts start with a rate limit of 5 requests per second. The [rate limits](/docs/api-reference/rate-limit) follow the [IETF standard](https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-ratelimit-headers) for stating the rate limit in the response header. If you have specific requirements, [contact support](https://resend.com/help) to request a rate increase.
+All accounts start with a rate limit of 10 requests per second. The [rate limits](/docs/api-reference/rate-limit) follow the [IETF standard](https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-ratelimit-headers) for stating the rate limit in the response header. If you have specific requirements, [contact support](https://resend.com/help) to request a rate increase.
 
-The rate limit is enforced as a per-second window. There is no separate burst allowance above the stated limit. If your limit is 5 requests per second, a sixth request in the same second window will receive a `429` response.
+The rate limit is enforced as a per-second window. There is no separate burst allowance above the stated limit. If your limit is 10 requests per second, an eleventh request in the same second window will receive a `429` response.
 
 ### Rate limit scope
 
-The rate limit is **per team**, not per API key or per domain. All API keys associated with your team share the same rate limit pool. If you have multiple services or applications sending through the same Resend team, their requests count together toward the 5 req/sec limit.
+The rate limit is **per team**, not per API key or per domain. All API keys associated with your team share the same rate limit pool. If you have multiple services or applications sending through the same Resend team, their requests count together toward the 10 req/sec limit.
 
-For example, if Service A sends 3 requests and Service B sends 2 requests in the same second, you have hit your 5 req/sec limit for that window. Any additional requests from either service will receive a `429` response.
+For example, if Service A sends 6 requests and Service B sends 4 requests in the same second, you have hit your 10 req/sec limit for that window. Any additional requests from either service will receive a `429` response.
 
 ### High-volume workloads
 
@@ -32796,7 +32832,7 @@ If you're having trouble with domain verification or DNS records, see our [domai
 # Domain Already Registered by Another Account
 Source: https://resend.com/docs/knowledge-base/domain-already-registered
 
-Resolve the 403 domain already registered error by verifying domain ownership and requesting a release.
+Resolve the 403 domain already registered error by verifying domain ownership or starting a self-serve claim.
 
 ## Overview
 
@@ -32813,11 +32849,23 @@ Common reasons a domain may already be registered:
 
 ## How to Resolve It
 
-To resolve this issue, confirm ownership and account access:
+### Check your existing accounts first
 
 1. Check with your team to see if someone is already using Resend.
-2. Check to make sure you're logged into the right account.
-3. If you still cannot locate the domain, contact [Resend support](https://resend.com/help) and share the domain name so the team can help you recover access.
+2. Make sure you're logged into the right account.
+
+### Claim the domain
+
+If the domain belongs to a different team and you can prove ownership, you can claim it through a self-serve process:
+
+1. Go to [Domains](https://resend.com/domains) and click **Add Domain**.
+2. Enter the domain name and submit the form.
+3. A prompt will appear explaining that the domain is in use by another Resend team. Click **Start claim** to begin.
+4. Add the DNS TXT record provided to your domain's DNS settings to prove ownership.
+
+The claim expires in 7 days. If you started a claim previously, you can pick up where you left off by submitting the same domain name again and clicking **Continue claim**.
+
+If you cannot add DNS records or need further assistance, contact [Resend support](https://resend.com/help).
 
 ## Related Resources
 
@@ -34619,17 +34667,26 @@ Source: https://resend.com/docs/knowledge-base/how-can-i-delete-my-resend-accoun
 
 How to request your Resend account and data to be deleted.
 
-To delete your Resend account:
+To delete your Resend account, navigate to your [Profile Settings](https://resend.com/profile) and scroll to the **Delete account** section.
 
-1. [Leave the team](/docs/dashboard/settings/team#leave-your-resend-team) associated with your Resend account.
-2. Select the **Delete account** button.
+If you're associated with any teams, you'll be automatically prompted to leave or delete them before you can delete your account. Once all teams are removed, you can proceed with account deletion.
 
-Upon confirmation, Resend will delete your account and all account data.
+After confirmation, your account and all associated data will be queued for permanent deletion.
 
 <Warning>
-  Please note that this action is not reversible, so please proceed with
-  caution.
+  This action is not reversible, so please proceed with caution.
 </Warning>
+
+## Understanding Accounts vs Teams
+
+A **Resend Account** is your login method (email address) used to access Resend. A **Resend Team** is the environment where your API keys, domains, and email data are stored.
+
+* You can only have one Account, but you can be part of multiple Teams
+* To delete your Account, you must first leave or delete all Teams you're associated with
+
+## Deleting a Team
+
+If you want to delete a team (rather than just leaving it), see [How can I delete my Resend team?](/docs/knowledge-base/how-can-i-delete-my-team).
 
 
 # How can I delete my Resend team?
@@ -34691,10 +34748,182 @@ Once a domain is verified in your Resend account, you can send from **any** emai
   However, we recommend using addresses that can receive replies.
 </Info>
 
+## How to add the sender address
+
+You add the sender address in the `from` field when you send the email.
+
+To include a friendly name, use the format `"Your Name <sender@example.com>"`.
+
+<CodeGroup>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  await resend.emails.send({
+    from: 'Acme <onboarding@example.com>',
+    to: ['customer@example.com'],
+    subject: 'Welcome to Acme',
+    html: '<p>Thanks for signing up!</p>',
+  });
+  ```
+
+  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+  $resend = Resend::client('re_xxxxxxxxx');
+
+  $resend->emails->send([
+    'from' => 'Acme <onboarding@example.com>',
+    'to' => ['customer@example.com'],
+    'subject' => 'Welcome to Acme',
+    'html' => '<p>Thanks for signing up!</p>'
+  ]);
+  ```
+
+  ```python Python theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import resend
+
+  resend.api_key = "re_xxxxxxxxx"
+
+  params: resend.Emails.SendParams = {
+    "from": "Acme <onboarding@example.com>",
+    "to": ["customer@example.com"],
+    "subject": "Welcome to Acme",
+    "html": "<p>Thanks for signing up!</p>"
+  }
+
+  email = resend.Emails.send(params)
+  print(email)
+  ```
+
+  ```rb Ruby theme={"theme":{"light":"github-light","dark":"vesper"}}
+  require "resend"
+
+  Resend.api_key = "re_xxxxxxxxx"
+
+  params = {
+    "from": "Acme <onboarding@example.com>",
+    "to": ["customer@example.com"],
+    "subject": "Welcome to Acme",
+    "html": "<p>Thanks for signing up!</p>"
+  }
+
+  sent = Resend::Emails.send(params)
+  puts sent
+  ```
+
+  ```go Go theme={"theme":{"light":"github-light","dark":"vesper"}}
+  package main
+
+  import (
+  	"context"
+  	"fmt"
+
+  	"github.com/resend/resend-go/v3"
+  )
+
+  func main() {
+    ctx := context.TODO()
+    client := resend.NewClient("re_xxxxxxxxx")
+
+    params := &resend.SendEmailRequest{
+        From:    "Acme <onboarding@example.com>",
+        To:      []string{"customer@example.com"},
+        Subject: "Welcome to Acme",
+        Html:    "<p>Thanks for signing up!</p>",
+    }
+
+    sent, err := client.Emails.SendWithContext(ctx, params)
+
+    if err != nil {
+      panic(err)
+    }
+    fmt.Println(sent.Id)
+  }
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::types::CreateEmailBaseOptions;
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let from = "Acme <onboarding@example.com>";
+    let to = ["customer@example.com"];
+    let subject = "Welcome to Acme";
+    let html = "<p>Thanks for signing up!</p>";
+
+    let email = CreateEmailBaseOptions::new(from, to, subject)
+      .with_html(html);
+
+    let _email = resend.emails.send(email).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```java Java theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import com.resend.*;
+
+  public class Main {
+      public static void main(String[] args) {
+          Resend resend = new Resend("re_xxxxxxxxx");
+
+          CreateEmailOptions params = CreateEmailOptions.builder()
+                  .from("Acme <onboarding@example.com>")
+                  .to("customer@example.com")
+                  .subject("Welcome to Acme")
+                  .html("<p>Thanks for signing up!</p>")
+                  .build();
+
+          CreateEmailResponse data = resend.emails().send(params);
+      }
+  }
+  ```
+
+  ```csharp .NET theme={"theme":{"light":"github-light","dark":"vesper"}}
+  using Resend;
+
+  IResend resend = ResendClient.Create( "re_xxxxxxxxx" ); // Or from DI
+
+  var resp = await resend.EmailSendAsync( new EmailMessage()
+  {
+      From = "Acme <onboarding@example.com>",
+      To = "customer@example.com",
+      Subject = "Welcome to Acme",
+      HtmlBody = "<p>Thanks for signing up!</p>",
+  } );
+  Console.WriteLine( "Email Id={0}", resp.Content );
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/emails' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "from": "Acme <onboarding@example.com>",
+    "to": ["customer@example.com"],
+    "subject": "Welcome to Acme",
+    "html": "<p>Thanks for signing up!</p>"
+  }'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@example.com>" \
+    --to customer@example.com \
+    --subject "Welcome to Acme" \
+    --html "<p>Thanks for signing up!</p>"
+  ```
+</CodeGroup>
+
+In this example, `onboarding@example.com` is the sender address. As long as `example.com` is verified in Resend, you can use that address in `from` without creating it first.
+
 ## Common misconceptions
 
 Some platforms require you to create, register, or pre-approve a sending address.\
-Resend does **not**. After verifying your domain, you’re free to send from any address **@yourdomain**, with no extra setup, creation, or configuration of that address.
+Resend does **not**. After verifying your domain, you’re free to send from any address at that domain, such as `example.com`, with no extra setup, creation, or configuration of that address.
 
 ## Getting started
 

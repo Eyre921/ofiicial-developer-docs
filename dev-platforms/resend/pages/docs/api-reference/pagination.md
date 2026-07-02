@@ -80,9 +80,7 @@ Paginated endpoints return responses in the following format:
 {
   "object": "list",
   "has_more": true,
-  "data": [
-    /* Array of resources */
-  ]
+  "data": [/* Array of resources */]
 }
 ```
 

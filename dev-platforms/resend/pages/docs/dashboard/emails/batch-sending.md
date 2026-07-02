@@ -260,6 +260,7 @@ You can send up to 100 emails in a single API call using the batch endpoint. Eac
 ## Response format
 
 The batch endpoint returns an array of email IDs for successfully created emails.
+When the request succeeds, each entry in `data` corresponds to the email at the same index in the batch payload (0-based). The first email in your request will be the first entry in `data`, and so on.
 
 ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
 {

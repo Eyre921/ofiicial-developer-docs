@@ -12,7 +12,7 @@ See all the metadata associated with an email, including the sender address, rec
 
 <img alt="Email Details" />
 
-Each email contains a **Preview**, **Plain Text**, and **HTML** version to visualize the content of your sent email in its various formats.
+Each email contains a **Preview**, **Plain Text**, **HTML**, and **Raw** tab to visualize the content of your sent email in its various formats. The Raw tab displays the email data as formatted JSON matching the public API response structure, including headers and other metadata.
 
 ## Understand email events
 
@@ -33,17 +33,17 @@ Here are all the events that can be associated with an email:
 
 ## Share email link
 
-You can share a public link of a sent email, which is valid for 48 hours. Anyone with the link can visualize the email.
+You can share a public link of a sent email. Anyone with the link can visualize the email.
 
 To share a link, click on the **dropdown menu** <Icon icon="ellipsis" />, and select **Share email**.
 
 <img alt="Email - Share Link Option" />
 
-Then copy the URL and share it with your team members.
+Select how long the link should remain valid (10 minutes, 3 hours, 24 hours, or 48 hours), then click **Generate link**.
 
 <img alt="Email - Share Link Modal" />
 
-Anyone with the link can visualize the email without authenticating for 48 hours.
+Copy the URL and share it with your team members. Anyone with the link can visualize the email without authenticating until the link expires.
 
 <img alt="Email - Share Link Item" />
 

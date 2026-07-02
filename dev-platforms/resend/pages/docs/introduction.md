@@ -6,6 +6,12 @@ path: docs/introduction
 
 Resend is the email API for developers.
 
+<Info>
+  For all documentation in an index, see
+  [llms.txt](https://resend.com/docs/llms.txt). To view the full text of the
+  documentation, see [llms-full.txt](https://resend.com/docs/llms-full.txt).
+</Info>
+
 ## Quickstart
 
 Learn how to get Resend set up in your project.

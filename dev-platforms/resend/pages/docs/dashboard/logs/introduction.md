@@ -67,6 +67,7 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
 
     * SDK name (e.g., "Resend Node.js")
     * Version number
+    * Update notification when a newer SDK version is available
 
     ## Troubleshooting errors
 

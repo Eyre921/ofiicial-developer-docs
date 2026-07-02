@@ -14,13 +14,13 @@ A run tracks the execution of each step in the workflow, including its status an
 
 Each run has one of the following statuses:
 
-| Status      | Description                                                    |
-| ----------- | -------------------------------------------------------------- |
-| `running`   | The Automation is currently executing steps                    |
-| `completed` | All steps finished successfully                                |
-| `failed`    | A step encountered an error and the run stopped                |
-| `cancelled` | The run was cancelled before completing                        |
-| `skipped`   | An email step was skipped because the contact has unsubscribed |
+| Status      | Description                                                                                        |
+| ----------- | -------------------------------------------------------------------------------------------------- |
+| `running`   | The Automation is currently executing steps                                                        |
+| `completed` | All steps finished successfully                                                                    |
+| `failed`    | A step encountered an error and the run stopped                                                    |
+| `cancelled` | The run was cancelled before completing                                                            |
+| `skipped`   | A step was skipped because the contact has either unsubscribed or followed a different branch path |
 
 ### Skipped steps
 

@@ -12,18 +12,15 @@ Stripe Tax enables businesses to calculate, collect, and report indirect taxes i
 
 Use this guide if your connected accounts are responsible for collecting, filing, and reporting taxes.
 
-1. [Set up your connected accounts for tax](https://docs.stripe.com/tax/tax-for-platforms.md#set-up)
-2. (Optional) [Assign tax codes to the product catalog](https://docs.stripe.com/tax/tax-for-platforms.md#assign-product-tax-codes)
-3. [Integrate tax calculation and collection](https://docs.stripe.com/tax/tax-for-platforms.md#enable-tax-collection)
-4. [Access Stripe Tax Reports](https://docs.stripe.com/tax/tax-for-platforms.md#access-reports)
-
 ## Set up your connected accounts for tax
 
 As a platform, you must make sure that a connected account has their [tax settings and registrations set up](https://docs.stripe.com/tax/set-up.md) before enabling tax calculations. This can be achieved by:
 
 ### Connected account using the Stripe Dashboard
 
-This option is only available to connected accounts with access to the Stripe Dashboard (for example, [Standard](https://docs.stripe.com/connect/standard-accounts.md) accounts). Ask your connected accounts to use the [Stripe Dashboard to add their head office location, preset tax code, and tax registrations](https://docs.stripe.com/tax/set-up.md). You can also collect the head office location and the preset tax code by enabling Stripe Tax in the connected account onboarding. You can make this adjustment in the [Connect onboarding options](https://dashboard.stripe.com/settings/connect/onboarding-options/tax) in the Dashboard.
+This option is only available to connected accounts with access to the Stripe Dashboard (for example, [Standard](https://docs.stripe.com/connect/standard-accounts.md) accounts). Ask your connected accounts to use the [Stripe Dashboard to add their head office location, preset tax code, and tax registrations](https://docs.stripe.com/tax/set-up.md).
+
+For new connected accounts, you can also collect the head office location and the preset tax code during Connect onboarding. To enable this, go to the [Connect onboarding options](https://dashboard.stripe.com/settings/connect/onboarding-options/tax) in the Dashboard. This only applies to accounts that haven’t completed onboarding yet. Existing connected accounts must configure their tax settings separately through the Dashboard or API.
 
 ### Creating a tax interface within your platform
 
@@ -98,6 +95,10 @@ Note: The following is a preview/demo component that behaves differently than li
 The tax registrations component allows a connected account to manage its tax registrations. If a connected account doesn’t add a tax registration, but calculates tax for that jurisdiction, Stripe Tax returns a tax amount of `0.00` and sets the [taxability reason to `not_collecting`](https://docs.stripe.com/tax/zero-tax.md#not-registered).
 
 Your platform must then check whether connected accounts have configured Stripe Tax to enable tax calculations.
+
+> #### Verify tax settings for a connected account
+> 
+> Before setting `automatic_tax[enabled]: true` on a payment, verify that the connected account’s tax settings are active. If a connected account hasn’t completed their tax setup (head office location, preset tax code, and at least one registration), enabling `automatic_tax` results in errors or zero-tax calculations. Use the [Tax Settings API](https://docs.stripe.com/tax/settings-api.md#checking-settings) to confirm the account’s `status` is `active` before enabling automatic tax on their payments.
 
 > [Sign in](https://dashboard.stripe.com/login?redirect=https%3A%2F%2Fdocs.stripe.com%2Ftax%2Ftax-for-platforms) to check if your connected accounts are ready to use Stripe Tax.
 
@@ -592,7 +593,9 @@ curl https://api.stripe.com/v1/transfers \
   -d "destination={{CONNECTEDACCOUNT_ID}}"
 ```
 
-### Custom flows using the Stripe Tax API
+### Custom flows (Payment Intents, non-Stripe gateways) 
+
+Custom flows use the Stripe Tax Calculation API directly—for example, to calculate taxes for Payment Intents, or to preview taxes on product pages or checkout carts before a payment is created. This is also the correct workflow if you use a payment gateway other than Stripe and only need Stripe for tax calculation.
 
 ### Payment Intents
 
@@ -738,6 +741,32 @@ After you implement it, Stripe automatically starts collecting tax in jurisdicti
 
 > Independent of the integration, your connected account receives a credit for the collected tax amount by default.
 
+## Optional: Resolve common errors
+
+When integrating Stripe Tax for your connected accounts, you might encounter the following common issues:
+
+### Tax amount is 0 with not_collecting taxability reason
+
+This means the connected account doesn’t have an active [tax registration](https://docs.stripe.com/tax/registering.md) for the jurisdiction where the transaction is occurring. Stripe Tax can only collect tax in jurisdictions where the business is registered.
+
+**To resolve this:**
+
+1. Add a tax registration for the connected account in the relevant jurisdiction:
+   - With the [Tax registrations embedded component](https://docs.stripe.com/connect/supported-embedded-components/tax-registrations.md) if it’s integrated into your platform. This is the recommended long-term approach.
+   - With the [Tax Registrations API](https://docs.stripe.com/tax/registrations-api.md?tax-integration=connect-platform#adding-registration). For example, this could be `POST /v1/tax/registrations` with the `country`, `state` (if applicable), and `type` parameters, using the connected account’s `Stripe-Account` header. This is useful for one-time integrations or testing.
+   - With the Stripe Dashboard (for Standard accounts with Dashboard access).
+2. Confirm the registration is `active` before retrying the transaction.
+
+### Tax amount is 0 with other taxability reasons
+
+A zero tax amount doesn’t always indicate an error. See [Zero tax amounts and reverse charges](https://docs.stripe.com/tax/zero-tax.md) for a full explanation of all scenarios where Stripe Tax returns a zero amount, including product exemptions, reverse charges, customer exemptions, and zero-rated products.
+
+If you believe tax should be applied but a zero amount is returned, verify the [product tax code](https://docs.stripe.com/tax/products-prices-tax-codes-tax-behavior.md#product-tax-code) assigned to the item and the customer’s tax-exempt status.
+
+### Tax settings status is pending
+
+Before you can calculate tax for a connected account, their tax settings `status` must be `active`. A `pending` status means required fields are missing. Check the [status_details.pending.missing_fields](https://docs.stripe.com/api/tax/settings/object.md#tax_settings_object-status_details-pending-missing_fields) array to determine what’s still needed (typically the head office address or preset tax code).
+
 ## Access Stripe Tax Reports
 
 Your connected accounts can use [Stripe Tax reports](https://docs.stripe.com/tax/reports.md) to help them correctly file and remit tax.
@@ -781,7 +810,60 @@ curl https://api.stripe.com/v1/reporting/report_runs \
 
 To learn more about this component and integrate it, see [export tax transactions](https://docs.stripe.com/connect/supported-embedded-components/export-tax-transactions.md).
 
+## Optional: Enable Tax for specific countries
+
+If you’re rolling out Stripe Tax incrementally, you can control which accounts have tax enabled based on their location or registration status. For example, you might only need to enable Stripe Tax for connected accounts in specific countries.
+
+### Check the connected account’s country before enabling tax
+
+Before setting `automatic_tax[enabled]: true`, check the connected account’s country. Only enable tax for jurisdictions you’re ready to support:
+Platform retrieves tax settings from Stripe, evaluates eligibility, then creates a Checkout Session with automatic tax enabled or disabled accordingly. (See full diagram at https://docs.stripe.com/tax/tax-for-platforms)
+```ruby
+# Example: Only enable automatic tax for accounts in supported countries
+supported_countries = ["US", "GB", "DE", "FR", "AU", "CA"]
+
+account = Stripe::Account.retrieve(connected_account_id)
+tax_settings = Stripe::Tax::Settings.retrieve(
+  {},
+  {stripe_account: connected_account_id}
+)
+
+enable_tax = supported_countries.include?(account.country) &&
+  tax_settings.status == "active"
+
+# Use the result when creating a Checkout Session, Payment Intent, etc.
+Stripe::Checkout::Session.create({
+  # ... other params
+  automatic_tax: { enabled: enable_tax, liability: { type: "account", account: connected_account_id } },
+  # ...
+})
+```
+
+### Check for active registrations in specific jurisdictions
+
+You can also check whether a connected account has active registrations in the jurisdictions you want to support:
+
+```ruby
+registrations = Stripe::Tax::Registration.list(
+  {status: "active"},
+  {stripe_account: connected_account_id}
+)
+
+active_countries = registrations.data.map { |r| r.country }
+enable_tax = (active_countries & supported_countries).any?
+```
+
+This pattern allows you to gradually expand tax collection to new countries as your platform adds support for them.
+
+### Restrict embedded components to specific countries
+
+If you use Connect embedded components, you can limit which countries are shown to connected accounts:
+
+- Use the [`displayCountries` parameter](https://docs.stripe.com/connect/supported-embedded-components/tax-registrations.md?client=react#integration) on the tax registrations component to restrict the list of available countries for registration.
+- Use the [`displayHeadOfficeCountries` parameter](https://docs.stripe.com/connect/supported-embedded-components/tax-settings.md) on the tax settings component to restrict which countries are available for the head office location.
+
 ## See also
 
 - [Calculate tax in your custom checkout flow](https://docs.stripe.com/tax/standalone-tax-api.md)
+- [Tax for Connect platforms](https://docs.stripe.com/tax/connect.md)
 

@@ -50,7 +50,7 @@ Vercel creates a new Resend account for your Vercel project, connects the domain
 
 Add Resend to the linked project from your terminal. With the [Vercel CLI](https://vercel.com/docs/cli) installed:
 
-1. Run `vercel integration add resend`.
+1. Run `vc i resend -m domain=example.com`.
 2. Select your custom domain associated with your Vercel project (or purchase a domain from Vercel).
 3. Select a plan (free or paid).
 4. Click **Continue** and **Create** to complete the installation.

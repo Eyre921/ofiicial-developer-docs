@@ -46,7 +46,7 @@ To start executing an Automation, you need to:
   <Tab title="Using the dashboard">
     ## 1. Create Automation
 
-    The [Automations page](https://resend.com/automations) shows all existing automations.
+    The [Automations page](https://resend.com/automations) shows all existing automations. You can search by name and filter by status (**All Statuses**, **Enabled**, or **Disabled**) to quickly find the automation you need.
 
     Click **Create automation** to start a new Automation.
 
@@ -86,11 +86,9 @@ To start executing an Automation, you need to:
 
     Once you select that step, you will be able to select an existing template.
 
-    <Note>
-      Note: Only `published` templates are available to be used in an Automation.
-    </Note>
-
     <img alt="Add Send Email Step" />
+
+    If you select a draft template, you can publish it directly from the Send Email node without leaving the workflow editor. Click the **Publish** button that appears when a draft template is selected.
 
     With the template selected, you will be able to configure the email subject and sender address.
 

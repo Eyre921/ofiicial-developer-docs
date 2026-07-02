@@ -91813,10 +91813,6 @@ pnpm add @supabase/supabase-js @supabase/ssr
 
 Create a `.env.local` file in the project root directory. In the file, set the project's Supabase URL and Key:
 
-
-
-
-
 **Next.js**
 
 ```bash .env.local
@@ -127830,14 +127826,23 @@ After migrating your keys, consider moving to the [JWT signing keys](https://sup
 
 Learn how to create a Supabase project, add sample data, and query from an Astro app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -127856,11 +127861,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -127881,11 +127892,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -127893,75 +127900,74 @@ for select to anon
 using (true);
 ```
 
-2. **Create an Astro app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-- Create an Astro app using the `npm create` command.
+## 3. Create an Astro app
 
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+Create an Astro app using the `npm create` command.
 
-Explore Components
-
-```bash name=Terminal
+```bash
 npm create astro@latest my-app
 cd my-app
 ```
 
-3. **Install Supabase client library and Node adapter**
+## 4. Install Supabase client library and Node adapter
 
 Install the `supabase-js` client library and the `@astrojs/node` adapter to enable server-side rendering.
 
-```bash name=Terminal
+```bash
 npm install @supabase/supabase-js @astrojs/node
 ```
 
-4. **Configure Astro for SSR**
+## 5. Configure Astro for SSR
 
 Update your `astro.config.mjs`.
 
 ```js name=astro.config.mjs
-import { defineConfig } from "astro/config";
-import node from "@astrojs/node";
+import node from '@astrojs/node'
+import { defineConfig } from 'astro/config'
 
 export default defineConfig({
-  output: "server",
+  output: 'server',
   adapter: node({
-    mode: "standalone",
+    mode: 'standalone',
   }),
-});
+})
 ```
 
-5. **Declare Supabase Environment Variables**
+## 6. Declare Supabase environment variables
 
-Create a `.env.local` file and populate with your Supabase connection variables:
+Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=astro\&tab=frameworks):
 
 ```text name=.env.local
 PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-6. **Create a Supabase client helper**
+## 7. Create a Supabase client helper
 
 Create a utility file to initialize the Supabase client:
 
 ```ts name=src/lib/supabase.ts
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL
 const supabasePublishableKey = import.meta.env.PUBLIC_SUPABASE_PUBLISHABLE_KEY
 
 export function createServerClient() {
-  return createClient(
-    supabaseUrl,
-    supabasePublishableKey
-  );
+  return createClient(supabaseUrl, supabasePublishableKey)
 }
 ```
 
-7. **Query Supabase data from Astro**
+## 8. Query Supabase data from Astro
+
+Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+
+Explore Components
 
 Create a new file at `src/pages/instruments.astro` and populate with the following.
 
-This queries all rows from the `instruments` table in Supabase and renders them on the page.
+This queries all rows from the `instruments` table you created earlier and renders them on the page.
 
 ```astro name=src/pages/instruments.astro
 ---
@@ -127985,11 +127991,11 @@ const { data: instruments } = await supabase.from("instruments").select();
 </html>
 ```
 
-8. **Start the app**
+## 9. Start the app
 
 Run the development server, go to [http://localhost:4321/instruments](http://localhost:4321/instruments) in your browser of choice to check the list of instruments.
 
-```bash name=Terminal
+```bash
 npm run dev
 ```
 
@@ -128006,14 +128012,23 @@ npm run dev
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from an Expo app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -128032,11 +128047,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128057,11 +128078,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -128069,31 +128086,29 @@ for select to anon
 using (true);
 ```
 
-2. **Create an Expo app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
+
+## 3. Create an Expo app
 
 Create a minimal Expo app using the `create-expo-app` command with the blank TypeScript template.
 
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
-
-```bash name=Terminal
+```bash
 npx create-expo-app my-app --template blank-typescript
 ```
 
-3. **Install the Supabase client library**
+## 4. Install the Supabase client library
 
 The fastest way to get started is to use the `@supabase/supabase-js` client library which provides a convenient interface for working with Supabase from a React Native app.
 
-Navigate to the Expo app and install `supabase-js` along with the required dependencies for secure storage and URL handling.
+Navigate to the Expo app and install `supabase-js` along with the required dependencies for session storage and URL handling.
 
-```bash name=Terminal
+```bash
 cd my-app && npx expo install @supabase/supabase-js react-native-url-polyfill expo-sqlite
 ```
 
-4. **Declare Supabase Environment Variables**
+## 5. Declare Supabase environment variables
 
-Create a `.env` file in the root of your project and populate it with your Supabase connection variables.
+Create a `.env` file in the root of your project and populate it with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true).
 
 Expo requires environment variables to be prefixed with `EXPO_PUBLIC_` to be accessible in your app code.
 
@@ -128102,7 +128117,7 @@ EXPO_PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-5. **Initialize the Supabase client**
+## 6. Initialize the Supabase client
 
 Create a helper file at `lib/supabase.ts` to initialize the Supabase client using the environment variables.
 
@@ -128110,8 +128125,10 @@ The code below uses Expo's localStorage polyfill to persist authentication sessi
 
 ```ts name=lib/supabase.ts
 import 'react-native-url-polyfill/auto'
+
 import { createClient } from '@supabase/supabase-js'
-import 'expo-sqlite/localStorage/install';
+
+import 'expo-sqlite/localStorage/install'
 
 const supabaseUrl = process.env.EXPO_PUBLIC_SUPABASE_URL
 const supabasePublishableKey = process.env.EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY
@@ -128126,7 +128143,7 @@ export const supabase = createClient(supabaseUrl, supabasePublishableKey, {
 })
 ```
 
-6. **Query data from the app**
+## 7. Query data from the app
 
 Replace the contents of `App.tsx` with the following code to fetch and display the instruments from your database.
 
@@ -128134,7 +128151,8 @@ Use `useEffect` to fetch the data when the component mounts and display the quer
 
 ```tsx name=App.tsx
 import { useEffect, useState } from 'react'
-import { StyleSheet, View, FlatList, Text } from 'react-native'
+import { FlatList, StyleSheet, Text, View } from 'react-native'
+
 import { supabase } from './lib/supabase'
 
 export default function App() {
@@ -128154,9 +128172,7 @@ export default function App() {
       <FlatList
         data={instruments}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <Text style={styles.item}>{item.name}</Text>
-        )}
+        renderItem={({ item }) => <Text style={styles.item}>{item.name}</Text>}
       />
     </View>
   )
@@ -128177,11 +128193,11 @@ const styles = StyleSheet.create({
 })
 ```
 
-7. **Start the app**
+## 8. Start the app
 
 Run the development server and scan the QR code with the Expo Go app on your phone, or press `i` for iOS simulator or `a` for Android emulator.
 
-```bash name=Terminal
+```bash
 npx expo start
 ```
 
@@ -128198,14 +128214,23 @@ npx expo start
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Python app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -128224,11 +128249,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128249,11 +128280,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -128261,36 +128288,38 @@ for select to anon
 using (true);
 ```
 
-2. **Create a Python app with Flask**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
+
+## 3. Create a Python app with Flask
 
 Create a new directory for your Python app and set up a virtual environment.
 
-```bash name=Terminal
+```bash
 mkdir my-app && cd my-app
 python3 -m venv venv
 source venv/bin/activate
 ```
 
-3. **Install Flask and the Supabase client library**
+## 4. Install Flask and the Supabase client library
 
 The fastest way to get started is to use Flask for the web framework and the `supabase-py` client library which provides a convenient interface for working with Supabase from a Python app.
 
 Install both packages using pip.
 
-```bash name=Terminal
+```bash
 pip install flask supabase
 ```
 
-4. **Create Environment Variables file**
+## 5. Create environment variables file
 
-Create a `.env` file in your project root and populate it with your Supabase connection variables:
+Create a `.env` file in your project root and populate it with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true):
 
 ```text name=.env
 SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-5. **Query data from the app**
+## 6. Query data from the app
 
 Install the `python-dotenv` package to load environment variables:
 
@@ -128331,11 +128360,11 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-6. **Start the app**
+## 7. Start the app
 
-Run the Flask development server, go to [http://localhost:5000](http://localhost:5000) in a browser and you should see the list of instruments.
+Run the Flask development server, and go to [http://localhost:5000](http://localhost:5000) in your browser, you should see the list of instruments.
 
-```bash name=Terminal
+```bash
 python app.py
 ```
 
@@ -128352,14 +128381,23 @@ python app.py
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Flutter app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -128378,11 +128416,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128403,11 +128447,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -128415,15 +128455,17 @@ for select to anon
 using (true);
 ```
 
-2. **Create a Flutter app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-Create a Flutter app using the `flutter create` command. You can skip this step if you already have a working app.
+## 3. Create a Flutter app
 
-```bash name=Terminal
+Create a Flutter app using the `flutter create` command.
+
+```bash
 flutter create my_app
 ```
 
-3. **Install the Supabase client library**
+## 4. Install the Supabase client library
 
 The fastest way to get started is to use the [`supabase_flutter`](https://pub.dev/packages/supabase_flutter) client library which provides a convenient interface for working with Supabase from a Flutter app.
 
@@ -128433,9 +128475,9 @@ Open the `pubspec.yaml` file inside your Flutter app and add `supabase_flutter` 
 supabase_flutter: ^2.0.0
 ```
 
-4. **Initialize the Supabase client**
+## 5. Initialize the Supabase client
 
-Open `lib/main.dart` and edit the main function to initialize Supabase using your project URL and publishable key:
+Open `lib/main.dart` and edit the main function to initialize Supabase using your project URL and publishable key, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=flutter\&tab=mobiles):
 
 ```dart name=lib/main.dart
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -128451,7 +128493,7 @@ Future<void> main() async {
 }
 ```
 
-5. **Query data from the app**
+## 6. Query data from the app
 
 Use a `FutureBuilder` to fetch the data when the home page loads and display the query result in a `ListView`.
 
@@ -128508,14 +128550,14 @@ class _HomePageState extends State<HomePage> {
 }
 ```
 
-6. **Start the app**
+## 7. Start the app
 
 Run your app on a platform of your choosing! By default an app should launch in your web browser.
 
 Note that `supabase_flutter` is compatible with web, iOS, Android, macOS, and Windows apps.
 Running the app on macOS requires additional configuration to [set the entitlements](https://docs.flutter.dev/development/platform-integration/macos/building#setting-up-entitlements).
 
-```bash name=Terminal
+```bash
 flutter run
 ```
 
@@ -128545,63 +128587,23 @@ To do this, add the following line to the `android/app/src/main/AndroidManifest.
 
 Learn how to create a Supabase project, add some sample data to your database, secure it with auth, and query the data from a Hono app.
 
-1. **Create a Hono app**
+## 1. Create a Supabase project
 
-Bootstrap the Hono example app from the Supabase Samples using the CLI.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-```bash name=Terminal
-npx supabase@latest bootstrap hono
-```
+**Dashboard**
 
-2. **Install the Supabase client library**
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
 
-The `package.json` file in the project includes the necessary dependencies, including `@supabase/supabase-js` and `@supabase/ssr` to help with server-side auth.
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
 
-```bash name=Terminal
-npm install
-```
+**Management API**
 
-3. **Set up the required environment variables**
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
 
-Copy the `.env.example` file to `.env` and update the values with your Supabase project URL and publishable key.
-
-Lastly, [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/auth/providers) in the Auth settings.
-
-```bash name=Terminal
-cp .env.example .env
-```
-
-4. **Start the app**
-
-Start the app, go to [http://localhost:5173](http://localhost:5173).
-
-Learn how [server side auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=hono) works with Hono.
-
-```bash name=Terminal
-npm run dev
-```
-
-## Next steps
-
-- Learn how [server side auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=hono) works with Hono.
-- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
-- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
-
-
----
-
-# Use Supabase with iOS and SwiftUI
-
-Learn how to create a Supabase project, add some sample data to your database, and query the data from an iOS app.
-
-1. **Create a Supabase project**
-
-Go to [database.new](https://database.new) and create a new Supabase project.
-
-Alternatively, you can create a project using the Management API:
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -128620,11 +128622,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128645,11 +128653,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -128657,11 +128661,138 @@ for select to anon
 using (true);
 ```
 
-2. **Create an iOS SwiftUI app with Xcode**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-Open Xcode > New Project > iOS > App. You can skip this step if you already have a working app.
+## 3. Create a Hono app
 
-3. **Install the Supabase client library**
+Bootstrap the Hono example app from the Supabase Samples using the CLI.
+
+```bash
+npx supabase@latest bootstrap hono
+```
+
+## 4. Install the Supabase client library
+
+The `package.json` file in the project includes the necessary dependencies, including `@supabase/supabase-js` and `@supabase/ssr` to help with server-side auth.
+
+```bash
+npm install
+```
+
+## 5. Set up the required environment variables
+
+Copy the `.env.example` file to `.env` and update the values with your Supabase project URL and publishable key, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&tab=frameworks).
+
+Lastly, [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/auth/providers) in the Auth settings.
+
+```bash
+cp .env.example .env
+```
+
+## 6. Start the app
+
+Start the app, go to [http://localhost:5173](http://localhost:5173).
+
+Learn how [server side auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=hono) works with Hono.
+
+```bash
+npm run dev
+```
+
+## Next steps
+
+- Learn how [server side auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=framework\&framework=hono) works with Hono.
+- [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
+- Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
+
+
+---
+
+# Use Supabase with iOS and SwiftUI
+
+Learn how to create a Supabase project, add some sample data to your database, and query the data from an iOS app.
+
+## 1. Create a Supabase project
+
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
+
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
+
+```bash
+export SUPABASE_ACCESS_TOKEN="your-access-token"
+
+# List your organizations to get the organization ID
+curl -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+  https://api.supabase.com/v1/organizations
+
+# Create a new project (replace <org-id> with your organization ID)
+curl -X POST https://api.supabase.com/v1/projects \
+  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "organization_id": "<org-id>",
+    "name": "My Project",
+    "region": "us-east-1",
+    "db_pass": "<your-secure-password>"
+  }'
+```
+
+## 2. Set up your database
+
+When your Supabase project is up and running, create an `instruments` table with some sample data.
+
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+
+```sql SQL_EDITOR
+-- Create the table
+create table instruments (
+  id bigint primary key generated always as identity,
+  name text not null
+);
+
+-- Insert sample data into the table
+insert into instruments (name)
+values
+  ('violin'),
+  ('viola'),
+  ('cello');
+
+-- Grant the privileges the role needs, which is read access
+grant select on public.instruments to anon;
+
+-- Enable row level security for the table
+alter table instruments enable row level security;
+
+-- Create a policy to allow the anon role to read from the instruments table
+create policy "public can read instruments"
+on public.instruments
+for select to anon
+using (true);
+```
+
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
+
+## 3. Create an iOS SwiftUI app with Xcode
+
+Select the **Xcode > New Project > iOS > App** menu item.
+
+## 4. Install the Supabase client library
 
 Add the [supabase-swift](https://github.com/supabase/supabase-swift) package to your app using the Swift Package Manager.
 
@@ -128669,9 +128800,9 @@ In Xcode, navigate to **File > Add Package Dependencies...** and enter the repos
 
 Make sure to add `Supabase` product package as a dependency to your application target.
 
-4. **Initialize the Supabase client**
+## 5. Initialize the Supabase client
 
-Create a new `Supabase.swift` file add a new Supabase instance using your project URL and publishable key:
+Create a new `Supabase.swift` file add a new Supabase instance using your project URL and publishable key, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=swift\&tab=mobiles):
 
 ```swift name=Supabase.swift
 import Supabase
@@ -128682,7 +128813,7 @@ let supabase = SupabaseClient(
 )
 ```
 
-5. **Create a data model for instruments**
+## 6. Create a data model for instruments
 
 Create a decodable struct to deserialize the data from the database.
 
@@ -128695,7 +128826,7 @@ struct Instrument: Decodable, Identifiable {
 }
 ```
 
-6. **Query data from the app**
+## 7. Query data from the app
 
 Use a `task` to fetch the data from the database and display it using a `List`.
 
@@ -128728,7 +128859,7 @@ struct ContentView: View {
 }
 ```
 
-7. **Start the app**
+## 8. Start the app
 
 Run the app on a simulator or a physical device by hitting `Cmd + R` on Xcode.
 
@@ -128748,14 +128879,23 @@ If you want to implement authentication features like magic links or OAuth, you 
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from an Android Kotlin app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -128774,11 +128914,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128799,11 +128945,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -128811,17 +128953,19 @@ for select to anon
 using (true);
 ```
 
-2. **Create an Android app with Android Studio**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-Open Android Studio > New > New Android Project.
+## 3. Create an Android app with Android Studio
 
-3. **Install the Dependencies**
+Select the **Android Studio > New > New Android Project** menu item.
 
-Open `build.gradle.kts` (app) file and add the serialization plug, Ktor client, and Supabase client.
+## 4. Install dependencies
 
-Replace the version placeholders `$kotlin_version` with the Kotlin version of the project, and  `$supabase_version` and `$ktor_version` with the respective latest versions.
+Open `build.gradle.kts` (app) file and add the serialization plugin, Ktor client, and Supabase client.
 
-The latest supabase-kt version can be found [here](https://github.com/supabase-community/supabase-kt/releases) and Ktor version can be found [here](https://ktor.io/docs/welcome.html).
+Replace the version placeholders `$kotlin_version` with the Kotlin version of the project, and `$supabase_version` and `$ktor_version` with the respective latest versions.
+
+Tip: You can find the latest supabase-kt version [on GitHub](https://github.com/supabase-community/supabase-kt/releases) and Ktor [in the Ktor documentation](https://ktor.io/docs/welcome.html).
 
 ```kotlin
 plugins {
@@ -128837,7 +128981,7 @@ dependencies {
 }
 ```
 
-4. **Add internet access permission**
+## 5. Add internet access permission
 
 Add the following line to the `AndroidManifest.xml` file under the `manifest` tag and outside the `application` tag.
 
@@ -128847,13 +128991,13 @@ Add the following line to the `AndroidManifest.xml` file under the `manifest` ta
 ...
 ```
 
-5. **Initialize the Supabase client**
+## 6. Initialize the Supabase client
 
 You can create a Supabase client whenever you need to perform an API call.
 
-For the sake of simplicity, we will create a client in the `MainActivity.kt` file at the top below the imports.
+For a quick example, create a client at the top of the `MainActivity.kt` file below the imports.
 
-Replace the `supabaseUrl` and `supabaseKey` with your own:
+Replace the `supabaseUrl` and `supabaseKey` with your own, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=androidkotlin\&tab=mobiles):
 
 ```kotlin
 import ...
@@ -128867,7 +129011,7 @@ val supabase = createSupabaseClient(
 ...
 ```
 
-6. **Create a data model for instruments**
+## 7. Create a data model for instruments
 
 Create a serializable data class to represent the data from the database.
 
@@ -128881,13 +129025,13 @@ data class Instrument(
 )
 ```
 
-7. **Query data from the app**
+## 8. Query data from the app
 
 Use `LaunchedEffect` to fetch data from the database and display it in a `LazyColumn`.
 
 Replace the default `MainActivity` class with the following code.
 
-Note that we are making a network request from our UI code. In production, you should probably use a `ViewModel` to separate the UI and data fetching logic.
+Note: This example application makes a network request from the UI code. In production, you should use a `ViewModel` to separate the UI and data fetching logic.
 
 ```kotlin
 class MainActivity : ComponentActivity() {
@@ -128930,7 +129074,7 @@ fun InstrumentsList() {
 }
 ```
 
-8. **Start the app**
+## 9. Start the app
 
 Run the app on an emulator or a physical device by clicking the `Run app` button in Android Studio.
 
@@ -128941,26 +129085,102 @@ Run the app on an emulator or a physical device by clicking the `Run app` button
 
 Learn how to create a PHP Laravel project, connect it to your Supabase Postgres database, and configure user authentication.
 
-1. **Create a Laravel Project**
+## 1. Create a Supabase project
+
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
+
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
+
+```bash
+export SUPABASE_ACCESS_TOKEN="your-access-token"
+
+# List your organizations to get the organization ID
+curl -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+  https://api.supabase.com/v1/organizations
+
+# Create a new project (replace <org-id> with your organization ID)
+curl -X POST https://api.supabase.com/v1/projects \
+  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "organization_id": "<org-id>",
+    "name": "My Project",
+    "region": "us-east-1",
+    "db_pass": "<your-secure-password>"
+  }'
+```
+
+## 2. Set up your database
+
+When your Supabase project is up and running, create an `instruments` table with some sample data.
+
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+
+```sql SQL_EDITOR
+-- Create the table
+create table instruments (
+  id bigint primary key generated always as identity,
+  name text not null
+);
+
+-- Insert sample data into the table
+insert into instruments (name)
+values
+  ('violin'),
+  ('viola'),
+  ('cello');
+
+-- Grant the privileges the role needs, which is read access
+grant select on public.instruments to anon;
+
+-- Enable row level security for the table
+alter table instruments enable row level security;
+
+-- Create a policy to allow the anon role to read from the instruments table
+create policy "public can read instruments"
+on public.instruments
+for select to anon
+using (true);
+```
+
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
+
+## 3. Create a Laravel project
 
 Make sure your PHP and Composer versions are up to date, then use `composer create-project` to scaffold a new Laravel project.
 
 See the [Laravel docs](https://laravel.com/docs/10.x/installation#creating-a-laravel-project) for more details.
 
-```bash name=Terminal
+```bash
 composer create-project laravel/laravel example-app
 ```
 
-2. **Install the Authentication template**
+## 4. Install the authentication template
 
 Install [Laravel Breeze](https://laravel.com/docs/10.x/starter-kits#laravel-breeze), a basic implementation of all of Laravel's [authentication features](https://laravel.com/docs/10.x/authentication).
 
-```bash name=Terminal
+```bash
 composer require laravel/breeze --dev
 php artisan breeze:install
 ```
 
-3. **Set up the Postgres connection details**
+## 5. Set up the Postgres connection details
 
 Go to [database.new](https://database.new) and create a new Supabase project. Save your database password securely.
 
@@ -128975,7 +129195,7 @@ DB_CONNECTION=pgsql
 DB_URL=postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:5432/postgres
 ```
 
-4. **Change the default schema**
+## 6. Change the default schema
 
 By default Laravel uses the `public` schema. We recommend changing this as Supabase exposes the `public` schema as a [data API](https://supabase.com/docs/guides/api).
 
@@ -129000,21 +129220,21 @@ The schema you specify in `search_path` has to exist on Supabase. You can create
 ],
 ```
 
-5. **Run the database migrations**
+## 7. Run the database migrations
 
 Laravel ships with database migration files that set up the required tables for Laravel Authentication and User Management.
 
 Note: Laravel does not use Supabase Auth but rather implements its own authentication system!
 
-```bash name=Terminal
+```bash
 php artisan migrate
 ```
 
-6. **Start the app**
+## 8. Start the app
 
 Run the development server. Go to [http://127.0.0.1:8000](http://127.0.0.1:8000) in a browser to see your application. You can also navigate to [http://127.0.0.1:8000/register](http://127.0.0.1:8000/register) and [http://127.0.0.1:8000/login](http://127.0.0.1:8000/login) to register and log in users.
 
-```bash name=Terminal
+```bash
 php artisan serve
 ```
 
@@ -129025,14 +129245,23 @@ php artisan serve
 
 Learn how to create a Supabase project, add some sample data, and query from a Next.js app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -129051,11 +129280,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129076,11 +129311,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -129088,36 +129319,34 @@ for select to anon
 using (true);
 ```
 
-2. **Create a Next.js app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-Use the `create-next-app` command and the `with-supabase` template, to create a Next.js app pre-configured with:
+## 3. Create a Next.js app
 
-- [Cookie-based Auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=package-manager\&package-manager=npm\&queryGroups=framework\&framework=nextjs\&queryGroups=environment\&environment=server)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Tailwind CSS](https://tailwindcss.com/)
-
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
+Use the `create-next-app` command and the `with-supabase` template, to create a Next.js app pre-configured with [Cookie-based Auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=package-manager\&package-manager=npm\&queryGroups=framework\&framework=nextjs\&queryGroups=environment\&environment=server), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/).
 
 ```bash
 npx create-next-app -e with-supabase
 ```
 
-3. **Declare Supabase Environment Variables**
+## 4. Declare Supabase environment variables
 
-Rename `.env.example` to `.env.local` and populate with your Supabase connection variables:
+Rename `.env.example` to `.env.local` and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nextjs\&tab=frameworks):
 
 ```text name=.env.local
 NEXT_PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-4. **Query Supabase data from Next.js**
+## 5. Query Supabase data from Next.js
+
+Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+
+Explore Components
 
 Create a new file at `app/instruments/page.tsx` and populate with the following.
 
-This selects all the rows from the `instruments` table in Supabase and render them on the page.
+This selects all the rows from the `instruments` table you created earlier and renders them on the page.
 
 ```ts name=app/instruments/page.tsx
 import { createClient } from "@/lib/supabase/server";
@@ -129139,11 +129368,11 @@ export default function Instruments() {
 }
 ```
 
-5. **Start the app**
+## 6. Start the app
 
 Run the development server, go to [http://localhost:3000/instruments](http://localhost:3000/instruments) in a browser and you should see the list of instruments.
 
-```bash Terminal
+```bash
 npm run dev
 ```
 
@@ -129160,14 +129389,23 @@ npm run dev
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Nuxt app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -129186,11 +129424,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129211,11 +129455,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -129223,38 +129463,36 @@ for select to anon
 using (true);
 ```
 
-2. **Create a Nuxt app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-- Create a Nuxt app using the `npx nuxi` command.
+## 3. Create a Nuxt app
 
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+Create a Nuxt app using the `npx nuxi` command.
 
-Explore Components
-
-```bash name=Terminal
+```bash
 npx nuxi@latest init my-app
 ```
 
-3. **Install the Supabase client library**
+## 4. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a Nuxt app.
 
 Navigate to the Nuxt app and install `supabase-js`.
 
-```bash name=Terminal
+```bash
 cd my-app && npm install @supabase/supabase-js
 ```
 
-4. **Declare Supabase Environment Variables**
+## 5. Declare Supabase environment variables
 
-Create a `.env` file and populate with your Supabase connection variables:
+Create a `.env` file and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nuxt\&tab=frameworks):
 
-```text name=.env.local
+```text name=.env
 SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-```ts name=nuxt.config.tsx
+```ts name=nuxt.config.ts
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
@@ -129262,16 +129500,17 @@ export default defineNuxtConfig({
       supabasePublishableKey: process.env.SUPABASE_PUBLISHABLE_KEY,
     },
   },
-});
+})
 ```
 
-5. **Query data from the app**
+## 6. Query data from the app
 
 In `app.vue`, create a Supabase client using your config values and replace the existing content with the following code.
 
 ```vue name=app.vue
 <script setup>
 import { createClient } from '@supabase/supabase-js'
+
 const config = useRuntimeConfig()
 const supabase = createClient(config.public.supabaseUrl, config.public.supabasePublishableKey)
 const instruments = ref([])
@@ -129293,11 +129532,11 @@ onMounted(() => {
 </template>
 ```
 
-6. **Start the app**
+## 7. Start the app
 
-Start the app, navigate to [http://localhost:3000](http://localhost:3000) in the browser, open the browser console, and you should see the list of instruments.
+Start the app, navigate to [http://localhost:3000](http://localhost:3000) in the browser, and you should see the list of instruments.
 
-```bash name=Terminal
+```bash
 npm run dev
 ```
 
@@ -129310,14 +129549,23 @@ Tip: The community-maintained [@nuxtjs/supabase](https://supabase.nuxtjs.org/) m
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a React app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -129336,11 +129584,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129361,11 +129615,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -129373,63 +129623,68 @@ for select to anon
 using (true);
 ```
 
-2. **Create a React app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-- Create a React app using a [Vite](https://vitejs.dev/guide/) template.
+## 3. Create a React app
 
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+Create a React app using a [Vite](https://vitejs.dev/guide/) template.
 
-Explore Components
-
-```bash name=Terminal
+```bash
 npm create vite@latest my-app -- --template react
 ```
 
-3. **Install the Supabase client library**
+## 4. Install the Supabase client library
 
-The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a React app.
+The fastest way to get started is to use the `supabase-js` client library, which provides a convenient interface for working with Supabase from a React app.
 
 Navigate to the React app and install `supabase-js`.
 
-```bash name=Terminal
+```bash
 cd my-app && npm install @supabase/supabase-js
 ```
 
-4. **Declare Supabase Environment Variables**
+## 5. Declare Supabase environment variables
 
-Create a `.env.local` file and populate with your Supabase connection variables:
+Create a `.env.local` file and populate it with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=react\&tab=frameworks):
 
 ```text name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-5. **Query data from the app**
+## 6. Query data from the app
 
-Replace the contents of `App.jsx` to add a `getInstruments` function to fetch the data and display the query result to the page using a Supabase client.
+Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+
+Explore Components
+
+Replace the contents of `App.jsx` with a `getInstruments` function that fetches the data and displays the query result on the page using a Supabase client.
 
 ```js name=src/App.jsx
-import { useEffect, useState } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
 
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+)
 
 function App() {
-  const [instruments, setInstruments] = useState([]);
+  const [instruments, setInstruments] = useState([])
 
   useEffect(() => {
-    getInstruments();
-  }, []);
+    getInstruments()
+  }, [])
 
   async function getInstruments() {
-    const { data, error } = await supabase.from("instruments").select();
+    const { data, error } = await supabase.from('instruments').select()
 
     if (error) {
-      console.error(error);
-      return;
+      console.error(error)
+      return
     }
 
-    setInstruments(data);
+    setInstruments(data)
   }
 
   return (
@@ -129438,17 +129693,17 @@ function App() {
         <li key={instrument.name}>{instrument.name}</li>
       ))}
     </ul>
-  );
+  )
 }
 
-export default App;
+export default App
 ```
 
-6. **Start the app**
+## 7. Start the app
 
-Run the development server, go to [http://localhost:5173](http://localhost:5173) in a browser and you should see the list of instruments.
+Run the development server, go to [http://localhost:5173](http://localhost:5173) in a browser, and you should see the list of instruments.
 
-```bash name=Terminal
+```bash
 npm run dev
 ```
 
@@ -129465,7 +129720,7 @@ npm run dev
 
 Learn how to create a Supabase project, add some sample data to your database using Prisma migration and seeds, and query the data from a RedwoodJS app.
 
-1. **Setup your new Supabase Project**
+## 1. Setup your new Supabase project
 
 [Create a new project](https://supabase.com/dashboard) in the Supabase Dashboard.
 
@@ -129473,21 +129728,21 @@ Tip: Be sure to make note of the Database Password you used as you will need thi
 
 ![New project for redwoodjs](/docs/img/guides/getting-started/quickstarts/redwoodjs/new-project.png)
 
-2. **Gather Database Connection Strings**
+## 2. Gather database connection strings
 
 Open the project [**Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true). This quickstart connects using the [**Transaction pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&method=transaction) and [**Session pooler**](https://supabase.com/dashboard/project/_?showConnect=true\&method=session) mode. Transaction mode is used for application queries and Session mode is used for running migrations with Prisma.
 
-To do this, set the connection mode to `Transaction` in the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings) and copy the connection string and append `?pgbouncer=true&&connection_limit=1`. `pgbouncer=true` disables Prisma from generating prepared statements. This is required since our connection pooler does not support prepared statements in transaction mode yet. The `connection_limit=1` parameter is only required if you are using Prisma from a serverless environment. This is the Transaction mode connection string.
+To do this, set the connection mode to `Transaction` in the [Database Settings page](https://supabase.com/dashboard/project/_/database/settings) and copy the connection string and append `?pgbouncer=true&connection_limit=1`. `pgbouncer=true` disables Prisma from generating prepared statements. This is required since our connection pooler does not support prepared statements in transaction mode yet. The `connection_limit=1` parameter is only required if you are using Prisma from a serverless environment. This is the Transaction mode connection string.
 
 To get the Session mode connection pooler string, change the port of the connection string from the dashboard to 5432.
 
-You will need the Transaction mode connection string and the Session mode connection string to setup environment variables in Step 5.
+You will need the Transaction mode connection string and the Session mode connection string to set up environment variables in Step 4.
 
 Tip: You can copy and paste these connection strings from the Supabase Dashboard when needed in later steps.
 
 ![pooled connection for redwoodjs](/docs/img/guides/getting-started/quickstarts/redwoodjs/pooled-connection-strings.png)
 
-3. **Create a RedwoodJS app**
+## 3. Create a RedwoodJS app
 
 Create a RedwoodJS app with TypeScript.
 
@@ -129495,26 +129750,17 @@ Note: The [`yarn` package manager](https://yarnpkg.com) is required to create a 
 
 While TypeScript is recommended, If you want a JavaScript app, omit the `--ts` flag.
 
-```bash name=Terminal
+```bash
 yarn create redwood-app my-app --ts
 ```
 
-4. **Open your RedwoodJS app in VS Code**
-
-You'll develop your app, manage database migrations, and run your app in VS Code.
-
-```bash name=Terminal
-cd my-app
-code .
-```
-
-5. **Configure Environment Variables**
+## 4. Configure environment variables
 
 In your `.env` file, add the following environment variables for your database connection:
 
-- The `DATABASE_URL` should use the Transaction mode connection string you copied in Step 1.
+- The `DATABASE_URL` should use the Transaction mode connection string you copied in Step 2.
 
-- The `DIRECT_URL` should use the Session mode connection string you copied in Step 1.
+- The `DIRECT_URL` should use the Session mode connection string you copied in Step 2.
 
 ```bash name=.env
 # Transaction mode connection string used for migrations
@@ -129524,11 +129770,11 @@ DATABASE_URL="postgres://postgres.[project-ref]:[db-password]@xxx.pooler.supabas
 DIRECT_URL="postgres://postgres.[project-ref]:[db-password]@xxx.pooler.supabase.com:5432/postgres"
 ```
 
-6. **Update your Prisma Schema**
+## 5. Update your Prisma schema
 
 By default, RedwoodJS ships with a SQLite database, but we want to use Postgres.
 
-Update your Prisma schema file `api/db/schema.prisma` to use your Supabase Postgres database connection environment variables you setup in Step 5.
+Update your Prisma schema file `api/db/schema.prisma` to use your Supabase Postgres database connection environment variables you set up in Step 4.
 
 ```prisma name=api/db/schema.prisma
 datasource db {
@@ -129538,7 +129784,7 @@ datasource db {
 }
 ```
 
-7. **Create the Instrument model and apply a schema migration**
+## 6. Create the instrument model and apply a schema migration
 
 Create the Instrument model in `api/db/schema.prisma` and then run `yarn rw prisma migrate dev` from your terminal to apply the migration.
 
@@ -129549,7 +129795,7 @@ model Instrument {
 }
 ```
 
-8. **Update seed script**
+## 7. Update seed script
 
 Seed the database with a few instruments.
 
@@ -129578,35 +129824,35 @@ export default async () => {
 }
 ```
 
-9. **Seed your database**
+## 8. Seed your database
 
 Run the seed database command to populate the `Instrument` table with the instruments you created.
 
-Tip: The reset database command `yarn rw prisma db reset` will recreate the tables and will also run the seed script.
+Tip: The reset database command `yarn rw prisma db reset` recreates the tables and also runs the seed script.
 
-```bash name=Terminal
+```bash
 yarn rw prisma db seed
 ```
 
-10. **Scaffold the Instrument UI**
+## 9. Scaffold the instrument UI
 
-Now, we'll use RedwoodJS generators to scaffold a CRUD UI for the `Instrument` model.
+Use RedwoodJS generators to scaffold a CRUD UI for the `Instrument` model.
 
-```bash name=Terminal
+```bash
 yarn rw g scaffold instrument
 ```
 
-11. **Start the app**
+## 10. Start the app
 
 Start the app via `yarn rw dev`. A browser will open to the RedwoodJS Splash page.
 
 ![RedwoodJS Splash Page](/docs/img/redwoodjs-qs-splash.png)
 
-12. **View Books UI**
+## 11. View instruments UI
 
 Click on `/instruments` to visit [http://localhost:8910/instruments](http://localhost:8910/instruments) where should see the list of instruments.
 
-You may now edit, delete, and add new books using the scaffolded UI.
+You may now edit, delete, and add new instruments using the scaffolded UI.
 
 
 ---
@@ -129615,14 +129861,23 @@ You may now edit, delete, and add new books using the scaffolded UI.
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Refine app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -129641,11 +129896,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129666,11 +129927,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -129678,94 +129935,83 @@ for select to anon
 using (true);
 ```
 
-2. **Create a Refine app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
+
+## 3. Create a Refine app
 
 Create a [Refine](https://github.com/refinedev/refine) app using the [create refine-app](https://refine.dev/docs/getting-started/quickstart/).
 
 The `refine-supabase` preset adds `@refinedev/supabase` supplementary package that supports Supabase in a Refine app. `@refinedev/supabase` out-of-the-box includes the Supabase dependency: [supabase-js](https://github.com/supabase/supabase-js).
 
-```bash name=Terminal
+```bash
 npm create refine-app@latest -- --preset refine-supabase my-app
-```
-
-3. **Open your Refine app in VS Code**
-
-You will develop your app, connect to the Supabase backend and run the Refine app in VS Code.
-
-```bash name=Terminal
-cd my-app
-code .
-```
-
-4. **Start the app**
-
-Start the app, go to [http://localhost:5173](http://localhost:5173) in a browser, and you should be greeted with the Refine Welcome page.
-
-```bash name=Terminal
-npm run dev
 ```
 
 ![Refine welcome page](/docs/img/refine-qs-welcome-page.png)
 
-5. **Update `supabaseClient`**
+## 4. Update `supabaseClient` with environment variables
 
-You now have to update the `supabaseClient` with the `SUPABASE_URL` and `SUPABASE_KEY` of your Supabase API. The `supabaseClient` is used in auth provider and data provider methods that allow the Refine app to connect to your Supabase backend.
+Update the `supabaseClient` with the `SUPABASE_URL` and `SUPABASE_KEY` of your Supabase API, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=refine\&tab=frameworks). The `supabaseClient` is used in auth provider and data provider methods that allow the Refine app to connect to your Supabase backend.
 
 ```ts name=src/utility/supabaseClient.ts
-import { createClient } from "@refinedev/supabase";
+import { createClient } from '@refinedev/supabase'
 
-const SUPABASE_URL = YOUR_SUPABASE_URL;
-const SUPABASE_KEY = YOUR_SUPABASE_KEY
+const SUPABASE_URL = '<your-supabase-url>'
+const SUPABASE_KEY = '<your-supabase-publishable-key>'
 
 export const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
   db: {
-    schema: "public",
+    schema: 'public',
   },
   auth: {
     persistSession: true,
   },
-});
+})
 ```
 
-6. **Add instruments resource and pages**
+## 5. Add instruments resource and pages
 
-You have to then configure resources and define pages for `instruments` resource.
+Use the following code to automatically add resources and generate code for the pages to show the `instruments` data using Refine Inferencer.
 
-Use the following command to automatically add resources and generate code for pages for `instruments` using Refine Inferencer.
+This defines pages for `list`, `create`, `show` and `edit` actions inside the `src/pages/instruments/` directory with a `<HeadlessInferencer />` component.
 
-This defines pages for `list`, `create`, `show` and `edit` actions inside the `src/pages/instruments/` directory with `<HeadlessInferencer />` component.
-
-The `<HeadlessInferencer />` component depends on `@refinedev/react-table` and `@refinedev/react-hook-form` packages. In order to avoid errors, you should install them as dependencies with `npm install @refinedev/react-table @refinedev/react-hook-form`.
+The `<HeadlessInferencer />` component depends on `@refinedev/react-table` and `@refinedev/react-hook-form` packages. To avoid errors, you should install them as dependencies with `npm install @refinedev/react-table @refinedev/react-hook-form`.
 
 Note: The `<HeadlessInferencer />` is a Refine Inferencer component that automatically generates necessary code for the `list`, `create`, `show` and `edit` pages.
 
-More on [how the Inferencer works is available in the docs here](https://refine.dev/docs/packages/documentation/inferencer/).
+Read more on [how the Inferencer works is in the Refine docs](https://refine.dev/docs/packages/documentation/inferencer/).
 
-```bash name=Terminal
+```bash
 npm run refine create-resource instruments
 ```
 
-7. **Add routes for instruments pages**
+## 6. Add routes for instruments pages
 
 Add routes for the `list`, `create`, `show`, and `edit` pages.
 
-Tip: You should remove the `index` route for the Welcome page presented with the `<Welcome />` component.
+Tip: Remove the `index` route for the Welcome page presented with the `<Welcome />` component.
 
 ```tsx name=src/App.tsx
-import { Refine } from "@refinedev/core";
-import { RefineKbar, RefineKbarProvider } from "@refinedev/kbar";
+import { Refine } from '@refinedev/core'
+import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar'
 import routerProvider, {
   DocumentTitleHandler,
   NavigateToResource,
   UnsavedChangesNotifier,
-} from "@refinedev/react-router";
-import { dataProvider, liveProvider } from "@refinedev/supabase";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+} from '@refinedev/react-router'
+import { dataProvider, liveProvider } from '@refinedev/supabase'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
-import "./App.css";
-import authProvider from "./authProvider";
-import { supabaseClient } from "./utility";
-import { InstrumentsCreate, InstrumentsEdit, InstrumentsList, InstrumentsShow } from "./pages/instruments";
+import './App.css'
+
+import authProvider from './authProvider'
+import {
+  InstrumentsCreate,
+  InstrumentsEdit,
+  InstrumentsList,
+  InstrumentsShow,
+} from './pages/instruments'
+import { supabaseClient } from './utility'
 
 function App() {
   return (
@@ -129780,17 +130026,18 @@ function App() {
             syncWithLocation: true,
             warnWhenUnsavedChanges: true,
           }}
-          resources={[{
-            name: "instruments",
-            list: "/instruments",
-            create: "/instruments/create",
-            edit: "/instruments/edit/:id",
-            show: "/instruments/show/:id"
-          }]}>
+          resources={[
+            {
+              name: 'instruments',
+              list: '/instruments',
+              create: '/instruments/create',
+              edit: '/instruments/edit/:id',
+              show: '/instruments/show/:id',
+            },
+          ]}
+        >
           <Routes>
-            <Route index
-              element={<NavigateToResource resource="instruments" />}
-            />
+            <Route index element={<NavigateToResource resource="instruments" />} />
             <Route path="/instruments">
               <Route index element={<InstrumentsList />} />
               <Route path="create" element={<InstrumentsCreate />} />
@@ -129804,17 +130051,23 @@ function App() {
         </Refine>
       </RefineKbarProvider>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App
 ```
 
-8. **View instruments pages**
+## 7. View instruments pages
 
-Now you should be able to see the instruments pages along the `/instruments` routes. You may now edit and add new instruments using the Inferencer generated UI.
+Start the app with the following command:
 
-The Inferencer auto-generated code gives you a good starting point on which to keep building your `list`, `create`, `show` and `edit` pages. They can be obtained by clicking the `Show the auto-generated code` buttons in their respective pages.
+```bash
+npm run dev
+```
+
+Open [http://localhost:5173/instruments](http://localhost:5173/instruments) in a browser, and you should be able to see the instruments pages along the `/instruments` routes. You can edit and add new instruments using the Inferencer generated UI.
+
+The Inferencer auto-generated code gives you a good starting point on which to keep building your `list`, `create`, `show` and `edit` pages. You can get these by clicking the `Show the auto-generated code` buttons in their respective pages.
 
 
 ---
@@ -129823,17 +130076,19 @@ The Inferencer auto-generated code gives you a good starting point on which to k
 
 Learn how to create a Rails project and connect it to your Supabase Postgres database.
 
-1. **Create a Rails Project**
+## 1. Create a Rails project
 
-Make sure your Ruby and Rails versions are up to date, then use `rails new` to scaffold a new Rails project. Use the `-d=postgresql` flag to set it up for Postgres.
+With your Ruby and Rails versions up to date, run `rails new` on your terminal to scaffold a new project.
 
-Go to the [Rails docs](https://guides.rubyonrails.org/getting_started.html) for more details.
+Use the `-d=postgresql` flag to set it up for Postgres.
 
-```bash name=Terminal
+Check the [Rails docs](https://guides.rubyonrails.org/getting_started.html) for more details.
+
+```bash
 rails new blog -d=postgresql
 ```
 
-2. **Set up the Postgres connection details**
+## 2. Set up the Postgres connection details
 
 Go to [database.new](https://database.new) and create a new Supabase project. Save your database password securely.
 
@@ -129843,26 +130098,26 @@ Look for the Session Pooler connection string and copy the string. You will need
 
 Note: If you're in an [IPv6 environment](https://github.com/orgs/supabase/discussions/27034) or have the IPv4 Add-On, you can use the direct connection string instead of Supavisor in Session mode.
 
-```bash name=Terminal
+```bash name=.env
 export DATABASE_URL=postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:5432/postgres
 ```
 
-3. **Create and run a database migration**
+## 3. Create and run a database migration
 
 Rails includes Active Record as the ORM as well as database migration tooling which generates the SQL migration files for you.
 
 Create an example `Article` model and generate the migration files.
 
-```bash name=Terminal
+```bash
 bin/rails generate model Article title:string body:text
 bin/rails db:migrate
 ```
 
-4. **Use the Model to interact with the database**
+## 4. Use the model to interact with the database
 
 You can use the included Rails console to interact with the database. For example, you can create new entries or list all entries in a Model's table.
 
-```bash name=Terminal
+```bash
 bin/rails console
 ```
 
@@ -129873,11 +130128,11 @@ article.save # Saves the entry to the database
 Article.all
 ```
 
-5. **Start the app**
+## 5. Start the app
 
 Run the development server. Go to [http://127.0.0.1:3000](http://127.0.0.1:3000) in a browser to see your application running.
 
-```bash name=Terminal
+```bash
 bin/rails server
 ```
 
@@ -129888,14 +130143,23 @@ bin/rails server
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a SolidJS app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -129914,11 +130178,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129939,11 +130209,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -129951,68 +130217,73 @@ for select to anon
 using (true);
 ```
 
-2. **Create a SolidJS app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
+
+## 3. Create a SolidJS app
 
 Create a SolidJS app using the `degit` command.
 
-```bash name=Terminal
+```bash
 npx degit solidjs/templates/js my-app
 ```
 
-3. **Install the Supabase client library**
+## 4. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a SolidJS app.
 
 Navigate to the SolidJS app and install `supabase-js`.
 
-```bash name=Terminal
+```bash
 cd my-app && npm install @supabase/supabase-js
 ```
 
-4. **Declare Supabase Environment Variables**
+## 5. Declare Supabase environment variables
 
-Create a `.env.local` file and populate with your Supabase connection variables:
+Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=solidjs\&tab=frameworks):
 
 ```text name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-5. **Query data from the app**
+## 6. Query data from the app
 
 In `App.jsx`, create a Supabase client to fetch the instruments data.
 
 Add a `getInstruments` function to fetch the data and display the query result to the page.
 
 ```jsx name=src/App.jsx
-import { createClient } from "@supabase/supabase-js";
-import { createResource, For } from "solid-js";
+import { createClient } from '@supabase/supabase-js'
+import { createResource, For } from 'solid-js'
 
-const supabase = createClient('https://<project>.supabase.co', '<sb_publishable_key>');
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+)
 
 async function getInstruments() {
-  const { data } = await supabase.from("instruments").select();
-  return data;
+  const { data } = await supabase.from('instruments').select()
+  return data
 }
 
 function App() {
-  const [instruments] = createResource(getInstruments);
+  const [instruments] = createResource(getInstruments)
 
   return (
     <ul>
       <For each={instruments()}>{(instrument) => <li>{instrument.name}</li>}</For>
     </ul>
-  );
+  )
 }
 
-export default App;
+export default App
 ```
 
-6. **Start the app**
+## 7. Start the app
 
 Start the app and go to [http://localhost:3000](http://localhost:3000) in a browser and you should see the list of instruments.
 
-```bash name=Terminal
+```bash
 npm run dev
 ```
 
@@ -130023,14 +130294,23 @@ npm run dev
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a SvelteKit app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -130049,11 +130329,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -130074,11 +130360,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -130086,89 +130368,92 @@ for select to anon
 using (true);
 ```
 
-2. **Create a SvelteKit app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
+
+## 3. Create a SvelteKit app
 
 Create a SvelteKit app using the `npm create` command.
 
-```bash name=Terminal
+```bash
 npx sv create my-app
 ```
 
-3. **Install the Supabase client library**
+## 4. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a SvelteKit app.
 
 Navigate to the SvelteKit app and install `supabase-js`.
 
-```bash name=Terminal
+```bash
 cd my-app && npm install @supabase/supabase-js
 ```
 
-4. **Declare Supabase Environment Variables**
+## 5. Declare Supabase environment variables
 
-Create a `.env` file at the root of your project and populate with your Supabase connection variables:
+Create a `.env` file at the root of your project and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=sveltekit\&tab=frameworks):
 
 ```text name=.env
 PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-5. **Create the Supabase client**
+## 6. Create the Supabase client
 
 Create a `src/lib` directory in your SvelteKit app, create a file called `supabaseClient.js` and add the following code to initialize the Supabase client:
 
 ```js name=src/lib/supabaseClient.js
-import { createClient } from '@supabase/supabase-js';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public';
+import { createClient } from '@supabase/supabase-js'
+import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 
 export const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
 ```
 
 ```ts name=src/lib/supabaseClient.ts
-import { createClient } from '@supabase/supabase-js';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY } from '$env/static/public';
+import { createClient } from '@supabase/supabase-js'
+import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 
 export const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
 ```
 
-6. **Query data from the app**
+## 7. Query data from the app
 
 Use `load` method to fetch the data server-side and display the query results as a list.
 
 Create `+page.server.js` file in the `src/routes` directory with the following code.
 
 ```js name=src/routes/+page.server.js
-  import { supabase } from "$lib/supabaseClient";
+import { supabase } from '$lib/supabaseClient'
 
-  export async function load() {
-    const { data } = await supabase.from("instruments").select();
-    return {
-      instruments: data ?? [],
-    };
+export async function load() {
+  const { data } = await supabase.from('instruments').select()
+  return {
+    instruments: data ?? [],
   }
+}
 ```
 
 ```ts name=src/routes/+page.server.ts
-import type { PageServerLoad } from './$types';
-import { supabase } from '$lib/supabaseClient';
+import { supabase } from '$lib/supabaseClient'
+
+import type { PageServerLoad } from './$types'
 
 type Instrument = {
-  id: number;
-  name: string;
-};
+  id: number
+  name: string
+}
 
 export const load: PageServerLoad = async () => {
-  const { data, error } = await supabase.from('instruments').select<'instruments', Instrument>();
+  const { data, error } = await supabase.from('instruments').select<'instruments', Instrument>()
 
   if (error) {
-    console.error('Error loading instruments:', error.message);
-    return { instruments: [] };
+    console.error('Error loading instruments:', error.message)
+    return { instruments: [] }
   }
 
   return {
     instruments: data ?? [],
-  };
-};
+  }
+}
 ```
 
 Replace the existing content in your `+page.svelte` file in the `src/routes` directory with the following code.
@@ -130185,11 +130470,11 @@ Replace the existing content in your `+page.svelte` file in the `src/routes` dir
 </ul>
 ```
 
-7. **Start the app**
+## 8. Start the app
 
 Start the app and go to [http://localhost:5173](http://localhost:5173) in a browser and you should see the list of instruments.
 
-```bash name=Terminal
+```bash
 npm run dev
 ```
 
@@ -130206,14 +130491,23 @@ npm run dev
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a TanStack Start app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -130232,11 +130526,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -130257,11 +130557,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -130269,56 +130565,59 @@ for select to anon
 using (true);
 ```
 
-2. **Create a TanStack Start app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-- Create a TanStack Start app using the official CLI.
+## 3. Create a TanStack Start app
 
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+Create a TanStack Start app using the official CLI.
 
-Explore Components
-
-```bash name=Terminal
+```bash
 npm create @tanstack/start@latest my-app -- --package-manager npm --toolchain biome
 ```
 
-3. **Install the Supabase client library**
+## 4. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a TanStack Start app.
 
 Navigate to the TanStack Start app and install `supabase-js`.
 
-```bash name=Terminal
+```bash
 cd my-app && npm install @supabase/supabase-js
 ```
 
-4. **Declare Supabase Environment Variables**
+## 5. Declare Supabase environment variables
 
-Create a `.env` file in the root of your project and populate with your Supabase connection variables:
+Create a `.env` file in the root of your project and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true):
 
 ```text name=.env
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-5. **Create a Supabase client utility**
+## 6. Create a Supabase client utility
 
 Create a new file at `src/utils/supabase.ts` to initialize the Supabase client.
 
 ```ts name=src/utils/supabase.ts
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from '@supabase/supabase-js'
 
 export const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-);
+)
 ```
 
-6. **Query data from the app**
+## 7. Query data from the app
+
+Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+
+Explore Components
 
 Replace the contents of `src/routes/index.tsx` with the following code to add a loader function that fetches the instruments data and displays it on the page.
 
 ```tsx name=src/routes/index.tsx
 import { createFileRoute } from '@tanstack/react-router'
+
 import { supabase } from '../utils/supabase'
 
 export const Route = createFileRoute('/')({
@@ -130342,11 +130641,11 @@ function Home() {
 }
 ```
 
-7. **Start the app**
+## 8. Start the app
 
 Run the development server, go to [http://localhost:3000](http://localhost:3000) in a browser and you should see the list of instruments.
 
-```bash name=Terminal
+```bash
 npm run dev
 ```
 
@@ -130363,14 +130662,23 @@ npm run dev
 
 Learn how to create a Supabase project, add some sample data to your database, and query the data from a Vue app.
 
-1. **Create a Supabase project**
+## 1. Create a Supabase project
 
-Go to [database.new](https://database.new) and create a new Supabase project.
+Before you can use Supabase, you need a Supabase project. You can create a project visually in the Dashboard or programmatically using [the Management API](https://supabase.com/docs/reference/api/introduction).
 
-Alternatively, you can create a project using the Management API:
+**Dashboard**
+
+Create a new Supabase project from [the Dashboard of any organization](https://supabase.com/dashboard/new/_) you belong to.
+
+Tip: You can also use [database.new](https://database.new) to create a new Supabase project.
+
+**Management API**
+
+First, get your access token from the [**Account Settings > Access Tokens**](https://supabase.com/dashboard/account/tokens) section of the Dashboard.
+
+Then create a project using [the Management API](https://supabase.com/docs/reference/api/introduction):
 
 ```bash
-# First, get your access token from https://supabase.com/dashboard/account/tokens
 export SUPABASE_ACCESS_TOKEN="your-access-token"
 
 # List your organizations to get the organization ID
@@ -130389,11 +130697,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-When your project is up and running, go to the [**Table Editor**](https://supabase.com/dashboard/project/_/editor) section of the Dashboard, create a new table and insert some data. Then in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard, expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Default privileges for new entities**.
+## 2. Set up your database
 
-Alternatively, you can run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new).
+When your Supabase project is up and running, create an `instruments` table with some sample data.
 
-This creates an `instruments` table with some sample data, sets a secure baseline by setting only the privileges each Postgres role needs, and adds [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default.
+Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+
+You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
+
+Prefill SQL
+
+Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -130414,11 +130728,7 @@ grant select on public.instruments to anon;
 
 -- Enable row level security for the table
 alter table instruments enable row level security;
-```
 
-Create an RLS policy to make the data in your table publicly readable:
-
-```sql SQL_EDITOR
 -- Create a policy to allow the anon role to read from the instruments table
 create policy "public can read instruments"
 on public.instruments
@@ -130426,38 +130736,36 @@ for select to anon
 using (true);
 ```
 
-2. **Create a Vue app**
+Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-- Create a Vue app using the `npm init` command.
+## 3. Create a Vue app
 
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
+Create a Vue app using the `npm init` command.
 
-Explore Components
-
-```sh name=Terminal
+```sh
 npm init vue@latest my-app
 ```
 
-3. **Install the Supabase client library**
+## 4. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a Vue app.
 
 Navigate to the Vue app and install `supabase-js`.
 
-```bash name=Terminal
+```bash
 cd my-app && npm install @supabase/supabase-js
 ```
 
-4. **Declare Supabase Environment Variables**
+## 5. Declare Supabase environment variables
 
-Create a `.env.local` file and populate with your Supabase connection variables:
+Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=vue\&tab=frameworks):
 
 ```text name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-5. **Create the Supabase client**
+## 6. Create the Supabase client
 
 Create a `/src/lib` directory in your Vue app, create a file called `supabaseClient.js` and add the following code to initialize the Supabase client:
 
@@ -130470,13 +130778,14 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 export const supabase = createClient(supabaseUrl, supabasePublishableKey)
 ```
 
-6. **Query data from the app**
+## 7. Query data from the app
 
 Replace the existing content in your `App.vue` file with the following code.
 
 ```vue name=src/App.vue
 <script setup>
-import { ref, onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
+
 import { supabase } from './lib/supabaseClient'
 
 const instruments = ref([])
@@ -130487,7 +130796,7 @@ async function getInstruments() {
 }
 
 onMounted(() => {
-   getInstruments()
+  getInstruments()
 })
 </script>
 
@@ -130498,11 +130807,11 @@ onMounted(() => {
 </template>
 ```
 
-7. **Start the app**
+## 8. Start the app
 
 Start the app and go to [http://localhost:5173](http://localhost:5173) in a browser and you should see the list of instruments.
 
-```bash name=Terminal
+```bash
 npm run dev
 ```
 

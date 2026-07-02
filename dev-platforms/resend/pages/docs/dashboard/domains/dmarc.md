@@ -70,6 +70,30 @@ To confirm DMARC passed, you can inspect the email headers and confirm there is 
 
 Once you have verified DMARC is passing across all your sending, you should upgrade your Policy to `p=quarantine;`. This policy gives mailbox providers greater confidence in your domain since your domain only allows authenticated email.
 
+Update the value of your existing `_dmarc` TXT record to use a stricter policy:
+
+| Name                | Type | Value                                                          |
+| ------------------- | ---- | -------------------------------------------------------------- |
+| \_dmarc.example.com | TXT  | `v=DMARC1; p=quarantine; rua=mailto:dmarcreports@example.com;` |
+
+Once you're confident that all legitimate email is passing DMARC, you can further tighten the policy to `reject`:
+
+| Name                | Type | Value                                                      |
+| ------------------- | ---- | ---------------------------------------------------------- |
+| \_dmarc.example.com | TXT  | `v=DMARC1; p=reject; rua=mailto:dmarcreports@example.com;` |
+
+<Info>
+  While tightening your policy, it's important to have visibility into your
+  DMARC failures to ensure you're not blocking legitimate email. We recommend
+  adding aggregate reporting (`rua`) to your DMARC record to help you monitor
+  and troubleshoot DMARC failures. For help analyzing your DMARC reports, see
+  our [guide on how to read a DMARC
+  report](https://resend.com/blog/how-to-read-a-dmarc-report) or use Resend's
+  [DMARC analyzer](/docs/dmarc-analyzer).
+</Info>
+
+Here is a summary of the available policies and their behavior:
+
 | Policy        | Value                                            |
 | ------------- | ------------------------------------------------ |
 | p=none;       | Allow all email. Monitoring for DMARC failures.  |

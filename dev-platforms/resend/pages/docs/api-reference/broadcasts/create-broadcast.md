@@ -21,7 +21,7 @@ Create a new broadcast to send to your contacts.
 <ParamField type="string">
   Sender email address.
 
-  To include a friendly name, use the format `"Your Name <sender@domain.com>"`.
+  To include a friendly name, pass the sender as `Name <email@example.com>`, for example `Acme <onboarding@example.dev>`.
 </ParamField>
 
 <ParamField type="string">

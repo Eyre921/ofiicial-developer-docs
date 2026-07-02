@@ -18,13 +18,13 @@ Changes to your email that can improve deliverability.
 
 <img alt="Attention Insights" />
 
-#### Link URLs match sending domain
+#### Ensure link URLs match sending domain
 
 Ensure that the URLs in your email match the sending domain. Mismatched URLs can trigger spam filters.
 
 For example, if your sending domain is `@widgets.com`, ensure links within the message point back to `https://widgets.com`.
 
-#### DMARC Record is Valid
+#### Include valid DMARC record
 
 DMARC is a TXT record published in the DNS that specifies how email receivers should handle messages from your domain that don’t pass SPF or DKIM validation. [A valid DMARC record](/docs/dashboard/domains/dmarc) can help improve email deliverability.
 
@@ -64,17 +64,17 @@ If you're diagnosing a deliverability issue, changing your email practices could
 
 Using a subdomain instead of the root domain helps segment your sending by purpose. This protects different types of sending from impacting the reputation of others and clearly shows the sending purpose.
 
-#### Disable Click Tracking
+#### Use Custom Subdomain for Click Tracking
 
-Click tracking modifies links, sometimes causing spam filters to flag emails as suspicious or phishing attempts. Disabling click tracking can help with email deliverability, especially for sensitive transactional emails like login or email verification.
+You're using a shared tracking domain for click tracking. Shared tracking domains can hurt deliverability because spam filters may flag links rewritten through shared domains as suspicious. Configure a custom tracking subdomain to keep links on your own domain and improve deliverability.
 
-If on, you can [disable click tracking on your domain in Resend](https://resend.com/domains).
+Learn how to [configure a custom tracking subdomain](/docs/dashboard/domains/tracking#open-and-click-tracking).
 
-#### Disable Open Tracking
+#### Use Custom Subdomain for Open Tracking
 
-Spam filters are sensitive to tracking pixels, flagging them as potential spam. Without these tracking elements, emails may bypass these filters more effectively, especially for sensitive transactional emails like login or email verification.
+You're using a shared tracking domain for open tracking. Spam filters are sensitive to tracking pixels served from shared domains, and may flag them as potential spam. Configure a custom tracking subdomain to serve tracking pixels from your own domain and improve deliverability.
 
-If on, you can [disable open tracking on your domain in Resend](https://resend.com/domains).
+Learn how to [configure a custom tracking subdomain](/docs/dashboard/domains/tracking#open-and-click-tracking).
 
 <Info>
   Open rates are not always accurate. Learn more about [why open rates may not
