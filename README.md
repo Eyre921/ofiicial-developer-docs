@@ -168,6 +168,13 @@ cd ofiicial-developer-docs && git sparse-checkout set ai-models/anthropic-api
 | 一份可直接喂给模型的**全文** | `<分类>/<来源>/llms-full.txt` |
 | 按官方 URL 路径拆开的**逐页 markdown** | `<分类>/<来源>/pages/…/*.md` |
 
+**不想 git clone？直接下压缩包（每周日 20:00 一版，保留最近 4 版）：**
+
+- CNB Release：`https://cnb.cool/lib/ofiicial-developer-docs/-/releases`
+- GitHub Release：`https://github.com/Eyre921/ofiicial-developer-docs/releases`
+
+每次 release 附 8 个 asset：`all.tar.gz`（全站，~68MB）+ 7 个分类各一包（`ai-models.tar.gz` 等，最小 363KB / 最大 33MB）+ `manifest.json`（版本 · git HEAD · sha256）。想要 OpenAI 的下 `ai-models.tar.gz`；想全下 `all.tar.gz`。
+
 ---
 
 ## 注意事项

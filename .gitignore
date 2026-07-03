@@ -2,3 +2,7 @@ __pycache__/
 *.pyc
 .venv/
 .uv/
+# release stage 产物；不入库，避免和 crawl 的 commit-back 循环
+dist/
+.release_version
+push.log
