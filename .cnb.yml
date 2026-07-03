@@ -122,64 +122,19 @@ main:
               - dist/libraries.tar.gz
               - dist/manifest.json
         - name: release-github
-          # 走 REST API 建 GitHub release + 上传 8 个 asset。失败静默不阻断。
+          # 建 release + 传 asset 全丢给 release_gh.py（YAML block 里 heredoc 缩进不可控，之前吃过亏）
           script: |
             if [ -z "${GH_TOKEN:-}" ]; then
               echo "跳过 GitHub release：GH_TOKEN 未注入"; exit 0
             fi
             VER="$(cat .release_version)"; TAG="v${VER}"
-            REPO="Eyre921/ofiicial-developer-docs"
-            API="https://api.github.com/repos/${REPO}"
-            UPLOAD="https://uploads.github.com/repos/${REPO}"
-
-            # 拿 CNB 侧刚 push 上去的 tag（GitHub 那边 mirror-to-github 是 branch push，tag 得单独推）
-            git push -f "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "refs/tags/${TAG}" || {
-              echo "⚠️ 推 tag 到 GitHub 失败"; exit 0
+            # 先把 tag 推到 GitHub（mirror-to-github 只推 branch）
+            git push -f "https://x-access-token:${GH_TOKEN}@github.com/Eyre921/ofiicial-developer-docs.git" \
+              "refs/tags/${TAG}" || { echo "⚠️ 推 tag 到 GitHub 失败"; exit 0; }
+            # 建 release + 上传 asset 全交给独立 python 脚本，纯 stdlib
+            python3 -u release_gh.py || {
+              echo "⚠️ release_gh.py 报错，但不阻断流水线"; exit 0
             }
-
-            # 如同名 release 已存在，先删（幂等）
-            existing_id=$(curl -sS -H "Authorization: Bearer ${GH_TOKEN}" \
-              "${API}/releases/tags/${TAG}" | jq -r '.id // empty')
-            if [ -n "$existing_id" ]; then
-              curl -sS -X DELETE -H "Authorization: Bearer ${GH_TOKEN}" "${API}/releases/${existing_id}" >/dev/null
-            fi
-
-            # 建 release：JSON body 用 python 生成到临时文件，永远不踩 bash 字符串转义坑
-            NOW="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-            TAG_CLEAN="$(echo -n "$TAG" | tr -d '[:space:]')"   # 防前后空白污染
-            TAG="$TAG_CLEAN"
-            python3 - "$TAG" "$NOW" > /tmp/release_body.json <<'PYEOF'
-            import json, sys
-            tag, now = sys.argv[1], sys.argv[2]
-            body = (
-                f"每周文档快照 · 生成时间 {now}\n\n"
-                "8 个 asset：all.tar.gz 全站 + 7 个分类包 + manifest.json"
-            )
-            print(json.dumps({"tag_name": tag, "name": tag, "body": body}, ensure_ascii=False))
-            PYEOF
-            release_json=$(curl -sS -X POST \
-              -H "Authorization: Bearer ${GH_TOKEN}" \
-              -H "Content-Type: application/json; charset=utf-8" \
-              "${API}/releases" \
-              --data-binary @/tmp/release_body.json)
-            release_id=$(echo "$release_json" | jq -r '.id // empty')
-            if [ -z "$release_id" ]; then
-              echo "⚠️ 建 release 失败,响应体:"
-              echo "$release_json" | head -30
-              exit 0
-            fi
-            echo "✓ 建 release id=$release_id"
-
-            # 上传 8 个包 + manifest
-            for f in dist/*.tar.gz dist/manifest.json; do
-              name=$(basename "$f")
-              curl -sS -X POST \
-                -H "Authorization: Bearer ${GH_TOKEN}" \
-                -H "Content-Type: application/octet-stream" \
-                --data-binary "@$f" \
-                "${UPLOAD}/releases/${release_id}/assets?name=${name}" \
-                -o /dev/null -w "  uploaded $name (HTTP %{http_code})\n"
-            done
             echo "✓ GitHub release ${TAG} 完成"
         - name: cleanup-old-releases
           # 两端都清：CNB + GitHub，各只留最近 4 个 v* release
