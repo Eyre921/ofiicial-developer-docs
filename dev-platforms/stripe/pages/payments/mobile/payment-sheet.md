@@ -17,6 +17,10 @@ The Payment Sheet is a prebuilt UI that presents payment methods in a sheet and 
 > #### US apps selling digital goods
 > 
 > Android apps in the US that sell digital goods can process payments in-app using the Payment Sheet. If you sell digital goods on iOS, see how to implement an app-to-web flow using Stripe Checkout in [Sell in-app digital goods and subscriptions](https://docs.stripe.com/mobile/digital-goods/checkout.md).
+
+> #### Tap to add your card availability
+> 
+> The tap to add your card feature is in private preview. You can [learn more](https://docs.stripe.com/payments/mobile/tap-to-add.md) about how to request access and integrate the feature.
 ![Payment Sheet integration example](https://b.stripecdn.com/docs-statics-srv/assets/payment-sheet.63467c074c4908983eb8fb0ce5250e5f.png)
 
 Payment Sheet integration example

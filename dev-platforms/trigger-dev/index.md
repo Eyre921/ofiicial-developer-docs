@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 297 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 303 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -82,6 +82,7 @@
 - `docs/database-connections` — [Database connections](pages/docs/database-connections.md) · [原文](https://trigger.dev/docs/database-connections)
 - `docs/deploy-environment-variables` — [Environment Variables](pages/docs/deploy-environment-variables.md) · [原文](https://trigger.dev/docs/deploy-environment-variables)
 - `docs/deployment/atomic-deployment` — [Atomic deploys](pages/docs/deployment/atomic-deployment.md) · [原文](https://trigger.dev/docs/deployment/atomic-deployment)
+- `docs/deployment/dev-branches` — [Development branches](pages/docs/deployment/dev-branches.md) · [原文](https://trigger.dev/docs/deployment/dev-branches)
 - `docs/deployment/overview` — [Deployment](pages/docs/deployment/overview.md) · [原文](https://trigger.dev/docs/deployment/overview)
 - `docs/deployment/preview-branches` — [Preview branches](pages/docs/deployment/preview-branches.md) · [原文](https://trigger.dev/docs/deployment/preview-branches)
 - `docs/errors-retrying` — [Errors & Retrying](pages/docs/errors-retrying.md) · [原文](https://trigger.dev/docs/errors-retrying)
@@ -195,6 +196,11 @@
 - `docs/management/envvars/retrieve` — [Retrieve Env Var](pages/docs/management/envvars/retrieve.md) · [原文](https://trigger.dev/docs/management/envvars/retrieve)
 - `docs/management/envvars/update` — [Update Env Var](pages/docs/management/envvars/update.md) · [原文](https://trigger.dev/docs/management/envvars/update)
 - `docs/management/errors-and-retries` — [Errors and retries](pages/docs/management/errors-and-retries.md) · [原文](https://trigger.dev/docs/management/errors-and-retries)
+- `docs/management/errors/ignore` — [Ignore an error](pages/docs/management/errors/ignore.md) · [原文](https://trigger.dev/docs/management/errors/ignore)
+- `docs/management/errors/list` — [List errors](pages/docs/management/errors/list.md) · [原文](https://trigger.dev/docs/management/errors/list)
+- `docs/management/errors/resolve` — [Resolve an error](pages/docs/management/errors/resolve.md) · [原文](https://trigger.dev/docs/management/errors/resolve)
+- `docs/management/errors/retrieve` — [Retrieve an error](pages/docs/management/errors/retrieve.md) · [原文](https://trigger.dev/docs/management/errors/retrieve)
+- `docs/management/errors/unresolve` — [Unresolve an error](pages/docs/management/errors/unresolve.md) · [原文](https://trigger.dev/docs/management/errors/unresolve)
 - `docs/management/multiple-clients` — [Multiple SDK clients](pages/docs/management/multiple-clients.md) · [原文](https://trigger.dev/docs/management/multiple-clients)
 - `docs/management/overview` — [Management API overview](pages/docs/management/overview.md) · [原文](https://trigger.dev/docs/management/overview)
 - `docs/management/query/dashboards` — [List dashboards](pages/docs/management/query/dashboards.md) · [原文](https://trigger.dev/docs/management/query/dashboards)

@@ -15,7 +15,7 @@ When you send emails with Resend, you can receive real-time notifications for ea
 
 These events contain valuable data, however, by default webhooks are ephemeral. To make the data persistent, you can store the data in your own datasource.
 
-This guide explains [why you should store your webhook data](#why-store-webhook-data) and [how to get started](#how-to-store-webhook-data).
+This guide explains [why storing your webhook data matters](#why-store-webhook-data) and [how to get started](#how-to-store-webhook-data).
 
 ## Why Store Webhook Data?
 
@@ -80,7 +80,7 @@ The right database depends on your use case:
   generous free tier.
 </Tip>
 
-### What Data Should You Store?
+### What Data to Store
 
 At minimum, store these fields for each webhook event:
 
@@ -108,8 +108,8 @@ Before storing webhook data, consider your retention requirements:
 
 ### How Long to Keep Data
 
-* **Operational use** - 30-90 days is often sufficient for debugging and recent analytics
-* **Compliance requirements** - Check your industry regulations (often 1-7 years)
+* **Operational use** - 30–90 days is often sufficient for debugging and recent analytics
+* **Compliance requirements** - Check your industry regulations (often 1–7 years)
 * **Historical analysis** - Consider aggregating old data rather than keeping raw events
 
 ### Privacy Considerations

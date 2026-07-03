@@ -121,7 +121,7 @@ Here's a simple workflow you can build with the Resend nodes:
 1. **Resend Trigger**: listens for `contact.created` events.
 2. **Resend** (Email > Send): sends a welcome email to the new contact using data from the trigger.
 
-The Trigger-Action pattern works for any event. For example, you could notify your team on Slack when an email bounces, or log delivery events to a spreadsheet.
+The Trigger-Action pattern works for any event. For example, you can notify your team on Slack when an email bounces, or log delivery events to a spreadsheet.
 
 <Note>
   The Resend node is also available as an [AI

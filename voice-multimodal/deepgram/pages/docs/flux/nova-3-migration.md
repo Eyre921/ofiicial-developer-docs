@@ -104,6 +104,7 @@ In addition to the transcript, flux responses include the:
 * `audio_window_start` and `audio_window_end` to track the audio window.
 * `end_of_turn_confidence` to track the confidence of the end of turn.
 * `sequence_id` to track the sequence id of the messages.
+* `words` array with word-level `start` and `end` timestamps (type `double`) on each word object, along with `word` and `confidence`.
 
 ### Implementation Pattern Changes
 

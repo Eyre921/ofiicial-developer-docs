@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 586 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 587 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -271,6 +271,7 @@
 - `docs/redis/howto/migratefromregionaltoglobal` — [Migrate Regional to Global Database](pages/docs/redis/howto/migratefromregionaltoglobal.md) · [原文](https://upstash.com/docs/redis/howto/migratefromregionaltoglobal)
 - `docs/redis/howto/monitoryourusage` — [Monitor your usage](pages/docs/redis/howto/monitoryourusage.md) · [原文](https://upstash.com/docs/redis/howto/monitoryourusage)
 - `docs/redis/howto/readyourwrites` — [Read Your Writes](pages/docs/redis/howto/readyourwrites.md) · [原文](https://upstash.com/docs/redis/howto/readyourwrites)
+- `docs/redis/howto/redis-cli` — [Using redis-cli](pages/docs/redis/howto/redis-cli.md) · [原文](https://upstash.com/docs/redis/howto/redis-cli)
 - `docs/redis/howto/terraformprovider` — [Terraform Provider](pages/docs/redis/howto/terraformprovider.md) · [原文](https://upstash.com/docs/redis/howto/terraformprovider)
 - `docs/redis/howto/upgrade-database` — [Upgrade Your Database](pages/docs/redis/howto/upgrade-database.md) · [原文](https://upstash.com/docs/redis/howto/upgrade-database)
 - `docs/redis/howto/vercelintegration` — [Vercel - Upstash Redis Integration](pages/docs/redis/howto/vercelintegration.md) · [原文](https://upstash.com/docs/redis/howto/vercelintegration)

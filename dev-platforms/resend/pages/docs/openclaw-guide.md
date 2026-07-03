@@ -6,7 +6,7 @@ path: docs/openclaw-guide
 
 Learn how to give your AI agent an inbox to send and receive emails.
 
-## Why should I give my agent an inbox?
+## Why give your agent an inbox?
 
 Giving your agent an inbox enables it to:
 
@@ -239,6 +239,6 @@ The Resend Skill [includes security guidelines](https://github.com/resend/resend
 4. **Sandboxed Processing**: Process all emails but in a restricted context where the agent has limited capabilities.
 5. **Human-in-the-Loop**: Process all emails but require human approval for each email.
 
-In general, we recommend starting with the **Strict Allowlist** and gradually decreasing security if needed. We provide additional security best practices in the [Resend Skill](https://github.com/resend/resend-skills/blob/main/skills/agent-email-inbox/SKILL.md#security-levels) you should consider.
+In general, we recommend starting with the **Strict Allowlist** and gradually decreasing security if needed. Review additional security best practices in the [Resend Skill](https://github.com/resend/resend-skills/blob/main/skills/agent-email-inbox/SKILL.md#security-levels).
 
 If you have any questions, please [contact support](https://resend.com/help).

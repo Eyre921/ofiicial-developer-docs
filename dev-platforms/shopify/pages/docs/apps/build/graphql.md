@@ -14,7 +14,7 @@ source_url:
   md: 'https://shopify.dev/docs/apps/build/graphql.md'
 ---
 
-# About GraphQL
+# About Graph​QL
 
 **Note:**
 

@@ -8,7 +8,7 @@ Claim a domain that is already verified by another team.
 
 When you try to add a domain that another team has already verified, Resend
 blocks the creation and tells you the domain can be claimed. Claiming lets you
-prove control of the domain over DNS and transfer it to your team — entirely
+prove control of the domain over DNS and transfer it to your team, entirely
 over the API.
 
 ## How it works
@@ -39,16 +39,16 @@ over the API.
 
 ## Claim status
 
-| Status       | Meaning                                                  |
-| ------------ | -------------------------------------------------------- |
-| `pending`    | Waiting for DNS verification.                            |
-| `verified`   | DNS proof accepted; the transfer is in progress.         |
-| `completed`  | The domain now belongs to your team.                     |
-| `blocked`    | A safety check blocked the claim — see `blocked_reason`. |
-| `expired`    | The claim window passed before it completed.             |
-| `superseded` | A newer claim replaced this one.                         |
-| `canceled`   | The claim was canceled.                                  |
-| `failed`     | The claim could not be completed.                        |
+| Status       | Meaning                                                 |
+| ------------ | ------------------------------------------------------- |
+| `pending`    | Waiting for DNS verification.                           |
+| `verified`   | DNS proof accepted. The transfer is in progress.        |
+| `completed`  | The domain now belongs to your team.                    |
+| `blocked`    | A safety check blocked the claim. See `blocked_reason`. |
+| `expired`    | The claim window passed before it completed.            |
+| `superseded` | A newer claim replaced this one.                        |
+| `canceled`   | The claim was canceled.                                 |
+| `failed`     | The claim did not complete.                             |
 
 When a claim is `blocked`, `blocked_reason` explains why: `grace_period`,
 `recent_owner_activity`, or `pending_scheduled_emails`.

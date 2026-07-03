@@ -6,10 +6,6 @@ path: docs/ai-chat/lifecycle-hooks
 
 Hook into every stage of a chat agent's run: preload, turn start, turn complete, suspend, resume, and more.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 `chat.agent({ ... })` accepts a set of lifecycle hooks for persisting state, validating input, transforming messages, and reacting to suspension and resumption. They fire at well-defined points in the chat agent's lifetime.
 
 **Once per worker process (every fresh run boot):** `onBoot` → `onPreload` (preloaded runs only).

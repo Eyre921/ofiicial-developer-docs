@@ -14,6 +14,10 @@ Generate images from text prompts.
 
 To query an image model, use the `.images` method and specify the image model:
 
+<Note>
+  TypeScript examples that call `together.images.generate` require `together-ai@0.31.0` or later. If your project already has an older SDK installed, upgrade with `npm install together-ai@latest`.
+</Note>
+
 <CodeGroup>
   ```python Python theme={null}
   from together import Together

@@ -162,13 +162,13 @@ npm install --save stripe @stripe/stripe-js next
 
 ### Create a Checkout Session
 
-Add an endpoint on your server that creates a *Checkout Session* (A Checkout Session represents your customer's session as they pay for one-time purchases or subscriptions through Checkout. After a successful payment, the Checkout Session contains a reference to the Customer, and either the successful PaymentIntent or an active Subscription), setting the [ui_mode](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-ui_mode) to `elements`.
+Add an endpoint on your server that creates a *Checkout Session* (A Checkout Session represents your customer's session as they pay for one-time purchases or subscriptions through Checkout. After a successful payment, the Checkout Session contains a reference to the Customer, and either the successful PaymentIntent or an active Subscription), setting the [ui_mode](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-ui_mode) to `elements`. You must create the Checkout Session server-side because it requires your [secret or restricted API key](https://docs.stripe.com/keys.md#obtain-api-keys), which you can’t safely expose in client-side code.
 
 The Checkout Session response includes a [client_secret](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-client_secret), which the client uses to complete the payment. Return the client secret in your response.
 
 ### Supply a return URL
 
-To define how Stripe redirects your customer after payment, specify the URL of the return page in the [return_url](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-return_url) parameter while creating the Checkout Session. After the payment attempt, Stripe directs your customer to the return page hosted on your website.
+To define where Stripe redirects your customer after payment, specify the URL of the return page in the [return_url](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-return_url) parameter when creating the Checkout Session. After the payment attempt, Stripe redirects your customer to the return page hosted on your website.
 
 Include the `{CHECKOUT_SESSION_ID}` template variable in the URL. Before redirecting your customer, Checkout replaces the variable with the Checkout Session ID. You’re responsible for creating and hosting the return page on your website.
 
@@ -389,6 +389,10 @@ Create a customer for each Checkout Session to track payment history, associate 
 ### Add the customer creation parameter
 
 Set the `customer_creation` parameter to `always` to create a new customer for each completed Checkout Session.
+
+### Specify returning customers
+
+To associate a Checkout Session with a customer that already exists, provide the [customer](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer) when creating a session. If you model customers using Accounts v2, you can also pass an Account ID to the [customer_account](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer_account) field to prefill the associated email address. Learn more about the [difference between using v1 Customers and v2 Accounts](https://docs.stripe.com/accounts-v2/use-accounts-as-customers.md).
 
 ### Save a customer’s payment method
 
@@ -1417,7 +1421,7 @@ const stripePromise = loadStripe("<<YOUR_PUBLISHABLE_KEY>>");
     )
 \## Set Price ID
 
-In the back end code, replace `{{PRICE_ID}}` with the Price ID (`price_xxx`) of the product you created in the quickstart guide. Find it in your [Stripe test Dashboard under Products](https://dashboard.stripe.com/test/products).
+In the server code, replace `{{PRICE_ID}}` with the Price ID (`price_xxx`) of the product you created in the quickstart guide. Find it in your [Stripe test Dashboard under Products](https://dashboard.stripe.com/test/products).
 
 1. Build the server
 

@@ -8,7 +8,7 @@ path: terminal/quickstart
 
 # Accept in-person payments 
 
-This guide shows you how to accept in-person payments in your own point of sale (POS) application using Stripe Terminal. You don’t need any hardware to complete these steps with our [simulated reader](https://docs.stripe.com/terminal/references/testing.md#simulated-reader). Optionally, you can download the example and run the application.
+This guide shows you how to accept in-person payments in your own point of sale (POS) application using Stripe Terminal. You don’t need any hardware to complete these steps with our *simulated reader* (Stripe Terminal SDKs and server-driven integrations come with a built-in simulated card reader, so you can develop and test your app without connecting to physical hardware. Whether your integration is complete or you're still building it, use the simulated reader to emulate all the Terminal flows in your app). Optionally, you can download the example and run the application.
 
 When you’re ready to use a physical reader, you only need to update the [reader registration step](https://docs.stripe.com/terminal/quickstart.md#register-reader) (for server-driven integrations) or [reader discovery step](https://docs.stripe.com/terminal/quickstart.md#discover-reader) (for SDK integrations).
 

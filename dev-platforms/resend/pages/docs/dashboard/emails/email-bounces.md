@@ -22,7 +22,7 @@ There are three types of bounces:
    * `General` - The recipient's email provider sent a hard bounce message.
    * `NoEmail` - It was not possible to retrieve the recipient email address from the bounce message.
 
-2. `Transient` - also known as "soft bounce,” where the recipient's mail server rejects the email but it could be delivered in the future.
+2. `Transient` - also known as "soft bounce,” where the recipient's mail server rejects the email but it may be delivered in the future.
    * `General` - The recipient's email provider sent a general bounce message. You might be able to send a message to the same recipient in the future if the issue that caused the message to bounce is resolved.
    * `MailboxFull` - The recipient's email provider sent a bounce message because the recipient's inbox was full. You might be able to send to the same recipient in the future when the mailbox is no longer full.
    * `MessageTooLarge` - The recipient's email provider sent a bounce message because message you sent was too large. You might be able to send a message to the same recipient if you reduce the size of the message.

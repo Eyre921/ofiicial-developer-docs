@@ -20,15 +20,15 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
-  You can assign a job to run on a virtual machine hosted by GitHub.
+  <p>You can assign a job to run on a virtual machine hosted by GitHub.</p>
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
-  <p>A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.</p>
+  A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
-  <p>You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.</p>
+  You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 

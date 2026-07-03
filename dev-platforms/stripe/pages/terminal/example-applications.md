@@ -107,7 +107,7 @@ The JavaScript example app connected to a simulated reader
 
 #### iOS
 
-After you have the example running, select **Simulated** to connect to a [simulated reader](https://docs.stripe.com/terminal/references/testing.md#simulated-reader).
+After you have the example running, select **Simulated** to connect to a *simulated reader* (Stripe Terminal SDKs and server-driven integrations come with a built-in simulated card reader, so you can develop and test your app without connecting to physical hardware. Whether your integration is complete or you're still building it, use the simulated reader to emulate all the Terminal flows in your app).
 ![](https://b.stripecdn.com/docs-statics-srv/assets/ios-example-app-simulator.048c8083664b139b272754aed05ed442.png)
 
 The iOS example app connected to a simulated reader
@@ -116,14 +116,14 @@ The iOS example app connected to a simulated reader
 
 #### Android
 
-After you have the example running, select **Simulated** to connect to a [simulated reader](https://docs.stripe.com/terminal/references/testing.md#simulated-reader).
+After you have the example running, select **Simulated** to connect to a *simulated reader* (Stripe Terminal SDKs and server-driven integrations come with a built-in simulated card reader, so you can develop and test your app without connecting to physical hardware. Whether your integration is complete or you're still building it, use the simulated reader to emulate all the Terminal flows in your app).
 ![](https://b.stripecdn.com/docs-statics-srv/assets/android-example-app-simulator.72ace5d890bc698d7900e10d98d068a2.png)
 
 The Android example app connected to a simulated reader
 
 #### React Native
 
-After you have the example running, select **Simulated** to connect to a [simulated reader](https://docs.stripe.com/terminal/references/testing.md#simulated-reader).
+After you have the example running, select **Simulated** to connect to a *simulated reader* (Stripe Terminal SDKs and server-driven integrations come with a built-in simulated card reader, so you can develop and test your app without connecting to physical hardware. Whether your integration is complete or you're still building it, use the simulated reader to emulate all the Terminal flows in your app).
 ![](https://b.stripecdn.com/docs-statics-srv/assets/react-native-example-app-simulator.268ea316e60ec49ee877240d255c8b58.png)
 
 The React Native example app connected to a simulated reader

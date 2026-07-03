@@ -29,7 +29,7 @@ composer require resend/resend-laravel
 
 ### API key
 
-Next, you should configure your Resend API key in your application's `.env` file:
+Next, configure your Resend API key in your application's `.env` file:
 
 ```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
 RESEND_API_KEY=re_xxxxxxxxx

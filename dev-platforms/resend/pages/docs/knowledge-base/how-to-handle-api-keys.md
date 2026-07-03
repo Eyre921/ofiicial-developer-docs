@@ -47,4 +47,4 @@ To rotate an API key:
   [delete](/docs/api-reference/api-keys/delete-api-key) API keys to rotate keys.
 </Warning>
 
-We recommend rotating keys at least every 90 days, or immediately if you suspect a key has been compromised. Resend flags keys unused for 30+ days in the dashboard to help you identify keys that should be reviewed or deleted.
+We recommend rotating keys at least every 90 days, or immediately if you suspect a key has been compromised. Resend flags keys unused for 30+ days in the dashboard to help you identify keys to review or delete.

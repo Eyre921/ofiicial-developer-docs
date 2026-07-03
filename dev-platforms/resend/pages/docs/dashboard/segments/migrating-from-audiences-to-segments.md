@@ -34,7 +34,7 @@ From now on, contacts will see a preference page where they can:
 * Unsubscribe from certain **Topics** (email's preference).
 * Or unsubscribe from **everything** you send (update contact status).
 
-## What you should do
+## What to Do
 
 If you've been using Audiences for both segmentation and unsubscribes, we recommend switching your unsubscribe logic to **Topics**:
 

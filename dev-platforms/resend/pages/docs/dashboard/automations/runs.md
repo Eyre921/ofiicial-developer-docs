@@ -16,7 +16,7 @@ Each run has one of the following statuses:
 
 | Status      | Description                                                                                        |
 | ----------- | -------------------------------------------------------------------------------------------------- |
-| `running`   | The Automation is currently executing steps                                                        |
+| `running`   | The Automation is executing steps                                                                  |
 | `completed` | All steps finished successfully                                                                    |
 | `failed`    | A step encountered an error and the run stopped                                                    |
 | `cancelled` | The run was cancelled before completing                                                            |
@@ -690,4 +690,4 @@ In the dashboard, you can view overall metrics for any Automation. In the **Obse
 
 <img alt="Automation Runs Metrics" />
 
-The API currently does not support fetching metrics for an Automation.
+The API does not support fetching metrics for an Automation.

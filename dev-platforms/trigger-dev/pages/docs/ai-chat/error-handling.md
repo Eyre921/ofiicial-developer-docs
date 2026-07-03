@@ -6,10 +6,6 @@ path: docs/ai-chat/error-handling
 
 How errors flow through chat.agent — stream errors, hook errors, run failures — and how to recover.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 `chat.agent` errors fall into four layers, each with different recovery semantics. The default behavior is **conversation-preserving**: a thrown error in a hook or `run()` does not kill the chat. The current turn ends with an error chunk, and the agent waits for the user's next message.
 
 ## Error layers at a glance

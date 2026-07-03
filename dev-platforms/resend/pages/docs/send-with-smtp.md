@@ -59,7 +59,7 @@ Here are some common use cases for custom headers:
 
 ## FAQ
 
-Once configured, you should be able to start sending emails via SMTP. Below are some frequently asked questions:
+Once configured, you can start sending emails via SMTP. Below are some frequently asked questions:
 
 <AccordionGroup>
   <Accordion title="What if I need logs from the server to debug?">

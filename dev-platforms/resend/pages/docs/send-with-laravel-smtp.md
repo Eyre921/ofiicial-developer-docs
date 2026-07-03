@@ -30,7 +30,7 @@ MAIL_FROM_NAME=Acme
 
 ## 2. Send an email
 
-Now you're ready to send emails with Laravel's powerful email service. Here's an example of how you could send your first email using Resend SMTP:
+Now you're ready to send emails with Laravel's powerful email service. Here's an example of how to send your first email using Resend SMTP:
 
 ```php OrderShipmentController.php theme={"theme":{"light":"github-light","dark":"vesper"}}
 <?php

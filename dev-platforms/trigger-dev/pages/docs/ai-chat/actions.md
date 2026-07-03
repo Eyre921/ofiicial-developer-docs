@@ -6,10 +6,6 @@ path: docs/ai-chat/actions
 
 Custom commands sent from the frontend that mutate chat state without consuming a turn — undo, rollback, edit, regenerate.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## Overview
 
 Custom actions let the frontend send structured commands (undo, rollback, edit, regenerate) that modify the conversation state. **Actions are not turns**: they fire `hydrateMessages` (if set) and `onAction` only. No turn lifecycle hooks (`onTurnStart` / `prepareMessages` / `onBeforeTurnComplete` / `onTurnComplete`), no `run()`, no turn-counter increment. The trace span is named `chat action`.

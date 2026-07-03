@@ -18,7 +18,7 @@ Together's IAM is built around five concepts that work together:
 | [Project](/docs/projects)                                                                | An isolated workspace within your Organization. Resources, Collaborators, and API keys are scoped to Projects. |
 | [Resource](#resources)                                                                   | Anything you create: fine-tuned models, dedicated endpoints, clusters, evaluations, files.                     |
 | [Member](#organization-members-and-project-collaborators)                                | A user with access to your organization.                                                                       |
-| [Collaborator](https://docs.together.ai/#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user)                                |
+| [Collaborator](https://docs.together.ai/#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user).                               |
 | [API key](/docs/api-keys-authentication)                                                 | A Project-scoped credential for authenticating API requests.                                                   |
 
 ## How It All Fits Together

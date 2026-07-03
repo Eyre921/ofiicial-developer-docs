@@ -6,10 +6,6 @@ path: docs/ai-chat/prompt-caching
 
 Cache the stable prefix of your agent's prompt with Anthropic prompt caching to cut token cost and latency on every turn.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 **Prompt caching lets a provider reuse the unchanged prefix of your prompt across requests, billing it at a fraction of the input price and skipping re-processing.** With Anthropic, cache reads cost \~10% of base input tokens, so a long, stable system prompt or a growing conversation history pays full price once and reads cheaply on every turn after.
 
 Caching is a **byte-exact prefix match**: any change in the prefix invalidates everything after it. A multi-turn agent is the ideal case — the system prompt, tools, and earlier turns are identical turn over turn, so the cacheable prefix only grows. `chat.agent` is built to keep that prefix stable across turns, suspends, and resumes; this page shows how to place the cache breakpoints and verify they're hitting.
@@ -135,6 +131,10 @@ The system breakpoint and the conversation breakpoint compose: the system block 
 
 <Note>
   Anthropic allows **at most 4** cache breakpoints per request, and a prefix must be at least \~1024 tokens (model-dependent) to cache at all — shorter prefixes silently don't cache. One system breakpoint plus one rolling message breakpoint is the typical setup and leaves headroom.
+</Note>
+
+<Note>
+  This rolling-breakpoint pattern composes with [Head Start](/docs/ai-chat/fast-starts#head-start). On a head-start handover, the first turn's pending tool call is handed to the agent as a tool-approval round whose trailing `tool` message must reach `streamText` untouched for that call to execute. `chat.agent` preserves that tail across `prepareMessages` automatically, so rewriting the last message here is safe: on a resume turn the breakpoint just lands on the next user or assistant message instead of the transient approval row.
 </Note>
 
 ## Caching and compaction

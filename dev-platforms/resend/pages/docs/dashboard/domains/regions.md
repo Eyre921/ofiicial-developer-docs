@@ -27,7 +27,7 @@ If your organization has strict data residency requirements, review the [Resend 
 
 ## Why is this important?
 
-Especially for transactional emails like magic links, password resets, and welcome messages, users expect to receive them right away. If they don't, they might not be able to access your service right away, which could be a missed opportunity for your organization.
+Especially for transactional emails like magic links, password resets, and welcome messages, users expect to receive them right away. If they don't, they might not be able to access your service right away, which is a missed opportunity for your organization.
 
 Here are some of the other benefits of using our multi-region email sending feature:
 
@@ -47,7 +47,7 @@ For advanced needs, you can set up multiple regions for the same domain. We reco
 
 ## Changing Domain Region
 
-If you'd like to switch the region your domain is currently set to:
+If you'd like to switch the region your domain is set to:
 
 1. Delete your current domain in the [Domain's page](https://resend.com/domains).
 2. Add the same domain again, selecting the new region.

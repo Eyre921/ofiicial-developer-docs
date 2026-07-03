@@ -10,7 +10,7 @@ Analyze DMARC XML reports with a free, open-source tool built by Resend.
 
 ## What is DMARC?
 
-DMARC (Domain-based Message Authentication, Reporting, and Conformance) is an email authentication protocol that builds on [SPF and DKIM](/docs/dashboard/domains/introduction). It lets domain owners specify how unauthenticated emails should be handled and receive reports about authentication results.
+DMARC (Domain-based Message Authentication, Reporting, and Conformance) is an email authentication protocol that builds on [SPF and DKIM](/docs/dashboard/domains/introduction). It lets domain owners specify how unauthenticated emails are handled and receive reports about authentication results.
 
 When you [set up a DMARC policy](/docs/dashboard/domains/dmarc), mailbox providers send XML reports to the address you specify. These reports contain valuable data about who is sending email on behalf of your domain and whether those emails pass authentication, but the raw XML is difficult to read. The DMARC Analyzer helps you visualize these reports in a human-readable format.
 

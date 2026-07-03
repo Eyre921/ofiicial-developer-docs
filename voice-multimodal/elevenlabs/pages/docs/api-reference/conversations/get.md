@@ -807,9 +807,20 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ConversationVoiceRewardModel'
+        cost_fiat:
+          type:
+            - number
+            - 'null'
+          format: double
+          description: >-
+            Total fiat cost of the conversation in USD, i.e. the sum of the LLM
+            price and the non-LLM platform price (the fiat analogue of
+            ``cost``). ``None`` when neither is set (e.g. conversations that
+            predate fiat cost tracking).
       required:
         - start_time_unix_secs
         - call_duration_secs
+        - cost_fiat
       title: ConversationHistoryMetadataCommonModel
     EvaluationSuccessResult:
       type: string

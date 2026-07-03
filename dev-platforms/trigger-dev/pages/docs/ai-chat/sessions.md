@@ -6,10 +6,6 @@ path: docs/ai-chat/sessions
 
 A Session is a stateful execution of an agent, with two-way streaming and durable compute. A single Session can have multiple runs associated with it.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 **A Session is a stateful execution of an agent.** It includes two-way streaming and durable compute, and a single Session can have multiple runs associated with it.
 
 The **two-way streaming** is a pair of durable streams. The input stream (`.in`) carries incoming user messages to your task. The output stream (`.out`) carries everything the agent produces back to your clients: AI generation parts (text, reasoning, tool calls) and any custom data parts you write.

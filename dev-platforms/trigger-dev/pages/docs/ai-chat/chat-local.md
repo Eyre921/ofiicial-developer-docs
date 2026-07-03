@@ -6,10 +6,6 @@ path: docs/ai-chat/chat-local
 
 Typed, run-scoped data accessible from hooks, run(), tools, and subtasks. Survives across turns, auto-cleared between runs, auto-hydrated into subtasks.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Use `chat.local` to create typed, run-scoped data that persists across turns and is accessible from anywhere — the run function, tools, nested helpers. Each run gets its own isolated copy, and locals are automatically cleared between runs.
 
 Lifecycle hooks and **`run`** also receive **`ctx`** ([`TaskRunContext`](/docs/ai-chat/reference#task-context-ctx)) — the same object as on a standard `task()` — for tags, metadata, and cleanup that needs the full run record.

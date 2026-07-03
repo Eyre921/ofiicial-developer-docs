@@ -1478,6 +1478,14 @@ components:
         - high
         - xhigh
       title: LlmReasoningEffort
+    type_:ToolInterruptionMode:
+      type: string
+      enum:
+        - allow
+        - disable_during_tool
+        - disable_during_tool_and_turn
+      default: allow
+      title: ToolInterruptionMode
     type_:PreToolSpeechMode:
       type: string
       enum:
@@ -2107,8 +2115,16 @@ components:
           type: boolean
           default: false
           description: >-
-            If true, the user will not be able to interrupt the agent while this
-            tool is running.
+            DEPRECATED: use `interruption_mode` instead. If true, the user will
+            not be able to interrupt the agent while this tool is running.
+        interruption_mode:
+          $ref: '#/components/schemas/type_:ToolInterruptionMode'
+          description: >-
+            Controls whether the user can interrupt the agent around this tool
+            call. 'allow' (default) lets the user interrupt at any time,
+            'disable_during_tool' suppresses interruptions only while the tool
+            is running, 'disable_during_tool_and_turn' suppresses interruptions
+            while the tool runs and for the agent response that follows it.
         force_pre_tool_speech:
           type: boolean
           default: false
@@ -2877,8 +2893,18 @@ components:
               type: boolean
               default: false
               description: >-
-                If true, the user will not be able to interrupt the agent while
-                this tool is running.
+                DEPRECATED: use `interruption_mode` instead. If true, the user
+                will not be able to interrupt the agent while this tool is
+                running.
+            interruption_mode:
+              $ref: '#/components/schemas/type_:ToolInterruptionMode'
+              description: >-
+                Controls whether the user can interrupt the agent around this
+                tool call. 'allow' (default) lets the user interrupt at any
+                time, 'disable_during_tool' suppresses interruptions only while
+                the tool is running, 'disable_during_tool_and_turn' suppresses
+                interruptions while the tool runs and for the agent response
+                that follows it.
             force_pre_tool_speech:
               type: boolean
               default: false
@@ -2968,8 +2994,18 @@ components:
               type: boolean
               default: false
               description: >-
-                If true, the user will not be able to interrupt the agent while
-                this tool is running.
+                DEPRECATED: use `interruption_mode` instead. If true, the user
+                will not be able to interrupt the agent while this tool is
+                running.
+            interruption_mode:
+              $ref: '#/components/schemas/type_:ToolInterruptionMode'
+              description: >-
+                Controls whether the user can interrupt the agent around this
+                tool call. 'allow' (default) lets the user interrupt at any
+                time, 'disable_during_tool' suppresses interruptions only while
+                the tool is running, 'disable_during_tool_and_turn' suppresses
+                interruptions while the tool runs and for the agent response
+                that follows it.
             force_pre_tool_speech:
               type: boolean
               default: false
@@ -3086,8 +3122,18 @@ components:
               type: boolean
               default: false
               description: >-
-                If true, the user will not be able to interrupt the agent while
-                this tool is running.
+                DEPRECATED: use `interruption_mode` instead. If true, the user
+                will not be able to interrupt the agent while this tool is
+                running.
+            interruption_mode:
+              $ref: '#/components/schemas/type_:ToolInterruptionMode'
+              description: >-
+                Controls whether the user can interrupt the agent around this
+                tool call. 'allow' (default) lets the user interrupt at any
+                time, 'disable_during_tool' suppresses interruptions only while
+                the tool is running, 'disable_during_tool_and_turn' suppresses
+                interruptions while the tool runs and for the agent response
+                that follows it.
             force_pre_tool_speech:
               type: boolean
               default: false
@@ -3155,8 +3201,18 @@ components:
               type: boolean
               default: false
               description: >-
-                If true, the user will not be able to interrupt the agent while
-                this tool is running.
+                DEPRECATED: use `interruption_mode` instead. If true, the user
+                will not be able to interrupt the agent while this tool is
+                running.
+            interruption_mode:
+              $ref: '#/components/schemas/type_:ToolInterruptionMode'
+              description: >-
+                Controls whether the user can interrupt the agent around this
+                tool call. 'allow' (default) lets the user interrupt at any
+                time, 'disable_during_tool' suppresses interruptions only while
+                the tool is running, 'disable_during_tool_and_turn' suppresses
+                interruptions while the tool runs and for the agent response
+                that follows it.
             force_pre_tool_speech:
               type: boolean
               default: false

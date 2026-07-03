@@ -82,11 +82,15 @@ Notice how confidence builds up and how the `EagerEndOfTurn` event fires before 
   "words": [
     {
       "word": "Hi",
-      "confidence": 0.95
+      "confidence": 0.95,
+      "start": 0.42,
+      "end": 0.56
     },
     {
       "word": "I",
-      "confidence": 0.92
+      "confidence": 0.92,
+      "start": 0.56,
+      "end": 0.6
     }
   ],
   "end_of_turn_confidence": 0.1

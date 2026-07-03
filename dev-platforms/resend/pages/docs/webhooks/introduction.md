@@ -49,7 +49,7 @@ export default (req, res) => {
 };
 ```
 
-On receiving an event, you should respond with an `HTTP 200 OK` to signal to Resend that the event was successfully delivered.
+On receiving an event, respond with an `HTTP 200 OK` to signal to Resend that the event was successfully delivered.
 
 <Tip>
   For development, you can create a tunnel to your localhost server using a tool like

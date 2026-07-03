@@ -26,6 +26,7 @@ Flux tackles the most critical challenges for voice agents today: knowing when t
 * **Early LLM responses** — `EagerEndOfTurn` events for faster replies
 * **Turn-based transcripts** — Clean conversation structure
 * **Natural interruptions** — Built-in barge-in handling
+* **Word-level timestamps** — Start and end times for each recognized word
 * **Nova-3 accuracy** — Best-in-class transcription quality
 
 For more information on how Flux manages turns, see the [Flux State Machine Guide](/docs/flux/state) guide.

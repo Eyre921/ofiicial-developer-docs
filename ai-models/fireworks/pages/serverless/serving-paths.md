@@ -48,7 +48,7 @@ curl https://api.fireworks.ai/inference/v1/chat/completions \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $FIREWORKS_API_KEY" \
   -d '{
-    "model": "accounts/fireworks/routers/kimi-k2p7-fast",
+    "model": "accounts/fireworks/routers/kimi-k2p7-code-fast",
     "messages": [{"role": "user", "content": "Hello"}]
   }'
 ```

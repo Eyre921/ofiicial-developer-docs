@@ -62,7 +62,7 @@ Use tools like [GitLeaks](https://github.com/gitleaks/gitleaks), [Detect Secrets
 
 ### Regular key rotation
 
-* Rotate API keys on a schedule and set calendar reminders to do so. PATs expire one year after creation, so plan replacements before they expire.
+* Rotate API keys on a schedule and set calendar reminders to do so. PATs expire on a date chosen when the token is created (up to one year later), so plan replacements before they expire.
 * Immediately rotate keys when team members with access leave
 * Keep an inventory of all API keys and their purposes
 

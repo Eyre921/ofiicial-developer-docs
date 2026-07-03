@@ -94,7 +94,7 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 
 | Resource                   | API key support | UI support |
 | -------------------------- | --------------- | ---------- |
-| Instant Clusters           | ✅               | ✅          |
+| GPU Clusters               | ✅               | ✅          |
 | API Keys                   | ✅               | ✅          |
 | Fine-tuning                | ✅               | ❌          |
 | Files                      | ✅               | ❌          |
@@ -106,7 +106,6 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | Storage                    | ❌               | ❌          |
 | Dedicated Endpoints        | ❌               | ❌          |
 | Uploaded Models & Adapters | ❌               | ❌          |
-| GPU Clusters               | N/A             | ✅          |
 
 Here's what to expect when using a resource that isn't yet supported:
 

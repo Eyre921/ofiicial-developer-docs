@@ -1,5 +1,5 @@
 ---
-title: "Should I add an unsubscribe link to all of my emails sent with Resend?"
+title: "Do I need to add an unsubscribe link to all of my emails sent with Resend?"
 source: https://resend.com/docs/knowledge-base/should-i-add-an-unsubscribe-link
 path: docs/knowledge-base/should-i-add-an-unsubscribe-link
 ---
@@ -14,4 +14,4 @@ Laws enforced by the FTC and GDPR prioritize giving recipients a clear way to gi
 
 Here is more on how to [manually add and manage unsubscribe links](https://resend.com/docs/dashboard/emails/add-unsubscribe-to-transactional-emails).
 
-If you're using [Resend Broadcasts or Automations](https://resend.com/docs/dashboard/audiences/managing-unsubscribe-list), Resend will automatically handle unsubscribe requests once you include `{{{RESEND_UNSUBSCRIBE_URL}}}` in your email. You can include the Unsubscribe Footer in your Broadcasts, which will be automatically replaced with the correct link for each contact, or use `{{{RESEND_UNSUBSCRIBE_URL}}}` as a link target should you want to customize the unsubscribe footer.
+If you're using [Resend Broadcasts or Automations](https://resend.com/docs/dashboard/audiences/managing-unsubscribe-list), Resend will automatically handle unsubscribe requests once you include `{{{RESEND_UNSUBSCRIBE_URL}}}` in your email. You can include the Unsubscribe Footer in your Broadcasts, which will be automatically replaced with the correct link for each contact, or use `{{{RESEND_UNSUBSCRIBE_URL}}}` as a link target if you want to customize the unsubscribe footer.

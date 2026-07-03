@@ -40,6 +40,8 @@ Deep Agents Code integrates automatically with the [following model providers](#
    /auth
    ```
 
+   `/auth` shows a list of available providers and stores credentials for reuse across sessions.
+
    For non-interactive runs, CI/CD, or anywhere a TUI isn't available, store the same key from the shell with [`dcode auth set`](/oss/javascript/deepagents/code/configuration#manage-credentials-from-the-shell-dcode-auth) or set the provider's environment variable instead. See [Provider credentials](/oss/javascript/deepagents/code/configuration#provider-credentials) for the full key resolution order, the [`DEEPAGENTS_CODE_` prefix](/oss/javascript/deepagents/code/configuration#deepagents_code_-prefix) for scoping a key to Deep Agents Code, and the [Provider reference](#provider-reference) for each provider's environment variable.
 
    To configure model parameters, see [Model parameters](#model-parameters).

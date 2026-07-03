@@ -74,7 +74,7 @@ A healthy email list is one that is continuously nurtured with relevant and time
 
 To keep your email list in top shape, focus on sending to engaged users. Major inbox providers like Gmail and Microsoft expect you to send emails to recipients who have recently opened or clicked on your emails.
 
-As a best practice, you should limit non-transactional email sends to recipients who have opened or clicked an email in the past 6 months.
+As a best practice, limit non-transactional email sends to recipients who have opened or clicked an email in the past 6 months.
 
 <Info>
   The exact timeframe may vary depending on your industry, sending frequency,

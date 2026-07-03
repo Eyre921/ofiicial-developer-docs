@@ -6,10 +6,6 @@ path: docs/ai-chat/quick-start
 
 Get a working AI agent in 3 steps — define an agent, generate a token, and wire up the frontend.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 These steps assume you already have a Trigger.dev project with the SDK installed and the CLI authenticated — if you don't, follow [Manual setup](/docs/manual-setup) (or `npx trigger.dev@latest init` in an existing project) first. You should be able to run `pnpm exec trigger dev` from your project root before continuing.
 
 The chat surface works with Vercel AI SDK **v5, v6, or v7**; install whichever major you want. On **v7**, also install `@ai-sdk/otel` so your model calls are traced (the SDK registers it for you). See [compatibility](/docs/ai-chat/reference#compatibility) for the full matrix.

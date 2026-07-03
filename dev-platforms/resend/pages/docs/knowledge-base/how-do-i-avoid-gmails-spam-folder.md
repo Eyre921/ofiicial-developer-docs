@@ -32,7 +32,7 @@ All communication is built on trust, and email is no different. When you send an
 
 ## Legitimize Your Domain
 
-Gmail is using many methods to identify who you are as a sender, and one way they do that is by looking at your domain. You should make sure that the domain you send with is the same domain where your website is hosted. If you send from `@example.com` but your website is hosted at `example.net`, Gmail won't be able to use your site to help legitimize you.
+Gmail is using many methods to identify who you are as a sender, and one way they do that is by looking at your domain. Make sure that the domain you send with is the same domain where your website is hosted. If you send from `@example.com` but your website is hosted at `example.net`, Gmail won't be able to use your site to help legitimize you.
 
 You can regularly check if your domain is listed as unsafe with [Google Safe Browsing](https://transparencyreport.google.com/safe-browsing/search?hl=en) to make sure Google isn't classifying your domain as suspicious.
 
@@ -79,8 +79,8 @@ A few good rules for content:
 
 * Less is more (keep it simple and to the point)
 * Plain text over complex HTML
-* Links should be visible and match the sending domain
-* No content should be hidden or manipulative
+* Visible links that match the sending domain
+* No hidden or manipulative content
 
 **Action Items**
 
@@ -97,9 +97,9 @@ It can also be helpful to segment your sending by sending address to give Gmail 
 
 Some examples of helpful email addresses:
 
-* **Personal emails** should come from an address with a name like [marissa@domain.com](mailto:marissa@domain.com)
-* **Transactional emails** should come from an address like [notifications@domain.com](mailto:notifications@domain.com)
-* **Marketing emails** should come from an address like [updates@domain.com](mailto:updates@domain.com).
+* **Personal emails** come from an address with a name like [marissa@domain.com](mailto:marissa@domain.com)
+* **Transactional emails** come from an address like [notifications@domain.com](mailto:notifications@domain.com)
+* **Marketing emails** come from an address like [updates@domain.com](mailto:updates@domain.com).
 
 **Action Items**
 
@@ -113,6 +113,6 @@ Email deliverability is overwhelming. One way to simplify it is to think: **what
 
 **Then do the opposite!**
 
-Gmail's goal is to only show emails that their users want to see and malicious emails are at the bottom of the list. Reverse engineer phishing sending habits and consider how you could prove to Gmail at each step that you clearly have no malicious intent.
+Gmail's goal is to only show emails that their users want to see and malicious emails are at the bottom of the list. Reverse engineer phishing sending habits and consider how you can prove to Gmail at each step that you clearly have no malicious intent.
 
 <Info>Anything we missed? [Let us know](https://resend.com/help).</Info>

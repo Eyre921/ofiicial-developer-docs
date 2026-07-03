@@ -6,10 +6,6 @@ path: docs/ai-chat/backend
 
 Three approaches to building your chat backend — chat.agent(), session iterator, or raw task primitives.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 There are three abstraction levels for a chat backend. All three speak the same wire protocol, so the [frontend transport](/docs/ai-chat/frontend) works unchanged whichever you pick.
 
 | Capability                            | `chat.agent()` | `chat.createSession()`                                                         | Raw primitives |

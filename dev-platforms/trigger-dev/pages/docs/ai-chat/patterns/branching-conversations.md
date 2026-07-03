@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/branching-conversations
 
 Build ChatGPT-style conversation trees with edit, regenerate, undo, and branch switching using hydrateMessages, chat.history, and actions.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Most chat UIs treat conversations as linear sequences. But real conversations branch — users edit previous messages, regenerate responses, undo exchanges, and explore alternative paths. This pattern shows how to build a branching conversation system using `hydrateMessages`, `chat.history`, and custom actions.
 
 ## Data model

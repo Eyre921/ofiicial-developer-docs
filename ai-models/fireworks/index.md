@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 378 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -150,6 +150,9 @@
 - `ecosystem/fireconnect/vscode` — [VS Code](pages/ecosystem/fireconnect/vscode.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/vscode)
 - `ecosystem/integrations/agent-frameworks` — [Agent Frameworks](pages/ecosystem/integrations/agent-frameworks.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/agent-frameworks)
 - `ecosystem/integrations/azure-foundry` — [Microsoft Foundry](pages/ecosystem/integrations/azure-foundry.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/azure-foundry)
+- `ecosystem/integrations/byoc/how-setup-works` — [How Setup Works](pages/ecosystem/integrations/byoc/how-setup-works.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/how-setup-works)
+- `ecosystem/integrations/byoc/operational-model` — [Operational Model](pages/ecosystem/integrations/byoc/operational-model.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/operational-model)
+- `ecosystem/integrations/byoc/overview` — [Bring Your Own Cluster](pages/ecosystem/integrations/byoc/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/byoc/overview)
 - `ecosystem/integrations/development-setup` — [Development Setup with Fireworks Docs MCP](pages/ecosystem/integrations/development-setup.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/development-setup)
 - `ecosystem/integrations/mlops-observability` — [MLOps & Observability](pages/ecosystem/integrations/mlops-observability.md) · [原文](https://docs.fireworks.ai/ecosystem/integrations/mlops-observability)
 

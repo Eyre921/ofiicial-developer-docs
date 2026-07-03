@@ -158,19 +158,19 @@ npm install --save stripe @stripe/stripe-js next
 
 ### Create a Checkout Session
 
-Add an endpoint on your server that creates a *Checkout Session* (A Checkout Session represents your customer's session as they pay for one-time purchases or subscriptions through Checkout. After a successful payment, the Checkout Session contains a reference to the Customer, and either the successful PaymentIntent or an active Subscription), setting the [ui_mode](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-ui_mode) to `embedded_page`.
+Add an endpoint on your server that creates a *Checkout Session* (A Checkout Session represents your customer's session as they pay for one-time purchases or subscriptions through Checkout. After a successful payment, the Checkout Session contains a reference to the Customer, and either the successful PaymentIntent or an active Subscription), setting the [ui_mode](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-ui_mode) to `embedded_page`. You must create the Checkout Session server-side because it requires your [secret or restricted API key](https://docs.stripe.com/keys.md#obtain-api-keys), which you can’t safely expose in client-side code.
 
 The Checkout Session response includes a client secret, which the client uses to mount Checkout. Return the [client_secret](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-client_secret) in your response.
 
 ### Create a Checkout Session
 
-Add a [Server Action](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) to your application that creates a *Checkout Session* (A Checkout Session represents your customer's session as they pay for one-time purchases or subscriptions through Checkout. After a successful payment, the Checkout Session contains a reference to the Customer, and either the successful PaymentIntent or an active Subscription), setting the [ui_mode](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-ui_mode) to `embedded_page`.
+Add a [Server Action](https://nextjs.org/docs/app/building-your-application/data-fetching/server-actions-and-mutations) to your application that creates a *Checkout Session* (A Checkout Session represents your customer's session as they pay for one-time purchases or subscriptions through Checkout. After a successful payment, the Checkout Session contains a reference to the Customer, and either the successful PaymentIntent or an active Subscription), setting the [ui_mode](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-ui_mode) to `embedded_page`. You must create the Checkout Session server-side because it requires your [secret or restricted API key](https://docs.stripe.com/keys.md#obtain-api-keys), which you can’t safely expose in client-side code.
 
 The Checkout Session response includes a client secret, which the client uses to mount Checkout. Return the [client_secret](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-client_secret) from the function.
 
 ### Supply a return URL
 
-To define how Stripe redirects your customer after payment, specify the URL of the return page in the [return_url](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-return_url) parameter while creating the Checkout Session. After the payment attempt, Stripe directs your customer to return page hosted on your website.
+To define where Stripe redirects your customer after payment, specify the URL of the return page in the [return_url](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-return_url) parameter when creating the Checkout Session. After the payment attempt, Stripe redirects your customer to the return page hosted on your website.
 
 Include the `{CHECKOUT_SESSION_ID}` template variable in the URL. Before redirecting your customer, Checkout replaces the variable with the Checkout Session ID. You’re responsible for creating and hosting the return page on your website.
 
@@ -319,6 +319,10 @@ Calculate and collect the right amount of tax on your Stripe transactions. Learn
 ### Add the automatic tax parameter
 
 Set the `automatic_tax` parameter to `enabled: true`.
+
+### Link autofill for returning customers
+
+[Link](https://docs.stripe.com/payments/link.md) lets returning customers check out faster by automatically filling in their payment and shipping details. Link is available in embedded Checkout by default. When your customer enters their email address and they have a Link account, they can authenticate with a one-time code to automatically fill their saved details.
 
 ### New and returning customers
 
@@ -739,8 +743,11 @@ async function initialize() {
     const response = await fetch("/checkout.php", {
       method: "POST",
     });
-    const { clientSecret } = await response.json();
-    return clientSecret;
+    const data = await response.json();
+    if (data.error) {
+      throw new Error(data.error);
+    }
+    return data.clientSecret;
   };
   const checkout = await stripe.createEmbeddedCheckoutPage({
     fetchClientSecret,

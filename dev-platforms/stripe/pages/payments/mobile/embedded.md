@@ -13,6 +13,10 @@ The Payment Element is a customizable drop-in component that [embeds a list of p
 > #### US apps selling digital goods
 > 
 > Android apps in the US that sell digital goods can process payments in-app using the Payment Element. If you sell digital goods on iOS, see how to implement an app-to-web flow using Stripe Checkout in [Sell in-app digital goods and subscriptions](https://docs.stripe.com/mobile/digital-goods/checkout.md).
+
+> #### Tap to add your card availability
+> 
+> The tap to add your card feature is in private preview. You can [learn more](https://docs.stripe.com/payments/mobile/embedded-tap-to-add.md) about how to request access and integrate the feature.
 ![Payment Element integration example](https://b.stripecdn.com/docs-statics-srv/assets/mobile-payment-element.de700c536720f40087a00fde4b958b9a.png)
 
 Payment Element integration example

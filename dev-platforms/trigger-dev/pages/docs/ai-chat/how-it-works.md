@@ -6,10 +6,6 @@ path: docs/ai-chat/how-it-works
 
 End-to-end mechanics of a chat.agent turn: the two durable channels per session, the long-lived task that reads and writes them, and how a chat survives refreshes, deploys, and idle gaps.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 This page explains how `chat.agent` is put together, what each piece does on a single turn, and how a chat survives across turns. It is not an API tour — for that, see [Backend](/docs/ai-chat/backend), [Frontend](/docs/ai-chat/frontend), and the [Reference](/docs/ai-chat/reference). For the byte-level wire format, see [Client Protocol](/docs/ai-chat/client-protocol).
 
 <Note>

@@ -136,3 +136,47 @@ For example, a job that requested 5 epochs but stopped once the validation loss 
 Here the best evaluation landed at step 48; the next two evaluations didn't improve on it (because `early_stopping_patience` is 2), so the run halted at step 72 and the step-48 checkpoint was promoted as the final model. `steps_completed` (72) is below `total_steps` (120), and the unused steps are refunded.
 
 The [events log](/reference/get-fine-tunes-id-events) also records an `early_stopped` entry at the halt step and a `refund` entry for the unused steps, which are credited back to your project automatically. To see the full history of `eval_loss` across evaluations and understand why early stopping fired, [retrieve the job's metrics](/docs/fine-tuning/monitoring#retrieve-metrics).
+
+## Find the final checkpoint
+
+An early-stopped job ships the final checkpoint from `early_stopping_best_step`, not the halt step. When you [list checkpoints](/reference/cli/finetune#list-checkpoints), the final entry's `step` field reports that promoted step, so it matches `early_stopping_best_step` on the job. A job that didn't stop early reports the last completed step instead.
+
+To confirm this, retrieve the job and compare its `early_stopping_best_step` against the final checkpoint's `step`:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  job = client.fine_tuning.retrieve("<JOB_ID>")
+  checkpoints = client.fine_tuning.list_checkpoints("<JOB_ID>")
+
+  final = next(
+      c
+      for c in checkpoints.data
+      if "intermediate" not in c.checkpoint_type.lower()
+  )
+  # For an early-stopped job, these two values match.
+  print(final.step, job.early_stopping_best_step)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const job = await client.fineTuning.retrieve("<JOB_ID>");
+  const checkpoints = await client.fineTuning.listCheckpoints("<JOB_ID>");
+
+  const final = checkpoints.data.find(
+    (c) => !c.checkpoint_type.toLowerCase().includes("intermediate"),
+  );
+  // For an early-stopped job, these two values match.
+  console.log(final?.step, job.early_stopping_best_step);
+  ```
+
+  ```bash CLI theme={null}
+  tg fine-tuning list-checkpoints <JOB_ID>
+  ```
+</CodeGroup>

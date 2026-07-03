@@ -89,7 +89,7 @@ wh.verify(payload, headers);
 
 If you prefer, you can also [manually verify the headers as well.](https://docs.svix.com/receiving/verifying-payloads/how-manual)
 
-## Why should I verify webhooks?
+## Why verify webhooks?
 
 Webhooks are vulnerable because attackers can send fake HTTP POST requests to endpoints, pretending to be legitimate services. This can lead to security risks or operational issues.
 

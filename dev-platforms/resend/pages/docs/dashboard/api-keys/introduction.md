@@ -8,7 +8,7 @@ Visualize all the API Keys on the Resend Dashboard.
 
 ## What is an API Key
 
-API Keys are secret tokens used to authenticate your requests. They are unique to your account and should be kept confidential.
+API Keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
 
 You can use multiple keys to isolate different application actions to different API Keys. This allows you to [view logs per key](#view-api-key-logs), detect possible abuse, and control any damage that may be done accidentally or maliciously.
 

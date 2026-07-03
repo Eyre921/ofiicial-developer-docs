@@ -134,7 +134,7 @@ For FLUX models (excluding pro models) pricing is based on the size of generated
 * **Default pricing:** The listed per megapixel prices are for the default number of steps.
 * **Using more or fewer steps:** Costs are adjusted based on the number of steps used **only if you go above the default steps**. If you use more steps, the cost increases proportionally using the formula below. If you use fewer steps, the cost *does not* decrease and is based on the default rate.
 
-Here’s a formula to calculate cost:
+Here's a formula to calculate cost:
 
 Cost = MP × Price per MP × (Steps ÷ Default Steps)
 

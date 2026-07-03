@@ -3,10 +3,6 @@ Source: https://trigger.dev/docs/ai-chat/actions
 
 Custom commands sent from the frontend that mutate chat state without consuming a turn — undo, rollback, edit, regenerate.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## Overview
 
 Custom actions let the frontend send structured commands (undo, rollback, edit, regenerate) that modify the conversation state. **Actions are not turns**: they fire `hydrateMessages` (if set) and `onAction` only. No turn lifecycle hooks (`onTurnStart` / `prepareMessages` / `onBeforeTurnComplete` / `onTurnComplete`), no `run()`, no turn-counter increment. The trace span is named `chat action`.
@@ -119,10 +115,6 @@ Source: https://trigger.dev/docs/ai-chat/anatomy
 
 The moving parts of a chat agent — the agent task, the session, the frontend transport — and which page covers each.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 **A chat agent is three parts: a long-lived agent task that runs the turn loop, a durable Session carrying messages in and the response stream out, and a frontend transport that plugs the session into `useChat`.** The pages in this section each own one part of that picture. This page is the map — if you'd rather read mechanics end to end, skip to [How it works](/docs/ai-chat/how-it-works).
 
 ```mermaid theme={"theme":"css-variables"}
@@ -190,10 +182,6 @@ Beyond this section: [Features](/docs/ai-chat/fast-starts) covers opt-in capabil
 Source: https://trigger.dev/docs/ai-chat/backend
 
 Three approaches to building your chat backend — chat.agent(), session iterator, or raw task primitives.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 There are three abstraction levels for a chat backend. All three speak the same wire protocol, so the [frontend transport](/docs/ai-chat/frontend) works unchanged whichever you pick.
 
@@ -1010,10 +998,6 @@ Source: https://trigger.dev/docs/ai-chat/background-injection
 
 Inject context from background work into the agent's conversation — self-review, RAG augmentation, or any async analysis.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## Overview
 
 `chat.inject()` queues model messages for injection into the conversation. Messages are picked up at the start of the next turn or at the next `prepareStep` boundary (between tool-call steps).
@@ -1231,7 +1215,38 @@ Messages are drained (consumed) when:
 # Changelog
 Source: https://trigger.dev/docs/ai-chat/changelog
 
-Pre-release updates for AI chat agents.
+Changelog for the AI Agents SDK.
+
+<Update label="July 2, 2026" description="4.5.0">
+  ## Point chat sessions at a different project or environment
+
+  [`chat.headStart`](/docs/ai-chat/fast-starts#head-start) and [`chat.createStartSessionAction`](/docs/ai-chat/sessions) now take an `apiClient` option (`baseURL` + `accessToken`). The server that creates the session and triggers the run can target a different project or environment than its ambient Trigger config, without setting a global `TRIGGER_SECRET_KEY`. Useful when your `chat.agent` lives in a separate project from the app serving the route, or when one server starts chats across more than one environment. Your LLM provider keys stay in the `run` callback and are unaffected. ([#4018](https://github.com/triggerdotdev/trigger.dev/pull/4018))
+
+  ```ts theme={"theme":"css-variables"}
+  export const POST = chat.headStart({
+    agentId: "my-agent",
+    apiClient: { baseURL, accessToken },
+    run: async ({ chat }) =>
+      streamText({ ...chat.toStreamTextOptions({ tools }), model: anthropic("claude-sonnet-4-6") }),
+  });
+  ```
+
+  ```ts theme={"theme":"css-variables"}
+  const startSession = chat.createStartSessionAction("my-chat", {
+    apiClient: { baseURL, accessToken },
+  });
+
+  await startSession({ chatId, clientData });
+  ```
+
+  ## Fix: chat agents on preview branches
+
+  Messaging a `chat.agent` (or `AgentChat`) deployed to a preview branch failed with `x-trigger-branch header required for preview env`. The realtime message-append and stream-subscribe calls now send the `x-trigger-branch` header, resolved the same way `sessions.start` resolves it, so preview-branch chat agents work. ([#4018](https://github.com/triggerdotdev/trigger.dev/pull/4018))
+
+  ## Fix: Head Start handovers with a prepareMessages hook
+
+  A [Head Start](/docs/ai-chat/fast-starts#head-start) handover passes the first turn's pending tool call to the agent as a tool-approval round whose trailing tool message must reach the model untouched. A `prepareMessages` hook that rewrites the last message (for example the recommended [prompt-caching](/docs/ai-chat/prompt-caching) breakpoint) could disturb that tail, so the turn failed with `tool_use ids were found without tool_result`. The agent now preserves the approval tail across `prepareMessages`, so prompt caching and Head Start compose cleanly. ([#4018](https://github.com/triggerdotdev/trigger.dev/pull/4018))
+</Update>
 
 <Update label="June 17, 2026" description="4.5.0-rc.7">
   ## chat.headStart now works for custom agents and sessions
@@ -2113,10 +2128,6 @@ Source: https://trigger.dev/docs/ai-chat/chat-local
 
 Typed, run-scoped data accessible from hooks, run(), tools, and subtasks. Survives across turns, auto-cleared between runs, auto-hydrated into subtasks.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Use `chat.local` to create typed, run-scoped data that persists across turns and is accessible from anywhere — the run function, tools, nested helpers. Each run gets its own isolated copy, and locals are automatically cleared between runs.
 
 Lifecycle hooks and **`run`** also receive **`ctx`** ([`TaskRunContext`](/docs/ai-chat/reference#task-context-ctx)) — the same object as on a standard `task()` — for tags, metadata, and cleanup that needs the full run record.
@@ -2287,10 +2298,6 @@ onTurnComplete: async ({ chatId }) => {
 Source: https://trigger.dev/docs/ai-chat/client-protocol
 
 The wire protocol for building custom chat transports — how clients communicate with chat agents over Sessions and SSE.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 This page documents the protocol that chat clients use to communicate with `chat.agent()` tasks. Use this if you're building a custom transport (e.g., for a Slack bot, CLI tool, or native app) instead of using the built-in `TriggerChatTransport` or `AgentChat`.
 
@@ -3375,10 +3382,6 @@ Source: https://trigger.dev/docs/ai-chat/compaction
 
 Automatic context compaction to keep long conversations within token limits.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## Overview
 
 Long conversations accumulate tokens across turns. Eventually the context window fills up, causing errors or degraded responses. Compaction solves this by automatically summarizing the conversation when token usage exceeds a threshold, then using that summary as the context for future turns.
@@ -3787,10 +3790,6 @@ Source: https://trigger.dev/docs/ai-chat/custom-agents
 
 Build chat agents without chat.agent()'s managed lifecycle: register with chat.customAgent(), then drive turns with the createSession iterator or a hand-rolled loop.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 **A custom agent is a task you register with `chat.customAgent()` and drive yourself — either with the managed turn iterator from `chat.createSession()`, or with a fully hand-rolled loop over the raw chat primitives.** You give up `chat.agent()`'s lifecycle hooks and automatic continuation recovery; you gain inline control over every turn, and (at the lowest level) full control over the stream conversion.
 
 See the [comparison table](/docs/ai-chat/backend) before dropping down. The frontend is unchanged either way: all levels speak the same wire protocol, so [`useTriggerChatTransport`](/docs/ai-chat/frontend) points at a custom agent exactly like a `chat.agent()`.
@@ -4189,10 +4188,6 @@ Things the managed levels do for you that a raw loop has to get right:
 Source: https://trigger.dev/docs/ai-chat/error-handling
 
 How errors flow through chat.agent — stream errors, hook errors, run failures — and how to recover.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 `chat.agent` errors fall into four layers, each with different recovery semantics. The default behavior is **conversation-preserving**: a thrown error in a hook or `run()` does not kill the chat. The current turn ends with an error chunk, and the agent waits for the user's next message.
 
@@ -4606,10 +4601,6 @@ Source: https://trigger.dev/docs/ai-chat/fast-starts
 
 Two ways to cut first-turn TTFC: Preload eagerly triggers the run before the first message; Head Start runs step 1 in your warm server while the agent boots in parallel.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 The first turn of a brand-new conversation pays for the chat.agent run's cold start: dequeue, process boot, `onPreload` / `onChatStart` hooks, and only then the LLM call. Two features address this from different angles.
 
 ## Picking an approach
@@ -4713,6 +4704,8 @@ if (payload.trigger === "preload") {
 Head Start runs step 1's LLM call in your warm server process while the agent run boots in parallel. The user sees one continuous turn: text first from your server, then a clean handover to the agent for tool execution and any further steps. The agent you hand off to can be a `chat.agent`, a `chat.customAgent`, or a `chat.createSession` loop (see [Handover with custom agents](#handover-with-custom-agents)).
 
 `chat.headStart` returns a standard [Web Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) handler — `(req: Request) => Promise<Response>` — so it slots into any runtime that speaks Web Fetch.
+
+Drive it one of two ways: wire the handler into the transport's [`headStart` option](#the-transport-option) so the browser's first message POSTs to it (the setup below), or call [`chat.startHeadStart`](#detached-head-start) from a backend that creates the chat and triggers the run in one request, then resumes on a separate page.
 
 **Verified runtimes:** Node 18+, Bun, Deno, Cloudflare Workers, Vercel (Node and Edge), Netlify (Functions and Edge). The handler uses only `fetch` and Web `ReadableStream` / `TransformStream` (no `node:*` imports), and the S2 streaming dependency picks the right transport for each runtime automatically (HTTP/2 on Node/Deno, HTTP/1.1 on Bun/Workers/browsers).
 
@@ -5148,6 +5141,10 @@ Head Start composes with [`hydrateMessages`](/docs/ai-chat/lifecycle-hooks#hydra
 
 Your hydrate hook shapes **model context**, not the transcript — dropping reasoning-only entries or unresolved tool rows from the returned chain is fine and does not affect what `onTurnComplete` persists or what the UI renders.
 
+#### With `prepareMessages`
+
+When the first turn's handover carries a pending tool call, the runtime reshapes it into a tool-approval round: the partial assistant gets a `tool-approval-request` and the chain ends with a `tool` message holding the matching `tool-approval-response`. The agent's `streamText` reads that trailing row to execute the handed-over call before step 2. `chat.agent` keeps that tail intact across your [`prepareMessages`](/docs/ai-chat/reference#chatagentoptions) hook, so the common [prompt-caching](/docs/ai-chat/prompt-caching) pattern of rolling a cache breakpoint onto the last message is safe on a resume turn (the breakpoint lands on the next user or assistant message instead). If you hand-roll a backend with [`chat.customAgent`](#chatcustomagent) or [`chat.createSession`](#chatcreatesession), preserve that trailing approval row yourself.
+
 ### Handover with custom agents
 
 The route handler is backend-agnostic: `agentId` can point at a `chat.agent`, a [`chat.customAgent`](/docs/ai-chat/custom-agents), or a [`chat.createSession`](/docs/ai-chat/custom-agents#managed-loop-chatcreatesession) loop. With `chat.agent` the handover is consumed for you (the steps above). The two hand-rolled backends consume it explicitly on turn 0.
@@ -5258,6 +5255,86 @@ Optional. When set, the FIRST message of a brand-new chat (no existing session s
 
 This is **not** a stock `useChat` `endpoint` — it's not the canonical request URL for every turn, just the first-turn shortcut.
 
+### Detached head start
+
+`chat.startHeadStart` runs the same head start as the [`chat.headStart` handler above](#setup); the difference is how step 1 reaches the browser. `chat.headStart` streams step 1 back over the live connection the browser opens when it sends the first message. `chat.startHeadStart` has no open browser connection to stream to, so it drains step 1 into the durable session stream and the browser **resumes** it when the chat page loads.
+
+Use it when there's no open connection at first-turn time, because the first message is captured outside the chat UI and the conversation renders on a separate page. A typical flow: a "new chat" form posts the prompt to your backend, which creates the chat row, starts the run with `chat.startHeadStart`, and returns a `chatId`; the browser then navigates to `/chats/{chatId}` and resumes. You still get the first-turn TTFC win; the browser picks step 1 up on resume instead of live.
+
+**1. Start the head start in your create endpoint.** Call `chat.startHeadStart`, keep `completion` alive past the response (`waitUntil` / Next.js `after`), and return the `chatId`.
+
+```ts app/api/chat/create/route.ts (your backend) theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/chat-server";
+import { streamText } from "ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { after } from "next/server";
+// Schema-only tools; same bundle-isolation rule as chat.headStart.
+import { headStartTools } from "@/lib/chat-tools/schemas";
+
+export async function POST(req: Request) {
+  const { chatId, messages } = await req.json();
+  // Persist your own chat row + the first user message here.
+
+  const { completion } = await chat.startHeadStart({
+    agentId: "my-chat",
+    chatId, // session externalId; reuse it on the destination page
+    messages, // first-turn user history
+    run: async ({ chat: helper }) =>
+      streamText({
+        ...helper.toStreamTextOptions({ tools: headStartTools }),
+        model: anthropic("claude-sonnet-4-6"),
+        system: "You are a helpful assistant.",
+      }),
+  });
+
+  // Keep the function warm until step 1 drains and the handover dispatches.
+  after(completion);
+
+  return Response.json({ chatId });
+}
+```
+
+**2. Resume the chat on the destination page.** Set no `headStart` and no `startSession`: the run is already in flight, so the transport resumes `session.out` and replays step 1 (warm) then step 2+ (agent) under one assistant message.
+
+```tsx app/chats/[chatId]/page.tsx theme={"theme":"css-variables"}
+import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
+import { useChat } from "@ai-sdk/react";
+
+const transport = useTriggerChatTransport({
+  task: "my-chat",
+  accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+});
+
+const { messages } = useChat({ id: chatId, transport, resume: true });
+```
+
+<Warning>
+  `completion` must run to completion, or step 1 never finishes draining and the turn stalls. On serverless, hand it to the platform's run-after-response primitive (`waitUntil`, Next.js `after`). On a long-lived server you can ignore it; it runs in the background.
+</Warning>
+
+<Warning>
+  If you hydrate the transport's session state yourself (the `sessions` option, e.g. so the same page can also resume already-stored chats from your session store), a head-started session is still mid-turn, so mark it `isStreaming: true`. A session hydrated as not streaming is treated as settled: the transport skips reconnecting to `session.out`, so the browser never sees the turn even though the run completed. The minimal example above sidesteps this by not hydrating a session at all (`resume: true` alone reconnects).
+</Warning>
+
+The `run` callback and bundle-isolation rule are the same as `chat.headStart`. Pass `metadata` to attach auth tokens or context to the run; it never reaches the browser. The cost over the transport-routed handler is one extra round trip: the create request, then the resume.
+
+#### The `chat.startHeadStart` API
+
+```ts theme={"theme":"css-variables"}
+chat.startHeadStart<TTools>({
+  agentId: string,                               // chat.agent / chat.customAgent / chat.createSession id
+  chatId: string,                                // session externalId; reuse on the destination page
+  messages: UIMessage[],                         // first-turn user history
+  run: (args: HeadStartRunArgs<TTools>) => Promise<StreamTextResult<any, any>>,
+  idleTimeoutInSeconds?: number,                 // how long the agent waits for the handover signal. Default: 60
+  triggerConfig?: Partial<SessionTriggerConfig>, // tags, queue, machine, …
+  apiClient?: ApiClientConfiguration,            // when the agent lives in another project/env
+  metadata?: Record<string, unknown>,            // merged into the run payload; never sent to the browser
+}): Promise<{ chatId: string; completion: Promise<void> }>
+```
+
+`completion` resolves once the head start finishes; `await` it or hand it to `waitUntil`. It rejects if the warm step or the dispatch fails.
+
 ### Limitations
 
 * **First turn only.** Step 2+ and turn 2+ run on the trigger side. There's no per-turn "head start every turn" mode — the win comes from amortizing agent boot across the LLM call once.
@@ -5279,10 +5356,6 @@ This is **not** a stock `useChat` `endpoint` — it's not the canonical request 
 Source: https://trigger.dev/docs/ai-chat/frontend
 
 Transport setup, session management, client data, and frontend patterns for AI Chat.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 ## How the transport works
 
@@ -5861,10 +5934,6 @@ Source: https://trigger.dev/docs/ai-chat/how-it-works
 
 End-to-end mechanics of a chat.agent turn: the two durable channels per session, the long-lived task that reads and writes them, and how a chat survives refreshes, deploys, and idle gaps.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 This page explains how `chat.agent` is put together, what each piece does on a single turn, and how a chat survives across turns. It is not an API tour — for that, see [Backend](/docs/ai-chat/backend), [Frontend](/docs/ai-chat/frontend), and the [Reference](/docs/ai-chat/reference). For the byte-level wire format, see [Client Protocol](/docs/ai-chat/client-protocol).
 
 <Note>
@@ -6104,10 +6173,6 @@ sequenceDiagram
 Source: https://trigger.dev/docs/ai-chat/lifecycle-hooks
 
 Hook into every stage of a chat agent's run: preload, turn start, turn complete, suspend, resume, and more.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 `chat.agent({ ... })` accepts a set of lifecycle hooks for persisting state, validating input, transforming messages, and reacting to suspension and resumption. They fire at well-defined points in the chat agent's lifetime.
 
@@ -6636,10 +6701,6 @@ Source: https://trigger.dev/docs/ai-chat/mcp
 
 Chat with your agents from any AI coding tool using the Trigger.dev MCP server.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 The Trigger.dev MCP server includes tools for having conversations with your chat agents directly from AI coding tools like Claude Code, Cursor, Windsurf, and others. This lets your AI assistant interact with your agents without writing any code.
 
 ## Available tools
@@ -6742,10 +6803,6 @@ Source: https://trigger.dev/docs/ai-chat/overview
 
 Durable multi-turn AI chats — one Trigger.dev task per conversation, surviving refreshes, deploys, and crashes.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 An AI chat isn't a request — it's a session. `chat.agent` runs every conversation as a single long-lived Trigger.dev task: you write the loop, it wakes up when a message arrives, freezes when none do, and the same in-memory state and on-disk workspace survive across page refreshes, deploys, idle gaps, and crashes. The substrate handles the parts most teams stitch together by hand — turn lifecycle, mid-stream resume, recovery from cancel/crash/OOM, HITL approvals, deploy upgrades — so your code is the loop you'd write anyway: messages in, `streamText` out.
 
 ## A minimal example
@@ -6837,10 +6894,6 @@ Three primitives, related but distinct:
 Source: https://trigger.dev/docs/ai-chat/patterns/branching-conversations
 
 Build ChatGPT-style conversation trees with edit, regenerate, undo, and branch switching using hydrateMessages, chat.history, and actions.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 Most chat UIs treat conversations as linear sequences. But real conversations branch — users edit previous messages, regenerate responses, undo exchanges, and explore alternative paths. This pattern shows how to build a branching conversation system using `hydrateMessages`, `chat.history`, and custom actions.
 
@@ -7123,10 +7176,6 @@ Source: https://trigger.dev/docs/ai-chat/patterns/code-sandbox
 
 Warm an isolated sandbox on each chat turn, run an AI SDK executeCode tool, and tear down right before the run suspends — using chat.agent hooks and chat.local.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Use a **hosted code sandbox** (for example [E2B](https://e2b.dev)) when the model should run short scripts to analyze tool output (PostHog queries, CSV-like data, math) without executing arbitrary code on the Trigger worker host.
 
 This page describes a **durable chat** pattern that fits `chat.agent()`:
@@ -7248,10 +7297,6 @@ The alias **`Context`** is also exported from `@trigger.dev/sdk` and is the same
 Source: https://trigger.dev/docs/ai-chat/patterns/database-persistence
 
 Split conversation state and live session metadata across hooks — preload, turn start, turn complete — without tying the pattern to a specific ORM or schema.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 Durable chat runs can span **hours** and **many turns**. You usually want:
 
@@ -7663,10 +7708,6 @@ Source: https://trigger.dev/docs/ai-chat/patterns/human-in-the-loop
 
 Pause the agent mid-response to ask the user a clarifying question, then resume with their answer.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Some turns need to stop and ask the user something before they can finish — picking between options, confirming a destructive action, or clarifying an ambiguous request. The AI SDK calls this **human-in-the-loop** (HITL), and the building block is a tool with no `execute` function.
 
 When the LLM calls a tool that has no `execute`, `streamText` ends with the tool call still pending. The turn completes cleanly, the frontend renders UI to collect the answer, and when the user responds, a new turn resumes with the answer merged into the same assistant message.
@@ -7947,10 +7988,6 @@ Source: https://trigger.dev/docs/ai-chat/patterns/large-payloads
 
 Why a single chunk on the chat stream is capped at ~1 MiB, what error you'll see, and how to work around it with ID references.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 The realtime stream that backs `chat.agent` enforces a **per-record cap of \~1 MiB** (`1048576` bytes minus a small envelope reserve). Anything written through the chat output — auto-piped LLM chunks, `chat.response.write`, custom `writer.write` parts — counts as one record per chunk and is rejected if it crosses the cap.
 
 This is a platform-level limit and cannot be raised per project or per stream.
@@ -8115,10 +8152,6 @@ Source: https://trigger.dev/docs/ai-chat/patterns/oom-resilience
 
 Recover from out-of-memory errors mid-turn by automatically retrying the failed turn on a larger machine — without losing the in-flight user message or re-processing completed turns.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 When a `chat.agent` turn runs out of memory, the worker process dies and everything in it is gone: the in-flight LLM call, the accumulator, any tool execution mid-flight. By default, Trigger.dev surfaces the OOM as a run failure.
 
 Setting `oomMachine` opts the agent into automatic recovery: the failed turn re-runs on a larger machine, picks up the user message that triggered the OOM (without re-processing earlier completed turns), and produces a normal response.
@@ -8235,10 +8268,6 @@ export const sendEmail = tool({
 Source: https://trigger.dev/docs/ai-chat/patterns/persistence-and-replay
 
 How chat.agent rebuilds conversation history at run boot — durable JSON snapshot in object storage plus session.out replay, with a hydrateMessages short-circuit for backend-owned history.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 `chat.agent` runs are processes — they boot, stream a turn, and either suspend (waiting for the next message) or exit. When the next message arrives at a session whose previous run already exited, a **fresh** run boots with no in-memory state. Something has to rebuild the conversation history before that turn can produce a coherent response.
 
@@ -8452,10 +8481,6 @@ For local development against `pnpm run docker`, the bundled MinIO container is 
 Source: https://trigger.dev/docs/ai-chat/patterns/recovery-boot
 
 Recover from cancel-mid-stream, crashes, and OOM kills with full conversational context. The smart default Just Works; the onRecoveryBoot hook is the override path for advanced policies.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 When a `chat.agent` run dies in the middle of streaming a response — the user cancels, the worker OOMs, or an unhandled exception kills the process — the durable streams hold what was in flight. The next run boots as a continuation, reads both stream tails, and reconstructs a chain that preserves the partial response so any follow-up (`keep going`, `actually do X instead`, a new question) has full context.
 
@@ -8684,10 +8709,6 @@ Source: https://trigger.dev/docs/ai-chat/patterns/skills
 
 Ship reusable capabilities (folders with SKILL.md + scripts) that a chat agent discovers and invokes on demand.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Agent skills are reusable capabilities you ship as folders — a `SKILL.md` describing when and how to use them, plus optional scripts, references, and assets. The chat agent sees a short description of each skill in its system prompt, loads the full instructions on demand via a `loadSkill` tool, and invokes the bundled scripts via `bash` — all without you wiring anything up manually.
 
 Built on the [AI SDK cookbook pattern](https://ai-sdk.dev/cookbook/guides/agent-skills). Works with any provider (OpenAI, Anthropic, Gemini, etc.) — not tied to Anthropic's server-side skills.
@@ -8905,10 +8926,6 @@ See [`projects/ai-chat/src/trigger/skills/time-utils/`](https://github.com/trigg
 Source: https://trigger.dev/docs/ai-chat/patterns/sub-agents
 
 Delegate work to durable sub-agents from within a parent agent's tool calls, with streaming preliminary results.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 Sub-agents let a parent agent delegate work to other agents running as durable Trigger.dev tasks. The sub-agent's response streams back through the parent as preliminary tool results, so the frontend sees the sub-agent working inside the parent's tool call card.
 
@@ -9292,10 +9309,6 @@ Source: https://trigger.dev/docs/ai-chat/patterns/tool-result-auditing
 
 Fire side effects exactly once per resolved tool call — audit logs, billing, notifications — using extractNewToolResults inside hydrateMessages or onTurnComplete.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 When a chat agent uses [tools](/docs/ai-chat/tools) (especially [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop) tools that wait on `addToolOutput` from the frontend), you often need to fire side effects exactly once per resolved tool call:
 
 * **Audit logs** — record every tool result for compliance.
@@ -9440,10 +9453,6 @@ This is the original motivator for the helper — see the [HITL pattern's net-ne
 Source: https://trigger.dev/docs/ai-chat/patterns/trusted-edge-signals
 
 How to safely deliver server-trusted signals (bot scores, JA4, ASN, ReCAPTCHA verdicts) to a chat.agent run via an edge proxy.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 A common need for chat-style endpoints is to drive agent behavior from **server-trusted signals** that the browser cannot be allowed to declare itself — bot management scores, JA4 fingerprints, ASN, ReCAPTCHA verdicts, or any other anti-abuse data only the edge can see. The agent's [`clientData`](/docs/ai-chat/reference#withclientdata) channel is the right delivery mechanism, but `clientData` set in the browser is by definition spoofable. The fix is to move the value population out of the browser and into a trusted edge proxy.
 
@@ -9779,10 +9788,6 @@ Source: https://trigger.dev/docs/ai-chat/patterns/version-upgrades
 
 Gracefully migrate suspended chat agents to a new deployment using chat.requestUpgrade() and the continuation mechanism.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Chat agent runs are pinned to the worker version they started on. When you deploy a new version, suspended runs resume on the **old** code. If your deploy includes breaking changes (new tools, changed schemas, updated API contracts), this can cause issues.
 
 `chat.requestUpgrade()` lets the agent opt out of the current run so the transport triggers a new one on the latest version.
@@ -9952,10 +9957,6 @@ This upgrades on **every** deploy, not just breaking changes. Good for fast-movi
 Source: https://trigger.dev/docs/ai-chat/pending-messages
 
 Inject user messages mid-execution to steer agents between tool-call steps.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 ## Overview
 
@@ -10299,10 +10300,6 @@ Source: https://trigger.dev/docs/ai-chat/prompt-caching
 
 Cache the stable prefix of your agent's prompt with Anthropic prompt caching to cut token cost and latency on every turn.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 **Prompt caching lets a provider reuse the unchanged prefix of your prompt across requests, billing it at a fraction of the input price and skipping re-processing.** With Anthropic, cache reads cost \~10% of base input tokens, so a long, stable system prompt or a growing conversation history pays full price once and reads cheaply on every turn after.
 
 Caching is a **byte-exact prefix match**: any change in the prefix invalidates everything after it. A multi-turn agent is the ideal case — the system prompt, tools, and earlier turns are identical turn over turn, so the cacheable prefix only grows. `chat.agent` is built to keep that prefix stable across turns, suspends, and resumes; this page shows how to place the cache breakpoints and verify they're hitting.
@@ -10430,6 +10427,10 @@ The system breakpoint and the conversation breakpoint compose: the system block 
   Anthropic allows **at most 4** cache breakpoints per request, and a prefix must be at least \~1024 tokens (model-dependent) to cache at all — shorter prefixes silently don't cache. One system breakpoint plus one rolling message breakpoint is the typical setup and leaves headroom.
 </Note>
 
+<Note>
+  This rolling-breakpoint pattern composes with [Head Start](/docs/ai-chat/fast-starts#head-start). On a head-start handover, the first turn's pending tool call is handed to the agent as a tool-approval round whose trailing `tool` message must reach `streamText` untouched for that call to execute. `chat.agent` preserves that tail across `prepareMessages` automatically, so rewriting the last message here is safe: on a resume turn the breakpoint just lands on the next user or assistant message instead of the transient approval row.
+</Note>
+
 ## Caching and compaction
 
 Compaction rewrites the conversation prefix — it replaces earlier turns with a summary — so it necessarily invalidates the cached message prefix at that point. That's a one-time reset, not a regression: because `prepareMessages` also runs on the compaction rebuild and result paths, the new (shorter) prefix gets a fresh breakpoint and re-warms on the next turn. Your system-prompt cache is unaffected — compaction never touches the system block. See [Compaction](/docs/ai-chat/compaction) for how the summary is produced.
@@ -10508,10 +10509,6 @@ If `cacheReadTokens` stays 0 across turns with an identical prefix, a silent inv
 Source: https://trigger.dev/docs/ai-chat/quick-start
 
 Get a working AI agent in 3 steps — define an agent, generate a token, and wire up the frontend.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 These steps assume you already have a Trigger.dev project with the SDK installed and the CLI authenticated — if you don't, follow [Manual setup](/docs/manual-setup) (or `npx trigger.dev@latest init` in an existing project) first. You should be able to run `pnpm exec trigger dev` from your project root before continuing.
 
@@ -10668,15 +10665,11 @@ Source: https://trigger.dev/docs/ai-chat/reference
 
 Complete API reference for the AI Agents SDK — backend options, events, frontend transport, and hooks.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## Compatibility
 
 | Dependency                                                      | Supported                                   | Notes                                                                                                                                                                                                                                                                                                          |
 | --------------------------------------------------------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `@trigger.dev/sdk`                                              | `>=4.5.0-rc.0`                              | The chat agent surface lives in this SDK release. Install with `@trigger.dev/sdk@rc`.                                                                                                                                                                                                                          |
+| `@trigger.dev/sdk`                                              | `>=4.5.0`                                   | The chat agent surface lives in this SDK release. Install with `@trigger.dev/sdk@latest`.                                                                                                                                                                                                                      |
 | `ai` (Vercel AI SDK)                                            | `^5.0.0 \|\| ^6.0.0 \|\| >=7.0.0-canary <8` | Declared as a peer. v6 is what we develop against day to day; v5 and v7 work too (v7 is in canary/beta upstream). Your installed `ai` major drives the chat surface's types.                                                                                                                                   |
 | `@ai-sdk/otel`                                                  | `1.x` (v7 only)                             | Optional. AI SDK 7 moved model-call span emission out of `ai` core into this adapter. Install it alongside `ai@7` and the SDK auto-registers it, so your model calls show up as spans in the run trace. Not needed on v5/v6, where `ai` core emits spans. See [AI SDK 7 telemetry](#ai-sdk-7-telemetry) below. |
 | `@ai-sdk/react`                                                 | matches your `ai` major                     | Pulled in by `useChat`. The transport works with whichever React hook ships in the same major as your `ai` version.                                                                                                                                                                                            |
@@ -11579,10 +11572,6 @@ Source: https://trigger.dev/docs/ai-chat/server-chat
 
 Use AgentChat to interact with chat agents from server-side code — tasks, webhooks, scripts, or other agents.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 `AgentChat` lets you chat with agents from server-side code. It works inside tasks (agent-to-agent), request handlers, webhook processors, and scripts.
 
 ```ts theme={"theme":"css-variables"}
@@ -11842,10 +11831,6 @@ const stream = await chat.reconnect();
 Source: https://trigger.dev/docs/ai-chat/sessions
 
 A Session is a stateful execution of an agent, with two-way streaming and durable compute. A single Session can have multiple runs associated with it.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 **A Session is a stateful execution of an agent.** It includes two-way streaming and durable compute, and a single Session can have multiple runs associated with it.
 
@@ -12176,10 +12161,6 @@ See [Session scopes](/docs/management/authentication#session-scopes) for exactly
 Source: https://trigger.dev/docs/ai-chat/testing
 
 Drive a chat.agent through real turns in unit tests — no network, no task runtime, no mocking the SDK.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 ## Overview
 
@@ -12860,10 +12841,6 @@ Source: https://trigger.dev/docs/ai-chat/tools
 
 Declare tools on chat.agent so toModelOutput survives across turns, get them back typed in run(), and type your messages from them.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 `chat.agent` doesn't call the model for you. Your tools still go to [`streamText`](https://sdk.vercel.ai/docs/ai-sdk-core/tools-and-tool-calling) inside `run()`. But you should **also declare them on the agent config**:
 
 ```ts theme={"theme":"css-variables"}
@@ -13051,10 +13028,6 @@ return streamText({ model: anthropic("claude-sonnet-4-5"), messages, tools });
 Source: https://trigger.dev/docs/ai-chat/types
 
 TypeScript types for AI Agents, UI messages, and the frontend transport.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 TypeScript patterns for [AI Chat](/docs/ai-chat/overview). This page covers how to pin a custom AI SDK [`UIMessage`](https://sdk.vercel.ai/docs/reference/ai-sdk-core/ui-message) subtype with `chat.withUIMessage`, fix a typed `clientData` schema with `chat.withClientData`, chain builder-level hooks, and align types on the client.
 
@@ -13294,10 +13267,6 @@ If you do not rely on custom `UIMessage` generics (only default text, reasoning,
 Source: https://trigger.dev/docs/ai-chat/upgrade-guide
 
 Migrating chat.agent code from the prerelease API to the Sessions-as-run-manager release.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 This guide is for customers who tried `chat.agent` during the prerelease period.
 The public surface of `chat.agent({...})`, `useTriggerChatTransport`,
@@ -13808,10 +13777,6 @@ If continuations boot empty:
 Source: https://trigger.dev/docs/ai/prompts
 
 Define prompt templates as code, version them on deploy, and override from the dashboard without redeploying.
-
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
 
 ## Overview
 
@@ -19548,6 +19513,93 @@ Checkout our [example repo](https://github.com/ericallam/vercel-atomic-deploys) 
   to the fact that it supports treating skipped (cancelled) Vercel deployments as valid (on by default).
   I've opened a PR for this issue [here](https://github.com/tj-actions/vercel-wait/pull/106).
 </Note>
+
+
+# Development branches
+Source: https://trigger.dev/docs/deployment/dev-branches
+
+Run multiple local dev sessions in isolation by giving each one its own development branch. Use branches to keep parallel work (in separate worktrees, directories, or agents) from clashing.
+
+Every project starts with a single development environment called `default`. A **dev branch** is an isolated environment that lives under development, with its own runs, schedules, and concurrency.
+
+Branches are useful when you run more than one local dev session at a time. Give each session its own branch so their runs don't collide:
+
+* Run several [git worktrees](https://git-scm.com/docs/git-worktree) or copies of your project in parallel, one branch each.
+* Let multiple coding agents each work in their own branch without stepping on one another.
+
+When you're done with a branch, you can archive it to free up a slot or just re-use it.
+
+## Run a dev session on a branch
+
+Log in with the CLI first:
+
+<CodeGroup>
+  ```bash npm theme={"theme":"css-variables"}
+  npx trigger.dev@latest login
+  ```
+
+  ```bash pnpm theme={"theme":"css-variables"}
+  pnpm dlx trigger.dev@latest login
+  ```
+
+  ```bash bun theme={"theme":"css-variables"}
+  bunx trigger.dev@latest login
+  ```
+</CodeGroup>
+
+Then start a dev session on a branch with the `--branch` flag. If the branch doesn't exist yet, it's created:
+
+<CodeGroup>
+  ```bash npm theme={"theme":"css-variables"}
+  npx trigger.dev@latest dev --branch my-feature
+  ```
+
+  ```bash pnpm theme={"theme":"css-variables"}
+  pnpm dlx trigger.dev@latest dev --branch my-feature
+  ```
+
+  ```bash bun theme={"theme":"css-variables"}
+  bunx trigger.dev@latest dev --branch my-feature
+  ```
+</CodeGroup>
+
+Without `--branch`, the session runs on the `default` branch.
+
+<Tip>
+  You can also set the branch with the `TRIGGER_DEV_BRANCH` environment variable instead of the flag.
+</Tip>
+
+## Archive a branch
+
+Archive a branch from the CLI when you no longer need it. The CLI detects your local git branch, or you can name one with `--branch`:
+
+<CodeGroup>
+  ```bash npm theme={"theme":"css-variables"}
+  npx trigger.dev@latest dev archive --branch my-feature
+  ```
+
+  ```bash pnpm theme={"theme":"css-variables"}
+  pnpm dlx trigger.dev@latest dev archive --branch my-feature
+  ```
+
+  ```bash bun theme={"theme":"css-variables"}
+  bunx trigger.dev@latest dev archive --branch my-feature
+  ```
+</CodeGroup>
+
+You can also create and archive branches from the **Dev branches** page in the dashboard.
+
+## Limits on active branches
+
+Each branch has its own concurrency, so we limit how many can be active per project. Archive a branch at any time to unlock another slot.
+
+| Plan  | Active dev branches |
+| ----- | ------------------- |
+| Free  | 25                  |
+| Hobby | 25                  |
+| Pro   | 25                  |
+
+Need more? [Get in touch](https://trigger.dev/contact) and we'll raise the limit.
 
 
 # Deployment
@@ -33176,21 +33228,28 @@ Monitor your usage dashboard to understand your spending patterns. You can see:
 
 You can view your usage page by clicking the "Organization" menu in the top left of the dashboard and then clicking "Usage".
 
-## Create billing alerts
+## Set billing limits and alerts
 
-Configure billing alerts in your dashboard to get notified when you approach spending thresholds. This helps you:
+Configure billing limits and alerts in your dashboard to protect against unexpected usage and get notified when you approach spending thresholds. This helps you:
 
+* Set a monthly compute spend limit for your organization
 * Catch unexpected cost increases early
 * Identify runaway tasks before they become expensive
 
-The billing alerts page includes two types of alerts:
+The **Billing limits** settings page has two sections:
 
-* **Standard alerts**: Get notified at 75%, 90%, 100%, 200%, and 500% of your monthly budget
-* **Spike alerts**: Catch runaway usage from bugs or errors with alerts at 10x (1000%), 20x (2000%), 50x (5000%), and 100x (10000%) of your monthly budget. We recommend keeping these enabled as a safety net.
+* **Billing limit**: Choose your plan limit, a custom amount, or no limit. When a limit is reached, billable environments (`production`, `staging`, and `preview`) enter a **grace period** — queues pause and new runs queue without starting. After grace expires, new triggers are rejected until you increase or remove the limit.
+* **Billing alerts**: Add email alerts at specific spend thresholds (% of your limit when a limit is set, or dollar amounts when no limit is configured). Alerts notify you only; they do **not** pause environments or reject triggers.
 
-<img alt="Billing alerts" />
+**Limits vs alerts:** A billing limit enforces spend (grace → reject). Billing alerts are optional notifications at thresholds you choose.
 
-You can view your billing alerts page by clicking the "Organization" menu in the top left of the dashboard and then clicking "Settings".
+**Soft limits:** Billing limits are not instantaneous hard caps. Usage is evaluated on a short delay, so spend can briefly exceed your limit before enforcement applies. Queued runs during grace incur no compute cost until they start. See our [terms](https://trigger.dev/terms) for refund policy details.
+
+On the **Usage** page, when you have a custom billing limit (or a plan limit that differs from included usage), a **Billing limit** marker appears on the usage bar alongside your current spend and plan included usage.
+
+<img alt="Billing limits and alerts settings" />
+
+You can open the page from the **Organization** menu in the top left of the dashboard, then **Settings** → **Billing limits**.
 
 ## Reduce your machine sizes
 
@@ -35583,7 +35642,7 @@ When working with preview branches, you may need to target a specific branch whe
   </Tab>
 
   <Tab title="cURL">
-    To target a specific preview branch, include the `x-trigger-branch` header in your API requests with the branch name as the value:
+    To target a specific preview or development branch, include the `x-trigger-branch` header in your API requests with the branch name as the value:
 
     ```bash theme={"theme":"css-variables"}
     curl --request PUT \
@@ -35601,8 +35660,8 @@ When working with preview branches, you may need to target a specific branch whe
 This will set the `DATABASE_URL` environment variable specifically for the `feature-xyz` preview branch.
 
 <Note>
-  The `x-trigger-branch` header is only relevant when working with the `preview` environment (`{env}
-      ` parameter set to `preview`). It has no effect when working with `dev`, `staging`, or `prod`
+  The `x-trigger-branch` header is only relevant when working with the `preview` or `dev` environments (`{env}
+      ` parameter set to `preview` or `development`). It has no effect when working with `staging`, or `prod`
   environments.
 </Note>
 
@@ -35921,6 +35980,49 @@ async function main() {
 </Note>
 
 
+# Ignore an error
+Source: https://trigger.dev/docs/management/errors/ignore
+
+v3-openapi POST /api/v1/errors/{errorId}/ignore
+Mark an error group as ignored. Provide a `duration` to ignore it for a fixed window, and/or thresholds that re-surface the error when exceeded. Send a JSON body (use `{}` to ignore indefinitely).
+
+
+
+
+# List errors
+Source: https://trigger.dev/docs/management/errors/list
+
+v3-openapi GET /api/v1/errors
+List error groups in a specific environment. Runs that fail are grouped by a fingerprint derived from the error type, message, and stack trace. Filter by task identifier, version, status, search text, and time range.
+
+
+
+
+# Resolve an error
+Source: https://trigger.dev/docs/management/errors/resolve
+
+v3-openapi POST /api/v1/errors/{errorId}/resolve
+Mark an error group as resolved. Optionally record the worker version that resolved it. Send a JSON body (use `{}` when you have no fields to set).
+
+
+
+
+# Retrieve an error
+Source: https://trigger.dev/docs/management/errors/retrieve
+
+v3-openapi GET /api/v1/errors/{errorId}
+Retrieve detailed information about a single error group, including its lifecycle state and the worker versions it has affected.
+
+
+
+# Unresolve an error
+Source: https://trigger.dev/docs/management/errors/unresolve
+
+v3-openapi POST /api/v1/errors/{errorId}/unresolve
+Move a resolved or ignored error group back to unresolved.
+
+
+
 # Multiple SDK clients
 Source: https://trigger.dev/docs/management/multiple-clients
 
@@ -36213,8 +36315,11 @@ Returns the execution result of a completed run. Returns 404 if the run doesn't 
 Source: https://trigger.dev/docs/management/runs/retrieve-trace
 
 v3-openapi GET /api/v1/runs/{runId}/trace
-Returns the full OTel trace tree for a run, including all spans and their children.
+Returns the OTel trace subtree for the requested run — the run's span as `rootSpan`, its ancestor chain, and its descendant spans. For child or nested runs in a large trace, this is scoped to that run rather than the trace-wide root.
 
+Returns the OpenTelemetry trace subtree for the run you request. The response `trace.rootSpan` is that run's span — not necessarily the trace-wide root — with its descendant spans nested under `children`.
+
+For a child or nested run inside a large trace, this endpoint scopes the tree to that run so you still get a useful subtree even when the full trace has more spans than the platform can return in one response.
 
 
 # Update metadata
@@ -37190,7 +37295,7 @@ The install command is the same, and now installs skills:
 npx trigger.dev@latest skills
 ```
 
-`npx trigger.dev@latest install-rules` still works as an alias, and `trigger dev` offers to install the skills on first run.
+`npx trigger.dev@latest install-rules` still works as an alias for `skills`, and `trigger dev` offers to install the skills on first run.
 
 The old task and realtime guidance now lives in the `trigger-authoring-tasks` and `trigger-realtime-and-frontend` skills, alongside two new skills for building `chat.agent` AI agents. See [Skills](/docs/skills) for the full list and supported assistants.
 
@@ -52269,7 +52374,7 @@ You can pass an idempotency key to any wait function, allowing you to skip waits
 
 ```ts theme={"theme":"css-variables"}
 // Specify the idempotency key and TTL when waiting for a duration:
-await wait.for({ seconds: 10 }, { idempotencyKey: "my-idempotency-key", idempotencyKeyTTL: "1h" });
+await wait.for({ seconds: 10, idempotencyKey: "my-idempotency-key", idempotencyKeyTTL: "1h" });
 ```
 
 

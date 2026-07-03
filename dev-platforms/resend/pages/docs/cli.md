@@ -276,7 +276,7 @@ resend contacts imports list       # List past contact imports
 **`resend contacts imports create`**
 
 Start an asynchronous CSV import. The command uploads the file and returns a
-contact import ID immediately; use `resend contacts imports get <id>` to check
+contact import ID immediately. Use `resend contacts imports get <id>` to check
 processing status.
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}

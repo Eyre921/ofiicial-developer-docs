@@ -199,7 +199,7 @@ Custom return paths must adhere to the following rules:
 * Must be 63 characters or less
 * Must start with a letter, end with a letter or number, and contain only letters, numbers, and hyphens
 
-Avoid setting values that could undermine credibility (e.g. `testing`), as they may be exposed to recipients in some email clients.
+Avoid setting values that undermine credibility (e.g. `testing`), as they may be exposed to recipients in some email clients.
 
 ## Export your data
 
@@ -245,3 +245,14 @@ DomainKeys Identified Mail (DKIM) is an email security standard designed to make
 The DKIM configuration is stored as a TXT DNS record that contains a public key used to verify the authenticity of the email.
 
 <img alt="DKIM Records" />
+
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does Resend support 2048-bit DKIM keys?">
+    No. Resend does not support 2048-bit DKIM keys. We sign outbound mail with
+    1024-bit DKIM keys, which are RFC-compliant, accepted by major mailbox
+    providers, and satisfy bulk sender requirements. Learn more about [DKIM key
+    length](/docs/knowledge-base/do-i-need-2048-dkim).
+  </Accordion>
+</AccordionGroup>

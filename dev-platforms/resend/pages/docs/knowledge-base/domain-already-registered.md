@@ -10,7 +10,7 @@ Resolve the 403 domain already registered error by verifying domain ownership or
 
 When you add a domain to Resend, you may see this error: `The example.com domain has been registered already`.
 
-This means the domain is currently associated with a different Resend account. A domain can only be active on one Resend account at a time.
+This means the domain is associated with a different Resend account. A domain can only be active on one Resend account at a time.
 
 ## Why This Happens
 

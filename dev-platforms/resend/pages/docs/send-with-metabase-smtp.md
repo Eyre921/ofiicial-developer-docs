@@ -26,7 +26,7 @@ When configuring your SMTP integration, you'll need to use the following credent
 
 After logging into your [Metabase Cloud](https://www.metabase.com/cloud/login) account, you’ll need to enable the SMTP integration.
 
-1. From your Metabase Cloud Admin Panel, go to **Settings > Email** in the left menu. You should see the form below.
+1. From your Metabase Cloud Admin Panel, go to **Settings > Email** in the left menu. You'll see the form below.
 
 <img alt="Metabase Cloud SMTP" />
 

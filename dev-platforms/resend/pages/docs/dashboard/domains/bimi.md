@@ -73,14 +73,14 @@ To display your logo in most email clients using BIMI, you need to prove ownersh
 There are two possible mark Certificate's to verify the use of your logo:
 
 * **Verified Mark Certificate (VMC)**: A certificate issued by a Certificate Authority (CA) that is used to verify that you are the owner of the logo you are trying to display. A VMC is available if you have a trademark of your logo. With a VMC, Gmail will display a blue checkmark.
-* **Common Mark Certificate (CMC)**: A certificate also issued by Certificate Authority (CA) to verify you. A CMC is available to you if you can establish that you’ve used your logo for one year. Currently, only Gmail supports a CMC.
+* **Common Mark Certificate (CMC)**: A certificate also issued by Certificate Authority (CA) to verify you. A CMC is available to you if you can establish that you’ve used your logo for one year. Only Gmail and Yahoo support a CMC.
 
 A VMC offers the widest email client support, though the barrier of a trademark means a CMC is an easier path if you have established use of your logo for one year.
 
 Here are a some things to know before starting the certificate purchase process:
 
 * If you don't hold a trademark for your logo or have not used your logo for a year, you will not be able to purchase a certificate.
-* The process could take weeks, so start early and respond to their requests quickly.
+* The process can take weeks, so start early and respond to their requests quickly.
 * You will need to provide a [SVG Tiny P/S formatted logo](https://bimigroup.org/creating-bimi-svg-logo-files/).
 * You will need to prove you own the domain by adding a DNS record.
 * You will need to prove you are the owner of the trademark or logo by providing identification.

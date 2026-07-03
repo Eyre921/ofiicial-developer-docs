@@ -26,9 +26,9 @@ For example, if your sending domain is `@widgets.com`, ensure links within the m
 
 #### Include valid DMARC record
 
-DMARC is a TXT record published in the DNS that specifies how email receivers should handle messages from your domain that don’t pass SPF or DKIM validation. [A valid DMARC record](/docs/dashboard/domains/dmarc) can help improve email deliverability.
+DMARC is a TXT record published in the DNS that specifies how email receivers should handle messages from your domain that don't pass SPF or DKIM validation. [A valid DMARC record](/docs/dashboard/domains/dmarc) can help improve email deliverability.
 
-Starting in 2024, Gmail and Yahoo require senders to have a DMARC record published. When [viewing your domain](https://resend.com/domains) in Resend, we provide a suggested DMARC record if you’re unsure what to publish.
+Gmail and Yahoo have required bulk senders to have a DMARC record published since 2024. When [viewing your domain](https://resend.com/domains) in Resend, we provide a suggested DMARC record if you’re unsure what to publish.
 
 #### Include Plain Text Version
 
@@ -56,7 +56,7 @@ For example, instead of using `https://youtu.be/abc123`, use `https://www.youtub
 
 ## Improvement Insights
 
-If you're diagnosing a deliverability issue, changing your email practices could be helpful.
+If you're diagnosing a deliverability issue, changing your email practices may help.
 
 <img alt="Improvement Insights" />
 

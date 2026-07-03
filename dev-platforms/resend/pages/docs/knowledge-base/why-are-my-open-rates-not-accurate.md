@@ -26,7 +26,7 @@ Because of this, open tracking is **not a statistically accurate way** of detect
 
 ## Does open tracking impact inbox placement?
 
-Though open tracking should not impact if your email is delivered, it most likely will impact your inbox placement. Trackers are generally **used by marketers and even spammers**. Because of this, inbox providers will often use open tracking as a signal that your email is promotional, or even spam, and categorize accordingly.
+Though open tracking does not impact whether your email is delivered, it most likely will impact your inbox placement. Trackers are generally **used by marketers and even spammers**. Because of this, inbox providers will often use open tracking as a signal that your email is promotional, or even spam, and categorize accordingly.
 
 **We suggest disabling open rates for transactional email**, to maximize inbox placement.
 

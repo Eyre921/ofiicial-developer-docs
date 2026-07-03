@@ -8,7 +8,7 @@ Learn how to warm up a domain or IP to avoid deliverability issues.
 
 Warming up a domain or IP refers to the practice of progressively increasing your sending volume to maximize your deliverability. The goal is to send at a consistent rate and avoid any spikes in email volume that might be concerning to inbox service providers.
 
-Whenever you change your sending patterns, whether because you're using a new domain, a new IP, or a new vendor, or because your volume will increase, you should warm-up your domain and/or IP.
+Whenever you change your sending patterns, whether because you're using a new domain, a new IP, or a new vendor, or because your volume will increase, warm up your domain and/or IP.
 
 A thought-out warm-up plan limits greylisting and delivery throttling, as well as helping establish a good domain and IP reputation.
 

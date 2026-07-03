@@ -14,39 +14,128 @@ Use this pattern when work spans many independent units, needs multiple perspect
   Dynamic subagents use the interpreter runtime, which is in [**beta**](/oss/javascript/versioning). APIs and lifecycle behavior may change between releases.
 </Warning>
 
+<Note>
+  Interpreters require `@langchain/quickjs`.
+</Note>
+
 ## Quickstart
 
-Dynamic subagents require two things: subagents to dispatch work to, and a code interpreter, a secure, lightweight runtime where the model writes and executes orchestration code. Deep Agents includes an optional code interpreter based on QuickJS. Install the QuickJS middleware package, then pass interpreter middleware through the `middleware` argument on `create_deep_agent`.
+Dynamic subagents require [interpreter](/oss/javascript/deepagents/interpreters) middleware. Install and wire up the interpreter first. The built-in [general-purpose subagent](/oss/javascript/deepagents/subagents#default-subagent) handles basic fan-out without extra configuration.
 
 <CodeGroup>
-  ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  npm install deepagents @langchain/quickjs
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    subagents: [{
+      name: "reviewer",
+      description: "Reviews code for security issues, citing lines and severity",
+      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+    }],
+    middleware: [createCodeInterpreterMiddleware()],
+  });
   ```
 
-  ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  pnpm add deepagents @langchain/quickjs
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "openai:gpt-5.5",
+    subagents: [{
+      name: "reviewer",
+      description: "Reviews code for security issues, citing lines and severity",
+      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+    }],
+    middleware: [createCodeInterpreterMiddleware()],
+  });
   ```
 
-  ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  yarn add deepagents @langchain/quickjs
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    subagents: [{
+      name: "reviewer",
+      description: "Reviews code for security issues, citing lines and severity",
+      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+    }],
+    middleware: [createCodeInterpreterMiddleware()],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    subagents: [{
+      name: "reviewer",
+      description: "Reviews code for security issues, citing lines and severity",
+      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+    }],
+    middleware: [createCodeInterpreterMiddleware()],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    subagents: [{
+      name: "reviewer",
+      description: "Reviews code for security issues, citing lines and severity",
+      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+    }],
+    middleware: [createCodeInterpreterMiddleware()],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    subagents: [{
+      name: "reviewer",
+      description: "Reviews code for security issues, citing lines and severity",
+      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+    }],
+    middleware: [createCodeInterpreterMiddleware()],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    subagents: [{
+      name: "reviewer",
+      description: "Reviews code for security issues, citing lines and severity",
+      systemPrompt: "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+    }],
+    middleware: [createCodeInterpreterMiddleware()],
+  });
   ```
 </CodeGroup>
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
-import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+For install steps and interpreter setup, see [Interpreters](/oss/javascript/deepagents/interpreters#quickstart).
 
-const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
-  middleware: [createCodeInterpreterMiddleware()],
-});
-```
-
-Deep Agents ships with a general-purpose subagent built in, so basic fan-out works without extra configuration. For specialized work, configure custom subagents with their own names, descriptions, and system prompts; the names and descriptions are how the agent knows which role to reach for. See [Subagents](/oss/javascript/deepagents/subagents) for configuration.
+For specialized work, configure custom [subagents](/oss/javascript/deepagents/subagents) with their own names, descriptions, and system prompts. The subagents' names and descriptions serve as information for the agent to evaluate which role to reach for.
 
 To trigger dynamic subagents, prompt the agent with the word "workflow":
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const result = await agent.invoke({
   messages: [{ role: "user", content: "Run a workflow that reviews every file in src/routes/ and summarizes the top risks." }],
 });
@@ -58,7 +147,7 @@ const result = await agent.invoke({
 
 ### Use with a coding agent
 
-The fastest way to try dynamic subagents is with `dcode`, the LangChain terminal coding agent built on a Deep Agent. It ships with the code interpreter enabled, so dynamic subagents works out of the box with nothing to wire up.
+The fastest way to try dynamic subagents is with `dcode`, the LangChain terminal coding agent built on a Deep Agent. It ships with the code interpreter enabled, so dynamic subagents work out of the box with nothing to wire up.
 
 Install `dcode`:
 
@@ -88,6 +177,10 @@ When an agent has [subagents](/oss/javascript/deepagents/subagents) and interpre
 
 Subagent orchestration also supports recursive language model (RLM) workflows, the approach described in the [Recursive Language Models paper](https://arxiv.org/abs/2512.24601): keep the working set in interpreter variables, select slices, call subagents with `task()`, and synthesize the results.
 
+Many orchestration workflows combine dynamic subagents with [programmatic tool calling (PTC)](/oss/javascript/deepagents/interpreters#programmatic-tool-calling-ptc): use `tools.*` from interpreter code to discover or filter inputs, then dispatch subagents with `task()`. PTC is off by default; enable it with an explicit allowlist on interpreter middleware.
+
+`task()` is a capability bridge into subagent execution, similar to PTC for tools. For isolation defaults, approval boundaries, and middleware options, see [Security](/oss/javascript/deepagents/interpreters#security) and [Configuration](/oss/javascript/deepagents/interpreters#configuration).
+
 `task()` takes the following inputs:
 
 * `description`: The prompt for the subagent
@@ -96,7 +189,7 @@ Subagent orchestration also supports recursive language model (RLM) workflows, t
 
 A `task()` runs a full agentic loop and resolves to the subagent's result:
 
-```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const review = await task({
   description: "Review src/auth/login.ts for auth issues. Cite line numbers.",
   subagentType: "reviewer",
@@ -119,7 +212,7 @@ When you pass `responseSchema`, the resolved value is already a typed JavaScript
 
 ## Patterns
 
-The agent picks a strategy from the shape of the task; these emerge from how it writes interpreter code, not from configuration, and the subagents you make available determine what it can do. Every pattern shares one model: hold work in JS variables, dispatch subagents with `task()`, and combine results in code. The diagrams below show the common shapes, each with a runnable example.
+The agent picks a strategy from the shape of the task; these emerge from how it writes interpreter code, not from configuration, and the subagents you make available determine what it can do. Every pattern shares the same orchestration approach: hold work in JS variables, dispatch subagents with `task()`, and combine results in code. The diagrams below show the common shapes, each with a runnable example.
 
 ### Classify and act
 
@@ -138,37 +231,200 @@ graph LR
 <Accordion title="Example: classify and act">
   **What you configure**
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [
-      {
-        name: "bug-fixer",
-        description: "Investigates bug reports and provides reproduction steps",
-        systemPrompt: "You are a bug triage specialist. Investigate each bug report and provide clear reproduction steps.",
-      },
-      {
-        name: "feature-analyst",
-        description: "Evaluates feature requests for feasibility and effort",
-        systemPrompt: "You are a product analyst. Evaluate each feature request for technical feasibility, estimated effort, and potential impact.",
-      },
-      {
-        name: "support-agent",
-        description: "Answers user questions based on documentation",
-        systemPrompt: "You are a support specialist. Answer user questions clearly based on the available documentation.",
-      },
-    ],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
+  <CodeGroup>
+    ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Go through these 30 support tickets. Categorize each one, then for bugs give me reproduction steps, and for feature requests give me a feasibility assessment." }],
-  });
-  ```
+    const agent = createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      subagents: [
+        {
+          name: "bug-fixer",
+          description: "Investigates bug reports and provides reproduction steps",
+          systemPrompt: "You are a bug triage specialist. Investigate each bug report and provide clear reproduction steps.",
+        },
+        {
+          name: "feature-analyst",
+          description: "Evaluates feature requests for feasibility and effort",
+          systemPrompt: "You are a product analyst. Evaluate each feature request for technical feasibility, estimated effort, and potential impact.",
+        },
+        {
+          name: "support-agent",
+          description: "Answers user questions based on documentation",
+          systemPrompt: "You are a support specialist. Answer user questions clearly based on the available documentation.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openai:gpt-5.5",
+      subagents: [
+        {
+          name: "bug-fixer",
+          description: "Investigates bug reports and provides reproduction steps",
+          systemPrompt: "You are a bug triage specialist. Investigate each bug report and provide clear reproduction steps.",
+        },
+        {
+          name: "feature-analyst",
+          description: "Evaluates feature requests for feasibility and effort",
+          systemPrompt: "You are a product analyst. Evaluate each feature request for technical feasibility, estimated effort, and potential impact.",
+        },
+        {
+          name: "support-agent",
+          description: "Answers user questions based on documentation",
+          systemPrompt: "You are a support specialist. Answer user questions clearly based on the available documentation.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      subagents: [
+        {
+          name: "bug-fixer",
+          description: "Investigates bug reports and provides reproduction steps",
+          systemPrompt: "You are a bug triage specialist. Investigate each bug report and provide clear reproduction steps.",
+        },
+        {
+          name: "feature-analyst",
+          description: "Evaluates feature requests for feasibility and effort",
+          systemPrompt: "You are a product analyst. Evaluate each feature request for technical feasibility, estimated effort, and potential impact.",
+        },
+        {
+          name: "support-agent",
+          description: "Answers user questions based on documentation",
+          systemPrompt: "You are a support specialist. Answer user questions clearly based on the available documentation.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      subagents: [
+        {
+          name: "bug-fixer",
+          description: "Investigates bug reports and provides reproduction steps",
+          systemPrompt: "You are a bug triage specialist. Investigate each bug report and provide clear reproduction steps.",
+        },
+        {
+          name: "feature-analyst",
+          description: "Evaluates feature requests for feasibility and effort",
+          systemPrompt: "You are a product analyst. Evaluate each feature request for technical feasibility, estimated effort, and potential impact.",
+        },
+        {
+          name: "support-agent",
+          description: "Answers user questions based on documentation",
+          systemPrompt: "You are a support specialist. Answer user questions clearly based on the available documentation.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      subagents: [
+        {
+          name: "bug-fixer",
+          description: "Investigates bug reports and provides reproduction steps",
+          systemPrompt: "You are a bug triage specialist. Investigate each bug report and provide clear reproduction steps.",
+        },
+        {
+          name: "feature-analyst",
+          description: "Evaluates feature requests for feasibility and effort",
+          systemPrompt: "You are a product analyst. Evaluate each feature request for technical feasibility, estimated effort, and potential impact.",
+        },
+        {
+          name: "support-agent",
+          description: "Answers user questions based on documentation",
+          systemPrompt: "You are a support specialist. Answer user questions clearly based on the available documentation.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      subagents: [
+        {
+          name: "bug-fixer",
+          description: "Investigates bug reports and provides reproduction steps",
+          systemPrompt: "You are a bug triage specialist. Investigate each bug report and provide clear reproduction steps.",
+        },
+        {
+          name: "feature-analyst",
+          description: "Evaluates feature requests for feasibility and effort",
+          systemPrompt: "You are a product analyst. Evaluate each feature request for technical feasibility, estimated effort, and potential impact.",
+        },
+        {
+          name: "support-agent",
+          description: "Answers user questions based on documentation",
+          systemPrompt: "You are a support specialist. Answer user questions clearly based on the available documentation.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      subagents: [
+        {
+          name: "bug-fixer",
+          description: "Investigates bug reports and provides reproduction steps",
+          systemPrompt: "You are a bug triage specialist. Investigate each bug report and provide clear reproduction steps.",
+        },
+        {
+          name: "feature-analyst",
+          description: "Evaluates feature requests for feasibility and effort",
+          systemPrompt: "You are a product analyst. Evaluate each feature request for technical feasibility, estimated effort, and potential impact.",
+        },
+        {
+          name: "support-agent",
+          description: "Answers user questions based on documentation",
+          systemPrompt: "You are a support specialist. Answer user questions clearly based on the available documentation.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+  </CodeGroup>
 
   **What the agent writes**
 
-  ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // The agent has already classified each ticket; this routes every item to
   // the right specialist and collects the handled results.
   const SPECIALIST = { bug: "bug-fixer", feature: "feature-analyst", question: "support-agent" };
@@ -203,31 +459,121 @@ graph LR
 
 **Use cases:** Code review across a directory, analyzing a batch of documents, processing log files, running the same check across many services.
 
+Discovering files from interpreter code requires [programmatic tool calling (PTC)](/oss/javascript/deepagents/interpreters#programmatic-tool-calling-ptc). Enable `glob` in the PTC allowlist on interpreter middleware.
+
 <Accordion title="Example: fan-out and synthesize">
   **What you configure**
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { createDeepAgent } from "deepagents";
-  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+  <CodeGroup>
+    ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [{
-      name: "reviewer",
-      description: "Reviews code for security issues, citing lines and severity",
-      systemPrompt: "You are a security-focused code reviewer. Read the file carefully and report any authentication or authorization issues with line numbers and severity.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
+    const agent = createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      subagents: [{
+        name: "reviewer",
+        description: "Reviews code for security issues, citing lines and severity",
+        systemPrompt: "You are a security-focused code reviewer. Read the file carefully and report any authentication or authorization issues with line numbers and severity.",
+      }],
+      middleware: [createCodeInterpreterMiddleware({ ptc: ["glob"] })],
+    });
+    ```
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Review all the route handlers in src/routes/ for authentication issues. Summarize the top risks." }],
-  });
-  ```
+    ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openai:gpt-5.5",
+      subagents: [{
+        name: "reviewer",
+        description: "Reviews code for security issues, citing lines and severity",
+        systemPrompt: "You are a security-focused code reviewer. Read the file carefully and report any authentication or authorization issues with line numbers and severity.",
+      }],
+      middleware: [createCodeInterpreterMiddleware({ ptc: ["glob"] })],
+    });
+    ```
+
+    ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      subagents: [{
+        name: "reviewer",
+        description: "Reviews code for security issues, citing lines and severity",
+        systemPrompt: "You are a security-focused code reviewer. Read the file carefully and report any authentication or authorization issues with line numbers and severity.",
+      }],
+      middleware: [createCodeInterpreterMiddleware({ ptc: ["glob"] })],
+    });
+    ```
+
+    ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      subagents: [{
+        name: "reviewer",
+        description: "Reviews code for security issues, citing lines and severity",
+        systemPrompt: "You are a security-focused code reviewer. Read the file carefully and report any authentication or authorization issues with line numbers and severity.",
+      }],
+      middleware: [createCodeInterpreterMiddleware({ ptc: ["glob"] })],
+    });
+    ```
+
+    ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      subagents: [{
+        name: "reviewer",
+        description: "Reviews code for security issues, citing lines and severity",
+        systemPrompt: "You are a security-focused code reviewer. Read the file carefully and report any authentication or authorization issues with line numbers and severity.",
+      }],
+      middleware: [createCodeInterpreterMiddleware({ ptc: ["glob"] })],
+    });
+    ```
+
+    ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      subagents: [{
+        name: "reviewer",
+        description: "Reviews code for security issues, citing lines and severity",
+        systemPrompt: "You are a security-focused code reviewer. Read the file carefully and report any authentication or authorization issues with line numbers and severity.",
+      }],
+      middleware: [createCodeInterpreterMiddleware({ ptc: ["glob"] })],
+    });
+    ```
+
+    ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      subagents: [{
+        name: "reviewer",
+        description: "Reviews code for security issues, citing lines and severity",
+        systemPrompt: "You are a security-focused code reviewer. Read the file carefully and report any authentication or authorization issues with line numbers and severity.",
+      }],
+      middleware: [createCodeInterpreterMiddleware({ ptc: ["glob"] })],
+    });
+    ```
+  </CodeGroup>
 
   **What the agent writes**
 
-  ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // One reviewer per file, dispatched in parallel, then findings merged.
   const files = (await tools.glob({ pattern: "src/routes/**/*.ts" }))
     .split("\n")
@@ -271,36 +617,169 @@ graph LR
 <Accordion title="Example: adversarial verification">
   **What you configure**
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [
-      {
-        name: "reviewer",
-        description: "Finds potential security vulnerabilities in code",
-        systemPrompt: "You are a security auditor. Find potential vulnerabilities and report each with file, line, and description.",
-      },
-      {
-        name: "verifier",
-        description: "Independently verifies whether a reported vulnerability is real",
-        systemPrompt: "You are a security verification specialist. Given a reported vulnerability, independently verify whether it is exploitable. Be skeptical. Only confirm real issues.",
-      },
-    ],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
+  <CodeGroup>
+    ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Do a thorough security audit of the payments module. I only want confirmed vulnerabilities, not maybes." }],
-  });
-  ```
+    const agent = createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      subagents: [
+        {
+          name: "reviewer",
+          description: "Finds potential security vulnerabilities in code",
+          systemPrompt: "You are a security auditor. Find potential vulnerabilities and report each with file, line, and description.",
+        },
+        {
+          name: "verifier",
+          description: "Independently verifies whether a reported vulnerability is real",
+          systemPrompt: "You are a security verification specialist. Given a reported vulnerability, independently verify whether it is exploitable. Be skeptical. Only confirm real issues.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openai:gpt-5.5",
+      subagents: [
+        {
+          name: "reviewer",
+          description: "Finds potential security vulnerabilities in code",
+          systemPrompt: "You are a security auditor. Find potential vulnerabilities and report each with file, line, and description.",
+        },
+        {
+          name: "verifier",
+          description: "Independently verifies whether a reported vulnerability is real",
+          systemPrompt: "You are a security verification specialist. Given a reported vulnerability, independently verify whether it is exploitable. Be skeptical. Only confirm real issues.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      subagents: [
+        {
+          name: "reviewer",
+          description: "Finds potential security vulnerabilities in code",
+          systemPrompt: "You are a security auditor. Find potential vulnerabilities and report each with file, line, and description.",
+        },
+        {
+          name: "verifier",
+          description: "Independently verifies whether a reported vulnerability is real",
+          systemPrompt: "You are a security verification specialist. Given a reported vulnerability, independently verify whether it is exploitable. Be skeptical. Only confirm real issues.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      subagents: [
+        {
+          name: "reviewer",
+          description: "Finds potential security vulnerabilities in code",
+          systemPrompt: "You are a security auditor. Find potential vulnerabilities and report each with file, line, and description.",
+        },
+        {
+          name: "verifier",
+          description: "Independently verifies whether a reported vulnerability is real",
+          systemPrompt: "You are a security verification specialist. Given a reported vulnerability, independently verify whether it is exploitable. Be skeptical. Only confirm real issues.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      subagents: [
+        {
+          name: "reviewer",
+          description: "Finds potential security vulnerabilities in code",
+          systemPrompt: "You are a security auditor. Find potential vulnerabilities and report each with file, line, and description.",
+        },
+        {
+          name: "verifier",
+          description: "Independently verifies whether a reported vulnerability is real",
+          systemPrompt: "You are a security verification specialist. Given a reported vulnerability, independently verify whether it is exploitable. Be skeptical. Only confirm real issues.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      subagents: [
+        {
+          name: "reviewer",
+          description: "Finds potential security vulnerabilities in code",
+          systemPrompt: "You are a security auditor. Find potential vulnerabilities and report each with file, line, and description.",
+        },
+        {
+          name: "verifier",
+          description: "Independently verifies whether a reported vulnerability is real",
+          systemPrompt: "You are a security verification specialist. Given a reported vulnerability, independently verify whether it is exploitable. Be skeptical. Only confirm real issues.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      subagents: [
+        {
+          name: "reviewer",
+          description: "Finds potential security vulnerabilities in code",
+          systemPrompt: "You are a security auditor. Find potential vulnerabilities and report each with file, line, and description.",
+        },
+        {
+          name: "verifier",
+          description: "Independently verifies whether a reported vulnerability is real",
+          systemPrompt: "You are a security verification specialist. Given a reported vulnerability, independently verify whether it is exploitable. Be skeptical. Only confirm real issues.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+  </CodeGroup>
 
   **What the agent writes**
 
-  ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // Pass 1: audit. Pass 2: verify each finding independently; keep only confirmed.
   const { findings } = await task({
     description: "Audit the payments module for vulnerabilities.",
-    subagentType: "auditor",
+    subagentType: "reviewer",
     responseSchema: findingsSchema, // -> { findings: [{ id, file, line, description }] }
   });
 
@@ -340,25 +819,116 @@ graph LR
 <Accordion title="Example: generate and filter">
   **What you configure**
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [{
-      name: "architect",
-      description: "Proposes a database schema design with tradeoff analysis",
-      systemPrompt: "You are a database architect. Propose a schema design for the given requirements. Include tradeoffs, migration considerations, and a clear rationale.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
+  <CodeGroup>
+    ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Generate three different approaches to restructure the database schema for the orders system, then pick the best one." }],
-  });
-  ```
+    const agent = createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      subagents: [{
+        name: "architect",
+        description: "Proposes a database schema design with tradeoff analysis",
+        systemPrompt: "You are a database architect. Propose a schema design for the given requirements. Include tradeoffs, migration considerations, and a clear rationale.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openai:gpt-5.5",
+      subagents: [{
+        name: "architect",
+        description: "Proposes a database schema design with tradeoff analysis",
+        systemPrompt: "You are a database architect. Propose a schema design for the given requirements. Include tradeoffs, migration considerations, and a clear rationale.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      subagents: [{
+        name: "architect",
+        description: "Proposes a database schema design with tradeoff analysis",
+        systemPrompt: "You are a database architect. Propose a schema design for the given requirements. Include tradeoffs, migration considerations, and a clear rationale.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      subagents: [{
+        name: "architect",
+        description: "Proposes a database schema design with tradeoff analysis",
+        systemPrompt: "You are a database architect. Propose a schema design for the given requirements. Include tradeoffs, migration considerations, and a clear rationale.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      subagents: [{
+        name: "architect",
+        description: "Proposes a database schema design with tradeoff analysis",
+        systemPrompt: "You are a database architect. Propose a schema design for the given requirements. Include tradeoffs, migration considerations, and a clear rationale.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      subagents: [{
+        name: "architect",
+        description: "Proposes a database schema design with tradeoff analysis",
+        systemPrompt: "You are a database architect. Propose a schema design for the given requirements. Include tradeoffs, migration considerations, and a clear rationale.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      subagents: [{
+        name: "architect",
+        description: "Proposes a database schema design with tradeoff analysis",
+        systemPrompt: "You are a database architect. Propose a schema design for the given requirements. Include tradeoffs, migration considerations, and a clear rationale.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+  </CodeGroup>
 
   **What the agent writes**
 
-  ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // Generate independent proposals in parallel, then score and keep the best.
   const proposals = await Promise.all(
     [1, 2, 3].map((n) =>
@@ -396,32 +966,165 @@ graph LR
 <Accordion title="Example: tournament">
   **What you configure**
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [
-      {
-        name: "writer",
-        description: "Rewrites a function with a focus on readability and clarity",
-        systemPrompt: "You are an expert programmer focused on clean code. Rewrite the given function to maximize readability. Explain your choices.",
-      },
-      {
-        name: "judge",
-        description: "Compares two code implementations and picks the more readable one",
-        systemPrompt: "You are a code quality judge. Compare two implementations and pick the more readable one. Justify your choice with specific criteria.",
-      },
-    ],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
+  <CodeGroup>
+    ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Rewrite the processOrder function in src/checkout.ts five different ways and find the most readable version." }],
-  });
-  ```
+    const agent = createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      subagents: [
+        {
+          name: "writer",
+          description: "Rewrites a function with a focus on readability and clarity",
+          systemPrompt: "You are an expert programmer focused on clean code. Rewrite the given function to maximize readability. Explain your choices.",
+        },
+        {
+          name: "judge",
+          description: "Compares two code implementations and picks the more readable one",
+          systemPrompt: "You are a code quality judge. Compare two implementations and pick the more readable one. Justify your choice with specific criteria.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openai:gpt-5.5",
+      subagents: [
+        {
+          name: "writer",
+          description: "Rewrites a function with a focus on readability and clarity",
+          systemPrompt: "You are an expert programmer focused on clean code. Rewrite the given function to maximize readability. Explain your choices.",
+        },
+        {
+          name: "judge",
+          description: "Compares two code implementations and picks the more readable one",
+          systemPrompt: "You are a code quality judge. Compare two implementations and pick the more readable one. Justify your choice with specific criteria.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      subagents: [
+        {
+          name: "writer",
+          description: "Rewrites a function with a focus on readability and clarity",
+          systemPrompt: "You are an expert programmer focused on clean code. Rewrite the given function to maximize readability. Explain your choices.",
+        },
+        {
+          name: "judge",
+          description: "Compares two code implementations and picks the more readable one",
+          systemPrompt: "You are a code quality judge. Compare two implementations and pick the more readable one. Justify your choice with specific criteria.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      subagents: [
+        {
+          name: "writer",
+          description: "Rewrites a function with a focus on readability and clarity",
+          systemPrompt: "You are an expert programmer focused on clean code. Rewrite the given function to maximize readability. Explain your choices.",
+        },
+        {
+          name: "judge",
+          description: "Compares two code implementations and picks the more readable one",
+          systemPrompt: "You are a code quality judge. Compare two implementations and pick the more readable one. Justify your choice with specific criteria.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      subagents: [
+        {
+          name: "writer",
+          description: "Rewrites a function with a focus on readability and clarity",
+          systemPrompt: "You are an expert programmer focused on clean code. Rewrite the given function to maximize readability. Explain your choices.",
+        },
+        {
+          name: "judge",
+          description: "Compares two code implementations and picks the more readable one",
+          systemPrompt: "You are a code quality judge. Compare two implementations and pick the more readable one. Justify your choice with specific criteria.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      subagents: [
+        {
+          name: "writer",
+          description: "Rewrites a function with a focus on readability and clarity",
+          systemPrompt: "You are an expert programmer focused on clean code. Rewrite the given function to maximize readability. Explain your choices.",
+        },
+        {
+          name: "judge",
+          description: "Compares two code implementations and picks the more readable one",
+          systemPrompt: "You are a code quality judge. Compare two implementations and pick the more readable one. Justify your choice with specific criteria.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      subagents: [
+        {
+          name: "writer",
+          description: "Rewrites a function with a focus on readability and clarity",
+          systemPrompt: "You are an expert programmer focused on clean code. Rewrite the given function to maximize readability. Explain your choices.",
+        },
+        {
+          name: "judge",
+          description: "Compares two code implementations and picks the more readable one",
+          systemPrompt: "You are a code quality judge. Compare two implementations and pick the more readable one. Justify your choice with specific criteria.",
+        },
+      ],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+  </CodeGroup>
 
   **What the agent writes**
 
-  ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // Generate variants, then judge pairwise until a single winner remains.
   let bracket = await Promise.all(
     [1, 2, 3, 4, 5].map((n) =>
@@ -462,25 +1165,116 @@ graph LR
 <Accordion title="Example: loop until done">
   **What you configure**
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  const agent = createDeepAgent({
-    model: "openai:gpt-5.5",
-    subagents: [{
-      name: "analyzer",
-      description: "Analyzes code for unused exports, functions, and dead code paths",
-      systemPrompt: "You are a code analyst specializing in dead code detection. Find unused exports, unreachable functions, and orphaned modules. Report each with file path and evidence.",
-    }],
-    middleware: [createCodeInterpreterMiddleware()],
-  });
+  <CodeGroup>
+    ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-  const result = await agent.invoke({
-    messages: [{ role: "user", content: "Find all the dead code in this repo. Be thorough. I want every unused export and unreachable function." }],
-  });
-  ```
+    const agent = createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      subagents: [{
+        name: "analyzer",
+        description: "Analyzes code for unused exports, functions, and dead code paths",
+        systemPrompt: "You are a code analyst specializing in dead code detection. Find unused exports, unreachable functions, and orphaned modules. Report each with file path and evidence.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openai:gpt-5.5",
+      subagents: [{
+        name: "analyzer",
+        description: "Analyzes code for unused exports, functions, and dead code paths",
+        systemPrompt: "You are a code analyst specializing in dead code detection. Find unused exports, unreachable functions, and orphaned modules. Report each with file path and evidence.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      subagents: [{
+        name: "analyzer",
+        description: "Analyzes code for unused exports, functions, and dead code paths",
+        systemPrompt: "You are a code analyst specializing in dead code detection. Find unused exports, unreachable functions, and orphaned modules. Report each with file path and evidence.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      subagents: [{
+        name: "analyzer",
+        description: "Analyzes code for unused exports, functions, and dead code paths",
+        systemPrompt: "You are a code analyst specializing in dead code detection. Find unused exports, unreachable functions, and orphaned modules. Report each with file path and evidence.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      subagents: [{
+        name: "analyzer",
+        description: "Analyzes code for unused exports, functions, and dead code paths",
+        systemPrompt: "You are a code analyst specializing in dead code detection. Find unused exports, unreachable functions, and orphaned modules. Report each with file path and evidence.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      subagents: [{
+        name: "analyzer",
+        description: "Analyzes code for unused exports, functions, and dead code paths",
+        systemPrompt: "You are a code analyst specializing in dead code detection. Find unused exports, unreachable functions, and orphaned modules. Report each with file path and evidence.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+
+    ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+    const agent = createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      subagents: [{
+        name: "analyzer",
+        description: "Analyzes code for unused exports, functions, and dead code paths",
+        systemPrompt: "You are a code analyst specializing in dead code detection. Find unused exports, unreachable functions, and orphaned modules. Report each with file path and evidence.",
+      }],
+      middleware: [createCodeInterpreterMiddleware()],
+    });
+    ```
+  </CodeGroup>
 
   **What the agent writes**
 
-  ```javascript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // Keep dispatching rounds, deduping against what's found, until a round adds nothing.
   const seen = new Set();
   const found = [];
@@ -505,18 +1299,92 @@ graph LR
 
 ## Disable dynamic subagents
 
-Subagent dispatch is on by default whenever the agent has subagents. Disable it if you want subagents to be available only through the normal `task` tool path.
+Subagent dispatch is on by default whenever the agent has subagents. Disable it if you want subagents to be available only through the normal `task` tool path. For other middleware options, see [Configuration](/oss/javascript/deepagents/interpreters#configuration) on the interpreters page.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
-import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
-const agent = createDeepAgent({
-  model: "openai:gpt-5.5",
-  subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
-  middleware: [createCodeInterpreterMiddleware({ subagents: false })],
-});
-```
+  const agent = createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
+    middleware: [createCodeInterpreterMiddleware({ subagents: false })],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "openai:gpt-5.5",
+    subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
+    middleware: [createCodeInterpreterMiddleware({ subagents: false })],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
+    middleware: [createCodeInterpreterMiddleware({ subagents: false })],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
+    middleware: [createCodeInterpreterMiddleware({ subagents: false })],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
+    middleware: [createCodeInterpreterMiddleware({ subagents: false })],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
+    middleware: [createCodeInterpreterMiddleware({ subagents: false })],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
+
+  const agent = createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
+    middleware: [createCodeInterpreterMiddleware({ subagents: false })],
+  });
+  ```
+</CodeGroup>
+
+## See also
+
+* [Interpreters](/oss/javascript/deepagents/interpreters): QuickJS setup, programmatic tool calling, persistence, security, and middleware configuration
+* [Subagents](/oss/javascript/deepagents/subagents): Configure subagent names, descriptions, and system prompts
+* [Event streaming](/oss/javascript/deepagents/event-streaming): Stream updates from the coordinator and delegated subagents
 
 ***
 

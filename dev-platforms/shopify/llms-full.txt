@@ -1,117 +1,3 @@
-# Manage app config files
-
-**URL:** https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md
-
----
-title: Manage app config files
-description: >-
-  This guide shows you how to get started with Shopify CLI, manage and update
-  your app configuration, and safely test your app’s behavior.
-source_url:
-  html: 'https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files'
-  md: 'https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md'
----
-
-# Manage app config files
-
-This guide shows you how to get started with Shopify CLI, manage and update your app configuration, and safely test your app’s behavior.
-
-***
-
-## What you'll learn
-
-After you've finished this tutorial, you'll understand:
-
-* How to configure and manage Shopify apps from your terminal or IDE
-* How to safely test and update your app configuration
-
-***
-
-## Requirements
-
-* You've created a [Shopify Partner account](https://www.shopify.com/partners).
-* You've created a dev store.
-* Your app uses [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) 3.0 or higher.
-
-If you have an app that doesn't use Shopify CLI, then you should consider [migrating your app to use Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/migrate-from-dashboard).
-
-***
-
-## Link and configure apps
-
-You can create, link, and configure Shopify apps directly from your preferred terminal or IDE using Shopify CLI. You can either create a new Shopify app or link to any existing apps. This generates a configuration file in the root directory of your app.
-
-## Terminal
-
-```terminal
-shopify app config link
-```
-
-You can use your configuration file to view and modify your app’s configuration on Shopify. After you've made changes to your configuration file, you can run the `deploy` command to create and release a new app version.
-
-## Terminal
-
-```terminal
-shopify app deploy
-```
-
-Learn more about the [configuration file format](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
-
-***
-
-## Test your app functionality
-
-After your app has been installed on a live store, avoid doing active development against it so that end-users are not affected by possible breaking changes. Shopify CLI makes this easy by allowing you to link multiple Shopify apps to your codebase, so that you can dedicate specific apps and their configuration for various development, staging, and production workflows.
-
-Use `shopify app config link` to generate additional configuration files for development or staging apps. You can also re-link upstream Shopify apps if your configuration file gets deleted, corrupted, or out-of-sync. If you already have a `shopify.app.toml` in your root directory, then you’ll be prompted to give your configuration file a name, and a file `shopify.app.{your-config-name}.toml` is generated in your root directory. Learn more about [configuration names](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
-
-## Terminal
-
-```terminal
-shopify app config link
-```
-
-**Tip:**
-
-You don’t need to commit every Shopify configuration file to your git repository. Depending on your workflow preferences, you might want to gitignore certain development configurations, or only commit your production configuration file(s) to your repository.
-
-When you link to a Shopify app, it becomes your default configuration. This means that when you run `shopify app dev` or other commands that reference a configuration file, your default configuration is selected. If you’d like to change your default configuration, then you can run `shopify app config use` and pass in either your configuration name, or the file name:
-
-## Terminal
-
-```terminal
-shopify app config use development
-```
-
-You can also override your default configuration by passing a `--config` flag to your command. This syntax can be used to leverage CLI behavior in scripts, CI/CD, or other automated processes:
-
-## Terminal
-
-```terminal
-shopify app dev --config staging
-```
-
-Using different configuration files is a great way to quickly and safely test functionality across multiple apps and stores as your app grows in complexity.
-
-***
-
-## Port changes across different app configurations
-
-Shopify configuration files make it easy to push and manage changes across development, staging, and production apps. After your configuration changes have been tested, you can copy and paste your blocks of configuration to any of your other configuration files, and deploy those changes.
-
-## Terminal
-
-```terminal
-shopify app deploy --config staging
-```
-
-**Tip:**
-
-Make sure to pass the correct config, or run `shopify app use`, before pushing a new configuration. When you run the `deploy` command, you'll be presented with a summary of the changes to your app configuration, which you can confirm before deploying.
-
-***
-
-
 # About GraphQL
 
 **URL:** https://shopify.dev/docs/apps/build/graphql.md
@@ -126,7 +12,7 @@ source_url:
   md: 'https://shopify.dev/docs/apps/build/graphql.md'
 ---
 
-# About GraphQL
+# About Graph​QL
 
 **Note:**
 
@@ -445,6 +331,120 @@ Trained on Shopify data for high accuracy.](https://shopify.dev/docs/apps/build/
 ](https://shopify-graphiql-app.shopifycloud.com/)
 
 [Explore your store's data, and test queries and mutations, using the GraphQL Admin and Storefront APIs.](https://shopify-graphiql-app.shopifycloud.com/)
+
+***
+
+
+# Manage app config files
+
+**URL:** https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md
+
+---
+title: Manage app config files
+description: >-
+  This guide shows you how to get started with Shopify CLI, manage and update
+  your app configuration, and safely test your app’s behavior.
+source_url:
+  html: 'https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files'
+  md: 'https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md'
+---
+
+# Manage app config files
+
+This guide shows you how to get started with Shopify CLI, manage and update your app configuration, and safely test your app’s behavior.
+
+***
+
+## What you'll learn
+
+After you've finished this tutorial, you'll understand:
+
+* How to configure and manage Shopify apps from your terminal or IDE
+* How to safely test and update your app configuration
+
+***
+
+## Requirements
+
+* You've created a [Shopify Partner account](https://www.shopify.com/partners).
+* You've created a dev store.
+* Your app uses [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) 3.0 or higher.
+
+If you have an app that doesn't use Shopify CLI, then you should consider [migrating your app to use Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/migrate-from-dashboard).
+
+***
+
+## Link and configure apps
+
+You can create, link, and configure Shopify apps directly from your preferred terminal or IDE using Shopify CLI. You can either create a new Shopify app or link to any existing apps. This generates a configuration file in the root directory of your app.
+
+## Terminal
+
+```terminal
+shopify app config link
+```
+
+You can use your configuration file to view and modify your app’s configuration on Shopify. After you've made changes to your configuration file, you can run the `deploy` command to create and release a new app version.
+
+## Terminal
+
+```terminal
+shopify app deploy
+```
+
+Learn more about the [configuration file format](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
+
+***
+
+## Test your app functionality
+
+After your app has been installed on a live store, avoid doing active development against it so that end-users are not affected by possible breaking changes. Shopify CLI makes this easy by allowing you to link multiple Shopify apps to your codebase, so that you can dedicate specific apps and their configuration for various development, staging, and production workflows.
+
+Use `shopify app config link` to generate additional configuration files for development or staging apps. You can also re-link upstream Shopify apps if your configuration file gets deleted, corrupted, or out-of-sync. If you already have a `shopify.app.toml` in your root directory, then you’ll be prompted to give your configuration file a name, and a file `shopify.app.{your-config-name}.toml` is generated in your root directory. Learn more about [configuration names](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
+
+## Terminal
+
+```terminal
+shopify app config link
+```
+
+**Tip:**
+
+You don’t need to commit every Shopify configuration file to your git repository. Depending on your workflow preferences, you might want to gitignore certain development configurations, or only commit your production configuration file(s) to your repository.
+
+When you link to a Shopify app, it becomes your default configuration. This means that when you run `shopify app dev` or other commands that reference a configuration file, your default configuration is selected. If you’d like to change your default configuration, then you can run `shopify app config use` and pass in either your configuration name, or the file name:
+
+## Terminal
+
+```terminal
+shopify app config use development
+```
+
+You can also override your default configuration by passing a `--config` flag to your command. This syntax can be used to leverage CLI behavior in scripts, CI/CD, or other automated processes:
+
+## Terminal
+
+```terminal
+shopify app dev --config staging
+```
+
+Using different configuration files is a great way to quickly and safely test functionality across multiple apps and stores as your app grows in complexity.
+
+***
+
+## Port changes across different app configurations
+
+Shopify configuration files make it easy to push and manage changes across development, staging, and production apps. After your configuration changes have been tested, you can copy and paste your blocks of configuration to any of your other configuration files, and deploy those changes.
+
+## Terminal
+
+```terminal
+shopify app deploy --config staging
+```
+
+**Tip:**
+
+Make sure to pass the correct config, or run `shopify app use`, before pushing a new configuration. When you run the `deploy` command, you'll be presented with a summary of the changes to your app configuration, which you can confirm before deploying.
 
 ***
 
@@ -2169,6 +2169,222 @@ api_name: shopify-cli
 ***
 
 
+# Ensure your app is accessible
+
+**URL:** https://shopify.dev/docs/apps/build/accessibility.md
+
+---
+title: Accessibility best practices for Shopify apps
+description: Learn how to increase the accessibility of your Shopify app.
+source_url:
+  html: 'https://shopify.dev/docs/apps/build/accessibility'
+  md: 'https://shopify.dev/docs/apps/build/accessibility.md'
+---
+
+# Accessibility best practices for Shopify apps
+
+When you build an app, make design choices that help keep content accessible. An accessible app is designed so that it can be used by everyone, including people who rely on [assistive technology](https://www.w3.org/WAI/perspective-videos/). Accessibility for your app is essential to providing an inclusive experience for app users and customers.
+
+The accessibility best practices for Shopify apps were created with the [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/TR/WCAG21/) in mind.
+
+**Note:**
+
+There are many factors to consider when creating an accessible app. Following only the best practices on this page doesn't guarantee that your app is completely accessible.
+
+***
+
+## Accessibility testing
+
+You can test the accessibility of your app by using tools such as:
+
+* [Accessibility Insights for Web](https://accessibilityinsights.io/en/)
+* [Lighthouse](https://developers.google.com/web/tools/lighthouse)
+* [WAVE](https://wave.webaim.org/)
+
+***
+
+## Accessibility principles
+
+When building your app, focus on the main principles of the WCAG 2.0 Guidelines:
+
+* **Perceivable**: Information and UI components must be presentable to users in ways that they can perceive.
+
+* **Operable**: UI components and navigation must be operable.
+
+* **Understandable**: Information and the operation of the UI must be understandable.
+
+* **Robust**: Content must be clear enough that it can be interpreted reliably by a wide variety of user agents, including assistive technologies.
+
+  The following sections provide a list of accessibility best practices for how app users and customers interact with your app.
+
+***
+
+## Keyboard and gesture controls
+
+App users and customers who have visual or motor impairments might use a keyboard to navigate and complete tasks online. These users rely on a visual indicator to communicate where their keyboard's focus is on a web page. Your app should allow for all links, buttons, dropdown navigation, and form controls to be controlled using a keyboard.
+
+### Keyboard support
+
+* The focus indicator is visible and consistent on active elements. When navigating with either the mouse or the keyboard, the focus indicator is apparent on active elements.
+* The focus style is visible on the desktop when using a keyboard.
+* Your app doesn't rely on a mouse hover action to be visible or accessible.
+* The `Tab` key and `Shift` + `Tab` keys can be used to navigate your app.
+* No sudden changes of context when a part of your app receives focus. For example, when navigating with a keyboard, focus shouldn't switch to something else when a control receives focus.
+
+### Gesture support
+
+* Zooming gestures, for example pinch to zoom, are always available.
+* Any functionality that requires several fingers or complex gestures, for example navigating 3D models, should be available with a single tap or click.
+
+***
+
+## Page structure
+
+The following sections provide best practices for specific elements of your app's page structure.
+
+### Global
+
+* The page `lang` attribute is set on the `html` element to help screen readers pronounce content in the correct accent and dialect.
+* The viewport zoom is enabled. Your app shouldn't use the `maximum-scale` and `user-scalable=”no”` attributes.
+* Skip link is available and visible when focused to provide quick access to page content by skipping past common content such as headers. Your app should include `tabindex="-1"` on the container for the main content to receive focus.
+* The content flow is linear. Your app uses no `tabindex` attributes values other than `0` or `-1` and no `autofocus` attribute. Positive `tabindex` values in use and autofocus take the power away from the user by forcing a specific focus order. Let the user discover page content organically.
+
+### Headings
+
+* The HTML heading elements use heading markup. Your app uses heading tags (`h1` to `h6`) to communicate the organization of the content on the page.
+* The heading tags are used in sequence. Your app shouldn't use headings for design but rather to set the logical order of content on the page.
+* The `h1` element is used to identify the main topic of a page.
+
+### Navigation
+
+* The navigation areas are wrapped with the `nav` HTML element.
+* `aria-current` is used to communicate the current page when traversing links.
+* `role=”menu”` or `role=”menuitem”` aren't used for navigation.
+
+### Drop-down menu navigation
+
+* `aria-expanded` is used to communicate the state of collapsible navigation.
+* `aria-controls` is used to convey to assistive technology that there's a visually-hidden container that the drop-down menu controls.
+* `aria-current` is used to communicate the current location or page when traversing navigation items.
+* `Enter` and `Space` keys are supported to open the drop-down menu. Your app should keep focus on the launcher control. The `Tab` key moves focus to the first item in the drop-down menu.
+* The `Esc` key is supported to collapse the drop-down menu and return focus to the launcher control.
+
+### Product information
+
+* Product images include descriptive [alt text](https://medium.com/shopify-ux/considerations-when-writing-alt-text-a9c1985a8204).
+* Sale and regular prices are marked differently, both visually and by using markup for screen readers. Your app should use visually-hidden text to help discern the regular price from the sales price.
+* If your app dynamically changes a product price and availability when different variants are selected, then the changes should also be communicated to screen readers.
+* `aria-live` is used to communicate dynamic changes in the UI.
+
+### Controls
+
+* The `a` element is used for links. Your app should use links for navigation, loading a new page, or shifting keyboard focus from one element to another.
+* The `button` element is used for on-screen actions such as launching a modal window and sorting a data table.
+* The destination of your link should be clear from the text alone.
+* Links that open a new window include a warning. Your app should include a visual icon with alternative text to help screen readers and sighted, keyboard-only users understand that clicking the link opens a new window.
+
+### Tables
+
+* The `table` element is used for tabular data.
+* The `caption` element is used to help assistive technology identify that a table is being read.
+* The `th` element is used for headers with `scope` attributes.
+* The `scope="col"` element is used for column headers, and `scope="row"` for row headers.
+
+### Forms
+
+* All form fields include a label. Fields can use `aria-label`, the `.visuallyhidden` element, floating labels, or a visible label to label forms. Form inputs and controls have names that clearly state their purpose.
+* Form inputs have labels with `for` attributes, including form labels in the app settings.
+* Required inputs have the `required` attribute.
+* Fields use the `autocomplete` attribute. Auto-complete helps people fill in form fields by using the data stored in their browser.
+
+#### Form errors
+
+* Focus is placed on the feedback message. Any errors returned as a result of completing or submitting a form are communicated to screen readers where possible and as soon as possible.
+* Error messages are clear and descriptive.
+* The `aria-describedby` attribute is applied to `input` elements which reference the error text container.
+* Notifications, error messages, success messages are announced aloud. Critical information is announced by screen readers using `aria-live`.
+
+***
+
+## Media
+
+Media can be distracting, disruptive, or unexpected. All the media in your app should adhere to the following best practices:
+
+* Media controls should respect the user's `prefers-reduced-motion` browser setting.
+* Media controls are marked up using native HTML elements. Make sure your app has a toggle state for buttons and range input for sliders.
+* Media can be paused using the `Space` key.
+
+### Images and icons
+
+* All `img` elements should have an `alt` attribute. Without an `alt` attribute, screen readers announce the name and path of the image file.
+* Product or content images feature `alt` text which describes the image for screen reader users.
+* Decorative images use empty values for `alt` attributes. Use `<img src="/content/assets/images/…" alt="" />` to hide images and icons from screen readers.
+
+### Video
+
+* Closed captions are available.
+* Descriptive audio is available.
+* If an auto-playing video is required, including videos in slideshows, the sound is muted.
+* Videos with audio aren't visually obstructed.
+* The `Space` key can be used to pause and play the video.
+
+### Audio
+
+* Transcripts are available.
+* Auto-playing audio can be paused.
+
+***
+
+## Color and contrast
+
+When you add colors to your app's UI, make sure that all of your text is accessible to app users and customers who are colorblind or have other visual impairments. These app users and customers rely on adequate color contrast to visually differentiate one thing from another.
+
+You can use an [online contrast ratio tool](https://contrast-ratio.com/) to check the contrast of the different parts of your app.
+
+The content in your app should adhere to the best practices described in the [WCAG 1.4.3: Contrast (Minimum) (Level AA) standards](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html).
+
+***
+
+## Dynamic components
+
+Dynamic components such as slideshows, predictive search, modal windows, and tabs can be complex and difficult to navigate. Use elements that can be interpreted by screen readers, provide context, and include keyboard functionality.
+
+### Drawers and modals
+
+* When a drawer or modal is opened, focus is moved to the element that labels the drawer or modal.
+* Navigating with the keyboard stays within the open drawer or modal.
+* The `Esc` key is supported to close drawers and modals, and returns keyboard focus to the launcher element.
+* The role used to identify modals is `dialog`.
+
+### Slideshows
+
+* Content that plays automatically in a slideshow can be paused or stopped.
+* Content in a slideshow can be accessed through next and previous buttons.
+
+***
+
+## Touch screens and mobile devices
+
+The main consideration for touch screens and mobile devices is to make sure that the app user or customer can easily change the orientation and tap the target to navigate the content.
+
+Touch targets on primary controls and links need to be at least 44 by 44 pixels. Primary touch targets include controls and links such as:
+
+* Main menu links (regardless if first or third level)
+* Submit buttons for any forms, such as contact forms, comment forms, search, and add to cart
+* Menu buttons for carts and for hamburger menus
+* Close buttons for modals
+* Product page variants and options, such as color, size, and quantity
+
+***
+
+## Next steps
+
+* Review the [Polaris guidelines for accessibility](https://polaris.shopify.com/foundations/accessibility).
+* Learn how to design apps with [keyboard accessibility](https://www.shopify.com/partners/blog/keyboard-accessibility) in mind.
+
+***
+
+
 # Built for Shopify
 
 **URL:** https://shopify.dev/docs/apps/launch/built-for-shopify.md
@@ -2405,222 +2621,6 @@ We observe your app’s usefulness to merchants on a regular basis, using a roll
 ### App info and benefits
 
 The app listing is your first point of contact with a merchant, and it's where they'll go to determine whether your app is right for them. Your [app listing](https://shopify.dev/docs/apps/launch/app-requirements-checklist#5-app-listing) should be as complete as possible, and reflect your app's current functionality.
-
-***
-
-
-# Ensure your app is accessible
-
-**URL:** https://shopify.dev/docs/apps/build/accessibility.md
-
----
-title: Accessibility best practices for Shopify apps
-description: Learn how to increase the accessibility of your Shopify app.
-source_url:
-  html: 'https://shopify.dev/docs/apps/build/accessibility'
-  md: 'https://shopify.dev/docs/apps/build/accessibility.md'
----
-
-# Accessibility best practices for Shopify apps
-
-When you build an app, make design choices that help keep content accessible. An accessible app is designed so that it can be used by everyone, including people who rely on [assistive technology](https://www.w3.org/WAI/perspective-videos/). Accessibility for your app is essential to providing an inclusive experience for app users and customers.
-
-The accessibility best practices for Shopify apps were created with the [Web Content Accessibility Guidelines (WCAG)](https://www.w3.org/TR/WCAG21/) in mind.
-
-**Note:**
-
-There are many factors to consider when creating an accessible app. Following only the best practices on this page doesn't guarantee that your app is completely accessible.
-
-***
-
-## Accessibility testing
-
-You can test the accessibility of your app by using tools such as:
-
-* [Accessibility Insights for Web](https://accessibilityinsights.io/en/)
-* [Lighthouse](https://developers.google.com/web/tools/lighthouse)
-* [WAVE](https://wave.webaim.org/)
-
-***
-
-## Accessibility principles
-
-When building your app, focus on the main principles of the WCAG 2.0 Guidelines:
-
-* **Perceivable**: Information and UI components must be presentable to users in ways that they can perceive.
-
-* **Operable**: UI components and navigation must be operable.
-
-* **Understandable**: Information and the operation of the UI must be understandable.
-
-* **Robust**: Content must be clear enough that it can be interpreted reliably by a wide variety of user agents, including assistive technologies.
-
-  The following sections provide a list of accessibility best practices for how app users and customers interact with your app.
-
-***
-
-## Keyboard and gesture controls
-
-App users and customers who have visual or motor impairments might use a keyboard to navigate and complete tasks online. These users rely on a visual indicator to communicate where their keyboard's focus is on a web page. Your app should allow for all links, buttons, dropdown navigation, and form controls to be controlled using a keyboard.
-
-### Keyboard support
-
-* The focus indicator is visible and consistent on active elements. When navigating with either the mouse or the keyboard, the focus indicator is apparent on active elements.
-* The focus style is visible on the desktop when using a keyboard.
-* Your app doesn't rely on a mouse hover action to be visible or accessible.
-* The `Tab` key and `Shift` + `Tab` keys can be used to navigate your app.
-* No sudden changes of context when a part of your app receives focus. For example, when navigating with a keyboard, focus shouldn't switch to something else when a control receives focus.
-
-### Gesture support
-
-* Zooming gestures, for example pinch to zoom, are always available.
-* Any functionality that requires several fingers or complex gestures, for example navigating 3D models, should be available with a single tap or click.
-
-***
-
-## Page structure
-
-The following sections provide best practices for specific elements of your app's page structure.
-
-### Global
-
-* The page `lang` attribute is set on the `html` element to help screen readers pronounce content in the correct accent and dialect.
-* The viewport zoom is enabled. Your app shouldn't use the `maximum-scale` and `user-scalable=”no”` attributes.
-* Skip link is available and visible when focused to provide quick access to page content by skipping past common content such as headers. Your app should include `tabindex="-1"` on the container for the main content to receive focus.
-* The content flow is linear. Your app uses no `tabindex` attributes values other than `0` or `-1` and no `autofocus` attribute. Positive `tabindex` values in use and autofocus take the power away from the user by forcing a specific focus order. Let the user discover page content organically.
-
-### Headings
-
-* The HTML heading elements use heading markup. Your app uses heading tags (`h1` to `h6`) to communicate the organization of the content on the page.
-* The heading tags are used in sequence. Your app shouldn't use headings for design but rather to set the logical order of content on the page.
-* The `h1` element is used to identify the main topic of a page.
-
-### Navigation
-
-* The navigation areas are wrapped with the `nav` HTML element.
-* `aria-current` is used to communicate the current page when traversing links.
-* `role=”menu”` or `role=”menuitem”` aren't used for navigation.
-
-### Drop-down menu navigation
-
-* `aria-expanded` is used to communicate the state of collapsible navigation.
-* `aria-controls` is used to convey to assistive technology that there's a visually-hidden container that the drop-down menu controls.
-* `aria-current` is used to communicate the current location or page when traversing navigation items.
-* `Enter` and `Space` keys are supported to open the drop-down menu. Your app should keep focus on the launcher control. The `Tab` key moves focus to the first item in the drop-down menu.
-* The `Esc` key is supported to collapse the drop-down menu and return focus to the launcher control.
-
-### Product information
-
-* Product images include descriptive [alt text](https://medium.com/shopify-ux/considerations-when-writing-alt-text-a9c1985a8204).
-* Sale and regular prices are marked differently, both visually and by using markup for screen readers. Your app should use visually-hidden text to help discern the regular price from the sales price.
-* If your app dynamically changes a product price and availability when different variants are selected, then the changes should also be communicated to screen readers.
-* `aria-live` is used to communicate dynamic changes in the UI.
-
-### Controls
-
-* The `a` element is used for links. Your app should use links for navigation, loading a new page, or shifting keyboard focus from one element to another.
-* The `button` element is used for on-screen actions such as launching a modal window and sorting a data table.
-* The destination of your link should be clear from the text alone.
-* Links that open a new window include a warning. Your app should include a visual icon with alternative text to help screen readers and sighted, keyboard-only users understand that clicking the link opens a new window.
-
-### Tables
-
-* The `table` element is used for tabular data.
-* The `caption` element is used to help assistive technology identify that a table is being read.
-* The `th` element is used for headers with `scope` attributes.
-* The `scope="col"` element is used for column headers, and `scope="row"` for row headers.
-
-### Forms
-
-* All form fields include a label. Fields can use `aria-label`, the `.visuallyhidden` element, floating labels, or a visible label to label forms. Form inputs and controls have names that clearly state their purpose.
-* Form inputs have labels with `for` attributes, including form labels in the app settings.
-* Required inputs have the `required` attribute.
-* Fields use the `autocomplete` attribute. Auto-complete helps people fill in form fields by using the data stored in their browser.
-
-#### Form errors
-
-* Focus is placed on the feedback message. Any errors returned as a result of completing or submitting a form are communicated to screen readers where possible and as soon as possible.
-* Error messages are clear and descriptive.
-* The `aria-describedby` attribute is applied to `input` elements which reference the error text container.
-* Notifications, error messages, success messages are announced aloud. Critical information is announced by screen readers using `aria-live`.
-
-***
-
-## Media
-
-Media can be distracting, disruptive, or unexpected. All the media in your app should adhere to the following best practices:
-
-* Media controls should respect the user's `prefers-reduced-motion` browser setting.
-* Media controls are marked up using native HTML elements. Make sure your app has a toggle state for buttons and range input for sliders.
-* Media can be paused using the `Space` key.
-
-### Images and icons
-
-* All `img` elements should have an `alt` attribute. Without an `alt` attribute, screen readers announce the name and path of the image file.
-* Product or content images feature `alt` text which describes the image for screen reader users.
-* Decorative images use empty values for `alt` attributes. Use `<img src="/content/assets/images/…" alt="" />` to hide images and icons from screen readers.
-
-### Video
-
-* Closed captions are available.
-* Descriptive audio is available.
-* If an auto-playing video is required, including videos in slideshows, the sound is muted.
-* Videos with audio aren't visually obstructed.
-* The `Space` key can be used to pause and play the video.
-
-### Audio
-
-* Transcripts are available.
-* Auto-playing audio can be paused.
-
-***
-
-## Color and contrast
-
-When you add colors to your app's UI, make sure that all of your text is accessible to app users and customers who are colorblind or have other visual impairments. These app users and customers rely on adequate color contrast to visually differentiate one thing from another.
-
-You can use an [online contrast ratio tool](https://contrast-ratio.com/) to check the contrast of the different parts of your app.
-
-The content in your app should adhere to the best practices described in the [WCAG 1.4.3: Contrast (Minimum) (Level AA) standards](https://www.w3.org/WAI/WCAG21/Understanding/contrast-minimum.html).
-
-***
-
-## Dynamic components
-
-Dynamic components such as slideshows, predictive search, modal windows, and tabs can be complex and difficult to navigate. Use elements that can be interpreted by screen readers, provide context, and include keyboard functionality.
-
-### Drawers and modals
-
-* When a drawer or modal is opened, focus is moved to the element that labels the drawer or modal.
-* Navigating with the keyboard stays within the open drawer or modal.
-* The `Esc` key is supported to close drawers and modals, and returns keyboard focus to the launcher element.
-* The role used to identify modals is `dialog`.
-
-### Slideshows
-
-* Content that plays automatically in a slideshow can be paused or stopped.
-* Content in a slideshow can be accessed through next and previous buttons.
-
-***
-
-## Touch screens and mobile devices
-
-The main consideration for touch screens and mobile devices is to make sure that the app user or customer can easily change the orientation and tap the target to navigate the content.
-
-Touch targets on primary controls and links need to be at least 44 by 44 pixels. Primary touch targets include controls and links such as:
-
-* Main menu links (regardless if first or third level)
-* Submit buttons for any forms, such as contact forms, comment forms, search, and add to cart
-* Menu buttons for carts and for hamburger menus
-* Close buttons for modals
-* Product page variants and options, such as color, size, and quantity
-
-***
-
-## Next steps
-
-* Review the [Polaris guidelines for accessibility](https://polaris.shopify.com/foundations/accessibility).
-* Learn how to design apps with [keyboard accessibility](https://www.shopify.com/partners/blog/keyboard-accessibility) in mind.
 
 ***
 
@@ -3660,6 +3660,407 @@ Deepen your understanding of admin UI extensions with these tutorials and commun
 ***
 
 
+# **UI components**
+
+**URL:** https://shopify.dev/docs/api/checkout-ui-extensions/2025-01/components.md
+
+---
+title: Web components
+description: >-
+  Web components are the UI building blocks that you use to display data and
+  trigger API functions. These components are native UI elements that follow
+  Shopify's design system and render optimized interfaces for workflows in
+  checkout.
+api_version: 2026-04
+source_url:
+  html: 'https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components'
+  md: 'https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components.md'
+api_name: checkout-ui-extensions
+---
+
+# Web components
+
+Web components are the UI building blocks that you use to display data and trigger API functions. These components are native UI elements that follow [Shopify's design system](https://shopify.dev/docs/api/polaris/using-polaris-web-components) and render optimized interfaces for workflows in [checkout](https://shopify.dev/docs/apps/build/checkout).
+
+Your [target](https://shopify.dev/docs/api/checkout-ui-extensions/2026-04/targets) determines which components you can use because different locations in checkout have different interface requirements and constraints.
+
+**Constraints:**
+
+You can't override the CSS for UI components. The checkout UI will always render the merchant's own branding. Checkout UI extensions don't have access to the real checkout DOM and can't render arbitrary HTML. They can only render custom HTML elements provided by Shopify.
+
+***
+
+## Upgrading your extension
+
+The latest version of checkout UI extensions adds new components and target APIs, and updates how extensions read and write metafields. Check out the [migration guide](https://shopify.dev/docs/apps/build/checkout/migrate-to-web-components) for the steps to upgrade your extension.
+
+## Actions
+
+Actions enable users to perform tasks and navigate through the checkout interface with interactive elements like buttons and links.
+
+[![Button](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/button-thumbnail-BfZnAuEe.png)![Button](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/button-thumbnail-BfZnAuEe.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/button)
+
+[Button](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/button)
+
+[Trigger actions or events, such as submitting forms, opening dialogs, or navigating to other pages.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/button)
+
+[![Clickable](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clickable-thumbnail-BRMP8BHA.png)![Clickable](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clickable-thumbnail-BRMP8BHA.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable)
+
+[Clickable](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable)
+
+[Wrap content to make it interactive when you need more styling control than Button or Link provide.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable)
+
+[![Clickable chip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clickable-chip-thumbnail-Ba_IS1uS.png)![Clickable chip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clickable-chip-thumbnail-Ba_IS1uS.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable-chip)
+
+[Clickable chip](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable-chip)
+
+[Display interactive labels or categories that users can click or remove.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable-chip)
+
+[![Clipboard item](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clipboard-default-CwDHUGWQ.png)![Clipboard item](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clipboard-default-CwDHUGWQ.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clipboard-item)
+
+[Clipboard item](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clipboard-item)
+
+[Copy text or data to the clipboard when activated.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clipboard-item)
+
+[![Link](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/link-thumbnail-BaRvZ9N2.png)![Link](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/link-thumbnail-BaRvZ9N2.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/link)
+
+[Link](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/link)
+
+[Make text interactive, allowing users to navigate to other pages or perform specific actions.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/link)
+
+[![Press button](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/press-button-thumbnail-BsATZaAo.png)![Press button](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/press-button-thumbnail-BsATZaAo.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/press-button)
+
+[Press button](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/press-button)
+
+[Enable users to toggle between active and inactive states to represent a persistent on/off or selected/unselected status.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/press-button)
+
+## Feedback and status indicators
+
+Feedback and status indicators communicate system states, progress, and important information to users.
+
+[![Announcement](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/announcement-thumbnail-DARYr6K-.png)![Announcement](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/announcement-thumbnail-DARYr6K-.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/announcement)
+
+[Announcement](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/announcement)
+
+[Provide a less disruptive alternative to modals for capturing user attention.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/announcement)
+
+[![Badge](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/badge-thumbnail-CY6oU4DH.png)![Badge](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/badge-thumbnail-CY6oU4DH.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/badge)
+
+[Badge](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/badge)
+
+[Display status information or indicate completed actions through compact visual indicators.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/badge)
+
+[![Banner](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/banner-thumbnail-CGI0HHQn.png)![Banner](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/banner-thumbnail-CGI0HHQn.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/banner)
+
+[Banner](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/banner)
+
+[Highlight important information or required actions prominently within the interface.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/banner)
+
+[![Progress](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/progress-thumbnail-B43fiJD9.png)![Progress](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/progress-thumbnail-B43fiJD9.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/progress)
+
+[Progress](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/progress)
+
+[Visually represent the completion of a task or process.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/progress)
+
+[![Spinner](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/spinner-thumbnail-BDWF5bu8.png)![Spinner](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/spinner-thumbnail-BDWF5bu8.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/spinner)
+
+[Spinner](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/spinner)
+
+[Display an animated indicator to show that content or actions are loading.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/spinner)
+
+## Forms
+
+Forms capture and validate user input with specialized field types optimized for different data collection needs in checkout.
+
+[![Checkbox](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/checkbox-thumbnail-Dc8KbyEv.png)![Checkbox](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/checkbox-thumbnail-Dc8KbyEv.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/checkbox)
+
+[Checkbox](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/checkbox)
+
+[Enable users to make selections, such as agreeing to terms, enabling settings, or choosing multiple items from a list.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/checkbox)
+
+[![Choice list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/choice-list-thumbnail-AaBvYPik.png)![Choice list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/choice-list-thumbnail-AaBvYPik.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/choice-list)
+
+[Choice list](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/choice-list)
+
+[Present multiple options for single or multiple selections.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/choice-list)
+
+[![Consent checkbox](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/consent-checkbox-thumbnail-Bobrtc7r.png)![Consent checkbox](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/consent-checkbox-thumbnail-Bobrtc7r.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-checkbox)
+
+[Consent checkbox](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-checkbox)
+
+[Collect the buyer's approval for a given policy.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-checkbox)
+
+[![Consent phone field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/consent-phone-field-thumbnail-ixRPV86k.png)![Consent phone field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/consent-phone-field-thumbnail-ixRPV86k.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-phone-field)
+
+[Consent phone field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-phone-field)
+
+[Capture phone numbers for text message marketing sign-up, with the value automatically saved during checkout.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-phone-field)
+
+[![Date field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/date-field-thumbnail-T6C2Li4o.png)![Date field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/date-field-thumbnail-T6C2Li4o.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-field)
+
+[Date field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-field)
+
+[Capture date input with a consistent interface for date selection and proper validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-field)
+
+[![Date picker](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/date-picker-thumbnail-BqAvVsRh.png)![Date picker](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/date-picker-thumbnail-BqAvVsRh.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-picker)
+
+[Date picker](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-picker)
+
+[Enable merchants to select dates using a calendar interface.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-picker)
+
+[![Drop zone](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/drop-zone-thumbnail-DaIYV0G2.png)![Drop zone](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/drop-zone-thumbnail-DaIYV0G2.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/drop-zone)
+
+[Drop zone](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/drop-zone)
+
+[Accept file uploads through drag-and-drop or button activation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/drop-zone)
+
+[![Email field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/email-field-thumbnail-D010x2qt.png)![Email field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/email-field-thumbnail-D010x2qt.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/email-field)
+
+[Email field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/email-field)
+
+[Capture email address input.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/email-field)
+
+[![Form](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/admin/components/form-B0kMehyX.png)![Form](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/admin/components/form-B0kMehyX.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/form)
+
+[Form](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/form)
+
+[Wrap form controls and enable implicit submission when users press Enter.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/form)
+
+[![Money field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/money-field-thumbnail-Bb8GnkaJ.png)![Money field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/money-field-thumbnail-Bb8GnkaJ.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/money-field)
+
+[Money field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/money-field)
+
+[Capture monetary values with built-in currency formatting and validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/money-field)
+
+[![Number field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/number-field-thumbnail-CYoZRuz8.png)![Number field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/number-field-thumbnail-CYoZRuz8.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/number-field)
+
+[Number field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/number-field)
+
+[Capture numeric input with built-in validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/number-field)
+
+[![Password field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/password-field-thumbnail-CNB0zR71.png)![Password field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/password-field-thumbnail-CNB0zR71.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/password-field)
+
+[Password field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/password-field)
+
+[Securely capture sensitive information.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/password-field)
+
+[![Phone field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/phone-field-thumbnail-DIk-2zce.png)![Phone field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/phone-field-thumbnail-DIk-2zce.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/phone-field)
+
+[Phone field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/phone-field)
+
+[Capture phone number input with built-in formatting and validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/phone-field)
+
+[![Select](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/select-thumbnail-C6qegx_e.png)![Select](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/select-thumbnail-C6qegx_e.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/select)
+
+[Select](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/select)
+
+[Enable users to pick one option from a dropdown menu.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/select)
+
+[![Switch](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/switch-thumbnail-Bp1WEwrj.png)![Switch](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/switch-thumbnail-Bp1WEwrj.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/switch)
+
+[Switch](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/switch)
+
+[Toggle options on or off.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/switch)
+
+[![Text area](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-area-thumbnail-C05TfnLG.png)![Text area](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-area-thumbnail-C05TfnLG.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-area)
+
+[Text area](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-area)
+
+[Capture longer text content with a multi-line, resizable text input area.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-area)
+
+[![Text field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-field-thumbnail-DU_Zc72d.png)![Text field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-field-thumbnail-DU_Zc72d.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-field)
+
+[Text field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-field)
+
+[Capture single-line text input.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-field)
+
+[![URL field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/url-field-thumbnail-D-kdH9F9.png)![URL field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/url-field-thumbnail-D-kdH9F9.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/url-field)
+
+[URL field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/url-field)
+
+[Capture URLs with built-in formatting and validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/url-field)
+
+## Layout and structure
+
+Layout and structure components organize content hierarchically and spatially, creating clear visual relationships in checkout interfaces.
+
+[![Box](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/box-thumbnail-ccy-RH7a.png)![Box](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/box-thumbnail-ccy-RH7a.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/box)
+
+[Box](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/box)
+
+[Provide a generic, flexible container for custom designs and layouts.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/box)
+
+[![Divider](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/divider-thumbnail-BRYBrdo5.png)![Divider](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/divider-thumbnail-BRYBrdo5.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/divider)
+
+[Divider](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/divider)
+
+[Create visual separation between content sections.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/divider)
+
+[![Grid](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/grid-thumbnail-CG_HRlB3.png)![Grid](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/grid-thumbnail-CG_HRlB3.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/grid)
+
+[Grid](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/grid)
+
+[Organize content in a matrix of rows and columns to build responsive layouts.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/grid)
+
+[![Query container](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/admin/components/page-ZjQ0PRv6.png)![Query container](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/admin/components/page-ZjQ0PRv6.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/query-container)
+
+[Query container](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/query-container)
+
+[Establish a container query context so child components can adapt based on the container's size rather than viewport width.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/query-container)
+
+[![Scroll box](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/scroll-box-thumbnail-11IGxt0S.png)![Scroll box](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/scroll-box-thumbnail-11IGxt0S.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/scroll-box)
+
+[Scroll box](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/scroll-box)
+
+[Create a scrollable container for overflowing content.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/scroll-box)
+
+[![Section](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/section-thumbnail-BPccSm6Y.png)![Section](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/section-thumbnail-BPccSm6Y.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/section)
+
+[Section](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/section)
+
+[Group related content into clearly-defined thematic areas.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/section)
+
+[![Stack](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/stack-thumbnail-CGHqNUgm.png)![Stack](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/stack-thumbnail-CGHqNUgm.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/stack)
+
+[Stack](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/stack)
+
+[Organize elements horizontally or vertically along the block or inline axis.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/stack)
+
+## Media and visuals
+
+Media and visuals display images, icons, and graphical elements that enhance comprehension and visual communication in checkout.
+
+[![Icon](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/icon-thumbnail-BVg7ao9W.png)![Icon](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/icon-thumbnail-BVg7ao9W.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/icon)
+
+[Icon](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/icon)
+
+[Display standardized visual symbols to represent actions, statuses, or categories consistently.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/icon)
+
+[![Image](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/image-thumbnail-6cA3jBoq.png)![Image](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/image-thumbnail-6cA3jBoq.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/image)
+
+[Image](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/image)
+
+[Embed images within the interface with control over presentation and loading behavior.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/image)
+
+[![Map](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/map-thumbnail-BGau5KHO.png)![Map](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/map-thumbnail-BGau5KHO.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/map)
+
+[Map](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/map)
+
+[Display an interactive map with location markers.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/map)
+
+[![Payment icon](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/payment-icon-thumbnail-BnrdgC3i.png)![Payment icon](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/payment-icon-thumbnail-BnrdgC3i.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/payment-icon)
+
+[Payment icon](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/payment-icon)
+
+[Display standardized icons for payment methods.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/payment-icon)
+
+[![Product thumbnail](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/product-thumbnail-thumbnail-CmnlDrNe.png)![Product thumbnail](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/product-thumbnail-thumbnail-CmnlDrNe.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/product-thumbnail)
+
+[Product thumbnail](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/product-thumbnail)
+
+[Display small preview images representing products.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/product-thumbnail)
+
+[![QR code](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/qr-code-thumbnail-DNJ5WgA-.png)![QR code](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/qr-code-thumbnail-DNJ5WgA-.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/qr-code)
+
+[QR code](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/qr-code)
+
+[Generate and display QR codes for sharing links or data.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/qr-code)
+
+## Overlays
+
+Overlays present content in floating or layered surfaces that appear above the main interface, useful for focused tasks, contextual information, and supplementary content.
+
+[![Modal](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/modal-thumbnail-D5PNMNOH.png)![Modal](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/modal-thumbnail-D5PNMNOH.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/modal)
+
+[Modal](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/modal)
+
+[Display content in a focused layer for tasks such as confirmation dialogs or settings panels.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/modal)
+
+[![Popover](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/popover-thumbnail-BxvF9pDV.png)![Popover](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/popover-thumbnail-BxvF9pDV.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/popover)
+
+[Popover](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/popover)
+
+[Display contextual content in a floating container anchored to a trigger element.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/popover)
+
+[![Sheet](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/sheet-thumbnail-B5PxIfKq.png)![Sheet](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/sheet-thumbnail-B5PxIfKq.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/sheet)
+
+[Sheet](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/sheet)
+
+[Display essential information at the bottom of the screen, appearing above other elements.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/sheet)
+
+[![Tooltip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/tooltip-thumbnail-kSuIvUCJ.png)![Tooltip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/tooltip-thumbnail-kSuIvUCJ.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/tooltip)
+
+[Tooltip](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/tooltip)
+
+[Display additional information on hover or focus.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/tooltip)
+
+## Typography and content
+
+Typography and content components present textual information with appropriate hierarchy, emphasis, and styling for clear communication.
+
+[![Abbreviation](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/abbreviation-thumbnail-BiXI2eyD.png)![Abbreviation](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/abbreviation-thumbnail-BiXI2eyD.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/abbreviation)
+
+[Abbreviation](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/abbreviation)
+
+[Display abbreviated text with a tooltip showing the full term on hover.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/abbreviation)
+
+[![Chip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/chip-thumbnail-Dm3qc2FJ.png)![Chip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/chip-thumbnail-Dm3qc2FJ.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/chip)
+
+[Chip](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/chip)
+
+[Display static labels, categories, or attributes that help classify and organize content.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/chip)
+
+[![Details](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/details-thumbnail-ottKwVSH.png)![Details](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/details-thumbnail-ottKwVSH.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/details)
+
+[Details](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/details)
+
+[Display a collapsible section that users can expand to reveal additional content.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/details)
+
+[![Heading](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/heading-thumbnail-kUJ6RcQy.png)![Heading](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/heading-thumbnail-kUJ6RcQy.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/heading)
+
+[Heading](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/heading)
+
+[Render hierarchical titles to communicate the structure and organization of page content.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/heading)
+
+[![Ordered list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/ordered-list-thumbnail-C8dDO3g2.png)![Ordered list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/ordered-list-thumbnail-C8dDO3g2.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/ordered-list)
+
+[Ordered list](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/ordered-list)
+
+[Display a numbered list of items.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/ordered-list)
+
+[![Paragraph](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/paragraph-thumbnail-DljjYJmu.png)![Paragraph](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/paragraph-thumbnail-DljjYJmu.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/paragraph)
+
+[Paragraph](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/paragraph)
+
+[Display blocks of text that can contain inline elements such as buttons, links, or emphasized text.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/paragraph)
+
+[![Skeleton paragraph](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/skeleton-paragraph-thumbnail-C_eH5TVX.png)![Skeleton paragraph](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/skeleton-paragraph-thumbnail-C_eH5TVX.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/skeleton-paragraph)
+
+[Skeleton paragraph](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/skeleton-paragraph)
+
+[Display a placeholder for paragraph content while data is loading.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/skeleton-paragraph)
+
+[![Text](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-thumbnail-Cn8TJc8F.png)![Text](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-thumbnail-Cn8TJc8F.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/text)
+
+[Text](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/text)
+
+[Display text with specific visual styles or tones.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/text)
+
+[![Time](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/time-thumbnail-BInsRCaK.png)![Time](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/time-thumbnail-BInsRCaK.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/time)
+
+[Time](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/time)
+
+[Display dates and times in a localized format.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/time)
+
+[![Unordered list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/unordered-list-thumbnail-CRa9rsI1.png)![Unordered list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/unordered-list-thumbnail-CRa9rsI1.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/unordered-list)
+
+[Unordered list](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/unordered-list)
+
+[Display a bulleted list of items.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/unordered-list)
+
+***
+
+
 # Customer account UI extensions
 
 **URL:** https://shopify.dev/docs/api/customer-account-ui-extensions.md
@@ -4297,407 +4698,6 @@ return <s-banner>Your extension</s-banner>;
 ***
 
 
-# **UI components**
-
-**URL:** https://shopify.dev/docs/api/checkout-ui-extensions/2025-01/components.md
-
----
-title: Web components
-description: >-
-  Web components are the UI building blocks that you use to display data and
-  trigger API functions. These components are native UI elements that follow
-  Shopify's design system and render optimized interfaces for workflows in
-  checkout.
-api_version: 2026-04
-source_url:
-  html: 'https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components'
-  md: 'https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components.md'
-api_name: checkout-ui-extensions
----
-
-# Web components
-
-Web components are the UI building blocks that you use to display data and trigger API functions. These components are native UI elements that follow [Shopify's design system](https://shopify.dev/docs/api/polaris/using-polaris-web-components) and render optimized interfaces for workflows in [checkout](https://shopify.dev/docs/apps/build/checkout).
-
-Your [target](https://shopify.dev/docs/api/checkout-ui-extensions/2026-04/targets) determines which components you can use because different locations in checkout have different interface requirements and constraints.
-
-**Constraints:**
-
-You can't override the CSS for UI components. The checkout UI will always render the merchant's own branding. Checkout UI extensions don't have access to the real checkout DOM and can't render arbitrary HTML. They can only render custom HTML elements provided by Shopify.
-
-***
-
-## Upgrading your extension
-
-The latest version of checkout UI extensions adds new components and target APIs, and updates how extensions read and write metafields. Check out the [migration guide](https://shopify.dev/docs/apps/build/checkout/migrate-to-web-components) for the steps to upgrade your extension.
-
-## Actions
-
-Actions enable users to perform tasks and navigate through the checkout interface with interactive elements like buttons and links.
-
-[![Button](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/button-thumbnail-BfZnAuEe.png)![Button](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/button-thumbnail-BfZnAuEe.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/button)
-
-[Button](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/button)
-
-[Trigger actions or events, such as submitting forms, opening dialogs, or navigating to other pages.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/button)
-
-[![Clickable](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clickable-thumbnail-BRMP8BHA.png)![Clickable](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clickable-thumbnail-BRMP8BHA.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable)
-
-[Clickable](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable)
-
-[Wrap content to make it interactive when you need more styling control than Button or Link provide.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable)
-
-[![Clickable chip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clickable-chip-thumbnail-Ba_IS1uS.png)![Clickable chip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clickable-chip-thumbnail-Ba_IS1uS.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable-chip)
-
-[Clickable chip](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable-chip)
-
-[Display interactive labels or categories that users can click or remove.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clickable-chip)
-
-[![Clipboard item](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clipboard-default-CwDHUGWQ.png)![Clipboard item](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/clipboard-default-CwDHUGWQ.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clipboard-item)
-
-[Clipboard item](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clipboard-item)
-
-[Copy text or data to the clipboard when activated.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/clipboard-item)
-
-[![Link](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/link-thumbnail-BaRvZ9N2.png)![Link](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/link-thumbnail-BaRvZ9N2.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/link)
-
-[Link](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/link)
-
-[Make text interactive, allowing users to navigate to other pages or perform specific actions.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/link)
-
-[![Press button](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/press-button-thumbnail-BsATZaAo.png)![Press button](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/press-button-thumbnail-BsATZaAo.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/press-button)
-
-[Press button](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/press-button)
-
-[Enable users to toggle between active and inactive states to represent a persistent on/off or selected/unselected status.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/actions/press-button)
-
-## Feedback and status indicators
-
-Feedback and status indicators communicate system states, progress, and important information to users.
-
-[![Announcement](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/announcement-thumbnail-DARYr6K-.png)![Announcement](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/announcement-thumbnail-DARYr6K-.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/announcement)
-
-[Announcement](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/announcement)
-
-[Provide a less disruptive alternative to modals for capturing user attention.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/announcement)
-
-[![Badge](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/badge-thumbnail-CY6oU4DH.png)![Badge](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/badge-thumbnail-CY6oU4DH.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/badge)
-
-[Badge](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/badge)
-
-[Display status information or indicate completed actions through compact visual indicators.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/badge)
-
-[![Banner](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/banner-thumbnail-CGI0HHQn.png)![Banner](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/banner-thumbnail-CGI0HHQn.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/banner)
-
-[Banner](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/banner)
-
-[Highlight important information or required actions prominently within the interface.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/banner)
-
-[![Progress](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/progress-thumbnail-B43fiJD9.png)![Progress](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/progress-thumbnail-B43fiJD9.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/progress)
-
-[Progress](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/progress)
-
-[Visually represent the completion of a task or process.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/progress)
-
-[![Spinner](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/spinner-thumbnail-BDWF5bu8.png)![Spinner](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/spinner-thumbnail-BDWF5bu8.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/spinner)
-
-[Spinner](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/spinner)
-
-[Display an animated indicator to show that content or actions are loading.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/feedback-and-status-indicators/spinner)
-
-## Forms
-
-Forms capture and validate user input with specialized field types optimized for different data collection needs in checkout.
-
-[![Checkbox](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/checkbox-thumbnail-Dc8KbyEv.png)![Checkbox](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/checkbox-thumbnail-Dc8KbyEv.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/checkbox)
-
-[Checkbox](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/checkbox)
-
-[Enable users to make selections, such as agreeing to terms, enabling settings, or choosing multiple items from a list.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/checkbox)
-
-[![Choice list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/choice-list-thumbnail-AaBvYPik.png)![Choice list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/choice-list-thumbnail-AaBvYPik.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/choice-list)
-
-[Choice list](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/choice-list)
-
-[Present multiple options for single or multiple selections.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/choice-list)
-
-[![Consent checkbox](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/consent-checkbox-thumbnail-Bobrtc7r.png)![Consent checkbox](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/consent-checkbox-thumbnail-Bobrtc7r.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-checkbox)
-
-[Consent checkbox](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-checkbox)
-
-[Collect the buyer's approval for a given policy.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-checkbox)
-
-[![Consent phone field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/consent-phone-field-thumbnail-ixRPV86k.png)![Consent phone field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/consent-phone-field-thumbnail-ixRPV86k.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-phone-field)
-
-[Consent phone field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-phone-field)
-
-[Capture phone numbers for text message marketing sign-up, with the value automatically saved during checkout.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/consent-phone-field)
-
-[![Date field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/date-field-thumbnail-T6C2Li4o.png)![Date field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/date-field-thumbnail-T6C2Li4o.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-field)
-
-[Date field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-field)
-
-[Capture date input with a consistent interface for date selection and proper validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-field)
-
-[![Date picker](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/date-picker-thumbnail-BqAvVsRh.png)![Date picker](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/date-picker-thumbnail-BqAvVsRh.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-picker)
-
-[Date picker](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-picker)
-
-[Enable merchants to select dates using a calendar interface.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/date-picker)
-
-[![Drop zone](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/drop-zone-thumbnail-DaIYV0G2.png)![Drop zone](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/drop-zone-thumbnail-DaIYV0G2.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/drop-zone)
-
-[Drop zone](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/drop-zone)
-
-[Accept file uploads through drag-and-drop or button activation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/drop-zone)
-
-[![Email field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/email-field-thumbnail-D010x2qt.png)![Email field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/email-field-thumbnail-D010x2qt.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/email-field)
-
-[Email field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/email-field)
-
-[Capture email address input.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/email-field)
-
-[![Form](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/admin/components/form-B0kMehyX.png)![Form](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/admin/components/form-B0kMehyX.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/form)
-
-[Form](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/form)
-
-[Wrap form controls and enable implicit submission when users press Enter.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/form)
-
-[![Money field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/money-field-thumbnail-Bb8GnkaJ.png)![Money field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/money-field-thumbnail-Bb8GnkaJ.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/money-field)
-
-[Money field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/money-field)
-
-[Capture monetary values with built-in currency formatting and validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/money-field)
-
-[![Number field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/number-field-thumbnail-CYoZRuz8.png)![Number field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/number-field-thumbnail-CYoZRuz8.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/number-field)
-
-[Number field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/number-field)
-
-[Capture numeric input with built-in validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/number-field)
-
-[![Password field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/password-field-thumbnail-CNB0zR71.png)![Password field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/password-field-thumbnail-CNB0zR71.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/password-field)
-
-[Password field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/password-field)
-
-[Securely capture sensitive information.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/password-field)
-
-[![Phone field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/phone-field-thumbnail-DIk-2zce.png)![Phone field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/phone-field-thumbnail-DIk-2zce.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/phone-field)
-
-[Phone field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/phone-field)
-
-[Capture phone number input with built-in formatting and validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/phone-field)
-
-[![Select](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/select-thumbnail-C6qegx_e.png)![Select](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/select-thumbnail-C6qegx_e.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/select)
-
-[Select](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/select)
-
-[Enable users to pick one option from a dropdown menu.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/select)
-
-[![Switch](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/switch-thumbnail-Bp1WEwrj.png)![Switch](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/switch-thumbnail-Bp1WEwrj.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/switch)
-
-[Switch](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/switch)
-
-[Toggle options on or off.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/switch)
-
-[![Text area](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-area-thumbnail-C05TfnLG.png)![Text area](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-area-thumbnail-C05TfnLG.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-area)
-
-[Text area](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-area)
-
-[Capture longer text content with a multi-line, resizable text input area.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-area)
-
-[![Text field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-field-thumbnail-DU_Zc72d.png)![Text field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-field-thumbnail-DU_Zc72d.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-field)
-
-[Text field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-field)
-
-[Capture single-line text input.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/text-field)
-
-[![URL field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/url-field-thumbnail-D-kdH9F9.png)![URL field](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/url-field-thumbnail-D-kdH9F9.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/url-field)
-
-[URL field](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/url-field)
-
-[Capture URLs with built-in formatting and validation.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/forms/url-field)
-
-## Layout and structure
-
-Layout and structure components organize content hierarchically and spatially, creating clear visual relationships in checkout interfaces.
-
-[![Box](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/box-thumbnail-ccy-RH7a.png)![Box](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/box-thumbnail-ccy-RH7a.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/box)
-
-[Box](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/box)
-
-[Provide a generic, flexible container for custom designs and layouts.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/box)
-
-[![Divider](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/divider-thumbnail-BRYBrdo5.png)![Divider](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/divider-thumbnail-BRYBrdo5.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/divider)
-
-[Divider](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/divider)
-
-[Create visual separation between content sections.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/divider)
-
-[![Grid](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/grid-thumbnail-CG_HRlB3.png)![Grid](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/grid-thumbnail-CG_HRlB3.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/grid)
-
-[Grid](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/grid)
-
-[Organize content in a matrix of rows and columns to build responsive layouts.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/grid)
-
-[![Query container](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/admin/components/page-ZjQ0PRv6.png)![Query container](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/admin/components/page-ZjQ0PRv6.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/query-container)
-
-[Query container](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/query-container)
-
-[Establish a container query context so child components can adapt based on the container's size rather than viewport width.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/query-container)
-
-[![Scroll box](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/scroll-box-thumbnail-11IGxt0S.png)![Scroll box](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/scroll-box-thumbnail-11IGxt0S.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/scroll-box)
-
-[Scroll box](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/scroll-box)
-
-[Create a scrollable container for overflowing content.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/scroll-box)
-
-[![Section](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/section-thumbnail-BPccSm6Y.png)![Section](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/section-thumbnail-BPccSm6Y.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/section)
-
-[Section](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/section)
-
-[Group related content into clearly-defined thematic areas.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/section)
-
-[![Stack](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/stack-thumbnail-CGHqNUgm.png)![Stack](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/stack-thumbnail-CGHqNUgm.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/stack)
-
-[Stack](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/stack)
-
-[Organize elements horizontally or vertically along the block or inline axis.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/layout-and-structure/stack)
-
-## Media and visuals
-
-Media and visuals display images, icons, and graphical elements that enhance comprehension and visual communication in checkout.
-
-[![Icon](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/icon-thumbnail-BVg7ao9W.png)![Icon](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/icon-thumbnail-BVg7ao9W.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/icon)
-
-[Icon](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/icon)
-
-[Display standardized visual symbols to represent actions, statuses, or categories consistently.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/icon)
-
-[![Image](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/image-thumbnail-6cA3jBoq.png)![Image](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/image-thumbnail-6cA3jBoq.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/image)
-
-[Image](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/image)
-
-[Embed images within the interface with control over presentation and loading behavior.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/image)
-
-[![Map](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/map-thumbnail-BGau5KHO.png)![Map](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/map-thumbnail-BGau5KHO.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/map)
-
-[Map](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/map)
-
-[Display an interactive map with location markers.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/map)
-
-[![Payment icon](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/payment-icon-thumbnail-BnrdgC3i.png)![Payment icon](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/payment-icon-thumbnail-BnrdgC3i.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/payment-icon)
-
-[Payment icon](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/payment-icon)
-
-[Display standardized icons for payment methods.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/payment-icon)
-
-[![Product thumbnail](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/product-thumbnail-thumbnail-CmnlDrNe.png)![Product thumbnail](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/product-thumbnail-thumbnail-CmnlDrNe.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/product-thumbnail)
-
-[Product thumbnail](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/product-thumbnail)
-
-[Display small preview images representing products.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/product-thumbnail)
-
-[![QR code](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/qr-code-thumbnail-DNJ5WgA-.png)![QR code](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/qr-code-thumbnail-DNJ5WgA-.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/qr-code)
-
-[QR code](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/qr-code)
-
-[Generate and display QR codes for sharing links or data.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/media-and-visuals/qr-code)
-
-## Overlays
-
-Overlays present content in floating or layered surfaces that appear above the main interface, useful for focused tasks, contextual information, and supplementary content.
-
-[![Modal](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/modal-thumbnail-D5PNMNOH.png)![Modal](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/modal-thumbnail-D5PNMNOH.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/modal)
-
-[Modal](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/modal)
-
-[Display content in a focused layer for tasks such as confirmation dialogs or settings panels.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/modal)
-
-[![Popover](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/popover-thumbnail-BxvF9pDV.png)![Popover](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/popover-thumbnail-BxvF9pDV.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/popover)
-
-[Popover](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/popover)
-
-[Display contextual content in a floating container anchored to a trigger element.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/popover)
-
-[![Sheet](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/sheet-thumbnail-B5PxIfKq.png)![Sheet](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/sheet-thumbnail-B5PxIfKq.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/sheet)
-
-[Sheet](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/sheet)
-
-[Display essential information at the bottom of the screen, appearing above other elements.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/sheet)
-
-[![Tooltip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/tooltip-thumbnail-kSuIvUCJ.png)![Tooltip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/tooltip-thumbnail-kSuIvUCJ.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/tooltip)
-
-[Tooltip](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/tooltip)
-
-[Display additional information on hover or focus.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/overlays/tooltip)
-
-## Typography and content
-
-Typography and content components present textual information with appropriate hierarchy, emphasis, and styling for clear communication.
-
-[![Abbreviation](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/abbreviation-thumbnail-BiXI2eyD.png)![Abbreviation](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/abbreviation-thumbnail-BiXI2eyD.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/abbreviation)
-
-[Abbreviation](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/abbreviation)
-
-[Display abbreviated text with a tooltip showing the full term on hover.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/abbreviation)
-
-[![Chip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/chip-thumbnail-Dm3qc2FJ.png)![Chip](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/chip-thumbnail-Dm3qc2FJ.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/chip)
-
-[Chip](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/chip)
-
-[Display static labels, categories, or attributes that help classify and organize content.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/chip)
-
-[![Details](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/details-thumbnail-ottKwVSH.png)![Details](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/details-thumbnail-ottKwVSH.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/details)
-
-[Details](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/details)
-
-[Display a collapsible section that users can expand to reveal additional content.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/details)
-
-[![Heading](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/heading-thumbnail-kUJ6RcQy.png)![Heading](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/heading-thumbnail-kUJ6RcQy.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/heading)
-
-[Heading](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/heading)
-
-[Render hierarchical titles to communicate the structure and organization of page content.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/heading)
-
-[![Ordered list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/ordered-list-thumbnail-C8dDO3g2.png)![Ordered list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/ordered-list-thumbnail-C8dDO3g2.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/ordered-list)
-
-[Ordered list](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/ordered-list)
-
-[Display a numbered list of items.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/ordered-list)
-
-[![Paragraph](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/paragraph-thumbnail-DljjYJmu.png)![Paragraph](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/paragraph-thumbnail-DljjYJmu.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/paragraph)
-
-[Paragraph](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/paragraph)
-
-[Display blocks of text that can contain inline elements such as buttons, links, or emphasized text.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/paragraph)
-
-[![Skeleton paragraph](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/skeleton-paragraph-thumbnail-C_eH5TVX.png)![Skeleton paragraph](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/skeleton-paragraph-thumbnail-C_eH5TVX.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/skeleton-paragraph)
-
-[Skeleton paragraph](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/skeleton-paragraph)
-
-[Display a placeholder for paragraph content while data is loading.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/skeleton-paragraph)
-
-[![Text](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-thumbnail-Cn8TJc8F.png)![Text](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/text-thumbnail-Cn8TJc8F.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/text)
-
-[Text](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/text)
-
-[Display text with specific visual styles or tones.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/text)
-
-[![Time](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/time-thumbnail-BInsRCaK.png)![Time](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/time-thumbnail-BInsRCaK.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/time)
-
-[Time](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/time)
-
-[Display dates and times in a localized format.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/time)
-
-[![Unordered list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/unordered-list-thumbnail-CRa9rsI1.png)![Unordered list](https://cdn.shopify.com/shopifycloud/shopify-dev/development/assets/assets/images/templated-apis-screenshots/checkout-ui-extensions/2025-10/unordered-list-thumbnail-CRa9rsI1.png)](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/unordered-list)
-
-[Unordered list](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/unordered-list)
-
-[Display a bulleted list of items.](https://shopify.dev/docs/api/checkout-ui-extensions/latest/web-components/typography-and-content/unordered-list)
-
-***
-
-
 # Metafields
 
 **URL:** https://shopify.dev/docs/apps/build/custom-data.md
@@ -5131,119 +5131,6 @@ Customer Account API access levels can only be adjusted via GraphQL Admin API mu
 * Learn how to [work with metafield values](https://shopify.dev/docs/apps/build/metafields/manage-metafields).
 * Learn how to use metafields to [query resources](https://shopify.dev/docs/apps/build/metafields/query-using-metafields).
 * Learn how to [enable filtering and other advanced features](https://shopify.dev/docs/apps/build/metafields/use-metafield-capabilities).
-
-***
-
-
-# Authentication
-
-**URL:** https://shopify.dev/docs/apps/build/authentication-authorization.md
-
----
-title: Authentication and authorization
-description: >-
-  Learn about the different methods of authenticating and authorizing apps with
-  Shopify’s platform.
-source_url:
-  html: 'https://shopify.dev/docs/apps/build/authentication-authorization'
-  md: 'https://shopify.dev/docs/apps/build/authentication-authorization.md'
----
-
-# Authentication and authorization
-
-This guide introduces the different methods of authenticating and authorizing apps with Shopify’s platform. Make sure that you understand the differences between the types of authentication and authorization methods before you begin your development process.
-
-You can [use Shopify CLI to generate a starter app](https://shopify.dev/docs/apps/build/scaffold-app) with boilerplate code that handles authentication and authorization. The starter app includes code for an app rendered in the Shopify admin that follows best practices:
-
-* Authorizing your app using [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens) and [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange).
-
-* Installing on stores using [Shopify managed installation](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation).
-
-  You should use this starter app unless you need to scaffold a standalone app.
-
-[Scaffold an app\
-\
-](https://shopify.dev/docs/apps/build/scaffold-app)
-
-[Scaffold an app that follows all authentication and authorization best practices.](https://shopify.dev/docs/apps/build/scaffold-app)
-
-***
-
-## Authentication vs.​authorization
-
-Authentication is the process of verifying the identity of the user or the app. To keep transactions on Shopify’s platform [safe and secure](https://shopify.dev/docs/apps/build/compliance/privacy-law-compliance), all apps connecting with Shopify APIs must authenticate when making API requests.
-
-Authorization is the process of giving permissions to apps. When an app user installs a Shopify app they authorize the app, enabling the app to acquire an access token. For example, an app might be authorized to access orders and product data in a store.
-
-***
-
-## Types of authentication and authorization methods
-
-The authentication and authorization methods that your app needs to use depends on the tool that you used to create your app, and the components that your app uses.
-
-### Authentication
-
-* Apps rendered in the Shopify admin need to authenticate their incoming requests with [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens).
-* Standalone apps need to implement their own authentication method for incoming requests.
-
-### Authorization
-
-Authorization encompasses the installation of an app and the means to acquire an access token.
-
-To avoid unnecessary redirects and page flickers during the app installation process, you should [configure your app's required access scopes using Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration). This allows Shopify to [manage the installation process for you](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation).
-
-If you aren't able to use Shopify CLI to configure your app, then your app will install as part of the [authorization code grant flow](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant). This provides a degraded user experience.
-
-If you're building an app for your own organization and don't require user interaction, you can use the [client credentials grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/client-credentials-grant) to acquire access tokens.
-
-The following table outlines the supported installation and token acquisition flows for various app configurations.
-
-Whenever possible, you should create apps rendered in the Shopify admin that use Shopify managed installation and token exchange.
-
-| Type of app | Supported installation flows | Supported token acquisition flows |
-| - | - | - |
-| App rendered in the Shopify admin | * [Shopify managed installation (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation)* [Installation during authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) | * [Token exchange (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange)* [Authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
-| Standalone app | * [Shopify managed installation (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation)* [Installation during authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) | * [Authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
-| Admin-created custom app | * Installed upon generation in the Shopify admin | * [Generate in the Shopify admin](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/generate-app-access-tokens-admin) |
-
-OAuth 2.0 is the industry-standard protocol for authorizing or giving permissions to apps. The following video illustrates how OAuth works at Shopify. Note that this video was created before [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange) was introduced, and might use the term "OAuth" interchangeably with "authorization code grant."
-
-***
-
-## Getting started
-
-* Authenticate your app using [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens).
-* Authorize your app using a session token with [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange).
-* Authorize your standalone app with [authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant).
-* Authenticate your app created in the Shopify admin with [access tokens](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/generate-app-access-tokens-admin).
-
-***
-
-## Tools
-
-[Shopify CLI\
-\
-](https://shopify.dev/docs/apps/build/cli-for-apps)
-
-[A command-line tool to help you build Shopify apps faster](https://shopify.dev/docs/apps/build/cli-for-apps)
-
-[shopify\_api\
-\
-](https://github.com/Shopify/shopify-api-ruby)
-
-[Shopify’s official Ruby gem for interacting with the Admin API](https://github.com/Shopify/shopify-api-ruby)
-
-[@shopify/shopify-api\
-\
-](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/shopify-api)
-
-[Shopify’s official Node library for interacting with the Storefront and Admin APIs, handling OAuth, webhooks, and billing](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/shopify-api)
-
-[@shopify/admin-api-client\
-\
-](https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client)
-
-[Shopify’s official lightweight Node library for interacting with the Admin API](https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client)
 
 ***
 
@@ -16761,6 +16648,119 @@ uri = "https://your-app.example.com/events"
 ***
 
 
+# Authentication
+
+**URL:** https://shopify.dev/docs/apps/build/authentication-authorization.md
+
+---
+title: Authentication and authorization
+description: >-
+  Learn about the different methods of authenticating and authorizing apps with
+  Shopify’s platform.
+source_url:
+  html: 'https://shopify.dev/docs/apps/build/authentication-authorization'
+  md: 'https://shopify.dev/docs/apps/build/authentication-authorization.md'
+---
+
+# Authentication and authorization
+
+This guide introduces the different methods of authenticating and authorizing apps with Shopify’s platform. Make sure that you understand the differences between the types of authentication and authorization methods before you begin your development process.
+
+You can [use Shopify CLI to generate a starter app](https://shopify.dev/docs/apps/build/scaffold-app) with boilerplate code that handles authentication and authorization. The starter app includes code for an app rendered in the Shopify admin that follows best practices:
+
+* Authorizing your app using [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens) and [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange).
+
+* Installing on stores using [Shopify managed installation](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation).
+
+  You should use this starter app unless you need to scaffold a standalone app.
+
+[Scaffold an app\
+\
+](https://shopify.dev/docs/apps/build/scaffold-app)
+
+[Scaffold an app that follows all authentication and authorization best practices.](https://shopify.dev/docs/apps/build/scaffold-app)
+
+***
+
+## Authentication vs.​authorization
+
+Authentication is the process of verifying the identity of the user or the app. To keep transactions on Shopify’s platform [safe and secure](https://shopify.dev/docs/apps/build/compliance/privacy-law-compliance), all apps connecting with Shopify APIs must authenticate when making API requests.
+
+Authorization is the process of giving permissions to apps. When an app user installs a Shopify app they authorize the app, enabling the app to acquire an access token. For example, an app might be authorized to access orders and product data in a store.
+
+***
+
+## Types of authentication and authorization methods
+
+The authentication and authorization methods that your app needs to use depends on the tool that you used to create your app, and the components that your app uses.
+
+### Authentication
+
+* Apps rendered in the Shopify admin need to authenticate their incoming requests with [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens).
+* Standalone apps need to implement their own authentication method for incoming requests.
+
+### Authorization
+
+Authorization encompasses the installation of an app and the means to acquire an access token.
+
+To avoid unnecessary redirects and page flickers during the app installation process, you should [configure your app's required access scopes using Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration). This allows Shopify to [manage the installation process for you](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation).
+
+If you aren't able to use Shopify CLI to configure your app, then your app will install as part of the [authorization code grant flow](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant). This provides a degraded user experience.
+
+If you're building an app for your own organization and don't require user interaction, you can use the [client credentials grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/client-credentials-grant) to acquire access tokens.
+
+The following table outlines the supported installation and token acquisition flows for various app configurations.
+
+Whenever possible, you should create apps rendered in the Shopify admin that use Shopify managed installation and token exchange.
+
+| Type of app | Supported installation flows | Supported token acquisition flows |
+| - | - | - |
+| App rendered in the Shopify admin | * [Shopify managed installation (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation)* [Installation during authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) | * [Token exchange (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange)* [Authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
+| Standalone app | * [Shopify managed installation (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation)* [Installation during authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) | * [Authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
+| Admin-created custom app | * Installed upon generation in the Shopify admin | * [Generate in the Shopify admin](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/generate-app-access-tokens-admin) |
+
+OAuth 2.0 is the industry-standard protocol for authorizing or giving permissions to apps. The following video illustrates how OAuth works at Shopify. Note that this video was created before [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange) was introduced, and might use the term "OAuth" interchangeably with "authorization code grant."
+
+***
+
+## Getting started
+
+* Authenticate your app using [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens).
+* Authorize your app using a session token with [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange).
+* Authorize your standalone app with [authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant).
+* Authenticate your app created in the Shopify admin with [access tokens](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/generate-app-access-tokens-admin).
+
+***
+
+## Tools
+
+[Shopify CLI\
+\
+](https://shopify.dev/docs/apps/build/cli-for-apps)
+
+[A command-line tool to help you build Shopify apps faster](https://shopify.dev/docs/apps/build/cli-for-apps)
+
+[shopify\_api\
+\
+](https://github.com/Shopify/shopify-api-ruby)
+
+[Shopify’s official Ruby gem for interacting with the Admin API](https://github.com/Shopify/shopify-api-ruby)
+
+[@shopify/shopify-api\
+\
+](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/shopify-api)
+
+[Shopify’s official Node library for interacting with the Storefront and Admin APIs, handling OAuth, webhooks, and billing](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/shopify-api)
+
+[@shopify/admin-api-client\
+\
+](https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client)
+
+[Shopify’s official lightweight Node library for interacting with the Admin API](https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client)
+
+***
+
+
 # Liquid
 
 **URL:** https://shopify.dev/docs/api/liquid.md
@@ -17170,6 +17170,55 @@ This is a health potion!
 ```
 
 
+# **Theme tags**
+
+**URL:** https://shopify.dev/docs/api/liquid/tags/theme-tags.md
+
+---
+title: 'Liquid tags: content_for'
+description: >-
+  Creates a designated area in your
+  [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
+source_url:
+  html: 'https://shopify.dev/docs/api/liquid/tags/content_for'
+  md: 'https://shopify.dev/docs/api/liquid/tags/content_for.md'
+api_name: liquid
+---
+
+# content\_​for
+
+Creates a designated area in your [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
+
+The `content_for` tag requires a type parameter to differentiate between rendering a number of theme blocks (`'blocks'`) and a single static block (`'block'`).
+
+## Syntax
+
+```oobleckTag
+{% content_for 'blocks' %}
+{% content_for 'block', type: "slide", id: "slide-1" %}
+```
+
+### blocks
+
+## Syntax
+
+```oobleckTag
+{% content_for "blocks" %}
+```
+
+Creates a designated area that renders theme blocks as configured in the JSON template or section groups, allowing merchants to add, remove, and rearrange blocks using the theme editor. See [theme blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks) for more information.
+
+### block
+
+## Syntax
+
+```oobleckTag
+{% content_for "block", type: "button", id: "static-block-1", color: "red" %}
+```
+
+Renders a static theme block of the specified type with the provided ID. You can pass additional arbitrary parameters (such as `color`) that will be accessible within the static block using `{{ color }}`. See [static blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/static-blocks) to learn more.
+
+
 # **Iteration tags**
 
 **URL:** https://shopify.dev/docs/api/liquid/tags/iteration-tags.md
@@ -17576,55 +17625,6 @@ About us, Contact, Potion dosages
 ```
 
 
-# **Theme tags**
-
-**URL:** https://shopify.dev/docs/api/liquid/tags/theme-tags.md
-
----
-title: 'Liquid tags: content_for'
-description: >-
-  Creates a designated area in your
-  [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
-source_url:
-  html: 'https://shopify.dev/docs/api/liquid/tags/content_for'
-  md: 'https://shopify.dev/docs/api/liquid/tags/content_for.md'
-api_name: liquid
----
-
-# content\_​for
-
-Creates a designated area in your [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
-
-The `content_for` tag requires a type parameter to differentiate between rendering a number of theme blocks (`'blocks'`) and a single static block (`'block'`).
-
-## Syntax
-
-```oobleckTag
-{% content_for 'blocks' %}
-{% content_for 'block', type: "slide", id: "slide-1" %}
-```
-
-### blocks
-
-## Syntax
-
-```oobleckTag
-{% content_for "blocks" %}
-```
-
-Creates a designated area that renders theme blocks as configured in the JSON template or section groups, allowing merchants to add, remove, and rearrange blocks using the theme editor. See [theme blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks) for more information.
-
-### block
-
-## Syntax
-
-```oobleckTag
-{% content_for "block", type: "button", id: "static-block-1", color: "red" %}
-```
-
-Renders a static theme block of the specified type with the provided ID. You can pass additional arbitrary parameters (such as `color`) that will be accessible within the static block using `{{ color }}`. See [static blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/static-blocks) to learn more.
-
-
 # **Variable tags**
 
 **URL:** https://shopify.dev/docs/api/liquid/tags/variable-tags.md
@@ -17763,6 +17763,154 @@ Merchants can use the [theme editor](https://shopify.dev/docs/storefronts/themes
 * [Review the theme app extensions framework](https://shopify.dev/docs/apps/build/online-store/theme-app-extensions/configuration)
 * [Understand the UX guidelines for theme app extensions](https://shopify.dev/docs/apps/build/online-store/theme-app-extensions/ux)
 * [Update your app to use theme app extensions](https://shopify.dev/docs/apps/build/online-store/theme-app-extensions/migrate)
+
+***
+
+
+# Hydrogen
+
+**URL:** https://shopify.dev/docs/api/hydrogen.md
+
+---
+title: Hydrogen
+description: >-
+  Hydrogen is Shopify’s opinionated stack for headless commerce, built on React
+  Router.
+api_version: 2026-04
+source_url:
+  html: 'https://shopify.dev/docs/api/hydrogen/latest'
+  md: 'https://shopify.dev/docs/api/hydrogen/latest.md'
+api_name: hydrogen
+---
+
+# Hydrogen
+
+Hydrogen is Shopify’s opinionated stack for headless commerce, built on [React Router](https://reactrouter.com/home). It provides a set of tools, utilities, and best-in-class examples for building dynamic and performant commerce applications.
+
+## Setup
+
+1. Create a new Hydrogen project with your preferred package manager.
+2. Import components, hooks, or utilities that you want to use in your app. For more, see the [getting started guide](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started).
+
+[API Reference - Getting started with Hydrogen and Oxygen](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started)
+
+## Create a new Hydrogen project
+
+##### npm
+
+```txt
+npm create @shopify/hydrogen@latest
+```
+
+##### yarn
+
+```txt
+yarn create @shopify/hydrogen
+```
+
+***
+
+## Authentication
+
+To make full use of Hydrogen, you need to authenticate with and make requests to the [Storefront API](https://shopify.dev/docs/api/storefront) and the [Customer Account API](https://shopify.dev/docs/api/customer). Hydrogen includes full-featured API clients to securely handle API queries and mutations.
+
+You can create access tokens for your own Shopify store by [installing the Hydrogen sales channel](https://apps.shopify.com/hydrogen), which includes built-in support for Oxygen, Shopify’s global edge hosting platform. Or install the [Headless sales channel](https://apps.shopify.com/headless) to host your Hydrogen app anywhere.
+
+Both the Storefront API and Customer Account API offer public credentials for client-side applications.
+
+[API Reference - Hydrogen sales channel](https://apps.shopify.com/hydrogen)
+
+[API Reference - Headless sales channel](https://apps.shopify.com/headless)
+
+## Authenticate a Hydrogen app
+
+##### server.js
+
+```js
+/**
+ * server.js
+ * ---------
+ * Create a storefront client.
+ * Check the server.js file in the root of your new Hydrogen project to see
+ * an example implementation of this function. If you start from an official
+ * Hydrogen template (Hello World or Demo Store), then the client is already
+ * set up for you. Update the Shopify store domain and API token to start
+ * querying your own store inventory.
+ */
+const {storefront} = createStorefrontClient({
+  cache,
+  waitUntil,
+  i18n: {language: 'EN', country: 'US'},
+  // `env` provides access to runtime data, including environment variables
+  publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+  privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
+  storeDomain: env.PUBLIC_STORE_DOMAIN,
+  storefrontId: env.PUBLIC_STOREFRONT_ID,
+  storefrontHeaders: getStorefrontHeaders(request),
+});
+```
+
+##### .env
+
+```txt
+# These API credentials fetch example inventory from the Hydrogen Demo Store
+# https://hydrogen.shop
+#
+# Replace with your own store domain and Storefront API token
+
+SESSION_SECRET="foobar"
+PUBLIC_STOREFRONT_API_TOKEN="3b580e70970c4528da70c98e097c2fa0"
+PUBLIC_STORE_DOMAIN="hydrogen-preview.myshopify.com"
+```
+
+***
+
+## Versioning
+
+Hydrogen is tied to specific versions of the [Storefront API](https://shopify.dev/api/storefront), which is versioned quarterly. For example, if you're using Storefront API version `2023-10`, then Hydrogen versions `2023.10.x` are fully compatible.
+
+**Caution:**
+
+If a Storefront API version includes breaking changes, then the corresponding Hydrogen version will include the same breaking changes.
+
+[API Reference - Shopify API versioning](https://shopify.dev/docs/api/usage/versioning)
+
+[API Reference - API release notes](https://shopify.dev/docs/api/release-notes)
+
+***
+
+## How Hydrogen works with Hydrogen React
+
+Hydrogen is [built on React Router](https://shopify.dev/docs/custom-storefronts/hydrogen/project-structure). But many of the components, hooks and utilities built into Hydrogen come from [Hydrogen React](https://shopify.dev/docs/api/hydrogen-react), an underlying package that’s framework-agnostic. For convenience, the Hydrogen package re-exports those resources. This means that if you’re building a Hydrogen app, then you should import modules from the `@shopify/hydrogen` package.
+
+## Importing Hydrogen components
+
+## example-page.jsx
+
+```jsx
+import {ShopPayButton} from '@shopify/hydrogen';
+
+
+export function renderShopPayButton({variantId, storeDomain}) {
+  return <ShopPayButton variantIds={[variantId]} storeDomain={storeDomain} />;
+}
+```
+
+***
+
+## Resources
+
+[Custom storefronts on Shopify\
+\
+](https://shopify.dev/custom-storefronts)
+
+[Learn more about how to design, build, and manage custom storefronts on Shopify.](https://shopify.dev/custom-storefronts)
+
+[Hydrogen on GitHub\
+\
+](https://github.com/Shopify/hydrogen)
+
+[Follow the Hydrogen project, file bugs and feature requests, preview upcoming features, and more](https://github.com/Shopify/hydrogen)
 
 ***
 
@@ -18637,154 +18785,6 @@ HTTP/1.1 500 Internal Server Error
 ***
 
 
-# Hydrogen
-
-**URL:** https://shopify.dev/docs/api/hydrogen.md
-
----
-title: Hydrogen
-description: >-
-  Hydrogen is Shopify’s opinionated stack for headless commerce, built on React
-  Router.
-api_version: 2026-04
-source_url:
-  html: 'https://shopify.dev/docs/api/hydrogen/latest'
-  md: 'https://shopify.dev/docs/api/hydrogen/latest.md'
-api_name: hydrogen
----
-
-# Hydrogen
-
-Hydrogen is Shopify’s opinionated stack for headless commerce, built on [React Router](https://reactrouter.com/home). It provides a set of tools, utilities, and best-in-class examples for building dynamic and performant commerce applications.
-
-## Setup
-
-1. Create a new Hydrogen project with your preferred package manager.
-2. Import components, hooks, or utilities that you want to use in your app. For more, see the [getting started guide](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started).
-
-[API Reference - Getting started with Hydrogen and Oxygen](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started)
-
-## Create a new Hydrogen project
-
-##### npm
-
-```txt
-npm create @shopify/hydrogen@latest
-```
-
-##### yarn
-
-```txt
-yarn create @shopify/hydrogen
-```
-
-***
-
-## Authentication
-
-To make full use of Hydrogen, you need to authenticate with and make requests to the [Storefront API](https://shopify.dev/docs/api/storefront) and the [Customer Account API](https://shopify.dev/docs/api/customer). Hydrogen includes full-featured API clients to securely handle API queries and mutations.
-
-You can create access tokens for your own Shopify store by [installing the Hydrogen sales channel](https://apps.shopify.com/hydrogen), which includes built-in support for Oxygen, Shopify’s global edge hosting platform. Or install the [Headless sales channel](https://apps.shopify.com/headless) to host your Hydrogen app anywhere.
-
-Both the Storefront API and Customer Account API offer public credentials for client-side applications.
-
-[API Reference - Hydrogen sales channel](https://apps.shopify.com/hydrogen)
-
-[API Reference - Headless sales channel](https://apps.shopify.com/headless)
-
-## Authenticate a Hydrogen app
-
-##### server.js
-
-```js
-/**
- * server.js
- * ---------
- * Create a storefront client.
- * Check the server.js file in the root of your new Hydrogen project to see
- * an example implementation of this function. If you start from an official
- * Hydrogen template (Hello World or Demo Store), then the client is already
- * set up for you. Update the Shopify store domain and API token to start
- * querying your own store inventory.
- */
-const {storefront} = createStorefrontClient({
-  cache,
-  waitUntil,
-  i18n: {language: 'EN', country: 'US'},
-  // `env` provides access to runtime data, including environment variables
-  publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-  privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
-  storeDomain: env.PUBLIC_STORE_DOMAIN,
-  storefrontId: env.PUBLIC_STOREFRONT_ID,
-  storefrontHeaders: getStorefrontHeaders(request),
-});
-```
-
-##### .env
-
-```txt
-# These API credentials fetch example inventory from the Hydrogen Demo Store
-# https://hydrogen.shop
-#
-# Replace with your own store domain and Storefront API token
-
-SESSION_SECRET="foobar"
-PUBLIC_STOREFRONT_API_TOKEN="3b580e70970c4528da70c98e097c2fa0"
-PUBLIC_STORE_DOMAIN="hydrogen-preview.myshopify.com"
-```
-
-***
-
-## Versioning
-
-Hydrogen is tied to specific versions of the [Storefront API](https://shopify.dev/api/storefront), which is versioned quarterly. For example, if you're using Storefront API version `2023-10`, then Hydrogen versions `2023.10.x` are fully compatible.
-
-**Caution:**
-
-If a Storefront API version includes breaking changes, then the corresponding Hydrogen version will include the same breaking changes.
-
-[API Reference - Shopify API versioning](https://shopify.dev/docs/api/usage/versioning)
-
-[API Reference - API release notes](https://shopify.dev/docs/api/release-notes)
-
-***
-
-## How Hydrogen works with Hydrogen React
-
-Hydrogen is [built on React Router](https://shopify.dev/docs/custom-storefronts/hydrogen/project-structure). But many of the components, hooks and utilities built into Hydrogen come from [Hydrogen React](https://shopify.dev/docs/api/hydrogen-react), an underlying package that’s framework-agnostic. For convenience, the Hydrogen package re-exports those resources. This means that if you’re building a Hydrogen app, then you should import modules from the `@shopify/hydrogen` package.
-
-## Importing Hydrogen components
-
-## example-page.jsx
-
-```jsx
-import {ShopPayButton} from '@shopify/hydrogen';
-
-
-export function renderShopPayButton({variantId, storeDomain}) {
-  return <ShopPayButton variantIds={[variantId]} storeDomain={storeDomain} />;
-}
-```
-
-***
-
-## Resources
-
-[Custom storefronts on Shopify\
-\
-](https://shopify.dev/custom-storefronts)
-
-[Learn more about how to design, build, and manage custom storefronts on Shopify.](https://shopify.dev/custom-storefronts)
-
-[Hydrogen on GitHub\
-\
-](https://github.com/Shopify/hydrogen)
-
-[Follow the Hydrogen project, file bugs and feature requests, preview upcoming features, and more](https://github.com/Shopify/hydrogen)
-
-***
-
-
 # Oxygen
 
 **URL:** https://shopify.dev/docs/storefronts/headless/hydrogen/getting-started.md
@@ -19473,73 +19473,6 @@ Deepen your understanding of POS UI extensions with these tutorials and communit
 ***
 
 
-# **Extension APIs**
-
-**URL:** https://shopify.dev/docs/api/pos-ui-extensions/apis.md
-
----
-title: Target APIs
-description: >-
-  When you build a POS UI extension, Shopify automatically provides you with
-  specific APIs based on where your extension runs within the POS interface.
-  This system ensures extensions receive exactly the data and functionality they
-  need for their particular use case, while maintaining security and
-  performance.
-api_version: 2025-10
-source_url:
-  html: 'https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis'
-  md: 'https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis.md'
-api_name: pos-ui-extensions
----
-
-# Target APIs
-
-When you build a POS UI extension, Shopify automatically provides you with specific APIs based on where your extension runs within the POS interface. This system ensures extensions receive exactly the data and functionality they need for their particular use case, while maintaining security and performance.
-
-Your [target](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/targets) determines which APIs you receive because different locations in POS require different capabilities.
-
-## Contextual APIs
-
-Contextual APIs provide access to data and operations specific to your extension's current location within [the POS app](https://apps.shopify.com/shopify-pos). These APIs give you the ability to read and modify context-specific information like cart contents, selected products, customer details, or order information based on where your extension is rendered.
-
-| Name | Description |
-| - | - |
-| [Cart API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/cart-api) | Add, remove, and modify cart items, apply discounts, and manage cart properties. |
-| [Cart Line Item API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/cart-line-item-api) | Read and interact with the currently selected cart line item in detail views. |
-| [Customer API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/customer-api) | Read customer information and build customer-specific functionality. |
-| [Draft Order API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/draft-order-api) | Read and manipulate draft order data in draft order detail views. |
-| [Order API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/order-api) | Read order data and build post-purchase, return, and exchange functionality. |
-| [Product API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/product-api) | Access the product ID and variant ID of the currently viewed or selected product. |
-
-## Platform APIs
-
-Platform APIs expose device-specific hardware capabilities and native POS functionality that differentiate mobile retail experiences from traditional web applications. These APIs provide access to physical device features like barcode scanners, receipt printers, camera scanning, and device connectivity status. They enable extensions to use the unique hardware and navigation patterns of POS devices to create native retail experiences.
-
-| Name | Description |
-| - | - |
-| [Connectivity API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/connectivity-api) | Check device connectivity status and Internet connection availability. |
-| [Device API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/device-api) | Retrieve device information including device name, ID, and hardware capabilities. |
-| [Navigation API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/navigation-api) | Navigate between different screens and views within the POS interface. |
-| [PinPad API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/pinpad-api) | Display a modal pinpad interface for secure PIN entry and validation. |
-| [Print API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/print-api) | Send documents and receipts to connected printers or trigger the device print dialog. |
-| [Scanner API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/scanner-api) | Capture barcodes and QR codes using the device camera or connected barcode scanners. |
-| [Storage API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/storage-api) | Store and retrieve extension data in POS local storage with up to 100 entries per extension. |
-
-## Standard APIs
-
-Standard APIs offer core functionality that most extensions need regardless of their specific use case or location within [the POS app](https://apps.shopify.com/shopify-pos). These APIs provide essential capabilities like local data storage, session and authentication management, user notifications through toasts, and internationalization support. They serve as the foundational building blocks that enable extensions to integrate with the POS environment while maintaining consistent behavior across different contexts.
-
-| Name | Description |
-| - | - |
-| [Action API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/action-api) | Launch modal dialogs for multi-step workflows and complex interactions. |
-| [Locale API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/locale-api) | Retrieve the merchant's locale and localization settings for internationalization. |
-| [Product Search API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/product-search-api) | Search the merchant's product catalog and retrieve product details, variants, and inventory data. |
-| [Session API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/session-api) | Access session information and generate fresh authentication tokens for secure backend API requests. |
-| [Toast API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/toast-api) | Display toast notifications to provide feedback and information to users. |
-
-***
-
-
 # **Extension targets**
 
 **URL:** https://shopify.dev/docs/api/pos-ui-extensions/targets.md
@@ -19930,5 +19863,72 @@ An action target that displays as a modal when a register details action menu it
 ![POS register details screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/register-menu-item-render-B2QI3bBx.png)
 
 ![POS register details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/register-modal-render-DcWdupxp.png)
+
+***
+
+
+# **Extension APIs**
+
+**URL:** https://shopify.dev/docs/api/pos-ui-extensions/apis.md
+
+---
+title: Target APIs
+description: >-
+  When you build a POS UI extension, Shopify automatically provides you with
+  specific APIs based on where your extension runs within the POS interface.
+  This system ensures extensions receive exactly the data and functionality they
+  need for their particular use case, while maintaining security and
+  performance.
+api_version: 2025-10
+source_url:
+  html: 'https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis'
+  md: 'https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis.md'
+api_name: pos-ui-extensions
+---
+
+# Target APIs
+
+When you build a POS UI extension, Shopify automatically provides you with specific APIs based on where your extension runs within the POS interface. This system ensures extensions receive exactly the data and functionality they need for their particular use case, while maintaining security and performance.
+
+Your [target](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/targets) determines which APIs you receive because different locations in POS require different capabilities.
+
+## Contextual APIs
+
+Contextual APIs provide access to data and operations specific to your extension's current location within [the POS app](https://apps.shopify.com/shopify-pos). These APIs give you the ability to read and modify context-specific information like cart contents, selected products, customer details, or order information based on where your extension is rendered.
+
+| Name | Description |
+| - | - |
+| [Cart API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/cart-api) | Add, remove, and modify cart items, apply discounts, and manage cart properties. |
+| [Cart Line Item API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/cart-line-item-api) | Read and interact with the currently selected cart line item in detail views. |
+| [Customer API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/customer-api) | Read customer information and build customer-specific functionality. |
+| [Draft Order API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/draft-order-api) | Read and manipulate draft order data in draft order detail views. |
+| [Order API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/order-api) | Read order data and build post-purchase, return, and exchange functionality. |
+| [Product API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/product-api) | Access the product ID and variant ID of the currently viewed or selected product. |
+
+## Platform APIs
+
+Platform APIs expose device-specific hardware capabilities and native POS functionality that differentiate mobile retail experiences from traditional web applications. These APIs provide access to physical device features like barcode scanners, receipt printers, camera scanning, and device connectivity status. They enable extensions to use the unique hardware and navigation patterns of POS devices to create native retail experiences.
+
+| Name | Description |
+| - | - |
+| [Connectivity API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/connectivity-api) | Check device connectivity status and Internet connection availability. |
+| [Device API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/device-api) | Retrieve device information including device name, ID, and hardware capabilities. |
+| [Navigation API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/navigation-api) | Navigate between different screens and views within the POS interface. |
+| [PinPad API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/pinpad-api) | Display a modal pinpad interface for secure PIN entry and validation. |
+| [Print API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/print-api) | Send documents and receipts to connected printers or trigger the device print dialog. |
+| [Scanner API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/scanner-api) | Capture barcodes and QR codes using the device camera or connected barcode scanners. |
+| [Storage API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/storage-api) | Store and retrieve extension data in POS local storage with up to 100 entries per extension. |
+
+## Standard APIs
+
+Standard APIs offer core functionality that most extensions need regardless of their specific use case or location within [the POS app](https://apps.shopify.com/shopify-pos). These APIs provide essential capabilities like local data storage, session and authentication management, user notifications through toasts, and internationalization support. They serve as the foundational building blocks that enable extensions to integrate with the POS environment while maintaining consistent behavior across different contexts.
+
+| Name | Description |
+| - | - |
+| [Action API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/action-api) | Launch modal dialogs for multi-step workflows and complex interactions. |
+| [Locale API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/locale-api) | Retrieve the merchant's locale and localization settings for internationalization. |
+| [Product Search API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/product-search-api) | Search the merchant's product catalog and retrieve product details, variants, and inventory data. |
+| [Session API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/session-api) | Access session information and generate fresh authentication tokens for secure backend API requests. |
+| [Toast API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/toast-api) | Display toast notifications to provide feedback and information to users. |
 
 ***

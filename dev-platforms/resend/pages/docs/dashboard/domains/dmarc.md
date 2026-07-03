@@ -45,7 +45,7 @@ This record is specifying a few parameters (see [Reference](#reference) section 
 * `v` - Version:
   This is the version of DMARC
 * `p` - Policy:
-  This is telling the inbox how to process messages that fail DMARC. Options are `none`, `quarantine`, `reject`. It's a best practice to use `quarantine` or `reject`, but you should only do it once you know your messages are delivering and fully passing DMARC.
+  This is telling the inbox how to process messages that fail DMARC. Options are `none`, `quarantine`, `reject`. It's a best practice to use `quarantine` or `reject`, but only do this once you know your messages are delivering and fully passing DMARC.
 * `rua` - Reporting URI of Aggregate:
   Provide a **valid address** that can receive email. The address can be a different domain than the one on which you set the DMARC policy. The aggregate report comes as an email with a `.xml` file attached that shares the IP sources of your messages and if they passed SPF or DKIM.
 
@@ -68,7 +68,7 @@ To confirm DMARC passed, you can inspect the email headers and confirm there is 
 
 ### 3. Upgrade Policy
 
-Once you have verified DMARC is passing across all your sending, you should upgrade your Policy to `p=quarantine;`. This policy gives mailbox providers greater confidence in your domain since your domain only allows authenticated email.
+Once you have verified DMARC is passing across all your sending, upgrade your Policy to `p=quarantine;`. This policy gives mailbox providers greater confidence in your domain since your domain only allows authenticated email.
 
 Update the value of your existing `_dmarc` TXT record to use a stricter policy:
 

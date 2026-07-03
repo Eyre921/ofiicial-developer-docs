@@ -8,7 +8,7 @@ Learn how to avoid conflicts with your existing MX records when setting up a Res
 
 ## What is an MX record?
 
-MX (Mail Exchanger) records specify where incoming mail should be delivered on behalf of a domain. Every MX value has a unique priority (also known as preference) value. The lower the number, the higher the priority.
+MX (Mail Exchanger) records specify where incoming mail is delivered on behalf of a domain. Every MX value has a unique priority (also known as preference) value. The lower the number, the higher the priority.
 
 Resend requires that you setup a MX record on two occasions:
 
@@ -26,7 +26,7 @@ Say you're using G Suite for your email. You'll have an MX record that looks som
 example.com     MX    10 alt3.aspmx.l.google.com.
 ```
 
-This records specifies that any incoming mail to `<anything>@example.com` should be delivered to the google servers.
+This record specifies that any incoming mail to `<anything>@example.com` is delivered to the Google servers.
 
 Now, let's say you want to use Resend to send emails from `@example.com`. You'll need to add an MX record for `send.example.com` that looks something like this:
 

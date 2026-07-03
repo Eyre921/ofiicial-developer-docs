@@ -38,7 +38,7 @@ storage.
 Clusters and storage volumes follow different lifecycle policies:
 
 * **Compute Clusters** – Clusters are automatically decommissioned when their
-  reservation period ends. To extend a reservation, go to the cloud console, "Cluster Details" view and then click the "Extend Reservation" button
+  reservation period ends. To extend a reservation, go to the cloud console, "Cluster Details" view and then click the "Extend Reservation" button.
 * **Storage Volumes** – Storage volumes are persistent and remain available as
   long as your billing account is in good standing. They are not automatically
   deleted. The user data persists as long as you use the static PV we provide.

@@ -25,7 +25,7 @@ Your model must meet these constraints:
 * **Weights:** `.safetensors` format.
 * **No custom code:** `trust_remote_code=True` is not allowed.
 * **Access:** The Hugging Face repo is public, or you have an API token with read access.
-* **Framework compatibility:** Transformers v4.55 or earlier.
+* **Framework compatibility:** Transformers v5.10 or earlier.
 
 You'll also need a Together base model whose architecture matches your custom checkpoint (Llama, Qwen, Mistral, Gemma, etc.) and whose `max_seq_length` is no larger than your checkpoint supports.
 

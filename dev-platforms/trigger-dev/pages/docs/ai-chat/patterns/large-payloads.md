@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/large-payloads
 
 Why a single chunk on the chat stream is capped at ~1 MiB, what error you'll see, and how to work around it with ID references.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 The realtime stream that backs `chat.agent` enforces a **per-record cap of \~1 MiB** (`1048576` bytes minus a small envelope reserve). Anything written through the chat output — auto-piped LLM chunks, `chat.response.write`, custom `writer.write` parts — counts as one record per chunk and is rejected if it crosses the cap.
 
 This is a platform-level limit and cannot be raised per project or per stream.

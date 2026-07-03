@@ -14,12 +14,12 @@ The Resend API enforces three types of limits: **rate limits** control how many 
 
 The response headers describe your current rate limit following every request in conformance with the [sixth IETF standard draft](https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-ratelimit-headers-06):
 
-| Header name           | Description                                                         |
-| --------------------- | ------------------------------------------------------------------- |
-| `ratelimit-limit`     | Maximum number of requests allowed within a window.                 |
-| `ratelimit-remaining` | How many requests you have left within the current window.          |
-| `ratelimit-reset`     | How many seconds until the limits are reset.                        |
-| `retry-after`         | How many seconds you should wait before making a follow-up request. |
+| Header name           | Description                                                 |
+| --------------------- | ----------------------------------------------------------- |
+| `ratelimit-limit`     | Maximum number of requests allowed within a window.         |
+| `ratelimit-remaining` | How many requests you have left within the current window.  |
+| `ratelimit-reset`     | How many seconds until the limits are reset.                |
+| `retry-after`         | How many seconds to wait before making a follow-up request. |
 
 The default maximum rate limit is **10 requests per second per team**. This limit applies across all API keys associated with your team. This number can be increased for trusted senders upon request. You can view your team's current rate limit on the [Settings Usage page](https://resend.com/settings/usage).
 

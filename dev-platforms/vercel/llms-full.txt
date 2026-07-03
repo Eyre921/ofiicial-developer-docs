@@ -22805,6 +22805,182 @@ Errors return a JSON body with an `error` field. Some endpoints additionally inc
 
 
 --------------------------------------------------------------------------------
+title: "Data Residency and Regional Routing"
+description: "Control where AI Gateway processes your requests and where providers store data, with per-request region selection for residency, compliance, and latency."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/ai-gateway/security-and-compliance/data-residency"
+--------------------------------------------------------------------------------
+
+# Data Residency and Regional Routing
+
+> **⚠️ Warning:** Data residency and regional routing is in **private beta** and may not be
+> available to your team yet. The API and behavior described here are subject to
+> change before general availability.
+
+Control where AI Gateway runs your requests and where providers store your data,
+for data residency, compliance, and latency. You choose a region per request, or
+pin it on a Virtual Model Config. If AI Gateway can't honor the chosen region, the
+request fails instead of silently running somewhere else.
+
+## The three things you can control
+
+Data residency has three independent parts. For strict residency, address all
+three. Each one is opt-in.
+
+| # | What it controls | How you set it |
+|---|------------------|----------------|
+| 1 | **Where inference runs** (the provider's processing) | `inferenceRegion` on the request |
+| 2 | **Where the provider stores data at rest** | Provider-dependent; many providers store nothing (see [per provider](#what-you-get-per-provider)) |
+| 3 | **Whether data leaves the region while passing through AI Gateway** | Call the region-pinned gateway host (`us.ai-gateway.vercel.sh`) |
+
+For a fully US-resident request, do all three: send to the US gateway host, set
+`inferenceRegion` to `us`, and use a provider or model that keeps data in the US.
+
+## Choosing a region
+
+Set `providerOptions.gateway.inferenceRegion` on the request:
+
+| Value | Meaning |
+|-------|---------|
+| `{ scope: 'zone', geoRegion: 'us' }` | Inference runs in the US |
+| `{ scope: 'zone', geoRegion: 'eu' }` | Inference runs in the EU |
+| `{ scope: 'global' }` (or omitted) | Any region; **no residency guarantee** |
+
+For example, to pin inference to the US:
+
+```jsonc
+{
+  "model": "openai/gpt-5.5",
+  "messages": [{ "role": "user", "content": "Hello" }],
+  "providerOptions": {
+    "gateway": { "inferenceRegion": { "scope": "zone", "geoRegion": "us" } }
+  }
+}
+```
+
+- The default (no `inferenceRegion`) is `global`, which gives no residency
+  guarantee. Residency is opt-in.
+- `zone` requires `geoRegion` (`us` or `eu`). If you omit it, the request fails.
+- You set the region in the request body or config only. There's no HTTP header
+  for it.
+
+### Per-provider overrides (advanced)
+
+Most callers set one region and stop. If more than one provider can serve a single
+request, you can set a default plus per-provider overrides. The top-level value
+applies to every provider unless you list that provider under `providers`:
+
+```jsonc
+{
+  "inferenceRegion": {
+    "scope": "zone",
+    "geoRegion": "us",           // default for all providers
+    "providers": {
+      "bedrock": { "scope": "zone", "geoRegion": "eu" },  // Bedrock only: EU
+      "anthropic": null                                   // Anthropic: no region pinned
+    }
+  }
+}
+```
+
+This reads as: US for everything, except Bedrock runs in the EU and Anthropic
+stays unconstrained. AI Gateway ignores unknown provider keys.
+
+### Pinning a region on a Virtual Model Config
+
+A Virtual Model Config (VMC) can carry an `inferenceRegion`, so every request
+through it inherits the region. A VMC supports `zone` (`us`/`eu`) or `global`. A
+VMC region takes precedence over a per-request region. See
+[Virtual Models](/docs/ai-gateway/models-and-providers/virtual-models).
+
+## Keeping the gateway leg in-region
+
+Setting `inferenceRegion` controls the provider. But every request also passes
+through AI Gateway itself, and the host you call decides that leg. To keep it
+in-region, call the region-pinned host instead of the default
+`ai-gateway.vercel.sh`. **Today the only region-pinned host is US**
+(`us.ai-gateway.vercel.sh`); there's no EU gateway host yet.
+
+Use the base URL for your surface:
+
+| Surface | Base URL |
+|---------|----------|
+| AI SDK v5 | `https://us.ai-gateway.vercel.sh/v1/ai` |
+| AI SDK v6 | `https://us.ai-gateway.vercel.sh/v3/ai` |
+| AI SDK v7 | `https://us.ai-gateway.vercel.sh/v4/ai` |
+| Chat Completions | `https://us.ai-gateway.vercel.sh/v1` |
+| Responses / OpenResponses | `https://us.ai-gateway.vercel.sh/v1` |
+| Anthropic Messages API | `https://us.ai-gateway.vercel.sh` |
+
+## What you get per provider
+
+AI Gateway can keep both inference and data at rest in your **region of choice**,
+for all four providers that it routes regionally:
+
+| Provider | In-region inference | In-region data at rest |
+|----------|:-------------------:|:----------------------:|
+| **Vertex** | Yes | Yes (stores nothing at rest) |
+| **OpenAI** | Yes | Yes (stored in the selected region) |
+| **Bedrock** | Yes | Yes (stores nothing at rest) |
+| **Anthropic** (direct) | Yes | Yes (stored in the region requested) |
+
+AI Gateway offers [zero data retention (ZDR)](/docs/ai-gateway/security-and-compliance/zdr)
+for Anthropic, Vertex, and Bedrock. When ZDR applies, the provider deletes prompts
+and responses after the request and keeps nothing at rest, so for most models the
+data-at-rest column above doesn't apply. The main exception is Anthropic's
+`fable-5`, which can retain a small amount of failover traffic in the requested
+region.
+
+Here's what each provider does today:
+
+- **Vertex**: inference in `us` or `eu`. The provider stores nothing at rest for
+  inference. (Resources you create separately, such as caches or tuned models,
+  stay wherever you created them.)
+- **OpenAI**: inference and storage in the **US** (EU isn't available yet). Data
+  at rest stays in the US, and OpenAI excludes prompts and responses from
+  abuse-monitoring logs.
+- **Bedrock**: inference in `us` or `eu`. The provider stores nothing at rest for
+  inference. Claude on Bedrock defaults to **global** (no residency) unless you
+  request `us`, and Claude on Bedrock has **no EU** option.
+- **Anthropic (direct)**: inference in the **US**, on **Opus and Sonnet 4.6 and
+  later** (you can't region-pin older models, so they run at the account default).
+  Any stored data stays in the US. EU isn't available.
+  - **`fable-5`**: Anthropic normally doesn't retain data after the response. It
+    may retain a small amount of failover traffic, and when it does, that data
+    stays in the US.
+
+**Current region coverage** is narrower than the mechanism allows: Vertex and
+Bedrock offer `us`/`eu` (Bedrock Claude is `us` only), and OpenAI and Anthropic
+are **US-only** today. The regions a model exposes vary by model, so confirm from
+the response (see the section below) rather than assuming.
+
+## Defaults and failure behavior
+
+- If you request no region, AI Gateway uses `global`, which gives no residency
+  guarantee. This isn't an error.
+- If AI Gateway can't honor the region, the request fails with HTTP 400
+  (`invalid_request_error`). AI Gateway doesn't silently fall back to another
+  region.
+- There's no automatic downgrade from a preferred region to a broader one.
+
+## Confirming where a request ran
+
+Every response reports where inference actually ran, so you can verify residency
+instead of assuming it. Read it from the response metadata (the resolved region,
+or `inference_geo`).
+
+## Current limits
+
+- The regions available today are `us` and `eu`, and several providers are US-only
+  (OpenAI, Anthropic, and Bedrock Claude).
+- Gateway-leg pinning (axis three) is US-only.
+- Region selection is opt-in; the default is `global` with no residency guarantee.
+- There's no cross-region fallback: a region that AI Gateway can't honor fails the
+  request.
+- Requesting a region for Claude on Vertex requires a current AI SDK version.
+
+
+--------------------------------------------------------------------------------
 title: "Disallow Prompt Training"
 description: "Learn how to prevent AI providers from using your prompts and responses for model training through AI Gateway."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -33504,9 +33680,8 @@ Supported cipher algorithms:
 - `ECDHE-RSA-AES256-GCM-SHA384` (TLS 1.2)
 - `ECDHE-ECDSA-CHACHA20-POLY1305` (TLS 1.2)
 - `ECDHE-RSA-CHACHA20-POLY1305` (TLS 1.2)
-- `DHE-RSA-AES256-GCM-SHA384` (TLS 1.2)
 
-This is the [recommended configuration from Mozilla](https://wiki.mozilla.org/Security/Server_Side_TLS#Intermediate_compatibility_.28recommended.29).
+This is the [recommended configuration from TLSRef](https://docs.tlsref.org/server-side-tls.html#intermediate-compatibility).
 
 ## Post-quantum cryptography
 
@@ -61105,6 +61280,80 @@ If the drain test fails with an AWS KMS error for a customer managed AWS KMS key
 
 
 --------------------------------------------------------------------------------
+title: "Drain Audit Logs to Splunk"
+description: "Learn how to forward Vercel Audit Log Drain events to Splunk using the HTTP Event Collector (HEC)."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/drains/audit-logs-to-splunk"
+--------------------------------------------------------------------------------
+
+# Drain Audit Logs to Splunk
+
+> **🔒 Permissions Required**: Audit Log Drains
+
+Audit Log Drains can forward team activity events to [Splunk](https://www.splunk.com/) using the [HTTP Event Collector (HEC)](https://help.splunk.com/en/data-management/collect-http-event-data/use-hec-in-splunk-cloud-platform/set-up-and-use-http-event-collector-in-splunk-web). Use this setup to ingest audit logs into Splunk for security monitoring, compliance review, and search.
+
+The Splunk destination sends events over HTTPS to your HEC endpoint, authenticated with an HEC token. Vercel formats each event using the [Splunk HEC event envelope](#format) so Splunk indexes the event time and fields correctly. The destination works with both Splunk Cloud and self-hosted Splunk Enterprise collectors.
+
+Follow the steps below to create an HEC token, find your HEC host, and configure the drain. After setup, use [Configuration reference](#configuration-reference) for field values and [Format](#format) for the event envelope.
+
+## Getting started with Audit Logs to Splunk
+
+Pre-requisites:
+
+- A Splunk deployment with the HTTP Event Collector enabled
+- An HEC token
+- Your Splunk HEC host
+
+- ### Enable and create an HEC token
+  In Splunk, enable the HTTP Event Collector and create a token. Splunk documents the full process, including index selection, in [Set up and use HTTP Event Collector in Splunk Web](https://help.splunk.com/en/data-management/collect-http-event-data/use-hec-in-splunk-cloud-platform/set-up-and-use-http-event-collector-in-splunk-web).
+
+- ### Find your HEC host
+  Vercel builds the full HEC endpoint from the host you enter. Enter the host that matches your Splunk deployment:
+
+  | Deployment                    | HEC host                             |
+  | ----------------------------- | ------------------------------------ |
+  | Splunk Cloud on AWS           | `http-inputs-<host>.splunkcloud.com` |
+  | Splunk Cloud on GCP or Azure  | `http-inputs.<host>.splunkcloud.com` |
+  | Self-hosted Splunk Enterprise | `<host>:8088`                        |
+
+  For the exact host format and prefixes, see Splunk's [Set up and use HTTP Event Collector in Splunk Web](https://help.splunk.com/en/data-management/collect-http-event-data/use-hec-in-splunk-cloud-platform/set-up-and-use-http-event-collector-in-splunk-web).
+
+- ### Configure the drain in Vercel
+  In Vercel, create an Audit Log drain and choose **Splunk** as the destination. Enter your **HEC host** and **HEC token**, then select **Test** to send an example event. A successful test returns a 2xx response from Splunk. A 403 response means the token is invalid or disabled.
+
+  To verify the host and token outside of Vercel, send a test event to your collector with `curl`:
+  ```bash
+  curl "https://your_hec_host_here/services/collector/event" \
+    -H "Authorization: Splunk your_hec_token_here" \
+    -d '{"sourcetype": "vercel:audit_log", "event": {"message": "test event"}}'
+  ```
+  A reachable collector returns `{"text":"Success","code":0}`.
+
+> **💡 Note:** Vercel doesn't manage index retention or lifecycle in Splunk. Configure index
+> retention and storage in Splunk based on your compliance and cost
+> requirements.
+
+## Configuration reference
+
+| Field     | Description                                                | Example                                |
+| --------- | ---------------------------------------------------------- | -------------------------------------- |
+| HEC host  | The host of your Splunk HEC endpoint.                      | `http-inputs-acme.splunkcloud.com`     |
+| HEC token | The token Vercel uses to authenticate with your collector. | `00000000-0000-0000-0000-000000000000` |
+
+## Format
+
+Vercel wraps each audit log event in the Splunk HEC event envelope, placing the event time in a `time` field and the audit log event under `event`. Vercel tags events with the `vercel` source and the `vercel:audit_log` source type, so searches and field extractions have a stable identity to target. To index events under a different source type, override the source type in Splunk as described in [Override source types on a per-event basis](https://docs.splunk.com/Documentation/SplunkCloud/latest/Data/Advancedsourcetypeoverrides).
+
+See the [Audit Log Drains reference](/docs/drains/reference/audit-logs#splunk-hec) for the schema and an example.
+
+## More resources
+
+- [Audit Log Drains reference](/docs/drains/reference/audit-logs)
+- [Configure Drains](/docs/drains/using-drains)
+- [Splunk HTTP Event Collector documentation](https://help.splunk.com/en/data-management/collect-http-event-data/use-hec-in-splunk-cloud-platform/set-up-and-use-http-event-collector-in-splunk-web)
+
+
+--------------------------------------------------------------------------------
 title: "Working with Drains"
 description: "Drains collect logs, traces, speed insights, and analytics from your applications. Forward observability data to custom endpoints or popular services."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -61240,7 +61489,6 @@ The following table describes the possible fields that are sent via Web Analytic
 | `timestamp`            | number | Unix timestamp when the event was recorded | 1694723400000                                    |
 | `projectId`            | string | Identifier for the Vercel project          | `Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2` |
 | `ownerId`              | string | Identifier for the project owner           | `team_nLlpyC6REAqxydlFKbrMDlud`                  |
-| `sessionId`            | number | Unique session identifier                  | 12345                                            |
 | `deviceId`             | number | Unique device identifier                   | 67890                                            |
 | `origin`               | string | Origin URL where the event was recorded    | `https://example.com`                            |
 | `path`                 | string | URL path where the event was recorded      | `/dashboard`                                     |
@@ -61278,8 +61526,8 @@ Vercel sends Web Analytics data as JSON arrays containing event objects:
 
 ```json
 [
-  { "schema": "vercel.analytics.v2", "eventType": "pageview", "timestamp": 1694723400000, "projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2", "ownerId": "team_nLlpyC6REAqxydlFKbrMDlud", "sessionId": 12345, "deviceId": 67890, "origin": "https://example.com", "path": "/dashboard" },
-  { "schema": "vercel.analytics.v2", "eventType": "event", "eventName": "button_click", "eventData": "{\"button\": \"signup\"}", "timestamp": 1694723405000, "projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2", "ownerId": "team_nLlpyC6REAqxydlFKbrMDlud", "sessionId": 12345, "deviceId": 67890, "origin": "https://example.com", "path": "/signup" }
+  { "schema": "vercel.analytics.v2", "eventType": "pageview", "timestamp": 1694723400000, "projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2", "ownerId": "team_nLlpyC6REAqxydlFKbrMDlud", "deviceId": 67890, "origin": "https://example.com", "path": "/dashboard" },
+  { "schema": "vercel.analytics.v2", "eventType": "event", "eventName": "button_click", "eventData": "{\"button\": \"signup\"}", "timestamp": 1694723405000, "projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2", "ownerId": "team_nLlpyC6REAqxydlFKbrMDlud", "deviceId": 67890, "origin": "https://example.com", "path": "/signup" }
 ]
 ```
 
@@ -61288,8 +61536,8 @@ Vercel sends Web Analytics data as JSON arrays containing event objects:
 Vercel sends Web Analytics data as newline-delimited JSON objects:
 
 ```json
-{"schema": "vercel.analytics.v2","eventType": "pageview","timestamp": 1694723400000,"projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2","ownerId": "team_nLlpyC6REAqxydlFKbrMDlud","sessionId": 12345,"deviceId": 67890,"origin": "https://example.com","path": "/dashboard"}
-{"schema": "vercel.analytics.v2","eventType": "event","eventName": "button_click","eventData": "{\"button\": \"signup\"}","timestamp": 1694723405000,"projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2","ownerId": "team_nLlpyC6REAqxydlFKbrMDlud","sessionId": 12345,"deviceId": 67890,"origin": "https://example.com","path": "/signup"}
+{"schema": "vercel.analytics.v2","eventType": "pageview","timestamp": 1694723400000,"projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2","ownerId": "team_nLlpyC6REAqxydlFKbrMDlud","deviceId": 67890,"origin": "https://example.com","path": "/dashboard"}
+{"schema": "vercel.analytics.v2","eventType": "event","eventName": "button_click","eventData": "{\"button\": \"signup\"}","timestamp": 1694723405000,"projectId": "Qmc52npNy86S8VV4Mt8a8dP1LEkRNbgosW3pBCQytkcgf2","ownerId": "team_nLlpyC6REAqxydlFKbrMDlud","deviceId": 67890,"origin": "https://example.com","path": "/signup"}
 ```
 
 ## Sampling Rate
@@ -61359,6 +61607,8 @@ Vercel supports the following formats for Audit Log Drains. You can configure th
 
 Audit Log Drains can also write events directly to Amazon S3. See [Drain Audit Logs to S3](/docs/drains/audit-logs-to-s3) for AWS IAM setup, file structure, and destination fields.
 
+To send Audit Logs to Splunk over the HTTP Event Collector, see [Drain Audit Logs to Splunk](/docs/drains/audit-logs-to-splunk).
+
 ### JSON
 
 Vercel sends Audit Log data as JSON arrays containing event objects:
@@ -61415,6 +61665,16 @@ Vercel sends Audit Log data as newline-delimited JSON objects:
 {"schema":"vercel.audit_log.v1","id":"uev_O0Sn1S6VHTDuKJ6sNs3hLIEz","teamId":"team_123","action":"team-updated","timestamp":1779444000456,"actor":{"type":"system","id":"system","name":"System"},"payload":{}}
 ```
 
+### Splunk (HEC)
+
+When the destination is Splunk, Vercel wraps each event in the [Splunk HTTP Event Collector event envelope](https://help.splunk.com/en/data-management/collect-http-event-data/use-hec-in-splunk-cloud-platform/format-events-for-http-event-collector). The `time` field is the event time in epoch seconds with millisecond precision, and the `event` field contains the audit log event. Vercel tags each envelope with the `vercel` source and the `vercel:audit_log` source type:
+
+```json
+{"time":1779444000.123,"source":"vercel","sourcetype":"vercel:audit_log","event":{"schema":"vercel.audit_log.v1","id":"uev_O0Sn1S6VHTDuKJ6sNs3hLIEy","teamId":"team_123","action":"drain-created","timestamp":1779444000123,"actor":{"type":"user","id":"user_123","name":"Test User"},"payload":{"drainUrl":"https://example.com"}}}
+```
+
+See [Drain Audit Logs to Splunk](/docs/drains/audit-logs-to-splunk) for HEC setup and destination fields.
+
 ## Audit Log actions
 
 The `action` value identifies the team activity that created the audit log event. For a list of audit log action values, see [Audit Logs actions](/docs/audit-log#actions).
@@ -61428,6 +61688,7 @@ For more information on Audit Log Drains and how to use them, check out the foll
 - [Drains overview](/docs/drains)
 - [Configure Drains](/docs/drains/using-drains)
 - [Drain Audit Logs to S3](/docs/drains/audit-logs-to-s3)
+- [Drain Audit Logs to Splunk](/docs/drains/audit-logs-to-splunk)
 - [Audit Logs](/docs/audit-log)
 
 
@@ -62055,7 +62316,7 @@ Teams on [Pro](/docs/plans/pro-plan) and [Enterprise](/docs/plans/enterprise) pl
   Rules run from top to bottom. Requests that match a rule use that rule’s sampling rate, and any other requests are dropped. If you do not add rules, the drain forwards **100%** of data to the destination.
 
 - ### Configure destination
-  Choose how you want to receive your drain data by selecting the [**Custom Endpoint**](#custom-endpoint), [**S3 Bucket**](#s3-bucket), or [**Native Integrations**](#native-integrations) section in the sidebar.
+  Choose how you want to receive your drain data by selecting the [**Custom Endpoint**](#custom-endpoint), [**S3 Bucket**](#s3-bucket), [**Splunk**](#splunk), or [**Native Integrations**](#native-integrations) section in the sidebar.
   #### Custom endpoint
   Configure a custom HTTP endpoint to receive drain data for any data type.
 
@@ -62089,6 +62350,10 @@ Teams on [Pro](/docs/plans/pro-plan) and [Enterprise](/docs/plans/enterprise) pl
   Configure an S3 bucket destination to write Audit Log data directly to Amazon S3. S3 bucket destinations are available only for Audit Log Drains.
 
   Before creating the drain, configure AWS IAM permissions and collect the S3 bucket path, encoding, role ARN, region, and any server-side encryption or Object ACL values required by your bucket. See [Drain Audit Logs to S3](/docs/drains/audit-logs-to-s3) for the full AWS setup.
+  #### Splunk
+  Configure a Splunk destination to forward Audit Log data to your Splunk HTTP Event Collector (HEC). Splunk destinations are available only for Audit Log Drains.
+
+  Enter your HEC host and HEC token. Vercel wraps each event in the Splunk HEC event envelope. See [Drain Audit Logs to Splunk](/docs/drains/audit-logs-to-splunk) for HEC setup.
   #### Native integrations
   Native integrations are available for log and traces data. You have 2 options:
   1. Installed Products
@@ -125621,6 +125886,40 @@ Tags have a few hard limits to keep in mind when designing your tagging scheme:
 
 
 --------------------------------------------------------------------------------
+title: "Mount remote storage"
+description: "Mount an external object store such as Amazon S3 into a Vercel Sandbox with a FUSE driver, so code reads and writes remote files through the local filesystem."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/sandbox/mount-remote-storage"
+--------------------------------------------------------------------------------
+
+# Mount remote storage
+
+Mount an external object store such as Amazon S3 into a sandbox and work with remote files as if they were local. Code in the sandbox reads and writes objects through a normal filesystem path instead of calling a storage API directly.
+
+Vercel Sandbox supports FUSE (Filesystem in Userspace) drivers, which back the mount. Use a FUSE mount when you need to share large datasets across sandboxes, persist files to an external provider, or hand agents and tools a filesystem interface over object storage.
+
+> **💡 Note:** For persistent storage managed by Vercel, see [Drives](/docs/sandbox/concepts/drives). Use a FUSE mount when your data must live in an external provider such as S3.
+
+## How mounting works
+
+A FUSE driver exposes remote object storage as a directory inside the sandbox. Reads and writes to that directory are translated into calls against the remote store. Because FUSE runs as a [system-privileged process](/docs/sandbox/system-specifications#system-privileged-processes), the install and mount commands run with `sudo`.
+
+Outbound access from the mount still follows the sandbox [firewall network policy](/docs/sandbox/concepts/firewall). If you run untrusted code, restrict reachable destinations with a network policy.
+
+## Mount an Amazon S3 bucket
+
+This example uses Mountpoint for Amazon S3, the official FUSE driver for S3. Install `fuse` and the `mount-s3` release, create a mount directory, then mount the bucket:
+
+After the mount succeeds, `ls -la /mnt/s3` prints the objects in your bucket. Any command in the sandbox can now read from and write to `/mnt/s3`.
+
+> **⚠️ Warning:** Passing credentials to `mount-s3` exposes them inside the sandbox for the life of the process. Use a narrowly scoped, short-lived IAM role that grants access only to the bucket and actions you need, and prefer temporary credentials (`AWS_SESSION_TOKEN`) over long-lived keys.
+
+## Mount other providers
+
+Mountpoint is specific to S3, but the same pattern works with any FUSE driver. Install the driver and its `fuse` dependency with `dnf`, create a mount directory, then run the driver's mount command with `sudo`. This covers other object stores, network filesystems, and custom mounts, so a sandbox can persist files to more than one storage provider in a single session.
+
+
+--------------------------------------------------------------------------------
 title: "Vercel Sandbox"
 description: "Vercel Sandbox allows you to run arbitrary code in isolated, ephemeral Linux VMs."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -129079,6 +129378,12 @@ The top-level rewrite is the only public entry point. A request from the public 
 ```ts
 await fetch(new URL('items/123', process.env.INVENTORY_URL));
 ```
+
+> **⚠️ Warning:** Service bindings aren't available yet for services that use the Go or Rust
+> runtime. If your service uses one of these runtimes and declares bindings,
+> build it as a [container image](/docs/services#using-custom-container-images-with-services)
+> instead. A container image service can use bindings. Runtimes such as Node.js and Python
+> are not affected.
 
 ## Binding fields
 

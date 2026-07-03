@@ -84678,7 +84678,9 @@ You can use the following optional settings to customize the OpenAI provider ins
   Either this or `resourceName` can be used.
   When a baseURL is provided, the resourceName is ignored.
 
-  With a baseURL, the resolved URL is `{baseURL}/v1{path}`.
+  With an Azure OpenAI baseURL, the resolved URL is `{baseURL}/v1{path}`.
+  With a non-Azure custom gateway baseURL, the resolved URL is `{baseURL}{path}`;
+  the SDK does not append `/v1` or an `api-version` query parameter in this mode.
 
 - **headers** _Record&lt;string,string&gt;_
 
@@ -120365,6 +120367,90 @@ const language = transcript.language; // language of the transcript e.g. "en", i
 const durationInSeconds = transcript.durationInSeconds; // duration of the transcript in seconds, if available
 ```
 
+## Streaming Transcription
+
+<Note type="warning">Streaming transcription is an experimental feature.</Note>
+
+Use `experimental_streamTranscribe` when you have live raw audio and need transcript updates before the full audio stream is complete. The function uses transcription models with streaming support; provider options configure provider-specific behavior, but the streaming operation is selected by the function itself.
+
+```ts
+import { openai } from '@ai-sdk/openai';
+import { experimental_streamTranscribe as streamTranscribe } from 'ai';
+
+const result = streamTranscribe({
+  model: openai.transcription('gpt-realtime-whisper'),
+  audio: audioStream, // ReadableStream<Uint8Array | string>
+  inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+  providerOptions: {
+    openai: {
+      language: 'en',
+      streaming: {
+        delay: 'low',
+      },
+    },
+  },
+});
+
+for await (const part of result.fullStream) {
+  if (part.type === 'transcript-delta') {
+    process.stdout.write(part.delta);
+  }
+
+  if (part.type === 'transcript-partial') {
+    console.log('partial:', part.text);
+  }
+
+  if (part.type === 'transcript-final') {
+    console.log('final:', part.text);
+  }
+}
+
+console.log(await result.text);
+```
+
+To access the final transcript metadata:
+
+```ts
+const text = await result.text; // final transcript text
+const segments = await result.segments; // final segments with timing, if available
+const language = await result.language; // language of the transcript, if available
+const durationInSeconds = await result.durationInSeconds; // duration in seconds, if available
+```
+
+The `audio` stream must contain raw audio chunks. `Uint8Array` chunks are raw bytes; `string` chunks are base64-encoded raw bytes. Always set `inputAudioFormat` to match the chunks you send.
+
+<Note>
+  Streaming transcription requires a provider model instance (e.g.
+  `openai.transcription('gpt-realtime-whisper')`). String model IDs resolve
+  through the global provider (AI Gateway by default), which does not support
+  streaming transcription yet.
+</Note>
+
+OpenAI streaming transcription uses `openai.transcription('gpt-realtime-whisper')`. xAI uses the same `xai.transcription()` model for request/response and streaming transcription; `experimental_streamTranscribe` uses xAI's WebSocket STT transport under the hood.
+
+```ts
+import { xai } from '@ai-sdk/xai';
+import { experimental_streamTranscribe as streamTranscribe } from 'ai';
+
+const result = streamTranscribe({
+  model: xai.transcription(),
+  audio: audioStream,
+  inputAudioFormat: { type: 'audio/pcm', rate: 16000 },
+  providerOptions: {
+    xai: {
+      language: 'en',
+      keyterm: ['AI SDK', 'Grok'],
+      streaming: {
+        interimResults: true,
+        endpointing: 500,
+      },
+    },
+  },
+});
+```
+
+Some providers require WebSocket headers for direct streaming STT. In those runtimes, pass a provider-specific `webSocket` implementation when creating the provider.
+
 ## Settings
 
 ### Provider-Specific settings
@@ -136247,11 +136333,38 @@ const result = await transcribe({
 
   Includes filler words such as `uh` and `um` in the transcript.
 
+- **streaming** _object_
+
+  Options for streaming speech-to-text over WebSocket. Use with `experimental_streamTranscribe`.
+  - **interimResults** _boolean_
+
+    Emits partial transcripts while speech is being processed.
+
+  - **endpointing** _number_
+
+    Silence duration in milliseconds before an utterance-final event. Range: 0-5000.
+
+  - **smartTurn** _number_
+
+    End-of-turn detection threshold. When set, enables Smart Turn. Range: 0.0-1.0.
+
+  - **smartTurnTimeout** _number_
+
+    Maximum silence duration in milliseconds before forcing `speech_final`. Range: 1-5000.
+
 ### Model Capabilities
 
-| Model     | Word Timestamps     | Diarization         | Multichannel        |
-| --------- | ------------------- | ------------------- | ------------------- |
-| `default` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model     | Request/Response    | Streaming           | Word Timestamps     | Diarization         | Multichannel        |
+| --------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `default` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+
+<Note>
+  Word timestamps, diarization results, and segments are only returned on the
+  request/response path (`transcribe`). Streaming transcription
+  (`experimental_streamTranscribe`) emits partial and final transcript text with
+  utterance-level timing, but does not surface per-word timestamps, speaker
+  labels, or segments.
+</Note>
 
 ## Image Models
 
@@ -139565,13 +139678,23 @@ The following provider options are available:
 - **include** _string[]_
   Additional information to include in the transcription response.
 
+- **streaming** _object_
+  Options for streaming transcription models such as `gpt-realtime-whisper`.
+  Use with `experimental_streamTranscribe`.
+  - **delay** _'minimal' | 'low' | 'medium' | 'high' | 'xhigh'_
+    Latency/accuracy tradeoff for realtime transcription.
+
+  - **include** _string[]_
+    Additional fields to include in realtime transcription events, such as `item.input_audio_transcription.logprobs`.
+
 ### Model Capabilities
 
-| Model                    | Transcription       | Duration            | Segments            | Language            |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
-| `whisper-1`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-4o-mini-transcribe` | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `gpt-4o-transcribe`      | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model                    | Transcription       | Streaming           | Duration            | Segments            | Language            |
+| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `whisper-1`              | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-4o-mini-transcribe` | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| `gpt-4o-transcribe`      | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| `gpt-realtime-whisper`   | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
 
 ## Speech Models
 
@@ -139734,7 +139857,9 @@ You can use the following optional settings to customize the OpenAI provider ins
   Either this or `resourceName` can be used.
   When a baseURL is provided, the resourceName is ignored.
 
-  With a baseURL, the resolved URL is `{baseURL}/v1{path}`.
+  With an Azure OpenAI baseURL, the resolved URL is `{baseURL}/v1{path}`.
+  With a non-Azure custom gateway baseURL, the resolved URL is `{baseURL}{path}`;
+  the SDK does not append `/v1` or an `api-version` query parameter in this mode.
 
 - **headers** _Record&lt;string,string&gt;_
 

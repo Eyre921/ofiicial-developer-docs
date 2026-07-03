@@ -39,7 +39,7 @@ To share a link, click on the **dropdown menu** <Icon icon="ellipsis" />, and se
 
 <img alt="Email - Share Link Option" />
 
-Select how long the link should remain valid (10 minutes, 3 hours, 24 hours, or 48 hours), then click **Generate link**.
+Select how long the link will remain valid (10 minutes, 3 hours, 24 hours, or 48 hours), then click **Generate link**.
 
 <img alt="Email - Share Link Modal" />
 

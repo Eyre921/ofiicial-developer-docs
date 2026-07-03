@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/database-persistence
 
 Split conversation state and live session metadata across hooks — preload, turn start, turn complete — without tying the pattern to a specific ORM or schema.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Durable chat runs can span **hours** and **many turns**. You usually want:
 
 1. **Conversation state** — full **`UIMessage[]`** (or equivalent) keyed by **`chatId`**, so reloads and history views work.

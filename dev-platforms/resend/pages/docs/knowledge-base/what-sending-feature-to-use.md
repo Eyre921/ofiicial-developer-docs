@@ -1,5 +1,5 @@
 ---
-title: "What sending feature should I be using?"
+title: "Which sending feature do I need?"
 source: https://resend.com/docs/knowledge-base/what-sending-feature-to-use
 path: docs/knowledge-base/what-sending-feature-to-use
 ---
@@ -34,7 +34,7 @@ Examples of marketing emails:
 
 Marketing emails can be **1-to-1** (e.g., abandoned cart reminders) or **1-to-many** (e.g., newsletters).
 
-## Should I be sending a Transactional or a Marketing email?
+## Transactional vs Marketing: Which Do I Need?
 
 While not exhaustive, here's a table listing different examples of emails and the most appropriate type for each example.
 

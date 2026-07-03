@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/skills
 
 Ship reusable capabilities (folders with SKILL.md + scripts) that a chat agent discovers and invokes on demand.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Agent skills are reusable capabilities you ship as folders — a `SKILL.md` describing when and how to use them, plus optional scripts, references, and assets. The chat agent sees a short description of each skill in its system prompt, loads the full instructions on demand via a `loadSkill` tool, and invokes the bundled scripts via `bash` — all without you wiring anything up manually.
 
 Built on the [AI SDK cookbook pattern](https://ai-sdk.dev/cookbook/guides/agent-skills). Works with any provider (OpenAI, Anthropic, Gemini, etc.) — not tied to Anthropic's server-side skills.

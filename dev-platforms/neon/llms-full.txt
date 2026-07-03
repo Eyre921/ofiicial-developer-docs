@@ -1007,16 +1007,15 @@ Neon AI Gateway serves models hosted by Databricks. Use short model IDs in the `
 
 Not sure which model to use? Start here.
 
-| I want to...                            | Recommended model                         |
-| --------------------------------------- | ----------------------------------------- |
-| Build a general chat or reasoning app   | `claude-sonnet-4-6`                       |
-| Understand images                       | `claude-sonnet-4-6` or `gemini-2-5-flash` |
-| Process audio or video                  | `gemini-3-5-flash`                        |
-| Generate or review code                 | `gpt-5-3-codex`                           |
-| Run extended or deep reasoning          | `claude-opus-4-7` or `gpt-5-1`            |
-| Handle very long documents (1M+ tokens) | `gemini-3-1-pro` or `claude-opus-4-7`     |
-| Keep costs low for lightweight tasks    | `claude-haiku-4-5` or `gpt-5-4-nano`      |
-| Use an open-weight model                | `gpt-oss-120b`                            |
+| I want to...                            | Recommended model                         | Open-weight alternative       |
+| --------------------------------------- | ----------------------------------------- | ----------------------------- |
+| Build a general chat or reasoning app   | `claude-sonnet-4-6`                       | `llama-4-maverick`            |
+| Understand images                       | `claude-sonnet-4-6` or `gemini-2-5-flash` | `llama-4-maverick`            |
+| Process audio or video                  | `gemini-3-5-flash`                        | —                             |
+| Generate or review code                 | `gpt-5-3-codex`                           | `gpt-oss-120b`                |
+| Run extended or deep reasoning          | `claude-opus-4-7` or `gpt-5-1`            | `qwen3-next-80b-a3b-instruct` |
+| Handle very long documents (1M+ tokens) | `gemini-3-1-pro` or `claude-opus-4-7`     | `qwen35-122b-a10b`            |
+| Keep costs low for lightweight tasks    | `claude-haiku-4-5` or `gpt-5-4-nano`      | `meta-llama-3-1-8b-instruct`  |
 
 ## Rate limits
 
@@ -1030,6 +1029,10 @@ During the private preview, the following limits apply:
 If you hit a limit, you'll receive a `429 Too Many Requests` response. Requests resume when the rate limit window resets.
 
 These limits apply to input tokens. Upstream output token limits (20,000 OTPM for most models) apply independently, so you can hit a `429` on output tokens without reaching the input limit. See [Databricks Foundation Model API limits](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/limits) for details.
+
+## Pricing
+
+Inference is free during the private preview. When billing begins, prices will match each provider's published list prices.
 
 ## Available models
 
@@ -1062,6 +1065,32 @@ Endpoints are shown in short form. See [Which endpoint to use](https://neon.com/
 | `gemini-2-5-flash`      | text, image, video, audio | 1M      | `chat/completions` · `gemini` |                       |
 | `gemma-3-12b`           | text, image               | 128K    | `chat/completions`            | Chat completions only |
 
+### Databricks
+
+Open-weight models hosted by Databricks. Text input only. Chat completions only.
+
+| Model ID                  | Context | Endpoints          | Notes                                    |
+| ------------------------- | ------- | ------------------ | ---------------------------------------- |
+| `databricks-gpt-oss-120b` | 128K    | `chat/completions` | Recommended. Adjustable reasoning effort |
+| `databricks-gpt-oss-20b`  | 128K    | `chat/completions` |                                          |
+
+### Meta
+
+| Model ID                                 | Inputs      | Context | Endpoints          | Notes                                                                                                                                                                                                              |
+| ---------------------------------------- | ----------- | ------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `databricks-llama-4-maverick`            | text, image | —       | `chat/completions` | Recommended. [Llama 4 Community License](https://www.llama.com/llama4/license) · [Acceptable Use](https://www.llama.com/llama4/use-policy)                                                                         |
+| `databricks-meta-llama-3-3-70b-instruct` | text        | 128K    | `chat/completions` | [Llama 3.3 Community License](https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/LICENSE) · [Acceptable Use](https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/USE_POLICY.md) |
+| `databricks-meta-llama-3-1-8b-instruct`  | text        | 128K    | `chat/completions` | [Llama 3.1 Community License](https://www.llama.com/llama3_1/license/) · [Acceptable Use](https://www.llama.com/llama3_1/use-policy/)                                                                              |
+
+### Alibaba
+
+Text input only. Chat completions only.
+
+| Model ID                                 | Context | Endpoints          | Notes                            |
+| ---------------------------------------- | ------- | ------------------ | -------------------------------- |
+| `databricks-qwen3-next-80b-a3b-instruct` | —       | `chat/completions` |                                  |
+| `databricks-qwen35-122b-a10b`            | 256K    | `chat/completions` | Always reasons before responding |
+
 ### OpenAI
 
 All OpenAI models have a 400K token context window and accept text and image inputs.
@@ -1080,32 +1109,6 @@ All OpenAI models have a 400K token context window and accept text and image inp
 | `gpt-5`              | `chat/completions` · `openai/responses` |                                                                                    |
 | `gpt-5-mini`         | `chat/completions` · `openai/responses` |                                                                                    |
 | `gpt-5-nano`         | `chat/completions` · `openai/responses` |                                                                                    |
-
-### Databricks
-
-Open-weight models hosted by Databricks. Text input only. Chat completions only.
-
-| Model ID                  | Context | Endpoints          | Notes                       |
-| ------------------------- | ------- | ------------------ | --------------------------- |
-| `databricks-gpt-oss-120b` | 128K    | `chat/completions` | Adjustable reasoning effort |
-| `databricks-gpt-oss-20b`  | 128K    | `chat/completions` |                             |
-
-### Meta
-
-| Model ID                                 | Inputs      | Context | Endpoints          | Notes                                                                                                                                                                                                              |
-| ---------------------------------------- | ----------- | ------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `databricks-llama-4-maverick`            | text, image | —       | `chat/completions` | [Llama 4 Community License](https://www.llama.com/llama4/license) · [Acceptable Use](https://www.llama.com/llama4/use-policy)                                                                                      |
-| `databricks-meta-llama-3-3-70b-instruct` | text        | 128K    | `chat/completions` | [Llama 3.3 Community License](https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/LICENSE) · [Acceptable Use](https://github.com/meta-llama/llama-models/blob/main/models/llama3_3/USE_POLICY.md) |
-| `databricks-meta-llama-3-1-8b-instruct`  | text        | 128K    | `chat/completions` | [Llama 3.1 Community License](https://www.llama.com/llama3_1/license/) · [Acceptable Use](https://www.llama.com/llama3_1/use-policy/)                                                                              |
-
-### Alibaba
-
-Text input only. Chat completions only.
-
-| Model ID                                 | Context | Endpoints          | Notes                            |
-| ---------------------------------------- | ------- | ------------------ | -------------------------------- |
-| `databricks-qwen3-next-80b-a3b-instruct` | —       | `chat/completions` |                                  |
-| `databricks-qwen35-122b-a10b`            | 256K    | `chat/completions` | Always reasons before responding |
 
 ## Which endpoint to use
 
@@ -1287,7 +1290,7 @@ One API for frontier and open-source models from Anthropic, OpenAI, Google, and 
 
 Neon AI Gateway is the LLM inference layer built into the Neon backend. It lets you call models from Anthropic, OpenAI, Google, and other providers using your Neon credential, without setting up separate provider accounts. Your existing OpenAI or Anthropic SDK works without code changes. Just point it at your branch endpoint.
 
-> During the private preview, AI Gateway is available for **new projects** in the **AWS us-east-2** region only, and foundation model access requires a paid Neon plan.
+> During the private preview, AI Gateway is available for **new projects** in the **AWS us-east-2** region only, and requires a paid Neon plan. Inference is free during the preview. When billing begins, prices will match each provider's published list prices.
 
 **Important:** Participation in this Private Preview is subject to our Private Preview Terms. Access is not available to users, organizations, or entities located in or operating from regions restricted by Anthropic's [Supported Regions Policy](https://www.anthropic.com/supported-countries). This restriction also applies to entities that are majority owned, directly or indirectly, by companies headquartered in unsupported regions.
 
@@ -2554,9 +2557,9 @@ DELETE /api/v2/projects/{project_id}/snapshots/{snapshot_id}
 - `project_id` (string, required): The Neon project ID
 - `snapshot_id` (string, required): The snapshot ID
 
-#### Update snapshot name
+#### Update a snapshot
 
-Rename a snapshot using the [update endpoint](https://api-docs.neon.tech/reference/updatesnapshot):
+Rename a snapshot or change its expiration using the [update endpoint](https://api-docs.neon.tech/reference/updatesnapshot):
 
 ```bash
 PATCH /api/v2/projects/{project_id}/snapshots/{snapshot_id}
@@ -2567,12 +2570,37 @@ PATCH /api/v2/projects/{project_id}/snapshots/{snapshot_id}
 - `project_id` (string, required): The Neon project ID
 - `snapshot_id` (string, required): The snapshot ID
 
-**Body:**
+**Body fields (all optional):**
+
+- `name` (string): A new name for the snapshot
+- `expires_at` (string or `null`): The auto-deletion time in [RFC 3339](https://tools.ietf.org/html/rfc3339#section-5.6) format. Set a future timestamp to change the retention deadline, or send `null` to clear the expiration so the snapshot never expires. Omit the field to leave the current expiration unchanged. A past timestamp is rejected.
+
+Rename a snapshot:
 
 ```json
 {
   "snapshot": {
     "name": "important-milestone"
+  }
+}
+```
+
+Extend a snapshot's expiration:
+
+```json
+{
+  "snapshot": {
+    "expires_at": "2026-12-31T00:00:00Z"
+  }
+}
+```
+
+Remove the expiration so the snapshot never expires:
+
+```json
+{
+  "snapshot": {
+    "expires_at": null
   }
 }
 ```
@@ -2614,7 +2642,7 @@ Proper cleanup reduces costs and keeps your project manageable:
 | [Restore snapshot](https://api-docs.neon.tech/reference/restoresnapshot)                | `POST /api/v2/projects/{project_id}/snapshots/{snapshot_id}/restore` | Restore database to a previous version       |
 | [List snapshots](https://api-docs.neon.tech/reference/listsnapshots)                    | `GET /api/v2/projects/{project_id}/snapshots`                        | Get all available versions                   |
 | [Delete snapshot](https://api-docs.neon.tech/reference/deletesnapshot)                  | `DELETE /api/v2/projects/{project_id}/snapshots/{snapshot_id}`       | Remove a saved version                       |
-| [Update snapshot](https://api-docs.neon.tech/reference/updatesnapshot)                  | `PATCH /api/v2/projects/{project_id}/snapshots/{snapshot_id}`        | Rename a version                             |
+| [Update snapshot](https://api-docs.neon.tech/reference/updatesnapshot)                  | `PATCH /api/v2/projects/{project_id}/snapshots/{snapshot_id}`        | Rename a version or change its expiration    |
 | [Poll operation](https://api-docs.neon.tech/reference/getprojectoperation)              | `GET /api/v2/projects/{project_id}/operations/{operation_id}`        | Check restore status                         |
 | [List branches](https://api-docs.neon.tech/reference/listprojectbranches) (for cleanup) | `GET /api/v2/projects/{project_id}/branches`                         | Find orphaned branches to clean up           |
 
@@ -11790,9 +11818,26 @@ One CLI for every Neon surface: manage Postgres, Functions, Storage, the Data AP
 npm i -g neon
 ```
 
-The CLI is invoked as `neon`. `neonctl` is an alias for `neon`, so any command works with either name.
+## Get started
 
-## Commands
+- [Install and connect](https://neon.com/docs/cli/install): Install the Neon, authenticate, and connect your first Neon project in minutes.
+- [Quickstart](https://neon.com/docs/cli/quickstart): Create a project, manage branches, and run your first Neon CLI commands.
+
+## Agent mode
+
+Use Neon CLI with Claude Code, Cursor, Codex, and other AI development tools.
+
+**Note:** Every command supports `--output json` for machine-readable results, and setting the `NEON_API_KEY` environment variable authenticates non-interactively. For AI agents, [`neon link --agent`](https://neon.com/docs/cli/link) emits a JSON state-machine response with a discriminated `status` field describing the next step, instead of prompting.
+
+## Commands reference
+
+Browse every Neon CLI command, organized by category. The CLI is invoked as `neon`. `neonctl` is an alias for `neon`, so any command works with either name.
+
+### api
+
+Call any Neon API route directly (authenticated passthrough).
+
+Usage: `neon api [path] [options]`
 
 ### auth (alias: `login`)
 
@@ -12048,10 +12093,6 @@ Manage VPC endpoints and project VPC restrictions.
 | `neon vpc project remove <id>`   | Remove a VPC endpoint restriction from this project.                                           |
 | `neon vpc project restrict <id>` | Configure or update a VPC endpoint restriction for this project.                               |
 
-## Agent mode
-
-Every command supports `--output json` for machine-readable results, and setting the `NEON_API_KEY` environment variable authenticates non-interactively. For AI agents, [`neon link --agent`](https://neon.com/docs/cli/link) emits a JSON state-machine response with a discriminated `status` field describing the next step, instead of prompting.
-
 ## Global options
 
 Global options are optional and work with any Neon CLI command.
@@ -12078,6 +12119,101 @@ More about global options:
 ## GitHub repository
 
 The Neon CLI is open source. See the [neondatabase/neon-pkgs](https://github.com/neondatabase/neon-pkgs/tree/main/packages/cli) repository.
+
+--- [Document source](https://neon.com/docs/cli/api.md) ---
+
+> Summary: The Neon CLI `api` command sends an authenticated request to any Neon API route and prints the response. Pass a path like `/projects`, set the method with `--method`, build a body from `--field` or `--data`, and add query parameters and headers. Run `neon api --list` to browse every endpoint.
+
+# Neon CLI command: api
+
+Call any Neon API route directly as an authenticated passthrough
+
+The `api` command sends an authenticated request to any [Neon API](https://api-docs.neon.tech/reference/getting-started-with-neon-api) route and prints the response. Pass an API path as the first argument. The method defaults to `GET`, or `POST` when you supply a body.
+
+By default the request uses your [`neon auth`](https://neon.com/docs/cli/auth) credentials. To use a specific key, pass `--api-key` or set `NEON_API_KEY`. The [key's permissions](https://neon.com/docs/manage/api-keys#types-of-api-keys) determine what the request can do.
+
+**Note:** `api` is a raw passthrough: it does not read your [context file](https://neon.com/docs/cli/set-context) or auto-fill parameters. Pass what each route needs explicitly. For example, `neon api /projects` returns `ERROR: org_id is required` unless you add `-Q org_id=<org_id>` or authenticate with an organization API key. Get your organization ID from [`neon orgs list`](https://neon.com/docs/cli/orgs).
+
+## Usage
+
+```bash
+neon api <path> [options]
+```
+
+## Options
+
+| Option              | Description                                                                                                                                | Type    | Default | Required |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------- | ------- | :------: |
+| `--data`, `-d`      | Raw request body: a JSON string, @file, or - for stdin. Overrides --field.                                                                 | string  | —       |    No    |
+| `--field`, `-F`     | Body field key=value (repeatable). Dot-notation nests objects (e.g. -F branch.name=dev); values are typed (numbers, booleans, null, JSON). | array   | —       |    No    |
+| `--header`, `-H`    | Extra request header key:value (repeatable).                                                                                               | array   | —       |    No    |
+| `--include`, `-i`   | Print the response status and headers before the body.                                                                                     | boolean | `false` |    No    |
+| `--list`            | List available API endpoints from the OpenAPI spec.                                                                                        | boolean | `false` |    No    |
+| `--method`, `-X`    | HTTP method (GET, POST, PUT, PATCH, DELETE). Defaults to GET, or POST when a body is provided.                                             | string  | —       |    No    |
+| `--query`, `-Q`     | Query parameter key=value (repeatable).                                                                                                    | array   | —       |    No    |
+| `--raw-field`, `-f` | Body field key=value with the value kept as a raw string.                                                                                  | array   | —       |    No    |
+| `--refresh`         | Refresh the cached OpenAPI spec (used with --list).                                                                                        | boolean | `false` |    No    |
+
+## Examples
+
+### GET request
+
+Pass required parameters with `--query` (`-Q`); add `--include` (`-i`) to print the status and headers before the body:
+
+```bash
+neon api /projects -Q org_id=org-cool-darkness-12345678 -i
+```
+
+The response is the route's raw JSON. For the fields each route returns, see the [Neon API reference](https://api-docs.neon.tech/reference/getting-started-with-neon-api).
+
+### Request body
+
+Set body fields with `--field` (`-F`) as `key=value`. Values are typed automatically (numbers, booleans, `null`, and JSON), and dot-notation nests objects. A body switches the default method to `POST`:
+
+```bash
+neon api /projects/{project_id}/branches -F branch.name=dev
+```
+
+This sends `{ "branch": { "name": "dev" } }`. Use `--raw-field` (`-f`) to keep a value as a literal string. For a full JSON body, use `--data` (`-d`) with a string, `@file`, or `-` (stdin).
+
+### Create a project
+
+`POST /projects` takes a `project` object. To create it under an organization, set `project.org_id` in the body (unlike `GET /projects`, which takes `org_id` as a query parameter):
+
+```bash
+neon api /projects -X POST -F project.name=my-project -F project.org_id=org-cool-darkness-12345678
+```
+
+For a larger body, put the JSON in a file and pass it with `-d @<file>`:
+
+```json filename="project.json"
+{
+  "project": {
+    "name": "my-project",
+    "org_id": "org-cool-darkness-12345678"
+  }
+}
+```
+
+```bash
+neon api /projects -X POST -d @project.json
+```
+
+### List endpoints
+
+`--list` prints every route from the Neon OpenAPI spec; `--refresh` refetches the cached spec:
+
+```bash
+neon api --list
+```
+
+### YAML output
+
+Responses print as JSON. Use the global `--output yaml` (`-o yaml`) for YAML:
+
+```bash
+neon api /projects -Q org_id=org-cool-darkness-12345678 -o yaml
+```
 
 --- [Document source](https://neon.com/docs/cli/auth.md) ---
 
@@ -12760,8 +12896,6 @@ neon branches delete br-rough-sky-158193
 └─────────────────────┴─────────────────┴──────────────────────┴──────────────────────┘
 ```
 
-Branches are soft-deleted by default, and enter a 7-day [deletion recovery period](https://neon.com/docs/manage/branches#recover-a-deleted-branch) before being permanently removed.
-
 ## neon branches get
 
 Retrieves details about a branch.
@@ -13152,13 +13286,13 @@ source ~/.zshrc
 
 --- [Document source](https://neon.com/docs/cli/config.md) ---
 
-> Summary: The Neon CLI `neon config` command manages a branch declaratively with a neon.ts policy file. Use `neon config status` to show the branch's live Neon state, `neon config plan` for a dry run of what an apply would change, and `neon config apply` (or its top-level alias `neon deploy`) to apply the policy to the branch. Supports --config to point at a neon.ts file, --env to load environment variables before evaluating it, and --allow-protected and --update-existing confirmation flags for non-interactive use.
+> Summary: The Neon CLI `neon config` command manages a branch declaratively with a neon.ts policy file. Use `neon config init` to scaffold a starter neon.ts and install the config packages, `neon config status` to show the branch's live Neon state (`neon status --current-branch` prints the pinned branch offline for shell prompts), `neon config plan` for a dry run of what an apply would change, and `neon config apply` (or its top-level alias `neon deploy`) to apply the policy to the branch. Supports --config to point at a neon.ts file, --env to load environment variables before evaluating it, and --allow-protected and --update-existing confirmation flags for non-interactive use.
 
 # Neon CLI command: config
 
-Manage a branch with a neon.ts policy: status, plan, and apply
+Manage a branch with a neon.ts policy: init, status, plan, and apply
 
-The `config` command manages a branch declaratively with a `neon.ts` policy file: inspect the branch's live state, preview what an apply would change, and apply the policy. For the `neon.ts` file format, see the [neon.ts reference](https://neon.com/docs/reference/neon-ts).
+The `config` command manages a branch declaratively with a `neon.ts` policy file: scaffold a starter config, inspect the branch's live state, preview what an apply would change, and apply the policy. For the `neon.ts` file format, see the [neon.ts reference](https://neon.com/docs/reference/neon-ts).
 
 Subcommands: [apply](https://neon.com/docs/cli/config#apply), [init](https://neon.com/docs/cli/config#init), [plan](https://neon.com/docs/cli/config#plan), [status](https://neon.com/docs/cli/config#status)
 
@@ -13166,7 +13300,9 @@ The top-level [`neon deploy`](https://neon.com/docs/cli/deploy) command is an al
 
 ## neon config init
 
-Scaffolds a `neon.ts` policy and installs the Neon config packages.
+Scaffolds a starter `neon.ts` policy file in the current project and installs the `@neon/config` and `@neon/env` packages, so you can start managing a branch declaratively. If a `neon.ts`, `neon.mts`, `neon.js`, or `neon.mjs` file already exists, it is left untouched.
+
+`config init` runs entirely locally and does not call the Neon API. It detects your package manager (npm, pnpm, yarn, or bun) from how the command was invoked. Pass `--no-install` to skip installation and just print the command to run.
 
 ```bash
 neon config init [options]
@@ -13181,6 +13317,8 @@ neon config init [options]
 ```bash
 neon config init
 ```
+
+**Tip:** After running an interactive [`neon link`](https://neon.com/docs/cli/link), the CLI offers to run `config init` as its final step, unless the project already has a `neon.ts` file.
 
 ## neon config status
 
@@ -13200,6 +13338,52 @@ neon config status [options]
 ```bash
 neon config status
 ```
+
+The top-level `neon status` command is an alias for `config status` and accepts the same options.
+
+### Print the current branch offline
+
+Pass `--current-branch` to print _only_ the branch pinned in the local `.neon` file. This variant makes no network request and requires no login or analytics, so it is cheap enough to drive a shell prompt.
+
+It prints the branch name to stdout and exits `0`. When no branch is pinned, it prints nothing to stdout, writes a `neon checkout <branch>` hint to stderr, and exits with a non-zero status, so a prompt can guard on the command directly.
+
+```bash
+neon status --current-branch
+```
+
+For example, add your current Neon branch to a [starship](https://starship.rs) prompt. Append this `[custom.neon]` module to `~/.config/starship.toml`. The `command` prints the pinned branch, and `when` hides the segment (exits non-zero) whenever you are not in a Neon project:
+
+```toml
+# ~/.config/starship.toml
+[custom.neon]
+description = "Current Neon branch"
+command = "neon status --current-branch"   # prints the branch pinned in .neon (no network)
+when = "neon status --current-branch"       # exits non-zero when no branch -> segment is hidden
+symbol = "🌿 "
+style = "bold green"
+format = "[$symbol$output]($style) "
+```
+
+**Tip: Faster outside Neon projects**
+
+The `when` above runs the CLI on every prompt everywhere. To skip it unless a `.neon` file exists somewhere up the tree, replace `when` with a pure-shell walk-up and add `shell = ["sh"]` so it runs under `sh` even if your interactive shell is fish or PowerShell:
+
+```toml
+shell = ["sh"]
+when = '''
+d="$PWD"
+while [ "$d" != "$HOME" ] && [ "$d" != / ]; do
+  if [ -e "$d/.neon" ]; then
+    neon status --current-branch >/dev/null 2>&1
+    exit $?
+  fi
+  d=$(dirname "$d")
+done
+exit 1
+'''
+```
+
+For a full copy-paste (and agent-ready) walkthrough, including prerequisites and troubleshooting, see this [Starship + Neon branch setup gist](https://gist.github.com/thisistonydang/0b6c03ec9aa9b619ffecd48f58fd40c7).
 
 ## neon config plan
 
@@ -14030,7 +14214,7 @@ brew install neonctl
 npm i -g neon
 ```
 
-Requires [Node.js 18.0](https://nodejs.org/en/download/) or higher.
+Requires [Node.js 20.19.0](https://nodejs.org/en/download/) or higher.
 
 **Install with bun**
 
@@ -14060,7 +14244,7 @@ neon <command> [options]
 npm i -g neon
 ```
 
-Requires [Node.js 18.0](https://nodejs.org/en/download/) or higher.
+Requires [Node.js 20.19.0](https://nodejs.org/en/download/) or higher.
 
 **Install with bun**
 
@@ -14089,6 +14273,8 @@ neonctl-win-x64.exe <command> [options]
 ```shell
 npm i -g neon
 ```
+
+Requires [Node.js 20.19.0](https://nodejs.org/en/download/) or higher.
 
 **Install with bun**
 
@@ -14137,6 +14323,10 @@ Upgrade using the method that matches how you installed the CLI. To check for th
 ```bash
 neon --version
 ```
+
+**Note: Node.js 20.19.0 is required to upgrade**
+
+The current CLI requires Node.js 20.19.0 or higher. An existing installation keeps working on your current Node.js version, but upgrading to the latest CLI on an older version (such as Node.js 18) fails. If you're on an older version, [upgrade Node.js](https://nodejs.org/en/download/) before you upgrade the CLI.
 
 **npm**
 
@@ -15475,8 +15665,6 @@ neon projects delete muddy-wood-859533
 ```
 
 Verify the deletion with `neon projects list`.
-
-Projects are soft-deleted by default, and enter a 7-day [deletion recovery period](https://neon.com/docs/manage/projects#recover-a-deleted-project) before being permanently removed.
 
 ## neon projects recover
 
@@ -19972,7 +20160,7 @@ A function takes a request and returns a web response, running on long-lived Nod
 
 - A Neon account with Functions preview access. See [Preview access](https://neon.com/docs/compute/functions/preview-access).
 - The latest `neon`, installed and authenticated. Functions commands are new and change often during the preview, so upgrade before you start (`npm install -g neon@latest`).
-- Node.js 18 or later. Deployed functions run on Node.js 24, so use 24 locally for the closest match.
+- Node.js 20 or later. Deployed functions run on Node.js 24, so use 24 locally for the closest match.
 
 Functions are available on new projects in AWS us-east-2 only, created on or after June 15, 2026.
 
@@ -56078,6 +56266,21 @@ The parameters used in the example above:
 - `name`: A user-defined name for the snapshot.
 - `expires_at`: The timestamp when the snapshot will be automatically deleted (RFC 3339 format).
 
+#### Update a snapshot's expiration
+
+You can change a snapshot's expiration after it is created using the [Update snapshot](https://api-docs.neon.tech/reference/updatesnapshot) endpoint. Set `expires_at` to a future timestamp to extend or change the retention deadline, or send `null` to clear it so the snapshot never expires. Omit the field to leave the expiration unchanged.
+
+```bash
+curl -X PATCH "https://console.neon.tech/api/v2/projects/project_id/snapshots/snapshot_id" \
+  -H "Content-Type: application/json" \
+  -H 'authorization: Bearer $NEON_API_KEY' \
+  -d '{
+    "snapshot": {
+      "expires_at": "2026-12-31T00:00:00Z"
+    }
+  }' |jq
+```
+
 ### Snapshot size fields in API responses
 
 Responses from the [Create snapshot](https://api-docs.neon.tech/reference/createsnapshot), [List project snapshots](https://api-docs.neon.tech/reference/listsnapshots), and [Update snapshot](https://api-docs.neon.tech/reference/updatesnapshot) endpoints include a `snapshot` object that may contain optional **`full_size`** and **`diff_size`** (both **`int64`**, size in bytes).
@@ -56389,8 +56592,6 @@ Use this option if you need to inspect the restored data before you switch over 
 
 - Instant restore (PITR) is currently not supported on branches created from a snapshot restore. If you restore a snapshot to create a new branch, you cannot perform point-in-time restore on that branch at this time. Attempting to do so will return an error: `restore from snapshot on target branch is still ongoing`.
 - **Reset from parent is unavailable on child branches for up to 24 hours after restoring a parent from a snapshot.** When you restore a branch from a snapshot, any child branches of that restored branch cannot use the [Reset from parent](https://neon.com/docs/guides/reset-from-parent) feature for up to 24 hours.
-
-For deleted branches, see [Recover a deleted branch](https://neon.com/docs/manage/branches#recover-a-deleted-branch). That's a separate recovery path from the point-in-time and snapshot features on this page.
 
 --- [Document source](https://neon.com/docs/guides/bemi.md) ---
 
@@ -56866,7 +57067,7 @@ When you set an expiration timestamp on a branch:
 
 3. If you reset a branch from its parent, the TTL countdown restarts using the original interval
 
-**Important:** Branches are soft-deleted by default, and enter a 7-day [deletion recovery period](https://neon.com/docs/manage/branches#recover-a-deleted-branch) before being permanently removed. All associated data and compute endpoints are also deleted. Verify expiration times carefully before setting them.
+**Important:** Branch deletion is permanent and cannot be recovered. All associated data and compute endpoints are also deleted. Verify expiration times carefully before setting them.
 
 ## Setting branch expiration
 
@@ -86078,7 +86279,6 @@ This ensures staging accurately reflects the current production state for reliab
 ## Limitations
 
 - **Reset from parent is unavailable for up to 24 hours after a parent is restored from a snapshot.** If a parent branch is restored from a snapshot, its child branches cannot be reset from that parent for up to 24 hours. If you need to update a child branch during this period, consider using [Instant restore](https://neon.com/docs/introduction/branch-restore) to restore the child branch from the parent directly.
-- **Soft-deleted children still block reset.** Since branches are [soft-deleted by default](https://neon.com/docs/manage/branches#recover-a-deleted-branch), a deleted child branch still counts until permanently removed. Permanently delete children (`hard_delete=true`), or pass [`preserve_under_name`](https://neon.com/docs/introduction/branch-restore#how-to-use-instant-restore) on the restore request to reset without deleting them.
 
 --- [Document source](https://neon.com/docs/guides/rls-drizzle.md) ---
 
@@ -91705,13 +91905,13 @@ If you're using the **Vercel-Managed integration**, you might expect preview bra
 
 1. **Vercel retains preview deployments for 6 months by default.** As of [October 2025](https://vercel.com/changelog/updated-defaults-for-deployment-retention), Vercel's default retention for pre-production deployments is 180 days. The clock starts when the deployment is created, not when the PR is closed.
 2. **Vercel's cleanup job runs asynchronously.** After the retention period expires, Vercel deletes the deployment in a batch process. This typically happens within hours to days of the expiration date, not instantly. Vercel offers a [30-day recovery window](https://vercel.com/docs/deployment-retention#restoring-a-deleted-deployment) to restore deleted deployments, but this does not delay cleanup for connected integrations.
-3. **Neon deletes the branch when Vercel deletes the deployment.** Neon receives a cleanup webhook and removes the corresponding preview branch. The branch enters a **7-day recovery period** before permanent deletion. See [Recover a deleted branch](https://neon.com/docs/manage/branches#recover-a-deleted-branch).
+3. **Neon deletes the branch when Vercel deletes the deployment.** Neon receives a cleanup webhook and removes the corresponding preview branch immediately.
 
 In the worst case (a deployment created moments before the PR is closed), this means up to **~6 months** before the Neon branch is automatically deleted.
 
 **Warning: Restoring deleted deployments**
 
-Vercel lets you [restore deleted deployments](https://vercel.com/docs/deployment-retention#restoring-a-deleted-deployment) within a 30-day recovery window. Restoring a Vercel deployment does **not** restore the associated Neon branch. The restored deployment will have no database behind it. If the Neon branch was deleted recently, you may be able to [recover the branch](https://neon.com/docs/manage/branches#recover-a-deleted-branch) within 7 days. After that, recreate it manually or push a new commit to trigger the integration.
+Vercel lets you [restore deleted deployments](https://vercel.com/docs/deployment-retention#restoring-a-deleted-deployment) within a 30-day recovery window. However, restoring a Vercel deployment does **not** restore the associated Neon branch. The restored deployment will have no database behind it. To recover, you would need to recreate the Neon branch manually or push a new commit to trigger the integration.
 
 ### Retention exceptions
 
@@ -91810,8 +92010,6 @@ To remove stale branches:
 - **Neon Console**: Go to the **Branches** page and delete branches individually
 - **Neon CLI**: Use `neon branches delete <branch-id-or-name>` to remove specific branches. See [CLI branches reference](https://neon.com/docs/cli/branches#delete).
 - **Neon API**: Use `DELETE /projects/{project_id}/branches/{branch_id}`. See [Delete a branch with the API](https://neon.com/docs/manage/branches#delete-a-branch-with-the-api).
-
-Branches deleted this way enter a 7-day recovery period before being permanently removed. See [Recover a deleted branch](https://neon.com/docs/manage/branches#recover-a-deleted-branch).
 
 ---
 
@@ -92884,37 +93082,57 @@ If you had trouble with any of the steps outlined above, refer to the video guid
 
 --- [Document source](https://neon.com/docs/import/azure-regions-deprecation.md) ---
 
-> Summary: Neon Azure regions (azure-eastus2, azure-westus3, azure-gwc) were deprecated on April 7, 2026: new project creation is blocked, but existing projects keep running with no end-of-support date currently set. Readers who need to act can delete the project, migrate to a Neon AWS region, or move to Databricks Lakebase to retain Azure data residency. The page also covers how to confirm which region a project is in via the Console, CLI, or API, and what changes when migrating, including new hostnames and project IDs.
+> Summary: Neon Azure regions (azure-eastus2, azure-westus3, azure-gwc) were deprecated on April 7, 2026: new project creation is blocked. After October 5, 2026, these regions stop receiving Neon feature updates, and projects in Free organizations inactive for 90 days or more are subject to deletion; active and paid projects keep running. This guide covers the timeline, what to do (migrate to a Neon AWS region, migrate to Databricks Lakebase, delete, or export), and how to confirm which region a project is in.
 
 # Azure regions deprecation
 
 What's changing, what to do, and answers to common questions
 
-Neon Azure regions are deprecated. You can no longer create new projects in Azure regions, but existing Azure projects continue to be supported until further notice. This guide explains what the deprecation means and what actions are available if you have active projects in Azure regions.
+**Warning:** Neon Azure regions were deprecated on April 7, 2026.
 
-You should receive personalized email communication about your specific projects and next steps. This guide answers common questions and provides general guidance during the deprecation.
+We recommend [migrating projects in Azure regions to another region](https://neon.com/docs/import/azure-regions-deprecation#what-to-do-next) by **October 5, 2026**.
 
-## What changed
+As of April 7, 2026, Neon's Azure regions are deprecated, and you can no longer create new projects in those regions.
 
-As of **April 7, 2026**, Azure regions are deprecated and new project creation in Azure regions is restricted. Existing projects keep running normally and remain supported until further notice. There is no end-of-support date today. If that changes, we'll give you advance notice and time to migrate.
+After **October 5, 2026**, these regions will not receive Neon feature updates. Also on October 5, projects on Free plans that have been inactive for 90 days or more are subject to deletion.
 
-We'll contact organizations with active Azure projects directly to discuss migration options and timelines.
+Users with projects in Neon Azure regions will receive a personalized email about specific projects and next steps. This guide explains what's changing and what to do.
 
-## What to do
+## Affected regions
 
-Your existing Azure projects keep running, so there's no immediate action to take. If you'd like to move off Azure, you have three options:
+Only projects in these Azure regions are affected:
 
-1. **Delete the project** if you no longer need it. This also stops storage costs from accruing. See [Delete a project](https://neon.com/docs/manage/projects#delete-a-project).
-2. **Migrate to a Neon AWS region.** Best if you don't need Azure residency. See [Migrate to another Neon region](https://neon.com/docs/import/migrate-neon-to-another-region) for the available migration methods.
-3. **Migrate to Databricks Lakebase.** Best if you need to keep your Postgres data in Azure. Lakebase is powered by the same serverless Postgres technology as Neon, under the Databricks product line. See [Migrate Neon to Lakebase](https://neon.com/docs/guides/migrate-neon-to-lakebase).
+- 🇺🇸 Azure East US 2 (Virginia) - `azure-eastus2`
+- 🇺🇸 Azure West US 3 (Phoenix) - `azure-westus3`
+- 🇩🇪 Azure Germany West Central (Frankfurt) - `azure-gwc`
 
-If none of these fit your requirements, [export your data in Postgres-compatible form](https://neon.com/docs/guides/export-neon-postgres-compatible) so you can move it elsewhere.
+Projects in AWS regions are not affected.
+
+## Deprecation timeline
+
+| Date                      | What happens                                                                                                                                          |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **April 7, 2026**         | Azure regions deprecated. New projects cannot be created in Azure regions. Existing projects keep running.                                            |
+| **October 5, 2026**       | Azure regions will not receive new Neon features. Projects in Free organizations that have been inactive for 90 days or more are subject to deletion. |
+| **After October 5, 2026** | A final end-of-service date will be announced.                                                                                                        |
+
+## What to do next
+
+**Migrate any projects you want to keep to an alternate region before October 5, 2026.** Migrating now keeps your project on actively developed infrastructure and lets you act on your own schedule.
+
+There are three options for moving your Neon projects off of Azure regions:
+
+1. **Migrate to a Neon AWS region.** Best if you don't need Azure data residency, and an AWS region in a similar location will suffice. See [Migrate to another Neon region](https://neon.com/docs/import/migrate-neon-to-another-region).
+2. **Migrate to Databricks Lakebase.** Best if you need to keep your Postgres data in Azure. Lakebase is powered by the same serverless Postgres technology as Neon, under the Databricks product line, and supports the deprecated Azure regions. See [Migrate Neon to Lakebase](https://neon.com/docs/guides/migrate-neon-to-lakebase).
+3. **Delete the project** if you no longer need it. This stops storage costs from accruing. See [Delete a project](https://neon.com/docs/manage/projects#delete-a-project).
+
+If none of these fit, [export your data in Postgres-compatible form](https://neon.com/docs/guides/export-neon-postgres-compatible) so you can store it elsewhere.
 
 ## Frequently asked questions
 
-### Does this affect my Neon projects?
+### Why are these regions being deprecated?
 
-Only if your project is in an Azure region (`azure-eastus2`, `azure-westus3`, or `azure-gwc`). Projects in AWS regions are not affected.
+We're focusing our infrastructure investment where our customers want to run Neon. Most Neon projects run in AWS regions, so concentrating there lets us ship features and reliability improvements faster, rather than splitting effort to maintain Azure in parallel. For teams that need Azure, [Databricks Lakebase](https://neon.com/docs/guides/migrate-neon-to-lakebase) runs the same Postgres technology as Neon and supports Azure regions.
 
 ### How do I find out which region a project is in?
 
@@ -92926,39 +93144,29 @@ You can check from the Console, the CLI, or the API:
 
 ![Project settings widget showing the project region](https://neon.com/docs/import/azure-regions-deprecation/project-settings-region.png)
 
-### Will my Azure project keep running?
+### Which AWS region should I migrate to?
 
-Yes. Your Azure project keeps running as it does today. Compute, storage, branching, and connections are unaffected. Existing Azure projects remain supported until further notice.
+To keep latency similar, choose the AWS region closest to your current Azure region. For the deprecated Azure regions, the nearest AWS equivalents are:
 
-### Will my Azure project be removed?
+| Azure region                                              | Nearest AWS region                               |
+| --------------------------------------------------------- | ------------------------------------------------ |
+| 🇺🇸 Azure East US 2 (Virginia) - `azure-eastus2`         | 🇺🇸 AWS US East (N. Virginia) - `aws-us-east-1` |
+| 🇺🇸 Azure West US 3 (Phoenix) - `azure-westus3`          | 🇺🇸 AWS US West (Oregon) - `aws-us-west-2`      |
+| 🇩🇪 Azure Germany West Central (Frankfurt) - `azure-gwc` | 🇩🇪 AWS Europe (Frankfurt) - `aws-eu-central-1` |
 
-No. Existing Azure projects remain supported until further notice. If we set a date to end Azure support in the future, we'll notify you in advance and give you time to migrate or export your data.
-
-### What if I do nothing?
-
-Your project continues running as it does today. There's no deadline to migrate. If we decide to end Azure support in the future, we'll contact you ahead of time so you can plan a migration or export.
-
-### I picked Azure for data residency. What are my options?
-
-Migrate to [Databricks Lakebase](https://neon.com/docs/guides/migrate-neon-to-lakebase). Lakebase is powered by the same serverless Postgres technology as Neon, under the Databricks product line. It supports Azure regions, so you can keep your data in Azure. For specific Lakebase region availability, see the [Lakebase Postgres documentation](https://docs.databricks.com/aws/en/oltp).
+If your workload has specific latency or data residency requirements, pick the region closest to your users.
 
 ### What changes about my project when I migrate to a new region?
 
-A region migration creates a **new** Neon project in the target region. The new project gets a new hostname, so plan to update connection strings in your application. The new project also has a different project ID.
-
-Project-level settings (branches, integrations, autoscaling configuration, IP Allow rules, monitoring, and so on) are configured per project. Review the [migration guide](https://neon.com/docs/import/migrate-neon-to-another-region) for the steps and decisions specific to your migration method.
+A region migration creates a **new** Neon project in the target region. The new project gets a new hostname, so you'll need to update connection strings in your application. The new project also has a different project ID. Project-level settings (branches, integrations, autoscaling, IP Allow rules, monitoring) are configured per project. See the [migration guide](https://neon.com/docs/import/migrate-neon-to-another-region) for method-specific steps.
 
 ### Should I take a backup before migrating?
 
-If your migration method uses `pg_dump` and `pg_restore`, the dump itself is a backup. If you're using logical replication or the [Import Data Assistant](https://neon.com/docs/import/import-data-assistant), it's still good practice to take a `pg_dump` snapshot of your source database before you start. See [Backups](https://neon.com/docs/manage/backups) for details.
-
-### What if I need to stay on Azure for now?
-
-That's fine. Existing Azure projects remain supported until further notice, so you can keep running on Azure. If you have specific constraints, such as regulatory requirements, application architecture changes, or customer migration dependencies, and want to talk through a plan, reply to any migration outreach you receive or contact [Neon Support](https://console.neon.tech/app/projects?modal=support).
+If your migration method uses `pg_dump` and `pg_restore`, the dump itself is a backup. If you're using Postgres logical replication, it's good practice to take a `pg_dump` snapshot of your source database first. See [Backups](https://neon.com/docs/manage/backups).
 
 ### How do I contact Neon about my Azure projects?
 
-Keep an eye on your inbox for communication from us about the deprecation. If you have questions before then, contact [Neon Support](https://console.neon.tech/app/projects?modal=support).
+Keep an eye on your inbox for communication from us. If you have specific constraints, such as regulatory requirements or migration dependencies, reply to any migration outreach you receive or contact [Neon Support](https://console.neon.tech/app/projects?modal=support).
 
 --- [Document source](https://neon.com/docs/import/import-data-assistant.md) ---
 
@@ -97586,7 +97794,6 @@ Learn how to revert changes or recover lost data using Neon's instant restore wi
 **Related docs**
 
 - [History window for instant restore](https://neon.com/docs/introduction/history-window)
-- [Recover a deleted branch](https://neon.com/docs/manage/branches#recover-a-deleted-branch)
 
 With Neon's instant restore capability, also known as point-in-time restore or PITR, you can restore a root branch to an earlier state in its own or another root branch's history. You can only point-in-time restore from root branches; child branches do not support instant restore. You can use Time Travel Assist to connect to a specific point in time still covered by your **history window** setting. See [History window](https://neon.com/docs/introduction/history-window), where you can run read-only queries to pinpoint the exact moment you need to restore to. You can also use Schema Diff to get a side-by-side, GitHub-style visual comparison of your selected branches before restoring.
 
@@ -99459,6 +99666,7 @@ For AI agent platforms that provision thousands of databases, Neon offers an **A
 | [History window](https://neon.com/docs/introduction/plans#history-window)                     | 6 hours, up to 1 GB-month                  | Up to 7 days                         | Up to 30 days                                                                                                     |
 | [Snapshots](https://neon.com/docs/introduction/plans#snapshots)                               | 1 manual snapshot                          | 100 manual snapshots                 | 100 manual snapshots                                                                                              |
 | [Auth](https://neon.com/docs/introduction/plans#auth) (Beta)                                  | Up to 60k MAU                              | Up to 1M MAU                         | Up to 1M MAU                                                                                                      |
+| [AI Gateway](https://neon.com/docs/introduction/plans#ai-gateway) (Private Preview)           | —                                          | Free during preview                  | Free during preview                                                                                               |
 | [Private network transfer](https://neon.com/docs/introduction/plans#private-network-transfer) | —                                          | —                                    | $0.01/GB                                                                                                          |
 | [Compliance and security](https://neon.com/docs/introduction/plans#compliance-and-security)   | —                                          | Protected branches                   | SOC 2, ISO, GDPR, [HIPAA](https://neon.com/docs/security/hipaa), Protected branches, IP Allow, Private Networking |
 | [Uptime SLA](https://neon.com/docs/introduction/plans#uptime-sla)                             | —                                          | —                                    | ✅                                                                                                                 |
@@ -99716,6 +99924,14 @@ Monthly Active User (MAU) limits per plan:
 > An MAU (Monthly Active User) is a unique user who authenticates at least once during a monthly billing period.
 
 See [Neon Auth](https://neon.com/docs/auth/overview) for more information.
+
+### AI Gateway
+
+Neon AI Gateway provides access to foundation models from Anthropic, OpenAI, Google, Meta, Databricks, and Alibaba through a single Neon credential. It is available on paid plans during the private preview.
+
+Inference is free during the preview. When billing begins, prices will match each provider's published list prices.
+
+See [AI Gateway models](https://neon.com/docs/ai-gateway/models#pricing) for details.
 
 ### Private network transfer
 
@@ -100061,9 +100277,9 @@ Each Neon **project** exists in exactly one region. Your database runs in that r
 
 **Warning: Azure regions deprecation**
 
-Neon Azure regions (`azure-eastus2`, `azure-westus3`, `azure-gwc`) are deprecated. You can no longer create new projects in Azure regions. Existing Azure projects continue to be supported until further notice.
+Neon Azure regions (`azure-eastus2`, `azure-westus3`, `azure-gwc`) are deprecated. You can no longer create new projects in Azure regions. Projects on the Free plan that have been inactive for 90 days or more are subject to deletion as of October 5, 2026.
 
-If you have active projects in Azure regions, see [Azure regions deprecation](https://neon.com/docs/import/azure-regions-deprecation) for additional information and recommendations.
+If you have projects in Azure regions, see [Azure regions deprecation](https://neon.com/docs/import/azure-regions-deprecation) for what's changing and your options.
 
 ## Request a region
 
@@ -102732,7 +102948,7 @@ You can use the Neon Console, CLI, or API. For more details, see [Instant restor
 
 ## Delete a branch
 
-Deleting a branch removes the branch along with its databases, roles, and associated compute. You cannot delete a branch that has child branches. The child branches must be deleted first.
+Deleting a branch is a permanent action. Deleting a branch also deletes the databases and roles that belong to the branch as well as the compute associated with the branch. You cannot delete a branch that has child branches. The child branches must be deleted first.
 
 To delete a branch:
 
@@ -102743,63 +102959,6 @@ To delete a branch:
 5. On the confirmation dialog, click **Delete**.
 
 **Tip:** For temporary branches, consider setting an expiration date when creating them to automate cleanup and reduce manual deletion overhead.
-
-## Recover a deleted branch
-
-Branches are soft-deleted by default, and enter a 7-day deletion recovery period before being permanently removed. To bypass the recovery period and delete immediately, use `hard_delete=true`.
-
-**Note:** This is different from [instant restore](https://neon.com/docs/introduction/branch-restore), which rolls back a branch to an earlier point in time.
-
-To recover a deleted project, see [Recover a deleted project](https://neon.com/docs/manage/projects#recover-a-deleted-project).
-
-### What's recovered
-
-When you recover a deleted branch:
-
-- Branch data and configuration are restored
-- Endpoints return to an idle state
-- Connection strings remain valid
-
-### Recovery API
-
-To list deleted branches that can be recovered, use `include_deleted=true`:
-
-```http
-GET /projects/{project_id}/branches?include_deleted=true
-```
-
-**Example:**
-
-```bash
-curl 'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches?include_deleted=true' \
-  -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" | jq
-```
-
-Each deleted branch includes a `recovery` object with `deleted_at`, `recoverable_until`, and `deletion_method` fields.
-
-To recover a deleted branch:
-
-```http
-POST /projects/{project_id}/branches/{branch_id}/recover
-```
-
-**Example:**
-
-```bash
-curl -X POST \
-  'https://console.neon.tech/api/v2/projects/dry-heart-13671059/branches/br-curly-wave-af4i4oeu/recover' \
-  -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" | jq
-```
-
-The API returns a `200` status code with the restored branch object.
-
-To skip the recovery window, add `hard_delete=true` to the delete request:
-
-```http
-DELETE /projects/{project_id}/branches/{branch_id}?hard_delete=true
-```
 
 ## Check the data size
 
@@ -105783,8 +105942,6 @@ All Members can create new projects from the Organization's **Projects** page; h
 - Any Member can create a project under the organization's ownership.
 - Only Admins can delete projects owned by the organization.
 
-Projects are soft-deleted by default, and enter a 7-day [deletion recovery period](https://neon.com/docs/manage/projects#recover-a-deleted-project) before being permanently removed.
-
 ## Manage billing
 
 When you create a new organization, you'll choose a plan for that organization. Each organization manages its own billing and plan.
@@ -106465,7 +106622,7 @@ After enabling logical replication, the next steps involve creating publications
 
 ### Delete a project
 
-Deleting a project removes all its computes, branches, databases, and roles. Deleted projects can be [recovered within 7 days](https://neon.com/docs/manage/projects#recover-a-deleted-project).
+Deleting a project is a permanent action, which also deletes any computes, branches, databases, and roles that belong to the project.
 
 To delete a project:
 
@@ -106967,7 +107124,7 @@ For attribute definitions, find the [Delete project](https://api-docs.neon.tech/
 
 If you accidentally delete a project, you can recover it within 7 days. This **deletion recovery period** allows you to restore deleted projects with all their data and configuration intact.
 
-**Note:** The deletion recovery period is different from the [history window](https://neon.com/docs/introduction/history-window) used for **instant restore** on branch data. The history window enables point-in-time recovery (PITR) for branch data, while the deletion recovery period allows you to recover (undelete) an entire deleted project. To recover a deleted branch, see [Recover a deleted branch](https://neon.com/docs/manage/branches#recover-a-deleted-branch).
+**Note:** The deletion recovery period is different from the [history window](https://neon.com/docs/introduction/history-window) used for **instant restore** on branch data. The history window enables point-in-time recovery (PITR) for branch data, while the deletion recovery period allows you to recover (undelete) an entire deleted project.
 
 ### What's recovered
 
@@ -107529,9 +107686,9 @@ In the Neon Console:
 
    ![Paid plan updates UI](https://neon.com/docs/manage/paid_plan_updates.png)
 
-You can check your project's settings for upcoming updates. We'll post a notice there at least **7 days** ahead of a planned update, letting you know when it's coming.
+You can check your project's settings for upcoming updates. On all paid plans, we post a notice there at least **3 days** ahead of a planned update, letting you know when it's coming.
 
-> If you're a Scale plan customer, you will also receive an **email notification** 7 days in advance of a planned update.
+> On the **Scale** and **Enterprise** plans, you also receive an **email notification** 3 days in advance of a planned update, in addition to the in-console notice. On the **Launch** plan, advance notice is provided in the console only, with no email.
 
 **API**
 
@@ -110211,11 +110368,11 @@ The table below lists the latest minor version available on Neon for each suppor
 
 | Major version | Latest minor version on Neon | Upstream release date |
 | ------------- | ---------------------------- | --------------------- |
-| 14            | PostgreSQL 14.21             | 2026-02-12            |
-| 15            | PostgreSQL 15.16             | 2026-02-12            |
-| 16            | PostgreSQL 16.12             | 2026-02-12            |
-| 17            | PostgreSQL 17.8              | 2026-02-12            |
-| 18            | PostgreSQL 18.2              | 2026-02-12            |
+| 14            | PostgreSQL 14.23             | 2026-05-14            |
+| 15            | PostgreSQL 15.18             | 2026-05-14            |
+| 16            | PostgreSQL 16.14             | 2026-05-14            |
+| 17            | PostgreSQL 17.10             | 2026-05-14            |
+| 18            | PostgreSQL 18.4              | 2026-05-14            |
 
 ## Postgres extensions
 

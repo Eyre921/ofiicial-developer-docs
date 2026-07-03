@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/tool-result-auditing
 
 Fire side effects exactly once per resolved tool call — audit logs, billing, notifications — using extractNewToolResults inside hydrateMessages or onTurnComplete.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 When a chat agent uses [tools](/docs/ai-chat/tools) (especially [human-in-the-loop](/docs/ai-chat/patterns/human-in-the-loop) tools that wait on `addToolOutput` from the frontend), you often need to fire side effects exactly once per resolved tool call:
 
 * **Audit logs** — record every tool result for compliance.

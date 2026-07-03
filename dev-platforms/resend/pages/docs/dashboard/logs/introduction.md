@@ -61,6 +61,10 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
     * **Status code** - The HTTP status code returned
     * **Timestamp** - When the request was processed
 
+    ### Related emails
+
+    When a log entry is associated with one or more email sends, an Email field appears in the log details, linking directly to the corresponding email records. The corresponding email's detail page includes a Log field linking to the API request log that triggered it, so you can trace the full request-to-delivery flow in both directions.
+
     ### SDK detection
 
     The dashboard automatically detects and displays Resend SDK information from the User-Agent header, showing:

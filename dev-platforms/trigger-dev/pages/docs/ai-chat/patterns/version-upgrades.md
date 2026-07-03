@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/version-upgrades
 
 Gracefully migrate suspended chat agents to a new deployment using chat.requestUpgrade() and the continuation mechanism.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Chat agent runs are pinned to the worker version they started on. When you deploy a new version, suspended runs resume on the **old** code. If your deploy includes breaking changes (new tools, changed schemas, updated API contracts), this can cause issues.
 
 `chat.requestUpgrade()` lets the agent opt out of the current run so the transport triggers a new one on the latest version.

@@ -132,11 +132,11 @@ With **Option B**, each tenant is responsible for their own Resend plan and bill
 
 Sender reputation is tied to the sending account and its associated domains and IPs. This is the most important distinction between the two approaches.
 
-With **Option A**, all tenants share the same sender reputation. If a single tenant sends to stale lists, generates high bounce rates, or triggers spam complaints, it can degrade deliverability for every tenant on your account. In the worst case, your entire account could be suspended.
+With **Option A**, all tenants share the same sender reputation. If a single tenant sends to stale lists, generates high bounce rates, or triggers spam complaints, it can degrade deliverability for every tenant on your account. In the worst case, your entire account faces suspension.
 
 With **Option B**, each tenant has a fully independent sender reputation. A problem with one tenant has zero impact on others. However, each tenant is responsible for following best practices on their own.
 
-Regardless of which approach you choose, each new tenant domain should follow a [warm-up schedule](/docs/knowledge-base/warming-up). Using a [subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) for sending is also a good practice to protect the tenant's root domain reputation.
+Regardless of which approach you choose, each new tenant domain must follow a [warm-up schedule](/docs/knowledge-base/warming-up). Using a [subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) for sending is also a good practice to protect the tenant's root domain reputation.
 
 ## Webhook routing
 

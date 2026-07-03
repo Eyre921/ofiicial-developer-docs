@@ -242,6 +242,14 @@ components:
         - 'off'
       default: auto
       title: PreToolSpeechMode
+    type_:ToolInterruptionMode:
+      type: string
+      enum:
+        - allow
+        - disable_during_tool
+        - disable_during_tool_and_turn
+      default: allow
+      title: ToolInterruptionMode
     type_:ToolCallSoundType:
       type: string
       enum:
@@ -480,8 +488,13 @@ components:
         disable_interruptions:
           type: boolean
           description: >-
-            If set, overrides the server's disable_interruptions setting for
-            this tool
+            DEPRECATED: use `interruption_mode` instead. If set, overrides the
+            server's disable_interruptions setting for this tool.
+        interruption_mode:
+          $ref: '#/components/schemas/type_:ToolInterruptionMode'
+          description: >-
+            If set, overrides the server's interruption_mode setting for this
+            tool.
         tool_call_sound:
           $ref: '#/components/schemas/type_:ToolCallSoundType'
           description: If set, overrides the server's tool_call_sound setting for this tool
@@ -579,8 +592,19 @@ components:
           type: boolean
           default: false
           description: >-
-            If true, the user will not be able to interrupt the agent while any
-            tool from this MCP server is running.
+            DEPRECATED: use `interruption_mode` instead. If true, the user will
+            not be able to interrupt the agent while any tool from this MCP
+            server is running.
+        interruption_mode:
+          $ref: '#/components/schemas/type_:ToolInterruptionMode'
+          description: >-
+            Controls whether the user can interrupt the agent around this tool
+            call. 'allow' (default) lets the user interrupt at any time,
+            'disable_during_tool' suppresses interruptions only while the tool
+            is running, 'disable_during_tool_and_turn' suppresses interruptions
+            while the tool runs and for the agent response that follows it.
+            Applies to every tool from this MCP server unless overridden per
+            tool.
         tool_call_sound:
           $ref: '#/components/schemas/type_:ToolCallSoundType'
           description: >-
@@ -853,7 +877,7 @@ components:
     },
     "description": "description",
     "pre_tool_speech": "auto",
-    "disable_interruptions": true,
+    "interruption_mode": "allow",
     "tool_call_sound": "typing",
     "tool_call_sound_behavior": "auto",
     "execution_mode": "immediate",

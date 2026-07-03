@@ -6,10 +6,6 @@ path: docs/ai-chat/custom-agents
 
 Build chat agents without chat.agent()'s managed lifecycle: register with chat.customAgent(), then drive turns with the createSession iterator or a hand-rolled loop.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 **A custom agent is a task you register with `chat.customAgent()` and drive yourself — either with the managed turn iterator from `chat.createSession()`, or with a fully hand-rolled loop over the raw chat primitives.** You give up `chat.agent()`'s lifecycle hooks and automatic continuation recovery; you gain inline control over every turn, and (at the lowest level) full control over the stream conversion.
 
 See the [comparison table](/docs/ai-chat/backend) before dropping down. The frontend is unchanged either way: all levels speak the same wire protocol, so [`useTriggerChatTransport`](/docs/ai-chat/frontend) points at a custom agent exactly like a `chat.agent()`.

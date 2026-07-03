@@ -57,7 +57,7 @@ It's important to understand the differences between [Flux](/docs/models-languag
 
 | Feature                  | Flux                     | Nova-3 |
 | ------------------------ | ------------------------ | ------ |
-| Word Times               | 🚫                       | ✅      |
+| Word Times               | ✅                        | ✅      |
 | Smart Formatting         | 🚫                       | ✅      |
 | Speaker Diarization      | 🚫                       | ✅      |
 | Filler Words             | ✅ Transcribed by default | 🚫     |

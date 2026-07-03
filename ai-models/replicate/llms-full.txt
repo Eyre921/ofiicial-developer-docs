@@ -1,3 +1,26 @@
+# Run a model from Google Colab
+
+**URL:** https://replicate.com/docs/get-started/google-colab.md
+
+[](#what-is-google-colab)What is Google Colab?
+----------------------------------------------
+
+Google Colab is a cloud-based platform that lets you write and execute Python code right from your browser, without having to install anything or worry about setting up Python.
+
+[](#what-are-notebooks)What are notebooks?
+------------------------------------------
+
+Colab uses **notebooks**: interactive documents that contain both code and other elements like paragraphs, equations, and images. Notebooks are a great prototyping tool for data scientists, researchers, and developers to create and share documents that contain live working code.
+
+[](#running-replicate-models-on-colab)Running Replicate models on Colab
+-----------------------------------------------------------------------
+
+You can run any public Replicate model in a notebook with just a few lines of Python code.
+
+To get started, [check out the Replicate Python notebook](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
+
+[![](https://github.com/replicate/cog/assets/2289/d2b4d474-7fa3-4b09-932a-deda4a9cab54)](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
+
 # Deploy a custom model
 
 **URL:** https://replicate.com/docs/get-started/deploy-a-custom-model.md
@@ -131,6 +154,141 @@ Now it’s time to integrate your deployed model into your app or product:
 *   Learn how to [continuously deploy your model using GitHub Actions](https://github.com/replicate/setup-cog).
 *   Check out the [client libraries](/docs/reference/client-libraries) you can use to run your model.
 *   Check out the [deployments guide](/docs/topics/deployments) to learn more about model performance and scaling.
+
+# Run a model from Python
+
+**URL:** https://replicate.com/docs/get-started/python.md
+
+Learn how to run a model on Replicate from within your Python code. It could be an app, a notebook, an evaluation script, or anywhere else you want to use machine learning.
+
+Tip
+
+Check out an interactive notebook version of this tutorial on [Google Colab](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX).
+
+[](#install-the-python-library)Install the Python library
+---------------------------------------------------------
+
+We maintain an [open-source Python client](https://github.com/replicate/replicate-python#readme) for the API. Install it with pip:
+
+```plaintext
+pip install replicate
+```
+
+[](#authenticate)Authenticate
+-----------------------------
+
+Generate an API token at [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens), copy the token, then set it as an environment variable in your shell:
+
+```shell
+export REPLICATE_API_TOKEN=r8_....
+```
+
+[](#run-a-model)Run a model
+---------------------------
+
+You can run [any public model](https://replicate.com/explore) on Replicate from your Python code. Here’s an example that runs [black-forest-labs/flux-schnell](https://replicate.com/black-forest-labs/flux-schnell) to generate an image:
+
+```python
+import replicate
+output = replicate.run(
+  "black-forest-labs/flux-schnell",
+  input={"prompt": "an iguana on the beach, pointillism"}
+)
+# Save the generated image
+with open('output.png', 'wb') as f:
+    f.write(output[0].read())
+print(f"Image saved as output.png")
+```
+
+[](#using-local-files-as-inputs)Using local files as inputs
+-----------------------------------------------------------
+
+Some models take files as inputs. You can use a local file on your machine as input, or you can provide an HTTPS URL to a file on the public internet.
+
+Here’s an example that uses a local file as input to the [LLaVA vision model](https://replicate.com/yorickvp/llava-13b), which takes an image and a text prompt as input and responds with text:
+
+```python
+import replicate
+image = open("my_fridge.jpg", "rb")
+output = replicate.run(
+    "yorickvp/llava-13b:a0fdc44e4f2e1f20f2bb4e27846899953ac8e66c5886c5878fa1d6b73ce009e5",
+    input={
+        "image": image,
+        "prompt": "Here's what's in my fridge. What can I make for dinner tonight?"
+    }
+)
+print(output)
+# You have a well-stocked refrigerator filled with various fruits, vegetables, and ...
+```
+
+[](#using-urls-as-inputs)Using URLs as inputs
+---------------------------------------------
+
+URLs are more efficient if your file is already in the cloud somewhere, or it is a large file.
+
+Here’s an example that uses an HTTPS URL of an image on the internet as input to a model:
+
+```python
+image = "https://example.com/my_fridge.jpg"
+output = replicate.run(
+    "yorickvp/llava-13b:a0fdc44e4f2e1f20f2bb4e27846899953ac8e66c5886c5878fa1d6b73ce009e5",
+    input={
+        "image": image,
+        "prompt": "Here's what's in my fridge. What can I make for dinner tonight?"
+    }
+)
+print(output)
+# You have a well-stocked refrigerator filled with various fruits, vegetables, and ...
+```
+
+[](#handling-output)Handling output
+-----------------------------------
+
+Some models stream output as the model is running. They will return an iterator, and you can iterate over that output.
+
+Here’s an example that uses the [Claude 3.7 Sonnet model](https://replicate.com/anthropic/claude-3.7-sonnet) to generate text:
+
+```python
+iterator = replicate.run(
+  "anthropic/claude-3.7-sonnet",
+  input={"prompt": "Who was Dolly the sheep?"},
+)
+for text in iterator:
+    print(text, end="")
+# Dolly the sheep was the first mammal to be successfully cloned from an adult cell...
+```
+
+[](#handling-file-outputs)Handling file outputs
+-----------------------------------------------
+
+Some models generate files as output, such as images or audio. These are returned as `FileOutput` objects, which you can easily save or process:
+
+```python
+output = replicate.run(
+    "black-forest-labs/flux-schnell",
+    input={"prompt": "A majestic lion"}
+)
+# Save the generated image
+with open('lion.png', 'wb') as f:
+    f.write(output[0].read())
+print("Image saved as lion.png")
+# Handle multiple outputs
+output = replicate.run(
+    "black-forest-labs/flux-schnell",
+    input={"prompt": "A majestic lion", "num_outputs": 2}
+)
+for idx, file_output in enumerate(output):
+    with open(f'output_{idx}.png', 'wb') as f:
+        f.write(file_output.read())
+
+```
+
+For more details on handling output files, see [Output Files](/docs/topics/predictions/output-files).
+
+[](#next-steps)Next steps
+-------------------------
+
+Read the [full Python client documentation on GitHub.](https://github.com/replicate/replicate-python#readme)
 
 # Fine-tune an image model
 
@@ -440,164 +598,6 @@ In this guide you used the FLUX.1 \[schnell\] image generation model, but you ca
 *   [setup-replicate documentation](https://github.com/replicate/setup-replicate#readme)
 *   [HTTP API reference](https://replicate.com/docs/reference/http)
 
-# Run a model from Python
-
-**URL:** https://replicate.com/docs/get-started/python.md
-
-Learn how to run a model on Replicate from within your Python code. It could be an app, a notebook, an evaluation script, or anywhere else you want to use machine learning.
-
-Tip
-
-Check out an interactive notebook version of this tutorial on [Google Colab](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX).
-
-[](#install-the-python-library)Install the Python library
----------------------------------------------------------
-
-We maintain an [open-source Python client](https://github.com/replicate/replicate-python#readme) for the API. Install it with pip:
-
-```plaintext
-pip install replicate
-```
-
-[](#authenticate)Authenticate
------------------------------
-
-Generate an API token at [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens), copy the token, then set it as an environment variable in your shell:
-
-```shell
-export REPLICATE_API_TOKEN=r8_....
-```
-
-[](#run-a-model)Run a model
----------------------------
-
-You can run [any public model](https://replicate.com/explore) on Replicate from your Python code. Here’s an example that runs [black-forest-labs/flux-schnell](https://replicate.com/black-forest-labs/flux-schnell) to generate an image:
-
-```python
-import replicate
-output = replicate.run(
-  "black-forest-labs/flux-schnell",
-  input={"prompt": "an iguana on the beach, pointillism"}
-)
-# Save the generated image
-with open('output.png', 'wb') as f:
-    f.write(output[0].read())
-print(f"Image saved as output.png")
-```
-
-[](#using-local-files-as-inputs)Using local files as inputs
------------------------------------------------------------
-
-Some models take files as inputs. You can use a local file on your machine as input, or you can provide an HTTPS URL to a file on the public internet.
-
-Here’s an example that uses a local file as input to the [LLaVA vision model](https://replicate.com/yorickvp/llava-13b), which takes an image and a text prompt as input and responds with text:
-
-```python
-import replicate
-image = open("my_fridge.jpg", "rb")
-output = replicate.run(
-    "yorickvp/llava-13b:a0fdc44e4f2e1f20f2bb4e27846899953ac8e66c5886c5878fa1d6b73ce009e5",
-    input={
-        "image": image,
-        "prompt": "Here's what's in my fridge. What can I make for dinner tonight?"
-    }
-)
-print(output)
-# You have a well-stocked refrigerator filled with various fruits, vegetables, and ...
-```
-
-[](#using-urls-as-inputs)Using URLs as inputs
----------------------------------------------
-
-URLs are more efficient if your file is already in the cloud somewhere, or it is a large file.
-
-Here’s an example that uses an HTTPS URL of an image on the internet as input to a model:
-
-```python
-image = "https://example.com/my_fridge.jpg"
-output = replicate.run(
-    "yorickvp/llava-13b:a0fdc44e4f2e1f20f2bb4e27846899953ac8e66c5886c5878fa1d6b73ce009e5",
-    input={
-        "image": image,
-        "prompt": "Here's what's in my fridge. What can I make for dinner tonight?"
-    }
-)
-print(output)
-# You have a well-stocked refrigerator filled with various fruits, vegetables, and ...
-```
-
-[](#handling-output)Handling output
------------------------------------
-
-Some models stream output as the model is running. They will return an iterator, and you can iterate over that output.
-
-Here’s an example that uses the [Claude 3.7 Sonnet model](https://replicate.com/anthropic/claude-3.7-sonnet) to generate text:
-
-```python
-iterator = replicate.run(
-  "anthropic/claude-3.7-sonnet",
-  input={"prompt": "Who was Dolly the sheep?"},
-)
-for text in iterator:
-    print(text, end="")
-# Dolly the sheep was the first mammal to be successfully cloned from an adult cell...
-```
-
-[](#handling-file-outputs)Handling file outputs
------------------------------------------------
-
-Some models generate files as output, such as images or audio. These are returned as `FileOutput` objects, which you can easily save or process:
-
-```python
-output = replicate.run(
-    "black-forest-labs/flux-schnell",
-    input={"prompt": "A majestic lion"}
-)
-# Save the generated image
-with open('lion.png', 'wb') as f:
-    f.write(output[0].read())
-print("Image saved as lion.png")
-# Handle multiple outputs
-output = replicate.run(
-    "black-forest-labs/flux-schnell",
-    input={"prompt": "A majestic lion", "num_outputs": 2}
-)
-for idx, file_output in enumerate(output):
-    with open(f'output_{idx}.png', 'wb') as f:
-        f.write(file_output.read())
-
-```
-
-For more details on handling output files, see [Output Files](/docs/topics/predictions/output-files).
-
-[](#next-steps)Next steps
--------------------------
-
-Read the [full Python client documentation on GitHub.](https://github.com/replicate/replicate-python#readme)
-
-# Run a model from Google Colab
-
-**URL:** https://replicate.com/docs/get-started/google-colab.md
-
-[](#what-is-google-colab)What is Google Colab?
-----------------------------------------------
-
-Google Colab is a cloud-based platform that lets you write and execute Python code right from your browser, without having to install anything or worry about setting up Python.
-
-[](#what-are-notebooks)What are notebooks?
-------------------------------------------
-
-Colab uses **notebooks**: interactive documents that contain both code and other elements like paragraphs, equations, and images. Notebooks are a great prototyping tool for data scientists, researchers, and developers to create and share documents that contain live working code.
-
-[](#running-replicate-models-on-colab)Running Replicate models on Colab
------------------------------------------------------------------------
-
-You can run any public Replicate model in a notebook with just a few lines of Python code.
-
-To get started, [check out the Replicate Python notebook](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
-
-[![](https://github.com/replicate/cog/assets/2289/d2b4d474-7fa3-4b09-932a-deda4a9cab54)](https://colab.research.google.com/drive/1cLthjBaZ6qSRsI5izrgq95tNonRYnvxX)
-
 # API tokens
 
 **URL:** https://replicate.com/docs/topics/security/api-tokens.md
@@ -879,6 +879,58 @@ See the API docs for more details:
 *   [List deployments](https://replicate.com/docs/reference/http#deployments.list)
 *   [Create a prediction using a deployment](https://replicate.com/docs/reference/http#deployments.predictions.create)
 
+# Set up webhooks
+
+**URL:** https://replicate.com/docs/topics/webhooks/setup-webhook.md
+
+To receive webhook events, specify a `webhook` URL in the request body when creating a prediction or a training.
+
+Here’s an example using the Replicate client to create a prediction and request a webhook event when the prediction is completed:
+
+[](#webhook-events-filter)Webhook events filter
+-----------------------------------------------
+
+By default, we will send requests to your webhook URL whenever there are new outputs or the prediction has finished. You can change which events trigger webhook requests by specifying `webhook_events_filter` in the prediction request:
+
+*   `start`: immediately on prediction start
+*   `output`: each time a prediction generates an output (note that predictions can generate multiple outputs)
+*   `logs`: each time log output is generated by a prediction
+*   `completed`: when the prediction reaches a terminal state (succeeded/canceled/failed)
+
+For example, if you only wanted requests to be sent at the start and end of the prediction, you would provide:
+
+```json
+{
+  "input": {
+    "text": "Alice"
+  },
+  "webhook": "https://example.com/my-webhook",
+  "webhook_events_filter": ["start", "completed"]
+}
+```
+
+Requests for event types `output` and `logs` will be sent at most once every 500ms.
+
+If you request `start` and `completed` webhooks, then they’ll always be sent regardless of throttling.
+
+[](#webhooks-for-trainings)Webhooks for trainings
+-------------------------------------------------
+
+In addition to predictions, you can also receive webhooks when [fine-tuning models with the training API](/docs/get-started/fine-tune-with-flux):
+
+Tip
+
+**Add query params to your webhook URL** to pass along extra metadata, like an internal ID you’re using for a prediction. For example: `https://example.com/replicate-webhook?customId=123`
+
+[](#example-resources)Example resources
+---------------------------------------
+
+*   See the [Node.js client](https://github.com/replicate/replicate-javascript#replicatepredictionscreate) webhook docs.
+*   See the [Python client](https://github.com/replicate/replicate-python#run-a-model-in-the-background-and-get-a-webhook) webhook docs.
+*   See [predictions.create](https://replicate.com/docs/reference/http#predictions.create) and [trainings.create](https://replicate.com/docs/reference/http#trainings.create) API docs.
+*   See [Scribble Diffusion’s codebase](https://github.com/replicate/scribble-diffusion/pull/27/commits/627c872c78aad89cadd02798d37d4696e3278a12) for a reference implementation in JavaScript.
+*   Read our [streaming guide](/docs/streaming) to learn how to consume server-sent events (SSEs) from language models.
+
 # Run a model
 
 **URL:** https://replicate.com/docs/topics/models/run-a-model.md
@@ -957,6 +1009,36 @@ They can be used to identify the image, version, deployment, when debugging or i
 *   `REPLICATE_DEPLOYMENT_NAME` - deployment name, if running as a deployment
 
 These environment variables are accessible to your code in public models, private models, and deployments.
+
+# Input files
+
+**URL:** https://replicate.com/docs/topics/predictions/input-files.md
+
+Some models accept files as input, like images, audio, or video, zip files, PDFs, etc.
+
+There are multiple ways to use files as input when running a model on Replicate. You can provide a file as input using a URL, a local file on your computer, or a base64-encoded object.
+
+[](#option-1-hosted-file)Option 1: Hosted file
+----------------------------------------------
+
+Use a URL to provide a hosted file:
+
+This is useful if you already have a file hosted somewhere on the internet.
+
+[](#option-2-local-file)Option 2: Local file
+--------------------------------------------
+
+You can provide Replicate with a `Blob`, `File`, or `Buffer` object, and the library will handle the upload for you. This will work for files up to 100MB:
+
+[](#option-3-data-uri)Option 3: Data URI
+----------------------------------------
+
+Create a data URI consisting of the base64 encoded data for your file. This is only recommended if the file is less than 1MB:
+
+[](#using-the-file-input)Using the file input
+---------------------------------------------
+
+Once you have your file input ready, you can use it in your prediction:
 
 # Create a prediction
 
@@ -1237,88 +1319,6 @@ For example:
 
 The web URL is available immediately when a prediction is created and remains accessible after completion, making it useful for both real-time monitoring and post-completion analysis.
 
-# Input files
-
-**URL:** https://replicate.com/docs/topics/predictions/input-files.md
-
-Some models accept files as input, like images, audio, or video, zip files, PDFs, etc.
-
-There are multiple ways to use files as input when running a model on Replicate. You can provide a file as input using a URL, a local file on your computer, or a base64-encoded object.
-
-[](#option-1-hosted-file)Option 1: Hosted file
-----------------------------------------------
-
-Use a URL to provide a hosted file:
-
-This is useful if you already have a file hosted somewhere on the internet.
-
-[](#option-2-local-file)Option 2: Local file
---------------------------------------------
-
-You can provide Replicate with a `Blob`, `File`, or `Buffer` object, and the library will handle the upload for you. This will work for files up to 100MB:
-
-[](#option-3-data-uri)Option 3: Data URI
-----------------------------------------
-
-Create a data URI consisting of the base64 encoded data for your file. This is only recommended if the file is less than 1MB:
-
-[](#using-the-file-input)Using the file input
----------------------------------------------
-
-Once you have your file input ready, you can use it in your prediction:
-
-# Set up webhooks
-
-**URL:** https://replicate.com/docs/topics/webhooks/setup-webhook.md
-
-To receive webhook events, specify a `webhook` URL in the request body when creating a prediction or a training.
-
-Here’s an example using the Replicate client to create a prediction and request a webhook event when the prediction is completed:
-
-[](#webhook-events-filter)Webhook events filter
------------------------------------------------
-
-By default, we will send requests to your webhook URL whenever there are new outputs or the prediction has finished. You can change which events trigger webhook requests by specifying `webhook_events_filter` in the prediction request:
-
-*   `start`: immediately on prediction start
-*   `output`: each time a prediction generates an output (note that predictions can generate multiple outputs)
-*   `logs`: each time log output is generated by a prediction
-*   `completed`: when the prediction reaches a terminal state (succeeded/canceled/failed)
-
-For example, if you only wanted requests to be sent at the start and end of the prediction, you would provide:
-
-```json
-{
-  "input": {
-    "text": "Alice"
-  },
-  "webhook": "https://example.com/my-webhook",
-  "webhook_events_filter": ["start", "completed"]
-}
-```
-
-Requests for event types `output` and `logs` will be sent at most once every 500ms.
-
-If you request `start` and `completed` webhooks, then they’ll always be sent regardless of throttling.
-
-[](#webhooks-for-trainings)Webhooks for trainings
--------------------------------------------------
-
-In addition to predictions, you can also receive webhooks when [fine-tuning models with the training API](/docs/get-started/fine-tune-with-flux):
-
-Tip
-
-**Add query params to your webhook URL** to pass along extra metadata, like an internal ID you’re using for a prediction. For example: `https://example.com/replicate-webhook?customId=123`
-
-[](#example-resources)Example resources
----------------------------------------
-
-*   See the [Node.js client](https://github.com/replicate/replicate-javascript#replicatepredictionscreate) webhook docs.
-*   See the [Python client](https://github.com/replicate/replicate-python#run-a-model-in-the-background-and-get-a-webhook) webhook docs.
-*   See [predictions.create](https://replicate.com/docs/reference/http#predictions.create) and [trainings.create](https://replicate.com/docs/reference/http#trainings.create) API docs.
-*   See [Scribble Diffusion’s codebase](https://github.com/replicate/scribble-diffusion/pull/27/commits/627c872c78aad89cadd02798d37d4696e3278a12) for a reference implementation in JavaScript.
-*   Read our [streaming guide](/docs/streaming) to learn how to consume server-sent events (SSEs) from language models.
-
 # View deployments
 
 **URL:** https://replicate.com/docs/topics/deployments/view-deployments.md
@@ -1409,180 +1409,6 @@ You can also create models using Replicate’s [JavaScript](https://github.com/r
 ----------------------------------------------
 
 Once you’ve created a model on Replicate, you can [push to it with Cog](/docs/guides/push-a-model) or [use it as a training destination for fine-tunes](/docs/topics/models/models-as-training-destinations).
-
-# Monitor a deployment
-
-**URL:** https://replicate.com/docs/topics/deployments/monitor-a-deployment.md
-
-Deployments provide tools to help you track performance, diagnose issues, and monitor your model’s health.
-
-[](#metrics-dashboard)Metrics dashboard
----------------------------------------
-
-Each deployment provides a metrics dashboard to help you understand how your model is performing in production.
-
-You can view up to 24 hours of historical metrics data, aggregated into 15-minute intervals.
-
-### [](#available-metrics)Available metrics
-
-The dashboard tracks the following metrics:
-
-*   **Latency**: Track response times and identify performance bottlenecks
-*   **Throughput**: Monitor requests per second and capacity utilization
-*   **Error rates**: Identify and troubleshoot failed predictions
-*   **Instance status**: See how many instances are starting, idle, or actively processing requests
-*   **Queue depth**: Monitor pending predictions waiting for processing
-*   **GPU memory usage**: Monitor how much GPU memory your deployment is using across all instances
-
-The metrics graphs automatically refresh and provide interactive controls for zooming and filtering data by time range.
-
-Access your deployment metrics by visiting [replicate.com/deployments](https://replicate.com/deployments) and selecting the deployment you want to monitor.
-
-[](#gpu-memory-monitoring)GPU memory monitoring
------------------------------------------------
-
-GPU memory monitoring helps you optimize resource utilization and ensure your models are running efficiently. The GPU memory visualization shows:
-
-*   **Total memory available**: The total GPU memory capacity allocated to your deployment across all instances.
-*   **Memory usage patterns**: Both median and maximum GPU memory usage over configurable time periods (2 hours or 24 hours).
-*   **Multi-instance aggregation**: Memory usage is aggregated across all running instances in your deployment, giving you a comprehensive view of resource utilization.
-
-This monitoring helps you:
-
-*   See if your model is using GPU memory efficiently
-*   Decide if you need different hardware for better performance
-*   Spot memory usage patterns and potential optimizations
-*   Plan capacity for scaling your deployment
-
-[](#setup-failure-notifications)Setup failure notifications
------------------------------------------------------------
-
-Info
-
-This feature is only available for users with an enterprise contract. To learn more about our enterprise plan, reach out to [sales@replicate.com](mailto:sales@replicate.com).
-
-You can choose to get notified via email when your deployment fails during the model’s [setup function](https://cog.run/python/#predictorsetup).
-
-The alert includes:
-
-*   The name of the deployment
-*   URL of the version that failed setup
-*   If relevant, any actions that we’ve automatically taken (like rolling back to a previous version)
-
-To turn on setup failure alerts:
-
-1.  Configure your email address:
-    *   Go to your account settings at [replicate.com/account](https://replicate.com/account)
-    *   Navigate to the **General** tab
-    *   Set your preferred email address for notifications
-2.  Turn on alerts for your deployment:
-    *   Go to your deployment page at [replicate.com/deployments](https://replicate.com/deployments)
-    *   Select the deployment you want to monitor
-    *   Go to the **Settings** tab
-    *   Scroll down to advanced settings and check the box to enable notifications for setup failure
-
-If you use Slack, you can use Slack’s [send emails to Slack](https://slack.com/help/articles/206819278-Send-emails-to-Slack) feature to receive these notifications in a Slack channel.
-
-[](#custom-setup-timeouts)Custom setup timeouts
------------------------------------------------
-
-Info
-
-This feature is only available for users with an enterprise contract. To learn more about our enterprise plan, reach out to [sales@replicate.com](mailto:sales@replicate.com).
-
-You can customize the timeout for your deployment’s model [setup function](https://cog.run/python/#predictorsetup). The setup timeout determines how long Replicate will wait for a model instance to complete setup before marking it as failed. The default setup timeout is 10 minutes.
-
-To configure the setup timeout:
-
-1.  Navigate to your deployment page at [replicate.com/deployments](https://replicate.com/deployments)
-2.  Select the deployment you want to configure
-3.  Go to the **Settings** tab
-4.  Scroll to **Advanced settings** and pick a duration from 1 minute to 3 hours.
-
-![Setup timeout configuration in deployment settings](/_content/assets/deployment-setup-timeout.FN-shQZL.png)
-
-The default setup timeout is appropriate for most models, but you may need to increase it if your model:
-
-*   Has a large model file that takes time to download
-*   Performs complex initialization or preprocessing
-*   Requires additional setup steps during instance startup
-
-# Receive webhooks
-
-**URL:** https://replicate.com/docs/topics/webhooks/receive-webhook.md
-
-Replicate can send an HTTP POST request to the URL you specified whenever the prediction is created, has new logs, new output, or is completed.
-
-Note
-
-To get started building your first webhook handler, check out this guide: [Build a webhook notifier with Val Town](/docs/guides/build-a-webhook-notifier-with-val-town).
-
-The request body is a prediction object in JSON format. This object has the same structure as the object returned by the [get a prediction](https://replicate.com/docs/reference/http#get-a-prediction) API. Here’s an example of an unfinished prediction:
-
-```json
-{
-  "id": "ufawqhfynnddngldkgtslldrkq",
-  "version": "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
-  "created_at": "2022-04-26T22:13:06.224088Z",
-  "started_at": null,
-  "completed_at": null,
-  "status": "starting",
-  "input": {
-    "text": "Alice"
-  },
-  "output": null,
-  "error": null,
-  "logs": null,
-  "metrics": {}
-}
-```
-
-Refer to [Prediction status](/docs/topics/predictions/lifecycle) for the list of possible `status` values.
-
-Here’s an example of a webhook handler:
-
-Your endpoint should respond with a 2xx status code within a few seconds; otherwise, the webhook might be retried.
-
-[](#filtering-webhook-events)Filtering webhook events
------------------------------------------------------
-
-By default, Replicate sends requests to your webhook URL whenever there are new outputs or the prediction has finished. You can change which events trigger webhook requests by specifying a `webhook_events_filter` array in the JSON body of the prediction request.
-
-*   `start`: immediately on prediction start
-*   `output`: each time a prediction generates an output (note that predictions can generate multiple outputs)
-*   `logs`: each time log output is generated by a prediction
-*   `completed`: when the prediction reaches a terminal state (succeeded/canceled/failed)
-
-For example, if you only wanted requests to be sent at the start and end of the prediction, you would provide:
-
-```json
-{
-  "input": {
-    "text": "Alice"
-  },
-  "webhook": "https://example.com/my-webhook",
-  "webhook_events_filter": ["start", "completed"]
-}
-```
-
-Requests for event types `output` and `logs` will be sent at most once every 500ms. If you request `start` and `completed` webhooks, then they’ll always be sent regardless of throttling.
-
-[](#retries)Retries
--------------------
-
-When Replicate sends the terminal webhook for a prediction (where the status is `succeeded`, `failed` or `canceled`), we check the response status we get. If we can’t make the request at all, or if we get a 4xx or 5xx response, we’ll retry the webhook. We retry several times on an exponential backoff. The final retry is sent about 1 minute after the prediction completed.
-
-We do not retry any webhooks for intermediate states.
-
-[](#idempotency)Idempotency
----------------------------
-
-**Make webhook handlers idempotent**. Identical webhooks can be sent more than once, so you’ll need handle potentially duplicate information.
-
-[](#ordering)Ordering
----------------------
-
-In rare cases, webhooks for a single prediction may arrive out of order. We recommend you include logic in your application to ignore all webhooks for a prediction after the terminal webhook (where the status is `succeeded`, `failed` or `canceled`). If you are using `output` or `logs` events, you may also want to ignore webhooks that regress the status of the prediction (for example, by emitting less output or fewer logs).
 
 # Output files
 
@@ -1768,6 +1594,180 @@ const nextConfig = {
 
 Remember to update your code to work with `FileOutput` objects if you’re using version 1.0.0 or later of our client libraries.
 
+# Receive webhooks
+
+**URL:** https://replicate.com/docs/topics/webhooks/receive-webhook.md
+
+Replicate can send an HTTP POST request to the URL you specified whenever the prediction is created, has new logs, new output, or is completed.
+
+Note
+
+To get started building your first webhook handler, check out this guide: [Build a webhook notifier with Val Town](/docs/guides/build-a-webhook-notifier-with-val-town).
+
+The request body is a prediction object in JSON format. This object has the same structure as the object returned by the [get a prediction](https://replicate.com/docs/reference/http#get-a-prediction) API. Here’s an example of an unfinished prediction:
+
+```json
+{
+  "id": "ufawqhfynnddngldkgtslldrkq",
+  "version": "5c7d5dc6dd8bf75c1acaa8565735e7986bc5b66206b55cca93cb72c9bf15ccaa",
+  "created_at": "2022-04-26T22:13:06.224088Z",
+  "started_at": null,
+  "completed_at": null,
+  "status": "starting",
+  "input": {
+    "text": "Alice"
+  },
+  "output": null,
+  "error": null,
+  "logs": null,
+  "metrics": {}
+}
+```
+
+Refer to [Prediction status](/docs/topics/predictions/lifecycle) for the list of possible `status` values.
+
+Here’s an example of a webhook handler:
+
+Your endpoint should respond with a 2xx status code within a few seconds; otherwise, the webhook might be retried.
+
+[](#filtering-webhook-events)Filtering webhook events
+-----------------------------------------------------
+
+By default, Replicate sends requests to your webhook URL whenever there are new outputs or the prediction has finished. You can change which events trigger webhook requests by specifying a `webhook_events_filter` array in the JSON body of the prediction request.
+
+*   `start`: immediately on prediction start
+*   `output`: each time a prediction generates an output (note that predictions can generate multiple outputs)
+*   `logs`: each time log output is generated by a prediction
+*   `completed`: when the prediction reaches a terminal state (succeeded/canceled/failed)
+
+For example, if you only wanted requests to be sent at the start and end of the prediction, you would provide:
+
+```json
+{
+  "input": {
+    "text": "Alice"
+  },
+  "webhook": "https://example.com/my-webhook",
+  "webhook_events_filter": ["start", "completed"]
+}
+```
+
+Requests for event types `output` and `logs` will be sent at most once every 500ms. If you request `start` and `completed` webhooks, then they’ll always be sent regardless of throttling.
+
+[](#retries)Retries
+-------------------
+
+When Replicate sends the terminal webhook for a prediction (where the status is `succeeded`, `failed` or `canceled`), we check the response status we get. If we can’t make the request at all, or if we get a 4xx or 5xx response, we’ll retry the webhook. We retry several times on an exponential backoff. The final retry is sent about 1 minute after the prediction completed.
+
+We do not retry any webhooks for intermediate states.
+
+[](#idempotency)Idempotency
+---------------------------
+
+**Make webhook handlers idempotent**. Identical webhooks can be sent more than once, so you’ll need handle potentially duplicate information.
+
+[](#ordering)Ordering
+---------------------
+
+In rare cases, webhooks for a single prediction may arrive out of order. We recommend you include logic in your application to ignore all webhooks for a prediction after the terminal webhook (where the status is `succeeded`, `failed` or `canceled`). If you are using `output` or `logs` events, you may also want to ignore webhooks that regress the status of the prediction (for example, by emitting less output or fewer logs).
+
+# Monitor a deployment
+
+**URL:** https://replicate.com/docs/topics/deployments/monitor-a-deployment.md
+
+Deployments provide tools to help you track performance, diagnose issues, and monitor your model’s health.
+
+[](#metrics-dashboard)Metrics dashboard
+---------------------------------------
+
+Each deployment provides a metrics dashboard to help you understand how your model is performing in production.
+
+You can view up to 24 hours of historical metrics data, aggregated into 15-minute intervals.
+
+### [](#available-metrics)Available metrics
+
+The dashboard tracks the following metrics:
+
+*   **Latency**: Track response times and identify performance bottlenecks
+*   **Throughput**: Monitor requests per second and capacity utilization
+*   **Error rates**: Identify and troubleshoot failed predictions
+*   **Instance status**: See how many instances are starting, idle, or actively processing requests
+*   **Queue depth**: Monitor pending predictions waiting for processing
+*   **GPU memory usage**: Monitor how much GPU memory your deployment is using across all instances
+
+The metrics graphs automatically refresh and provide interactive controls for zooming and filtering data by time range.
+
+Access your deployment metrics by visiting [replicate.com/deployments](https://replicate.com/deployments) and selecting the deployment you want to monitor.
+
+[](#gpu-memory-monitoring)GPU memory monitoring
+-----------------------------------------------
+
+GPU memory monitoring helps you optimize resource utilization and ensure your models are running efficiently. The GPU memory visualization shows:
+
+*   **Total memory available**: The total GPU memory capacity allocated to your deployment across all instances.
+*   **Memory usage patterns**: Both median and maximum GPU memory usage over configurable time periods (2 hours or 24 hours).
+*   **Multi-instance aggregation**: Memory usage is aggregated across all running instances in your deployment, giving you a comprehensive view of resource utilization.
+
+This monitoring helps you:
+
+*   See if your model is using GPU memory efficiently
+*   Decide if you need different hardware for better performance
+*   Spot memory usage patterns and potential optimizations
+*   Plan capacity for scaling your deployment
+
+[](#setup-failure-notifications)Setup failure notifications
+-----------------------------------------------------------
+
+Info
+
+This feature is only available for users with an enterprise contract. To learn more about our enterprise plan, reach out to [sales@replicate.com](mailto:sales@replicate.com).
+
+You can choose to get notified via email when your deployment fails during the model’s [setup function](https://cog.run/python/#predictorsetup).
+
+The alert includes:
+
+*   The name of the deployment
+*   URL of the version that failed setup
+*   If relevant, any actions that we’ve automatically taken (like rolling back to a previous version)
+
+To turn on setup failure alerts:
+
+1.  Configure your email address:
+    *   Go to your account settings at [replicate.com/account](https://replicate.com/account)
+    *   Navigate to the **General** tab
+    *   Set your preferred email address for notifications
+2.  Turn on alerts for your deployment:
+    *   Go to your deployment page at [replicate.com/deployments](https://replicate.com/deployments)
+    *   Select the deployment you want to monitor
+    *   Go to the **Settings** tab
+    *   Scroll down to advanced settings and check the box to enable notifications for setup failure
+
+If you use Slack, you can use Slack’s [send emails to Slack](https://slack.com/help/articles/206819278-Send-emails-to-Slack) feature to receive these notifications in a Slack channel.
+
+[](#custom-setup-timeouts)Custom setup timeouts
+-----------------------------------------------
+
+Info
+
+This feature is only available for users with an enterprise contract. To learn more about our enterprise plan, reach out to [sales@replicate.com](mailto:sales@replicate.com).
+
+You can customize the timeout for your deployment’s model [setup function](https://cog.run/python/#predictorsetup). The setup timeout determines how long Replicate will wait for a model instance to complete setup before marking it as failed. The default setup timeout is 10 minutes.
+
+To configure the setup timeout:
+
+1.  Navigate to your deployment page at [replicate.com/deployments](https://replicate.com/deployments)
+2.  Select the deployment you want to configure
+3.  Go to the **Settings** tab
+4.  Scroll to **Advanced settings** and pick a duration from 1 minute to 3 hours.
+
+![Setup timeout configuration in deployment settings](/_content/assets/deployment-setup-timeout.FN-shQZL.png)
+
+The default setup timeout is appropriate for most models, but you may need to increase it if your model:
+
+*   Has a large model file that takes time to download
+*   Performs complex initialization or preprocessing
+*   Requires additional setup steps during instance startup
+
 # Prediction lifecycle
 
 **URL:** https://replicate.com/docs/topics/predictions/lifecycle.md
@@ -1817,6 +1817,19 @@ When you’re logged in, you can view a list of your predictions on the [dashboa
 For long-running models, you may want to poll the API or use [webhooks](/docs/topics/webhooks) to check the status of a prediction.
 
 To learn more about how long predictions are stored with Replicate, refer to [Data retention](/docs/topics/predictions/data-retention).
+
+# Model versions
+
+**URL:** https://replicate.com/docs/topics/models/versions.md
+
+Just like normal software, machine learning models change and improve over time, and those changes are released as new versions. Whenever a model author retrains a model with new data, fixes a bug in the source code, or updates a dependency, those changes can influence the behavior of the model. The changes are published as new versions, so model authors can make improvements without disrupting the experience for people using older versions of the model. Versioning is essential to making machine learning reproducible: it helps guarantee that a model will behave consistently regardless of when or where it’s being run.
+
+[](#finding-model-versions)Finding model versions
+-------------------------------------------------
+
+You can find model versions by going to any model page and clicking on the [Versions tab](https://replicate.com/fofr/sticker-maker/versions).
+
+![The model versions UI on Replicate](/_content/assets/versions.B4zSnoCg.png)
 
 # Verify webhooks
 
@@ -1912,18 +1925,41 @@ As mentioned above, Replicate also sends the timestamp of the attempt in the `we
 [](#complete-verification-example)Complete verification example
 ---------------------------------------------------------------
 
-# Model versions
+# Delete a deployment
 
-**URL:** https://replicate.com/docs/topics/models/versions.md
+**URL:** https://replicate.com/docs/topics/deployments/delete-a-deployment.md
 
-Just like normal software, machine learning models change and improve over time, and those changes are released as new versions. Whenever a model author retrains a model with new data, fixes a bug in the source code, or updates a dependency, those changes can influence the behavior of the model. The changes are published as new versions, so model authors can make improvements without disrupting the experience for people using older versions of the model. Versioning is essential to making machine learning reproducible: it helps guarantee that a model will behave consistently regardless of when or where it’s being run.
+You can delete a deployment you own on the settings page on the web or programmatically via the `deployments.delete` HTTP API.
 
-[](#finding-model-versions)Finding model versions
--------------------------------------------------
+Note
 
-You can find model versions by going to any model page and clicking on the [Versions tab](https://replicate.com/fofr/sticker-maker/versions).
+You can only delete deployments that have been offline and unused for at least 15 minutes.
 
-![The model versions UI on Replicate](/_content/assets/versions.B4zSnoCg.png)
+[](#delete-a-deployment-on-the-web)Delete a deployment on the web
+-----------------------------------------------------------------
+
+Go to [Deployments](https://replicate.com/deployments) and select the deployment, navigate to **Settings**, then select **Delete deployment**.
+
+[](#delete-a-deployment-via-api)Delete a deployment via API
+-----------------------------------------------------------
+
+Use the [`deployments.delete` endpoint](https://replicate.com/docs/reference/http#delete-a-deployment):
+
+```http
+DELETE https://api.replicate.com/v1/deployments/{deployment_id}
+```
+
+Here’s an example cURL request:
+
+```shell
+curl -s -X DELETE \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  https://api.replicate.com/v1/deployments/deployment-id
+```
+
+Note
+
+Currently, the JavaScript and Python client libraries do not offer a way to delete deployments (only the HTTP API does).
 
 # Publish a model
 
@@ -2069,42 +2105,6 @@ Cog models are versioned just like normal software projects, which means you can
 
 For more details, see [model versions](/docs/topics/models/versions).
 
-# Delete a deployment
-
-**URL:** https://replicate.com/docs/topics/deployments/delete-a-deployment.md
-
-You can delete a deployment you own on the settings page on the web or programmatically via the `deployments.delete` HTTP API.
-
-Note
-
-You can only delete deployments that have been offline and unused for at least 15 minutes.
-
-[](#delete-a-deployment-on-the-web)Delete a deployment on the web
------------------------------------------------------------------
-
-Go to [Deployments](https://replicate.com/deployments) and select the deployment, navigate to **Settings**, then select **Delete deployment**.
-
-[](#delete-a-deployment-via-api)Delete a deployment via API
------------------------------------------------------------
-
-Use the [`deployments.delete` endpoint](https://replicate.com/docs/reference/http#delete-a-deployment):
-
-```http
-DELETE https://api.replicate.com/v1/deployments/{deployment_id}
-```
-
-Here’s an example cURL request:
-
-```shell
-curl -s -X DELETE \
-  -H "Authorization: Bearer YOUR_API_TOKEN" \
-  https://api.replicate.com/v1/deployments/deployment-id
-```
-
-Note
-
-Currently, the JavaScript and Python client libraries do not offer a way to delete deployments (only the HTTP API does).
-
 # Share a prediction
 
 **URL:** https://replicate.com/docs/topics/predictions/share-a-prediction.md
@@ -2158,6 +2158,38 @@ await replicate.predictions.create({
 Your webhook handler should now receive webhooks from Replicate. Once you’ve deployed your app, change the value of the `webhook` URL to your production webhook handler endpoint when creating predictions.
 
 For a real-world example of webhook handling in Next.js, check out [Scribble Diffusion’s codebase](https://github.com/replicate/scribble-diffusion/pull/27/commits/627c872c78aad89cadd02798d37d4696e3278a12).
+
+# Rate limits
+
+**URL:** https://replicate.com/docs/topics/predictions/rate-limits.md
+
+We limit the number of API requests that can be made to Replicate:
+
+*   You can [create predictions](/docs/reference/http#create-a-prediction) at 600 requests per minute.
+*   All other endpoints you can call at 3000 requests per minute.
+
+[](#throttling)Throttling
+-------------------------
+
+You can make short bursts of requests above the default rate limits before being throttled.
+
+As you approach running out of credit, we apply stronger rate limits. We do this to stop you from accidentally overspending and going into arrears, and to give you some time to increase your balance when it’s running low before getting shut off entirely. To avoid this, set up [credit auto-reload](/docs/topics/billing/prepaid-credit) to keep your credit balance above $20.
+
+If you have been granted credit and don’t have a payment method on file, you’ll also be rate limited to 1 request per second with a maximum of 6 requests per minute.
+
+[](#api-response)API response
+-----------------------------
+
+If you hit a limit, you will receive a response with status `429` with a body like:
+
+```json
+{"detail":"Request was throttled. Your rate limit resets in ~30s."}
+```
+
+[](#higher-limits)Higher limits
+-------------------------------
+
+If you want higher limits, [contact us](https://replicate.com/support).
 
 # Model hardware
 
@@ -2301,38 +2333,6 @@ For the full list, [take a look at the official models collection](https://repli
 ---------------------------------------------------------
 
 The collection of official models is always growing. If you know of a model that you think should be official, please [let us know](https://replicate.com/contact).
-
-# Rate limits
-
-**URL:** https://replicate.com/docs/topics/predictions/rate-limits.md
-
-We limit the number of API requests that can be made to Replicate:
-
-*   You can [create predictions](/docs/reference/http#create-a-prediction) at 600 requests per minute.
-*   All other endpoints you can call at 3000 requests per minute.
-
-[](#throttling)Throttling
--------------------------
-
-You can make short bursts of requests above the default rate limits before being throttled.
-
-As you approach running out of credit, we apply stronger rate limits. We do this to stop you from accidentally overspending and going into arrears, and to give you some time to increase your balance when it’s running low before getting shut off entirely. To avoid this, set up [credit auto-reload](/docs/topics/billing/prepaid-credit) to keep your credit balance above $20.
-
-If you have been granted credit and don’t have a payment method on file, you’ll also be rate limited to 1 request per second with a maximum of 6 requests per minute.
-
-[](#api-response)API response
------------------------------
-
-If you hit a limit, you will receive a response with status `429` with a body like:
-
-```json
-{"detail":"Request was throttled. Your rate limit resets in ~30s."}
-```
-
-[](#higher-limits)Higher limits
--------------------------------
-
-If you want higher limits, [contact us](https://replicate.com/support).
 
 # Community models
 
@@ -2479,18 +2479,6 @@ If you’ve created a useful model, consider publishing it to share with the com
 
 For more information about creating and publishing models, see the [guide to publishing your first model](/docs/topics/models/publish-a-model).
 
-# Safety checking
-
-**URL:** https://replicate.com/docs/topics/predictions/safety-checking.md
-
-Image generation models like [Stability AI’s SDXL](https://replicate.com/stability-ai/sdxl) and [Black Forest Labs’ Flux](https://replicate.com/black-forest-labs/flux-dev) include a safety checker to prevent the model from generating images that portray nudity, violence, and other unsafe content.
-
-To protect users from generating unsafe content, we enable the safety checker for web predictions on the [SDXL base model](https://replicate.com/stability-ai/sdxl), the [Flux base model](https://replicate.com/black-forest-labs/flux-dev), and all derivative fine-tunes of both SDXL and Flux.
-
-The safety checker is intended to protect users, but it can sometimes be too restrictive or generate false positives, incorrectly flagging safe content as unsafe. For those cases, you can disable the safety checker when running the model with the API. This gives you the flexibility to use a [custom safety-checking model](https://replicate.com/zsxkib/stable-diffusion-safety-checker) or a third-party service as part of your workflow.
-
-For more details on allowed use, see the [terms of service](https://replicate.com/terms).
-
 # Private models vs. public models
 
 **URL:** https://replicate.com/docs/topics/models/private-models.md
@@ -2526,6 +2514,18 @@ Data for predictions created through the web interface is kept indefinitely.
 ---------------------------------------------------------------
 
 To manually delete a prediction on the website, go to your dashboard, find the prediction, and look for a **Delete** button on the prediction page. Clicking this button completely removes the prediction from the site, including any output data and output files associated with it.
+
+# Safety checking
+
+**URL:** https://replicate.com/docs/topics/predictions/safety-checking.md
+
+Image generation models like [Stability AI’s SDXL](https://replicate.com/stability-ai/sdxl) and [Black Forest Labs’ Flux](https://replicate.com/black-forest-labs/flux-dev) include a safety checker to prevent the model from generating images that portray nudity, violence, and other unsafe content.
+
+To protect users from generating unsafe content, we enable the safety checker for web predictions on the [SDXL base model](https://replicate.com/stability-ai/sdxl), the [Flux base model](https://replicate.com/black-forest-labs/flux-dev), and all derivative fine-tunes of both SDXL and Flux.
+
+The safety checker is intended to protect users, but it can sometimes be too restrictive or generate false positives, incorrectly flagging safe content as unsafe. For those cases, you can disable the safety checker when running the model with the API. This gives you the flexibility to use a [custom safety-checking model](https://replicate.com/zsxkib/stable-diffusion-safety-checker) or a third-party service as part of your workflow.
+
+For more details on allowed use, see the [terms of service](https://replicate.com/terms).
 
 # Use a model as a training destination
 
@@ -5555,211 +5555,6 @@ const output = await replicate.run(
 console.log(output);
 ```
 
-# Set up a CI/CD pipeline for your model
-
-**URL:** https://replicate.com/docs/guides/build/continuous-model-deployment.md
-
-This guide will show you how to set up continuous integration and deployment for your Cog model, so you can safely and easily publish new versions of your model as part of your GitHub-based development workflow.
-
-![Use GitHub, Anthropic, and Replicate to build a CI/CD pipeline for your Cog model.](/_content/assets/openai-anthropic-replicate.B4ZhQOYb_Z2tNfmX.webp)
-
-Use GitHub, Anthropic, and Replicate to build a CI/CD pipeline for your Cog model.
-
-[](#what-is-cicd)What is CI/CD?
--------------------------------
-
-CI/CD stands for continuous integration and deployment. It’s a well-known process for building, testing, and deploying software. It has been a popular practice in the software industry for a long time, but it’s just as applicable when developing machine learning models. After all, [AI models are just software](https://replicate.com/blog/machine-learning-needs-better-tools#machine-learning-is-just-software).
-
-CI/CD has many benefits:
-
-*   Catch errors early. This helps reduce the risk of breaking things for your users.
-*   Test your model in a consistent and repeatable way.
-*   Automate the release process so you can ship new versions of your model more frequently.
-*   Collaborate with others. CI/CD workflows live as code in your repository, so they’re easy to discover and understand.
-
-[](#what-are-we-building)What are we building?
-----------------------------------------------
-
-In this guide, you’ll set up a CI/CD pipeline for your Cog model using GitHub Actions and [github.com/replicate/cog-safe-push](https://github.com/replicate/cog-safe-push), an open-source project we use internally at Replicate to test and deploy our production models.
-
-Your pipeline will:
-
-*   Lint your Python model code.
-*   Create a private test model on Replicate.
-*   Push your local Cog model to the test model on Replicate.
-*   Lint the model schema, making sure all inputs have descriptions, etc.
-*   Run predictions against the test model and compare the outputs to the upstream model.
-*   “Fuzz” the test model for five minutes by throwing a bunch of different inputs at it and making sure it doesn’t throw any errors.
-*   Push your changes to the production model once the test model passes all the tests.
-
-[](#what-is-fuzz-testing)What is fuzz testing?
-----------------------------------------------
-
-Fuzz testing is a technique for finding bugs in software by passing invalid, unexpected, or random data as inputs to the software and seeing if it crashes. In this guide, we’ll use Anthropic’s [Claude API](https://docs.anthropic.com/en/api/introduction) to generate random inputs to test your model.
-
-Language models are great for generating plain text, but they can also be used to generate JSON data. We’ll take advantage of that here to generate structured data that matches the input schema of your model.
-
-[](#prerequisites)Prerequisites
--------------------------------
-
-Before starting this guide, you’ll need the following:
-
-*   An existing [Cog](https://cog.run/) model. If you’ve never pushed a Cog model before, check out the [guide to pushing your first model](/docs/guides/push-a-model).
-*   A [Replicate](https://replicate.com/) account for publishing your Cog model.
-*   A [GitHub](https://github.com/) repository containing the source code for your model.
-*   An [Anthropic](https://console.anthropic.com/) account for generating JSON data to test your model.
-
-[](#step-1-create-a-github-actions-workflow)Step 1: Create a GitHub Actions workflow
-------------------------------------------------------------------------------------
-
-GitHub Actions is a feature built into GitHub that makes it easy to add scripts to your repository, and run those scripts on GitHub’s servers. You can use GitHub Actions to do all kinds of automation, like running tests, deploying your model, and more.
-
-To use GitHub Actions, you define workflows using YAML files stored in the `.github/workflows` directory of your GitHub repository.
-
-Create a new file in your repository called `.github/workflows/cog-safe-push.yml`.
-
-Then paste the following code into the file:
-
-```yml
-name: Cog Safe Push
-on:
-  workflow_dispatch:
-    inputs:
-      model:
-        description: 'The name of the model to push, in the format owner/model-name'
-        type: string
-jobs:
-  cog-safe-push:
-    # Tip: Create custom runners in your GitHub organization for faster builds
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: "3.12"
-    - name: Install Cog
-      run: |
-        sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
-        sudo chmod +x /usr/local/bin/cog
-    - name: cog login
-      run: |
-        echo ${{ secrets.COG_TOKEN }} | cog login --token-stdin
-    - name: Install cog-safe-push
-      run: |
-        pip install git+https://github.com/replicate/cog-safe-push.git
-    - name: Push selected models
-      env:
-        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
-      run: |
-        cog-safe-push ${{ inputs.model }}
-```
-
-Commit this file to your Git repository and push it to GitHub.
-
-[](#step-2-set-a-replicate-api-token)Step 2: Set a Replicate API token
-----------------------------------------------------------------------
-
-Before you can run your GitHub Actions workflow, you’ll need to set a Replicate API token as a secret in your GitHub repository.
-
-1.  Go to [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens?new-token-name=continuous-deployment)
-2.  Create a new token with a name like “GitHub Actions CI/CD workflow for my-username/my-model”.
-3.  Copy the token to your clipboard.
-4.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
-5.  Click **New repository secret**.
-6.  In the **Name** field, enter `REPLICATE_API_TOKEN`.
-7.  In the **Value** field, paste the token you copied from Replicate.
-8.  Click **Add secret**.
-
-[](#step-3-set-a-cog-api-token)Step 3: Set a Cog API token
-----------------------------------------------------------
-
-You’ll also need to set a Cog API token as a secret in your GitHub repository, so the `cog-safe-push` script can push your model to Replicate.
-
-1.  Go to [replicate.com/auth/token](https://replicate.com/auth/token) and copy your CLI auth token.
-2.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
-3.  Click **New repository secret**.
-4.  In the **Name** field, enter `COG_TOKEN`.
-5.  In the **Value** field, paste the token you copied from Replicate.
-6.  Click **Add secret**.
-
-[](#step-4-set-an-anthropic-api-key)Step 4: Set an Anthropic API key
---------------------------------------------------------------------
-
-You’ll also need to set an Anthropic API key as a secret in your GitHub repository, so the `cog-safe-push` script can generate structured JSON inputs to test your model.
-
-1.  Go to [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys)
-2.  Create a new API key with a name like “fuzz testing with cog-safe-push for my-username/my-model”.
-3.  Copy the key to your clipboard.
-4.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
-5.  Click **New repository secret**.
-6.  In the **Name** field, enter `ANTHROPIC_API_KEY`.
-7.  In the **Value** field, paste the key you copied from Anthropic.
-8.  Click **Add secret**.
-
-[](#step-5-run-the-workflow)Step 5: Run the workflow
-----------------------------------------------------
-
-Now that you’ve created your workflow and configured the necessary secrets, you can run the workflow manually.
-
-If you’ve configured your workflow correctly, you should see a green checkmark next to the workflow run, and output like the following:
-
-1.  In your GitHub repository, go to the **Actions** tab.
-2.  Click **Cog Safe Push**.
-3.  In the **Model** field, enter the name of your model in the format `owner/model-name`.
-4.  Click **Run workflow**.
-
-![Screenshot of the completed GitHub Actions workflow.](/_content/assets/actions.DNJDa6Ua_2cxMxY.webp)
-
-Screenshot of the completed GitHub Actions workflow.
-
-Success! You’ve just run your CI/CD pipeline. If all the steps passed, you’ve now got a newly published [version](https://replicate.com/docs/topics/models/versions) of your model on Replicate.
-
-[](#step-6-optional-customize-cog-safe-push)Step 6 (Optional): Customize cog-safe-push
---------------------------------------------------------------------------------------
-
-The `cog-safe-push` command has sensible defaults and will work without any specific configuration, but you’ll probably want to customize it to your needs.
-
-If you create a file named `cog-safe-push.yaml` in your Cog directory, it will be used automatically.
-
-Here’s an example configuration that specifies a model, a test model, hardware, and a set of test cases:
-
-```yaml
-# This is the model that the deployment will use
-model: owner/my-model
-# A private model to run the test against before pushing
-test_model: owner/my-model-test
-test_hardware: gpu-l40s
-# Define the predict section to run predictions against the test model
-predict:
-  compare_outputs: false
-  predict_timeout: 700
-  test_cases:
-    - inputs:
-        prompt: A formula one car
-        seed: 1
-    - inputs:
-        prompt: A cat
-        duration: 4
-        negative_prompt: Ginger cat
-        frame_image_url: https://tjzk.replicate.delivery/models_models_featured_image/afce5fa4-5f8a-45db-95c0-bf62ec6958e7/output-59.webp
-        seed: 2
-```
-
-To learn more about the available options, see the [cog-safe-push README](https://github.com/replicate/cog-safe-push/blob/main/README.md).
-
-[](#next-steps)Next steps
--------------------------
-
-Now that you have a CI/CD pipeline for your Cog model, you can use it to publish new versions of your model as part of your GitHub-based development workflow.
-
-The Actions workflow you created is triggered manually. This is a good starting point, as it lets you run the workflow repeatedly until you get everything working the way you want.
-
-Once you’ve got things configured just right, consider updating the workflow to run automatically when you push to a branch of your repository, or whenever you open a pull request.
-
-Remember that CI/CD is an iterative process, and you’ll need to customize the workflow and testing parameters to match your needs. The investment is worth it though: CI/CD will help you ship new versions of your model more frequently, and your team will enjoy faster development velocity and fewer operational headaches. Ship it!
-
 # Push your own model
 
 **URL:** https://replicate.com/docs/guides/build/push-a-model.md
@@ -6002,6 +5797,211 @@ For more details about handling file outputs, see the [Output files documentatio
 
 You can also run your model with the raw HTTP API. [Refer to the HTTP API reference](https://replicate.com/docs/reference/http) for more details.
 
+# Set up a CI/CD pipeline for your model
+
+**URL:** https://replicate.com/docs/guides/build/continuous-model-deployment.md
+
+This guide will show you how to set up continuous integration and deployment for your Cog model, so you can safely and easily publish new versions of your model as part of your GitHub-based development workflow.
+
+![Use GitHub, Anthropic, and Replicate to build a CI/CD pipeline for your Cog model.](/_content/assets/openai-anthropic-replicate.B4ZhQOYb_Z2tNfmX.webp)
+
+Use GitHub, Anthropic, and Replicate to build a CI/CD pipeline for your Cog model.
+
+[](#what-is-cicd)What is CI/CD?
+-------------------------------
+
+CI/CD stands for continuous integration and deployment. It’s a well-known process for building, testing, and deploying software. It has been a popular practice in the software industry for a long time, but it’s just as applicable when developing machine learning models. After all, [AI models are just software](https://replicate.com/blog/machine-learning-needs-better-tools#machine-learning-is-just-software).
+
+CI/CD has many benefits:
+
+*   Catch errors early. This helps reduce the risk of breaking things for your users.
+*   Test your model in a consistent and repeatable way.
+*   Automate the release process so you can ship new versions of your model more frequently.
+*   Collaborate with others. CI/CD workflows live as code in your repository, so they’re easy to discover and understand.
+
+[](#what-are-we-building)What are we building?
+----------------------------------------------
+
+In this guide, you’ll set up a CI/CD pipeline for your Cog model using GitHub Actions and [github.com/replicate/cog-safe-push](https://github.com/replicate/cog-safe-push), an open-source project we use internally at Replicate to test and deploy our production models.
+
+Your pipeline will:
+
+*   Lint your Python model code.
+*   Create a private test model on Replicate.
+*   Push your local Cog model to the test model on Replicate.
+*   Lint the model schema, making sure all inputs have descriptions, etc.
+*   Run predictions against the test model and compare the outputs to the upstream model.
+*   “Fuzz” the test model for five minutes by throwing a bunch of different inputs at it and making sure it doesn’t throw any errors.
+*   Push your changes to the production model once the test model passes all the tests.
+
+[](#what-is-fuzz-testing)What is fuzz testing?
+----------------------------------------------
+
+Fuzz testing is a technique for finding bugs in software by passing invalid, unexpected, or random data as inputs to the software and seeing if it crashes. In this guide, we’ll use Anthropic’s [Claude API](https://docs.anthropic.com/en/api/introduction) to generate random inputs to test your model.
+
+Language models are great for generating plain text, but they can also be used to generate JSON data. We’ll take advantage of that here to generate structured data that matches the input schema of your model.
+
+[](#prerequisites)Prerequisites
+-------------------------------
+
+Before starting this guide, you’ll need the following:
+
+*   An existing [Cog](https://cog.run/) model. If you’ve never pushed a Cog model before, check out the [guide to pushing your first model](/docs/guides/push-a-model).
+*   A [Replicate](https://replicate.com/) account for publishing your Cog model.
+*   A [GitHub](https://github.com/) repository containing the source code for your model.
+*   An [Anthropic](https://console.anthropic.com/) account for generating JSON data to test your model.
+
+[](#step-1-create-a-github-actions-workflow)Step 1: Create a GitHub Actions workflow
+------------------------------------------------------------------------------------
+
+GitHub Actions is a feature built into GitHub that makes it easy to add scripts to your repository, and run those scripts on GitHub’s servers. You can use GitHub Actions to do all kinds of automation, like running tests, deploying your model, and more.
+
+To use GitHub Actions, you define workflows using YAML files stored in the `.github/workflows` directory of your GitHub repository.
+
+Create a new file in your repository called `.github/workflows/cog-safe-push.yml`.
+
+Then paste the following code into the file:
+
+```yml
+name: Cog Safe Push
+on:
+  workflow_dispatch:
+    inputs:
+      model:
+        description: 'The name of the model to push, in the format owner/model-name'
+        type: string
+jobs:
+  cog-safe-push:
+    # Tip: Create custom runners in your GitHub organization for faster builds
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.12"
+    - name: Install Cog
+      run: |
+        sudo curl -o /usr/local/bin/cog -L https://github.com/replicate/cog/releases/latest/download/cog_`uname -s`_`uname -m`
+        sudo chmod +x /usr/local/bin/cog
+    - name: cog login
+      run: |
+        echo ${{ secrets.COG_TOKEN }} | cog login --token-stdin
+    - name: Install cog-safe-push
+      run: |
+        pip install git+https://github.com/replicate/cog-safe-push.git
+    - name: Push selected models
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        REPLICATE_API_TOKEN: ${{ secrets.REPLICATE_API_TOKEN }}
+      run: |
+        cog-safe-push ${{ inputs.model }}
+```
+
+Commit this file to your Git repository and push it to GitHub.
+
+[](#step-2-set-a-replicate-api-token)Step 2: Set a Replicate API token
+----------------------------------------------------------------------
+
+Before you can run your GitHub Actions workflow, you’ll need to set a Replicate API token as a secret in your GitHub repository.
+
+1.  Go to [replicate.com/account/api-tokens](https://replicate.com/account/api-tokens?new-token-name=continuous-deployment)
+2.  Create a new token with a name like “GitHub Actions CI/CD workflow for my-username/my-model”.
+3.  Copy the token to your clipboard.
+4.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
+5.  Click **New repository secret**.
+6.  In the **Name** field, enter `REPLICATE_API_TOKEN`.
+7.  In the **Value** field, paste the token you copied from Replicate.
+8.  Click **Add secret**.
+
+[](#step-3-set-a-cog-api-token)Step 3: Set a Cog API token
+----------------------------------------------------------
+
+You’ll also need to set a Cog API token as a secret in your GitHub repository, so the `cog-safe-push` script can push your model to Replicate.
+
+1.  Go to [replicate.com/auth/token](https://replicate.com/auth/token) and copy your CLI auth token.
+2.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
+3.  Click **New repository secret**.
+4.  In the **Name** field, enter `COG_TOKEN`.
+5.  In the **Value** field, paste the token you copied from Replicate.
+6.  Click **Add secret**.
+
+[](#step-4-set-an-anthropic-api-key)Step 4: Set an Anthropic API key
+--------------------------------------------------------------------
+
+You’ll also need to set an Anthropic API key as a secret in your GitHub repository, so the `cog-safe-push` script can generate structured JSON inputs to test your model.
+
+1.  Go to [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys)
+2.  Create a new API key with a name like “fuzz testing with cog-safe-push for my-username/my-model”.
+3.  Copy the key to your clipboard.
+4.  In your GitHub repository, go to the **Settings**, click **Secrets and variables**, then click **Actions**.
+5.  Click **New repository secret**.
+6.  In the **Name** field, enter `ANTHROPIC_API_KEY`.
+7.  In the **Value** field, paste the key you copied from Anthropic.
+8.  Click **Add secret**.
+
+[](#step-5-run-the-workflow)Step 5: Run the workflow
+----------------------------------------------------
+
+Now that you’ve created your workflow and configured the necessary secrets, you can run the workflow manually.
+
+If you’ve configured your workflow correctly, you should see a green checkmark next to the workflow run, and output like the following:
+
+1.  In your GitHub repository, go to the **Actions** tab.
+2.  Click **Cog Safe Push**.
+3.  In the **Model** field, enter the name of your model in the format `owner/model-name`.
+4.  Click **Run workflow**.
+
+![Screenshot of the completed GitHub Actions workflow.](/_content/assets/actions.DNJDa6Ua_2cxMxY.webp)
+
+Screenshot of the completed GitHub Actions workflow.
+
+Success! You’ve just run your CI/CD pipeline. If all the steps passed, you’ve now got a newly published [version](https://replicate.com/docs/topics/models/versions) of your model on Replicate.
+
+[](#step-6-optional-customize-cog-safe-push)Step 6 (Optional): Customize cog-safe-push
+--------------------------------------------------------------------------------------
+
+The `cog-safe-push` command has sensible defaults and will work without any specific configuration, but you’ll probably want to customize it to your needs.
+
+If you create a file named `cog-safe-push.yaml` in your Cog directory, it will be used automatically.
+
+Here’s an example configuration that specifies a model, a test model, hardware, and a set of test cases:
+
+```yaml
+# This is the model that the deployment will use
+model: owner/my-model
+# A private model to run the test against before pushing
+test_model: owner/my-model-test
+test_hardware: gpu-l40s
+# Define the predict section to run predictions against the test model
+predict:
+  compare_outputs: false
+  predict_timeout: 700
+  test_cases:
+    - inputs:
+        prompt: A formula one car
+        seed: 1
+    - inputs:
+        prompt: A cat
+        duration: 4
+        negative_prompt: Ginger cat
+        frame_image_url: https://tjzk.replicate.delivery/models_models_featured_image/afce5fa4-5f8a-45db-95c0-bf62ec6958e7/output-59.webp
+        seed: 2
+```
+
+To learn more about the available options, see the [cog-safe-push README](https://github.com/replicate/cog-safe-push/blob/main/README.md).
+
+[](#next-steps)Next steps
+-------------------------
+
+Now that you have a CI/CD pipeline for your Cog model, you can use it to publish new versions of your model as part of your GitHub-based development workflow.
+
+The Actions workflow you created is triggered manually. This is a good starting point, as it lets you run the workflow repeatedly until you get everything working the way you want.
+
+Once you’ve got things configured just right, consider updating the workflow to run automatically when you push to a branch of your repository, or whenever you open a pull request.
+
+Remember that CI/CD is an iterative process, and you’ll need to customize the workflow and testing parameters to match your needs. The investment is worth it though: CI/CD will help you ship new versions of your model more frequently, and your team will enjoy faster development velocity and fewer operational headaches. Ship it!
+
 # Push a Transformers model
 
 **URL:** https://replicate.com/docs/guides/build/push-a-transformers-model.md
@@ -6224,149 +6224,6 @@ Click the “API” tab on your model page to see example code for running the m
 Now that you have your own model, see what else you can do with it!
 
 To see what models you can use, [check out the Transformers docs on Hugging Face](https://huggingface.co/docs/transformers).
-
-If you need inspiration or guidance, jump into our [Discord](https://discord.gg/replicate).
-
-# Push a Diffusers model
-
-**URL:** https://replicate.com/docs/guides/build/push-a-diffusers-model.md
-
-Learn how to push a [Diffusers](https://huggingface.co/docs/diffusers) image generation model to Replicate as a scalable API.
-
-[](#intro)Intro
----------------
-
-[Diffusers](https://huggingface.co/docs/diffusers) is an open-source Python library that provides a consistent interface for using diffusion models for image generation, the most popular of which is Stable Diffusion.
-
-There are lots of ways to use Stable Diffusion: You can [run it from your browser](https://replicate.com/stability-ai/stable-diffusion) on Replicate’s website, or [run it from your code](https://replicate.com/stability-ai/stable-diffusion/api) using Replicate’s API. You can even [run it on your own machine](https://replicate.com/blog/run-stable-diffusion-on-m1-mac).
-
-But what if you want to customize the model? There are a lot of things you might want to change:
-
-*   **Use custom/pretrained weights or styles.** There are lots of variants of Stable Diffusion trained on different styles of images, like [OpenJourney](https://huggingface.co/prompthero/openjourney-v2), [Analog Diffusion](https://huggingface.co/wavymulder/Analog-Diffusion), and [Realistic Vision](https://huggingface.co/SG161222/Realistic_Vision_V1.4).
-*   **Use a different image format.** Stable Diffusion returns an uncompressed PNG by default, but you might want to also return a compressed JPEG or WebP image.
-*   **Generate a batch of outputs.** You could update the prompt input to accept a delimited string of multiple values and generate a batch of 200 images at once to reduce API call overhead.
-*   **Remove some inputs you don’t care about.** Many machine learning models have a lot of inputs, but you might only care about a few of them. You could remove the ones you don’t care about, and make the model easier to use. For an example of this, see [lora-training](https://replicate.com/cloneofsimo/lora-training) and [lora-advanced-training](https://replicate.com/cloneofsimo/lora-advanced-training).
-*   **Change the scheduler.** Schedulers give you a way to configure a speed-vs-quality tradeoff in your model.
-
-In this guide we’ll walk you through the steps to create your own model, so you can make these kinds of changes and push them to Replicate as your own public or private model with a stable API.
-
-[](#prerequisites)Prerequisites
--------------------------------
-
-To follow this guide, you’ll need:
-
-*   **An account on Replicate.**
-*   **Docker.** You’ll be using the Cog command-line tool to build and push your model. Cog uses Docker to create a container for your model. You’ll need to [install and start Docker](https://docs.docker.com/get-docker/) before you can run Cog. You can confirm Docker is running by typing `docker info` in your terminal.
-
-[](#step-1-create-a-model)Step 1: Create a model
-------------------------------------------------
-
-First, create a model on Replicate at [replicate.com/create](https://replicate.com/create?purpose=fine-tune-image). If you haven’t used Replicate before, you’ll need to sign in with your GitHub account. You can configure the model to be private so that only you can use it, or public so anyone can use it.
-
-[![](https://user-images.githubusercontent.com/2289/222594676-ecb72c3e-1fb4-4ed5-b368-1a82afc46f3b.png)](https://replicate.com/create?purpose=fine-tune-image)
-
-[](#step-2-clone-the-stable-diffusion-repo)Step 2: Clone the Stable Diffusion repo
-----------------------------------------------------------------------------------
-
-Replicate maintains an open-source Stable Diffusion repo on GitHub at [replicate/cog-stable-diffusion](https://github.com/replicate/cog-stable-diffusion).
-
-Create your own fork of the repo on GitHub, or clone the repo directly:
-
-```shell
-git clone https://github.com/replicate/cog-stable-diffusion
-cd cog-stable-diffusion
-```
-
-This repo is fairly small, and contains two noteworthy files:
-
-*   `cog.yaml` - Defines the CUDA and Python versions, and dependencies for the model. This file tells Cog how to package the model.
-*   `predict.py` - Defines the inputs and outputs of the model, and the code to run the model. The Stable Diffusion model itself is imported through the Python [`diffusers`](https://pypi.org/project/diffusers/) library.
-
-[](#step-3-install-cog)Step 3: Install Cog
-------------------------------------------
-
-[Cog](https://cog.run) is an open source tool that makes it easy to put a machine learning model in a Docker container. Run the following commands to install it and set the correct permissions:
-
-```shell
-curl https://replicate.github.io/codespaces/scripts/install-cog.sh | bash
-```
-
-Confirm that Cog is installed by running `cog --version`:
-
-```shell
-cog --version
-# cog version 0.9.25 (built 2024-10-07T15:11:47Z)
-```
-
-[](#step-4-customize-your-model)Step 4: Customize your model
-------------------------------------------------------------
-
-The repo you cloned is configured to build Stable Diffusion 2.1 by default, but you can customize it to use any [diffusers-compatible model](https://huggingface.co/models?library=fine-tune-image), including trained models like [OpenJourney](https://huggingface.co/prompthero/openjourney-v2), [Analog Diffusion](https://huggingface.co/wavymulder/Analog-Diffusion), and [Realistic Vision](https://huggingface.co/SG161222/Realistic_Vision_V1.4).
-
-To use a different model, open `predict.py` and change the value of `MODEL_ID` to a shorthand `{owner}/{repo}` string that corresponds to a diffusers-compatible model on Hugging Face:
-
-```python
-MODEL_ID = "wavymulder/Analog-Diffusion"
-```
-
-If you just want to use a different pretrained model, this is the only change that’s needed.
-
-If you want to make other changes to your model’s behavior, take a look at [`predict.py`](https://github.com/replicate/cog-stable-diffusion/blob/38510524cf4f3dc679e5945ebb52feb40d52c1a9/predict.py), which is the Python interface that defines the inputs and outputs for your model.
-
-[](#step-5-download-weights)Step 5: Download weights
-----------------------------------------------------
-
-Now that you’ve configured your model, it’s time to download the weights:
-
-```shell
-cog run script/download-weights
-```
-
-This process will take a few minutes but you’ll only need to run it once, as it will cache the downloaded dependencies on disk. Get up and stretch, grab yourself a snack, or use this opportunity to add metadata to the model page you created on Replicate in Step 1 by adding a title, README, GitHub repository URL, etc.
-
-[](#step-6-run-your-model)Step 6: Run your model
-------------------------------------------------
-
-Now that you’ve downloaded the weights, you can run the model locally with Cog:
-
-```shell
-cog predict -i prompt="monkey scuba diving" -i width=512  -i height=512
-```
-
-This will run the model locally and return the output image. You can change the prompt, width, and height to see how the model responds to different inputs. Note that larger dimensions require more VRAM, so 512x512 is a sensible default.
-
-[](#step-7-push-your-model)Step 7: Push your model
---------------------------------------------------
-
-Now that you’ve customized your model, it’s time to push it to Replicate.
-
-First you’ll need to authenticate:
-
-```shell
-cog login
-```
-
-Then push your model using the name you specified in Step 1:
-
-```shell
-cog push r8.im/<your-username>/<your-model-name>
-```
-
-[](#step-8-use-your-model)Step 8: Use your model
-------------------------------------------------
-
-Your model is now live!
-
-You can run the model from the website by clicking the “Demo” tab on the model page, or you can use the HTTP API to run the model from your own code.
-
-Click the “API” tab on your model page to see example code for running the model:
-
-![](https://user-images.githubusercontent.com/2289/222592355-ec880478-fa5c-470b-bf90-512cd0b1247f.png)
-
-[](#next-steps)Next steps
--------------------------
-
-Now that you have your own model, see what else you can do with it.
 
 If you need inspiration or guidance, jump into our [Discord](https://discord.gg/replicate).
 
@@ -6687,6 +6544,149 @@ But there’s a lot more you can do. Here are some ideas:
 We’d love to see what you build with these powerful new tools.
 
 Share your project on [X](https://x.com/replicate) or [Discord](https://discord.gg/replicate) and tag us.
+
+# Push a Diffusers model
+
+**URL:** https://replicate.com/docs/guides/build/push-a-diffusers-model.md
+
+Learn how to push a [Diffusers](https://huggingface.co/docs/diffusers) image generation model to Replicate as a scalable API.
+
+[](#intro)Intro
+---------------
+
+[Diffusers](https://huggingface.co/docs/diffusers) is an open-source Python library that provides a consistent interface for using diffusion models for image generation, the most popular of which is Stable Diffusion.
+
+There are lots of ways to use Stable Diffusion: You can [run it from your browser](https://replicate.com/stability-ai/stable-diffusion) on Replicate’s website, or [run it from your code](https://replicate.com/stability-ai/stable-diffusion/api) using Replicate’s API. You can even [run it on your own machine](https://replicate.com/blog/run-stable-diffusion-on-m1-mac).
+
+But what if you want to customize the model? There are a lot of things you might want to change:
+
+*   **Use custom/pretrained weights or styles.** There are lots of variants of Stable Diffusion trained on different styles of images, like [OpenJourney](https://huggingface.co/prompthero/openjourney-v2), [Analog Diffusion](https://huggingface.co/wavymulder/Analog-Diffusion), and [Realistic Vision](https://huggingface.co/SG161222/Realistic_Vision_V1.4).
+*   **Use a different image format.** Stable Diffusion returns an uncompressed PNG by default, but you might want to also return a compressed JPEG or WebP image.
+*   **Generate a batch of outputs.** You could update the prompt input to accept a delimited string of multiple values and generate a batch of 200 images at once to reduce API call overhead.
+*   **Remove some inputs you don’t care about.** Many machine learning models have a lot of inputs, but you might only care about a few of them. You could remove the ones you don’t care about, and make the model easier to use. For an example of this, see [lora-training](https://replicate.com/cloneofsimo/lora-training) and [lora-advanced-training](https://replicate.com/cloneofsimo/lora-advanced-training).
+*   **Change the scheduler.** Schedulers give you a way to configure a speed-vs-quality tradeoff in your model.
+
+In this guide we’ll walk you through the steps to create your own model, so you can make these kinds of changes and push them to Replicate as your own public or private model with a stable API.
+
+[](#prerequisites)Prerequisites
+-------------------------------
+
+To follow this guide, you’ll need:
+
+*   **An account on Replicate.**
+*   **Docker.** You’ll be using the Cog command-line tool to build and push your model. Cog uses Docker to create a container for your model. You’ll need to [install and start Docker](https://docs.docker.com/get-docker/) before you can run Cog. You can confirm Docker is running by typing `docker info` in your terminal.
+
+[](#step-1-create-a-model)Step 1: Create a model
+------------------------------------------------
+
+First, create a model on Replicate at [replicate.com/create](https://replicate.com/create?purpose=fine-tune-image). If you haven’t used Replicate before, you’ll need to sign in with your GitHub account. You can configure the model to be private so that only you can use it, or public so anyone can use it.
+
+[![](https://user-images.githubusercontent.com/2289/222594676-ecb72c3e-1fb4-4ed5-b368-1a82afc46f3b.png)](https://replicate.com/create?purpose=fine-tune-image)
+
+[](#step-2-clone-the-stable-diffusion-repo)Step 2: Clone the Stable Diffusion repo
+----------------------------------------------------------------------------------
+
+Replicate maintains an open-source Stable Diffusion repo on GitHub at [replicate/cog-stable-diffusion](https://github.com/replicate/cog-stable-diffusion).
+
+Create your own fork of the repo on GitHub, or clone the repo directly:
+
+```shell
+git clone https://github.com/replicate/cog-stable-diffusion
+cd cog-stable-diffusion
+```
+
+This repo is fairly small, and contains two noteworthy files:
+
+*   `cog.yaml` - Defines the CUDA and Python versions, and dependencies for the model. This file tells Cog how to package the model.
+*   `predict.py` - Defines the inputs and outputs of the model, and the code to run the model. The Stable Diffusion model itself is imported through the Python [`diffusers`](https://pypi.org/project/diffusers/) library.
+
+[](#step-3-install-cog)Step 3: Install Cog
+------------------------------------------
+
+[Cog](https://cog.run) is an open source tool that makes it easy to put a machine learning model in a Docker container. Run the following commands to install it and set the correct permissions:
+
+```shell
+curl https://replicate.github.io/codespaces/scripts/install-cog.sh | bash
+```
+
+Confirm that Cog is installed by running `cog --version`:
+
+```shell
+cog --version
+# cog version 0.9.25 (built 2024-10-07T15:11:47Z)
+```
+
+[](#step-4-customize-your-model)Step 4: Customize your model
+------------------------------------------------------------
+
+The repo you cloned is configured to build Stable Diffusion 2.1 by default, but you can customize it to use any [diffusers-compatible model](https://huggingface.co/models?library=fine-tune-image), including trained models like [OpenJourney](https://huggingface.co/prompthero/openjourney-v2), [Analog Diffusion](https://huggingface.co/wavymulder/Analog-Diffusion), and [Realistic Vision](https://huggingface.co/SG161222/Realistic_Vision_V1.4).
+
+To use a different model, open `predict.py` and change the value of `MODEL_ID` to a shorthand `{owner}/{repo}` string that corresponds to a diffusers-compatible model on Hugging Face:
+
+```python
+MODEL_ID = "wavymulder/Analog-Diffusion"
+```
+
+If you just want to use a different pretrained model, this is the only change that’s needed.
+
+If you want to make other changes to your model’s behavior, take a look at [`predict.py`](https://github.com/replicate/cog-stable-diffusion/blob/38510524cf4f3dc679e5945ebb52feb40d52c1a9/predict.py), which is the Python interface that defines the inputs and outputs for your model.
+
+[](#step-5-download-weights)Step 5: Download weights
+----------------------------------------------------
+
+Now that you’ve configured your model, it’s time to download the weights:
+
+```shell
+cog run script/download-weights
+```
+
+This process will take a few minutes but you’ll only need to run it once, as it will cache the downloaded dependencies on disk. Get up and stretch, grab yourself a snack, or use this opportunity to add metadata to the model page you created on Replicate in Step 1 by adding a title, README, GitHub repository URL, etc.
+
+[](#step-6-run-your-model)Step 6: Run your model
+------------------------------------------------
+
+Now that you’ve downloaded the weights, you can run the model locally with Cog:
+
+```shell
+cog predict -i prompt="monkey scuba diving" -i width=512  -i height=512
+```
+
+This will run the model locally and return the output image. You can change the prompt, width, and height to see how the model responds to different inputs. Note that larger dimensions require more VRAM, so 512x512 is a sensible default.
+
+[](#step-7-push-your-model)Step 7: Push your model
+--------------------------------------------------
+
+Now that you’ve customized your model, it’s time to push it to Replicate.
+
+First you’ll need to authenticate:
+
+```shell
+cog login
+```
+
+Then push your model using the name you specified in Step 1:
+
+```shell
+cog push r8.im/<your-username>/<your-model-name>
+```
+
+[](#step-8-use-your-model)Step 8: Use your model
+------------------------------------------------
+
+Your model is now live!
+
+You can run the model from the website by clicking the “Demo” tab on the model page, or you can use the HTTP API to run the model from your own code.
+
+Click the “API” tab on your model page to see example code for running the model:
+
+![](https://user-images.githubusercontent.com/2289/222592355-ec880478-fa5c-470b-bf90-512cd0b1247f.png)
+
+[](#next-steps)Next steps
+-------------------------
+
+Now that you have your own model, see what else you can do with it.
+
+If you need inspiration or guidance, jump into our [Discord](https://discord.gg/replicate).
 
 # Optimize models with Pruna
 
@@ -9947,6 +9947,239 @@ Client libraries make it easier to call the HTTP API from various languages.
 
 Got one you’d like to add? [Contact us](https://replicate.com/support).
 
+# OpenAPI schema
+
+**URL:** https://replicate.com/docs/reference/openapi.md
+
+Replicate’s public HTTP API documentation is available as a machine-readable OpenAPI schema in JSON format.
+
+Download the schema at [**api.replicate.com/openapi.json**](https://api.replicate.com/openapi.json)
+
+[](#what-is-openapi)What is OpenAPI?
+------------------------------------
+
+OpenAPI (formerly known as Swagger) is a specification for describing the structure of HTTP APIs, including all their endpoints, HTTP methods, input parameters, request and response formats, and other metadata.
+
+OpenAPI schemas are useful as raw reference material when learning about an API, but they’re also great for dynamically generating client libraries, [reference documentation](/docs/reference/http), tests, and tools for interacting with HTTP APIs.
+
+OpenAPI is also the industry-standard format for AI [function calling](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) (also called “tool use”), which enables products like [Anthropic Claude](https://github.com/anthropics/anthropic-cookbook/blob/main/tool_use/extracting_structured_json.ipynb) and [OpenAI GPT Actions](https://platform.openai.com/docs/actions/actions-library) to auto-discover the structure of HTTP APIs and interact with them dynamically.
+
+[](#exploring-the-schema)Exploring the schema
+---------------------------------------------
+
+Here’s an example using cURL and [jq](https://jqlang.github.io/jq/) to print all the API paths in your terminal:
+
+```shell
+curl -s https://api.replicate.com/openapi.json | jq -r '.paths | keys[]'
+/account
+/collections
+/collections/{collection_slug}
+/deployments
+/deployments/{deployment_owner}/{deployment_name}
+/deployments/{deployment_owner}/{deployment_name}/predictions
+/hardware
+/models
+/models/{model_owner}/{model_name}
+/models/{model_owner}/{model_name}/predictions
+/models/{model_owner}/{model_name}/versions
+/models/{model_owner}/{model_name}/versions/{version_id}
+/models/{model_owner}/{model_name}/versions/{version_id}/trainings
+/predictions
+/predictions/{prediction_id}
+/predictions/{prediction_id}/cancel
+/trainings
+/trainings/{training_id}
+/trainings/{training_id}/cancel
+/webhooks/default/secret
+```
+
+[](#dereferencing)Dereferencing
+-------------------------------
+
+OpenAPI schemas are written in [JSON Schema](https://json-schema.org/), a format which allows you to have multiple references to the same object (see [`$ref`](https://json-schema.org/understanding-json-schema/structuring#dollarref)). References are great for keeping the schema DRY (Don’t Repeat Yourself), but they can make the schema a bit harder to read and use as a consumer.
+
+To make the schema easier to work with, it’s helpful to “dereference” it. This means replacing all the references with the actual objects.
+
+Here’s an example of how `$ref`s appear in the schema:
+
+```json
+{
+  "parameters": [
+    {
+      "$ref": "#/components/parameters/prefer_header"
+    }
+  ],
+}
+```
+
+And here’s what that same object looks like after dereferencing:
+
+```json
+{
+  "parameters": [
+    {
+      "prefer_header": {
+        "description": "Leave the request open and wait for the model to finish generating output.",
+        "in": "header",
+        "name": "Prefer",
+        "schema": {
+          "example": "wait=5",
+          "pattern": "^wait(=([1-9]|[1-9][0-9]|60))?$",
+          "type": "string"
+        }
+      }
+    }
+  ]
+}
+```
+
+There are many open-source libraries for dereferencing OpenAPI schemas.
+
+Here’s some example code showing how to dereference Replicate’s OpenAPI schema using Node.js and the popular and well-maintained [@apidevtools/json-schema-ref-parser](https://www.npmjs.com/package/@apidevtools/json-schema-ref-parser) npm package:
+
+```js
+import $RefParser from "@apidevtools/json-schema-ref-parser";
+const res = await fetch("https://api.replicate.com/openapi.json");
+const rawSchema = await res.json();
+const dereferencedSchema = await $RefParser.dereference(rawSchema);
+console.log(dereferencedSchema);
+```
+
+That will print the entire dereferenced schema to the console:
+
+```js
+{
+  externalDocs: {
+    description: 'Replicate HTTP API',
+    url: 'https://replicate.com/docs/reference/http'
+  },
+  openapi: '3.1.0',
+  paths: {
+    '/account': { get: [Object] },
+    '/collections': { get: [Object] },
+    '/collections/{collection_slug}': { get: [Object] },
+    '/deployments': { get: [Object], post: [Object] },
+    '/deployments/{deployment_owner}/{deployment_name}': { delete: [Object], get: [Object], patch: [Object] },
+    '/deployments/{deployment_owner}/{deployment_name}/predictions': { post: [Object] },
+    '/hardware': { get: [Object] },
+    '/models': { get: [Object], post: [Object], query: [Object] },
+    '/models/{model_owner}/{model_name}': { delete: [Object], get: [Object] },
+    '/models/{model_owner}/{model_name}/predictions': { post: [Object] },
+    '/models/{model_owner}/{model_name}/versions': { get: [Object] },
+    '/models/{model_owner}/{model_name}/versions/{version_id}': { delete: [Object], get: [Object] },
+    '/models/{model_owner}/{model_name}/versions/{version_id}/trainings': { post: [Object] },
+    '/predictions': { get: [Object], post: [Object] },
+    '/predictions/{prediction_id}': { get: [Object] },
+    '/predictions/{prediction_id}/cancel': { post: [Object] },
+    '/trainings': { get: [Object] },
+    '/trainings/{training_id}': { get: [Object] },
+    '/trainings/{training_id}/cancel': { post: [Object] },
+    '/webhooks/default/secret': { get: [Object] }
+  },
+  security: [ { bearerAuth: [] } ],
+  servers: [ { url: 'https://api.replicate.com/v1' } ]
+}
+```
+
+[](#model-schemas)Model schemas
+-------------------------------
+
+Every model on Replicate also has its own API schema.
+
+You can programmatically fetch the full input and output schema for any Replicate model using the [`models.get`](/docs/reference/http#operation/models.get) API endpoint.
+
+Here’s an example using cURL and [jq](https://jqlang.github.io/jq/) to print the input schema for the [black-forest-labs/flux-schnell](https://replicate.com/black-forest-labs/flux-schnell) model:
+
+```shell
+curl -s \
+  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
+  https://api.replicate.com/v1/models/black-forest-labs/flux-schnell \
+  | jq .latest_version.openapi_schema.components.schemas.Input.properties
+```
+
+And here’s the output:
+
+```json
+{
+  "seed": {
+    "type": "integer",
+    "title": "Seed",
+    "x-order": 3,
+    "description": "Random seed. Set for reproducible generation"
+  },
+  "prompt": {
+    "type": "string",
+    "title": "Prompt",
+    "x-order": 0,
+    "description": "Prompt for generated image"
+  },
+  "go_fast": {
+    "type": "boolean",
+    "title": "Go Fast",
+    "default": true,
+    "x-order": 7,
+    "description": "Run faster predictions with model optimized for speed (currently fp8 quantized); disable to run in original bf16"
+  },
+  "megapixels": {
+    "allOf": [
+      {
+        "$ref": "#/components/schemas/megapixels"
+      }
+    ],
+    "default": "1",
+    "x-order": 8,
+    "description": "Approximate number of megapixels for generated image"
+  },
+  "num_outputs": {
+    "type": "integer",
+    "title": "Num Outputs",
+    "default": 1,
+    "maximum": 4,
+    "minimum": 1,
+    "x-order": 2,
+    "description": "Number of outputs to generate"
+  },
+  "aspect_ratio": {
+    "allOf": [
+      {
+        "$ref": "#/components/schemas/aspect_ratio"
+      }
+    ],
+    "default": "1:1",
+    "x-order": 1,
+    "description": "Aspect ratio for the generated image"
+  },
+  "output_format": {
+    "allOf": [
+      {
+        "$ref": "#/components/schemas/output_format"
+      }
+    ],
+    "default": "webp",
+    "x-order": 4,
+    "description": "Format of the output images"
+  },
+  "output_quality": {
+    "type": "integer",
+    "title": "Output Quality",
+    "default": 80,
+    "maximum": 100,
+    "minimum": 0,
+    "x-order": 5,
+    "description": "Quality when saving the output images, from 0 to 100. 100 is best quality, 0 is lowest quality. Not relevant for .png outputs"
+  },
+  "disable_safety_checker": {
+    "type": "boolean",
+    "title": "Disable Safety Checker",
+    "default": false,
+    "x-order": 6,
+    "description": "Disable safety checker for generated images."
+  }
+}
+```
+
+To learn more about how Replicate model interfaces are defined, see the [Cog documentation](https://cog.run/python).
+
 # HTTP API
 
 **URL:** https://replicate.com/docs/reference/http.md
@@ -12215,239 +12448,6 @@ Replicate’s public HTTP API documentation is available as a machine-readable O
 
 See [OpenAPI schema](/docs/reference/openapi) to learn more and download the schema.
 
-# OpenAPI schema
-
-**URL:** https://replicate.com/docs/reference/openapi.md
-
-Replicate’s public HTTP API documentation is available as a machine-readable OpenAPI schema in JSON format.
-
-Download the schema at [**api.replicate.com/openapi.json**](https://api.replicate.com/openapi.json)
-
-[](#what-is-openapi)What is OpenAPI?
-------------------------------------
-
-OpenAPI (formerly known as Swagger) is a specification for describing the structure of HTTP APIs, including all their endpoints, HTTP methods, input parameters, request and response formats, and other metadata.
-
-OpenAPI schemas are useful as raw reference material when learning about an API, but they’re also great for dynamically generating client libraries, [reference documentation](/docs/reference/http), tests, and tools for interacting with HTTP APIs.
-
-OpenAPI is also the industry-standard format for AI [function calling](https://docs.anthropic.com/en/docs/build-with-claude/tool-use) (also called “tool use”), which enables products like [Anthropic Claude](https://github.com/anthropics/anthropic-cookbook/blob/main/tool_use/extracting_structured_json.ipynb) and [OpenAI GPT Actions](https://platform.openai.com/docs/actions/actions-library) to auto-discover the structure of HTTP APIs and interact with them dynamically.
-
-[](#exploring-the-schema)Exploring the schema
----------------------------------------------
-
-Here’s an example using cURL and [jq](https://jqlang.github.io/jq/) to print all the API paths in your terminal:
-
-```shell
-curl -s https://api.replicate.com/openapi.json | jq -r '.paths | keys[]'
-/account
-/collections
-/collections/{collection_slug}
-/deployments
-/deployments/{deployment_owner}/{deployment_name}
-/deployments/{deployment_owner}/{deployment_name}/predictions
-/hardware
-/models
-/models/{model_owner}/{model_name}
-/models/{model_owner}/{model_name}/predictions
-/models/{model_owner}/{model_name}/versions
-/models/{model_owner}/{model_name}/versions/{version_id}
-/models/{model_owner}/{model_name}/versions/{version_id}/trainings
-/predictions
-/predictions/{prediction_id}
-/predictions/{prediction_id}/cancel
-/trainings
-/trainings/{training_id}
-/trainings/{training_id}/cancel
-/webhooks/default/secret
-```
-
-[](#dereferencing)Dereferencing
--------------------------------
-
-OpenAPI schemas are written in [JSON Schema](https://json-schema.org/), a format which allows you to have multiple references to the same object (see [`$ref`](https://json-schema.org/understanding-json-schema/structuring#dollarref)). References are great for keeping the schema DRY (Don’t Repeat Yourself), but they can make the schema a bit harder to read and use as a consumer.
-
-To make the schema easier to work with, it’s helpful to “dereference” it. This means replacing all the references with the actual objects.
-
-Here’s an example of how `$ref`s appear in the schema:
-
-```json
-{
-  "parameters": [
-    {
-      "$ref": "#/components/parameters/prefer_header"
-    }
-  ],
-}
-```
-
-And here’s what that same object looks like after dereferencing:
-
-```json
-{
-  "parameters": [
-    {
-      "prefer_header": {
-        "description": "Leave the request open and wait for the model to finish generating output.",
-        "in": "header",
-        "name": "Prefer",
-        "schema": {
-          "example": "wait=5",
-          "pattern": "^wait(=([1-9]|[1-9][0-9]|60))?$",
-          "type": "string"
-        }
-      }
-    }
-  ]
-}
-```
-
-There are many open-source libraries for dereferencing OpenAPI schemas.
-
-Here’s some example code showing how to dereference Replicate’s OpenAPI schema using Node.js and the popular and well-maintained [@apidevtools/json-schema-ref-parser](https://www.npmjs.com/package/@apidevtools/json-schema-ref-parser) npm package:
-
-```js
-import $RefParser from "@apidevtools/json-schema-ref-parser";
-const res = await fetch("https://api.replicate.com/openapi.json");
-const rawSchema = await res.json();
-const dereferencedSchema = await $RefParser.dereference(rawSchema);
-console.log(dereferencedSchema);
-```
-
-That will print the entire dereferenced schema to the console:
-
-```js
-{
-  externalDocs: {
-    description: 'Replicate HTTP API',
-    url: 'https://replicate.com/docs/reference/http'
-  },
-  openapi: '3.1.0',
-  paths: {
-    '/account': { get: [Object] },
-    '/collections': { get: [Object] },
-    '/collections/{collection_slug}': { get: [Object] },
-    '/deployments': { get: [Object], post: [Object] },
-    '/deployments/{deployment_owner}/{deployment_name}': { delete: [Object], get: [Object], patch: [Object] },
-    '/deployments/{deployment_owner}/{deployment_name}/predictions': { post: [Object] },
-    '/hardware': { get: [Object] },
-    '/models': { get: [Object], post: [Object], query: [Object] },
-    '/models/{model_owner}/{model_name}': { delete: [Object], get: [Object] },
-    '/models/{model_owner}/{model_name}/predictions': { post: [Object] },
-    '/models/{model_owner}/{model_name}/versions': { get: [Object] },
-    '/models/{model_owner}/{model_name}/versions/{version_id}': { delete: [Object], get: [Object] },
-    '/models/{model_owner}/{model_name}/versions/{version_id}/trainings': { post: [Object] },
-    '/predictions': { get: [Object], post: [Object] },
-    '/predictions/{prediction_id}': { get: [Object] },
-    '/predictions/{prediction_id}/cancel': { post: [Object] },
-    '/trainings': { get: [Object] },
-    '/trainings/{training_id}': { get: [Object] },
-    '/trainings/{training_id}/cancel': { post: [Object] },
-    '/webhooks/default/secret': { get: [Object] }
-  },
-  security: [ { bearerAuth: [] } ],
-  servers: [ { url: 'https://api.replicate.com/v1' } ]
-}
-```
-
-[](#model-schemas)Model schemas
--------------------------------
-
-Every model on Replicate also has its own API schema.
-
-You can programmatically fetch the full input and output schema for any Replicate model using the [`models.get`](/docs/reference/http#operation/models.get) API endpoint.
-
-Here’s an example using cURL and [jq](https://jqlang.github.io/jq/) to print the input schema for the [black-forest-labs/flux-schnell](https://replicate.com/black-forest-labs/flux-schnell) model:
-
-```shell
-curl -s \
-  -H "Authorization: Bearer $REPLICATE_API_TOKEN" \
-  https://api.replicate.com/v1/models/black-forest-labs/flux-schnell \
-  | jq .latest_version.openapi_schema.components.schemas.Input.properties
-```
-
-And here’s the output:
-
-```json
-{
-  "seed": {
-    "type": "integer",
-    "title": "Seed",
-    "x-order": 3,
-    "description": "Random seed. Set for reproducible generation"
-  },
-  "prompt": {
-    "type": "string",
-    "title": "Prompt",
-    "x-order": 0,
-    "description": "Prompt for generated image"
-  },
-  "go_fast": {
-    "type": "boolean",
-    "title": "Go Fast",
-    "default": true,
-    "x-order": 7,
-    "description": "Run faster predictions with model optimized for speed (currently fp8 quantized); disable to run in original bf16"
-  },
-  "megapixels": {
-    "allOf": [
-      {
-        "$ref": "#/components/schemas/megapixels"
-      }
-    ],
-    "default": "1",
-    "x-order": 8,
-    "description": "Approximate number of megapixels for generated image"
-  },
-  "num_outputs": {
-    "type": "integer",
-    "title": "Num Outputs",
-    "default": 1,
-    "maximum": 4,
-    "minimum": 1,
-    "x-order": 2,
-    "description": "Number of outputs to generate"
-  },
-  "aspect_ratio": {
-    "allOf": [
-      {
-        "$ref": "#/components/schemas/aspect_ratio"
-      }
-    ],
-    "default": "1:1",
-    "x-order": 1,
-    "description": "Aspect ratio for the generated image"
-  },
-  "output_format": {
-    "allOf": [
-      {
-        "$ref": "#/components/schemas/output_format"
-      }
-    ],
-    "default": "webp",
-    "x-order": 4,
-    "description": "Format of the output images"
-  },
-  "output_quality": {
-    "type": "integer",
-    "title": "Output Quality",
-    "default": 80,
-    "maximum": 100,
-    "minimum": 0,
-    "x-order": 5,
-    "description": "Quality when saving the output images, from 0 to 100. 100 is best quality, 0 is lowest quality. Not relevant for .png outputs"
-  },
-  "disable_safety_checker": {
-    "type": "boolean",
-    "title": "Disable Safety Checker",
-    "default": false,
-    "x-order": 6,
-    "description": "Disable safety checker for generated images."
-  }
-}
-```
-
-To learn more about how Replicate model interfaces are defined, see the [Cog documentation](https://cog.run/python).
-
 # llms.txt
 
 **URL:** https://replicate.com/docs/reference/llms-txt.md
@@ -12483,6 +12483,77 @@ The file is available at: [https://replicate.com/docs/llms.txt](/docs/llms.txt)
 
 *   [HTTP API](/docs/reference/http) - The full API reference
 *   [OpenAPI schema](/docs/reference/openapi) - Machine-readable API schema
+
+# Error codes
+
+**URL:** https://replicate.com/docs/reference/error-codes.md
+
+When you’re running a model and something goes wrong, Replicate’s API returns error codes to help you understand what happened. These codes start at 1000 and are always 4 digits long.
+
+[](#understanding-error-codes)Understanding error codes
+-------------------------------------------------------
+
+Error codes are returned in the format `E####` (for example, `E1001`). Each code corresponds to a specific type of error that can help you troubleshoot issues with your predictions.
+
+[](#common-error-codes)Common error codes
+-----------------------------------------
+
+### [](#e1000---unknown-error)E1000 - Unknown Error
+
+An unexpected error occurred that we haven’t categorized yet. This can happen due to temporary system issues, network connectivity problems, or unforeseen edge cases that we haven’t encountered before.
+
+Try retrying your prediction, and check your internet connection. If the problem persists, [contact support](https://replicate.com/support).
+
+### [](#e1001---model-out-of-memory-oom-killed)E1001 - Model Out of Memory (OOM Killed)
+
+The model ran out of memory and was terminated by the system. This typically occurs when your input is too large (like a high-resolution image or very long text), when the model requires more memory than what’s available, or when complex operations exceed memory limits.
+
+Try reducing the size of your input by using smaller images or shorter text. You can also try a different model variant with lower memory requirements, split large inputs into smaller chunks, or check the model’s documentation for input size limits.
+
+### [](#e4875---internal-webhook-url-empty)E4875 - Internal Webhook URL Empty
+
+A webhook URL was expected but not provided or is empty. This usually means you’re missing webhook configuration, have an empty webhook URL in your request, or the webhook URL was cleared or removed from your setup.
+
+Make sure you’re providing a valid webhook URL in your prediction request, check that your webhook endpoint is accessible, and verify your webhook configuration is correct.
+
+### [](#e6716---timeout-starting-prediction)E6716 - Timeout Starting Prediction
+
+The prediction failed to start within the expected time limit. This can happen due to high system load, model initialization taking too long, resource allocation delays, or network connectivity issues.
+
+Wait a moment and retry your prediction, check if there are any ongoing system issues, or try during off-peak hours if the problem persists.
+
+### [](#e8367---prediction-stopped-in-non-terminal-state)E8367 - Prediction Stopped in Non-Terminal State
+
+The prediction was stopped while it was still running, not in a completed or failed state. This usually occurs due to manual cancellation of the prediction, system maintenance or updates, resource reallocation, or timeout limits being exceeded.
+
+Check if you or your application cancelled the prediction, retry the prediction if it wasn’t intentionally stopped, or monitor for any scheduled maintenance windows.
+
+### [](#e8765---model-health-check-failed)E8765 - Model Health Check Failed
+
+The model failed its health check before starting the prediction. This can be caused by model container issues, corrupted model files, environment configuration problems, or model version incompatibilities.
+
+Try using a different model version, check if the model is experiencing known issues, wait a few minutes and retry, or contact support if the issue persists.
+
+### [](#e9243---error-starting-prediction)E9243 - Error Starting Prediction
+
+The prediction encountered an error during the startup process. This typically happens due to invalid input parameters, model configuration issues, resource allocation failures, or environment setup problems.
+
+Verify your input parameters are correct, check the model’s documentation for required inputs, ensure all required environment variables are set, or try with simpler inputs first.
+
+### [](#e9825---failed-to-upload-file)E9825 - Failed to Upload File
+
+A file upload to Replicate failed during the prediction process. This can occur when the file is too large, there are network connectivity issues, the file format is invalid, the upload times out, or your storage quota has been exceeded.
+
+Check your file size (most models have upload limits), ensure the file format is supported, try uploading the file again, compress or resize the file if possible, or check your internet connection.
+
+[](#getting-help)Getting help
+-----------------------------
+
+If you’re encountering an error code not listed here, or if the suggested solutions don’t resolve your issue:
+
+1.  Check our status page for any ongoing system issues
+2.  Review the model documentation for specific requirements and limitations
+3.  [Contact our support team](https://replicate.com/support)
 
 # Open source at Replicate
 
@@ -12605,74 +12676,3 @@ Tools for working with [Flux](https://replicate.com/black-forest-labs), the stat
 [zeke/flux-fine-tune-action](https://github.com/zeke/flux-fine-tune-action) -  GitHub Actions workflow for fine-tuning Flux. Store your training data in a GitHub repo and train a custom version of Flux.
 
 [replicate/reflux](https://github.com/replicate/reflux) -  Flux LoRA image editor built on Nuxt
-
-# Error codes
-
-**URL:** https://replicate.com/docs/reference/error-codes.md
-
-When you’re running a model and something goes wrong, Replicate’s API returns error codes to help you understand what happened. These codes start at 1000 and are always 4 digits long.
-
-[](#understanding-error-codes)Understanding error codes
--------------------------------------------------------
-
-Error codes are returned in the format `E####` (for example, `E1001`). Each code corresponds to a specific type of error that can help you troubleshoot issues with your predictions.
-
-[](#common-error-codes)Common error codes
------------------------------------------
-
-### [](#e1000---unknown-error)E1000 - Unknown Error
-
-An unexpected error occurred that we haven’t categorized yet. This can happen due to temporary system issues, network connectivity problems, or unforeseen edge cases that we haven’t encountered before.
-
-Try retrying your prediction, and check your internet connection. If the problem persists, [contact support](https://replicate.com/support).
-
-### [](#e1001---model-out-of-memory-oom-killed)E1001 - Model Out of Memory (OOM Killed)
-
-The model ran out of memory and was terminated by the system. This typically occurs when your input is too large (like a high-resolution image or very long text), when the model requires more memory than what’s available, or when complex operations exceed memory limits.
-
-Try reducing the size of your input by using smaller images or shorter text. You can also try a different model variant with lower memory requirements, split large inputs into smaller chunks, or check the model’s documentation for input size limits.
-
-### [](#e4875---internal-webhook-url-empty)E4875 - Internal Webhook URL Empty
-
-A webhook URL was expected but not provided or is empty. This usually means you’re missing webhook configuration, have an empty webhook URL in your request, or the webhook URL was cleared or removed from your setup.
-
-Make sure you’re providing a valid webhook URL in your prediction request, check that your webhook endpoint is accessible, and verify your webhook configuration is correct.
-
-### [](#e6716---timeout-starting-prediction)E6716 - Timeout Starting Prediction
-
-The prediction failed to start within the expected time limit. This can happen due to high system load, model initialization taking too long, resource allocation delays, or network connectivity issues.
-
-Wait a moment and retry your prediction, check if there are any ongoing system issues, or try during off-peak hours if the problem persists.
-
-### [](#e8367---prediction-stopped-in-non-terminal-state)E8367 - Prediction Stopped in Non-Terminal State
-
-The prediction was stopped while it was still running, not in a completed or failed state. This usually occurs due to manual cancellation of the prediction, system maintenance or updates, resource reallocation, or timeout limits being exceeded.
-
-Check if you or your application cancelled the prediction, retry the prediction if it wasn’t intentionally stopped, or monitor for any scheduled maintenance windows.
-
-### [](#e8765---model-health-check-failed)E8765 - Model Health Check Failed
-
-The model failed its health check before starting the prediction. This can be caused by model container issues, corrupted model files, environment configuration problems, or model version incompatibilities.
-
-Try using a different model version, check if the model is experiencing known issues, wait a few minutes and retry, or contact support if the issue persists.
-
-### [](#e9243---error-starting-prediction)E9243 - Error Starting Prediction
-
-The prediction encountered an error during the startup process. This typically happens due to invalid input parameters, model configuration issues, resource allocation failures, or environment setup problems.
-
-Verify your input parameters are correct, check the model’s documentation for required inputs, ensure all required environment variables are set, or try with simpler inputs first.
-
-### [](#e9825---failed-to-upload-file)E9825 - Failed to Upload File
-
-A file upload to Replicate failed during the prediction process. This can occur when the file is too large, there are network connectivity issues, the file format is invalid, the upload times out, or your storage quota has been exceeded.
-
-Check your file size (most models have upload limits), ensure the file format is supported, try uploading the file again, compress or resize the file if possible, or check your internet connection.
-
-[](#getting-help)Getting help
------------------------------
-
-If you’re encountering an error code not listed here, or if the suggested solutions don’t resolve your issue:
-
-1.  Check our status page for any ongoing system issues
-2.  Review the model documentation for specific requirements and limitations
-3.  [Contact our support team](https://replicate.com/support)

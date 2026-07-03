@@ -4,7 +4,7 @@ source: https://resend.com/docs/knowledge-base/how-do-i-maximize-deliverability-
 path: docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails
 ---
 
-Everything you should do before you start sending authentication emails with Resend and Supabase.
+Everything to do before you start sending authentication emails with Resend and Supabase.
 
 <Note>
   If you haven't yet, [configure your own Supabase

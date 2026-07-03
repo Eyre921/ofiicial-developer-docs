@@ -46,7 +46,7 @@ When an email lands in spam, providers like Gmail display a banner explaining wh
 | Banner message                                                       | What it means                             | Fix                                                                                     |
 | -------------------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------- |
 | "It's similar to messages that were identified as spam in the past." | Content is triggering spam filters        | Simplify your email content and remove excessive links, images, or marketing language   |
-| "This message seems dangerous"                                       | A URL or content was flagged as malicious | Review the links and content in your email for anything that could be flagged as unsafe |
+| "This message seems dangerous"                                       | A URL or content was flagged as malicious | Review the links and content in your email for anything that might be flagged as unsafe |
 
 ## 4. Check your domain reputation
 

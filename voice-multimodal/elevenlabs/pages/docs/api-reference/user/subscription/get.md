@@ -333,8 +333,17 @@ components:
         professional_voice_slots_used:
           type: integer
           description: >-
-            The number of professional voice slots used by the workspace/user if
-            single seat.
+            The number of professional voice slots used. For consolidated
+            billing this is the group-wide count across all workspaces in the
+            group; see professional_voice_slots_used_in_workspace for the
+            current workspace only.
+        professional_voice_slots_used_in_workspace:
+          type: integer
+          description: >-
+            The number of professional voice slots used in the current
+            workspace. For consolidated billing, professional_voice_slots_used
+            counts across all workspaces in the group, while this counts only
+            the current workspace.
         voice_limit:
           type: integer
           description: The maximum number of voice slots allowed for the user.
@@ -420,6 +429,7 @@ components:
         - allowed_to_extend_character_limit
         - voice_slots_used
         - professional_voice_slots_used
+        - professional_voice_slots_used_in_workspace
         - voice_limit
         - voice_add_edit_counter
         - professional_voice_limit
@@ -480,6 +490,7 @@ components:
   "allowed_to_extend_character_limit": true,
   "voice_slots_used": 1,
   "professional_voice_slots_used": 0,
+  "professional_voice_slots_used_in_workspace": 0,
   "voice_limit": 10,
   "voice_add_edit_counter": 0,
   "professional_voice_limit": 1,

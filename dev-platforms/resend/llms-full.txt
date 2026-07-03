@@ -217,7 +217,7 @@ If you're developing with AI, Resend offers several resources to improve your ex
 
 ## Prerequisite: Create an API Key
 
-Currently, we require a human to create a Resend account. Once you have an account, you'll need to [create an API key](https://resend.com/api-keys). With an API key, your agent can perform many other tasks.
+We require a human to create a Resend account. Once you have an account, you'll need to [create an API key](https://resend.com/api-keys). With an API key, your agent can perform many other tasks.
 
 <Info>
   To send or receive with Resend, you'll need to [verify a domain](https://resend.com/domains). While an agent can [create a domain](/docs/api-reference/domains/create-domain), the API returns DNS records you will need to add in your DNS provider before [verifying your DNS records](/docs/api-reference/domains/verify-domain). You may find it easier to verify your domain in the dashboard.
@@ -8553,7 +8553,7 @@ We use standard HTTP response codes for success and failure notifications, and o
 ### `invalid_idempotency_key`
 
 * **Status:** 400
-* **Message:** The key must be between 1-256 chars.
+* **Message:** The key must be between 1–256 chars.
 * **Suggested action:** Retry with a valid idempotency key.
 
 ### `validation_error`
@@ -8674,7 +8674,7 @@ We use standard HTTP response codes for success and failure notifications, and o
 
 * **Status:** 429
 * **Message:** Too many requests. Please limit the number of requests per second. Or [contact support](https://resend.com/contact) to increase rate limit.
-* **Suggested action:** You should read the [response headers](./introduction#rate-limit) and reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
+* **Suggested action:** Read the [response headers](./introduction#rate-limit) and reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
 
 ### `security_error`
 
@@ -9080,7 +9080,7 @@ You can navigate through the results using the following parameters:
 
 Use the `id` of objects as the cursor for pagination. The cursor itself is *excluded* from the results. For an example, see [pagination strategies below](#strategies).
 
-## Currently-supported endpoints
+## Supported endpoints
 
 Existing list endpoints can optionally return paginated results:
 
@@ -9506,7 +9506,7 @@ Pagination requests may return the following validation errors:
 
 | Error              | Description                                         |
 | ------------------ | --------------------------------------------------- |
-| `validation_error` | Invalid cursor format or limit out of range (1-100) |
+| `validation_error` | Invalid cursor format or limit out of range (1–100) |
 | `validation_error` | Both `before` and `after` parameters provided       |
 
 Example error response:
@@ -9533,12 +9533,12 @@ The Resend API enforces three types of limits: **rate limits** control how many 
 
 The response headers describe your current rate limit following every request in conformance with the [sixth IETF standard draft](https://datatracker.ietf.org/doc/html/draft-ietf-httpapi-ratelimit-headers-06):
 
-| Header name           | Description                                                         |
-| --------------------- | ------------------------------------------------------------------- |
-| `ratelimit-limit`     | Maximum number of requests allowed within a window.                 |
-| `ratelimit-remaining` | How many requests you have left within the current window.          |
-| `ratelimit-reset`     | How many seconds until the limits are reset.                        |
-| `retry-after`         | How many seconds you should wait before making a follow-up request. |
+| Header name           | Description                                                 |
+| --------------------- | ----------------------------------------------------------- |
+| `ratelimit-limit`     | Maximum number of requests allowed within a window.         |
+| `ratelimit-remaining` | How many requests you have left within the current window.  |
+| `ratelimit-reset`     | How many seconds until the limits are reset.                |
+| `retry-after`         | How many seconds to wait before making a follow-up request. |
 
 The default maximum rate limit is **10 requests per second per team**. This limit applies across all API keys associated with your team. This number can be increased for trusted senders upon request. You can view your team's current rate limit on the [Settings Usage page](https://resend.com/settings/usage).
 
@@ -13311,7 +13311,7 @@ const card: CardElement = {
 | Type          | Fields         | Description                       |
 | ------------- | -------------- | --------------------------------- |
 | `text`        | `content`      | Plain text paragraph              |
-| `divider`     | —              | Horizontal rule                   |
+| `divider`     | `n/a`          | Horizontal rule                   |
 | `link-button` | `label`, `url` | Clickable button that opens a URL |
 | `actions`     | `children`     | Container for link buttons        |
 
@@ -13696,7 +13696,7 @@ resend contacts imports list       # List past contact imports
 **`resend contacts imports create`**
 
 Start an asynchronous CSV import. The command uploads the file and returns a
-contact import ID immediately; use `resend contacts imports get <id>` to check
+contact import ID immediately. Use `resend contacts imports get <id>` to check
 processing status.
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -14269,7 +14269,7 @@ Get started sending emails by creating an API key
 
 ## What is an API Key?
 
-API Keys are secret tokens used to authenticate your requests. They are unique to your account and should be kept confidential.
+API Keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
 
 You must create at least one API key to use the Resend platform through code (e.g., SDKs, API, command-line interface (CLI), or AI tools).
 
@@ -14386,7 +14386,7 @@ Visualize all the API Keys on the Resend Dashboard.
 
 ## What is an API Key
 
-API Keys are secret tokens used to authenticate your requests. They are unique to your account and should be kept confidential.
+API Keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
 
 You can use multiple keys to isolate different application actions to different API Keys. This allows you to [view logs per key](#view-api-key-logs), detect possible abuse, and control any damage that may be done accidentally or maliciously.
 
@@ -14613,7 +14613,23 @@ When creating a Contact, you can optionally set the following properties:
 
 Once a Contact is created, you can update it using the [update contact](/docs/api-reference/contacts/update-contact) endpoint or [add the contact to a Segment](/docs/api-reference/contacts/add-contact-to-segment).
 
-### 2. Add Contacts manually
+### 2. Add Contacts by uploading a .csv
+
+You can also add Contacts by uploading a .csv file. This is a convenient way to add multiple Contacts at once.
+
+1. Go to the [Contacts](https://resend.com/audience) page, and select **Add Contacts**.
+2. Select **Import CSV**.
+3. Upload your CSV file from your computer.
+4. Map the fields you want to use. You can map the fields to: `email`, `first_name`, `last_name`, and `unsubscribed`, or any Contact properties you've already created.
+5. Optionally add the contacts to an existing Segment.
+6. Select **Continue**, review the contacts, and finish the upload.
+
+<Note>
+  If a contact with the same email address already exists, the CSV upload will
+  update the existing contact with the new data.
+</Note>
+
+### 3. Add Contacts manually
 
 1. Go to the [Contacts](https://resend.com/audience) page, and select **Add Contacts**.
 2. Select **Add Manually**.
@@ -14636,7 +14652,7 @@ You can add many Contacts at once by uploading a CSV file (up to 200MB), either 
 1. Go to the [Contacts](https://resend.com/audience) page, and select **Add Contacts**.
 2. Select **Import CSV**.
 3. Drag and drop or click to upload your CSV file from your computer.
-4. Resend uses AI to read your column headers and suggest field mappings. Review and adjust the mappings to `email`, `first_name`, `last_name`, and `unsubscribed`, or to any existing Contact properties. You can also map a column to a new custom property and Resend will create it for you. Use the checkboxes to include or exclude individual columns; the `email` column is always included.
+4. Resend uses AI to read your column headers and suggest field mappings. Review and adjust the mappings to `email`, `first_name`, `last_name`, and `unsubscribed`, or to any existing Contact properties. You can also map a column to a new custom property and Resend will create it for you. Use the checkboxes to include or exclude individual columns. The `email` column is always included.
 5. Optionally add the contacts to an existing Segment.
 6. Select **Continue**, review the contacts, and finish the upload.
 
@@ -18898,7 +18914,7 @@ Each run has one of the following statuses:
 
 | Status      | Description                                                                                        |
 | ----------- | -------------------------------------------------------------------------------------------------- |
-| `running`   | The Automation is currently executing steps                                                        |
+| `running`   | The Automation is executing steps                                                                  |
 | `completed` | All steps finished successfully                                                                    |
 | `failed`    | A step encountered an error and the run stopped                                                    |
 | `cancelled` | The run was cancelled before completing                                                            |
@@ -19572,7 +19588,7 @@ In the dashboard, you can view overall metrics for any Automation. In the **Obse
 
 <img alt="Automation Runs Metrics" />
 
-The API currently does not support fetching metrics for an Automation.
+The API does not support fetching metrics for an Automation.
 
 
 # Send Email
@@ -21357,14 +21373,14 @@ To display your logo in most email clients using BIMI, you need to prove ownersh
 There are two possible mark Certificate's to verify the use of your logo:
 
 * **Verified Mark Certificate (VMC)**: A certificate issued by a Certificate Authority (CA) that is used to verify that you are the owner of the logo you are trying to display. A VMC is available if you have a trademark of your logo. With a VMC, Gmail will display a blue checkmark.
-* **Common Mark Certificate (CMC)**: A certificate also issued by Certificate Authority (CA) to verify you. A CMC is available to you if you can establish that you’ve used your logo for one year. Currently, only Gmail supports a CMC.
+* **Common Mark Certificate (CMC)**: A certificate also issued by Certificate Authority (CA) to verify you. A CMC is available to you if you can establish that you’ve used your logo for one year. Only Gmail and Yahoo support a CMC.
 
 A VMC offers the widest email client support, though the barrier of a trademark means a CMC is an easier path if you have established use of your logo for one year.
 
 Here are a some things to know before starting the certificate purchase process:
 
 * If you don't hold a trademark for your logo or have not used your logo for a year, you will not be able to purchase a certificate.
-* The process could take weeks, so start early and respond to their requests quickly.
+* The process can take weeks, so start early and respond to their requests quickly.
 * You will need to provide a [SVG Tiny P/S formatted logo](https://bimigroup.org/creating-bimi-svg-logo-files/).
 * You will need to prove you own the domain by adding a DNS record.
 * You will need to prove you are the owner of the trademark or logo by providing identification.
@@ -21421,7 +21437,7 @@ Claim a domain that is already verified by another team.
 
 When you try to add a domain that another team has already verified, Resend
 blocks the creation and tells you the domain can be claimed. Claiming lets you
-prove control of the domain over DNS and transfer it to your team — entirely
+prove control of the domain over DNS and transfer it to your team, entirely
 over the API.
 
 ## How it works
@@ -21452,16 +21468,16 @@ over the API.
 
 ## Claim status
 
-| Status       | Meaning                                                  |
-| ------------ | -------------------------------------------------------- |
-| `pending`    | Waiting for DNS verification.                            |
-| `verified`   | DNS proof accepted; the transfer is in progress.         |
-| `completed`  | The domain now belongs to your team.                     |
-| `blocked`    | A safety check blocked the claim — see `blocked_reason`. |
-| `expired`    | The claim window passed before it completed.             |
-| `superseded` | A newer claim replaced this one.                         |
-| `canceled`   | The claim was canceled.                                  |
-| `failed`     | The claim could not be completed.                        |
+| Status       | Meaning                                                 |
+| ------------ | ------------------------------------------------------- |
+| `pending`    | Waiting for DNS verification.                           |
+| `verified`   | DNS proof accepted. The transfer is in progress.        |
+| `completed`  | The domain now belongs to your team.                    |
+| `blocked`    | A safety check blocked the claim. See `blocked_reason`. |
+| `expired`    | The claim window passed before it completed.            |
+| `superseded` | A newer claim replaced this one.                        |
+| `canceled`   | The claim was canceled.                                 |
+| `failed`     | The claim did not complete.                             |
 
 When a claim is `blocked`, `blocked_reason` explains why: `grace_period`,
 `recent_owner_activity`, or `pending_scheduled_emails`.
@@ -21517,7 +21533,7 @@ This record is specifying a few parameters (see [Reference](#reference) section 
 * `v` - Version:
   This is the version of DMARC
 * `p` - Policy:
-  This is telling the inbox how to process messages that fail DMARC. Options are `none`, `quarantine`, `reject`. It's a best practice to use `quarantine` or `reject`, but you should only do it once you know your messages are delivering and fully passing DMARC.
+  This is telling the inbox how to process messages that fail DMARC. Options are `none`, `quarantine`, `reject`. It's a best practice to use `quarantine` or `reject`, but only do this once you know your messages are delivering and fully passing DMARC.
 * `rua` - Reporting URI of Aggregate:
   Provide a **valid address** that can receive email. The address can be a different domain than the one on which you set the DMARC policy. The aggregate report comes as an email with a `.xml` file attached that shares the IP sources of your messages and if they passed SPF or DKIM.
 
@@ -21540,7 +21556,7 @@ To confirm DMARC passed, you can inspect the email headers and confirm there is 
 
 ### 3. Upgrade Policy
 
-Once you have verified DMARC is passing across all your sending, you should upgrade your Policy to `p=quarantine;`. This policy gives mailbox providers greater confidence in your domain since your domain only allows authenticated email.
+Once you have verified DMARC is passing across all your sending, upgrade your Policy to `p=quarantine;`. This policy gives mailbox providers greater confidence in your domain since your domain only allows authenticated email.
 
 Update the value of your existing `_dmarc` TXT record to use a stricter policy:
 
@@ -21796,7 +21812,7 @@ Custom return paths must adhere to the following rules:
 * Must be 63 characters or less
 * Must start with a letter, end with a letter or number, and contain only letters, numbers, and hyphens
 
-Avoid setting values that could undermine credibility (e.g. `testing`), as they may be exposed to recipients in some email clients.
+Avoid setting values that undermine credibility (e.g. `testing`), as they may be exposed to recipients in some email clients.
 
 ## Export your data
 
@@ -21843,6 +21859,17 @@ The DKIM configuration is stored as a TXT DNS record that contains a public key 
 
 <img alt="DKIM Records" />
 
+## FAQ
+
+<AccordionGroup>
+  <Accordion title="Does Resend support 2048-bit DKIM keys?">
+    No. Resend does not support 2048-bit DKIM keys. We sign outbound mail with
+    1024-bit DKIM keys, which are RFC-compliant, accepted by major mailbox
+    providers, and satisfy bulk sender requirements. Learn more about [DKIM key
+    length](/docs/knowledge-base/do-i-need-2048-dkim).
+  </Accordion>
+</AccordionGroup>
+
 
 # Choosing a Region
 Source: https://resend.com/docs/dashboard/domains/regions
@@ -21870,7 +21897,7 @@ If your organization has strict data residency requirements, review the [Resend 
 
 ## Why is this important?
 
-Especially for transactional emails like magic links, password resets, and welcome messages, users expect to receive them right away. If they don't, they might not be able to access your service right away, which could be a missed opportunity for your organization.
+Especially for transactional emails like magic links, password resets, and welcome messages, users expect to receive them right away. If they don't, they might not be able to access your service right away, which is a missed opportunity for your organization.
 
 Here are some of the other benefits of using our multi-region email sending feature:
 
@@ -21890,7 +21917,7 @@ For advanced needs, you can set up multiple regions for the same domain. We reco
 
 ## Changing Domain Region
 
-If you'd like to switch the region your domain is currently set to:
+If you'd like to switch the region your domain is set to:
 
 1. Delete your current domain in the [Domain's page](https://resend.com/domains).
 2. Add the same domain again, selecting the new region.
@@ -22415,7 +22442,7 @@ If you manage your own list, you can add the `List-Unsubscribe: https://example.
 
 As of February 2024, your bulk messages must include a URL version in your list-unsubscribe header, `List-Unsubscribe-Post: List-Unsubscribe=One-Click`, and to allow for a `POST` request from the same URL. This follows [RFC 8058](https://datatracker.ietf.org/doc/html/rfc8058) (Signaling One-Click Functionality for List Email Headers).
 
-When receiving a `POST`, it should return a blank page with `200 (OK)` or `202 (Accepted)`, and should show the regular unsubscribe page with the `GET` method. Ensure that users stop receiving email within 48 hours of this request.
+When receiving a `POST`, return a blank page with `200 (OK)` or `202 (Accepted)`, and show the regular unsubscribe page with the `GET` method. Ensure that users stop receiving email within 48 hours of this request.
 
 This header allows email clients to offer a one-click "Unsubscribe" option in their UI, enhancing user experience and decreasing spam complaints. Gmail and Yahoo require RFC 8058 compliance for bulk senders (those sending more than 5,000 messages per day to their domains).
 
@@ -23738,9 +23765,9 @@ For example, if your sending domain is `@widgets.com`, ensure links within the m
 
 #### Include valid DMARC record
 
-DMARC is a TXT record published in the DNS that specifies how email receivers should handle messages from your domain that don’t pass SPF or DKIM validation. [A valid DMARC record](/docs/dashboard/domains/dmarc) can help improve email deliverability.
+DMARC is a TXT record published in the DNS that specifies how email receivers should handle messages from your domain that don't pass SPF or DKIM validation. [A valid DMARC record](/docs/dashboard/domains/dmarc) can help improve email deliverability.
 
-Starting in 2024, Gmail and Yahoo require senders to have a DMARC record published. When [viewing your domain](https://resend.com/domains) in Resend, we provide a suggested DMARC record if you’re unsure what to publish.
+Gmail and Yahoo have required bulk senders to have a DMARC record published since 2024. When [viewing your domain](https://resend.com/domains) in Resend, we provide a suggested DMARC record if you’re unsure what to publish.
 
 #### Include Plain Text Version
 
@@ -23768,7 +23795,7 @@ For example, instead of using `https://youtu.be/abc123`, use `https://www.youtub
 
 ## Improvement Insights
 
-If you're diagnosing a deliverability issue, changing your email practices could be helpful.
+If you're diagnosing a deliverability issue, changing your email practices may help.
 
 <img alt="Improvement Insights" />
 
@@ -23815,7 +23842,7 @@ There are three types of bounces:
    * `General` - The recipient's email provider sent a hard bounce message.
    * `NoEmail` - It was not possible to retrieve the recipient email address from the bounce message.
 
-2. `Transient` - also known as "soft bounce,” where the recipient's mail server rejects the email but it could be delivered in the future.
+2. `Transient` - also known as "soft bounce,” where the recipient's mail server rejects the email but it may be delivered in the future.
    * `General` - The recipient's email provider sent a general bounce message. You might be able to send a message to the same recipient in the future if the issue that caused the message to bounce is resolved.
    * `MailboxFull` - The recipient's email provider sent a bounce message because the recipient's inbox was full. You might be able to send to the same recipient in the future when the mailbox is no longer full.
    * `MessageTooLarge` - The recipient's email provider sent a bounce message because message you sent was too large. You might be able to send a message to the same recipient if you reduce the size of the message.
@@ -23858,7 +23885,7 @@ To protect your sender reputation and our sending infrastructure, we proactively
 
 The suppression is caused by:
 
-* `Bounced` when the recipient's mail server rejects the email and the response indicates a permanent failure to deliver. There could be [multiple reasons why an email `bounced`](/docs/dashboard/emails/email-bounces#bounce-types-and-subtypes).
+* `Bounced` when the recipient's mail server rejects the email and the response indicates a permanent failure to deliver. There are [multiple reasons why an email `bounced`](/docs/dashboard/emails/email-bounces#bounce-types-and-subtypes).
 * `Complained` when the recipient marked your email as spam.
 
 <Tip>
@@ -24414,7 +24441,7 @@ This makes it safe to retry requests that send an email. You don't have to worry
 
 ## How to use idempotency keys?
 
-Idempotency keys can be **up to 256 characters** and should be unique per API request.
+Idempotency keys can be **up to 256 characters** and must be unique per API request.
 
 We **recommend using a UUID** or other string that uniquely identifies that specific email.
 
@@ -24422,7 +24449,7 @@ We **recommend using a UUID** or other string that uniquely identifies that spec
 
 Send the key in the `Idempotency-Key` HTTP header in your API requests. Our SDKs also provide a convenient way to set this header. If you're using SMTP, you can set the `Resend-Idempotency-Key` email header instead.
 
-We keep idempotency keys in our system for **24 hours**. This should give you an ample window to retry any failed processes on your end without having to keep track of the sent status.
+We keep idempotency keys in our system for **24 hours**. This gives you an ample window to retry any failed processes on your end without having to keep track of the sent status.
 
 ### `POST /emails` endpoint example
 
@@ -24855,9 +24882,9 @@ After checking if an email with the same idempotency key has already been sent, 
 
 * **Successful responses** will return the email ID of the sent email.
 * **Error responses** will return one of the following errors:
-  * `400`: `invalid_idempotency_key` - the idempotency key has to be between 1-256 characters. You can retry with a valid key or without supplying an idempotency key.
+  * `400`: `invalid_idempotency_key` - the idempotency key has to be between 1–256 characters. You can retry with a valid key or without supplying an idempotency key.
   * `409`: `invalid_idempotent_request` - this idempotency key has already been used on a request that had a different payload. Retrying this request is useless without changing the idempotency key or payload.
-  * `409`: `concurrent_idempotent_requests` - another request with the same idempotency key is currently in progress. As it isn't finished yet, Resend can't return its original response, but it is safe to retry this request later if needed.
+  * `409`: `concurrent_idempotent_requests` - another request with the same idempotency key is in progress. As it isn't finished yet, Resend can't return its original response, but it is safe to retry this request later if needed.
 
 
 # Managing Emails
@@ -24898,7 +24925,7 @@ To share a link, click on the **dropdown menu** <Icon icon="ellipsis" />, and se
 
 <img alt="Email - Share Link Option" />
 
-Select how long the link should remain valid (10 minutes, 3 hours, 24 hours, or 48 hours), then click **Generate link**.
+Select how long the link will remain valid (10 minutes, 3 hours, 24 hours, or 48 hours), then click **Generate link**.
 
 <img alt="Email - Share Link Modal" />
 
@@ -26216,6 +26243,10 @@ Logs are a powerful tool for monitoring activity and troubleshooting issues.
     * **Response body** - The complete API response (with copyable code blocks)
     * **Status code** - The HTTP status code returned
     * **Timestamp** - When the request was processed
+
+    ### Related emails
+
+    When a log entry is associated with one or more email sends, an Email field appears in the log details, linking directly to the corresponding email records. The corresponding email's detail page includes a Log field linking to the API request log that triggered it, so you can trace the full request-to-delivery flow in both directions.
 
     ### SDK detection
 
@@ -27556,7 +27587,7 @@ Reply to Receiving emails in the same thread.
 
 Email clients thread emails by using the `message_id` metadata.
 
-If you want to reply to an email, you should add the `In-Reply-To` header set to the `message_id` of the received email. We also recommend setting the subject to start with `Re:` so that email clients can group the replies together.
+If you want to reply to an email, add the `In-Reply-To` header set to the `message_id` of the received email. We also recommend setting the subject to start with `Re:` so that email clients can group the replies together.
 
 ## Get the message ID
 
@@ -28237,7 +28268,7 @@ From now on, contacts will see a preference page where they can:
 * Unsubscribe from certain **Topics** (email's preference).
 * Or unsubscribe from **everything** you send (update contact status).
 
-## What you should do
+## What to Do
 
 If you've been using Audiences for both segmentation and unsubscribes, we recommend switching your unsubscribe logic to **Topics**:
 
@@ -30019,7 +30050,7 @@ When you send emails with Resend, you can receive real-time notifications for ea
 
 These events contain valuable data, however, by default webhooks are ephemeral. To make the data persistent, you can store the data in your own datasource.
 
-This guide explains [why you should store your webhook data](#why-store-webhook-data) and [how to get started](#how-to-store-webhook-data).
+This guide explains [why storing your webhook data matters](#why-store-webhook-data) and [how to get started](#how-to-store-webhook-data).
 
 ## Why Store Webhook Data?
 
@@ -30084,7 +30115,7 @@ The right database depends on your use case:
   generous free tier.
 </Tip>
 
-### What Data Should You Store?
+### What Data to Store
 
 At minimum, store these fields for each webhook event:
 
@@ -30112,8 +30143,8 @@ Before storing webhook data, consider your retention requirements:
 
 ### How Long to Keep Data
 
-* **Operational use** - 30-90 days is often sufficient for debugging and recent analytics
-* **Compliance requirements** - Check your industry regulations (often 1-7 years)
+* **Operational use** - 30–90 days is often sufficient for debugging and recent analytics
+* **Compliance requirements** - Check your industry regulations (often 1–7 years)
 * **Historical analysis** - Consider aggregating old data rather than keeping raw events
 
 ### Privacy Considerations
@@ -30197,7 +30228,7 @@ Analyze DMARC XML reports with a free, open-source tool built by Resend.
 
 ## What is DMARC?
 
-DMARC (Domain-based Message Authentication, Reporting, and Conformance) is an email authentication protocol that builds on [SPF and DKIM](/docs/dashboard/domains/introduction). It lets domain owners specify how unauthenticated emails should be handled and receive reports about authentication results.
+DMARC (Domain-based Message Authentication, Reporting, and Conformance) is an email authentication protocol that builds on [SPF and DKIM](/docs/dashboard/domains/introduction). It lets domain owners specify how unauthenticated emails are handled and receive reports about authentication results.
 
 When you [set up a DMARC policy](/docs/dashboard/domains/dmarc), mailbox providers send XML reports to the address you specify. These reports contain valuable data about who is sending email on behalf of your domain and whether those emails pass authentication, but the raw XML is difficult to read. The DMARC Analyzer helps you visualize these reports in a human-readable format.
 
@@ -32519,7 +32550,7 @@ A healthy email list is one that is continuously nurtured with relevant and time
 
 To keep your email list in top shape, focus on sending to engaged users. Major inbox providers like Gmail and Microsoft expect you to send emails to recipients who have recently opened or clicked on your emails.
 
-As a best practice, you should limit non-transactional email sends to recipients who have opened or clicked an email in the past 6 months.
+As a best practice, limit non-transactional email sends to recipients who have opened or clicked an email in the past 6 months.
 
 <Info>
   The exact timeframe may vary depending on your industry, sending frequency,
@@ -32755,7 +32786,9 @@ Source: https://resend.com/docs/knowledge-base/do-i-need-2048-dkim
 
 Learn why 1024-bit DKIM is enough for transactional and marketing mail, and how it compares to 2048-bit keys.
 
-**For almost every sender, you do not need 2048-bit DKIM.** Resend signs outbound mail with 1024-bit DKIM keys, which is RFC-compliant, accepted by every major mailbox provider, and satisfies the bulk sender requirements that inbox service providers enforce.
+**For almost every sender, you do not need 2048-bit DKIM.** This additional level of security can result in performance and compatibility issues with some systems.
+
+To balance these concerns, Resend signs outbound mail with 1024-bit DKIM keys, which are RFC-compliant, accepted by every major mailbox provider, and satisfy the bulk sender requirements that inbox service providers enforce. Resend does not support 2048-bit DKIM keys.
 
 ## 1024-bit is RFC-compliant
 
@@ -32782,7 +32815,7 @@ The 2024 bulk sender requirements from Google, Yahoo, and Microsoft (which apply
 
 ## Our stance
 
-For transactional and marketing mail, **1024-bit DKIM is the right choice.** It meets the RFC, satisfies bulk sender requirements from every major inbox provider, and keeps DNS setup simple and reliable. Resend does not currently support 2048-bit keys.
+For transactional and marketing mail, **1024-bit DKIM is the right choice.** It meets the RFC, satisfies bulk sender requirements from every major inbox provider, and keeps DNS setup simple and reliable.
 
 We are keeping a close eye on customer interest and evolving industry best practices. If expectations shift, we will update this article and add support accordingly.
 
@@ -32838,7 +32871,7 @@ Resolve the 403 domain already registered error by verifying domain ownership or
 
 When you add a domain to Resend, you may see this error: `The example.com domain has been registered already`.
 
-This means the domain is currently associated with a different Resend account. A domain can only be active on one Resend account at a time.
+This means the domain is associated with a different Resend account. A domain can only be active on one Resend account at a time.
 
 ## Why This Happens
 
@@ -34686,7 +34719,7 @@ A **Resend Account** is your login method (email address) used to access Resend.
 
 ## Deleting a Team
 
-If you want to delete a team (rather than just leaving it), see [How can I delete my Resend team?](/docs/knowledge-base/how-can-i-delete-my-team).
+If you want to delete a team (rather than leaving it), see [How can I delete my Resend team?](/docs/knowledge-base/how-can-i-delete-my-team).
 
 
 # How can I delete my Resend team?
@@ -35029,7 +35062,7 @@ Learn how to avoid conflicts with your existing MX records when setting up a Res
 
 ## What is an MX record?
 
-MX (Mail Exchanger) records specify where incoming mail should be delivered on behalf of a domain. Every MX value has a unique priority (also known as preference) value. The lower the number, the higher the priority.
+MX (Mail Exchanger) records specify where incoming mail is delivered on behalf of a domain. Every MX value has a unique priority (also known as preference) value. The lower the number, the higher the priority.
 
 Resend requires that you setup a MX record on two occasions:
 
@@ -35047,7 +35080,7 @@ Say you're using G Suite for your email. You'll have an MX record that looks som
 example.com     MX    10 alt3.aspmx.l.google.com.
 ```
 
-This records specifies that any incoming mail to `<anything>@example.com` should be delivered to the google servers.
+This record specifies that any incoming mail to `<anything>@example.com` is delivered to the Google servers.
 
 Now, let's say you want to use Resend to send emails from `@example.com`. You'll need to add an MX record for `send.example.com` that looks something like this:
 
@@ -35127,7 +35160,7 @@ All communication is built on trust, and email is no different. When you send an
 
 ## Legitimize Your Domain
 
-Gmail is using many methods to identify who you are as a sender, and one way they do that is by looking at your domain. You should make sure that the domain you send with is the same domain where your website is hosted. If you send from `@example.com` but your website is hosted at `example.net`, Gmail won't be able to use your site to help legitimize you.
+Gmail is using many methods to identify who you are as a sender, and one way they do that is by looking at your domain. Make sure that the domain you send with is the same domain where your website is hosted. If you send from `@example.com` but your website is hosted at `example.net`, Gmail won't be able to use your site to help legitimize you.
 
 You can regularly check if your domain is listed as unsafe with [Google Safe Browsing](https://transparencyreport.google.com/safe-browsing/search?hl=en) to make sure Google isn't classifying your domain as suspicious.
 
@@ -35174,8 +35207,8 @@ A few good rules for content:
 
 * Less is more (keep it simple and to the point)
 * Plain text over complex HTML
-* Links should be visible and match the sending domain
-* No content should be hidden or manipulative
+* Visible links that match the sending domain
+* No hidden or manipulative content
 
 **Action Items**
 
@@ -35192,9 +35225,9 @@ It can also be helpful to segment your sending by sending address to give Gmail 
 
 Some examples of helpful email addresses:
 
-* **Personal emails** should come from an address with a name like [marissa@domain.com](mailto:marissa@domain.com)
-* **Transactional emails** should come from an address like [notifications@domain.com](mailto:notifications@domain.com)
-* **Marketing emails** should come from an address like [updates@domain.com](mailto:updates@domain.com).
+* **Personal emails** come from an address with a name like [marissa@domain.com](mailto:marissa@domain.com)
+* **Transactional emails** come from an address like [notifications@domain.com](mailto:notifications@domain.com)
+* **Marketing emails** come from an address like [updates@domain.com](mailto:updates@domain.com).
 
 **Action Items**
 
@@ -35208,7 +35241,7 @@ Email deliverability is overwhelming. One way to simplify it is to think: **what
 
 **Then do the opposite!**
 
-Gmail's goal is to only show emails that their users want to see and malicious emails are at the bottom of the list. Reverse engineer phishing sending habits and consider how you could prove to Gmail at each step that you clearly have no malicious intent.
+Gmail's goal is to only show emails that their users want to see and malicious emails are at the bottom of the list. Reverse engineer phishing sending habits and consider how you can prove to Gmail at each step that you clearly have no malicious intent.
 
 <Info>Anything we missed? [Let us know](https://resend.com/help).</Info>
 
@@ -35277,7 +35310,7 @@ Apple requires that you send only to recipients who explicitly subscribed to you
 2. Use [Webhooks](/docs/webhooks/introduction) to remove bounced or complained recipients from your list
 3. Never resume sending to addresses on your suppression list
 
-## Make It Easy to Unsubscribe
+## Simplify the Unsubscribe Process
 
 Apple requires bulk senders to offer an unsubscribe link so recipients can opt out immediately. We recommend implementing [one-click unsubscribe](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails) for the best user experience.
 
@@ -35318,7 +35351,7 @@ Email deliverability is overwhelming. One way to simplify it is to think: **what
 
 **Then do the opposite!**
 
-iCloud's goal is to only show emails that their users want to see. Reverse engineer phishing sending habits and consider how you could prove to Apple at each step that you clearly have no malicious intent.
+iCloud's goal is to only show emails that their users want to see. Reverse engineer phishing sending habits and consider how you can prove to Apple at each step that you clearly have no malicious intent.
 
 <Info>Anything we missed? [Let us know](https://resend.com/help).</Info>
 
@@ -35348,7 +35381,7 @@ Learn how to improve inbox placement in Outlook.
 
 * **Don't blast to a BCC list**. Send separate emails if you are sending to a large number of recipients.
 
-* **Prevent over sending**. Limits are impacted by historical engagements and sending volumes, but you should be hesitant to send too many emails at once. If you think this is an issue, reduce the frequency or volume.
+* **Prevent over sending**. Limits are impacted by historical engagements and sending volumes, so avoid sending too many emails at once. If you think this is an issue, reduce the frequency or volume.
 
 * **Send to engaged recipients**. Don't keep sending if there is no engagement from your recipients. This is especially true if a recipient has requested to unsubscribe or an address is bouncing. Keep spam complaint rates under 0.3%.
 
@@ -35397,7 +35430,7 @@ We recommend you to send the emails on the **server-side** to not expose your AP
 # How do I maximize deliverability for Supabase Auth emails?
 Source: https://resend.com/docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails
 
-Everything you should do before you start sending authentication emails with Resend and Supabase.
+Everything to do before you start sending authentication emails with Resend and Supabase.
 
 <Note>
   If you haven't yet, [configure your own Supabase
@@ -35695,7 +35728,7 @@ To rotate an API key:
   [delete](/docs/api-reference/api-keys/delete-api-key) API keys to rotate keys.
 </Warning>
 
-We recommend rotating keys at least every 90 days, or immediately if you suspect a key has been compromised. Resend flags keys unused for 30+ days in the dashboard to help you identify keys that should be reviewed or deleted.
+We recommend rotating keys at least every 90 days, or immediately if you suspect a key has been compromised. Resend flags keys unused for 30+ days in the dashboard to help you identify keys to review or delete.
 
 
 # Introduction
@@ -36257,7 +36290,7 @@ Discover why sending emails from a subdomain can be better than using a root dom
 
 We recommend sending emails from a subdomain (`notifications.acme.com`) instead of your root/apex domain (`acme.com`).
 
-There are **two main goals you should achieve with your domain setup**:
+There are **two main goals to achieve with your domain setup**:
 
 * Reputation Isolation
 * Sending Purpose Transparency
@@ -36270,9 +36303,9 @@ Whatever it is, you want to be consistently hedging your reputation. One way to 
 
 ## Sending Purpose Transparency
 
-All of us want all of our emails to go right to the top of the priority folder of the inbox, but the reality is, not all of our email should. A password reset email should have higher priority than a monthly product update. Inbox providers like Outlook and Gmail are constantly trying to triage incoming mail to put only the most important stuff in that priority spot, and move the rest towards Promotional or even Spam.
+All of us want all of our emails to go right to the top of the priority folder of the inbox, but the reality is, not all of our email belongs there. A password reset email carries higher priority than a monthly product update. Inbox providers like Outlook and Gmail are constantly trying to triage incoming mail to put only the most important stuff in that priority spot, and move the rest towards Promotional or even Spam.
 
-By segmenting your sending purposes by subdomain, you are giving Inbox Providers clear indication of how they should place your emails, which will build trust and confidence.
+By segmenting your sending purposes by subdomain, you give Inbox Providers clear indication of where to place your emails, which builds trust and confidence.
 
 ## Avoid "Lookalike" Domains
 
@@ -36406,7 +36439,7 @@ Here's a simple workflow you can build with the Resend nodes:
 1. **Resend Trigger**: listens for `contact.created` events.
 2. **Resend** (Email > Send): sends a welcome email to the new contact using data from the trigger.
 
-The Trigger-Action pattern works for any event. For example, you could notify your team on Slack when an email bounces, or log delivery events to a spreadsheet.
+The Trigger-Action pattern works for any event. For example, you can notify your team on Slack when an email bounces, or log delivery events to a spreadsheet.
 
 <Note>
   The Resend node is also available as an [AI
@@ -37133,11 +37166,11 @@ With **Option B**, each tenant is responsible for their own Resend plan and bill
 
 Sender reputation is tied to the sending account and its associated domains and IPs. This is the most important distinction between the two approaches.
 
-With **Option A**, all tenants share the same sender reputation. If a single tenant sends to stale lists, generates high bounce rates, or triggers spam complaints, it can degrade deliverability for every tenant on your account. In the worst case, your entire account could be suspended.
+With **Option A**, all tenants share the same sender reputation. If a single tenant sends to stale lists, generates high bounce rates, or triggers spam complaints, it can degrade deliverability for every tenant on your account. In the worst case, your entire account faces suspension.
 
 With **Option B**, each tenant has a fully independent sender reputation. A problem with one tenant has zero impact on others. However, each tenant is responsible for following best practices on their own.
 
-Regardless of which approach you choose, each new tenant domain should follow a [warm-up schedule](/docs/knowledge-base/warming-up). Using a [subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) for sending is also a good practice to protect the tenant's root domain reputation.
+Regardless of which approach you choose, each new tenant domain must follow a [warm-up schedule](/docs/knowledge-base/warming-up). Using a [subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) for sending is also a good practice to protect the tenant's root domain reputation.
 
 ## Webhook routing
 
@@ -37215,7 +37248,7 @@ Multi-tenant email is a complex space, and we're always looking to make it easie
 </CardGroup>
 
 
-# Should I add an unsubscribe link to all of my emails sent with Resend?
+# Do I need to add an unsubscribe link to all of my emails sent with Resend?
 Source: https://resend.com/docs/knowledge-base/should-i-add-an-unsubscribe-link
 
 Learn best practices about using unsubscribe links.
@@ -37228,7 +37261,7 @@ Laws enforced by the FTC and GDPR prioritize giving recipients a clear way to gi
 
 Here is more on how to [manually add and manage unsubscribe links](https://resend.com/docs/dashboard/emails/add-unsubscribe-to-transactional-emails).
 
-If you're using [Resend Broadcasts or Automations](https://resend.com/docs/dashboard/audiences/managing-unsubscribe-list), Resend will automatically handle unsubscribe requests once you include `{{{RESEND_UNSUBSCRIBE_URL}}}` in your email. You can include the Unsubscribe Footer in your Broadcasts, which will be automatically replaced with the correct link for each contact, or use `{{{RESEND_UNSUBSCRIBE_URL}}}` as a link target should you want to customize the unsubscribe footer.
+If you're using [Resend Broadcasts or Automations](https://resend.com/docs/dashboard/audiences/managing-unsubscribe-list), Resend will automatically handle unsubscribe requests once you include `{{{RESEND_UNSUBSCRIBE_URL}}}` in your email. You can include the Unsubscribe Footer in your Broadcasts, which will be automatically replaced with the correct link for each contact, or use `{{{RESEND_UNSUBSCRIBE_URL}}}` as a link target if you want to customize the unsubscribe footer.
 
 
 # Squarespace
@@ -37825,6 +37858,10 @@ Verify your domain on Vercel with Resend.
   the integration here](https://vercel.com/resend/~/integrations/resend).
 </Note>
 
+## Vercel Marketplace integration
+
+If you installed Resend through the [Vercel Marketplace](https://vercel.com/marketplace/resend), Vercel manages the lifecycle of your Resend team, API keys, and domains. These resources cannot be deleted from the Resend dashboard, as they must uninstalled from Vercel to remove them.
+
 ## Add Domain to Resend
 
 First, log in to your [Resend Account](https://resend.com/login) and [add a domain](https://resend.com/domains).
@@ -38015,7 +38052,7 @@ Learn how to warm up a domain or IP to avoid deliverability issues.
 
 Warming up a domain or IP refers to the practice of progressively increasing your sending volume to maximize your deliverability. The goal is to send at a consistent rate and avoid any spikes in email volume that might be concerning to inbox service providers.
 
-Whenever you change your sending patterns, whether because you're using a new domain, a new IP, or a new vendor, or because your volume will increase, you should warm-up your domain and/or IP.
+Whenever you change your sending patterns, whether because you're using a new domain, a new IP, or a new vendor, or because your volume will increase, warm up your domain and/or IP.
 
 A thought-out warm-up plan limits greylisting and delivery throttling, as well as helping establish a good domain and IP reputation.
 
@@ -38150,7 +38187,7 @@ Valid consent means the recipient **clearly and knowingly agreed** to receive th
 * **Informed** – the user knows who you are and how you’ll use their data
 * **Unambiguous** – requires an active opt-in (like checking a box)
 
-In other words, recipients should be able to consent to each message type from a particular sender.
+In other words, recipients must be able to consent to each message type from a particular sender.
 
 ## What happens if you send without consent?
 
@@ -38242,7 +38279,7 @@ Some emails may be marked as `Delivered` but not reach the recipient's inbox due
 
 When an email is sent, it is marked as `Delivered` once the recipient server accepts it with a `250 OK` response. However, the server can then direct the email to the inbox, queue it for later, route it to the spam folder, or even discard it. This is done by major inbox providers (e.g., Gmail, Yahoo, Outlook), as well as by IT departments and individual users who set up firewalls or filtering rules.
 
-As a result, even though most legitimate emails should land in the intended inboxes, your message might end up in the spam/junk folder or, in rare cases, be deleted.
+As a result, even though most legitimate emails land in the intended inboxes, your message might end up in the spam/junk folder or, in rare cases, be deleted.
 
 **Inbox Providers do not share any information on how the messages are later filtered.** Resend is only notified about the initial acceptance and marks the email as `Delivered`. Any subsequent events (e.g., open/click events, unsubscribes) require recipient engagement.
 
@@ -38285,7 +38322,7 @@ Verifying a domain involves a few steps:
 3. Add these records to your DNS provider
 4. Wait for verification to complete
 
-When this process is completed correctly, your domain will often verify within 15 minutes of adding the DNS records. What should you do if your domain isn't verifying?
+When this process is completed correctly, your domain will often verify within 15 minutes of adding the DNS records.
 
 <Tip>
   If you are having any conflict issues with the `MX` records, [check out this
@@ -38334,7 +38371,7 @@ In your DNS provider, add a trailing period (dot) at the end of the record value
 
 `feedback-smtp.eu-west-1.amazonses.com.`
 
-The trailing period tells your DNS provider that this is a fully qualified domain name that should not be modified.
+The trailing period tells your DNS provider that this is a fully qualified domain name that must not be modified.
 
 <Tip>
   Note: The region your domain is added to is in this MX record. It may be
@@ -38489,7 +38526,7 @@ Dedicated IPs are available for \$30/month on the Scale plan for customers sendi
 Yes, we offer annual subscriptions for Enterprise plans. [Book time with our sales team to learn more.](https://resend.com/enterprise)
 
 
-# What sending feature should I be using?
+# Which sending feature do I need?
 Source: https://resend.com/docs/knowledge-base/what-sending-feature-to-use
 
 How to pick between our different sending features depending on your number of recipients and the nature of the message.
@@ -38522,7 +38559,7 @@ Examples of marketing emails:
 
 Marketing emails can be **1-to-1** (e.g., abandoned cart reminders) or **1-to-many** (e.g., newsletters).
 
-## Should I be sending a Transactional or a Marketing email?
+## Transactional vs Marketing: Which Do I Need?
 
 While not exhaustive, here's a table listing different examples of emails and the most appropriate type for each example.
 
@@ -38633,7 +38670,7 @@ When an email lands in spam, providers like Gmail display a banner explaining wh
 | Banner message                                                       | What it means                             | Fix                                                                                     |
 | -------------------------------------------------------------------- | ----------------------------------------- | --------------------------------------------------------------------------------------- |
 | "It's similar to messages that were identified as spam in the past." | Content is triggering spam filters        | Simplify your email content and remove excessive links, images, or marketing language   |
-| "This message seems dangerous"                                       | A URL or content was flagged as malicious | Review the links and content in your email for anything that could be flagged as unsafe |
+| "This message seems dangerous"                                       | A URL or content was flagged as malicious | Review the links and content in your email for anything that might be flagged as unsafe |
 
 ## 4. Check your domain reputation
 
@@ -38750,7 +38787,7 @@ Because of this, open tracking is **not a statistically accurate way** of detect
 
 ## Does open tracking impact inbox placement?
 
-Though open tracking should not impact if your email is delivered, it most likely will impact your inbox placement. Trackers are generally **used by marketers and even spammers**. Because of this, inbox providers will often use open tracking as a signal that your email is promotional, or even spam, and categorize accordingly.
+Though open tracking does not impact whether your email is delivered, it most likely will impact your inbox placement. Trackers are generally **used by marketers and even spammers**. Because of this, inbox providers will often use open tracking as a signal that your email is promotional, or even spam, and categorize accordingly.
 
 **We suggest disabling open rates for transactional email**, to maximize inbox placement.
 
@@ -38771,7 +38808,7 @@ When you send an email, you make one primary decision: **who is this for?** Thos
 
 Topics give recipients a way to say "don't send me this kind of email" without unsubscribing from everything. Think of Topics as **contracts with your recipients**: a promise that if they opt out of a content type, you'll respect it.
 
-Topics don't define who receives a message. They **define who asked not to receive that message**. This guide explains why Topics matter for deliverability, when you should use them, and how they differ from Segments.
+Topics don't define who receives a message. They **define who asked not to receive that message**. This guide explains why Topics matter for deliverability, when to use them, and how they differ from Segments.
 
 ## Why Topics improve deliverability
 
@@ -38877,11 +38914,11 @@ Private Topics are useful for exclusive content, like a beta program or VIP anno
 
 ### Keep it simple
 
-Don't create too many Topics. Recipients get overwhelmed when faced with a long list of checkboxes. Aim for 3-5 distinct content types that clearly communicate what the recipient will receive.
+Don't create too many Topics. Recipients get overwhelmed when faced with a long list of checkboxes. Aim for 3–5 distinct content types that clearly communicate what the recipient will receive.
 
 ### Use clear, descriptive names
 
-Topic names should be immediately understandable. "Newsletter" and "Product Updates" are clear. "Category A" and "Misc" are not.
+Topic names must be immediately understandable. "Newsletter" and "Product Updates" are clear. "Category A" and "Misc" are not.
 
 ### Add descriptions
 
@@ -39029,7 +39066,7 @@ The MCP server includes `create-contact-import`, `get-contact-import`, and
 `list-contact-imports` tools to upload CSV files, check import status, and review
 previous imports.
 
-As an example, you could use this to automate email workflows, manage your contact database, or build AI-powered email campaigns.
+For example, use this to automate email workflows, manage your contact database, or build AI-powered email campaigns.
 
 ## Prerequisites
 
@@ -39401,7 +39438,7 @@ Source: https://resend.com/docs/openclaw-guide
 
 Learn how to give your AI agent an inbox to send and receive emails.
 
-## Why should I give my agent an inbox?
+## Why give your agent an inbox?
 
 Giving your agent an inbox enables it to:
 
@@ -39634,7 +39671,7 @@ The Resend Skill [includes security guidelines](https://github.com/resend/resend
 4. **Sandboxed Processing**: Process all emails but in a restricted context where the agent has limited capabilities.
 5. **Human-in-the-Loop**: Process all emails but require human approval for each email.
 
-In general, we recommend starting with the **Strict Allowlist** and gradually decreasing security if needed. We provide additional security best practices in the [Resend Skill](https://github.com/resend/resend-skills/blob/main/skills/agent-email-inbox/SKILL.md#security-levels) you should consider.
+In general, we recommend starting with the **Strict Allowlist** and gradually decreasing security if needed. Review additional security best practices in the [Resend Skill](https://github.com/resend/resend-skills/blob/main/skills/agent-email-inbox/SKILL.md#security-levels).
 
 If you have any questions, please [contact support](https://resend.com/help).
 
@@ -40595,8 +40632,8 @@ async fn endpoint(State(state): State<Arc<AppState>>) -> Result<String, StatusCo
 }
 ```
 
-Opening your browser at `http://localhost:3000` (or running `curl localhost:3000`) should send an
-email and return you its id!
+Opening your browser at `http://localhost:3000` (or running `curl localhost:3000`) sends an
+email and returns its id!
 
 ## 3. Try it yourself!
 
@@ -44070,7 +44107,7 @@ composer require resend/resend-laravel
 
 ### API key
 
-Next, you should configure your Resend API key in your application's `.env` file:
+Next, configure your Resend API key in your application's `.env` file:
 
 ```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
 RESEND_API_KEY=re_xxxxxxxxx
@@ -44269,7 +44306,7 @@ MAIL_FROM_NAME=Acme
 
 ## 2. Send an email
 
-Now you're ready to send emails with Laravel's powerful email service. Here's an example of how you could send your first email using Resend SMTP:
+Now you're ready to send emails with Laravel's powerful email service. Here's an example of how to send your first email using Resend SMTP:
 
 ```php OrderShipmentController.php theme={"theme":{"light":"github-light","dark":"vesper"}}
 <?php
@@ -44399,7 +44436,7 @@ When configuring your SMTP integration, you'll need to use the following credent
 
 After logging into your [Metabase Cloud](https://www.metabase.com/cloud/login) account, you’ll need to enable the SMTP integration.
 
-1. From your Metabase Cloud Admin Panel, go to **Settings > Email** in the left menu. You should see the form below.
+1. From your Metabase Cloud Admin Panel, go to **Settings > Email** in the left menu. You'll see the form below.
 
 <img alt="Metabase Cloud SMTP" />
 
@@ -46196,13 +46233,13 @@ And create your ERB email template.
 </html>
 ```
 
-Initialize your `UserMailer` class. This should return a `UserMailer` instance.
+Initialize your `UserMailer` class. This returns an `ActionMailer::MessageDelivery` instance.
 
 ```rb theme={"theme":{"light":"github-light","dark":"vesper"}}
 u = User.new name: "derich"
 mailer = UserMailer.with(user: u).welcome_email
 
-# => #<Mail::Message:153700, Multipart: false, Headers: <From: from@example.com>, <To: to@example.com>, <Subject: hello world>, <Mime-Version: 1.0>...
+# => #<ActionMailer::MessageDelivery:153700, @mail_message=#<Mail::Message...>, @processed_mailer=...>
 ```
 
 Finally, you can now send emails using the `deliver_now!` method:
@@ -46313,13 +46350,13 @@ And create your ERB email template.
 </html>
 ```
 
-Initialize your `UserMailer` class. This should return a `UserMailer` instance.
+Initialize your `UserMailer` class. This returns an `ActionMailer::MessageDelivery` instance.
 
 ```rb theme={"theme":{"light":"github-light","dark":"vesper"}}
 u = User.new name: "derich"
 mailer = UserMailer.with(user: u).welcome_email
 
-# => #<Mail::Message:153700, Multipart: false, Headers: <From: from@example.com>, <To: to@example.com>, <Subject: hello world>, <Mime-Version: 1.0>...
+# => #<ActionMailer::MessageDelivery:153700, @mail_message=#<Mail::Message...>, @processed_mailer=...>
 ```
 
 Finally, you can now send emails using the `deliver_now!` method:
@@ -47327,7 +47364,7 @@ async fn main() -> Result<()> {
 ## Reading the API key
 
 Instead of using `Resend::new` and hardcoding the API key, the `RESEND_API_KEY` environment variable
-can be used instead. The `Resend::default()` should be used in that scenario instead.
+can be used instead. Use `Resend::default()` in that scenario instead.
 
 ### Reading the API key from a `.env` file
 
@@ -47562,7 +47599,7 @@ Here are some common use cases for custom headers:
 
 ## FAQ
 
-Once configured, you should be able to start sending emails via SMTP. Below are some frequently asked questions:
+Once configured, you can start sending emails via SMTP. Below are some frequently asked questions:
 
 <AccordionGroup>
   <Accordion title="What if I need logs from the server to debug?">
@@ -48107,7 +48144,7 @@ Get the Resend Mailer Bridge package.
 composer require symfony/resend-mailer
 ```
 
-If your application relies on Resend webhook events, you should also install the Symfony Webhook Component.
+If your application relies on Resend webhook events, also install the Symfony Webhook Component.
 
 ```bash Composer theme={"theme":{"light":"github-light","dark":"vesper"}}
 composer require symfony/webhook
@@ -50833,7 +50870,7 @@ export default (req, res) => {
 };
 ```
 
-On receiving an event, you should respond with an `HTTP 200 OK` to signal to Resend that the event was successfully delivered.
+On receiving an event, respond with an `HTTP 200 OK` to signal to Resend that the event was successfully delivered.
 
 <Tip>
   For development, you can create a tunnel to your localhost server using a tool like
@@ -51040,6 +51077,12 @@ If an endpoint is removed or disabled delivery attempts to the endpoint will be 
 
 To see when a message will be retried next, check the webhook message details in the dashboard.
 
+## Failure notifications
+
+When a webhook endpoint starts failing to receive events, Resend sends an email notification to your team. The email includes the endpoint URL, the time of the last failed attempt, and the last HTTP response status code.
+
+If the endpoint continues to fail, Resend will eventually disable it automatically and send a second notification to let you know. Once your endpoint is back up, you can re-enable it from the [Webhooks](https://resend.com/webhooks) page in the dashboard.
+
 For example, an attempt that fails three times before eventually succeeding will be delivered roughly 35 minutes and 5 seconds following the first attempt.
 
 ## Manual Replays
@@ -51146,7 +51189,7 @@ wh.verify(payload, headers);
 
 If you prefer, you can also [manually verify the headers as well.](https://docs.svix.com/receiving/verifying-payloads/how-manual)
 
-## Why should I verify webhooks?
+## Why verify webhooks?
 
 Webhooks are vulnerable because attackers can send fake HTTP POST requests to endpoints, pretending to be legitimate services. This can lead to security risks or operational issues.
 

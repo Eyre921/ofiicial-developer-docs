@@ -65,7 +65,7 @@ Apple requires that you send only to recipients who explicitly subscribed to you
 2. Use [Webhooks](/docs/webhooks/introduction) to remove bounced or complained recipients from your list
 3. Never resume sending to addresses on your suppression list
 
-## Make It Easy to Unsubscribe
+## Simplify the Unsubscribe Process
 
 Apple requires bulk senders to offer an unsubscribe link so recipients can opt out immediately. We recommend implementing [one-click unsubscribe](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails) for the best user experience.
 
@@ -106,6 +106,6 @@ Email deliverability is overwhelming. One way to simplify it is to think: **what
 
 **Then do the opposite!**
 
-iCloud's goal is to only show emails that their users want to see. Reverse engineer phishing sending habits and consider how you could prove to Apple at each step that you clearly have no malicious intent.
+iCloud's goal is to only show emails that their users want to see. Reverse engineer phishing sending habits and consider how you can prove to Apple at each step that you clearly have no malicious intent.
 
 <Info>Anything we missed? [Let us know](https://resend.com/help).</Info>

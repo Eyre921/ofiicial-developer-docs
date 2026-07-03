@@ -71,8 +71,8 @@ async fn endpoint(State(state): State<Arc<AppState>>) -> Result<String, StatusCo
 }
 ```
 
-Opening your browser at `http://localhost:3000` (or running `curl localhost:3000`) should send an
-email and return you its id!
+Opening your browser at `http://localhost:3000` (or running `curl localhost:3000`) sends an
+email and returns its id!
 
 ## 3. Try it yourself!
 

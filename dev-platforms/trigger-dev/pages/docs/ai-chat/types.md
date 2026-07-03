@@ -6,10 +6,6 @@ path: docs/ai-chat/types
 
 TypeScript types for AI Agents, UI messages, and the frontend transport.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 TypeScript patterns for [AI Chat](/docs/ai-chat/overview). This page covers how to pin a custom AI SDK [`UIMessage`](https://sdk.vercel.ai/docs/reference/ai-sdk-core/ui-message) subtype with `chat.withUIMessage`, fix a typed `clientData` schema with `chat.withClientData`, chain builder-level hooks, and align types on the client.
 
 ## Custom `UIMessage` with `chat.withUIMessage`

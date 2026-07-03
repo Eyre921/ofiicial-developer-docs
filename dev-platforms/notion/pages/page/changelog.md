@@ -4,6 +4,14 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="July 2, 2026">
+  ### Choose an expiration when creating a personal access token
+
+  When creating a [personal access token](/guides/get-started/personal-access-tokens) in the [Developer portal](https://www.notion.so/developers), you can now pick an **Expiration** of 7 days, 30 days, 90 days, 180 days, or 1 year. The default stays at 1 year, matching the previous behavior. The create dialog previews the exact expiration date, and the reveal step shows the same date next to the token value.
+
+  The workspace admin view under **Settings & members → Connections** now also surfaces an **Expired** status and filter for PATs whose expiration has passed. Expired tokens stop authenticating and return an `unauthorized` error, and can still be revoked from the admin view or the Developer portal.
+</Update>
+
 <Update label="July 1, 2026">
   ### Icon names and database icons
 

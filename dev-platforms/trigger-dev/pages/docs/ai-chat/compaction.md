@@ -6,10 +6,6 @@ path: docs/ai-chat/compaction
 
 Automatic context compaction to keep long conversations within token limits.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## Overview
 
 Long conversations accumulate tokens across turns. Eventually the context window fills up, causing errors or degraded responses. Compaction solves this by automatically summarizing the conversation when token usage exceeds a threshold, then using that summary as the context for future turns.

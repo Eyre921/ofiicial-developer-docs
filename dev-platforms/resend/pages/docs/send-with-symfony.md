@@ -21,7 +21,7 @@ Get the Resend Mailer Bridge package.
 composer require symfony/resend-mailer
 ```
 
-If your application relies on Resend webhook events, you should also install the Symfony Webhook Component.
+If your application relies on Resend webhook events, also install the Symfony Webhook Component.
 
 ```bash Composer theme={"theme":{"light":"github-light","dark":"vesper"}}
 composer require symfony/webhook

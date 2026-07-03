@@ -13,7 +13,7 @@ Verifying a domain involves a few steps:
 3. Add these records to your DNS provider
 4. Wait for verification to complete
 
-When this process is completed correctly, your domain will often verify within 15 minutes of adding the DNS records. What should you do if your domain isn't verifying?
+When this process is completed correctly, your domain will often verify within 15 minutes of adding the DNS records.
 
 <Tip>
   If you are having any conflict issues with the `MX` records, [check out this
@@ -62,7 +62,7 @@ In your DNS provider, add a trailing period (dot) at the end of the record value
 
 `feedback-smtp.eu-west-1.amazonses.com.`
 
-The trailing period tells your DNS provider that this is a fully qualified domain name that should not be modified.
+The trailing period tells your DNS provider that this is a fully qualified domain name that must not be modified.
 
 <Tip>
   Note: The region your domain is added to is in this MX record. It may be

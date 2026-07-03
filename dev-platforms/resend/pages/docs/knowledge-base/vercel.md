@@ -14,6 +14,10 @@ Verify your domain on Vercel with Resend.
   the integration here](https://vercel.com/resend/~/integrations/resend).
 </Note>
 
+## Vercel Marketplace integration
+
+If you installed Resend through the [Vercel Marketplace](https://vercel.com/marketplace/resend), Vercel manages the lifecycle of your Resend team, API keys, and domains. These resources cannot be deleted from the Resend dashboard, as they must uninstalled from Vercel to remove them.
+
 ## Add Domain to Resend
 
 First, log in to your [Resend Account](https://resend.com/login) and [add a domain](https://resend.com/domains).

@@ -120,7 +120,7 @@ When working with preview branches, you may need to target a specific branch whe
   </Tab>
 
   <Tab title="cURL">
-    To target a specific preview branch, include the `x-trigger-branch` header in your API requests with the branch name as the value:
+    To target a specific preview or development branch, include the `x-trigger-branch` header in your API requests with the branch name as the value:
 
     ```bash theme={"theme":"css-variables"}
     curl --request PUT \
@@ -138,8 +138,8 @@ When working with preview branches, you may need to target a specific branch whe
 This will set the `DATABASE_URL` environment variable specifically for the `feature-xyz` preview branch.
 
 <Note>
-  The `x-trigger-branch` header is only relevant when working with the `preview` environment (`{env}
-      ` parameter set to `preview`). It has no effect when working with `dev`, `staging`, or `prod`
+  The `x-trigger-branch` header is only relevant when working with the `preview` or `dev` environments (`{env}
+      ` parameter set to `preview` or `development`). It has no effect when working with `staging`, or `prod`
   environments.
 </Note>
 

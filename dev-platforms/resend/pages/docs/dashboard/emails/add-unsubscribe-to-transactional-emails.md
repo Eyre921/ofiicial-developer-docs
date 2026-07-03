@@ -18,7 +18,7 @@ If you manage your own list, you can add the `List-Unsubscribe: https://example.
 
 As of February 2024, your bulk messages must include a URL version in your list-unsubscribe header, `List-Unsubscribe-Post: List-Unsubscribe=One-Click`, and to allow for a `POST` request from the same URL. This follows [RFC 8058](https://datatracker.ietf.org/doc/html/rfc8058) (Signaling One-Click Functionality for List Email Headers).
 
-When receiving a `POST`, it should return a blank page with `200 (OK)` or `202 (Accepted)`, and should show the regular unsubscribe page with the `GET` method. Ensure that users stop receiving email within 48 hours of this request.
+When receiving a `POST`, return a blank page with `200 (OK)` or `202 (Accepted)`, and show the regular unsubscribe page with the `GET` method. Ensure that users stop receiving email within 48 hours of this request.
 
 This header allows email clients to offer a one-click "Unsubscribe" option in their UI, enhancing user experience and decreasing spam complaints. Gmail and Yahoo require RFC 8058 compliance for bulk senders (those sending more than 5,000 messages per day to their domains).
 

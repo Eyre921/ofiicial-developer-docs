@@ -10,7 +10,7 @@ When you send an email, you make one primary decision: **who is this for?** Thos
 
 Topics give recipients a way to say "don't send me this kind of email" without unsubscribing from everything. Think of Topics as **contracts with your recipients**: a promise that if they opt out of a content type, you'll respect it.
 
-Topics don't define who receives a message. They **define who asked not to receive that message**. This guide explains why Topics matter for deliverability, when you should use them, and how they differ from Segments.
+Topics don't define who receives a message. They **define who asked not to receive that message**. This guide explains why Topics matter for deliverability, when to use them, and how they differ from Segments.
 
 ## Why Topics improve deliverability
 
@@ -116,11 +116,11 @@ Private Topics are useful for exclusive content, like a beta program or VIP anno
 
 ### Keep it simple
 
-Don't create too many Topics. Recipients get overwhelmed when faced with a long list of checkboxes. Aim for 3-5 distinct content types that clearly communicate what the recipient will receive.
+Don't create too many Topics. Recipients get overwhelmed when faced with a long list of checkboxes. Aim for 3–5 distinct content types that clearly communicate what the recipient will receive.
 
 ### Use clear, descriptive names
 
-Topic names should be immediately understandable. "Newsletter" and "Product Updates" are clear. "Category A" and "Misc" are not.
+Topic names must be immediately understandable. "Newsletter" and "Product Updates" are clear. "Category A" and "Misc" are not.
 
 ### Add descriptions
 

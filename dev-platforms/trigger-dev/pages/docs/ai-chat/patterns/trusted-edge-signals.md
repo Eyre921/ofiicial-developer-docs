@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/trusted-edge-signals
 
 How to safely deliver server-trusted signals (bot scores, JA4, ASN, ReCAPTCHA verdicts) to a chat.agent run via an edge proxy.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 A common need for chat-style endpoints is to drive agent behavior from **server-trusted signals** that the browser cannot be allowed to declare itself — bot management scores, JA4 fingerprints, ASN, ReCAPTCHA verdicts, or any other anti-abuse data only the edge can see. The agent's [`clientData`](/docs/ai-chat/reference#withclientdata) channel is the right delivery mechanism, but `clientData` set in the browser is by definition spoofable. The fix is to move the value population out of the browser and into a trusted edge proxy.
 
 This page documents the pattern using Cloudflare Workers as the proxy. The same shape applies to any edge layer (custom reverse proxy, Vercel Edge Middleware, AWS Lambda\@Edge) — the trust comes from the deployment topology, not from Trigger.dev validating the source.

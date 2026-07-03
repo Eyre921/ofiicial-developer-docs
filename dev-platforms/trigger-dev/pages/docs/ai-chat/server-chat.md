@@ -6,10 +6,6 @@ path: docs/ai-chat/server-chat
 
 Use AgentChat to interact with chat agents from server-side code — tasks, webhooks, scripts, or other agents.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 `AgentChat` lets you chat with agents from server-side code. It works inside tasks (agent-to-agent), request handlers, webhook processors, and scripts.
 
 ```ts theme={"theme":"css-variables"}

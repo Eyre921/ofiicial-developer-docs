@@ -87,6 +87,14 @@ components:
         - 'off'
       default: auto
       title: PreToolSpeechMode
+    ToolInterruptionMode:
+      type: string
+      enum:
+        - allow
+        - disable_during_tool
+        - disable_during_tool_and_turn
+      default: allow
+      title: ToolInterruptionMode
     ToolCallSoundType:
       type: string
       enum:
@@ -350,8 +358,15 @@ components:
             - boolean
             - 'null'
           description: >-
-            If set, overrides the server's disable_interruptions setting for
-            this tool
+            DEPRECATED: use `interruption_mode` instead. If set, overrides the
+            server's disable_interruptions setting for this tool.
+        interruption_mode:
+          oneOf:
+            - $ref: '#/components/schemas/ToolInterruptionMode'
+            - type: 'null'
+          description: >-
+            If set, overrides the server's interruption_mode setting for this
+            tool.
         tool_call_sound:
           oneOf:
             - $ref: '#/components/schemas/ToolCallSoundType'
@@ -442,7 +457,7 @@ components:
 {
   "tool_name": "string",
   "pre_tool_speech": "auto",
-  "disable_interruptions": true,
+  "interruption_mode": "allow",
   "tool_call_sound": "typing",
   "tool_call_sound_behavior": "auto",
   "execution_mode": "immediate",
@@ -471,7 +486,8 @@ components:
       ]
     }
   ],
-  "force_pre_tool_speech": true
+  "force_pre_tool_speech": true,
+  "disable_interruptions": true
 }
 ```
 

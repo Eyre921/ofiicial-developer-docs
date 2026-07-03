@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/oom-resilience
 
 Recover from out-of-memory errors mid-turn by automatically retrying the failed turn on a larger machine — without losing the in-flight user message or re-processing completed turns.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 When a `chat.agent` turn runs out of memory, the worker process dies and everything in it is gone: the in-flight LLM call, the accumulator, any tool execution mid-flight. By default, Trigger.dev surfaces the OOM as a run failure.
 
 Setting `oomMachine` opts the agent into automatic recovery: the failed turn re-runs on a larger machine, picks up the user message that triggered the OOM (without re-processing earlier completed turns), and produces a normal response.

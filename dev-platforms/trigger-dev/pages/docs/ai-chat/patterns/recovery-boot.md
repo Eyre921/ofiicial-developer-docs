@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/recovery-boot
 
 Recover from cancel-mid-stream, crashes, and OOM kills with full conversational context. The smart default Just Works; the onRecoveryBoot hook is the override path for advanced policies.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 When a `chat.agent` run dies in the middle of streaming a response — the user cancels, the worker OOMs, or an unhandled exception kills the process — the durable streams hold what was in flight. The next run boots as a continuation, reads both stream tails, and reconstructs a chain that preserves the partial response so any follow-up (`keep going`, `actually do X instead`, a new question) has full context.
 
 The behavior is automatic. The `onRecoveryBoot` hook is opt-in for policies that need something different.

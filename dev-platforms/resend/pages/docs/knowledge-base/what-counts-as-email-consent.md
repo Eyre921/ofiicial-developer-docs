@@ -37,7 +37,7 @@ Valid consent means the recipient **clearly and knowingly agreed** to receive th
 * **Informed** – the user knows who you are and how you’ll use their data
 * **Unambiguous** – requires an active opt-in (like checking a box)
 
-In other words, recipients should be able to consent to each message type from a particular sender.
+In other words, recipients must be able to consent to each message type from a particular sender.
 
 ## What happens if you send without consent?
 

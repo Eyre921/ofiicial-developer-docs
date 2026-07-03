@@ -6,10 +6,6 @@ path: docs/ai-chat/pending-messages
 
 Inject user messages mid-execution to steer agents between tool-call steps.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## Overview
 
 When an AI agent is executing tool calls, users may want to send a message that **steers the agent mid-execution** — adding context, correcting course, or refining the request without waiting for the response to finish.

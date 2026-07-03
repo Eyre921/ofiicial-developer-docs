@@ -12,13 +12,17 @@ For the full list of base models supported by managed fine-tuning (SFT, DPO, and
 
 <Steps>
   <Step title="Confirm model support for fine-tuning">
-    You can confirm that a base model is available to fine-tune by looking for the `Tunnable` tag in the model library or by using:
+    You can confirm that a base model is available to fine-tune by looking for the `Tunable` tag in the model library or by using:
 
     ```bash theme={null}
     firectl model get -a fireworks <MODEL-ID>
     ```
 
     And looking for `Tunable: true`.
+
+    <Note>
+      Custom uploaded base models must include a corresponding Hugging Face URL before Fireworks can determine whether they are tunable. Fireworks uses the URL to infer the training renderer and find compatible training shapes. The tunability refresh runs asynchronously about every 30 minutes, so a newly uploaded or updated custom model may take up to 30 minutes to show `Tunable: true`.
+    </Note>
 
     <Note>
       Some base models cannot be tuned on Fireworks (`Tunable: false`) but still list support for LoRA (`Supports Lora: true`). This means that users can tune a LoRA for this base model on a separate platform and upload it to Fireworks for inference. Consult [importing fine-tuned models](/models/uploading-custom-models#importing-fine-tuned-models) for more information.

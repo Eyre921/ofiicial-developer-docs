@@ -44,6 +44,8 @@ For SFT and DPO pricing, see the [pricing page](https://fireworks.ai/pricing).
 
 Fireworks supports fine-tuning for most major open source models, including DeepSeek, Qwen, Kimi, Gemma, GLM, and Llama families. The same set of base models is available for SFT, DPO, and RFT — once a base model is supported, every managed fine-tuning method works against it.
 
+Custom models uploaded by users are not automatically tunable. To use managed fine-tuning with an uploaded custom base model, the model must have a corresponding Hugging Face URL. Fireworks uses that URL to infer the training renderer and locate compatible training shapes. A custom model is supported only when Fireworks can resolve both a supported renderer and at least one compatible training shape. After the Hugging Face URL is set, tunability is refreshed by a background operation that runs about every 30 minutes, so the model may take up to 30 minutes to show as `Tunable: true`. We are working to make this refresh faster.
+
 The table below is generated from the live training shape registry. The "Max supported context length" is the largest `max_supported_context_length` across all training shapes registered for that base model — use it as the upper bound when you set a per-job context length on `firectl sftj create`, `firectl dpoj create`, or RFT job creation.
 
 | Base model                      | Max supported context length |

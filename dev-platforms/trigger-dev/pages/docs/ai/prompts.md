@@ -6,10 +6,6 @@ path: docs/ai/prompts
 
 Define prompt templates as code, version them on deploy, and override from the dashboard without redeploying.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## Overview
 
 AI Prompts let you define prompt templates in your codebase alongside your tasks. When you deploy, Trigger.dev automatically versions your prompts. You can then:

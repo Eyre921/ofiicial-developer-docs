@@ -30,6 +30,12 @@ path: docs/flux/feature-overview
 | ------------------------------------------ | --------------------------------- |
 | [Profanity Filter](/docs/profanity-filter) | [All available](/docs/model#flux) |
 
+## Transcription
+
+| Feature               | Language(s)                       |
+| --------------------- | --------------------------------- |
+| Word-level Timestamps | [All available](/docs/model#flux) |
+
 ## Custom Vocabulary
 
 | Feature                            | Language(s)                                      |

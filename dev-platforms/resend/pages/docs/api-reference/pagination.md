@@ -24,7 +24,7 @@ You can navigate through the results using the following parameters:
 
 Use the `id` of objects as the cursor for pagination. The cursor itself is *excluded* from the results. For an example, see [pagination strategies below](#strategies).
 
-## Currently-supported endpoints
+## Supported endpoints
 
 Existing list endpoints can optionally return paginated results:
 
@@ -450,7 +450,7 @@ Pagination requests may return the following validation errors:
 
 | Error              | Description                                         |
 | ------------------ | --------------------------------------------------- |
-| `validation_error` | Invalid cursor format or limit out of range (1-100) |
+| `validation_error` | Invalid cursor format or limit out of range (1–100) |
 | `validation_error` | Both `before` and `after` parameters provided       |
 
 Example error response:

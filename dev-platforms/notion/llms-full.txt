@@ -7643,7 +7643,7 @@ Use tools like [GitLeaks](https://github.com/gitleaks/gitleaks), [Detect Secrets
 
 ### Regular key rotation
 
-* Rotate API keys on a schedule and set calendar reminders to do so. PATs expire one year after creation, so plan replacements before they expire.
+* Rotate API keys on a schedule and set calendar reminders to do so. PATs expire on a date chosen when the token is created (up to one year later), so plan replacements before they expire.
 * Immediately rotate keys when team members with access leave
 * Keep an inventory of all API keys and their purposes
 
@@ -8223,10 +8223,10 @@ PATs are intentionally different from internal connections. An internal connecti
 
 Workspace admins can manage PATs from **Settings & members → Connections**:
 
-* View all PATs created in the workspace, including active and revoked tokens.
+* View all PATs created in the workspace, including active, expired, and revoked tokens.
 * Search and filter tokens by name, creator, and status.
 * See who created a token and, for revoked tokens, who revoked it.
-* Revoke active PATs.
+* Revoke active or expired PATs.
 * Configure who can create PATs with Notion API access.
 
 Admins cannot reveal or copy another member's token secret. Only the token creator can reveal or copy their own PAT.
@@ -8262,7 +8262,7 @@ On Enterprise, selected groups are managed from the PAT creators settings page. 
   </Step>
 
   <Step>
-    Enter a name, choose a workspace, and select the capabilities the token should have.
+    Enter a name, choose a workspace, select an expiration, and select the capabilities the token should have.
   </Step>
 
   <Step>
@@ -8270,7 +8270,7 @@ On Enterprise, selected groups are managed from the PAT creators settings page. 
   </Step>
 </Steps>
 
-PATs expire one year after creation. Create a new PAT and update your scripts or tools before the old token expires.
+Choose an **Expiration** for the token from **7 days**, **30 days**, **90 days**, **180 days**, or **1 year**. The form previews the exact date the token will stop working, and the same date is shown on the reveal step next to the token value. If you don't pick an expiration, the token expires 1 year after creation. Create a new PAT and update your scripts or tools before the old token expires — expired tokens stop authenticating and return an `unauthorized` error.
 
 ## Revoke a PAT
 
@@ -16745,6 +16745,14 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="July 2, 2026">
+  ### Choose an expiration when creating a personal access token
+
+  When creating a [personal access token](/guides/get-started/personal-access-tokens) in the [Developer portal](https://www.notion.so/developers), you can now pick an **Expiration** of 7 days, 30 days, 90 days, 180 days, or 1 year. The default stays at 1 year, matching the previous behavior. The create dialog previews the exact expiration date, and the reveal step shows the same date next to the token value.
+
+  The workspace admin view under **Settings & members → Connections** now also surfaces an **Expired** status and filter for PATs whose expiration has passed. Expired tokens stop authenticating and return an `unauthorized` error, and can still be revoked from the admin view or the Developer portal.
+</Update>
 
 <Update label="July 1, 2026">
   ### Icon names and database icons

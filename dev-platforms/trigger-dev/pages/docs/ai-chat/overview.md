@@ -6,10 +6,6 @@ path: docs/ai-chat/overview
 
 Durable multi-turn AI chats — one Trigger.dev task per conversation, surviving refreshes, deploys, and crashes.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 An AI chat isn't a request — it's a session. `chat.agent` runs every conversation as a single long-lived Trigger.dev task: you write the loop, it wakes up when a message arrives, freezes when none do, and the same in-memory state and on-disk workspace survive across page refreshes, deploys, idle gaps, and crashes. The substrate handles the parts most teams stitch together by hand — turn lifecycle, mid-stream resume, recovery from cancel/crash/OOM, HITL approvals, deploy upgrades — so your code is the loop you'd write anyway: messages in, `streamText` out.
 
 ## A minimal example

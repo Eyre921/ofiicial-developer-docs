@@ -21,7 +21,7 @@ This makes it safe to retry requests that send an email. You don't have to worry
 
 ## How to use idempotency keys?
 
-Idempotency keys can be **up to 256 characters** and should be unique per API request.
+Idempotency keys can be **up to 256 characters** and must be unique per API request.
 
 We **recommend using a UUID** or other string that uniquely identifies that specific email.
 
@@ -29,7 +29,7 @@ We **recommend using a UUID** or other string that uniquely identifies that spec
 
 Send the key in the `Idempotency-Key` HTTP header in your API requests. Our SDKs also provide a convenient way to set this header. If you're using SMTP, you can set the `Resend-Idempotency-Key` email header instead.
 
-We keep idempotency keys in our system for **24 hours**. This should give you an ample window to retry any failed processes on your end without having to keep track of the sent status.
+We keep idempotency keys in our system for **24 hours**. This gives you an ample window to retry any failed processes on your end without having to keep track of the sent status.
 
 ### `POST /emails` endpoint example
 
@@ -462,6 +462,6 @@ After checking if an email with the same idempotency key has already been sent, 
 
 * **Successful responses** will return the email ID of the sent email.
 * **Error responses** will return one of the following errors:
-  * `400`: `invalid_idempotency_key` - the idempotency key has to be between 1-256 characters. You can retry with a valid key or without supplying an idempotency key.
+  * `400`: `invalid_idempotency_key` - the idempotency key has to be between 1–256 characters. You can retry with a valid key or without supplying an idempotency key.
   * `409`: `invalid_idempotent_request` - this idempotency key has already been used on a request that had a different payload. Retrying this request is useless without changing the idempotency key or payload.
-  * `409`: `concurrent_idempotent_requests` - another request with the same idempotency key is currently in progress. As it isn't finished yet, Resend can't return its original response, but it is safe to retry this request later if needed.
+  * `409`: `concurrent_idempotent_requests` - another request with the same idempotency key is in progress. As it isn't finished yet, Resend can't return its original response, but it is safe to retry this request later if needed.

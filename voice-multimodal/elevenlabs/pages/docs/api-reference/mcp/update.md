@@ -90,6 +90,14 @@ components:
         - 'off'
       default: auto
       title: PreToolSpeechMode
+    ToolInterruptionMode:
+      type: string
+      enum:
+        - allow
+        - disable_during_tool
+        - disable_during_tool_and_turn
+      default: allow
+      title: ToolInterruptionMode
     ToolCallSoundType:
       type: string
       enum:
@@ -206,8 +214,15 @@ components:
             - boolean
             - 'null'
           description: >-
-            If set, overrides the server's disable_interruptions setting for
-            this tool
+            DEPRECATED: use `interruption_mode` instead. If set, overrides the
+            server's disable_interruptions setting for this tool.
+        interruption_mode:
+          oneOf:
+            - $ref: '#/components/schemas/ToolInterruptionMode'
+            - type: 'null'
+          description: >-
+            If set, overrides the server's interruption_mode setting for this
+            tool.
         tool_call_sound:
           oneOf:
             - $ref: '#/components/schemas/ToolCallSoundType'
@@ -582,8 +597,15 @@ components:
             - boolean
             - 'null'
           description: >-
-            If set, overrides the server's disable_interruptions setting for
-            this tool
+            DEPRECATED: use `interruption_mode` instead. If set, overrides the
+            server's disable_interruptions setting for this tool.
+        interruption_mode:
+          oneOf:
+            - $ref: '#/components/schemas/ToolInterruptionMode'
+            - type: 'null'
+          description: >-
+            If set, overrides the server's interruption_mode setting for this
+            tool.
         tool_call_sound:
           oneOf:
             - $ref: '#/components/schemas/ToolCallSoundType'
@@ -698,8 +720,20 @@ components:
           type: boolean
           default: false
           description: >-
-            If true, the user will not be able to interrupt the agent while any
-            tool from this MCP server is running.
+            DEPRECATED: use `interruption_mode` instead. If true, the user will
+            not be able to interrupt the agent while any tool from this MCP
+            server is running.
+        interruption_mode:
+          $ref: '#/components/schemas/ToolInterruptionMode'
+          default: allow
+          description: >-
+            Controls whether the user can interrupt the agent around this tool
+            call. 'allow' (default) lets the user interrupt at any time,
+            'disable_during_tool' suppresses interruptions only while the tool
+            is running, 'disable_during_tool_and_turn' suppresses interruptions
+            while the tool runs and for the agent response that follows it.
+            Applies to every tool from this MCP server unless overridden per
+            tool.
         tool_call_sound:
           oneOf:
             - $ref: '#/components/schemas/ToolCallSoundType'
@@ -999,7 +1033,7 @@ components:
     },
     "description": "",
     "pre_tool_speech": "auto",
-    "disable_interruptions": false,
+    "interruption_mode": "allow",
     "tool_call_sound": "typing",
     "tool_call_sound_behavior": "auto",
     "execution_mode": "immediate",
@@ -1008,7 +1042,7 @@ components:
       {
         "tool_name": "string",
         "pre_tool_speech": "auto",
-        "disable_interruptions": true,
+        "interruption_mode": "allow",
         "tool_call_sound": "typing",
         "tool_call_sound_behavior": "auto",
         "execution_mode": "immediate",
@@ -1037,11 +1071,13 @@ components:
             ]
           }
         ],
-        "force_pre_tool_speech": true
+        "force_pre_tool_speech": true,
+        "disable_interruptions": true
       }
     ],
     "disable_compression": false,
-    "force_pre_tool_speech": false
+    "force_pre_tool_speech": false,
+    "disable_interruptions": false
   },
   "metadata": {
     "created_at": 1,

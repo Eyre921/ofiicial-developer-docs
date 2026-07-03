@@ -10711,7 +10711,7 @@ Your model must meet these constraints:
 * **Weights:** `.safetensors` format.
 * **No custom code:** `trust_remote_code=True` is not allowed.
 * **Access:** The Hugging Face repo is public, or you have an API token with read access.
-* **Framework compatibility:** Transformers v4.55 or earlier.
+* **Framework compatibility:** Transformers v5.10 or earlier.
 
 You'll also need a Together base model whose architecture matches your custom checkpoint (Llama, Qwen, Mistral, Gemma, etc.) and whose `max_seq_length` is no larger than your checkpoint supports.
 
@@ -11671,6 +11671,50 @@ For example, a job that requested 5 epochs but stopped once the validation loss 
 Here the best evaluation landed at step 48; the next two evaluations didn't improve on it (because `early_stopping_patience` is 2), so the run halted at step 72 and the step-48 checkpoint was promoted as the final model. `steps_completed` (72) is below `total_steps` (120), and the unused steps are refunded.
 
 The [events log](/reference/get-fine-tunes-id-events) also records an `early_stopped` entry at the halt step and a `refund` entry for the unused steps, which are credited back to your project automatically. To see the full history of `eval_loss` across evaluations and understand why early stopping fired, [retrieve the job's metrics](/docs/fine-tuning/monitoring#retrieve-metrics).
+
+## Find the final checkpoint
+
+An early-stopped job ships the final checkpoint from `early_stopping_best_step`, not the halt step. When you [list checkpoints](/reference/cli/finetune#list-checkpoints), the final entry's `step` field reports that promoted step, so it matches `early_stopping_best_step` on the job. A job that didn't stop early reports the last completed step instead.
+
+To confirm this, retrieve the job and compare its `early_stopping_best_step` against the final checkpoint's `step`:
+
+<CodeGroup>
+  ```python Python theme={null}
+  from together import Together
+
+  client = Together()
+
+  job = client.fine_tuning.retrieve("<JOB_ID>")
+  checkpoints = client.fine_tuning.list_checkpoints("<JOB_ID>")
+
+  final = next(
+      c
+      for c in checkpoints.data
+      if "intermediate" not in c.checkpoint_type.lower()
+  )
+  # For an early-stopped job, these two values match.
+  print(final.step, job.early_stopping_best_step)
+  ```
+
+  ```typescript TypeScript theme={null}
+  import Together from "together-ai";
+
+  const client = new Together();
+
+  const job = await client.fineTuning.retrieve("<JOB_ID>");
+  const checkpoints = await client.fineTuning.listCheckpoints("<JOB_ID>");
+
+  const final = checkpoints.data.find(
+    (c) => !c.checkpoint_type.toLowerCase().includes("intermediate"),
+  );
+  // For an early-stopped job, these two values match.
+  console.log(final?.step, job.early_stopping_best_step);
+  ```
+
+  ```bash CLI theme={null}
+  tg fine-tuning list-checkpoints <JOB_ID>
+  ```
+</CodeGroup>
 
 
 # Function-calling fine-tuning
@@ -14936,7 +14980,7 @@ storage.
 Clusters and storage volumes follow different lifecycle policies:
 
 * **Compute Clusters** – Clusters are automatically decommissioned when their
-  reservation period ends. To extend a reservation, go to the cloud console, "Cluster Details" view and then click the "Extend Reservation" button
+  reservation period ends. To extend a reservation, go to the cloud console, "Cluster Details" view and then click the "Extend Reservation" button.
 * **Storage Volumes** – Storage volumes are persistent and remain available as
   long as your billing account is in good standing. They are not automatically
   deleted. The user data persists as long as you use the static PV we provide.
@@ -20833,7 +20877,7 @@ Together's IAM is built around five concepts that work together:
 | [Project](/docs/projects)                                                                | An isolated workspace within your Organization. Resources, Collaborators, and API keys are scoped to Projects. |
 | [Resource](#resources)                                                                   | Anything you create: fine-tuned models, dedicated endpoints, clusters, evaluations, files.                     |
 | [Member](#organization-members-and-project-collaborators)                                | A user with access to your organization.                                                                       |
-| [Collaborator](https://docs.together.ai/#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user)                                |
+| [Collaborator](https://docs.together.ai/#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user).                               |
 | [API key](/docs/api-keys-authentication)                                                 | A Project-scoped credential for authenticating API requests.                                                   |
 
 ## How It All Fits Together
@@ -25888,6 +25932,10 @@ Generate images from text prompts.
 ## Generate an image
 
 To query an image model, use the `.images` method and specify the image model:
+
+<Note>
+  TypeScript examples that call `together.images.generate` require `together-ai@0.31.0` or later. If your project already has an older SDK installed, upgrade with `npm install together-ai@latest`.
+</Note>
 
 <CodeGroup>
   ```python Python theme={null}
@@ -34924,7 +34972,7 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 
 | Resource                   | API key support | UI support |
 | -------------------------- | --------------- | ---------- |
-| Instant Clusters           | ✅               | ✅          |
+| GPU Clusters               | ✅               | ✅          |
 | API Keys                   | ✅               | ✅          |
 | Fine-tuning                | ✅               | ❌          |
 | Files                      | ✅               | ❌          |
@@ -34936,7 +34984,6 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | Storage                    | ❌               | ❌          |
 | Dedicated Endpoints        | ❌               | ❌          |
 | Uploaded Models & Adapters | ❌               | ❌          |
-| GPU Clusters               | N/A             | ✅          |
 
 Here's what to expect when using a resource that isn't yet supported:
 
@@ -38909,7 +38956,7 @@ For FLUX models (excluding pro models) pricing is based on the size of generated
 * **Default pricing:** The listed per megapixel prices are for the default number of steps.
 * **Using more or fewer steps:** Costs are adjusted based on the number of steps used **only if you go above the default steps**. If you use more steps, the cost increases proportionally using the formula below. If you use fewer steps, the cost *does not* decrease and is based on the default rate.
 
-Here’s a formula to calculate cost:
+Here's a formula to calculate cost:
 
 Cost = MP × Price per MP × (Steps ÷ Default Steps)
 
@@ -39167,7 +39214,7 @@ Slurm is a cluster management system that allows users to manage and schedule jo
 
 ### Slurm Job Arrays
 
-You can use Slurm job arrays to partition input files into k chunks and distribute the chunks across the nodes. See this example on processing RPv1 which will need to be adapted to your processing: [arxiv-clean-slurm.batch](https://github.com/togethercomputer/RedPajama-Data/blob/rp_v1/data_prep/arxiv/scripts/arxiv-clean-slurm.sbatch)
+You can use Slurm job arrays to partition input files into k chunks and distribute the chunks across the nodes. See this example on processing RPv1 which will need to be adapted to your processing: [arxiv-clean-slurm.sbatch](https://github.com/togethercomputer/RedPajama-Data/blob/rp_v1/data_prep/arxiv/scripts/arxiv-clean-slurm.sbatch)
 
 ### **Troubleshooting Slurm**
 

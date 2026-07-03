@@ -29,7 +29,7 @@ The MCP server includes `create-contact-import`, `get-contact-import`, and
 `list-contact-imports` tools to upload CSV files, check import status, and review
 previous imports.
 
-As an example, you could use this to automate email workflows, manage your contact database, or build AI-powered email campaigns.
+For example, use this to automate email workflows, manage your contact database, or build AI-powered email campaigns.
 
 ## Prerequisites
 

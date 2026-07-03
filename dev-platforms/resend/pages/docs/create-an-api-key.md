@@ -8,7 +8,7 @@ Get started sending emails by creating an API key
 
 ## What is an API Key?
 
-API Keys are secret tokens used to authenticate your requests. They are unique to your account and should be kept confidential.
+API Keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
 
 You must create at least one API key to use the Resend platform through code (e.g., SDKs, API, command-line interface (CLI), or AI tools).
 

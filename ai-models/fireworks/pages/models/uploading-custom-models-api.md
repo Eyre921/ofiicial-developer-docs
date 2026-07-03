@@ -60,6 +60,7 @@ requests.post(
         "modelId": MODEL_ID,
         "model": {
             "kind": "HF_BASE_MODEL",
+            "huggingFaceUrl": "https://huggingface.co/<ORG>/<MODEL>",
             "baseModelDetails": {
                 "checkpointFormat": "HUGGINGFACE",
                 "worldSize": 1,
@@ -106,6 +107,10 @@ while True:
         continue
     resp.raise_for_status()  # any other error is fatal
 ```
+
+<Note>
+  Set `huggingFaceUrl` if this uploaded custom base model should be considered for Fireworks managed fine-tuning. Fireworks uses the Hugging Face URL to infer the training renderer and locate compatible training shapes. The tunability check runs asynchronously about every 30 minutes, so `Tunable: true` may take up to 30 minutes to appear after the URL is set.
+</Note>
 
 <Tip>
   Every step is safe to retry. `create` and `getUploadEndpoint` no-op if the model already exists (returning `ALREADY_EXISTS`), so an automated uploader that gets interrupted can simply re-run from the top and keep polling `validateUpload` until it succeeds.

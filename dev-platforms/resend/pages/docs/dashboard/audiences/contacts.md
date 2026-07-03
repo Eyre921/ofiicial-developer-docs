@@ -152,7 +152,23 @@ When creating a Contact, you can optionally set the following properties:
 
 Once a Contact is created, you can update it using the [update contact](/docs/api-reference/contacts/update-contact) endpoint or [add the contact to a Segment](/docs/api-reference/contacts/add-contact-to-segment).
 
-### 2. Add Contacts manually
+### 2. Add Contacts by uploading a .csv
+
+You can also add Contacts by uploading a .csv file. This is a convenient way to add multiple Contacts at once.
+
+1. Go to the [Contacts](https://resend.com/audience) page, and select **Add Contacts**.
+2. Select **Import CSV**.
+3. Upload your CSV file from your computer.
+4. Map the fields you want to use. You can map the fields to: `email`, `first_name`, `last_name`, and `unsubscribed`, or any Contact properties you've already created.
+5. Optionally add the contacts to an existing Segment.
+6. Select **Continue**, review the contacts, and finish the upload.
+
+<Note>
+  If a contact with the same email address already exists, the CSV upload will
+  update the existing contact with the new data.
+</Note>
+
+### 3. Add Contacts manually
 
 1. Go to the [Contacts](https://resend.com/audience) page, and select **Add Contacts**.
 2. Select **Add Manually**.
@@ -175,7 +191,7 @@ You can add many Contacts at once by uploading a CSV file (up to 200MB), either 
 1. Go to the [Contacts](https://resend.com/audience) page, and select **Add Contacts**.
 2. Select **Import CSV**.
 3. Drag and drop or click to upload your CSV file from your computer.
-4. Resend uses AI to read your column headers and suggest field mappings. Review and adjust the mappings to `email`, `first_name`, `last_name`, and `unsubscribed`, or to any existing Contact properties. You can also map a column to a new custom property and Resend will create it for you. Use the checkboxes to include or exclude individual columns; the `email` column is always included.
+4. Resend uses AI to read your column headers and suggest field mappings. Review and adjust the mappings to `email`, `first_name`, `last_name`, and `unsubscribed`, or to any existing Contact properties. You can also map a column to a new custom property and Resend will create it for you. Use the checkboxes to include or exclude individual columns. The `email` column is always included.
 5. Optionally add the contacts to an existing Segment.
 6. Select **Continue**, review the contacts, and finish the upload.
 

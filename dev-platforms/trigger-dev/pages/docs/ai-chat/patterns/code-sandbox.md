@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/code-sandbox
 
 Warm an isolated sandbox on each chat turn, run an AI SDK executeCode tool, and tear down right before the run suspends — using chat.agent hooks and chat.local.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Use a **hosted code sandbox** (for example [E2B](https://e2b.dev)) when the model should run short scripts to analyze tool output (PostHog queries, CSV-like data, math) without executing arbitrary code on the Trigger worker host.
 
 This page describes a **durable chat** pattern that fits `chat.agent()`:

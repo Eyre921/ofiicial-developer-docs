@@ -6,10 +6,6 @@ path: docs/ai-chat/tools
 
 Declare tools on chat.agent so toModelOutput survives across turns, get them back typed in run(), and type your messages from them.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 `chat.agent` doesn't call the model for you. Your tools still go to [`streamText`](https://sdk.vercel.ai/docs/ai-sdk-core/tools-and-tool-calling) inside `run()`. But you should **also declare them on the agent config**:
 
 ```ts theme={"theme":"css-variables"}

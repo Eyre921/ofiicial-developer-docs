@@ -20,7 +20,7 @@ If you're developing with AI, Resend offers several resources to improve your ex
 
 ## Prerequisite: Create an API Key
 
-Currently, we require a human to create a Resend account. Once you have an account, you'll need to [create an API key](https://resend.com/api-keys). With an API key, your agent can perform many other tasks.
+We require a human to create a Resend account. Once you have an account, you'll need to [create an API key](https://resend.com/api-keys). With an API key, your agent can perform many other tasks.
 
 <Info>
   To send or receive with Resend, you'll need to [verify a domain](https://resend.com/domains). While an agent can [create a domain](/docs/api-reference/domains/create-domain), the API returns DNS records you will need to add in your DNS provider before [verifying your DNS records](/docs/api-reference/domains/verify-domain). You may find it easier to verify your domain in the dashboard.

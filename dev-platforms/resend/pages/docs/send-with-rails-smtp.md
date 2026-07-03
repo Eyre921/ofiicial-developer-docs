@@ -60,13 +60,13 @@ And create your ERB email template.
 </html>
 ```
 
-Initialize your `UserMailer` class. This should return a `UserMailer` instance.
+Initialize your `UserMailer` class. This returns an `ActionMailer::MessageDelivery` instance.
 
 ```rb theme={"theme":{"light":"github-light","dark":"vesper"}}
 u = User.new name: "derich"
 mailer = UserMailer.with(user: u).welcome_email
 
-# => #<Mail::Message:153700, Multipart: false, Headers: <From: from@example.com>, <To: to@example.com>, <Subject: hello world>, <Mime-Version: 1.0>...
+# => #<ActionMailer::MessageDelivery:153700, @mail_message=#<Mail::Message...>, @processed_mailer=...>
 ```
 
 Finally, you can now send emails using the `deliver_now!` method:

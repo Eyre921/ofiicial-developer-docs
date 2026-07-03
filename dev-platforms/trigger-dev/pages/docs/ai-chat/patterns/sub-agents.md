@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/sub-agents
 
 Delegate work to durable sub-agents from within a parent agent's tool calls, with streaming preliminary results.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Sub-agents let a parent agent delegate work to other agents running as durable Trigger.dev tasks. The sub-agent's response streams back through the parent as preliminary tool results, so the frontend sees the sub-agent working inside the parent's tool call card.
 
 This builds on the AI SDK's [async generator tool pattern](https://ai-sdk.dev/docs/agents/subagents) and Trigger.dev's [AgentChat](/docs/ai-chat/server-chat) for server-side agent interaction.

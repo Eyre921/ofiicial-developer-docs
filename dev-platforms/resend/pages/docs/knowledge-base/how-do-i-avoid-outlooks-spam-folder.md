@@ -26,7 +26,7 @@ Learn how to improve inbox placement in Outlook.
 
 * **Don't blast to a BCC list**. Send separate emails if you are sending to a large number of recipients.
 
-* **Prevent over sending**. Limits are impacted by historical engagements and sending volumes, but you should be hesitant to send too many emails at once. If you think this is an issue, reduce the frequency or volume.
+* **Prevent over sending**. Limits are impacted by historical engagements and sending volumes, so avoid sending too many emails at once. If you think this is an issue, reduce the frequency or volume.
 
 * **Send to engaged recipients**. Don't keep sending if there is no engagement from your recipients. This is especially true if a recipient has requested to unsubscribe or an address is bouncing. Keep spam complaint rates under 0.3%.
 

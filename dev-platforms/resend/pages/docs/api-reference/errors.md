@@ -13,7 +13,7 @@ We use standard HTTP response codes for success and failure notifications, and o
 ### `invalid_idempotency_key`
 
 * **Status:** 400
-* **Message:** The key must be between 1-256 chars.
+* **Message:** The key must be between 1–256 chars.
 * **Suggested action:** Retry with a valid idempotency key.
 
 ### `validation_error`
@@ -134,7 +134,7 @@ We use standard HTTP response codes for success and failure notifications, and o
 
 * **Status:** 429
 * **Message:** Too many requests. Please limit the number of requests per second. Or [contact support](https://resend.com/contact) to increase rate limit.
-* **Suggested action:** You should read the [response headers](./introduction#rate-limit) and reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
+* **Suggested action:** Read the [response headers](./introduction#rate-limit) and reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
 
 ### `security_error`
 

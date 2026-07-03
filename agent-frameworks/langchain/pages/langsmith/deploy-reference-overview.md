@@ -11,18 +11,12 @@ This section is a reference for the SDKs, CLI, and APIs you use to deploy and in
 ## SDKs and CLI
 
 <CardGroup>
-  <Card title="LangGraph Python SDK" icon="brand-python" href="/langsmith/langgraph-python-sdk">
-    Client library for Python applications to call deployed agents.
-  </Card>
-
-  <Card title="LangGraph JS/TS SDK" icon="brand-javascript" href="/langsmith/langgraph-js-ts-sdk">
-    Client library for JavaScript and TypeScript applications to call deployed agents.
-  </Card>
-
   <Card title="LangSmith Deployments SDK" icon="package" href="/langsmith/smith-deployments-sdk">
-    Programmatic management of LangSmith deployments and revisions.
+    Management of LangSmith deployments and revisions using the LangGraph SDK.
   </Card>
+</CardGroup>
 
+<CardGroup>
   <Card title="LangGraph CLI" icon="terminal" href="/langsmith/cli">
     Build, deploy, and interact with agents from the command line.
   </Card>

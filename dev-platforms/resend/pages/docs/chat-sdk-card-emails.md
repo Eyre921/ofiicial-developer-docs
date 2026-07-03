@@ -41,7 +41,7 @@ const card: CardElement = {
 | Type          | Fields         | Description                       |
 | ------------- | -------------- | --------------------------------- |
 | `text`        | `content`      | Plain text paragraph              |
-| `divider`     | —              | Horizontal rule                   |
+| `divider`     | `n/a`          | Horizontal rule                   |
 | `link-button` | `label`, `url` | Clickable button that opens a URL |
 | `actions`     | `children`     | Container for link buttons        |
 

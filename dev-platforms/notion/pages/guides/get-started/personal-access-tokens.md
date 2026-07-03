@@ -75,10 +75,10 @@ PATs are intentionally different from internal connections. An internal connecti
 
 Workspace admins can manage PATs from **Settings & members → Connections**:
 
-* View all PATs created in the workspace, including active and revoked tokens.
+* View all PATs created in the workspace, including active, expired, and revoked tokens.
 * Search and filter tokens by name, creator, and status.
 * See who created a token and, for revoked tokens, who revoked it.
-* Revoke active PATs.
+* Revoke active or expired PATs.
 * Configure who can create PATs with Notion API access.
 
 Admins cannot reveal or copy another member's token secret. Only the token creator can reveal or copy their own PAT.
@@ -114,7 +114,7 @@ On Enterprise, selected groups are managed from the PAT creators settings page. 
   </Step>
 
   <Step>
-    Enter a name, choose a workspace, and select the capabilities the token should have.
+    Enter a name, choose a workspace, select an expiration, and select the capabilities the token should have.
   </Step>
 
   <Step>
@@ -122,7 +122,7 @@ On Enterprise, selected groups are managed from the PAT creators settings page. 
   </Step>
 </Steps>
 
-PATs expire one year after creation. Create a new PAT and update your scripts or tools before the old token expires.
+Choose an **Expiration** for the token from **7 days**, **30 days**, **90 days**, **180 days**, or **1 year**. The form previews the exact date the token will stop working, and the same date is shown on the reveal step next to the token value. If you don't pick an expiration, the token expires 1 year after creation. Create a new PAT and update your scripts or tools before the old token expires — expired tokens stop authenticating and return an `unauthorized` error.
 
 ## Revoke a PAT
 

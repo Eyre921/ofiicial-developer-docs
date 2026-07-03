@@ -8,7 +8,7 @@ Discover why sending emails from a subdomain can be better than using a root dom
 
 We recommend sending emails from a subdomain (`notifications.acme.com`) instead of your root/apex domain (`acme.com`).
 
-There are **two main goals you should achieve with your domain setup**:
+There are **two main goals to achieve with your domain setup**:
 
 * Reputation Isolation
 * Sending Purpose Transparency
@@ -21,9 +21,9 @@ Whatever it is, you want to be consistently hedging your reputation. One way to 
 
 ## Sending Purpose Transparency
 
-All of us want all of our emails to go right to the top of the priority folder of the inbox, but the reality is, not all of our email should. A password reset email should have higher priority than a monthly product update. Inbox providers like Outlook and Gmail are constantly trying to triage incoming mail to put only the most important stuff in that priority spot, and move the rest towards Promotional or even Spam.
+All of us want all of our emails to go right to the top of the priority folder of the inbox, but the reality is, not all of our email belongs there. A password reset email carries higher priority than a monthly product update. Inbox providers like Outlook and Gmail are constantly trying to triage incoming mail to put only the most important stuff in that priority spot, and move the rest towards Promotional or even Spam.
 
-By segmenting your sending purposes by subdomain, you are giving Inbox Providers clear indication of how they should place your emails, which will build trust and confidence.
+By segmenting your sending purposes by subdomain, you give Inbox Providers clear indication of where to place your emails, which builds trust and confidence.
 
 ## Avoid "Lookalike" Domains
 

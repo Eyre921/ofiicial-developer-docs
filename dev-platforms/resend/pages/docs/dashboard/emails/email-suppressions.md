@@ -16,7 +16,7 @@ To protect your sender reputation and our sending infrastructure, we proactively
 
 The suppression is caused by:
 
-* `Bounced` when the recipient's mail server rejects the email and the response indicates a permanent failure to deliver. There could be [multiple reasons why an email `bounced`](/docs/dashboard/emails/email-bounces#bounce-types-and-subtypes).
+* `Bounced` when the recipient's mail server rejects the email and the response indicates a permanent failure to deliver. There are [multiple reasons why an email `bounced`](/docs/dashboard/emails/email-bounces#bounce-types-and-subtypes).
 * `Complained` when the recipient marked your email as spam.
 
 <Tip>

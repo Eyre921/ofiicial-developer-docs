@@ -6,7 +6,9 @@ path: docs/knowledge-base/do-i-need-2048-dkim
 
 Learn why 1024-bit DKIM is enough for transactional and marketing mail, and how it compares to 2048-bit keys.
 
-**For almost every sender, you do not need 2048-bit DKIM.** Resend signs outbound mail with 1024-bit DKIM keys, which is RFC-compliant, accepted by every major mailbox provider, and satisfies the bulk sender requirements that inbox service providers enforce.
+**For almost every sender, you do not need 2048-bit DKIM.** This additional level of security can result in performance and compatibility issues with some systems.
+
+To balance these concerns, Resend signs outbound mail with 1024-bit DKIM keys, which are RFC-compliant, accepted by every major mailbox provider, and satisfy the bulk sender requirements that inbox service providers enforce. Resend does not support 2048-bit DKIM keys.
 
 ## 1024-bit is RFC-compliant
 
@@ -33,7 +35,7 @@ The 2024 bulk sender requirements from Google, Yahoo, and Microsoft (which apply
 
 ## Our stance
 
-For transactional and marketing mail, **1024-bit DKIM is the right choice.** It meets the RFC, satisfies bulk sender requirements from every major inbox provider, and keeps DNS setup simple and reliable. Resend does not currently support 2048-bit keys.
+For transactional and marketing mail, **1024-bit DKIM is the right choice.** It meets the RFC, satisfies bulk sender requirements from every major inbox provider, and keeps DNS setup simple and reliable.
 
 We are keeping a close eye on customer interest and evolving industry best practices. If expectations shift, we will update this article and add support accordingly.
 

@@ -6,10 +6,6 @@ path: docs/ai-chat/patterns/human-in-the-loop
 
 Pause the agent mid-response to ask the user a clarifying question, then resume with their answer.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 Some turns need to stop and ask the user something before they can finish — picking between options, confirming a destructive action, or clarifying an ambiguous request. The AI SDK calls this **human-in-the-loop** (HITL), and the building block is a tool with no `execute` function.
 
 When the LLM calls a tool that has no `execute`, `streamText` ends with the tool call still pending. The turn completes cleanly, the frontend renders UI to collect the answer, and when the user responds, a new turn resumes with the answer merged into the same assistant message.

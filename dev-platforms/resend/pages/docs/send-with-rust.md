@@ -57,7 +57,7 @@ async fn main() -> Result<()> {
 ## Reading the API key
 
 Instead of using `Resend::new` and hardcoding the API key, the `RESEND_API_KEY` environment variable
-can be used instead. The `Resend::default()` should be used in that scenario instead.
+can be used instead. Use `Resend::default()` in that scenario instead.
 
 ### Reading the API key from a `.env` file
 

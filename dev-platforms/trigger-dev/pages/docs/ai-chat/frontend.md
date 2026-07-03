@@ -6,10 +6,6 @@ path: docs/ai-chat/frontend
 
 Transport setup, session management, client data, and frontend patterns for AI Chat.
 
-<Warning>
-  The AI Agents and Prompts surface ships as part of the **v4.5 release candidate**. Install with `@trigger.dev/sdk@rc` (or pin `4.5.0-rc.0` or later) to use these features — they aren't yet on the latest stable, and APIs may still change before the 4.5.0 GA. See [supported AI SDK versions](/docs/ai-chat/reference#compatibility) and the [AI chat changelog](/docs/ai-chat/changelog) for details.
-</Warning>
-
 ## How the transport works
 
 Vanilla `useChat` expects an `api` URL — it POSTs the conversation to your own Next.js route handler, which terminates the stream. `useTriggerChatTransport` replaces that round-trip: instead of an `api` URL, you pass a custom [`ChatTransport`](https://ai-sdk.dev/docs/ai-sdk-ui/transport) that talks directly to the Trigger.dev cloud (or your self-hosted webapp) on behalf of `useChat`.
