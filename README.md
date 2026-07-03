@@ -50,98 +50,98 @@ crawled-and-stitched where it doesn't, and organized to mirror each source's rea
 
 ## 收录范围
 
-54 个官方源、7 大分类，全部经过域名核对。**每格一家**：徽章 → 官方文档 URL → 一句话说明。图标来自 [Simple Icons](https://simpleicons.org)，未收录的家用中性灰徽章占位。
+54 个官方源、7 大分类，全部经过域名核对。**每格一家** —— 徽章跳**官方文档**，「家」这一列跳**本仓里这家的目录**（`./<分类>/<slug>/`，可直接看下载好的 markdown）。图标来自 [Simple Icons](https://simpleicons.org)，未收录的家用中性灰徽章占位。
 
 > 徽章下方的数量指该分类**注册总数**。近一次刷新有 45 家 ok（连通性问题见「已知限制」）。
 
-### AI 模型 / 推理平台 · `ai-models` · 13 家
+### AI 模型 / 推理平台 · [`ai-models/`](./ai-models/) · 13 家
 
-| Logo | 家 | 干什么 |
+| Logo（官方文档） | 家（本仓目录） | 干什么 |
 |---|---|---|
-| [![Anthropic Claude Code](https://img.shields.io/badge/Anthropic_Claude_Code-191919?style=flat-square&logo=anthropic&logoColor=white)](https://code.claude.com/docs) | [Anthropic Claude Code](https://code.claude.com/docs) | 官方 CLI 编码 agent 文档 |
-| [![Anthropic API](https://img.shields.io/badge/Anthropic_API-191919?style=flat-square&logo=anthropic&logoColor=white)](https://platform.claude.com/docs/en) | [Anthropic API](https://platform.claude.com/docs/en) | Claude 平台 API 参考 |
-| [![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat-square)](https://developers.openai.com/api/docs) | [OpenAI](https://developers.openai.com/api/docs) | GPT 系列 API 文档 |
-| [![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)](https://ai.google.dev/gemini-api/docs) | [Google Gemini](https://ai.google.dev/gemini-api/docs) | Gemini API 文档 |
-| [![xAI Grok](https://img.shields.io/badge/xAI_Grok-64748B?style=flat-square)](https://docs.x.ai) | [xAI Grok](https://docs.x.ai) | Grok 模型 API 文档 |
-| [![Perplexity](https://img.shields.io/badge/Perplexity-1FB8CD?style=flat-square&logo=perplexity&logoColor=white)](https://docs.perplexity.ai) | [Perplexity](https://docs.perplexity.ai) | 带联网的对话 API |
-| [![Mistral](https://img.shields.io/badge/Mistral-FA520F?style=flat-square&logo=mistralai&logoColor=white)](https://docs.mistral.ai) | [Mistral](https://docs.mistral.ai) | 开源系模型 + API |
-| [![Cohere](https://img.shields.io/badge/Cohere-64748B?style=flat-square)](https://docs.cohere.com) | [Cohere](https://docs.cohere.com) | 企业向 LLM API + Rerank |
-| [![Groq](https://img.shields.io/badge/Groq-64748B?style=flat-square)](https://console.groq.com/docs) | [Groq](https://console.groq.com/docs) | LPU 推理加速平台 |
-| [![Together](https://img.shields.io/badge/Together-64748B?style=flat-square)](https://docs.together.ai) | [Together](https://docs.together.ai) | 开源模型托管 + 推理 |
-| [![Fireworks](https://img.shields.io/badge/Fireworks-64748B?style=flat-square)](https://docs.fireworks.ai) | [Fireworks](https://docs.fireworks.ai) | 开源模型推理服务 |
-| [![OpenRouter](https://img.shields.io/badge/OpenRouter-94A3B8?style=flat-square&logo=openrouter&logoColor=white)](https://openrouter.ai/docs) | [OpenRouter](https://openrouter.ai/docs) | 统一多模型路由 |
-| [![Replicate](https://img.shields.io/badge/Replicate-000000?style=flat-square&logo=replicate&logoColor=white)](https://replicate.com/docs) | [Replicate](https://replicate.com/docs) | 模型托管 + 推理 API |
+| [![Anthropic Claude Code](https://img.shields.io/badge/Anthropic_Claude_Code-191919?style=flat-square&logo=anthropic&logoColor=white)](https://code.claude.com/docs) | [Anthropic Claude Code](./ai-models/anthropic-claude-code/) | 官方 CLI 编码 agent 文档 |
+| [![Anthropic API](https://img.shields.io/badge/Anthropic_API-191919?style=flat-square&logo=anthropic&logoColor=white)](https://platform.claude.com/docs/en) | [Anthropic API](./ai-models/anthropic-api/) | Claude 平台 API 参考 |
+| [![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=flat-square)](https://developers.openai.com/api/docs) | [OpenAI](./ai-models/openai/) | GPT 系列 API 文档 |
+| [![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)](https://ai.google.dev/gemini-api/docs) | [Google Gemini](./ai-models/google-gemini/) | Gemini API 文档 |
+| [![xAI Grok](https://img.shields.io/badge/xAI_Grok-64748B?style=flat-square)](https://docs.x.ai) | [xAI Grok](./ai-models/xai-grok/) | Grok 模型 API 文档 |
+| [![Perplexity](https://img.shields.io/badge/Perplexity-1FB8CD?style=flat-square&logo=perplexity&logoColor=white)](https://docs.perplexity.ai) | [Perplexity](./ai-models/perplexity/) | 带联网的对话 API |
+| [![Mistral](https://img.shields.io/badge/Mistral-FA520F?style=flat-square&logo=mistralai&logoColor=white)](https://docs.mistral.ai) | [Mistral](./ai-models/mistral/) | 开源系模型 + API |
+| [![Cohere](https://img.shields.io/badge/Cohere-64748B?style=flat-square)](https://docs.cohere.com) | [Cohere](./ai-models/cohere/) | 企业向 LLM API + Rerank |
+| [![Groq](https://img.shields.io/badge/Groq-64748B?style=flat-square)](https://console.groq.com/docs) | [Groq](./ai-models/groq/) | LPU 推理加速平台 |
+| [![Together](https://img.shields.io/badge/Together-64748B?style=flat-square)](https://docs.together.ai) | [Together](./ai-models/together/) | 开源模型托管 + 推理 |
+| [![Fireworks](https://img.shields.io/badge/Fireworks-64748B?style=flat-square)](https://docs.fireworks.ai) | [Fireworks](./ai-models/fireworks/) | 开源模型推理服务 |
+| [![OpenRouter](https://img.shields.io/badge/OpenRouter-94A3B8?style=flat-square&logo=openrouter&logoColor=white)](https://openrouter.ai/docs) | [OpenRouter](./ai-models/openrouter/) | 统一多模型路由 |
+| [![Replicate](https://img.shields.io/badge/Replicate-000000?style=flat-square&logo=replicate&logoColor=white)](https://replicate.com/docs) | [Replicate](./ai-models/replicate/) | 模型托管 + 推理 API |
 
-### Agent 框架 · `agent-frameworks` · 4 家
+### Agent 框架 · [`agent-frameworks/`](./agent-frameworks/) · 4 家
 
-| Logo | 家 | 干什么 |
+| Logo（官方文档） | 家（本仓目录） | 干什么 |
 |---|---|---|
-| [![MCP](https://img.shields.io/badge/MCP-000000?style=flat-square&logo=modelcontextprotocol&logoColor=white)](https://modelcontextprotocol.io) | [MCP](https://modelcontextprotocol.io) | Anthropic 主导的开放 agent 协议 |
-| [![LangChain](https://img.shields.io/badge/LangChain-7FC8FF?style=flat-square&logo=langchain&logoColor=white)](https://docs.langchain.com) | [LangChain](https://docs.langchain.com) | LLM 应用编排(含 LangGraph) |
-| [![Vercel AI SDK](https://img.shields.io/badge/Vercel_AI_SDK-000000?style=flat-square&logo=vercel&logoColor=white)](https://ai-sdk.dev) | [Vercel AI SDK](https://ai-sdk.dev) | TS 端 AI 应用工具集 |
-| [![CrewAI](https://img.shields.io/badge/CrewAI-FF5A50?style=flat-square&logo=crewai&logoColor=white)](https://docs.crewai.com) | [CrewAI](https://docs.crewai.com) | 多 agent 协作框架 |
+| [![MCP](https://img.shields.io/badge/MCP-000000?style=flat-square&logo=modelcontextprotocol&logoColor=white)](https://modelcontextprotocol.io) | [MCP](./agent-frameworks/mcp/) | Anthropic 主导的开放 agent 协议 |
+| [![LangChain](https://img.shields.io/badge/LangChain-7FC8FF?style=flat-square&logo=langchain&logoColor=white)](https://docs.langchain.com) | [LangChain](./agent-frameworks/langchain/) | LLM 应用编排(含 LangGraph) |
+| [![Vercel AI SDK](https://img.shields.io/badge/Vercel_AI_SDK-000000?style=flat-square&logo=vercel&logoColor=white)](https://ai-sdk.dev) | [Vercel AI SDK](./agent-frameworks/vercel-ai-sdk/) | TS 端 AI 应用工具集 |
+| [![CrewAI](https://img.shields.io/badge/CrewAI-FF5A50?style=flat-square&logo=crewai&logoColor=white)](https://docs.crewai.com) | [CrewAI](./agent-frameworks/crewai/) | 多 agent 协作框架 |
 
-### 语音 / 多模态 · `voice-multimodal` · 4 家
+### 语音 / 多模态 · [`voice-multimodal/`](./voice-multimodal/) · 4 家
 
-| Logo | 家 | 干什么 |
+| Logo（官方文档） | 家（本仓目录） | 干什么 |
 |---|---|---|
-| [![ElevenLabs](https://img.shields.io/badge/ElevenLabs-000000?style=flat-square&logo=elevenlabs&logoColor=white)](https://elevenlabs.io/docs) | [ElevenLabs](https://elevenlabs.io/docs) | 高保真 TTS / 声音克隆 |
-| [![Deepgram](https://img.shields.io/badge/Deepgram-13EF93?style=flat-square&logo=deepgram&logoColor=white)](https://developers.deepgram.com) | [Deepgram](https://developers.deepgram.com) | 低延迟 STT |
-| [![AssemblyAI](https://img.shields.io/badge/AssemblyAI-64748B?style=flat-square)](https://www.assemblyai.com/docs) | [AssemblyAI](https://www.assemblyai.com/docs) | STT + 语音理解 |
-| [![Vapi](https://img.shields.io/badge/Vapi-0E0E13?style=flat-square)](https://docs.vapi.ai) | [Vapi](https://docs.vapi.ai) | 语音 agent 平台 |
+| [![ElevenLabs](https://img.shields.io/badge/ElevenLabs-000000?style=flat-square&logo=elevenlabs&logoColor=white)](https://elevenlabs.io/docs) | [ElevenLabs](./voice-multimodal/elevenlabs/) | 高保真 TTS / 声音克隆 |
+| [![Deepgram](https://img.shields.io/badge/Deepgram-13EF93?style=flat-square&logo=deepgram&logoColor=white)](https://developers.deepgram.com) | [Deepgram](./voice-multimodal/deepgram/) | 低延迟 STT |
+| [![AssemblyAI](https://img.shields.io/badge/AssemblyAI-64748B?style=flat-square)](https://www.assemblyai.com/docs) | [AssemblyAI](./voice-multimodal/assemblyai/) | STT + 语音理解 |
+| [![Vapi](https://img.shields.io/badge/Vapi-0E0E13?style=flat-square)](https://docs.vapi.ai) | [Vapi](./voice-multimodal/vapi/) | 语音 agent 平台 |
 
-### 向量数据库 · `vector-db` · 4 家
+### 向量数据库 · [`vector-db/`](./vector-db/) · 4 家
 
-| Logo | 家 | 干什么 |
+| Logo（官方文档） | 家（本仓目录） | 干什么 |
 |---|---|---|
-| [![Pinecone](https://img.shields.io/badge/Pinecone-002BFF?style=flat-square)](https://docs.pinecone.io) | [Pinecone](https://docs.pinecone.io) | 托管向量库 |
-| [![Qdrant](https://img.shields.io/badge/Qdrant-DC244C?style=flat-square&logo=qdrant&logoColor=white)](https://qdrant.tech/documentation) | [Qdrant](https://qdrant.tech/documentation) | 开源向量库(Rust) |
-| [![Weaviate](https://img.shields.io/badge/Weaviate-160F52?style=flat-square)](https://weaviate.io/developers) | [Weaviate](https://weaviate.io/developers) | 开源向量库(Go) |
-| [![Chroma](https://img.shields.io/badge/Chroma-64748B?style=flat-square)](https://docs.trychroma.com) | [Chroma](https://docs.trychroma.com) | 轻量本地向量库 |
+| [![Pinecone](https://img.shields.io/badge/Pinecone-002BFF?style=flat-square)](https://docs.pinecone.io) | [Pinecone](./vector-db/pinecone/) | 托管向量库 |
+| [![Qdrant](https://img.shields.io/badge/Qdrant-DC244C?style=flat-square&logo=qdrant&logoColor=white)](https://qdrant.tech/documentation) | [Qdrant](./vector-db/qdrant/) | 开源向量库(Rust) |
+| [![Weaviate](https://img.shields.io/badge/Weaviate-160F52?style=flat-square)](https://weaviate.io/developers) | [Weaviate](./vector-db/weaviate/) | 开源向量库(Go) |
+| [![Chroma](https://img.shields.io/badge/Chroma-64748B?style=flat-square)](https://docs.trychroma.com) | [Chroma](./vector-db/chroma/) | 轻量本地向量库 |
 
-### 编码 Agent · `coding-agents` · 1 家
+### 编码 Agent · [`coding-agents/`](./coding-agents/) · 1 家
 
-| Logo | 家 | 干什么 |
+| Logo（官方文档） | 家（本仓目录） | 干什么 |
 |---|---|---|
-| [![Windsurf](https://img.shields.io/badge/Windsurf-0B100F?style=flat-square&logo=windsurf&logoColor=white)](https://docs.windsurf.com) | [Windsurf](https://docs.windsurf.com) | AI 编码 IDE / agent |
+| [![Windsurf](https://img.shields.io/badge/Windsurf-0B100F?style=flat-square&logo=windsurf&logoColor=white)](https://docs.windsurf.com) | [Windsurf](./coding-agents/windsurf/) | AI 编码 IDE / agent |
 
-### 开发 / 基础设施平台 · `dev-platforms` · 23 家
+### 开发 / 基础设施平台 · [`dev-platforms/`](./dev-platforms/) · 23 家
 
-| Logo | 家 | 干什么 |
+| Logo（官方文档） | 家（本仓目录） | 干什么 |
 |---|---|---|
-| [![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white)](https://developers.cloudflare.com) | [Cloudflare](https://developers.cloudflare.com) | CDN / Workers / R2 |
-| [![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/docs) | [Vercel](https://vercel.com/docs) | 前端 / Serverless 部署 |
-| [![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/docs) | [Supabase](https://supabase.com/docs) | 开源 Firebase(Postgres 版) |
-| [![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=flat-square&logo=stripe&logoColor=white)](https://docs.stripe.com) | [Stripe](https://docs.stripe.com) | 支付 API |
-| [![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=prisma&logoColor=white)](https://www.prisma.io/docs) | [Prisma](https://www.prisma.io/docs) | TS ORM |
-| [![Drizzle](https://img.shields.io/badge/Drizzle-C5F74F?style=flat-square&logo=drizzle&logoColor=white)](https://orm.drizzle.team) | [Drizzle](https://orm.drizzle.team) | 轻量 TS ORM |
-| [![Clerk](https://img.shields.io/badge/Clerk-6C47FF?style=flat-square&logo=clerk&logoColor=white)](https://clerk.com/docs) | [Clerk](https://clerk.com/docs) | 身份认证 / 用户管理 |
-| [![Resend](https://img.shields.io/badge/Resend-000000?style=flat-square&logo=resend&logoColor=white)](https://resend.com/docs) | [Resend](https://resend.com/docs) | 开发者向邮件 API |
-| [![Sentry](https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=sentry&logoColor=white)](https://docs.sentry.io) | [Sentry](https://docs.sentry.io) | 错误监控 / 性能追踪 |
-| [![Convex](https://img.shields.io/badge/Convex-EE342F?style=flat-square&logo=convex&logoColor=white)](https://docs.convex.dev) | [Convex](https://docs.convex.dev) | 响应式后端数据库 |
-| [![Neon](https://img.shields.io/badge/Neon-34D59A?style=flat-square&logo=neon&logoColor=white)](https://neon.com/docs) | [Neon](https://neon.com/docs) | Serverless Postgres |
-| [![Turso](https://img.shields.io/badge/Turso-4FF8D2?style=flat-square&logo=turso&logoColor=white)](https://docs.turso.tech) | [Turso](https://docs.turso.tech) | 边缘 SQLite |
-| [![Upstash](https://img.shields.io/badge/Upstash-00E9A3?style=flat-square&logo=upstash&logoColor=white)](https://upstash.com/docs) | [Upstash](https://upstash.com/docs) | Serverless Redis / Kafka |
-| [![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white)](https://docs.netlify.com) | [Netlify](https://docs.netlify.com) | 前端部署 / Edge Functions |
-| [![Expo](https://img.shields.io/badge/Expo-1C2024?style=flat-square&logo=expo&logoColor=white)](https://docs.expo.dev) | [Expo](https://docs.expo.dev) | React Native 开发平台 |
-| [![Langfuse](https://img.shields.io/badge/Langfuse-64748B?style=flat-square)](https://langfuse.com/docs) | [Langfuse](https://langfuse.com/docs) | LLM 应用观测 |
-| [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://docs.github.com) | [GitHub](https://docs.github.com) | 代码托管 / Actions / API |
-| [![X 开发者](https://img.shields.io/badge/X_开发者-000000?style=flat-square&logo=x&logoColor=white)](https://docs.x.com) | [X 开发者](https://docs.x.com) | X(Twitter) 平台 API |
-| [![n8n](https://img.shields.io/badge/n8n-EA4B71?style=flat-square&logo=n8n&logoColor=white)](https://docs.n8n.io) | [n8n](https://docs.n8n.io) | 开源工作流自动化 |
-| [![Trigger.dev](https://img.shields.io/badge/Trigger.dev-64748B?style=flat-square)](https://trigger.dev/docs) | [Trigger.dev](https://trigger.dev/docs) | 背景任务调度 / cron |
-| [![Shopify](https://img.shields.io/badge/Shopify-7AB55C?style=flat-square&logo=shopify&logoColor=white)](https://shopify.dev/docs) | [Shopify](https://shopify.dev/docs) | 电商平台 API / Admin |
-| [![Notion](https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white)](https://developers.notion.com) | [Notion](https://developers.notion.com) | Notion API |
-| [![Twilio](https://img.shields.io/badge/Twilio-64748B?style=flat-square)](https://www.twilio.com/docs) | [Twilio](https://www.twilio.com/docs) | 短信 / 语音 / 通信 API |
+| [![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=flat-square&logo=cloudflare&logoColor=white)](https://developers.cloudflare.com) | [Cloudflare](./dev-platforms/cloudflare/) | CDN / Workers / R2 |
+| [![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com/docs) | [Vercel](./dev-platforms/vercel/) | 前端 / Serverless 部署 |
+| [![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com/docs) | [Supabase](./dev-platforms/supabase/) | 开源 Firebase(Postgres 版) |
+| [![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=flat-square&logo=stripe&logoColor=white)](https://docs.stripe.com) | [Stripe](./dev-platforms/stripe/) | 支付 API |
+| [![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=prisma&logoColor=white)](https://www.prisma.io/docs) | [Prisma](./dev-platforms/prisma/) | TS ORM |
+| [![Drizzle](https://img.shields.io/badge/Drizzle-C5F74F?style=flat-square&logo=drizzle&logoColor=white)](https://orm.drizzle.team) | [Drizzle](./dev-platforms/drizzle/) | 轻量 TS ORM |
+| [![Clerk](https://img.shields.io/badge/Clerk-6C47FF?style=flat-square&logo=clerk&logoColor=white)](https://clerk.com/docs) | [Clerk](./dev-platforms/clerk/) | 身份认证 / 用户管理 |
+| [![Resend](https://img.shields.io/badge/Resend-000000?style=flat-square&logo=resend&logoColor=white)](https://resend.com/docs) | [Resend](./dev-platforms/resend/) | 开发者向邮件 API |
+| [![Sentry](https://img.shields.io/badge/Sentry-362D59?style=flat-square&logo=sentry&logoColor=white)](https://docs.sentry.io) | [Sentry](./dev-platforms/sentry/) | 错误监控 / 性能追踪 |
+| [![Convex](https://img.shields.io/badge/Convex-EE342F?style=flat-square&logo=convex&logoColor=white)](https://docs.convex.dev) | [Convex](./dev-platforms/convex/) | 响应式后端数据库 |
+| [![Neon](https://img.shields.io/badge/Neon-34D59A?style=flat-square&logo=neon&logoColor=white)](https://neon.com/docs) | [Neon](./dev-platforms/neon/) | Serverless Postgres |
+| [![Turso](https://img.shields.io/badge/Turso-4FF8D2?style=flat-square&logo=turso&logoColor=white)](https://docs.turso.tech) | [Turso](./dev-platforms/turso/) | 边缘 SQLite |
+| [![Upstash](https://img.shields.io/badge/Upstash-00E9A3?style=flat-square&logo=upstash&logoColor=white)](https://upstash.com/docs) | [Upstash](./dev-platforms/upstash/) | Serverless Redis / Kafka |
+| [![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=flat-square&logo=netlify&logoColor=white)](https://docs.netlify.com) | [Netlify](./dev-platforms/netlify/) | 前端部署 / Edge Functions |
+| [![Expo](https://img.shields.io/badge/Expo-1C2024?style=flat-square&logo=expo&logoColor=white)](https://docs.expo.dev) | [Expo](./dev-platforms/expo/) | React Native 开发平台 |
+| [![Langfuse](https://img.shields.io/badge/Langfuse-64748B?style=flat-square)](https://langfuse.com/docs) | [Langfuse](./dev-platforms/langfuse/) | LLM 应用观测 |
+| [![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)](https://docs.github.com) | [GitHub](./dev-platforms/github/) | 代码托管 / Actions / API |
+| [![X 开发者](https://img.shields.io/badge/X_开发者-000000?style=flat-square&logo=x&logoColor=white)](https://docs.x.com) | [X 开发者](./dev-platforms/x-developer/) | X(Twitter) 平台 API |
+| [![n8n](https://img.shields.io/badge/n8n-EA4B71?style=flat-square&logo=n8n&logoColor=white)](https://docs.n8n.io) | [n8n](./dev-platforms/n8n/) | 开源工作流自动化 |
+| [![Trigger.dev](https://img.shields.io/badge/Trigger.dev-64748B?style=flat-square)](https://trigger.dev/docs) | [Trigger.dev](./dev-platforms/trigger-dev/) | 背景任务调度 / cron |
+| [![Shopify](https://img.shields.io/badge/Shopify-7AB55C?style=flat-square&logo=shopify&logoColor=white)](https://shopify.dev/docs) | [Shopify](./dev-platforms/shopify/) | 电商平台 API / Admin |
+| [![Notion](https://img.shields.io/badge/Notion-000000?style=flat-square&logo=notion&logoColor=white)](https://developers.notion.com) | [Notion](./dev-platforms/notion/) | Notion API |
+| [![Twilio](https://img.shields.io/badge/Twilio-64748B?style=flat-square)](https://www.twilio.com/docs) | [Twilio](./dev-platforms/twilio/) | 短信 / 语音 / 通信 API |
 
-### 框架 / 工具库 · `libraries` · 5 家
+### 框架 / 工具库 · [`libraries/`](./libraries/) · 5 家
 
-| Logo | 家 | 干什么 |
+| Logo（官方文档） | 家（本仓目录） | 干什么 |
 |---|---|---|
-| [![Hono](https://img.shields.io/badge/Hono-E36002?style=flat-square&logo=hono&logoColor=white)](https://hono.dev/docs) | [Hono](https://hono.dev/docs) | 轻量 Web 框架(边缘优先) |
-| [![Svelte](https://img.shields.io/badge/Svelte-FF3E00?style=flat-square&logo=svelte&logoColor=white)](https://svelte.dev/docs) | [Svelte](https://svelte.dev/docs) | 编译时前端框架 |
-| [![Bun](https://img.shields.io/badge/Bun-000000?style=flat-square&logo=bun&logoColor=white)](https://bun.sh/docs) | [Bun](https://bun.sh/docs) | JS 运行时 / 打包器 |
-| [![TanStack](https://img.shields.io/badge/TanStack-000000?style=flat-square&logo=tanstack&logoColor=white)](https://tanstack.com) | [TanStack](https://tanstack.com) | Query / Router / Table 全家桶 |
-| [![Zod](https://img.shields.io/badge/Zod-408AFF?style=flat-square&logo=zod&logoColor=white)](https://zod.dev) | [Zod](https://zod.dev) | TS 优先 schema 校验 |
+| [![Hono](https://img.shields.io/badge/Hono-E36002?style=flat-square&logo=hono&logoColor=white)](https://hono.dev/docs) | [Hono](./libraries/hono/) | 轻量 Web 框架(边缘优先) |
+| [![Svelte](https://img.shields.io/badge/Svelte-FF3E00?style=flat-square&logo=svelte&logoColor=white)](https://svelte.dev/docs) | [Svelte](./libraries/svelte/) | 编译时前端框架 |
+| [![Bun](https://img.shields.io/badge/Bun-000000?style=flat-square&logo=bun&logoColor=white)](https://bun.sh/docs) | [Bun](./libraries/bun/) | JS 运行时 / 打包器 |
+| [![TanStack](https://img.shields.io/badge/TanStack-000000?style=flat-square&logo=tanstack&logoColor=white)](https://tanstack.com) | [TanStack](./libraries/tanstack/) | Query / Router / Table 全家桶 |
+| [![Zod](https://img.shields.io/badge/Zod-408AFF?style=flat-square&logo=zod&logoColor=white)](https://zod.dev) | [Zod](./libraries/zod/) | TS 优先 schema 校验 |
 
 具体每家的官方 URL、mode 也见 [`crawl.py`](./crawl.py) 的 `SOURCES` 注册表；每次抓取的成败与页数见 [`crawl-metadata.json`](./crawl-metadata.json)。
 
