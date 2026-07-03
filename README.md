@@ -29,26 +29,45 @@ crawled-and-stitched where it doesn't, and organized to mirror each source's rea
 
 > 非官方镜像，仅供学习 / 培训 / 内部检索用途。每份文档的版权归其原厂商所有，商业使用请遵循各家官方条款。
 
-## Contents
+## 目录
 
-- [Quick start](#quick-start)
-- [Notes](#notes)
-- [What's inside](#whats-inside)
-- [Coverage](#coverage)
-- [Pipeline architecture](#pipeline-architecture)
-- [One refresh, end to end](#one-refresh-end-to-end)
-- [How each source is handled](#how-each-source-is-handled)
-- [Layout on disk](#layout-on-disk)
-- [Running the crawler locally](#running-the-crawler-locally)
-- [Environment and secrets](#environment-and-secrets)
-- [Refresh and manual triggers](#refresh-and-manual-triggers)
-- [Contributing a new source](#contributing-a-new-source)
-- [Known limits](#known-limits)
-- [License](#license)
+- [收录范围](#收录范围)
+- [快速开始](#快速开始)
+- [注意事项](#注意事项)
+- [仓库构成](#仓库构成)
+- [流水线架构](#流水线架构)
+- [一次刷新的完整时序](#一次刷新的完整时序)
+- [每种来源怎么处理](#每种来源怎么处理)
+- [目录结构](#目录结构)
+- [本地跑爬虫](#本地跑爬虫)
+- [环境变量与密钥](#环境变量与密钥)
+- [触发方式](#触发方式)
+- [贡献新来源](#贡献新来源)
+- [已知限制](#已知限制)
+- [许可](#许可)
+
 
 ---
 
-## Quick start
+## 收录范围
+
+54 个官方源，7 大分类，域名逐个核对过——不是抓 llmstxthub 之类的第三方索引，是每个源的**产品自己发布**的 `llms.txt` / `llms-full.txt`。每次刷新，能否全部成功取决于 CNB runner 到各上游的连通性（近期一次 metadata 记录 45 家 ok）。
+
+| 分类 | 数量 | 收录 |
+|---|:---:|---|
+| **ai-models** | 13 | Anthropic Claude Code · Anthropic API · OpenAI · Google Gemini · xAI Grok · Perplexity · Mistral · Cohere · Groq · Together · Fireworks · OpenRouter · Replicate |
+| **agent-frameworks** | 4 | MCP · LangChain（含 LangGraph）· Vercel AI SDK · CrewAI |
+| **voice-multimodal** | 4 | ElevenLabs · Deepgram · AssemblyAI · Vapi |
+| **vector-db** | 4 | Pinecone · Qdrant · Weaviate · Chroma |
+| **coding-agents** | 1 | Windsurf |
+| **dev-platforms** | 23 | Cloudflare · Vercel · Supabase · Stripe · Prisma · Drizzle · Clerk · Resend · Sentry · Convex · Neon · Turso · Upstash · Netlify · Expo · Langfuse · GitHub · X 开发者平台 · n8n · Trigger.dev · Shopify · Notion · Twilio |
+| **libraries** | 5 | Hono · Svelte · Bun · TanStack · Zod |
+
+具体每个来源的官方 URL 见 [`crawl.py`](./crawl.py) 里的 `SOURCES` 注册表；每次抓取的成败/页数见 [`crawl-metadata.json`](./crawl-metadata.json)。
+
+---
+
+## 快速开始
 
 只想拿一家的全文来读、或喂给 RAG：
 
@@ -73,7 +92,7 @@ cd ofiicial-developer-docs && git sparse-checkout set ai-models/anthropic-api
 
 ---
 
-## Notes
+## 注意事项
 
 > - **每天早晚 07:30 / 19:30 (Asia/Shanghai) 自动刷新**；上游无变化时**不产生新提交**，git 历史干净。
 > - 只是**镜像**，不是二次创作 —— 每篇 markdown 头部的 frontmatter 里 `source:` 指向真实官方 URL，出错请以官方为准。
@@ -81,7 +100,7 @@ cd ofiicial-developer-docs && git sparse-checkout set ai-models/anthropic-api
 
 ---
 
-## What's inside
+## 仓库构成
 
 | 组成 | 是什么 | 怎么维护 |
 |---|---|---|
@@ -93,27 +112,7 @@ cd ofiicial-developer-docs && git sparse-checkout set ai-models/anthropic-api
 | **`.cnb.yml`** | CNB 流水线（4 stage + 定时 + 按钮 + 手动） | 代码提交才改 |
 | **`.cnb/web_trigger.yml`** | 网页自定义按钮 + 输入面板配置 | 代码提交才改 |
 
----
-
-## Coverage
-
-54 个官方源，7 大分类，域名逐个核对过——不是抓 llmstxthub 之类的第三方索引，是每个源的**产品自己发布**的 `llms.txt` / `llms-full.txt`。每次刷新，能否全部成功取决于 CNB runner 到各上游的连通性（近期一次 metadata 记录 45 家 ok）。
-
-| 分类 | 数量 | 收录 |
-|---|:---:|---|
-| **ai-models** | 13 | Anthropic Claude Code · Anthropic API · OpenAI · Google Gemini · xAI Grok · Perplexity · Mistral · Cohere · Groq · Together · Fireworks · OpenRouter · Replicate |
-| **agent-frameworks** | 4 | MCP · LangChain（含 LangGraph）· Vercel AI SDK · CrewAI |
-| **voice-multimodal** | 4 | ElevenLabs · Deepgram · AssemblyAI · Vapi |
-| **vector-db** | 4 | Pinecone · Qdrant · Weaviate · Chroma |
-| **coding-agents** | 1 | Windsurf |
-| **dev-platforms** | 23 | Cloudflare · Vercel · Supabase · Stripe · Prisma · Drizzle · Clerk · Resend · Sentry · Convex · Neon · Turso · Upstash · Netlify · Expo · Langfuse · GitHub · X 开发者平台 · n8n · Trigger.dev · Shopify · Notion · Twilio |
-| **libraries** | 5 | Hono · Svelte · Bun · TanStack · Zod |
-
-具体每个来源的官方 URL 见 [`crawl.py`](./crawl.py) 里的 `SOURCES` 注册表；每次抓取的成败/页数见 [`crawl-metadata.json`](./crawl-metadata.json)。
-
----
-
-## Pipeline architecture
+## 流水线架构
 
 刷新是一条四段流水线，跑在 CNB 云原生构建上，产物**回写自己**（并镜像到 GitHub）。省资源、抗抽风、单源坏了不阻断其它。
 
@@ -153,7 +152,7 @@ flowchart LR
 
 ---
 
-## One refresh, end to end
+## 一次刷新的完整时序
 
 一次刷新在时间线上是什么样：CNB 触发 → runner 拉代码和依赖 → 并发抓上游 → 有变化就 commit → 镜像到 GH。所有对外调用都独立，其中一家坏了不影响其它。
 
@@ -184,7 +183,7 @@ sequenceDiagram
 
 ---
 
-## How each source is handled
+## 每种来源怎么处理
 
 不是所有源官方都给 `llms-full.txt`。按上游能给什么，本仓有三种处理模式，写在 `crawl.py` 的注册表里：
 
@@ -206,11 +205,11 @@ flowchart TD
 | `follow` | 上游只提供索引；追链接拼全文（无页数上限） | 13 |
 | `verbatim` | 内容已够丰富、无独立 full 版；原样存盘 | 1（xAI Grok） |
 
-四种 mode 加起来 **54 个注册源** —— 单次跑通几个取决于目标机器能否访问上游（见下方 *Known limits*）。每个 source 的确切 mode 写在 `crawl.py` 的 `SOURCES` 注册表里。
+四种 mode 加起来 **54 个注册源** —— 单次跑通几个取决于目标机器能否访问上游（见下方 *[已知限制](#已知限制)*）。每个 source 的确切 mode 写在 `crawl.py` 的 `SOURCES` 注册表里。
 
 ---
 
-## Layout on disk
+## 目录结构
 
 目录严格镜像每个来源的**官方 URL 路径**，一直拆到最深的叶子：
 
@@ -246,7 +245,7 @@ ofiicial-developer-docs/
 
 ---
 
-## Running the crawler locally
+## 本地跑爬虫
 
 爬虫是单文件、零 pip 依赖（`pyproject.toml` 里 `dependencies = []` 是刻意的）。任何装了 Python 3.10+ 和 `curl` 的机器都能跑：
 
@@ -270,7 +269,7 @@ FOLLOW_CAP=200 python crawl.py dev-platforms/github
 
 ---
 
-## Environment and secrets
+## 环境变量与密钥
 
 流水线里只用到这些：
 
@@ -288,7 +287,7 @@ FOLLOW_CAP=200 python crawl.py dev-platforms/github
 
 ---
 
-## Refresh and manual triggers
+## 触发方式
 
 三种方式触发刷新，效果等价：
 
@@ -302,9 +301,9 @@ FOLLOW_CAP=200 python crawl.py dev-platforms/github
 
 ---
 
-## Contributing a new source
+## 贡献新来源
 
-用一次 `crawl.py` 的注册表就是唯一改动点 —— 加一行 tuple、按上面 [How each source is handled](#how-each-source-is-handled) 的决策图选 mode 即可：
+用一次 `crawl.py` 的注册表就是唯一改动点 —— 加一行 tuple、按上面 [每种来源怎么处理](#每种来源怎么处理) 的决策图选 mode 即可：
 
 ```python
 # crawl.py 里的 _GENERIC 注册表
@@ -322,7 +321,7 @@ _GENERIC = [
 
 ---
 
-## Known limits
+## 已知限制
 
 如实告知，不藏：
 
@@ -333,7 +332,7 @@ _GENERIC = [
 
 ---
 
-## License
+## 许可
 
 各文档版权归其原厂商所有。本仓库仅是**结构化镜像与索引**，出于学习、培训、检索目的构建，非官方；商业使用请遵循各家原始文档的授权条款。
 
