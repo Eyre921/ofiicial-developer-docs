@@ -29,7 +29,7 @@ paths:
       summary: Create Mcp Tool Configuration Override
       description: Create configuration overrides for a specific MCP tool.
       tags:
-        - subpackage_conversationalAi/mcpServers/toolConfigs
+        - toolConfigs
       parameters:
         - name: mcp_server_id
           in: path

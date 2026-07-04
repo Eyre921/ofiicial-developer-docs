@@ -29,7 +29,7 @@ paths:
       summary: Post Agent Avatar
       description: Sets the avatar for an agent displayed in the widget
       tags:
-        - subpackage_conversationalAi/agents/widget/avatar
+        - avatar
       parameters:
         - name: agent_id
           in: path

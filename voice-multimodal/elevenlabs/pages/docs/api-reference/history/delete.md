@@ -28,7 +28,7 @@ paths:
       summary: Delete history item
       description: Delete a history item by its ID
       tags:
-        - subpackage_history
+        - history
       parameters:
         - name: history_item_id
           in: path

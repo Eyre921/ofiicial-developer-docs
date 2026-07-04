@@ -28,7 +28,7 @@ paths:
       summary: Get audio from sample
       description: Returns the audio corresponding to a sample attached to a voice.
       tags:
-        - subpackage_voices/samples/audio
+        - audio
       parameters:
         - name: voice_id
           in: path

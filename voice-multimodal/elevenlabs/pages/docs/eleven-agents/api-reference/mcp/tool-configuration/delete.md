@@ -28,7 +28,7 @@ paths:
       summary: Delete Mcp Tool Configuration Override
       description: Remove configuration overrides for a specific MCP tool.
       tags:
-        - subpackage_conversationalAi/mcpServers/toolConfigs
+        - toolConfigs
       parameters:
         - name: mcp_server_id
           in: path

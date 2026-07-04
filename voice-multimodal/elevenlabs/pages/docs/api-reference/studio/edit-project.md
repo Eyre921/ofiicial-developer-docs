@@ -31,7 +31,7 @@ paths:
         Updates the specified Studio project by setting the values of the
         parameters passed.
       tags:
-        - subpackage_studio/projects
+        - projects
       parameters:
         - name: project_id
           in: path

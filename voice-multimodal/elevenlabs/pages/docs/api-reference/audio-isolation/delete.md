@@ -30,7 +30,7 @@ paths:
         Deletes a specific audio isolation history item and the associated media
         files.
       tags:
-        - subpackage_audioIsolation
+        - audioIsolation
       parameters:
         - name: history_item_id
           in: path

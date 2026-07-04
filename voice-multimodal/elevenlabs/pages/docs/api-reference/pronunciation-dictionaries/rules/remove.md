@@ -29,7 +29,7 @@ paths:
       summary: Remove pronunciation dictionary rules
       description: Remove rules from the pronunciation dictionary
       tags:
-        - subpackage_pronunciationDictionaries/rules
+        - rules
       parameters:
         - name: pronunciation_dictionary_id
           in: path

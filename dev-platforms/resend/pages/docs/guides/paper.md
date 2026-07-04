@@ -20,8 +20,7 @@ The flow looks like this:
 Before you start, make sure you have:
 
 * The [Paper Desktop app](https://paper.design/downloads) installed with a file open (opening a file starts the Paper MCP server automatically)
-* A Resend [API key](/docs/create-an-api-key)
-* A [verified domain](/docs/add-a-domain)
+* A [Resend account](https://resend.com/signup) with a [verified domain](/docs/add-a-domain)
 * An MCP client like Claude Code, Cursor, or Claude Desktop
 
 <Info>
@@ -84,18 +83,20 @@ See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
 
 ## 2. Connect the Resend MCP server
 
+Connect to Resend's hosted MCP server at `https://mcp.resend.com`. When you connect, your client opens a browser window to log in to Resend and approve access.
+
 <Tabs>
   <Tab title="Claude Code">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add resend -e RESEND_API_KEY=re_xxxxxxxxx -- npx -y resend-mcp
+    claude mcp add --transport http resend https://mcp.resend.com
     ```
+
+    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
   </Tab>
 
   <Tab title="Codex">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex mcp add resend \
-      --env RESEND_API_KEY=re_xxxxxxxxx \
-      -- npx -y resend-mcp
+    codex mcp add resend --url https://mcp.resend.com
     ```
   </Tab>
 
@@ -106,11 +107,7 @@ See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
     {
       "mcpServers": {
         "resend": {
-          "command": "npx",
-          "args": ["-y", "resend-mcp"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx"
-          }
+          "url": "https://mcp.resend.com"
         }
       }
     }
@@ -118,25 +115,15 @@ See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
   </Tab>
 
   <Tab title="Claude Desktop">
-    Open Claude Desktop settings > "Developer" tab > "Edit Config".
+    Open **Settings** > **Connectors** > **Add custom connector** and enter:
 
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "command": "npx",
-          "args": ["-y", "resend-mcp"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx"
-          }
-        }
-      }
-    }
+    ```
+    https://mcp.resend.com
     ```
   </Tab>
 </Tabs>
 
-For more clients and configuration options, see the [MCP Server overview](/docs/mcp-server).
+For more clients and configuration options, including running the server locally, see the [MCP Server overview](/docs/mcp-server).
 
 ## 3. Design your email in Paper
 

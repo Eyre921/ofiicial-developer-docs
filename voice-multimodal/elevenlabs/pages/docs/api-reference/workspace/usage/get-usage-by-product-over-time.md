@@ -32,7 +32,7 @@ paths:
         is a tabular structure with columns, column_types, column_units, and
         rows.
       tags:
-        - subpackage_workspace/usage
+        - usage
       parameters:
         - name: xi-api-key
           in: header

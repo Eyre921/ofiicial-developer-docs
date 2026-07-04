@@ -29,7 +29,7 @@ paths:
       summary: Update Workspace Auth Connection
       description: Update an auth connection
       tags:
-        - subpackage_workspace/authConnections
+        - authConnections
       parameters:
         - name: auth_connection_id
           in: path

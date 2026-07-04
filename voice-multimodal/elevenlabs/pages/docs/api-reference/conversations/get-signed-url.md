@@ -30,7 +30,7 @@ paths:
         Get a signed url to start a conversation with an agent with an agent
         that requires authorization
       tags:
-        - subpackage_conversationalAi/conversations
+        - conversations
       parameters:
         - name: agent_id
           in: query

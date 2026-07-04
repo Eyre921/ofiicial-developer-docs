@@ -29,7 +29,7 @@ paths:
       summary: Create Chapter
       description: Creates a new chapter either as blank or from a URL.
       tags:
-        - subpackage_studio/projects/chapters
+        - chapters
       parameters:
         - name: project_id
           in: path

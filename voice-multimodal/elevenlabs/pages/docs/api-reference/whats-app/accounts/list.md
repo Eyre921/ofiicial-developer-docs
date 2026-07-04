@@ -28,7 +28,7 @@ paths:
       summary: List Whatsapp Accounts
       description: List all WhatsApp accounts
       tags:
-        - subpackage_conversationalAi/whatsappAccounts
+        - whatsappAccounts
       parameters:
         - name: agent_id
           in: query

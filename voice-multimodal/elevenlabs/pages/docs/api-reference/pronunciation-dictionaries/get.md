@@ -28,7 +28,7 @@ paths:
       summary: Get pronunciation dictionary
       description: Get metadata for a pronunciation dictionary
       tags:
-        - subpackage_pronunciationDictionaries
+        - pronunciationDictionaries
       parameters:
         - name: pronunciation_dictionary_id
           in: path

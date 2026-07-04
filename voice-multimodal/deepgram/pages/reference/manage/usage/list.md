@@ -32,8 +32,7 @@ paths:
         Lists the features, models, tags, languages, and processing method used
         for requests in the specified project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/usage.subpackage_manage/v1/projects/usage/fields
+        - manage > v1 > projects > usage > fields
       parameters:
         - name: project_id
           in: path

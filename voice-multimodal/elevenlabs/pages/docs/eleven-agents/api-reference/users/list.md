@@ -28,7 +28,7 @@ paths:
       summary: Get Conversation Users
       description: Get distinct users from conversations with pagination.
       tags:
-        - subpackage_conversationalAi/users
+        - users
       parameters:
         - name: agent_id
           in: query

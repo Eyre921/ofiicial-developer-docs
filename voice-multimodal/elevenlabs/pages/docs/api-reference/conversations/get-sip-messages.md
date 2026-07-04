@@ -28,7 +28,7 @@ paths:
       summary: Get Sip Messages For A Conversation
       description: Get SIP messages associated with a conversation's phone call
       tags:
-        - subpackage_conversationalAi/conversations
+        - conversations
       parameters:
         - name: conversation_id
           in: path

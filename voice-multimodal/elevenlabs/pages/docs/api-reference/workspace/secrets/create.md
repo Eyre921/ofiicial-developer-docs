@@ -29,7 +29,7 @@ paths:
       summary: Create Convai Workspace Secret
       description: Create a new secret for the workspace
       tags:
-        - subpackage_conversationalAi/secrets
+        - secrets
       parameters:
         - name: xi-api-key
           in: header

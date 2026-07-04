@@ -32,7 +32,7 @@ paths:
         we will return a single audio file. If more than one history item IDs
         are provided, we will provide the history items packed into a .zip file.
       tags:
-        - subpackage_history
+        - history
       parameters:
         - name: xi-api-key
           in: header

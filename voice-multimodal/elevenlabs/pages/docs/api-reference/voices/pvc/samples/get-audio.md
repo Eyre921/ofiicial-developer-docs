@@ -30,7 +30,7 @@ paths:
         Retrieve the first 30 seconds of voice sample audio with or without
         noise removal.
       tags:
-        - subpackage_voices/pvc/samples/audio
+        - audio
       parameters:
         - name: voice_id
           in: path

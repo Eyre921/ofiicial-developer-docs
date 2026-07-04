@@ -29,7 +29,7 @@ paths:
       summary: Update audio native project
       description: Updates content for the specific AudioNative Project.
       tags:
-        - subpackage_audioNative
+        - audioNative
       parameters:
         - name: project_id
           in: path

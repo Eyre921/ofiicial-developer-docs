@@ -29,7 +29,7 @@ paths:
       summary: Update Mcp Server Configuration
       description: Update the configuration settings for an MCP server.
       tags:
-        - subpackage_conversationalAi/mcpServers
+        - mcpServers
       parameters:
         - name: mcp_server_id
           in: path

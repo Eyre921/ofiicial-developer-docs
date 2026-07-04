@@ -31,7 +31,7 @@ paths:
         Converts text into speech using a voice of your choice and returns audio
         as an audio stream.
       tags:
-        - subpackage_textToSpeech
+        - textToSpeech
       parameters:
         - name: voice_id
           in: path

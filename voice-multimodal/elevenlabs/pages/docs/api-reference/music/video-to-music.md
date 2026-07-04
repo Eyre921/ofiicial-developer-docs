@@ -32,7 +32,7 @@ paths:
         combined in order. Optional description and style tags influence the
         generated music.
       tags:
-        - subpackage_music
+        - music
       parameters:
         - name: output_format
           in: query

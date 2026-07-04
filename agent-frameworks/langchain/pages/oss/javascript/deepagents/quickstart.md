@@ -259,7 +259,7 @@ Pass a `model` string in `provider:model` format, or an [initialized model insta
   `;
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [internetSearch],
     systemPrompt: researchInstructions,
   });

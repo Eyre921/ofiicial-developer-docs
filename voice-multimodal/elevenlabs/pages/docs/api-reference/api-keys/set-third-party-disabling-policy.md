@@ -36,7 +36,7 @@ paths:
         for all keys, or `null` to clear the override so per-key values and the
         plan default apply again. Workspace admins only.
       tags:
-        - subpackage_workspace
+        - workspace
       parameters:
         - name: xi-api-key
           in: header

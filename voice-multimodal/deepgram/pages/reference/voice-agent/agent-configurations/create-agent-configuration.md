@@ -35,7 +35,7 @@ paths:
         The returned `agent_id` can be passed in place of the full `agent`
         object in future Settings messages.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path

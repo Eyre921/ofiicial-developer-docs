@@ -112,7 +112,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
 ## Using SubAgent
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -168,7 +168,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -224,7 +224,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -280,7 +280,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -336,7 +336,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -382,7 +382,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", // Optional override, defaults to main agent model
+    model: "fireworks:accounts/fireworks/models/glm-5p2", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
@@ -392,7 +392,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -448,7 +448,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -642,7 +642,7 @@ Use [`streamEvents`](/oss/javascript/deepagents/event-streaming) to get typed pr
 The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -700,7 +700,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -758,7 +758,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -816,7 +816,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -874,11 +874,11 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     systemPrompt:
       "You are a project coordinator with no research knowledge. " +
       "For every user request, you must call the task() tool with " +
@@ -932,7 +932,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -990,7 +990,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -1068,7 +1068,9 @@ Because each subagent's `name` is written to the `lc_agent_name` metadata key on
 1. Open your tracing project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents).
 2. Switch the view to **Runs** on the Tracing project page to see individual spans.
 3. Click **Add filter** and select **Metadata**.
-4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name (for example, `research-agent`).
+4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
+
+<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
 
 This shows only the runs produced by that subagent. You can save the filter as a named view for reuse. For a full reference on filtering options, see [Filter traces](/langsmith/filter-traces-in-application).
 

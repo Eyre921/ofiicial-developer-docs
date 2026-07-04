@@ -46,7 +46,7 @@ A harness is everything around that loop: the model, its prompt, its tools, and 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", tools });
+  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -100,7 +100,7 @@ Pass a model identifier string (`"provider:model"`) or an initialized model inst
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", tools });
+  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -183,7 +183,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
     schema: z.object({ query: z.string() }),
   });
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", tools: [search] });
+  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools: [search] });
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -252,7 +252,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools,
     systemPrompt: "You are a helpful assistant. Be concise and accurate.",
   });
@@ -340,7 +340,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools,
     responseFormat: Answer,
   });
@@ -510,7 +510,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   import { MemorySaver } from "@langchain/langgraph";
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [],
     checkpointer: new MemorySaver(),
   });
@@ -730,7 +730,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   });
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [],
     contextSchema,
     checkpointer: new MemorySaver(),
@@ -943,7 +943,7 @@ Agents are especially useful when they can take action rather than just generate
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
   });
@@ -1194,7 +1194,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   var backend = new StateBackend();
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [
       createFilesystemMiddleware({ backend }),
@@ -1344,7 +1344,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools,
     name: "research_assistant",
   });
@@ -1488,7 +1488,7 @@ Agents in production encounter failures that rarely appear in development: rate 
   });
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [
       modelRetryMiddleware({ maxRetries: 3 }),
@@ -1634,7 +1634,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
   });
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [piiMiddleware("email")],
   });
@@ -1761,7 +1761,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
   });
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
   });

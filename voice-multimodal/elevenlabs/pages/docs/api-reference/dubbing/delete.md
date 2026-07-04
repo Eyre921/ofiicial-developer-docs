@@ -28,7 +28,7 @@ paths:
       summary: Delete dubbing
       description: Deletes a dubbing project.
       tags:
-        - subpackage_dubbing
+        - dubbing
       parameters:
         - name: dubbing_id
           in: path

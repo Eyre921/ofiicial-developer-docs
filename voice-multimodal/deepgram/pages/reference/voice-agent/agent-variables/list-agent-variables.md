@@ -30,7 +30,7 @@ paths:
       summary: List Agent Variables
       description: Returns all template variables for the specified project
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/variables
+        - voiceAgent > variables
       parameters:
         - name: project_id
           in: path

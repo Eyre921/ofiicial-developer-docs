@@ -30,7 +30,7 @@ paths:
         Delete a conversation tag. Restricted to the tag owner or a workspace
         admin.
       tags:
-        - subpackage_conversationalAi/conversations/tags
+        - tags
       parameters:
         - name: tag_id
           in: path

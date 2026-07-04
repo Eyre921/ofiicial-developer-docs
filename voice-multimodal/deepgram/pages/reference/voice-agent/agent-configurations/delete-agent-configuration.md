@@ -34,7 +34,7 @@ paths:
         this agent UUID. Migrate all active sessions to a new configuration
         before deleting.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path

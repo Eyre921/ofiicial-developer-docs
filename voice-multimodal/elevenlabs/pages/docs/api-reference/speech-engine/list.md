@@ -28,7 +28,7 @@ paths:
       summary: List Speech Engines
       description: Returns a paginated list of Speech Engine resources.
       tags:
-        - subpackage_speechEngine
+        - speechEngine
       parameters:
         - name: page_size
           in: query

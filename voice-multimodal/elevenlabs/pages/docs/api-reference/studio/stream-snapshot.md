@@ -29,7 +29,7 @@ paths:
       summary: Stream Studio Project Audio
       description: Stream the audio from a Studio project snapshot.
       tags:
-        - subpackage_studio/projects/snapshots
+        - snapshots
       parameters:
         - name: project_id
           in: path

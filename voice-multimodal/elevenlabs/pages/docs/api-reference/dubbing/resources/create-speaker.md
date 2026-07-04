@@ -32,7 +32,7 @@ paths:
         every available language and can optionally be associated with an
         ElevenLabs voice and voice settings.
       tags:
-        - subpackage_dubbing/resource/speaker
+        - speaker
       parameters:
         - name: dubbing_id
           in: path

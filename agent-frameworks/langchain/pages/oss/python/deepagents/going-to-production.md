@@ -215,7 +215,7 @@ The two are independent and almost always passed together:
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       context_schema=Context,
   )
 

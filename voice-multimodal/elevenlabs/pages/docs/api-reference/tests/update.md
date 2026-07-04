@@ -29,7 +29,7 @@ paths:
       summary: Update Agent Response Test
       description: Updates an agent response test by ID.
       tags:
-        - subpackage_conversationalAi/tests
+        - tests
       parameters:
         - name: test_id
           in: path

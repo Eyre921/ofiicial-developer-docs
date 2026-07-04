@@ -31,7 +31,7 @@ paths:
         Transform audio from one voice to another. Maintain full control over
         emotion, timing and delivery.
       tags:
-        - subpackage_speechToSpeech
+        - speechToSpeech
       parameters:
         - name: voice_id
           in: path

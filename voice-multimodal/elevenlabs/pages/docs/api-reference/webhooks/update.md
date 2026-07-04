@@ -29,7 +29,7 @@ paths:
       summary: Update Workspace Webhook
       description: Update the specified workspace webhook
       tags:
-        - subpackage_webhooks
+        - webhooks
       parameters:
         - name: webhook_id
           in: path

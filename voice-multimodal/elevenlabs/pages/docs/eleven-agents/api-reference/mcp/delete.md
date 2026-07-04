@@ -28,7 +28,7 @@ paths:
       summary: Delete Mcp Server
       description: Delete a specific MCP server configuration from the workspace.
       tags:
-        - subpackage_conversationalAi/mcpServers
+        - mcpServers
       parameters:
         - name: mcp_server_id
           in: path

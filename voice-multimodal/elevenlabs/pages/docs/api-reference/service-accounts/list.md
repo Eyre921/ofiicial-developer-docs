@@ -28,7 +28,7 @@ paths:
       summary: Get service accounts
       description: List all service accounts in the workspace
       tags:
-        - subpackage_serviceAccounts
+        - serviceAccounts
       parameters:
         - name: xi-api-key
           in: header

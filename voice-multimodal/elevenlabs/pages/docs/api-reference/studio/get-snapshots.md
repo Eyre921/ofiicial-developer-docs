@@ -28,7 +28,7 @@ paths:
       summary: List Studio Project Snapshots
       description: Retrieves a list of snapshots for a Studio project.
       tags:
-        - subpackage_studio/projects/snapshots
+        - snapshots
       parameters:
         - name: project_id
           in: path

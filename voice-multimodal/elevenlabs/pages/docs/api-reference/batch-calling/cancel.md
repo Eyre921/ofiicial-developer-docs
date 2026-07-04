@@ -28,7 +28,7 @@ paths:
       summary: Cancel A Batch Call.
       description: Cancel a running batch call and set all recipients to cancelled status.
       tags:
-        - subpackage_conversationalAi/batchCalls
+        - batchCalls
       parameters:
         - name: batch_id
           in: path

@@ -32,7 +32,7 @@ paths:
         `/v1/convai/agents/:agent_id/run-tests` endpoints to create and run
         simulations. Run a conversation between the agent and a simulated user.
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: agent_id
           in: path

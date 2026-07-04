@@ -28,7 +28,7 @@ paths:
       summary: Retrieve Separated Speaker Audio
       description: Retrieve the separated audio for a specific speaker.
       tags:
-        - subpackage_voices/pvc/samples/speakers/audio
+        - audio
       parameters:
         - name: voice_id
           in: path

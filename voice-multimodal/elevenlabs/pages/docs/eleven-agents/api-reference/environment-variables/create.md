@@ -29,7 +29,7 @@ paths:
       summary: Create Environment Variable
       description: Create a new environment variable for the workspace
       tags:
-        - subpackage_environmentVariables
+        - environmentVariables
       parameters:
         - name: xi-api-key
           in: header

@@ -28,7 +28,7 @@ paths:
       summary: Get agent
       description: Retrieve config for an agent
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: agent_id
           in: path

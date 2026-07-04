@@ -28,7 +28,7 @@ paths:
       summary: Get pronunciation dictionary by version
       description: Get a PLS file with a pronunciation dictionary version rules
       tags:
-        - subpackage_pronunciationDictionaries
+        - pronunciationDictionaries
       parameters:
         - name: dictionary_id
           in: path

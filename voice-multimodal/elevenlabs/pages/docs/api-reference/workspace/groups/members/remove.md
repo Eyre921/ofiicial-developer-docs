@@ -31,7 +31,7 @@ paths:
         Removes a member from the specified group. Requires
         `group_members_manage` permission.
       tags:
-        - subpackage_workspace/groups/members
+        - members
       parameters:
         - name: group_id
           in: path

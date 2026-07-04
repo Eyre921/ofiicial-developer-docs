@@ -30,7 +30,7 @@ paths:
       summary: Get an Agent Configuration
       description: Returns the specified agent configuration in its uninterpolated form
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path

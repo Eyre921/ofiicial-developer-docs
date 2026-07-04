@@ -34,7 +34,7 @@ paths:
         variable placeholders appear as-is rather than with their substituted
         values.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path

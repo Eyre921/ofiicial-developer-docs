@@ -28,7 +28,7 @@ paths:
       summary: Delete Speech Engine
       description: Delete a Speech Engine resource
       tags:
-        - subpackage_speechEngine
+        - speechEngine
       parameters:
         - name: speech_engine_id
           in: path

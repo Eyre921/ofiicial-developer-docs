@@ -29,7 +29,7 @@ paths:
       summary: Update API key
       description: Update an existing API key for a service account
       tags:
-        - subpackage_serviceAccounts/apiKeys
+        - apiKeys
       parameters:
         - name: service_account_user_id
           in: path

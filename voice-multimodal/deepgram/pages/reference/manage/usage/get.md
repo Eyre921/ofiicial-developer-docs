@@ -32,8 +32,7 @@ paths:
         Retrieves the usage for a specific project. Use Get Project Usage
         Breakdown for a more comprehensive usage summary.
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/usage
+        - manage > v1 > projects > usage
       parameters:
         - name: project_id
           in: path

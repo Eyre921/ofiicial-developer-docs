@@ -28,7 +28,7 @@ paths:
       summary: List Phone Numbers
       description: Retrieve all Phone Numbers
       tags:
-        - subpackage_conversationalAi/phoneNumbers
+        - phoneNumbers
       parameters:
         - name: provider
           in: query

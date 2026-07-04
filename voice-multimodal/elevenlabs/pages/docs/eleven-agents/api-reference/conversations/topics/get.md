@@ -28,7 +28,7 @@ paths:
       summary: Get Agent Conversation Topics
       description: Returns the latest topic discovery run results for a given agent.
       tags:
-        - subpackage_conversationalAi/conversations/topics
+        - topics
       parameters:
         - name: agent_id
           in: path

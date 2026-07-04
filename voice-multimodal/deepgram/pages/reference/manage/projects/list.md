@@ -32,7 +32,7 @@ paths:
         Retrieves basic information about the projects associated with the API
         key
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects
+        - manage > v1 > projects
       parameters:
         - name: Authorization
           in: header

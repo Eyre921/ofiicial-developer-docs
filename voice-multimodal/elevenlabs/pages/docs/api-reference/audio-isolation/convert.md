@@ -29,7 +29,7 @@ paths:
       summary: Audio isolation
       description: Removes background noise from audio.
       tags:
-        - subpackage_audioIsolation
+        - audioIsolation
       parameters:
         - name: xi-api-key
           in: header

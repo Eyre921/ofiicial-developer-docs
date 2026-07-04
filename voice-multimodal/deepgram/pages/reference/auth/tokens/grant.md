@@ -35,7 +35,7 @@ paths:
         key with Member or higher authorization. Tokens created with this
         endpoint will not work with the Manage APIs.
       tags:
-        - subpackage_auth.subpackage_auth/v1.subpackage_auth/v1/tokens
+        - auth > v1 > tokens
       parameters:
         - name: Authorization
           in: header

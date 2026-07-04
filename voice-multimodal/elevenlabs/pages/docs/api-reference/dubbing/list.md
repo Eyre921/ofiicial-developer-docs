@@ -28,7 +28,7 @@ paths:
       summary: List Dubs
       description: List the dubs you have access to.
       tags:
-        - subpackage_dubbing
+        - dubbing
       parameters:
         - name: cursor
           in: query

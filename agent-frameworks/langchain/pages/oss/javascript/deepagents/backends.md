@@ -189,7 +189,7 @@ even after that subagent's execution is complete. Those files will continue to b
   import { createDeepAgent, FilesystemBackend } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
   });
   ```
@@ -332,7 +332,7 @@ even after that subagent's execution is complete. Those files will continue to b
   const backend = new LocalShellBackend({ workingDirectory: "." });
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend,
   });
   ```
@@ -442,7 +442,7 @@ even after that subagent's execution is complete. Those files will continue to b
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend: new StoreBackend({
       namespace: (rt) => [rt.serverInfo.user.identity],
     }),
@@ -691,7 +691,7 @@ Construct it with a repo identifier in `owner/name` or `name` format.
   const store = new InMemoryStore();
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend: new CompositeBackend(new StateBackend(), {
       "/memories/": new StoreBackend({
         namespace: () => ["memories"],

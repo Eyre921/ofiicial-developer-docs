@@ -31,7 +31,7 @@ paths:
         Generate speech from text with precise character-level timing
         information for audio-text synchronization.
       tags:
-        - subpackage_textToSpeech
+        - textToSpeech
       parameters:
         - name: voice_id
           in: path

@@ -28,7 +28,7 @@ paths:
       summary: Retrieve A Transcript
       description: Fetch the transcript for one of the languages in a dub.
       tags:
-        - subpackage_dubbing/transcripts
+        - transcripts
       parameters:
         - name: dubbing_id
           in: path

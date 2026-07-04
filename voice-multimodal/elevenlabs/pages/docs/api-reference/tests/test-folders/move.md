@@ -29,7 +29,7 @@ paths:
       summary: Bulk Move Tests To Folder
       description: Moves multiple tests or folders from one folder to another.
       tags:
-        - subpackage_conversationalAi/tests
+        - tests
       parameters:
         - name: xi-api-key
           in: header

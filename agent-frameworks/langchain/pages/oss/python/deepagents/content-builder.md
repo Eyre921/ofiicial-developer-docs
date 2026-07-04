@@ -731,7 +731,7 @@ Create `content_writer.py` in the project root. The following sections belong in
       def create_content_writer():
           """Create a content writer agent configured by filesystem files."""
           return create_deep_agent(
-              model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+              model="fireworks:accounts/fireworks/models/glm-5p2",
               memory=["./AGENTS.md"],
               skills=["./skills/"],
               tools=[generate_cover, generate_social_image],

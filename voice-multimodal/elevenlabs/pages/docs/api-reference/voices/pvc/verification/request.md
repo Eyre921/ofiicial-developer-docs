@@ -29,7 +29,7 @@ paths:
       summary: Request Manual Verification
       description: Request manual verification for a PVC voice.
       tags:
-        - subpackage_voices/pvc/verification
+        - verification
       parameters:
         - name: voice_id
           in: path

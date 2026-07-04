@@ -29,7 +29,7 @@ paths:
       summary: Create Mcp Server
       description: Create a new MCP server configuration in the workspace.
       tags:
-        - subpackage_conversationalAi/mcpServers
+        - mcpServers
       parameters:
         - name: xi-api-key
           in: header

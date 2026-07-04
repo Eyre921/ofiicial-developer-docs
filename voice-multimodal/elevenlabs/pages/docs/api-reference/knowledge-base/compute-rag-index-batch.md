@@ -31,7 +31,7 @@ paths:
         Retrieves and/or creates RAG indexes for multiple knowledge base
         documents in a single request. Maximum 100 items per request.
       tags:
-        - subpackage_conversationalAi/knowledgeBase
+        - knowledgeBase
       parameters:
         - name: xi-api-key
           in: header

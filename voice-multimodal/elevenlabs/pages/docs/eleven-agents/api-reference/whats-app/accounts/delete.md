@@ -28,7 +28,7 @@ paths:
       summary: Delete Whatsapp Account
       description: Delete a WhatsApp account
       tags:
-        - subpackage_conversationalAi/whatsappAccounts
+        - whatsappAccounts
       parameters:
         - name: phone_number_id
           in: path

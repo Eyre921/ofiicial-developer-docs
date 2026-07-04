@@ -29,7 +29,7 @@ paths:
       summary: Create Agent Draft
       description: Create a new draft for an agent
       tags:
-        - subpackage_conversationalAi/agents/drafts
+        - drafts
       parameters:
         - name: agent_id
           in: path

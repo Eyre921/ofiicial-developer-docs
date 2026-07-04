@@ -4,43 +4,126 @@ source: https://resend.com/docs/mcp-server
 path: docs/mcp-server
 ---
 
-Learn how to use the MCP Server to send emails.
+Connect your AI agent to Resend using the hosted MCP server.
 
-## What is an MCP Server?
+MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. We offer both a [remote MCP server](#remote-mcp-server) and a [local MCP server](#local-mcp-server).
 
-MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf.
+## Remote MCP Server
 
-## What can Resend's MCP Server do?
+Resend hosts the MCP server at:
 
-Resend's [MCP Server](https://github.com/resend/resend-mcp) gives your AI agent native access to the full Resend platform through a single integration. You can manage all aspects of your email infrastructure using natural language.
+```
+https://mcp.resend.com
+```
 
-* **Emails**: Send, list, get, cancel, update, and batch send emails. Supports HTML, plain text, attachments (local file, URL, or base64), CC/BCC, reply-to, scheduling, tags, and topic-based sending.
-* **Received Emails**: List and read inbound emails. List and download received email attachments.
-* **Contacts**: Create, list, get, update, and remove contacts. Manage segment memberships, topic subscriptions, and CSV contact imports. Supports custom contact properties.
-* **Broadcasts**: Create, send, list, get, update, and remove broadcast campaigns. Supports scheduling, personalization placeholders, and preview text.
-* **Domains**: Create, list, get, update, remove, and verify sender domains. Configure tracking, TLS, and sending/receiving capabilities.
-* **Segments**: Create, list, get, and remove audience segments.
-* **Topics**: Create, list, get, update, and remove subscription topics.
-* **Contact Properties**: Create, list, get, update, and remove custom contact attributes.
-* **API Keys**: Create, list, and remove API keys.
-* **Webhooks**: Create, list, get, update, and remove webhooks for event notifications.
+Connect any MCP client that supports remote servers (Streamable HTTP). There's nothing to install and no local process to run, which makes it the best option for web-based clients like Claude and hosted agent platforms.
 
-The MCP server includes `create-contact-import`, `get-contact-import`, and
-`list-contact-imports` tools to upload CSV files, check import status, and review
-previous imports.
+When you connect, your client opens a browser window to log in to Resend and approve access using OAuth.
 
-For example, use this to automate email workflows, manage your contact database, or build AI-powered email campaigns.
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    claude mcp add --transport http resend https://mcp.resend.com
+    ```
 
-## Prerequisites
+    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
+  </Tab>
 
-The Resend MCP server is available on NPM and can be integrated into any [supported MCP client](#how-to-use-the-mcp-server) using `npx`. To use the MCP Server, you'll need to:
+  <Tab title="Claude">
+    In Claude (web or desktop), open **Settings** > **Connectors** > **Add custom connector** and enter:
 
-* [Create an API key](https://resend.com/api-keys)
-* [Verify your domain](https://resend.com/domains)
+    ```
+    https://mcp.resend.com
+    ```
+  </Tab>
 
-## How to use the MCP Server
+  <Tab title="Cursor">
+    Open the command palette and choose "Cursor Settings" > "MCP" > "Add new global MCP server".
 
-The server supports two transport modes: **stdio** (default) and **HTTP**.
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "url": "https://mcp.resend.com"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Codex">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    codex mcp add resend --url https://mcp.resend.com
+    ```
+  </Tab>
+
+  <Tab title="Copilot">
+    To use GitHub Copilot in VS Code, add the following to your `settings.json`:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcp": {
+        "servers": {
+          "resend": {
+            "type": "http",
+            "url": "https://mcp.resend.com"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Windsurf">
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "serverUrl": "https://mcp.resend.com"
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+***
+
+*If your client runs somewhere a browser login isn't possible* (a server, CI, or a headless agent), pass a [Resend API key](https://resend.com/api-keys) as a Bearer token instead of using OAuth.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    claude mcp add --transport http resend https://mcp.resend.com --header "Authorization: Bearer re_xxxxxxxxx"
+    ```
+  </Tab>
+
+  <Tab title="JSON config">
+    For clients configured with JSON (Cursor, Windsurf, and others), add an `Authorization` header:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "url": "https://mcp.resend.com",
+          "headers": {
+            "Authorization": "Bearer re_xxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Local MCP Server
+
+The hosted server runs the same open-source code that's available on NPM as [`resend-mcp`](https://github.com/resend/resend-mcp). If you prefer to run the server yourself, you can integrate it into any supported MCP client using `npx`. You'll need to:
+
+* [Create an API key](/docs/create-an-api-key)
+* [Verify your domain](/docs/add-a-domain)
+
+The local server supports two transport modes: **stdio** (default) and **HTTP**.
 
 Choose your preferred mode and client below to get started. Remember to replace `re_xxxxxxxxx` with your actual API key.
 
@@ -234,7 +317,7 @@ MCP_PORT=3000 npx -y resend-mcp --http
 
 ### Options
 
-You can pass additional arguments to configure the server:
+You can pass additional arguments to configure the local server:
 
 * `--key`: Your Resend API key (stdio mode only, since HTTP mode uses the Bearer token from the client)
 * `--sender`: Default sender email address from a verified domain
@@ -254,143 +337,31 @@ You can pass additional arguments to configure the server:
   provide one each time you call the tool.
 </Info>
 
-## Local Development
+## MCP Server tools
 
-Clone the project and build:
+Resend's MCP server gives your AI agent native access to the full Resend platform through a single integration. You can manage all aspects of your email infrastructure using natural language.
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-git clone https://github.com/resend/resend-mcp.git
-pnpm install
-pnpm run build
-```
+* **Emails**: Send, list, get, cancel, update, and batch send emails. Supports HTML, plain text, attachments (local file, URL, or base64), CC/BCC, reply-to, scheduling, tags, and topic-based sending.
+* **Received Emails**: List and read inbound emails. List and download received email attachments.
+* **Templates**: Create, list, get, update, publish, duplicate, and remove email templates. Supports composing template content and `{{{VARIABLE}}}` placeholders.
+* **Contacts**: Create, list, get, update, and remove contacts. Manage segment memberships, topic subscriptions, and CSV contact imports. Supports custom contact properties.
+* **Broadcasts**: Create, send, list, get, update, and remove broadcast campaigns. Supports scheduling, personalization placeholders, and preview text.
+* **Automations**: Create, list, get, update, and remove automations. Review the runs of an automation.
+* **Events**: Send events to trigger automations for a contact. Create, update, and remove event definitions.
+* **Domains**: Create, list, get, update, remove, and verify sender domains. Configure tracking, TLS, and sending/receiving capabilities. Create and verify domain claims.
+* **Segments**: Create, list, get, and remove audience segments.
+* **Topics**: Create, list, get, update, and remove subscription topics.
+* **Contact Properties**: Create, list, get, update, and remove custom contact attributes.
+* **API Keys**: Create, list, and remove API keys.
+* **Webhooks**: Create, list, get, update, and remove webhooks for event notifications.
+* **Logs**: List and inspect API request logs, including full request and response bodies.
+* **Editor**: Connect to (and disconnect from) the visual editor in the Resend dashboard, and read a draft's content while collaborating on broadcasts and templates.
 
-To use the local build, replace the `npx` command with the path to your local build:
+Here are some real examples of what your agent can do with these tools:
 
-#### Stdio
-
-<Tabs>
-  <Tab title="Claude Code">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add resend -e RESEND_API_KEY=re_xxxxxxxxx -- node ABSOLUTE_PATH_TO_PROJECT/dist/index.js
-    ```
-  </Tab>
-
-  <Tab title="Codex">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex mcp add resend \
-      --env RESEND_API_KEY=re_xxxxxxxxx \
-      -- node ABSOLUTE_PATH_TO_PROJECT/dist/index.js
-    ```
-  </Tab>
-
-  <Tab title="Cursor / Claude Desktop / Gemini CLI">
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "command": "node",
-          "args": ["ABSOLUTE_PATH_TO_PROJECT/dist/index.js"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-#### HTTP
-
-First, start the local HTTP server:
-
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-node ABSOLUTE_PATH_TO_PROJECT/dist/index.js --http --port 3000
-```
-
-Then configure your client:
-
-<Tabs>
-  <Tab title="Claude Code">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add resend --transport http http://127.0.0.1:3000/mcp --header "Authorization: Bearer re_xxxxxxxxx"
-    ```
-  </Tab>
-
-  <Tab title="Cursor">
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "url": "http://127.0.0.1:3000/mcp",
-          "headers": {
-            "Authorization": "Bearer re_xxxxxxxxx"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-### Testing with MCP Inspector
-
-<Note>
-  Make sure you've built the project first (see [Local
-  Development](#local-development) section above).
-</Note>
-
-#### Using Stdio Transport
-
-<Steps>
-  <Step title="Set your API key">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    export RESEND_API_KEY=re_your_key_here
-    ```
-  </Step>
-
-  <Step title="Start the inspector">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    pnpm inspector
-    ```
-  </Step>
-
-  <Step title="Configure in the browser">
-    In the Inspector UI:
-
-    * Choose **stdio** (launch a process)
-    * **Command:** `node`
-    * **Args:** `dist/index.js` (or the full path to `dist/index.js`)
-    * **Env:** `RESEND_API_KEY=re_your_key_here` (or leave blank if you already exported it in the same terminal)
-    * Click **Connect**, then use "List tools" to verify the server is working
-  </Step>
-</Steps>
-
-#### Using HTTP Transport
-
-<Steps>
-  <Step title="Start the HTTP server">
-    In one terminal:
-
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    node dist/index.js --http --port 3000
-    ```
-  </Step>
-
-  <Step title="Start the inspector">
-    In another terminal:
-
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    pnpm inspector
-    ```
-  </Step>
-
-  <Step title="Configure in the browser">
-    In the Inspector UI:
-
-    * Choose **Streamable HTTP** (connect to URL)
-    * **URL:** `http://127.0.0.1:3000/mcp`
-    * Add a custom header: `Authorization: Bearer re_your_key_here` and activate the toggle
-    * Click **Connect**, then use "List tools" to verify the server is working
-  </Step>
-</Steps>
+* Turn a [Paper design](/docs/guides/paper) into a ready-to-send [Template](/docs/dashboard/templates/introduction) or [Broadcast](/docs/dashboard/broadcasts/introduction)
+* [Bulk import contacts from a CSV](/docs/dashboard/audiences/contacts#bulk-upload-by-csv), upserting or skipping duplicates, and organize them into [Segments](/docs/dashboard/segments/introduction)
+* Build [Automations](/docs/dashboard/automations/introduction) that send emails when a contact is created, updated, or triggers a [custom event](/docs/dashboard/automations/custom-events)
+* Read and triage [inbound email](/docs/dashboard/receiving/introduction), download attachments, and send replies
+* Schedule, reschedule, and cancel [scheduled emails](/docs/dashboard/emails/schedule-email)
+* Debug failed API requests by inspecting the [request logs](/docs/dashboard/logs/introduction)

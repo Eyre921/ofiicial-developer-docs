@@ -28,7 +28,7 @@ paths:
       summary: Search Knowledge Base Content
       description: Fuzzy text search over knowledge base document content
       tags:
-        - subpackage_conversationalAi/knowledgeBase
+        - knowledgeBase
       parameters:
         - name: query
           in: query

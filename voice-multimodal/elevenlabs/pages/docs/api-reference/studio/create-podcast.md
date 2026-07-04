@@ -33,7 +33,7 @@ paths:
         the future, you will be charged for both the LLM and audio generation
         costs.
       tags:
-        - subpackage_studio
+        - studio
       parameters:
         - name: xi-api-key
           in: header

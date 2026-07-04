@@ -28,7 +28,7 @@ paths:
       summary: Delete Tool
       description: Delete tool from the workspace.
       tags:
-        - subpackage_conversationalAi/tools
+        - tools
       parameters:
         - name: tool_id
           in: path

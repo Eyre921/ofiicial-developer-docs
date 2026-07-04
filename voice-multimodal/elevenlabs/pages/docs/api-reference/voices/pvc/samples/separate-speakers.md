@@ -28,7 +28,7 @@ paths:
       summary: Start Speaker Separation
       description: Start speaker separation process for a sample
       tags:
-        - subpackage_voices/pvc/samples/speakers
+        - speakers
       parameters:
         - name: voice_id
           in: path

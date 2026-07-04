@@ -30,7 +30,7 @@ paths:
         Disable the API key used to authenticate this request. Requires the
         query parameter `api_key_name=self` as an explicit confirmation.
       tags:
-        - subpackage_workspaces/apiKeys
+        - apiKeys
       parameters:
         - name: api_key_name
           in: query

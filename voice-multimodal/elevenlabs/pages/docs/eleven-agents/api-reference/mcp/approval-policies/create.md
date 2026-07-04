@@ -29,7 +29,7 @@ paths:
       summary: Create Mcp Server Tool Approval
       description: Add approval for a specific MCP tool when using per-tool approval mode.
       tags:
-        - subpackage_conversationalAi/mcpServers/toolApprovals
+        - toolApprovals
       parameters:
         - name: mcp_server_id
           in: path

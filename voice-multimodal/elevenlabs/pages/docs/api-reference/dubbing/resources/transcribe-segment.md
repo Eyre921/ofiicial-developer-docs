@@ -31,7 +31,7 @@ paths:
         Regenerate the transcriptions for the specified segments. Does not
         automatically regenerate translations or dubs.
       tags:
-        - subpackage_dubbing/resource
+        - resource
       parameters:
         - name: dubbing_id
           in: path

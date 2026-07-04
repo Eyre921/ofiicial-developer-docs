@@ -28,7 +28,7 @@ paths:
       summary: Delete voice sample
       description: Removes a sample by its ID.
       tags:
-        - subpackage_samples
+        - samples
       parameters:
         - name: voice_id
           in: path

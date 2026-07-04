@@ -424,7 +424,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 
 
       agent: Runnable = create_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           tools=[get_user_info],
           # Pass store to agent - enables agent to access store when running tools
           store=store,
@@ -855,7 +855,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 
 
       agent: Runnable = create_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           tools=[save_user_info],
           store=store,
           context_schema=Context,

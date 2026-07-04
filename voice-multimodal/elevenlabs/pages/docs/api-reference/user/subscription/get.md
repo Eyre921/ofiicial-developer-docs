@@ -28,7 +28,7 @@ paths:
       summary: Get user subscription
       description: Gets extended information about the users subscription
       tags:
-        - subpackage_user/subscription
+        - subscription
       parameters:
         - name: xi-api-key
           in: header

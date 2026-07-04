@@ -30,7 +30,7 @@ paths:
         Generate a time limited single-use token with embedded authentication
         for frontend clients.
       tags:
-        - subpackage_tokens/singleUse
+        - singleUse
       parameters:
         - name: token_type
           in: path

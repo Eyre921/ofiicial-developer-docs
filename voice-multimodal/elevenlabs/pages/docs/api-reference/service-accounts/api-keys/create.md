@@ -29,7 +29,7 @@ paths:
       summary: Create API key
       description: Create a new API key for a service account
       tags:
-        - subpackage_serviceAccounts/apiKeys
+        - apiKeys
       parameters:
         - name: service_account_user_id
           in: path

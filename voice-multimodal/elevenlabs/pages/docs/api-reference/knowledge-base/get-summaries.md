@@ -28,7 +28,7 @@ paths:
       summary: Get Knowledge Base Summaries By Ids
       description: Gets multiple knowledge base document summaries by their IDs.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents/summaries
+        - summaries
       parameters:
         - name: document_ids
           in: query

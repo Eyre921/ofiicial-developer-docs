@@ -31,7 +31,7 @@ paths:
         without performing the merge. Useful for showing an accurate diff before
         confirming.
       tags:
-        - subpackage_conversationalAi/agents/branches
+        - branches
       parameters:
         - name: agent_id
           in: path

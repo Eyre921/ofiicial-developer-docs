@@ -28,7 +28,7 @@ paths:
       summary: Delete Workspace Webhook
       description: Delete the specified workspace webhook
       tags:
-        - subpackage_webhooks
+        - webhooks
       parameters:
         - name: webhook_id
           in: path

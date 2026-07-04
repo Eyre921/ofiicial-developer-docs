@@ -29,7 +29,7 @@ paths:
       summary: Create PVC voice
       description: Creates a new PVC voice with metadata but no samples
       tags:
-        - subpackage_voices/pvc
+        - pvc
       parameters:
         - name: xi-api-key
           in: header

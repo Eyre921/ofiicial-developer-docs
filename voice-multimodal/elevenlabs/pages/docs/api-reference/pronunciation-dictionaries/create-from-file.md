@@ -29,7 +29,7 @@ paths:
       summary: Create a pronunciation dictionary from a file
       description: Creates a new pronunciation dictionary from a lexicon .PLS file
       tags:
-        - subpackage_pronunciationDictionaries
+        - pronunciationDictionaries
       parameters:
         - name: xi-api-key
           in: header

@@ -32,7 +32,7 @@ paths:
         stream of JSONs containing audio as a base64 encoded string together
         with information on when which character was spoken.
       tags:
-        - subpackage_textToSpeech
+        - textToSpeech
       parameters:
         - name: voice_id
           in: path

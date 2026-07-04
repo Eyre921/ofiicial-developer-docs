@@ -28,7 +28,7 @@ paths:
       summary: Get Project Snapshot
       description: Returns the project snapshot.
       tags:
-        - subpackage_studio/projects/snapshots
+        - snapshots
       parameters:
         - name: project_id
           in: path

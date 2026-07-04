@@ -35,8 +35,7 @@ paths:
         excludes requests that used it. Multiple true filters are combined with
         OR logic, while false filters use AND logic.
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/usage.subpackage_manage/v1/projects/usage/breakdown
+        - manage > v1 > projects > usage > breakdown
       parameters:
         - name: project_id
           in: path

@@ -29,7 +29,7 @@ paths:
       summary: Create Speech Engine
       description: Create a new Speech Engine resource
       tags:
-        - subpackage_speechEngine
+        - speechEngine
       parameters:
         - name: xi-api-key
           in: header

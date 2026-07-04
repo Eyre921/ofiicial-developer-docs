@@ -30,7 +30,7 @@ paths:
         Returns the audit log for the workspace. Requires enterprise tier and
         the audit_log_read permission.
       tags:
-        - subpackage_workspace/auditLogs
+        - auditLogs
       parameters:
         - name: limit
           in: query

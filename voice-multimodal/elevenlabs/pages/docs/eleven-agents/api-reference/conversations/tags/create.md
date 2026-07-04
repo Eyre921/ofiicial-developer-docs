@@ -29,7 +29,7 @@ paths:
       summary: Create Conversation Tag
       description: Create a new conversation tag for the workspace.
       tags:
-        - subpackage_conversationalAi/conversations/tags
+        - tags
       parameters:
         - name: xi-api-key
           in: header

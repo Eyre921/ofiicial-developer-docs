@@ -28,7 +28,7 @@ paths:
       summary: Delete a segment
       description: Deletes a single segment from the dubbing.
       tags:
-        - subpackage_dubbing/resource/segment
+        - segment
       parameters:
         - name: dubbing_id
           in: path

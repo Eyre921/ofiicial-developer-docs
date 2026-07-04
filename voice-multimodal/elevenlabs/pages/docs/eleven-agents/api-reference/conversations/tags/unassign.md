@@ -28,7 +28,7 @@ paths:
       summary: Unassign Conversation Tag
       description: Remove a single conversation tag from a conversation.
       tags:
-        - subpackage_conversationalAi/conversations/tags
+        - tags
       parameters:
         - name: conversation_id
           in: path

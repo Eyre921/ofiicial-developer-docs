@@ -227,7 +227,7 @@ The `interrupt_on` parameter accepts a dictionary mapping tool names to interrup
   checkpointer = MemorySaver()
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[remove_file, fetch_file, notify_email],
       interrupt_on={
           "remove_file": True,  # Default: approve, edit, reject, respond
@@ -467,7 +467,7 @@ By default, every tool call listed in `interrupt_on` pauses for review. To pause
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       interrupt_on={
           "write_file": {
               "allowed_decisions": ["approve", "edit", "reject"],

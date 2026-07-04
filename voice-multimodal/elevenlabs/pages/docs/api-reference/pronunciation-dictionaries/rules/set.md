@@ -31,7 +31,7 @@ paths:
         Replaces all existing rules on the pronunciation dictionary with the
         provided ones.
       tags:
-        - subpackage_pronunciationDictionaries/rules
+        - rules
       parameters:
         - name: pronunciation_dictionary_id
           in: path

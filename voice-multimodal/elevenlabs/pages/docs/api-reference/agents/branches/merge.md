@@ -29,7 +29,7 @@ paths:
       summary: Merge A Branch Into A Target Branch
       description: Merge a branch into a target branch
       tags:
-        - subpackage_conversationalAi/agents/branches
+        - branches
       parameters:
         - name: agent_id
           in: path

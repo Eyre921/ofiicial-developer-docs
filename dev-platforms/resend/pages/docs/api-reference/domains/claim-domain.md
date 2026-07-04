@@ -67,6 +67,20 @@ Claim a domain that is already verified by another team.
   });
   ```
 
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, types::CreateDomainClaimOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let domain_claim = CreateDomainClaimOptions::new("example.com");
+    let _data = resend.domains.claim(domain_claim).await?;
+
+    Ok(())
+  }
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/domains/claim' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \

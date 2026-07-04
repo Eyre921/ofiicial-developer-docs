@@ -38,7 +38,7 @@ paths:
         webhook_metadata parameter allows you to attach custom data that will be
         included in webhook responses for request correlation and tracking.
       tags:
-        - subpackage_speechToText
+        - speechToText
       parameters:
         - name: enable_logging
           in: query

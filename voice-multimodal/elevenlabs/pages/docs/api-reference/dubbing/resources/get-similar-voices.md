@@ -30,7 +30,7 @@ paths:
         Fetch the top 10 similar voices to a speaker, including the voice IDs,
         names, descriptions, and, where possible, a sample audio recording.
       tags:
-        - subpackage_dubbing/resource/speaker
+        - speaker
       parameters:
         - name: dubbing_id
           in: path

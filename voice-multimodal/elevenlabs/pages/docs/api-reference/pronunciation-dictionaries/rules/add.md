@@ -31,7 +31,7 @@ paths:
         Add rules to the pronunciation dictionary. If a rule with the same
         string_to_replace already exists, it will be replaced.
       tags:
-        - subpackage_pronunciationDictionaries/rules
+        - rules
       parameters:
         - name: pronunciation_dictionary_id
           in: path

@@ -28,7 +28,7 @@ paths:
       summary: Get Dependent Agents List
       description: Get a list of agents depending on this tool
       tags:
-        - subpackage_conversationalAi/tools
+        - tools
       parameters:
         - name: tool_id
           in: path

@@ -37,7 +37,7 @@ paths:
         resource will be shared with the service account associated with that
         key. You must have admin access to the resource to share it.
       tags:
-        - subpackage_workspace/resources
+        - resources
       parameters:
         - name: resource_id
           in: path

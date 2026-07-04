@@ -29,7 +29,7 @@ paths:
       summary: Stream Composed Music
       description: Stream a composed song from a prompt or a composition plan.
       tags:
-        - subpackage_music
+        - music
       parameters:
         - name: output_format
           in: query

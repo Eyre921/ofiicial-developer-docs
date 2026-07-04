@@ -28,7 +28,7 @@ paths:
       summary: Delete Convai Workspace Secret
       description: Delete a workspace secret if it's not in use
       tags:
-        - subpackage_conversationalAi/secrets
+        - secrets
       parameters:
         - name: secret_id
           in: path

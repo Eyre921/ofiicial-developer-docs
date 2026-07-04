@@ -28,7 +28,7 @@ paths:
       summary: List Agents
       description: Returns a list of your agents and their metadata.
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: page_size
           in: query

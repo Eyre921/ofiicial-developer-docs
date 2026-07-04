@@ -31,7 +31,7 @@ paths:
       summary: Analyze text content
       description: Analyze text content using Deepgrams text analysis API
       tags:
-        - subpackage_read.subpackage_read/v1.subpackage_read/v1/text
+        - read > v1 > text
       parameters:
         - name: callback
           in: query

@@ -28,7 +28,7 @@ paths:
       summary: Get Mcp Server
       description: Retrieve a specific MCP server configuration from the workspace.
       tags:
-        - subpackage_conversationalAi/mcpServers
+        - mcpServers
       parameters:
         - name: mcp_server_id
           in: path

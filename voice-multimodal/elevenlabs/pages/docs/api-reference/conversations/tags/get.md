@@ -28,7 +28,7 @@ paths:
       summary: Get Conversation Tag
       description: Get a conversation tag by ID.
       tags:
-        - subpackage_conversationalAi/conversations/tags
+        - tags
       parameters:
         - name: tag_id
           in: path

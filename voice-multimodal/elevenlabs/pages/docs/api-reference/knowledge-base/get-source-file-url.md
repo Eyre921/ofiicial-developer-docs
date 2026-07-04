@@ -30,7 +30,7 @@ paths:
         Get a signed URL to download the original source file of a file-type
         document from the knowledge base
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: documentation_id
           in: path

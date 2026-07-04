@@ -31,7 +31,7 @@ paths:
       summary: Transcribe and analyze pre-recorded audio and video
       description: Transcribe audio and video using Deepgram's speech-to-text REST API
       tags:
-        - subpackage_listen.subpackage_listen/v1.subpackage_listen/v1/media
+        - listen > v1 > media
       parameters:
         - name: callback
           in: query

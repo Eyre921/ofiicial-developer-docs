@@ -29,7 +29,7 @@ paths:
       summary: Make An Outbound Call Via Whatsapp
       description: Make an outbound call via WhatsApp
       tags:
-        - subpackage_conversationalAi/whatsapp
+        - whatsapp
       parameters:
         - name: xi-api-key
           in: header

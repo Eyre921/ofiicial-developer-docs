@@ -29,7 +29,7 @@ paths:
       summary: Edit Pvc Voice
       description: Edit PVC voice metadata
       tags:
-        - subpackage_voices/pvc
+        - pvc
       parameters:
         - name: voice_id
           in: path

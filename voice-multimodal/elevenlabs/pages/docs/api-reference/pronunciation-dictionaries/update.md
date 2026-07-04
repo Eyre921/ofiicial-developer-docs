@@ -31,7 +31,7 @@ paths:
         Partially update the pronunciation dictionary without changing the
         version
       tags:
-        - subpackage_pronunciationDictionaries
+        - pronunciationDictionaries
       parameters:
         - name: pronunciation_dictionary_id
           in: path

@@ -29,7 +29,7 @@ paths:
       summary: Create File Document
       description: Create a knowledge base document generated form the uploaded file.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: xi-api-key
           in: header

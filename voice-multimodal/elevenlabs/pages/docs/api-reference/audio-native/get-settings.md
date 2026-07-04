@@ -28,7 +28,7 @@ paths:
       summary: Get Audio Native Project Settings
       description: Get player settings for the specific project.
       tags:
-        - subpackage_audioNative
+        - audioNative
       parameters:
         - name: project_id
           in: path

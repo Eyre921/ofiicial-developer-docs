@@ -32,8 +32,7 @@ paths:
         Returns metadata on all the latest models that a specific project has
         access to, including non-public models
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/models
+        - manage > v1 > projects > models
       parameters:
         - name: project_id
           in: path

@@ -29,7 +29,7 @@ paths:
       summary: Voice design
       description: Create a voice from a text prompt.
       tags:
-        - subpackage_textToVoice
+        - textToVoice
       parameters:
         - name: output_format
           in: query

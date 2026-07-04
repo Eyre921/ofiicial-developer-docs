@@ -32,7 +32,7 @@ paths:
         Returns metadata on all the latest public models. To retrieve custom
         models, use Get Project Models.
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/models
+        - manage > v1 > models
       parameters:
         - name: include_outdated
           in: query

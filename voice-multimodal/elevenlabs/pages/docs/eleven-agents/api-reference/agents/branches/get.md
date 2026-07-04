@@ -28,7 +28,7 @@ paths:
       summary: Get Agent Branch
       description: Get information about a single agent branch
       tags:
-        - subpackage_conversationalAi/agents/branches
+        - branches
       parameters:
         - name: agent_id
           in: path

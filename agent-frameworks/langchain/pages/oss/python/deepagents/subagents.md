@@ -106,7 +106,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
 
 ## Using SubAgent
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 
@@ -279,7 +279,7 @@ Use [`stream_events`](/oss/python/deepagents/event-streaming) to get typed proje
 The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
 <CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -334,7 +334,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -389,7 +389,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -444,7 +444,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -499,13 +499,13 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       system_prompt=(
           "You are a project coordinator with no research knowledge. "
           "For every user request, you must call the task() tool with "
@@ -554,7 +554,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -609,7 +609,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -684,7 +684,9 @@ Because each subagent's `name` is written to the `lc_agent_name` metadata key on
 1. Open your tracing project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents).
 2. Switch the view to **Runs** on the Tracing project page to see individual spans.
 3. Click **Add filter** and select **Metadata**.
-4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name (for example, `research-agent`).
+4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
+
+<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
 
 This shows only the runs produced by that subagent. You can save the filter as a named view for reuse. For a full reference on filtering options, see [Filter traces](/langsmith/filter-traces-in-application).
 

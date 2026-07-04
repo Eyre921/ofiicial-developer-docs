@@ -29,7 +29,7 @@ paths:
       summary: Send An Outbound Message Via Whatsapp
       description: Send an outbound message via WhatsApp
       tags:
-        - subpackage_conversationalAi/whatsapp
+        - whatsapp
       parameters:
         - name: xi-api-key
           in: header

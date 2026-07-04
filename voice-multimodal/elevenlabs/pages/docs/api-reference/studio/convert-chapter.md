@@ -28,7 +28,7 @@ paths:
       summary: Convert Chapter
       description: Starts conversion of a specific chapter.
       tags:
-        - subpackage_studio/projects/chapters
+        - chapters
       parameters:
         - name: project_id
           in: path

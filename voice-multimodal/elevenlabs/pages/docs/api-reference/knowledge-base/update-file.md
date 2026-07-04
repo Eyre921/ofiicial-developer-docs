@@ -32,7 +32,7 @@ paths:
         and metadata are updated to reflect the new file. Any manual content
         edits will be overwritten.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/document
+        - document
       parameters:
         - name: documentation_id
           in: path

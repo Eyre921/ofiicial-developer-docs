@@ -30,7 +30,7 @@ paths:
         Get all conversations of agents that user owns. With option to restrict
         to a specific agent.
       tags:
-        - subpackage_conversationalAi/conversations
+        - conversations
       parameters:
         - name: cursor
           in: query

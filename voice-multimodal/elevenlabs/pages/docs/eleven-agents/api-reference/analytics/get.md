@@ -28,7 +28,7 @@ paths:
       summary: Get Live Count
       description: Get the live count of the ongoing conversations.
       tags:
-        - subpackage_conversationalAi/analytics/liveCount
+        - liveCount
       parameters:
         - name: agent_id
           in: query

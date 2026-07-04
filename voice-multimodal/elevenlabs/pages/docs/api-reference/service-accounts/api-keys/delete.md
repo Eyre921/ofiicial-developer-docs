@@ -28,7 +28,7 @@ paths:
       summary: Delete API key
       description: Delete an existing API key for a service account
       tags:
-        - subpackage_serviceAccounts/apiKeys
+        - apiKeys
       parameters:
         - name: service_account_user_id
           in: path

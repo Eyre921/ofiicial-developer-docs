@@ -28,7 +28,7 @@ paths:
       summary: List Studio Projects
       description: Returns a list of your Studio projects with metadata.
       tags:
-        - subpackage_studio/projects
+        - projects
       parameters:
         - name: xi-api-key
           in: header

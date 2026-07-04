@@ -140,7 +140,7 @@ graph TB
   from deepagents.backends import StateBackend
 
   # By default we provide a StateBackend
-  agent = create_deep_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+  agent = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
@@ -274,7 +274,7 @@ even after that subagent's execution is complete. Those files will continue to b
   from deepagents.backends import FilesystemBackend
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=FilesystemBackend(root_dir=".", virtual_mode=True),
   )
   ```
@@ -415,7 +415,7 @@ even after that subagent's execution is complete. Those files will continue to b
   from deepagents.backends import LocalShellBackend
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
   )
   ```
@@ -518,7 +518,7 @@ even after that subagent's execution is complete. Those files will continue to b
   from langgraph.store.memory import InMemoryStore
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=StoreBackend(
           namespace=lambda rt: (rt.server_info.user.identity,),
       ),
@@ -687,7 +687,7 @@ This means your agent's context is intentionally spread across repos: one repo p
   from deepagents.backends import ContextHubBackend
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=ContextHubBackend("my-agent"),
   )
   ```
@@ -813,7 +813,7 @@ Construct it with a repo identifier in `owner/name` or `name` format.
   from langgraph.store.memory import InMemoryStore
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=CompositeBackend(
           default=StateBackend(),
           routes={

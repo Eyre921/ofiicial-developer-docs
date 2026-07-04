@@ -30,8 +30,7 @@ paths:
       summary: Get a Project Request
       description: Retrieves a specific request for a specific project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/requests
+        - manage > v1 > projects > requests
       parameters:
         - name: project_id
           in: path

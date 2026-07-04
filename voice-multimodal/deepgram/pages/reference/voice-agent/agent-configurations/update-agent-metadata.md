@@ -34,7 +34,7 @@ paths:
         itself is immutable—to change the configuration, delete the existing
         agent and create a new one.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path

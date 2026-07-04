@@ -28,7 +28,7 @@ paths:
       summary: Delete Phone Number
       description: Delete Phone Number by ID
       tags:
-        - subpackage_conversationalAi/phoneNumbers
+        - phoneNumbers
       parameters:
         - name: phone_number_id
           in: path

@@ -28,7 +28,7 @@ paths:
       summary: List Mcp Server Tools
       description: Retrieve all tools available for a specific MCP server configuration.
       tags:
-        - subpackage_conversationalAi/mcpServers/tools
+        - tools
       parameters:
         - name: mcp_server_id
           in: path

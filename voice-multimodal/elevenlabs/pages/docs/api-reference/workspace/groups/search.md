@@ -30,7 +30,7 @@ paths:
         Searches for user groups in the workspace. Multiple or no groups may be
         returned.
       tags:
-        - subpackage_workspace/groups
+        - groups
       parameters:
         - name: name
           in: query

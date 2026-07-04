@@ -31,7 +31,7 @@ paths:
         Returns a list of LLM models and the expected cost for using them based
         on the provided values.
       tags:
-        - subpackage_conversationalAi/llmUsage
+        - llmUsage
       parameters:
         - name: xi-api-key
           in: header

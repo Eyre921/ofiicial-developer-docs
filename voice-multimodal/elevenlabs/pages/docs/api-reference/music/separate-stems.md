@@ -31,7 +31,7 @@ paths:
         Separate an audio file into individual stems. This endpoint might have
         high latency, depending on the length of the audio file.
       tags:
-        - subpackage_music
+        - music
       parameters:
         - name: output_format
           in: query

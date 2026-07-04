@@ -28,7 +28,7 @@ paths:
       summary: Get Agent Response Test By Id
       description: Gets an agent response test by ID.
       tags:
-        - subpackage_conversationalAi/tests
+        - tests
       parameters:
         - name: test_id
           in: path

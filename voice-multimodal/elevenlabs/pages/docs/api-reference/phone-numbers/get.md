@@ -28,7 +28,7 @@ paths:
       summary: Get Phone Number
       description: Retrieve Phone Number details by ID
       tags:
-        - subpackage_conversationalAi/phoneNumbers
+        - phoneNumbers
       parameters:
         - name: phone_number_id
           in: path

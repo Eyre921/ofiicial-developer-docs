@@ -29,7 +29,7 @@ paths:
       summary: Update Convai Dashboard Settings
       description: Update Convai dashboard settings for the workspace
       tags:
-        - subpackage_conversationalAi/dashboard/settings
+        - settings
       parameters:
         - name: xi-api-key
           in: header

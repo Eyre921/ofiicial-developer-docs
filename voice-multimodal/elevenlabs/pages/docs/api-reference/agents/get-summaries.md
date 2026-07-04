@@ -28,7 +28,7 @@ paths:
       summary: Get Agent Summaries
       description: Returns summaries for the specified agents.
       tags:
-        - subpackage_conversationalAi/agents/summaries
+        - summaries
       parameters:
         - name: agent_ids
           in: query

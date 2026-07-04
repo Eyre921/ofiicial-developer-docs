@@ -193,7 +193,7 @@ Pass a `thread_id` via `config` so the conversation is checkpointed and follow-u
       return f"It's always sunny in {city}!"
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[get_weather],
       checkpointer=InMemorySaver()
   )

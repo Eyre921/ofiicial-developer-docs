@@ -34,7 +34,7 @@ paths:
         generated_voice_id of the preferred preview with the /v1/text-to-voice
         endpoint.
       tags:
-        - subpackage_textToVoice
+        - textToVoice
       parameters:
         - name: voice_id
           in: path

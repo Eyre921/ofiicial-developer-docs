@@ -29,7 +29,7 @@ paths:
       summary: Create agent
       description: Create an agent from a config object
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: enable_versioning
           in: query

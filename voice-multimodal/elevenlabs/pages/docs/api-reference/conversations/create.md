@@ -29,7 +29,7 @@ paths:
       summary: Send Conversation Feedback
       description: Send the feedback for the given conversation
       tags:
-        - subpackage_conversationalAi/conversations/feedback
+        - feedback
       parameters:
         - name: conversation_id
           in: path

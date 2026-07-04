@@ -32,7 +32,7 @@ paths:
         agent configuration is provided, it will be used to override default
         agent configuration.
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: agent_id
           in: path

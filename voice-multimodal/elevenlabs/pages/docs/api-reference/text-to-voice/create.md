@@ -32,7 +32,7 @@ paths:
         should be called after you fetched a generated_voice_id using POST
         /v1/text-to-voice/design or POST /v1/text-to-voice/:voice_id/remix.
       tags:
-        - subpackage_textToVoice
+        - textToVoice
       parameters:
         - name: xi-api-key
           in: header

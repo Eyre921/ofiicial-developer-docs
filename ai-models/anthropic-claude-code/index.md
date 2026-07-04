@@ -59,7 +59,7 @@
 - `gitlab-ci-cd` — [Claude Code GitLab CI/CD](pages/gitlab-ci-cd.md) · [原文](https://code.claude.com/docs/en/gitlab-ci-cd)
 - `glossary` — [Glossary](pages/glossary.md) · [原文](https://code.claude.com/docs/en/glossary)
 - `goal` — [Keep Claude working toward a goal](pages/goal.md) · [原文](https://code.claude.com/docs/en/goal)
-- `google-vertex-ai` — [Claude Code on Google Vertex AI](pages/google-vertex-ai.md) · [原文](https://code.claude.com/docs/en/google-vertex-ai)
+- `google-vertex-ai` — [Claude Code on Google Cloud's Agent Platform](pages/google-vertex-ai.md) · [原文](https://code.claude.com/docs/en/google-vertex-ai)
 - `headless` — [Run Claude Code programmatically](pages/headless.md) · [原文](https://code.claude.com/docs/en/headless)
 - `hooks` — [Hooks reference](pages/hooks.md) · [原文](https://code.claude.com/docs/en/hooks)
 - `hooks-guide` — [Automate actions with hooks](pages/hooks-guide.md) · [原文](https://code.claude.com/docs/en/hooks-guide)

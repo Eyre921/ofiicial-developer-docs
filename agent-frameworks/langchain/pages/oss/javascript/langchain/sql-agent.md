@@ -479,7 +479,7 @@ The following tutorial covers the following concepts:
       import { createAgent } from "langchain";
 
       let agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
       });
@@ -1150,7 +1150,7 @@ The following tutorial covers the following concepts:
         `);
 
         export const agent = createAgent({
-          model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model: "fireworks:accounts/fireworks/models/glm-5p2",
           tools: [executeSql],
           systemPrompt: await getSystemPrompt(),
         });
@@ -1490,7 +1490,7 @@ The following tutorial covers the following concepts:
       import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
       agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
         middleware: [

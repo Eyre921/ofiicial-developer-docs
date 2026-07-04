@@ -29,7 +29,7 @@ paths:
       summary: Update Whatsapp Account
       description: Update a WhatsApp account
       tags:
-        - subpackage_conversationalAi/whatsappAccounts
+        - whatsappAccounts
       parameters:
         - name: phone_number_id
           in: path

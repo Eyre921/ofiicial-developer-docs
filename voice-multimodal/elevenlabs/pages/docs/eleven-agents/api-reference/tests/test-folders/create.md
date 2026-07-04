@@ -29,7 +29,7 @@ paths:
       summary: Create Agent Test Folder
       description: Creates a folder for organizing agent tests.
       tags:
-        - subpackage_conversationalAi/tests/folders
+        - folders
       parameters:
         - name: xi-api-key
           in: header

@@ -28,7 +28,7 @@ paths:
       summary: Get Convai Workspace Secrets
       description: Get all workspace secrets for the user
       tags:
-        - subpackage_conversationalAi/secrets
+        - secrets
       parameters:
         - name: page_size
           in: query

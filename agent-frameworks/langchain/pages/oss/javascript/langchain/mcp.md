@@ -471,7 +471,7 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
   async function accessMultimodalToolContent(): Promise<void> {
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
-    const agent = createAgent({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", tools });
+    const agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
 
     const result = await agent.invoke({
       messages: [{ role: "user", content: "Take a screenshot of the current page" }],

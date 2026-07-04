@@ -28,7 +28,7 @@ paths:
       summary: Get All Batch Calls For A Workspace.
       description: Get all batch calls for the current workspace.
       tags:
-        - subpackage_conversationalAi/batchCalls
+        - batchCalls
       parameters:
         - name: limit
           in: query

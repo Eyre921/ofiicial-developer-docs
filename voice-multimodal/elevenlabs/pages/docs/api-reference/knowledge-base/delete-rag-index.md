@@ -28,7 +28,7 @@ paths:
       summary: Delete Rag Index.
       description: Delete RAG index for the knowledgebase document.
       tags:
-        - subpackage_conversationalAi
+        - conversationalAi
       parameters:
         - name: documentation_id
           in: path

@@ -29,7 +29,7 @@ paths:
       summary: Update Chapter
       description: Updates a chapter.
       tags:
-        - subpackage_studio/projects/chapters
+        - chapters
       parameters:
         - name: project_id
           in: path

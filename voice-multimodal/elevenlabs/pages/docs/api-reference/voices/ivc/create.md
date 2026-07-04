@@ -29,7 +29,7 @@ paths:
       summary: Create voice clone
       description: Create a voice clone and add it to your Voices
       tags:
-        - subpackage_voices/ivc
+        - ivc
       parameters:
         - name: xi-api-key
           in: header

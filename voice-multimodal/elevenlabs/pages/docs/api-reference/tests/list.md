@@ -30,7 +30,7 @@ paths:
         Lists all agent response tests with pagination support and optional
         search filtering.
       tags:
-        - subpackage_conversationalAi/tests
+        - tests
       parameters:
         - name: cursor
           in: query

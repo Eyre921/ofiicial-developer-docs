@@ -25,7 +25,7 @@ A **Transactional email** is a message triggered by a user action or required fo
 
 Typically, transactional emails are **1-to-1** messages sent in response to a specific event.
 
-With a Resend Transactional Plan, you can send transactional emails from your application using the [Resend API](/docs/api-reference/introduction), the [Resend CLI](/docs/cli), or with [SMTP](/docs/send-with-smtp). Resend also provides an [MCP server](/docs/mcp-server), [agent skills](react-email-skill), and more to work with your preferred [AI builder and tooling](/docs/ai-onboarding).
+With a Resend Transactional Plan, you can send transactional emails from your application using the [Resend API](/docs/api-reference/introduction), the [Resend CLI](/docs/cli), or with [SMTP](/docs/send-with-smtp). Resend also provides an [MCP server](/docs/mcp-server), [agent skills](/docs/react-email-skill), and more to work with your preferred [AI builder and tooling](/docs/ai-onboarding).
 
 You can also trigger emails using [webhooks](/docs/webhooks/introduction), and even [create steps to automate emails](/docs/dashboard/automations/introduction) based on custom events from your application.
 
@@ -47,7 +47,7 @@ With a Resend Marketing Plan, you can send [Broadcasts](/docs/dashboard/broadcas
 
 When you use Broadcasts, you get tools for [managing your contacts](/docs/dashboard/audiences/introduction), [tracking performance](/docs/dashboard/broadcasts/performance-tracking), and [customizing your personal unsubscribe page](/docs/dashboard/settings/unsubscribe-page). Resend also handles all the queuing, throttling, and scheduling for you so that you don't have to roll your own infrastructure.
 
-Marketing plans also allow you to create [Resend automations](/docs/dashboard/automations/introduction) for repeatable actions like welcoming new subscribers and updating your contact list. Resources such as the [Resend MCP server](mcp-server), [agent skills](react-email-skill), and more are all available to your preferred [AI builders and tooling](/docs/ai-onboarding) to help you send and manage your marketing emails.
+Marketing plans also allow you to create [Resend automations](/docs/dashboard/automations/introduction) for repeatable actions like welcoming new subscribers and updating your contact list. Resources such as the [Resend MCP server](/docs/mcp-server), [agent skills](/docs/react-email-skill), and more are all available to your preferred [AI builders and tooling](/docs/ai-onboarding) to help you send and manage your marketing emails.
 
 ## I need to send a combination of emails
 

@@ -29,7 +29,7 @@ paths:
       summary: Run Pvc Training
       description: Start PVC training process for a voice.
       tags:
-        - subpackage_voices/pvc
+        - pvc
       parameters:
         - name: voice_id
           in: path

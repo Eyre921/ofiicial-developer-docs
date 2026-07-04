@@ -29,7 +29,7 @@ paths:
       summary: Create Agent Response Test
       description: Creates a new agent response test.
       tags:
-        - subpackage_conversationalAi/tests
+        - tests
       parameters:
         - name: xi-api-key
           in: header

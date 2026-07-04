@@ -1,340 +1,3 @@
-# About GraphQL
-
-**URL:** https://shopify.dev/docs/apps/build/graphql.md
-
----
-title: About GraphQL
-description: >-
-  Get an introduction into GraphQL, its benefits over REST, and how you can use
-  GraphQL at Shopify.
-source_url:
-  html: 'https://shopify.dev/docs/apps/build/graphql'
-  md: 'https://shopify.dev/docs/apps/build/graphql.md'
----
-
-# About Graph​QL
-
-**Note:**
-
-The REST Admin API is a legacy API as of October 1, 2024. All apps and integrations should be built with the [GraphQL Admin API](https://shopify.dev/docs/api/admin-graphql). For details and migration steps, visit our [migration guide](https://shopify.dev/docs/apps/build/graphql/migrate).
-
-GraphQL has become Shopify's technology of choice for building APIs. If you're used to working with REST APIs, then GraphQL might seem confusing at first. When you begin using GraphQL, you need to change how you think about retrieving and working with data. The following guides introduce you to GraphQL concepts and help you begin experimenting with GraphQL.
-
-***
-
-## What is Graph​QL?
-
-GraphQL is a query language and a runtime system. Clients form requests by using the GraphQL query language, and the GraphQL server executes the request and returns the data in a response. The following are GraphQL request types:
-
-* [**Queries**](https://shopify.dev/docs/apps/build/graphql/basics/queries): Requests to retrieve data, similar to a `GET` request in REST
-* [**Mutations**](https://shopify.dev/docs/apps/build/graphql/basics/mutations): Requests to create and modify data, similar to a `PUT`, `POST`, or `DELETE` request in REST
-
-Unlike REST APIs, which have different endpoints for each resource, a GraphQL API has a single endpoint for all available data. Clients specify the data they need, for both read and write operations, and the server responds with only that data.
-
-GraphQL request structures resemble JSON. However, GraphQL requests don't use quotes for field names and don't have colons separating field names and values. Responses are in JSON format.
-
-The following is a simple GraphQL query and the JSON response:
-
-## POST /admin/api/{api\_version}/graphql.json
-
-## GraphQL query
-
-```graphql
-query {
-  product(id: "gid://shopify/Product/10079785100") {
-    title
-    handle
-    createdAt
-  }
-}
-```
-
-## JSON response
-
-```json
-{
-  "data": {
-    "product": {
-      "title": "The T-Shirt",
-      "handle": "the-t-shirt",
-      "createdAt": "2024-01-27T19:24:10Z"
-    }
-  }
-}
-```
-
-In the JSON response, the structure within the top-level data object mirrors the structure of the corresponding GraphQL request.
-
-### Additional types
-
-In addition to queries and mutations, the GraphQL type system includes the following types:
-
-| Type | Description |
-| - | - |
-| Scalar | Primitive data types such as strings, Booleans, and integers. Can also represent unstructured data like a JSON blob. These are the basic building blocks of the GraphQL schema.GraphQL has the following built-in scalar types:- **Int**: A signed 32-bit integer
-- **Float**: A signed double-precision floating-point value
-- **String**: A UTF-8 character sequence
-- **Boolean**: A `true` or `false` Boolean value
-- **ID**: A unique identifier, which is often used either to refetch an object or as the key for a cache. The value isn't intended to be human-readable. |
-| Enum | A scalar that's restricted to a set of allowed values.Enums enable you to validate that arguments of this type are one of the allowed values, and communicate through the type system that a field will always be one of a finite set of values. |
-| Object | A fundamental unit that represents a structured set of data. Object types are collections of readable fields, where each field represents a type in the GraphQL type system and defines the kind of data that you can fetch.Object types are the most common units in a GraphQL schema, and they enable data to be modeled in a structural and relational way. |
-| Input object | Similar to an object type, but used as input arguments in queries and mutations.Input objects enable you to pass complex, structured data to mutations.The key difference between input object and object types is that input objects are for inputs, or arguments to queries and mutations, and objects are for outputs, or data that you can fetch. |
-| Interface | An abstract type that defines a specific set of fields that any object implementing the interface must contain.This mechanism ensures that different object types implementing the same interface share common fields, and promotes consistency across the objects. |
-| Union | A type that can return one of several specific object types that are defined in the schema.Unlike interfaces, unions don't enforce common fields between these object types. The object type that's returned in a specific case is determined at runtime. This is useful when a field could return different object types, and these types don't necessarily share any fields.Refer to an example of the [`discount` union.](https://shopify.dev/docs/api/admin-graphql/latest/queries/discountNode#examples-Retrieve_a_discount_by_its_ID) |
-| List | An array of another GraphQL type, for example an array of scalars or objects. |
-
-***
-
-## Benefits of Graph​QL over REST
-
-Shopify's REST and GraphQL APIs have some similarities. For example, they're versioned, require authentication and explicit access scopes, and enforce rate limits. However, there are several benefits to using GraphQL over REST, summarized in the following table:
-
-| GraphQL | REST |
-| - | - |
-| **Work with multiple resources in a single query or mutation**Use GraphQL features like connections, variables, fragments, and aliases for efficient queries and fetch data from multiple types in one request. | **Work with one resource at a time**REST APIs are designed to return a single resource type per endpoint. Fetching associated data often requires multiple calls or chained requests. |
-| **Request only the data that you need**Reduce payload size, improve performance, and reduce over-fetching by requesting the exact data that you need. | **Limited resource filtering**Filter top-level resource properties using the `fields` parameter. However, filtering isn't available for properties of child resources. |
-| **Strongly typed and part of a schema**GraphQL is strongly typed, which provides for safer data handling through validation and autocompletion.Everything that's available through a GraphQL API is included in its schema. | **Weakly typed and lacking machine-readable data**REST data is weakly typed and has fewer validation guardrails. This can lead to errors or unpredictable results due to incorrect data formatting. |
-| **Shopify knows what data an app is using**Shopify knows which fields each app is using, which makes it easier for us to evolve our APIs over time and focus on resources that the community uses.We can easily mark a part of our schema as deprecated, which is reflected in documentation. | **Shopify doesn't know what data an app is using**When an app requests a REST endpoint, Shopify has no way of knowing if it's actually using every piece of data that's returned. It's similar to doing a `SELECT *` to a SQL database.When Shopify needs to make breaking changes, such as removing an attribute from a response, we can't know which developers the change directly affects. This means that we need to notify all developers who use an endpoint, which creates noise for those who aren't affected. |
-| **Documentation is a first-class citizen**The documentation for a GraphQL API lives side-by-side with the code that constitutes it. Using GraphQL's introspection feature, you can query the schema to explore its contents and documentation. | **Documentation is secondary**Most REST APIs lack embedded metadata. Apps are dependent on external documentation that can become out of sync with the API. |
-
-### Example
-
-In GraphQL, you can get information about related objects with a single request to a single endpoint, and scope your request down to only the fields that you need.
-
-For example, in the case of an order, you might want to know the total price, the customer's name, metafields, and the title of other variants belonging to the product in the order.
-
-Using REST, you need to make a request to the following endpoints and filter out unnecessary data:
-
-* `/orders/{order_id}.json`
-* `/products/{product_id}/variants.json`
-* `/customers/{customer_id}/metafields.json`
-
-Using GraphQL, you can make a single request using connections to get the desired data:
-
-## Example
-
-## Endpoint
-
-```text
-POST https://{shop}.myshopify.com/admin/api/{api_version}/graphql.json
-```
-
-## GraphQL query
-
-```graphql
-query {
-  order(id:"gid://shopify/Order/5369369690390") {
-    id
-    totalPriceSet{
-      shopMoney {
-        amount
-      }
-    }
-    customer {
-      displayName
-      metafields (first:10) {
-        edges {
-          node {
-            key
-            value
-          }
-        }
-      }
-    }
-    lineItems (first:10) {
-      edges {
-        node {
-          variant {
-            product {
-              variants(first:10) {
-                edges {
-                  node {
-                    title
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-## JSON response
-
-```json
-{
-  "data": {
-    "order": {
-      "id": "gid://shopify/Order/5369369690390",
-      "totalPriceSet": {
-        "shopMoney": {
-          "amount": "2099.85"
-        }
-      },
-      "customer": {
-        "displayName": "Ayumu Hirano",
-        "metafields": {
-          "edges": [
-            {
-              "node": {
-                "key": "birth_date",
-                "value": "1990-02-22"
-              }
-            }
-          ]
-        }
-      },
-      "lineItems": {
-        "edges": [
-          {
-            "node": {
-              "variant": {
-                "product": {
-                  "variants": {
-                    "edges": [
-                      {
-                        "node": {
-                          "title": "Ice"
-                        }
-                      },
-                      {
-                        "node": {
-                          "title": "Dawn"
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        ]
-      }
-    }
-  }
-}
-```
-
-***
-
-## Graph​QL concepts
-
-Refer to the following guides to learn the fundamentals of GraphQL:
-
-[Queries\
-\
-](https://shopify.dev/docs/apps/build/graphql/basics/queries)
-
-[Retrieve data from Shopify using queries.](https://shopify.dev/docs/apps/build/graphql/basics/queries)
-
-[Mutations\
-\
-](https://shopify.dev/docs/apps/build/graphql/basics/mutations)
-
-[Create and modify Shopify data using mutations.](https://shopify.dev/docs/apps/build/graphql/basics/mutations)
-
-[Variables\
-\
-](https://shopify.dev/docs/apps/build/graphql/basics/variables)
-
-[Write reusable requests using variables.](https://shopify.dev/docs/apps/build/graphql/basics/variables)
-
-[Advanced concepts\
-\
-](https://shopify.dev/docs/api/usage/graphql-basics/advanced)
-
-[Supercharge your requests using inline fragments, and learn how to build requests that contain multiple queries.](https://shopify.dev/docs/api/usage/graphql-basics/advanced)
-
-[Optimized requests\
-\
-](https://shopify.dev/docs/apps/build/graphql/migrate/learn-how#optimizing-your-requests)
-
-[Review some tips for refining requests to optimize performance and lower query costs.](https://shopify.dev/docs/apps/build/graphql/migrate/learn-how#optimizing-your-requests)
-
-### Additional guides
-
-Refer to the following guides to learn more about how GraphQL APIs work at Shopify:
-
-[Pagination\
-\
-](https://shopify.dev/docs/api/usage/pagination-graphql)
-
-[Retrieve consecutive pages of resources using cursor-based pagination.](https://shopify.dev/docs/api/usage/pagination-graphql)
-
-[Global IDs\
-\
-](https://shopify.dev/docs/api/usage/gids)
-
-[Learn about the identifiers that Shopify uses for objects in GraphQL.](https://shopify.dev/docs/api/usage/gids)
-
-[Bulk operations\
-\
-](https://shopify.dev/docs/api/usage/bulk-operations)
-
-[Read and write high volumes of data and avoid throttling using asynchronous operations.](https://shopify.dev/docs/api/usage/bulk-operations)
-
-[Rate limits\
-\
-](https://shopify.dev/docs/api/usage/limits#rate-limits)
-
-[Learn about the rate limits for each API.](https://shopify.dev/docs/api/usage/limits#rate-limits)
-
-[Error handling\
-\
-](https://shopify.dev/docs/apps/build/graphql/migrate/learn-how#understanding-error-handling)
-
-[Learn about detecting and recovering from errors in GraphQL.](https://shopify.dev/docs/apps/build/graphql/migrate/learn-how#understanding-error-handling)
-
-***
-
-## Tools and resources
-
-Explore the following developer tools and resources to learn more about Shopify GraphQL APIs. For a complete list of APIs, and for information about the libraries that you can use to interact with them, explore our [API documentation](https://shopify.dev/docs/api).
-
-[.dev Assistant\
-\
-](https://shopify.dev/docs/apps/build/graphql?assistant=1)
-
-[Generate GraphQL operations, convert REST requests to GraphQL operations, and get interactive help with Shopify's AI-powered assistant.\
-\
-Trained on Shopify data for high accuracy.](https://shopify.dev/docs/apps/build/graphql?assistant=1)
-
-[GraphQL Admin API reference\
-\
-](https://shopify.dev/docs/api/admin-graphql)
-
-[Consult the complete reference to Shopify’s GraphQL Admin API.](https://shopify.dev/docs/api/admin-graphql)
-
-[Shopify Admin API GraphiQL explorer\
-\
-](https://shopify.dev/docs/api/usage/api-exploration/admin-graphiql-explorer)
-
-[Browse Shopify’s GraphQL Admin API schema and documentation.](https://shopify.dev/docs/api/usage/api-exploration/admin-graphiql-explorer)
-
-[GraphQL Storefront API reference\
-\
-](https://shopify.dev/docs/api/storefront)
-
-[Consult the complete reference to Shopify’s GraphQL Storefront API.](https://shopify.dev/docs/api/storefront)
-
-[Shopify Storefront API GraphiQL explorer\
-\
-](https://shopify.dev/docs/storefronts/headless/building-with-the-storefront-api/api-exploration/graphiql-storefront-api)
-
-[Browse Shopify’s Storefront API schema and documentation.](https://shopify.dev/docs/storefronts/headless/building-with-the-storefront-api/api-exploration/graphiql-storefront-api)
-
-[Shopify GraphiQL app\
-\
-](https://shopify-graphiql-app.shopifycloud.com/)
-
-[Explore your store's data, and test queries and mutations, using the GraphQL Admin and Storefront APIs.](https://shopify-graphiql-app.shopifycloud.com/)
-
-***
-
-
 # Manage app config files
 
 **URL:** https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md
@@ -445,331 +108,6 @@ shopify app deploy --config staging
 **Tip:**
 
 Make sure to pass the correct config, or run `shopify app use`, before pushing a new configuration. When you run the `deploy` command, you'll be presented with a summary of the changes to your app configuration, which you can confirm before deploying.
-
-***
-
-
-# App configuration
-
-**URL:** https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration.md
-
----
-title: App configuration
-description: Learn about configuring apps created using Shopify CLI.
-source_url:
-  html: 'https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration'
-  md: 'https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration.md'
----
-
-# App configuration
-
-You can configure your apps locally with TOML files, then [deploy your changes](https://shopify.dev/docs/api/shopify-cli/app/app-deploy) using Shopify CLI. You can also configure many of these values through the [Dev Dashboard](https://shopify.dev/docs/apps/build/dev-dashboard).
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-Learn more about [managing app configuration files](https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files).
-
-***
-
-## App configuration file example
-
-## shopify.app.config-name.toml
-
-```toml
-name = "Example App"
-client_id = "a61950a2cbd5f32876b0b55587ec7a27"
-application_url = "https://www.app.example.com/"
-embedded = true
-handle = "example-app"
-
-
-[access_scopes]
-scopes = "read_products"
-
-
-[access.admin]
-direct_api_mode = "online"
-
-
-[auth]
-redirect_urls = [
-  "https://app.example.com/api/auth/callback",
-  "https://app.example.com/api/auth/oauth/callback",
-]
-
-
-[customer_authentication]
-redirect_uris = [
-  "https://app.example.com/api/customer/auth/callback"
-]
-javascript_origins = [
-  "https://app.example.com"
-]
-logout_urls = [
-  "https://app.example.com/api/customer/logout"
-]
-
-
-[webhooks]
-api_version = "2024-01"
-
-
-[[webhooks.subscriptions]]
-topics = [ "app/uninstalled" ]
-compliance_topics = [ "customers/redact", "customers/data_request", "shop/redact" ]
-uri = "/webhooks"
-
-
-[events]
-api_version = "unstable"
-
-
-[[events.subscription]]
-handle = "product-updates"
-topic = "Product"
-actions = ["create", "update", "delete"]
-uri = "/events/products"
-
-
-[app_proxy]
-url = "https://app.example.com/api/proxy"
-subpath = "store-pickup"
-prefix = "apps"
-
-
-[pos]
-embedded = false
-
-
-[app_preferences]
-url = "https://www.app.example.com/preferences"
-
-
-[build]
-automatically_update_urls_on_dev = false
-```
-
-***
-
-## Reference
-
-### Global
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `name` | Yes | `string` | The name of your app. |
-| `handle` | No | `string` | The URL slug of your App Home, for example `https://admin.shopify.com/store/your-store-name/apps/your-app-handle/app`. **Warning**: Updating the handle changes the Shopify admin URL that appears when you access your app from the side menu. As a result, any app admin links will be broken. |
-| `client_id` | Yes | `string` | The app's public identifier. |
-| `application_url` | Yes | `string` matching a valid URL | The URL of your app. **Note:** If you're building an [extension-only app](https://shopify.dev/docs/apps/build/app-extensions/build-extension-only-app), then your `application_url` will be set to `https://shopify.dev/apps/default-app-home` by default. |
-| `embedded` | Yes | `boolean` | When `true`, your app renders in the Shopify admin, letting users interact with it without leaving Shopify. |
-| `extension_directories` | No | `array` of `string` paths or glob patterns | The paths that Shopify CLI will search for app [extensions](https://shopify.dev/docs/apps/build/cli-for-apps/app-structure#extensions). When omitted, defaults to `["extensions/"]`. |
-| `web_directories` | No | `array` of `string` paths or glob patterns | The paths that Shopify CLI will search for the [web files](https://shopify.dev/docs/apps/build/cli-for-apps/app-structure#web-files) of your app. When omitted, defaults to the app root directory. |
-
-### access\_​scopes
-
-Define the permissions your app requests, as well as how the permissions are requested.
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `scopes` | Yes | `string` matching a comma-separated list of scopes | Any [access scopes](https://shopify.dev/docs/api/usage/access-scopes) that your app will request access to during the authorization process. When a merchant installs your app with [Shopify managed install](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation), they're prompted to grant permission to all the access scopes that you defined in this field. Learn how to [manage access scopes](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation/manage-access-scopes) for your app. |
-| `optional_scopes` | No | `array` of `string` access scopes | Any [access scopes](https://shopify.dev/docs/api/usage/access-scopes) that your app can [request dynamically](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation/manage-access-scopes#request-new-access-scopes-dynamically) after installation. Learn how to [manage access scopes](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation/manage-access-scopes) for your app. |
-| `use_legacy_install_flow` | No | boolean | When omitted or `false`, scopes are saved in your app's configuration, and are automatically requested when the app is installed on a store or when you update the `scopes` value. This is referred to as [Shopify managed installation](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation). When `true`, the legacy installation flow requests scopes through a URL parameter during the [OAuth flow](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant). The legacy installation flow is still supported, but isn't recommended because your app can end up with different scopes for each installation. |
-
-### access
-
-Settings for defining the ways that your app can access Shopify APIs.
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-#### admin
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `direct_api_mode` | No | `string` matching `online` or `offline` | The access mode that [Direct API access](https://shopify.dev/docs/api/admin-extensions#direct-api-access) will use. When `online`, Direct API access is enabled and uses an [online access token](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/online-access-tokens). When `offline`, Direct API access is enabled and uses an [offline access token](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/offline-access-tokens). When omitted, defaults to `online`. |
-| `embedded_app_direct_api_access` | No | `boolean` | Whether your app has access to [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access) for calling types in the GraphQL Admin API. When omitted or `false`, Direct API access is disabled. When `true`, Direct API is enabled and uses the mode defined by `direct_api_mode`. |
-
-### auth
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `redirect_urls` | Yes | `array` of `string`s matching a valid URL | Users are redirected to these URLs as part of [authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant). You must include at least one redirect URL before making your app public. Learn more about [redirection URLs.](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
-
-### customer\_​authentication
-
-Configure authentication for Customer Account API access. Your app uses these settings for OAuth 2.0 authentication flows with customers. The authentication endpoints are discovered dynamically using [discovery endpoints](https://shopify.dev/docs/api/customer#discovery-endpoints).
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `redirect_uris` | Yes | An array of strings matching a valid URL | The URIs where customers are redirected after authentication. Supports HTTPS URLs for web applications (for example, `https://app.example.com/api/customer/auth/callback`). These URIs are used with the `authorization_endpoint` discovered from `/.well-known/openid-configuration`. |
-| `javascript_origins` | No | An array of string matching a valid origin | The allowed origins for CORS when making requests to authentication endpoints from JavaScript. Required for web applications using the authorization code flow with PKCE. Origins must include protocol and domain (for example, `https://app.example.com`). |
-| `logout_urls` | No | An array of strings matching a valid URL | The URLs where customers are redirected after logout. Used with the `end_session_endpoint` discovered from `/.well-known/openid-configuration` for OpenID Connect RP-initiated logout. |
-
-### webhooks
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `api_version` | Yes | `string` matching a valid Shopify version (example: `2022-10`) | The API version used to serialize webhooks and cloud service events. |
-
-#### subscriptions
-
-Subscribe your app to Shopify webhook topics so that your app is alerted when an event occurs on a merchant's store. [Learn more about webhook subscriptions](https://shopify.dev/docs/apps/build/webhooks/get-started).
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `topics` | Yes | `array` of `string`s matching a valid topic | The topics that your app subscribes to. Refer to a complete list of topics in the [webhooks reference](https://shopify.dev/docs/api/webhooks). |
-| `compliance_topics` | No | `array` of `string`s matching a valid compliance topic | The topics to manage the requests to view or erase customer personal information. Valid options: `customers/redact`, `customers/data_request` or `shop/redact`. These are required [topics to subscribe to for all apps distributed in the Shopify App Store](https://shopify.dev/docs/apps/build/compliance/privacy-law-compliance). |
-| `uri` | Yes | `string` matching a valid URI | Your app's endpoint to handle the events. It can be a HTTPS URL, a relative path starting with a slash, a Google Pub/Sub URI or an Amazon EventBridge Amazon Resource Name (ARN). |
-| `filter` | No | `string` | A set of rules specified using Shopify API's Search Syntax. Ensures only webhooks that match the filter are delivered. [Learn more](https://shopify.dev/docs/apps/build/webhooks/delivery-filtering). |
-| `include_fields` | No | `array` of `string`s | Specifies the fields that will be sent in a webhook's event message. If `null`, then all fields will be sent. [Learn more](https://shopify.dev/docs/apps/build/webhooks/delivery-structure#include_fields). |
-
-**Info:**
-
-The following is the structure of the URL you should use for the URI when working with **Google Cloud Pub/Sub**:
-
-`pubsub://{project-id}:{topic-id}`
-
-Where `{project-id}` is the ID of your Google Cloud Platform project, and `{topic-id}` is the ID of the topic that you set up in Google Cloud Pub/Sub.
-
-For **Amazon EventBridge**, your URL will be similar to the following example:
-
-`arn:aws:events:<aws_region>::event-source/aws.partner/shopify.com/<app_id>/<event_source_name>`
-
-### events
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `api_version` | Yes | `string` matching a valid Shopify version | The API version used to validate and run subscription `query` operations. |
-
-#### subscription
-
-Subscribe your app to Events topics to receive deliveries when qualifying changes occur in a merchant's store.
-
-[Learn more about Events subscriptions](https://shopify.dev/docs/apps/build/events/subscribe).
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `handle` | Yes | `string` | Unique identifier for this subscription. Alphanumeric, `_`, `-`, max 50 characters. Included in the delivery payload and headers. |
-| `topic` | Yes | `string` matching a valid Events topic | The resource your subscription listens to (for example, `Product`). See the [Events reference](https://shopify.dev/docs/api/events) for supported topics. |
-| `actions` | Yes | `array` of `create`, `update`, and/or `delete` | The lifecycle transitions that can produce a delivery. |
-| `uri` | Yes | `string` matching a valid URI | Your app's endpoint to handle deliveries. It can be a HTTPS URL, a relative path starting with a slash, a Google Pub/Sub URI, or an Amazon EventBridge ARN. |
-| `triggers` | No | `array` of `string`s | Field paths that narrow `update` deliveries to specific field changes. Learn more about [Filtering deliveries with `triggers`](https://shopify.dev/docs/apps/build/events/delivery-filtering#triggers). |
-| `query` | No | `string` | GraphQL Admin API operation whose result appears in the delivery `data` field. Learn more about [defining custom queries](https://shopify.dev/docs/apps/build/events/delivery-structure#custom-queries). |
-| `query_filter` | No | `string` | Expression evaluated on the query result to suppress deliveries. Learn more about [Filtering deliveries with `query_filter`](https://shopify.dev/docs/apps/build/events/delivery-filtering#query-filters). |
-
-### app\_​proxy
-
-Let Shopify act as a proxy when sending requests to your app. Learn more about [app proxy](https://shopify.dev/docs/apps/build/online-store/display-dynamic-data).
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `url` | Yes if `app_proxy` defined | `string` matching a valid URL | URL of your app proxy server |
-| `subpath` | Yes if `app_proxy` defined | `string` containing letters, numbers, underscores, and hyphens up to 30 characters. The value may not be `admin`, `services`, `password`, or `login`. | The combination of `prefix` and `subpath` defines where the app proxy is accessed from a merchant's shop. |
-| `prefix` | Yes if `app_proxy` defined | `string` matching `a`, `apps`, `community`, or `tools` | The combination of `prefix` and `subpath` defines where the app proxy is accessed from a merchant's shop. |
-
-### pos
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `embedded` | No | `boolean` | Load your [POS UI extension](https://shopify.dev/docs/api/pos-ui-extensions) or [App Home](https://shopify.dev/docs/api/app-home) app in Shopify POS. |
-
-### app\_​preferences
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `url` | No | `string` matching a valid URL | URL for your app's preferences page |
-
-### build
-
-**Note:**
-
-Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
-
-Settings for running your app through Shopify CLI.
-
-| Property | Required? | Value | Description |
-| - | - | - | - |
-| `automatically_update_urls_on_dev` | No | `boolean` | When `true`, your app URL and redirect URLs will be automatically updated on `dev`. This is useful when using the built-in tunnel for development. When `false`, your URLs won't be updated on `dev`. Recommended for production apps. When omitted, you will be prompted to choose an option on `dev`. |
-| `dev_store_url` | No | `string` matching a valid store URL | The name of the dev store used to preview your app. |
-
-***
-
-## Migrate from config push
-
-The `shopify app config push` Shopify CLI command is no longer supported. Instead, you can release your app configuration and extensions together with the [`deploy`](https://shopify.dev/docs/api/shopify-cli/app/app-deploy) command.
-
-### Migrate interactively
-
-If you use the `shopify app config push` command without the `--force` flag, then follow these steps to migrate to the `deploy` command:
-
-1. [Upgrade Shopify CLI](https://shopify.dev/docs/api/shopify-cli#upgrade) to the latest version.
-2. Remove all references to the `shopify app config push` command in any scripts or aliases.
-3. When you're ready to deploy both app configuration and all extensions, run the `deploy` command.
-
-## Terminal
-
-```terminal
-shopify app deploy
-```
-
-1. Shopify CLI will ask if you want to start including app configuration on `deploy`. Answer `Yes, always`, and your choice will be saved in your app configuration file.
-2. Continue the rest of the `deploy` flow to release a new app version to users.
-3. Push your app configuration file to source control, so all contributors use the same app configuration. This ensures that the app and Shopify CLI commands behave the same way in each contributor's environment.
-
-### Update your CI/CD workflow
-
-If you use the `shopify app config push` with the `--force` flag, follow these steps to migrate to the `deploy` command:
-
-1. [Upgrade Shopify CLI](https://shopify.dev/docs/api/shopify-cli#upgrade) to the latest version.
-2. Remove all references to the `shopify app config push` command.
-3. Add the `deploy` command with the `--force` flag to your workflow, if it's not there already. Refer to the [example workflows](https://shopify.dev/docs/apps/launch/deployment/deploy-in-ci-cd-pipeline#examples) for more details.
 
 ***
 
@@ -1583,139 +921,664 @@ HTTP/1.1 500 Internal Server Error
 ***
 
 
-# App commands
+# App configuration
 
-**URL:** https://shopify.dev/docs/api/shopify-cli/app.md
+**URL:** https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration.md
 
 ---
-title: Shopify CLI App commands
+title: App configuration
+description: Learn about configuring apps created using Shopify CLI.
 source_url:
-  html: 'https://shopify.dev/docs/api/shopify-cli/app'
-  md: 'https://shopify.dev/docs/api/shopify-cli/app.md'
-api_name: shopify-cli
+  html: 'https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration'
+  md: 'https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration.md'
 ---
 
-# Shopify CLI App commands
+# App configuration
 
-[app build](https://shopify.dev/docs/api/shopify-cli/app/app-build)
+You can configure your apps locally with TOML files, then [deploy your changes](https://shopify.dev/docs/api/shopify-cli/app/app-deploy) using Shopify CLI. You can also configure many of these values through the [Dev Dashboard](https://shopify.dev/docs/apps/build/dev-dashboard).
 
-[This command executes the build script specified in the element's TOML file.](https://shopify.dev/docs/api/shopify-cli/app/app-build)
+**Note:**
 
-[app bulk cancel](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-cancel)
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
 
-[Cancels a running bulk operation by ID.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-cancel)
+Learn more about [managing app configuration files](https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files).
 
-[app bulk execute](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-execute)
+***
 
-[Executes an Admin API GraphQL query or mutation on the specified store, as a bulk operation.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-execute)
+## App configuration file example
 
-[app bulk status](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-status)
+## shopify.app.config-name.toml
 
-[Check the status of a specific bulk operation by ID, or list all bulk operations belonging to this app on this store in the last 7 days.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-status)
+```toml
+name = "Example App"
+client_id = "a61950a2cbd5f32876b0b55587ec7a27"
+application_url = "https://www.app.example.com/"
+embedded = true
+handle = "example-app"
 
-[app config link](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
 
-[Pulls app configuration from the Developer Dashboard and creates or overwrites a configuration file.](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
+[access_scopes]
+scopes = "read_products"
 
-[app config pull](https://shopify.dev/docs/api/shopify-cli/app/app-config-pull)
 
-[Pulls the latest configuration from the already-linked Shopify app and updates the selected configuration file.](https://shopify.dev/docs/api/shopify-cli/app/app-config-pull)
+[access.admin]
+direct_api_mode = "online"
 
-[app config use](https://shopify.dev/docs/api/shopify-cli/app/app-config-use)
 
-[Sets default configuration when you run app-related CLI commands.](https://shopify.dev/docs/api/shopify-cli/app/app-config-use)
+[auth]
+redirect_urls = [
+  "https://app.example.com/api/auth/callback",
+  "https://app.example.com/api/auth/oauth/callback",
+]
 
-[app config validate](https://shopify.dev/docs/api/shopify-cli/app/app-config-validate)
 
-[Validates the selected app configuration file and all extension configurations against their schemas and reports any errors found.](https://shopify.dev/docs/api/shopify-cli/app/app-config-validate)
+[customer_authentication]
+redirect_uris = [
+  "https://app.example.com/api/customer/auth/callback"
+]
+javascript_origins = [
+  "https://app.example.com"
+]
+logout_urls = [
+  "https://app.example.com/api/customer/logout"
+]
 
-[app deploy](https://shopify.dev/docs/api/shopify-cli/app/app-deploy)
 
-[Builds the app, then deploys your app configuration and extensions.](https://shopify.dev/docs/api/shopify-cli/app/app-deploy)
+[webhooks]
+api_version = "2024-01"
 
-[app dev clean](https://shopify.dev/docs/api/shopify-cli/app/app-dev-clean)
 
-[Stop the dev preview that was started with shopify app dev.](https://shopify.dev/docs/api/shopify-cli/app/app-dev-clean)
+[[webhooks.subscriptions]]
+topics = [ "app/uninstalled" ]
+compliance_topics = [ "customers/redact", "customers/data_request", "shop/redact" ]
+uri = "/webhooks"
 
-[app dev](https://shopify.dev/docs/api/shopify-cli/app/app-dev)
 
-[Builds and previews your app on a dev store, and watches for changes.](https://shopify.dev/docs/api/shopify-cli/app/app-dev)
+[events]
+api_version = "unstable"
 
-[app env pull](https://shopify.dev/docs/api/shopify-cli/app/app-env-pull)
 
-[Creates or updates an .env files that contains app and app extension environment variables.](https://shopify.dev/docs/api/shopify-cli/app/app-env-pull)
+[[events.subscription]]
+handle = "product-updates"
+topic = "Product"
+actions = ["create", "update", "delete"]
+uri = "/events/products"
 
-[app env show](https://shopify.dev/docs/api/shopify-cli/app/app-env-show)
 
-[Displays environment variables that can be used to deploy apps and app extensions.](https://shopify.dev/docs/api/shopify-cli/app/app-env-show)
+[app_proxy]
+url = "https://app.example.com/api/proxy"
+subpath = "store-pickup"
+prefix = "apps"
 
-[app execute](https://shopify.dev/docs/api/shopify-cli/app/app-execute)
 
-[Executes an Admin API GraphQL query or mutation on the specified store.](https://shopify.dev/docs/api/shopify-cli/app/app-execute)
+[pos]
+embedded = false
 
-[app function build](https://shopify.dev/docs/api/shopify-cli/app/app-function-build)
 
-[Compiles the function in your current directory to WebAssembly (Wasm) for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-build)
+[app_preferences]
+url = "https://www.app.example.com/preferences"
 
-[app function info](https://shopify.dev/docs/api/shopify-cli/app/app-function-info)
 
-[The information returned includes the following:](https://shopify.dev/docs/api/shopify-cli/app/app-function-info)
+[build]
+automatically_update_urls_on_dev = false
+```
 
-[app function replay](https://shopify.dev/docs/api/shopify-cli/app/app-function-replay)
+***
 
-[Runs the function from your current directory for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-replay)
+## Reference
 
-[app function run](https://shopify.dev/docs/api/shopify-cli/app/app-function-run)
+### Global
 
-[Runs the function from your current directory for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-run)
+**Note:**
 
-[app function schema](https://shopify.dev/docs/api/shopify-cli/app/app-function-schema)
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
 
-[Generates the latest GraphQL schema for a function in your app.](https://shopify.dev/docs/api/shopify-cli/app/app-function-schema)
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `name` | Yes | `string` | The name of your app. |
+| `handle` | No | `string` | The URL slug of your App Home, for example `https://admin.shopify.com/store/your-store-name/apps/your-app-handle/app`. **Warning**: Updating the handle changes the Shopify admin URL that appears when you access your app from the side menu. As a result, any app admin links will be broken. |
+| `client_id` | Yes | `string` | The app's public identifier. |
+| `application_url` | Yes | `string` matching a valid URL | The URL of your app. **Note:** If you're building an [extension-only app](https://shopify.dev/docs/apps/build/app-extensions/build-extension-only-app), then your `application_url` will be set to `https://shopify.dev/apps/default-app-home` by default. |
+| `embedded` | Yes | `boolean` | When `true`, your app renders in the Shopify admin, letting users interact with it without leaving Shopify. |
+| `extension_directories` | No | `array` of `string` paths or glob patterns | The paths that Shopify CLI will search for app [extensions](https://shopify.dev/docs/apps/build/cli-for-apps/app-structure#extensions). When omitted, defaults to `["extensions/"]`. |
+| `web_directories` | No | `array` of `string` paths or glob patterns | The paths that Shopify CLI will search for the [web files](https://shopify.dev/docs/apps/build/cli-for-apps/app-structure#web-files) of your app. When omitted, defaults to the app root directory. |
 
-[app function typegen](https://shopify.dev/docs/api/shopify-cli/app/app-function-typegen)
+### access\_​scopes
 
-[Creates GraphQL types based on your input query for a function.](https://shopify.dev/docs/api/shopify-cli/app/app-function-typegen)
+Define the permissions your app requests, as well as how the permissions are requested.
 
-[app generate extension](https://shopify.dev/docs/api/shopify-cli/app/app-generate-extension)
+**Note:**
 
-[Generates a new app extension.](https://shopify.dev/docs/api/shopify-cli/app/app-generate-extension)
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
 
-[app import-custom-data-definitions](https://shopify.dev/docs/api/shopify-cli/app/app-import-custom-data-definitions)
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `scopes` | Yes | `string` matching a comma-separated list of scopes | Any [access scopes](https://shopify.dev/docs/api/usage/access-scopes) that your app will request access to during the authorization process. When a merchant installs your app with [Shopify managed install](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation), they're prompted to grant permission to all the access scopes that you defined in this field. Learn how to [manage access scopes](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation/manage-access-scopes) for your app. |
+| `optional_scopes` | No | `array` of `string` access scopes | Any [access scopes](https://shopify.dev/docs/api/usage/access-scopes) that your app can [request dynamically](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation/manage-access-scopes#request-new-access-scopes-dynamically) after installation. Learn how to [manage access scopes](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation/manage-access-scopes) for your app. |
+| `use_legacy_install_flow` | No | boolean | When omitted or `false`, scopes are saved in your app's configuration, and are automatically requested when the app is installed on a store or when you update the `scopes` value. This is referred to as [Shopify managed installation](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation). When `true`, the legacy installation flow requests scopes through a URL parameter during the [OAuth flow](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant). The legacy installation flow is still supported, but isn't recommended because your app can end up with different scopes for each installation. |
 
-[Import metafield and metaobject definitions from your development store.](https://shopify.dev/docs/api/shopify-cli/app/app-import-custom-data-definitions)
+### access
 
-[app import-extensions](https://shopify.dev/docs/api/shopify-cli/app/app-import-extensions)
+Settings for defining the ways that your app can access Shopify APIs.
 
-[Import dashboard-managed extensions into your app.](https://shopify.dev/docs/api/shopify-cli/app/app-import-extensions)
+**Note:**
 
-[app info](https://shopify.dev/docs/api/shopify-cli/app/app-info)
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
 
-[The information returned includes the following:](https://shopify.dev/docs/api/shopify-cli/app/app-info)
+#### admin
 
-[app init](https://shopify.dev/docs/api/shopify-cli/app/app-init)
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `direct_api_mode` | No | `string` matching `online` or `offline` | The access mode that [Direct API access](https://shopify.dev/docs/api/admin-extensions#direct-api-access) will use. When `online`, Direct API access is enabled and uses an [online access token](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/online-access-tokens). When `offline`, Direct API access is enabled and uses an [offline access token](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/offline-access-tokens). When omitted, defaults to `online`. |
+| `embedded_app_direct_api_access` | No | `boolean` | Whether your app has access to [Direct API access](https://shopify.dev/docs/api/app-home#direct-api-access) for calling types in the GraphQL Admin API. When omitted or `false`, Direct API access is disabled. When `true`, Direct API is enabled and uses the mode defined by `direct_api_mode`. |
 
-[Create a new app project](https://shopify.dev/docs/api/shopify-cli/app/app-init)
+### auth
 
-[app logs sources](https://shopify.dev/docs/api/shopify-cli/app/app-logs-sources)
+**Note:**
 
-[The output source names can be used with the --source argument of shopify app logs to filter log output.](https://shopify.dev/docs/api/shopify-cli/app/app-logs-sources)
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
 
-[app logs](https://shopify.dev/docs/api/shopify-cli/app/app-logs)
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `redirect_urls` | Yes | `array` of `string`s matching a valid URL | Users are redirected to these URLs as part of [authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant). You must include at least one redirect URL before making your app public. Learn more about [redirection URLs.](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
 
-[Opens a real-time stream of detailed app logs from the selected app and store.](https://shopify.dev/docs/api/shopify-cli/app/app-logs)
+### customer\_​authentication
 
-[app release](https://shopify.dev/docs/api/shopify-cli/app/app-release)
+Configure authentication for Customer Account API access. Your app uses these settings for OAuth 2.0 authentication flows with customers. The authentication endpoints are discovered dynamically using [discovery endpoints](https://shopify.dev/docs/api/customer#discovery-endpoints).
 
-[Releases an existing app version.](https://shopify.dev/docs/api/shopify-cli/app/app-release)
+**Note:**
 
-[app versions list](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
 
-[Lists the deployed app versions.](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `redirect_uris` | Yes | An array of strings matching a valid URL | The URIs where customers are redirected after authentication. Supports HTTPS URLs for web applications (for example, `https://app.example.com/api/customer/auth/callback`). These URIs are used with the `authorization_endpoint` discovered from `/.well-known/openid-configuration`. |
+| `javascript_origins` | No | An array of string matching a valid origin | The allowed origins for CORS when making requests to authentication endpoints from JavaScript. Required for web applications using the authorization code flow with PKCE. Origins must include protocol and domain (for example, `https://app.example.com`). |
+| `logout_urls` | No | An array of strings matching a valid URL | The URLs where customers are redirected after logout. Used with the `end_session_endpoint` discovered from `/.well-known/openid-configuration` for OpenID Connect RP-initiated logout. |
 
-[app webhook trigger](https://shopify.dev/docs/api/shopify-cli/app/app-webhook-trigger)
+### webhooks
 
-[Triggers the delivery of a sample Admin API event topic payload to a designated address.](https://shopify.dev/docs/api/shopify-cli/app/app-webhook-trigger)
+**Note:**
+
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
+
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `api_version` | Yes | `string` matching a valid Shopify version (example: `2022-10`) | The API version used to serialize webhooks and cloud service events. |
+
+#### subscriptions
+
+Subscribe your app to Shopify webhook topics so that your app is alerted when an event occurs on a merchant's store. [Learn more about webhook subscriptions](https://shopify.dev/docs/apps/build/webhooks/get-started).
+
+**Note:**
+
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
+
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `topics` | Yes | `array` of `string`s matching a valid topic | The topics that your app subscribes to. Refer to a complete list of topics in the [webhooks reference](https://shopify.dev/docs/api/webhooks). |
+| `compliance_topics` | No | `array` of `string`s matching a valid compliance topic | The topics to manage the requests to view or erase customer personal information. Valid options: `customers/redact`, `customers/data_request` or `shop/redact`. These are required [topics to subscribe to for all apps distributed in the Shopify App Store](https://shopify.dev/docs/apps/build/compliance/privacy-law-compliance). |
+| `uri` | Yes | `string` matching a valid URI | Your app's endpoint to handle the events. It can be a HTTPS URL, a relative path starting with a slash, a Google Pub/Sub URI or an Amazon EventBridge Amazon Resource Name (ARN). |
+| `filter` | No | `string` | A set of rules specified using Shopify API's Search Syntax. Ensures only webhooks that match the filter are delivered. [Learn more](https://shopify.dev/docs/apps/build/webhooks/delivery-filtering). |
+| `include_fields` | No | `array` of `string`s | Specifies the fields that will be sent in a webhook's event message. If `null`, then all fields will be sent. [Learn more](https://shopify.dev/docs/apps/build/webhooks/delivery-structure#include_fields). |
+
+**Info:**
+
+The following is the structure of the URL you should use for the URI when working with **Google Cloud Pub/Sub**:
+
+`pubsub://{project-id}:{topic-id}`
+
+Where `{project-id}` is the ID of your Google Cloud Platform project, and `{topic-id}` is the ID of the topic that you set up in Google Cloud Pub/Sub.
+
+For **Amazon EventBridge**, your URL will be similar to the following example:
+
+`arn:aws:events:<aws_region>::event-source/aws.partner/shopify.com/<app_id>/<event_source_name>`
+
+### events
+
+**Note:**
+
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
+
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `api_version` | Yes | `string` matching a valid Shopify version | The API version used to validate and run subscription `query` operations. |
+
+#### subscription
+
+Subscribe your app to Events topics to receive deliveries when qualifying changes occur in a merchant's store.
+
+[Learn more about Events subscriptions](https://shopify.dev/docs/apps/build/events/subscribe).
+
+**Note:**
+
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
+
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `handle` | Yes | `string` | Unique identifier for this subscription. Alphanumeric, `_`, `-`, max 50 characters. Included in the delivery payload and headers. |
+| `topic` | Yes | `string` matching a valid Events topic | The resource your subscription listens to (for example, `Product`). See the [Events reference](https://shopify.dev/docs/api/events) for supported topics. |
+| `actions` | Yes | `array` of `create`, `update`, and/or `delete` | The lifecycle transitions that can produce a delivery. |
+| `uri` | Yes | `string` matching a valid URI | Your app's endpoint to handle deliveries. It can be a HTTPS URL, a relative path starting with a slash, a Google Pub/Sub URI, or an Amazon EventBridge ARN. |
+| `triggers` | No | `array` of `string`s | Field paths that narrow `update` deliveries to specific field changes. Learn more about [Filtering deliveries with `triggers`](https://shopify.dev/docs/apps/build/events/delivery-filtering#triggers). |
+| `query` | No | `string` | GraphQL Admin API operation whose result appears in the delivery `data` field. Learn more about [defining custom queries](https://shopify.dev/docs/apps/build/events/delivery-structure#custom-queries). |
+| `query_filter` | No | `string` | Expression evaluated on the query result to suppress deliveries. Learn more about [Filtering deliveries with `query_filter`](https://shopify.dev/docs/apps/build/events/delivery-filtering#query-filters). |
+
+### app\_​proxy
+
+Let Shopify act as a proxy when sending requests to your app. Learn more about [app proxy](https://shopify.dev/docs/apps/build/online-store/display-dynamic-data).
+
+**Note:**
+
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
+
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `url` | Yes if `app_proxy` defined | `string` matching a valid URL | URL of your app proxy server |
+| `subpath` | Yes if `app_proxy` defined | `string` containing letters, numbers, underscores, and hyphens up to 30 characters. The value may not be `admin`, `services`, `password`, or `login`. | The combination of `prefix` and `subpath` defines where the app proxy is accessed from a merchant's shop. |
+| `prefix` | Yes if `app_proxy` defined | `string` matching `a`, `apps`, `community`, or `tools` | The combination of `prefix` and `subpath` defines where the app proxy is accessed from a merchant's shop. |
+
+### pos
+
+**Note:**
+
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
+
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `embedded` | No | `boolean` | Load your [POS UI extension](https://shopify.dev/docs/api/pos-ui-extensions) or [App Home](https://shopify.dev/docs/api/app-home) app in Shopify POS. |
+
+### app\_​preferences
+
+**Note:**
+
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
+
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `url` | No | `string` matching a valid URL | URL for your app's preferences page |
+
+### build
+
+**Note:**
+
+Changes to the `shopify.app.toml` are applied automatically during [`app dev`](https://shopify.dev/docs/api/shopify-cli/app/app-dev) for your chosen development store. For app configuration changes to take effect for all stores in production, you need to run the [`deploy` command](https://shopify.dev/docs/api/shopify-cli/app/app-deploy).
+
+Settings for running your app through Shopify CLI.
+
+| Property | Required? | Value | Description |
+| - | - | - | - |
+| `automatically_update_urls_on_dev` | No | `boolean` | When `true`, your app URL and redirect URLs will be automatically updated on `dev`. This is useful when using the built-in tunnel for development. When `false`, your URLs won't be updated on `dev`. Recommended for production apps. When omitted, you will be prompted to choose an option on `dev`. |
+| `dev_store_url` | No | `string` matching a valid store URL | The name of the dev store used to preview your app. |
+
+***
+
+## Migrate from config push
+
+The `shopify app config push` Shopify CLI command is no longer supported. Instead, you can release your app configuration and extensions together with the [`deploy`](https://shopify.dev/docs/api/shopify-cli/app/app-deploy) command.
+
+### Migrate interactively
+
+If you use the `shopify app config push` command without the `--force` flag, then follow these steps to migrate to the `deploy` command:
+
+1. [Upgrade Shopify CLI](https://shopify.dev/docs/api/shopify-cli#upgrade) to the latest version.
+2. Remove all references to the `shopify app config push` command in any scripts or aliases.
+3. When you're ready to deploy both app configuration and all extensions, run the `deploy` command.
+
+## Terminal
+
+```terminal
+shopify app deploy
+```
+
+1. Shopify CLI will ask if you want to start including app configuration on `deploy`. Answer `Yes, always`, and your choice will be saved in your app configuration file.
+2. Continue the rest of the `deploy` flow to release a new app version to users.
+3. Push your app configuration file to source control, so all contributors use the same app configuration. This ensures that the app and Shopify CLI commands behave the same way in each contributor's environment.
+
+### Update your CI/CD workflow
+
+If you use the `shopify app config push` with the `--force` flag, follow these steps to migrate to the `deploy` command:
+
+1. [Upgrade Shopify CLI](https://shopify.dev/docs/api/shopify-cli#upgrade) to the latest version.
+2. Remove all references to the `shopify app config push` command.
+3. Add the `deploy` command with the `--force` flag to your workflow, if it's not there already. Refer to the [example workflows](https://shopify.dev/docs/apps/launch/deployment/deploy-in-ci-cd-pipeline#examples) for more details.
+
+***
+
+
+# About GraphQL
+
+**URL:** https://shopify.dev/docs/apps/build/graphql.md
+
+---
+title: About GraphQL
+description: >-
+  Get an introduction into GraphQL, its benefits over REST, and how you can use
+  GraphQL at Shopify.
+source_url:
+  html: 'https://shopify.dev/docs/apps/build/graphql'
+  md: 'https://shopify.dev/docs/apps/build/graphql.md'
+---
+
+# About Graph​QL
+
+**Note:**
+
+The REST Admin API is a legacy API as of October 1, 2024. All apps and integrations should be built with the [GraphQL Admin API](https://shopify.dev/docs/api/admin-graphql). For details and migration steps, visit our [migration guide](https://shopify.dev/docs/apps/build/graphql/migrate).
+
+GraphQL has become Shopify's technology of choice for building APIs. If you're used to working with REST APIs, then GraphQL might seem confusing at first. When you begin using GraphQL, you need to change how you think about retrieving and working with data. The following guides introduce you to GraphQL concepts and help you begin experimenting with GraphQL.
+
+***
+
+## What is Graph​QL?
+
+GraphQL is a query language and a runtime system. Clients form requests by using the GraphQL query language, and the GraphQL server executes the request and returns the data in a response. The following are GraphQL request types:
+
+* [**Queries**](https://shopify.dev/docs/apps/build/graphql/basics/queries): Requests to retrieve data, similar to a `GET` request in REST
+* [**Mutations**](https://shopify.dev/docs/apps/build/graphql/basics/mutations): Requests to create and modify data, similar to a `PUT`, `POST`, or `DELETE` request in REST
+
+Unlike REST APIs, which have different endpoints for each resource, a GraphQL API has a single endpoint for all available data. Clients specify the data they need, for both read and write operations, and the server responds with only that data.
+
+GraphQL request structures resemble JSON. However, GraphQL requests don't use quotes for field names and don't have colons separating field names and values. Responses are in JSON format.
+
+The following is a simple GraphQL query and the JSON response:
+
+## POST /admin/api/{api\_version}/graphql.json
+
+## GraphQL query
+
+```graphql
+query {
+  product(id: "gid://shopify/Product/10079785100") {
+    title
+    handle
+    createdAt
+  }
+}
+```
+
+## JSON response
+
+```json
+{
+  "data": {
+    "product": {
+      "title": "The T-Shirt",
+      "handle": "the-t-shirt",
+      "createdAt": "2024-01-27T19:24:10Z"
+    }
+  }
+}
+```
+
+In the JSON response, the structure within the top-level data object mirrors the structure of the corresponding GraphQL request.
+
+### Additional types
+
+In addition to queries and mutations, the GraphQL type system includes the following types:
+
+| Type | Description |
+| - | - |
+| Scalar | Primitive data types such as strings, Booleans, and integers. Can also represent unstructured data like a JSON blob. These are the basic building blocks of the GraphQL schema.GraphQL has the following built-in scalar types:- **Int**: A signed 32-bit integer
+- **Float**: A signed double-precision floating-point value
+- **String**: A UTF-8 character sequence
+- **Boolean**: A `true` or `false` Boolean value
+- **ID**: A unique identifier, which is often used either to refetch an object or as the key for a cache. The value isn't intended to be human-readable. |
+| Enum | A scalar that's restricted to a set of allowed values.Enums enable you to validate that arguments of this type are one of the allowed values, and communicate through the type system that a field will always be one of a finite set of values. |
+| Object | A fundamental unit that represents a structured set of data. Object types are collections of readable fields, where each field represents a type in the GraphQL type system and defines the kind of data that you can fetch.Object types are the most common units in a GraphQL schema, and they enable data to be modeled in a structural and relational way. |
+| Input object | Similar to an object type, but used as input arguments in queries and mutations.Input objects enable you to pass complex, structured data to mutations.The key difference between input object and object types is that input objects are for inputs, or arguments to queries and mutations, and objects are for outputs, or data that you can fetch. |
+| Interface | An abstract type that defines a specific set of fields that any object implementing the interface must contain.This mechanism ensures that different object types implementing the same interface share common fields, and promotes consistency across the objects. |
+| Union | A type that can return one of several specific object types that are defined in the schema.Unlike interfaces, unions don't enforce common fields between these object types. The object type that's returned in a specific case is determined at runtime. This is useful when a field could return different object types, and these types don't necessarily share any fields.Refer to an example of the [`discount` union.](https://shopify.dev/docs/api/admin-graphql/latest/queries/discountNode#examples-Retrieve_a_discount_by_its_ID) |
+| List | An array of another GraphQL type, for example an array of scalars or objects. |
+
+***
+
+## Benefits of Graph​QL over REST
+
+Shopify's REST and GraphQL APIs have some similarities. For example, they're versioned, require authentication and explicit access scopes, and enforce rate limits. However, there are several benefits to using GraphQL over REST, summarized in the following table:
+
+| GraphQL | REST |
+| - | - |
+| **Work with multiple resources in a single query or mutation**Use GraphQL features like connections, variables, fragments, and aliases for efficient queries and fetch data from multiple types in one request. | **Work with one resource at a time**REST APIs are designed to return a single resource type per endpoint. Fetching associated data often requires multiple calls or chained requests. |
+| **Request only the data that you need**Reduce payload size, improve performance, and reduce over-fetching by requesting the exact data that you need. | **Limited resource filtering**Filter top-level resource properties using the `fields` parameter. However, filtering isn't available for properties of child resources. |
+| **Strongly typed and part of a schema**GraphQL is strongly typed, which provides for safer data handling through validation and autocompletion.Everything that's available through a GraphQL API is included in its schema. | **Weakly typed and lacking machine-readable data**REST data is weakly typed and has fewer validation guardrails. This can lead to errors or unpredictable results due to incorrect data formatting. |
+| **Shopify knows what data an app is using**Shopify knows which fields each app is using, which makes it easier for us to evolve our APIs over time and focus on resources that the community uses.We can easily mark a part of our schema as deprecated, which is reflected in documentation. | **Shopify doesn't know what data an app is using**When an app requests a REST endpoint, Shopify has no way of knowing if it's actually using every piece of data that's returned. It's similar to doing a `SELECT *` to a SQL database.When Shopify needs to make breaking changes, such as removing an attribute from a response, we can't know which developers the change directly affects. This means that we need to notify all developers who use an endpoint, which creates noise for those who aren't affected. |
+| **Documentation is a first-class citizen**The documentation for a GraphQL API lives side-by-side with the code that constitutes it. Using GraphQL's introspection feature, you can query the schema to explore its contents and documentation. | **Documentation is secondary**Most REST APIs lack embedded metadata. Apps are dependent on external documentation that can become out of sync with the API. |
+
+### Example
+
+In GraphQL, you can get information about related objects with a single request to a single endpoint, and scope your request down to only the fields that you need.
+
+For example, in the case of an order, you might want to know the total price, the customer's name, metafields, and the title of other variants belonging to the product in the order.
+
+Using REST, you need to make a request to the following endpoints and filter out unnecessary data:
+
+* `/orders/{order_id}.json`
+* `/products/{product_id}/variants.json`
+* `/customers/{customer_id}/metafields.json`
+
+Using GraphQL, you can make a single request using connections to get the desired data:
+
+## Example
+
+## Endpoint
+
+```text
+POST https://{shop}.myshopify.com/admin/api/{api_version}/graphql.json
+```
+
+## GraphQL query
+
+```graphql
+query {
+  order(id:"gid://shopify/Order/5369369690390") {
+    id
+    totalPriceSet{
+      shopMoney {
+        amount
+      }
+    }
+    customer {
+      displayName
+      metafields (first:10) {
+        edges {
+          node {
+            key
+            value
+          }
+        }
+      }
+    }
+    lineItems (first:10) {
+      edges {
+        node {
+          variant {
+            product {
+              variants(first:10) {
+                edges {
+                  node {
+                    title
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+## JSON response
+
+```json
+{
+  "data": {
+    "order": {
+      "id": "gid://shopify/Order/5369369690390",
+      "totalPriceSet": {
+        "shopMoney": {
+          "amount": "2099.85"
+        }
+      },
+      "customer": {
+        "displayName": "Ayumu Hirano",
+        "metafields": {
+          "edges": [
+            {
+              "node": {
+                "key": "birth_date",
+                "value": "1990-02-22"
+              }
+            }
+          ]
+        }
+      },
+      "lineItems": {
+        "edges": [
+          {
+            "node": {
+              "variant": {
+                "product": {
+                  "variants": {
+                    "edges": [
+                      {
+                        "node": {
+                          "title": "Ice"
+                        }
+                      },
+                      {
+                        "node": {
+                          "title": "Dawn"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
+***
+
+## Graph​QL concepts
+
+Refer to the following guides to learn the fundamentals of GraphQL:
+
+[Queries\
+\
+](https://shopify.dev/docs/apps/build/graphql/basics/queries)
+
+[Retrieve data from Shopify using queries.](https://shopify.dev/docs/apps/build/graphql/basics/queries)
+
+[Mutations\
+\
+](https://shopify.dev/docs/apps/build/graphql/basics/mutations)
+
+[Create and modify Shopify data using mutations.](https://shopify.dev/docs/apps/build/graphql/basics/mutations)
+
+[Variables\
+\
+](https://shopify.dev/docs/apps/build/graphql/basics/variables)
+
+[Write reusable requests using variables.](https://shopify.dev/docs/apps/build/graphql/basics/variables)
+
+[Advanced concepts\
+\
+](https://shopify.dev/docs/api/usage/graphql-basics/advanced)
+
+[Supercharge your requests using inline fragments, and learn how to build requests that contain multiple queries.](https://shopify.dev/docs/api/usage/graphql-basics/advanced)
+
+[Optimized requests\
+\
+](https://shopify.dev/docs/apps/build/graphql/migrate/learn-how#optimizing-your-requests)
+
+[Review some tips for refining requests to optimize performance and lower query costs.](https://shopify.dev/docs/apps/build/graphql/migrate/learn-how#optimizing-your-requests)
+
+### Additional guides
+
+Refer to the following guides to learn more about how GraphQL APIs work at Shopify:
+
+[Pagination\
+\
+](https://shopify.dev/docs/api/usage/pagination-graphql)
+
+[Retrieve consecutive pages of resources using cursor-based pagination.](https://shopify.dev/docs/api/usage/pagination-graphql)
+
+[Global IDs\
+\
+](https://shopify.dev/docs/api/usage/gids)
+
+[Learn about the identifiers that Shopify uses for objects in GraphQL.](https://shopify.dev/docs/api/usage/gids)
+
+[Bulk operations\
+\
+](https://shopify.dev/docs/api/usage/bulk-operations)
+
+[Read and write high volumes of data and avoid throttling using asynchronous operations.](https://shopify.dev/docs/api/usage/bulk-operations)
+
+[Rate limits\
+\
+](https://shopify.dev/docs/api/usage/limits#rate-limits)
+
+[Learn about the rate limits for each API.](https://shopify.dev/docs/api/usage/limits#rate-limits)
+
+[Error handling\
+\
+](https://shopify.dev/docs/apps/build/graphql/migrate/learn-how#understanding-error-handling)
+
+[Learn about detecting and recovering from errors in GraphQL.](https://shopify.dev/docs/apps/build/graphql/migrate/learn-how#understanding-error-handling)
+
+***
+
+## Tools and resources
+
+Explore the following developer tools and resources to learn more about Shopify GraphQL APIs. For a complete list of APIs, and for information about the libraries that you can use to interact with them, explore our [API documentation](https://shopify.dev/docs/api).
+
+[.dev Assistant\
+\
+](https://shopify.dev/docs/apps/build/graphql?assistant=1)
+
+[Generate GraphQL operations, convert REST requests to GraphQL operations, and get interactive help with Shopify's AI-powered assistant.\
+\
+Trained on Shopify data for high accuracy.](https://shopify.dev/docs/apps/build/graphql?assistant=1)
+
+[GraphQL Admin API reference\
+\
+](https://shopify.dev/docs/api/admin-graphql)
+
+[Consult the complete reference to Shopify’s GraphQL Admin API.](https://shopify.dev/docs/api/admin-graphql)
+
+[Shopify Admin API GraphiQL explorer\
+\
+](https://shopify.dev/docs/api/usage/api-exploration/admin-graphiql-explorer)
+
+[Browse Shopify’s GraphQL Admin API schema and documentation.](https://shopify.dev/docs/api/usage/api-exploration/admin-graphiql-explorer)
+
+[GraphQL Storefront API reference\
+\
+](https://shopify.dev/docs/api/storefront)
+
+[Consult the complete reference to Shopify’s GraphQL Storefront API.](https://shopify.dev/docs/api/storefront)
+
+[Shopify Storefront API GraphiQL explorer\
+\
+](https://shopify.dev/docs/storefronts/headless/building-with-the-storefront-api/api-exploration/graphiql-storefront-api)
+
+[Browse Shopify’s Storefront API schema and documentation.](https://shopify.dev/docs/storefronts/headless/building-with-the-storefront-api/api-exploration/graphiql-storefront-api)
+
+[Shopify GraphiQL app\
+\
+](https://shopify-graphiql-app.shopifycloud.com/)
+
+[Explore your store's data, and test queries and mutations, using the GraphQL Admin and Storefront APIs.](https://shopify-graphiql-app.shopifycloud.com/)
 
 ***
 
@@ -1886,99 +1749,6 @@ Shopify CLI is open source. [Learn how to contribute](https://github.com/Shopify
 ***
 
 
-# Theme commands
-
-**URL:** https://shopify.dev/docs/api/shopify-cli/theme.md
-
----
-title: Shopify CLI Theme commands
-source_url:
-  html: 'https://shopify.dev/docs/api/shopify-cli/theme'
-  md: 'https://shopify.dev/docs/api/shopify-cli/theme.md'
-api_name: shopify-cli
----
-
-# Shopify CLI Theme commands
-
-[theme check](https://shopify.dev/docs/api/shopify-cli/theme/theme-check)
-
-[Calls and runs Theme Check to analyze your theme code for errors and to ensure that it follows theme and Liquid best practices.](https://shopify.dev/docs/api/shopify-cli/theme/theme-check)
-
-[theme console](https://shopify.dev/docs/api/shopify-cli/theme/theme-console)
-
-[Starts the Shopify Liquid REPL (read-eval-print loop) tool.](https://shopify.dev/docs/api/shopify-cli/theme/theme-console)
-
-[theme delete](https://shopify.dev/docs/api/shopify-cli/theme/theme-delete)
-
-[Deletes a theme from your store.](https://shopify.dev/docs/api/shopify-cli/theme/theme-delete)
-
-[theme dev](https://shopify.dev/docs/api/shopify-cli/theme/theme-dev)
-
-[Uploads the current theme as the specified theme, or a development theme, to a store so you can preview it.](https://shopify.dev/docs/api/shopify-cli/theme/theme-dev)
-
-[theme duplicate](https://shopify.dev/docs/api/shopify-cli/theme/theme-duplicate)
-
-[If you want to duplicate your local theme, you need to run shopify theme push first.](https://shopify.dev/docs/api/shopify-cli/theme/theme-duplicate)
-
-[theme info](https://shopify.dev/docs/api/shopify-cli/theme/theme-info)
-
-[Displays information about your theme environment, including your current store.](https://shopify.dev/docs/api/shopify-cli/theme/theme-info)
-
-[theme init](https://shopify.dev/docs/api/shopify-cli/theme/theme-init)
-
-[Clones a Git repository to your local machine to use as the starting point for building a theme.](https://shopify.dev/docs/api/shopify-cli/theme/theme-init)
-
-[theme language-server](https://shopify.dev/docs/api/shopify-cli/theme/theme-language-server)
-
-[Starts the Language Server.](https://shopify.dev/docs/api/shopify-cli/theme/theme-language-server)
-
-[theme list](https://shopify.dev/docs/api/shopify-cli/theme/theme-list)
-
-[Lists the themes in your store, along with their IDs and statuses.](https://shopify.dev/docs/api/shopify-cli/theme/theme-list)
-
-[theme metafields pull](https://shopify.dev/docs/api/shopify-cli/theme/theme-metafields-pull)
-
-[Retrieves metafields from Shopify Admin.](https://shopify.dev/docs/api/shopify-cli/theme/theme-metafields-pull)
-
-[theme open](https://shopify.dev/docs/api/shopify-cli/theme/theme-open)
-
-[Returns links that let you preview the specified theme.](https://shopify.dev/docs/api/shopify-cli/theme/theme-open)
-
-[theme package](https://shopify.dev/docs/api/shopify-cli/theme/theme-package)
-
-[Packages your local theme files into a ZIP file that can be uploaded to Shopify.](https://shopify.dev/docs/api/shopify-cli/theme/theme-package)
-
-[theme preview](https://shopify.dev/docs/api/shopify-cli/theme/theme-preview)
-
-[Applies a JSON overrides file to a theme and creates or updates a preview.](https://shopify.dev/docs/api/shopify-cli/theme/theme-preview)
-
-[theme profile](https://shopify.dev/docs/api/shopify-cli/theme/theme-profile)
-
-[Profile the Shopify Liquid on a given page.](https://shopify.dev/docs/api/shopify-cli/theme/theme-profile)
-
-[theme publish](https://shopify.dev/docs/api/shopify-cli/theme/theme-publish)
-
-[Publishes an unpublished theme from your theme library.](https://shopify.dev/docs/api/shopify-cli/theme/theme-publish)
-
-[theme pull](https://shopify.dev/docs/api/shopify-cli/theme/theme-pull)
-
-[Retrieves theme files from Shopify.](https://shopify.dev/docs/api/shopify-cli/theme/theme-pull)
-
-[theme push](https://shopify.dev/docs/api/shopify-cli/theme/theme-push)
-
-[Uploads your local theme files to Shopify, overwriting the remote version if specified.](https://shopify.dev/docs/api/shopify-cli/theme/theme-push)
-
-[theme rename](https://shopify.dev/docs/api/shopify-cli/theme/theme-rename)
-
-[Renames a theme in your store.](https://shopify.dev/docs/api/shopify-cli/theme/theme-rename)
-
-[theme share](https://shopify.dev/docs/api/shopify-cli/theme/theme-share)
-
-[Uploads your theme as a new, unpublished theme in your theme library.](https://shopify.dev/docs/api/shopify-cli/theme/theme-share)
-
-***
-
-
 # Hydrogen commands
 
 **URL:** https://shopify.dev/docs/api/shopify-cli/hydrogen.md
@@ -2092,6 +1862,476 @@ api_name: shopify-cli
 [hydrogen upgrade](https://shopify.dev/docs/api/shopify-cli/hydrogen/hydrogen-upgrade)
 
 [Upgrade Hydrogen project dependencies, preview features, fixes and breaking changes.](https://shopify.dev/docs/api/shopify-cli/hydrogen/hydrogen-upgrade)
+
+***
+
+
+# Theme commands
+
+**URL:** https://shopify.dev/docs/api/shopify-cli/theme.md
+
+---
+title: Shopify CLI Theme commands
+source_url:
+  html: 'https://shopify.dev/docs/api/shopify-cli/theme'
+  md: 'https://shopify.dev/docs/api/shopify-cli/theme.md'
+api_name: shopify-cli
+---
+
+# Shopify CLI Theme commands
+
+[theme check](https://shopify.dev/docs/api/shopify-cli/theme/theme-check)
+
+[Calls and runs Theme Check to analyze your theme code for errors and to ensure that it follows theme and Liquid best practices.](https://shopify.dev/docs/api/shopify-cli/theme/theme-check)
+
+[theme console](https://shopify.dev/docs/api/shopify-cli/theme/theme-console)
+
+[Starts the Shopify Liquid REPL (read-eval-print loop) tool.](https://shopify.dev/docs/api/shopify-cli/theme/theme-console)
+
+[theme delete](https://shopify.dev/docs/api/shopify-cli/theme/theme-delete)
+
+[Deletes a theme from your store.](https://shopify.dev/docs/api/shopify-cli/theme/theme-delete)
+
+[theme dev](https://shopify.dev/docs/api/shopify-cli/theme/theme-dev)
+
+[Uploads the current theme as the specified theme, or a development theme, to a store so you can preview it.](https://shopify.dev/docs/api/shopify-cli/theme/theme-dev)
+
+[theme duplicate](https://shopify.dev/docs/api/shopify-cli/theme/theme-duplicate)
+
+[If you want to duplicate your local theme, you need to run shopify theme push first.](https://shopify.dev/docs/api/shopify-cli/theme/theme-duplicate)
+
+[theme info](https://shopify.dev/docs/api/shopify-cli/theme/theme-info)
+
+[Displays information about your theme environment, including your current store.](https://shopify.dev/docs/api/shopify-cli/theme/theme-info)
+
+[theme init](https://shopify.dev/docs/api/shopify-cli/theme/theme-init)
+
+[Clones a Git repository to your local machine to use as the starting point for building a theme.](https://shopify.dev/docs/api/shopify-cli/theme/theme-init)
+
+[theme language-server](https://shopify.dev/docs/api/shopify-cli/theme/theme-language-server)
+
+[Starts the Language Server.](https://shopify.dev/docs/api/shopify-cli/theme/theme-language-server)
+
+[theme list](https://shopify.dev/docs/api/shopify-cli/theme/theme-list)
+
+[Lists the themes in your store, along with their IDs and statuses.](https://shopify.dev/docs/api/shopify-cli/theme/theme-list)
+
+[theme metafields pull](https://shopify.dev/docs/api/shopify-cli/theme/theme-metafields-pull)
+
+[Retrieves metafields from Shopify Admin.](https://shopify.dev/docs/api/shopify-cli/theme/theme-metafields-pull)
+
+[theme open](https://shopify.dev/docs/api/shopify-cli/theme/theme-open)
+
+[Returns links that let you preview the specified theme.](https://shopify.dev/docs/api/shopify-cli/theme/theme-open)
+
+[theme package](https://shopify.dev/docs/api/shopify-cli/theme/theme-package)
+
+[Packages your local theme files into a ZIP file that can be uploaded to Shopify.](https://shopify.dev/docs/api/shopify-cli/theme/theme-package)
+
+[theme preview](https://shopify.dev/docs/api/shopify-cli/theme/theme-preview)
+
+[Applies a JSON overrides file to a theme and creates or updates a preview.](https://shopify.dev/docs/api/shopify-cli/theme/theme-preview)
+
+[theme profile](https://shopify.dev/docs/api/shopify-cli/theme/theme-profile)
+
+[Profile the Shopify Liquid on a given page.](https://shopify.dev/docs/api/shopify-cli/theme/theme-profile)
+
+[theme publish](https://shopify.dev/docs/api/shopify-cli/theme/theme-publish)
+
+[Publishes an unpublished theme from your theme library.](https://shopify.dev/docs/api/shopify-cli/theme/theme-publish)
+
+[theme pull](https://shopify.dev/docs/api/shopify-cli/theme/theme-pull)
+
+[Retrieves theme files from Shopify.](https://shopify.dev/docs/api/shopify-cli/theme/theme-pull)
+
+[theme push](https://shopify.dev/docs/api/shopify-cli/theme/theme-push)
+
+[Uploads your local theme files to Shopify, overwriting the remote version if specified.](https://shopify.dev/docs/api/shopify-cli/theme/theme-push)
+
+[theme rename](https://shopify.dev/docs/api/shopify-cli/theme/theme-rename)
+
+[Renames a theme in your store.](https://shopify.dev/docs/api/shopify-cli/theme/theme-rename)
+
+[theme share](https://shopify.dev/docs/api/shopify-cli/theme/theme-share)
+
+[Uploads your theme as a new, unpublished theme in your theme library.](https://shopify.dev/docs/api/shopify-cli/theme/theme-share)
+
+***
+
+
+# App commands
+
+**URL:** https://shopify.dev/docs/api/shopify-cli/app.md
+
+---
+title: Shopify CLI App commands
+source_url:
+  html: 'https://shopify.dev/docs/api/shopify-cli/app'
+  md: 'https://shopify.dev/docs/api/shopify-cli/app.md'
+api_name: shopify-cli
+---
+
+# Shopify CLI App commands
+
+[app build](https://shopify.dev/docs/api/shopify-cli/app/app-build)
+
+[This command executes the build script specified in the element's TOML file.](https://shopify.dev/docs/api/shopify-cli/app/app-build)
+
+[app bulk cancel](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-cancel)
+
+[Cancels a running bulk operation by ID.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-cancel)
+
+[app bulk execute](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-execute)
+
+[Executes an Admin API GraphQL query or mutation on the specified store, as a bulk operation.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-execute)
+
+[app bulk status](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-status)
+
+[Check the status of a specific bulk operation by ID, or list all bulk operations belonging to this app on this store in the last 7 days.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-status)
+
+[app config link](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
+
+[Pulls app configuration from the Developer Dashboard and creates or overwrites a configuration file.](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
+
+[app config pull](https://shopify.dev/docs/api/shopify-cli/app/app-config-pull)
+
+[Pulls the latest configuration from the already-linked Shopify app and updates the selected configuration file.](https://shopify.dev/docs/api/shopify-cli/app/app-config-pull)
+
+[app config use](https://shopify.dev/docs/api/shopify-cli/app/app-config-use)
+
+[Sets default configuration when you run app-related CLI commands.](https://shopify.dev/docs/api/shopify-cli/app/app-config-use)
+
+[app config validate](https://shopify.dev/docs/api/shopify-cli/app/app-config-validate)
+
+[Validates the selected app configuration file and all extension configurations against their schemas and reports any errors found.](https://shopify.dev/docs/api/shopify-cli/app/app-config-validate)
+
+[app deploy](https://shopify.dev/docs/api/shopify-cli/app/app-deploy)
+
+[Builds the app, then deploys your app configuration and extensions.](https://shopify.dev/docs/api/shopify-cli/app/app-deploy)
+
+[app dev clean](https://shopify.dev/docs/api/shopify-cli/app/app-dev-clean)
+
+[Stop the dev preview that was started with shopify app dev.](https://shopify.dev/docs/api/shopify-cli/app/app-dev-clean)
+
+[app dev](https://shopify.dev/docs/api/shopify-cli/app/app-dev)
+
+[Builds and previews your app on a dev store, and watches for changes.](https://shopify.dev/docs/api/shopify-cli/app/app-dev)
+
+[app env pull](https://shopify.dev/docs/api/shopify-cli/app/app-env-pull)
+
+[Creates or updates an .env files that contains app and app extension environment variables.](https://shopify.dev/docs/api/shopify-cli/app/app-env-pull)
+
+[app env show](https://shopify.dev/docs/api/shopify-cli/app/app-env-show)
+
+[Displays environment variables that can be used to deploy apps and app extensions.](https://shopify.dev/docs/api/shopify-cli/app/app-env-show)
+
+[app execute](https://shopify.dev/docs/api/shopify-cli/app/app-execute)
+
+[Executes an Admin API GraphQL query or mutation on the specified store.](https://shopify.dev/docs/api/shopify-cli/app/app-execute)
+
+[app function build](https://shopify.dev/docs/api/shopify-cli/app/app-function-build)
+
+[Compiles the function in your current directory to WebAssembly (Wasm) for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-build)
+
+[app function info](https://shopify.dev/docs/api/shopify-cli/app/app-function-info)
+
+[The information returned includes the following:](https://shopify.dev/docs/api/shopify-cli/app/app-function-info)
+
+[app function replay](https://shopify.dev/docs/api/shopify-cli/app/app-function-replay)
+
+[Runs the function from your current directory for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-replay)
+
+[app function run](https://shopify.dev/docs/api/shopify-cli/app/app-function-run)
+
+[Runs the function from your current directory for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-run)
+
+[app function schema](https://shopify.dev/docs/api/shopify-cli/app/app-function-schema)
+
+[Generates the latest GraphQL schema for a function in your app.](https://shopify.dev/docs/api/shopify-cli/app/app-function-schema)
+
+[app function typegen](https://shopify.dev/docs/api/shopify-cli/app/app-function-typegen)
+
+[Creates GraphQL types based on your input query for a function.](https://shopify.dev/docs/api/shopify-cli/app/app-function-typegen)
+
+[app generate extension](https://shopify.dev/docs/api/shopify-cli/app/app-generate-extension)
+
+[Generates a new app extension.](https://shopify.dev/docs/api/shopify-cli/app/app-generate-extension)
+
+[app import-custom-data-definitions](https://shopify.dev/docs/api/shopify-cli/app/app-import-custom-data-definitions)
+
+[Import metafield and metaobject definitions from your development store.](https://shopify.dev/docs/api/shopify-cli/app/app-import-custom-data-definitions)
+
+[app import-extensions](https://shopify.dev/docs/api/shopify-cli/app/app-import-extensions)
+
+[Import dashboard-managed extensions into your app.](https://shopify.dev/docs/api/shopify-cli/app/app-import-extensions)
+
+[app info](https://shopify.dev/docs/api/shopify-cli/app/app-info)
+
+[The information returned includes the following:](https://shopify.dev/docs/api/shopify-cli/app/app-info)
+
+[app init](https://shopify.dev/docs/api/shopify-cli/app/app-init)
+
+[Create a new app project](https://shopify.dev/docs/api/shopify-cli/app/app-init)
+
+[app logs sources](https://shopify.dev/docs/api/shopify-cli/app/app-logs-sources)
+
+[The output source names can be used with the --source argument of shopify app logs to filter log output.](https://shopify.dev/docs/api/shopify-cli/app/app-logs-sources)
+
+[app logs](https://shopify.dev/docs/api/shopify-cli/app/app-logs)
+
+[Opens a real-time stream of detailed app logs from the selected app and store.](https://shopify.dev/docs/api/shopify-cli/app/app-logs)
+
+[app release](https://shopify.dev/docs/api/shopify-cli/app/app-release)
+
+[Releases an existing app version.](https://shopify.dev/docs/api/shopify-cli/app/app-release)
+
+[app versions list](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
+
+[Lists the deployed app versions.](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
+
+[app webhook trigger](https://shopify.dev/docs/api/shopify-cli/app/app-webhook-trigger)
+
+[Triggers the delivery of a sample Admin API event topic payload to a designated address.](https://shopify.dev/docs/api/shopify-cli/app/app-webhook-trigger)
+
+***
+
+
+# Built for Shopify
+
+**URL:** https://shopify.dev/docs/apps/launch/built-for-shopify.md
+
+---
+title: About Built for Shopify
+description: >-
+  Learn about our quality standards for apps, and how you can earn achievements
+  and get your app promoted.
+source_url:
+  html: 'https://shopify.dev/docs/apps/launch/built-for-shopify'
+  md: 'https://shopify.dev/docs/apps/launch/built-for-shopify.md'
+---
+
+# About Built for Shopify
+
+More and more merchants join Shopify every day. They rely on apps to help them start, grow, and run their business effectively.
+
+We've developed a set of quality standards that help app developers to make high-quality apps for merchants: apps that are easy to use, safe, and performant, and help solve merchant problems. Each standard has an impact on the merchant and customer experience, and the success of a merchant’s store.
+
+To determine whether you meet our app quality standards, we evaluate your app using specific, actionable criteria. Apps that meet all of these criteria are eligible for Built for Shopify status. Along the way, you can qualify for smaller [achievements](#other-achievements) that grant you more limited benefits, such as indicators of high quality on your app listing, special merchandising, or opportunities for promotion on various Shopify surfaces.
+
+Most criteria for Built for Shopify and intermediate achievements are automatically evaluated, while others require you to apply for evaluation. Some achievements are automatically granted, while others require you to apply for inclusion. You can check whether your app meets the criteria for Built for Shopify on the **Distribution** page for the app in your Partner Dashboard.
+
+[Achievement criteria\
+\
+](https://shopify.dev/docs/apps/launch/built-for-shopify/achievement-criteria)
+
+[Explore the criteria that you need to meet to earn Built for Shopify status and other achievements.](https://shopify.dev/docs/apps/launch/built-for-shopify/achievement-criteria)
+
+***
+
+## Built for Shopify status
+
+Built for Shopify status is the highest level of recognition and achievement that an app can reach. Built for Shopify apps receive additional promotion in the Shopify App Store, and are eligible for promotion on other key merchant surfaces.
+
+**Note:**
+
+You need to [apply for Built for Shopify status](#apply-for-built-for-shopify-status). You can apply for Built for Shopify status anytime.
+
+When you achieve Built for Shopify status, your app receives the following promotional benefits:
+
+### Built for Shopify highlight
+
+A highlight indicating your Built for Shopify status appears on the app listing page. The Built for Shopify highlight appears at the top of the highlights list.
+
+On your way to earning Built for Shopify status, your app might earn other [standalone highlights](https://shopify.dev/docs/apps/launch/built-for-shopify#app-highlights), where applicable.
+
+![An image of the Built for Shopify highlight that appears on the app details page.](https://shopify.dev/assets/assets/images/apps/store/quality/bfs-overview-CN3ls_I8.png)
+
+### Built for Shopify badge
+
+A **Built for Shopify** badge appears on your app card wherever it appears in the Shopify App Store. For example, the badge will be visible on your app listing, and on your app card in search results and category pages.
+
+![An image of the Built for Shopify badge that appears on the app details page.](https://shopify.dev/assets/assets/images/apps/store/quality/bfs-badge-C1UdF-mc.png)
+
+### Search filter for Built for Shopify
+
+When merchants search for apps on the Shopify App Store, there is a search filter for Built for Shopify to help them filter for only apps that are Built for Shopify.
+
+### Priority app review
+
+Developers with Built for Shopify status get priority review when submitting additional apps in future. Your apps go through the same Shopify App Store review process, and must meet all the same requirements, but join a prioritized review queue, reserved just for BFS developers.
+
+### Plan based targeting for Shopify App Store Ads
+
+Built with Shopify developers can target their search, category page, and homepage ads on the Shopify App Store to [specific merchant plans](https://shopify.dev/docs/apps/launch/marketing/advertising/create-ads#merchant-plan-based-targeting).
+
+### Search ranking boost
+
+Built for Shopify apps appear higher in Shopify App Store search rankings. Built for Shopify apps are ranked higher than other apps with search ranking boosts. This benefit isn’t exclusive to Built for Shopify apps.
+
+### Eligible for promotion on the App Store homepage and category pages
+
+Your app is eligible to be recommended to merchants in the first collection that they see on the App Store homepage and category pages. This collection is personalized for each merchant, so your app isn't guaranteed to appear. This benefit isn’t exclusive to Built for Shopify apps.
+
+![An image of an app in the first section of the Shopify App Store homepage.](https://shopify.dev/assets/assets/images/apps/store/quality/picked-for-you-Ck3caBcj.png)
+
+### Eligible for discovery through the Shopify admin
+
+You'll be eligible to be recommended to merchants in the **Picked for you** modal in the Shopify admin. This collection is personalized for each merchant, so your app isn't guaranteed to appear. This benefit isn’t exclusive to Built for Shopify apps.
+
+### Eligible to be featured in story pages
+
+Apps can be featured in story pages across various surfaces in the Shopify App Store, including the homepage, and in search, navigation, app categories, and the app’s listing. Story pages from Shopify help to educate merchants about how your app can help their business, inspire merchants by showing what’s possible with apps, and build trust by showing how real merchants succeed with apps. Being featured in a story page makes your app more visible, and more likely to be installed by merchants.
+
+### Apply for Built for Shopify status
+
+To achieve Built for Shopify status, you need to apply for your app to be evaluated by Shopify.
+
+You can't apply for Built for Shopify status until you meet all of the [prerequisite achievement criteria](https://shopify.dev/docs/apps/launch/built-for-shopify/achievement-criteria). These criteria are automatically evaluated on a regular basis.
+
+After the prerequisite criteria are met, you can apply from the Partner Dashboard:
+
+1. From the Partner Dashboard, go to **Apps** and then select your app from the list.
+2. From your app's overview page, click **Distribution**.
+3. In the **Apply for Built for Shopify status** section, click **Apply now**.
+
+Only team members with the Manage apps permission can submit applications for Built for Shopify status.
+
+he Shopify app review team will review your application, and will let you know if you need to address any issues before your application can be approved.
+
+You must fix each issue as it's raised by the app review team. If you fail the same criterion three times in a row, then your application is suspended and you won't be able to apply again for three months.
+
+### Maintaining Built for Shopify status
+
+Apps are reviewed annually to ensure they continue to adhere to the Built for Shopify standards. Apps found to no longer adhere to Built for Shopify standards will be notified by email, and will have 60 days to rectify any failures that arise.
+
+### Losing Built for Shopify status
+
+You can lose Built for Shopify status after it's granted if you fail to meet certain criteria on an ongoing basis. [Learn more about why you might lose Built for Shopify status](https://shopify.dev/docs/apps/launch/built-for-shopify/regain-lost-status).
+
+***
+
+## Other achievements
+
+While you work toward Built for Shopify status, you can earn smaller achievements that grant you unique benefits:
+
+* [App highlights](#app-highlights)
+* [In the spotlight](#in-the-spotlight)
+* [Story pages](#story-pages)
+* [Increased visibility on key merchant surfaces](#increased-visibility-on-key-merchant-surfaces)
+
+### App highlights
+
+When your app meets the relevant criteria, we display a highlight on your app listing. These highlights make it easier for merchants to identify high-quality apps. Depending on your app’s functionality, it might qualify for the following app highlights:
+
+* **Built for your business: Works with the latest themes**. This highlight tells users that your app is compatible with Online Store 2.0 themes. These apps are easy to install and enable, offer app block functionality where applicable, and uninstall cleanly.
+
+  **Mandatory:**
+
+  Requirements for the "Works with the latest themes" app highlight
+
+  * (Storefront apps only) [Uninstalls cleanly: uses theme app extensions](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#provide-a-clean-uninstall-including-all-theme-app-extensions)
+  * [Minimizes impact on checkout speed](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#minimize-the-impact-on-checkout-speed)
+
+* **Built for your business: Use directly in the Shopify admin**. This highlight tells users that your app is embedded and offers a streamlined workflow.
+
+  **Mandatory:**
+
+  Requirements for the "Use directly in the Shopify admin" app highlight
+
+  * [The app is embedded in the Shopify admin](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#embed-the-app-in-the-shopify-admin)
+
+All apps are automatically assessed to determine whether they meet the criteria for the highlight on a regular basis. If you meet the criteria, then the highlight is automatically added to your app listing. You can check whether your app meets these criteria on the **Distribution** page of your Partner Dashboard.
+
+**Note:**
+
+It might take a few days for the highlight to appear on your app listing after the criteria are met.
+
+![The highlights section on the app listing page.](https://shopify.dev/assets/assets/images/apps/store/quality/highlights-CNYb1dah.png)
+
+### In the spotlight
+
+**In the spotlight** is a curated collection of notable, high-quality apps that appears on the Shopify App Store homepage. Being featured in this section makes your app more visible, and more likely to be installed by merchants.
+
+When you meet the criteria for this achievement, your app becomes eligible to be promoted in the **In the spotlight** section. Our app review team selects eligible apps to be featured every week.
+
+**Note:**
+
+Meeting the achievement criteria makes you eligible to be featured in the **In the Spotlight** section. Your app isn’t guaranteed to be selected.
+
+**Mandatory:**
+
+* [Good Partner standing](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-good-partner-standing)
+* [Meets App Store requirements](https://shopify.dev/docs/apps/launch/app-requirements-checklist)
+* (Storefront apps only) [Uninstalls cleanly: uses theme app extensions](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#provide-a-clean-uninstall-including-all-theme-app-extensions)
+
+![An example of an In the spotlight section.](https://shopify.dev/assets/assets/images/apps/store/quality/in-the-spotlight-D_6U7LEZ.png)
+
+### Story pages
+
+Apps can be featured in story pages across various surfaces in the Shopify App Store, including the homepage, and in search, navigation, app categories, and the app’s listing. Story pages from Shopify help to educate merchants about how your app can help their business, inspire merchants by showing what’s possible with apps, and build trust by showing how real merchants succeed with apps. Being featured in a story page makes your app more visible, and more likely to be installed by merchants.
+
+Only apps that meet the following criteria are eligible to be featured in story pages.
+
+**Mandatory:**
+
+* (Storefront apps only) [Uninstalls cleanly: uses theme app extensions](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#provide-a-clean-uninstall-including-all-theme-app-extensions)
+* [Minimum number of installs](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-number-of-installs)
+* [Minimum number of reviews](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-number-of-reviews)
+* [Minimum app rating](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-app-rating)
+
+![An example of a story page on the Shopify App Store.](https://shopify.dev/assets/assets/images/apps/store/quality/story-pages-CVGg4uIU.png)
+
+### Increased visibility on key merchant surfaces
+
+Shopify surfaces apps to merchants in many ways. Increased visibility makes your app more visible, and more likely to be installed by merchants.
+
+When you earn this achievement, you’ll get a search ranking boost, and become eligible for promotion on key merchant surfaces, including:
+
+* The first collection in the App Store homepage
+* The Shopify admin **Picked for you** modal
+* App recommendations in Sidekick
+
+These surfaces are personalized for each merchant, so your app isn't guaranteed to appear.
+
+**Mandatory:**
+
+* [Good Partner standing](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-good-partner-standing)
+* [Meets App Store requirements](https://shopify.dev/docs/apps/launch/app-requirements-checklist)
+* (Storefront apps only) [Uninstalls cleanly: uses theme app extensions](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#provide-a-clean-uninstall-including-all-theme-app-extensions)
+* [Minimizes impact on checkout speed](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#minimize-the-impact-on-checkout-speed)
+* [Minimum number of installs](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-number-of-installs)
+* [Minimum number of reviews](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-number-of-reviews)
+* [Minimum app rating](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-app-rating)
+
+***
+
+## Quality standards
+
+We use the following standards to determine whether your app is high quality. Each standard has an impact on the merchant and customer experience, and the success of a merchant’s store.
+
+Shopify offers specific, actionable criteria to meet these quality standards. When you meet certain criteria, your app becomes eligible for Built for Shopify status, and other achievements. [Learn about the criteria that you need to meet to earn achievements](https://shopify.dev/docs/apps/launch/built-for-shopify/achievement-criteria).
+
+### Safety, security, and reliability
+
+Merchants want to know that their apps are handling store data responsibly. Apps need to use certain APIs and extensions to ensure that they install and uninstall cleanly.
+
+Apps also need to meet all [App Store requirements](https://shopify.dev/docs/apps/launch/app-requirements-checklist) on an ongoing basis and uphold the [Shopify API License and Terms of Use](https://www.shopify.com/legal/api-terms). There should be no outstanding infractions against the [Partner Program Agreement](https://www.shopify.com/partners/terms).
+
+### Performance
+
+Apps should perform quickly and at scale for merchants and their customers. We measure how apps impact the performance of the Shopify admin. For a subset of apps, we also measure how your app impacts storefront and checkout performance.
+
+### Ease of use
+
+Apps should be intuitive, seamless, and well-integrated into the Shopify admin.
+
+### Proven usefulness
+
+We observe your app’s usefulness to merchants on a regular basis, using a rolling time window. We automatically gauge usefulness based on how many merchants installed your app, the number of reviews, and your app’s average rating.
+
+### App info and benefits
+
+The app listing is your first point of contact with a merchant, and it's where they'll go to determine whether your app is right for them. Your [app listing](https://shopify.dev/docs/apps/launch/app-requirements-checklist#5-app-listing) should be as complete as possible, and reflect your app's current functionality.
 
 ***
 
@@ -2381,246 +2621,6 @@ Touch targets on primary controls and links need to be at least 44 by 44 pixels.
 
 * Review the [Polaris guidelines for accessibility](https://polaris.shopify.com/foundations/accessibility).
 * Learn how to design apps with [keyboard accessibility](https://www.shopify.com/partners/blog/keyboard-accessibility) in mind.
-
-***
-
-
-# Built for Shopify
-
-**URL:** https://shopify.dev/docs/apps/launch/built-for-shopify.md
-
----
-title: About Built for Shopify
-description: >-
-  Learn about our quality standards for apps, and how you can earn achievements
-  and get your app promoted.
-source_url:
-  html: 'https://shopify.dev/docs/apps/launch/built-for-shopify'
-  md: 'https://shopify.dev/docs/apps/launch/built-for-shopify.md'
----
-
-# About Built for Shopify
-
-More and more merchants join Shopify every day. They rely on apps to help them start, grow, and run their business effectively.
-
-We've developed a set of quality standards that help app developers to make high-quality apps for merchants: apps that are easy to use, safe, and performant, and help solve merchant problems. Each standard has an impact on the merchant and customer experience, and the success of a merchant’s store.
-
-To determine whether you meet our app quality standards, we evaluate your app using specific, actionable criteria. Apps that meet all of these criteria are eligible for Built for Shopify status. Along the way, you can qualify for smaller [achievements](#other-achievements) that grant you more limited benefits, such as indicators of high quality on your app listing, special merchandising, or opportunities for promotion on various Shopify surfaces.
-
-Most criteria for Built for Shopify and intermediate achievements are automatically evaluated, while others require you to apply for evaluation. Some achievements are automatically granted, while others require you to apply for inclusion. You can check whether your app meets the criteria for Built for Shopify on the **Distribution** page for the app in your Partner Dashboard.
-
-[Achievement criteria\
-\
-](https://shopify.dev/docs/apps/launch/built-for-shopify/achievement-criteria)
-
-[Explore the criteria that you need to meet to earn Built for Shopify status and other achievements.](https://shopify.dev/docs/apps/launch/built-for-shopify/achievement-criteria)
-
-***
-
-## Built for Shopify status
-
-Built for Shopify status is the highest level of recognition and achievement that an app can reach. Built for Shopify apps receive additional promotion in the Shopify App Store, and are eligible for promotion on other key merchant surfaces.
-
-**Note:**
-
-You need to [apply for Built for Shopify status](#apply-for-built-for-shopify-status). You can apply for Built for Shopify status anytime.
-
-When you achieve Built for Shopify status, your app receives the following promotional benefits:
-
-### Built for Shopify highlight
-
-A highlight indicating your Built for Shopify status appears on the app listing page. The Built for Shopify highlight appears at the top of the highlights list.
-
-On your way to earning Built for Shopify status, your app might earn other [standalone highlights](https://shopify.dev/docs/apps/launch/built-for-shopify#app-highlights), where applicable.
-
-![An image of the Built for Shopify highlight that appears on the app details page.](https://shopify.dev/assets/assets/images/apps/store/quality/bfs-overview-CN3ls_I8.png)
-
-### Built for Shopify badge
-
-A **Built for Shopify** badge appears on your app card wherever it appears in the Shopify App Store. For example, the badge will be visible on your app listing, and on your app card in search results and category pages.
-
-![An image of the Built for Shopify badge that appears on the app details page.](https://shopify.dev/assets/assets/images/apps/store/quality/bfs-badge-C1UdF-mc.png)
-
-### Search filter for Built for Shopify
-
-When merchants search for apps on the Shopify App Store, there is a search filter for Built for Shopify to help them filter for only apps that are Built for Shopify.
-
-### Priority app review
-
-Developers with Built for Shopify status get priority review when submitting additional apps in future. Your apps go through the same Shopify App Store review process, and must meet all the same requirements, but join a prioritized review queue, reserved just for BFS developers.
-
-### Plan based targeting for Shopify App Store Ads
-
-Built with Shopify developers can target their search, category page, and homepage ads on the Shopify App Store to [specific merchant plans](https://shopify.dev/docs/apps/launch/marketing/advertising/create-ads#merchant-plan-based-targeting).
-
-### Search ranking boost
-
-Built for Shopify apps appear higher in Shopify App Store search rankings. Built for Shopify apps are ranked higher than other apps with search ranking boosts. This benefit isn’t exclusive to Built for Shopify apps.
-
-### Eligible for promotion on the App Store homepage and category pages
-
-Your app is eligible to be recommended to merchants in the first collection that they see on the App Store homepage and category pages. This collection is personalized for each merchant, so your app isn't guaranteed to appear. This benefit isn’t exclusive to Built for Shopify apps.
-
-![An image of an app in the first section of the Shopify App Store homepage.](https://shopify.dev/assets/assets/images/apps/store/quality/picked-for-you-Ck3caBcj.png)
-
-### Eligible for discovery through the Shopify admin
-
-You'll be eligible to be recommended to merchants in the **Picked for you** modal in the Shopify admin. This collection is personalized for each merchant, so your app isn't guaranteed to appear. This benefit isn’t exclusive to Built for Shopify apps.
-
-### Eligible to be featured in story pages
-
-Apps can be featured in story pages across various surfaces in the Shopify App Store, including the homepage, and in search, navigation, app categories, and the app’s listing. Story pages from Shopify help to educate merchants about how your app can help their business, inspire merchants by showing what’s possible with apps, and build trust by showing how real merchants succeed with apps. Being featured in a story page makes your app more visible, and more likely to be installed by merchants.
-
-### Apply for Built for Shopify status
-
-To achieve Built for Shopify status, you need to apply for your app to be evaluated by Shopify.
-
-You can't apply for Built for Shopify status until you meet all of the [prerequisite achievement criteria](https://shopify.dev/docs/apps/launch/built-for-shopify/achievement-criteria). These criteria are automatically evaluated on a regular basis.
-
-After the prerequisite criteria are met, you can apply from the Partner Dashboard:
-
-1. From the Partner Dashboard, go to **Apps** and then select your app from the list.
-2. From your app's overview page, click **Distribution**.
-3. In the **Apply for Built for Shopify status** section, click **Apply now**.
-
-Only team members with the Manage apps permission can submit applications for Built for Shopify status.
-
-he Shopify app review team will review your application, and will let you know if you need to address any issues before your application can be approved.
-
-You must fix each issue as it's raised by the app review team. If you fail the same criterion three times in a row, then your application is suspended and you won't be able to apply again for three months.
-
-### Maintaining Built for Shopify status
-
-Apps are reviewed annually to ensure they continue to adhere to the Built for Shopify standards. Apps found to no longer adhere to Built for Shopify standards will be notified by email, and will have 60 days to rectify any failures that arise.
-
-### Losing Built for Shopify status
-
-You can lose Built for Shopify status after it's granted if you fail to meet certain criteria on an ongoing basis. [Learn more about why you might lose Built for Shopify status](https://shopify.dev/docs/apps/launch/built-for-shopify/regain-lost-status).
-
-***
-
-## Other achievements
-
-While you work toward Built for Shopify status, you can earn smaller achievements that grant you unique benefits:
-
-* [App highlights](#app-highlights)
-* [In the spotlight](#in-the-spotlight)
-* [Story pages](#story-pages)
-* [Increased visibility on key merchant surfaces](#increased-visibility-on-key-merchant-surfaces)
-
-### App highlights
-
-When your app meets the relevant criteria, we display a highlight on your app listing. These highlights make it easier for merchants to identify high-quality apps. Depending on your app’s functionality, it might qualify for the following app highlights:
-
-* **Built for your business: Works with the latest themes**. This highlight tells users that your app is compatible with Online Store 2.0 themes. These apps are easy to install and enable, offer app block functionality where applicable, and uninstall cleanly.
-
-  **Mandatory:**
-
-  Requirements for the "Works with the latest themes" app highlight
-
-  * (Storefront apps only) [Uninstalls cleanly: uses theme app extensions](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#provide-a-clean-uninstall-including-all-theme-app-extensions)
-  * [Minimizes impact on checkout speed](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#minimize-the-impact-on-checkout-speed)
-
-* **Built for your business: Use directly in the Shopify admin**. This highlight tells users that your app is embedded and offers a streamlined workflow.
-
-  **Mandatory:**
-
-  Requirements for the "Use directly in the Shopify admin" app highlight
-
-  * [The app is embedded in the Shopify admin](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#embed-the-app-in-the-shopify-admin)
-
-All apps are automatically assessed to determine whether they meet the criteria for the highlight on a regular basis. If you meet the criteria, then the highlight is automatically added to your app listing. You can check whether your app meets these criteria on the **Distribution** page of your Partner Dashboard.
-
-**Note:**
-
-It might take a few days for the highlight to appear on your app listing after the criteria are met.
-
-![The highlights section on the app listing page.](https://shopify.dev/assets/assets/images/apps/store/quality/highlights-CNYb1dah.png)
-
-### In the spotlight
-
-**In the spotlight** is a curated collection of notable, high-quality apps that appears on the Shopify App Store homepage. Being featured in this section makes your app more visible, and more likely to be installed by merchants.
-
-When you meet the criteria for this achievement, your app becomes eligible to be promoted in the **In the spotlight** section. Our app review team selects eligible apps to be featured every week.
-
-**Note:**
-
-Meeting the achievement criteria makes you eligible to be featured in the **In the Spotlight** section. Your app isn’t guaranteed to be selected.
-
-**Mandatory:**
-
-* [Good Partner standing](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-good-partner-standing)
-* [Meets App Store requirements](https://shopify.dev/docs/apps/launch/app-requirements-checklist)
-* (Storefront apps only) [Uninstalls cleanly: uses theme app extensions](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#provide-a-clean-uninstall-including-all-theme-app-extensions)
-
-![An example of an In the spotlight section.](https://shopify.dev/assets/assets/images/apps/store/quality/in-the-spotlight-D_6U7LEZ.png)
-
-### Story pages
-
-Apps can be featured in story pages across various surfaces in the Shopify App Store, including the homepage, and in search, navigation, app categories, and the app’s listing. Story pages from Shopify help to educate merchants about how your app can help their business, inspire merchants by showing what’s possible with apps, and build trust by showing how real merchants succeed with apps. Being featured in a story page makes your app more visible, and more likely to be installed by merchants.
-
-Only apps that meet the following criteria are eligible to be featured in story pages.
-
-**Mandatory:**
-
-* (Storefront apps only) [Uninstalls cleanly: uses theme app extensions](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#provide-a-clean-uninstall-including-all-theme-app-extensions)
-* [Minimum number of installs](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-number-of-installs)
-* [Minimum number of reviews](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-number-of-reviews)
-* [Minimum app rating](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-app-rating)
-
-![An example of a story page on the Shopify App Store.](https://shopify.dev/assets/assets/images/apps/store/quality/story-pages-CVGg4uIU.png)
-
-### Increased visibility on key merchant surfaces
-
-Shopify surfaces apps to merchants in many ways. Increased visibility makes your app more visible, and more likely to be installed by merchants.
-
-When you earn this achievement, you’ll get a search ranking boost, and become eligible for promotion on key merchant surfaces, including:
-
-* The first collection in the App Store homepage
-* The Shopify admin **Picked for you** modal
-* App recommendations in Sidekick
-
-These surfaces are personalized for each merchant, so your app isn't guaranteed to appear.
-
-**Mandatory:**
-
-* [Good Partner standing](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-good-partner-standing)
-* [Meets App Store requirements](https://shopify.dev/docs/apps/launch/app-requirements-checklist)
-* (Storefront apps only) [Uninstalls cleanly: uses theme app extensions](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#provide-a-clean-uninstall-including-all-theme-app-extensions)
-* [Minimizes impact on checkout speed](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#minimize-the-impact-on-checkout-speed)
-* [Minimum number of installs](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-number-of-installs)
-* [Minimum number of reviews](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-number-of-reviews)
-* [Minimum app rating](https://shopify.dev/docs/apps/launch/built-for-shopify/requirements#have-a-minimum-app-rating)
-
-***
-
-## Quality standards
-
-We use the following standards to determine whether your app is high quality. Each standard has an impact on the merchant and customer experience, and the success of a merchant’s store.
-
-Shopify offers specific, actionable criteria to meet these quality standards. When you meet certain criteria, your app becomes eligible for Built for Shopify status, and other achievements. [Learn about the criteria that you need to meet to earn achievements](https://shopify.dev/docs/apps/launch/built-for-shopify/achievement-criteria).
-
-### Safety, security, and reliability
-
-Merchants want to know that their apps are handling store data responsibly. Apps need to use certain APIs and extensions to ensure that they install and uninstall cleanly.
-
-Apps also need to meet all [App Store requirements](https://shopify.dev/docs/apps/launch/app-requirements-checklist) on an ongoing basis and uphold the [Shopify API License and Terms of Use](https://www.shopify.com/legal/api-terms). There should be no outstanding infractions against the [Partner Program Agreement](https://www.shopify.com/partners/terms).
-
-### Performance
-
-Apps should perform quickly and at scale for merchants and their customers. We measure how apps impact the performance of the Shopify admin. For a subset of apps, we also measure how your app impacts storefront and checkout performance.
-
-### Ease of use
-
-Apps should be intuitive, seamless, and well-integrated into the Shopify admin.
-
-### Proven usefulness
-
-We observe your app’s usefulness to merchants on a regular basis, using a rolling time window. We automatically gauge usefulness based on how many merchants installed your app, the number of reviews, and your app’s average rating.
-
-### App info and benefits
-
-The app listing is your first point of contact with a merchant, and it's where they'll go to determine whether your app is right for them. Your [app listing](https://shopify.dev/docs/apps/launch/app-requirements-checklist#5-app-listing) should be as complete as possible, and reflect your app's current functionality.
 
 ***
 
@@ -4694,443 +4694,6 @@ return <s-banner>Your extension</s-banner>;
 [Reference - Developer changelog for customer account UI extensions](https://shopify.dev/changelog?filter=customer-account-extensions)
 
 [Community - Community forum for customer account extensions](https://community.shopify.dev/tag/customer-account-ext)
-
-***
-
-
-# Metafields
-
-**URL:** https://shopify.dev/docs/apps/build/custom-data.md
-
----
-title: About metafields
-description: Use metafields to extend Shopify's data models.
-source_url:
-  html: 'https://shopify.dev/docs/apps/build/metafields'
-  md: 'https://shopify.dev/docs/apps/build/metafields.md'
----
-
-# About metafields
-
-Shopify includes built-in data models like products, customers, and orders. Metafields extend these models by letting you add custom data to any [Shopify resource](https://shopify.dev/docs/api/admin-graphql/latest/enums/MetafieldOwnerType).
-
-You can use metafields to add warranty information to products, track customer lifetime value, store fulfillment notes on orders, link related products, trigger Shopify Flow automations, or power backend processes. This flexibility lets you extend Shopify's data model for specialized features and business logic.
-
-**Info:**
-
-Metafields add individual custom fields to specific Shopify resources.
-
-* Need to create standalone objects with multiple related fields? Use [metaobjects](https://shopify.dev/docs/apps/build/metaobjects) instead.
-* For a deep dive on how to structure your data using both tools, see [Data modeling with metafields and metaobjects](https://shopify.dev/docs/apps/build/metaobjects/data-modeling-with-metafields-and-metaobjects).
-
-
-
-Want to skip ahead? Choose a path based on what you're building:
-
-* **Building an app**: Use [app-owned metafields](#app-owned-metafields) with TOML configuration.
-* **Extending existing store data**: Use [merchant-owned metafields](#merchant-owned-metafields) with GraphQL.
-
-***
-
-## What are metafields?
-
-Metafields are key-value pairs with the following components:
-
-* **Identifier**: A combination of namespace and key (for example, `custom.warranty_info`). Namespaces are logical containers that not only provide organization and prevent naming conflicts, they establish [ownership](#metafield-ownership).
-* **Value**: The data being stored.
-* **Type**: Defines the kind of value (such as text, number, date, or reference) and how the value is interpreted. [See available types](https://shopify.dev/docs/apps/build/metafields/list-of-data-types).
-
-### Metafield definitions
-
-Before creating a metafield, you will create a metafield definition. Metafield definitions establish data schemas that enable type validation, Shopify admin integration, query filtering, access control, and performance optimization.
-
-**Note:**
-
-Shopify provides pre-built "standard" definitions for common use cases like ISBN numbers, product ingredients, and care instructions. Using standard definitions helps ensure interoperability across the Shopify ecosystem and saves you from defining schemas for well-known data types. Explore [standard metafield definitions](https://shopify.dev/docs/apps/build/metafields/list-of-standard-definitions).
-
-### Metafield ownership
-
-Ownership determines access and control. When creating metafields, you choose between two ownership models:
-
-| **Ownership Type** | **Purpose** | **Namespace** |
-| - | - | - |
-| App-owned | App-managed data for internal logic, configuration, and workflows | Use reserved namespace `$app` (GraphQL) or `app` (TOML) |
-| Merchant-owned | Merchant-managed data shared across all apps | Use any non-reserved namespace, such as `custom` |
-
-**Additional ownership types:**
-
-* **Shopify-reserved**: Metafields with Shopify-controlled namespaces and structures, including those typically prefixed with reserved namespace `shopify--` and [standard definitions](https://shopify.dev/docs/apps/build/metafields/list-of-standard-definitions). Shopify controls the structure, but the metafields are typically [merchant-owned](#merchant-owned-metafields).
-* **App-data**: A special type of app-owned metafield tied to your app installation (not to products, customers, or orders) and completely hidden from the Shopify admin. See [App-data metafields](#app-data-metafields) for details.
-
-***
-
-## App-owned metafields
-
-App-owned metafields are custom data entries controlled by your app. Your app manages both the structure and values, which are view only in the Shopify admin (by default).
-
-App-ownership is defined using the `app` reserved namespace.
-
-**Info:**
-
-App-owned data is viewable by default in the Shopify admin. If you need to store data that is not visible, consider [App-data metafields](#app-data-metafields).
-
-### Example
-
-You want to track internal SKU codes for products. Because your app manages inventory tracking, you create an app-owned metafield.
-
-#### Step 1: Create the metafield definition
-
-Create the metafield definition using your app's `shopify.app.toml` file. The following creates the definition with app-owned namespace `app` and key `internal_sku`:
-
-## File
-
-shopify.app.toml
-
-```toml
-[product.metafields.app.internal_sku]
-name = "Internal SKU"
-description = "Internal inventory tracking code"
-type = "single_line_text_field"
-```
-
-Deploy it with your app:
-
-## Terminal
-
-```bash
-shopify app deploy
-```
-
-#### Step 2: Create the metafield
-
-After you create the metafield definition, add the metafield (value) using the GraphQL Admin API. Use the same namespace, key, and type from the definition:
-
-## GraphQL
-
-POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
-
-```graphql
-mutation AddInternalSKU {
-  productUpdate(
-    input: {
-      id: "gid://shopify/Product/123456789"
-      metafields: [
-        {
-          namespace: "$app"
-          key: "internal_sku"
-          value: "INV-2024-COTTON-001"
-          type: "single_line_text_field"
-        }
-      ]
-    }
-  ) {
-    product {
-      id
-      metafield(namespace: "$app", key: "internal_sku") {
-        id
-        value
-      }
-    }
-    userErrors {
-      field
-      message
-    }
-  }
-}
-```
-
-**Note:**
-
-Get a product ID by querying `products(first: 1)` in GraphiQL, or find it in the Shopify admin URL when viewing a product: `/admin/products/123456789`.
-
-***
-
-## Merchant-owned metafields
-
-Merchant-owned metafields are custom data entries that merchants and all installed apps can modify. Both the structure and values are editable, making them ideal for shared data across multiple apps.
-
-Create merchant-owned metafields using any [non-reserved namespace](#metafield-ownership) (such as `custom`, `specs`, or `inventory`).
-
-**Info:**
-
-Merchant-owned definitions can't be created in `shopify.app.toml`.
-
-### Example
-
-You want to add warranty information to products. Because this type of field should be managed in the Shopify admin, you use a merchant-owned metafield.
-
-#### Step 1: Create the metafield definition
-
-First, create the metafield definition using the GraphQL Admin API. The following example doesn't use namespace `$app`, so the definition will be merchant-owned:
-
-## GraphQL
-
-POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
-
-```graphql
-mutation {
-  metafieldDefinitionCreate(definition: {
-    name: "Warranty Information",
-    namespace: "custom",
-    key: "warranty_info",
-    description: "Product warranty details and coverage information",
-    type: "multi_line_text_field",
-    ownerType: PRODUCT,
-    access: {
-      storefront: PUBLIC_READ,
-    },
-  }) {
-    createdDefinition {
-      name
-      namespace
-      key
-      type
-      access
-    }
-  }
-}
-```
-
-#### Step 2: Create the metafield
-
-After you create the metafield definition, add the metafield (value). Use the same namespace, key, and type from the definition:
-
-## GraphQL
-
-POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
-
-```graphql
-mutation AddWarrantyInfo {
-  productUpdate(
-    input: {
-      id: "gid://shopify/Product/123456789"
-      metafields: [
-        {
-          namespace: "custom"
-          key: "warranty_info"
-          value: "2-year manufacturer warranty. Covers defects in materials and workmanship."
-          type: "multi_line_text_field"
-        }
-      ]
-    }
-  ) {
-    product {
-      id
-      metafield(namespace: "custom", key: "warranty_info") {
-        id
-        value
-      }
-    }
-    userErrors {
-      field
-      message
-    }
-  }
-}
-```
-
-***
-
-## App-data metafields
-
-App-data metafields are tied to a specific app installation and are completely hidden from the Shopify admin. They're stored on the `AppInstallation` resource and can only be accessed by the owning app via GraphQL or through the [`app` object in Liquid](https://shopify.dev/docs/api/liquid/objects/app). They can't be created using `shopify.app.toml`.
-
-Unlike [app-owned metafields](#app-owned-metafields) on shared resources, the `$app` reserved namespace isn't required because the `AppInstallation` owner provides isolation — only your app can access its own installation's metafields.
-
-**Caution:**
-
-Generally, private app data should be stored in an app-specific, secure database. App-data metafields can be used for per-installation configuration values, but sensitive credentials should be stored in environment variables or a dedicated secret management system.
-
-### Example
-
-You want to store a feature tier configuration for each app installation. Because this data should be completely hidden from merchants and specific to each installation, you use app-data metafields.
-
-#### Step 1: Retrieve the app installation ID
-
-Get the app installation ID using the [`currentAppInstallation`](https://shopify.dev/docs/api/admin-graphql/latest/queries/currentAppInstallation) query:
-
-## POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
-
-## GraphQL query
-
-```graphql
-query {
-  currentAppInstallation {
-    id
-  }
-}
-```
-
-## Response
-
-```json
-{
-  "data": {
-    "currentAppInstallation": {
-      "id": "gid://shopify/AppInstallation/123456"
-    }
-  }
-}
-```
-
-#### Step 2: Create the app-data metafield
-
-Create the app-data metafield using the [`metafieldsSet`](https://shopify.dev/docs/api/admin-graphql/current/mutations/metafieldsSet) mutation:
-
-## POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
-
-## GraphQL mutation
-
-```graphql
-mutation CreateAppDataMetafield($metafieldsSetInput: [MetafieldsSetInput!]!) {
-  metafieldsSet(metafields: $metafieldsSetInput) {
-    metafields {
-      id
-      namespace
-      key
-    }
-    userErrors {
-      field
-      message
-    }
-  }
-}
-```
-
-## Variables
-
-```json
-{
-  "metafieldsSetInput": [
-    {
-      "namespace": "app_config",
-      "key": "feature_tier",
-      "type": "single_line_text_field",
-      "value": "premium",
-      "ownerId": "gid://shopify/AppInstallation/123456"
-    }
-  ]
-}
-```
-
-***
-
-## Permissions
-
-Configure who can read and write your metafields using the `access` settings on your definition.
-
-### Shopify admin permissions
-
-`admin` controls permissions for both the Shopify admin and the GraphQL Admin API.
-
-**For app-owned metafields:**
-
-##### TOML
-
-```toml
-# Merchants can view but not edit (default)
-access.admin = "merchant_read"
-
-# Merchants can view and edit
-access.admin = "merchant_read_write"
-```
-
-##### GraphQL
-
-```graphql
-access: {
-  admin: MERCHANT_READ  # view only (default)
-}
-
-access: {
-  admin: MERCHANT_READ_WRITE  # view and edit
-}
-```
-
-**For merchant-owned metafields:**
-
-* Always full access - readable and writable by merchants and all apps with appropriate scopes. No configuration needed.
-
-### Storefront permissions
-
-`storefront` controls permissions for the Storefront API (used by headless and custom storefronts). This setting doesn't affect Liquid templates - metafields are always accessible in Liquid regardless of this setting.
-
-**Available settings:**
-
-##### TOML
-
-```toml
-# Hidden from Storefront API (default)
-access.storefront = "none"
-
-# Accessible in Storefront API
-access.storefront = "public_read"
-```
-
-##### GraphQL
-
-```graphql
-access: {
-  storefront: NONE  # hidden (default)
-}
-
-access: {
-  storefront: PUBLIC_READ  # accessible
-}
-```
-
-**Note:**
-
-Metafield access depends on its owning resource.
-
-### Customer accounts permissions
-
-`customer_accounts` controls permissions for the Customer Accounts API.
-
-**Available settings:**
-
-##### TOML
-
-```toml
-# Hidden from Customer Accounts API (default)
-access.customer_account = "none"
-
-# Readable in Customer Accounts API
-access.customer_account = "read"
-
-# Readable and writable in Customer Accounts API
-access.customer_account = "read_write"
-```
-
-##### GraphQL
-
-```graphql
-access: {
-  customerAccount: NONE  # hidden (default)
-}
-
-access: {
-  customerAccount: READ  # readable
-}
-
-access: {
-  customerAccount: READ_WRITE  # readable and writable
-}
-```
-
-**Note:**
-
-Customer Account API access levels can only be adjusted via GraphQL Admin API mutation for app-owned metafields (namespace `app--`). For merchant-owned metafields, Customer Account API access can only be configured through the Shopify admin.
-
-***
-
-## Next steps
-
-* Learn how to [model your data structure](https://shopify.dev/docs/apps/build/metaobjects/data-modeling-with-metafields-and-metaobjects).
-* Learn how to [work with metafield definitions](https://shopify.dev/docs/apps/build/metafields/definitions).
-* Learn how to [work with metafield values](https://shopify.dev/docs/apps/build/metafields/manage-metafields).
-* Learn how to use metafields to [query resources](https://shopify.dev/docs/apps/build/metafields/query-using-metafields).
-* Learn how to [enable filtering and other advanced features](https://shopify.dev/docs/apps/build/metafields/use-metafield-capabilities).
 
 ***
 
@@ -16648,6 +16211,443 @@ uri = "https://your-app.example.com/events"
 ***
 
 
+# Metafields
+
+**URL:** https://shopify.dev/docs/apps/build/custom-data.md
+
+---
+title: About metafields
+description: Use metafields to extend Shopify's data models.
+source_url:
+  html: 'https://shopify.dev/docs/apps/build/metafields'
+  md: 'https://shopify.dev/docs/apps/build/metafields.md'
+---
+
+# About metafields
+
+Shopify includes built-in data models like products, customers, and orders. Metafields extend these models by letting you add custom data to any [Shopify resource](https://shopify.dev/docs/api/admin-graphql/latest/enums/MetafieldOwnerType).
+
+You can use metafields to add warranty information to products, track customer lifetime value, store fulfillment notes on orders, link related products, trigger Shopify Flow automations, or power backend processes. This flexibility lets you extend Shopify's data model for specialized features and business logic.
+
+**Info:**
+
+Metafields add individual custom fields to specific Shopify resources.
+
+* Need to create standalone objects with multiple related fields? Use [metaobjects](https://shopify.dev/docs/apps/build/metaobjects) instead.
+* For a deep dive on how to structure your data using both tools, see [Data modeling with metafields and metaobjects](https://shopify.dev/docs/apps/build/metaobjects/data-modeling-with-metafields-and-metaobjects).
+
+
+
+Want to skip ahead? Choose a path based on what you're building:
+
+* **Building an app**: Use [app-owned metafields](#app-owned-metafields) with TOML configuration.
+* **Extending existing store data**: Use [merchant-owned metafields](#merchant-owned-metafields) with GraphQL.
+
+***
+
+## What are metafields?
+
+Metafields are key-value pairs with the following components:
+
+* **Identifier**: A combination of namespace and key (for example, `custom.warranty_info`). Namespaces are logical containers that not only provide organization and prevent naming conflicts, they establish [ownership](#metafield-ownership).
+* **Value**: The data being stored.
+* **Type**: Defines the kind of value (such as text, number, date, or reference) and how the value is interpreted. [See available types](https://shopify.dev/docs/apps/build/metafields/list-of-data-types).
+
+### Metafield definitions
+
+Before creating a metafield, you will create a metafield definition. Metafield definitions establish data schemas that enable type validation, Shopify admin integration, query filtering, access control, and performance optimization.
+
+**Note:**
+
+Shopify provides pre-built "standard" definitions for common use cases like ISBN numbers, product ingredients, and care instructions. Using standard definitions helps ensure interoperability across the Shopify ecosystem and saves you from defining schemas for well-known data types. Explore [standard metafield definitions](https://shopify.dev/docs/apps/build/metafields/list-of-standard-definitions).
+
+### Metafield ownership
+
+Ownership determines access and control. When creating metafields, you choose between two ownership models:
+
+| **Ownership Type** | **Purpose** | **Namespace** |
+| - | - | - |
+| App-owned | App-managed data for internal logic, configuration, and workflows | Use reserved namespace `$app` (GraphQL) or `app` (TOML) |
+| Merchant-owned | Merchant-managed data shared across all apps | Use any non-reserved namespace, such as `custom` |
+
+**Additional ownership types:**
+
+* **Shopify-reserved**: Metafields with Shopify-controlled namespaces and structures, including those typically prefixed with reserved namespace `shopify--` and [standard definitions](https://shopify.dev/docs/apps/build/metafields/list-of-standard-definitions). Shopify controls the structure, but the metafields are typically [merchant-owned](#merchant-owned-metafields).
+* **App-data**: A special type of app-owned metafield tied to your app installation (not to products, customers, or orders) and completely hidden from the Shopify admin. See [App-data metafields](#app-data-metafields) for details.
+
+***
+
+## App-owned metafields
+
+App-owned metafields are custom data entries controlled by your app. Your app manages both the structure and values, which are view only in the Shopify admin (by default).
+
+App-ownership is defined using the `app` reserved namespace.
+
+**Info:**
+
+App-owned data is viewable by default in the Shopify admin. If you need to store data that is not visible, consider [App-data metafields](#app-data-metafields).
+
+### Example
+
+You want to track internal SKU codes for products. Because your app manages inventory tracking, you create an app-owned metafield.
+
+#### Step 1: Create the metafield definition
+
+Create the metafield definition using your app's `shopify.app.toml` file. The following creates the definition with app-owned namespace `app` and key `internal_sku`:
+
+## File
+
+shopify.app.toml
+
+```toml
+[product.metafields.app.internal_sku]
+name = "Internal SKU"
+description = "Internal inventory tracking code"
+type = "single_line_text_field"
+```
+
+Deploy it with your app:
+
+## Terminal
+
+```bash
+shopify app deploy
+```
+
+#### Step 2: Create the metafield
+
+After you create the metafield definition, add the metafield (value) using the GraphQL Admin API. Use the same namespace, key, and type from the definition:
+
+## GraphQL
+
+POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
+
+```graphql
+mutation AddInternalSKU {
+  productUpdate(
+    input: {
+      id: "gid://shopify/Product/123456789"
+      metafields: [
+        {
+          namespace: "$app"
+          key: "internal_sku"
+          value: "INV-2024-COTTON-001"
+          type: "single_line_text_field"
+        }
+      ]
+    }
+  ) {
+    product {
+      id
+      metafield(namespace: "$app", key: "internal_sku") {
+        id
+        value
+      }
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+**Note:**
+
+Get a product ID by querying `products(first: 1)` in GraphiQL, or find it in the Shopify admin URL when viewing a product: `/admin/products/123456789`.
+
+***
+
+## Merchant-owned metafields
+
+Merchant-owned metafields are custom data entries that merchants and all installed apps can modify. Both the structure and values are editable, making them ideal for shared data across multiple apps.
+
+Create merchant-owned metafields using any [non-reserved namespace](#metafield-ownership) (such as `custom`, `specs`, or `inventory`).
+
+**Info:**
+
+Merchant-owned definitions can't be created in `shopify.app.toml`.
+
+### Example
+
+You want to add warranty information to products. Because this type of field should be managed in the Shopify admin, you use a merchant-owned metafield.
+
+#### Step 1: Create the metafield definition
+
+First, create the metafield definition using the GraphQL Admin API. The following example doesn't use namespace `$app`, so the definition will be merchant-owned:
+
+## GraphQL
+
+POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
+
+```graphql
+mutation {
+  metafieldDefinitionCreate(definition: {
+    name: "Warranty Information",
+    namespace: "custom",
+    key: "warranty_info",
+    description: "Product warranty details and coverage information",
+    type: "multi_line_text_field",
+    ownerType: PRODUCT,
+    access: {
+      storefront: PUBLIC_READ,
+    },
+  }) {
+    createdDefinition {
+      name
+      namespace
+      key
+      type
+      access
+    }
+  }
+}
+```
+
+#### Step 2: Create the metafield
+
+After you create the metafield definition, add the metafield (value). Use the same namespace, key, and type from the definition:
+
+## GraphQL
+
+POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
+
+```graphql
+mutation AddWarrantyInfo {
+  productUpdate(
+    input: {
+      id: "gid://shopify/Product/123456789"
+      metafields: [
+        {
+          namespace: "custom"
+          key: "warranty_info"
+          value: "2-year manufacturer warranty. Covers defects in materials and workmanship."
+          type: "multi_line_text_field"
+        }
+      ]
+    }
+  ) {
+    product {
+      id
+      metafield(namespace: "custom", key: "warranty_info") {
+        id
+        value
+      }
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+***
+
+## App-data metafields
+
+App-data metafields are tied to a specific app installation and are completely hidden from the Shopify admin. They're stored on the `AppInstallation` resource and can only be accessed by the owning app via GraphQL or through the [`app` object in Liquid](https://shopify.dev/docs/api/liquid/objects/app). They can't be created using `shopify.app.toml`.
+
+Unlike [app-owned metafields](#app-owned-metafields) on shared resources, the `$app` reserved namespace isn't required because the `AppInstallation` owner provides isolation — only your app can access its own installation's metafields.
+
+**Caution:**
+
+Generally, private app data should be stored in an app-specific, secure database. App-data metafields can be used for per-installation configuration values, but sensitive credentials should be stored in environment variables or a dedicated secret management system.
+
+### Example
+
+You want to store a feature tier configuration for each app installation. Because this data should be completely hidden from merchants and specific to each installation, you use app-data metafields.
+
+#### Step 1: Retrieve the app installation ID
+
+Get the app installation ID using the [`currentAppInstallation`](https://shopify.dev/docs/api/admin-graphql/latest/queries/currentAppInstallation) query:
+
+## POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
+
+## GraphQL query
+
+```graphql
+query {
+  currentAppInstallation {
+    id
+  }
+}
+```
+
+## Response
+
+```json
+{
+  "data": {
+    "currentAppInstallation": {
+      "id": "gid://shopify/AppInstallation/123456"
+    }
+  }
+}
+```
+
+#### Step 2: Create the app-data metafield
+
+Create the app-data metafield using the [`metafieldsSet`](https://shopify.dev/docs/api/admin-graphql/current/mutations/metafieldsSet) mutation:
+
+## POST https://{shop}.myshopify.com/api/{api\_version}/graphql.json
+
+## GraphQL mutation
+
+```graphql
+mutation CreateAppDataMetafield($metafieldsSetInput: [MetafieldsSetInput!]!) {
+  metafieldsSet(metafields: $metafieldsSetInput) {
+    metafields {
+      id
+      namespace
+      key
+    }
+    userErrors {
+      field
+      message
+    }
+  }
+}
+```
+
+## Variables
+
+```json
+{
+  "metafieldsSetInput": [
+    {
+      "namespace": "app_config",
+      "key": "feature_tier",
+      "type": "single_line_text_field",
+      "value": "premium",
+      "ownerId": "gid://shopify/AppInstallation/123456"
+    }
+  ]
+}
+```
+
+***
+
+## Permissions
+
+Configure who can read and write your metafields using the `access` settings on your definition.
+
+### Shopify admin permissions
+
+`admin` controls permissions for both the Shopify admin and the GraphQL Admin API.
+
+**For app-owned metafields:**
+
+##### TOML
+
+```toml
+# Merchants can view but not edit (default)
+access.admin = "merchant_read"
+
+# Merchants can view and edit
+access.admin = "merchant_read_write"
+```
+
+##### GraphQL
+
+```graphql
+access: {
+  admin: MERCHANT_READ  # view only (default)
+}
+
+access: {
+  admin: MERCHANT_READ_WRITE  # view and edit
+}
+```
+
+**For merchant-owned metafields:**
+
+* Always full access - readable and writable by merchants and all apps with appropriate scopes. No configuration needed.
+
+### Storefront permissions
+
+`storefront` controls permissions for the Storefront API (used by headless and custom storefronts). This setting doesn't affect Liquid templates - metafields are always accessible in Liquid regardless of this setting.
+
+**Available settings:**
+
+##### TOML
+
+```toml
+# Hidden from Storefront API (default)
+access.storefront = "none"
+
+# Accessible in Storefront API
+access.storefront = "public_read"
+```
+
+##### GraphQL
+
+```graphql
+access: {
+  storefront: NONE  # hidden (default)
+}
+
+access: {
+  storefront: PUBLIC_READ  # accessible
+}
+```
+
+**Note:**
+
+Metafield access depends on its owning resource.
+
+### Customer accounts permissions
+
+`customer_accounts` controls permissions for the Customer Accounts API.
+
+**Available settings:**
+
+##### TOML
+
+```toml
+# Hidden from Customer Accounts API (default)
+access.customer_account = "none"
+
+# Readable in Customer Accounts API
+access.customer_account = "read"
+
+# Readable and writable in Customer Accounts API
+access.customer_account = "read_write"
+```
+
+##### GraphQL
+
+```graphql
+access: {
+  customerAccount: NONE  # hidden (default)
+}
+
+access: {
+  customerAccount: READ  # readable
+}
+
+access: {
+  customerAccount: READ_WRITE  # readable and writable
+}
+```
+
+**Note:**
+
+Customer Account API access levels can only be adjusted via GraphQL Admin API mutation for app-owned metafields (namespace `app--`). For merchant-owned metafields, Customer Account API access can only be configured through the Shopify admin.
+
+***
+
+## Next steps
+
+* Learn how to [model your data structure](https://shopify.dev/docs/apps/build/metaobjects/data-modeling-with-metafields-and-metaobjects).
+* Learn how to [work with metafield definitions](https://shopify.dev/docs/apps/build/metafields/definitions).
+* Learn how to [work with metafield values](https://shopify.dev/docs/apps/build/metafields/manage-metafields).
+* Learn how to use metafields to [query resources](https://shopify.dev/docs/apps/build/metafields/query-using-metafields).
+* Learn how to [enable filtering and other advanced features](https://shopify.dev/docs/apps/build/metafields/use-metafield-capabilities).
+
+***
+
+
 # Authentication
 
 **URL:** https://shopify.dev/docs/apps/build/authentication-authorization.md
@@ -17170,55 +17170,6 @@ This is a health potion!
 ```
 
 
-# **Theme tags**
-
-**URL:** https://shopify.dev/docs/api/liquid/tags/theme-tags.md
-
----
-title: 'Liquid tags: content_for'
-description: >-
-  Creates a designated area in your
-  [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
-source_url:
-  html: 'https://shopify.dev/docs/api/liquid/tags/content_for'
-  md: 'https://shopify.dev/docs/api/liquid/tags/content_for.md'
-api_name: liquid
----
-
-# content\_​for
-
-Creates a designated area in your [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
-
-The `content_for` tag requires a type parameter to differentiate between rendering a number of theme blocks (`'blocks'`) and a single static block (`'block'`).
-
-## Syntax
-
-```oobleckTag
-{% content_for 'blocks' %}
-{% content_for 'block', type: "slide", id: "slide-1" %}
-```
-
-### blocks
-
-## Syntax
-
-```oobleckTag
-{% content_for "blocks" %}
-```
-
-Creates a designated area that renders theme blocks as configured in the JSON template or section groups, allowing merchants to add, remove, and rearrange blocks using the theme editor. See [theme blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks) for more information.
-
-### block
-
-## Syntax
-
-```oobleckTag
-{% content_for "block", type: "button", id: "static-block-1", color: "red" %}
-```
-
-Renders a static theme block of the specified type with the provided ID. You can pass additional arbitrary parameters (such as `color`) that will be accessible within the static block using `{{ color }}`. See [static blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/static-blocks) to learn more.
-
-
 # **Iteration tags**
 
 **URL:** https://shopify.dev/docs/api/liquid/tags/iteration-tags.md
@@ -17625,68 +17576,53 @@ About us, Contact, Potion dosages
 ```
 
 
-# **Variable tags**
+# **Theme tags**
 
-**URL:** https://shopify.dev/docs/api/liquid/tags/variable-tags.md
+**URL:** https://shopify.dev/docs/api/liquid/tags/theme-tags.md
 
 ---
-title: 'Liquid tags: assign'
-description: Creates a new variable.
+title: 'Liquid tags: content_for'
+description: >-
+  Creates a designated area in your
+  [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
 source_url:
-  html: 'https://shopify.dev/docs/api/liquid/tags/assign'
-  md: 'https://shopify.dev/docs/api/liquid/tags/assign.md'
+  html: 'https://shopify.dev/docs/api/liquid/tags/content_for'
+  md: 'https://shopify.dev/docs/api/liquid/tags/content_for.md'
 api_name: liquid
 ---
 
-# assign
+# content\_​for
 
-Creates a new variable.
+Creates a designated area in your [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
 
-You can create variables of any [basic type](https://shopify.dev/docs/api/liquid/basics#types), [object](https://shopify.dev/docs/api/liquid/objects), or object property.
-
-***
-
-**Caution:** Predefined Liquid objects can be overridden by variables with the same name. To make sure that you can access all Liquid objects, make sure that your variable name doesn\&#39;t match a predefined object\&#39;s name.
-
-***
+The `content_for` tag requires a type parameter to differentiate between rendering a number of theme blocks (`'blocks'`) and a single static block (`'block'`).
 
 ## Syntax
 
 ```oobleckTag
-{% assign variable_name = value %}
+{% content_for 'blocks' %}
+{% content_for 'block', type: "slide", id: "slide-1" %}
 ```
 
-### variable\_name
+### blocks
 
-The name of the variable being created.
+## Syntax
 
-### value
-
-The value you want to assign to the variable.
-
-##### Code
-
-```liquid
-{%- assign product_title = product.title | upcase -%}
-
-{{ product_title }}
+```oobleckTag
+{% content_for "blocks" %}
 ```
 
-##### Data
+Creates a designated area that renders theme blocks as configured in the JSON template or section groups, allowing merchants to add, remove, and rearrange blocks using the theme editor. See [theme blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks) for more information.
 
-```json
-{
-  "product": {
-    "title": "Health potion"
-  }
-}
+### block
+
+## Syntax
+
+```oobleckTag
+{% content_for "block", type: "button", id: "static-block-1", color: "red" %}
 ```
 
-##### Output
-
-```html
-HEALTH POTION
-```
+Renders a static theme block of the specified type with the provided ID. You can pass additional arbitrary parameters (such as `color`) that will be accessible within the static block using `{{ color }}`. See [static blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/static-blocks) to learn more.
 
 
 # Theme app extensions
@@ -17763,154 +17699,6 @@ Merchants can use the [theme editor](https://shopify.dev/docs/storefronts/themes
 * [Review the theme app extensions framework](https://shopify.dev/docs/apps/build/online-store/theme-app-extensions/configuration)
 * [Understand the UX guidelines for theme app extensions](https://shopify.dev/docs/apps/build/online-store/theme-app-extensions/ux)
 * [Update your app to use theme app extensions](https://shopify.dev/docs/apps/build/online-store/theme-app-extensions/migrate)
-
-***
-
-
-# Hydrogen
-
-**URL:** https://shopify.dev/docs/api/hydrogen.md
-
----
-title: Hydrogen
-description: >-
-  Hydrogen is Shopify’s opinionated stack for headless commerce, built on React
-  Router.
-api_version: 2026-04
-source_url:
-  html: 'https://shopify.dev/docs/api/hydrogen/latest'
-  md: 'https://shopify.dev/docs/api/hydrogen/latest.md'
-api_name: hydrogen
----
-
-# Hydrogen
-
-Hydrogen is Shopify’s opinionated stack for headless commerce, built on [React Router](https://reactrouter.com/home). It provides a set of tools, utilities, and best-in-class examples for building dynamic and performant commerce applications.
-
-## Setup
-
-1. Create a new Hydrogen project with your preferred package manager.
-2. Import components, hooks, or utilities that you want to use in your app. For more, see the [getting started guide](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started).
-
-[API Reference - Getting started with Hydrogen and Oxygen](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started)
-
-## Create a new Hydrogen project
-
-##### npm
-
-```txt
-npm create @shopify/hydrogen@latest
-```
-
-##### yarn
-
-```txt
-yarn create @shopify/hydrogen
-```
-
-***
-
-## Authentication
-
-To make full use of Hydrogen, you need to authenticate with and make requests to the [Storefront API](https://shopify.dev/docs/api/storefront) and the [Customer Account API](https://shopify.dev/docs/api/customer). Hydrogen includes full-featured API clients to securely handle API queries and mutations.
-
-You can create access tokens for your own Shopify store by [installing the Hydrogen sales channel](https://apps.shopify.com/hydrogen), which includes built-in support for Oxygen, Shopify’s global edge hosting platform. Or install the [Headless sales channel](https://apps.shopify.com/headless) to host your Hydrogen app anywhere.
-
-Both the Storefront API and Customer Account API offer public credentials for client-side applications.
-
-[API Reference - Hydrogen sales channel](https://apps.shopify.com/hydrogen)
-
-[API Reference - Headless sales channel](https://apps.shopify.com/headless)
-
-## Authenticate a Hydrogen app
-
-##### server.js
-
-```js
-/**
- * server.js
- * ---------
- * Create a storefront client.
- * Check the server.js file in the root of your new Hydrogen project to see
- * an example implementation of this function. If you start from an official
- * Hydrogen template (Hello World or Demo Store), then the client is already
- * set up for you. Update the Shopify store domain and API token to start
- * querying your own store inventory.
- */
-const {storefront} = createStorefrontClient({
-  cache,
-  waitUntil,
-  i18n: {language: 'EN', country: 'US'},
-  // `env` provides access to runtime data, including environment variables
-  publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-  privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
-  storeDomain: env.PUBLIC_STORE_DOMAIN,
-  storefrontId: env.PUBLIC_STOREFRONT_ID,
-  storefrontHeaders: getStorefrontHeaders(request),
-});
-```
-
-##### .env
-
-```txt
-# These API credentials fetch example inventory from the Hydrogen Demo Store
-# https://hydrogen.shop
-#
-# Replace with your own store domain and Storefront API token
-
-SESSION_SECRET="foobar"
-PUBLIC_STOREFRONT_API_TOKEN="3b580e70970c4528da70c98e097c2fa0"
-PUBLIC_STORE_DOMAIN="hydrogen-preview.myshopify.com"
-```
-
-***
-
-## Versioning
-
-Hydrogen is tied to specific versions of the [Storefront API](https://shopify.dev/api/storefront), which is versioned quarterly. For example, if you're using Storefront API version `2023-10`, then Hydrogen versions `2023.10.x` are fully compatible.
-
-**Caution:**
-
-If a Storefront API version includes breaking changes, then the corresponding Hydrogen version will include the same breaking changes.
-
-[API Reference - Shopify API versioning](https://shopify.dev/docs/api/usage/versioning)
-
-[API Reference - API release notes](https://shopify.dev/docs/api/release-notes)
-
-***
-
-## How Hydrogen works with Hydrogen React
-
-Hydrogen is [built on React Router](https://shopify.dev/docs/custom-storefronts/hydrogen/project-structure). But many of the components, hooks and utilities built into Hydrogen come from [Hydrogen React](https://shopify.dev/docs/api/hydrogen-react), an underlying package that’s framework-agnostic. For convenience, the Hydrogen package re-exports those resources. This means that if you’re building a Hydrogen app, then you should import modules from the `@shopify/hydrogen` package.
-
-## Importing Hydrogen components
-
-## example-page.jsx
-
-```jsx
-import {ShopPayButton} from '@shopify/hydrogen';
-
-
-export function renderShopPayButton({variantId, storeDomain}) {
-  return <ShopPayButton variantIds={[variantId]} storeDomain={storeDomain} />;
-}
-```
-
-***
-
-## Resources
-
-[Custom storefronts on Shopify\
-\
-](https://shopify.dev/custom-storefronts)
-
-[Learn more about how to design, build, and manage custom storefronts on Shopify.](https://shopify.dev/custom-storefronts)
-
-[Hydrogen on GitHub\
-\
-](https://github.com/Shopify/hydrogen)
-
-[Follow the Hydrogen project, file bugs and feature requests, preview upcoming features, and more](https://github.com/Shopify/hydrogen)
 
 ***
 
@@ -18785,6 +18573,70 @@ HTTP/1.1 500 Internal Server Error
 ***
 
 
+# **Variable tags**
+
+**URL:** https://shopify.dev/docs/api/liquid/tags/variable-tags.md
+
+---
+title: 'Liquid tags: assign'
+description: Creates a new variable.
+source_url:
+  html: 'https://shopify.dev/docs/api/liquid/tags/assign'
+  md: 'https://shopify.dev/docs/api/liquid/tags/assign.md'
+api_name: liquid
+---
+
+# assign
+
+Creates a new variable.
+
+You can create variables of any [basic type](https://shopify.dev/docs/api/liquid/basics#types), [object](https://shopify.dev/docs/api/liquid/objects), or object property.
+
+***
+
+**Caution:** Predefined Liquid objects can be overridden by variables with the same name. To make sure that you can access all Liquid objects, make sure that your variable name doesn\&#39;t match a predefined object\&#39;s name.
+
+***
+
+## Syntax
+
+```oobleckTag
+{% assign variable_name = value %}
+```
+
+### variable\_name
+
+The name of the variable being created.
+
+### value
+
+The value you want to assign to the variable.
+
+##### Code
+
+```liquid
+{%- assign product_title = product.title | upcase -%}
+
+{{ product_title }}
+```
+
+##### Data
+
+```json
+{
+  "product": {
+    "title": "Health potion"
+  }
+}
+```
+
+##### Output
+
+```html
+HEALTH POTION
+```
+
+
 # Oxygen
 
 **URL:** https://shopify.dev/docs/storefronts/headless/hydrogen/getting-started.md
@@ -18950,6 +18802,154 @@ Congratulations! You've created a new Hydrogen storefront, connected it to Shopi
 ](https://shopify.dev/docs/storefronts/headless/hydrogen/fundamentals)
 
 [Explore the key components of the Hydrogen and Oxygen stack and how they work together](https://shopify.dev/docs/storefronts/headless/hydrogen/fundamentals)
+
+***
+
+
+# Hydrogen
+
+**URL:** https://shopify.dev/docs/api/hydrogen.md
+
+---
+title: Hydrogen
+description: >-
+  Hydrogen is Shopify’s opinionated stack for headless commerce, built on React
+  Router.
+api_version: 2026-04
+source_url:
+  html: 'https://shopify.dev/docs/api/hydrogen/latest'
+  md: 'https://shopify.dev/docs/api/hydrogen/latest.md'
+api_name: hydrogen
+---
+
+# Hydrogen
+
+Hydrogen is Shopify’s opinionated stack for headless commerce, built on [React Router](https://reactrouter.com/home). It provides a set of tools, utilities, and best-in-class examples for building dynamic and performant commerce applications.
+
+## Setup
+
+1. Create a new Hydrogen project with your preferred package manager.
+2. Import components, hooks, or utilities that you want to use in your app. For more, see the [getting started guide](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started).
+
+[API Reference - Getting started with Hydrogen and Oxygen](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started)
+
+## Create a new Hydrogen project
+
+##### npm
+
+```txt
+npm create @shopify/hydrogen@latest
+```
+
+##### yarn
+
+```txt
+yarn create @shopify/hydrogen
+```
+
+***
+
+## Authentication
+
+To make full use of Hydrogen, you need to authenticate with and make requests to the [Storefront API](https://shopify.dev/docs/api/storefront) and the [Customer Account API](https://shopify.dev/docs/api/customer). Hydrogen includes full-featured API clients to securely handle API queries and mutations.
+
+You can create access tokens for your own Shopify store by [installing the Hydrogen sales channel](https://apps.shopify.com/hydrogen), which includes built-in support for Oxygen, Shopify’s global edge hosting platform. Or install the [Headless sales channel](https://apps.shopify.com/headless) to host your Hydrogen app anywhere.
+
+Both the Storefront API and Customer Account API offer public credentials for client-side applications.
+
+[API Reference - Hydrogen sales channel](https://apps.shopify.com/hydrogen)
+
+[API Reference - Headless sales channel](https://apps.shopify.com/headless)
+
+## Authenticate a Hydrogen app
+
+##### server.js
+
+```js
+/**
+ * server.js
+ * ---------
+ * Create a storefront client.
+ * Check the server.js file in the root of your new Hydrogen project to see
+ * an example implementation of this function. If you start from an official
+ * Hydrogen template (Hello World or Demo Store), then the client is already
+ * set up for you. Update the Shopify store domain and API token to start
+ * querying your own store inventory.
+ */
+const {storefront} = createStorefrontClient({
+  cache,
+  waitUntil,
+  i18n: {language: 'EN', country: 'US'},
+  // `env` provides access to runtime data, including environment variables
+  publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+  privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
+  storeDomain: env.PUBLIC_STORE_DOMAIN,
+  storefrontId: env.PUBLIC_STOREFRONT_ID,
+  storefrontHeaders: getStorefrontHeaders(request),
+});
+```
+
+##### .env
+
+```txt
+# These API credentials fetch example inventory from the Hydrogen Demo Store
+# https://hydrogen.shop
+#
+# Replace with your own store domain and Storefront API token
+
+SESSION_SECRET="foobar"
+PUBLIC_STOREFRONT_API_TOKEN="3b580e70970c4528da70c98e097c2fa0"
+PUBLIC_STORE_DOMAIN="hydrogen-preview.myshopify.com"
+```
+
+***
+
+## Versioning
+
+Hydrogen is tied to specific versions of the [Storefront API](https://shopify.dev/api/storefront), which is versioned quarterly. For example, if you're using Storefront API version `2023-10`, then Hydrogen versions `2023.10.x` are fully compatible.
+
+**Caution:**
+
+If a Storefront API version includes breaking changes, then the corresponding Hydrogen version will include the same breaking changes.
+
+[API Reference - Shopify API versioning](https://shopify.dev/docs/api/usage/versioning)
+
+[API Reference - API release notes](https://shopify.dev/docs/api/release-notes)
+
+***
+
+## How Hydrogen works with Hydrogen React
+
+Hydrogen is [built on React Router](https://shopify.dev/docs/custom-storefronts/hydrogen/project-structure). But many of the components, hooks and utilities built into Hydrogen come from [Hydrogen React](https://shopify.dev/docs/api/hydrogen-react), an underlying package that’s framework-agnostic. For convenience, the Hydrogen package re-exports those resources. This means that if you’re building a Hydrogen app, then you should import modules from the `@shopify/hydrogen` package.
+
+## Importing Hydrogen components
+
+## example-page.jsx
+
+```jsx
+import {ShopPayButton} from '@shopify/hydrogen';
+
+
+export function renderShopPayButton({variantId, storeDomain}) {
+  return <ShopPayButton variantIds={[variantId]} storeDomain={storeDomain} />;
+}
+```
+
+***
+
+## Resources
+
+[Custom storefronts on Shopify\
+\
+](https://shopify.dev/custom-storefronts)
+
+[Learn more about how to design, build, and manage custom storefronts on Shopify.](https://shopify.dev/custom-storefronts)
+
+[Hydrogen on GitHub\
+\
+](https://github.com/Shopify/hydrogen)
+
+[Follow the Hydrogen project, file bugs and feature requests, preview upcoming features, and more](https://github.com/Shopify/hydrogen)
 
 ***
 

@@ -29,7 +29,7 @@ paths:
       summary: Update Document
       description: Update the name and/or content of a document.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: documentation_id
           in: path

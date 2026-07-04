@@ -33,7 +33,7 @@ paths:
         inspected for copyright infringement. If copyrighted content is
         detected, half of the request cost is still charged.
       tags:
-        - subpackage_music
+        - music
       parameters:
         - name: xi-api-key
           in: header

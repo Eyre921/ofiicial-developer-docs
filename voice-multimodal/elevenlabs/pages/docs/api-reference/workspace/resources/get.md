@@ -28,7 +28,7 @@ paths:
       summary: Get Resource
       description: Gets the metadata of a resource by ID.
       tags:
-        - subpackage_workspace/resources
+        - resources
       parameters:
         - name: resource_id
           in: path

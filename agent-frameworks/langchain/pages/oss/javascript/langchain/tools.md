@@ -229,7 +229,7 @@ Tools can access an agent's runtime context through the `config` parameter. Pass
   });
 
   const agent = createAgent({
-    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code" }),
+    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/glm-5p2" }),
     tools: [getUserName],
     contextSchema,
   });
@@ -775,7 +775,7 @@ Set return direct on a tool to short-circuit the agent loop: the agent returns t
   );
 
   const agent = createAgent({
-    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code" }),
+    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/glm-5p2" }),
     tools: [fetchOrderStatus],
   });
 
@@ -986,7 +986,7 @@ Handle tool errors using LangChain agent [middleware](/oss/javascript/langchain/
   });
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [],
     middleware: [handleToolErrors],
   });

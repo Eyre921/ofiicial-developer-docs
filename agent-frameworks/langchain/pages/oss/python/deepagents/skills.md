@@ -462,7 +462,7 @@ Deep Agents supports different backends depending on how you want to store and m
       }
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=backend,
           skills=["/skills/"],
           checkpointer=checkpointer,
@@ -874,7 +874,7 @@ To share skills without letting agents modify them, route `/skills/` to a shared
   store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=CompositeBackend(
           default=StateBackend(),
           routes={
@@ -1522,7 +1522,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
 
       try:
           agent = create_deep_agent(
-              model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+              model="fireworks:accounts/fireworks/models/glm-5p2",
               backend=backend,
               skills=["/skills/"],
               store=store,

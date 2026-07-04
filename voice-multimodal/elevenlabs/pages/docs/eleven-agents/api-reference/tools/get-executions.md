@@ -28,7 +28,7 @@ paths:
       summary: Get Tool Executions
       description: Get paginated list of tool executions for a specific tool.
       tags:
-        - subpackage_conversationalAi/tools/executions
+        - executions
       parameters:
         - name: tool_id
           in: path

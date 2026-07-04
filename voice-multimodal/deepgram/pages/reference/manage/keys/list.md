@@ -30,8 +30,7 @@ paths:
       summary: List Project Keys
       description: Retrieves all API keys associated with the specified project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/keys
+        - manage > v1 > projects > keys
       parameters:
         - name: project_id
           in: path

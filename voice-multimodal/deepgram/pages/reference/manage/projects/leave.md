@@ -30,7 +30,7 @@ paths:
       summary: Leave a Project
       description: Removes the authenticated account from the specific project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects
+        - manage > v1 > projects
       parameters:
         - name: project_id
           in: path

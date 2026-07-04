@@ -1196,7 +1196,7 @@ The following steps show you how to build a minimal [agent](/oss/javascript/lang
       });
       const allSplits = await splitter.splitDocuments(docs);
 
-      const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code" });
+      const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/glm-5p2" });
       const vectorStore = new MemoryVectorStore(embeddings);
 
       // Index chunks
@@ -1853,7 +1853,7 @@ This is a fast and effective method for simple queries in constrained settings, 
       });
       const allSplits = await splitter.splitDocuments(docs);
 
-      const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code" });
+      const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/glm-5p2" });
       const vectorStore = new MemoryVectorStore(embeddings);
 
       // Index chunks

@@ -30,7 +30,7 @@ paths:
       summary: Get a specific Model
       description: Returns metadata for a specific public model
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/models
+        - manage > v1 > models
       parameters:
         - name: model_id
           in: path

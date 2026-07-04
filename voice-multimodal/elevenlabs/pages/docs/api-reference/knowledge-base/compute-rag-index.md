@@ -31,7 +31,7 @@ paths:
         In case the document is not RAG indexed, it triggers rag indexing task,
         otherwise it just returns the current status.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/document
+        - document
       parameters:
         - name: documentation_id
           in: path

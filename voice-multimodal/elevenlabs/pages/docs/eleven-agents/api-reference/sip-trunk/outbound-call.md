@@ -29,7 +29,7 @@ paths:
       summary: Handle An Outbound Call Via Sip Trunk
       description: Handle an outbound call via SIP trunk
       tags:
-        - subpackage_conversationalAi/sipTrunk
+        - sipTrunk
       parameters:
         - name: xi-api-key
           in: header

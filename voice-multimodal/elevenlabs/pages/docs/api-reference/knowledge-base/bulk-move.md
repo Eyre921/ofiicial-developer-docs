@@ -29,7 +29,7 @@ paths:
       summary: Bulk Move Entities To Folder
       description: Moves multiple entities from one folder to another.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: xi-api-key
           in: header

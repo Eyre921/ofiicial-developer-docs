@@ -28,7 +28,7 @@ paths:
       summary: Get Knowledge Base List
       description: Get a list of available knowledge base documents
       tags:
-        - subpackage_conversationalAi/knowledgeBase
+        - knowledgeBase
       parameters:
         - name: page_size
           in: query

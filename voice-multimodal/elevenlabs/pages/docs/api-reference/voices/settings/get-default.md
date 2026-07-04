@@ -31,7 +31,7 @@ paths:
         to"Clarity + Similarity Enhancement" in the web app and "stability"
         corresponds to "Stability" slider in the web app.
       tags:
-        - subpackage_voices/settings
+        - settings
       parameters:
         - name: xi-api-key
           in: header

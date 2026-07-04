@@ -36,7 +36,7 @@ paths:
         WORKSPACE_MEMBERS_INVITE permission. If the user is already in the
         workspace a 400 error will be returned.
       tags:
-        - subpackage_workspace/invites
+        - invites
       parameters:
         - name: xi-api-key
           in: header

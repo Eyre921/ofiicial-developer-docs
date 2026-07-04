@@ -239,7 +239,7 @@ The two are independent and almost always passed together:
   const contextSchema = z.object({ userId: z.string() });
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     contextSchema,
   });
 

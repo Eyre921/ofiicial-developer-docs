@@ -28,7 +28,7 @@ paths:
       summary: Delete Transcript By Id
       description: Delete a previously generated transcript by its ID.
       tags:
-        - subpackage_speechToText/transcripts
+        - transcripts
       parameters:
         - name: transcription_id
           in: path

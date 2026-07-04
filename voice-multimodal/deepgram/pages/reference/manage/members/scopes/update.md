@@ -31,8 +31,7 @@ paths:
       summary: Update Project Member Scopes
       description: Updates the scopes for a specific member
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members.subpackage_manage/v1/projects/members/scopes
+        - manage > v1 > projects > members > scopes
       parameters:
         - name: project_id
           in: path

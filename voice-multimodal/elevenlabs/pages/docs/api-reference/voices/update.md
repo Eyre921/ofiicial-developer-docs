@@ -29,7 +29,7 @@ paths:
       summary: Edit voice
       description: Edit a voice created by you.
       tags:
-        - subpackage_voices
+        - voices
       parameters:
         - name: voice_id
           in: path

@@ -162,7 +162,9 @@ Deep Agents automatically writes the subagent's `name` to the `lc_agent_name` me
 1. Open your tracing project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents).
 2. Switch the view to **Runs** to see individual spans.
 3. Click **Add filter** and select **Metadata**.
-4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `research-agent`.
+4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
+
+<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
 
 Save the filter as a named view for quick reuse. For a full reference on filter options, see [Filter traces](/langsmith/filter-traces-in-application).
 

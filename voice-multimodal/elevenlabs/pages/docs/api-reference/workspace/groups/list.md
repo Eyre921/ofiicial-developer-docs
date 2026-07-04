@@ -28,7 +28,7 @@ paths:
       summary: List workspace groups
       description: Get all groups in the workspace
       tags:
-        - subpackage_workspace/groups
+        - groups
       parameters:
         - name: xi-api-key
           in: header

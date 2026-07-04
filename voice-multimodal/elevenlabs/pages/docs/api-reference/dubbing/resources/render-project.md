@@ -34,7 +34,7 @@ paths:
         and to check the status of all renders please use the 'Get Dubbing
         Resource' endpoint.
       tags:
-        - subpackage_dubbing/resource
+        - resource
       parameters:
         - name: dubbing_id
           in: path

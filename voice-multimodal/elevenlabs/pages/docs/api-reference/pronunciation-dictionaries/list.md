@@ -30,7 +30,7 @@ paths:
         Get a list of the pronunciation dictionaries you have access to and
         their metadata
       tags:
-        - subpackage_pronunciationDictionaries
+        - pronunciationDictionaries
       parameters:
         - name: cursor
           in: query

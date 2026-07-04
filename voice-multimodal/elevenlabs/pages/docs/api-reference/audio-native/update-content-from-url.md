@@ -32,7 +32,7 @@ paths:
         from the URL, updates the project content, and queues it for conversion
         and auto-publishing.
       tags:
-        - subpackage_audioNative
+        - audioNative
       parameters:
         - name: xi-api-key
           in: header

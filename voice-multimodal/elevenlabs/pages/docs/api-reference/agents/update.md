@@ -29,7 +29,7 @@ paths:
       summary: Update agent
       description: Patches an Agent settings
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: agent_id
           in: path

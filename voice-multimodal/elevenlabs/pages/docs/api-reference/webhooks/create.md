@@ -31,7 +31,7 @@ paths:
         Create a new webhook for the workspace with the specified authentication
         type.
       tags:
-        - subpackage_webhooks
+        - webhooks
       parameters:
         - name: xi-api-key
           in: header

@@ -29,7 +29,7 @@ paths:
       summary: Add Tool
       description: Add a new tool to the available tools in the workspace.
       tags:
-        - subpackage_conversationalAi/tools
+        - tools
       parameters:
         - name: xi-api-key
           in: header

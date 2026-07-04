@@ -31,7 +31,7 @@ paths:
         be downloaded as audio. Whenever a chapter is converted a snapshot will
         automatically be created.
       tags:
-        - subpackage_studio/projects/chapters/snapshots
+        - snapshots
       parameters:
         - name: project_id
           in: path

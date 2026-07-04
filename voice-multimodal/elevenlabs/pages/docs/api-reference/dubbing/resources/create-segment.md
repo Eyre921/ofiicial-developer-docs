@@ -32,7 +32,7 @@ paths:
         the speaker in every available language. Does not automatically generate
         transcripts/translations/audio.
       tags:
-        - subpackage_dubbing/resource/speaker/segment
+        - segment
       parameters:
         - name: dubbing_id
           in: path

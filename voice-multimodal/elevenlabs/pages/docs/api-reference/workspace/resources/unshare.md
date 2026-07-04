@@ -37,7 +37,7 @@ paths:
         have admin access to the resource to unshare it. You cannot remove
         permissions from the user who created the resource.
       tags:
-        - subpackage_workspace/resources
+        - resources
       parameters:
         - name: resource_id
           in: path

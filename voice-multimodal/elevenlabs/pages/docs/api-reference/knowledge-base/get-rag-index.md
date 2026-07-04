@@ -30,7 +30,7 @@ paths:
         Provides information about all RAG indexes of the specified
         knowledgebase document.
       tags:
-        - subpackage_conversationalAi
+        - conversationalAi
       parameters:
         - name: documentation_id
           in: path

@@ -29,7 +29,7 @@ paths:
       summary: Create Or Update Deployments
       description: Create a new deployment for an agent
       tags:
-        - subpackage_conversationalAi/agents/deployments
+        - deployments
       parameters:
         - name: agent_id
           in: path

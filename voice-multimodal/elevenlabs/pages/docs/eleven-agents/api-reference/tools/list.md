@@ -28,7 +28,7 @@ paths:
       summary: Get Tools
       description: Get all available tools in the workspace.
       tags:
-        - subpackage_conversationalAi/tools
+        - tools
       parameters:
         - name: search
           in: query

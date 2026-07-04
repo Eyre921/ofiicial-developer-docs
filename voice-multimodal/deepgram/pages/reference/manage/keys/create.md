@@ -31,8 +31,7 @@ paths:
       summary: Create a Project Key
       description: Creates a new API key with specified settings for the project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/keys
+        - manage > v1 > projects > keys
       parameters:
         - name: project_id
           in: path

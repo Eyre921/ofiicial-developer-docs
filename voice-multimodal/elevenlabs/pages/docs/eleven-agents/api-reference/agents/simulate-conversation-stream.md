@@ -36,7 +36,7 @@ paths:
         complete a single final message with the conversation analysis will be
         sent.
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: agent_id
           in: path

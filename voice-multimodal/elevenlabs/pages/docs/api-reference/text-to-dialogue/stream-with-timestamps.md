@@ -32,7 +32,7 @@ paths:
         returns a stream of JSON blobs containing audio as a base64 encoded
         string and timestamps
       tags:
-        - subpackage_textToDialogue
+        - textToDialogue
       parameters:
         - name: output_format
           in: query

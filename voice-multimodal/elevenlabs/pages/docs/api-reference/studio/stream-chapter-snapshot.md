@@ -32,7 +32,7 @@ paths:
         /v1/studio/projects/{project_id}/chapters/{chapter_id}/snapshots` to
         return the snapshots of a chapter.
       tags:
-        - subpackage_studio/projects/chapters/snapshots
+        - snapshots
       parameters:
         - name: project_id
           in: path

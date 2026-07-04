@@ -31,7 +31,7 @@ paths:
         Replace an environment variable's values. Use null to remove an
         environment (except production).
       tags:
-        - subpackage_environmentVariables
+        - environmentVariables
       parameters:
         - name: env_var_id
           in: path

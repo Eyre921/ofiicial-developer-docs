@@ -28,7 +28,7 @@ paths:
       summary: Get Documentation Chunk From Knowledge Base
       description: Get details about a specific documentation part used by RAG.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents/chunk
+        - chunk
       parameters:
         - name: documentation_id
           in: path

@@ -29,7 +29,7 @@ paths:
       summary: Create a pronunciation dictionary from rules
       description: Creates a new pronunciation dictionary from provided rules.
       tags:
-        - subpackage_pronunciationDictionaries
+        - pronunciationDictionaries
       parameters:
         - name: xi-api-key
           in: header

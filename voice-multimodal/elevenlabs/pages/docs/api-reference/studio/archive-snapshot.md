@@ -28,7 +28,7 @@ paths:
       summary: Stream Archive With Studio Project Audio
       description: Returns a compressed archive of the Studio project's audio.
       tags:
-        - subpackage_studio/projects/snapshots
+        - snapshots
       parameters:
         - name: project_id
           in: path

@@ -28,7 +28,7 @@ paths:
       summary: List Chapters
       description: Returns a list of a Studio project's chapters.
       tags:
-        - subpackage_studio/projects/chapters
+        - chapters
       parameters:
         - name: project_id
           in: path

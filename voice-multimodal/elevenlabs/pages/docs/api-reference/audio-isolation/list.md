@@ -28,7 +28,7 @@ paths:
       summary: Get Audio Isolation History
       description: Returns a list of all your audio isolation generations.
       tags:
-        - subpackage_audioIsolation
+        - audioIsolation
       parameters:
         - name: page_size
           in: query

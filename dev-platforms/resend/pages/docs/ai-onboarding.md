@@ -30,25 +30,23 @@ We require a human to create a Resend account. Once you have an account, you'll 
 
 MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. Our [MCP server](https://github.com/resend/resend-mcp) is open-source and covers our full API surface area.
 
-The Resend MCP server is available on NPM and can be added to any supported MCP client. For example:
+Resend hosts the MCP server, so you can connect any MCP client without installing anything:
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-{
-  "mcpServers": {
-    "resend": {
-      "command": "npx",
-      "args": ["-y", "resend-mcp"],
-      "env": {
-        "RESEND_API_KEY": "re_xxxxxxxxx"
-      }
-    }
-  }
-}
+```
+https://mcp.resend.com
 ```
 
+For example, with Claude Code:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+claude mcp add --transport http resend https://mcp.resend.com
+```
+
+When you connect, your client authenticates with OAuth by opening a browser to log in to Resend. Clients that can't complete a browser login can pass an API key as a Bearer token instead. You can also run the server locally with `npx` using the `resend-mcp` package on NPM.
+
 <Card title="MCP Server" icon="microchip-ai" href="/mcp-server">
-  View installation instructions for Cursor, Codex, Claude Desktop, Windsurf,
-  and more.
+  View setup instructions for Claude, Cursor, Codex, Copilot, Windsurf, and
+  more.
 </Card>
 
 ## Resend CLI

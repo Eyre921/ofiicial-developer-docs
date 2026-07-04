@@ -35,7 +35,7 @@ paths:
         ascending if start_time is used. The response is a tabular structure
         with columns, column_types, column_units, and rows.
       tags:
-        - subpackage_workspace/analytics/requests
+        - requests
       parameters:
         - name: xi-api-key
           in: header

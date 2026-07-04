@@ -30,8 +30,7 @@ paths:
       summary: Get Project Balances
       description: Generates a list of outstanding balances for the specified project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/balances
+        - manage > v1 > projects > billing > balances
       parameters:
         - name: project_id
           in: path

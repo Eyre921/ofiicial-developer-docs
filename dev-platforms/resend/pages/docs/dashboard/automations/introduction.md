@@ -16,7 +16,7 @@ You can use Automations for use cases like:
 * Abandoned cart
 * Trial expiration
 
-Automations support `{{{RESEND_UNSUBSCRIBE_URL}}}` for compliance with non-transactional product and marketing messaging. Read more about [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsubscribe-link).
+Automations support `{{{RESEND_UNSUBSCRIBE_URL}}}` for compliance with non-transactional product and marketing messaging. See [Unsubscribe behavior](/docs/dashboard/automations/send-email#unsubscribe-behavior) for how to add it to a Send Email step, or read more about [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsubscribe-link).
 
 ## How it works
 

@@ -30,8 +30,7 @@ paths:
       summary: List Project Requests
       description: Generates a list of requests for a specific project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/requests
+        - manage > v1 > projects > requests
       parameters:
         - name: project_id
           in: path

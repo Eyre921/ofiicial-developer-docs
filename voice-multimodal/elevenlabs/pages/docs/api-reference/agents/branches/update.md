@@ -31,7 +31,7 @@ paths:
         Update agent branch properties such as archiving status and protection
         level
       tags:
-        - subpackage_conversationalAi/agents/branches
+        - branches
       parameters:
         - name: agent_id
           in: path

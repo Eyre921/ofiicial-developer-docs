@@ -28,7 +28,7 @@ paths:
       summary: Get A Batch Call By Id.
       description: Get detailed information about a batch call including all recipients.
       tags:
-        - subpackage_conversationalAi/batchCalls
+        - batchCalls
       parameters:
         - name: batch_id
           in: path

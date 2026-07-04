@@ -28,7 +28,7 @@ paths:
       summary: Get history item
       description: Retrieves a history item.
       tags:
-        - subpackage_history
+        - history
       parameters:
         - name: history_item_id
           in: path

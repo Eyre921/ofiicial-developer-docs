@@ -28,7 +28,7 @@ paths:
       summary: Get Transcript By Id
       description: Retrieve a previously generated transcript by its ID.
       tags:
-        - subpackage_speechToText/transcripts
+        - transcripts
       parameters:
         - name: transcription_id
           in: path

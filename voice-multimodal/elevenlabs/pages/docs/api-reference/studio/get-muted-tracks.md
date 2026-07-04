@@ -28,7 +28,7 @@ paths:
       summary: Get Project Muted Tracks
       description: Returns a list of chapter IDs that have muted tracks in a project.
       tags:
-        - subpackage_studio/projects
+        - projects
       parameters:
         - name: project_id
           in: path

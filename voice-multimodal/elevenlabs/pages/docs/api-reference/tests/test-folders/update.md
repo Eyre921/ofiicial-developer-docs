@@ -31,7 +31,7 @@ paths:
         Updates an agent test folder. Currently only supports updating the
         folder name.
       tags:
-        - subpackage_conversationalAi/tests/folders
+        - folders
       parameters:
         - name: folder_id
           in: path

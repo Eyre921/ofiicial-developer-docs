@@ -28,7 +28,7 @@ paths:
       summary: Get Agent Test Folder By Id
       description: Gets an agent test folder by ID, including its folder path.
       tags:
-        - subpackage_conversationalAi/tests/folders
+        - folders
       parameters:
         - name: folder_id
           in: path

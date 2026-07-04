@@ -28,7 +28,7 @@ paths:
       summary: Get Environment Variable
       description: Get a specific environment variable by ID
       tags:
-        - subpackage_environmentVariables
+        - environmentVariables
       parameters:
         - name: env_var_id
           in: path

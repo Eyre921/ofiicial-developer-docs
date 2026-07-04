@@ -32,7 +32,7 @@ paths:
         information for each character and word in an audio file based on a
         provided text transcript.
       tags:
-        - subpackage_forcedAlignment
+        - forcedAlignment
       parameters:
         - name: xi-api-key
           in: header

@@ -29,7 +29,7 @@ paths:
       summary: Duplicate Agent
       description: Create a new agent by duplicating an existing one
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: agent_id
           in: path

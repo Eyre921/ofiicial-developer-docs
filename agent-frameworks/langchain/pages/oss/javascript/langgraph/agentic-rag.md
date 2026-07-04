@@ -220,7 +220,7 @@ Now we will start building components ([nodes](/oss/javascript/langgraph/graph-a
 
   const State = MessagesAnnotation;
   const model = new ChatOpenAI({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     temperature: 0,
   }).bindTools(tools);
 
@@ -578,7 +578,7 @@ AIMessage {
   });
 
   const gradeModel = new ChatOpenAI({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     temperature: 0,
   }).withStructuredOutput(gradeDocumentsSchema);
   const gradeFallbackModel = new ChatOpenAI({

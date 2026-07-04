@@ -28,7 +28,7 @@ paths:
       summary: Get Conversation Audio
       description: Get the audio recording of a particular conversation
       tags:
-        - subpackage_conversationalAi/conversations/audio
+        - audio
       parameters:
         - name: conversation_id
           in: path

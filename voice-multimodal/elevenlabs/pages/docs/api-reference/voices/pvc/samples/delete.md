@@ -28,7 +28,7 @@ paths:
       summary: Delete Pvc Voice Sample
       description: Delete a sample from a PVC voice.
       tags:
-        - subpackage_voices/pvc/samples
+        - samples
       parameters:
         - name: voice_id
           in: path

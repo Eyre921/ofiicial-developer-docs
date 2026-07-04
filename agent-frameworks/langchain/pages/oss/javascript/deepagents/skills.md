@@ -695,7 +695,7 @@ To share skills without letting agents modify them, route `/skills/` to a shared
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend: new CompositeBackend(new StateBackend(), {
       "/skills/": new StoreBackend({
         namespace: (rt) => ["curated-skills", rt.context.orgId],
@@ -1564,7 +1564,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
 
     try {
       const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend,
         skills: ["/skills/"],
         store,

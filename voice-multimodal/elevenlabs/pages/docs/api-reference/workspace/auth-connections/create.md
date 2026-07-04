@@ -29,7 +29,7 @@ paths:
       summary: Create Workspace Auth Connection
       description: Create a new OAuth2 auth connection for the workspace
       tags:
-        - subpackage_workspace/authConnections
+        - authConnections
       parameters:
         - name: xi-api-key
           in: header

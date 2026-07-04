@@ -34,8 +34,7 @@ paths:
         to filter your results from the Billing Breakdown endpoint and want to
         know what filters are available.
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/fields
+        - manage > v1 > projects > billing > fields
       parameters:
         - name: project_id
           in: path

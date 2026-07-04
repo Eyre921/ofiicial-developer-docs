@@ -31,7 +31,7 @@ paths:
         Update a PVC voice sample - apply noise removal, select speaker, change
         trim times or file name.
       tags:
-        - subpackage_voices/pvc/samples
+        - samples
       parameters:
         - name: voice_id
           in: path

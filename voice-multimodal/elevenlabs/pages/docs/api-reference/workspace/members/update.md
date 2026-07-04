@@ -32,7 +32,7 @@ paths:
         identifier, all parameters will remain unchanged unless specified. This
         endpoint may only be called by workspace administrators.
       tags:
-        - subpackage_workspace/members
+        - members
       parameters:
         - name: xi-api-key
           in: header

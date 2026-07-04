@@ -30,7 +30,7 @@ paths:
         Provides total size and other information of RAG indexes used by
         knowledgebase documents
       tags:
-        - subpackage_conversationalAi
+        - conversationalAi
       parameters:
         - name: xi-api-key
           in: header

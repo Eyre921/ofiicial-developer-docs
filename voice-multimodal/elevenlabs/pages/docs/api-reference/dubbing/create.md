@@ -29,7 +29,7 @@ paths:
       summary: Dub a video or audio file
       description: Dubs a provided audio or video file into given language.
       tags:
-        - subpackage_dubbing
+        - dubbing
       parameters:
         - name: xi-api-key
           in: header

@@ -352,6 +352,16 @@ Template variables must be present in your referenced template and the key names
 
 For more help working with variables, see the [Template documentation](/docs/dashboard/templates/template-variables).
 
+## Unsubscribe behavior
+
+Resend does not automatically add an unsubscribe link to emails sent from a `send_email` step. To let contacts opt out, add `{{{RESEND_UNSUBSCRIBE_URL}}}` to the [Template](/docs/dashboard/templates/introduction) used by the step.
+
+<Note>
+  `{{{RESEND_UNSUBSCRIBE_URL}}}` must be added to the Template itself, not the step's `config`. If the Template doesn't include this variable, contacts have no way to unsubscribe from within the email.
+</Note>
+
+See [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsubscribe-link) to decide whether your Automation emails need one.
+
 ## Configuration
 
 <ParamField type="object">
@@ -386,7 +396,7 @@ For more help working with variables, see the [Template documentation](/docs/das
   If provided, this value will override the template's default value.
 </ParamField>
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "welcome",
   "type": "send_email",

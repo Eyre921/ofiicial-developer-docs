@@ -703,7 +703,7 @@ Create `content_writer.ts` in the project root. The following sections belong in
         };
 
         return createDeepAgent({
-          model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model: "fireworks:accounts/fireworks/models/glm-5p2",
           memory: ["./AGENTS.md"],
           skills: ["./skills/"],
           tools: [generateCover, generateSocialImage],

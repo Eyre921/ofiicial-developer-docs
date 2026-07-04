@@ -30,7 +30,7 @@ paths:
         Given a dubbing ID generated from the '/v1/dubbing' endpoint with studio
         enabled, returns the dubbing resource.
       tags:
-        - subpackage_dubbing/resource
+        - resource
       parameters:
         - name: dubbing_id
           in: path

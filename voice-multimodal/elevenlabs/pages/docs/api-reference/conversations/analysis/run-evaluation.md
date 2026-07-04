@@ -29,7 +29,7 @@ paths:
       summary: Run Conversation Evaluation
       description: Rerun a specific evaluation for a conversation.
       tags:
-        - subpackage_conversationalAi/conversations/analysis
+        - analysis
       parameters:
         - name: conversation_id
           in: path

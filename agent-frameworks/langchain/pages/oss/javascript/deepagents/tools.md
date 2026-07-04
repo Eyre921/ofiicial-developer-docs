@@ -254,7 +254,7 @@ Deep Agents infers the tool schema from the function signature and docstring, so
   );
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [internetSearch],
   });
   ```

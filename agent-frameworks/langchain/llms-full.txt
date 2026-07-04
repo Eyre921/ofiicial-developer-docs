@@ -97852,7 +97852,9 @@ Deep Agents automatically writes the subagent's `name` to the `lc_agent_name` me
 1. Open your tracing project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-trace-deep-agents).
 2. Switch the view to **Runs** to see individual spans.
 3. Click **Add filter** and select **Metadata**.
-4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `research-agent`.
+4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
+
+<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
 
 Save the filter as a named view for quick reuse. For a full reference on filter options, see [Filter traces](/langsmith/filter-traces-in-application).
 
@@ -100473,11 +100475,11 @@ This guide shows you how to trace [Google Agent Development Kit (ADK)](https://g
 Install the required packages using your preferred package manager:
 
 <CodeGroup>
-  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```bash uv theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   uv add "langsmith[google-adk]"
   ```
 
-  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```bash pip theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   pip install langsmith[google-adk]
   ```
 </CodeGroup>
@@ -100487,7 +100489,7 @@ Install the required packages using your preferred package manager:
 Set your [API keys](/langsmith/create-account-api-key):
 
 <CodeGroup>
-  ```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```bash shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   export LANGSMITH_TRACING=true
   export LANGSMITH_ENDPOINT=https://api.smith.langchain.com
   export LANGSMITH_API_KEY=<your_langsmith_api_key>
@@ -100496,7 +100498,7 @@ Set your [API keys](/langsmith/create-account-api-key):
   export GOOGLE_API_KEY=<your_google_api_key>
   ```
 
-  ```dotenv .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```dotenv .env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   LANGSMITH_TRACING=true
   LANGSMITH_ENDPOINT=https://api.smith.langchain.com
   LANGSMITH_API_KEY=<your_langsmith_api_key>
@@ -100531,7 +100533,7 @@ The function accepts the following optional parameters:
 
 This example creates a weather agent with a tool, then runs it with tracing enabled:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from dotenv import load_dotenv  # Optional
@@ -100623,7 +100625,7 @@ configure_google_adk(
 
 The integration automatically traces multi-agent workflows including sequential and parallel agent compositions:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import asyncio
 
 from dotenv import load_dotenv  # Optional
@@ -115975,7 +115977,7 @@ even after that subagent's execution is complete. Those files will continue to b
   import { createDeepAgent, FilesystemBackend } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
   });
   ```
@@ -116118,7 +116120,7 @@ even after that subagent's execution is complete. Those files will continue to b
   const backend = new LocalShellBackend({ workingDirectory: "." });
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend,
   });
   ```
@@ -116228,7 +116230,7 @@ even after that subagent's execution is complete. Those files will continue to b
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend: new StoreBackend({
       namespace: (rt) => [rt.serverInfo.user.identity],
     }),
@@ -116477,7 +116479,7 @@ Construct it with a repo identifier in `owner/name` or `name` format.
   const store = new InMemoryStore();
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend: new CompositeBackend(new StateBackend(), {
       "/memories/": new StoreBackend({
         namespace: () => ["memories"],
@@ -121216,7 +121218,7 @@ Create `content_writer.ts` in the project root. The following sections belong in
         };
 
         return createDeepAgent({
-          model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model: "fireworks:accounts/fireworks/models/glm-5p2",
           memory: ["./AGENTS.md"],
           skills: ["./skills/"],
           tools: [generateCover, generateSocialImage],
@@ -122349,7 +122351,7 @@ In addition to [built-in tools](/oss/javascript/deepagents/overview#execution-en
   );
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [internetSearch],
   });
   ```
@@ -122560,7 +122562,7 @@ Each deep agent should also include a custom system prompt specific to its speci
     `write a polished report.`;
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     systemPrompt: researchInstructions,
   });
   ```
@@ -122992,7 +122994,7 @@ You can provide additional middleware to extend functionality, add tools, or imp
   });
 
   const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [getWeather] as any,
     middleware: [logToolCallsMiddleware] as any,
   });
@@ -123182,7 +123184,7 @@ Use [interpreters](/oss/javascript/deepagents/interpreters) to add an `eval` too
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -123485,7 +123487,7 @@ To isolate detailed work and avoid context bloat, use subagents:
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", // Optional override, defaults to main agent model
+    model: "fireworks:accounts/fireworks/models/glm-5p2", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
@@ -123685,7 +123687,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       import { createDeepAgent, FilesystemBackend } from "deepagents";
 
       const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
       });
       ```
@@ -123774,7 +123776,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const backend = new LocalShellBackend({ workingDirectory: "." });
 
       const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend,
       });
       ```
@@ -123874,7 +123876,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
       const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new StoreBackend({
           namespace: (rt) => [rt.serverInfo.user.identity],
         }),
@@ -124032,7 +124034,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const store = new InMemoryStore();
 
       const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new CompositeBackend(new StateBackend(), {
           "/memories/": new StoreBackend({
             namespace: () => ["memories"],
@@ -124574,7 +124576,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       }
 
       const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         memory: ["/AGENTS.md"],
         checkpointer: checkpointer,
       });
@@ -124954,7 +124956,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new StoreBackend({
           namespace: () => ["filesystem"],
         }),
@@ -125180,7 +125182,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
         memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
         interruptOn: {
@@ -125856,7 +125858,7 @@ Create `agent.ts` in your project directory:
       };
 
       const model = new ChatAnthropic({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         temperature: 0,
       });
 
@@ -126140,7 +126142,7 @@ Dynamic subagents require [interpreter](/oss/javascript/deepagents/interpreters)
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     subagents: [{
       name: "reviewer",
       description: "Reviews code for security issues, citing lines and severity",
@@ -126397,7 +126399,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
       subagents: [
         {
           name: "bug-fixer",
@@ -126582,7 +126584,7 @@ Discovering files from interpreter code requires [programmatic tool calling (PTC
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
       subagents: [{
         name: "reviewer",
         description: "Reviews code for security issues, citing lines and severity",
@@ -126763,7 +126765,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
       subagents: [
         {
           name: "reviewer",
@@ -126937,7 +126939,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
       subagents: [{
         name: "architect",
         description: "Proposes a database schema design with tradeoff analysis",
@@ -127112,7 +127114,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
       subagents: [
         {
           name: "writer",
@@ -127283,7 +127285,7 @@ graph LR
     import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
     const agent = createDeepAgent({
-      model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
       subagents: [{
         name: "analyzer",
         description: "Analyzes code for unused exports, functions, and dead code paths",
@@ -127403,7 +127405,7 @@ Subagent dispatch is on by default whenever the agent has subagents. Disable it 
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     subagents: [{ name: "reviewer", description: "Reviews code", systemPrompt: "Review code." }],
     middleware: [createCodeInterpreterMiddleware({ subagents: false })],
   });
@@ -129581,7 +129583,7 @@ The two are independent and almost always passed together:
   const contextSchema = z.object({ userId: z.string() });
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     contextSchema,
   });
 
@@ -130895,7 +130897,7 @@ Install the QuickJS middleware package, then pass interpreter middleware using t
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -131016,7 +131018,7 @@ Enable PTC with an explicit allowlist:
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
   });
   ```
@@ -132968,7 +132970,7 @@ Pass a `model` string in `provider:model` format, or an [initialized model insta
   `;
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [internetSearch],
     systemPrompt: researchInstructions,
   });
@@ -134260,7 +134262,7 @@ To share skills without letting agents modify them, route `/skills/` to a shared
   const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     backend: new CompositeBackend(new StateBackend(), {
       "/skills/": new StoreBackend({
         namespace: (rt) => ["curated-skills", rt.context.orgId],
@@ -135129,7 +135131,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
 
     try {
       const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend,
         skills: ["/skills/"],
         store,
@@ -136178,7 +136180,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
 ## Using SubAgent
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136234,7 +136236,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136290,7 +136292,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136346,7 +136348,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136402,7 +136404,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136448,7 +136450,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", // Optional override, defaults to main agent model
+    model: "fireworks:accounts/fireworks/models/glm-5p2", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
@@ -136458,7 +136460,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136514,7 +136516,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136708,7 +136710,7 @@ Use [`streamEvents`](/oss/javascript/deepagents/event-streaming) to get typed pr
 The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -136766,7 +136768,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -136824,7 +136826,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -136882,7 +136884,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -136940,11 +136942,11 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     systemPrompt:
       "You are a project coordinator with no research knowledge. " +
       "For every user request, you must call the task() tool with " +
@@ -136998,7 +137000,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -137056,7 +137058,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -137134,7 +137136,9 @@ Because each subagent's `name` is written to the `lc_agent_name` metadata key on
 1. Open your tracing project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents).
 2. Switch the view to **Runs** on the Tracing project page to see individual spans.
 3. Click **Add filter** and select **Metadata**.
-4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name (for example, `research-agent`).
+4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
+
+<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
 
 This shows only the runs produced by that subagent. You can save the filter as a named view for reuse. For a full reference on filtering options, see [Filter traces](/langsmith/filter-traces-in-application).
 
@@ -137907,7 +137911,7 @@ Deep Agents infers the tool schema from the function signature and docstring, so
   );
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [internetSearch],
   });
   ```
@@ -148400,7 +148404,7 @@ A harness is everything around that loop: the model, its prompt, its tools, and 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", tools });
+  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -148454,7 +148458,7 @@ Pass a model identifier string (`"provider:model"`) or an initialized model inst
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createAgent } from "langchain";
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", tools });
+  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -148537,7 +148541,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
     schema: z.object({ query: z.string() }),
   });
 
-  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", tools: [search] });
+  var agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools: [search] });
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -148606,7 +148610,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools,
     systemPrompt: "You are a helpful assistant. Be concise and accurate.",
   });
@@ -148694,7 +148698,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
   const Answer = z.object({ summary: z.string(), confidence: z.number() });
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools,
     responseFormat: Answer,
   });
@@ -148864,7 +148868,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   import { MemorySaver } from "@langchain/langgraph";
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [],
     checkpointer: new MemorySaver(),
   });
@@ -149084,7 +149088,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
   });
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [],
     contextSchema,
     checkpointer: new MemorySaver(),
@@ -149297,7 +149301,7 @@ Agents are especially useful when they can take action rather than just generate
   import { createFilesystemMiddleware, StateBackend } from "deepagents";
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [createFilesystemMiddleware({ backend: new StateBackend() })],
   });
@@ -149548,7 +149552,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   var backend = new StateBackend();
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [
       createFilesystemMiddleware({ backend }),
@@ -149698,7 +149702,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools,
     name: "research_assistant",
   });
@@ -149842,7 +149846,7 @@ Agents in production encounter failures that rarely appear in development: rate 
   });
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [
       modelRetryMiddleware({ maxRetries: 3 }),
@@ -149988,7 +149992,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
   });
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [piiMiddleware("email")],
   });
@@ -150115,7 +150119,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
   });
 
   var agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [search],
     middleware: [humanInTheLoopMiddleware({ interruptOn: { writeFile: true } })],
   });
@@ -159240,7 +159244,7 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
       const store = new InMemoryStore();
 
       const agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [],
         store,
       });
@@ -159361,7 +159365,7 @@ To add long-term memory to an agent, create a store and pass it to [`create_agen
       await store.setup();
 
       const agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [],
         store,
       });
@@ -159794,7 +159798,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       );
 
       const agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [getUserInfo],
         contextSchema,
         // Pass store to agent - enables agent to access store when running tools
@@ -160162,7 +160166,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       );
 
       const agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [getUserInfo],
         contextSchema,
         store,
@@ -160541,7 +160545,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       );
 
       const agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -160882,7 +160886,7 @@ For more information about the memory store, see the [Persistence](/oss/javascri
       );
 
       const agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [saveUserInfo],
         contextSchema,
         store,
@@ -161473,7 +161477,7 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
   async function accessMultimodalToolContent(): Promise<void> {
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
-    const agent = createAgent({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", tools });
+    const agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
 
     const result = await agent.invoke({
       messages: [{ role: "user", content: "Take a screenshot of the current page" }],
@@ -164671,7 +164675,7 @@ Use the `systemMessage` field in `ModelRequest` to read and modify the system pr
   });
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     systemPrompt: "You are a helpful assistant.",
     middleware: [addContextMiddleware],
   });
@@ -175484,7 +175488,7 @@ The following steps show you how to build a minimal [agent](/oss/javascript/lang
       });
       const allSplits = await splitter.splitDocuments(docs);
 
-      const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code" });
+      const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/glm-5p2" });
       const vectorStore = new MemoryVectorStore(embeddings);
 
       // Index chunks
@@ -176141,7 +176145,7 @@ This is a fast and effective method for simple queries in constrained settings, 
       });
       const allSplits = await splitter.splitDocuments(docs);
 
-      const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code" });
+      const embeddings = new OpenAIEmbeddings({ model: "fireworks:accounts/fireworks/models/glm-5p2" });
       const vectorStore = new MemoryVectorStore(embeddings);
 
       // Index chunks
@@ -177116,7 +177120,7 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
   const checkpointer = new MemorySaver(); // [!code highlight]
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [getUserInfo],
     checkpointer,
   });
@@ -178294,7 +178298,7 @@ The following tutorial covers the following concepts:
       import { createAgent } from "langchain";
 
       let agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
       });
@@ -178965,7 +178969,7 @@ The following tutorial covers the following concepts:
         `);
 
         export const agent = createAgent({
-          model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model: "fireworks:accounts/fireworks/models/glm-5p2",
           tools: [executeSql],
           systemPrompt: await getSystemPrompt(),
         });
@@ -179305,7 +179309,7 @@ The following tutorial covers the following concepts:
       import { MemorySaver } from "@langchain/langgraph"; // [!code highlight]
 
       agent = createAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         tools: [executeSql],
         systemPrompt: await getSystemPrompt(),
         middleware: [
@@ -179765,7 +179769,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   );
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [getWeather],
     checkpointer: new MemorySaver(),
   });
@@ -182155,7 +182159,7 @@ Tools can access an agent's runtime context through the `config` parameter. Pass
   });
 
   const agent = createAgent({
-    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code" }),
+    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/glm-5p2" }),
     tools: [getUserName],
     contextSchema,
   });
@@ -182701,7 +182705,7 @@ Set return direct on a tool to short-circuit the agent loop: the agent returns t
   );
 
   const agent = createAgent({
-    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/kimi-k2p7-code" }),
+    model: new ChatOpenAI({ model: "fireworks:accounts/fireworks/models/glm-5p2" }),
     tools: [fetchOrderStatus],
   });
 
@@ -182912,7 +182916,7 @@ Handle tool errors using LangChain agent [middleware](/oss/javascript/langchain/
   });
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [],
     middleware: [handleToolErrors],
   });
@@ -185178,7 +185182,7 @@ Now we will start building components ([nodes](/oss/javascript/langgraph/graph-a
 
   const State = MessagesAnnotation;
   const model = new ChatOpenAI({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     temperature: 0,
   }).bindTools(tools);
 
@@ -185536,7 +185540,7 @@ AIMessage {
   });
 
   const gradeModel = new ChatOpenAI({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     temperature: 0,
   }).withStructuredOutput(gradeDocumentsSchema);
   const gradeFallbackModel = new ChatOpenAI({
@@ -206963,7 +206967,7 @@ graph TB
   from deepagents.backends import StateBackend
 
   # By default we provide a StateBackend
-  agent = create_deep_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+  agent = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
   # Under the hood, it looks like
   agent2 = create_deep_agent(
@@ -207097,7 +207101,7 @@ even after that subagent's execution is complete. Those files will continue to b
   from deepagents.backends import FilesystemBackend
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=FilesystemBackend(root_dir=".", virtual_mode=True),
   )
   ```
@@ -207238,7 +207242,7 @@ even after that subagent's execution is complete. Those files will continue to b
   from deepagents.backends import LocalShellBackend
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
   )
   ```
@@ -207341,7 +207345,7 @@ even after that subagent's execution is complete. Those files will continue to b
   from langgraph.store.memory import InMemoryStore
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=StoreBackend(
           namespace=lambda rt: (rt.server_info.user.identity,),
       ),
@@ -207510,7 +207514,7 @@ This means your agent's context is intentionally spread across repos: one repo p
   from deepagents.backends import ContextHubBackend
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=ContextHubBackend("my-agent"),
   )
   ```
@@ -207636,7 +207640,7 @@ Construct it with a repo identifier in `owner/name` or `name` format.
   from langgraph.store.memory import InMemoryStore
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=CompositeBackend(
           default=StateBackend(),
           routes={
@@ -212301,7 +212305,7 @@ Create `content_writer.py` in the project root. The following sections belong in
       def create_content_writer():
           """Create a content writer agent configured by filesystem files."""
           return create_deep_agent(
-              model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+              model="fireworks:accounts/fireworks/models/glm-5p2",
               memory=["./AGENTS.md"],
               skills=["./skills/"],
               tools=[generate_cover, generate_social_image],
@@ -213434,7 +213438,7 @@ In addition to [built-in tools](/oss/python/deepagents/overview#execution-enviro
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[internet_search],
   )
   ```
@@ -213617,7 +213621,7 @@ Each deep agent should also include a custom system prompt specific to its speci
   """
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       system_prompt=research_instructions,
   )
   ```
@@ -214004,7 +214008,7 @@ You can provide additional middleware to extend functionality, add tools, or imp
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[get_weather],
       middleware=[log_tool_calls],
   )
@@ -214179,7 +214183,7 @@ Use [interpreters](/oss/python/deepagents/interpreters) to add an `eval` tool th
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[CodeInterpreterMiddleware()],
   )
   ```
@@ -214327,7 +214331,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import StateBackend
 
       # By default we provide a StateBackend
-      agent = create_deep_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+      agent = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
@@ -214421,7 +214425,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import FilesystemBackend
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=FilesystemBackend(root_dir=".", virtual_mode=True),
       )
       ```
@@ -214507,7 +214511,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import LocalShellBackend
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
       )
       ```
@@ -214600,7 +214604,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from langgraph.store.memory import InMemoryStore
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=StoreBackend(
               namespace=lambda rt: (rt.server_info.user.identity,),
           ),
@@ -214695,7 +214699,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import ContextHubBackend
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=ContextHubBackend("my-agent"),
       )
       ```
@@ -214802,7 +214806,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from langgraph.store.memory import InMemoryStore
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=CompositeBackend(
               default=StateBackend(),
               routes={
@@ -215309,7 +215313,7 @@ You can configure the approval for each tool:
   checkpointer = MemorySaver()
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[remove_file, fetch_file, notify_email],
       interrupt_on={
           "remove_file": True,  # Default: approve, edit, reject, respond
@@ -215575,7 +215579,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
       }
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=backend,
           skills=["/skills/"],
           checkpointer=checkpointer,
@@ -215896,7 +215900,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       checkpointer = MemorySaver()
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           memory=[
               "/AGENTS.md"
           ],
@@ -216189,7 +216193,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       )
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
           store=store,
           memory=["/AGENTS.md"],
@@ -216448,7 +216452,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       checkpointer = MemorySaver()
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=FilesystemBackend(root_dir="/Users/user/{project}"),
           memory=[
               "./AGENTS.md"
@@ -217901,7 +217905,7 @@ Create `agent.py` in your project directory:
               "tools": [tavily_search],
           }
 
-          model = init_chat_model(model="fireworks:accounts/fireworks/models/kimi-k2p7-code", temperature=0.0)
+          model = init_chat_model(model="fireworks:accounts/fireworks/models/glm-5p2", temperature=0.0)
 
           agent = create_deep_agent(
               model=model,
@@ -218207,7 +218211,7 @@ Dynamic subagents require [interpreter](/oss/python/deepagents/interpreters) mid
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       subagents=[{
           "name": "reviewer",
           "description": "Reviews code for security issues, citing lines and severity",
@@ -218468,7 +218472,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[
             {
                 "name": "bug-fixer",
@@ -218653,7 +218657,7 @@ Discovering files from interpreter code requires [programmatic tool calling (PTC
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[{
             "name": "reviewer",
             "description": "Reviews code for security issues, citing lines and severity",
@@ -218834,7 +218838,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[
             {
                 "name": "reviewer",
@@ -219008,7 +219012,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[{
             "name": "architect",
             "description": "Proposes a database schema design with tradeoff analysis",
@@ -219183,7 +219187,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[
             {
                 "name": "writer",
@@ -219354,7 +219358,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[{
             "name": "analyzer",
             "description": "Analyzes code for unused exports, functions, and dead code paths",
@@ -219474,7 +219478,7 @@ Subagent dispatch is on by default whenever the agent has subagents. Disable it 
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       subagents=[{"name": "reviewer", "description": "Reviews code", "system_prompt": "Review code."}],
       middleware=[CodeInterpreterMiddleware(subagents=False)],
   )
@@ -220147,7 +220151,7 @@ lookup function between them.
 
   def agent():
       return create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=lambda _runtime: get_or_create_sandbox_for_thread(
               get_thread_id_from_config()
           ),
@@ -221774,7 +221778,7 @@ The two are independent and almost always passed together:
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       context_schema=Context,
   )
 
@@ -222775,7 +222779,7 @@ The `interrupt_on` parameter accepts a dictionary mapping tool names to interrup
   checkpointer = MemorySaver()
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[remove_file, fetch_file, notify_email],
       interrupt_on={
           "remove_file": True,  # Default: approve, edit, reject, respond
@@ -223015,7 +223019,7 @@ By default, every tool call listed in `interrupt_on` pauses for review. To pause
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       interrupt_on={
           "write_file": {
               "allowed_decisions": ["approve", "edit", "reject"],
@@ -223623,7 +223627,7 @@ Install the QuickJS middleware package, then pass interpreter middleware using t
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[CodeInterpreterMiddleware()],
   )
   ```
@@ -223746,7 +223750,7 @@ Enable PTC with an explicit allowlist:
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[CodeInterpreterMiddleware(ptc=["web_search"])],
   )
   ```
@@ -223902,7 +223906,7 @@ Cross-turn persistence does not require a checkpointer:
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[
           CodeInterpreterMiddleware(
               mode="thread",  # Default
@@ -223997,7 +224001,7 @@ Because interpreter snapshots are stored in graph state, a [checkpointer](/oss/p
   from langgraph.checkpoint.memory import MemorySaver
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       checkpointer=MemorySaver(),
       middleware=[CodeInterpreterMiddleware(mode="thread")],
   )
@@ -226180,7 +226184,7 @@ Pass a `model` string in `provider:model` format, or an [initialized model insta
   """
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[internet_search],
       system_prompt=research_instructions,
   )
@@ -226399,7 +226403,7 @@ Add `RubricMiddleware` to the `middleware` list when you call `create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[
           RubricMiddleware(
               model="anthropic:claude-haiku-4-5",
@@ -226684,7 +226688,7 @@ When the deep agent finishes reasoning and has an output, the LLM-as-a-judge gra
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[
           RubricMiddleware(
               model="anthropic:claude-haiku-4-5",
@@ -227028,7 +227032,7 @@ Rather than asking the grader to reason abstractly about correctness, the exampl
 
 
       rubric_middleware = RubricMiddleware(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           system_prompt="You are a code reviewer grading generated code against a rubric.",
           tools=[run_test_suite],
           max_iterations=5,
@@ -227194,7 +227198,7 @@ Rather than asking the grader to reason abstractly about correctness, the exampl
       from langgraph.checkpoint.memory import InMemorySaver
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           system_prompt=(
               "You are a careful Python engineer. Write correct, readable code. "
               "Follow the user's instructions exactly."
@@ -228966,7 +228970,7 @@ Deep Agents supports different backends depending on how you want to store and m
       }
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=backend,
           skills=["/skills/"],
           checkpointer=checkpointer,
@@ -229378,7 +229382,7 @@ To share skills without letting agents modify them, route `/skills/` to a shared
   store = InMemoryStore()  # Good for local dev; omit for LangSmith Deployment
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       backend=CompositeBackend(
           default=StateBackend(),
           routes={
@@ -230026,7 +230030,7 @@ The agent can *read* scripts from any backend, but to *execute* them, the agent 
 
       try:
           agent = create_deep_agent(
-              model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+              model="fireworks:accounts/fireworks/models/glm-5p2",
               backend=backend,
               skills=["/skills/"],
               store=store,
@@ -230946,7 +230950,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
 
 ## Using SubAgent
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 
@@ -231119,7 +231123,7 @@ Use [`stream_events`](/oss/python/deepagents/event-streaming) to get typed proje
 The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
 <CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231174,7 +231178,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231229,7 +231233,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231284,7 +231288,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231339,13 +231343,13 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       system_prompt=(
           "You are a project coordinator with no research knowledge. "
           "For every user request, you must call the task() tool with "
@@ -231394,7 +231398,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231449,7 +231453,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231524,7 +231528,9 @@ Because each subagent's `name` is written to the `lc_agent_name` metadata key on
 1. Open your tracing project in [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-subagents).
 2. Switch the view to **Runs** on the Tracing project page to see individual spans.
 3. Click **Add filter** and select **Metadata**.
-4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name (for example, `research-agent`).
+4. Set the **Key** to `lc_agent_name` and the **Value** to the subagent name, for example `coordinator`.
+
+<img alt="LangSmith Runs view with a metadata filter on lc_agent_name set to coordinator" />
 
 This shows only the runs produced by that subagent. You can save the filter as a named view for reuse. For a full reference on filtering options, see [Filter traces](/langsmith/filter-traces-in-application).
 
@@ -232192,7 +232198,7 @@ Deep Agents infers the tool schema from the function signature and docstring, so
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[internet_search],
   )
   ```
@@ -238011,7 +238017,7 @@ A harness is everything around that loop: the model, its prompt, its tools, and 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
 
-  agent = create_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code", tools=tools)
+  agent = create_agent(model="fireworks:accounts/fireworks/models/glm-5p2", tools=tools)
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -238065,7 +238071,7 @@ Pass a model identifier string (`"provider:model"`) or an initialized model inst
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from langchain.agents import create_agent
 
-  agent = create_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code", tools=tools)
+  agent = create_agent(model="fireworks:accounts/fireworks/models/glm-5p2", tools=tools)
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -238153,7 +238159,7 @@ To provide the agent with tools, pass any Python callable, LangChain tool, or to
       return f"Results for: {query}"
 
 
-  agent = create_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code", tools=[search])
+  agent = create_agent(model="fireworks:accounts/fireworks/models/glm-5p2", tools=[search])
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -238224,7 +238230,7 @@ Shape how the agent approaches tasks. The system prompt parameter accepts a stri
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=tools,
       system_prompt="You are a helpful assistant. Be concise and accurate.",
   )
@@ -238322,7 +238328,7 @@ Return a validated schema from the agent using `response_format=`. See [Structur
       confidence: float
 
 
-  agent = create_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code", tools=tools, response_format=Answer)
+  agent = create_agent(model="fireworks:accounts/fireworks/models/glm-5p2", tools=tools, response_format=Answer)
   result = agent.invoke({"messages": [{"role": "user", "content": "Summarize AI trends"}]})
   result["structured_response"]  # Answer(summary=..., confidence=...)
   ```
@@ -238473,7 +238479,7 @@ You can invoke an agent with a message. Behind the scenes that passes an update 
   from langgraph.checkpoint.memory import InMemorySaver
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[],
       checkpointer=InMemorySaver(),
   )
@@ -238672,7 +238678,7 @@ If you also need to pass per-run configuration (such as a user ID, API keys, or 
 
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[],
       context_schema=Context,
       checkpointer=InMemorySaver(),
@@ -238869,7 +238875,7 @@ Agents are especially useful when they can take action rather than just generate
   from deepagents.middleware import FilesystemMiddleware
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[search],
       middleware=[FilesystemMiddleware(backend=StateBackend())],
   )
@@ -238988,7 +238994,7 @@ Every model call has a fixed context window. As an agent runs, that window fills
   from deepagents.middleware import FilesystemMiddleware, MemoryMiddleware, SkillsMiddleware, SummarizationMiddleware
 
   backend = StateBackend()
-  model="fireworks:accounts/fireworks/models/kimi-k2p7-code"
+  model="fireworks:accounts/fireworks/models/glm-5p2"
 
   agent = create_agent(
       model=model,
@@ -239226,7 +239232,7 @@ Complex tasks often exceed what one context window can handle. Delegation lets t
   backend = StateBackend()
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[search],
       middleware=[
           FilesystemMiddleware(backend=backend),
@@ -239353,7 +239359,7 @@ Optionally use an identifier for the agent. This is especially useful when embed
   ```
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  agent = create_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code", tools=tools, name="research_assistant")
+  agent = create_agent(model="fireworks:accounts/fireworks/models/glm-5p2", tools=tools, name="research_assistant")
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -239471,7 +239477,7 @@ Agents in production encounter failures that rarely appear in development: rate 
 
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[search],
       middleware=[
           ModelRetryMiddleware(max_retries=3),
@@ -239621,7 +239627,7 @@ Some policies can't live in a prompt—they need to be enforced deterministicall
 
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[search],
       middleware=[PIIMiddleware("email")],
   )
@@ -239762,7 +239768,7 @@ Full autonomy isn't always appropriate. Steering lets you place humans at specif
 
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[search],
       middleware=[HumanInTheLoopMiddleware(interrupt_on={"write_file": True})],
   )
@@ -241470,7 +241476,7 @@ Update your agent from step 2 by adding [`SummarizationMiddleware`](https://refe
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents.middleware import FilesystemMiddleware, SummarizationMiddleware
 
-  model="fireworks:accounts/fireworks/models/kimi-k2p7-code"
+  model="fireworks:accounts/fireworks/models/glm-5p2"
 
   agent = create_agent(
       model=model,
@@ -250089,7 +250095,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 
 
       agent: Runnable = create_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           tools=[get_user_info],
           # Pass store to agent - enables agent to access store when running tools
           store=store,
@@ -250520,7 +250526,7 @@ For more information about the memory store, see the [Persistence](/oss/python/l
 
 
       agent: Runnable = create_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           tools=[save_user_info],
           store=store,
           context_schema=Context,
@@ -265598,7 +265604,7 @@ The following steps show you how to build a minimal [agent](/oss/python/langchai
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         all_splits = text_splitter.split_documents(docs)
 
-        embeddings = OpenAIEmbeddings(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+        embeddings = OpenAIEmbeddings(model="fireworks:accounts/fireworks/models/glm-5p2")
         vector_store = InMemoryVectorStore(embedding=embeddings)
 
         # Index chunks
@@ -266180,7 +266186,7 @@ This is a fast and effective method for simple queries in constrained settings, 
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         all_splits = text_splitter.split_documents(docs)
 
-        embeddings = OpenAIEmbeddings(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+        embeddings = OpenAIEmbeddings(model="fireworks:accounts/fireworks/models/glm-5p2")
         vector_store = InMemoryVectorStore(embedding=embeddings)
 
         # Index chunks
@@ -267107,7 +267113,7 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
 
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[get_user_info],
       checkpointer=InMemorySaver(),  # [!code highlight]
   )
@@ -268946,7 +268952,7 @@ Pass a `thread_id` via `config` so the conversation is checkpointed and follow-u
       return f"It's always sunny in {city}!"
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[get_weather],
       checkpointer=InMemorySaver()
   )
@@ -272121,7 +272127,7 @@ Access context through `runtime.context`. Pass it alongside a `thread_id` so the
       return "User not found"
 
 
-  model = ChatOpenAI(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+  model = ChatOpenAI(model="fireworks:accounts/fireworks/models/glm-5p2")
   agent = create_agent(
       model,
       tools=[get_account_info],
@@ -272655,7 +272661,7 @@ Set return direct on a tool to short-circuit the agent loop: the agent returns t
 
 
   agent = create_agent(
-      ChatOpenAI(model="fireworks:accounts/fireworks/models/kimi-k2p7-code"),
+      ChatOpenAI(model="fireworks:accounts/fireworks/models/glm-5p2"),
       tools=[fetch_order_status],
   )
 
@@ -272887,7 +272893,7 @@ Handle tool errors using LangChain agent [middleware](/oss/python/langchain/midd
 
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[],
       middleware=[handle_tool_errors],
   )

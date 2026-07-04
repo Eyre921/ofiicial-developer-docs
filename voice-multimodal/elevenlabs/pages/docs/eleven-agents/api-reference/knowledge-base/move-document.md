@@ -29,7 +29,7 @@ paths:
       summary: Move Entity To Folder
       description: Moves the entity from one folder to another.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: document_id
           in: path

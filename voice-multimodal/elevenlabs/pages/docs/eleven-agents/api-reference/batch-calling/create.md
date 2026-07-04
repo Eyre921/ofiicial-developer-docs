@@ -29,7 +29,7 @@ paths:
       summary: Submit A Batch Call Request.
       description: Submit a batch call request to schedule calls for multiple recipients.
       tags:
-        - subpackage_conversationalAi/batchCalls
+        - batchCalls
       parameters:
         - name: xi-api-key
           in: header

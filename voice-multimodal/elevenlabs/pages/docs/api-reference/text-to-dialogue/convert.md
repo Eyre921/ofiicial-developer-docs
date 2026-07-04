@@ -31,7 +31,7 @@ paths:
         Converts a list of text and voice ID pairs into speech (dialogue) and
         returns audio.
       tags:
-        - subpackage_textToDialogue
+        - textToDialogue
       parameters:
         - name: output_format
           in: query

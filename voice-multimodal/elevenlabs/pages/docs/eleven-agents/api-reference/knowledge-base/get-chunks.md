@@ -28,7 +28,7 @@ paths:
       summary: Get All Rag Chunks For A Document
       description: Get all RAG chunks for a specific knowledge base document.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents/chunks
+        - chunks
       parameters:
         - name: documentation_id
           in: path

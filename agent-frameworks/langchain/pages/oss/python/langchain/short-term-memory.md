@@ -178,7 +178,7 @@ To add short-term memory (thread-level persistence) to an agent, you need to spe
 
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[get_user_info],
       checkpointer=InMemorySaver(),  # [!code highlight]
   )

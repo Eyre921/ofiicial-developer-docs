@@ -31,7 +31,7 @@ paths:
         Gets multiple agent response tests by their IDs. Returns a dictionary
         mapping test IDs to test summaries.
       tags:
-        - subpackage_conversationalAi/tests
+        - tests
       parameters:
         - name: xi-api-key
           in: header

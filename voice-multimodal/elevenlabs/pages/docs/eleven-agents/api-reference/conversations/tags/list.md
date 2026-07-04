@@ -30,7 +30,7 @@ paths:
         List conversation tags for the workspace, ordered by most recently
         created first.
       tags:
-        - subpackage_conversationalAi/conversations/tags
+        - tags
       parameters:
         - name: page_size
           in: query

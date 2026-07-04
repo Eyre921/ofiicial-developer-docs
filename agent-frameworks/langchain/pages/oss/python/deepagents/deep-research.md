@@ -517,7 +517,7 @@ Create `agent.py` in your project directory:
               "tools": [tavily_search],
           }
 
-          model = init_chat_model(model="fireworks:accounts/fireworks/models/kimi-k2p7-code", temperature=0.0)
+          model = init_chat_model(model="fireworks:accounts/fireworks/models/glm-5p2", temperature=0.0)
 
           agent = create_deep_agent(
               model=model,

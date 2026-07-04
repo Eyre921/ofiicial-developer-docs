@@ -28,7 +28,7 @@ paths:
       summary: List Environment Variables
       description: List all environment variables for the workspace with optional filtering
       tags:
-        - subpackage_environmentVariables
+        - environmentVariables
       parameters:
         - name: cursor
           in: query

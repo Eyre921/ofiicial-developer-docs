@@ -28,7 +28,7 @@ paths:
       summary: Delete Knowledge Base Document Or Folder
       description: Delete a document or folder from the knowledge base.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: documentation_id
           in: path

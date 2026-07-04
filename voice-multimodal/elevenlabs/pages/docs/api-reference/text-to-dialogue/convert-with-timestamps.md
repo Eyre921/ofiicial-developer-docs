@@ -31,7 +31,7 @@ paths:
         Generate dialogue from text with precise character-level timing
         information for audio-text synchronization.
       tags:
-        - subpackage_textToDialogue
+        - textToDialogue
       parameters:
         - name: output_format
           in: query

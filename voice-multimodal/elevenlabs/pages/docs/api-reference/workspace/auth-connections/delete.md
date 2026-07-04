@@ -28,7 +28,7 @@ paths:
       summary: Delete Workspace Auth Connection
       description: Delete an auth connection
       tags:
-        - subpackage_workspace/authConnections
+        - authConnections
       parameters:
         - name: auth_connection_id
           in: path

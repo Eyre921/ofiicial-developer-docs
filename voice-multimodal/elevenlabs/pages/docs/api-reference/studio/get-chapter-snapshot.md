@@ -28,7 +28,7 @@ paths:
       summary: Get Chapter Snapshot
       description: Returns the chapter snapshot.
       tags:
-        - subpackage_studio/projects/chapters/snapshots
+        - snapshots
       parameters:
         - name: project_id
           in: path

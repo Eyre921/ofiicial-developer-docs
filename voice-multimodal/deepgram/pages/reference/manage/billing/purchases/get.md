@@ -30,8 +30,7 @@ paths:
       summary: List Project Purchases
       description: Returns the original purchased amount on an order transaction
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/purchases
+        - manage > v1 > projects > billing > purchases
       parameters:
         - name: project_id
           in: path

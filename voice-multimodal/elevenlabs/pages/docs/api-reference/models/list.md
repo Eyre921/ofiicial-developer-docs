@@ -28,7 +28,7 @@ paths:
       summary: List models
       description: Gets a list of available models.
       tags:
-        - subpackage_models
+        - Models
       parameters:
         - name: xi-api-key
           in: header

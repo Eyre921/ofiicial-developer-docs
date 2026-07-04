@@ -88,7 +88,7 @@ Dynamic subagents require [interpreter](/oss/python/deepagents/interpreters) mid
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       subagents=[{
           "name": "reviewer",
           "description": "Reviews code for security issues, citing lines and severity",
@@ -349,7 +349,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[
             {
                 "name": "bug-fixer",
@@ -534,7 +534,7 @@ Discovering files from interpreter code requires [programmatic tool calling (PTC
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[{
             "name": "reviewer",
             "description": "Reviews code for security issues, citing lines and severity",
@@ -715,7 +715,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[
             {
                 "name": "reviewer",
@@ -889,7 +889,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[{
             "name": "architect",
             "description": "Proposes a database schema design with tradeoff analysis",
@@ -1064,7 +1064,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[
             {
                 "name": "writer",
@@ -1235,7 +1235,7 @@ graph LR
     from langchain_quickjs import CodeInterpreterMiddleware
 
     agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model="fireworks:accounts/fireworks/models/glm-5p2",
         subagents=[{
             "name": "analyzer",
             "description": "Analyzes code for unused exports, functions, and dead code paths",
@@ -1355,7 +1355,7 @@ Subagent dispatch is on by default whenever the agent has subagents. Disable it 
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       subagents=[{"name": "reviewer", "description": "Reviews code", "system_prompt": "Review code."}],
       middleware=[CodeInterpreterMiddleware(subagents=False)],
   )

@@ -29,7 +29,7 @@ paths:
       summary: Update Phone Number
       description: Update assigned agent of a phone number
       tags:
-        - subpackage_conversationalAi/phoneNumbers
+        - phoneNumbers
       parameters:
         - name: phone_number_id
           in: path

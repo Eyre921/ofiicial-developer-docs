@@ -1270,7 +1270,7 @@ The following steps show you how to build a minimal [agent](/oss/python/langchai
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         all_splits = text_splitter.split_documents(docs)
 
-        embeddings = OpenAIEmbeddings(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+        embeddings = OpenAIEmbeddings(model="fireworks:accounts/fireworks/models/glm-5p2")
         vector_store = InMemoryVectorStore(embedding=embeddings)
 
         # Index chunks
@@ -1852,7 +1852,7 @@ This is a fast and effective method for simple queries in constrained settings, 
         text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=200)
         all_splits = text_splitter.split_documents(docs)
 
-        embeddings = OpenAIEmbeddings(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+        embeddings = OpenAIEmbeddings(model="fireworks:accounts/fireworks/models/glm-5p2")
         vector_store = InMemoryVectorStore(embedding=embeddings)
 
         # Index chunks

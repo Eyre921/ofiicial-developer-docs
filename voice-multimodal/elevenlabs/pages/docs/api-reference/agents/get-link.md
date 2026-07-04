@@ -28,7 +28,7 @@ paths:
       summary: Get Shareable Agent Link
       description: Get the current link used to share the agent with others
       tags:
-        - subpackage_conversationalAi/agents/link
+        - link
       parameters:
         - name: agent_id
           in: path

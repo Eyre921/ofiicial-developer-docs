@@ -30,7 +30,7 @@ paths:
         Get paginated list of resources that depend on a specific secret,
         filtered by resource type.
       tags:
-        - subpackage_conversationalAi/secrets
+        - secrets
       parameters:
         - name: secret_id
           in: path

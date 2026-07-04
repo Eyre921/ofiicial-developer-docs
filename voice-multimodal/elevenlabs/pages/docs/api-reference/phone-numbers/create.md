@@ -31,7 +31,7 @@ paths:
         Import Phone Number from provider configuration (Twilio, Exotel, or SIP
         trunk)
       tags:
-        - subpackage_conversationalAi/phoneNumbers
+        - phoneNumbers
       parameters:
         - name: xi-api-key
           in: header

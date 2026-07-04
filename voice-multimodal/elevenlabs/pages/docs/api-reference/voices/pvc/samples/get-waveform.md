@@ -28,7 +28,7 @@ paths:
       summary: Retrieve Voice Sample Visual Waveform
       description: Retrieve the visual waveform of a voice sample.
       tags:
-        - subpackage_voices/pvc/samples/waveform
+        - waveform
       parameters:
         - name: voice_id
           in: path

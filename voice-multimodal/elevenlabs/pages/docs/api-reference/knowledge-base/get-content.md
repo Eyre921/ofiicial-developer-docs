@@ -28,7 +28,7 @@ paths:
       summary: Get Document Content
       description: Get the entire content of a document from the knowledge base
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: documentation_id
           in: path

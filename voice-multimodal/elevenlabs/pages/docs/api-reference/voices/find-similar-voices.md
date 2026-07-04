@@ -32,7 +32,7 @@ paths:
         neither similarity_threshold nor top_k is provided, we will apply
         default values.
       tags:
-        - subpackage_voices
+        - voices
       parameters:
         - name: xi-api-key
           in: header

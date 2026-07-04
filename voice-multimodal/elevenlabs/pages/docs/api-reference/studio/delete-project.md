@@ -28,7 +28,7 @@ paths:
       summary: Delete Studio Project
       description: Deletes a Studio project.
       tags:
-        - subpackage_studio/projects
+        - projects
       parameters:
         - name: project_id
           in: path

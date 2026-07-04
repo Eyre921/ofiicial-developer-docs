@@ -28,7 +28,7 @@ paths:
       summary: Get user
       description: Gets information about the user
       tags:
-        - subpackage_user
+        - user
       parameters:
         - name: xi-api-key
           in: header

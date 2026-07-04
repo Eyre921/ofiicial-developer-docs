@@ -38,7 +38,7 @@ paths:
         breakdown type "voice" will return the usage of each voice for each
         interval along the time axis.
       tags:
-        - subpackage_usage
+        - usage
       parameters:
         - name: start_unix
           in: query

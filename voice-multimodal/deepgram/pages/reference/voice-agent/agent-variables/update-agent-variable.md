@@ -31,7 +31,7 @@ paths:
       summary: Update an Agent Variable
       description: Updates the value of an existing template variable
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/variables
+        - voiceAgent > variables
       parameters:
         - name: project_id
           in: path

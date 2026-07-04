@@ -30,7 +30,7 @@ paths:
         Returns the result of rebasing the branch onto main without performing
         the rebase. Useful for showing an accurate diff before confirming.
       tags:
-        - subpackage_conversationalAi/agents/branches
+        - branches
       parameters:
         - name: agent_id
           in: path

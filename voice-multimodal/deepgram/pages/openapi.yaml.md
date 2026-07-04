@@ -15,8 +15,7 @@ paths:
       summary: List Agent Think Models
       description: Retrieves the available think models that can be used for AI agent processing
       tags:
-        - >-
-          subpackage_agent.subpackage_agent/v1.subpackage_agent/v1/settings.subpackage_agent/v1/settings/think.subpackage_agent/v1/settings/think/models
+        - agent > v1 > settings > think > models
       responses:
         '200':
           description: List of available think models
@@ -39,7 +38,7 @@ paths:
         `agent` block of a Settings message. The returned `agent_id` can be passed in place of the full `agent` object
         in future Settings messages.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path
@@ -81,7 +80,7 @@ paths:
         Returns all agent configurations for the specified project. Configurations are returned in their uninterpolated
         form—template variable placeholders appear as-is rather than with their substituted values.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path
@@ -116,7 +115,7 @@ paths:
       summary: Get an Agent Configuration
       description: Returns the specified agent configuration in its uninterpolated form
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path
@@ -158,7 +157,7 @@ paths:
         Updates the metadata associated with an agent configuration. The config itself is immutable—to change the
         configuration, delete the existing agent and create a new one.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path
@@ -206,7 +205,7 @@ paths:
         Deletes the specified agent configuration. Deleting an agent configuration can cause a production outage if your
         service references this agent UUID. Migrate all active sessions to a new configuration before deleting.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/configurations
+        - voiceAgent > configurations
       parameters:
         - name: project_id
           in: path
@@ -249,7 +248,7 @@ paths:
         Creates a new template variable. Variables follow the `DG_<VARIABLE_NAME>` naming format and can substitute any
         JSON value in an agent configuration.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/variables
+        - voiceAgent > variables
       parameters:
         - name: project_id
           in: path
@@ -289,7 +288,7 @@ paths:
       summary: List Agent Variables
       description: Returns all template variables for the specified project
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/variables
+        - voiceAgent > variables
       parameters:
         - name: project_id
           in: path
@@ -324,7 +323,7 @@ paths:
       summary: Get an Agent Variable
       description: Returns the specified template variable
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/variables
+        - voiceAgent > variables
       parameters:
         - name: project_id
           in: path
@@ -364,7 +363,7 @@ paths:
       summary: Update an Agent Variable
       description: Updates the value of an existing template variable
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/variables
+        - voiceAgent > variables
       parameters:
         - name: project_id
           in: path
@@ -410,7 +409,7 @@ paths:
       summary: Delete an Agent Variable
       description: Deletes the specified template variable
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/variables
+        - voiceAgent > variables
       parameters:
         - name: project_id
           in: path
@@ -451,7 +450,7 @@ paths:
       summary: Transcribe and analyze pre-recorded audio and video
       description: Transcribe audio and video using Deepgram's speech-to-text REST API
       tags:
-        - subpackage_listen.subpackage_listen/v1.subpackage_listen/v1/media
+        - listen > v1 > media
       parameters:
         - name: callback
           in: query
@@ -755,7 +754,7 @@ paths:
       summary: Text to Speech transformation
       description: Convert text into natural-sounding speech using Deepgram's TTS REST API
       tags:
-        - subpackage_speak.subpackage_speak/v1.subpackage_speak/v1/audio
+        - speak > v1 > audio
       parameters:
         - name: callback
           in: query
@@ -869,7 +868,7 @@ paths:
       summary: Analyze text content
       description: Analyze text content using Deepgrams text analysis API
       tags:
-        - subpackage_read.subpackage_read/v1.subpackage_read/v1/text
+        - read > v1 > text
       parameters:
         - name: callback
           in: query
@@ -991,7 +990,7 @@ paths:
       summary: List Projects
       description: Retrieves basic information about the projects associated with the API key
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects
+        - manage > v1 > projects
       parameters:
         - name: Authorization
           in: header
@@ -1020,7 +1019,7 @@ paths:
       summary: Get a Project
       description: Retrieves information about the specified project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects
+        - manage > v1 > projects
       parameters:
         - name: project_id
           in: path
@@ -1069,7 +1068,7 @@ paths:
       summary: Update a Project
       description: Updates the name or other properties of an existing project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects
+        - manage > v1 > projects
       parameters:
         - name: project_id
           in: path
@@ -1109,7 +1108,7 @@ paths:
       summary: Delete a Project
       description: Deletes the specified project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects
+        - manage > v1 > projects
       parameters:
         - name: project_id
           in: path
@@ -1144,7 +1143,7 @@ paths:
       summary: Leave a Project
       description: Removes the authenticated account from the specific project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects
+        - manage > v1 > projects
       parameters:
         - name: project_id
           in: path
@@ -1179,7 +1178,7 @@ paths:
       summary: List Project Models
       description: Returns metadata on all the latest models that a specific project has access to, including non-public models
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/models
+        - manage > v1 > projects > models
       parameters:
         - name: project_id
           in: path
@@ -1220,7 +1219,7 @@ paths:
       summary: Get a Project Model
       description: Returns metadata for a specific model
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/models
+        - manage > v1 > projects > models
       parameters:
         - name: project_id
           in: path
@@ -1261,7 +1260,7 @@ paths:
       summary: List Models
       description: Returns metadata on all the latest public models. To retrieve custom models, use Get Project Models.
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/models
+        - manage > v1 > models
       parameters:
         - name: include_outdated
           in: query
@@ -1296,7 +1295,7 @@ paths:
       summary: Get a specific Model
       description: Returns metadata for a specific public model
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/models
+        - manage > v1 > models
       parameters:
         - name: model_id
           in: path
@@ -1331,7 +1330,7 @@ paths:
       summary: List Project Keys
       description: Retrieves all API keys associated with the specified project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/keys
+        - manage > v1 > projects > keys
       parameters:
         - name: project_id
           in: path
@@ -1371,7 +1370,7 @@ paths:
       summary: Create a Project Key
       description: Creates a new API key with specified settings for the project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/keys
+        - manage > v1 > projects > keys
       parameters:
         - name: project_id
           in: path
@@ -1412,7 +1411,7 @@ paths:
       summary: Get a Project Key
       description: Retrieves information about a specified API key
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/keys
+        - manage > v1 > projects > keys
       parameters:
         - name: project_id
           in: path
@@ -1452,7 +1451,7 @@ paths:
       summary: Delete a Project Key
       description: Deletes an API key for a specific project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/keys
+        - manage > v1 > projects > keys
       parameters:
         - name: project_id
           in: path
@@ -1493,7 +1492,7 @@ paths:
       summary: List Project Members
       description: Retrieves a list of members for a given project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members
+        - manage > v1 > projects > members
       parameters:
         - name: project_id
           in: path
@@ -1528,7 +1527,7 @@ paths:
       summary: Delete a Project Member
       description: Removes a member from the project using their unique member ID
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members
+        - manage > v1 > projects > members
       parameters:
         - name: project_id
           in: path
@@ -1569,8 +1568,7 @@ paths:
       summary: List Project Member Scopes
       description: Retrieves a list of scopes for a specific member
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members.subpackage_manage/v1/projects/members/scopes
+        - manage > v1 > projects > members > scopes
       parameters:
         - name: project_id
           in: path
@@ -1610,8 +1608,7 @@ paths:
       summary: Update Project Member Scopes
       description: Updates the scopes for a specific member
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members.subpackage_manage/v1/projects/members/scopes
+        - manage > v1 > projects > members > scopes
       parameters:
         - name: project_id
           in: path
@@ -1658,8 +1655,7 @@ paths:
       summary: List Project Invites
       description: Generates a list of invites for a specific project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members.subpackage_manage/v1/projects/members/invites
+        - manage > v1 > projects > members > invites
       parameters:
         - name: project_id
           in: path
@@ -1693,8 +1689,7 @@ paths:
       summary: Create a Project Invite
       description: Generates an invite for a specific project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members.subpackage_manage/v1/projects/members/invites
+        - manage > v1 > projects > members > invites
       parameters:
         - name: project_id
           in: path
@@ -1735,8 +1730,7 @@ paths:
       summary: Delete a Project Invite
       description: Deletes an invite for a specific project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members.subpackage_manage/v1/projects/members/invites
+        - manage > v1 > projects > members > invites
       parameters:
         - name: project_id
           in: path
@@ -1777,7 +1771,7 @@ paths:
       summary: List Project Requests
       description: Generates a list of requests for a specific project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/requests
+        - manage > v1 > projects > requests
       parameters:
         - name: project_id
           in: path
@@ -1881,7 +1875,7 @@ paths:
       summary: Get a Project Request
       description: Retrieves a specific request for a specific project
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/requests
+        - manage > v1 > projects > requests
       parameters:
         - name: project_id
           in: path
@@ -1924,7 +1918,7 @@ paths:
         Retrieves the usage for a specific project. Use Get Project Usage Breakdown for a more comprehensive usage
         summary.
       tags:
-        - subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/usage
+        - manage > v1 > projects > usage
       parameters:
         - name: project_id
           in: path
@@ -2225,8 +2219,7 @@ paths:
       summary: List Project Usage Fields
       description: Lists the features, models, tags, languages, and processing method used for requests in the specified project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/usage.subpackage_manage/v1/projects/usage/fields
+        - manage > v1 > projects > usage > fields
       parameters:
         - name: project_id
           in: path
@@ -2279,8 +2272,7 @@ paths:
         excludes requests that used it. Multiple true filters are combined with OR logic, while false filters use AND
         logic.
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/usage.subpackage_manage/v1/projects/usage/breakdown
+        - manage > v1 > projects > usage > breakdown
       parameters:
         - name: project_id
           in: path
@@ -2587,8 +2579,7 @@ paths:
       summary: Get Project Balances
       description: Generates a list of outstanding balances for the specified project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/balances
+        - manage > v1 > projects > billing > balances
       parameters:
         - name: project_id
           in: path
@@ -2623,8 +2614,7 @@ paths:
       summary: Get a Project Balance
       description: Retrieves details about the specified balance
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/balances
+        - manage > v1 > projects > billing > balances
       parameters:
         - name: project_id
           in: path
@@ -2665,8 +2655,7 @@ paths:
       summary: Get Project Billing Breakdown
       description: Retrieves the billing summary for a specific project, with various filter options or by grouping options.
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/breakdown
+        - manage > v1 > projects > billing > breakdown
       parameters:
         - name: project_id
           in: path
@@ -2750,8 +2739,7 @@ paths:
         Use this endpoint if you want to filter your results from the Billing Breakdown endpoint and want to know what
         filters are available.
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/fields
+        - manage > v1 > projects > billing > fields
       parameters:
         - name: project_id
           in: path
@@ -2800,8 +2788,7 @@ paths:
       summary: List Project Purchases
       description: Returns the original purchased amount on an order transaction
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/purchases
+        - manage > v1 > projects > billing > purchases
       parameters:
         - name: project_id
           in: path
@@ -2844,7 +2831,7 @@ paths:
       summary: List Project Self-Hosted Distribution Credentials
       description: Lists sets of distribution credentials for the specified project
       tags:
-        - subpackage_selfHosted.subpackage_selfHosted/v1.subpackage_selfHosted/v1/distributionCredentials
+        - selfHosted > v1 > distributionCredentials
       parameters:
         - name: project_id
           in: path
@@ -2878,7 +2865,7 @@ paths:
       summary: Create a Project Self-Hosted Distribution Credential
       description: Creates a set of distribution credentials for the specified project
       tags:
-        - subpackage_selfHosted.subpackage_selfHosted/v1.subpackage_selfHosted/v1/distributionCredentials
+        - selfHosted > v1 > distributionCredentials
       parameters:
         - name: project_id
           in: path
@@ -2936,7 +2923,7 @@ paths:
       summary: Get a Project Self-Hosted Distribution Credential
       description: Returns a set of distribution credentials for the specified project
       tags:
-        - subpackage_selfHosted.subpackage_selfHosted/v1.subpackage_selfHosted/v1/distributionCredentials
+        - selfHosted > v1 > distributionCredentials
       parameters:
         - name: project_id
           in: path
@@ -2976,7 +2963,7 @@ paths:
       summary: Delete a Project Self-Hosted Distribution Credential
       description: Deletes a set of distribution credentials for the specified project
       tags:
-        - subpackage_selfHosted.subpackage_selfHosted/v1.subpackage_selfHosted/v1/distributionCredentials
+        - selfHosted > v1 > distributionCredentials
       parameters:
         - name: project_id
           in: path
@@ -3020,7 +3007,7 @@ paths:
         core voice APIs, requiring an API key with Member or higher authorization. Tokens created with this endpoint
         will not work with the Manage APIs.
       tags:
-        - subpackage_auth.subpackage_auth/v1.subpackage_auth/v1/tokens
+        - auth > v1 > tokens
       parameters:
         - name: Authorization
           in: header

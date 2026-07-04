@@ -31,7 +31,7 @@ paths:
         using Dubbing Studio you need to use the resource render endpoint as
         this endpoint only returns the original automatic dub result.
       tags:
-        - subpackage_dubbing/audio
+        - audio
       parameters:
         - name: dubbing_id
           in: path

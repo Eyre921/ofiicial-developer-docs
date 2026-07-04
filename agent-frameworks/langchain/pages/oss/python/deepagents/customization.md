@@ -554,7 +554,7 @@ In addition to [built-in tools](/oss/python/deepagents/overview#execution-enviro
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[internet_search],
   )
   ```
@@ -737,7 +737,7 @@ Each deep agent should also include a custom system prompt specific to its speci
   """
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       system_prompt=research_instructions,
   )
   ```
@@ -1124,7 +1124,7 @@ You can provide additional middleware to extend functionality, add tools, or imp
 
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[get_weather],
       middleware=[log_tool_calls],
   )
@@ -1299,7 +1299,7 @@ Use [interpreters](/oss/python/deepagents/interpreters) to add an `eval` tool th
   from langchain_quickjs import CodeInterpreterMiddleware
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       middleware=[CodeInterpreterMiddleware()],
   )
   ```
@@ -1447,7 +1447,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import StateBackend
 
       # By default we provide a StateBackend
-      agent = create_deep_agent(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+      agent = create_deep_agent(model="fireworks:accounts/fireworks/models/glm-5p2")
 
       # Under the hood, it looks like
       agent2 = create_deep_agent(
@@ -1541,7 +1541,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import FilesystemBackend
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=FilesystemBackend(root_dir=".", virtual_mode=True),
       )
       ```
@@ -1627,7 +1627,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import LocalShellBackend
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=LocalShellBackend(root_dir=".", virtual_mode=True, env={"PATH": "/usr/bin:/bin"}),
       )
       ```
@@ -1720,7 +1720,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from langgraph.store.memory import InMemoryStore
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=StoreBackend(
               namespace=lambda rt: (rt.server_info.user.identity,),
           ),
@@ -1815,7 +1815,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from deepagents.backends import ContextHubBackend
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=ContextHubBackend("my-agent"),
       )
       ```
@@ -1922,7 +1922,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       from langgraph.store.memory import InMemoryStore
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=CompositeBackend(
               default=StateBackend(),
               routes={
@@ -2429,7 +2429,7 @@ You can configure the approval for each tool:
   checkpointer = MemorySaver()
 
   agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[remove_file, fetch_file, notify_email],
       interrupt_on={
           "remove_file": True,  # Default: approve, edit, reject, respond
@@ -2695,7 +2695,7 @@ To add skills to your deep agent, pass them as an argument to `create_deep_agent
       }
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=backend,
           skills=["/skills/"],
           checkpointer=checkpointer,
@@ -3016,7 +3016,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       checkpointer = MemorySaver()
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           memory=[
               "/AGENTS.md"
           ],
@@ -3309,7 +3309,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       )
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=StoreBackend(namespace=lambda _rt: ("filesystem",)),
           store=store,
           memory=["/AGENTS.md"],
@@ -3568,7 +3568,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       checkpointer = MemorySaver()
 
       agent = create_deep_agent(
-          model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+          model="fireworks:accounts/fireworks/models/glm-5p2",
           backend=FilesystemBackend(root_dir="/Users/user/{project}"),
           memory=[
               "./AGENTS.md"

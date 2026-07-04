@@ -29,7 +29,7 @@ paths:
       summary: Move Segments Between Speakers
       description: Change the attribution of one or more segments to a different speaker.
       tags:
-        - subpackage_dubbing/resource
+        - resource
       parameters:
         - name: dubbing_id
           in: path

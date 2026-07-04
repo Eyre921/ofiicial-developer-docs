@@ -30,7 +30,7 @@ paths:
         Search through conversation transcript messages by full-text and fuzzy
         search
       tags:
-        - subpackage_conversationalAi/conversations/messages
+        - messages
       parameters:
         - name: text_query
           in: query

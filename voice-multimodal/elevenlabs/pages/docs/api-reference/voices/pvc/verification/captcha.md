@@ -28,7 +28,7 @@ paths:
       summary: Get Pvc Voice Captcha
       description: Get captcha for PVC voice verification.
       tags:
-        - subpackage_voices/pvc/verification/captcha
+        - captcha
       parameters:
         - name: voice_id
           in: path

@@ -28,7 +28,7 @@ paths:
       summary: List Agent Branches
       description: Returns a list of branches an agent has
       tags:
-        - subpackage_conversationalAi/agents/branches
+        - branches
       parameters:
         - name: agent_id
           in: path

@@ -28,7 +28,7 @@ paths:
       summary: Get Agent Widget Config
       description: Retrieve the widget configuration for an agent
       tags:
-        - subpackage_conversationalAi/agents/widget
+        - widget
       parameters:
         - name: agent_id
           in: path

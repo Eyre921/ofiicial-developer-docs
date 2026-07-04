@@ -29,7 +29,7 @@ paths:
       summary: Update Mcp Tool Configuration Override
       description: Update configuration overrides for a specific MCP tool.
       tags:
-        - subpackage_conversationalAi/mcpServers/toolConfigs
+        - toolConfigs
       parameters:
         - name: mcp_server_id
           in: path

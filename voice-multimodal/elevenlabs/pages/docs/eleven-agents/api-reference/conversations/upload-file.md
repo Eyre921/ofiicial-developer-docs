@@ -31,7 +31,7 @@ paths:
         Upload an image or PDF file for a conversation. Returns a unique file ID
         that can be used to reference the file in the conversation.
       tags:
-        - subpackage_conversationalAi/conversations/files
+        - files
       parameters:
         - name: conversation_id
           in: path

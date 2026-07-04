@@ -34,7 +34,7 @@ paths:
         `DG_<VARIABLE_NAME>` naming format and can substitute any JSON value in
         an agent configuration.
       tags:
-        - subpackage_voiceAgent.subpackage_voiceAgent/variables
+        - voiceAgent > variables
       parameters:
         - name: project_id
           in: path

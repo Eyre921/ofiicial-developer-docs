@@ -29,7 +29,7 @@ paths:
       summary: Compose Music With A Detailed Response
       description: Compose a song from a prompt or a composition plan.
       tags:
-        - subpackage_music
+        - music
       parameters:
         - name: output_format
           in: query

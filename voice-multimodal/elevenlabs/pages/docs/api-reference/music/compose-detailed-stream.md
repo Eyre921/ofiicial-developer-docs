@@ -29,7 +29,7 @@ paths:
       summary: Stream Composed Music With A Detailed Response
       description: Stream a song and its detailed metadata using Server-Sent Events (SSE).
       tags:
-        - subpackage_music
+        - music
       parameters:
         - name: output_format
           in: query

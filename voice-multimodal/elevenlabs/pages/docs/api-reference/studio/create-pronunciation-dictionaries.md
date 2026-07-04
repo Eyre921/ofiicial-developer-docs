@@ -33,7 +33,7 @@ paths:
         reconverting where the new dictionary would apply or the old one no
         longer does.
       tags:
-        - subpackage_studio/projects/pronunciationDictionaries
+        - pronunciationDictionaries
       parameters:
         - name: project_id
           in: path

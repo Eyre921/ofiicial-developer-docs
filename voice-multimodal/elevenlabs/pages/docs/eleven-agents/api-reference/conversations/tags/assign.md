@@ -31,7 +31,7 @@ paths:
         Assign one or more conversation tags to a conversation. Tags that are
         already assigned are ignored. Tags must belong to the same workspace.
       tags:
-        - subpackage_conversationalAi/conversations/tags
+        - tags
       parameters:
         - name: conversation_id
           in: path

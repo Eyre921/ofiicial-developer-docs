@@ -30,7 +30,7 @@ paths:
         Manually refresh a URL document by re-fetching its content from the
         source URL.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/document
+        - document
       parameters:
         - name: documentation_id
           in: path

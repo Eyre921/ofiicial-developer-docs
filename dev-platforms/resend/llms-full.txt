@@ -227,25 +227,23 @@ We require a human to create a Resend account. Once you have an account, you'll 
 
 MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. Our [MCP server](https://github.com/resend/resend-mcp) is open-source and covers our full API surface area.
 
-The Resend MCP server is available on NPM and can be added to any supported MCP client. For example:
+Resend hosts the MCP server, so you can connect any MCP client without installing anything:
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-{
-  "mcpServers": {
-    "resend": {
-      "command": "npx",
-      "args": ["-y", "resend-mcp"],
-      "env": {
-        "RESEND_API_KEY": "re_xxxxxxxxx"
-      }
-    }
-  }
-}
+```
+https://mcp.resend.com
 ```
 
+For example, with Claude Code:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+claude mcp add --transport http resend https://mcp.resend.com
+```
+
+When you connect, your client authenticates with OAuth by opening a browser to log in to Resend. Clients that can't complete a browser login can pass an API key as a Bearer token instead. You can also run the server locally with `npx` using the `resend-mcp` package on NPM.
+
 <Card title="MCP Server" icon="microchip-ai" href="/mcp-server">
-  View installation instructions for Cursor, Codex, Claude Desktop, Windsurf,
-  and more.
+  View setup instructions for Claude, Cursor, Codex, Copilot, Windsurf, and
+  more.
 </Card>
 
 ## Resend CLI
@@ -5047,6 +5045,20 @@ Claim a domain that is already verified by another team.
   });
   ```
 
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, types::CreateDomainClaimOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let domain_claim = CreateDomainClaimOptions::new("example.com");
+    let _data = resend.domains.claim(domain_claim).await?;
+
+    Ok(())
+  }
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/domains/claim' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
@@ -5664,6 +5676,22 @@ Retrieve the latest claim for a domain.
   );
   ```
 
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend
+      .domains
+      .get_claim("d91cd9bd-1176-453e-8fc1-35364d380206")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/domains/d91cd9bd-1176-453e-8fc1-35364d380206/claim' \
        -H 'Authorization: Bearer re_xxxxxxxxx'
@@ -6221,6 +6249,22 @@ Trigger DNS verification for a domain claim.
   const { data, error } = await resend.domains.claims.verify(
     'd91cd9bd-1176-453e-8fc1-35364d380206',
   );
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend
+      .domains
+      .verify_claim("d91cd9bd-1176-453e-8fc1-35364d380206")
+      .await?;
+
+    Ok(())
+  }
   ```
 
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -17881,7 +17925,7 @@ You can use Automations for use cases like:
 * Abandoned cart
 * Trial expiration
 
-Automations support `{{{RESEND_UNSUBSCRIBE_URL}}}` for compliance with non-transactional product and marketing messaging. Read more about [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsubscribe-link).
+Automations support `{{{RESEND_UNSUBSCRIBE_URL}}}` for compliance with non-transactional product and marketing messaging. See [Unsubscribe behavior](/docs/dashboard/automations/send-email#unsubscribe-behavior) for how to add it to a Send Email step, or read more about [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsubscribe-link).
 
 ## How it works
 
@@ -19942,6 +19986,16 @@ Template variables must be present in your referenced template and the key names
 
 For more help working with variables, see the [Template documentation](/docs/dashboard/templates/template-variables).
 
+## Unsubscribe behavior
+
+Resend does not automatically add an unsubscribe link to emails sent from a `send_email` step. To let contacts opt out, add `{{{RESEND_UNSUBSCRIBE_URL}}}` to the [Template](/docs/dashboard/templates/introduction) used by the step.
+
+<Note>
+  `{{{RESEND_UNSUBSCRIBE_URL}}}` must be added to the Template itself, not the step's `config`. If the Template doesn't include this variable, contacts have no way to unsubscribe from within the email.
+</Note>
+
+See [when to use an unsubscribe link](/docs/knowledge-base/should-i-add-an-unsubscribe-link) to decide whether your Automation emails need one.
+
 ## Configuration
 
 <ParamField type="object">
@@ -19976,7 +20030,7 @@ For more help working with variables, see the [Template documentation](/docs/das
   If provided, this value will override the template's default value.
 </ParamField>
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+```json theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}} theme={"theme":{"light":"github-light","dark":"vesper"}}
 {
   "key": "welcome",
   "type": "send_email",
@@ -31473,7 +31527,7 @@ A **Transactional email** is a message triggered by a user action or required fo
 
 Typically, transactional emails are **1-to-1** messages sent in response to a specific event.
 
-With a Resend Transactional Plan, you can send transactional emails from your application using the [Resend API](/docs/api-reference/introduction), the [Resend CLI](/docs/cli), or with [SMTP](/docs/send-with-smtp). Resend also provides an [MCP server](/docs/mcp-server), [agent skills](react-email-skill), and more to work with your preferred [AI builder and tooling](/docs/ai-onboarding).
+With a Resend Transactional Plan, you can send transactional emails from your application using the [Resend API](/docs/api-reference/introduction), the [Resend CLI](/docs/cli), or with [SMTP](/docs/send-with-smtp). Resend also provides an [MCP server](/docs/mcp-server), [agent skills](/docs/react-email-skill), and more to work with your preferred [AI builder and tooling](/docs/ai-onboarding).
 
 You can also trigger emails using [webhooks](/docs/webhooks/introduction), and even [create steps to automate emails](/docs/dashboard/automations/introduction) based on custom events from your application.
 
@@ -31495,7 +31549,7 @@ With a Resend Marketing Plan, you can send [Broadcasts](/docs/dashboard/broadcas
 
 When you use Broadcasts, you get tools for [managing your contacts](/docs/dashboard/audiences/introduction), [tracking performance](/docs/dashboard/broadcasts/performance-tracking), and [customizing your personal unsubscribe page](/docs/dashboard/settings/unsubscribe-page). Resend also handles all the queuing, throttling, and scheduling for you so that you don't have to roll your own infrastructure.
 
-Marketing plans also allow you to create [Resend automations](/docs/dashboard/automations/introduction) for repeatable actions like welcoming new subscribers and updating your contact list. Resources such as the [Resend MCP server](mcp-server), [agent skills](react-email-skill), and more are all available to your preferred [AI builders and tooling](/docs/ai-onboarding) to help you send and manage your marketing emails.
+Marketing plans also allow you to create [Resend automations](/docs/dashboard/automations/introduction) for repeatable actions like welcoming new subscribers and updating your contact list. Resources such as the [Resend MCP server](/docs/mcp-server), [agent skills](/docs/react-email-skill), and more are all available to your preferred [AI builders and tooling](/docs/ai-onboarding) to help you send and manage your marketing emails.
 
 ## I need to send a combination of emails
 
@@ -31643,8 +31697,7 @@ The flow looks like this:
 Before you start, make sure you have:
 
 * The [Paper Desktop app](https://paper.design/downloads) installed with a file open (opening a file starts the Paper MCP server automatically)
-* A Resend [API key](/docs/create-an-api-key)
-* A [verified domain](/docs/add-a-domain)
+* A [Resend account](https://resend.com/signup) with a [verified domain](/docs/add-a-domain)
 * An MCP client like Claude Code, Cursor, or Claude Desktop
 
 <Info>
@@ -31707,18 +31760,20 @@ See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
 
 ## 2. Connect the Resend MCP server
 
+Connect to Resend's hosted MCP server at `https://mcp.resend.com`. When you connect, your client opens a browser window to log in to Resend and approve access.
+
 <Tabs>
   <Tab title="Claude Code">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add resend -e RESEND_API_KEY=re_xxxxxxxxx -- npx -y resend-mcp
+    claude mcp add --transport http resend https://mcp.resend.com
     ```
+
+    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
   </Tab>
 
   <Tab title="Codex">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex mcp add resend \
-      --env RESEND_API_KEY=re_xxxxxxxxx \
-      -- npx -y resend-mcp
+    codex mcp add resend --url https://mcp.resend.com
     ```
   </Tab>
 
@@ -31729,11 +31784,7 @@ See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
     {
       "mcpServers": {
         "resend": {
-          "command": "npx",
-          "args": ["-y", "resend-mcp"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx"
-          }
+          "url": "https://mcp.resend.com"
         }
       }
     }
@@ -31741,25 +31792,15 @@ See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
   </Tab>
 
   <Tab title="Claude Desktop">
-    Open Claude Desktop settings > "Developer" tab > "Edit Config".
+    Open **Settings** > **Connectors** > **Add custom connector** and enter:
 
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "command": "npx",
-          "args": ["-y", "resend-mcp"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx"
-          }
-        }
-      }
-    }
+    ```
+    https://mcp.resend.com
     ```
   </Tab>
 </Tabs>
 
-For more clients and configuration options, see the [MCP Server overview](/docs/mcp-server).
+For more clients and configuration options, including running the server locally, see the [MCP Server overview](/docs/mcp-server).
 
 ## 3. Design your email in Paper
 
@@ -39041,43 +39082,126 @@ Get more help adding a custom domain in [Resend's documentation](/docs/dashboard
 # MCP Server
 Source: https://resend.com/docs/mcp-server
 
-Learn how to use the MCP Server to send emails.
+Connect your AI agent to Resend using the hosted MCP server.
 
-## What is an MCP Server?
+MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. We offer both a [remote MCP server](#remote-mcp-server) and a [local MCP server](#local-mcp-server).
 
-MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf.
+## Remote MCP Server
 
-## What can Resend's MCP Server do?
+Resend hosts the MCP server at:
 
-Resend's [MCP Server](https://github.com/resend/resend-mcp) gives your AI agent native access to the full Resend platform through a single integration. You can manage all aspects of your email infrastructure using natural language.
+```
+https://mcp.resend.com
+```
 
-* **Emails**: Send, list, get, cancel, update, and batch send emails. Supports HTML, plain text, attachments (local file, URL, or base64), CC/BCC, reply-to, scheduling, tags, and topic-based sending.
-* **Received Emails**: List and read inbound emails. List and download received email attachments.
-* **Contacts**: Create, list, get, update, and remove contacts. Manage segment memberships, topic subscriptions, and CSV contact imports. Supports custom contact properties.
-* **Broadcasts**: Create, send, list, get, update, and remove broadcast campaigns. Supports scheduling, personalization placeholders, and preview text.
-* **Domains**: Create, list, get, update, remove, and verify sender domains. Configure tracking, TLS, and sending/receiving capabilities.
-* **Segments**: Create, list, get, and remove audience segments.
-* **Topics**: Create, list, get, update, and remove subscription topics.
-* **Contact Properties**: Create, list, get, update, and remove custom contact attributes.
-* **API Keys**: Create, list, and remove API keys.
-* **Webhooks**: Create, list, get, update, and remove webhooks for event notifications.
+Connect any MCP client that supports remote servers (Streamable HTTP). There's nothing to install and no local process to run, which makes it the best option for web-based clients like Claude and hosted agent platforms.
 
-The MCP server includes `create-contact-import`, `get-contact-import`, and
-`list-contact-imports` tools to upload CSV files, check import status, and review
-previous imports.
+When you connect, your client opens a browser window to log in to Resend and approve access using OAuth.
 
-For example, use this to automate email workflows, manage your contact database, or build AI-powered email campaigns.
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    claude mcp add --transport http resend https://mcp.resend.com
+    ```
 
-## Prerequisites
+    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
+  </Tab>
 
-The Resend MCP server is available on NPM and can be integrated into any [supported MCP client](#how-to-use-the-mcp-server) using `npx`. To use the MCP Server, you'll need to:
+  <Tab title="Claude">
+    In Claude (web or desktop), open **Settings** > **Connectors** > **Add custom connector** and enter:
 
-* [Create an API key](https://resend.com/api-keys)
-* [Verify your domain](https://resend.com/domains)
+    ```
+    https://mcp.resend.com
+    ```
+  </Tab>
 
-## How to use the MCP Server
+  <Tab title="Cursor">
+    Open the command palette and choose "Cursor Settings" > "MCP" > "Add new global MCP server".
 
-The server supports two transport modes: **stdio** (default) and **HTTP**.
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "url": "https://mcp.resend.com"
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Codex">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    codex mcp add resend --url https://mcp.resend.com
+    ```
+  </Tab>
+
+  <Tab title="Copilot">
+    To use GitHub Copilot in VS Code, add the following to your `settings.json`:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcp": {
+        "servers": {
+          "resend": {
+            "type": "http",
+            "url": "https://mcp.resend.com"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Windsurf">
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "serverUrl": "https://mcp.resend.com"
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+***
+
+*If your client runs somewhere a browser login isn't possible* (a server, CI, or a headless agent), pass a [Resend API key](https://resend.com/api-keys) as a Bearer token instead of using OAuth.
+
+<Tabs>
+  <Tab title="Claude Code">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    claude mcp add --transport http resend https://mcp.resend.com --header "Authorization: Bearer re_xxxxxxxxx"
+    ```
+  </Tab>
+
+  <Tab title="JSON config">
+    For clients configured with JSON (Cursor, Windsurf, and others), add an `Authorization` header:
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "url": "https://mcp.resend.com",
+          "headers": {
+            "Authorization": "Bearer re_xxxxxxxxx"
+          }
+        }
+      }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Local MCP Server
+
+The hosted server runs the same open-source code that's available on NPM as [`resend-mcp`](https://github.com/resend/resend-mcp). If you prefer to run the server yourself, you can integrate it into any supported MCP client using `npx`. You'll need to:
+
+* [Create an API key](/docs/create-an-api-key)
+* [Verify your domain](/docs/add-a-domain)
+
+The local server supports two transport modes: **stdio** (default) and **HTTP**.
 
 Choose your preferred mode and client below to get started. Remember to replace `re_xxxxxxxxx` with your actual API key.
 
@@ -39271,7 +39395,7 @@ MCP_PORT=3000 npx -y resend-mcp --http
 
 ### Options
 
-You can pass additional arguments to configure the server:
+You can pass additional arguments to configure the local server:
 
 * `--key`: Your Resend API key (stdio mode only, since HTTP mode uses the Bearer token from the client)
 * `--sender`: Default sender email address from a verified domain
@@ -39291,146 +39415,34 @@ You can pass additional arguments to configure the server:
   provide one each time you call the tool.
 </Info>
 
-## Local Development
+## MCP Server tools
 
-Clone the project and build:
+Resend's MCP server gives your AI agent native access to the full Resend platform through a single integration. You can manage all aspects of your email infrastructure using natural language.
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-git clone https://github.com/resend/resend-mcp.git
-pnpm install
-pnpm run build
-```
+* **Emails**: Send, list, get, cancel, update, and batch send emails. Supports HTML, plain text, attachments (local file, URL, or base64), CC/BCC, reply-to, scheduling, tags, and topic-based sending.
+* **Received Emails**: List and read inbound emails. List and download received email attachments.
+* **Templates**: Create, list, get, update, publish, duplicate, and remove email templates. Supports composing template content and `{{{VARIABLE}}}` placeholders.
+* **Contacts**: Create, list, get, update, and remove contacts. Manage segment memberships, topic subscriptions, and CSV contact imports. Supports custom contact properties.
+* **Broadcasts**: Create, send, list, get, update, and remove broadcast campaigns. Supports scheduling, personalization placeholders, and preview text.
+* **Automations**: Create, list, get, update, and remove automations. Review the runs of an automation.
+* **Events**: Send events to trigger automations for a contact. Create, update, and remove event definitions.
+* **Domains**: Create, list, get, update, remove, and verify sender domains. Configure tracking, TLS, and sending/receiving capabilities. Create and verify domain claims.
+* **Segments**: Create, list, get, and remove audience segments.
+* **Topics**: Create, list, get, update, and remove subscription topics.
+* **Contact Properties**: Create, list, get, update, and remove custom contact attributes.
+* **API Keys**: Create, list, and remove API keys.
+* **Webhooks**: Create, list, get, update, and remove webhooks for event notifications.
+* **Logs**: List and inspect API request logs, including full request and response bodies.
+* **Editor**: Connect to (and disconnect from) the visual editor in the Resend dashboard, and read a draft's content while collaborating on broadcasts and templates.
 
-To use the local build, replace the `npx` command with the path to your local build:
+Here are some real examples of what your agent can do with these tools:
 
-#### Stdio
-
-<Tabs>
-  <Tab title="Claude Code">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add resend -e RESEND_API_KEY=re_xxxxxxxxx -- node ABSOLUTE_PATH_TO_PROJECT/dist/index.js
-    ```
-  </Tab>
-
-  <Tab title="Codex">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex mcp add resend \
-      --env RESEND_API_KEY=re_xxxxxxxxx \
-      -- node ABSOLUTE_PATH_TO_PROJECT/dist/index.js
-    ```
-  </Tab>
-
-  <Tab title="Cursor / Claude Desktop / Gemini CLI">
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "command": "node",
-          "args": ["ABSOLUTE_PATH_TO_PROJECT/dist/index.js"],
-          "env": {
-            "RESEND_API_KEY": "re_xxxxxxxxx"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-#### HTTP
-
-First, start the local HTTP server:
-
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-node ABSOLUTE_PATH_TO_PROJECT/dist/index.js --http --port 3000
-```
-
-Then configure your client:
-
-<Tabs>
-  <Tab title="Claude Code">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add resend --transport http http://127.0.0.1:3000/mcp --header "Authorization: Bearer re_xxxxxxxxx"
-    ```
-  </Tab>
-
-  <Tab title="Cursor">
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "url": "http://127.0.0.1:3000/mcp",
-          "headers": {
-            "Authorization": "Bearer re_xxxxxxxxx"
-          }
-        }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
-
-### Testing with MCP Inspector
-
-<Note>
-  Make sure you've built the project first (see [Local
-  Development](#local-development) section above).
-</Note>
-
-#### Using Stdio Transport
-
-<Steps>
-  <Step title="Set your API key">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    export RESEND_API_KEY=re_your_key_here
-    ```
-  </Step>
-
-  <Step title="Start the inspector">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    pnpm inspector
-    ```
-  </Step>
-
-  <Step title="Configure in the browser">
-    In the Inspector UI:
-
-    * Choose **stdio** (launch a process)
-    * **Command:** `node`
-    * **Args:** `dist/index.js` (or the full path to `dist/index.js`)
-    * **Env:** `RESEND_API_KEY=re_your_key_here` (or leave blank if you already exported it in the same terminal)
-    * Click **Connect**, then use "List tools" to verify the server is working
-  </Step>
-</Steps>
-
-#### Using HTTP Transport
-
-<Steps>
-  <Step title="Start the HTTP server">
-    In one terminal:
-
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    node dist/index.js --http --port 3000
-    ```
-  </Step>
-
-  <Step title="Start the inspector">
-    In another terminal:
-
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    pnpm inspector
-    ```
-  </Step>
-
-  <Step title="Configure in the browser">
-    In the Inspector UI:
-
-    * Choose **Streamable HTTP** (connect to URL)
-    * **URL:** `http://127.0.0.1:3000/mcp`
-    * Add a custom header: `Authorization: Bearer re_your_key_here` and activate the toggle
-    * Click **Connect**, then use "List tools" to verify the server is working
-  </Step>
-</Steps>
+* Turn a [Paper design](/docs/guides/paper) into a ready-to-send [Template](/docs/dashboard/templates/introduction) or [Broadcast](/docs/dashboard/broadcasts/introduction)
+* [Bulk import contacts from a CSV](/docs/dashboard/audiences/contacts#bulk-upload-by-csv), upserting or skipping duplicates, and organize them into [Segments](/docs/dashboard/segments/introduction)
+* Build [Automations](/docs/dashboard/automations/introduction) that send emails when a contact is created, updated, or triggers a [custom event](/docs/dashboard/automations/custom-events)
+* Read and triage [inbound email](/docs/dashboard/receiving/introduction), download attachments, and send replies
+* Schedule, reschedule, and cancel [scheduled emails](/docs/dashboard/emails/schedule-email)
+* Debug failed API requests by inspecting the [request logs](/docs/dashboard/logs/introduction)
 
 
 # OpenClaw Guide

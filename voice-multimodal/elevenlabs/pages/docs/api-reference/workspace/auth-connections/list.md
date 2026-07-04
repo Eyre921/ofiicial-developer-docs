@@ -28,7 +28,7 @@ paths:
       summary: Get Workspace Auth Connections
       description: Get all auth connections for the workspace
       tags:
-        - subpackage_workspace/authConnections
+        - authConnections
       parameters:
         - name: xi-api-key
           in: header

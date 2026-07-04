@@ -28,7 +28,7 @@ paths:
       summary: Get Agent Version Metadata
       description: Get metadata for a specific agent version
       tags:
-        - subpackage_conversationalAi/agents/versions
+        - versions
       parameters:
         - name: agent_id
           in: path

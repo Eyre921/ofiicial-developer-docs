@@ -30,7 +30,7 @@ paths:
         Retrieve the status of the speaker separation process and the list of
         detected speakers if complete.
       tags:
-        - subpackage_voices/pvc/samples/speakers
+        - speakers
       parameters:
         - name: voice_id
           in: path

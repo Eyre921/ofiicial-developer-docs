@@ -28,7 +28,7 @@ paths:
       summary: Get Convai Settings
       description: Retrieve Convai settings for the workspace
       tags:
-        - subpackage_conversationalAi/settings
+        - settings
       parameters:
         - name: xi-api-key
           in: header

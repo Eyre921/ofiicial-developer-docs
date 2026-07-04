@@ -28,7 +28,7 @@ paths:
       summary: Get generated items
       description: Returns a list of your generated audio.
       tags:
-        - subpackage_history
+        - history
       parameters:
         - name: page_size
           in: query

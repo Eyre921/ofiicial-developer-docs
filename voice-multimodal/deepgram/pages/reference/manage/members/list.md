@@ -30,8 +30,7 @@ paths:
       summary: List Project Members
       description: Retrieves a list of members for a given project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members
+        - manage > v1 > projects > members
       parameters:
         - name: project_id
           in: path

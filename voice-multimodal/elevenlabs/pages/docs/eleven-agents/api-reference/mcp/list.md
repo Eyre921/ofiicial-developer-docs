@@ -28,7 +28,7 @@ paths:
       summary: List Mcp Servers
       description: Retrieve all MCP server configurations available in the workspace.
       tags:
-        - subpackage_conversationalAi/mcpServers
+        - mcpServers
       parameters:
         - name: xi-api-key
           in: header

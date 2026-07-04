@@ -28,7 +28,7 @@ paths:
       summary: Get shared voices
       description: Retrieves a list of shared voices.
       tags:
-        - subpackage_voices
+        - voices
       parameters:
         - name: page_size
           in: query

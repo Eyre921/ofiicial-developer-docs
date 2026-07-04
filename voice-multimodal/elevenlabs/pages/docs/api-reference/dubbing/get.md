@@ -30,7 +30,7 @@ paths:
         Returns metadata about a dubbing project, including whether it's still
         in progress or not
       tags:
-        - subpackage_dubbing
+        - dubbing
       parameters:
         - name: dubbing_id
           in: path

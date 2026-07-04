@@ -32,7 +32,7 @@ paths:
         <Note> After creating the document, update the agent's knowledge base by
         calling [Update agent](/docs/api-reference/agents/update). </Note>
       tags:
-        - subpackage_conversationalAi
+        - conversationalAi
       parameters:
         - name: agent_id
           in: query

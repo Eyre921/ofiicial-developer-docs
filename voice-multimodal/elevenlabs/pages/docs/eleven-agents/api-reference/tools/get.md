@@ -28,7 +28,7 @@ paths:
       summary: Get Tool
       description: Get tool that is available in the workspace.
       tags:
-        - subpackage_conversationalAi/tools
+        - tools
       parameters:
         - name: tool_id
           in: path

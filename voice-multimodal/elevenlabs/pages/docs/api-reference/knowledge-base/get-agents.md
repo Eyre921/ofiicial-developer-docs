@@ -28,7 +28,7 @@ paths:
       summary: Get Dependent Agents List
       description: Get a list of agents depending on this knowledge base document
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: documentation_id
           in: path

@@ -29,7 +29,7 @@ paths:
       summary: Handle An Outbound Call Via Twilio
       description: Handle an outbound call via Twilio
       tags:
-        - subpackage_conversationalAi/twilio
+        - twilio
       parameters:
         - name: xi-api-key
           in: header

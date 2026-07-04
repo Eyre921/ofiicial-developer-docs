@@ -30,7 +30,7 @@ paths:
         Run the analysis for a conversation using the agent's current evaluation
         criteria and data collection settings.
       tags:
-        - subpackage_conversationalAi/conversations/analysis
+        - analysis
       parameters:
         - name: conversation_id
           in: path

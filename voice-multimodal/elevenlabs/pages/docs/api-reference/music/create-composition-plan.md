@@ -32,7 +32,7 @@ paths:
         does not cost any credits but is subject to rate limiting depending on
         your tier.
       tags:
-        - subpackage_music/compositionPlan
+        - compositionPlan
       parameters:
         - name: xi-api-key
           in: header

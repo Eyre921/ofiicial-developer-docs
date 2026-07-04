@@ -31,7 +31,7 @@ paths:
         Turn text into sound effects for your videos, voice-overs or video games
         using the most advanced sound effects models in the world.
       tags:
-        - subpackage_textToSoundEffects
+        - textToSoundEffects
       parameters:
         - name: output_format
           in: query

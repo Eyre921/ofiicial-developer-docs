@@ -29,7 +29,7 @@ paths:
       summary: Update Convai Workspace Secret
       description: Update an existing secret for the workspace
       tags:
-        - subpackage_conversationalAi/secrets
+        - secrets
       parameters:
         - name: secret_id
           in: path

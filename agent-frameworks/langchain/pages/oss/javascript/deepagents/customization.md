@@ -617,7 +617,7 @@ In addition to [built-in tools](/oss/javascript/deepagents/overview#execution-en
   );
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [internetSearch],
   });
   ```
@@ -828,7 +828,7 @@ Each deep agent should also include a custom system prompt specific to its speci
     `write a polished report.`;
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     systemPrompt: researchInstructions,
   });
   ```
@@ -1260,7 +1260,7 @@ You can provide additional middleware to extend functionality, add tools, or imp
   });
 
   const agent = await createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [getWeather] as any,
     middleware: [logToolCallsMiddleware] as any,
   });
@@ -1450,7 +1450,7 @@ Use [interpreters](/oss/javascript/deepagents/interpreters) to add an `eval` too
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -1753,7 +1753,7 @@ To isolate detailed work and avoid context bloat, use subagents:
     description: "Used to research more in depth questions",
     systemPrompt: "You are a great researcher",
     tools: [internetSearch],
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code", // Optional override, defaults to main agent model
+    model: "fireworks:accounts/fireworks/models/glm-5p2", // Optional override, defaults to main agent model
   };
   const subagents = [researchSubagent];
 
@@ -1953,7 +1953,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       import { createDeepAgent, FilesystemBackend } from "deepagents";
 
       const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new FilesystemBackend({ rootDir: ".", virtualMode: true }),
       });
       ```
@@ -2042,7 +2042,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const backend = new LocalShellBackend({ workingDirectory: "." });
 
       const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend,
       });
       ```
@@ -2142,7 +2142,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const store = new InMemoryStore(); // Good for local dev; omit for LangSmith Deployment
 
       const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new StoreBackend({
           namespace: (rt) => [rt.serverInfo.user.identity],
         }),
@@ -2300,7 +2300,7 @@ If you are using [skills](#skills) or [memory](#memory), you must add the expect
       const store = new InMemoryStore();
 
       const agent = createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new CompositeBackend(new StateBackend(), {
           "/memories/": new StoreBackend({
             namespace: () => ["memories"],
@@ -2842,7 +2842,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       }
 
       const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         memory: ["/AGENTS.md"],
         checkpointer: checkpointer,
       });
@@ -3222,7 +3222,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new StoreBackend({
           namespace: () => ["filesystem"],
         }),
@@ -3448,7 +3448,7 @@ You can pass one or more file paths to the `memory` parameter when creating your
       const checkpointer = new MemorySaver();
 
       const agent = await createDeepAgent({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         backend: new FilesystemBackend({ rootDir: "/Users/user/{project}" }),
         memory: ["./AGENTS.md", "./.deepagents/AGENTS.md"],
         interruptOn: {

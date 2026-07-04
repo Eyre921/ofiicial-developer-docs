@@ -29,7 +29,7 @@ paths:
       summary: Update Studio Project Content
       description: Updates Studio project content.
       tags:
-        - subpackage_studio/projects/content
+        - content
       parameters:
         - name: project_id
           in: path

@@ -31,7 +31,7 @@ paths:
         Adds the given ElevenLab Turbo V2/V2.5 language code to the resource.
         Does not automatically generate transcripts/translations/audio.
       tags:
-        - subpackage_dubbing/resource/language
+        - language
       parameters:
         - name: dubbing_id
           in: path

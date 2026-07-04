@@ -30,7 +30,7 @@ paths:
         Returns a list of all available voices for a user. Stops working once
         the user's workspace exceeds 500 voices.
       tags:
-        - subpackage_voices
+        - voices
       parameters:
         - name: show_legacy
           in: query

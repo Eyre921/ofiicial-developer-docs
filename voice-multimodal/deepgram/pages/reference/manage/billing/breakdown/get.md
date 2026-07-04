@@ -32,8 +32,7 @@ paths:
         Retrieves the billing summary for a specific project, with various
         filter options or by grouping options.
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/billing.subpackage_manage/v1/projects/billing/breakdown
+        - manage > v1 > projects > billing > breakdown
       parameters:
         - name: project_id
           in: path

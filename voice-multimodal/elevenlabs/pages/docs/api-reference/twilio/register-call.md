@@ -29,7 +29,7 @@ paths:
       summary: Register A Twilio Call And Return Twiml
       description: Register a Twilio call and return TwiML to connect the call
       tags:
-        - subpackage_conversationalAi/twilio
+        - twilio
       parameters:
         - name: xi-api-key
           in: header

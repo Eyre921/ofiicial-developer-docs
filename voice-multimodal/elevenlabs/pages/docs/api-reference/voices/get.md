@@ -28,7 +28,7 @@ paths:
       summary: Get voice
       description: Returns metadata about a specific voice.
       tags:
-        - subpackage_voices
+        - voices
       parameters:
         - name: voice_id
           in: path

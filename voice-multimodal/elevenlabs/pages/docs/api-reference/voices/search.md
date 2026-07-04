@@ -30,7 +30,7 @@ paths:
         Gets a list of all available voices for a user with search, filtering
         and pagination.
       tags:
-        - subpackage_voices
+        - voices
       parameters:
         - name: next_page_token
           in: query

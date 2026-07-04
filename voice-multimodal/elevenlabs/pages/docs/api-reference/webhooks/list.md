@@ -28,7 +28,7 @@ paths:
       summary: List Workspace Webhooks
       description: List all webhooks for a workspace
       tags:
-        - subpackage_webhooks
+        - webhooks
       parameters:
         - name: include_usages
           in: query

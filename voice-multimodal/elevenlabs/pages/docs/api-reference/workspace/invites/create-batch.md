@@ -36,7 +36,7 @@ paths:
         called by workspace members with the WORKSPACE_MEMBERS_INVITE
         permission.
       tags:
-        - subpackage_workspace/invites
+        - invites
       parameters:
         - name: xi-api-key
           in: header

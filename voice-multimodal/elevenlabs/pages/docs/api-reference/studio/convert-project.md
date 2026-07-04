@@ -28,7 +28,7 @@ paths:
       summary: Convert Studio Project
       description: Starts conversion of a Studio project and all of its chapters.
       tags:
-        - subpackage_studio/projects
+        - projects
       parameters:
         - name: project_id
           in: path

@@ -28,7 +28,7 @@ paths:
       summary: Get Sip Messages For A Phone Number
       description: Get SIP messages for a phone number
       tags:
-        - subpackage_conversationalAi/phoneNumbers
+        - phoneNumbers
       parameters:
         - name: phone_number_id
           in: path

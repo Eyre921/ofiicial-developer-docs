@@ -30,7 +30,7 @@ paths:
         Stream a voice preview that was created via the /v1/text-to-voice/design
         endpoint.
       tags:
-        - subpackage_textToVoice/preview
+        - preview
       parameters:
         - name: generated_voice_id
           in: path

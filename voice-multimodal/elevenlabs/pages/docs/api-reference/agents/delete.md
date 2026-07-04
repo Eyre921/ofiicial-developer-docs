@@ -28,7 +28,7 @@ paths:
       summary: Delete agent
       description: Delete an agent
       tags:
-        - subpackage_conversationalAi/agents
+        - agents
       parameters:
         - name: agent_id
           in: path

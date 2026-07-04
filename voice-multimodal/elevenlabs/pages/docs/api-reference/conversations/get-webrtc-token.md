@@ -30,7 +30,7 @@ paths:
         authorization
       description: Get a WebRTC session token for real-time communication.
       tags:
-        - subpackage_conversationalAi/conversations
+        - conversations
       parameters:
         - name: agent_id
           in: query

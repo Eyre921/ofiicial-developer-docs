@@ -30,8 +30,7 @@ paths:
       summary: Delete a Project Member
       description: Removes a member from the project using their unique member ID
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members
+        - manage > v1 > projects > members
       parameters:
         - name: project_id
           in: path

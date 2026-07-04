@@ -29,7 +29,7 @@ paths:
       summary: Resubmit Tests
       description: Resubmits specific test runs from a test invocation.
       tags:
-        - subpackage_conversationalAi/tests/invocations
+        - invocations
       parameters:
         - name: test_invocation_id
           in: path

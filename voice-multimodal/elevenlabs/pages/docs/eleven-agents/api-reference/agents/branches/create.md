@@ -29,7 +29,7 @@ paths:
       summary: Create A New Branch
       description: Create a new branch from a given version of any branch
       tags:
-        - subpackage_conversationalAi/agents/branches
+        - branches
       parameters:
         - name: agent_id
           in: path

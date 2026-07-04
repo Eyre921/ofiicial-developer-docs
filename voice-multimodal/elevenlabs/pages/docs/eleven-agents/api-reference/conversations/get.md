@@ -28,7 +28,7 @@ paths:
       summary: Get Conversation Details
       description: Get the details of a particular conversation
       tags:
-        - subpackage_conversationalAi/conversations
+        - conversations
       parameters:
         - name: conversation_id
           in: path

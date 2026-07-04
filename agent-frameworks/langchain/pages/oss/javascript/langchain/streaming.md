@@ -278,7 +278,7 @@ Pass a `thread_id` via `configurable` so the conversation is checkpointed and fo
   );
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     tools: [getWeather],
     checkpointer: new MemorySaver(),
   });

@@ -29,7 +29,7 @@ paths:
       summary: Add shared voice
       description: Add a shared voice to your collection of Voices
       tags:
-        - subpackage_voices
+        - voices
       parameters:
         - name: public_user_id
           in: path

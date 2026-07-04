@@ -29,7 +29,7 @@ paths:
       summary: Calculate Expected Llm Usage For An Agent
       description: Calculates expected number of LLM tokens needed for the specified agent.
       tags:
-        - subpackage_conversationalAi/agents/llmUsage
+        - llmUsage
       parameters:
         - name: agent_id
           in: path

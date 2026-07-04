@@ -29,7 +29,7 @@ paths:
       summary: Update Speech Engine
       description: Update a Speech Engine resource (partial update)
       tags:
-        - subpackage_speechEngine
+        - speechEngine
       parameters:
         - name: speech_engine_id
           in: path

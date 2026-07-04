@@ -28,7 +28,7 @@ paths:
       summary: Delete Chapter
       description: Deletes a chapter.
       tags:
-        - subpackage_studio/projects/chapters
+        - chapters
       parameters:
         - name: project_id
           in: path

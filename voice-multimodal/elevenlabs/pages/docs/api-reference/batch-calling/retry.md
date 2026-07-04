@@ -28,7 +28,7 @@ paths:
       summary: Retry A Batch Call.
       description: Retry a batch call, calling failed and no-response recipients again.
       tags:
-        - subpackage_conversationalAi/batchCalls
+        - batchCalls
       parameters:
         - name: batch_id
           in: path

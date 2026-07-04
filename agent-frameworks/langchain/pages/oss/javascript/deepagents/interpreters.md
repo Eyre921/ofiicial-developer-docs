@@ -120,7 +120,7 @@ Install the QuickJS middleware package, then pass interpreter middleware using t
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     middleware: [createCodeInterpreterMiddleware()],
   });
   ```
@@ -241,7 +241,7 @@ Enable PTC with an explicit allowlist:
   import { createCodeInterpreterMiddleware } from "@langchain/quickjs";
 
   const agent = createDeepAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     middleware: [createCodeInterpreterMiddleware({ ptc: ["web_search"] })],
   });
   ```

@@ -28,7 +28,7 @@ paths:
       summary: Delete voice
       description: Deletes a voice by its ID.
       tags:
-        - subpackage_voices
+        - voices
       parameters:
         - name: voice_id
           in: path

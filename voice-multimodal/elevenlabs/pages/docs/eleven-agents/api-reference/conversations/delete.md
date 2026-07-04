@@ -28,7 +28,7 @@ paths:
       summary: Delete Conversation
       description: Delete a particular conversation
       tags:
-        - subpackage_conversationalAi/conversations
+        - conversations
       parameters:
         - name: conversation_id
           in: path

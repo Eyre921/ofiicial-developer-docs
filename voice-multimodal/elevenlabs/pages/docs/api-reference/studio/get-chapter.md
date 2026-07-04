@@ -28,7 +28,7 @@ paths:
       summary: Get Chapter
       description: Returns information about a specific chapter.
       tags:
-        - subpackage_studio/projects/chapters
+        - chapters
       parameters:
         - name: project_id
           in: path

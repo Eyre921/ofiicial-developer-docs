@@ -28,7 +28,7 @@ paths:
       summary: Get audio from history item
       description: Returns the audio of an history item.
       tags:
-        - subpackage_history
+        - history
       parameters:
         - name: history_item_id
           in: path

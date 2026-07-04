@@ -28,7 +28,7 @@ paths:
       summary: Returns The Size Of The Agent'S Knowledge Base
       description: Returns the number of pages in the agent's knowledge base.
       tags:
-        - subpackage_conversationalAi/agents/knowledgeBase
+        - knowledgeBase
       parameters:
         - name: agent_id
           in: path

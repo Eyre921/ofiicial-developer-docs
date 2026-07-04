@@ -29,7 +29,7 @@ paths:
       summary: Update Tool
       description: Update tool that is available in the workspace.
       tags:
-        - subpackage_conversationalAi/tools
+        - tools
       parameters:
         - name: tool_id
           in: path

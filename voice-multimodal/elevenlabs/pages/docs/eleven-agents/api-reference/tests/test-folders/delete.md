@@ -30,7 +30,7 @@ paths:
         Deletes an agent test folder by ID. Use force=true to delete a non-empty
         folder and all its contents.
       tags:
-        - subpackage_conversationalAi/tests/folders
+        - folders
       parameters:
         - name: folder_id
           in: path

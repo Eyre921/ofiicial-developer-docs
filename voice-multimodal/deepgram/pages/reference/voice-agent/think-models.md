@@ -32,8 +32,7 @@ paths:
         Retrieves the available think models that can be used for AI agent
         processing
       tags:
-        - >-
-          subpackage_agent.subpackage_agent/v1.subpackage_agent/v1/settings.subpackage_agent/v1/settings/think.subpackage_agent/v1/settings/think/models
+        - agent > v1 > settings > think > models
       responses:
         '200':
           description: List of available think models

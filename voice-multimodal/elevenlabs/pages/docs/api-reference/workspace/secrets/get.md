@@ -28,7 +28,7 @@ paths:
       summary: Get Convai Workspace Secret
       description: Get a workspace secret by ID
       tags:
-        - subpackage_conversationalAi/secrets
+        - secrets
       parameters:
         - name: secret_id
           in: path

@@ -28,7 +28,7 @@ paths:
       summary: Delete Agent Response Test
       description: Deletes an agent response test by ID.
       tags:
-        - subpackage_conversationalAi/tests
+        - tests
       parameters:
         - name: test_id
           in: path

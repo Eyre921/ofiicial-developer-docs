@@ -29,7 +29,7 @@ paths:
       summary: Add Samples To Pvc Voice
       description: Add audio samples to a PVC voice
       tags:
-        - subpackage_voices/pvc/samples
+        - samples
       parameters:
         - name: voice_id
           in: path

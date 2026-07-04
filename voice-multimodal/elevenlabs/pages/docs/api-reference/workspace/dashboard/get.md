@@ -28,7 +28,7 @@ paths:
       summary: Get Convai Dashboard Settings
       description: Retrieve Convai dashboard settings for the workspace
       tags:
-        - subpackage_conversationalAi/dashboard/settings
+        - settings
       parameters:
         - name: xi-api-key
           in: header

@@ -690,7 +690,7 @@ Use the `systemMessage` field in `ModelRequest` to read and modify the system pr
   });
 
   const agent = createAgent({
-    model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
     systemPrompt: "You are a helpful assistant.",
     middleware: [addContextMiddleware],
   });

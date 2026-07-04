@@ -28,7 +28,7 @@ paths:
       summary: Get Test Invocation
       description: Gets a test invocation by ID.
       tags:
-        - subpackage_conversationalAi/tests/invocations
+        - invocations
       parameters:
         - name: test_invocation_id
           in: path

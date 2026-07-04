@@ -30,7 +30,7 @@ paths:
         Get details about a specific documentation making up the agent's
         knowledge base
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: documentation_id
           in: path

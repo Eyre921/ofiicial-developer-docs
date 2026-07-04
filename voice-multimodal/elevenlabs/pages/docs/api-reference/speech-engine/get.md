@@ -28,7 +28,7 @@ paths:
       summary: Get Speech Engine
       description: Retrieve a Speech Engine resource
       tags:
-        - subpackage_speechEngine
+        - speechEngine
       parameters:
         - name: speech_engine_id
           in: path

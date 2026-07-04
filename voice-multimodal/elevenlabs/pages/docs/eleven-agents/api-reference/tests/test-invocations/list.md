@@ -30,7 +30,7 @@ paths:
         Lists all test invocations with pagination support and optional search
         filtering.
       tags:
-        - subpackage_conversationalAi/tests/invocations
+        - invocations
       parameters:
         - name: agent_id
           in: query

@@ -32,7 +32,7 @@ paths:
         update the values for only a specific language of a segment. Does not
         automatically regenerate the dub.
       tags:
-        - subpackage_dubbing/resource/segment
+        - segment
       parameters:
         - name: dubbing_id
           in: path

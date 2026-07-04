@@ -30,8 +30,7 @@ paths:
       summary: Delete a Project Invite
       description: Deletes an invite for a specific project
       tags:
-        - >-
-          subpackage_manage.subpackage_manage/v1.subpackage_manage/v1/projects.subpackage_manage/v1/projects/members.subpackage_manage/v1/projects/members/invites
+        - manage > v1 > projects > members > invites
       parameters:
         - name: project_id
           in: path

@@ -29,7 +29,7 @@ paths:
       summary: Create Folder
       description: Create a folder used for grouping documents together.
       tags:
-        - subpackage_conversationalAi/knowledgeBase/documents
+        - documents
       parameters:
         - name: xi-api-key
           in: header

@@ -32,7 +32,7 @@ paths:
         segments/languages. Will automatically transcribe and translate any
         missing transcriptions and translations.
       tags:
-        - subpackage_dubbing/resource
+        - resource
       parameters:
         - name: dubbing_id
           in: path

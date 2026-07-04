@@ -32,7 +32,7 @@ paths:
         filtered based on the data residency of the deployment and any
         compliance requirements (e.g. HIPAA) of the workspace subscription.
       tags:
-        - subpackage_conversationalAi/llm
+        - llm
       parameters:
         - name: xi-api-key
           in: header

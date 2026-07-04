@@ -30,6 +30,22 @@ Retrieve the latest claim for a domain.
   );
   ```
 
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend
+      .domains
+      .get_claim("d91cd9bd-1176-453e-8fc1-35364d380206")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X GET 'https://api.resend.com/domains/d91cd9bd-1176-453e-8fc1-35364d380206/claim' \
        -H 'Authorization: Bearer re_xxxxxxxxx'

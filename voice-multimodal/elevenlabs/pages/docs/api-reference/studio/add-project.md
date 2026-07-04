@@ -31,7 +31,7 @@ paths:
         Creates a new Studio project, it can be either initialized as blank,
         from a document or from a URL.
       tags:
-        - subpackage_studio/projects
+        - projects
       parameters:
         - name: xi-api-key
           in: header

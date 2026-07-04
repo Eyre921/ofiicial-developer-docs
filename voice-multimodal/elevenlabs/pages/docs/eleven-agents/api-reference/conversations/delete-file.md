@@ -30,7 +30,7 @@ paths:
         Remove a file upload from a conversation. Only possible if the file
         hasn't already been used in the conversation.
       tags:
-        - subpackage_conversationalAi/conversations/files
+        - files
       parameters:
         - name: conversation_id
           in: path

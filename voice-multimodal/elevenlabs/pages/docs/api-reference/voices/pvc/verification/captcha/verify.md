@@ -29,7 +29,7 @@ paths:
       summary: Verify Pvc Voice Captcha
       description: Submit captcha verification for PVC voice.
       tags:
-        - subpackage_voices/pvc/verification/captcha
+        - captcha
       parameters:
         - name: voice_id
           in: path

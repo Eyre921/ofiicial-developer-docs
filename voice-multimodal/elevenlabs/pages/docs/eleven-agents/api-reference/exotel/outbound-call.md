@@ -29,7 +29,7 @@ paths:
       summary: Handle An Outbound Call Via Exotel
       description: Handle an outbound call via Exotel Connect API
       tags:
-        - subpackage_conversationalAi/exotel
+        - exotel
       parameters:
         - name: xi-api-key
           in: header

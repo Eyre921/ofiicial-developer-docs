@@ -30,7 +30,7 @@ paths:
         Rebase a branch onto the latest main branch, incorporating main's
         changes while preserving the branch's own changes.
       tags:
-        - subpackage_conversationalAi/agents/branches
+        - branches
       parameters:
         - name: agent_id
           in: path

@@ -32,7 +32,7 @@ paths:
         voice cloning and using voices from the ElevenLabs library are
         supported.
       tags:
-        - subpackage_dubbing/resource/speaker
+        - speaker
       parameters:
         - name: dubbing_id
           in: path

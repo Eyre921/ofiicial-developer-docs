@@ -31,7 +31,7 @@ paths:
         Update the approval policy configuration for an MCP server. DEPRECATED:
         Use PATCH /mcp-servers/{id} endpoint instead.
       tags:
-        - subpackage_conversationalAi/mcpServers/approvalPolicy
+        - approvalPolicy
       parameters:
         - name: mcp_server_id
           in: path

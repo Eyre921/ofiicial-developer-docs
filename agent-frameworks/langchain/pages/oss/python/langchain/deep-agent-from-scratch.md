@@ -241,7 +241,7 @@ Update your agent from step 2 by adding [`SummarizationMiddleware`](https://refe
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents.middleware import FilesystemMiddleware, SummarizationMiddleware
 
-  model="fireworks:accounts/fireworks/models/kimi-k2p7-code"
+  model="fireworks:accounts/fireworks/models/glm-5p2"
 
   agent = create_agent(
       model=model,

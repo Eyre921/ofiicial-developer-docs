@@ -31,7 +31,7 @@ paths:
         relevant messages based on meaning and intent, rather than exact keyword
         matches
       tags:
-        - subpackage_conversationalAi/conversations/messages
+        - messages
       parameters:
         - name: text_query
           in: query

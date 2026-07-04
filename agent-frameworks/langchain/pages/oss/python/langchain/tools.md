@@ -577,7 +577,7 @@ Access context through `runtime.context`. Pass it alongside a `thread_id` so the
       return "User not found"
 
 
-  model = ChatOpenAI(model="fireworks:accounts/fireworks/models/kimi-k2p7-code")
+  model = ChatOpenAI(model="fireworks:accounts/fireworks/models/glm-5p2")
   agent = create_agent(
       model,
       tools=[get_account_info],
@@ -1111,7 +1111,7 @@ Set return direct on a tool to short-circuit the agent loop: the agent returns t
 
 
   agent = create_agent(
-      ChatOpenAI(model="fireworks:accounts/fireworks/models/kimi-k2p7-code"),
+      ChatOpenAI(model="fireworks:accounts/fireworks/models/glm-5p2"),
       tools=[fetch_order_status],
   )
 
@@ -1343,7 +1343,7 @@ Handle tool errors using LangChain agent [middleware](/oss/python/langchain/midd
 
 
   agent = create_agent(
-      model="fireworks:accounts/fireworks/models/kimi-k2p7-code",
+      model="fireworks:accounts/fireworks/models/glm-5p2",
       tools=[],
       middleware=[handle_tool_errors],
   )

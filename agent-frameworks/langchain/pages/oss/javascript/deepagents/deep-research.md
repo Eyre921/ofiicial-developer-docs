@@ -519,7 +519,7 @@ Create `agent.ts` in your project directory:
       };
 
       const model = new ChatAnthropic({
-        model: "fireworks:accounts/fireworks/models/kimi-k2p7-code",
+        model: "fireworks:accounts/fireworks/models/glm-5p2",
         temperature: 0,
       });
 

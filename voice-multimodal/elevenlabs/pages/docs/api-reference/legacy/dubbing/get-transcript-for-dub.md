@@ -28,7 +28,7 @@ paths:
       summary: Get dubbed transcript
       description: Returns transcript for the dub as an SRT or WEBVTT file.
       tags:
-        - subpackage_dubbing/transcript
+        - transcript
       parameters:
         - name: dubbing_id
           in: path

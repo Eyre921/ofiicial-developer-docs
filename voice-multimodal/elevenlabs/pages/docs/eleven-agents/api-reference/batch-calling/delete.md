@@ -30,7 +30,7 @@ paths:
         Permanently delete a batch call and all recipient records. Conversations
         remain in history.
       tags:
-        - subpackage_conversationalAi/batchCalls
+        - batchCalls
       parameters:
         - name: batch_id
           in: path
