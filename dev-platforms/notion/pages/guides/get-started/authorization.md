@@ -393,7 +393,7 @@ Set up a way for your connection to store both the `access_token` and `refresh_t
 
 Refreshing an access token will generate a new access token and a new refresh token.
 
-Send the `refresh_token` provided from [Step 4](#step-4-notion-responds-with-an-access_token-refresh_token-and-additional-information) as part of a `POST` request to Notion’s token endpoint: [https://api.notion.com/v1/oauth/token](https://api.notion.com/v1/oauth/token).
+Send the `refresh_token` provided from [Step 4](#step-4-notion-responds-with-an-access_token--refresh_token-and-additional-information) as part of a `POST` request to Notion’s token endpoint: [https://api.notion.com/v1/oauth/token](https://api.notion.com/v1/oauth/token).
 
 This endpoint is described in more detail in the API reference docs for [refreshing a token](/reference/refresh-a-token).
 

@@ -67,8 +67,19 @@ BYOC is not a raw self-hosting kit. Fireworks brings the managed serving experie
   </Card>
 </CardGroup>
 
+## Hybrid BYOC and Fireworks-managed capacity
+
+Some Enterprise customers want BYOC for their primary environment, but still want the option to use Fireworks-managed capacity for specific workloads or traffic spikes. During Private Preview, Fireworks can review hybrid BYOC patterns with your team, including overflow scheduling onto Fireworks-managed capacity when elected during onboarding and supported for the workload.
+
+Hybrid operation can help when:
+
+* Traffic occasionally exceeds the GPU capacity available in your cluster
+* You want a fallback path while customer-owned GPU capacity is being expanded or remediated
+* Some workloads can run outside the BYOC environment while others must remain within your network boundary
+* Your team wants a consistent Fireworks API surface across BYOC and Fireworks-managed deployments
+
 <Note>
-  When elected during onboarding and supported for the workload, Fireworks can also help coordinate overflow scheduling onto Fireworks-managed capacity while preserving the same Fireworks API surface.
+  Hybrid BYOC is optional and must be reviewed during onboarding. Fireworks works with your team to confirm routing behavior, workload eligibility, data handling expectations, and any compliance constraints before enabling overflow onto Fireworks-managed capacity.
 </Note>
 
 ## Known gaps during Private Preview

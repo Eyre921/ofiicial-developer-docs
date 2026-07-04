@@ -115,7 +115,7 @@ By default, the response from this endpoint returns a maximum of 100 items. To r
 
 ## Adding a comment to a page
 
-You can add a top-level comment to a page by using the [Add comment to page](/reference/create-a-comment) endpoint. Requests made to this endpoint require the ID for the parent page, as well as a comment body provided as either [rich text](/reference/rich-text) or a Markdown string with inline formatting support.
+You can add a top-level comment to a page by using the [Create comment](/reference/create-a-comment) endpoint. Requests made to this endpoint require the ID for the parent page, as well as a comment body provided as either [rich text](/reference/rich-text) or a Markdown string with inline formatting support.
 
 The `rich_text` and `markdown` parameters are mutually exclusive — exactly one must be provided per request.
 
@@ -197,6 +197,57 @@ The response will contain the new [comment object](/reference/comment-object).
 The exception to what will be returned occurs if your connection has “write comment” capabilities but not “read comment” capabilities. In this situation, the response will be a partial object consisting of only the `id` and `object` fields. This is because the connection can create new comments but can’t retrieve comments, even if the retrieval is just the response for the newly created one. (Reminder: Update the read/write settings in the <a href={developerConnectionsUrl}>Developer portal</a>.)
 
 In the Notion UI, this new comment will be displayed on the page using your connection's name and icon.
+
+## Adding an inline comment
+
+To add a block-level inline comment, use the [Create comment](/reference/create-a-comment) endpoint with `parent.block_id`. This creates a comment attached to the whole block, such as a paragraph, heading, or to-do item.
+
+<CodeGroup>
+  ```bash Shell theme={null}
+  curl -X POST https://api.notion.com/v1/comments \
+    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+    -H "Content-Type: application/json" \
+    -H "Notion-Version: 2026-03-11" \
+    --data '
+    {
+      "parent": {
+        "block_id": "d40e767c-d7af-4b18-a86d-55c61f1e39a4"
+      },
+      "rich_text": [
+        {
+          "text": {
+            "content": "This comment is attached to a block."
+          }
+        }
+      ]
+    }
+    '
+  ```
+
+  ```javascript JavaScript theme={null}
+  const { Client } = require('@notionhq/client');
+
+  const notion = new Client({ auth: process.env.NOTION_API_KEY });
+
+  (async () => {
+    const response = await notion.comments.create({
+      parent: {
+        block_id: "d40e767c-d7af-4b18-a86d-55c61f1e39a4"
+      },
+      rich_text: [
+        {
+          text: {
+            content: "This comment is attached to a block.",
+          },
+        },
+      ],
+    });
+    console.log(response);
+  })();
+  ```
+</CodeGroup>
+
+The public API does not support creating a new discussion anchored to a selected range of text inside a block. To reply to an existing selected-text discussion, use the `discussion_id` for that discussion thread.
 
 ## Updating a comment
 
@@ -291,17 +342,17 @@ The response will contain the deleted [comment object](/reference/comment-object
 
 ### Responding to a discussion thread
 
-The [Add comment to page](/reference/create-a-comment) endpoint can also be used to respond to a discussion thread on a block. (Reminder: Page blocks are the child elements that make up the page content, like a paragraph, header, to-do list, etc.)
+The [Create comment](/reference/create-a-comment) endpoint can also be used to respond to an existing discussion thread on a page or block. (Reminder: Page blocks are the child elements that make up the page content, like a paragraph, header, to-do list, etc.)
 
-If using this endpoint to respond to a discussion, provide a `discussion_id` parameter *instead of* a `parent.page_id`.
+If using this endpoint to respond to a discussion, provide a `discussion_id` parameter *instead of* a `parent` object.
 
 <Note>
-  Inline comments cannot be directly added to blocks to start a new discussion using the public API. Currently, the API can only be used to respond to inline comments (discussions).
+  Use `parent.block_id` to create a comment attached to a whole block. The API does not support creating a new discussion anchored to selected text within a block; it can only reply to an existing selected-text discussion with `discussion_id`.
 </Note>
 
 #### Retrieving a discussion ID
 
-The are two possible ways to get the `discussion_id` for a discussion thread.
+There are two possible ways to get the `discussion_id` for a discussion thread.
 
 1. You can use the [Retrieve comments](/reference/list-comments) endpoint, which will return a list of open comments on the page or block.
 2. You can also get a `discussion_id` manually by navigating to the page with the discussion you’re responding to. Next, click the "Copy link to discussion" menu option next to the discussion.

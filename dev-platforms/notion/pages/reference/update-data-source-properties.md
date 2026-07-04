@@ -70,9 +70,9 @@ To update the property type, the property schema object should contain the key o
 
 To update an existing select configuration, the property schema object optionally contains the following configuration within the `select` property:
 
-| Property  | Type                                                                                                                                           | Description                                                                                                                                                                | Example value |
-| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing select options](#existing-select-options) and [select option objects](/reference/create-a-database#select-options) | Settings for select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
+| Property  | Type                                                                                                                                                | Description                                                                                                                                                                | Example value |
+| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| `options` | optional array of [existing select options](#existing-select-options) and [select option objects](/reference/property-schema-object#select-options) | Settings for select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
 
 #### Existing select options
 
@@ -87,9 +87,9 @@ Note that the name and color of an existing option cannot be updated.
 
 To update an existing select configuration, the property schema object optionally contains the following configuration within the `multi_select` property:
 
-| Property  | Type                                                                                                                                                             | Description                                                                                                                                                                      | Example value |
-| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing select options](#existing-multi-select-options) and [multi-select option objects](/reference/create-a-database#multi-select-options) | Settings for multi select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
+| Property  | Type                                                                                                                                                                  | Description                                                                                                                                                                      | Example value |
+| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| `options` | optional array of [existing select options](#existing-multi-select-options) and [multi-select option objects](/reference/property-schema-object#multi-select-options) | Settings for multi select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
 
 #### Existing multi-select options
 

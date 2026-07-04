@@ -41,6 +41,12 @@ Serving capacity scales with demand within the GPU capacity available in your cl
 
 Autoscaling behavior depends on model size, traffic shape, GPU availability, and customer-defined capacity constraints.
 
+## Hybrid capacity
+
+For customers who elect a hybrid BYOC model, Fireworks can help coordinate overflow scheduling onto Fireworks-managed capacity for eligible workloads. This is useful when traffic exceeds available BYOC capacity, customer-owned hardware is temporarily constrained, or some workloads do not need to remain in the BYOC environment.
+
+Hybrid capacity is configured during onboarding. Fireworks works with your team to define which workloads are eligible, when overflow may be used, how routing is handled, and what data handling or compliance constraints apply.
+
 ## GPU fleet reliability
 
 Fireworks continuously monitors GPU and node health for the serving stack. When a node or GPU becomes unhealthy, Fireworks automation detects the condition and safely remediates it, such as by removing traffic from the affected node and replacing capacity when available.
@@ -70,6 +76,7 @@ Customers with strict access policies can discuss a hardened onboarding variant 
 BYOC operations work best when Fireworks and the customer agree on:
 
 * Approved GPU capacity and scaling boundaries
+* Whether any workloads are eligible for hybrid overflow onto Fireworks-managed capacity
 * Customer-side change windows or approval requirements
 * Contacts for networking, cloud account or data center, and capacity issues
 * Support and escalation expectations

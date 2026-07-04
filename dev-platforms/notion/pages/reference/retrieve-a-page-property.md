@@ -41,7 +41,7 @@ Refer to the [pagination reference](/reference/intro#pagination) for details on 
 
 For regular "Show original" rollups, the endpoint returns a flattened list of all the property items in the rollup.
 
-For rollups with an aggregation, the API returns a [rollup property value](/reference/page#rollup-property-values) under the `rollup` key and the list of relations.
+For rollups with an aggregation, the API returns a [rollup property value](/reference/page-property-values#rollup) under the `rollup` key and the list of relations.
 
 In order to avoid timeouts, if the rollup has a with a large number of aggregations or properties the endpoint returns a `next_cursor` value that is used to determinate the aggregation value *so far* for the subset of relations that have been paginated through.
 

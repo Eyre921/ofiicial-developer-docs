@@ -150,7 +150,7 @@ A wider set of audio files is [supported in the File Upload API](/guides/data-ap
 
 #### Supported file upload types
 
-See the [file upload reference](/reference/file-upload#file-types-and-sizes) for a list of supported file extensions and content types when attaching a File Upload to a block.
+See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
 
 Audio blocks only support file types in the "audio" section of the table.
 
@@ -416,10 +416,10 @@ Divider block objects do not contain any information within the `divider` proper
 
 Embed block objects include information about another website, or an uploaded file, displayed within the Notion UI. The `embed` property contains the following information:
 
-| Field         | Type                                         | Description                                                                                                                                                                                                                                         |
-| :------------ | :------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `url`         | `string`                                     | The link that the embed block displays. When the embed is backed by an uploaded file, this is a temporary, signed link; fetch the block again from the API to get a fresh `url` rather than caching it.                                             |
-| `file_upload` | [File upload object](/reference/file-upload) | Create and update parameter only. An object with the `id` of a [FileUpload](/reference/file-upload) to embed (for example, a PDF). Provide either `url` or `file_upload`, not both. An embed always reads back with a `url`, never a `file_upload`. |
+| Field         | Type                                         | Description                                                                                                                                                                                                                                                                                                                                   |
+| :------------ | :------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`         | `string`                                     | The link that the embed block displays. When the embed is backed by an uploaded file, this is a temporary, signed link; fetch the block again from the API to get a fresh `url` rather than caching it.                                                                                                                                       |
+| `file_upload` | [File upload object](/reference/file-upload) | Create and update parameter only. An object with the `id` of a [FileUpload](/reference/file-upload) to embed (for example, a PDF). Attaching an uploaded `.html` file creates an [HTML block](/reference/block#html-blocks). Provide either `url` or `file_upload`, not both. An embed always reads back with a `url`, never a `file_upload`. |
 
 <CodeGroup>
   ```json Example Embed block object theme={null}
@@ -480,6 +480,29 @@ Embed block objects include information about another website, or an uploaded fi
   For other video sources, see [Supported video types](/reference/block#supported-video-types).
 </Check>
 
+#### HTML blocks
+
+An embed backed by an uploaded HTML file is an **HTML block**: the Notion app renders the file's contents interactively in a sandboxed iframe instead of linking out to it. This is the same block the app creates with the `/html` command and that agents create through [Notion MCP](/guides/mcp/mcp-supported-tools).
+
+To create an HTML block with the API:
+
+1. Upload a file with an `.html` or `.htm` extension using the [File Upload API](/reference/file-upload).
+2. Attach it to an embed block via `embed.file_upload` when creating or updating the block.
+
+```json Create an HTML block theme={null}
+{
+  "type": "embed",
+  "embed": {
+    "type": "file_upload",
+    "file_upload": {
+      "id": "43833259-72ae-404e-8441-b6577f3159b4"
+    }
+  }
+}
+```
+
+Retrieving an HTML block returns a temporary, signed `embed.url` for the underlying HTML file, like any other file-backed embed. Updating the embed to point at a non-HTML file or at a `url` turns it back into a regular embed.
+
 ### Equation
 
 Equation block objects are represented as children of [paragraph](/reference/block#paragraph) blocks. They are nested within a [rich text object](/reference/rich-text) and contain the following information within the `equation` property:
@@ -505,14 +528,14 @@ Equation block objects are represented as children of [paragraph](/reference/blo
 
 File block objects contain the following information within the `file` property:
 
-| Field         | Type                                                                        | Description                                                                                                                                                                                                                                                                                                                                                                                         |
-| :------------ | :-------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `caption`     | `array` of [rich text objects](/reference/rich-text)                        | The caption of the file block.                                                                                                                                                                                                                                                                                                                                                                      |
-| `type`        | One of: <br /><br />- `"file"` <br />- `"external"` <br />- `"file_upload"` | Type of file. This enum value indicates which of the following three objects are populated.                                                                                                                                                                                                                                                                                                         |
-| `file`        | [Notion-hosted file object](/reference/file-object#notion-hosted-files)     | A file object that details information about the file contained in the block: a temporary download `url` and `expiry_time`. After the `expiry_time`, fetch the block again from the API to get a new `url`. <br /><br />Only valid as a parameter if copied verbatim from the `file` field of a recent block API response from Notion. To attach a file, provide a `type` of `file_upload` instead. |
-| `external`    | [External file object](/reference/file-object#external-files)               | An object with a `url` property, identifying a publicly accessible URL.                                                                                                                                                                                                                                                                                                                             |
-| `file_upload` | [File upload object](/reference/file-upload#file-types-and-sizes)           | An object with the `id` of a [FileUpload](/reference/file-upload) to attach to the block. After attaching, the API response responds with a type of `file`, not `file_upload`, so your connection can access a download `url`.                                                                                                                                                                      |
-| `name`        | `string`                                                                    | The name of the file, as shown in the Notion UI. Note that the UI may auto-append `.pdf` or other extensions.<br /><br /> When attaching a `file_upload`, the `name` parameter is not required.                                                                                                                                                                                                     |
+| Field         | Type                                                                              | Description                                                                                                                                                                                                                                                                                                                                                                                         |
+| :------------ | :-------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `caption`     | `array` of [rich text objects](/reference/rich-text)                              | The caption of the file block.                                                                                                                                                                                                                                                                                                                                                                      |
+| `type`        | One of: <br /><br />- `"file"` <br />- `"external"` <br />- `"file_upload"`       | Type of file. This enum value indicates which of the following three objects are populated.                                                                                                                                                                                                                                                                                                         |
+| `file`        | [Notion-hosted file object](/reference/file-object#notion-hosted-files-type-file) | A file object that details information about the file contained in the block: a temporary download `url` and `expiry_time`. After the `expiry_time`, fetch the block again from the API to get a new `url`. <br /><br />Only valid as a parameter if copied verbatim from the `file` field of a recent block API response from Notion. To attach a file, provide a `type` of `file_upload` instead. |
+| `external`    | [External file object](/reference/file-object#external-files-type-external)       | An object with a `url` property, identifying a publicly accessible URL.                                                                                                                                                                                                                                                                                                                             |
+| `file_upload` | [File upload object](/reference/file-upload)                                      | An object with the `id` of a [FileUpload](/reference/file-upload) to attach to the block. After attaching, the API response responds with a type of `file`, not `file_upload`, so your connection can access a download `url`.                                                                                                                                                                      |
+| `name`        | `string`                                                                          | The name of the file, as shown in the Notion UI. Note that the UI may auto-append `.pdf` or other extensions.<br /><br /> When attaching a `file_upload`, the `name` parameter is not required.                                                                                                                                                                                                     |
 
 <CodeGroup>
   ```json Example File block theme={null}
@@ -662,7 +685,7 @@ The image must be directly hosted. In other words, the `url` cannot point to a s
 
 #### Supported file upload types
 
-See the [file upload reference](/reference/file-upload#file-types-and-sizes) for a list of supported file extensions and content types when attaching a File Upload to a block.
+See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
 
 Image blocks only support file types in the "image" section of the table.
 
@@ -917,7 +940,7 @@ A PDF block object represents a PDF that has been embedded within a Notion page.
 
 #### Supported file upload types
 
-See the [file upload reference](/reference/file-upload#file-types-and-sizes) for a list of supported file extensions and content types when attaching a File Upload to a block.
+See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
 
 PDF blocks only support a type of `.pdf`.
 
@@ -1417,6 +1440,6 @@ Video block objects contain a [file object](/reference/file-object) detailing in
 
 #### Supported file upload types
 
-See the [file upload reference](/reference/file-upload#file-types-and-sizes) for a list of supported file extensions and content types when attaching a File Upload to a block.
+See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
 
 Video blocks only support file types in the "video" section of the table.

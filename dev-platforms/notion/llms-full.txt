@@ -3243,7 +3243,7 @@ By default, the response from this endpoint returns a maximum of 100 items. To r
 
 ## Adding a comment to a page
 
-You can add a top-level comment to a page by using the [Add comment to page](/reference/create-a-comment) endpoint. Requests made to this endpoint require the ID for the parent page, as well as a comment body provided as either [rich text](/reference/rich-text) or a Markdown string with inline formatting support.
+You can add a top-level comment to a page by using the [Create comment](/reference/create-a-comment) endpoint. Requests made to this endpoint require the ID for the parent page, as well as a comment body provided as either [rich text](/reference/rich-text) or a Markdown string with inline formatting support.
 
 The `rich_text` and `markdown` parameters are mutually exclusive — exactly one must be provided per request.
 
@@ -3325,6 +3325,57 @@ The response will contain the new [comment object](/reference/comment-object).
 The exception to what will be returned occurs if your connection has “write comment” capabilities but not “read comment” capabilities. In this situation, the response will be a partial object consisting of only the `id` and `object` fields. This is because the connection can create new comments but can’t retrieve comments, even if the retrieval is just the response for the newly created one. (Reminder: Update the read/write settings in the <a href={developerConnectionsUrl}>Developer portal</a>.)
 
 In the Notion UI, this new comment will be displayed on the page using your connection's name and icon.
+
+## Adding an inline comment
+
+To add a block-level inline comment, use the [Create comment](/reference/create-a-comment) endpoint with `parent.block_id`. This creates a comment attached to the whole block, such as a paragraph, heading, or to-do item.
+
+<CodeGroup>
+  ```bash Shell theme={null}
+  curl -X POST https://api.notion.com/v1/comments \
+    -H 'Authorization: Bearer '"$NOTION_API_KEY"'' \
+    -H "Content-Type: application/json" \
+    -H "Notion-Version: 2026-03-11" \
+    --data '
+    {
+      "parent": {
+        "block_id": "d40e767c-d7af-4b18-a86d-55c61f1e39a4"
+      },
+      "rich_text": [
+        {
+          "text": {
+            "content": "This comment is attached to a block."
+          }
+        }
+      ]
+    }
+    '
+  ```
+
+  ```javascript JavaScript theme={null}
+  const { Client } = require('@notionhq/client');
+
+  const notion = new Client({ auth: process.env.NOTION_API_KEY });
+
+  (async () => {
+    const response = await notion.comments.create({
+      parent: {
+        block_id: "d40e767c-d7af-4b18-a86d-55c61f1e39a4"
+      },
+      rich_text: [
+        {
+          text: {
+            content: "This comment is attached to a block.",
+          },
+        },
+      ],
+    });
+    console.log(response);
+  })();
+  ```
+</CodeGroup>
+
+The public API does not support creating a new discussion anchored to a selected range of text inside a block. To reply to an existing selected-text discussion, use the `discussion_id` for that discussion thread.
 
 ## Updating a comment
 
@@ -3419,17 +3470,17 @@ The response will contain the deleted [comment object](/reference/comment-object
 
 ### Responding to a discussion thread
 
-The [Add comment to page](/reference/create-a-comment) endpoint can also be used to respond to a discussion thread on a block. (Reminder: Page blocks are the child elements that make up the page content, like a paragraph, header, to-do list, etc.)
+The [Create comment](/reference/create-a-comment) endpoint can also be used to respond to an existing discussion thread on a page or block. (Reminder: Page blocks are the child elements that make up the page content, like a paragraph, header, to-do list, etc.)
 
-If using this endpoint to respond to a discussion, provide a `discussion_id` parameter *instead of* a `parent.page_id`.
+If using this endpoint to respond to a discussion, provide a `discussion_id` parameter *instead of* a `parent` object.
 
 <Note>
-  Inline comments cannot be directly added to blocks to start a new discussion using the public API. Currently, the API can only be used to respond to inline comments (discussions).
+  Use `parent.block_id` to create a comment attached to a whole block. The API does not support creating a new discussion anchored to selected text within a block; it can only reply to an existing selected-text discussion with `discussion_id`.
 </Note>
 
 #### Retrieving a discussion ID
 
-The are two possible ways to get the `discussion_id` for a discussion thread.
+There are two possible ways to get the `discussion_id` for a discussion thread.
 
 1. You can use the [Retrieve comments](/reference/list-comments) endpoint, which will return a list of open comments on the page or block.
 2. You can also get a `discussion_id` manually by navigating to the page with the discussion you’re responding to. Next, click the "Copy link to discussion" menu option next to the discussion.
@@ -5077,7 +5128,7 @@ Rich text is used both in page content and inside [page property values](/refere
 
 Pages can be created with child blocks using the [create a page](/reference/post-page) endpoint. This endpoint supports creating a page within another page, or creating a page within a database.
 
-Let's try creating a page within another page with some sample content. We will use all three parameters for this endpoint. The parent parameter is a [page parent](/reference/page#page-parent). We can build this object using an existing page ID:
+Let's try creating a page within another page with some sample content. We will use all three parameters for this endpoint. The parent parameter is a [page parent](/reference/parent-object#page-parent). We can build this object using an existing page ID:
 
 <CodeGroup>
   ```js JavaScript theme={null}
@@ -5162,7 +5213,7 @@ The children parameter is a list of [block objects]() which describe the page co
 <Note>
   **Size limits**
 
-  When creating new blocks, keep in mind that the Notion API has [size limits](/reference/errors#size-limits) for the content.
+  When creating new blocks, keep in mind that the Notion API has [size limits](/reference/request-limits#size-limits) for the content.
 </Note>
 
 Using all three of the parameters, we create a page by sending a request to [the endpoint](/reference/post-page).
@@ -7521,7 +7572,7 @@ Set up a way for your connection to store both the `access_token` and `refresh_t
 
 Refreshing an access token will generate a new access token and a new refresh token.
 
-Send the `refresh_token` provided from [Step 4](#step-4-notion-responds-with-an-access_token-refresh_token-and-additional-information) as part of a `POST` request to Notion’s token endpoint: [https://api.notion.com/v1/oauth/token](https://api.notion.com/v1/oauth/token).
+Send the `refresh_token` provided from [Step 4](#step-4-notion-responds-with-an-access_token--refresh_token-and-additional-information) as part of a `POST` request to Notion’s token endpoint: [https://api.notion.com/v1/oauth/token](https://api.notion.com/v1/oauth/token).
 
 This endpoint is described in more detail in the API reference docs for [refreshing a token](/reference/refresh-a-token).
 
@@ -8912,7 +8963,7 @@ In this example, we'll have three key files:
 
 * `index.html`, which will contain our client-side HTML.
 * `client.js`, which will contain our client-side JavaScript code.
-* `server.js`, which will contain our server-side JavaScript code. This file contains all the endpoints to make requests to Notion's public API, as well as to serve the `index.html` file. ([More on that below.](#step-3-importing-the-notion-sdk-serverjs))
+* `server.js`, which will contain our server-side JavaScript code. This file contains all the endpoints to make requests to Notion's public API, as well as to serve the `index.html` file. ([More on that below.](#step-3-set-up-the-notion-sdk))
 
 All of the sample code is available in [GitHub](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/web-form-with-express).
 
@@ -9075,7 +9126,7 @@ In this code block, we select the form element using its ID attribute with `getE
 
 Next, we attach an async function to the `onsubmit` event that will make a request to our local server's `/databases` endpoint. (This endpoint will be described below in our `server.js` code.) The function is asynchronous because we need to wait for a response from our server before proceeding.
 
-The response is then appended to our `index.html` document. ([More on this below.](#step-5-displaying-the-response-indexhtml))
+The response is then appended to our `index.html` document. ([More on this below.](#step-5-display-the-response))
 
 ### Step 3 - Set up the Notion SDK
 
@@ -12674,7 +12725,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   * We’ve updated our API reference docs to include information on Notion’s [wiki databases and verified pages](https://www.notion.so/help/wikis-and-verified-pages). Updates include:
 
-    * An overview on wikis in the guide to [working with databases](/guides/data-apis/working-with-databases#properties).
+    * An overview on wikis in the guide to [working with databases](/guides/data-apis/working-with-databases#database-properties).
     * The [`verification`](/reference/page-property-values#verification) page property was added to the [Page properties](/reference/page-property-values) documentation.
     * The [Create a database](/reference/create-a-database) and [Query a database](/reference/post-database-query) endpoint documentation was updated to reflect API changes related to wikis. Namely, that querying wiki databases can return both [Page](/reference/page) and [Database](/reference/database) objects.
 
@@ -12682,7 +12733,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   * A number of sample cURL commands in our docs were still using an old [Notion Version](/reference/versioning) in their headers. These have all been updated.
 
-  * A clarification was added to the [Authorization guide](/guides/get-started/authorization#making-api-requests-with-an-internal-integration) that the [Notion Version](/reference/versioning) is always required in public API request headers.
+  * A clarification was added to the [Authorization guide](/guides/get-started/authorization#making-api-requests-with-an-internal-connection) that the [Notion Version](/reference/versioning) is always required in public API request headers.
 </Update>
 
 <Update label="July 11 - July 24, 2023">
@@ -12816,7 +12867,7 @@ View an archive of Notion Developers updates prior to September 2023
 </Update>
 
 <Update label="January 31 - February 13, 2023">
-  We don’t have any updates to share right now. Stay tuned for the next changelog! To get a sense for what we’re heads down working on, check out the [platform roadmap](/page/changelog#updated-march-2-2022).
+  We don’t have any updates to share right now. Stay tuned for the next changelog! To get a sense for what we’re heads down working on, check out the [platform roadmap](/page/changelog).
 </Update>
 
 <Update label="January 18 - 30, 2023">
@@ -12869,15 +12920,15 @@ View an archive of Notion Developers updates prior to September 2023
 </Update>
 
 <Update label="November 8 - 21, 2022">
-  * We added a `this_week` filter for database queries. You can now search for database entries where the `"date"`, `"created_time"`, or `"last_edited_time"` property value falls within the current week. Refer to the [date filter condition](/reference/post-database-query-filter#date-filter-condition) docs for details.
+  * We added a `this_week` filter for database queries. You can now search for database entries where the `"date"`, `"created_time"`, or `"last_edited_time"` property value falls within the current week. Refer to the [date filter condition](/reference/post-database-query-filter#date) docs for details.
 </Update>
 
 <Update label="October 25 - November 7, 2022">
-  * Number database properties now support the Singapore dollar as a currency format. To use it, set `"singapore_dollar"` as the value for a number’s `format` field when creating or updating a database [property](/reference/property-object#number-configuration) or [schema](/reference/property-schema-object#number-configuration).
+  * Number database properties now support the Singapore dollar as a currency format. To use it, set `"singapore_dollar"` as the value for a number’s `format` field when creating or updating a database [property](/reference/property-object#number) or [schema](/reference/property-schema-object#number-configuration).
 </Update>
 
 <Update label="October 11 - 24, 2022">
-  * You can now add a Notion template option to a public integration from the <a href={developerConnectionsUrl}>integration's settings page</a>. For details on what the permissions flow looks like for users who opt in to the template, refer to the [Authorization guide](/guides/get-started/authorization#permissions-flow-for-integrations-with-a-notion-template-option).
+  * You can now add a Notion template option to a public integration from the <a href={developerConnectionsUrl}>integration's settings page</a>. For details on what the permissions flow looks like for users who opt in to the template, refer to the [Authorization guide](/guides/get-started/authorization).
 </Update>
 
 <Update label="September 26 - October 10, 2022">
@@ -12891,8 +12942,8 @@ View an archive of Notion Developers updates prior to September 2023
 
 <Update label="August 29 - September 11, 2022">
   * Fixed a bug where date mentions ended in a `→` character even if they only represented a single date, not a date range.
-  * Added an `Authorization URL` field to the public integration form. You can now click to copy the URL that allows users to authorize your integration (read more in the [Authorization guide](/guides/get-started/authorization#prompting-users-to-add-an-integration)).
-  * Corrected an error that caused the [`getProperty` endpoint](/reference/retrieve-a-page-property) to return only one item if the `property_id` belonged to a multi-item [`Files`](/reference/property-item-object#files-property-values) page property.
+  * Added an `Authorization URL` field to the public integration form. You can now click to copy the URL that allows users to authorize your integration (read more in the [Authorization guide](/guides/get-started/authorization)).
+  * Corrected an error that caused the [`getProperty` endpoint](/reference/retrieve-a-page-property) to return only one item if the `property_id` belonged to a multi-item [`Files`](/reference/property-item-object#files) page property.
 </Update>
 
 <Update label="August 31, 2022">
@@ -12907,8 +12958,8 @@ View an archive of Notion Developers updates prior to September 2023
   * The public API now supports the following functionality for `status` properties:
 
     * Reading and updating `status` properties on pages ([read more](/reference/property-value-object#status-property-values))
-    * Reading, but not updating, `status` property configuration on databases ([read more](/reference/property-object#status-configuration))
-    * Filtering or sorting by `status` properties when querying databases ([read more](/reference/post-database-query-filter#status-filter-condition))
+    * Reading, but not updating, `status` property configuration on databases ([read more](/reference/property-object#status))
+    * Filtering or sorting by `status` properties when querying databases ([read more](/reference/post-database-query-filter#status))
 
   * `header_1`, `header_2`, and `header_3` blocks now have an `is_toggleable` property, to better indicate whether they are heading toggle blocks. ([read more](/reference/block#headings))
 
@@ -13102,7 +13153,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="March 14 - 27, 2022">
   ### Features
 
-  * You can now filter databases on the created at and last edited at timestamps, even if they don't have a corresponding property of that type. Read more [here](/reference/post-database-query-filter#timestamp-filter-object).
+  * You can now filter databases on the created at and last edited at timestamps, even if they don't have a corresponding property of that type. Read more [here](/reference/post-database-query-filter#timestamp).
   * A [`Retry-After`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After) response header is now being sent with rate limited request responses. The value of this field is set as an integer number of seconds (in decimal). Requests made after waiting this minimum amount of time should not be rate limited. Read more about our rate limits [here](/reference/request-limits#rate-limits).
 
   ### Bug fixes and performance improvements
@@ -13115,7 +13166,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   When [querying a database](/reference/post-database-query) using filters, you previously were only able to build filters using properties that were explicitly defined in the database schema. We've added a new type of filter for the created timestamp and last edited timestamp of any page within the database. This means you can filter by these attributes, even if the database doesn't have a "Created time" or "Last edited time" *property*.
 
-  You can read more about this filter type [here](/reference/post-database-query-filter#timestamp-filter-object), but as a preview here is how you would filter by the created timestamp:
+  You can read more about this filter type [here](/reference/post-database-query-filter#timestamp), but as a preview here is how you would filter by the created timestamp:
 
   <CodeGroup>
     ```json JSON theme={null}
@@ -13155,7 +13206,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   ### Bug fixes and performance improvements
 
-  * Rich text objects now properly include template mentions. Read more about this type of text object [here](/reference/rich-text#template-mentions).
+  * Rich text objects now properly include template mentions. Read more about this type of text object [here](/reference/rich-text#template-mention-type-object).
 </Update>
 
 <Update label="March 8, 2022">
@@ -14138,7 +14189,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="November 10, 2021">
   The public API now supports returning `link_preview` blocks and mentions found in `rich_text`! Previously these blocks had type `unsupported` and mentions were skipped in `rich_text`. Note: `link_preview`s cannot be created via the API, only returned in responses.
 
-  See the documentation in [blocks](/reference/block#link-preview) and [`rich_text`](/reference/rich-text#link-preview-mentions) for more information.
+  See the documentation in [blocks](/reference/block#link-preview) and [`rich_text`](/reference/rich-text#link-preview-mention-type-object) for more information.
 
   <CodeGroup>
     ```json JSON theme={null}
@@ -15413,10 +15464,10 @@ View an archive of Notion Developers updates prior to September 2023
 
   * Retrieve and update [page](/reference/page) and [database](/reference/database) icons and cover images.
   * [List](/reference/get-block-children) and [append](/reference/patch-block-children) embed, image, video, file, PDF, and bookmark blocks
-  * Retrieve URL for [file page properties](/reference/page#files-property-values)
-  * Update [file page properties](/reference/page#files-property-values)
+  * Retrieve URL for [file page properties](/reference/page-property-values#files)
+  * Update [file page properties](/reference/page-property-values#files)
 
-  We do not yet support uploading files to Notion through the API, however, any files already uploaded to Notion can be retrieved. You can reference the details of what is supported [here](#externally-hosted-files-vs-files-hosted-by-notion).
+  We do not yet support uploading files to Notion through the API, however, any files already uploaded to Notion can be retrieved. You can reference the details of what is supported [here](/reference/file-object).
 
   #### Page Icons and Cover Images
 
@@ -15915,7 +15966,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   ### OAuth token response now includes workspace ID and owner info
 
-  We now return a `workspace_id` field and an `owner` in the [token response](/guides/get-started/authorization#exchanging-the-grant-for-an-access-token) at the very end of the OAuth authorization flow.
+  We now return a `workspace_id` field and an `owner` in the [token response](/guides/get-started/authorization) at the very end of the OAuth authorization flow.
 
   `workspace_id` is the ID of the workspace where the integration was authorized. As a reminder, this is **not** intended to be unique across tokens; in future iterations of our authorization flow users may be able to authorize your integration multiple times in the same workspace.
 
@@ -16243,7 +16294,7 @@ View an archive of Notion Developers updates prior to September 2023
   * "ringgit"
   * "leu"
 
-  This impacts the [number configuration of databases](/reference/database#number-configuration).
+  This impacts the [number configuration of databases](/reference/property-schema-object#number-configuration).
 </Update>
 
 <Update label="July 22, 2021">
@@ -16271,13 +16322,13 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="July 21, 2021">
   ### Database property objects now include the property name
 
-  [Database property objects](/reference/database#database-property) now include the field `name` with the property name as it appears in Notion.
+  [Database property objects](/reference/property-schema-object#database-properties) now include the field `name` with the property name as it appears in Notion.
 </Update>
 
 <Update label="July 15, 2021">
   ### Rollup property functions now include show\_original
 
-  The `function` `show_original` has now been added to [rollup database property objects](/reference/database#rollup-configuration). This fixes a bug where rollup properties were omitted if the calculation was "Show Original".
+  The `function` `show_original` has now been added to [rollup database property objects](/reference/property-schema-object#rollup-configuration). This fixes a bug where rollup properties were omitted if the calculation was "Show Original".
 </Update>
 
 <Update label="July 13, 2021">
@@ -16513,7 +16564,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="July 1, 2021">
   ### Page objects now contain url
 
-  [Page objects](/reference/page#all-pages) now return the web address of the page in the `url` key.
+  [Page objects](/reference/page) now return the web address of the page in the `url` key.
 
   <CodeGroup>
     ```json JSON expandable theme={null}
@@ -16569,7 +16620,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="June 23, 2021">
   ### Database objects now return parent
 
-  Database objects now return a [parent property](/reference/database#page-parent). Databases can have pages or workspaces as parents.
+  Database objects now return a [parent property](/reference/parent-object#database-parent). Databases can have pages or workspaces as parents.
 
   <CodeGroup>
     ```json JSON theme={null}
@@ -16583,15 +16634,15 @@ View an archive of Notion Developers updates prior to September 2023
 
   ### Other Improvements and Fixes
 
-  * Inline database mentions are now included in [rich\_text mention](/reference/rich-text#database-mentions) responses.
-  * When an integration does not have access to a [page or database mention](/reference/rich-text#page-mentions), we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as "Untitled" and annotations will be default).
-  * When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new [select](/reference/page#select-property-values) or [multi-select](/reference/page#multi-select-property-values) properties through the create or update page endpoints without the ability to edit the database parent.
+  * Inline database mentions are now included in [rich\_text mention](/reference/rich-text#database-mention-type-object) responses.
+  * When an integration does not have access to a [page or database mention](/reference/rich-text#page-mention-type-object), we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as "Untitled" and annotations will be default).
+  * When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new [select](/reference/page-property-values#select) or [multi-select](/reference/page-property-values#multi-select) properties through the create or update page endpoints without the ability to edit the database parent.
 </Update>
 
 <Update label="June 15, 2021">
   ### Select values can now be dynamically created via Create and Update Page endpoints + other updates since public beta launch
 
-  You can now dynamically create new options for [Select](/reference/database#select-configuration) or [Multi-Select properties](/reference/database#multi-select-configuration) when using the [Create Page](/reference/post-page) and [Update Page](/reference/patch-page) endpoints. When specifying an option that does not exist in the database schema already, the option will now be created and the database schema updated accordingly.
+  You can now dynamically create new options for [Select](/reference/property-schema-object#select-configuration) or [Multi-Select properties](/reference/property-schema-object#multi-select-configuration) when using the [Create Page](/reference/post-page) and [Update Page](/reference/patch-page) endpoints. When specifying an option that does not exist in the database schema already, the option will now be created and the database schema updated accordingly.
 
   <CodeGroup>
     ```json JSON theme={null}
@@ -16615,7 +16666,7 @@ View an archive of Notion Developers updates prior to September 2023
   **Other Changes**
 
   * [Search endpoint](/reference/post-search) now returns untitled pages.
-  * Applies to [version 2021-05-13](/reference/versioning#changes-by-version) and later only: The [Query Database](/reference/post-database-query) endpoint no longer accepts query parameters – these should be sent as body parameters.
+  * Applies to [version 2021-05-13](/reference/versioning) and later only: The [Query Database](/reference/post-database-query) endpoint no longer accepts query parameters – these should be sent as body parameters.
 </Update>
 
 <Update label="May 19, 2021">
@@ -16690,7 +16741,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="May 18, 2021">
   ### Initial users may reauthorize a public integration using OAuth
 
-  Public integrations use OAuth to [request authorization from a user](/guides/get-started/authorization#prompting-users-to-add-an-integration) before being added to a Notion workspace. Previously, once an integration was added to a workspace, no users were able to reauthorize the same integration in that workspace. This change allows the user who initially added the integration to complete the authorization flow more than once. This improvement helps integrations avoid a potential dead end in user flows.
+  Public integrations use OAuth to [request authorization from a user](/guides/get-started/authorization) before being added to a Notion workspace. Previously, once an integration was added to a workspace, no users were able to reauthorize the same integration in that workspace. This change allows the user who initially added the integration to complete the authorization flow more than once. This improvement helps integrations avoid a potential dead end in user flows.
 
   Integrations do not need to make any updates to take advantage of this new capability. An integration may simply link or redirect a user to the authorization URL, the same as the first authorization. During reauthorization the user will not see the page picker. The access token received at the end of reauthorization will be the same as the initial access token. This capability is available immediately.
 
@@ -16745,6 +16796,12 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="July 3, 2026">
+  ### HTML blocks via the API
+
+  You can now create [HTML blocks](/reference/block#html-blocks) with the API. Upload an `.html` file with the [File Upload API](/reference/file-upload) and attach it to an embed block via `embed.file_upload` when [appending block children](/reference/patch-block-children), [creating a page](/reference/post-page), or [updating a block](/reference/update-a-block). The Notion app renders the file's contents interactively in a sandboxed iframe — the same HTML block the app creates with the `/html` command and that agents create through [Notion MCP](/guides/mcp/mcp-supported-tools).
+</Update>
 
 <Update label="July 2, 2026">
   ### Choose an expiration when creating a personal access token
@@ -17187,7 +17244,7 @@ Source: https://developers.notion.com/page/changelog
 <Update label="September 6 - September 7, 2023">
   ### What's new
 
-  * The [updates](/page/changelog#notice-for-an-upcoming-public-api-change) related to the [Formulas 2.0 launch](https://twitter.com/NotionHQ/status/1699828805408550971?s=20) are now live in the Public API. These changes will not impact most developers using the Public API; however, please note that the formatting of [`formula.expression`](/reference/property-object#formula), which is returned when [retrieving a database](/reference/retrieve-a-database) with a [Formula property](/reference/property-object#formula), has changed. See Notion's Help Center articles for more information on the Formula 2.0 changes:
+  * The [updates](/page/changelog) related to the [Formulas 2.0 launch](https://twitter.com/NotionHQ/status/1699828805408550971?s=20) are now live in the Public API. These changes will not impact most developers using the Public API; however, please note that the formatting of [`formula.expression`](/reference/property-object#formula), which is returned when [retrieving a database](/reference/retrieve-a-database) with a [Formula property](/reference/property-object#formula), has changed. See Notion's Help Center articles for more information on the Formula 2.0 changes:
     * [Formulas 2.0: How to use Notion's new and improved formulas with your existing setups](https://www.notion.so/help/guides/new-formulas-whats-changed)
     * [How to write Notion formulas that extend the capabilities of your databases](https://www.notion.so/help/guides/write-formulas-that-extend-capabilities-of-databases)
   * The example for the [Formula database property](/reference/property-object#formula) was updated to align with the new Formula 2.0 launch.
@@ -17700,7 +17757,7 @@ A wider set of audio files is [supported in the File Upload API](/guides/data-ap
 
 #### Supported file upload types
 
-See the [file upload reference](/reference/file-upload#file-types-and-sizes) for a list of supported file extensions and content types when attaching a File Upload to a block.
+See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
 
 Audio blocks only support file types in the "audio" section of the table.
 
@@ -17966,10 +18023,10 @@ Divider block objects do not contain any information within the `divider` proper
 
 Embed block objects include information about another website, or an uploaded file, displayed within the Notion UI. The `embed` property contains the following information:
 
-| Field         | Type                                         | Description                                                                                                                                                                                                                                         |
-| :------------ | :------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `url`         | `string`                                     | The link that the embed block displays. When the embed is backed by an uploaded file, this is a temporary, signed link; fetch the block again from the API to get a fresh `url` rather than caching it.                                             |
-| `file_upload` | [File upload object](/reference/file-upload) | Create and update parameter only. An object with the `id` of a [FileUpload](/reference/file-upload) to embed (for example, a PDF). Provide either `url` or `file_upload`, not both. An embed always reads back with a `url`, never a `file_upload`. |
+| Field         | Type                                         | Description                                                                                                                                                                                                                                                                                                                                   |
+| :------------ | :------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`         | `string`                                     | The link that the embed block displays. When the embed is backed by an uploaded file, this is a temporary, signed link; fetch the block again from the API to get a fresh `url` rather than caching it.                                                                                                                                       |
+| `file_upload` | [File upload object](/reference/file-upload) | Create and update parameter only. An object with the `id` of a [FileUpload](/reference/file-upload) to embed (for example, a PDF). Attaching an uploaded `.html` file creates an [HTML block](/reference/block#html-blocks). Provide either `url` or `file_upload`, not both. An embed always reads back with a `url`, never a `file_upload`. |
 
 <CodeGroup>
   ```json Example Embed block object theme={null}
@@ -18030,6 +18087,29 @@ Embed block objects include information about another website, or an uploaded fi
   For other video sources, see [Supported video types](/reference/block#supported-video-types).
 </Check>
 
+#### HTML blocks
+
+An embed backed by an uploaded HTML file is an **HTML block**: the Notion app renders the file's contents interactively in a sandboxed iframe instead of linking out to it. This is the same block the app creates with the `/html` command and that agents create through [Notion MCP](/guides/mcp/mcp-supported-tools).
+
+To create an HTML block with the API:
+
+1. Upload a file with an `.html` or `.htm` extension using the [File Upload API](/reference/file-upload).
+2. Attach it to an embed block via `embed.file_upload` when creating or updating the block.
+
+```json Create an HTML block theme={null}
+{
+  "type": "embed",
+  "embed": {
+    "type": "file_upload",
+    "file_upload": {
+      "id": "43833259-72ae-404e-8441-b6577f3159b4"
+    }
+  }
+}
+```
+
+Retrieving an HTML block returns a temporary, signed `embed.url` for the underlying HTML file, like any other file-backed embed. Updating the embed to point at a non-HTML file or at a `url` turns it back into a regular embed.
+
 ### Equation
 
 Equation block objects are represented as children of [paragraph](/reference/block#paragraph) blocks. They are nested within a [rich text object](/reference/rich-text) and contain the following information within the `equation` property:
@@ -18055,14 +18135,14 @@ Equation block objects are represented as children of [paragraph](/reference/blo
 
 File block objects contain the following information within the `file` property:
 
-| Field         | Type                                                                        | Description                                                                                                                                                                                                                                                                                                                                                                                         |
-| :------------ | :-------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `caption`     | `array` of [rich text objects](/reference/rich-text)                        | The caption of the file block.                                                                                                                                                                                                                                                                                                                                                                      |
-| `type`        | One of: <br /><br />- `"file"` <br />- `"external"` <br />- `"file_upload"` | Type of file. This enum value indicates which of the following three objects are populated.                                                                                                                                                                                                                                                                                                         |
-| `file`        | [Notion-hosted file object](/reference/file-object#notion-hosted-files)     | A file object that details information about the file contained in the block: a temporary download `url` and `expiry_time`. After the `expiry_time`, fetch the block again from the API to get a new `url`. <br /><br />Only valid as a parameter if copied verbatim from the `file` field of a recent block API response from Notion. To attach a file, provide a `type` of `file_upload` instead. |
-| `external`    | [External file object](/reference/file-object#external-files)               | An object with a `url` property, identifying a publicly accessible URL.                                                                                                                                                                                                                                                                                                                             |
-| `file_upload` | [File upload object](/reference/file-upload#file-types-and-sizes)           | An object with the `id` of a [FileUpload](/reference/file-upload) to attach to the block. After attaching, the API response responds with a type of `file`, not `file_upload`, so your connection can access a download `url`.                                                                                                                                                                      |
-| `name`        | `string`                                                                    | The name of the file, as shown in the Notion UI. Note that the UI may auto-append `.pdf` or other extensions.<br /><br /> When attaching a `file_upload`, the `name` parameter is not required.                                                                                                                                                                                                     |
+| Field         | Type                                                                              | Description                                                                                                                                                                                                                                                                                                                                                                                         |
+| :------------ | :-------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `caption`     | `array` of [rich text objects](/reference/rich-text)                              | The caption of the file block.                                                                                                                                                                                                                                                                                                                                                                      |
+| `type`        | One of: <br /><br />- `"file"` <br />- `"external"` <br />- `"file_upload"`       | Type of file. This enum value indicates which of the following three objects are populated.                                                                                                                                                                                                                                                                                                         |
+| `file`        | [Notion-hosted file object](/reference/file-object#notion-hosted-files-type-file) | A file object that details information about the file contained in the block: a temporary download `url` and `expiry_time`. After the `expiry_time`, fetch the block again from the API to get a new `url`. <br /><br />Only valid as a parameter if copied verbatim from the `file` field of a recent block API response from Notion. To attach a file, provide a `type` of `file_upload` instead. |
+| `external`    | [External file object](/reference/file-object#external-files-type-external)       | An object with a `url` property, identifying a publicly accessible URL.                                                                                                                                                                                                                                                                                                                             |
+| `file_upload` | [File upload object](/reference/file-upload)                                      | An object with the `id` of a [FileUpload](/reference/file-upload) to attach to the block. After attaching, the API response responds with a type of `file`, not `file_upload`, so your connection can access a download `url`.                                                                                                                                                                      |
+| `name`        | `string`                                                                          | The name of the file, as shown in the Notion UI. Note that the UI may auto-append `.pdf` or other extensions.<br /><br /> When attaching a `file_upload`, the `name` parameter is not required.                                                                                                                                                                                                     |
 
 <CodeGroup>
   ```json Example File block theme={null}
@@ -18212,7 +18292,7 @@ The image must be directly hosted. In other words, the `url` cannot point to a s
 
 #### Supported file upload types
 
-See the [file upload reference](/reference/file-upload#file-types-and-sizes) for a list of supported file extensions and content types when attaching a File Upload to a block.
+See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
 
 Image blocks only support file types in the "image" section of the table.
 
@@ -18467,7 +18547,7 @@ A PDF block object represents a PDF that has been embedded within a Notion page.
 
 #### Supported file upload types
 
-See the [file upload reference](/reference/file-upload#file-types-and-sizes) for a list of supported file extensions and content types when attaching a File Upload to a block.
+See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
 
 PDF blocks only support a type of `.pdf`.
 
@@ -18967,7 +19047,7 @@ Video block objects contain a [file object](/reference/file-object) detailing in
 
 #### Supported file upload types
 
-See the [file upload reference](/reference/file-upload#file-types-and-sizes) for a list of supported file extensions and content types when attaching a File Upload to a block.
+See the [file upload reference](/reference/file-upload) for a list of supported file extensions and content types when attaching a File Upload to a block.
 
 Video blocks only support file types in the "video" section of the table.
 
@@ -19255,18 +19335,18 @@ When [retrieving comments](/reference/list-comments), one or more Comment object
   Connections must have read comments or insert comments capabilities in order to interact with the Comment object through the API. For more information on connection capabilities, see the [capabilities guide](/reference/capabilities).
 </Note>
 
-| Property           | Type                                                                        | Description                                                                                                                                                                                                                  | Example value                                                                                                                                                                  |
-| :----------------- | :-------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `object`           | `string`                                                                    | Always `"comment"`                                                                                                                                                                                                           | `"comment"`                                                                                                                                                                    |
-| `id`               | `string` (UUIDv4)                                                           | Unique identifier of the comment.                                                                                                                                                                                            | `"ce18f8c6-ef2a-427f-b416-43531fc7c117"`                                                                                                                                       |
-| `parent`           | `object`                                                                    | Information about the comment's parent. See [Parent object](/reference/parent-object). Note that comments may only be parented by pages or blocks.                                                                           | `{ "type": "block_id", "block_id": "5d4ca33c-d6b7-4675-93d9-84b70af45d1c" }`                                                                                                   |
-| `discussion_id`    | `string` (UUIDv4)                                                           | Unique identifier of the discussion thread that the comment is associated with. See [the guide](/guides/data-apis/working-with-comments#listing-comments-for-a-page-or-block) for more information about discussion threads. | `"ce18f8c6-ef2a-427f-b416-43531fc7c117"`                                                                                                                                       |
-| `created_time`     | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this comment was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string.                                                                                            | `"2022-07-15T21:46:00.000Z"`                                                                                                                                                   |
-| `last_edited_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this comment was updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string.                                                                                            | `"2022-07-15T21:46:00.000Z"`                                                                                                                                                   |
-| `created_by`       | [Partial User](/reference/user)                                             | User who created the comment.                                                                                                                                                                                                | `{ "object": "user", "id": "e450a39e-9051-4d36-bc4e-8581611fc592" }`                                                                                                           |
-| `rich_text`        | [Rich text object](/reference/rich-text)                                    | Content of the comment, which supports rich text formatting, links, and mentions.                                                                                                                                            | `[ { "text": { "content": "Kale", "link": { "type": "url", "url": "https://www.healthline.com/nutrition/10-proven-benefits-of-kale" } } } ]`                                   |
-| `attachments`      | [Comment Attachment](/reference/comment-attachment)                         | File attachments on the comment                                                                                                                                                                                              | `[ { "category": "image", "file": { "url": "https://s3.us-west-2.amazonaws.com/9bc6c6e0-32b8-4d55-8c12-3ae931f43a01/meow...", "expiry_time": "2025-06-10T21:58:51.599Z" } } ]` |
-| `display_name`     | [Comment Display Name](/reference/comment-display-name)                     | Custom display name on comment                                                                                                                                                                                               | `"display_name": { "type": "custom", "resolved_name": "automated response" }`                                                                                                  |
+| Property           | Type                                                                        | Description                                                                                                                                                                                                                     | Example value                                                                                                                                                                  |
+| :----------------- | :-------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `object`           | `string`                                                                    | Always `"comment"`                                                                                                                                                                                                              | `"comment"`                                                                                                                                                                    |
+| `id`               | `string` (UUIDv4)                                                           | Unique identifier of the comment.                                                                                                                                                                                               | `"ce18f8c6-ef2a-427f-b416-43531fc7c117"`                                                                                                                                       |
+| `parent`           | `object`                                                                    | Information about the comment's parent. See [Parent object](/reference/parent-object). Note that comments may only be parented by pages or blocks.                                                                              | `{ "type": "block_id", "block_id": "5d4ca33c-d6b7-4675-93d9-84b70af45d1c" }`                                                                                                   |
+| `discussion_id`    | `string` (UUIDv4)                                                           | Unique identifier of the discussion thread that the comment is associated with. See [the guide](/guides/data-apis/working-with-comments#retrieving-comments-for-a-page-or-block) for more information about discussion threads. | `"ce18f8c6-ef2a-427f-b416-43531fc7c117"`                                                                                                                                       |
+| `created_time`     | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this comment was created. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string.                                                                                               | `"2022-07-15T21:46:00.000Z"`                                                                                                                                                   |
+| `last_edited_time` | `string` ([ISO 8601 date and time](https://en.wikipedia.org/wiki/ISO_8601)) | Date and time when this comment was updated. Formatted as an [ISO 8601 date time](https://en.wikipedia.org/wiki/ISO_8601) string.                                                                                               | `"2022-07-15T21:46:00.000Z"`                                                                                                                                                   |
+| `created_by`       | [Partial User](/reference/user)                                             | User who created the comment.                                                                                                                                                                                                   | `{ "object": "user", "id": "e450a39e-9051-4d36-bc4e-8581611fc592" }`                                                                                                           |
+| `rich_text`        | [Rich text object](/reference/rich-text)                                    | Content of the comment, which supports rich text formatting, links, and mentions.                                                                                                                                               | `[ { "text": { "content": "Kale", "link": { "type": "url", "url": "https://www.healthline.com/nutrition/10-proven-benefits-of-kale" } } } ]`                                   |
+| `attachments`      | [Comment Attachment](/reference/comment-attachment)                         | File attachments on the comment                                                                                                                                                                                                 | `[ { "category": "image", "file": { "url": "https://s3.us-west-2.amazonaws.com/9bc6c6e0-32b8-4d55-8c12-3ae931f43a01/meow...", "expiry_time": "2025-06-10T21:58:51.599Z" } } ]` |
+| `display_name`     | [Comment Display Name](/reference/comment-display-name)                     | Custom display name on comment                                                                                                                                                                                                  | `"display_name": { "type": "custom", "resolved_name": "automated response" }`                                                                                                  |
 
 
 # Complete a file upload
@@ -19281,23 +19361,44 @@ Use this API to finalize a `mode=multi_part` [file upload](/reference/file-uploa
 Source: https://developers.notion.com/reference/create-a-comment
 
 post /v1/comments
-Creates a comment in a page, block or existing discussion thread.
+Creates a comment on a page, block, or existing discussion thread.
 
 Returns a [comment object](/reference/comment-object) for the created comment.
 
-There are three locations where a new comment can be added with the public API:
+Choose exactly one target for the new comment:
 
-1. A page
-2. A block
-3. An existing discussion thread
+| Target                     | Body parameter    | Use when                                                                                      |
+| -------------------------- | ----------------- | --------------------------------------------------------------------------------------------- |
+| Page                       | `parent.page_id`  | Creating a comment on a page.                                                                 |
+| Block                      | `parent.block_id` | Creating a comment attached to a specific block, such as a paragraph, heading, or to-do item. |
+| Existing discussion thread | `discussion_id`   | Replying to an existing page, block, or selected-text discussion.                             |
 
-The request body will differ slightly depending on which type of comment is being added with this endpoint.
+The request body will differ slightly depending on which target is being used.
 
-To add a new comment to a page or block, a `parent` object with a `page_id` or `block_id` must be provided in the body params.
+To add a new comment to a page or block, provide a `parent` object with a `page_id` or `block_id` in the body params. For example, this request creates a comment attached to a block:
 
-To add a new comment to an existing discussion thread, a `discussion_id` string must be provided in the body params. (Inline comments to start a new discussion thread cannot be created via the public API.)
+```json theme={null}
+{
+  "parent": {
+    "block_id": "d40e767c-d7af-4b18-a86d-55c61f1e39a4"
+  },
+  "rich_text": [
+    {
+      "text": {
+        "content": "This comment is attached to a block."
+      }
+    }
+  ]
+}
+```
 
-***Either* the `parent.page_id` , `parent.block_id` *or* `discussion_id` parameter must be provided — ONLY one can be specified**.
+To add a new comment to an existing discussion thread, provide a `discussion_id` string in the body params.
+
+<Note>
+  The public API can create comments attached to whole blocks with `parent.block_id`. It does not support creating a new discussion anchored to a selected range of text inside a block. To reply to an existing selected-text discussion, use `discussion_id`.
+</Note>
+
+**Exactly one of `parent.page_id`, `parent.block_id`, or `discussion_id` must be provided.**
 
 ### Comment body format
 
@@ -19308,7 +19409,7 @@ The comment body can be provided in one of two formats:
 
 Exactly one of `rich_text` or `markdown` must be provided. Providing both or neither will return a validation error.
 
-To see additional examples of creating a [page](/guides/data-apis/working-with-comments#adding-a-comment-to-a-page) or [discussion](/guides/data-apis/working-with-comments#responding-to-a-discussion-thread) comment and to learn more about comments in Notion, see the [Working with comments](/guides/data-apis/working-with-comments) guide.
+To see additional examples of creating a [page](/guides/data-apis/working-with-comments#adding-a-comment-to-a-page), [inline](/guides/data-apis/working-with-comments#adding-an-inline-comment), or [discussion](/guides/data-apis/working-with-comments#responding-to-a-discussion-thread) comment and to learn more about comments in Notion, see the [Working with comments](/guides/data-apis/working-with-comments) guide.
 
 ### Errors
 
@@ -19383,7 +19484,7 @@ Creates an access token that a third-party service can use to authenticate with 
 
   The `redirect_uri` is a *required* field in the request body for this endpoint if:
 
-  * the `redirect_uri` query parameter was set in the [Authorization URL](/guides/get-started/authorization#step-1-navigate-the-user-to-the-connections-authorization-url) provided to users, *or*;
+  * the `redirect_uri` query parameter was set in the [Authorization URL](/guides/get-started/authorization#step-1-navigate-the-user-to-the-connection’s-authorization-url) provided to users, *or*;
   * there are more than one `redirect_uri`s included in the <a href={developerConnectionsUrl}>connection's settings</a> under **OAuth Domain & URIs**.
 
   In most cases, the `redirect_uri` field is required.
@@ -24108,7 +24209,7 @@ Source: https://developers.notion.com/reference/property-item-object
 
 A `property_item` object describes the identifier, type, and value of a page property. It's returned from the [Retrieve a page property item](/reference/retrieve-a-page-property) API.
 
-Generally, the details on this page are the same as those in [Page properties](/reference/page-property-values), but with tweaks and additional information specific to the retrieve page property item endpoint, such as [value pagination](#paginated-property-values) .
+Generally, the details on this page are the same as those in [Page properties](/reference/page-property-values), but with tweaks and additional information specific to the retrieve page property item endpoint, such as [value pagination](#paginated-values) .
 
 ## Common fields
 
@@ -24377,7 +24478,7 @@ Boolean formula property values contain a boolean within the `boolean` property.
 
 ### Date formula
 
-Date formula property values contain an optional [date property value](#date-property-values) within the `date` property.
+Date formula property values contain an optional [date property value](#date) within the `date` property.
 
 <CodeGroup>
   ```json Formula Property Value theme={null}
@@ -24455,7 +24556,7 @@ Number rollup property values contain a number within the `number` property.
 
 ### Date rollup
 
-Date rollup property values contain a [date property value](#date-property-values) within the `date` property.
+Date rollup property values contain a [date property value](#date) within the `date` property.
 
 ### Array rollup
 
@@ -26339,7 +26440,7 @@ Refer to the [pagination reference](/reference/intro#pagination) for details on 
 
 For regular "Show original" rollups, the endpoint returns a flattened list of all the property items in the rollup.
 
-For rollups with an aggregation, the API returns a [rollup property value](/reference/page#rollup-property-values) under the `rollup` key and the list of relations.
+For rollups with an aggregation, the API returns a [rollup property value](/reference/page-property-values#rollup) under the `rollup` key and the list of relations.
 
 In order to avoid timeouts, if the rollup has a with a large number of aggregations or properties the endpoint returns a `next_cursor` value that is used to determinate the aggregation value *so far* for the subset of relations that have been paginated through.
 
@@ -27905,9 +28006,9 @@ To update the property type, the property schema object should contain the key o
 
 To update an existing select configuration, the property schema object optionally contains the following configuration within the `select` property:
 
-| Property  | Type                                                                                                                                           | Description                                                                                                                                                                | Example value |
-| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing select options](#existing-select-options) and [select option objects](/reference/create-a-database#select-options) | Settings for select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
+| Property  | Type                                                                                                                                                | Description                                                                                                                                                                | Example value |
+| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| `options` | optional array of [existing select options](#existing-select-options) and [select option objects](/reference/property-schema-object#select-options) | Settings for select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
 
 #### Existing select options
 
@@ -27922,9 +28023,9 @@ Note that the name and color of an existing option cannot be updated.
 
 To update an existing select configuration, the property schema object optionally contains the following configuration within the `multi_select` property:
 
-| Property  | Type                                                                                                                                                             | Description                                                                                                                                                                      | Example value |
-| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing select options](#existing-multi-select-options) and [multi-select option objects](/reference/create-a-database#multi-select-options) | Settings for multi select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
+| Property  | Type                                                                                                                                                                  | Description                                                                                                                                                                      | Example value |
+| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| `options` | optional array of [existing select options](#existing-multi-select-options) and [multi-select option objects](/reference/property-schema-object#multi-select-options) | Settings for multi select properties. If an existing option is omitted, it will be removed from the data source property. New options will be added to the data source property. |               |
 
 #### Existing multi-select options
 
@@ -28157,9 +28258,9 @@ To update the property type, the property schema object should contain the key o
 
 To update an existing select configuration, the property schema object optionally contains the following configuration within the `select` property:
 
-| Property  | Type                                                                                                                                           | Description                                                                                                                                                          | Example value |
-| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing select options](#existing-select-options) and [select option objects](/reference/create-a-database#select-options) | Settings for select properties. If an existing option is omitted, it will be removed from the database property. New options will be added to the database property. |               |
+| Property  | Type                                                                                                                                                | Description                                                                                                                                                          | Example value |
+| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| `options` | optional array of [existing select options](#existing-select-options) and [select option objects](/reference/property-schema-object#select-options) | Settings for select properties. If an existing option is omitted, it will be removed from the database property. New options will be added to the database property. |               |
 
 #### Existing select options
 
@@ -28174,9 +28275,9 @@ Note that the name and color of an existing option cannot be updated.
 
 To update an existing select configuration, the property schema object optionally contains the following configuration within the `multi_select` property:
 
-| Property  | Type                                                                                                                                                             | Description                                                                                                                                                                | Example value |
-| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing select options](#existing-multi-select-options) and [multi-select option objects](/reference/create-a-database#multi-select-options) | Settings for multi select properties. If an existing option is omitted, it will be removed from the database property. New options will be added to the database property. |               |
+| Property  | Type                                                                                                                                                                  | Description                                                                                                                                                                | Example value |
+| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| `options` | optional array of [existing select options](#existing-multi-select-options) and [multi-select option objects](/reference/property-schema-object#multi-select-options) | Settings for multi select properties. If an existing option is omitted, it will be removed from the database property. New options will be added to the database property. |               |
 
 #### Existing multi-select options
 
@@ -28191,9 +28292,9 @@ Note that the name and color of an existing option cannot be updated.
 
 To update an existing status configuration, the property schema object optionally contains the following configuration within the `status` property:
 
-| Property  | Type                                                                                                                                           | Description                                                                                                                                                                                                            | Example value |
-| :-------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
-| `options` | optional array of [existing status options](#existing-status-options) and [status option objects](/reference/create-a-database#status-options) | Settings for status properties. If an existing option is omitted, it will be removed from the database property. New options will be added to the database property and assigned to the requested group when provided. |               |
+| Property  | Type                                                                                                                                                | Description                                                                                                                                                                                                            | Example value |
+| :-------- | :-------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------ |
+| `options` | optional array of [existing status options](#existing-status-options) and [status option objects](/reference/property-schema-object#status-options) | Settings for status properties. If an existing option is omitted, it will be removed from the database property. New options will be added to the database property and assigned to the requested group when provided. |               |
 
 #### Existing status options
 

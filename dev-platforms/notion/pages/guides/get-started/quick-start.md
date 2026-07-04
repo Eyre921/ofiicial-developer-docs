@@ -143,7 +143,7 @@ In this example, we'll have three key files:
 
 * `index.html`, which will contain our client-side HTML.
 * `client.js`, which will contain our client-side JavaScript code.
-* `server.js`, which will contain our server-side JavaScript code. This file contains all the endpoints to make requests to Notion's public API, as well as to serve the `index.html` file. ([More on that below.](#step-3-importing-the-notion-sdk-serverjs))
+* `server.js`, which will contain our server-side JavaScript code. This file contains all the endpoints to make requests to Notion's public API, as well as to serve the `index.html` file. ([More on that below.](#step-3-set-up-the-notion-sdk))
 
 All of the sample code is available in [GitHub](https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/web-form-with-express).
 
@@ -306,7 +306,7 @@ In this code block, we select the form element using its ID attribute with `getE
 
 Next, we attach an async function to the `onsubmit` event that will make a request to our local server's `/databases` endpoint. (This endpoint will be described below in our `server.js` code.) The function is asynchronous because we need to wait for a response from our server before proceeding.
 
-The response is then appended to our `index.html` document. ([More on this below.](#step-5-displaying-the-response-indexhtml))
+The response is then appended to our `index.html` document. ([More on this below.](#step-5-display-the-response))
 
 ### Step 3 - Set up the Notion SDK
 

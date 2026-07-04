@@ -140,7 +140,7 @@ Rich text is used both in page content and inside [page property values](/refere
 
 Pages can be created with child blocks using the [create a page](/reference/post-page) endpoint. This endpoint supports creating a page within another page, or creating a page within a database.
 
-Let's try creating a page within another page with some sample content. We will use all three parameters for this endpoint. The parent parameter is a [page parent](/reference/page#page-parent). We can build this object using an existing page ID:
+Let's try creating a page within another page with some sample content. We will use all three parameters for this endpoint. The parent parameter is a [page parent](/reference/parent-object#page-parent). We can build this object using an existing page ID:
 
 <CodeGroup>
   ```js JavaScript theme={null}
@@ -225,7 +225,7 @@ The children parameter is a list of [block objects]() which describe the page co
 <Note>
   **Size limits**
 
-  When creating new blocks, keep in mind that the Notion API has [size limits](/reference/errors#size-limits) for the content.
+  When creating new blocks, keep in mind that the Notion API has [size limits](/reference/request-limits#size-limits) for the content.
 </Note>
 
 Using all three of the parameters, we create a page by sending a request to [the endpoint](/reference/post-page).

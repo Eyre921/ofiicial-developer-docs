@@ -96,7 +96,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   * We’ve updated our API reference docs to include information on Notion’s [wiki databases and verified pages](https://www.notion.so/help/wikis-and-verified-pages). Updates include:
 
-    * An overview on wikis in the guide to [working with databases](/guides/data-apis/working-with-databases#properties).
+    * An overview on wikis in the guide to [working with databases](/guides/data-apis/working-with-databases#database-properties).
     * The [`verification`](/reference/page-property-values#verification) page property was added to the [Page properties](/reference/page-property-values) documentation.
     * The [Create a database](/reference/create-a-database) and [Query a database](/reference/post-database-query) endpoint documentation was updated to reflect API changes related to wikis. Namely, that querying wiki databases can return both [Page](/reference/page) and [Database](/reference/database) objects.
 
@@ -104,7 +104,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   * A number of sample cURL commands in our docs were still using an old [Notion Version](/reference/versioning) in their headers. These have all been updated.
 
-  * A clarification was added to the [Authorization guide](/guides/get-started/authorization#making-api-requests-with-an-internal-integration) that the [Notion Version](/reference/versioning) is always required in public API request headers.
+  * A clarification was added to the [Authorization guide](/guides/get-started/authorization#making-api-requests-with-an-internal-connection) that the [Notion Version](/reference/versioning) is always required in public API request headers.
 </Update>
 
 <Update label="July 11 - July 24, 2023">
@@ -238,7 +238,7 @@ View an archive of Notion Developers updates prior to September 2023
 </Update>
 
 <Update label="January 31 - February 13, 2023">
-  We don’t have any updates to share right now. Stay tuned for the next changelog! To get a sense for what we’re heads down working on, check out the [platform roadmap](/page/changelog#updated-march-2-2022).
+  We don’t have any updates to share right now. Stay tuned for the next changelog! To get a sense for what we’re heads down working on, check out the [platform roadmap](/page/changelog).
 </Update>
 
 <Update label="January 18 - 30, 2023">
@@ -291,15 +291,15 @@ View an archive of Notion Developers updates prior to September 2023
 </Update>
 
 <Update label="November 8 - 21, 2022">
-  * We added a `this_week` filter for database queries. You can now search for database entries where the `"date"`, `"created_time"`, or `"last_edited_time"` property value falls within the current week. Refer to the [date filter condition](/reference/post-database-query-filter#date-filter-condition) docs for details.
+  * We added a `this_week` filter for database queries. You can now search for database entries where the `"date"`, `"created_time"`, or `"last_edited_time"` property value falls within the current week. Refer to the [date filter condition](/reference/post-database-query-filter#date) docs for details.
 </Update>
 
 <Update label="October 25 - November 7, 2022">
-  * Number database properties now support the Singapore dollar as a currency format. To use it, set `"singapore_dollar"` as the value for a number’s `format` field when creating or updating a database [property](/reference/property-object#number-configuration) or [schema](/reference/property-schema-object#number-configuration).
+  * Number database properties now support the Singapore dollar as a currency format. To use it, set `"singapore_dollar"` as the value for a number’s `format` field when creating or updating a database [property](/reference/property-object#number) or [schema](/reference/property-schema-object#number-configuration).
 </Update>
 
 <Update label="October 11 - 24, 2022">
-  * You can now add a Notion template option to a public integration from the <a href={developerConnectionsUrl}>integration's settings page</a>. For details on what the permissions flow looks like for users who opt in to the template, refer to the [Authorization guide](/guides/get-started/authorization#permissions-flow-for-integrations-with-a-notion-template-option).
+  * You can now add a Notion template option to a public integration from the <a href={developerConnectionsUrl}>integration's settings page</a>. For details on what the permissions flow looks like for users who opt in to the template, refer to the [Authorization guide](/guides/get-started/authorization).
 </Update>
 
 <Update label="September 26 - October 10, 2022">
@@ -313,8 +313,8 @@ View an archive of Notion Developers updates prior to September 2023
 
 <Update label="August 29 - September 11, 2022">
   * Fixed a bug where date mentions ended in a `→` character even if they only represented a single date, not a date range.
-  * Added an `Authorization URL` field to the public integration form. You can now click to copy the URL that allows users to authorize your integration (read more in the [Authorization guide](/guides/get-started/authorization#prompting-users-to-add-an-integration)).
-  * Corrected an error that caused the [`getProperty` endpoint](/reference/retrieve-a-page-property) to return only one item if the `property_id` belonged to a multi-item [`Files`](/reference/property-item-object#files-property-values) page property.
+  * Added an `Authorization URL` field to the public integration form. You can now click to copy the URL that allows users to authorize your integration (read more in the [Authorization guide](/guides/get-started/authorization)).
+  * Corrected an error that caused the [`getProperty` endpoint](/reference/retrieve-a-page-property) to return only one item if the `property_id` belonged to a multi-item [`Files`](/reference/property-item-object#files) page property.
 </Update>
 
 <Update label="August 31, 2022">
@@ -329,8 +329,8 @@ View an archive of Notion Developers updates prior to September 2023
   * The public API now supports the following functionality for `status` properties:
 
     * Reading and updating `status` properties on pages ([read more](/reference/property-value-object#status-property-values))
-    * Reading, but not updating, `status` property configuration on databases ([read more](/reference/property-object#status-configuration))
-    * Filtering or sorting by `status` properties when querying databases ([read more](/reference/post-database-query-filter#status-filter-condition))
+    * Reading, but not updating, `status` property configuration on databases ([read more](/reference/property-object#status))
+    * Filtering or sorting by `status` properties when querying databases ([read more](/reference/post-database-query-filter#status))
 
   * `header_1`, `header_2`, and `header_3` blocks now have an `is_toggleable` property, to better indicate whether they are heading toggle blocks. ([read more](/reference/block#headings))
 
@@ -524,7 +524,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="March 14 - 27, 2022">
   ### Features
 
-  * You can now filter databases on the created at and last edited at timestamps, even if they don't have a corresponding property of that type. Read more [here](/reference/post-database-query-filter#timestamp-filter-object).
+  * You can now filter databases on the created at and last edited at timestamps, even if they don't have a corresponding property of that type. Read more [here](/reference/post-database-query-filter#timestamp).
   * A [`Retry-After`](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After) response header is now being sent with rate limited request responses. The value of this field is set as an integer number of seconds (in decimal). Requests made after waiting this minimum amount of time should not be rate limited. Read more about our rate limits [here](/reference/request-limits#rate-limits).
 
   ### Bug fixes and performance improvements
@@ -537,7 +537,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   When [querying a database](/reference/post-database-query) using filters, you previously were only able to build filters using properties that were explicitly defined in the database schema. We've added a new type of filter for the created timestamp and last edited timestamp of any page within the database. This means you can filter by these attributes, even if the database doesn't have a "Created time" or "Last edited time" *property*.
 
-  You can read more about this filter type [here](/reference/post-database-query-filter#timestamp-filter-object), but as a preview here is how you would filter by the created timestamp:
+  You can read more about this filter type [here](/reference/post-database-query-filter#timestamp), but as a preview here is how you would filter by the created timestamp:
 
   <CodeGroup>
     ```json JSON theme={null}
@@ -577,7 +577,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   ### Bug fixes and performance improvements
 
-  * Rich text objects now properly include template mentions. Read more about this type of text object [here](/reference/rich-text#template-mentions).
+  * Rich text objects now properly include template mentions. Read more about this type of text object [here](/reference/rich-text#template-mention-type-object).
 </Update>
 
 <Update label="March 8, 2022">
@@ -1560,7 +1560,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="November 10, 2021">
   The public API now supports returning `link_preview` blocks and mentions found in `rich_text`! Previously these blocks had type `unsupported` and mentions were skipped in `rich_text`. Note: `link_preview`s cannot be created via the API, only returned in responses.
 
-  See the documentation in [blocks](/reference/block#link-preview) and [`rich_text`](/reference/rich-text#link-preview-mentions) for more information.
+  See the documentation in [blocks](/reference/block#link-preview) and [`rich_text`](/reference/rich-text#link-preview-mention-type-object) for more information.
 
   <CodeGroup>
     ```json JSON theme={null}
@@ -2835,10 +2835,10 @@ View an archive of Notion Developers updates prior to September 2023
 
   * Retrieve and update [page](/reference/page) and [database](/reference/database) icons and cover images.
   * [List](/reference/get-block-children) and [append](/reference/patch-block-children) embed, image, video, file, PDF, and bookmark blocks
-  * Retrieve URL for [file page properties](/reference/page#files-property-values)
-  * Update [file page properties](/reference/page#files-property-values)
+  * Retrieve URL for [file page properties](/reference/page-property-values#files)
+  * Update [file page properties](/reference/page-property-values#files)
 
-  We do not yet support uploading files to Notion through the API, however, any files already uploaded to Notion can be retrieved. You can reference the details of what is supported [here](#externally-hosted-files-vs-files-hosted-by-notion).
+  We do not yet support uploading files to Notion through the API, however, any files already uploaded to Notion can be retrieved. You can reference the details of what is supported [here](/reference/file-object).
 
   #### Page Icons and Cover Images
 
@@ -3337,7 +3337,7 @@ View an archive of Notion Developers updates prior to September 2023
 
   ### OAuth token response now includes workspace ID and owner info
 
-  We now return a `workspace_id` field and an `owner` in the [token response](/guides/get-started/authorization#exchanging-the-grant-for-an-access-token) at the very end of the OAuth authorization flow.
+  We now return a `workspace_id` field and an `owner` in the [token response](/guides/get-started/authorization) at the very end of the OAuth authorization flow.
 
   `workspace_id` is the ID of the workspace where the integration was authorized. As a reminder, this is **not** intended to be unique across tokens; in future iterations of our authorization flow users may be able to authorize your integration multiple times in the same workspace.
 
@@ -3665,7 +3665,7 @@ View an archive of Notion Developers updates prior to September 2023
   * "ringgit"
   * "leu"
 
-  This impacts the [number configuration of databases](/reference/database#number-configuration).
+  This impacts the [number configuration of databases](/reference/property-schema-object#number-configuration).
 </Update>
 
 <Update label="July 22, 2021">
@@ -3693,13 +3693,13 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="July 21, 2021">
   ### Database property objects now include the property name
 
-  [Database property objects](/reference/database#database-property) now include the field `name` with the property name as it appears in Notion.
+  [Database property objects](/reference/property-schema-object#database-properties) now include the field `name` with the property name as it appears in Notion.
 </Update>
 
 <Update label="July 15, 2021">
   ### Rollup property functions now include show\_original
 
-  The `function` `show_original` has now been added to [rollup database property objects](/reference/database#rollup-configuration). This fixes a bug where rollup properties were omitted if the calculation was "Show Original".
+  The `function` `show_original` has now been added to [rollup database property objects](/reference/property-schema-object#rollup-configuration). This fixes a bug where rollup properties were omitted if the calculation was "Show Original".
 </Update>
 
 <Update label="July 13, 2021">
@@ -3935,7 +3935,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="July 1, 2021">
   ### Page objects now contain url
 
-  [Page objects](/reference/page#all-pages) now return the web address of the page in the `url` key.
+  [Page objects](/reference/page) now return the web address of the page in the `url` key.
 
   <CodeGroup>
     ```json JSON expandable theme={null}
@@ -3991,7 +3991,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="June 23, 2021">
   ### Database objects now return parent
 
-  Database objects now return a [parent property](/reference/database#page-parent). Databases can have pages or workspaces as parents.
+  Database objects now return a [parent property](/reference/parent-object#database-parent). Databases can have pages or workspaces as parents.
 
   <CodeGroup>
     ```json JSON theme={null}
@@ -4005,15 +4005,15 @@ View an archive of Notion Developers updates prior to September 2023
 
   ### Other Improvements and Fixes
 
-  * Inline database mentions are now included in [rich\_text mention](/reference/rich-text#database-mentions) responses.
-  * When an integration does not have access to a [page or database mention](/reference/rich-text#page-mentions), we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as "Untitled" and annotations will be default).
-  * When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new [select](/reference/page#select-property-values) or [multi-select](/reference/page#multi-select-property-values) properties through the create or update page endpoints without the ability to edit the database parent.
+  * Inline database mentions are now included in [rich\_text mention](/reference/rich-text#database-mention-type-object) responses.
+  * When an integration does not have access to a [page or database mention](/reference/rich-text#page-mention-type-object), we will no longer completely omit the mention. The mention will be returned with just the ID but without detailed information (title will appear as "Untitled" and annotations will be default).
+  * When integrations are added to pages inside collections they can now always update page properties, even when the integration does not have access to the parent database. However, integrations will not be able to add new [select](/reference/page-property-values#select) or [multi-select](/reference/page-property-values#multi-select) properties through the create or update page endpoints without the ability to edit the database parent.
 </Update>
 
 <Update label="June 15, 2021">
   ### Select values can now be dynamically created via Create and Update Page endpoints + other updates since public beta launch
 
-  You can now dynamically create new options for [Select](/reference/database#select-configuration) or [Multi-Select properties](/reference/database#multi-select-configuration) when using the [Create Page](/reference/post-page) and [Update Page](/reference/patch-page) endpoints. When specifying an option that does not exist in the database schema already, the option will now be created and the database schema updated accordingly.
+  You can now dynamically create new options for [Select](/reference/property-schema-object#select-configuration) or [Multi-Select properties](/reference/property-schema-object#multi-select-configuration) when using the [Create Page](/reference/post-page) and [Update Page](/reference/patch-page) endpoints. When specifying an option that does not exist in the database schema already, the option will now be created and the database schema updated accordingly.
 
   <CodeGroup>
     ```json JSON theme={null}
@@ -4037,7 +4037,7 @@ View an archive of Notion Developers updates prior to September 2023
   **Other Changes**
 
   * [Search endpoint](/reference/post-search) now returns untitled pages.
-  * Applies to [version 2021-05-13](/reference/versioning#changes-by-version) and later only: The [Query Database](/reference/post-database-query) endpoint no longer accepts query parameters – these should be sent as body parameters.
+  * Applies to [version 2021-05-13](/reference/versioning) and later only: The [Query Database](/reference/post-database-query) endpoint no longer accepts query parameters – these should be sent as body parameters.
 </Update>
 
 <Update label="May 19, 2021">
@@ -4112,7 +4112,7 @@ View an archive of Notion Developers updates prior to September 2023
 <Update label="May 18, 2021">
   ### Initial users may reauthorize a public integration using OAuth
 
-  Public integrations use OAuth to [request authorization from a user](/guides/get-started/authorization#prompting-users-to-add-an-integration) before being added to a Notion workspace. Previously, once an integration was added to a workspace, no users were able to reauthorize the same integration in that workspace. This change allows the user who initially added the integration to complete the authorization flow more than once. This improvement helps integrations avoid a potential dead end in user flows.
+  Public integrations use OAuth to [request authorization from a user](/guides/get-started/authorization) before being added to a Notion workspace. Previously, once an integration was added to a workspace, no users were able to reauthorize the same integration in that workspace. This change allows the user who initially added the integration to complete the authorization flow more than once. This improvement helps integrations avoid a potential dead end in user flows.
 
   Integrations do not need to make any updates to take advantage of this new capability. An integration may simply link or redirect a user to the authorization URL, the same as the first authorization. During reauthorization the user will not see the page picker. The access token received at the end of reauthorization will be the same as the initial access token. This capability is available immediately.
 

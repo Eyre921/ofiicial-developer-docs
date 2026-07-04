@@ -189,7 +189,7 @@
     "status": "ok"
   },
   "dev-platforms/github": {
-    "pages": 88,
+    "pages": 107,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -208,5 +208,5 @@
     "pages": 758,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-04T11:30:30Z"
+  "_last_crawl": "2026-07-04T23:30:35Z"
 }

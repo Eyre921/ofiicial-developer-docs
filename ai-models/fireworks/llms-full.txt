@@ -4596,6 +4596,12 @@ Serving capacity scales with demand within the GPU capacity available in your cl
 
 Autoscaling behavior depends on model size, traffic shape, GPU availability, and customer-defined capacity constraints.
 
+## Hybrid capacity
+
+For customers who elect a hybrid BYOC model, Fireworks can help coordinate overflow scheduling onto Fireworks-managed capacity for eligible workloads. This is useful when traffic exceeds available BYOC capacity, customer-owned hardware is temporarily constrained, or some workloads do not need to remain in the BYOC environment.
+
+Hybrid capacity is configured during onboarding. Fireworks works with your team to define which workloads are eligible, when overflow may be used, how routing is handled, and what data handling or compliance constraints apply.
+
 ## GPU fleet reliability
 
 Fireworks continuously monitors GPU and node health for the serving stack. When a node or GPU becomes unhealthy, Fireworks automation detects the condition and safely remediates it, such as by removing traffic from the affected node and replacing capacity when available.
@@ -4625,6 +4631,7 @@ Customers with strict access policies can discuss a hardened onboarding variant 
 BYOC operations work best when Fireworks and the customer agree on:
 
 * Approved GPU capacity and scaling boundaries
+* Whether any workloads are eligible for hybrid overflow onto Fireworks-managed capacity
 * Customer-side change windows or approval requirements
 * Contacts for networking, cloud account or data center, and capacity issues
 * Support and escalation expectations
@@ -4697,8 +4704,19 @@ BYOC is not a raw self-hosting kit. Fireworks brings the managed serving experie
   </Card>
 </CardGroup>
 
+## Hybrid BYOC and Fireworks-managed capacity
+
+Some Enterprise customers want BYOC for their primary environment, but still want the option to use Fireworks-managed capacity for specific workloads or traffic spikes. During Private Preview, Fireworks can review hybrid BYOC patterns with your team, including overflow scheduling onto Fireworks-managed capacity when elected during onboarding and supported for the workload.
+
+Hybrid operation can help when:
+
+* Traffic occasionally exceeds the GPU capacity available in your cluster
+* You want a fallback path while customer-owned GPU capacity is being expanded or remediated
+* Some workloads can run outside the BYOC environment while others must remain within your network boundary
+* Your team wants a consistent Fireworks API surface across BYOC and Fireworks-managed deployments
+
 <Note>
-  When elected during onboarding and supported for the workload, Fireworks can also help coordinate overflow scheduling onto Fireworks-managed capacity while preserving the same Fireworks API surface.
+  Hybrid BYOC is optional and must be reviewed during onboarding. Fireworks works with your team to confirm routing behavior, workload eligibility, data handling expectations, and any compliance constraints before enabling overflow onto Fireworks-managed capacity.
 </Note>
 
 ## Known gaps during Private Preview
@@ -26053,7 +26071,7 @@ There are three metrics we use to rate limit accounts:
 * **Uncached Prompt TPM** — uncached input tokens per minute.
 * **Generated TPM** — output tokens per minute.
 
-**Starting limits:** 3.6M Total Prompt TPM, 900k Uncached Prompt TPM, 36k Generated TPM (\~60k / \~15k / \~600 TPS). **Enforcement uses TPM**, not TPS.
+**Default ceilings:** 21.6M Total Prompt TPM, 5.4M Uncached Prompt TPM, 216k Generated TPM (\~360k / \~90k / \~3.6k TPS). **Enforcement uses TPM**, not TPS.
 
 Based on your usage, your adaptive limits will grow and shrink. If your traffic ramps up too quickly, you will get 429s.
 

@@ -8,7 +8,7 @@ path: reference/property-item-object
 
 A `property_item` object describes the identifier, type, and value of a page property. It's returned from the [Retrieve a page property item](/reference/retrieve-a-page-property) API.
 
-Generally, the details on this page are the same as those in [Page properties](/reference/page-property-values), but with tweaks and additional information specific to the retrieve page property item endpoint, such as [value pagination](#paginated-property-values) .
+Generally, the details on this page are the same as those in [Page properties](/reference/page-property-values), but with tweaks and additional information specific to the retrieve page property item endpoint, such as [value pagination](#paginated-values) .
 
 ## Common fields
 
@@ -277,7 +277,7 @@ Boolean formula property values contain a boolean within the `boolean` property.
 
 ### Date formula
 
-Date formula property values contain an optional [date property value](#date-property-values) within the `date` property.
+Date formula property values contain an optional [date property value](#date) within the `date` property.
 
 <CodeGroup>
   ```json Formula Property Value theme={null}
@@ -355,7 +355,7 @@ Number rollup property values contain a number within the `number` property.
 
 ### Date rollup
 
-Date rollup property values contain a [date property value](#date-property-values) within the `date` property.
+Date rollup property values contain a [date property value](#date) within the `date` property.
 
 ### Array rollup
 

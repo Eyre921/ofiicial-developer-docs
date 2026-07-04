@@ -18,7 +18,7 @@ There are three metrics we use to rate limit accounts:
 * **Uncached Prompt TPM** — uncached input tokens per minute.
 * **Generated TPM** — output tokens per minute.
 
-**Starting limits:** 3.6M Total Prompt TPM, 900k Uncached Prompt TPM, 36k Generated TPM (\~60k / \~15k / \~600 TPS). **Enforcement uses TPM**, not TPS.
+**Default ceilings:** 21.6M Total Prompt TPM, 5.4M Uncached Prompt TPM, 216k Generated TPM (\~360k / \~90k / \~3.6k TPS). **Enforcement uses TPM**, not TPS.
 
 Based on your usage, your adaptive limits will grow and shrink. If your traffic ramps up too quickly, you will get 429s.
 

@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="July 3, 2026">
+  ### HTML blocks via the API
+
+  You can now create [HTML blocks](/reference/block#html-blocks) with the API. Upload an `.html` file with the [File Upload API](/reference/file-upload) and attach it to an embed block via `embed.file_upload` when [appending block children](/reference/patch-block-children), [creating a page](/reference/post-page), or [updating a block](/reference/update-a-block). The Notion app renders the file's contents interactively in a sandboxed iframe — the same HTML block the app creates with the `/html` command and that agents create through [Notion MCP](/guides/mcp/mcp-supported-tools).
+</Update>
+
 <Update label="July 2, 2026">
   ### Choose an expiration when creating a personal access token
 
@@ -445,7 +451,7 @@ path: page/changelog
 <Update label="September 6 - September 7, 2023">
   ### What's new
 
-  * The [updates](/page/changelog#notice-for-an-upcoming-public-api-change) related to the [Formulas 2.0 launch](https://twitter.com/NotionHQ/status/1699828805408550971?s=20) are now live in the Public API. These changes will not impact most developers using the Public API; however, please note that the formatting of [`formula.expression`](/reference/property-object#formula), which is returned when [retrieving a database](/reference/retrieve-a-database) with a [Formula property](/reference/property-object#formula), has changed. See Notion's Help Center articles for more information on the Formula 2.0 changes:
+  * The [updates](/page/changelog) related to the [Formulas 2.0 launch](https://twitter.com/NotionHQ/status/1699828805408550971?s=20) are now live in the Public API. These changes will not impact most developers using the Public API; however, please note that the formatting of [`formula.expression`](/reference/property-object#formula), which is returned when [retrieving a database](/reference/retrieve-a-database) with a [Formula property](/reference/property-object#formula), has changed. See Notion's Help Center articles for more information on the Formula 2.0 changes:
     * [Formulas 2.0: How to use Notion's new and improved formulas with your existing setups](https://www.notion.so/help/guides/new-formulas-whats-changed)
     * [How to write Notion formulas that extend the capabilities of your databases](https://www.notion.so/help/guides/write-formulas-that-extend-capabilities-of-databases)
   * The example for the [Formula database property](/reference/property-object#formula) was updated to align with the new Formula 2.0 launch.

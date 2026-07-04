@@ -16,7 +16,7 @@ Creates an access token that a third-party service can use to authenticate with 
 
   The `redirect_uri` is a *required* field in the request body for this endpoint if:
 
-  * the `redirect_uri` query parameter was set in the [Authorization URL](/guides/get-started/authorization#step-1-navigate-the-user-to-the-connections-authorization-url) provided to users, *or*;
+  * the `redirect_uri` query parameter was set in the [Authorization URL](/guides/get-started/authorization#step-1-navigate-the-user-to-the-connection’s-authorization-url) provided to users, *or*;
   * there are more than one `redirect_uri`s included in the <a href={developerConnectionsUrl}>connection's settings</a> under **OAuth Domain & URIs**.
 
   In most cases, the `redirect_uri` field is required.
