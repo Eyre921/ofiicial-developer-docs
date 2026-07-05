@@ -114,27 +114,23 @@ See the [Internal connections](/guides/get-started/internal-connections), [Publi
 
 Connections can subscribe to real-time events — like page updates, property changes, and new comments — via webhooks. This allows your connection to react to changes in Notion without polling the API. See the [Webhooks guide](/reference/webhooks) for details on setting up webhook subscriptions.
 
-## Starting your connection journey
+## Getting started
 
-We recommend starting with an internal connection — it's the fastest way to begin building. You get an API token immediately and can focus entirely on using the API within your workspace, without worrying about OAuth or Marketplace listing. You can always create a public connection later if you need multi-workspace support.
+The fastest way to start building is the [**Quickstart**](/guides/get-started/quick-start) — create a personal access token, make your first API request, and see a new page appear in your workspace in under two minutes.
 
-Here's a guided path through the documentation:
+Once you're ready to build further, choose the authentication model that fits your use case:
 
 <Steps>
   <Step>
-    [**Quickstart**](/guides/get-started/quick-start) — Build your first connection with a hands-on tutorial.
+    [**Personal access tokens**](/guides/get-started/personal-access-tokens) — Authenticate as yourself for scripts, CLI workflows, Workers, or trusted tools.
   </Step>
 
   <Step>
-    [**Personal access tokens**](/guides/get-started/personal-access-tokens) — Create a user-scoped token for scripts, CLI workflows, Workers, or trusted tools.
+    [**Internal connections**](/guides/get-started/internal-connections) — Build team-owned automations with a dedicated bot identity scoped to one workspace.
   </Step>
 
   <Step>
-    [**Internal connections**](/guides/get-started/internal-connections) — Understand how internal connections work, including the permissions model.
-  </Step>
-
-  <Step>
-    [**Public connections**](/guides/get-started/public-connections) — Learn how public connections work, including installation scope and the OAuth flow.
+    [**Public connections**](/guides/get-started/public-connections) — Build apps for other Notion users with OAuth 2.0.
   </Step>
 
   <Step>

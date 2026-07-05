@@ -323,6 +323,120 @@ If you use the `shopify app config push` with the `--force` flag, follow these s
 ***
 
 
+# Manage app config files
+
+**URL:** https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md
+
+---
+title: Manage app config files
+description: >-
+  This guide shows you how to get started with Shopify CLI, manage and update
+  your app configuration, and safely test your app’s behavior.
+source_url:
+  html: 'https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files'
+  md: 'https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md'
+---
+
+# Manage app config files
+
+This guide shows you how to get started with Shopify CLI, manage and update your app configuration, and safely test your app’s behavior.
+
+***
+
+## What you'll learn
+
+After you've finished this tutorial, you'll understand:
+
+* How to configure and manage Shopify apps from your terminal or IDE
+* How to safely test and update your app configuration
+
+***
+
+## Requirements
+
+* You've created a [Shopify Partner account](https://www.shopify.com/partners).
+* You've created a dev store.
+* Your app uses [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) 3.0 or higher.
+
+If you have an app that doesn't use Shopify CLI, then you should consider [migrating your app to use Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/migrate-from-dashboard).
+
+***
+
+## Link and configure apps
+
+You can create, link, and configure Shopify apps directly from your preferred terminal or IDE using Shopify CLI. You can either create a new Shopify app or link to any existing apps. This generates a configuration file in the root directory of your app.
+
+## Terminal
+
+```terminal
+shopify app config link
+```
+
+You can use your configuration file to view and modify your app’s configuration on Shopify. After you've made changes to your configuration file, you can run the `deploy` command to create and release a new app version.
+
+## Terminal
+
+```terminal
+shopify app deploy
+```
+
+Learn more about the [configuration file format](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
+
+***
+
+## Test your app functionality
+
+After your app has been installed on a live store, avoid doing active development against it so that end-users are not affected by possible breaking changes. Shopify CLI makes this easy by allowing you to link multiple Shopify apps to your codebase, so that you can dedicate specific apps and their configuration for various development, staging, and production workflows.
+
+Use `shopify app config link` to generate additional configuration files for development or staging apps. You can also re-link upstream Shopify apps if your configuration file gets deleted, corrupted, or out-of-sync. If you already have a `shopify.app.toml` in your root directory, then you’ll be prompted to give your configuration file a name, and a file `shopify.app.{your-config-name}.toml` is generated in your root directory. Learn more about [configuration names](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
+
+## Terminal
+
+```terminal
+shopify app config link
+```
+
+**Tip:**
+
+You don’t need to commit every Shopify configuration file to your git repository. Depending on your workflow preferences, you might want to gitignore certain development configurations, or only commit your production configuration file(s) to your repository.
+
+When you link to a Shopify app, it becomes your default configuration. This means that when you run `shopify app dev` or other commands that reference a configuration file, your default configuration is selected. If you’d like to change your default configuration, then you can run `shopify app config use` and pass in either your configuration name, or the file name:
+
+## Terminal
+
+```terminal
+shopify app config use development
+```
+
+You can also override your default configuration by passing a `--config` flag to your command. This syntax can be used to leverage CLI behavior in scripts, CI/CD, or other automated processes:
+
+## Terminal
+
+```terminal
+shopify app dev --config staging
+```
+
+Using different configuration files is a great way to quickly and safely test functionality across multiple apps and stores as your app grows in complexity.
+
+***
+
+## Port changes across different app configurations
+
+Shopify configuration files make it easy to push and manage changes across development, staging, and production apps. After your configuration changes have been tested, you can copy and paste your blocks of configuration to any of your other configuration files, and deploy those changes.
+
+## Terminal
+
+```terminal
+shopify app deploy --config staging
+```
+
+**Tip:**
+
+Make sure to pass the correct config, or run `shopify app use`, before pushing a new configuration. When you run the `deploy` command, you'll be presented with a summary of the changes to your app configuration, which you can confirm before deploying.
+
+***
+
+
 # About GraphQL
 
 **URL:** https://shopify.dev/docs/apps/build/graphql.md
@@ -660,120 +774,6 @@ Trained on Shopify data for high accuracy.](https://shopify.dev/docs/apps/build/
 ***
 
 
-# Manage app config files
-
-**URL:** https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md
-
----
-title: Manage app config files
-description: >-
-  This guide shows you how to get started with Shopify CLI, manage and update
-  your app configuration, and safely test your app’s behavior.
-source_url:
-  html: 'https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files'
-  md: 'https://shopify.dev/docs/apps/build/cli-for-apps/manage-app-config-files.md'
----
-
-# Manage app config files
-
-This guide shows you how to get started with Shopify CLI, manage and update your app configuration, and safely test your app’s behavior.
-
-***
-
-## What you'll learn
-
-After you've finished this tutorial, you'll understand:
-
-* How to configure and manage Shopify apps from your terminal or IDE
-* How to safely test and update your app configuration
-
-***
-
-## Requirements
-
-* You've created a [Shopify Partner account](https://www.shopify.com/partners).
-* You've created a dev store.
-* Your app uses [Shopify CLI](https://shopify.dev/docs/api/shopify-cli) 3.0 or higher.
-
-If you have an app that doesn't use Shopify CLI, then you should consider [migrating your app to use Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/migrate-from-dashboard).
-
-***
-
-## Link and configure apps
-
-You can create, link, and configure Shopify apps directly from your preferred terminal or IDE using Shopify CLI. You can either create a new Shopify app or link to any existing apps. This generates a configuration file in the root directory of your app.
-
-## Terminal
-
-```terminal
-shopify app config link
-```
-
-You can use your configuration file to view and modify your app’s configuration on Shopify. After you've made changes to your configuration file, you can run the `deploy` command to create and release a new app version.
-
-## Terminal
-
-```terminal
-shopify app deploy
-```
-
-Learn more about the [configuration file format](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
-
-***
-
-## Test your app functionality
-
-After your app has been installed on a live store, avoid doing active development against it so that end-users are not affected by possible breaking changes. Shopify CLI makes this easy by allowing you to link multiple Shopify apps to your codebase, so that you can dedicate specific apps and their configuration for various development, staging, and production workflows.
-
-Use `shopify app config link` to generate additional configuration files for development or staging apps. You can also re-link upstream Shopify apps if your configuration file gets deleted, corrupted, or out-of-sync. If you already have a `shopify.app.toml` in your root directory, then you’ll be prompted to give your configuration file a name, and a file `shopify.app.{your-config-name}.toml` is generated in your root directory. Learn more about [configuration names](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration).
-
-## Terminal
-
-```terminal
-shopify app config link
-```
-
-**Tip:**
-
-You don’t need to commit every Shopify configuration file to your git repository. Depending on your workflow preferences, you might want to gitignore certain development configurations, or only commit your production configuration file(s) to your repository.
-
-When you link to a Shopify app, it becomes your default configuration. This means that when you run `shopify app dev` or other commands that reference a configuration file, your default configuration is selected. If you’d like to change your default configuration, then you can run `shopify app config use` and pass in either your configuration name, or the file name:
-
-## Terminal
-
-```terminal
-shopify app config use development
-```
-
-You can also override your default configuration by passing a `--config` flag to your command. This syntax can be used to leverage CLI behavior in scripts, CI/CD, or other automated processes:
-
-## Terminal
-
-```terminal
-shopify app dev --config staging
-```
-
-Using different configuration files is a great way to quickly and safely test functionality across multiple apps and stores as your app grows in complexity.
-
-***
-
-## Port changes across different app configurations
-
-Shopify configuration files make it easy to push and manage changes across development, staging, and production apps. After your configuration changes have been tested, you can copy and paste your blocks of configuration to any of your other configuration files, and deploy those changes.
-
-## Terminal
-
-```terminal
-shopify app deploy --config staging
-```
-
-**Tip:**
-
-Make sure to pass the correct config, or run `shopify app use`, before pushing a new configuration. When you run the `deploy` command, you'll be presented with a summary of the changes to your app configuration, which you can confirm before deploying.
-
-***
-
-
 # access scopes
 
 **URL:** https://shopify.dev/api/usage/access-scopes.md
@@ -991,309 +991,6 @@ You can check your app's granted access scopes using the [`appInstallation`](htt
 
 * Apps should request only the minimum amount of data that's necessary for an app to function when using a Shopify API. Shopify restricts access to scopes for apps that don't require legitimate use of the associated data.
 * Only [public or custom apps](https://shopify.dev/docs/apps/launch/distribution) are granted access scopes. Legacy app types, such as private or unpublished, won't be granted new access scopes.
-
-***
-
-
-# Shopify CLI
-
-**URL:** https://shopify.dev/docs/api/shopify-cli.md
-
----
-title: Shopify CLI
-description: >-
-  Shopify CLI is a command-line interface tool that helps you generate and work
-  with Shopify apps, themes and custom storefronts.
-source_url:
-  html: 'https://shopify.dev/docs/api/shopify-cli'
-  md: 'https://shopify.dev/docs/api/shopify-cli.md'
-api_name: shopify-cli
----
-
-# Shopify CLI
-
-Shopify CLI is a command-line interface tool that helps you generate and work with Shopify apps, themes and custom storefronts. You can also use it to automate many common development tasks.
-
-## Requirements
-
-* [Node.js](https://nodejs.org/en/download/): 22.12 or higher
-* A Node.js package manager: [npm](https://www.npmjs.com/get-npm), [Yarn 1.x](https://classic.yarnpkg.com/lang/en/docs/install), or [pnpm](https://pnpm.io/installation).
-* [Git](https://git-scm.com/downloads): 2.28.0 or higher
-
-***
-
-## Installation
-
-This installs Shopify CLI globally on your system, so you can run `shopify` commands from any directory. Find out more about the available commands by running `shopify` in your terminal.
-
-## Code
-
-##### npm
-
-```sh
-npm install -g @shopify/cli@latest
-```
-
-##### yarn
-
-```sh
-yarn global add @shopify/cli@latest
-```
-
-##### pnpm
-
-```sh
-pnpm install -g @shopify/cli@latest
-```
-
-##### homebrew
-
-```sh
-# Only for macOS
-brew tap shopify/shopify
-brew install shopify-cli
-```
-
-***
-
-## Commands
-
-Shopify CLI groups commands into topics. The command syntax is: `shopify [topic] [command]`. Refer to each topic section in the sidebar for a list of available commands.
-
-Or, run the `help` command to get this information right in your terminal.
-
-## terminal
-
-```sh
-shopify help
-```
-
-***
-
-## Upgrade Shopify CLI
-
-Starting with Shopify CLI 4.0, Shopify CLI upgrades itself automatically using the package manager you installed it with. Auto-upgrade is skipped in CI environments, project-local installs, and major version bumps. To upgrade immediately, run `shopify upgrade`.
-
-### Turn off auto-upgrades
-
-* To disable auto-upgrades, run `shopify config autoupgrade off`.
-* To re-enable, run `shopify config autoupgrade on`.
-
-When auto-upgrade is off, Shopify CLI shows a daily reminder when a new version is available, but won't upgrade itself.
-
-## terminal
-
-```sh
-> shopify version
-4.0.0
-
-
-> shopify config autoupgrade status
-╭─ info ──────────────────────────────────────────────────────╮
-│                                                             │
-│  Auto-upgrade on. Shopify CLI will update automatically     │
-│  after each command.                                        │
-│                                                             │
-╰─────────────────────────────────────────────────────────────╯
-```
-
-***
-
-## Network proxy configuration
-
-When working behind a network proxy, you can configure Shopify CLI (version 3.78+) to route connections through it:
-
-1. Set the proxy for HTTP traffic:
-
-   ```bash
-   export SHOPIFY_HTTP_PROXY=http://proxy.com:8080
-   ```
-
-2. Optionally, set a different proxy for HTTPS traffic:
-
-   ```bash
-   export SHOPIFY_HTTPS_PROXY=https://secure-proxy.com:8443
-   ```
-
-   If not specified, the HTTP proxy will be used for all traffic.
-
-3. For authenticated proxies, include credentials in the URL:
-
-   ```bash
-   export SHOPIFY_HTTP_PROXY=http://username:password@proxy.com:8080
-   ```
-
-***
-
-## Usage reporting
-
-Anonymous usage statistics are collected by default. To opt out, you can use either `SHOPIFY_CLI_NO_ANALYTICS=1` or `OPT_OUT_INSTRUMENTATION=true`.
-
-***
-
-## Contribute to Shopify CLI
-
-Shopify CLI is open source. [Learn how to contribute](https://github.com/Shopify/cli/wiki/Contributors:-Introduction) to our GitHub repository.
-
-***
-
-## Where to get help
-
-* [Shopify CLI and Libraries](https://community.shopify.dev/c/shopify-cli-libraries/14) - Report any issues with the CLI.
-* [Dev Platform](https://community.shopify.dev/c/dev-platform/32) - Ask any questions and learn more about the Dev Platform powering the CLI.
-
-***
-
-## Resources
-
-[Start building a theme\
-\
-](https://shopify.dev/docs/themes/getting-started/create)
-
-[Learn how to set up your theme development environment and create a new theme](https://shopify.dev/docs/themes/getting-started/create)
-
-[Start building an app\
-\
-](https://shopify.dev/docs/apps/getting-started/create)
-
-[Learn how to set up your app development environment and start building](https://shopify.dev/docs/apps/getting-started/create)
-
-***
-
-
-# App commands
-
-**URL:** https://shopify.dev/docs/api/shopify-cli/app.md
-
----
-title: Shopify CLI App commands
-source_url:
-  html: 'https://shopify.dev/docs/api/shopify-cli/app'
-  md: 'https://shopify.dev/docs/api/shopify-cli/app.md'
-api_name: shopify-cli
----
-
-# Shopify CLI App commands
-
-[app build](https://shopify.dev/docs/api/shopify-cli/app/app-build)
-
-[This command executes the build script specified in the element's TOML file.](https://shopify.dev/docs/api/shopify-cli/app/app-build)
-
-[app bulk cancel](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-cancel)
-
-[Cancels a running bulk operation by ID.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-cancel)
-
-[app bulk execute](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-execute)
-
-[Executes an Admin API GraphQL query or mutation on the specified store, as a bulk operation.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-execute)
-
-[app bulk status](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-status)
-
-[Check the status of a specific bulk operation by ID, or list all bulk operations belonging to this app on this store in the last 7 days.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-status)
-
-[app config link](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
-
-[Pulls app configuration from the Developer Dashboard and creates or overwrites a configuration file.](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
-
-[app config pull](https://shopify.dev/docs/api/shopify-cli/app/app-config-pull)
-
-[Pulls the latest configuration from the already-linked Shopify app and updates the selected configuration file.](https://shopify.dev/docs/api/shopify-cli/app/app-config-pull)
-
-[app config use](https://shopify.dev/docs/api/shopify-cli/app/app-config-use)
-
-[Sets default configuration when you run app-related CLI commands.](https://shopify.dev/docs/api/shopify-cli/app/app-config-use)
-
-[app config validate](https://shopify.dev/docs/api/shopify-cli/app/app-config-validate)
-
-[Validates the selected app configuration file and all extension configurations against their schemas and reports any errors found.](https://shopify.dev/docs/api/shopify-cli/app/app-config-validate)
-
-[app deploy](https://shopify.dev/docs/api/shopify-cli/app/app-deploy)
-
-[Builds the app, then deploys your app configuration and extensions.](https://shopify.dev/docs/api/shopify-cli/app/app-deploy)
-
-[app dev clean](https://shopify.dev/docs/api/shopify-cli/app/app-dev-clean)
-
-[Stop the dev preview that was started with shopify app dev.](https://shopify.dev/docs/api/shopify-cli/app/app-dev-clean)
-
-[app dev](https://shopify.dev/docs/api/shopify-cli/app/app-dev)
-
-[Builds and previews your app on a dev store, and watches for changes.](https://shopify.dev/docs/api/shopify-cli/app/app-dev)
-
-[app env pull](https://shopify.dev/docs/api/shopify-cli/app/app-env-pull)
-
-[Creates or updates an .env files that contains app and app extension environment variables.](https://shopify.dev/docs/api/shopify-cli/app/app-env-pull)
-
-[app env show](https://shopify.dev/docs/api/shopify-cli/app/app-env-show)
-
-[Displays environment variables that can be used to deploy apps and app extensions.](https://shopify.dev/docs/api/shopify-cli/app/app-env-show)
-
-[app execute](https://shopify.dev/docs/api/shopify-cli/app/app-execute)
-
-[Executes an Admin API GraphQL query or mutation on the specified store.](https://shopify.dev/docs/api/shopify-cli/app/app-execute)
-
-[app function build](https://shopify.dev/docs/api/shopify-cli/app/app-function-build)
-
-[Compiles the function in your current directory to WebAssembly (Wasm) for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-build)
-
-[app function info](https://shopify.dev/docs/api/shopify-cli/app/app-function-info)
-
-[The information returned includes the following:](https://shopify.dev/docs/api/shopify-cli/app/app-function-info)
-
-[app function replay](https://shopify.dev/docs/api/shopify-cli/app/app-function-replay)
-
-[Runs the function from your current directory for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-replay)
-
-[app function run](https://shopify.dev/docs/api/shopify-cli/app/app-function-run)
-
-[Runs the function from your current directory for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-run)
-
-[app function schema](https://shopify.dev/docs/api/shopify-cli/app/app-function-schema)
-
-[Generates the latest GraphQL schema for a function in your app.](https://shopify.dev/docs/api/shopify-cli/app/app-function-schema)
-
-[app function typegen](https://shopify.dev/docs/api/shopify-cli/app/app-function-typegen)
-
-[Creates GraphQL types based on your input query for a function.](https://shopify.dev/docs/api/shopify-cli/app/app-function-typegen)
-
-[app generate extension](https://shopify.dev/docs/api/shopify-cli/app/app-generate-extension)
-
-[Generates a new app extension.](https://shopify.dev/docs/api/shopify-cli/app/app-generate-extension)
-
-[app import-custom-data-definitions](https://shopify.dev/docs/api/shopify-cli/app/app-import-custom-data-definitions)
-
-[Import metafield and metaobject definitions from your development store.](https://shopify.dev/docs/api/shopify-cli/app/app-import-custom-data-definitions)
-
-[app import-extensions](https://shopify.dev/docs/api/shopify-cli/app/app-import-extensions)
-
-[Import dashboard-managed extensions into your app.](https://shopify.dev/docs/api/shopify-cli/app/app-import-extensions)
-
-[app info](https://shopify.dev/docs/api/shopify-cli/app/app-info)
-
-[The information returned includes the following:](https://shopify.dev/docs/api/shopify-cli/app/app-info)
-
-[app init](https://shopify.dev/docs/api/shopify-cli/app/app-init)
-
-[Create a new app project](https://shopify.dev/docs/api/shopify-cli/app/app-init)
-
-[app logs sources](https://shopify.dev/docs/api/shopify-cli/app/app-logs-sources)
-
-[The output source names can be used with the --source argument of shopify app logs to filter log output.](https://shopify.dev/docs/api/shopify-cli/app/app-logs-sources)
-
-[app logs](https://shopify.dev/docs/api/shopify-cli/app/app-logs)
-
-[Opens a real-time stream of detailed app logs from the selected app and store.](https://shopify.dev/docs/api/shopify-cli/app/app-logs)
-
-[app release](https://shopify.dev/docs/api/shopify-cli/app/app-release)
-
-[Releases an existing app version.](https://shopify.dev/docs/api/shopify-cli/app/app-release)
-
-[app versions list](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
-
-[Lists the deployed app versions.](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
-
-[app webhook trigger](https://shopify.dev/docs/api/shopify-cli/app/app-webhook-trigger)
-
-[Triggers the delivery of a sample Admin API event topic payload to a designated address.](https://shopify.dev/docs/api/shopify-cli/app/app-webhook-trigger)
 
 ***
 
@@ -1886,6 +1583,309 @@ HTTP/1.1 500 Internal Server Error
 ***
 
 
+# Shopify CLI
+
+**URL:** https://shopify.dev/docs/api/shopify-cli.md
+
+---
+title: Shopify CLI
+description: >-
+  Shopify CLI is a command-line interface tool that helps you generate and work
+  with Shopify apps, themes and custom storefronts.
+source_url:
+  html: 'https://shopify.dev/docs/api/shopify-cli'
+  md: 'https://shopify.dev/docs/api/shopify-cli.md'
+api_name: shopify-cli
+---
+
+# Shopify CLI
+
+Shopify CLI is a command-line interface tool that helps you generate and work with Shopify apps, themes and custom storefronts. You can also use it to automate many common development tasks.
+
+## Requirements
+
+* [Node.js](https://nodejs.org/en/download/): 22.12 or higher
+* A Node.js package manager: [npm](https://www.npmjs.com/get-npm), [Yarn 1.x](https://classic.yarnpkg.com/lang/en/docs/install), or [pnpm](https://pnpm.io/installation).
+* [Git](https://git-scm.com/downloads): 2.28.0 or higher
+
+***
+
+## Installation
+
+This installs Shopify CLI globally on your system, so you can run `shopify` commands from any directory. Find out more about the available commands by running `shopify` in your terminal.
+
+## Code
+
+##### npm
+
+```sh
+npm install -g @shopify/cli@latest
+```
+
+##### yarn
+
+```sh
+yarn global add @shopify/cli@latest
+```
+
+##### pnpm
+
+```sh
+pnpm install -g @shopify/cli@latest
+```
+
+##### homebrew
+
+```sh
+# Only for macOS
+brew tap shopify/shopify
+brew install shopify-cli
+```
+
+***
+
+## Commands
+
+Shopify CLI groups commands into topics. The command syntax is: `shopify [topic] [command]`. Refer to each topic section in the sidebar for a list of available commands.
+
+Or, run the `help` command to get this information right in your terminal.
+
+## terminal
+
+```sh
+shopify help
+```
+
+***
+
+## Upgrade Shopify CLI
+
+Starting with Shopify CLI 4.0, Shopify CLI upgrades itself automatically using the package manager you installed it with. Auto-upgrade is skipped in CI environments, project-local installs, and major version bumps. To upgrade immediately, run `shopify upgrade`.
+
+### Turn off auto-upgrades
+
+* To disable auto-upgrades, run `shopify config autoupgrade off`.
+* To re-enable, run `shopify config autoupgrade on`.
+
+When auto-upgrade is off, Shopify CLI shows a daily reminder when a new version is available, but won't upgrade itself.
+
+## terminal
+
+```sh
+> shopify version
+4.0.0
+
+
+> shopify config autoupgrade status
+╭─ info ──────────────────────────────────────────────────────╮
+│                                                             │
+│  Auto-upgrade on. Shopify CLI will update automatically     │
+│  after each command.                                        │
+│                                                             │
+╰─────────────────────────────────────────────────────────────╯
+```
+
+***
+
+## Network proxy configuration
+
+When working behind a network proxy, you can configure Shopify CLI (version 3.78+) to route connections through it:
+
+1. Set the proxy for HTTP traffic:
+
+   ```bash
+   export SHOPIFY_HTTP_PROXY=http://proxy.com:8080
+   ```
+
+2. Optionally, set a different proxy for HTTPS traffic:
+
+   ```bash
+   export SHOPIFY_HTTPS_PROXY=https://secure-proxy.com:8443
+   ```
+
+   If not specified, the HTTP proxy will be used for all traffic.
+
+3. For authenticated proxies, include credentials in the URL:
+
+   ```bash
+   export SHOPIFY_HTTP_PROXY=http://username:password@proxy.com:8080
+   ```
+
+***
+
+## Usage reporting
+
+Anonymous usage statistics are collected by default. To opt out, you can use either `SHOPIFY_CLI_NO_ANALYTICS=1` or `OPT_OUT_INSTRUMENTATION=true`.
+
+***
+
+## Contribute to Shopify CLI
+
+Shopify CLI is open source. [Learn how to contribute](https://github.com/Shopify/cli/wiki/Contributors:-Introduction) to our GitHub repository.
+
+***
+
+## Where to get help
+
+* [Shopify CLI and Libraries](https://community.shopify.dev/c/shopify-cli-libraries/14) - Report any issues with the CLI.
+* [Dev Platform](https://community.shopify.dev/c/dev-platform/32) - Ask any questions and learn more about the Dev Platform powering the CLI.
+
+***
+
+## Resources
+
+[Start building a theme\
+\
+](https://shopify.dev/docs/themes/getting-started/create)
+
+[Learn how to set up your theme development environment and create a new theme](https://shopify.dev/docs/themes/getting-started/create)
+
+[Start building an app\
+\
+](https://shopify.dev/docs/apps/getting-started/create)
+
+[Learn how to set up your app development environment and start building](https://shopify.dev/docs/apps/getting-started/create)
+
+***
+
+
+# App commands
+
+**URL:** https://shopify.dev/docs/api/shopify-cli/app.md
+
+---
+title: Shopify CLI App commands
+source_url:
+  html: 'https://shopify.dev/docs/api/shopify-cli/app'
+  md: 'https://shopify.dev/docs/api/shopify-cli/app.md'
+api_name: shopify-cli
+---
+
+# Shopify CLI App commands
+
+[app build](https://shopify.dev/docs/api/shopify-cli/app/app-build)
+
+[This command executes the build script specified in the element's TOML file.](https://shopify.dev/docs/api/shopify-cli/app/app-build)
+
+[app bulk cancel](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-cancel)
+
+[Cancels a running bulk operation by ID.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-cancel)
+
+[app bulk execute](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-execute)
+
+[Executes an Admin API GraphQL query or mutation on the specified store, as a bulk operation.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-execute)
+
+[app bulk status](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-status)
+
+[Check the status of a specific bulk operation by ID, or list all bulk operations belonging to this app on this store in the last 7 days.](https://shopify.dev/docs/api/shopify-cli/app/app-bulk-status)
+
+[app config link](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
+
+[Pulls app configuration from the Developer Dashboard and creates or overwrites a configuration file.](https://shopify.dev/docs/api/shopify-cli/app/app-config-link)
+
+[app config pull](https://shopify.dev/docs/api/shopify-cli/app/app-config-pull)
+
+[Pulls the latest configuration from the already-linked Shopify app and updates the selected configuration file.](https://shopify.dev/docs/api/shopify-cli/app/app-config-pull)
+
+[app config use](https://shopify.dev/docs/api/shopify-cli/app/app-config-use)
+
+[Sets default configuration when you run app-related CLI commands.](https://shopify.dev/docs/api/shopify-cli/app/app-config-use)
+
+[app config validate](https://shopify.dev/docs/api/shopify-cli/app/app-config-validate)
+
+[Validates the selected app configuration file and all extension configurations against their schemas and reports any errors found.](https://shopify.dev/docs/api/shopify-cli/app/app-config-validate)
+
+[app deploy](https://shopify.dev/docs/api/shopify-cli/app/app-deploy)
+
+[Builds the app, then deploys your app configuration and extensions.](https://shopify.dev/docs/api/shopify-cli/app/app-deploy)
+
+[app dev clean](https://shopify.dev/docs/api/shopify-cli/app/app-dev-clean)
+
+[Stop the dev preview that was started with shopify app dev.](https://shopify.dev/docs/api/shopify-cli/app/app-dev-clean)
+
+[app dev](https://shopify.dev/docs/api/shopify-cli/app/app-dev)
+
+[Builds and previews your app on a dev store, and watches for changes.](https://shopify.dev/docs/api/shopify-cli/app/app-dev)
+
+[app env pull](https://shopify.dev/docs/api/shopify-cli/app/app-env-pull)
+
+[Creates or updates an .env files that contains app and app extension environment variables.](https://shopify.dev/docs/api/shopify-cli/app/app-env-pull)
+
+[app env show](https://shopify.dev/docs/api/shopify-cli/app/app-env-show)
+
+[Displays environment variables that can be used to deploy apps and app extensions.](https://shopify.dev/docs/api/shopify-cli/app/app-env-show)
+
+[app execute](https://shopify.dev/docs/api/shopify-cli/app/app-execute)
+
+[Executes an Admin API GraphQL query or mutation on the specified store.](https://shopify.dev/docs/api/shopify-cli/app/app-execute)
+
+[app function build](https://shopify.dev/docs/api/shopify-cli/app/app-function-build)
+
+[Compiles the function in your current directory to WebAssembly (Wasm) for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-build)
+
+[app function info](https://shopify.dev/docs/api/shopify-cli/app/app-function-info)
+
+[The information returned includes the following:](https://shopify.dev/docs/api/shopify-cli/app/app-function-info)
+
+[app function replay](https://shopify.dev/docs/api/shopify-cli/app/app-function-replay)
+
+[Runs the function from your current directory for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-replay)
+
+[app function run](https://shopify.dev/docs/api/shopify-cli/app/app-function-run)
+
+[Runs the function from your current directory for testing purposes.](https://shopify.dev/docs/api/shopify-cli/app/app-function-run)
+
+[app function schema](https://shopify.dev/docs/api/shopify-cli/app/app-function-schema)
+
+[Generates the latest GraphQL schema for a function in your app.](https://shopify.dev/docs/api/shopify-cli/app/app-function-schema)
+
+[app function typegen](https://shopify.dev/docs/api/shopify-cli/app/app-function-typegen)
+
+[Creates GraphQL types based on your input query for a function.](https://shopify.dev/docs/api/shopify-cli/app/app-function-typegen)
+
+[app generate extension](https://shopify.dev/docs/api/shopify-cli/app/app-generate-extension)
+
+[Generates a new app extension.](https://shopify.dev/docs/api/shopify-cli/app/app-generate-extension)
+
+[app import-custom-data-definitions](https://shopify.dev/docs/api/shopify-cli/app/app-import-custom-data-definitions)
+
+[Import metafield and metaobject definitions from your development store.](https://shopify.dev/docs/api/shopify-cli/app/app-import-custom-data-definitions)
+
+[app import-extensions](https://shopify.dev/docs/api/shopify-cli/app/app-import-extensions)
+
+[Import dashboard-managed extensions into your app.](https://shopify.dev/docs/api/shopify-cli/app/app-import-extensions)
+
+[app info](https://shopify.dev/docs/api/shopify-cli/app/app-info)
+
+[The information returned includes the following:](https://shopify.dev/docs/api/shopify-cli/app/app-info)
+
+[app init](https://shopify.dev/docs/api/shopify-cli/app/app-init)
+
+[Create a new app project](https://shopify.dev/docs/api/shopify-cli/app/app-init)
+
+[app logs sources](https://shopify.dev/docs/api/shopify-cli/app/app-logs-sources)
+
+[The output source names can be used with the --source argument of shopify app logs to filter log output.](https://shopify.dev/docs/api/shopify-cli/app/app-logs-sources)
+
+[app logs](https://shopify.dev/docs/api/shopify-cli/app/app-logs)
+
+[Opens a real-time stream of detailed app logs from the selected app and store.](https://shopify.dev/docs/api/shopify-cli/app/app-logs)
+
+[app release](https://shopify.dev/docs/api/shopify-cli/app/app-release)
+
+[Releases an existing app version.](https://shopify.dev/docs/api/shopify-cli/app/app-release)
+
+[app versions list](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
+
+[Lists the deployed app versions.](https://shopify.dev/docs/api/shopify-cli/app/app-versions-list)
+
+[app webhook trigger](https://shopify.dev/docs/api/shopify-cli/app/app-webhook-trigger)
+
+[Triggers the delivery of a sample Admin API event topic payload to a designated address.](https://shopify.dev/docs/api/shopify-cli/app/app-webhook-trigger)
+
+***
+
+
 # Theme commands
 
 **URL:** https://shopify.dev/docs/api/shopify-cli/theme.md
@@ -2092,6 +2092,79 @@ api_name: shopify-cli
 [hydrogen upgrade](https://shopify.dev/docs/api/shopify-cli/hydrogen/hydrogen-upgrade)
 
 [Upgrade Hydrogen project dependencies, preview features, fixes and breaking changes.](https://shopify.dev/docs/api/shopify-cli/hydrogen/hydrogen-upgrade)
+
+***
+
+
+# General commands
+
+**URL:** https://shopify.dev/docs/api/shopify-cli/general-commands.md
+
+---
+title: General commands
+source_url:
+  html: 'https://shopify.dev/docs/api/shopify-cli/general-commands'
+  md: 'https://shopify.dev/docs/api/shopify-cli/general-commands.md'
+api_name: shopify-cli
+---
+
+# General commands
+
+[auth login](https://shopify.dev/docs/api/shopify-cli/general-commands/auth-login)
+
+[Logs you in to your Shopify account.](https://shopify.dev/docs/api/shopify-cli/general-commands/auth-login)
+
+[auth logout](https://shopify.dev/docs/api/shopify-cli/general-commands/auth-logout)
+
+[Logs you out of the Shopify account or Partner account and store.](https://shopify.dev/docs/api/shopify-cli/general-commands/auth-logout)
+
+[commands](https://shopify.dev/docs/api/shopify-cli/general-commands/commands)
+
+[List all shopify commands.](https://shopify.dev/docs/api/shopify-cli/general-commands/commands)
+
+[config autocorrect off](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-off)
+
+[Disable autocorrect.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-off)
+
+[config autocorrect on](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-on)
+
+[Enable autocorrect.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-on)
+
+[config autocorrect status](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-status)
+
+[Check whether autocorrect is enabled or disabled.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-status)
+
+[config autoupgrade off](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-off)
+
+[Disable automatic upgrades for Shopify CLI.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-off)
+
+[config autoupgrade on](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-on)
+
+[Enable automatic upgrades for Shopify CLI.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-on)
+
+[config autoupgrade status](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-status)
+
+[Check whether auto-upgrade is enabled, disabled, or not yet configured.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-status)
+
+[help](https://shopify.dev/docs/api/shopify-cli/general-commands/help)
+
+[Display help for Shopify CLI](https://shopify.dev/docs/api/shopify-cli/general-commands/help)
+
+[organization list](https://shopify.dev/docs/api/shopify-cli/general-commands/organization-list)
+
+[Lists the Shopify organizations that you have access to, along with their organization IDs.](https://shopify.dev/docs/api/shopify-cli/general-commands/organization-list)
+
+[search](https://shopify.dev/docs/api/shopify-cli/general-commands/search)
+
+[Starts a search on shopify.dev.](https://shopify.dev/docs/api/shopify-cli/general-commands/search)
+
+[upgrade](https://shopify.dev/docs/api/shopify-cli/general-commands/upgrade)
+
+[Upgrades Shopify CLI using your package manager.](https://shopify.dev/docs/api/shopify-cli/general-commands/upgrade)
+
+[version](https://shopify.dev/docs/api/shopify-cli/general-commands/version)
+
+[Shopify CLI version currently installed.](https://shopify.dev/docs/api/shopify-cli/general-commands/version)
 
 ***
 
@@ -2332,79 +2405,6 @@ We observe your app’s usefulness to merchants on a regular basis, using a roll
 ### App info and benefits
 
 The app listing is your first point of contact with a merchant, and it's where they'll go to determine whether your app is right for them. Your [app listing](https://shopify.dev/docs/apps/launch/app-requirements-checklist#5-app-listing) should be as complete as possible, and reflect your app's current functionality.
-
-***
-
-
-# General commands
-
-**URL:** https://shopify.dev/docs/api/shopify-cli/general-commands.md
-
----
-title: General commands
-source_url:
-  html: 'https://shopify.dev/docs/api/shopify-cli/general-commands'
-  md: 'https://shopify.dev/docs/api/shopify-cli/general-commands.md'
-api_name: shopify-cli
----
-
-# General commands
-
-[auth login](https://shopify.dev/docs/api/shopify-cli/general-commands/auth-login)
-
-[Logs you in to your Shopify account.](https://shopify.dev/docs/api/shopify-cli/general-commands/auth-login)
-
-[auth logout](https://shopify.dev/docs/api/shopify-cli/general-commands/auth-logout)
-
-[Logs you out of the Shopify account or Partner account and store.](https://shopify.dev/docs/api/shopify-cli/general-commands/auth-logout)
-
-[commands](https://shopify.dev/docs/api/shopify-cli/general-commands/commands)
-
-[List all shopify commands.](https://shopify.dev/docs/api/shopify-cli/general-commands/commands)
-
-[config autocorrect off](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-off)
-
-[Disable autocorrect.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-off)
-
-[config autocorrect on](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-on)
-
-[Enable autocorrect.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-on)
-
-[config autocorrect status](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-status)
-
-[Check whether autocorrect is enabled or disabled.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autocorrect-status)
-
-[config autoupgrade off](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-off)
-
-[Disable automatic upgrades for Shopify CLI.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-off)
-
-[config autoupgrade on](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-on)
-
-[Enable automatic upgrades for Shopify CLI.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-on)
-
-[config autoupgrade status](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-status)
-
-[Check whether auto-upgrade is enabled, disabled, or not yet configured.](https://shopify.dev/docs/api/shopify-cli/general-commands/config-autoupgrade-status)
-
-[help](https://shopify.dev/docs/api/shopify-cli/general-commands/help)
-
-[Display help for Shopify CLI](https://shopify.dev/docs/api/shopify-cli/general-commands/help)
-
-[organization list](https://shopify.dev/docs/api/shopify-cli/general-commands/organization-list)
-
-[Lists the Shopify organizations that you have access to, along with their organization IDs.](https://shopify.dev/docs/api/shopify-cli/general-commands/organization-list)
-
-[search](https://shopify.dev/docs/api/shopify-cli/general-commands/search)
-
-[Starts a search on shopify.dev.](https://shopify.dev/docs/api/shopify-cli/general-commands/search)
-
-[upgrade](https://shopify.dev/docs/api/shopify-cli/general-commands/upgrade)
-
-[Upgrades Shopify CLI using your package manager.](https://shopify.dev/docs/api/shopify-cli/general-commands/upgrade)
-
-[version](https://shopify.dev/docs/api/shopify-cli/general-commands/version)
-
-[Shopify CLI version currently installed.](https://shopify.dev/docs/api/shopify-cli/general-commands/version)
 
 ***
 
@@ -4061,119 +4061,6 @@ Typography and content components present textual information with appropriate h
 ***
 
 
-# Authentication
-
-**URL:** https://shopify.dev/docs/apps/build/authentication-authorization.md
-
----
-title: Authentication and authorization
-description: >-
-  Learn about the different methods of authenticating and authorizing apps with
-  Shopify’s platform.
-source_url:
-  html: 'https://shopify.dev/docs/apps/build/authentication-authorization'
-  md: 'https://shopify.dev/docs/apps/build/authentication-authorization.md'
----
-
-# Authentication and authorization
-
-This guide introduces the different methods of authenticating and authorizing apps with Shopify’s platform. Make sure that you understand the differences between the types of authentication and authorization methods before you begin your development process.
-
-You can [use Shopify CLI to generate a starter app](https://shopify.dev/docs/apps/build/scaffold-app) with boilerplate code that handles authentication and authorization. The starter app includes code for an app rendered in the Shopify admin that follows best practices:
-
-* Authorizing your app using [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens) and [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange).
-
-* Installing on stores using [Shopify managed installation](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation).
-
-  You should use this starter app unless you need to scaffold a standalone app.
-
-[Scaffold an app\
-\
-](https://shopify.dev/docs/apps/build/scaffold-app)
-
-[Scaffold an app that follows all authentication and authorization best practices.](https://shopify.dev/docs/apps/build/scaffold-app)
-
-***
-
-## Authentication vs.​authorization
-
-Authentication is the process of verifying the identity of the user or the app. To keep transactions on Shopify’s platform [safe and secure](https://shopify.dev/docs/apps/build/compliance/privacy-law-compliance), all apps connecting with Shopify APIs must authenticate when making API requests.
-
-Authorization is the process of giving permissions to apps. When an app user installs a Shopify app they authorize the app, enabling the app to acquire an access token. For example, an app might be authorized to access orders and product data in a store.
-
-***
-
-## Types of authentication and authorization methods
-
-The authentication and authorization methods that your app needs to use depends on the tool that you used to create your app, and the components that your app uses.
-
-### Authentication
-
-* Apps rendered in the Shopify admin need to authenticate their incoming requests with [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens).
-* Standalone apps need to implement their own authentication method for incoming requests.
-
-### Authorization
-
-Authorization encompasses the installation of an app and the means to acquire an access token.
-
-To avoid unnecessary redirects and page flickers during the app installation process, you should [configure your app's required access scopes using Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration). This allows Shopify to [manage the installation process for you](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation).
-
-If you aren't able to use Shopify CLI to configure your app, then your app will install as part of the [authorization code grant flow](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant). This provides a degraded user experience.
-
-If you're building an app for your own organization and don't require user interaction, you can use the [client credentials grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/client-credentials-grant) to acquire access tokens.
-
-The following table outlines the supported installation and token acquisition flows for various app configurations.
-
-Whenever possible, you should create apps rendered in the Shopify admin that use Shopify managed installation and token exchange.
-
-| Type of app | Supported installation flows | Supported token acquisition flows |
-| - | - | - |
-| App rendered in the Shopify admin | * [Shopify managed installation (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation)* [Installation during authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) | * [Token exchange (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange)* [Authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
-| Standalone app | * [Shopify managed installation (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation)* [Installation during authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) | * [Authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
-| Admin-created custom app | * Installed upon generation in the Shopify admin | * [Generate in the Shopify admin](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/generate-app-access-tokens-admin) |
-
-OAuth 2.0 is the industry-standard protocol for authorizing or giving permissions to apps. The following video illustrates how OAuth works at Shopify. Note that this video was created before [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange) was introduced, and might use the term "OAuth" interchangeably with "authorization code grant."
-
-***
-
-## Getting started
-
-* Authenticate your app using [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens).
-* Authorize your app using a session token with [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange).
-* Authorize your standalone app with [authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant).
-* Authenticate your app created in the Shopify admin with [access tokens](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/generate-app-access-tokens-admin).
-
-***
-
-## Tools
-
-[Shopify CLI\
-\
-](https://shopify.dev/docs/apps/build/cli-for-apps)
-
-[A command-line tool to help you build Shopify apps faster](https://shopify.dev/docs/apps/build/cli-for-apps)
-
-[shopify\_api\
-\
-](https://github.com/Shopify/shopify-api-ruby)
-
-[Shopify’s official Ruby gem for interacting with the Admin API](https://github.com/Shopify/shopify-api-ruby)
-
-[@shopify/shopify-api\
-\
-](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/shopify-api)
-
-[Shopify’s official Node library for interacting with the Storefront and Admin APIs, handling OAuth, webhooks, and billing](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/shopify-api)
-
-[@shopify/admin-api-client\
-\
-](https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client)
-
-[Shopify’s official lightweight Node library for interacting with the Admin API](https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client)
-
-***
-
-
 # Customer account UI extensions
 
 **URL:** https://shopify.dev/docs/api/customer-account-ui-extensions.md
@@ -5248,322 +5135,115 @@ Customer Account API access levels can only be adjusted via GraphQL Admin API mu
 ***
 
 
-# Liquid
+# Authentication
 
-**URL:** https://shopify.dev/docs/api/liquid.md
+**URL:** https://shopify.dev/docs/apps/build/authentication-authorization.md
 
 ---
-title: Liquid reference
+title: Authentication and authorization
 description: >-
-  The Liquid reference documents the Liquid tags, filters, and objects that you
-  can use to build Shopify themes.
+  Learn about the different methods of authenticating and authorizing apps with
+  Shopify’s platform.
 source_url:
-  html: 'https://shopify.dev/docs/api/liquid'
-  md: 'https://shopify.dev/docs/api/liquid.md'
-api_name: liquid
+  html: 'https://shopify.dev/docs/apps/build/authentication-authorization'
+  md: 'https://shopify.dev/docs/apps/build/authentication-authorization.md'
 ---
 
-# Liquid reference
+# Authentication and authorization
 
-Liquid is a template language created by Shopify. It's available as an [open source project](https://shopify.github.io/liquid/) on GitHub, and is used by many different software projects and companies.
+This guide introduces the different methods of authenticating and authorizing apps with Shopify’s platform. Make sure that you understand the differences between the types of authentication and authorization methods before you begin your development process.
 
-This reference documents the Liquid tags, filters, and objects that you can use to build [Shopify Themes](https://shopify.dev/themes).
+You can [use Shopify CLI to generate a starter app](https://shopify.dev/docs/apps/build/scaffold-app) with boilerplate code that handles authentication and authorization. The starter app includes code for an app rendered in the Shopify admin that follows best practices:
 
-## What is a template language?
+* Authorizing your app using [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens) and [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange).
 
-A template language allows you to create a single template to host static content, and dynamically insert information depending on where the template is rendered. For example, you can create a product template that hosts all of your standard product attributes, such as the product image, title, and price. That template can then dynamically render those attributes with the appropriate content, depending on the current product being viewed.
+* Installing on stores using [Shopify managed installation](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation).
 
-***
+  You should use this starter app unless you need to scaffold a standalone app.
 
-## Variations of Liquid
-
-The variation of Liquid in this reference extends the open-source version of Liquid for use with [Shopify themes](https://shopify.dev/themes). It includes tags, filters, and objects that can be used to render objects specific to Shopify stores and storefront functionality.
-
-Shopify also uses slightly different versions of Liquid to render dynamic content for the following features. These variations aren’t included in this reference.
-
-[Notification templates](https://help.shopify.com/en/manual/orders/notifications/email-variables)
-
-[Shopify Flow](https://help.shopify.com/en/manual/shopify-flow/reference/variables#liquid-variables)
-
-[Order printer templates](https://help.shopify.com/en/manual/fulfillment/managing-orders/printing-orders/shopify-order-printer/liquid-variables-and-filters-reference)
-
-[Packing slip templates](https://help.shopify.com/en/manual/orders/packing-slips-variable-list)
-
-***
-
-## Liquid basics
-
-Liquid is used to dynamically output objects and their properties. You can further modify that output by creating logic with tags, or directly altering it with a filter. Objects and object properties are output using one of six basic data types. Liquid also includes basic logical and comparison operators for use with tags.
-
-[Navigate to - Basics](https://shopify.dev/docs/api/liquid/basics)
-
-##### Code
-
-```liquid
-<title>
-  {{ page_title }}
-</title>
-{% if page_description -%}
-  <meta name="description" content="{{ page_description | truncate: 150 }}">
-{%- endif %}
-```
-
-##### Output
-
-```html
-<title>
-  Health potion
-</title>
-<meta name="description" content="Are you low on health? Well we've got the potion just for you! Just need a top up? Almost dead? In between? No need to worry because we have a ...">
-```
-
-***
-
-## Defining logic with tags
-
-Liquid tags are used to define logic that tells templates what to do.
-
-Tags are wrapped with curly brace percentage delimiters `{% %}`. The text within the delimiters is an instruction, not content to render.
-
-In the example to the right, the `if` tag defines the condition to be met. If `product.available` returns `true`, then the price is displayed. Otherwise, the “sold out” message is shown.
-
-`{% %}`
-
-To nest multiple tags inside one set of delimiters, use the [`liquid`](https://shopify.dev/docs/api/liquid/tags/liquid) tag.
-
-##### Code
-
-```liquid
-{% if product.available %}
-  Price: $99.99
-{% else %}
-  Sorry, this product is sold out.
-{% endif %}
-```
-
-##### Data
-
-```json
-{
-  "product": {
-    "available": true
-  }
-}
-```
-
-##### Output
-
-```html
-Price: $99.99
-```
-
-### Tags with parameters
-
-Some tags accept parameters: either required or optional. For example, the `for` tag takes an optional `limit` parameter to stop the loop at a specific index.
-
-##### Code
-
-```liquid
-{% assign numbers = '1,2,3,4,5' | split: ',' %}
-
-{% for item in numbers limit:2 -%}
-  {{ item }}
-{% endfor %}
-```
-
-##### Output
-
-```html
-1
-2
-```
-
-***
-
-## Modifying output with filters
-
-Liquid filters modify the output of variables and objects.
-
-To filter the output of a tag, use the pipe character `|`, followed by the filter. In this example, `product` is the object, `title` is its property, and `upcase` is the filter.
-
-##### Code
-
-```liquid
-{% # product.title -> Health potion %}
-
-{{ product.title | upcase }}
-```
-
-##### Data
-
-```json
-{
-  "product": {
-    "title": "Health potion"
-  }
-}
-```
-
-##### Output
-
-```html
-HEALTH POTION
-```
-
-### Filters with parameters
-
-Many filters accept parameters that adjust their output. Some parameters are required, others are optional.
-
-##### Code
-
-```liquid
-{% # product.title -> Health potion %}
-
-{{ product.title | remove: 'Health' }}
-```
-
-##### Data
-
-```json
-{
-  "product": {
-    "title": "Health potion"
-  }
-}
-```
-
-##### Output
-
-```html
-potion
-```
-
-### Using multiple filters
-
-Multiple filters can be used on one output. They're applied from left to right.
-
-##### Code
-
-```liquid
-{% # product.title -> Health potion %}
-
-{{ product.title | upcase | remove: 'HEALTH' }}
-```
-
-##### Data
-
-```json
-{
-  "product": {
-    "title": "Health potion"
-  }
-}
-```
-
-##### Output
-
-```html
-POTION
-```
-
-***
-
-## Referencing objects
-
-Liquid objects represent variables that you can use to build your theme. Object types include, but aren't limited to:
-
-* Store resources, such as a collection or product and its properties
-* Standard content that is used to power Shopify themes, such as `content_for_header`
-* Functional elements that can be used to build interactivity, such as `paginate` and `search`
-
-Objects might represent a single data point, or contain multiple properties. Some products might represent a related object, such as a product in a collection.
-
-`{{ }}`
-
-Double curly brace delimiters denote an output.
-
-### Usage
-
-To output an object, wrap it in curly brace delimiters `{{ }}`.
-
-To output an object's property, use dot notation. This example outputs the `product` object's `title` property.
-
-##### Code
-
-```liquid
-{{ product.title }}
-```
-
-##### Data
-
-```json
-{
-  "product": {
-    "title": "Health potion"
-  }
-}
-```
-
-##### Output
-
-```html
-Health potion
-```
-
-### Object access
-
-Objects can be accessed in three ways:
-
-* **Globally**: Available in any Liquid file, excluding [checkout.liquid](https://shopify.dev/themes/architecture/layouts/checkout-liquid) and [Liquid asset files](https://shopify.dev/themes/architecture#assets)
-* **In templates**: Available in specific templates and their sections or blocks. For example, the [`product`](https://shopify.dev/docs/api/liquid/objects/product) object in a [product template](https://shopify.dev/themes/architecture/templates/product)
-* **Through parent objects**: Returned as properties of other objects. For example, [`article`](https://shopify.dev/docs/api/liquid/objects/article) objects through [`articles`](https://shopify.dev/docs/api/liquid/objects/articles) or [`blog`](https://shopify.dev/docs/api/liquid/objects/blog)
-
-Check each object's documentation to see how it can be accessed.
-
-### Creating variables
-
-To create your own variables, use variable tags like [`assign`](https://shopify.dev/docs/api/liquid/tags/assign) or [`capture`](https://shopify.dev/docs/api/liquid/tags/capture). Syntactically, Liquid treats variables the same as objects.
-
-##### Code
-
-```liquid
-{% assign my_variable = 'My custom string.' %}
-{{ my_variable }}
-```
-
-##### Output
-
-```html
-My custom string.
-```
-
-***
-
-## Resources & tools
-
-[Liquid Cheat Sheet\
+[Scaffold an app\
 \
-](https://www.shopify.com/partners/shopify-cheat-sheet)
+](https://shopify.dev/docs/apps/build/scaffold-app)
 
-[A simple reference guide to the Liquid language.](https://www.shopify.com/partners/shopify-cheat-sheet)
+[Scaffold an app that follows all authentication and authorization best practices.](https://shopify.dev/docs/apps/build/scaffold-app)
 
-[Theme Check\
+***
+
+## Authentication vs.​authorization
+
+Authentication is the process of verifying the identity of the user or the app. To keep transactions on Shopify’s platform [safe and secure](https://shopify.dev/docs/apps/build/compliance/privacy-law-compliance), all apps connecting with Shopify APIs must authenticate when making API requests.
+
+Authorization is the process of giving permissions to apps. When an app user installs a Shopify app they authorize the app, enabling the app to acquire an access token. For example, an app might be authorized to access orders and product data in a store.
+
+***
+
+## Types of authentication and authorization methods
+
+The authentication and authorization methods that your app needs to use depends on the tool that you used to create your app, and the components that your app uses.
+
+### Authentication
+
+* Apps rendered in the Shopify admin need to authenticate their incoming requests with [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens).
+* Standalone apps need to implement their own authentication method for incoming requests.
+
+### Authorization
+
+Authorization encompasses the installation of an app and the means to acquire an access token.
+
+To avoid unnecessary redirects and page flickers during the app installation process, you should [configure your app's required access scopes using Shopify CLI](https://shopify.dev/docs/apps/build/cli-for-apps/app-configuration). This allows Shopify to [manage the installation process for you](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation).
+
+If you aren't able to use Shopify CLI to configure your app, then your app will install as part of the [authorization code grant flow](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant). This provides a degraded user experience.
+
+If you're building an app for your own organization and don't require user interaction, you can use the [client credentials grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/client-credentials-grant) to acquire access tokens.
+
+The following table outlines the supported installation and token acquisition flows for various app configurations.
+
+Whenever possible, you should create apps rendered in the Shopify admin that use Shopify managed installation and token exchange.
+
+| Type of app | Supported installation flows | Supported token acquisition flows |
+| - | - | - |
+| App rendered in the Shopify admin | * [Shopify managed installation (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation)* [Installation during authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) | * [Token exchange (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange)* [Authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
+| Standalone app | * [Shopify managed installation (recommended)](https://shopify.dev/docs/apps/build/authentication-authorization/app-installation)* [Installation during authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) | * [Authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant) |
+| Admin-created custom app | * Installed upon generation in the Shopify admin | * [Generate in the Shopify admin](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/generate-app-access-tokens-admin) |
+
+OAuth 2.0 is the industry-standard protocol for authorizing or giving permissions to apps. The following video illustrates how OAuth works at Shopify. Note that this video was created before [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange) was introduced, and might use the term "OAuth" interchangeably with "authorization code grant."
+
+***
+
+## Getting started
+
+* Authenticate your app using [session tokens](https://shopify.dev/docs/apps/build/authentication-authorization/session-tokens).
+* Authorize your app using a session token with [token exchange](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/token-exchange).
+* Authorize your standalone app with [authorization code grant](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/authorization-code-grant).
+* Authenticate your app created in the Shopify admin with [access tokens](https://shopify.dev/docs/apps/build/authentication-authorization/access-tokens/generate-app-access-tokens-admin).
+
+***
+
+## Tools
+
+[Shopify CLI\
 \
-](https://shopify.dev/themes/tools/theme-check)
+](https://shopify.dev/docs/apps/build/cli-for-apps)
 
-[Command line-based linter for themes. Also comes as an official Visual Studio Code extension.](https://shopify.dev/themes/tools/theme-check)
+[A command-line tool to help you build Shopify apps faster](https://shopify.dev/docs/apps/build/cli-for-apps)
 
-[Shopify CLI for Themes\
+[shopify\_api\
 \
-](https://shopify.dev/themes/tools/cli)
+](https://github.com/Shopify/shopify-api-ruby)
 
-[A powerful command-line tool for building Shopify themes, and exploring Liquid code in a REPL interface.](https://shopify.dev/themes/tools/cli)
+[Shopify’s official Ruby gem for interacting with the Admin API](https://github.com/Shopify/shopify-api-ruby)
 
-[Open source liquid\
+[@shopify/shopify-api\
 \
-](https://github.com/Shopify/liquid)
+](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/shopify-api)
 
-[Liquid is an open source project on GitHub.](https://github.com/Shopify/liquid)
+[Shopify’s official Node library for interacting with the Storefront and Admin APIs, handling OAuth, webhooks, and billing](https://github.com/Shopify/shopify-app-js/tree/main/packages/apps/shopify-api)
+
+[@shopify/admin-api-client\
+\
+](https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client)
+
+[Shopify’s official lightweight Node library for interacting with the Admin API](https://github.com/Shopify/shopify-app-js/tree/main/packages/api-clients/admin-api-client)
 
 ***
 
@@ -17081,6 +16761,326 @@ uri = "https://your-app.example.com/events"
 ***
 
 
+# Liquid
+
+**URL:** https://shopify.dev/docs/api/liquid.md
+
+---
+title: Liquid reference
+description: >-
+  The Liquid reference documents the Liquid tags, filters, and objects that you
+  can use to build Shopify themes.
+source_url:
+  html: 'https://shopify.dev/docs/api/liquid'
+  md: 'https://shopify.dev/docs/api/liquid.md'
+api_name: liquid
+---
+
+# Liquid reference
+
+Liquid is a template language created by Shopify. It's available as an [open source project](https://shopify.github.io/liquid/) on GitHub, and is used by many different software projects and companies.
+
+This reference documents the Liquid tags, filters, and objects that you can use to build [Shopify Themes](https://shopify.dev/themes).
+
+## What is a template language?
+
+A template language allows you to create a single template to host static content, and dynamically insert information depending on where the template is rendered. For example, you can create a product template that hosts all of your standard product attributes, such as the product image, title, and price. That template can then dynamically render those attributes with the appropriate content, depending on the current product being viewed.
+
+***
+
+## Variations of Liquid
+
+The variation of Liquid in this reference extends the open-source version of Liquid for use with [Shopify themes](https://shopify.dev/themes). It includes tags, filters, and objects that can be used to render objects specific to Shopify stores and storefront functionality.
+
+Shopify also uses slightly different versions of Liquid to render dynamic content for the following features. These variations aren’t included in this reference.
+
+[Notification templates](https://help.shopify.com/en/manual/orders/notifications/email-variables)
+
+[Shopify Flow](https://help.shopify.com/en/manual/shopify-flow/reference/variables#liquid-variables)
+
+[Order printer templates](https://help.shopify.com/en/manual/fulfillment/managing-orders/printing-orders/shopify-order-printer/liquid-variables-and-filters-reference)
+
+[Packing slip templates](https://help.shopify.com/en/manual/orders/packing-slips-variable-list)
+
+***
+
+## Liquid basics
+
+Liquid is used to dynamically output objects and their properties. You can further modify that output by creating logic with tags, or directly altering it with a filter. Objects and object properties are output using one of six basic data types. Liquid also includes basic logical and comparison operators for use with tags.
+
+[Navigate to - Basics](https://shopify.dev/docs/api/liquid/basics)
+
+##### Code
+
+```liquid
+<title>
+  {{ page_title }}
+</title>
+{% if page_description -%}
+  <meta name="description" content="{{ page_description | truncate: 150 }}">
+{%- endif %}
+```
+
+##### Output
+
+```html
+<title>
+  Health potion
+</title>
+<meta name="description" content="Are you low on health? Well we've got the potion just for you! Just need a top up? Almost dead? In between? No need to worry because we have a ...">
+```
+
+***
+
+## Defining logic with tags
+
+Liquid tags are used to define logic that tells templates what to do.
+
+Tags are wrapped with curly brace percentage delimiters `{% %}`. The text within the delimiters is an instruction, not content to render.
+
+In the example to the right, the `if` tag defines the condition to be met. If `product.available` returns `true`, then the price is displayed. Otherwise, the “sold out” message is shown.
+
+`{% %}`
+
+To nest multiple tags inside one set of delimiters, use the [`liquid`](https://shopify.dev/docs/api/liquid/tags/liquid) tag.
+
+##### Code
+
+```liquid
+{% if product.available %}
+  Price: $99.99
+{% else %}
+  Sorry, this product is sold out.
+{% endif %}
+```
+
+##### Data
+
+```json
+{
+  "product": {
+    "available": true
+  }
+}
+```
+
+##### Output
+
+```html
+Price: $99.99
+```
+
+### Tags with parameters
+
+Some tags accept parameters: either required or optional. For example, the `for` tag takes an optional `limit` parameter to stop the loop at a specific index.
+
+##### Code
+
+```liquid
+{% assign numbers = '1,2,3,4,5' | split: ',' %}
+
+{% for item in numbers limit:2 -%}
+  {{ item }}
+{% endfor %}
+```
+
+##### Output
+
+```html
+1
+2
+```
+
+***
+
+## Modifying output with filters
+
+Liquid filters modify the output of variables and objects.
+
+To filter the output of a tag, use the pipe character `|`, followed by the filter. In this example, `product` is the object, `title` is its property, and `upcase` is the filter.
+
+##### Code
+
+```liquid
+{% # product.title -> Health potion %}
+
+{{ product.title | upcase }}
+```
+
+##### Data
+
+```json
+{
+  "product": {
+    "title": "Health potion"
+  }
+}
+```
+
+##### Output
+
+```html
+HEALTH POTION
+```
+
+### Filters with parameters
+
+Many filters accept parameters that adjust their output. Some parameters are required, others are optional.
+
+##### Code
+
+```liquid
+{% # product.title -> Health potion %}
+
+{{ product.title | remove: 'Health' }}
+```
+
+##### Data
+
+```json
+{
+  "product": {
+    "title": "Health potion"
+  }
+}
+```
+
+##### Output
+
+```html
+potion
+```
+
+### Using multiple filters
+
+Multiple filters can be used on one output. They're applied from left to right.
+
+##### Code
+
+```liquid
+{% # product.title -> Health potion %}
+
+{{ product.title | upcase | remove: 'HEALTH' }}
+```
+
+##### Data
+
+```json
+{
+  "product": {
+    "title": "Health potion"
+  }
+}
+```
+
+##### Output
+
+```html
+POTION
+```
+
+***
+
+## Referencing objects
+
+Liquid objects represent variables that you can use to build your theme. Object types include, but aren't limited to:
+
+* Store resources, such as a collection or product and its properties
+* Standard content that is used to power Shopify themes, such as `content_for_header`
+* Functional elements that can be used to build interactivity, such as `paginate` and `search`
+
+Objects might represent a single data point, or contain multiple properties. Some products might represent a related object, such as a product in a collection.
+
+`{{ }}`
+
+Double curly brace delimiters denote an output.
+
+### Usage
+
+To output an object, wrap it in curly brace delimiters `{{ }}`.
+
+To output an object's property, use dot notation. This example outputs the `product` object's `title` property.
+
+##### Code
+
+```liquid
+{{ product.title }}
+```
+
+##### Data
+
+```json
+{
+  "product": {
+    "title": "Health potion"
+  }
+}
+```
+
+##### Output
+
+```html
+Health potion
+```
+
+### Object access
+
+Objects can be accessed in three ways:
+
+* **Globally**: Available in any Liquid file, excluding [checkout.liquid](https://shopify.dev/themes/architecture/layouts/checkout-liquid) and [Liquid asset files](https://shopify.dev/themes/architecture#assets)
+* **In templates**: Available in specific templates and their sections or blocks. For example, the [`product`](https://shopify.dev/docs/api/liquid/objects/product) object in a [product template](https://shopify.dev/themes/architecture/templates/product)
+* **Through parent objects**: Returned as properties of other objects. For example, [`article`](https://shopify.dev/docs/api/liquid/objects/article) objects through [`articles`](https://shopify.dev/docs/api/liquid/objects/articles) or [`blog`](https://shopify.dev/docs/api/liquid/objects/blog)
+
+Check each object's documentation to see how it can be accessed.
+
+### Creating variables
+
+To create your own variables, use variable tags like [`assign`](https://shopify.dev/docs/api/liquid/tags/assign) or [`capture`](https://shopify.dev/docs/api/liquid/tags/capture). Syntactically, Liquid treats variables the same as objects.
+
+##### Code
+
+```liquid
+{% assign my_variable = 'My custom string.' %}
+{{ my_variable }}
+```
+
+##### Output
+
+```html
+My custom string.
+```
+
+***
+
+## Resources & tools
+
+[Liquid Cheat Sheet\
+\
+](https://www.shopify.com/partners/shopify-cheat-sheet)
+
+[A simple reference guide to the Liquid language.](https://www.shopify.com/partners/shopify-cheat-sheet)
+
+[Theme Check\
+\
+](https://shopify.dev/themes/tools/theme-check)
+
+[Command line-based linter for themes. Also comes as an official Visual Studio Code extension.](https://shopify.dev/themes/tools/theme-check)
+
+[Shopify CLI for Themes\
+\
+](https://shopify.dev/themes/tools/cli)
+
+[A powerful command-line tool for building Shopify themes, and exploring Liquid code in a REPL interface.](https://shopify.dev/themes/tools/cli)
+
+[Open source liquid\
+\
+](https://github.com/Shopify/liquid)
+
+[Liquid is an open source project on GitHub.](https://github.com/Shopify/liquid)
+
+***
+
+
 # **Conditional tags**
 
 **URL:** https://shopify.dev/docs/api/liquid/tags/conditional-tags.md
@@ -17168,55 +17168,6 @@ You can use the `elsif` tag to check for multiple conditions.
 ```html
 This is a health potion!
 ```
-
-
-# **Theme tags**
-
-**URL:** https://shopify.dev/docs/api/liquid/tags/theme-tags.md
-
----
-title: 'Liquid tags: content_for'
-description: >-
-  Creates a designated area in your
-  [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
-source_url:
-  html: 'https://shopify.dev/docs/api/liquid/tags/content_for'
-  md: 'https://shopify.dev/docs/api/liquid/tags/content_for.md'
-api_name: liquid
----
-
-# content\_​for
-
-Creates a designated area in your [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
-
-The `content_for` tag requires a type parameter to differentiate between rendering a number of theme blocks (`'blocks'`) and a single static block (`'block'`).
-
-## Syntax
-
-```oobleckTag
-{% content_for 'blocks' %}
-{% content_for 'block', type: "slide", id: "slide-1" %}
-```
-
-### blocks
-
-## Syntax
-
-```oobleckTag
-{% content_for "blocks" %}
-```
-
-Creates a designated area that renders theme blocks as configured in the JSON template or section groups, allowing merchants to add, remove, and rearrange blocks using the theme editor. See [theme blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks) for more information.
-
-### block
-
-## Syntax
-
-```oobleckTag
-{% content_for "block", type: "button", id: "static-block-1", color: "red" %}
-```
-
-Renders a static theme block of the specified type with the provided ID. You can pass additional arbitrary parameters (such as `color`) that will be accessible within the static block using `{{ color }}`. See [static blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/static-blocks) to learn more.
 
 
 # **Iteration tags**
@@ -17625,6 +17576,55 @@ About us, Contact, Potion dosages
 ```
 
 
+# **Theme tags**
+
+**URL:** https://shopify.dev/docs/api/liquid/tags/theme-tags.md
+
+---
+title: 'Liquid tags: content_for'
+description: >-
+  Creates a designated area in your
+  [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
+source_url:
+  html: 'https://shopify.dev/docs/api/liquid/tags/content_for'
+  md: 'https://shopify.dev/docs/api/liquid/tags/content_for.md'
+api_name: liquid
+---
+
+# content\_​for
+
+Creates a designated area in your [theme](https://shopify.dev/themes/architecture) where blocks can be rendered.
+
+The `content_for` tag requires a type parameter to differentiate between rendering a number of theme blocks (`'blocks'`) and a single static block (`'block'`).
+
+## Syntax
+
+```oobleckTag
+{% content_for 'blocks' %}
+{% content_for 'block', type: "slide", id: "slide-1" %}
+```
+
+### blocks
+
+## Syntax
+
+```oobleckTag
+{% content_for "blocks" %}
+```
+
+Creates a designated area that renders theme blocks as configured in the JSON template or section groups, allowing merchants to add, remove, and rearrange blocks using the theme editor. See [theme blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks) for more information.
+
+### block
+
+## Syntax
+
+```oobleckTag
+{% content_for "block", type: "button", id: "static-block-1", color: "red" %}
+```
+
+Renders a static theme block of the specified type with the provided ID. You can pass additional arbitrary parameters (such as `color`) that will be accessible within the static block using `{{ color }}`. See [static blocks](https://shopify.dev/docs/storefronts/themes/architecture/blocks/theme-blocks/static-blocks) to learn more.
+
+
 # Theme app extensions
 
 **URL:** https://shopify.dev/docs/apps/build/online-store/theme-app-extensions.md
@@ -17765,6 +17765,154 @@ The value you want to assign to the variable.
 ```html
 HEALTH POTION
 ```
+
+
+# Hydrogen
+
+**URL:** https://shopify.dev/docs/api/hydrogen.md
+
+---
+title: Hydrogen
+description: >-
+  Hydrogen is Shopify’s opinionated stack for headless commerce, built on React
+  Router.
+api_version: 2026-04
+source_url:
+  html: 'https://shopify.dev/docs/api/hydrogen/latest'
+  md: 'https://shopify.dev/docs/api/hydrogen/latest.md'
+api_name: hydrogen
+---
+
+# Hydrogen
+
+Hydrogen is Shopify’s opinionated stack for headless commerce, built on [React Router](https://reactrouter.com/home). It provides a set of tools, utilities, and best-in-class examples for building dynamic and performant commerce applications.
+
+## Setup
+
+1. Create a new Hydrogen project with your preferred package manager.
+2. Import components, hooks, or utilities that you want to use in your app. For more, see the [getting started guide](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started).
+
+[API Reference - Getting started with Hydrogen and Oxygen](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started)
+
+## Create a new Hydrogen project
+
+##### npm
+
+```txt
+npm create @shopify/hydrogen@latest
+```
+
+##### yarn
+
+```txt
+yarn create @shopify/hydrogen
+```
+
+***
+
+## Authentication
+
+To make full use of Hydrogen, you need to authenticate with and make requests to the [Storefront API](https://shopify.dev/docs/api/storefront) and the [Customer Account API](https://shopify.dev/docs/api/customer). Hydrogen includes full-featured API clients to securely handle API queries and mutations.
+
+You can create access tokens for your own Shopify store by [installing the Hydrogen sales channel](https://apps.shopify.com/hydrogen), which includes built-in support for Oxygen, Shopify’s global edge hosting platform. Or install the [Headless sales channel](https://apps.shopify.com/headless) to host your Hydrogen app anywhere.
+
+Both the Storefront API and Customer Account API offer public credentials for client-side applications.
+
+[API Reference - Hydrogen sales channel](https://apps.shopify.com/hydrogen)
+
+[API Reference - Headless sales channel](https://apps.shopify.com/headless)
+
+## Authenticate a Hydrogen app
+
+##### server.js
+
+```js
+/**
+ * server.js
+ * ---------
+ * Create a storefront client.
+ * Check the server.js file in the root of your new Hydrogen project to see
+ * an example implementation of this function. If you start from an official
+ * Hydrogen template (Hello World or Demo Store), then the client is already
+ * set up for you. Update the Shopify store domain and API token to start
+ * querying your own store inventory.
+ */
+const {storefront} = createStorefrontClient({
+  cache,
+  waitUntil,
+  i18n: {language: 'EN', country: 'US'},
+  // `env` provides access to runtime data, including environment variables
+  publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
+  privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
+  storeDomain: env.PUBLIC_STORE_DOMAIN,
+  storefrontId: env.PUBLIC_STOREFRONT_ID,
+  storefrontHeaders: getStorefrontHeaders(request),
+});
+```
+
+##### .env
+
+```txt
+# These API credentials fetch example inventory from the Hydrogen Demo Store
+# https://hydrogen.shop
+#
+# Replace with your own store domain and Storefront API token
+
+SESSION_SECRET="foobar"
+PUBLIC_STOREFRONT_API_TOKEN="3b580e70970c4528da70c98e097c2fa0"
+PUBLIC_STORE_DOMAIN="hydrogen-preview.myshopify.com"
+```
+
+***
+
+## Versioning
+
+Hydrogen is tied to specific versions of the [Storefront API](https://shopify.dev/api/storefront), which is versioned quarterly. For example, if you're using Storefront API version `2023-10`, then Hydrogen versions `2023.10.x` are fully compatible.
+
+**Caution:**
+
+If a Storefront API version includes breaking changes, then the corresponding Hydrogen version will include the same breaking changes.
+
+[API Reference - Shopify API versioning](https://shopify.dev/docs/api/usage/versioning)
+
+[API Reference - API release notes](https://shopify.dev/docs/api/release-notes)
+
+***
+
+## How Hydrogen works with Hydrogen React
+
+Hydrogen is [built on React Router](https://shopify.dev/docs/custom-storefronts/hydrogen/project-structure). But many of the components, hooks and utilities built into Hydrogen come from [Hydrogen React](https://shopify.dev/docs/api/hydrogen-react), an underlying package that’s framework-agnostic. For convenience, the Hydrogen package re-exports those resources. This means that if you’re building a Hydrogen app, then you should import modules from the `@shopify/hydrogen` package.
+
+## Importing Hydrogen components
+
+## example-page.jsx
+
+```jsx
+import {ShopPayButton} from '@shopify/hydrogen';
+
+
+export function renderShopPayButton({variantId, storeDomain}) {
+  return <ShopPayButton variantIds={[variantId]} storeDomain={storeDomain} />;
+}
+```
+
+***
+
+## Resources
+
+[Custom storefronts on Shopify\
+\
+](https://shopify.dev/custom-storefronts)
+
+[Learn more about how to design, build, and manage custom storefronts on Shopify.](https://shopify.dev/custom-storefronts)
+
+[Hydrogen on GitHub\
+\
+](https://github.com/Shopify/hydrogen)
+
+[Follow the Hydrogen project, file bugs and feature requests, preview upcoming features, and more](https://github.com/Shopify/hydrogen)
+
+***
 
 
 # Storefront API
@@ -18637,154 +18785,6 @@ HTTP/1.1 500 Internal Server Error
 ***
 
 
-# Hydrogen
-
-**URL:** https://shopify.dev/docs/api/hydrogen.md
-
----
-title: Hydrogen
-description: >-
-  Hydrogen is Shopify’s opinionated stack for headless commerce, built on React
-  Router.
-api_version: 2026-04
-source_url:
-  html: 'https://shopify.dev/docs/api/hydrogen/latest'
-  md: 'https://shopify.dev/docs/api/hydrogen/latest.md'
-api_name: hydrogen
----
-
-# Hydrogen
-
-Hydrogen is Shopify’s opinionated stack for headless commerce, built on [React Router](https://reactrouter.com/home). It provides a set of tools, utilities, and best-in-class examples for building dynamic and performant commerce applications.
-
-## Setup
-
-1. Create a new Hydrogen project with your preferred package manager.
-2. Import components, hooks, or utilities that you want to use in your app. For more, see the [getting started guide](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started).
-
-[API Reference - Getting started with Hydrogen and Oxygen](https://shopify.dev/docs/custom-storefronts/hydrogen/getting-started)
-
-## Create a new Hydrogen project
-
-##### npm
-
-```txt
-npm create @shopify/hydrogen@latest
-```
-
-##### yarn
-
-```txt
-yarn create @shopify/hydrogen
-```
-
-***
-
-## Authentication
-
-To make full use of Hydrogen, you need to authenticate with and make requests to the [Storefront API](https://shopify.dev/docs/api/storefront) and the [Customer Account API](https://shopify.dev/docs/api/customer). Hydrogen includes full-featured API clients to securely handle API queries and mutations.
-
-You can create access tokens for your own Shopify store by [installing the Hydrogen sales channel](https://apps.shopify.com/hydrogen), which includes built-in support for Oxygen, Shopify’s global edge hosting platform. Or install the [Headless sales channel](https://apps.shopify.com/headless) to host your Hydrogen app anywhere.
-
-Both the Storefront API and Customer Account API offer public credentials for client-side applications.
-
-[API Reference - Hydrogen sales channel](https://apps.shopify.com/hydrogen)
-
-[API Reference - Headless sales channel](https://apps.shopify.com/headless)
-
-## Authenticate a Hydrogen app
-
-##### server.js
-
-```js
-/**
- * server.js
- * ---------
- * Create a storefront client.
- * Check the server.js file in the root of your new Hydrogen project to see
- * an example implementation of this function. If you start from an official
- * Hydrogen template (Hello World or Demo Store), then the client is already
- * set up for you. Update the Shopify store domain and API token to start
- * querying your own store inventory.
- */
-const {storefront} = createStorefrontClient({
-  cache,
-  waitUntil,
-  i18n: {language: 'EN', country: 'US'},
-  // `env` provides access to runtime data, including environment variables
-  publicStorefrontToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-  privateStorefrontToken: env.PRIVATE_STOREFRONT_API_TOKEN,
-  storeDomain: env.PUBLIC_STORE_DOMAIN,
-  storefrontId: env.PUBLIC_STOREFRONT_ID,
-  storefrontHeaders: getStorefrontHeaders(request),
-});
-```
-
-##### .env
-
-```txt
-# These API credentials fetch example inventory from the Hydrogen Demo Store
-# https://hydrogen.shop
-#
-# Replace with your own store domain and Storefront API token
-
-SESSION_SECRET="foobar"
-PUBLIC_STOREFRONT_API_TOKEN="3b580e70970c4528da70c98e097c2fa0"
-PUBLIC_STORE_DOMAIN="hydrogen-preview.myshopify.com"
-```
-
-***
-
-## Versioning
-
-Hydrogen is tied to specific versions of the [Storefront API](https://shopify.dev/api/storefront), which is versioned quarterly. For example, if you're using Storefront API version `2023-10`, then Hydrogen versions `2023.10.x` are fully compatible.
-
-**Caution:**
-
-If a Storefront API version includes breaking changes, then the corresponding Hydrogen version will include the same breaking changes.
-
-[API Reference - Shopify API versioning](https://shopify.dev/docs/api/usage/versioning)
-
-[API Reference - API release notes](https://shopify.dev/docs/api/release-notes)
-
-***
-
-## How Hydrogen works with Hydrogen React
-
-Hydrogen is [built on React Router](https://shopify.dev/docs/custom-storefronts/hydrogen/project-structure). But many of the components, hooks and utilities built into Hydrogen come from [Hydrogen React](https://shopify.dev/docs/api/hydrogen-react), an underlying package that’s framework-agnostic. For convenience, the Hydrogen package re-exports those resources. This means that if you’re building a Hydrogen app, then you should import modules from the `@shopify/hydrogen` package.
-
-## Importing Hydrogen components
-
-## example-page.jsx
-
-```jsx
-import {ShopPayButton} from '@shopify/hydrogen';
-
-
-export function renderShopPayButton({variantId, storeDomain}) {
-  return <ShopPayButton variantIds={[variantId]} storeDomain={storeDomain} />;
-}
-```
-
-***
-
-## Resources
-
-[Custom storefronts on Shopify\
-\
-](https://shopify.dev/custom-storefronts)
-
-[Learn more about how to design, build, and manage custom storefronts on Shopify.](https://shopify.dev/custom-storefronts)
-
-[Hydrogen on GitHub\
-\
-](https://github.com/Shopify/hydrogen)
-
-[Follow the Hydrogen project, file bugs and feature requests, preview upcoming features, and more](https://github.com/Shopify/hydrogen)
-
-***
-
-
 # Oxygen
 
 **URL:** https://shopify.dev/docs/storefronts/headless/hydrogen/getting-started.md
@@ -18950,467 +18950,6 @@ Congratulations! You've created a new Hydrogen storefront, connected it to Shopi
 ](https://shopify.dev/docs/storefronts/headless/hydrogen/fundamentals)
 
 [Explore the key components of the Hydrogen and Oxygen stack and how they work together](https://shopify.dev/docs/storefronts/headless/hydrogen/fundamentals)
-
-***
-
-
-# **Extension APIs**
-
-**URL:** https://shopify.dev/docs/api/pos-ui-extensions/apis.md
-
----
-title: Target APIs
-description: >-
-  When you build a POS UI extension, Shopify automatically provides you with
-  specific APIs based on where your extension runs within the POS interface.
-  This system ensures extensions receive exactly the data and functionality they
-  need for their particular use case, while maintaining security and
-  performance.
-api_version: 2025-10
-source_url:
-  html: 'https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis'
-  md: 'https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis.md'
-api_name: pos-ui-extensions
----
-
-# Target APIs
-
-When you build a POS UI extension, Shopify automatically provides you with specific APIs based on where your extension runs within the POS interface. This system ensures extensions receive exactly the data and functionality they need for their particular use case, while maintaining security and performance.
-
-Your [target](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/targets) determines which APIs you receive because different locations in POS require different capabilities.
-
-## Contextual APIs
-
-Contextual APIs provide access to data and operations specific to your extension's current location within [the POS app](https://apps.shopify.com/shopify-pos). These APIs give you the ability to read and modify context-specific information like cart contents, selected products, customer details, or order information based on where your extension is rendered.
-
-| Name | Description |
-| - | - |
-| [Cart API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/cart-api) | Add, remove, and modify cart items, apply discounts, and manage cart properties. |
-| [Cart Line Item API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/cart-line-item-api) | Read and interact with the currently selected cart line item in detail views. |
-| [Customer API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/customer-api) | Read customer information and build customer-specific functionality. |
-| [Draft Order API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/draft-order-api) | Read and manipulate draft order data in draft order detail views. |
-| [Order API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/order-api) | Read order data and build post-purchase, return, and exchange functionality. |
-| [Product API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/product-api) | Access the product ID and variant ID of the currently viewed or selected product. |
-
-## Platform APIs
-
-Platform APIs expose device-specific hardware capabilities and native POS functionality that differentiate mobile retail experiences from traditional web applications. These APIs provide access to physical device features like barcode scanners, receipt printers, camera scanning, and device connectivity status. They enable extensions to use the unique hardware and navigation patterns of POS devices to create native retail experiences.
-
-| Name | Description |
-| - | - |
-| [Connectivity API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/connectivity-api) | Check device connectivity status and Internet connection availability. |
-| [Device API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/device-api) | Retrieve device information including device name, ID, and hardware capabilities. |
-| [Navigation API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/navigation-api) | Navigate between different screens and views within the POS interface. |
-| [PinPad API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/pinpad-api) | Display a modal pinpad interface for secure PIN entry and validation. |
-| [Print API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/print-api) | Send documents and receipts to connected printers or trigger the device print dialog. |
-| [Scanner API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/scanner-api) | Capture barcodes and QR codes using the device camera or connected barcode scanners. |
-| [Storage API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/storage-api) | Store and retrieve extension data in POS local storage with up to 100 entries per extension. |
-
-## Standard APIs
-
-Standard APIs offer core functionality that most extensions need regardless of their specific use case or location within [the POS app](https://apps.shopify.com/shopify-pos). These APIs provide essential capabilities like local data storage, session and authentication management, user notifications through toasts, and internationalization support. They serve as the foundational building blocks that enable extensions to integrate with the POS environment while maintaining consistent behavior across different contexts.
-
-| Name | Description |
-| - | - |
-| [Action API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/action-api) | Launch modal dialogs for multi-step workflows and complex interactions. |
-| [Locale API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/locale-api) | Retrieve the merchant's locale and localization settings for internationalization. |
-| [Product Search API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/product-search-api) | Search the merchant's product catalog and retrieve product details, variants, and inventory data. |
-| [Session API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/session-api) | Access session information and generate fresh authentication tokens for secure backend API requests. |
-| [Toast API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/toast-api) | Display toast notifications to provide feedback and information to users. |
-
-***
-
-
-# **Extension targets**
-
-**URL:** https://shopify.dev/docs/api/pos-ui-extensions/targets.md
-
----
-title: Targets
-description: >-
-  Targets define where your POS UI extensions appear within Shopify's Point of
-  Sale interface and what capabilities they receive. Targets serve specific
-  purposes — some render persistent UI elements within existing screens, others
-  provide interactive menu items or buttons, and some launch full-screen modal
-  experiences for complex workflows.
-api_version: 2026-04
-source_url:
-  html: 'https://shopify.dev/docs/api/pos-ui-extensions/latest/targets'
-  md: 'https://shopify.dev/docs/api/pos-ui-extensions/latest/targets.md'
-api_name: pos-ui-extensions
----
-
-# Targets
-
-Targets define where your POS UI extensions appear within [Shopify's Point of Sale interface](https://shopify.dev/docs/apps/build/pos) and what capabilities they receive.
-
-Targets serve specific purposes: some render persistent UI elements within existing screens, others provide interactive menu items or buttons, and some launch full-screen modal experiences for complex workflows.
-
-Use this reference to explore all available targets and understand where they appear in the POS interface.
-
-![POS tablet interface showing multiple extension target locations across different screens in the Point of Sale app.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/targets-overview-hero-EQ3LjmEr.png)
-
-***
-
-## Cart details
-
-The cart details screen appears when customers select items in a transaction to modify quantities, apply discounts, or access item-specific tools. This screen provides control over individual products during transaction building.
-
-**Use cases**: Item-specific customizations, cart monitoring, or product configuration tools that improve line item management.
-
-[View cart details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/cart-details)
-
-##### Cart details action (menu item)
-
-`pos.cart.line-item-details.action.menu-item.render`
-
-An action target that displays as a menu item on the cart line item details screen.
-
-##### Cart details action (modal)
-
-`pos.cart.line-item-details.action.render`
-
-An action target that displays as a modal when a cart line item action menu item is tapped.
-
-![POS cart screen showing product line items with the extension target slot highlighted as a menu item option on the right side.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/cart-details-menu-item-render-jLl5EgM3.png)
-
-![POS cart screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/cart-details-modal-render-BFkDZDZj.png)
-
-***
-
-## Customer details
-
-The customer details screen appears when merchants look up a customer during checkout or need to access customer history and profile information. This screen serves as the hub for customer management within POS, displaying customer data, purchase history, and contact details.
-
-**Use cases**: Customer service capabilities, loyalty program integration, or tools for customer engagement and support during transactions.
-
-[View customer details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/customer-details)
-
-##### Customer details block
-
-`pos.customer-details.block.render`
-
-A block target that displays inline content within the customer details screen.
-
-##### Customer details action (menu item)
-
-`pos.customer-details.action.menu-item.render`
-
-An action target that displays as a menu item on the customer details screen action menu.
-
-##### Customer details action (modal)
-
-`pos.customer-details.action.render`
-
-An action target that displays as a modal when a customer details action menu item is tapped.
-
-![POS customer profile screen showing customer information and order history, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/customer-details-block-render-DAsZIa2K.png)
-
-![POS customer profile screen with the extension target slot highlighted as a menu action item on the right side.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/customer-details-menu-item-render-C5M6Rq_U.png)
-
-![POS customer details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/customer-details-modal-render-DRjcbJbh.png)
-
-***
-
-## Draft order details
-
-The draft order details screen appears when merchants access saved orders, quotes, or incomplete transactions that need to be finalized later. This screen displays draft order information, customer details, and line items for sales that haven't been completed.
-
-**Use cases**: Quote management, approval workflows, or integration with external systems for draft order processing and completion.
-
-[View draft order details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/draft-order-details)
-
-##### Draft order details block
-
-`pos.draft-order-details.block.render`
-
-A block target that displays inline content within the draft order details screen.
-
-##### Draft order details action (menu item)
-
-`pos.draft-order-details.action.menu-item.render`
-
-An action target that displays as a menu item on the draft order details screen action menu.
-
-##### Draft order details action (modal)
-
-`pos.draft-order-details.action.render`
-
-An action target that displays as a modal when a draft order details action menu item is tapped.
-
-![POS draft order screen showing order details and line items, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/draft-order-block-render-BY_i0_jR.png)
-
-![POS draft order screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/draft-order-menu-item-render-TUZMJLb3.png)
-
-![POS draft order screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/draft-order-modal-render-BAswaBFY.png)
-
-***
-
-## Home screen (smart grid)
-
-The smart grid is the first screen merchants see when they open [the POS app](https://apps.shopify.com/shopify-pos). It provides quick access to essential functions and serves as the starting point for merchant activities.
-
-**Use cases**: High-frequency actions, status displays, or entry points to workflows that merchants need daily.
-
-[View home screen targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/home-screen)
-
-##### Home screen tile
-
-`pos.home.tile.render`
-
-A tile target that displays as a clickable tile on the POS home screen smart grid.
-
-##### Home screen action (modal)
-
-`pos.home.modal.render`
-
-An action target that displays as a full-screen modal when a home screen tile is tapped.
-
-![POS home screen smart grid showing app tiles, with the extension target slot displayed as a clickable tile in the grid.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/home-tile-render-BLpqYBnr.png)
-
-![POS home screen with a full-screen modal overlay open after tapping a tile, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/home-modal-render-CENBsTmv.png)
-
-***
-
-## Order details
-
-The order details screen appears when merchants access a completed transaction for customer service, refunds, or order fulfillment tasks. This screen displays transaction information including customer details, payment data, line items, and fulfillment status for completed sales.
-
-**Use cases**: Order management, fulfillment tools, or integration with external systems for post-sale processing and customer support.
-
-[View order details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/order-details)
-
-##### Order details block
-
-`pos.order-details.block.render`
-
-A block target that displays inline content within the order details screen.
-
-##### Order details action (menu item)
-
-`pos.order-details.action.menu-item.render`
-
-An action target that displays as a menu item on the order details screen action menu.
-
-##### Order details action (modal)
-
-`pos.order-details.action.render`
-
-An action target that displays as a modal when an order details action menu item is tapped.
-
-![POS order details screen showing transaction and fulfillment information, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/order-details-block-render-D9oKyw0e.png)
-
-![POS order details screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/order-details-menu-item-render-BYfP_PnY.png)
-
-![POS order details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/order-details-modal-render-CQOvyY2S.png)
-
-***
-
-## Post-exchange
-
-The post-exchange screen appears after merchants complete an exchange transaction. This screen displays the exchange summary including exchanged items, price adjustments, and exchange details, providing opportunities for customer service and follow-up actions.
-
-**Use cases**: Exchange management, inventory tracking tools, or customer service features for product exchanges.
-
-**Beta:**
-
-Post-exchange targets are part of the POS UI extensions [feature preview](https://shopify.dev/docs/api/feature-previews). This feature preview is invite-only and requires POS UI extensions version 2025-07 or higher and POS app version 9.31.0 or later.
-
-[View post-exchange targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/post-exchange)
-
-##### Post-exchange block
-
-`pos.exchange.post.block.render`
-
-A block target that displays inline content within the post-exchange screen.
-
-##### Post-exchange action (menu item)
-
-`pos.exchange.post.action.menu-item.render`
-
-An action target that displays as a menu item on the post-exchange screen action menu.
-
-##### Post-exchange action (modal)
-
-`pos.exchange.post.action.render`
-
-An action target that displays as a modal when a post-exchange action menu item is tapped.
-
-![POS post-exchange summary screen showing exchanged items and price adjustments, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-exchange-block-render-AhLKmMp4.png)
-
-![POS post-exchange screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-exchange-menu-item-render-DIuxCL-j.png)
-
-![POS post-exchange screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-exchange-modal-render-CHyT0RzR.png)
-
-***
-
-## Post-purchase
-
-The post-purchase screen appears after merchants complete a sale, return, or exchange transaction. This screen displays the transaction summary and provides opportunities for follow-up actions, customer service, and revenue generation.
-
-**Use cases**: Capturing additional information, customer service tools, or related transactions that improve the post-sale customer experience.
-
-[View post-purchase targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/post-purchase)
-
-##### Post-purchase block
-
-`pos.purchase.post.block.render`
-
-A block target that displays inline content within the post-purchase screen.
-
-##### Post-purchase action (menu item)
-
-`pos.purchase.post.action.menu-item.render`
-
-An action target that displays as a menu item on the post-purchase screen action menu.
-
-##### Post-purchase action (modal)
-
-`pos.purchase.post.action.render`
-
-An action target that displays as a modal when a post-purchase action menu item is tapped.
-
-![POS post-purchase summary screen showing transaction details, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-purchase-block-render-D0D8LK0O.png)
-
-![POS post-purchase screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-purchase-menu-item-render-x40yByUf.png)
-
-![POS post-purchase screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-purchase-modal-render-DVbNAzop.png)
-
-***
-
-## Post-return
-
-The post-return screen appears after merchants complete a return transaction. This screen displays the return summary including returned items, refund amounts, and return reason, providing opportunities for customer service and follow-up actions.
-
-**Use cases**: Return-specific tools, refund processing, or customer service features for return workflows.
-
-**Beta:**
-
-Post-return targets are part of the POS UI extensions [feature preview](https://shopify.dev/docs/api/feature-previews). This feature preview is invite-only and requires POS UI extensions version 2025-07 or higher and POS app version 9.31.0 or later.
-
-[View post-return targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/post-return)
-
-##### Post-return block
-
-`pos.return.post.block.render`
-
-A block target that displays inline content within the post-return screen.
-
-##### Post-return action (menu item)
-
-`pos.return.post.action.menu-item.render`
-
-An action target that displays as a menu item on the post-return screen action menu.
-
-##### Post-return action (modal)
-
-`pos.return.post.action.render`
-
-An action target that displays as a modal when a post-return action menu item is tapped.
-
-![POS post-return summary screen showing returned items and refund amounts, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-return-block-render-BakoLmTj.png)
-
-![POS post-return screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-return-menu-item-render-ZuqUt75Z.png)
-
-![POS post-return screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-return-modal-render-DzlpPDUg.png)
-
-***
-
-## Product details
-
-The product details screen appears when merchants search for a product, scan a barcode, or browse inventory during a transaction. This screen displays product information including pricing, inventory levels, variants, and product specifications that merchants need to serve customers.
-
-**Use cases**: Product understanding, additional product data, or product-specific tools that help merchants make informed decisions during transaction building.
-
-[View product details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/product-details)
-
-##### Product details block
-
-`pos.product-details.block.render`
-
-A block target that displays inline content within the product details screen.
-
-##### Product details action (menu item)
-
-`pos.product-details.action.menu-item.render`
-
-An action target that displays as a menu item on the product details screen action menu.
-
-##### Product details action (modal)
-
-`pos.product-details.action.render`
-
-An action target that displays as a modal when a product details action menu item is tapped.
-
-![POS product details screen showing pricing and inventory information, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/product-details-block-render-BGkLbrh5.png)
-
-![POS product details screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/product-details-menu-item-render-CtCQMWN2.png)
-
-![POS product details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/product-details-modal-render-zOdzHi1W.png)
-
-***
-
-## Receipts
-
-The receipt appears as the printed or digital output that customers receive after completing a transaction. This receipt displays transaction details, payment information, and store branding, providing the last touchpoint in the customer experience.
-
-**Use cases**: Custom content in receipt headers and footers, branding opportunities, promotional messages, or transaction details that improve the customer experience.
-
-**Beta:**
-
-Receipt targets are part of the POS UI extensions [feature preview](https://shopify.dev/docs/api/feature-previews). This feature preview is invite-only and requires POS UI extensions version 2025-04 or higher and POS app version 9.31.0 or later.
-
-[View receipt targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/receipts)
-
-##### Receipt block (header)
-
-`pos.receipt-header.block.render`
-
-A block target that displays custom content in receipt headers for printed and digital receipts.
-
-##### Receipt block (footer)
-
-`pos.receipt-footer.block.render`
-
-A block target that displays custom content in receipt footers for printed and digital receipts.
-
-![Printed receipt showing store branding and transaction details, with the extension target slot at the top of the receipt header area.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/receipts-header-block-render-CawGpwXn.png)
-
-![Printed receipt showing transaction details, with the extension target slot at the bottom of the receipt footer area.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/receipts-footer-block-render-DWy10BWH.png)
-
-***
-
-## Register details
-
-The register details screen displays information about the current register and cash drawer status. This screen provides access to cash management operations and register-specific tools for retail staff.
-
-**Use cases**: Cash drawer operations, cash management workflows, register verification tools, or compliance features for cash handling and register operations.
-
-[View register details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/register-details)
-
-##### Register details block
-
-`pos.register-details.block.render`
-
-A block target that displays inline content within the register details screen.
-
-##### Register details action (menu item)
-
-`pos.register-details.action.menu-item.render`
-
-An action target that displays as a menu item on the register details screen action menu.
-
-##### Register details action (modal)
-
-`pos.register-details.action.render`
-
-An action target that displays as a modal when a register details action menu item is tapped.
-
-![POS register details screen showing cash drawer status, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/register-block-render-DmQRvcV-.png)
-
-![POS register details screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/register-menu-item-render-B2QI3bBx.png)
-
-![POS register details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/register-modal-render-DcWdupxp.png)
 
 ***
 
@@ -19930,5 +19469,466 @@ Deepen your understanding of POS UI extensions with these tutorials and communit
 [Reference - Developer changelog for POS UI extensions](https://shopify.dev/changelog?filter=pos-extensions)
 
 [Community - Community forum for POS UI extensions](https://community.shopify.dev/tag/pos-extensions)
+
+***
+
+
+# **Extension APIs**
+
+**URL:** https://shopify.dev/docs/api/pos-ui-extensions/apis.md
+
+---
+title: Target APIs
+description: >-
+  When you build a POS UI extension, Shopify automatically provides you with
+  specific APIs based on where your extension runs within the POS interface.
+  This system ensures extensions receive exactly the data and functionality they
+  need for their particular use case, while maintaining security and
+  performance.
+api_version: 2025-10
+source_url:
+  html: 'https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis'
+  md: 'https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis.md'
+api_name: pos-ui-extensions
+---
+
+# Target APIs
+
+When you build a POS UI extension, Shopify automatically provides you with specific APIs based on where your extension runs within the POS interface. This system ensures extensions receive exactly the data and functionality they need for their particular use case, while maintaining security and performance.
+
+Your [target](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/targets) determines which APIs you receive because different locations in POS require different capabilities.
+
+## Contextual APIs
+
+Contextual APIs provide access to data and operations specific to your extension's current location within [the POS app](https://apps.shopify.com/shopify-pos). These APIs give you the ability to read and modify context-specific information like cart contents, selected products, customer details, or order information based on where your extension is rendered.
+
+| Name | Description |
+| - | - |
+| [Cart API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/cart-api) | Add, remove, and modify cart items, apply discounts, and manage cart properties. |
+| [Cart Line Item API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/cart-line-item-api) | Read and interact with the currently selected cart line item in detail views. |
+| [Customer API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/customer-api) | Read customer information and build customer-specific functionality. |
+| [Draft Order API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/draft-order-api) | Read and manipulate draft order data in draft order detail views. |
+| [Order API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/order-api) | Read order data and build post-purchase, return, and exchange functionality. |
+| [Product API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/contextual-apis/product-api) | Access the product ID and variant ID of the currently viewed or selected product. |
+
+## Platform APIs
+
+Platform APIs expose device-specific hardware capabilities and native POS functionality that differentiate mobile retail experiences from traditional web applications. These APIs provide access to physical device features like barcode scanners, receipt printers, camera scanning, and device connectivity status. They enable extensions to use the unique hardware and navigation patterns of POS devices to create native retail experiences.
+
+| Name | Description |
+| - | - |
+| [Connectivity API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/connectivity-api) | Check device connectivity status and Internet connection availability. |
+| [Device API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/device-api) | Retrieve device information including device name, ID, and hardware capabilities. |
+| [Navigation API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/navigation-api) | Navigate between different screens and views within the POS interface. |
+| [PinPad API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/pinpad-api) | Display a modal pinpad interface for secure PIN entry and validation. |
+| [Print API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/print-api) | Send documents and receipts to connected printers or trigger the device print dialog. |
+| [Scanner API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/scanner-api) | Capture barcodes and QR codes using the device camera or connected barcode scanners. |
+| [Storage API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/platform-apis/storage-api) | Store and retrieve extension data in POS local storage with up to 100 entries per extension. |
+
+## Standard APIs
+
+Standard APIs offer core functionality that most extensions need regardless of their specific use case or location within [the POS app](https://apps.shopify.com/shopify-pos). These APIs provide essential capabilities like local data storage, session and authentication management, user notifications through toasts, and internationalization support. They serve as the foundational building blocks that enable extensions to integrate with the POS environment while maintaining consistent behavior across different contexts.
+
+| Name | Description |
+| - | - |
+| [Action API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/action-api) | Launch modal dialogs for multi-step workflows and complex interactions. |
+| [Locale API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/locale-api) | Retrieve the merchant's locale and localization settings for internationalization. |
+| [Product Search API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/product-search-api) | Search the merchant's product catalog and retrieve product details, variants, and inventory data. |
+| [Session API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/session-api) | Access session information and generate fresh authentication tokens for secure backend API requests. |
+| [Toast API](https://shopify.dev/docs/api/pos-ui-extensions/2025-10/target-apis/standard-apis/toast-api) | Display toast notifications to provide feedback and information to users. |
+
+***
+
+
+# **Extension targets**
+
+**URL:** https://shopify.dev/docs/api/pos-ui-extensions/targets.md
+
+---
+title: Targets
+description: >-
+  Targets define where your POS UI extensions appear within Shopify's Point of
+  Sale interface and what capabilities they receive. Targets serve specific
+  purposes — some render persistent UI elements within existing screens, others
+  provide interactive menu items or buttons, and some launch full-screen modal
+  experiences for complex workflows.
+api_version: 2026-04
+source_url:
+  html: 'https://shopify.dev/docs/api/pos-ui-extensions/latest/targets'
+  md: 'https://shopify.dev/docs/api/pos-ui-extensions/latest/targets.md'
+api_name: pos-ui-extensions
+---
+
+# Targets
+
+Targets define where your POS UI extensions appear within [Shopify's Point of Sale interface](https://shopify.dev/docs/apps/build/pos) and what capabilities they receive.
+
+Targets serve specific purposes: some render persistent UI elements within existing screens, others provide interactive menu items or buttons, and some launch full-screen modal experiences for complex workflows.
+
+Use this reference to explore all available targets and understand where they appear in the POS interface.
+
+![POS tablet interface showing multiple extension target locations across different screens in the Point of Sale app.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/targets-overview-hero-EQ3LjmEr.png)
+
+***
+
+## Cart details
+
+The cart details screen appears when customers select items in a transaction to modify quantities, apply discounts, or access item-specific tools. This screen provides control over individual products during transaction building.
+
+**Use cases**: Item-specific customizations, cart monitoring, or product configuration tools that improve line item management.
+
+[View cart details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/cart-details)
+
+##### Cart details action (menu item)
+
+`pos.cart.line-item-details.action.menu-item.render`
+
+An action target that displays as a menu item on the cart line item details screen.
+
+##### Cart details action (modal)
+
+`pos.cart.line-item-details.action.render`
+
+An action target that displays as a modal when a cart line item action menu item is tapped.
+
+![POS cart screen showing product line items with the extension target slot highlighted as a menu item option on the right side.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/cart-details-menu-item-render-jLl5EgM3.png)
+
+![POS cart screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/cart-details-modal-render-BFkDZDZj.png)
+
+***
+
+## Customer details
+
+The customer details screen appears when merchants look up a customer during checkout or need to access customer history and profile information. This screen serves as the hub for customer management within POS, displaying customer data, purchase history, and contact details.
+
+**Use cases**: Customer service capabilities, loyalty program integration, or tools for customer engagement and support during transactions.
+
+[View customer details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/customer-details)
+
+##### Customer details block
+
+`pos.customer-details.block.render`
+
+A block target that displays inline content within the customer details screen.
+
+##### Customer details action (menu item)
+
+`pos.customer-details.action.menu-item.render`
+
+An action target that displays as a menu item on the customer details screen action menu.
+
+##### Customer details action (modal)
+
+`pos.customer-details.action.render`
+
+An action target that displays as a modal when a customer details action menu item is tapped.
+
+![POS customer profile screen showing customer information and order history, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/customer-details-block-render-DAsZIa2K.png)
+
+![POS customer profile screen with the extension target slot highlighted as a menu action item on the right side.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/customer-details-menu-item-render-C5M6Rq_U.png)
+
+![POS customer details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/customer-details-modal-render-DRjcbJbh.png)
+
+***
+
+## Draft order details
+
+The draft order details screen appears when merchants access saved orders, quotes, or incomplete transactions that need to be finalized later. This screen displays draft order information, customer details, and line items for sales that haven't been completed.
+
+**Use cases**: Quote management, approval workflows, or integration with external systems for draft order processing and completion.
+
+[View draft order details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/draft-order-details)
+
+##### Draft order details block
+
+`pos.draft-order-details.block.render`
+
+A block target that displays inline content within the draft order details screen.
+
+##### Draft order details action (menu item)
+
+`pos.draft-order-details.action.menu-item.render`
+
+An action target that displays as a menu item on the draft order details screen action menu.
+
+##### Draft order details action (modal)
+
+`pos.draft-order-details.action.render`
+
+An action target that displays as a modal when a draft order details action menu item is tapped.
+
+![POS draft order screen showing order details and line items, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/draft-order-block-render-BY_i0_jR.png)
+
+![POS draft order screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/draft-order-menu-item-render-TUZMJLb3.png)
+
+![POS draft order screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/draft-order-modal-render-BAswaBFY.png)
+
+***
+
+## Home screen (smart grid)
+
+The smart grid is the first screen merchants see when they open [the POS app](https://apps.shopify.com/shopify-pos). It provides quick access to essential functions and serves as the starting point for merchant activities.
+
+**Use cases**: High-frequency actions, status displays, or entry points to workflows that merchants need daily.
+
+[View home screen targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/home-screen)
+
+##### Home screen tile
+
+`pos.home.tile.render`
+
+A tile target that displays as a clickable tile on the POS home screen smart grid.
+
+##### Home screen action (modal)
+
+`pos.home.modal.render`
+
+An action target that displays as a full-screen modal when a home screen tile is tapped.
+
+![POS home screen smart grid showing app tiles, with the extension target slot displayed as a clickable tile in the grid.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/home-tile-render-BLpqYBnr.png)
+
+![POS home screen with a full-screen modal overlay open after tapping a tile, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/home-modal-render-CENBsTmv.png)
+
+***
+
+## Order details
+
+The order details screen appears when merchants access a completed transaction for customer service, refunds, or order fulfillment tasks. This screen displays transaction information including customer details, payment data, line items, and fulfillment status for completed sales.
+
+**Use cases**: Order management, fulfillment tools, or integration with external systems for post-sale processing and customer support.
+
+[View order details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/order-details)
+
+##### Order details block
+
+`pos.order-details.block.render`
+
+A block target that displays inline content within the order details screen.
+
+##### Order details action (menu item)
+
+`pos.order-details.action.menu-item.render`
+
+An action target that displays as a menu item on the order details screen action menu.
+
+##### Order details action (modal)
+
+`pos.order-details.action.render`
+
+An action target that displays as a modal when an order details action menu item is tapped.
+
+![POS order details screen showing transaction and fulfillment information, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/order-details-block-render-D9oKyw0e.png)
+
+![POS order details screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/order-details-menu-item-render-BYfP_PnY.png)
+
+![POS order details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/order-details-modal-render-CQOvyY2S.png)
+
+***
+
+## Post-exchange
+
+The post-exchange screen appears after merchants complete an exchange transaction. This screen displays the exchange summary including exchanged items, price adjustments, and exchange details, providing opportunities for customer service and follow-up actions.
+
+**Use cases**: Exchange management, inventory tracking tools, or customer service features for product exchanges.
+
+**Beta:**
+
+Post-exchange targets are part of the POS UI extensions [feature preview](https://shopify.dev/docs/api/feature-previews). This feature preview is invite-only and requires POS UI extensions version 2025-07 or higher and POS app version 9.31.0 or later.
+
+[View post-exchange targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/post-exchange)
+
+##### Post-exchange block
+
+`pos.exchange.post.block.render`
+
+A block target that displays inline content within the post-exchange screen.
+
+##### Post-exchange action (menu item)
+
+`pos.exchange.post.action.menu-item.render`
+
+An action target that displays as a menu item on the post-exchange screen action menu.
+
+##### Post-exchange action (modal)
+
+`pos.exchange.post.action.render`
+
+An action target that displays as a modal when a post-exchange action menu item is tapped.
+
+![POS post-exchange summary screen showing exchanged items and price adjustments, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-exchange-block-render-AhLKmMp4.png)
+
+![POS post-exchange screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-exchange-menu-item-render-DIuxCL-j.png)
+
+![POS post-exchange screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-exchange-modal-render-CHyT0RzR.png)
+
+***
+
+## Post-purchase
+
+The post-purchase screen appears after merchants complete a sale, return, or exchange transaction. This screen displays the transaction summary and provides opportunities for follow-up actions, customer service, and revenue generation.
+
+**Use cases**: Capturing additional information, customer service tools, or related transactions that improve the post-sale customer experience.
+
+[View post-purchase targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/post-purchase)
+
+##### Post-purchase block
+
+`pos.purchase.post.block.render`
+
+A block target that displays inline content within the post-purchase screen.
+
+##### Post-purchase action (menu item)
+
+`pos.purchase.post.action.menu-item.render`
+
+An action target that displays as a menu item on the post-purchase screen action menu.
+
+##### Post-purchase action (modal)
+
+`pos.purchase.post.action.render`
+
+An action target that displays as a modal when a post-purchase action menu item is tapped.
+
+![POS post-purchase summary screen showing transaction details, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-purchase-block-render-D0D8LK0O.png)
+
+![POS post-purchase screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-purchase-menu-item-render-x40yByUf.png)
+
+![POS post-purchase screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-purchase-modal-render-DVbNAzop.png)
+
+***
+
+## Post-return
+
+The post-return screen appears after merchants complete a return transaction. This screen displays the return summary including returned items, refund amounts, and return reason, providing opportunities for customer service and follow-up actions.
+
+**Use cases**: Return-specific tools, refund processing, or customer service features for return workflows.
+
+**Beta:**
+
+Post-return targets are part of the POS UI extensions [feature preview](https://shopify.dev/docs/api/feature-previews). This feature preview is invite-only and requires POS UI extensions version 2025-07 or higher and POS app version 9.31.0 or later.
+
+[View post-return targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/post-return)
+
+##### Post-return block
+
+`pos.return.post.block.render`
+
+A block target that displays inline content within the post-return screen.
+
+##### Post-return action (menu item)
+
+`pos.return.post.action.menu-item.render`
+
+An action target that displays as a menu item on the post-return screen action menu.
+
+##### Post-return action (modal)
+
+`pos.return.post.action.render`
+
+An action target that displays as a modal when a post-return action menu item is tapped.
+
+![POS post-return summary screen showing returned items and refund amounts, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-return-block-render-BakoLmTj.png)
+
+![POS post-return screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-return-menu-item-render-ZuqUt75Z.png)
+
+![POS post-return screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/post-return-modal-render-DzlpPDUg.png)
+
+***
+
+## Product details
+
+The product details screen appears when merchants search for a product, scan a barcode, or browse inventory during a transaction. This screen displays product information including pricing, inventory levels, variants, and product specifications that merchants need to serve customers.
+
+**Use cases**: Product understanding, additional product data, or product-specific tools that help merchants make informed decisions during transaction building.
+
+[View product details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/product-details)
+
+##### Product details block
+
+`pos.product-details.block.render`
+
+A block target that displays inline content within the product details screen.
+
+##### Product details action (menu item)
+
+`pos.product-details.action.menu-item.render`
+
+An action target that displays as a menu item on the product details screen action menu.
+
+##### Product details action (modal)
+
+`pos.product-details.action.render`
+
+An action target that displays as a modal when a product details action menu item is tapped.
+
+![POS product details screen showing pricing and inventory information, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/product-details-block-render-BGkLbrh5.png)
+
+![POS product details screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/product-details-menu-item-render-CtCQMWN2.png)
+
+![POS product details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/product-details-modal-render-zOdzHi1W.png)
+
+***
+
+## Receipts
+
+The receipt appears as the printed or digital output that customers receive after completing a transaction. This receipt displays transaction details, payment information, and store branding, providing the last touchpoint in the customer experience.
+
+**Use cases**: Custom content in receipt headers and footers, branding opportunities, promotional messages, or transaction details that improve the customer experience.
+
+**Beta:**
+
+Receipt targets are part of the POS UI extensions [feature preview](https://shopify.dev/docs/api/feature-previews). This feature preview is invite-only and requires POS UI extensions version 2025-04 or higher and POS app version 9.31.0 or later.
+
+[View receipt targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/receipts)
+
+##### Receipt block (header)
+
+`pos.receipt-header.block.render`
+
+A block target that displays custom content in receipt headers for printed and digital receipts.
+
+##### Receipt block (footer)
+
+`pos.receipt-footer.block.render`
+
+A block target that displays custom content in receipt footers for printed and digital receipts.
+
+![Printed receipt showing store branding and transaction details, with the extension target slot at the top of the receipt header area.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/receipts-header-block-render-CawGpwXn.png)
+
+![Printed receipt showing transaction details, with the extension target slot at the bottom of the receipt footer area.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/receipts-footer-block-render-DWy10BWH.png)
+
+***
+
+## Register details
+
+The register details screen displays information about the current register and cash drawer status. This screen provides access to cash management operations and register-specific tools for retail staff.
+
+**Use cases**: Cash drawer operations, cash management workflows, register verification tools, or compliance features for cash handling and register operations.
+
+[View register details targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/register-details)
+
+##### Register details block
+
+`pos.register-details.block.render`
+
+A block target that displays inline content within the register details screen.
+
+##### Register details action (menu item)
+
+`pos.register-details.action.menu-item.render`
+
+An action target that displays as a menu item on the register details screen action menu.
+
+##### Register details action (modal)
+
+`pos.register-details.action.render`
+
+An action target that displays as a modal when a register details action menu item is tapped.
+
+![POS register details screen showing cash drawer status, with the extension target slot displayed as an inline block.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/register-block-render-DmQRvcV-.png)
+
+![POS register details screen with the extension target slot highlighted as a menu action item.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/register-menu-item-render-B2QI3bBx.png)
+
+![POS register details screen with a full-screen modal overlay open, showing the extension target slot inside the modal.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/register-modal-render-DcWdupxp.png)
 
 ***

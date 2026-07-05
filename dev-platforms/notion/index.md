@@ -42,7 +42,7 @@
 - `guides/get-started/personal-access-tokens` — [Personal access tokens](pages/guides/get-started/personal-access-tokens.md) · [原文](https://developers.notion.com/guides/get-started/personal-access-tokens)
 - `guides/get-started/preparing-for-users` — [Preparing your connection for users](pages/guides/get-started/preparing-for-users.md) · [原文](https://developers.notion.com/guides/get-started/preparing-for-users)
 - `guides/get-started/public-connections` — [Public connections](pages/guides/get-started/public-connections.md) · [原文](https://developers.notion.com/guides/get-started/public-connections)
-- `guides/get-started/quick-start` — [Developer quickstart](pages/guides/get-started/quick-start.md) · [原文](https://developers.notion.com/guides/get-started/quick-start)
+- `guides/get-started/quick-start` — [API quickstart](pages/guides/get-started/quick-start.md) · [原文](https://developers.notion.com/guides/get-started/quick-start)
 - `guides/get-started/upgrade-faqs-2025-09-03` — [FAQs](pages/guides/get-started/upgrade-faqs-2025-09-03.md) · [原文](https://developers.notion.com/guides/get-started/upgrade-faqs-2025-09-03)
 - `guides/get-started/upgrade-guide-2025-09-03` — [Upgrade guide](pages/guides/get-started/upgrade-guide-2025-09-03.md) · [原文](https://developers.notion.com/guides/get-started/upgrade-guide-2025-09-03)
 - `guides/get-started/upgrade-guide-2026-03-11` — [Upgrade guide](pages/guides/get-started/upgrade-guide-2026-03-11.md) · [原文](https://developers.notion.com/guides/get-started/upgrade-guide-2026-03-11)

@@ -26,7 +26,7 @@ To get a data source ID from the Notion app directly, the settings menu for a da
   <img />
 </Frame>
 
-Refer to the [Build your first connection guide](/guides/get-started/quick-start) for more details.
+Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 
 ### Errors
 

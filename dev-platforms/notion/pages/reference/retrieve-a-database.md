@@ -27,7 +27,7 @@ To find a database ID, navigate to the database URL in your Notion workspace. Th
   <img alt="1340" />
 </Frame>
 
-Refer to the [Build your first connection guide](/guides/get-started/quick-start) for more details.
+Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 
 ### Errors
 

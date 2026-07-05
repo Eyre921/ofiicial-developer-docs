@@ -48,7 +48,7 @@ path: page/examples
   </Card>
 
   <Card title="Build a full-stack Notion connection" href="https://github.com/makenotion/notion-cookbook/tree/main/examples/javascript/web-form-with-express" icon="github">
-    Learn how to build a Notion connection with an interactive front-end. This codebase is referenced in the [Build your first connection guide](/guides/get-started/quick-start).
+    Learn how to build a Notion connection with an interactive front-end using Express.js and the Notion SDK for JavaScript.
   </Card>
 </CardGroup>
 
