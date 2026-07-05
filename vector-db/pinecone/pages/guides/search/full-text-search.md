@@ -1577,3 +1577,12 @@ Full-text search is in public preview under API version `2026-01.alpha`. The fea
 ## Pricing
 
 Reads and writes on indexes with document schemas are metered using the same [read units (RUs)](/guides/manage-cost/understanding-cost#read-units) and [write units (WUs)](/guides/manage-cost/understanding-cost#write-units) model as vector indexes. List pricing for public preview will be announced before general availability.
+
+## Next steps
+
+* **[Create an index](/guides/index-data/create-an-index)**: create an index with a document schema that declares your ranking fields.
+* **[Model your data](/guides/index-data/data-modeling#schema-patterns)**: schema-pattern recipes for keyword-only, multi-field, dense + FTS, and multi-signal indexes.
+* **[Choose a search approach](/guides/search/search-overview)**: compare full-text, semantic, sparse-vector, and hybrid search.
+* **[Hybrid search](/guides/search/hybrid-search)**: combine keyword and vector ranking, including when to use a document schema versus the vector API.
+* **[Filter by metadata](/guides/search/filter-by-metadata)**: narrow the candidate set before ranking.
+* **[Understanding cost](/guides/manage-cost/understanding-cost)**: how read units and write units are metered.

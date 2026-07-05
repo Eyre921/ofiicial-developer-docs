@@ -33131,6 +33131,15 @@ Full-text search is in public preview under API version `2026-01.alpha`. The fea
 
 Reads and writes on indexes with document schemas are metered using the same [read units (RUs)](/guides/manage-cost/understanding-cost#read-units) and [write units (WUs)](/guides/manage-cost/understanding-cost#write-units) model as vector indexes. List pricing for public preview will be announced before general availability.
 
+## Next steps
+
+* **[Create an index](/guides/index-data/create-an-index)**: create an index with a document schema that declares your ranking fields.
+* **[Model your data](/guides/index-data/data-modeling#schema-patterns)**: schema-pattern recipes for keyword-only, multi-field, dense + FTS, and multi-signal indexes.
+* **[Choose a search approach](/guides/search/search-overview)**: compare full-text, semantic, sparse-vector, and hybrid search.
+* **[Hybrid search](/guides/search/hybrid-search)**: combine keyword and vector ranking, including when to use a document schema versus the vector API.
+* **[Filter by metadata](/guides/search/filter-by-metadata)**: narrow the candidate set before ranking.
+* **[Understanding cost](/guides/manage-cost/understanding-cost)**: how read units and write units are metered.
+
 
 # Hybrid search
 Source: https://docs.pinecone.io/guides/search/hybrid-search
@@ -37364,6 +37373,8 @@ A useful gradient: **dense** ranks on concept (semantic similarity), **full-text
 * **[Sparse-vector search (also called sparse-vector lexical search)](/guides/search/lexical-search)** — recommended for workflows that use a learned sparse-vector model (for example, [`pinecone-sparse-english-v0`](/models/pinecone-sparse-english-v0)) or where the application owns the sparse-vector representation directly. For general-purpose keyword and phrase retrieval over text, start with full-text search.
 
 * **[Hybrid search](/guides/search/hybrid-search)** — combines dense and sparse vectors in a single index (vector API) for vector-centric workflows that need both semantic and lexical signals. For document-centric workflows that combine keyword matching with vector ranking, the most common pattern is dense (or sparse) ranking restricted by a text-match filter on an FTS-enabled `string` field — for example, semantic search across a corpus narrowed to documents containing an exact phrase. To weight BM25 and dense rankings against each other, run separate searches and merge the results client-side.
+
+Once you've chosen an approach, see [Data modeling](/guides/index-data/data-modeling) to structure your documents or records, then [Create an index](/guides/index-data/create-an-index) to set it up.
 
 ## Optimization
 

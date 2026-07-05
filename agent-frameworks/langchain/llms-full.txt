@@ -136180,7 +136180,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
 ## Using SubAgent
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136236,7 +136236,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136292,7 +136292,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136348,7 +136348,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136404,7 +136404,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136460,7 +136460,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136516,7 +136516,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -136710,7 +136710,7 @@ Use [`streamEvents`](/oss/javascript/deepagents/event-streaming) to get typed pr
 The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -136768,7 +136768,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -136826,7 +136826,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -136884,7 +136884,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -136942,7 +136942,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -137000,7 +137000,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -137058,7 +137058,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -139524,7 +139524,7 @@ There are a few different ways to authenticate with AWS - the below examples rel
 import { ChatBedrockConverse } from "@langchain/aws";
 
 const llm = new ChatBedrockConverse({
-  model: "anthropic.claude-3-5-sonnet-20240620-v1:0",
+  model: "us.anthropic.claude-sonnet-4-6",
   region: process.env.BEDROCK_AWS_REGION,
   credentials: {
     accessKeyId: process.env.BEDROCK_AWS_ACCESS_KEY_ID!,
@@ -230950,7 +230950,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
 
 ## Using SubAgent
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import os
 from typing import Literal
 
@@ -231123,7 +231123,7 @@ Use [`stream_events`](/oss/python/deepagents/event-streaming) to get typed proje
 The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
 <CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231178,7 +231178,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231233,7 +231233,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231288,7 +231288,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231343,7 +231343,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231398,7 +231398,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -231453,7 +231453,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
               print(f"[{item.name}] status: {item.status}")
   ```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import (
       create_deep_agent
   )
@@ -255556,7 +255556,7 @@ The easiest way to get started with a standalone model in LangChain is to use [`
       # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
       )
       ```
@@ -255564,7 +255564,7 @@ The easiest way to get started with a standalone model in LangChain is to use [`
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
 
-      model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
       ```
     </CodeGroup>
   </Tab>
@@ -257805,7 +257805,7 @@ Select a chat model from LangChain's suite of integrations:
       # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
       )
       ```
@@ -257813,7 +257813,7 @@ Select a chat model from LangChain's suite of integrations:
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
 
-      model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
       ```
     </CodeGroup>
   </Tab>
@@ -259291,7 +259291,7 @@ Select a chat model from LangChain's suite of integrations:
       # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
       )
       ```
@@ -259299,7 +259299,7 @@ Select a chat model from LangChain's suite of integrations:
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
 
-      model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
       ```
     </CodeGroup>
   </Tab>
@@ -260457,7 +260457,7 @@ Select a chat model from LangChain's suite of integrations:
       # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
       )
       ```
@@ -260465,7 +260465,7 @@ Select a chat model from LangChain's suite of integrations:
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
 
-      model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
       ```
     </CodeGroup>
   </Tab>
@@ -262121,7 +262121,7 @@ We will need to select a chat model from LangChain's suite of integrations:
       # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
       )
       ```
@@ -262129,7 +262129,7 @@ We will need to select a chat model from LangChain's suite of integrations:
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
 
-      model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
       ```
     </CodeGroup>
   </Tab>
@@ -263834,7 +263834,7 @@ Start by creating a simple agent that can answer questions and call tools. The a
       return f"It's always sunny in {city}!"
 
   agent = create_agent(
-      model="anthropic.claude-3-5-sonnet-20240620-v1:0",
+      model="us.anthropic.claude-sonnet-4-6",
       model_provider="bedrock_converse",
       tools=[get_weather],
       system_prompt="You are a helpful assistant",
@@ -264042,7 +264042,7 @@ Along the way you will explore the following concepts:
       from langchain.chat_models import init_chat_model
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
           temperature=0.5,
           timeout=300,
@@ -265158,7 +265158,7 @@ The following steps show you how to build a minimal [agent](/oss/python/langchai
           # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
           model = init_chat_model(
-              "anthropic.claude-3-5-sonnet-20240620-v1:0",
+              "us.anthropic.claude-sonnet-4-6",
               model_provider="bedrock_converse",
           )
           ```
@@ -265166,7 +265166,7 @@ The following steps show you how to build a minimal [agent](/oss/python/langchai
           ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
           from langchain_aws import ChatBedrock
 
-          model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+          model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
           ```
         </CodeGroup>
       </Tab>
@@ -268023,7 +268023,7 @@ The following tutorial covers the following concepts:
           # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
           model = init_chat_model(
-              "anthropic.claude-3-5-sonnet-20240620-v1:0",
+              "us.anthropic.claude-sonnet-4-6",
               model_provider="bedrock_converse",
           )
           ```
@@ -268031,7 +268031,7 @@ The following tutorial covers the following concepts:
           ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
           from langchain_aws import ChatBedrock
 
-          model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+          model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
           ```
         </CodeGroup>
       </Tab>
@@ -284537,7 +284537,7 @@ Select a model that supports [tool-calling](/oss/python/integrations/providers/o
       # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
       )
       ```
@@ -284545,7 +284545,7 @@ Select a model that supports [tool-calling](/oss/python/integrations/providers/o
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
 
-      model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
       ```
     </CodeGroup>
   </Tab>
@@ -290766,7 +290766,7 @@ See example below. To demonstrate async invocations of underlying LLMs, we will 
       # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
       )
       ```
@@ -290774,7 +290774,7 @@ See example below. To demonstrate async invocations of underlying LLMs, we will 
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
 
-      model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
       ```
     </CodeGroup>
   </Tab>

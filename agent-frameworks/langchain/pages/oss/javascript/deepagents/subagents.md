@@ -112,7 +112,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
 ## Using SubAgent
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -168,7 +168,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -224,7 +224,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -280,7 +280,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -336,7 +336,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -392,7 +392,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -448,7 +448,7 @@ For complex workflows, use a prebuilt LangGraph graph as a [`CompiledSubAgent`](
   });
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { tool } from "langchain";
   import { TavilySearch } from "@langchain/tavily";
   import { createDeepAgent, type SubAgent } from "deepagents";
@@ -642,7 +642,7 @@ Use [`streamEvents`](/oss/javascript/deepagents/event-streaming) to get typed pr
 The simplest pattern is to iterate `stream.subagents` to track each delegated task as it starts, runs, and completes. Each subagent handle exposes `.name`, `.messages`, `.tool_calls`, and `.output`.
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -700,7 +700,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -758,7 +758,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -816,7 +816,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -874,7 +874,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -932,7 +932,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({
@@ -990,7 +990,7 @@ The simplest pattern is to iterate `stream.subagents` to track each delegated ta
   }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent } from "deepagents";
 
   const agent = createDeepAgent({

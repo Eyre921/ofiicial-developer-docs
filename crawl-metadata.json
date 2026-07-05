@@ -103,7 +103,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -189,7 +189,7 @@
     "status": "ok"
   },
   "dev-platforms/github": {
-    "pages": 107,
+    "pages": 97,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -208,5 +208,5 @@
     "pages": 758,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-04T23:30:35Z"
+  "_last_crawl": "2026-07-05T11:30:40Z"
 }

@@ -185,7 +185,7 @@ Select a model that supports [tool-calling](/oss/python/integrations/providers/o
       # https://docs.aws.amazon.com/bedrock/latest/userguide/getting-started.html
 
       model = init_chat_model(
-          "anthropic.claude-3-5-sonnet-20240620-v1:0",
+          "us.anthropic.claude-sonnet-4-6",
           model_provider="bedrock_converse",
       )
       ```
@@ -193,7 +193,7 @@ Select a model that supports [tool-calling](/oss/python/integrations/providers/o
       ```python Model Class theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
       from langchain_aws import ChatBedrock
 
-      model = ChatBedrock(model="anthropic.claude-3-5-sonnet-20240620-v1:0")
+      model = ChatBedrock(model="us.anthropic.claude-sonnet-4-6")
       ```
     </CodeGroup>
   </Tab>

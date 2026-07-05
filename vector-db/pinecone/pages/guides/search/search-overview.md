@@ -47,6 +47,8 @@ A useful gradient: **dense** ranks on concept (semantic similarity), **full-text
 
 * **[Hybrid search](/guides/search/hybrid-search)** — combines dense and sparse vectors in a single index (vector API) for vector-centric workflows that need both semantic and lexical signals. For document-centric workflows that combine keyword matching with vector ranking, the most common pattern is dense (or sparse) ranking restricted by a text-match filter on an FTS-enabled `string` field — for example, semantic search across a corpus narrowed to documents containing an exact phrase. To weight BM25 and dense rankings against each other, run separate searches and merge the results client-side.
 
+Once you've chosen an approach, see [Data modeling](/guides/index-data/data-modeling) to structure your documents or records, then [Create an index](/guides/index-data/create-an-index) to set it up.
+
 ## Optimization
 
 * [Filter by metadata](/guides/search/filter-by-metadata)
