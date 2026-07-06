@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 355 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 352 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -37,8 +37,6 @@
 - `docs/auto-scaling-sagemaker` — [Auto-Scaling SageMaker Endpoints](pages/docs/auto-scaling-sagemaker.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker.md)
 - `docs/auto-scaling-sagemaker-async` — [Auto-Scaling Asynchronous SageMaker Endpoints](pages/docs/auto-scaling-sagemaker-async.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-async.md)
 - `docs/auto-scaling-sagemaker-streaming` — [Auto-Scaling Real-Time Endpoints](pages/docs/auto-scaling-sagemaker-streaming.md) · [原文](https://developers.deepgram.com/docs/auto-scaling-sagemaker-streaming.md)
-- `docs/automatically-generating-webvtt-and-srt-captions` — [Automatically Generating WebVTT & SRT Captions](pages/docs/automatically-generating-webvtt-and-srt-captions.md) · [原文](https://developers.deepgram.com/docs/automatically-generating-webvtt-and-srt-captions.md)
-- `docs/automatically-transcribing-and-summarizing-phone-calls` — [Automatically Transcribe and Summarize Phone Calls](pages/docs/automatically-transcribing-and-summarizing-phone-calls.md) · [原文](https://developers.deepgram.com/docs/automatically-transcribing-and-summarizing-phone-calls.md)
 - `docs/autoscaling-best-practices` — [Auto-Scaling](pages/docs/autoscaling-best-practices.md) · [原文](https://developers.deepgram.com/docs/autoscaling-best-practices.md)
 - `docs/aws-docker-podman` — [Amazon Web Services](pages/docs/aws-docker-podman.md) · [原文](https://developers.deepgram.com/docs/aws-docker-podman.md)
 - `docs/aws-k8s` — [Amazon Web Services](pages/docs/aws-k8s.md) · [原文](https://developers.deepgram.com/docs/aws-k8s.md)
@@ -123,7 +121,6 @@
 - `docs/keywords` — [Keywords](pages/docs/keywords.md) · [原文](https://developers.deepgram.com/docs/keywords.md)
 - `docs/keywords-vs-search` — [When To Use Keywords and Search](pages/docs/keywords-vs-search.md) · [原文](https://developers.deepgram.com/docs/keywords-vs-search.md)
 - `docs/kubernetes` — [Kubernetes](pages/docs/kubernetes.md) · [原文](https://developers.deepgram.com/docs/kubernetes.md)
-- `docs/language` — [Languages Support](pages/docs/language.md) · [原文](https://developers.deepgram.com/docs/language.md)
 - `docs/language-detection` — [Language Detection](pages/docs/language-detection.md) · [原文](https://developers.deepgram.com/docs/language-detection.md)
 - `docs/license-proxy` — [License Proxy](pages/docs/license-proxy.md) · [原文](https://developers.deepgram.com/docs/license-proxy.md)
 - `docs/live-streaming-audio` — [Getting Started](pages/docs/live-streaming-audio.md) · [原文](https://developers.deepgram.com/docs/live-streaming-audio.md)
@@ -148,6 +145,7 @@
 - `docs/multichannel-vs-diarization` — [When To Use Multichannel and Diarization](pages/docs/multichannel-vs-diarization.md) · [原文](https://developers.deepgram.com/docs/multichannel-vs-diarization.md)
 - `docs/multilingual-code-switching` — [Multilingual Codeswitching](pages/docs/multilingual-code-switching.md) · [原文](https://developers.deepgram.com/docs/multilingual-code-switching.md)
 - `docs/multilingual-voice-agent` — [Multilingual Voice Agents](pages/docs/multilingual-voice-agent.md) · [原文](https://developers.deepgram.com/docs/multilingual-voice-agent.md)
+- `docs/networking` — [Networking](pages/docs/networking.md) · [原文](https://developers.deepgram.com/docs/networking.md)
 - `docs/numerals` — [Numerals](pages/docs/numerals.md) · [原文](https://developers.deepgram.com/docs/numerals.md)
 - `docs/observability-sagemaker` — [Observability for Amazon SageMaker](pages/docs/observability-sagemaker.md) · [原文](https://developers.deepgram.com/docs/observability-sagemaker.md)
 - `docs/oci-docker-podman` — [Oracle Cloud Infrastructure](pages/docs/oci-docker-podman.md) · [原文](https://developers.deepgram.com/docs/oci-docker-podman.md)
@@ -239,7 +237,6 @@
 - `docs/twilio-and-deepgram-tts` — [Twilio and Deepgram TTS](pages/docs/twilio-and-deepgram-tts.md) · [原文](https://developers.deepgram.com/docs/twilio-and-deepgram-tts.md)
 - `docs/twilio-and-deepgram-voice-agent` — [Twilio and Deepgram Voice Agent](pages/docs/twilio-and-deepgram-voice-agent.md) · [原文](https://developers.deepgram.com/docs/twilio-and-deepgram-voice-agent.md)
 - `docs/understand-endpointing-interim-results` — [Configure Endpointing and Interim Results](pages/docs/understand-endpointing-interim-results.md) · [原文](https://developers.deepgram.com/docs/understand-endpointing-interim-results.md)
-- `docs/understanding-end-of-speech-detection` — [End of Speech Detection While Live Streaming](pages/docs/understanding-end-of-speech-detection.md) · [原文](https://developers.deepgram.com/docs/understanding-end-of-speech-detection.md)
 - `docs/understanding-nat-port-exhaustion` — [Understanding NAT Port Exhaustion](pages/docs/understanding-nat-port-exhaustion.md) · [原文](https://developers.deepgram.com/docs/understanding-nat-port-exhaustion.md)
 - `docs/update-amazon-sagemaker-endpoint` — [Update an Amazon SageMaker Endpoint](pages/docs/update-amazon-sagemaker-endpoint.md) · [原文](https://developers.deepgram.com/docs/update-amazon-sagemaker-endpoint.md)
 - `docs/use-deepgram-with-dialogflow-cx` — [Google Dialogflow CX and Deepgram](pages/docs/use-deepgram-with-dialogflow-cx.md) · [原文](https://developers.deepgram.com/docs/use-deepgram-with-dialogflow-cx.md)

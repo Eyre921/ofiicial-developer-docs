@@ -87,14 +87,6 @@ The following example shows how to target an index by host directly:
       }
   }
   ```
-
-  ```csharp C# {5} theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var index = pinecone.Index(host: "INDEX_HOST");
-  ```
 </CodeGroup>
 
 ## Reuse connections
@@ -105,12 +97,16 @@ When you target an index for upserting or querying, the client establishes a TCP
 
 If you experience slow uploads or high query latencies, it might be because you are accessing Pinecone from your home network. To decrease latency, access Pinecone/deploy your application from a cloud environment instead, ideally from the same [cloud and region](/guides/index-data/create-an-index#cloud-regions) as your index.
 
+## Avoid batching queries
+
+If you're batching queries, try reducing the number of queries per call to a single query vector. You can run these [queries in parallel](/guides/search/semantic-search#parallel-queries) and expect roughly the same performance as with batching.
+
 ## Avoid including vector values when not needed
 
 Including vector values increases response size -- especially with higher `top_k` values —- which can elevate round-trip latency. If you don't need the vector values in your response, set `include_values=false` to improve query performance. This applies to [`query`](/reference/api/latest/data-plane/query) and [`fetch`](/reference/api/latest/data-plane/fetch) operations.
 
 <Note>
-  On-demand indexes may occasionally experience higher tail latency, since vector values must be fetched from object storage before being cached on disk. DRN indexes cache values locally and are not affected.
+  On-demand indexes retrieve vector values from object storage, so `fetch` operations and queries with `include_values=true` may occasionally experience higher tail latency before values are cached on disk. DRN indexes cache values locally and are not affected.
 </Note>
 
 ## Work with database limits

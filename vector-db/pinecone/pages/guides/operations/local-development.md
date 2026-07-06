@@ -213,7 +213,7 @@ Running code against Pinecone Local is just like running code against your Pinec
 
 * Pinecone Local does not authenticate client requests. API keys are ignored.
 
-* The latest version of Pinecone Local uses [Pinecone API version](/reference/api/versioning) `2025-01` and requires [Python SDK](/reference/sdks/python/overview) `v6.x` or later, [Node.js SDK](/reference/sdks/node/overview) `v5.x` or later, [Java SDK](/reference/sdks/java/overview) `v4.x` or later, [Go SDK](/reference/sdks/go/overview) `v3.x` or later, and [.NET SDK](/reference/sdks/dotnet/overview) `v3.x` or later.
+* The latest version of Pinecone Local uses [Pinecone API version](/reference/api/versioning) `2025-01` and requires [Python SDK](/reference/sdks/python/overview) `v6.x` or later, [Node.js SDK](/reference/sdks/node/overview) `v5.x` or later, [Java SDK](/reference/sdks/java/overview) `v4.x` or later, and [Go SDK](/reference/sdks/go/overview) `v3.x` or later.
 
 <Note>
   Be sure to review the [limitations](#limitations) of Pinecone Local before using it for development or testing.

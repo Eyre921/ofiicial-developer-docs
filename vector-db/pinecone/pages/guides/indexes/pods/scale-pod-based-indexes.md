@@ -123,22 +123,6 @@ You can increase the pod size in the Pinecone console or using the API.
       }
       ```
 
-      ```csharp C# theme={null}
-      using Pinecone;
-
-      var pinecone = new PineconeClient("YOUR_API_KEY");
-
-      var indexMetadata = await pinecone.ConfigureIndexAsync("docs-example", new ConfigureIndexRequest
-      {
-          Spec = new ConfigureIndexRequestSpec
-          {
-              Pod = new ConfigureIndexRequestSpecPod {
-                  PodType = "s1.x2",
-              }
-          }
-      });
-      ```
-
       ```bash curl theme={null}
       PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -233,16 +217,6 @@ The following example uses `describe_index` to get the index status of the index
           fmt.Printf("Successfully found index: %v", idx.Name)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var indexModel = await pinecone.DescribeIndexAsync("docs-example");
-
-  Console.WriteLine(indexModel);
   ```
 
   ```bash curl theme={null}
@@ -360,22 +334,6 @@ To add replicas, use the `configure_index` endpoint to increase the number of re
           fmt.Printf("Successfully configured index \"%v\"", idx.Name)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var configureIndexRequest = await pinecone.ConfigureIndexAsync("docs-example", new ConfigureIndexRequest
-  {
-      Spec = new ConfigureIndexRequestSpec
-      {
-          Pod = new ConfigureIndexRequestSpecPod {
-              Replicas = 4,
-          }
-      }
-  });
   ```
 
   ```bash curl theme={null}

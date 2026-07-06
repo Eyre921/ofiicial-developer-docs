@@ -157,23 +157,6 @@ Example query request:
   		fmt.Printf(prettifyStruct(res))
   	}
   ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var queryResponse = await index.QueryAsync(new QueryRequest {
-      Vector = new[] { 0.22f,0.43f,0.16f,1f,... },
-      Namespace = "example-namespace",
-      TopK = 3,
-      IncludeMetadata = false,
-  });
-  ```
 </CodeGroup>
 
 The response looks like this:
@@ -278,33 +261,6 @@ The response looks like this:
       "read_units": 1
     },
     "namespace": "example-index"
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "results": [],
-    "matches": [
-      {
-        "id": "record_193027",
-        "score": 0.004059374,
-        "values": []
-      },
-      {
-        "id": "record_137452",
-        "score": 0.004059374,
-        "values": []
-      },
-      {
-        "id": "record_132264",
-        "score": 0.004059374,
-        "values": []
-      }
-    ],
-    "namespace": "example-namespace",
-    "usage": {
-      "readUnits": 1
-    }
   }
   ```
 </CodeGroup>

@@ -24,11 +24,11 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Best practices for using the REST API](/en/rest/using-the-rest-api/best-practices-for-using-the-rest-api)
 
-  <p>Follow these best practices when using GitHub's API.</p>
+  Follow these best practices when using GitHub's API.
 
 * [Rate limits for the REST API](/en/rest/using-the-rest-api/rate-limits-for-the-rest-api)
 
-  Learn about REST API rate limits, how to avoid exceeding them, and what to do if you do exceed them.
+  <p>Learn about REST API rate limits, how to avoid exceeding them, and what to do if you do exceed them.</p>
 
 * [Keeping your API credentials secure](/en/rest/authentication/keeping-your-api-credentials-secure)
 
@@ -36,15 +36,15 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Scripting with the REST API and JavaScript](/en/rest/guides/scripting-with-the-rest-api-and-javascript)
 
-  <p>Write a script using the Octokit.js SDK to interact with the REST API.</p>
+  Write a script using the Octokit.js SDK to interact with the REST API.
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 
-  <p>Learn how to diagnose and resolve common problems for the REST API.</p>
+  Learn how to diagnose and resolve common problems for the REST API.
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 
-  <p>Learn how to navigate through paginated responses from the REST API.</p>
+  Learn how to navigate through paginated responses from the REST API.
 
 ## Links
 

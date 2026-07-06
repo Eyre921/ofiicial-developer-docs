@@ -105,28 +105,6 @@ To [create a serverless index from a backup](/reference/api/latest/control-plane
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var response = await pinecone.Backups.CreateIndexFromBackupAsync(
-      "a65ff585-d987-4da5-a622-72e19a6ed5f4", 
-      new CreateIndexFromBackupRequest
-      {
-          Name = "restored-index",
-          Tags = new Dictionary<string, string> 
-          { 
-              { "tag0", "val0" },
-              { "tag1", "val1" }
-          },
-          DeletionProtection = DeletionProtection.Enabled
-      }
-  );
-
-  Console.WriteLine(response);
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
   BACKUP_ID="a65ff585-d987-4da5-a622-72e19a6ed5f4"
@@ -187,13 +165,6 @@ The example returns a response like the following:
   {
     "index_id": "025117b3-e683-423c-b2d1-6d30fbe5027f",
     "restore_job_id": "e9ba8ff8-7948-4cfa-ba43-34227f6d30d4"
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-      "restore_job_id":"e9ba8ff8-7948-4cfa-ba43-34227f6d30d4",
-      "index_id":"025117b3-e683-423c-b2d1-6d30fbe5027f"
   }
   ```
 
@@ -300,16 +271,6 @@ You can [list all restore jobs](/reference/api/latest/control-plane/list_restore
 
   	fmt.Printf(prettifyStruct(restoreJobs))
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var jobs = await pinecone.RestoreJobs.ListAsync(new ListRestoreJobsRequest());
-
-  Console.WriteLine(jobs);
   ```
 
   ```bash curl theme={null}
@@ -435,33 +396,6 @@ The example returns a response like the following:
   }
   ```
 
-  ```csharp C# theme={null}
-  {
-    "data": [
-      {
-        "restore_job_id": "9857add2-99d4-4399-870e-aa7f15d8d326",
-        "backup_id": "94a63aeb-efae-4f7a-b059-75d32c27ca57",
-        "target_index_name": "restored-index",
-        "target_index_id": "0d8aed24-adf8-4b77-8e10-fd674309dc85",
-        "status": "Completed",
-        "created_at": "2025-04-25T18:14:05.227526Z",
-        "completed_at": "2025-04-25T18:14:11.074618Z",
-        "percent_complete": 100
-      },
-      {
-        "restore_job_id": "69acc1d0-9105-4fcb-b1db-ebf97b285c5e",
-        "backup_id": "8c85e612-ed1c-4f97-9f8c-8194e07bcf71",
-        "target_index_name": "restored-index2",
-        "target_index_id": "e6c0387f-33db-4227-9e91-32181106e56b",
-        "status": "Completed",
-        "created_at": "2025-05-14T17:25:59.378989Z",
-        "completed_at": "2025-05-14T17:26:23.997284Z",
-        "percent_complete": 100
-      }
-    ]
-  }
-  ```
-
   ```json curl theme={null}
   {
     "data": [
@@ -568,16 +502,6 @@ You can [view the details of a specific restore job](/reference/api/latest/contr
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var job = await pinecone.RestoreJobs.GetAsync("9857add2-99d4-4399-870e-aa7f15d8d326");
-
-  Console.WriteLine(job);
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
   JOB_ID="9857add2-99d4-4399-870e-aa7f15d8d326"
@@ -640,19 +564,6 @@ The example returns a response like the following:
     "status": "Completed",
     "target_index_id": "025117b3-e683-423c-b2d1-6d30fbe5027f",
     "target_index_name": "restored-index"
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "restore_job_id": "9857add2-99d4-4399-870e-aa7f15d8d326",
-    "backup_id": "94a63aeb-efae-4f7a-b059-75d32c27ca57",
-    "target_index_name": "restored-index",
-    "target_index_id": "0d8aed24-adf8-4b77-8e10-fd674309dc85",
-    "status": "Completed",
-    "created_at": "2025-04-25T18:14:05.227526Z",
-    "completed_at": "2025-04-25T18:14:11.074618Z",
-    "percent_complete": 100
   }
   ```
 

@@ -160,25 +160,6 @@ In this example, assume you are updating the dense vector values and one metadat
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var updateResponse = await index.UpdateAsync(new UpdateRequest {
-      Id = "id-3",
-      Namespace = "example-namespace",
-      Values = new[] { 5.0f, 3.0f },
-      SetMetadata = new Metadata {
-          ["genre"] = new("comedy")
-      }
-  });
-  ```
-
   ```bash curl theme={null}
   # To get the unique host for an index,
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -610,6 +591,10 @@ Each request updates a maximum of 100,000 records. For larger datasets, use `dry
 
 * Each request updates a maximum of 100,000 records. Use `"dry_run": true` to check if you need to run the request multiple times. See the example above for details.
 * You can add or change metadata across multiple records, but you cannot remove metadata fields.
+
+## Remove a metadata field
+
+To remove a metadata field from a record, use the [upsert](/guides/index-data/upsert-data) operation to replace the record's metadata, providing the record's existing ID and vector values along with only the metadata you want to keep. Because upsert replaces a record's metadata in full, any fields you omit are cleared.
 
 ## Data freshness
 

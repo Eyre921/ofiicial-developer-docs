@@ -23,7 +23,7 @@ There are multiple ways to set the software and language version used for your b
 
 | | Default version | Available versions | Set the version using |
 | --- | --- | --- | --- |
-| [Node.js](https://nodejs.org/en) | `22` | Any version that `nvm` can install | In order of precedence: `.nvmrc` file, `.node-version` file, `NODE_VERSION` build environment variable, or the 
+| [Node.js](https://nodejs.org/en) | `24` | Any version that `nvm` can install | In order of precedence: `.nvmrc` file, `.node-version` file, `NODE_VERSION` build environment variable, or the 
 ### NavigationPath Component:
 
 Dependency management

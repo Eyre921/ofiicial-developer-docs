@@ -154,38 +154,6 @@ The following code searches for the 3 records that are most semantically similar
       }
       ```
 
-      ```csharp C# theme={null}
-      using Pinecone;
-
-      var pinecone = new PineconeClient("YOUR_API_KEY");
-
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      var index = pinecone.Index(host: "INDEX_HOST");
-
-      var response = await index.SearchRecordsAsync(
-          "example-namespace",
-          new SearchRecordsRequest
-          {
-              Query = new SearchRecordsRequestQuery
-              {
-                  TopK = 4,
-                  Inputs = new Dictionary<string, object?> { { "text", "Disease prevention" } },
-                  Filter = new Dictionary<string, object?>
-                  {
-                      ["category"] = new Dictionary<string, object?>
-                      {
-                          ["$eq"] = "digestive system"
-                      }
-                  }
-              },
-              Fields = ["category", "chunk_text"],
-          }
-      );
-
-      Console.WriteLine(response);
-      ```
-
       ```shell curl theme={null}
       INDEX_HOST="INDEX_HOST"
       NAMESPACE="YOUR_NAMESPACE"
@@ -346,33 +314,6 @@ The following code searches for the 3 records that are most semantically similar
               fmt.Printf(prettifyStruct(res))
           }
       }
-      ```
-
-      ```csharp C# theme={null}
-      using Pinecone;
-
-      var pinecone = new PineconeClient("YOUR_API_KEY");
-
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      var index = pinecone.Index(host: "INDEX_HOST");
-
-      var queryResponse = await index.QueryAsync(new QueryRequest {
-          Vector = new[] { 0.0236663818359375f ,-0.032989501953125f, ..., -0.01041412353515625f, 0.0086669921875f },
-          Namespace = "example-namespace",
-          TopK = 3,
-          Filter = new Metadata
-          {
-              ["category"] =
-                  new Metadata
-                  {
-                      ["$eq"] = "digestive system",
-                  }
-          },
-          IncludeMetadata = true,
-      });
-
-      Console.WriteLine(queryResponse);
       ```
 
       ```bash curl theme={null}

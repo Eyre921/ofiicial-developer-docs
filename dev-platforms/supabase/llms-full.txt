@@ -89969,14 +89969,14 @@ final UserResponse res = await supabase.auth.updateUser(
 
 #### Verifying the current password
 
-If your app requires users to confirm their current password before setting a new one, you can pass `currentPassword` (available in `supabase-js` v2.102.0+ and `supabase-kt` 3.5.0+):
+If your app requires users to confirm their current password before setting a new one, you can pass `current_password` (available in `supabase-js` v2.102.0+ and `supabase-kt` 3.5.0+):
 
 **JavaScript**
 
 ```js
 await supabase.auth.updateUser({
   password: 'new_password',
-  currentPassword: 'old_password',
+  current_password: 'old_password',
 })
 ```
 
@@ -127401,6 +127401,8 @@ There are 4 types of API keys that you can use with Supabase:
 | `anon`          | JWT (long lived)     | Low        | Platform, CLI | Legacy version of publishable keys.                                                                                                                                                                                                                                                                                                       |
 | `service_role`  | JWT (long lived)     | Elevated   | Platform, CLI | Legacy version of secret keys.                                                                                                                                                                                                                                                                                                            |
 
+Note: Both key types work simultaneously. Creating publishable and secret keys adds them *alongside* your existing `anon` and `service_role` keys without affecting them — your legacy keys keep working. They remain valid until you explicitly disable them in the [**Settings > API Keys**](https://supabase.com/dashboard/project/_/settings/api-keys/) section of the Dashboard which is a separate step. See [Migrating to new API keys](https://supabase.com/docs/guides/getting-started/migrating-to-new-api-keys) for the full process.
+
 ## Publishable keys
 
 Publishable keys identify the public components of your application. Public components run in environments where it is impossible to secure any secrets. These include:
@@ -143589,6 +143591,129 @@ In the event that your project is already on the latest version of Postgres and 
 
 ---
 
+# Deleting Your Project
+
+Understanding the permanent consequences and how to protect yourself
+
+Deleting a Supabase project is a **permanent and irreversible action**. Before proceeding, understand the full scope of what will be deleted and take precautions to prevent accidental data loss.
+
+Danger: We cannot recover deleted projects. All data, backups, and configurations are permanently removed. Ensure you have exported all critical data or saved backups before proceeding to delete your project.
+
+## What gets deleted
+
+When you delete a project, **all artifacts are permanently removed and you cannot recover them**.
+Some of these artifacts includes (but are not limited to):
+
+- **Database and all data**: Your entire Postgres database, including all tables, schemas, and records
+- **Edge Functions**: All deployed Edge Functions and their source code are removed
+- **Storage objects**: All files in Storage buckets are permanently deleted
+- **Backups**: All automated backups and point-in-time recovery snapshots are inaccessible
+- **Authentication data**: User accounts, sessions, and auth logs are removed
+- **Real-time subscriptions**: All active subscriptions and configurations are cleared
+- **API keys and credentials**: All project API keys, service role keys, and webhooks are invalidated
+- **Custom domains and SSL certificates**: Any custom domains linked to the project are removed
+
+## How to delete a project
+
+You can delete a project through any of these methods:
+
+### Via dashboard
+
+1. Navigate to your project's [**Settings** > **General** > **Delete project**](https://supabase.com/dashboard/project/qiuwhyoiycwkuobqirkr/settings/general#delete-project)
+2. Click **Delete Project**
+3. Enter your project name exactly as it appears to confirm
+4. Review the confirmation dialog and click **Delete**
+
+### Via Supabase CLI
+
+```bash
+supabase projects delete <project-ref>
+```
+
+For more information, see the [Supabase CLI documentation](https://supabase.com/docs/reference/cli/supabase-projects-delete).
+
+### Via management API
+
+```bash
+curl -X DELETE https://api.supabase.com/v1/projects/<project-ref> \
+  -H "Authorization: Bearer <access-token>"
+```
+
+For more information, see the [Management API documentation](https://supabase.com/docs/reference/api/v1-delete-a-project).
+
+## After deletion
+
+Once a project is deleted:
+
+- Your project URL will no longer be accessible
+- DNS records will be cleaned up (may take up to 24 hours to fully propagate)
+- Billing for this project will stop immediately
+- You cannot recover or restore the project
+
+Note: Deleting projects stops new usage from accumulating, but does not remove usage that already occurred during the current billing cycle. For quota-based limits, that usage still counts until the billing period resets.
+See our [Fair Use Policy](https://supabase.com/docs/guides/platform/billing-faq#fair-use-policy) for further details.
+
+## Alternative: Pause your project
+
+If you're unsure about deletion, consider pausing your project instead:
+
+Note: Note: Only Free Projects can be paused at this time.
+
+- **Paused projects** stop incurring compute charges
+- **Data is preserved** and can be accessed when you resume
+- **Quick recovery** — Resume the project at any time without data loss
+
+To pause a project, navigate to [**Settings** > **General** > **Project availability**](https://supabase.com/dashboard/project/qiuwhyoiycwkuobqirkr/settings/general) and click **Pause Project**.
+
+## Protective measures to consider
+
+To safeguard against accidental deletion, consider the following:
+
+### 1. Backup your database
+
+You can backup your database by following the [backup and restore guide](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore) provided.
+
+If you are on the Pro, Team or Enterprise Plan, with legacy logical backups, you can download a copy from [your Supabase dashboard](https://supabase.com/dashboard/project/_/database/backups/scheduled)
+
+### 2. Download storage objects
+
+- Back up all important files from Storage buckets
+- Use the Supabase dashboard or API to download files in bulk
+- Store in a secure location outside of Supabase
+
+### 3. Document configuration
+
+- Export Edge Function code and configurations from the dashboard
+- Save authentication provider settings (OAuth, SAML, etc.)
+- Document any custom database functions, triggers, or policies
+- Record webhook configurations and integrations
+
+### 4. Enable access controls
+
+Caution: Restrict who can delete projects within your organization to prevent accidental deletion by team members.
+See [Access Controls](https://supabase.com/docs/guides/platform/access-control)
+
+- Set up role-based access controls to limit deletion permissions
+- Require multi-factor authentication (MFA) for sensitive operations
+- Use the Supabase dashboard to configure team member permissions
+
+### 5. Monitor project activity
+
+- Enable audit logging to track who has access to your project
+- Review and revoke unnecessary API keys before deletion
+- Check for any scheduled jobs or integrations that depend on the project
+
+## Need help?
+
+If you're unsure about deletion or need assistance:
+
+- Review this guide and the protection measures above
+- Contact [Supabase support](https://supabase.com/support) for guidance
+- Consider reaching out to your team before deleting shared projects
+
+
+---
+
 # Project Pausing
 
 Free project pausing behavior.
@@ -149036,98 +149161,101 @@ Caution: We strongly recommend that you do not disable MFA to avoid unauthorized
 
 Apply network restrictions for your project's database.
 
-Note: If you can't find the Network Restrictions section at the bottom of your [Database Settings](https://supabase.com/dashboard/project/_/database/settings), update your version of Postgres in the [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure).
+This topic explains how to configure network restrictions for your Supabase project's database. Network restrictions let you control which IP ranges can connect to Postgres and its pooler, reducing your project's exposure to unauthorized access.
 
-Each Supabase project comes with configurable restrictions on the IP ranges that are allowed to connect to Postgres and its pooler ("your database"). These restrictions are enforced before traffic reaches your database. If a connection is not restricted by IP, it still needs to authenticate successfully with valid database credentials.
+Note: If you can't find the Network Restrictions section in your [Database Settings](https://supabase.com/dashboard/project/_/database/settings), update your Postgres version in [Infrastructure Settings](https://supabase.com/dashboard/project/_/settings/infrastructure).
 
-If direct connections to your database [resolve to a IPv6 address](https://supabase.com/dashboard/project/_/database/settings), you need to add both IPv4 and IPv6 CIDRs to the list of allowed CIDRs. Network Restrictions will be applied to all database connection routes, whether pooled or direct. You will need to add both the IPv4 and IPv6 networks you want to allow. There are two exceptions: If you have been granted an extension on the IPv6 migration OR if you have purchased the [IPv4 add-on](https://supabase.com/dashboard/project/_/settings/addons), you need only add IPv4 CIDRs.
+Each Supabase project supports configurable restrictions on the IP ranges allowed to connect to Postgres and its pooler. These restrictions are enforced before traffic reaches your database. Connections that aren't restricted by IP still need to authenticate with valid database credentials.
 
-## To get started via the Dashboard:
+If direct connections to your database [resolve to an IPv6 address](https://supabase.com/dashboard/project/_/database/settings), add both IPv4 and IPv6 CIDRs to your allowlist. Network restrictions apply to all connection routes, whether pooled or direct. There are two exceptions: if you have an extension on the IPv6 migration, or if you have the [IPv4 add-on](https://supabase.com/dashboard/project/_/settings/addons), you only need to add IPv4 CIDRs.
 
-Network restrictions can be configured in the [Database Settings](https://supabase.com/dashboard/project/_/database/settings) page. Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project that you are enabling network restrictions.
+## Configure with the dashboard \[#to-get-started-via-the-dashboard]
 
-## To get started via the Management API:
+To configure network restrictions with the dashboard:
 
-You can also manage network restrictions using the Management API:
+1. Open your project's [Database Settings](https://supabase.com/dashboard/project/_/database/settings) page.
+2. In the Network Restrictions section, make your changes. You need [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) to make changes.
 
-```bash
-# Get your access token from https://supabase.com/dashboard/account/tokens
-export SUPABASE_ACCESS_TOKEN="your-access-token"
-export PROJECT_REF="your-project-ref"
+## Configure with the CLI \[#to-get-started-via-the-cli]
 
-# Get current network restrictions
-curl -X GET "https://api.supabase.com/v1/projects/$PROJECT_REF/network-restrictions" \
-  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN"
-
-# Update network restrictions
-curl -X POST "https://api.supabase.com/v1/projects/$PROJECT_REF/network-restrictions/apply" \
-  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "db_allowed_cidrs": [
-      "192.168.0.1/24",
-    ]
-  }'
-```
-
-## To get started via the CLI:
+To configure network restrictions with the CLI:
 
 1. [Install](https://supabase.com/docs/guides/cli) the Supabase CLI 1.22.0+.
-2. [Log in](https://supabase.com/docs/guides/cli/local-development#log-in-to-the-supabase-cli) to your Supabase account using the CLI.
-3. If your project was created before 23rd December 2022, it will need to be [upgraded to the latest Supabase version](https://supabase.com/docs/guides/platform/migrating-and-upgrading-projects) before Network Restrictions can be used.
-4. Ensure that you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project that you are enabling network restrictions.
+2. [Log in](https://supabase.com/docs/guides/cli/local-development#log-in-to-the-supabase-cli) to your Supabase account.
+3. If your project was created before December 23, 2022, [upgrade it to the latest Supabase version](https://supabase.com/docs/guides/platform/migrating-and-upgrading-projects) before using network restrictions.
+4. Ensure you have [Owner or Admin permissions](https://supabase.com/docs/guides/platform/access-control#manage-team-members) for the project.
 
 ### Check restrictions
 
-You can use the `get` subcommand of the CLI to retrieve the restrictions currently in effect.
+To check your current network restrictions:
 
-If restrictions have been applied, the output of the `get` command will reflect the IP ranges allowed to connect:
+1. Complete the steps in [Configure with the CLI](#to-get-started-via-the-cli).
+2. Run the `get` subcommand to retrieve the restrictions currently in effect:
 
-```bash
-> supabase network-restrictions --project-ref {ref} get --experimental
-DB Allowed IPv4 CIDRs: &[183.12.1.1/24]
-DB Allowed IPv6 CIDRs: &[2001:db8:3333:4444:5555:6666:7777:8888/64]
-Restrictions applied successfully: true
-```
+   ```bash
+   > supabase network-restrictions get --project-ref {ref} --experimental
+   DB Allowed IPv4 CIDRs: &[183.12.1.1/24]
+   DB Allowed IPv6 CIDRs: &[2001:db8:3333:4444:5555:6666:7777:8888/64]
+   Restrictions applied successfully: true
+   ```
 
-If restrictions have never been applied to your project, the list of allowed CIDRs will be empty, but they will also not have been applied ("Restrictions applied successfully: false"). As a result, all IPs are allowed to connect to your database:
+   If restrictions have never been applied, the allowed CIDRs list is empty and `Restrictions applied successfully` is `false`. All IPs can connect:
 
-```bash
-> supabase network-restrictions --project-ref {ref} get --experimental
-DB Allowed IPv4 CIDRs: []
-DB Allowed IPv6 CIDRs: []
-Restrictions applied successfully: false
-```
+   ```bash
+   > supabase network-restrictions get --project-ref {ref} --experimental
+   DB Allowed IPv4 CIDRs: []
+   DB Allowed IPv6 CIDRs: []
+   Restrictions applied successfully: false
+   ```
 
 ### Update restrictions
 
-The `update` subcommand is used to apply network restrictions to your project:
+To update your network restrictions:
 
-```bash
-> supabase network-restrictions --project-ref {ref} update --db-allow-cidr 183.12.1.1/24 --db-allow-cidr 2001:db8:3333:4444:5555:6666:7777:8888/64 --experimental
-DB Allowed IPv4 CIDRs: &[183.12.1.1/24]
-DB Allowed IPv6 CIDRs: &[2001:db8:3333:4444:5555:6666:7777:8888/64]
-Restrictions applied successfully: true
-```
+1. Complete the steps in [Configure with the CLI](#to-get-started-via-the-cli).
+2. Run the `update` subcommand with the CIDRs you want to allow:
 
-The restrictions specified (in the form of CIDRs) replaces any restrictions that might have been applied in the past.
-To add to the existing restrictions, you must include the existing restrictions within the list of CIDRs provided to the `update` command.
+   ```bash
+   > supabase network-restrictions update --project-ref {ref} --db-allow-cidr 183.12.1.1/24 --db-allow-cidr 2001:db8:3333:4444:5555:6666:7777:8888/64 --experimental
+   DB Allowed IPv4 CIDRs: &[183.12.1.1/24]
+   DB Allowed IPv6 CIDRs: &[2001:db8:3333:4444:5555:6666:7777:8888/64]
+   Restrictions applied successfully: true
+   ```
+
+   The CIDRs you provide replace any previously applied restrictions. To keep existing restrictions, include them alongside any new CIDRs in the `update` command.
+
+### Append a CIDR to existing restrictions
+
+To append a CIDR to your existing restrictions:
+
+1. Complete the steps in [Configure with the CLI](#to-get-started-via-the-cli).
+2. Run the `update` subcommand with the `--append` flag to add a CIDR without replacing existing restrictions:
+
+   ```bash
+   > supabase network-restrictions update --project-ref {ref} --db-allow-cidr 1.2.3.4/32 --append --experimental
+   DB Allowed IPv4 CIDRs: &[183.12.1.1/24 1.2.3.4/32]
+   DB Allowed IPv6 CIDRs: &[2001:db8:3333:4444:5555:6666:7777:8888/64]
+   Restrictions applied successfully: true
+   ```
 
 ### Remove restrictions
 
-To remove all restrictions on your project, you can use the `update` subcommand with the CIDR `0.0.0.0/0`:
+To remove all network restrictions:
 
-```bash
-> supabase network-restrictions --project-ref {ref} update --db-allow-cidr 0.0.0.0/0 --db-allow-cidr ::/0 --experimental
-DB Allowed IPv4 CIDRs: &[0.0.0.0/0]
-DB Allowed IPv6 CIDRs: &[::/0]
-Restrictions applied successfully: true
-```
+1. Complete the steps in [Configure with the CLI](#to-get-started-via-the-cli).
+2. Run the `update` subcommand with the CIDR `0.0.0.0/0` to remove all restrictions:
+
+   ```bash
+   > supabase network-restrictions update --project-ref {ref} --db-allow-cidr 0.0.0.0/0 --db-allow-cidr ::/0 --experimental
+   DB Allowed IPv4 CIDRs: &[0.0.0.0/0]
+   DB Allowed IPv6 CIDRs: &[::/0]
+   Restrictions applied successfully: true
+   ```
 
 ## Limitations
 
-- The current iteration of Network Restrictions applies to connections to Postgres and the database pooler; it doesn't currently apply to APIs offered over HTTPS (e.g., PostgREST, Storage, and Auth). This includes using Supabase client libraries like [supabase-js](https://supabase.com/docs/reference/javascript).
-- If network restrictions are enabled, direct access to your database from Edge Functions will always be blocked. Using the Supabase client library [supabase-js](https://supabase.com/docs/reference/javascript) is recommended to connect to a database with network restrictions from Edge Functions.
+- Network restrictions apply to Postgres and the database pooler. They don't apply to HTTPS APIs such as PostgREST, Storage, and Auth, or to Supabase client libraries like [supabase-js](https://supabase.com/docs/reference/javascript).
+- With network restrictions applied, Edge functions lose direct access to the database. Use [supabase-js](https://supabase.com/docs/reference/javascript) to connect to the database from Edge Functions instead.
 
 
 ---
@@ -154612,41 +154740,41 @@ Enter your database settings to estimate the maximum throughput for your instanc
 
 #### Micro
 
-| Filters | RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
-| --- | --- | --- | --- | --- | --- | --- |
-| No | No | 500 | 64 | 64 | 32,000 | 238ms |
-| No | No | 5,000 | 10 | 10 | 50,000 | 807ms |
-| No | No | 10,000 | 5 | 5 | 50,000 | 1310ms |
-| No | No | 30,000 | 1 | 1 | 30,000 | 941ms |
-| No | Yes | 500 | 30 | 6 | 3,000 | 228ms |
-| No | Yes | 1,500 | 10 | 2 | 3,000 | 356ms |
-| No | Yes | 3,000 | 5 | 1 | 3,000 | 616ms |
+| RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
+| --- | --- | --- | --- | --- | --- |
+| No | 500 | 64 | 64 | 32,000 | 238ms |
+| No | 5,000 | 10 | 10 | 50,000 | 807ms |
+| No | 10,000 | 5 | 5 | 50,000 | 1310ms |
+| No | 30,000 | 1 | 1 | 30,000 | 941ms |
+| Yes | 500 | 30 | 6 | 3,000 | 228ms |
+| Yes | 1,500 | 10 | 2 | 3,000 | 356ms |
+| Yes | 3,000 | 5 | 1 | 3,000 | 616ms |
 
 #### Small to medium
 
-| Filters | RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
-| --- | --- | --- | --- | --- | --- | --- |
-| No | No | 500 | 64 | 64 | 32,000 | 184ms |
-| No | No | 5,000 | 10 | 10 | 50,000 | 782ms |
-| No | No | 10,000 | 5 | 5 | 50,000 | 1349ms |
-| No | No | 35,000 | 1 | 1 | 35,000 | 1287ms |
-| No | Yes | 500 | 30 | 6 | 3,000 | 282ms |
-| No | Yes | 1,500 | 10 | 2 | 3,000 | 387ms |
-| No | Yes | 3,000 | 5 | 1 | 3,000 | 920ms |
+| RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
+| --- | --- | --- | --- | --- | --- |
+| No | 500 | 64 | 64 | 32,000 | 184ms |
+| No | 5,000 | 10 | 10 | 50,000 | 782ms |
+| No | 10,000 | 5 | 5 | 50,000 | 1349ms |
+| No | 35,000 | 1 | 1 | 35,000 | 1287ms |
+| Yes | 500 | 30 | 6 | 3,000 | 282ms |
+| Yes | 1,500 | 10 | 2 | 3,000 | 387ms |
+| Yes | 3,000 | 5 | 1 | 3,000 | 920ms |
 
 #### Large to 16XL
 
-| Filters | RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
-| --- | --- | --- | --- | --- | --- | --- |
-| No | No | 500 | 64 | 64 | 32,000 | 184ms |
-| No | No | 5,000 | 10 | 10 | 50,000 | 672ms |
-| No | No | 10,000 | 5 | 5 | 50,000 | 1253ms |
-| No | No | 35,000 | 1 | 1 | 35,000 | 1257ms |
-| No | No | 100,000 | 0.1 (6/min) | 0.1 (6/min) | 40,000 | 4951ms |
-| No | No | 200,000 | 0.05 (3/min) | 0.05 (3/min) | 40,000 | 4581ms |
-| No | Yes | 500 | 40 | 8 | 4,000 | 618ms |
-| No | Yes | 2,000 | 10 | 2 | 4,000 | 606ms |
-| No | Yes | 4,000 | 5 | 1 | 4,000 | 918ms |
+| RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
+| --- | --- | --- | --- | --- | --- |
+| No | 500 | 64 | 64 | 32,000 | 184ms |
+| No | 5,000 | 10 | 10 | 50,000 | 672ms |
+| No | 10,000 | 5 | 5 | 50,000 | 1253ms |
+| No | 35,000 | 1 | 1 | 35,000 | 1257ms |
+| No | 100,000 | 0.1 (6/min) | 0.1 (6/min) | 40,000 | 4951ms |
+| No | 200,000 | 0.05 (3/min) | 0.05 (3/min) | 40,000 | 4581ms |
+| Yes | 500 | 40 | 8 | 4,000 | 618ms |
+| Yes | 2,000 | 10 | 2 | 4,000 | 606ms |
+| Yes | 4,000 | 5 | 1 | 4,000 | 918ms |
 
 Don't forget to run your own benchmarks to make sure that the performance is acceptable for your use case.
 
@@ -156658,11 +156786,13 @@ changes = supabase.channel('schema-db-changes').on_postgres_changes(
 
 The channel name can be any string except 'realtime'.
 
-### Listening to `INSERT` events
+### Listening to specific events
+
+Use the `event` parameter to listen only to a specific database event. `event` can be `INSERT`, `UPDATE`, `DELETE`, or `*` to listen to all changes.
 
 **JavaScript**
 
-Use the `event` parameter to listen only to database `INSERT`s:
+**Insert**
 
 ```js
 const changes = supabase
@@ -156670,7 +156800,55 @@ const changes = supabase
   .on(
     'postgres_changes',
     {
-      event: 'INSERT', // Listen only to INSERTs
+      event: 'INSERT',
+      schema: 'public',
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Update**
+
+```js
+const changes = supabase
+  .channel('schema-db-changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Delete**
+
+```js
+const changes = supabase
+  .channel('schema-db-changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'DELETE',
+      schema: 'public',
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**All events**
+
+```js
+const changes = supabase
+  .channel('schema-db-changes')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
       schema: 'public',
     },
     (payload) => console.log(payload)
@@ -156680,8 +156858,10 @@ const changes = supabase
 
 **Dart**
 
+**Insert**
+
 ```dart
-final changes = supabase
+supabase
     .channel('schema-db-changes')
     .onPostgresChanges(
         event: PostgresChangeEvent.insert,
@@ -156690,9 +156870,47 @@ final changes = supabase
     .subscribe();
 ```
 
+**Update**
+
+```dart
+supabase
+    .channel('schema-db-changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.update,
+        schema: 'public',
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**Delete**
+
+```dart
+supabase
+    .channel('schema-db-changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.delete,
+        schema: 'public',
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**All events**
+
+```dart
+supabase
+    .channel('schema-db-changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.all,
+        schema: 'public',
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
 **Swift**
 
-Use `InsertAction.self` as type to listen only to database `INSERT`s:
+Pass the action type to select the event.
+
+**Insert**
 
 ```swift
 let myChannel = await supabase.channel("schema-db-changes")
@@ -156706,9 +156924,58 @@ for await change in changes {
 }
 ```
 
+**Update**
+
+```swift
+let myChannel = await supabase.channel("schema-db-changes")
+
+let changes = await myChannel.postgresChange(UpdateAction.self, schema: "public")
+
+await myChannel.subscribe()
+
+for await change in changes {
+  print(change.record)
+}
+```
+
+**Delete**
+
+```swift
+let myChannel = await supabase.channel("schema-db-changes")
+
+let changes = await myChannel.postgresChange(DeleteAction.self, schema: "public")
+
+await myChannel.subscribe()
+
+for await change in changes {
+  print(change.oldRecord)
+}
+```
+
+**All events**
+
+```swift
+let myChannel = await supabase.channel("schema-db-changes")
+
+let changes = await myChannel.postgresChange(AnyAction.self, schema: "public")
+
+await myChannel.subscribe()
+
+for await change in changes {
+  switch change {
+  case .insert(let action): print(action.record)
+  case .update(let action): print(action.record)
+  case .delete(let action): print(action.oldRecord)
+  case .select(let action): print(action.record)
+  }
+}
+```
+
 **Kotlin**
 
-Use `PostgresAction.Insert` as type to listen only to database `INSERT`s:
+Pass the action type to select the event.
+
+**Insert**
 
 ```kotlin
 val myChannel = supabase.channel("db-changes")
@@ -156724,70 +156991,7 @@ changes
 myChannel.subscribe()
 ```
 
-**Python**
-
-```python
-changes = supabase.channel('schema-db-changes').on_postgres_changes(
-  "INSERT", # Listen only to INSERTs
-  schema="public",
-  callback=lambda payload: print(payload)
-)
-.subscribe()
-```
-
-The channel name can be any string except 'realtime'.
-
-### Listening to `UPDATE` events
-
-**JavaScript**
-
-Use the `event` parameter to listen only to database `UPDATE`s:
-
-```js
-const changes = supabase
-  .channel('schema-db-changes')
-  .on(
-    'postgres_changes',
-    {
-      event: 'UPDATE', // Listen only to UPDATEs
-      schema: 'public',
-    },
-    (payload) => console.log(payload)
-  )
-  .subscribe()
-```
-
-**Dart**
-
-```dart
-supabase
-    .channel('schema-db-changes')
-    .onPostgresChanges(
-        event: PostgresChangeEvent.update, // Listen only to UPDATEs
-        schema: 'public',
-        callback: (payload) => print(payload))
-    .subscribe();
-```
-
-**Swift**
-
-Use `UpdateAction.self` as type to listen only to database `UPDATE`s:
-
-```swift
-let myChannel = await supabase.channel("schema-db-changes")
-
-let changes = await myChannel.postgresChange(UpdateAction.self, schema: "public")
-
-await myChannel.subscribe()
-
-for await change in changes {
-  print(change.oldRecord, change.record)
-}
-```
-
-**Kotlin**
-
-Use `PostgresAction.Update` as type to listen only to database `UPDATE`s:
+**Update**
 
 ```kotlin
 val myChannel = supabase.channel("db-changes")
@@ -156803,70 +157007,7 @@ changes
 myChannel.subscribe()
 ```
 
-**Python**
-
-```python
-changes = supabase.channel('schema-db-changes').on_postgres_changes(
-  "UPDATE", # Listen only to UPDATEs
-  schema="public",
-  callback=lambda payload: print(payload)
-)
-.subscribe()
-```
-
-The channel name can be any string except 'realtime'.
-
-### Listening to `DELETE` events
-
-**JavaScript**
-
-Use the `event` parameter to listen only to database `DELETE`s:
-
-```js
-const changes = supabase
-  .channel('schema-db-changes')
-  .on(
-    'postgres_changes',
-    {
-      event: 'DELETE', // Listen only to DELETEs
-      schema: 'public',
-    },
-    (payload) => console.log(payload)
-  )
-  .subscribe()
-```
-
-**Dart**
-
-```dart
-supabase
-    .channel('schema-db-changes')
-    .onPostgresChanges(
-        event: PostgresChangeEvent.delete, // Listen only to DELETEs
-        schema: 'public',
-        callback: (payload) => print(payload))
-    .subscribe();
-```
-
-**Swift**
-
-Use `DeleteAction.self` as type to listen only to database `DELETE`s:
-
-```swift
-let myChannel = await supabase.channel("schema-db-changes")
-
-let changes = await myChannel.postgresChange(DeleteAction.self, schema: "public")
-
-await myChannel.subscribe()
-
-for await change in changes {
-  print(change.oldRecord)
-}
-```
-
-**Kotlin**
-
-Use `PostgresAction.Delete` as type to listen only to database `DELETE`s:
+**Delete**
 
 ```kotlin
 val myChannel = supabase.channel("db-changes")
@@ -156882,11 +157023,66 @@ changes
 myChannel.subscribe()
 ```
 
+**All events**
+
+```kotlin
+val myChannel = supabase.channel("db-changes")
+
+val changes = myChannel.postgresChangeFlow<PostgresAction>(schema = "public")
+
+changes
+    .onEach {
+        when (it) { //You can also check for <is PostgresAction.Insert>, etc.. manually
+            is HasRecord -> println(it.record)
+            is HasOldRecord -> println(it.oldRecord)
+            else -> println(it)
+        }
+    }
+    .launchIn(yourCoroutineScope)
+
+myChannel.subscribe()
+```
+
 **Python**
+
+**Insert**
 
 ```python
 changes = supabase.channel('schema-db-changes').on_postgres_changes(
-  "DELETE", # Listen only to DELETEs
+  "INSERT",
+  schema="public",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+**Update**
+
+```python
+changes = supabase.channel('schema-db-changes').on_postgres_changes(
+  "UPDATE",
+  schema="public",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+**Delete**
+
+```python
+changes = supabase.channel('schema-db-changes').on_postgres_changes(
+  "DELETE",
+  schema="public",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+**All events**
+
+```python
+changes = supabase.channel('schema-db-changes').on_postgres_changes(
+  "*",
   schema="public",
   callback=lambda payload: print(payload)
 )
@@ -157161,13 +157357,58 @@ changes = supabase.channel('db-changes').on_postgres_changes(
 
 ## Available filters
 
-Realtime offers filters so you can specify the data your client receives at a more granular level.
+Realtime offers filters so you can specify the data your client receives at a more granular level. A filter is a `column=operator.value` expression (for example `id=eq.1` or `title=like.%foo%`) that Realtime evaluates on the server, so filtered-out events never leave the database.
+
+The following operators are available:
+
+| Operator           | Matches when the column…                             | Example                   |
+| ------------------ | ---------------------------------------------------- | ------------------------- |
+| `eq`               | equals the value                                     | `id=eq.1`                 |
+| `neq`              | does not equal the value                             | `status=neq.done`         |
+| `lt` / `lte`       | is less than / less than or equal to                 | `age=lt.65`               |
+| `gt` / `gte`       | is greater than / greater than or equal to           | `quantity=gte.10`         |
+| `in`               | is one of a list (max 100 values)                    | `name=in.(red,blue)`      |
+| `like` / `ilike`   | matches a pattern (case-sensitive / insensitive)     | `title=like.%foo%`        |
+| `match` / `imatch` | matches a POSIX regex (case-sensitive / insensitive) | `slug=match.^post-`       |
+| `is`               | `IS null` / `true` / `false` / `unknown`             | `deleted_at=is.null`      |
+| `isdistinct`       | is distinct from the value (NULL-safe `!=`)          | `state=isdistinct.active` |
+
+You can also [negate any operator](#negating-a-filter-not) with `not.` and [combine multiple conditions](#combining-filters-with-and) with commas (applied as an `AND`).
+
+Tip: In JavaScript you can pass a raw filter string, or build one with the type-safe `postgresChangesFilter()` helper, which handles operator names, negation, `AND` composition, and escaping for you:
+
+```js
+import { postgresChangesFilter } from '@supabase/supabase-js'
+
+// → 'quantity=gte.10,status=eq.open'
+const filter = postgresChangesFilter().gte('quantity', 10).eq('status', 'open')
+```
 
 ### Equal to (`eq`)
 
 To listen to changes when a column's value in a table equals a client-specified value:
 
 **JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'messages',
+      filter: postgresChangesFilter().eq('body', 'hey'),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
 
 ```js
 const channel = supabase
@@ -157261,6 +157502,26 @@ This filter uses Postgres's `=` filter.
 To listen to changes when a column's value in a table does not equal a client-specified value:
 
 **JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'messages',
+      filter: postgresChangesFilter().neq('body', 'bye'),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
 
 ```js
 const channel = supabase
@@ -157356,6 +157617,26 @@ To listen to changes when a column's value in a table is less than a client-spec
 
 **JavaScript**
 
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'profiles',
+      filter: postgresChangesFilter().lt('age', 65),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
 ```js
 const channel = supabase
   .channel('changes')
@@ -157448,6 +157729,26 @@ This filter uses Postgres's `<` filter, so it works for non-numeric types. Make 
 To listen to changes when a column's value in a table is less than or equal to a client-specified value:
 
 **JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'profiles',
+      filter: postgresChangesFilter().lte('age', 65),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
 
 ```js
 const channel = supabase
@@ -157542,6 +157843,26 @@ To listen to changes when a column's value in a table is greater than a client-s
 
 **JavaScript**
 
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'products',
+      filter: postgresChangesFilter().gt('quantity', 10),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
 ```js
 const channel = supabase
   .channel('changes')
@@ -157634,6 +157955,26 @@ This filter uses Postgres's `>` filter, so it works for non-numeric types. Make 
 To listen to changes when a column's value in a table is greater than or equal to a client-specified value:
 
 **JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'products',
+      filter: postgresChangesFilter().gte('quantity', 10),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
 
 ```js
 const channel = supabase
@@ -157728,6 +158069,8 @@ To listen to changes when a column's value in a table equals any client-specifie
 
 **JavaScript**
 
+**Builder**
+
 ```js
 const channel = supabase
   .channel('changes')
@@ -157737,7 +158080,25 @@ const channel = supabase
       event: 'INSERT',
       schema: 'public',
       table: 'colors',
-      filter: 'name=in.(red, blue, yellow)',
+      filter: postgresChangesFilter().in('name', ['red', 'blue', 'yellow']),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'colors',
+      filter: 'name=in.(red,blue,yellow)',
     },
     (payload) => console.log(payload)
   )
@@ -157788,7 +158149,7 @@ val myChannel = supabase.channel("db-changes")
 
 val changes = myChannel.postgresChangeFlow<PostgresAction.Update>(schema = "public") {
     table = "products"
-    filter = "name=in.(red, blue, yellow)"
+    filter = "name=in.(red,blue,yellow)"
 }
 
 changes
@@ -157807,13 +158168,759 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   "UPDATE",
   schema="public",
   table="products",
-  filter="name=in.(red, blue, yellow)",
+  filter="name=in.(red,blue,yellow)",
   callback=lambda payload: print(payload)
 )
 .subscribe()
 ```
 
 This filter uses Postgres's `= ANY`. Realtime allows a maximum of 100 values for this filter.
+
+### Pattern matching (`like`, `ilike`)
+
+To listen to changes when a text column matches a pattern, use `like` (case-sensitive) or `ilike` (case-insensitive). Use `%` to match any sequence of characters and `_` to match a single character.
+
+**JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'articles',
+      // matches "Breaking News", "BREAKING", ...
+      filter: postgresChangesFilter().ilike('title', '%breaking%'),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'articles',
+      filter: 'title=ilike.%breaking%', // matches "Breaking News", "BREAKING", ...
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Dart**
+
+```dart
+supabase
+    .channel('changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.insert,
+        schema: 'public',
+        table: 'articles',
+        filter: PostgresChangeFilter(
+          type: PostgresChangeFilterType.ilike,
+          column: 'title',
+          value: '%breaking%',
+        ),
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**Swift**
+
+```swift
+let myChannel = await supabase.channel("db-changes")
+
+let changes = await myChannel.postgresChange(
+  InsertAction.self,
+  schema: "public",
+  table: "articles",
+  filter: .ilike("title", value: "%breaking%")
+)
+
+await myChannel.subscribe()
+
+for await change in changes {
+  print(change.record)
+}
+```
+
+**Kotlin**
+
+```kotlin
+val myChannel = supabase.channel("db-changes")
+
+val changes = myChannel.postgresChangeFlow<PostgresAction.Insert>(schema = "public") {
+    table = "articles"
+    filter = "title=ilike.%breaking%"
+}
+
+changes
+    .onEach {
+        println(it.record)
+    }
+    .launchIn(yourCoroutineScope)
+
+myChannel.subscribe()
+```
+
+**Python**
+
+```python
+changes = supabase.channel('db-changes').on_postgres_changes(
+  "INSERT",
+  schema="public",
+  table="articles",
+  filter="title=ilike.%breaking%",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+`like` uses Postgres's `LIKE` and `ilike` uses `ILIKE`. Both require a text-compatible column. The examples above use `ilike`; swap in `like` for case-sensitive matching—usage is otherwise identical.
+
+### Regular expression matching (`match`, `imatch`)
+
+To listen to changes when a text column matches a POSIX regular expression, use `match` (case-sensitive) or `imatch` (case-insensitive).
+
+**JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'posts',
+      // matches "post-1", "post-42", ...
+      filter: postgresChangesFilter().match('slug', '^post-\\d+$'),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'posts',
+      filter: 'slug=match.^post-\\d+$', // matches "post-1", "post-42", ...
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Dart**
+
+```dart
+supabase
+    .channel('changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.insert,
+        schema: 'public',
+        table: 'posts',
+        filter: PostgresChangeFilter(
+          type: PostgresChangeFilterType.match,
+          column: 'slug',
+          value: r'^post-\d+$',
+        ),
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**Swift**
+
+```swift
+let myChannel = await supabase.channel("db-changes")
+
+let changes = await myChannel.postgresChange(
+  InsertAction.self,
+  schema: "public",
+  table: "posts",
+  filter: .match("slug", value: "^post-\\d+$")
+)
+
+await myChannel.subscribe()
+
+for await change in changes {
+  print(change.record)
+}
+```
+
+**Kotlin**
+
+```kotlin
+val myChannel = supabase.channel("db-changes")
+
+val changes = myChannel.postgresChangeFlow<PostgresAction.Insert>(schema = "public") {
+    table = "posts"
+    filter = "slug=match.^post-\\d+$"
+}
+
+changes
+    .onEach {
+        println(it.record)
+    }
+    .launchIn(yourCoroutineScope)
+
+myChannel.subscribe()
+```
+
+**Python**
+
+```python
+changes = supabase.channel('db-changes').on_postgres_changes(
+  "INSERT",
+  schema="public",
+  table="posts",
+  filter="slug=match.^post-\\d+$",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+`match` uses Postgres's `~` operator and `imatch` uses `~*`. Both require a text-compatible column, and the pattern is validated when you subscribe. The examples above use `match`; swap in `imatch` for case-insensitive matching—usage is otherwise identical.
+
+### Null and boolean checks (`is`)
+
+To listen to changes when a column `IS` `null`, `true`, `false`, or `unknown`, use `is`. `is.null` works on any column type; `is.true`, `is.false`, and `is.unknown` require a boolean column.
+
+**JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'todos',
+      // only rows that are not yet completed
+      filter: postgresChangesFilter().is('completed_at', null),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'todos',
+      filter: 'completed_at=is.null', // only rows that are not yet completed
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Dart**
+
+```dart
+supabase
+    .channel('changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.update,
+        schema: 'public',
+        table: 'todos',
+        filter: PostgresChangeFilter(
+          type: PostgresChangeFilterType.isFilter,
+          column: 'completed_at',
+          value: null,
+        ),
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**Swift**
+
+```swift
+let myChannel = await supabase.channel("db-changes")
+
+let changes = await myChannel.postgresChange(
+  UpdateAction.self,
+  schema: "public",
+  table: "todos",
+  filter: .is("completed_at", value: .null)
+)
+
+await myChannel.subscribe()
+
+for await change in changes {
+  print(change.record)
+}
+```
+
+**Kotlin**
+
+```kotlin
+val myChannel = supabase.channel("db-changes")
+
+val changes = myChannel.postgresChangeFlow<PostgresAction.Update>(schema = "public") {
+    table = "todos"
+    filter = "completed_at=is.null"
+}
+
+changes
+    .onEach {
+        println(it.record)
+    }
+    .launchIn(yourCoroutineScope)
+
+myChannel.subscribe()
+```
+
+**Python**
+
+```python
+changes = supabase.channel('db-changes').on_postgres_changes(
+  "UPDATE",
+  schema="public",
+  table="todos",
+  filter="completed_at=is.null",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+This filter uses Postgres's `IS` operator.
+
+### Distinct from (`isdistinct`)
+
+`isdistinct` is a NULL-safe inequality (`IS DISTINCT FROM`). Unlike `neq`, it treats `null` as a comparable value, so a `null` column is considered distinct from a non-null value.
+
+**JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'orders',
+      // includes rows where status is null
+      filter: postgresChangesFilter().isDistinct('status', 'shipped'),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'UPDATE',
+      schema: 'public',
+      table: 'orders',
+      filter: 'status=isdistinct.shipped', // includes rows where status is null
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Dart**
+
+```dart
+supabase
+    .channel('changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.update,
+        schema: 'public',
+        table: 'orders',
+        filter: PostgresChangeFilter(
+          type: PostgresChangeFilterType.isDistinct,
+          column: 'status',
+          value: 'shipped',
+        ),
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**Swift**
+
+```swift
+let myChannel = await supabase.channel("db-changes")
+
+let changes = await myChannel.postgresChange(
+  UpdateAction.self,
+  schema: "public",
+  table: "orders",
+  filter: .isDistinct("status", value: "shipped")
+)
+
+await myChannel.subscribe()
+
+for await change in changes {
+  print(change.record)
+}
+```
+
+**Kotlin**
+
+```kotlin
+val myChannel = supabase.channel("db-changes")
+
+val changes = myChannel.postgresChangeFlow<PostgresAction.Update>(schema = "public") {
+    table = "orders"
+    filter = "status=isdistinct.shipped"
+}
+
+changes
+    .onEach {
+        println(it.record)
+    }
+    .launchIn(yourCoroutineScope)
+
+myChannel.subscribe()
+```
+
+**Python**
+
+```python
+changes = supabase.channel('db-changes').on_postgres_changes(
+  "UPDATE",
+  schema="public",
+  table="orders",
+  filter="status=isdistinct.shipped",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+### Negating a filter (`not`)
+
+Prefix any operator with `not.` to invert it — for example `not.in`, `not.is`, or `not.like`.
+
+**JavaScript**
+
+**Builder**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'posts',
+      // anything except drafts and archived
+      filter: postgresChangesFilter().not('status', 'in', ['draft', 'archived']),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'posts',
+      filter: 'status=not.in.(draft,archived)', // anything except drafts and archived
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Dart**
+
+Set `negate: true` on a `PostgresChangeFilter` to apply the `not.` prefix.
+
+```dart
+supabase
+    .channel('changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.all,
+        schema: 'public',
+        table: 'posts',
+        filter: PostgresChangeFilter(
+          type: PostgresChangeFilterType.inFilter,
+          column: 'status',
+          value: ['draft', 'archived'],
+          negate: true,
+        ),
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**Swift**
+
+Wrap any single-condition filter in `.not(...)`.
+
+```swift
+let myChannel = await supabase.channel("db-changes")
+
+let changes = await myChannel.postgresChange(
+  AnyAction.self,
+  schema: "public",
+  table: "posts",
+  filter: .not(.in("status", values: ["draft", "archived"]))
+)
+
+await myChannel.subscribe()
+```
+
+**Kotlin**
+
+```kotlin
+val myChannel = supabase.channel("db-changes")
+
+val changes = myChannel.postgresChangeFlow<PostgresAction>(schema = "public") {
+    table = "posts"
+    filter = "status=not.in.(draft,archived)"
+}
+
+changes
+    .onEach {
+        println(it.record)
+    }
+    .launchIn(yourCoroutineScope)
+
+myChannel.subscribe()
+```
+
+**Python**
+
+```python
+changes = supabase.channel('db-changes').on_postgres_changes(
+  "*",
+  schema="public",
+  table="posts",
+  filter="status=not.in.(draft,archived)",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+### Combining filters with `AND`
+
+Combine multiple conditions by separating them with commas. All conditions must match (logical `AND`). You can only combine conditions with `AND` — `OR` is not supported.
+
+**JavaScript**
+
+**Builder**
+
+The builder composes conditions and escapes reserved characters for you.
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'orders',
+      // amount > 100 AND status = "open"
+      filter: postgresChangesFilter().gt('amount', 100).eq('status', 'open'),
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Filter string**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'orders',
+      filter: 'amount=gt.100,status=eq.open', // amount > 100 AND status = "open"
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Dart**
+
+Pass a list of filters to `filters` to combine them with `AND`.
+
+```dart
+supabase
+    .channel('changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.insert,
+        schema: 'public',
+        table: 'orders',
+        filters: [
+          PostgresChangeFilter(
+            type: PostgresChangeFilterType.gt,
+            column: 'amount',
+            value: 100,
+          ),
+          PostgresChangeFilter(
+            type: PostgresChangeFilterType.eq,
+            column: 'status',
+            value: 'open',
+          ),
+        ],
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**Swift**
+
+Use `.and([...])` to combine multiple conditions.
+
+```swift
+let myChannel = await supabase.channel("db-changes")
+
+let changes = await myChannel.postgresChange(
+  InsertAction.self,
+  schema: "public",
+  table: "orders",
+  filter: .and([
+    .gt("amount", value: 100),
+    .eq("status", value: "open"),
+  ])
+)
+
+await myChannel.subscribe()
+```
+
+**Kotlin**
+
+```kotlin
+val myChannel = supabase.channel("db-changes")
+
+val changes = myChannel.postgresChangeFlow<PostgresAction.Insert>(schema = "public") {
+    table = "orders"
+    filter = "amount=gt.100,status=eq.open"
+}
+
+changes
+    .onEach {
+        println(it.record)
+    }
+    .launchIn(yourCoroutineScope)
+
+myChannel.subscribe()
+```
+
+**Python**
+
+```python
+changes = supabase.channel('db-changes').on_postgres_changes(
+  "INSERT",
+  schema="public",
+  table="orders",
+  filter="amount=gt.100,status=eq.open",
+  callback=lambda payload: print(payload)
+)
+.subscribe()
+```
+
+Note: Values that contain reserved characters (`,`, `(`, `)`, `"`, or `\`) must be double-quoted PostgREST-style so the server doesn't read them as condition or list boundaries — for example `name=eq."Doe, Jane"`. The `postgresChangesFilter()` builder (JavaScript), `PostgresChangeFilter` (Dart), and `RealtimePostgresFilter` (Swift) apply this quoting for you.
+
+## Selecting specific columns
+
+By default each change event contains the full row. Use `select` to receive only a subset of columns instead. This reduces payload size and the data transferred per event, which is especially useful for tables with large `bytea`, `jsonb`, or `text` columns.
+
+The listed columns must be selectable by the subscribing role, and the table's primary key is always included so you can identify the row. `select` requires an explicit `schema` and `table` — it's not supported on wildcard subscriptions.
+
+**JavaScript**
+
+```js
+const channel = supabase
+  .channel('changes')
+  .on(
+    'postgres_changes',
+    {
+      event: '*',
+      schema: 'public',
+      table: 'profiles',
+      select: ['id', 'username'], // payload.new only contains { id, username }
+    },
+    (payload) => console.log(payload)
+  )
+  .subscribe()
+```
+
+**Dart**
+
+```dart
+supabase
+    .channel('changes')
+    .onPostgresChanges(
+        event: PostgresChangeEvent.all,
+        schema: 'public',
+        table: 'profiles',
+        select: ['id', 'username'],
+        callback: (payload) => print(payload))
+    .subscribe();
+```
+
+**Swift**
+
+```swift
+let myChannel = await supabase.channel("db-changes")
+
+let changes = await myChannel.postgresChange(
+  AnyAction.self,
+  schema: "public",
+  table: "profiles",
+  select: ["id", "username"]
+)
+
+await myChannel.subscribe()
+```
 
 ## Receiving `old` records
 
@@ -157903,7 +159010,7 @@ let changes = await myChannel.postgresChange(
   UpdateAction.self,
   schema: "public",
   table: "products",
-  filter: "name=in.(red, blue, yellow)"
+  filter: "name=in.(red,blue,yellow)"
 )
 
 await myChannel.subscribe()
@@ -157925,7 +159032,7 @@ val myChannel = supabase.channel("db-changes")
 
 val changes = myChannel.postgresChangeFlow<PostgresAction.Update>(schema = "public") {
     table = "products"
-    filter = "name=in.(red, blue, yellow)"
+    filter = "name=in.(red,blue,yellow)"
 }
 
 changes
@@ -157946,50 +159053,10 @@ changes = supabase.channel('db-changes').on_postgres_changes(
   "UPDATE",
   schema="public",
   table="products",
-  filter="name=in.(red, blue, yellow)",
+  filter="name=in.(red,blue,yellow)",
   callback=lambda payload: print(payload)
 )
 .subscribe()
-```
-
-### Refreshed tokens
-
-You will need to refresh tokens on your own, but once generated, you can pass them to Realtime.
-
-**JavaScript**
-
-For example, if you're using the `supabase-js` `v2` client then you can pass your token like this:
-
-```js
-// Client setup
-
-supabase.realtime.setAuth('fresh-token')
-```
-
-**Dart**
-
-```dart
-supabase.realtime.setAuth('fresh-token');
-```
-
-**Swift**
-
-```swift
-await supabase.realtime.setAuth("fresh-token")
-```
-
-**Kotlin**
-
-In Kotlin, you have to update the token manually per channel:
-
-```kotlin
-myChannel.updateAuth("fresh-token")
-```
-
-**Python**
-
-```python
-supabase.realtime.set_auth('fresh-token')
 ```
 
 ## Limitations
@@ -157998,63 +159065,58 @@ supabase.realtime.set_auth('fresh-token')
 
 You can't filter Delete events when tracking Postgres Changes. This limitation is due to the way changes are pulled from Postgres.
 
-### Spaces in table names
+## Scaling Postgres Changes
 
-Realtime currently does not work when table names contain spaces.
+Postgres Changes authorizes every event against each subscriber. When you make a single change to a table with 100 subscribed users, Realtime performs 100 authorization checks — one per user — so throughput scales with the number of subscribers, not the write rate. Changes are also processed on a single thread to preserve their order, which means larger compute add-ons don't meaningfully increase Postgres Changes throughput.
 
-### Database instance and realtime performance
+For most applications this is plenty. To get the best performance:
 
-Realtime systems usually require forethought because of their scaling dynamics. For the `Postgres Changes` feature, every change event must be checked to see if the subscribed user has access. For instance, if you have 100 users subscribed to a table where you make a single insert, it will then trigger 100 "reads": one for each user.
+- Use [filters](#available-filters) and [column selection](#selecting-specific-columns) to send each client only the events and columns it needs.
+- Keep authorization cheap by writing , indexed [RLS policies](https://supabase.com/docs/guides/database/postgres/row-level-security).
 
-There can be a database bottleneck which limits message throughput. If your database cannot authorize the changes rapidly enough, the changes will be delayed until you receive a timeout.
-
-Database changes are processed on a single thread to maintain the change order. That means compute upgrades don't have a large effect on the performance of Postgres change subscriptions. You can estimate the expected maximum throughput for your database below.
-
-If you are using Postgres Changes at scale, you should consider using separate "public" table without RLS and filters. Alternatively, you can use Realtime server-side only and then re-stream the changes to your clients using a Realtime Broadcast.
-
-Enter your database settings to estimate the maximum throughput for your instance:
+Use the estimator below to gauge the maximum throughput for your instance, and run your own benchmarks to confirm it fits your use case:
 
 #### Micro
 
-| Filters | RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
-| --- | --- | --- | --- | --- | --- | --- |
-| No | No | 500 | 64 | 64 | 32,000 | 238ms |
-| No | No | 5,000 | 10 | 10 | 50,000 | 807ms |
-| No | No | 10,000 | 5 | 5 | 50,000 | 1310ms |
-| No | No | 30,000 | 1 | 1 | 30,000 | 941ms |
-| No | Yes | 500 | 30 | 6 | 3,000 | 228ms |
-| No | Yes | 1,500 | 10 | 2 | 3,000 | 356ms |
-| No | Yes | 3,000 | 5 | 1 | 3,000 | 616ms |
+| RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
+| --- | --- | --- | --- | --- | --- |
+| No | 500 | 64 | 64 | 32,000 | 238ms |
+| No | 5,000 | 10 | 10 | 50,000 | 807ms |
+| No | 10,000 | 5 | 5 | 50,000 | 1310ms |
+| No | 30,000 | 1 | 1 | 30,000 | 941ms |
+| Yes | 500 | 30 | 6 | 3,000 | 228ms |
+| Yes | 1,500 | 10 | 2 | 3,000 | 356ms |
+| Yes | 3,000 | 5 | 1 | 3,000 | 616ms |
 
 #### Small to medium
 
-| Filters | RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
-| --- | --- | --- | --- | --- | --- | --- |
-| No | No | 500 | 64 | 64 | 32,000 | 184ms |
-| No | No | 5,000 | 10 | 10 | 50,000 | 782ms |
-| No | No | 10,000 | 5 | 5 | 50,000 | 1349ms |
-| No | No | 35,000 | 1 | 1 | 35,000 | 1287ms |
-| No | Yes | 500 | 30 | 6 | 3,000 | 282ms |
-| No | Yes | 1,500 | 10 | 2 | 3,000 | 387ms |
-| No | Yes | 3,000 | 5 | 1 | 3,000 | 920ms |
+| RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
+| --- | --- | --- | --- | --- | --- |
+| No | 500 | 64 | 64 | 32,000 | 184ms |
+| No | 5,000 | 10 | 10 | 50,000 | 782ms |
+| No | 10,000 | 5 | 5 | 50,000 | 1349ms |
+| No | 35,000 | 1 | 1 | 35,000 | 1287ms |
+| Yes | 500 | 30 | 6 | 3,000 | 282ms |
+| Yes | 1,500 | 10 | 2 | 3,000 | 387ms |
+| Yes | 3,000 | 5 | 1 | 3,000 | 920ms |
 
 #### Large to 16XL
 
-| Filters | RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
-| --- | --- | --- | --- | --- | --- | --- |
-| No | No | 500 | 64 | 64 | 32,000 | 184ms |
-| No | No | 5,000 | 10 | 10 | 50,000 | 672ms |
-| No | No | 10,000 | 5 | 5 | 50,000 | 1253ms |
-| No | No | 35,000 | 1 | 1 | 35,000 | 1257ms |
-| No | No | 100,000 | 0.1 (6/min) | 0.1 (6/min) | 40,000 | 4951ms |
-| No | No | 200,000 | 0.05 (3/min) | 0.05 (3/min) | 40,000 | 4581ms |
-| No | Yes | 500 | 40 | 8 | 4,000 | 618ms |
-| No | Yes | 2,000 | 10 | 2 | 4,000 | 606ms |
-| No | Yes | 4,000 | 5 | 1 | 4,000 | 918ms |
+| RLS | Connected clients | Total DB changes /sec | Max messages per client /sec | Max total messages /sec | Latency p95 |
+| --- | --- | --- | --- | --- | --- |
+| No | 500 | 64 | 64 | 32,000 | 184ms |
+| No | 5,000 | 10 | 10 | 50,000 | 672ms |
+| No | 10,000 | 5 | 5 | 50,000 | 1253ms |
+| No | 35,000 | 1 | 1 | 35,000 | 1257ms |
+| No | 100,000 | 0.1 (6/min) | 0.1 (6/min) | 40,000 | 4951ms |
+| No | 200,000 | 0.05 (3/min) | 0.05 (3/min) | 40,000 | 4581ms |
+| Yes | 500 | 40 | 8 | 4,000 | 618ms |
+| Yes | 2,000 | 10 | 2 | 4,000 | 606ms |
+| Yes | 4,000 | 5 | 1 | 4,000 | 918ms |
 
-Don't forget to run your own benchmarks to make sure that the performance is acceptable for your use case.
+Tip: If you expect more than \~3,000 concurrent subscribers on the same changes, use [Broadcast to stream database changes](https://supabase.com/docs/guides/realtime/subscribing-to-database-changes#using-broadcast) instead. Broadcast sends each change once and fans it out to all subscribers, so it scales to far higher connection counts than per-subscriber authorization allows.
 
-We are making many improvements to Realtime's Postgres Changes. If you are uncertain about the performance of your use case, reach out using [Support Form](https://supabase.com/dashboard/support/new) and we will be happy to help you. We have a team of engineers that can advise you on the best solution for your use-case.
+If you're unsure which approach fits your use case, reach out through the [Support Form](https://supabase.com/dashboard/support/new) — our engineers are happy to help you find the best solution.
 
 
 ---
@@ -164285,7 +165347,7 @@ For AWS S3, you do not need `GLOBAL_S3_ENDPOINT` or `GLOBAL_S3_FORCE_PATH_STYLE`
 
 ### S3-compatible providers
 
-Use the same configuration as MinIO, but point to your provider's endpoint, e.g.:
+Use the same configuration as MinIO, replacing the endpoint, bucket name, region, and AWS credentials with the values provided by your S3-compatible provider, for example:
 
 ```yaml name=docker-compose.yml
 storage:
@@ -164294,6 +165356,10 @@ storage:
     STORAGE_BACKEND: s3
     GLOBAL_S3_BUCKET: your-bucket-name
     GLOBAL_S3_ENDPOINT: https://your-account-id.r2.cloudflarestorage.com
+    GLOBAL_S3_FORCE_PATH_STYLE: 'true'
+    AWS_ACCESS_KEY_ID: your-access-key-id
+    AWS_SECRET_ACCESS_KEY: your-secret-access-key
+    REGION: your-region
 ```
 
 ## Verify
@@ -173523,6 +174589,27 @@ A common pitfall, is inadvertently using a Supabase API key (such as the publish
 
 ---
 
+# Auth error: '500: Database error querying schema'
+
+If you observe the error message `500: Database error querying schema` in your Auth logs, it typically indicates that the Supabase Auth server has encountered `NULL` values in the `auth.users` table where a valid string or empty string is expected.
+
+**Why Does This Happen?**
+This issue usually occurs following manual SQL inserts or updates to the `auth.users` table. The Auth service expects specific columns to contain data or an empty string; when it encounters a `NULL` value instead, it triggers a validation error.
+
+**How to Resolve This:**
+Identify the column containing the `NULL` values (such as `email`) and execute the following command in the [SQL Editor](https://supabase.com/dashboard/project/_/sql/new) to convert them to empty strings:
+
+```sql
+UPDATE auth.users
+SET <column_name> = ''
+WHERE <column_name> IS NULL;
+```
+
+Replace `<column_name>` with the specific column causing the error. To prevent this from recurring, ensure that any future manual modifications to the `auth` schema adhere to the service's requirements.
+
+
+---
+
 # Auth error: 503 AuthRetryableFetchError
 
 A `503` status code accompanied by an `AuthRetryableFetchError` typically indicates that the Auth (GoTrue) service is failing to initialize because it cannot load its configuration.
@@ -176926,6 +178013,21 @@ This error occurs when you are trying to connect to the database using PgBouncer
 
 There is a special parameter in the query string for Prisma to work with PgBouncer
 [https://www.prisma.io/docs/guides/performance-and-optimization/connection-management/configure-pg-bouncer](https://www.prisma.io/docs/guides/performance-and-optimization/connection-management/configure-pg-bouncer)
+
+
+---
+
+# Error: relation 'supabase_migrations.schema_migrations' does not exist
+
+If you are observing the error `relation "supabase_migrations.schema_migrations" does not exist` in your Postgres logs, it is typically caused by the Supabase dashboard polling for migration history.
+
+**Why Does This Happen?**
+The Supabase dashboard performs background queries to retrieve migration data from a table that is managed specifically by the Supabase CLI. If you are using a custom migration tool, a manual setup, or have not yet deployed migrations via the CLI, this table will not exist, causing the logs to report this error.
+
+**How to Resolve:**
+
+- **Ignore the error:** If you are not using the Supabase CLI to manage your database migrations, this error is a harmless side effect of dashboard polling and can be safely ignored.
+- **Initialize the migration metadata**: If you manage your database with the Supabase CLI, running `supabase db push` will create the supabase\_migrations schema and schema\_migrations table as part of applying your local migrations. Be aware that this command may also apply any pending migration files to your database, so only run it if that's your intended workflow.
 
 
 ---

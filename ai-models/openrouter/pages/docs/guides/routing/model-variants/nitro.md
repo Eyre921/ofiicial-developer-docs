@@ -1,0 +1,28 @@
+---
+title: "Nitro Variant"
+source: https://openrouter.ai/docs/guides/routing/model-variants/nitro.md
+path: docs/guides/routing/model-variants/nitro
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Nitro Variant
+
+> High-speed model inference with :nitro
+
+The `:nitro` variant is an alias for sorting providers by throughput. When you use `:nitro`, OpenRouter will prioritize providers with the highest throughput (tokens per second).
+
+## Usage
+
+Append `:nitro` to any model ID:
+
+```json lines theme={null}
+{
+  "model": "openai/gpt-5.2:nitro"
+}
+```
+
+This is exactly equivalent to setting `provider.sort` to `"throughput"` in your request. For more details on provider sorting, see the [Provider Routing documentation](/guides/routing/provider-selection#provider-sorting).
+

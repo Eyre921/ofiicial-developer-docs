@@ -14,7 +14,7 @@ Terminal’s smart readers are compatible with the JavaScript, iOS, Android, and
 
 | Reader | Available in |
 | --- | --- |
-| [Stripe Reader S700](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md) | Available in: US, CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP |
+| [Stripe Reader S700](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md) | Available in: US, CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP, MX |
 | [Stripe Reader S710](https://docs.stripe.com/terminal/readers/stripe-reader-s700-s710.md) | Available in: AU, BE, BG, CA, HR, CY, EE, FR, HU, IE, LV, LI, LT, MY, MT, NZ, RO, SG, SK, SI, GB, US |
 | [BBPOS WisePOS E](https://docs.stripe.com/terminal/readers/bbpos-wisepos-e.md) | Available in: US, CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL |
 | [Verifone V660p](https://docs.stripe.com/terminal/payments/setup-reader/v660p.md) | Available in: US, CA, GB, IE, SG |

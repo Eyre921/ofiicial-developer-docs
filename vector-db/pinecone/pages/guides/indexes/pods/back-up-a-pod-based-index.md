@@ -86,17 +86,6 @@ The following example creates a [collection](/guides/indexes/pods/understanding-
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var collectionModel = await pinecone.CreateCollectionAsync(new CreateCollectionRequest {
-      Name = "example-collection",
-      Source = "docs-example",
-  });
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -187,16 +176,6 @@ The following example gets the creation status and size of a collection named `e
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var collectionModel = await pinecone.DescribeCollectionAsync("example-collection");
-
-  Console.WriteLine(collectionModel);
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -282,16 +261,6 @@ To get a list of the collections in the current project, use the [`list_collecti
           }
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var collectionList = await pinecone.ListCollectionsAsync();
-
-  Console.WriteLine(collectionList);
   ```
 
   ```shell curl theme={null}
@@ -380,14 +349,6 @@ Deleting the collection takes several minutes. During this time, the [`describe_
           }
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  await pinecone.DeleteCollectionAsync("example-collection");
   ```
 
   ```shell curl theme={null}

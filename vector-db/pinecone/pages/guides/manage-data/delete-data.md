@@ -109,21 +109,6 @@ Since Pinecone records can always be efficiently accessed using their ID, deleti
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var deleteResponse = await index.DeleteAsync(new DeleteRequest {
-      Ids = new List<string> { "id-1", "id-2" },
-      Namespace = "example-namespace",
-  });
-  ```
-
   ```bash curl theme={null}
   # To get the unique host for an index,
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -363,21 +348,6 @@ To delete all of the records in a namespace but not the namespace itself, provid
           log.Fatalf("Failed to delete all vectors in namespace %v: %v", namespace, err)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var deleteResponse = await index.DeleteAsync(new DeleteRequest {
-      DeleteAll = true,
-      Namespace = "example-namespace",
-  });
   ```
 
   ```bash curl theme={null}

@@ -287,12 +287,6 @@ If you are using an older version of the Python, Node.js, Java, or Go SDK, you m
      ```
    </CodeGroup>
 
-   If you are using the [.NET SDK](/reference/sdks/dotnet/overview), add a package reference to your project file:
-
-   ```shell C# theme={null}
-   dotnet add package Pinecone.Client 
-   ```
-
 ## 5. Adapt existing code
 
 You must make some minor code changes to work with serverless indexes.
@@ -349,12 +343,6 @@ You must make some minor code changes to work with serverless indexes.
              log.Fatalf("Failed to create Client: %v", err)
          }
      }
-     ```
-
-     ```csharp C# theme={null}
-     using Pinecone;
-
-     var pinecone = new PineconeClient("YOUR_API_KEY");
      ```
    </CodeGroup>
 
@@ -802,14 +790,6 @@ When you're ready to cutover to your new serverless index:
              log.Fatalf("Failed to create IndexConnection for Host %v: %v", idx.Host, err)
          }
      }
-     ```
-
-     ```csharp C# theme={null}
-     using Pinecone;
-
-     var pinecone = new PineconeClient("YOUR_API_KEY");
-
-     var index = pinecone.Index("YOUR_SERVERLESS_INDEX_NAME");
      ```
 
      ```bash curl theme={null}

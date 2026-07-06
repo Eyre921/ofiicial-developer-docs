@@ -14678,7 +14678,7 @@ We hope you enjoyed this course. If you have any questions or feedback, don't he
 ---
 
 ---
-modificationDate: July 2, 2026
+modificationDate: July 6, 2026
 title: Additional resources
 description: A reference of resources that are useful to learn about Expo tooling and services.
 ---
@@ -14736,6 +14736,8 @@ The following resources are useful for learning about Expo tooling and services.
 
 [Expo keynote](https://www.youtube.com/watch?v=605Id2fhmXE) — Charlie Cheever — App.js Conf 2026
 
+[What is your app actually doing in production?](https://www.youtube.com/watch?v=7DzSnY33t-Y) — Kadi Kraman — App.js Conf 2026
+
 [React Native without Cocoapods](https://www.youtube.com/watch?v=5nHDA39K4NE) — Riccardo Cipolleschi, Christian Falch — App.js Conf 2026
 
 [Screens & Routers: The Foundation of Navigation in React Native Apps](https://www.youtube.com/watch?v=WJ3B2aIah6Q) — Kacper Kafara, Kuba Tkacz — App.js Conf 2026
@@ -14755,8 +14757,6 @@ The following resources are useful for learning about Expo tooling and services.
 [Launching Desktop Apps to Orbit with React Native](https://www.youtube.com/watch?v=K7yC3JKfWYU) — Gabriel Donadel — App.js Conf 2024
 
 [Keynote: community & workflows](https://www.youtube.com/watch?v=xHMu4oT6-SQ) — Charlie Cheever, James Ide — App.js Conf 2023
-
-[EAS: Iterate with confidence](https://www.youtube.com/watch?v=LTui_5dqXyM) — Jon Samp — App.js Conf 2023
 
 ## Podcasts
 

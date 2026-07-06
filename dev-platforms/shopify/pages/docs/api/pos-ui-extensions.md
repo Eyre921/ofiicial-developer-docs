@@ -424,8 +424,6 @@ The following extension targets render without network access:
 * [`pos.cash-tracking-session-start.event.observe`](https://shopify.dev/docs/api/pos-ui-extensions/latest/targets/register-details)
 * [`pos.cash-tracking-session-complete.event.observe`](https://shopify.dev/docs/api/pos-ui-extensions/latest/targets/register-details)
 * [`pos.cart-update.event.observe`](https://shopify.dev/docs/api/pos-ui-extensions/latest/targets/cart-details)
-* [`pos.receipt-header.block.render`](https://shopify.dev/docs/api/pos-ui-extensions/latest/targets/receipts)
-* [`pos.receipt-footer.block.render`](https://shopify.dev/docs/api/pos-ui-extensions/latest/targets/receipts)
 
 ## shopify.extension.toml
 

@@ -150,31 +150,6 @@ For example, the following code searches for the 2 records most semantically rel
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var response = await index.SearchRecordsAsync(
-      "example-namespace",
-      new SearchRecordsRequest
-      {
-          Query = new SearchRecordsRequestQuery
-          {
-              TopK = 4,
-              Inputs = new Dictionary<string, object?> { { "text", "Disease prevention" } },
-          },
-          Fields = ["category", "chunk_text"],
-      }
-  );
-
-  Console.WriteLine(response);
-  ```
-
   ```shell curl theme={null}
   INDEX_HOST="INDEX_HOST"
   NAMESPACE="YOUR_NAMESPACE"
@@ -296,36 +271,6 @@ The response will look as follows. Each record is returned with a similarity sco
       "read_units": 6,
       "embed_total_tokens": 8
     }
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-      "result": {
-          "hits": [
-              {
-                  "_id": "rec3",
-                  "_score": 0.13741668,
-                  "fields": {
-                      "category": "immune system",
-                      "chunk_text": "Rich in vitamin C and other antioxidants, apples contribute to immune health and may reduce the risk of chronic diseases."
-                  }
-              },
-              {
-                  "_id": "rec1",
-                  "_score": 0.0023413408,
-                  "fields": {
-                      "category": "digestive system",
-                      "chunk_text": "Apples are a great source of dietary fiber, which supports digestion and helps maintain a healthy gut."
-                  }
-              }
-          ]
-      },
-      "usage": {
-          "read_units": 6,
-          "embed_total_tokens": 5,
-          "rerank_units": 1
-      }
   }
   ```
 
@@ -478,25 +423,6 @@ For example, the following code uses a dense vector representation of the query 
           fmt.Printf(prettifyStruct(res))
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var queryResponse = await index.QueryAsync(new QueryRequest {
-      Vector = new[] { 0.0236663818359375f ,-0.032989501953125f, ..., -0.01041412353515625f, 0.0086669921875f },
-      Namespace = "example-namespace",
-      TopK = 3,
-      IncludeMetadata = true,
-  });
-
-  Console.WriteLine(queryResponse);
   ```
 
   ```bash curl theme={null}
@@ -694,45 +620,6 @@ The response will look as follows. Each record is returned with a similarity sco
   }
   ```
 
-  ```csharp C# theme={null}
-  {
-    "results": [],
-    "matches": [
-      {
-        "id": "rec3",
-        "score": 0.8197099,
-        "values": [],
-        "metadata": {
-          "category": "immune system",
-          "chunk_text": "Rich in vitamin C and other antioxidants, apples contribute to immune health and may reduce the risk of chronic diseases."
-        }
-      },
-      {
-        "id": "rec1",
-        "score": 0.79290026,
-        "values": [],
-        "metadata": {
-          "category": "digestive system",
-          "chunk_text": "Apples are a great source of dietary fiber, which supports digestion and helps maintain a healthy gut."
-        }
-      },
-      {
-        "id": "rec4",
-        "score": 0.7800688,
-        "values": [],
-        "metadata": {
-          "category": "endocrine system",
-          "chunk_text": "The high fiber content in apples can also help regulate blood sugar levels, making them a favorable snack for people with diabetes."
-        }
-      }
-    ],
-    "namespace": "example-namespace",
-    "usage": {
-      "readUnits": 6
-    }
-  }
-  ```
-
   ```json curl theme={null}
   {
       "results": [],
@@ -889,26 +776,6 @@ For example, the following code uses an ID to search for the 3 records in the `e
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var queryResponse = await index.QueryAsync(new QueryRequest {
-      Id = "rec2",
-      Namespace = "example-namespace",
-      TopK = 3,
-      IncludeValues = false,
-      IncludeMetadata = true
-  });
-
-  Console.WriteLine(queryResponse);
-  ```
-
   ```bash curl theme={null}
   # To get the unique host for an index,
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -932,3 +799,72 @@ For example, the following code uses an ID to search for the 3 records in the `e
 ## Parallel queries
 
 Python SDK v6.0.0 and later provide `async` methods for use with [asyncio](https://docs.python.org/3/library/asyncio.html). Async support makes it possible to use Pinecone with modern async web frameworks such as FastAPI, Quart, and Sanic, and can significantly increase the efficiency of running queries in parallel. For more details, see the [Async requests](/reference/sdks/python/overview#async-requests).
+
+Alternatively, you can run multi-threaded, synchronous queries in parallel. For example, the following code uses a thread pool to run multiple queries concurrently. This example assumes that you have a 1536-dimension serverless index called `docs-example` and the [Pinecone Python SDK](/reference/sdks/python/overview) and [`concurrent.futures`](https://docs.python.org/3/library/concurrent.futures.html#module-concurrent.futures) and [`numpy`](https://numpy.org/) packages installed.
+
+```python theme={null}
+import os
+from pinecone import Pinecone
+from concurrent.futures import ThreadPoolExecutor
+
+# Get the API key from the environment variable and initialize Pinecone
+api_key = os.environ.get("PINECONE_API_KEY")
+pc = Pinecone(api_key=api_key)
+
+# Define the index name
+index_name = "docs-example"
+
+# Define the index
+index = pc.Index(index_name)
+
+# Define the function to run parallel queries
+def run_parallel_queries(vectors):
+    """
+    Run a list of vectors in parallel using ThreadPoolExecutor.
+    
+    Parameters:
+    vectors (list): A list of vectors.
+    
+    Returns:
+    list: A list of query results.
+    """
+    
+    # Define the maximum number of concurrent queries
+    MAX_CONCURRENT_QUERIES = 4
+
+    def run_query(vector):
+        """
+        Run a single query.
+        """
+        return index.query(
+            namespace="example-namespace",
+            vector=vector,
+            top_k=3,
+            include_values=True
+        )
+    
+    # Run the queries in parallel
+    with ThreadPoolExecutor(max_workers=MAX_CONCURRENT_QUERIES) as executor:
+        results = list(executor.map(run_query, vectors))
+    
+    return results
+
+def test_parallel_queries():
+    """
+    Test the run_parallel_queries function with 20 random vectors.
+    """
+    import numpy as np
+
+    # Generate 20 random vectors of size 1536 and convert them to lists
+    vectors = [np.random.rand(1536).tolist() for _ in range(20)]
+
+    # Run the parallel queries
+    results = run_parallel_queries(vectors)
+
+    # Print the results
+    for i, result in enumerate(results):
+        print(f"Query {i+1} results: {result}")
+
+if __name__ == "__main__":
+    test_parallel_queries()
+```

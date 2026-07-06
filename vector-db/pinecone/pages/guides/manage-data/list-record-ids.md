@@ -166,42 +166,6 @@ To list the IDs of all records in the namespace of a serverless index, pass only
   // }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var listResponse = await index.ListAsync(new ListRequest {
-      Namespace = "example-namespace",
-  });
-
-  Console.WriteLine(listResponse);
-
-  // Response:
-  // {
-  //   "vectors": [
-  //     {
-  //       "id": "doc1#chunk1"
-  //     },
-  //     {
-  //       "id": "doc1#chunk2"
-  //     },
-  //     {
-  //       "id": "doc1#chunk3"
-  //     }
-  //   ],
-  //   "pagination": "eyJza2lwX3Bhc3QiOiIwMDBkMTc4OC0zMDAxLTQwZmMtYjZjNC0wOWI2N2I5N2JjNDUiLCJwcmVmaXgiOm51bGx9",
-  //   "namespace": "example-namespace",
-  //   "usage": {
-  //     "readUnits": 1
-  //   }
-  // }
-  ```
-
   ```shell curl theme={null}
   # To get the unique host for an index,
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -264,7 +228,7 @@ for ids in index.list(namespace='example-namespace'):
 
 ### Manual pagination
 
-When using the Node.js SDK, Java SDK, Go SDK, .NET SDK, or REST API, you must manually fetch each page of results. You can also manually paginate with the Python SDK using `list_paginated()`.
+When using the Node.js SDK, Java SDK, Go SDK, or REST API, you must manually fetch each page of results. You can also manually paginate with the Python SDK using `list_paginated()`.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -412,43 +376,6 @@ When using the Node.js SDK, Java SDK, Go SDK, .NET SDK, or REST API, you must ma
   //     "read_units": 1
   //   },
   //   "next_pagination_token": "eyJza2lwX3Bhc3QiOiIwMDBkMTc4OC0zMDAxLTQwZmMtYjZjNC0wOWI2N2I5N2JjNDUiLCJwcmVmaXgiOm51bGx9"
-  // }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var listResponse = await index.ListAsync(new ListRequest {
-      Namespace = "example-namespace",
-      Prefix = "document1#",
-  });
-
-  Console.WriteLine(listResponse);
-
-  // Response:
-  // {
-  //   "vectors": [
-  //     {
-  //       "id": "doc1#chunk1"
-  //     },
-  //     {
-  //       "id": "doc1#chunk2"
-  //     },
-  //     {
-  //       "id": "doc1#chunk3"
-  //     }
-  //   ],
-  //   "pagination": "eyJza2lwX3Bhc3QiOiIwMDBkMTc4OC0zMDAxLTQwZmMtYjZjNC0wOWI2N2I5N2JjNDUiLCJwcmVmaXgiOm51bGx9",
-  //   "namespace": "example-namespace",
-  //   "usage": {
-  //     "readUnits": 1
-  //   }
   // }
   ```
 
@@ -623,44 +550,6 @@ Then, to get the next batch of IDs, use the returned `pagination_token`:
   // }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var listResponse = await index.ListAsync(new ListRequest {
-      Namespace = "example-namespace",
-      Prefix = "document1#",
-      PaginationToken= "eyJza2lwX3Bhc3QiOiIwMDBkMTc4OC0zMDAxLTQwZmMtYjZjNC0wOWI2N2I5N2JjNDUiLCJwcmVmaXgiOm51bGx9",
-  });
-
-  Console.WriteLine(listResponse);
-
-  // Response:
-  // {
-  //   "vectors": [
-  //     {
-  //       "id": "doc1#chunk4"
-  //     },
-  //     {
-  //       "id": "doc1#chunk5"
-  //     },
-  //     {
-  //       "id": "doc1#chunk6"
-  //     }
-  //   ],
-  //   "pagination": "dfajlkjfdsoijeowjoDJFKLJldLIFf34KFNLDSndaklqoLQJORN45afdlkJ==",
-  //   "namespace": "example-namespace",
-  //   "usage": {
-  //     "readUnits": 1
-  //   }
-  // }
-  ```
-
   ```shell curl theme={null}
   # To get the unique host for an index,
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -793,42 +682,6 @@ When there are no more IDs to return, the response does not includes a `paginati
   //   ],
   //   "usage": {
   //     "read_units": 1
-  //   }
-  // }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var listResponse = await index.ListAsync(new ListRequest {
-      Namespace = "example-namespace",
-      Prefix = "document1#",
-      PaginationToken= "dfajlkjfdsoijeowjoDJFKLJldLIFf34KFNLDSndaklqoLQJORN45afdlkJ==",
-  });
-
-  Console.WriteLine(listResponse);
-
-  // Response:
-  // {
-  //   "vectors": [
-  //     {
-  //       "id": "doc1#chunk7"
-  //     },
-  //     {
-  //       "id": "doc1#chunk8"
-  //     },
-  //     {
-  //       "id": "doc1#chunk9"
-  //     }
-  //   ],
-  //   "pagination": null,
-  //   "namespace": "example-namespace",
-  //   "usage": {
-  //     "readUnits": 1
   //   }
   // }
   ```

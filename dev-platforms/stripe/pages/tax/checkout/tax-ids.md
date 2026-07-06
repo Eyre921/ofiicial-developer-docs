@@ -204,6 +204,7 @@ Checkout collects the following tax ID types in the given regions:
 | HR | eu_vat | European VAT number | HR12345678912 | Yes |
 | HU | eu_vat | European VAT number | HU12345678 | Yes |
 | HU | hu_tin | Hungary tax number (adószám) | 12345678-1-23 | No |
+| ID | id_npwp | Indonesian NPWP number | 012.345.678.9-012.345 | No |
 | IE | eu_vat | European VAT number | IE1234567AB | Yes |
 | IN | in_gst | Indian GST number | 12ABCDE3456FGZH | Yes |
 | IS | is_vat | Icelandic VAT | 123456 | Yes |

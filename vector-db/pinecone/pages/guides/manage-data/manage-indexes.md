@@ -492,30 +492,6 @@ The response will look like this:
   }
   ```
 
-  ```csharp C# theme={null}
-  {
-    "name": "docs-example-dense",
-    "dimension": 1536,
-    "metric": "cosine",
-    "host": "docs-example-dense-govk0nt.svc.aped-4627-b74a.pinecone.io",
-    "deletion_protection": "disabled",
-    "tags": {
-      "environment": "development"
-    },
-    "spec": {
-      "serverless": {
-        "cloud": "aws",
-        "region": "us-east-1"
-      }
-    },
-    "status": {
-      "ready": true,
-      "state": "Ready"
-    },
-    "vector_type": "dense"
-  }
-  ```
-
   ```json curl theme={null}
   {
     "name": "docs-example-dense",
@@ -613,14 +589,6 @@ Use the [`delete_index`](reference/api/latest/control-plane/delete_index) operat
           fmt.Println("Index \"%v\" deleted successfully", indexName)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  await pinecone.DeleteIndexAsync("docs-example");
   ```
 
   ```shell curl theme={null}
@@ -824,29 +792,6 @@ To enable deletion protection when creating a new index:
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // Serverless index
-  var createIndexRequest = await pinecone.CreateIndexAsync(new CreateIndexRequest
-  {
-      Name = "docs-example",
-      Dimension = 1536,
-      Metric = MetricType.Cosine,
-      Spec = new ServerlessIndexSpec
-      {
-          Serverless = new ServerlessSpec
-          {
-              Cloud = ServerlessSpecCloud.Aws,
-              Region = "us-east-1",
-          }
-      },
-      DeletionProtection = DeletionProtection.Enabled
-  });
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -935,17 +880,6 @@ To enable deletion protection when configuring an existing index:
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var indexMetadata = await pinecone.ConfigureIndexAsync("docs-example", new ConfigureIndexRequest
-  {
-      DeletionProtection = DeletionProtection.Enabled,
-  });
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -1029,17 +963,6 @@ Before you can [delete an index](#delete-an-index) with deletion protection enab
           fmt.Printf("Successfully configured index \"%v\"", idx.Name)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var configureIndexRequest = await pinecone.ConfigureIndexAsync("docs-example", new ConfigureIndexRequest
-  {
-      DeletionProtection = DeletionProtection.Disabled,
-  });
   ```
 
   ```shell curl theme={null}
@@ -1164,33 +1087,6 @@ To add tags when creating a new index:
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexAsync(new CreateIndexRequest
-  {
-      Name = "docs-example",
-      Dimension = 1536,
-      Metric = MetricType.Cosine,
-      Spec = new ServerlessIndexSpec
-      {
-          Serverless = new ServerlessSpec
-          {
-              Cloud = ServerlessSpecCloud.Aws,
-              Region = "us-east-1"
-          }
-      },
-      DeletionProtection = DeletionProtection.Disabled,
-      Tags = new Dictionary<string, string> 
-      { 
-          { "example", "tag" }, 
-          { "environment", "development" }
-      }
-  });
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -1302,21 +1198,6 @@ To add or update tags when configuring an existing index:
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var configureIndexRequest = await pinecone.ConfigureIndexAsync("docs-example", new ConfigureIndexRequest
-  {
-      Tags = new Dictionary<string, string> 
-      { 
-          { "example", "tag" }, 
-          { "environment", "development" }
-      }
-  });
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -1418,20 +1299,6 @@ The following example removes the `example: tag` tag from `docs-example`:
           fmt.Printf("Successfully configured index \"%v\"", idx.Name)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var configureIndexRequest = await pinecone.ConfigureIndexAsync("docs-example", new ConfigureIndexRequest
-  {
-      Tags = new Dictionary<string, string> 
-      { 
-          { "example", "" } 
-      }
-  });
   ```
 
   ```shell curl theme={null}

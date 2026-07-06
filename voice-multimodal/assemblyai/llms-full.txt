@@ -263,18 +263,13 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Segment A Phone Call using LLM Gateway](#segment-a-phone-call-using-llm-gateway-docs-guides-phone-call-segmentation-mdx)
 - [Generate SOAP Notes using LLM Gateway](#generate-soap-notes-using-llm-gateway-docs-guides-soap-note-generation-mdx)
 - [Frequently Asked Questions](#frequently-asked-questions-docs-faq-mdx)
-- [Does AssemblyAI use encryption?](#does-assemblyai-use-encryption-docs-faq-are-audio-and-text-files-encrypted-mdx)
-- [Are files submitted to the API used for model training?](#are-files-submitted-to-the-api-used-for-model-training-docs-faq-are-files-submitted-to-the-api-used-for-model-training-mdx)
-- [Are you GDPR compliant?](#are-you-gdpr-compliant-docs-faq-are-you-gdpr-compliant-mdx)
 - [Has AssemblyAI certified to the EU-U.S. Data Privacy Framework?](#has-assemblyai-certified-to-the-eu-u-s-data-privacy-framework-docs-faq-has-assemblyai-certified-to-the-eu-us-data-privacy-framework-mdx)
 - [Can I sign a DPA agreement with AssemblyAI?](#can-i-sign-a-dpa-agreement-with-assemblyai-docs-faq-can-i-sign-a-dpa-agreement-with-assemblyai-mdx)
 - [Can you provide a copy of your most recent penetration test executive summary?](#can-you-provide-a-copy-of-your-most-recent-penetration-test-executive-summary-docs-faq-can-you-provide-a-copy-of-your-most-recent-penetration-test-executive-summary-mdx)
 - [Can you provide a recent vulnerability scan?](#can-you-provide-a-recent-vulnerability-scan-docs-faq-can-you-provide-a-recent-vulnerability-scan-mdx)
 - [Will AssemblyAI sign a Business Associate Addendum (BAA) as described in the HIPAA rules and regulations?](#will-assemblyai-sign-a-business-associate-addendum-baa-as-described-in-the-hipaa-rules-and-regulations-docs-faq-can-you-sign-a-baa-mdx)
-- [Do the LLMs provided through LLM Gateway train on my data?](#do-the-llms-provided-through-llm-gateway-train-on-my-data-docs-faq-do-llms-in-llm-gateway-train-on-data-mdx)
 - [Do you have a formal risk assessment policy or process?](#do-you-have-a-formal-risk-assessment-policy-or-process-docs-faq-do-you-have-a-formal-risk-assessment-policy-or-process-mdx)
 - [Do you have documented information security policies? If so, how frequently are they updated?](#do-you-have-documented-information-security-policies-if-so-how-frequently-are-they-updated-docs-faq-do-you-have-documented-information-security-policies-if-so-how-frequently-are-they-updated-mdx)
-- [Do you have SOC2 certification?](#do-you-have-soc2-certification-docs-faq-do-you-have-soc2-certification-mdx)
 - [Do you offer EU Data Residency?](#do-you-offer-eu-data-residency-docs-faq-do-you-offer-eu-data-residency-mdx)
 - [Do you offer self-hosted solutions?](#do-you-offer-self-hosted-solutions-docs-faq-do-you-offer-self-hosted-solutions-mdx)
 - [Do you offer servers in the EU?](#do-you-offer-servers-in-the-eu-docs-faq-do-you-offer-servers-in-the-eu-mdx)
@@ -1639,7 +1634,7 @@ The **Cost** and **Usage** pages provide a breakdown of your spend and usage so 
 
 - Account
 - Product (e.g., Speech-to-Text, Streaming, LLM Gateway)
-- Models (e.g., Best, Claude 3.5 Sonnet, etc.)
+- Models (e.g., Best, Claude Sonnet 4.6, etc.)
 - Project
 - API key
 
@@ -2090,7 +2085,7 @@ llm_response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -2176,7 +2171,7 @@ res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", {
   method: "POST",
   headers,
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -2326,7 +2321,7 @@ llm_response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -2442,7 +2437,7 @@ res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", {
   method: "POST",
   headers,
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -2578,7 +2573,7 @@ llm_response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -2662,7 +2657,7 @@ llm_response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -2759,7 +2754,7 @@ res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", {
   method: "POST",
   headers,
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -2850,7 +2845,7 @@ const llmRes = await fetch(
     method: "POST",
     headers,
     body: JSON.stringify({
-      model: "claude-sonnet-4-5-20250929",
+      model: "claude-sonnet-4-6",
       messages: [
         {
           role: "user",
@@ -2964,7 +2959,7 @@ llm_response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -3036,7 +3031,7 @@ res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", {
   method: "POST",
   headers,
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -3140,7 +3135,7 @@ PROMPT = (
 )
 
 LLM_GATEWAY_CONFIG = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [{"role": "user", "content": PROMPT}],
     "max_tokens": 500,
 }
@@ -3243,7 +3238,7 @@ const PROMPT =
   "action items mentioned.\n\nTranscript: {{turn}}";
 
 const LLM_GATEWAY_CONFIG = {
-  model: "claude-sonnet-4-5-20250929",
+  model: "claude-sonnet-4-6",
   messages: [{ role: "user", content: PROMPT }],
   max_tokens: 500,
 };
@@ -10778,7 +10773,7 @@ async def run_bot(websocket):
 
     # Configure AI services
     stt = AssemblyAISTTService(api_key=os.getenv("ASSEMBLYAI_API_KEY"))
-    llm = OpenAILLMService(api_key=os.getenv("OPENAI_API_KEY"), model="gpt-4o-mini")
+    llm = OpenAILLMService(api_key=os.getenv("OPENAI_API_KEY"), model="gpt-5-mini")
     tts = DeepgramTTSService(api_key=os.getenv("DEEPGRAM_API_KEY"))
 
     # Customize bot behavior based on call information
@@ -53039,7 +53034,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
     "llm": [
       {
         "base_url": "https://api.openai.com/v1",
-        "model": "gpt-4o-mini",
+        "model": "gpt-5-mini",
         "api_key": "sk-..."
       }
     ]
@@ -53061,7 +53056,7 @@ resp = requests.post(
         "llm": [
             {
                 "base_url": "https://api.openai.com/v1",
-                "model": "gpt-4o-mini",
+                "model": "gpt-5-mini",
                 "api_key": "sk-...",
             }
         ],
@@ -53086,7 +53081,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
     llm: [
       {
         base_url: "https://api.openai.com/v1",
-        model: "gpt-4o-mini",
+        model: "gpt-5-mini",
         api_key: "sk-...",
       },
     ],
@@ -65051,7 +65046,7 @@ prompt = "What is a runner's knee?"
 
 # Step 3: Send to LLM Gateway.
 llm_gateway_data = {
-  "model": "claude-sonnet-4-5-20250929",
+  "model": "claude-sonnet-4-6",
   "messages": [
     {"role": "user", "content": f"{prompt}\n\n{{{{ transcript }}}}"}
   ],
@@ -65200,7 +65195,7 @@ Context: This is a GitLab meeting to discuss logistics."""
 
 # Step 3: Send to LLM Gateway
 llm_gateway_data = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [
         {"role": "user", "content": f"{prompt}\n\n{{{{ transcript }}}}"}
     ],
@@ -67110,7 +67105,7 @@ prompt = f"""
         """
 
 llm_gateway_data = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [
       {
         "role": "user",
@@ -67198,7 +67193,7 @@ const prompt = `
         `;
 
 const llmGatewayData = {
-  model: "claude-sonnet-4-5-20250929",
+  model: "claude-sonnet-4-6",
   messages: [
     {
       role: "user",
@@ -67375,7 +67370,7 @@ Generate the custom feedback using LLM Gateway.
 
 ```python
 llm_gateway_data = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [
       {
         "role": "user",
@@ -67396,7 +67391,7 @@ response = requests.post(
 
 ```javascript
 const llmGatewayData = {
-  model: "claude-sonnet-4-5-20250929",
+  model: "claude-sonnet-4-6",
   messages: [
     {
       role: "user",
@@ -67513,7 +67508,7 @@ response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -67588,7 +67583,7 @@ res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", {
   method: "POST",
   headers: { ...headers, "Content-Type": "application/json" },
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -67760,7 +67755,7 @@ response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -67784,7 +67779,7 @@ let res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", 
   method: "POST",
   headers: { ...headers, "Content-Type": "application/json" },
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -67938,7 +67933,7 @@ response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [{"role": "user", "content": prompt}],
         "transcript_id": transcript_id,
         "max_tokens": 2000,
@@ -68091,7 +68086,7 @@ res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", {
   method: "POST",
   headers: { ...headers, "Content-Type": "application/json" },
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [{ role: "user", content: prompt }],
     transcript_id: transcriptId,
     max_tokens: 2000,
@@ -68380,7 +68375,7 @@ response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [{"role": "user", "content": prompt}],
         "transcript_id": transcript_id,
         "max_tokens": 2000,
@@ -68450,7 +68445,7 @@ const res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions"
   method: "POST",
   headers: { ...headers, "Content-Type": "application/json" },
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [{ role: "user", content: prompt }],
     transcript_id: transcriptId,
     max_tokens: 2000,
@@ -68552,7 +68547,7 @@ gemini_pro_cost = 1.25 * tokens_in_millions
 print(f"Estimated input tokens: {estimated_tokens:,.0f}")
 print(f"\nEstimated input costs:")
 print(f"GPT-5: ${gpt5_cost:.4f}")
-print(f"Claude 4.5 Sonnet: ${claude_sonnet_cost:.4f}")
+print(f"Claude Sonnet 4.6: ${claude_sonnet_cost:.4f}")
 print(f"Gemini 2.5 Pro: ${gemini_pro_cost:.4f}")
 ```
 
@@ -68611,7 +68606,7 @@ const geminiProCost = 1.25 * tokensInMillions;
 console.log(`Estimated input tokens: ${estimatedTokens.toLocaleString("en-US", { maximumFractionDigits: 0 })}`);
 console.log(`\nEstimated input costs:`);
 console.log(`GPT-5: $${gpt5Cost.toFixed(4)}`);
-console.log(`Claude 4.5 Sonnet: $${claudeSonnetCost.toFixed(4)}`);
+console.log(`Claude Sonnet 4.6: $${claudeSonnetCost.toFixed(4)}`);
 console.log(`Gemini 2.5 Pro: $${geminiProCost.toFixed(4)}`);
 ```
 
@@ -68768,7 +68763,7 @@ gemini_pro_cost = 1.25 * tokens_in_millions
 
 print(f"\nEstimated input costs:")
 print(f"GPT-5: ${gpt5_cost:.4f}")
-print(f"Claude 4.5 Sonnet: ${claude_sonnet_cost:.4f}")
+print(f"Claude Sonnet 4.6: ${claude_sonnet_cost:.4f}")
 print(f"Gemini 2.5 Pro: ${gemini_pro_cost:.4f}")
 ```
 
@@ -68780,14 +68775,14 @@ const geminiProCost = 1.25 * tokensInMillions;
 
 console.log(`\nEstimated input costs:`);
 console.log(`GPT-5: $${gpt5Cost.toFixed(4)}`);
-console.log(`Claude 4.5 Sonnet: $${claudeSonnetCost.toFixed(4)}`);
+console.log(`Claude Sonnet 4.6: $${claudeSonnetCost.toFixed(4)}`);
 console.log(`Gemini 2.5 Pro: $${geminiProCost.toFixed(4)}`);
 ```
 
 For our example file with approximately 1,230 input tokens:
 
 - **GPT-5** (`gpt-5`): ~$0.0015
-- **Claude 4.5 Sonnet** (`claude-sonnet-4-5-20250929`): ~$0.0037
+- **Claude Sonnet 4.6** (`claude-sonnet-4-6`): ~$0.0037
 - **Gemini 2.5 Pro** (`gemini-2.5-pro`): ~$0.0015
 
 These calculations estimate **input token costs only**. Output tokens are not included and will vary based on:
@@ -68892,7 +68887,7 @@ def transcribe_audio(audio_url):
 def process_with_llm_gateway(transcript_id, prompt):
     """Send transcript to LLM Gateway for processing"""
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -69046,7 +69041,7 @@ async function transcribeAudio(audioUrl) {
 async function processWithLlmGateway(transcriptId, prompt) {
   // Send transcript to LLM Gateway for processing
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -69304,7 +69299,7 @@ Define a function to process each transcript text with LLM Gateway.
 def process_with_llm_gateway(transcript_id, prompt):
     """Send transcript to LLM Gateway for processing"""
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -69333,7 +69328,7 @@ def process_with_llm_gateway(transcript_id, prompt):
 async function processWithLlmGateway(transcriptId, prompt) {
   // Send transcript to LLM Gateway for processing
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -69559,7 +69554,7 @@ def process_with_llm_gateway(transcript_text, question, context=""):
             Please provide a clear and specific answer."""
 
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -69769,7 +69764,7 @@ async function processWithLlmGateway(transcriptText, question, context = "") {
             Please provide a clear and specific answer.`;
 
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -70075,7 +70070,7 @@ def process_with_llm_gateway(transcript_text, question, context=""):
             Please provide a clear and specific answer."""
 
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {
                 "role": "user",
@@ -70109,7 +70104,7 @@ async function processWithLlmGateway(transcriptText, question, context = "") {
             Please provide a clear and specific answer.`;
 
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       {
         role: "user",
@@ -70463,7 +70458,7 @@ gateway_response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {"role": "user", "content": prompt}
         ]
@@ -70561,7 +70556,7 @@ res = await fetch(
     method: "POST",
     headers,
     body: JSON.stringify({
-      model: "claude-sonnet-4-5-20250929",
+      model: "claude-sonnet-4-6",
       messages: [
         { role: "user", content: prompt }
       ]
@@ -70741,7 +70736,7 @@ gateway_response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {"role": "user", "content": prompt}
         ]
@@ -70787,7 +70782,7 @@ let res = await fetch(
     method: "POST",
     headers,
     body: JSON.stringify({
-      model: "claude-sonnet-4-5-20250929",
+      model: "claude-sonnet-4-6",
       messages: [
         { role: "user", content: prompt }
       ]
@@ -70981,7 +70976,7 @@ response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [{"role": "user", "content": prompt}],
         "transcript_id": transcript_id,
         "max_tokens": 2000,
@@ -71123,7 +71118,7 @@ res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", {
   method: "POST",
   headers: { ...headers, "Content-Type": "application/json" },
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [{ role: "user", content: prompt }],
     transcript_id: transcriptId,
     max_tokens: 2000,
@@ -71413,7 +71408,7 @@ response = requests.post(
     "https://llm-gateway.assemblyai.com/v1/chat/completions",
     headers=headers,
     json={
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [{"role": "user", "content": prompt}],
         "transcript_id": transcript_id,
         "max_tokens": 2000,
@@ -71436,7 +71431,7 @@ let res = await fetch("https://llm-gateway.assemblyai.com/v1/chat/completions", 
   method: "POST",
   headers: { ...headers, "Content-Type": "application/json" },
   body: JSON.stringify({
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [{ role: "user", content: prompt }],
     transcript_id: transcriptId,
     max_tokens: 2000,
@@ -71521,7 +71516,7 @@ I will give you a list of topics and definitions. Select the most relevant topic
 """
 
 llm_gateway_data = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [
         {"role": "user", "content": f"{prompt}\n\n{{{{ transcript }}}}"}
     ],
@@ -71601,7 +71596,7 @@ ${JSON.stringify(tagList, null, 2)}
 `;
 
 const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
         { role: "user", content: `${prompt}\n\n{{ transcript }}` },
     ],
@@ -71781,7 +71776,7 @@ I will give you a list of topics and definitions. Select the most relevant topic
 """
 
 llm_gateway_data = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [
         {"role": "user", "content": f"{prompt}\n\n{{{{ transcript }}}}"}
     ],
@@ -71811,7 +71806,7 @@ ${JSON.stringify(tagList, null, 2)}
 `;
 
 const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
         { role: "user", content: `${prompt}\n\n{{ transcript }}` },
     ],
@@ -71880,7 +71875,7 @@ def generate_ner(transcript_text):
     '''
 
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {"role": "user", "content": f"{prompt}\n\nTranscript: {transcript_text}"}
         ],
@@ -71978,7 +71973,7 @@ async function generateNer(transcriptText) {
     `;
 
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       { role: "user", content: `${prompt}\n\nTranscript: ${transcriptText}` },
     ],
@@ -72133,7 +72128,7 @@ def generate_ner(transcript_text):
     '''
 
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {"role": "user", "content": f"{prompt}\n\nTranscript: {transcript_text}"}
         ],
@@ -72186,7 +72181,7 @@ async function generateNer(transcriptText) {
     `;
 
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       { role: "user", content: `${prompt}\n\nTranscript: ${transcriptText}` },
     ],
@@ -74641,7 +74636,7 @@ Answer Options: {', '.join(q['answer_options'])}
 """
 
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {"role": "user", "content": f"{prompt}\n\n{{{{ transcript }}}}"}
         ],
@@ -74741,7 +74736,7 @@ ${answerFormat}
 `;
 
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       { role: "user", content: `${prompt}\n\n{{ transcript }}` }
     ],
@@ -74939,7 +74934,7 @@ Answer Options: {', '.join(q['answer_options'])}
 """
 
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {"role": "user", "content": f"{prompt}\n\n{{{{ transcript }}}}"}
         ],
@@ -74972,7 +74967,7 @@ ${answerFormat}
 `;
 
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       { role: "user", content: `${prompt}\n\n{{ transcript }}` }
     ],
@@ -75074,7 +75069,7 @@ Ensure that all parts of the conversation are covered by a phase, using "Other" 
 '''
 
 llm_gateway_data = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [
         {"role": "user", "content": f"{prompt}\n\nVTT Transcript:\n{vtt_content}"}
     ],
@@ -75171,7 +75166,7 @@ Ensure that all parts of the conversation are covered by a phase, using "Other" 
 `;
 
 const llmGatewayData = {
-  model: "claude-sonnet-4-5-20250929",
+  model: "claude-sonnet-4-6",
   messages: [
     { role: "user", content: `${prompt}\n\nVTT Transcript:\n${vttContent}` },
   ],
@@ -75366,7 +75361,7 @@ Ensure that all parts of the conversation are covered by a phase, using "Other" 
 '''
 
 llm_gateway_data = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [
         {"role": "user", "content": f"{prompt}\n\nVTT Transcript:\n{vtt_content}"}
     ],
@@ -75411,7 +75406,7 @@ Ensure that all parts of the conversation are covered by a phase, using "Other" 
 `;
 
 const llmGatewayData = {
-  model: "claude-sonnet-4-5-20250929",
+  model: "claude-sonnet-4-6",
   messages: [
     { role: "user", content: `${prompt}\n\nVTT Transcript:\n${vttContent}` },
   ],
@@ -75636,7 +75631,7 @@ This is another short section that states the plan for future sessions. In most 
 
 # Send to LLM Gateway
 llm_gateway_data = {
-    "model": "claude-sonnet-4-5-20250929",
+    "model": "claude-sonnet-4-6",
     "messages": [
         {"role": "user", "content": f"{prompt}\n\n{{{{ transcript }}}}"}
     ],
@@ -75686,7 +75681,7 @@ This is another short section that states the plan for future sessions. In most 
 
 // Send to LLM Gateway
 const llmGatewayData = {
-  model: "claude-sonnet-4-5-20250929",
+  model: "claude-sonnet-4-6",
   messages: [
     { role: "user", content: `${prompt}\n\n{{ transcript }}` },
   ],
@@ -75750,7 +75745,7 @@ Answer Format: {q['format']}
 """
 
     llm_gateway_data = {
-        "model": "claude-sonnet-4-5-20250929",
+        "model": "claude-sonnet-4-6",
         "messages": [
             {"role": "user", "content": f"{prompt}\n\n{{{{ transcript }}}}"}
         ],
@@ -75810,7 +75805,7 @@ Answer Format: ${q.format}
 `;
 
   const llmGatewayData = {
-    model: "claude-sonnet-4-5-20250929",
+    model: "claude-sonnet-4-6",
     messages: [
       { role: "user", content: `${prompt}\n\n{{ transcript }}` },
     ],
@@ -76083,80 +76078,6 @@ Get quick answers to the most common questions about AssemblyAI's features, pric
 
 ---
 
-<a id="does-assemblyai-use-encryption-docs-faq-are-audio-and-text-files-encrypted-mdx"></a>
-
-# Does AssemblyAI use encryption?
-
-URL: https://www.assemblyai.com/docs/faq/are-audio-and-text-files-encrypted
-Source: docs/faq/are-audio-and-text-files-encrypted.mdx
-Navigation: FAQ > Overview > Privacy & Security
-Description: Does AssemblyAI use encryption? documentation.
-
-Data at rest is encrypted with AES 128 or AES-256, and data in transit uses TLS 1.2+. AssemblyAI posts SSL scans quarterly to its [Trust Center](https://app.vanta.com/assemblyai/trust/7n80syl8zln1bn1qm3x8eg) to verify the use of TLS with modern ciphersuites to its service.
-
-## Async
-
-For transcription of pre-recorded audio, AssemblyAI supports the following TLS versions and cipher suites:
-
-### Supported TLS versions
-
-- TLS 1.3
-- TLS 1.2
-
-### Supported cipher suites
-
-- TLS_AES_128_GCM_SHA256
-- TLS_AES_256_GCM_SHA384
-- TLS_CHACHA20_POLY1305_SHA256
-- ECDHE-ECDSA-AES128-GCM-SHA256
-- ECDHE-RSA-AES128-GCM-SHA256
-- ECDHE-ECDSA-AES256-GCM-SHA384
-- ECDHE-RSA-AES256-GCM-SHA384
-
-## Streaming
-
-For transcription of streaming audio, AssemblyAI supports the following TLS version and cipher suites:
-
-### Supported TLS versions
-
-- TLS 1.3
-
-### Supported cipher suites
-
-- TLS_AES_128_GCM_SHA256
-- TLS_AES_256_GCM_SHA384
-- TLS_CHACHA20_POLY1305_SHA256
-
-Ensure your client or application is configured to use one of the supported TLS versions and cipher suites when connecting to AssemblyAI services.
-
----
-
-<a id="are-files-submitted-to-the-api-used-for-model-training-docs-faq-are-files-submitted-to-the-api-used-for-model-training-mdx"></a>
-
-# Are files submitted to the API used for model training?
-
-URL: https://www.assemblyai.com/docs/faq/are-files-submitted-to-the-api-used-for-model-training
-Source: docs/faq/are-files-submitted-to-the-api-used-for-model-training.mdx
-Navigation: FAQ > Overview > Privacy & Security
-Description: Are files submitted to the API used for model training? documentation.
-
-We consider model training critical to providing you with the most accurate models and services that we can. Only certain files submitted to the API, as permitted by the applicable contract, are used for model training. These files undergo a redaction process designed to redact personally identifiable information before any remaining data is used for model training. We will not use files you submit for model training if you are subject to a Business Associate Addendum, are utilizing [our European servers](/pre-recorded-audio/select-the-region), or if you have opted out from model training. You can find more information on if and how to opt out [here](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
-
----
-
-<a id="are-you-gdpr-compliant-docs-faq-are-you-gdpr-compliant-mdx"></a>
-
-# Are you GDPR compliant?
-
-URL: https://www.assemblyai.com/docs/faq/are-you-gdpr-compliant
-Source: docs/faq/are-you-gdpr-compliant.mdx
-Navigation: FAQ > Overview > Privacy & Security
-Description: Are you GDPR compliant? documentation.
-
-We have designed our products with GDPR principles top of mind but also understand that privacy compliance is a moving target. As privacy requirements continue to evolve (rapidly), we are constantly working to assess and improve our practices. You can read more about our privacy practices in our Privacy Policy [here](https://www.assemblyai.com/legal/privacy-policy), and Data Processing Addendum [here](https://www.assemblyai.com/legal/data-processing-addendum).
-
----
-
 <a id="has-assemblyai-certified-to-the-eu-u-s-data-privacy-framework-docs-faq-has-assemblyai-certified-to-the-eu-us-data-privacy-framework-mdx"></a>
 
 # Has AssemblyAI certified to the EU-U.S. Data Privacy Framework?
@@ -76238,21 +76159,6 @@ Paid customers can review and sign our standard online BAA terms self-serve, at 
 
 ---
 
-<a id="do-the-llms-provided-through-llm-gateway-train-on-my-data-docs-faq-do-llms-in-llm-gateway-train-on-data-mdx"></a>
-
-# Do the LLMs provided through LLM Gateway train on my data?
-
-URL: https://www.assemblyai.com/docs/faq/do-llms-in-llm-gateway-train-on-data
-Source: docs/faq/do-llms-in-llm-gateway-train-on-data.mdx
-Navigation: FAQ > Overview > Privacy & Security
-Description: Do the LLMs provided through LLM Gateway train on my data? documentation.
-
-AssemblyAI has opted out of data training with all LLM Gateway providers.
-
-Please note this is separate from whether AssemblyAI may train our models with your data. You can find more information on if and how to opt out of data sharing for our model improvement program [here](/faq/how-to-opt-out-of-data-sharing-for-our-model-improvement-program).
-
----
-
 <a id="do-you-have-a-formal-risk-assessment-policy-or-process-docs-faq-do-you-have-a-formal-risk-assessment-policy-or-process-mdx"></a>
 
 # Do you have a formal risk assessment policy or process?
@@ -76280,19 +76186,6 @@ Description: Do you have documented information security policies? If so, how fr
 Yes, AssemblyAI maintains documented information security policies. These policies are available on our [Trust Center](https://app.vanta.com/assemblyai/trust/7n80syl8zln1bn1qm3x8eg) and are reviewed and updated annually.
 
 AssemblyAI is SOC 2 Type II certified and HIPAA compliant. You can access our security reports and certifications through the [Trust Center](https://app.vanta.com/assemblyai/trust/7n80syl8zln1bn1qm3x8eg). For more information about how we handle your data, see [Data retention and model training](/data-retention-and-model-training).
-
----
-
-<a id="do-you-have-soc2-certification-docs-faq-do-you-have-soc2-certification-mdx"></a>
-
-# Do you have SOC2 certification?
-
-URL: https://www.assemblyai.com/docs/faq/do-you-have-soc2-certification
-Source: docs/faq/do-you-have-soc2-certification.mdx
-Navigation: FAQ > Overview > Privacy & Security
-Description: Do you have SOC2 certification? documentation.
-
-We have both SOC2 Type 1 and Type 2 certifications. You can find more information on this on our [Trust Center](https://www.assemblyai.com/trust). We also have a great blog post on the subject, which you can find [here](https://www.assemblyai.com/blog/assemblyai-obtains-soc2-type-2-compliance-for-2022-2023/).
 
 ---
 

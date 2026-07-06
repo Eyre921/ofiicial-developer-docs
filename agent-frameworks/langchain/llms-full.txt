@@ -120353,7 +120353,7 @@ Define custom Deep Agents Code subagents as AGENTS.md files with YAML frontmatte
 Define custom synchronous [subagents](/oss/javascript/deepagents/subagents) as markdown files so Deep Agents Code can delegate specialized tasks to them.
 
 <Note>
-  Async subagents are not available in Deep Agents Code at this time.
+  Async subagents are not available to end-users in Deep Agents Code at this time.
 </Note>
 
 Each subagent lives in its own folder with an `AGENTS.md` file:
@@ -211412,7 +211412,7 @@ Define custom Deep Agents Code subagents as AGENTS.md files with YAML frontmatte
 Define custom synchronous [subagents](/oss/python/deepagents/subagents) as markdown files so Deep Agents Code can delegate specialized tasks to them.
 
 <Note>
-  Async subagents are not available in Deep Agents Code at this time.
+  Async subagents are not available to end-users in Deep Agents Code at this time.
 </Note>
 
 Each subagent lives in its own folder with an `AGENTS.md` file:
@@ -252702,25 +252702,26 @@ LangChain and [Deep Agents](/oss/python/deepagents/overview) provide prebuilt mi
 
 The following middleware work with any LLM provider:
 
-| Middleware                                    | Description                                                                      |
-| --------------------------------------------- | -------------------------------------------------------------------------------- |
-| [Summarization](#summarization)               | Automatically summarize conversation history when approaching token limits.      |
-| [Human-in-the-loop](#human-in-the-loop)       | Pause execution for human approval of tool calls.                                |
-| [Model call limit](#model-call-limit)         | Limit the number of model calls to prevent excessive costs.                      |
-| [Tool call limit](#tool-call-limit)           | Control tool execution by limiting call counts.                                  |
-| [Model fallback](#model-fallback)             | Automatically fallback to alternative models when primary fails.                 |
-| [PII detection](#pii-detection)               | Detect and handle Personally Identifiable Information (PII).                     |
-| [To-do list](#to-do-list)                     | Equip agents with task planning and tracking capabilities.                       |
-| [LLM tool selector](#llm-tool-selector)       | Use an LLM to select relevant tools before calling main model.                   |
-| [Tool retry](#tool-retry)                     | Automatically retry failed tool calls with exponential backoff.                  |
-| [Model retry](#model-retry)                   | Automatically retry failed model calls with exponential backoff.                 |
-| [LLM tool emulator](#llm-tool-emulator)       | Emulate tool execution using an LLM for testing purposes.                        |
-| [Context editing](#context-editing)           | Manage conversation context by trimming or clearing tool uses.                   |
-| [Provider tool search](#provider-tool-search) | Defer tools behind providers' server-side tool search, surfacing them on demand. |
-| [Shell tool](#shell-tool)                     | Expose a persistent shell session to agents for command execution.               |
-| [File search](#file-search)                   | Provide Glob and Grep search tools over filesystem files.                        |
-| [Filesystem](#filesystem-middleware)          | Provide agents with a filesystem for storing context and long-term memories.     |
-| [Subagent](#subagent)                         | Add the ability to spawn subagents.                                              |
+| Middleware                                    | Description                                                                                   |
+| --------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [Summarization](#summarization)               | Automatically summarize conversation history when approaching token limits.                   |
+| [Human-in-the-loop](#human-in-the-loop)       | Pause execution for human approval of tool calls.                                             |
+| [Model call limit](#model-call-limit)         | Limit the number of model calls to prevent excessive costs.                                   |
+| [Tool call limit](#tool-call-limit)           | Control tool execution by limiting call counts.                                               |
+| [Model fallback](#model-fallback)             | Automatically fallback to alternative models when primary fails.                              |
+| [PII detection](#pii-detection)               | Detect and handle Personally Identifiable Information (PII).                                  |
+| [To-do list](#to-do-list)                     | Equip agents with task planning and tracking capabilities.                                    |
+| [LLM tool selector](#llm-tool-selector)       | Use an LLM to select relevant tools before calling main model.                                |
+| [Tool retry](#tool-retry)                     | Automatically retry failed tool calls with exponential backoff.                               |
+| [Model retry](#model-retry)                   | Automatically retry failed model calls with exponential backoff.                              |
+| [LLM tool emulator](#llm-tool-emulator)       | Emulate tool execution using an LLM for testing purposes.                                     |
+| [Context editing](#context-editing)           | Manage conversation context by trimming or clearing tool uses.                                |
+| [Provider tool search](#provider-tool-search) | Defer tools behind providers' server-side tool search, surfacing them on demand.              |
+| [Shell tool](#shell-tool)                     | Expose a persistent shell session to agents for command execution.                            |
+| [File search](#file-search)                   | Provide Glob and Grep search tools over filesystem files.                                     |
+| [Filesystem](#filesystem-middleware)          | Provide agents with a filesystem for storing context and long-term memories.                  |
+| [Subagent](#subagent)                         | Add the ability to spawn subagents.                                                           |
+| [Rubric grading (Beta)](#rubric-grading)      | Apply LLM-as-a-judge grading so agents self-evaluate and iterate until a rubric is satisfied. |
 
 ### Summarization
 
@@ -254240,6 +254241,132 @@ agent = create_agent(
 ```
 
 In addition to any user-defined subagents, the main agent has access to a `general-purpose` subagent at all times. This subagent has the same instructions as the main agent and all the tools it has access to. The primary purpose of the `general-purpose` subagent is context isolation—the main agent can delegate a complex task to this subagent and get a concise answer back without bloat from intermediate tool calls.
+
+### Rubric grading
+
+<Note>
+  `RubricMiddleware` requires `deepagents>=0.6.5`. It is in [**beta**](/oss/python/versioning); the API may change in the future.
+</Note>
+
+Some tasks have a clear definition of "done" that an agent cannot reliably hit on the first try. `RubricMiddleware` lets you declare *what done looks like* as a rubric and have the agent self-evaluate and iterate until the rubric is satisfied or a maximum iteration cap is hit.
+
+**API reference:** [`RubricMiddleware`](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
+
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import RubricMiddleware, create_deep_agent
+  from langgraph.checkpoint.memory import InMemorySaver
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      middleware=[
+          RubricMiddleware(
+              model="anthropic:claude-haiku-4-5",
+              max_iterations=3,
+          ),
+      ],
+      checkpointer=InMemorySaver(),
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import RubricMiddleware, create_deep_agent
+  from langgraph.checkpoint.memory import InMemorySaver
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      middleware=[
+          RubricMiddleware(
+              model="anthropic:claude-haiku-4-5",
+              max_iterations=3,
+          ),
+      ],
+      checkpointer=InMemorySaver(),
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import RubricMiddleware, create_deep_agent
+  from langgraph.checkpoint.memory import InMemorySaver
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      middleware=[
+          RubricMiddleware(
+              model="anthropic:claude-haiku-4-5",
+              max_iterations=3,
+          ),
+      ],
+      checkpointer=InMemorySaver(),
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import RubricMiddleware, create_deep_agent
+  from langgraph.checkpoint.memory import InMemorySaver
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      middleware=[
+          RubricMiddleware(
+              model="anthropic:claude-haiku-4-5",
+              max_iterations=3,
+          ),
+      ],
+      checkpointer=InMemorySaver(),
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import RubricMiddleware, create_deep_agent
+  from langgraph.checkpoint.memory import InMemorySaver
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      middleware=[
+          RubricMiddleware(
+              model="anthropic:claude-haiku-4-5",
+              max_iterations=3,
+          ),
+      ],
+      checkpointer=InMemorySaver(),
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import RubricMiddleware, create_deep_agent
+  from langgraph.checkpoint.memory import InMemorySaver
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      middleware=[
+          RubricMiddleware(
+              model="anthropic:claude-haiku-4-5",
+              max_iterations=3,
+          ),
+      ],
+      checkpointer=InMemorySaver(),
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import RubricMiddleware, create_deep_agent
+  from langgraph.checkpoint.memory import InMemorySaver
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      middleware=[
+          RubricMiddleware(
+              model="anthropic:claude-haiku-4-5",
+              max_iterations=3,
+          ),
+      ],
+      checkpointer=InMemorySaver(),
+  )
+  ```
+</CodeGroup>
+
+For full configuration options, streaming events, and a complete code generation example, see [Grading rubrics](/oss/python/deepagents/rubric).
 
 ## Provider-specific middleware
 

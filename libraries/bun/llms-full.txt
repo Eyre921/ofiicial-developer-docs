@@ -27978,7 +27978,7 @@ Bun can also execute `"scripts"` from your `package.json`. Add the following scr
     "@types/bun": "latest"
   },
   "peerDependencies": {
-    "typescript": "^5"
+    "typescript": "^6"
   }
 }
 ```
@@ -31799,7 +31799,7 @@ cookie.httpOnly; // boolean - Accessible only via HTTP (not JavaScript)
 
 #### `isExpired(): boolean`
 
-Checks if the cookie has expired.
+Checks if the cookie has expired. When both `maxAge` and `expires` are set, `maxAge` takes precedence, as required by [RFC 6265](https://datatracker.ietf.org/doc/html/rfc6265#section-5.3).
 
 ```ts title="is-expired.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 // Expired cookie (Date in the past)
@@ -31813,6 +31813,10 @@ const validCookie = new Bun.Cookie("name", "value", {
   maxAge: 3600, // 1 hour in seconds
 });
 console.log(validCookie.isExpired()); // false
+
+// A non-positive maxAge expires the cookie immediately
+const deletedCookie = new Bun.Cookie("name", "value", { maxAge: 0 });
+console.log(deletedCookie.isExpired()); // true
 
 // Session cookie (no expiration)
 const sessionCookie = new Bun.Cookie("name", "value");
@@ -52483,6 +52487,27 @@ test("clearing all mocks", () => {
 });
 ```
 
+### Reset All Mocks
+
+`jest.resetAllMocks()` (and its `vi.resetAllMocks()` alias) calls `mockFn.mockReset()` on every mock: on top of what `clearAllMocks()` does, it drops the implementations set by `mockImplementation()`, `mockReturnValue()` and friends. It does not restore the original implementation of a spy:
+
+```ts title="test.ts" icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
+import { expect, jest, test } from "bun:test";
+
+const random = jest.fn(() => Math.random());
+
+test("resetting all mocks", () => {
+  random();
+  expect(random).toHaveBeenCalledTimes(1);
+
+  jest.resetAllMocks();
+
+  expect(random).toHaveBeenCalledTimes(0);
+  // unlike clearAllMocks(), the implementation is gone
+  expect(random()).toBeUndefined();
+});
+```
+
 ### Restore All Mocks
 
 `mock.restore()` restores every mock at once, instead of calling `mockFn.mockRestore()` on each one. It does not reset modules overridden with `mock.module()`.
@@ -52543,6 +52568,7 @@ test("vitest compatibility", () => {
   // vi.spyOn
   // vi.mock
   // vi.restoreAllMocks
+  // vi.resetAllMocks
   // vi.clearAllMocks
 });
 ```

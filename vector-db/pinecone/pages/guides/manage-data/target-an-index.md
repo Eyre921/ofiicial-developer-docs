@@ -85,14 +85,6 @@ This method is recommended for production:
   	idxConnectionNs2 := idxConnectionNs1.WithNamespace("example-namespace2")
   }
   ```
-
-  ```csharp C# {5} theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var index = pinecone.Index(host: "INDEX_HOST");
-  ```
 </CodeGroup>
 
 ### Get an index host
@@ -241,36 +233,6 @@ To get an index host from the Pinecone API, use the [`describe_index`](/referenc
   // }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var indexModel = await pinecone.DescribeIndexAsync("docs-example");
-
-  Console.WriteLine(indexModel);
-
-  // Response:
-  // {
-  //   "name": "docs-example",
-  //   "dimension": 1536,
-  //   "metric": "cosine",
-  //   "host": "docs-example-govk0nt.svc.aped-4627-b74a.pinecone.io",
-  //   "deletion_protection": "disabled",
-  //   "spec": {
-  //     "pod": null,
-  //     "serverless": {
-  //       "cloud": "aws",
-  //       "region": "us-east-1"
-  //     }
-  //   },
-  //   "status": {
-  //     "ready": true,
-  //     "state": "Ready"
-  //   }
-  // }
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -335,13 +297,5 @@ This method is convenient for testing but is not recommended for production:
   ```go Go theme={null}
   // It is not possible to target an index by name in the Go SDK. 
   // You must target an index by host.
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var index = pinecone.Index("docs-example");
   ```
 </CodeGroup>

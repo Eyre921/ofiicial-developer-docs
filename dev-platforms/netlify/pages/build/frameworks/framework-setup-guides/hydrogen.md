@@ -30,7 +30,7 @@ To successfully deploy a Hydrogen app to Netlify, you should use Netlify's [star
 
 Using the command line, you can create a new project based on the Netlify starter template for Hydrogen.
 
-Before you begin, make sure you have [Node.js](https://nodejs.org/en/download) version 22 or later.
+Before you begin, make sure you have [Node.js](https://nodejs.org/en/download) version 24 or later.
 
 1. In your terminal, run the following to create your project:
 

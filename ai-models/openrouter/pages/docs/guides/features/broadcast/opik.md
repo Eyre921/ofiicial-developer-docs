@@ -1,0 +1,96 @@
+---
+title: "Comet Opik"
+source: https://openrouter.ai/docs/guides/features/broadcast/opik.md
+path: docs/guides/features/broadcast/opik
+---
+
+> ## Documentation Index
+> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Comet Opik
+
+> Send traces to Comet Opik
+
+[Comet Opik](https://www.comet.com/site/products/opik/) is an open-source platform for evaluating, testing, and monitoring LLM applications.
+
+## Step 1: Get your Opik credentials
+
+In Comet, set up your Opik workspace and project:
+
+1. Log in to your Comet account
+2. Create or select a workspace for your LLM traces
+3. Create a project within the workspace
+4. Go to **Settings > API Keys** to create or copy your API key
+
+## Step 2: Enable Broadcast in OpenRouter
+
+Go to [Settings > Observability](https://openrouter.ai/settings/observability) and toggle **Enable Broadcast**.
+
+<Frame>
+  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/guides/features/broadcast/arize/broadcast-enable.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=a48ecd5df85b4e6f3982c8402671f631" alt="Enable Broadcast" width="2692" height="1296" data-path="assets/guides/features/broadcast/arize/broadcast-enable.png" />
+</Frame>
+
+## Step 3: Configure Comet Opik
+
+Click the edit icon next to **Comet Opik** and enter:
+
+* **Api Key**: Your Comet API key (starts with `opik_...`)
+* **Workspace**: Your Comet workspace name
+* **Project Name**: The project name where traces will be logged
+
+## Step 4: Test and save
+
+Click **Test Connection** to verify the setup. The configuration only saves if the test passes.
+
+## Step 5: Send a test trace
+
+Make an API request through OpenRouter and view the trace in your Opik
+project dashboard.
+
+<Frame>
+  <img src="https://mintcdn.com/openrouter-d02e98a0/PSwwwiCqAD_BNeni/assets/guides/features/broadcast/opik/broadcast-opik-trace.png?fit=max&auto=format&n=PSwwwiCqAD_BNeni&q=85&s=a1efdbc1b136ceccc4546078f5cad6b0" alt="Opik Trace View" width="3368" height="1650" data-path="assets/guides/features/broadcast/opik/broadcast-opik-trace.png" />
+</Frame>
+
+## Custom Metadata
+
+Comet Opik supports custom metadata on both traces and spans for organizing and filtering your LLM evaluations.
+
+### Supported Metadata Keys
+
+| Key               | Opik Mapping                           | Description                                  |
+| ----------------- | -------------------------------------- | -------------------------------------------- |
+| `trace_id`        | Trace metadata (`openrouter_trace_id`) | Group multiple requests into a single trace  |
+| `trace_name`      | Trace Name                             | Custom name displayed in the Opik trace list |
+| `span_name`       | Span Name                              | Name for intermediate spans in the hierarchy |
+| `generation_name` | Span Name                              | Name for the LLM generation span             |
+
+### Example
+
+```json lines theme={null}
+{
+  "model": "openai/gpt-4o",
+  "messages": [{ "role": "user", "content": "Evaluate this response..." }],
+  "user": "user_12345",
+  "session_id": "session_abc",
+  "trace": {
+    "trace_name": "Response Quality Eval",
+    "generation_name": "Quality Assessment",
+    "eval_suite": "quality_v2",
+    "test_case_id": "tc_001"
+  }
+}
+```
+
+### Additional Context
+
+* Custom metadata keys from `trace` are included in both the trace and span metadata objects
+* Cost information (input, output, total) is automatically added to span metadata
+* Model parameters and finish reasons are included in span metadata when available
+* The `user` field maps to user identification in trace metadata
+* Opik uses UUIDv7 format for trace and span IDs internally; original OpenRouter IDs are stored in metadata as `openrouter_trace_id` and `openrouter_observation_id`
+
+## Privacy Mode
+
+When [Privacy Mode](/guides/features/broadcast#privacy-mode) is enabled for this destination, prompt and completion content is excluded from traces. All other trace data — token usage, costs, timing, model information, and custom metadata — is still sent normally. See [Privacy Mode](/guides/features/broadcast#privacy-mode) for details.
+

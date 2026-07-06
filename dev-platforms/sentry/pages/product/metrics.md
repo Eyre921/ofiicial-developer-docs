@@ -131,8 +131,6 @@ You can pin any metric query as a widget on a [Dashboard](https://docs.sentry.io
 * From the Metrics Explorer, open **Save As → Dashboard widget** and choose the metric query you want to visualize.
 * If you have multiple metric queries on the page, you can add them individually or pick **All Metrics** to create a single widget containing all of them.
 
-Equations can't currently be added as dashboard widgets — add the underlying metric queries instead.
-
 ## [Saving Queries](https://docs.sentry.io/product/metrics.md#saving-queries)
 
 Frequently-used metric queries can be saved and re-opened from the [Explorer](https://sentry.io/explore/metrics/):

@@ -220,60 +220,6 @@ If a record ID already exists, upserting overwrites the entire record. To change
       }
       ```
 
-      ```csharp C# theme={null}
-      using Pinecone;
-
-      var pinecone = new PineconeClient("YOUR_API_KEY");
-
-      var index = pinecone.Index(host: "INDEX_HOST");
-
-      await index.UpsertRecordsAsync(
-          "example-namespace",
-          [
-              new UpsertRecord
-              {
-                  Id = "rec1",
-                  AdditionalProperties =
-                  {
-                      ["chunk_text"] = "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-                      ["category"] = "technology",
-                      ["quarter"] = "Q3",
-                  },
-              },
-              new UpsertRecord
-              {
-                  Id = "rec2",
-                  AdditionalProperties =
-                  {
-                      ["chunk_text"] = "AAPL may consider healthcare integrations in Q4 to compete with tech rivals entering the consumer wellness space.",
-                      ["category"] = "technology",
-                      ["quarter"] = "Q4",
-                  },
-              },  
-              new UpsertRecord
-              {
-                  Id = "rec3",
-                  AdditionalProperties =
-                  {
-                      ["chunk_text"] = "AAPL may consider healthcare integrations in Q4 to compete with tech rivals entering the consumer wellness space.",
-                      ["category"] = "technology",
-                      ["quarter"] = "Q4",
-                  },
-              },
-              new UpsertRecord
-              {
-                  Id = "rec4",
-                  AdditionalProperties =
-                  {
-                      ["chunk_text"] = "AAPL's strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production",
-                      ["category"] = "technology",
-                      ["quarter"] = "Q3",
-                  },
-              },
-          ]
-      );
-      ```
-
       ```shell curl theme={null}
       # To get the unique host for an index,
       # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -521,58 +467,6 @@ If a record ID already exists, upserting overwrites the entire record. To change
               fmt.Printf("Successfully upserted %d vector(s)!\n", count)
           }
       }
-      ```
-
-      ```csharp C# theme={null}
-      using Pinecone;
-
-      var pinecone = new PineconeClient("YOUR_API_KEY");
-
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      var index = pinecone.Index(host: "INDEX_HOST");
-
-      var upsertResponse = await index.UpsertAsync(new UpsertRequest {
-          Vectors = new[]
-          {
-              new Vector
-              {
-                  Id = "A",
-                  Values = new[] { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f },
-                  Metadata = new Metadata {
-                      ["genre"] = new("comedy"),
-                      ["year"] = new(2020),
-                  },
-              },
-              new Vector
-              {
-                  Id = "B",
-                  Values = new[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f },
-                  Metadata = new Metadata {
-                      ["genre"] = new("documentary"),
-                      ["year"] = new(2019),
-                  },
-              },
-              new Vector
-              {
-                  Id = "C",
-                  Values = new[] { 0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f },
-                  Metadata = new Metadata {
-                      ["genre"] = new("comedy"),
-                      ["year"] = new(2019),
-                  },
-              },
-              new Vector
-              {
-                  Id = "D",
-                  Values = new[] { 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f },
-                  Metadata = new Metadata {
-                      ["genre"] = new("drama"),
-                  },
-              }
-          },
-          Namespace = "example-namespace",
-      });
       ```
 
       ```bash curl theme={null}
@@ -833,60 +727,6 @@ If a record ID already exists, upserting overwrites the entire record. To change
       		log.Fatalf("Failed to upsert vectors: %v", err)
       	}
       }
-      ```
-
-      ```csharp C# theme={null}
-      using Pinecone;
-
-      var pinecone = new PineconeClient("YOUR_API_KEY");
-
-      var index = pinecone.Index(host: "INDEX_HOST");
-
-      await index.UpsertRecordsAsync(
-          "example-namespace",
-          [
-              new UpsertRecord
-              {
-                  Id = "rec1",
-                  AdditionalProperties =
-                  {
-                      ["chunk_text"] = "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-                      ["category"] = "technology",
-                      ["quarter"] = "Q3",
-                  },
-              },
-              new UpsertRecord
-              {
-                  Id = "rec2",
-                  AdditionalProperties =
-                  {
-                      ["chunk_text"] = "AAPL may consider healthcare integrations in Q4 to compete with tech rivals entering the consumer wellness space.",
-                      ["category"] = "technology",
-                      ["quarter"] = "Q4",
-                  },
-              },  
-              new UpsertRecord
-              {
-                  Id = "rec3",
-                  AdditionalProperties =
-                  {
-                      ["chunk_text"] = "AAPL may consider healthcare integrations in Q4 to compete with tech rivals entering the consumer wellness space.",
-                      ["category"] = "technology",
-                      ["quarter"] = "Q4",
-                  },
-              },
-              new UpsertRecord
-              {
-                  Id = "rec4",
-                  AdditionalProperties =
-                  {
-                      ["chunk_text"] = "AAPL's strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production",
-                      ["category"] = "technology",
-                      ["quarter"] = "Q3",
-                  },
-              },
-          ]
-      );
       ```
 
       ```shell curl theme={null}
@@ -1269,83 +1109,6 @@ If a record ID already exists, upserting overwrites the entire record. To change
       		fmt.Printf("Successfully upserted %d vector(s)!\n", count)
       	}
       }
-      ```
-
-      ```csharp C# theme={null}
-      using Pinecone;
-
-      var pinecone = new PineconeClient("YOUR_API_KEY");
-
-      var index = pinecone.Index("docs-example");
-
-      var vector1 = new Vector
-      {
-          Id = "vec1",
-          SparseValues = new SparseValues
-          {
-              Indices = new uint[] { 822745112, 1009084850, 1221765879, 1408993854, 1504846510, 1596856843, 1640781426, 1656251611, 1807131503, 2543655733, 2902766088, 2909307736, 3246437992, 3517203014, 3590924191 },
-              Values = new ReadOnlyMemory<float>([1.7958984f, 0.41577148f, 2.828125f, 2.8027344f, 2.8691406f, 1.6533203f, 5.3671875f, 1.3046875f, 0.49780273f, 0.5722656f, 2.71875f, 3.0820312f, 2.5019531f, 4.4414062f, 3.3554688f])
-          },
-          Metadata = new Metadata {
-              ["chunk_text"] = new("AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones."),
-              ["category"] = new("technology"),
-              ["quarter"] = new("Q3"),
-          },
-      };
-
-      var vector2 = new Vector
-      {
-          Id = "vec2",
-          SparseValues = new SparseValues
-          {
-              Indices = new uint[] { 131900689, 592326839, 710158994, 838729363, 1304885087, 1640781426, 1690623792, 1807131503, 2066971792, 2428553208, 2548600401, 2577534050, 3162218338, 3319279674, 3343062801, 3476647774, 3485013322, 3517203014, 4283091697 },
-              Values = new ReadOnlyMemory<float>([0.4362793f, 3.3457031f, 2.7714844f, 3.0273438f, 3.3164062f, 5.6015625f, 2.4863281f, 0.38134766f, 1.25f, 2.9609375f, 0.34179688f, 1.4306641f, 0.34375f, 3.3613281f, 1.4404297f, 2.2558594f, 2.2597656f, 4.8710938f, 0.5605469f])
-          },
-          Metadata = new Metadata {
-              ["chunk_text"] = new("Analysts suggest that AAPL'\''s upcoming Q4 product launch event might solidify its position in the premium smartphone market."),
-              ["category"] = new("technology"),
-              ["quarter"] = new("Q4"),
-          },
-      };
-
-      var vector3 = new Vector
-      {
-          Id = "vec3",
-          SparseValues = new SparseValues
-          {
-              Indices = new uint[] { 8661920, 350356213, 391213188, 554637446, 1024951234, 1640781426, 1780689102, 1799010313, 2194093370, 2632344667, 2641553256, 2779594451, 3517203014, 3543799498, 3837503950, 4283091697 },
-              Values = new ReadOnlyMemory<float>([2.6875f, 4.2929688f, 3.609375f, 3.0722656f, 2.1152344f, 5.78125f, 3.7460938f, 3.7363281f, 1.2695312f, 3.4824219f, 0.7207031f, 0.0826416f, 4.671875f, 3.7011719f, 2.796875f, 0.61621094f])
-          },
-          Metadata = new Metadata {
-              ["chunk_text"] = new("AAPL'\''s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production"),
-              ["category"] = new("technology"),
-              ["quarter"] = new("Q3"),
-          },    
-      };
-
-      var vector4 = new Vector
-      {
-          Id = "vec4",
-          SparseValues = new SparseValues
-          {
-              Indices = new uint[] { 131900689, 152217691, 441495248, 1640781426, 1851149807, 2263326288, 2502307765, 2641553256, 2684780967, 2966813704, 3162218338, 3283104238, 3488055477, 3530642888, 3888762515, 4152503047, 4177290673 },
-              Values = new ReadOnlyMemory<float>([0.73046875f, 0.46972656f, 2.84375f, 5.2265625f, 3.3242188f, 1.9863281f, 0.9511719f, 0.5019531f, 4.4257812f, 3.4277344f, 0.41308594f, 4.3242188f, 2.4179688f, 3.1757812f, 1.0224609f, 2.0585938f, 2.5859375f])
-          },
-          Metadata = new Metadata {
-              ["chunk_text"] = new("AAPL may consider healthcare integrations in Q4 to compete with tech rivals entering the consumer wellness space."),
-              ["category"] = new("technology"),
-              ["quarter"] = new("Q4"),
-          },
-      };
-
-      // Upsert vector
-      Console.WriteLine("Upserting vector...");
-      var upsertResponse = await index.UpsertAsync(new UpsertRequest
-      {
-          Vectors = new List<Vector> { vector1, vector2, vector3, vector4 },
-          Namespace = "example-namespace"
-      });
-      Console.WriteLine($"Upserted {upsertResponse.UpsertedCount} vector");
       ```
 
       ```shell curl theme={null}

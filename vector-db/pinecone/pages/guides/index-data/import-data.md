@@ -278,25 +278,6 @@ Use the [`start_import`](/reference/api/latest/data-plane/start_import) operatio
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var uri = "s3://example_bucket/import";
-
-  var response = await index.StartBulkImportAsync(new StartImportRequest
-  {
-      Uri = uri,
-      IntegrationId = "a12b3d4c-47d2-492c-a97a-dd98c8dbefde",
-      ErrorMode = new ImportErrorMode { OnError = ImportErrorModeOnError.Continue }
-  });
-  ```
-
   ```bash curl theme={null}
   # To get the unique host for an index,
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -428,18 +409,6 @@ To track an import's progress, check its status bar in the [Pinecone console](ht
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var importDetails = await index.DescribeBulkImportAsync("101");
-  ```
-
   ```bash curl theme={null}
   # To get the unique host for an index, 
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -534,7 +503,7 @@ Use the [`list_imports`](/reference/api/latest/data-plane/list_imports) operatio
   </Tab>
 
   <Tab title="Other SDKs">
-    When using the Node.js SDK, Java SDK, Go SDK, .NET SDK, or REST API to list recent and ongoing imports, you must manually fetch each page of results. To view the next page of results, include the `paginationToken` provided in the response.
+    When using the Node.js SDK, Java SDK, Go SDK, or REST API to list recent and ongoing imports, you must manually fetch each page of results. To view the next page of results, include the `paginationToken` provided in the response.
 
     <CodeGroup>
       ```javascript JavaScript theme={null}
@@ -614,22 +583,6 @@ Use the [`list_imports`](/reference/api/latest/data-plane/list_imports) operatio
           }
           fmt.Printf("Second page of imports: %+v", nextImportPage.Imports)
       }
-      ```
-
-      ```csharp C# theme={null}
-      using Pinecone;
-
-      var pinecone = new PineconeClient("YOUR_API_KEY");
-
-      // To get the unique host for an index, 
-      // see https://docs.pinecone.io/guides/manage-data/target-an-index
-      var index = pinecone.Index(host: "INDEX_HOST");
-
-      var imports = await index.ListBulkImportsAsync(new ListBulkImportsRequest
-      {
-          Limit = 10,
-          PaginationToken = "Tm90aGluZyB0byBzZWUgaGVyZQo"
-      });
       ```
 
       ```bash curl theme={null}
@@ -734,18 +687,6 @@ The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation 
           log.Fatalf("Failed to describe import: %s - %v", importID, err)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var cancelResponse = await index.CancelBulkImportAsync("101");
   ```
 
   ```bash curl theme={null}

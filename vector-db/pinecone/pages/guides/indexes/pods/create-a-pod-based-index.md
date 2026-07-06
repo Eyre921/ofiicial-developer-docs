@@ -120,29 +120,6 @@ Other parameters are optional. See the [API reference](/reference/api/latest/con
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexAsync(new CreateIndexRequest
-  {
-      Name = "docs-example",
-      Dimension = 1536,
-      Metric = MetricType.Cosine,
-      Spec = new PodIndexSpec
-      {
-          Pod = new PodSpec
-          {
-              Environment = "us-east1-gcp",
-              PodType = "p1.x1",
-              Pods = 1,
-          }
-      },
-      DeletionProtection = DeletionProtection.Disabled
-  });
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 

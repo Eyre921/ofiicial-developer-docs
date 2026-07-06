@@ -66,7 +66,9 @@ curl https://api.stripe.com/v1/payment_methods \
 
 | Payment method | Connect | Checkout | Payment Links | Payment Element | Express Checkout Element | Mobile Payment Element | Subscriptions | Invoicing | Customer Portal |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Custom payment methods | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
+| Custom payment methods | ✓ Supported | ✓ Supported 1 | - Unsupported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported |
+
+1 Not supported when using [manual approval](https://docs.stripe.com/payments/custom/manual-approval.md) (`approval_method=manual`).
 
 ### Payment Element 
 

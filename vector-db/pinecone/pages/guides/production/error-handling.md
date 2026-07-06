@@ -96,7 +96,6 @@ For SDK-specific error handling patterns, see the documentation for your languag
 
 * [Go SDK](/reference/sdks/go/overview)
 * [Java SDK](/reference/sdks/java/overview)
-* [.NET SDK](/reference/sdks/dotnet/overview)
 
 ## Implement retry logic
 

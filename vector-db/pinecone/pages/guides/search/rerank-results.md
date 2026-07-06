@@ -168,37 +168,6 @@ For example, the following code searches for the 3 records most semantically rel
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var response = await index.SearchRecordsAsync(
-      "example-namespace",
-      new SearchRecordsRequest
-      {
-          Query = new SearchRecordsRequestQuery
-          {
-              TopK = 4,
-              Inputs = new Dictionary<string, object?> { { "text", "Disease prevention" } },
-          },
-          Fields = ["category", "chunk_text"],
-          Rerank = new SearchRecordsRequestRerank
-          {
-              Model = "bge-reranker-v2-m3",
-              TopN = 2,
-              RankFields = ["chunk_text"],
-          }
-      }
-  );
-
-  Console.WriteLine(response);
-  ```
-
   ```shell curl theme={null}
   INDEX_HOST="INDEX_HOST"
   NAMESPACE="YOUR_NAMESPACE"
@@ -318,36 +287,6 @@ The response looks as follows. For each hit, the `_score` represents the relevan
         {
           "_id": "rec4",
           "_score": 0.0029235430993139744,
-          "fields": {
-            "category": "endocrine system",
-            "chunk_text": "The high fiber content in apples can also help regulate blood sugar levels, making them a favorable snack for people with diabetes."
-          }
-        }
-      ]
-    },
-    "usage": {
-      "read_units": 6,
-      "embed_total_tokens": 8,
-      "rerank_units": 1
-    }
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "result": {
-      "hits": [
-        {
-          "_id": "rec3",
-          "_score": 0.004399413242936134,
-          "fields": {
-            "category": "immune system",
-            "chunk_text": "Rich in vitamin C and other antioxidants, apples contribute to immune health and may reduce the risk of chronic diseases."
-          }
-        },
-        {
-          "_id": "rec4",
-          "_score": 0.0029121784027665854,
           "fields": {
             "category": "endocrine system",
             "chunk_text": "The high fiber content in apples can also help regulate blood sugar levels, making them a favorable snack for people with diabetes."
@@ -568,56 +507,6 @@ For example, the following code uses the hosted `bge-reranker-v2-m3` model to re
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // Add the documents to rerank
-  var documents = new List<Dictionary<string, object?>>
-  {
-      new()
-      {
-          ["id"] = "vec2",
-          ["chunk_text"] = "Analysts suggest that AAPL's upcoming Q4 product launch event might solidify its position in the premium smartphone market."
-      },
-      new()
-      {
-          ["id"] = "vec3",
-          ["chunk_text"] = "AAPL's strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production."
-      },
-      new()
-      {
-          ["id"] = "vec1",
-          ["chunk_text"] = "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones."
-      }
-  };
-
-  // The fields to rank the documents by. If not provided, the default is "text"
-  var rankFields = new List<string> { "chunk_text" };
-
-  // Additional model-specific parameters for the reranker
-  var parameters = new Dictionary<string, object>
-  {
-      ["truncate"] = "END"
-  };
-
-  // Send ranking request
-  var result = await pinecone.Inference.RerankAsync(
-      new RerankRequest
-      {
-          Model = "bge-reranker-v2-m3",
-          Query = "What is AAPL's outlook, considering both product launches and market conditions?",
-          Documents = documents,
-          RankFields = rankFields,
-          TopN = 2,
-          ReturnDocuments = true,
-          Parameters = parameters
-      });
-
-  Console.WriteLine(result);
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -715,33 +604,6 @@ The response looks as follows. For each hit, the \_score represents the relevanc
       }
     ],
     "model": "bge-reranker-v2-m3",
-    "usage": {
-      "rerank_units": 1
-    }
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "model": "bge-reranker-v2-m3",
-    "data": [
-      {
-        "index": 0,
-        "score": 0.006289902,
-        "document": {
-          "chunk_text": "Analysts suggest that AAPL\u0027s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
-          "id": "vec2"
-        }
-      },
-      {
-        "index": 3,
-        "score": 0.0011513996,
-        "document": {
-          "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-          "id": "vec1"
-        }
-      }
-    ],
     "usage": {
       "rerank_units": 1
     }
@@ -954,74 +816,6 @@ For example, the following request uses the `bge-reranker-v2-m3` reranking model
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // The model to use for reranking
-  var model = "bge-reranker-v2-m3";
-
-  // The query to rerank documents against
-  var query = "The tech company Apple is known for its innovative products like the iPhone.";
-
-  // Add the documents to rerank
-  var documents = new List<Dictionary<string, object>>
-  {
-      new()
-      {
-          ["id"] = "vec1",
-          ["my_field"] = "Apple is a popular fruit known for its sweetness and crisp texture."
-      },
-      new()
-      {
-          ["id"] = "vec2",
-          ["my_field"] = "Many people enjoy eating apples as a healthy snack."
-      },
-      new()
-      {
-          ["id"] = "vec3",
-          ["my_field"] =
-              "Apple Inc. has revolutionized the tech industry with its sleek designs and user-friendly interfaces."
-      },
-      new()
-      {
-          ["id"] = "vec4",
-          ["my_field"] = "An apple a day keeps the doctor away, as the saying goes."
-      }
-  };
-
-  // The fields to rank the documents by. If not provided, the default is "text"
-  var rankFields = new List<string> { "my_field" };
-
-  // The number of results to return sorted by relevance. Defaults to the number of inputs
-  int topN = 4;
-
-  // Whether to return the documents in the response
-  bool returnDocuments = true;
-
-  // Additional model-specific parameters for the reranker
-  var parameters = new Dictionary<string, object>
-  {
-      ["truncate"] = "END"
-  };
-
-  // Send ranking request
-  var result = await pinecone.Inference.RerankAsync(
-      new RerankRequest
-      {
-          Model = model,
-          Query = query,
-          Documents = documents,
-          RankFields = rankFields,
-          TopN = topN,
-          ReturnDocuments = true,
-          Parameters = parameters
-      });
-
-  Console.WriteLine(result);
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -1146,49 +940,6 @@ The returned object contains documents with relevance scores:
       }
     ],
     "model": "bge-reranker-v2-m3",
-    "usage": {
-      "rerank_units": 1
-    }
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "model": "bge-reranker-v2-m3",
-    "data": [
-      {
-        "index": 2,
-        "score": 0.48357219,
-        "document": {
-          "id": "vec3",
-          "my_field": "Apple Inc. has revolutionized the tech industry with its sleek designs and user-friendly interfaces."
-        }
-      },
-      {
-        "index": 0,
-        "score": 0.048405956,
-        "document": {
-          "id": "vec1",
-          "my_field": "Apple is a popular fruit known for its sweetness and crisp texture."
-        }
-      },
-      {
-        "index": 3,
-        "score": 0.007846239,
-        "document": {
-          "id": "vec4",
-          "my_field": "An apple a day keeps the doctor away, as the saying goes."
-        }
-      },
-      {
-        "index": 1,
-        "score": 0.0006563728,
-        "document": {
-          "id": "vec2",
-          "my_field": "Many people enjoy eating apples as a healthy snack."
-        }
-      }
-    ],
     "usage": {
       "rerank_units": 1
     }
@@ -1414,77 +1165,6 @@ For example, the following request reranks documents based on the values of the 
       }
       fmt.Printf("Rerank result: %+v\n", ranking)
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // The model to use for reranking
-  var model = "bge-reranker-v2-m3";
-
-  // The query to rerank documents against
-  var query = "The tech company Apple is known for its innovative products like the iPhone.";
-
-  // Add the documents to rerank
-  var documents = new List<Dictionary<string, string>>
-  {
-      new()
-      {
-          ["id"] = "vec1",
-          ["my_field"] = "Apple is a popular fruit known for its sweetness and crisp texture."
-      },
-      new()
-      {
-          ["id"] = "vec2",
-          ["my_field"] = "Many people enjoy eating apples as a healthy snack."
-      },
-      new()
-      {
-          ["id"] = "vec3",
-          ["my_field"] =
-              "Apple Inc. has revolutionized the tech industry with its sleek designs and user-friendly interfaces."
-      },
-      new()
-      {
-          ["id"] = "vec4",
-          ["my_field"] = "An apple a day keeps the doctor away, as the saying goes."
-      }
-  };
-
-  // The fields to rank the documents by. If not provided, the default is "text"
-  var rankFields = new List<string> { "my_field" };
-
-  // The number of results to return sorted by relevance. Defaults to the number of inputs
-  int topN = 2;
-
-  // Whether to return the documents in the response
-  bool returnDocuments = true;
-
-  // Additional model-specific parameters for the reranker
-  var parameters = new Dictionary<string, object>
-  {
-      ["truncate"] = "END"
-  };
-
-  // Send ranking request
-  var result = await pinecone.Inference.RerankAsync(
-      new RerankRequest
-      {
-          Model = model,
-          Query = query,
-          Documents = documents,
-          RankFields = rankFields,
-          TopN = topN,
-          ReturnDocuments = true,
-          Parameters = parameters
-      });
-
-  // Get ranked data
-  var data = result.Data;
-
-  Console.WriteLine(data);
   ```
 
   ```shell curl theme={null}

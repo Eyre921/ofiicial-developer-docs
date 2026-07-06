@@ -28,10 +28,6 @@ The following Pinecone SDKs support the Database API:
   <Card title="Java SDK" icon="java" href="/reference/sdks/java/overview" />
 
   <Card title="Go SDK" icon="golang" href="/reference/sdks/go/overview" />
-
-  <Card title=".NET SDK" icon="microsoft" href="/reference/sdks/dotnet/overview" />
-
-  <Card title="Rust SDK" icon="rust" href="/reference/sdks/rust/overview" />
 </CardGroup>
 
 ## Inference
@@ -53,6 +49,4 @@ The following Pinecone SDKs support using the Inference API:
   <Card title="Java SDK" icon="java" href="/reference/sdks/java/overview" />
 
   <Card title="Go SDK" icon="golang" href="/reference/sdks/go/overview" />
-
-  <Card title=".NET SDK" icon="microsoft" href="/reference/sdks/dotnet/overview" />
 </CardGroup>

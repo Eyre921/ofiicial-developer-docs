@@ -329,36 +329,6 @@ An action target that displays as a modal when a product details action menu ite
 
 ***
 
-## Receipts
-
-The receipt appears as the printed or digital output that customers receive after completing a transaction. This receipt displays transaction details, payment information, and store branding, providing the last touchpoint in the customer experience.
-
-**Use cases**: Custom content in receipt headers and footers, branding opportunities, promotional messages, or transaction details that improve the customer experience.
-
-**Beta:**
-
-Receipt targets are part of the POS UI extensions [feature preview](https://shopify.dev/docs/api/feature-previews). This feature preview is invite-only and requires POS UI extensions version 2025-04 or higher and POS app version 9.31.0 or later.
-
-[View receipt targets →](https://shopify.dev/docs/api/pos-ui-extensions/2026-04/targets/receipts)
-
-##### Receipt block (header)
-
-`pos.receipt-header.block.render`
-
-A block target that displays custom content in receipt headers for printed and digital receipts.
-
-##### Receipt block (footer)
-
-`pos.receipt-footer.block.render`
-
-A block target that displays custom content in receipt footers for printed and digital receipts.
-
-![Printed receipt showing store branding and transaction details, with the extension target slot at the top of the receipt header area.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/receipts-header-block-render-CawGpwXn.png)
-
-![Printed receipt showing transaction details, with the extension target slot at the bottom of the receipt footer area.](https://shopify.dev/assets/assets/images/api/pos-ui-extensions/targets-overview-images/receipts-footer-block-render-DWy10BWH.png)
-
-***
-
 ## Register details
 
 The register details screen displays information about the current register and cash drawer status. This screen provides access to cash management operations and register-specific tools for retail staff.

@@ -222,20 +222,6 @@ To verify that your index contains the number of records you expect, [view index
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var indexStatsResponse = await index.DescribeIndexStatsAsync(new DescribeIndexStatsRequest());
-
-  Console.WriteLine(indexStatsResponse);
-  ```
-
   ```shell curl theme={null}
   # To get the unique host for an index,
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -300,22 +286,6 @@ The response will look like this:
         "vector_count": 4
       }
     }
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "namespaces": {
-      "example-namespace1": {
-        "vectorCount": 4
-      },
-      "example-namespace2": {
-        "vectorCount": 4
-      }
-    },
-    "dimension": 1024,
-    "indexFullness": 0,
-    "totalVectorCount": 8
   }
   ```
 

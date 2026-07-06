@@ -20,16 +20,18 @@ Creating a backup is useful when performing tasks like the following:
 
 ## Scheduled backups
 
-<Note>
-  Scheduled backups require `X-Pinecone-API-Version: unstable`.
-</Note>
-
 Instead of creating backups manually, you can define a recurring backup schedule that runs automatically. Each schedule includes:
 
 * **Frequency**: Backups can run daily, weekly, or monthly.
-* **Retention**: A required expiration policy (`expire_after_days`) that automatically deletes old backups, keeping storage costs predictable.
+* **Retention**: A required expiration policy that automatically deletes old backups, keeping storage costs predictable.
 
 Each index supports one active schedule at a time. Backups created by a schedule are automatically named `{name}-{ISO8601_timestamp}`.
+
+You can create and manage backup schedules in the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups) or with the API. For step-by-step instructions, see [Schedule automated backups](/guides/manage-data/back-up-an-index#schedule-automated-backups).
+
+<Note>
+  The scheduled backups API requires `X-Pinecone-API-Version: unstable`.
+</Note>
 
 For example, to create a daily backup that expires after 7 days:
 

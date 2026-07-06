@@ -165,39 +165,6 @@ Use the [`describe_index`](/reference/api/latest/control-plane/describe_index/) 
   // }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var indexModel = await pinecone.DescribeIndexAsync("docs-example");
-
-  Console.WriteLine(indexModel);
-
-  // Response:
-  // {
-  //   "name": "docs-example",
-  //   "dimension": 1536,
-  //   "metric": "cosine",
-  //   "host": "docs-example-4mkljsz.svc.aped-4627-b74a.pinecone.io",
-  //   "deletion_protection": "disabled",
-  //   "spec": {
-  //     "serverless": null,
-  //     "pod": {
-  //        "environment": "us-east-1-aws",
-  //        "pod_type": "s1.x1",
-  //        "pods": 1,
-  //        "replicas": 1,
-  //        "shards": 1
-  //     }
-  //   },
-  //   "status": {
-  //     "ready": true,
-  //     "state": "Ready"
-  //   }
-  // }
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -303,14 +270,6 @@ Use the [`delete_index`](/reference/api/latest/control-plane/delete_index) opera
           fmt.Println("Index \"%v\" deleted successfully", indexName)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  await pinecone.DeleteIndexAsync("docs-example");
   ```
 
   ```shell curl theme={null}
@@ -470,33 +429,6 @@ The following example creates a pod-based index that only indexes the `genre` me
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexAsync(new CreateIndexRequest
-  {
-      Name = "docs-example",
-      Dimension = 1536,
-      Metric = MetricType.Cosine,
-      Spec = new PodIndexSpec
-      {
-          Pod = new PodSpec
-          {
-              Environment = "us-east1-gcp",
-              PodType = "p1.x1",
-              Pods = 1,
-              MetadataConfig = new PodSpecMetadataConfig
-              {
-                  Indexed = new List<string> { "genre" },
-              },
-          }
-      },
-      DeletionProtection = DeletionProtection.Disabled
-  });
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -631,29 +563,6 @@ To enable deletion protection when creating a new index:
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexAsync(new CreateIndexRequest
-  {
-      Name = "docs-example",
-      Dimension = 1536,
-      Metric = MetricType.Cosine,
-      Spec = new PodIndexSpec
-      {
-          Pod = new PodSpec
-          {
-              Environment = "us-east1-gcp",
-              PodType = "p1.x1",
-              Pods = 1,
-          }
-      },
-      DeletionProtection = DeletionProtection.Enabled
-  });
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -742,17 +651,6 @@ To enable deletion protection when configuring an existing index:
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var indexMetadata = await pinecone.ConfigureIndexAsync("docs-example", new ConfigureIndexRequest
-  {
-      DeletionProtection = DeletionProtection.Enabled,
-  });
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -836,17 +734,6 @@ Before you can [delete an index](#delete-a-pod-based-index) with deletion protec
           fmt.Printf("Successfully configured index \"%v\"", idx.Name)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var configureIndexRequest = await pinecone.ConfigureIndexAsync("docs-example", new ConfigureIndexRequest
-  {
-      DeletionProtection = DeletionProtection.Disabled,
-  });
   ```
 
   ```shell curl theme={null}

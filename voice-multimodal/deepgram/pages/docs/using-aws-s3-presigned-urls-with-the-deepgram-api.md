@@ -355,30 +355,27 @@ If you are using a serverless infrastructure, you may want to use AWS Lambda fun
 	"Effect": "Allow",
 	"Action": [
 		"s3:PutObject",
-		"s3:GetObject",
+		"s3:GetObject"
 	],
 	"Resource": [
 		"arn:aws:s3:::deepgram-presigned-url-example-bucket/transcript/*",
-		"arn:aws:s3:::deepgram-presigned-url-example-bucket/audio/",
+		"arn:aws:s3:::deepgram-presigned-url-example-bucket/audio/"
 	]
 }
 ```
 
 ### Accessing Deepgram from AWS Lambda
 
-AWS Lambda functions do not have access to most Python packages, including the Deepgram SDK. To use the Deepgram SDK, you can upload a Lambda Layer.
-
-Alternatively, if you just need to make simple requests to Deepgram, you can use the `requests` package to make calls to Deepgram. Below is the full code that can be used in a Lambda function (using Python 3.10).
+For a single REST call like this one, you don't need any third-party packages. Python's standard library includes `urllib.request`, which ships with every Lambda Python runtime — so there's no need for the Deepgram SDK, a `requests` dependency, a Lambda Layer, or a container image. Below is the full code that can be used in a Lambda function (Python 3.13).
 
 ```python Python
-import pip._vendor.requests as requests  # Import a pre-installed `requests` module
+import urllib.request
+import urllib.parse
 from botocore.client import Config
 from typing import Tuple
-import urllib.parse
 import boto3
 import json
 
-# For demo purposes only. Follow best practices for storing API keys securely.
 DEEPGRAM_API_KEY = "YOUR_DEEPGRAM_API_KEY"
 
 BUCKET_NAME = "deepgram-presigned-url-example-bucket"  # Your S3 bucket
@@ -404,19 +401,23 @@ def get_presigned_urls(audio_file_key: str, destination_transcript_key: str, exp
 
 def transcribe_audio(get_url: str, put_url: str):
     source = {"url": get_url}
-    headers = {"Authorization": f"Token {DEEPGRAM_API_KEY}", "Content-Type": "application/json"}
-
+    headers = {
+        "Authorization": f"Token {DEEPGRAM_API_KEY}",
+        "Content-Type": "application/json",
+    }
     options = {
         "model": "nova-3",
         "smart_format": "true",
         "callback": put_url,
-        "callback_method": "put"
+        "callback_method": "put",
     }
     params = urllib.parse.urlencode(options)
     url = f"https://api.deepgram.com/v1/listen?{params}"
-    response = requests.post(url, headers=headers, data=json.dumps(source))
-    data = response.json()
-    return data
+    req = urllib.request.Request(
+        url, data=json.dumps(source).encode(), headers=headers, method="POST"
+    )
+    with urllib.request.urlopen(req) as response:
+        return json.loads(response.read().decode())
 
 def lambda_handler(event, context):
     # The name of the audio file that Deepgram will pull from your bucket to be transcribed

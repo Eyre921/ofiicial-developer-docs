@@ -157,31 +157,6 @@ For example, the following code converts the query “What is AAPL's outlook, co
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var response = await index.SearchRecordsAsync(
-      "example-namespace",
-      new SearchRecordsRequest
-      {
-          Query = new SearchRecordsRequestQuery
-          {
-              TopK = 3,
-              Inputs = new Dictionary<string, object?> { { "text", "What is AAPL's outlook, considering both product launches and market conditions?" } },
-          },
-          Fields = ["category", "chunk_text"],
-      }
-  );
-
-  Console.WriteLine(response);
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
   INDEX_HOST="INDEX_HOST"
@@ -330,43 +305,6 @@ The results will look as follows. The most similar records are scored highest.
       "read_units": 6,
       "embed_total_tokens": 18
     }
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-      "result": {
-          "hits": [
-              {
-                  "_id": "vec2",
-                  "_score": 10.833984,
-                  "fields": {
-                      "chunk_text": "Analysts suggest that AAPL's upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
-                      "quarter": "Q4"
-                  }
-              },
-              {
-                  "_id": "vec3",
-                  "_score": 6.473572,
-                  "fields": {
-                      "chunk_text": "AAPL's strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production.",
-                      "quarter": "Q3"
-                  }
-              },
-              {
-                  "_id": "vec1",
-                  "_score": 5.3710938,
-                  "fields": {
-                      "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-                      "quarter": "Q3"
-                  }
-              }
-          ]
-      },
-      "usage": {
-          "read_units": 6,
-          "embed_total_tokens": 18
-      }
   }
   ```
 
@@ -553,28 +491,6 @@ For example, the following code uses a sparse vector representation of the query
   		fmt.Printf(prettifyStruct(res))
   	}
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var index = pinecone.Index("docs-example");
-
-  var queryResponse = await index.QueryAsync(new QueryRequest {
-      Namespace = "example-namespace",
-      TopK = 4,
-      SparseVector = new SparseValues
-      {
-          Indices = [767227209, 1640781426, 1690623792, 2021799277, 2152645940, 2295025838, 2443437770, 2779594451, 2956155693, 3476647774, 3818127854, 4283091697],
-          Values = new[] { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
-      },
-      IncludeValues = false,
-      IncludeMetadata = true
-  });
-
-  Console.WriteLine(queryResponse);
   ```
 
   ```shell curl theme={null}
@@ -806,48 +722,6 @@ The results will look as follows. The most similar records are scored highest.
   }
   ```
 
-  ```csharp C# theme={null}
-  {
-    "results": [],
-    "matches": [
-      {
-        "id": "vec2",
-        "score": 10.904297,
-        "values": [],
-        "metadata": {
-          "category": "technology",
-          "chunk_text": "Analysts suggest that AAPL\u0027\u0027\u0027s upcoming Q4 product launch event might solidify its position in the premium smartphone market.",
-          "quarter": "Q4"
-        }
-      },
-      {
-        "id": "vec3",
-        "score": 6.4801025,
-        "values": [],
-        "metadata": {
-          "category": "technology",
-          "chunk_text": "AAPL\u0027\u0027\u0027s strategic Q3 partnerships with semiconductor suppliers could mitigate component risks and stabilize iPhone production",
-          "quarter": "Q3"
-        }
-      },
-      {
-        "id": "vec1",
-        "score": 5.3671875,
-        "values": [],
-        "metadata": {
-          "category": "technology",
-          "chunk_text": "AAPL reported a year-over-year revenue increase, expecting stronger Q3 demand for its flagship phones.",
-          "quarter": "Q3"
-        }
-      }
-    ],
-    "namespace": "example-namespace",
-    "usage": {
-      "readUnits": 1
-    }
-  }
-  ```
-
   ```json curl theme={null}
   {
     "results": [],
@@ -1012,26 +886,6 @@ For example, the following code uses an ID to search for the 3 records in the `e
           fmt.Printf(prettifyStruct(res.Matches))
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var queryResponse = await index.QueryAsync(new QueryRequest {
-      Id = "rec2",
-      Namespace = "example-namespace",
-      TopK = 3,
-      IncludeValues = false,
-      IncludeMetadata = true
-  });
-
-  Console.WriteLine(queryResponse);
   ```
 
   ```bash curl theme={null}

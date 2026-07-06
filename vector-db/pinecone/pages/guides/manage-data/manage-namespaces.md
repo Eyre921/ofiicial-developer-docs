@@ -328,20 +328,6 @@ Up to 100 namespaces are returned at a time by default, in sorted order (bitwise
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("PINECONE_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var namespaces = await index.ListNamespacesAsync(new ListNamespacesRequest());
-
-  Console.WriteLine(namespaces);
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
   INDEX_HOST="INDEX_HOST"
@@ -413,17 +399,6 @@ The response will look like the following:
     "Pagination": {
       "next": "eyJza2lwX3Bhc3QiOiIyNzQ5YTU1YS0zZTQ2LTQ4MDItOGFlNi1hZTJjZGNkMTE5N2IiLCJwcmVmaXgiOm51bGx9"
     }
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "namespaces":[
-      {"name":"example-namespace","recordCount":20000},
-      {"name":"example-namespace2","recordCount":10500},
-      ...
-    ],
-    "pagination":"Tm90aGluZyB0byBzZWUgaGVyZQo="
   }
   ```
 
@@ -544,20 +519,6 @@ Use the [`describe_namespace`](/reference/api/latest/data-plane/describenamespac
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("PINECONE_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var @namespace = await index.DescribeNamespaceAsync("example-namespace");
-
-  Console.WriteLine(@namespace);
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
   INDEX_HOST="INDEX_HOST"
@@ -593,10 +554,6 @@ The response will look like the following:
     "name": "example-namespace",
     "record_count": 20000
   }
-  ```
-
-  ```csharp C# theme={null}
-  {"name":"example-namespace","recordCount":20000}
   ```
 
   ```json curl theme={null}
@@ -700,18 +657,6 @@ Use the [`delete_namespace`](/reference/api/latest/data-plane/deletenamespace) o
           log.Fatalf("Failed to delete namespace: %v", err)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  const pinecone = new PineconeClient("PINECONE_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  const index = pinecone.Index(host: "INDEX_HOST");
-
-  await index.DeleteNamespaceAsync("example-namespace");
   ```
 
   ```shell curl theme={null}

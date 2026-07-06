@@ -29,7 +29,6 @@ For example, for an integration called "New Framework", `"new_framework"` is val
 | [Node.js](/reference/sdks/node/overview)  | v2.2.0+          |
 | [Java](/reference/sdks/java/overview)     | v1.0.0+          |
 | [Go](/reference/sdks/go/overview)         | v0.4.1+          |
-| [.NET](/reference/sdks/dotnet/overview)   | v1.0.0+          |
 
 <CodeGroup>
   ```python Python theme={null}
@@ -78,15 +77,6 @@ For example, for an integration called "New Framework", `"new_framework"` is val
   	ApiKey: "YOUR_API_KEY",
   	SourceTag: "YOUR_SOURCE_TAG",
   })
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY", new ClientOptions
-  {
-      SourceTag = "YOUR_SOURCE_TAG",
-  });
   ```
 
   ```shell curl theme={null}

@@ -107,23 +107,6 @@ You can [create a backup from a serverless index](/reference/api/latest/control-
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("PINECONE_API_KEY");
-
-  var backup = await pinecone.Backups.BackupIndexAsync(
-      "docs-example", 
-      new BackupIndexRequest
-      {
-          Name = "example-backup",
-          Description = "Monthly backup of production index"
-      }
-  );
-
-  Console.WriteLine(backup);
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
   INDEX_NAME="docs-example"
@@ -214,21 +197,6 @@ The example returns a response like the following:
     "source_index_name": "docs-example",
     "status": "Initializing",
     "tags": {}
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-      "backup_id": "8c85e612-ed1c-4f97-9f8c-8194e07bcf71",
-      "source_index_name": "docs-example",
-      "source_index_id": "f73b36c9-faf5-4a2c-b1d6-4013d8b1cc74",
-      "name": "example-backup",
-      "description": "Monthly backup of production index",
-      "status": "Ready",
-      "cloud": "aws",
-      "region": "us-east-1",
-      "tags": {},
-      "created_at": "2025-05-15T00:52:10.809305882Z"
   }
   ```
 
@@ -332,16 +300,6 @@ You can [view the details of a backup](/reference/api/latest/control-plane/descr
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("PINECONE_API_KEY");
-
-  var backup = await pinecone.Backups.GetAsync("8c85e612-ed1c-4f97-9f8c-8194e07bcf71");
-
-  Console.WriteLine(backup);
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
   BACKUP_ID="8c85e612-ed1c-4f97-9f8c-8194e07bcf71"
@@ -434,25 +392,6 @@ The example returns a response like the following:
     "source_index_name": "docs-example",
     "status": "Ready",
     "tags": {}
-  }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "backup_id": "95707edb-e482-49cf-b5a5-312219a51a97",
-    "source_index_name": "docs-example",
-    "source_index_id": "f73b36c9-faf5-4a2c-b1d6-4013d8b1cc74",
-    "name": "example-backup",
-    "description": "Monthly backup of production index",
-    "status": "Ready",
-    "cloud": "aws",
-    "region": "us-east-1",
-    "dimension": 1024,
-    "record_count": 97,
-    "namespace_count": 2,
-    "size_bytes": 1069169,
-    "tags": {},
-    "created_at": "2025-05-15T00:52:10.809354Z"
   }
   ```
 
@@ -799,16 +738,6 @@ Up to 100 backups are returned at a time by default, in sorted order (bitwise â€
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("PINECONE_API_KEY");
-
-  var backups = await pinecone.Backups.ListAsync();
-
-  Console.WriteLine(backups);
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -1047,57 +976,6 @@ The example returns a response like the following:
   }
   ```
 
-  ```csharp C# theme={null}
-  {
-    "data": [
-      {
-        "backup_id": "95707edb-e482-49cf-b5a5-312219a51a97",
-        "source_index_name": "docs-example",
-        "source_index_id": "f73b36c9-faf5-4a2c-b1d6-4013d8b1cc74",
-        "name": "example-backup",
-        "description": "Monthly backup of production index",
-        "status": "Ready",
-        "cloud": "aws",
-        "region": "us-east-1",
-        "dimension": 1024,
-        "record_count": 97,
-        "namespace_count": 2,
-        "size_bytes": 1069169,
-        "tags": {},
-        "created_at": "2025-05-15T00:52:10.809354Z"
-      },
-      {
-        "backup_id": "e12269b0-a29b-4af0-9729-c7771dec03e3",
-        "source_index_name": "docs-example2",
-        "source_index_id": "bcb5b3c9-903e-4cb6-8b37-a6072aeb874f",
-        "name": "example-backup2",
-        "status": "Ready",
-        "cloud": "aws",
-        "region": "us-east-1",
-        "dimension": 0,
-        "record_count": 96,
-        "namespace_count": 1,
-        "size_bytes": 86393,
-        "created_at": "2025-05-14T17:00:45.803146Z"
-      },
-      {
-        "backup_id": "d686451d-1ede-4004-9f72-7d22cc799b6e",
-        "source_index_name": "docs-example3",
-        "source_index_id": "b49f27d1-1bf3-49c6-82b5-4ae46f00f0e6",
-        "name": "example-backup3",
-        "status": "Ready",
-        "cloud": "aws",
-        "region": "us-east-1",
-        "dimension": 1024,
-        "record_count": 50,
-        "namespace_count": 1,
-        "size_bytes": 545171,
-        "created_at": "2025-05-14T17:00:34.814371Z"
-      }
-    ]
-  }
-  ```
-
   ```json curl  theme={null}
   {
     "data": [
@@ -1230,14 +1108,6 @@ You can [delete a backup](/reference/api/latest/control-plane/delete_backup) as 
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("PINECONE_API_KEY");
-
-  await pinecone.Backups.DeleteAsync("9947520e-d5a1-4418-a78d-9f464c9969da");
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
   BACKUP_ID="9947520e-d5a1-4418-a78d-9f464c9969da"
@@ -1254,33 +1124,70 @@ You can [delete a backup](/reference/api/latest/control-plane/delete_backup) as 
 
 ## Schedule automated backups
 
-<Note>
-  Scheduled backups require `X-Pinecone-API-Version: unstable`.
-</Note>
+Instead of creating backups manually, you can define a recurring schedule that automatically creates backups at a daily, weekly, or monthly frequency. Each schedule includes a retention policy that automatically deletes old backups, keeping storage costs predictable. Each index supports one active schedule at a time.
 
-Instead of creating backups manually, you can define a recurring schedule that automatically creates backups at a daily, weekly, or monthly frequency. Each schedule requires a retention policy (`expire_after_days`) that automatically deletes old backups, keeping storage costs predictable. Each index supports one active schedule at a time.
+### Create a backup schedule
 
-To [create a backup schedule](/reference/api/2026-04/control-plane/create_backup_schedule):
+<Tabs>
+  <Tab title="Pinecone console">
+    1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups) and go to the **Backups** tab.
+    2. Find your index and, in the **Schedule** column, click **add**. Alternatively, select **Schedule backups** from the actions menu of the index.
+    3. In the **Add a backup schedule** modal, select a **Frequency** (daily, weekly, or monthly).
+    4. Select a **Retention** period. Each backup created by the schedule is automatically deleted after this period.
+    5. Click **Add schedule**.
 
-```bash curl theme={null}
-curl -sS -X POST "https://api.pinecone.io/indexes/${INDEX_NAME}/backup-schedules" \
-  -H "api-key: ${PINECONE_API_KEY}" \
-  -H "X-Pinecone-API-Version: unstable" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "my-nightly-backup",
-    "schedule": {
-      "type": "time-based",
-      "frequency": "daily"
-    },
-    "retention": {
-      "expire_after_days": 7
-    }
-  }'
-```
+    Pinecone names the schedule and assigns its run time automatically.
+  </Tab>
 
-Use `"frequency": "weekly"` or `"monthly"` as needed.
+  <Tab title="API">
+    <Note>
+      The scheduled backups API requires `X-Pinecone-API-Version: unstable`.
+    </Note>
 
-You can also [list schedules](/reference/api/2026-04/control-plane/list_backup_schedules), [update a schedule](/reference/api/2026-04/control-plane/update_backup_schedule) (e.g., to pause it or change the frequency), [delete a schedule](/reference/api/2026-04/control-plane/delete_backup_schedule), and [view the backup history](/reference/api/2026-04/control-plane/list_backup_schedule_history) for a schedule.
+    To [create a backup schedule](/reference/api/2026-04/control-plane/create_backup_schedule):
+
+    ```bash curl theme={null}
+    curl -sS -X POST "https://api.pinecone.io/indexes/${INDEX_NAME}/backup-schedules" \
+      -H "api-key: ${PINECONE_API_KEY}" \
+      -H "X-Pinecone-API-Version: unstable" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "my-nightly-backup",
+        "schedule": {
+          "type": "time-based",
+          "frequency": "daily"
+        },
+        "retention": {
+          "expire_after_days": 7
+        }
+      }'
+    ```
+
+    Use `"frequency": "weekly"` or `"monthly"` as needed. The retention policy (`expire_after_days`) is required.
+  </Tab>
+</Tabs>
+
+### Manage backup schedules
+
+<Tabs>
+  <Tab title="Pinecone console">
+    1. Open the [Pinecone console](https://app.pinecone.io/organizations/-/projects/-/backups) and go to the **Backups** tab.
+    2. Find your index and, in the **Schedule** column, click the schedule. This opens the **Scheduled backups** page for the index.
+
+    For each schedule, the page shows the frequency, retention period, and next scheduled run time. From here, you can:
+
+    * **Pause or resume a schedule**: Use the toggle on the schedule. An index can have up to three schedules, but only one can be enabled at a time.
+    * **Edit a schedule**: Expand the schedule, change the **Frequency** or **Retention**, and click **Update**.
+    * **Delete a schedule**: Select **Delete** from the actions menu of the schedule.
+  </Tab>
+
+  <Tab title="API">
+    <Note>
+      The scheduled backups API requires `X-Pinecone-API-Version: unstable`.
+    </Note>
+
+    You can [list schedules](/reference/api/2026-04/control-plane/list_backup_schedules), [update a schedule](/reference/api/2026-04/control-plane/update_backup_schedule) (e.g., to pause it or change the frequency), [delete a schedule](/reference/api/2026-04/control-plane/delete_backup_schedule), and [view the backup history](/reference/api/2026-04/control-plane/list_backup_schedule_history) for a schedule.
+  </Tab>
+</Tabs>
 
 Deleting a schedule does not delete any backups that were previously created by it. For more details, see [Scheduled backups](/guides/manage-data/backups-overview#scheduled-backups).

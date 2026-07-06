@@ -26,7 +26,7 @@ You can choose the Node.js version we use to build your site in the following wa
 
 Project configuration > Build & deploy > Continuous deployment > Dependency management
  in the Netlify UI and select from the major Node.js versions that Netlify currently supports. Once you change the version, you need to redeploy your site for it to take effect. Note that a `NODE_VERSION` environment variable, `.node-version` file, or `.nvmrc` file will override this UI setting.
-- Set a `NODE_VERSION` [environment variable](/build/configure-builds/environment-variables) with any released version of Node.js or any valid string that [nvm](https://github.com/nvm-sh/nvm#nvmrc) understands. You can either set a specific version or set a major version, such as the number `22` for the latest version of Node.js 22.x.
+- Set a `NODE_VERSION` [environment variable](/build/configure-builds/environment-variables) with any released version of Node.js or any valid string that [nvm](https://github.com/nvm-sh/nvm#nvmrc) understands. You can either set a specific version or set a major version, such as the number `24` for the latest version of Node.js 24.x.
 - Add a `.node-version` or [`.nvmrc`](https://github.com/nvm-sh/nvm#nvmrc) file to the site's [base directory](/build/configure-builds/overview#definitions) in your repository. The file can include any released version of Node.js or any valid string that [nvm](https://github.com/nvm-sh/nvm#nvmrc) understands. You can either set a specific version or set a major version, such as the number `22` for the latest version of Node.js 22.x.
 
 The version of Node.js you use is dynamically fetched using `nvm` and then [cached](/build/configure-builds/manage-dependencies#dependency-cache) to speed up subsequent builds.
@@ -268,5 +268,5 @@ The first build you do can take some time while we install all of your dependenc
 
 If you change your dependency requirements, the next build will re-run the installation command which may update cached dependencies if needed. It isn't guaranteed a change will take place if the previous dependencies still satisfy the installer, though! You can check which directories are cached by searching for `$NETLIFY_CACHE_DIR` in the `run-build-functions.sh` file for your site's selected [build image](/build/configure-builds/overview#build-image-selection).
 
-If a build fails, it's worth retrying with a cleared build cache to check if this works better. You can do this by [deploying the latest branch commit](/deploy/manage-deploys/manage-deploys-overview#retry-deploy-from-latest-branch-commit) with the clear cache option. 
+If a build fails, it's worth retrying with a cleared build cache to check if this works better. You can do this by [deploying the latest branch commit](/deploy/manage-deploys/manage-deploys-overview#retry-deploy-from-latest-branch-commit) with the clear cache option.
 

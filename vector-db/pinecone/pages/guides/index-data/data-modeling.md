@@ -959,46 +959,6 @@ A common anti-pattern is storing all data in a single namespace and using metada
   }
   ```
 
-  ```csharp C# theme={null}
-  // Anti-pattern: Filtering by many user IDs
-  using Pinecone;
-  using System;
-  using System.Linq;
-
-  var queryVector = new[] { 0.1f, 0.2f, 0.3f, ... };  // Your query vector
-  // index is your IndexClient instance
-
-  var userIds = new[] { "user_1", "user_2", /* ... up to 10,000 values */ };
-  var filter = new Metadata
-  {
-      { "allowed_user_ids", new MetadataValue(new Metadata { { "$in", userIds } }) }
-  };
-
-  var results = await index.QueryAsync(new QueryRequest
-  {
-      Vector = queryVector,
-      TopK = 10,
-      Filter = filter,
-      IncludeMetadata = true
-  });
-  if (results == null)
-  {
-      throw new InvalidOperationException("Failed to query");
-  }
-  Console.WriteLine($"Found {results.Matches?.Count() ?? 0} matches:");
-  if (results.Matches != null)
-  {
-      foreach (var match in results.Matches)
-      {
-          Console.WriteLine($"  ID: {match.Id}, Score: {match.Score:F4}");
-          if (match.Metadata != null)
-          {
-              Console.WriteLine($"    Metadata: {match.Metadata}");
-          }
-      }
-  }
-  ```
-
   ```bash curl theme={null}
   # Anti-pattern: Filtering by many user IDs
   PINECONE_API_KEY="YOUR_API_KEY"
@@ -1182,64 +1142,6 @@ If data must be shared across many tenants, design your access control using the
       fmt.Printf("  ID: %s, Score: %.4f\n", match.Vector.Id, match.Score)
       if match.Vector.Metadata != nil {
           fmt.Printf("    Metadata: %v\n", match.Vector.Metadata)
-      }
-  }
-  ```
-
-  ```csharp C# theme={null}
-  // Better: Filter by organization or role instead of individual users
-  using Pinecone;
-  using System;
-  using System.Linq;
-
-  var queryVector = new[] { 0.1f, 0.2f, 0.3f, ... };  // Your query vector
-  // index is your IndexClient instance
-
-  var filter = new Metadata
-  {
-      {
-          "$or",
-          new MetadataValue(new[]
-          {
-              new MetadataValue(new Metadata
-              {
-                  {
-                      "organization_id",
-                      new MetadataValue(new Metadata { { "$eq", "org_A" } })
-                  }
-              }),
-              new MetadataValue(new Metadata
-              {
-                  {
-                      "project_id",
-                      new MetadataValue(new Metadata { { "$eq", "project_B" } })
-                  }
-              })
-          })
-      }
-  };
-
-  var results = await index.QueryAsync(new QueryRequest
-  {
-      Vector = queryVector,
-      TopK = 10,
-      Filter = filter,
-      IncludeMetadata = true
-  });
-  if (results == null)
-  {
-      throw new InvalidOperationException("Failed to query");
-  }
-  Console.WriteLine($"Found {results.Matches?.Count() ?? 0} matches:");
-  if (results.Matches != null)
-  {
-      foreach (var match in results.Matches)
-      {
-          Console.WriteLine($"  ID: {match.Id}, Score: {match.Score:F4}");
-          if (match.Metadata != null)
-          {
-              Console.WriteLine($"    Metadata: {match.Metadata}");
-          }
       }
   }
   ```

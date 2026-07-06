@@ -154,28 +154,6 @@ To [create a serverless index](/guides/index-data/create-an-index#create-a-serve
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexAsync(new CreateIndexRequest
-  {
-      Name = "multitenant-app",
-      Dimension = 8,
-      Metric = MetricType.Cosine,
-      Spec = new ServerlessIndexSpec
-      {
-          Serverless = new ServerlessSpec
-          {
-              Cloud = ServerlessSpecCloud.Aws,
-              Region = "us-east-1",
-          }
-      },
-      DeletionProtection = DeletionProtection.Disabled
-  });
-  ```
-
   ```bash curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -378,68 +356,6 @@ To [create a namespace for a tenant](/guides/index-data/indexing-overview#namesp
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var index = pinecone.Index("multitenant-app");
-
-  var upsertResponse1 = await index.UpsertAsync(new UpsertRequest {
-      Vectors = new[]
-      {
-          new Vector
-          {
-              Id = "A",
-              Values = new[] { 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.1f },
-          },
-          new Vector
-          {
-              Id = "B",
-              Values = new[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f, 0.2f },
-          },
-          new Vector
-          {
-              Id = "C",
-              Values = new[] { 0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f, 0.3f },
-          },
-          new Vector
-          {
-              Id = "D",
-              Values = new[] { 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f, 0.4f },
-          }
-      },
-      Namespace = "tenant1",
-  });
-
-  var upsertResponse2 = await index.UpsertAsync(new UpsertRequest {
-      Vectors = new[]
-      {
-          new Vector
-          {
-              Id = "E",
-              Values = new[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f, 0.5f },
-          },
-          new Vector
-          {
-              Id = "F",
-              Values = new[] { 0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f, 0.6f },
-          },
-          new Vector
-          {
-              Id = "G",
-              Values = new[] { 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f },
-          },
-          new Vector
-          {
-              Id = "H",
-              Values = new[] { 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f, 0.8f },
-          }
-      },
-      Namespace = "tenant2",
-  });
-  ```
-
   ```bash curl theme={null}
   # The `POST` requests below uses the unique endpoint for an index.
   # See https://docs.pinecone.io/guides/manage-data/target-an-index for details.
@@ -552,26 +468,6 @@ When upserting additional records for a tenant, or when [updating](/guides/manag
   if err != nil {
       log.Fatalf("Failed to update vector with ID %v: %v", id, err)
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var index = pinecone.Index("multitenant-app");
-
-  var upsertResponse = await index.UpsertAsync(new UpsertRequest {
-      Vectors = new[]
-      {
-          new Vector
-          {
-              Id = "A",
-              Values = new[] { 0.1f, 0.2f, 0.3f, 0.4f, 0.5f, 0.6f, 0.7f, 0.8f },
-          }
-      },
-      Namespace = "tenant1",
-  });
   ```
 
   ```bash curl theme={null}
@@ -800,22 +696,6 @@ For example, the following code queries only `tenant2` for the 3 vectors that ar
   // }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var index = pinecone.Index("multitenant-app");
-
-  var queryResponse = await index.QueryAsync(new QueryRequest {
-      Vector = new[] { 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f, 0.7f },
-      Namespace = "tenant2",
-      TopK = 3,
-  });
-
-  Console.WriteLine(queryRespnose);
-  ```
-
   ```shell curl theme={null}
   # The `POST` requests below uses the unique endpoint for an index.
   # See https://docs.pinecone.io/guides/manage-data/target-an-index for details.
@@ -902,15 +782,6 @@ For example, the following code deletes the namespace and all records for `tenan
   if err != nil {
       log.Fatalf("Failed to delete vectors in namespace \"%v\": %v", idxConnection2.Namespace, err)
   }
-  ```
-
-  ```csharp C# theme={null}
-  var index = pinecone.Index("multitenant-app");
-
-  var deleteResponse = await index.DeleteAsync(new DeleteRequest {
-      DeleteAll = true,
-      Namespace = "tenant1",
-  });
   ```
 
   ```bash curl theme={null}

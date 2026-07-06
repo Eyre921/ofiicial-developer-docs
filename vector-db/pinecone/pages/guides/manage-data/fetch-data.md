@@ -118,21 +118,6 @@ To fetch records from a namespace based on their IDs, use the `fetch` operation 
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  // To get the unique host for an index, 
-  // see https://docs.pinecone.io/guides/manage-data/target-an-index
-  var index = pinecone.Index(host: "INDEX_HOST");
-
-  var fetchResponse = await index.FetchAsync(new FetchRequest {
-      Ids = new List<string> { "id-1", "id-2" },
-      Namespace = "example-namespace"
-  });
-  ```
-
   ```bash curl theme={null}
   # To get the unique host for an index,
   # see https://docs.pinecone.io/guides/manage-data/target-an-index
@@ -219,38 +204,6 @@ The response looks like this:
       "read_units": 1
     }
   }
-  ```
-
-  ```csharp C# theme={null}
-  {
-    "vectors": {
-      "id-1": {
-        "id": "id-1",
-        "values": [
-          -0.0089730695,
-          -0.020010853,
-          -0.0042787646,
-          ...
-        ],
-        "sparseValues": null,
-        "metadata": null
-      },
-      "vec1": {
-        "id": "id-2",
-        "values": [
-          -0.005380766,
-          0.00215196,
-          -0.014833462,
-          ...
-        ],
-        "sparseValues": null,
-        "metadata": null
-      }
-    },
-    "namespace": "example-namespace",
-    "usage": {
-      "readUnits": 1
-    }
   ```
 
   ```json curl theme={null}

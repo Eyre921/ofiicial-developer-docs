@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 758 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 759 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -591,6 +591,7 @@
 - `docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys` — [Genesys](pages/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys.md)
 - `docs/eleven-agents/phone-numbers/sip-reference` — [SIP reference](pages/docs/eleven-agents/phone-numbers/sip-reference.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/sip-reference.md)
 - `docs/eleven-agents/phone-numbers/sip-trunking` — [SIP trunking](pages/docs/eleven-agents/phone-numbers/sip-trunking.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/sip-trunking.md)
+- `docs/eleven-agents/phone-numbers/telephony/bandwidth` — [Bandwidth SIP trunking](pages/docs/eleven-agents/phone-numbers/telephony/bandwidth.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/bandwidth.md)
 - `docs/eleven-agents/phone-numbers/telephony/exotel` — [Exotel integration](pages/docs/eleven-agents/phone-numbers/telephony/exotel.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/exotel.md)
 - `docs/eleven-agents/phone-numbers/telephony/plivo` — [Plivo](pages/docs/eleven-agents/phone-numbers/telephony/plivo.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/plivo.md)
 - `docs/eleven-agents/phone-numbers/telephony/telnyx` — [Telnyx SIP trunking](pages/docs/eleven-agents/phone-numbers/telephony/telnyx.md) · [原文](https://elevenlabs.io/docs/eleven-agents/phone-numbers/telephony/telnyx.md)

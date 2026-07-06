@@ -1001,6 +1001,8 @@ If Stripe can’t verify the person’s keyed-in information, you must collect a
 
 Collect ID information using the [verification.document.front](https://docs.stripe.com/api/persons/object.md#person_object-verification-document-front) and [verification.document.back](https://docs.stripe.com/api/persons/object.md#person_object-verification-document-back) parameters on the [Person](https://docs.stripe.com/api/persons/object.md) being verified.
 
+Brazilian regulation also requires a liveness check (`proof_of_liveness`) to confirm that the person submitting identity documents is physically present. Stripe-hosted and embedded onboarding flows handle this automatically. For API-based onboarding, redirect users to a Stripe-hosted verification step or integrate the embedded component. See [Handle liveness requirements](https://docs.stripe.com/connect/api-onboarding.md?accounts-namespace=v1&liveness=hosted#proof-of-liveness).
+
 ##### KYC error codes 
 
 The following error codes can appear in `requirements.errors` for KYC verification:
@@ -1053,12 +1055,29 @@ Brazilian AML regulation requires Stripe to collect a connected account’s esti
 
 `monthly_estimated_revenue.amount` is expressed in the smallest currency unit (centavos). For example, 50,000 BRL is `5000000`. The values are collected for regulatory monitoring purposes and aren’t independently verified at onboarding.
 
+#### Proof of Authorization (PoA) 
+
+All non-individual accounts in Brazil require Proof of Authorization (PoA) verification. This confirms that the business representative is authorized to act on behalf of the company.
+
+Stripe first attempts programmatic verification by checking the representative’s name against the CNPJ registry. If the representative’s name matches an authorized person in the registry, verification passes automatically and no further action is needed.
+
+If the programmatic check fails, the representative must submit a `company.representative_declaration` attestation. Provide `company.representative_declaration.date` (Unix timestamp) and `company.representative_declaration.ip` (representative’s IP address).
+
+##### PoA error codes 
+
+| Code | Trigger | Remediation |
+| --- | --- | --- |
+| `verification_failed_representative_authority` | The representative’s name does not match any authorized person in the CNPJ registry. | Submit `company.representative_declaration` with `date` (Unix timestamp) and `ip` (representative’s IP address) to attest authorization. |
+
+To learn more, see [compliance requirements for Brazil](https://docs.stripe.com/connect/upcoming-requirements-updates.md).
+
 #### UBO and relationship verification 
 
-Brazilian AML regulation (Circular BCB 3978/20) requires that all business representatives be identified and verified as legally listed representatives of the entity. Stripe verifies this in two steps:
+Brazilian AML regulation (Circular BCB 3978/20) requires that owners (UBOs) and directors of legal entities be identified and verified as legally listed in the CNPJ registry. Stripe verifies this through:
 
-1. **Programmatic name matching**: The representative’s full name is matched against the CNPJ registry response.
-2. **Fallback document review**: If programmatic verification fails, the representative must upload an acceptable relationship document (for simple ownership structures) or attestation (for complex ownership structures).
+1. **Programmatic name matching**: Owner or director names are matched against the CNPJ registry response.
+2. **Fallback document review**: If programmatic verification fails, upload an acceptable relationship document (for simple ownership structures) or the Stripe attestation template (for complex ownership structures).
+3. **Director waterfall**: If owners can’t be verified (for example, all shareholders are legal entities rather than individuals), resolve by providing directors instead using `company.directors_provided` and director persons.
 
 ##### Acceptable relationship documents (for simple ownership structures) 
 
@@ -1069,6 +1088,22 @@ Documents must contain the following:
 - The legal entity name and CNPJ
 - Express appointment as owner or director with the person’s full name and CPF, with a valid mandate term
 - The signature of the business representative
+
+##### Acceptable relationship documents (for complex ownership structures) 
+
+For companies with intermediary layers (holding companies, trusts, subsidiaries) that separate the ultimate beneficial owners from the operating entity, download the Stripe letter of attestation template and fill it out:
+
+- [UBO attestation template](https://docs.stripecdn.com/6e82842bfc01bd0b1c46d77f7d46b69673a9ca965ed2ad9ef53139f98abdbbaf.pdf)
+- [Directors attestation template](https://docs.stripecdn.com/715ffef45157ff700bc368a4011659ee23bc8ba3c68746c5c15948a6eee1591f.pdf)
+
+##### UBO and relationship error codes 
+
+| Code | Trigger | Remediation |
+| --- | --- | --- |
+| `verification_missing_owners` | Owner names provided do not match any owner in the CNPJ registry. | Add persons with names matching the registry, or upload `documents.proof_of_ultimate_beneficial_ownership`. |
+| `verification_missing_directors` | Director names provided do not match any director in the CNPJ registry. | Add persons with names matching the registry, or upload `documents.proof_of_registration`. |
+| `verification_data_not_found` | No owner or director data could be retrieved from the CNPJ registry. | Upload `documents.proof_of_ultimate_beneficial_ownership` (for owners) or `documents.proof_of_registration` (for directors). |
+| `verification_document_type_not_supported` | The uploaded relationship document is unreadable or the wrong type. | Upload an acceptable document (contrato social, estatuto social, or Stripe attestation template). |
 
 #### Additional information on the account 
 
@@ -1834,6 +1869,8 @@ If Stripe can’t verify the person’s keyed-in information, you must collect a
 
 Collect ID information using the [verification.document.front](https://docs.stripe.com/api/persons/object.md#person_object-verification-document-front) and [verification.document.back](https://docs.stripe.com/api/persons/object.md#person_object-verification-document-back) parameters on the [Person](https://docs.stripe.com/api/persons/object.md) being verified.
 
+Brazilian regulation also requires a liveness check (`proof_of_liveness`) to confirm that the person submitting identity documents is physically present. Stripe-hosted and embedded onboarding flows handle this automatically. For API-based onboarding, redirect users to a Stripe-hosted verification step or integrate the embedded component. See [Handle liveness requirements](https://docs.stripe.com/connect/api-onboarding.md?accounts-namespace=v1&liveness=hosted#proof-of-liveness).
+
 ##### KYC error codes 
 
 The following error codes can appear in `requirements.errors` for KYC verification:
@@ -1886,12 +1923,29 @@ Brazilian AML regulation requires Stripe to collect a connected account’s esti
 
 `monthly_estimated_revenue.amount` is expressed in the smallest currency unit (centavos). For example, 50,000 BRL is `5000000`. The values are collected for regulatory monitoring purposes and aren’t independently verified at onboarding.
 
+#### Proof of Authorization (PoA) 
+
+All non-individual accounts in Brazil require Proof of Authorization (PoA) verification. This confirms that the business representative is authorized to act on behalf of the company.
+
+Stripe first attempts programmatic verification by checking the representative’s name against the CNPJ registry. If the representative’s name matches an authorized person in the registry, verification passes automatically and no further action is needed.
+
+If the programmatic check fails, the representative must submit a `company.representative_declaration` attestation. Provide `company.representative_declaration.date` (Unix timestamp) and `company.representative_declaration.ip` (representative’s IP address).
+
+##### PoA error codes 
+
+| Code | Trigger | Remediation |
+| --- | --- | --- |
+| `verification_failed_representative_authority` | The representative’s name does not match any authorized person in the CNPJ registry. | Submit `company.representative_declaration` with `date` (Unix timestamp) and `ip` (representative’s IP address) to attest authorization. |
+
+To learn more, see [compliance requirements for Brazil](https://docs.stripe.com/connect/upcoming-requirements-updates.md).
+
 #### UBO and relationship verification 
 
-Brazilian AML regulation (Circular BCB 3978/20) requires that all business representatives be identified and verified as legally listed representatives of the entity. Stripe verifies this in two steps:
+Brazilian AML regulation (Circular BCB 3978/20) requires that owners (UBOs) and directors of legal entities be identified and verified as legally listed in the CNPJ registry. Stripe verifies this through:
 
-1. **Programmatic name matching**: The representative’s full name is matched against the CNPJ registry response.
-2. **Fallback document review**: If programmatic verification fails, the representative must upload an acceptable relationship document (for simple ownership structures) or attestation (for complex ownership structures).
+1. **Programmatic name matching**: Owner or director names are matched against the CNPJ registry response.
+2. **Fallback document review**: If programmatic verification fails, upload an acceptable relationship document (for simple ownership structures) or the Stripe attestation template (for complex ownership structures).
+3. **Director waterfall**: If owners can’t be verified (for example, all shareholders are legal entities rather than individuals), resolve by providing directors instead using `company.directors_provided` and director persons.
 
 ##### Acceptable relationship documents (for simple ownership structures) 
 
@@ -1902,4 +1956,20 @@ Documents must contain the following:
 - The legal entity name and CNPJ
 - Express appointment as owner or director with the person’s full name and CPF, with a valid mandate term
 - The signature of the business representative
+
+##### Acceptable relationship documents (for complex ownership structures) 
+
+For companies with intermediary layers (holding companies, trusts, subsidiaries) that separate the ultimate beneficial owners from the operating entity, download the Stripe letter of attestation template and fill it out:
+
+- [UBO attestation template](https://docs.stripecdn.com/6e82842bfc01bd0b1c46d77f7d46b69673a9ca965ed2ad9ef53139f98abdbbaf.pdf)
+- [Directors attestation template](https://docs.stripecdn.com/715ffef45157ff700bc368a4011659ee23bc8ba3c68746c5c15948a6eee1591f.pdf)
+
+##### UBO and relationship error codes 
+
+| Code | Trigger | Remediation |
+| --- | --- | --- |
+| `verification_missing_owners` | Owner names provided do not match any owner in the CNPJ registry. | Add persons with names matching the registry, or upload `documents.proof_of_ultimate_beneficial_ownership`. |
+| `verification_missing_directors` | Director names provided do not match any director in the CNPJ registry. | Add persons with names matching the registry, or upload `documents.proof_of_registration`. |
+| `verification_data_not_found` | No owner or director data could be retrieved from the CNPJ registry. | Upload `documents.proof_of_ultimate_beneficial_ownership` (for owners) or `documents.proof_of_registration` (for directors). |
+| `verification_document_type_not_supported` | The uploaded relationship document is unreadable or the wrong type. | Upload an acceptable document (contrato social, estatuto social, or Stripe attestation template). |
 

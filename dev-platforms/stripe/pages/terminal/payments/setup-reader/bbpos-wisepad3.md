@@ -7,7 +7,7 @@ path: terminal/payments/setup-reader/bbpos-wisepad3
 # Set up BBPOS WisePad 3
 
 Learn how to set up the BBPOS WisePad 3.
-Available in: CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP, BG, HR, CY, EE, HU, LV, LI, LT, MT, RO, SK, SI![](https://b.stripecdn.com/docs-statics-srv/assets/wisepad-floating-thumb.d6e3015116e0b4295b0106e770b9843e.png)
+Available in: CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP, BG, HR, CY, EE, HU, LV, LI, LT, MT, RO, SK, SI, MX![](https://b.stripecdn.com/docs-statics-srv/assets/wisepad-floating-thumb.d6e3015116e0b4295b0106e770b9843e.png)
 
 The BBPOS WisePad 3 is a handheld reader for use with mobile applications. It uses Bluetooth Low Energy (BLE) or USB (Android only) to [connect](https://docs.stripe.com/terminal/payments/connect-reader.md?reader-type=bluetooth) to the Stripe Terminal SDK on a mobile device. The WisePad 3 features a display and PIN pad, which facilitates use in countries where PIN-authenticated transactions are more common.
 

@@ -221,34 +221,6 @@ Other parameters are optional. See the [API reference](/reference/api/latest/con
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexForModelAsync(
-      new CreateIndexForModelRequest
-      {
-          Name = "integrated-dense-dotnet",
-          Cloud = CreateIndexForModelRequestCloud.Aws,
-          Region = "us-east-1",
-          Embed = new CreateIndexForModelRequestEmbed
-          {
-              Model = "llama-text-embed-v2",
-              FieldMap = new Dictionary<string, object?>() 
-              { 
-                  { "text", "chunk_text" } 
-              }
-          },
-          DeletionProtection = DeletionProtection.Disabled,
-          Tags = new Dictionary<string, string> 
-          { 
-              { "environment", "development" }
-          }
-      }
-  );
-  ```
-
   ```json curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -415,33 +387,6 @@ Other parameters are optional. See the [API reference](/reference/api/latest/con
           fmt.Printf("Successfully created serverless index: %v", idx.Name)
       }
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexAsync(new CreateIndexRequest
-  {
-      Name = "standard-dense-dotnet",
-      VectorType = VectorType.Dense,
-      Dimension = 1536,
-      Metric = MetricType.Cosine,
-      Spec = new ServerlessIndexSpec
-      {
-          Serverless = new ServerlessSpec
-          {
-              Cloud = ServerlessSpecCloud.Aws,
-              Region = "us-east-1"
-          }
-      },
-      DeletionProtection = DeletionProtection.Disabled,
-      Tags = new Dictionary<string, string> 
-      {  
-          { "environment", "development" }
-      }
-  });
   ```
 
   ```shell curl theme={null}
@@ -616,34 +561,6 @@ Other parameters are optional. See the [API reference](/reference/api/latest/con
   }
   ```
 
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexForModelAsync(
-      new CreateIndexForModelRequest
-      {
-          Name = "integrated-sparse-dotnet",
-          Cloud = CreateIndexForModelRequestCloud.Aws,
-          Region = "us-east-1",
-          Embed = new CreateIndexForModelRequestEmbed
-          {
-              Model = "pinecone-sparse-english-v0",
-              FieldMap = new Dictionary<string, object?>() 
-              { 
-                  { "text", "chunk_text" } 
-              }
-          },
-          DeletionProtection = DeletionProtection.Disabled,
-          Tags = new Dictionary<string, string> 
-          { 
-              { "environment", "development" }
-          }
-      }
-  );
-  ```
-
   ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
@@ -792,27 +709,6 @@ Other parameters are optional. See the [API reference](/reference/api/latest/con
   		fmt.Printf("Successfully created serverless index: %v", idx.Name)
   	}
   }
-  ```
-
-  ```csharp C# theme={null}
-  using Pinecone;
-
-  var pinecone = new PineconeClient("YOUR_API_KEY");
-
-  var createIndexRequest = await pinecone.CreateIndexAsync(new CreateIndexRequest
-  {
-      Name = "standard-sparse-dotnet",
-      VectorType = VectorType.Sparse,
-      Metric = MetricType.Dotproduct,
-      Spec = new ServerlessIndexSpec
-      {
-          Serverless = new ServerlessSpec
-          {
-              Cloud = ServerlessSpecCloud.Aws,
-              Region = "us-east-1"
-          }
-      }
-  });
   ```
 
   ```shell curl theme={null}
