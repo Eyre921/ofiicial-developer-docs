@@ -448,13 +448,13 @@ This quickstart walks you through creating a Pinecone index and building a sampl
   1. Install the CLI.
 
      <CodeGroup>
-       ```shell macOS theme={null} theme={null} theme={null}
+       ```shell macOS theme={null}
        # Using Homebrew (https://brew.sh)
        brew tap pinecone-io/tap
        brew install pinecone-io/tap/pinecone
        ```
 
-       ```shell Linux/Windows theme={null} theme={null} theme={null}
+       ```shell Linux/Windows theme={null}
        Download pre-build binaries from https://github.com/pinecone-io/cli/releases
        ```
      </CodeGroup>
@@ -527,7 +527,7 @@ Choose your approach to build with Pinecone below. Each approach achieves the sa
       npm install @pinecone-database/pinecone
       ```
 
-      ```shell Java theme={null} theme={null} theme={null}
+      ```shell Java theme={null}
       # Maven
       <dependency>
         <groupId>io.pinecone</groupId>
@@ -9738,7 +9738,7 @@ Every [record](/guides/get-started/concepts#record) in an index must contain an 
 **Examples**
 
 <CodeGroup>
-  ```json Valid metadata theme={null} theme={null} theme={null}
+  ```json Valid metadata theme={null}
   {
     "document_id": "document1",
     "document_title": "Introduction to Vector Databases",
@@ -9750,7 +9750,7 @@ Every [record](/guides/get-started/concepts#record) in an index must contain an 
   }
   ```
 
-  ```json Invalid metadata theme={null} theme={null} theme={null}
+  ```json Invalid metadata theme={null}
   {
     "document": {       // Nested JSON objects are not supported
       "document_id": "document1",
@@ -9797,13 +9797,13 @@ Pinecone's filtering language supports the following operators:
 
 For example, the following has a `"genre"` metadata field with a list of strings:
 
-```JSON JSON theme={null} theme={null} theme={null}
+```JSON JSON theme={null}
 { "genre": ["comedy", "documentary"] }
 ```
 
 This means `"genre"` takes on both values, and requests with the following filters will match:
 
-```JSON JSON theme={null} theme={null} theme={null}
+```JSON JSON theme={null}
 {"genre":"comedy"}
 
 {"genre": {"$in":["documentary","action"]}}
@@ -9813,18 +9813,18 @@ This means `"genre"` takes on both values, and requests with the following filte
 
 However, requests with the following filter will **not** match:
 
-```JSON JSON theme={null} theme={null} theme={null}
+```JSON JSON theme={null}
 { "$and": [{ "genre": "comedy" }, { "genre": "drama" }] }
 ```
 
 Additionally, requests with the following filters will **not** match because they are invalid. They will result in a compilation error:
 
-```json JSON theme={null} theme={null} theme={null}
+```json JSON theme={null}
 # INVALID QUERY:
 {"genre": ["comedy", "documentary"]}
 ```
 
-```json JSON theme={null} theme={null} theme={null}
+```json JSON theme={null}
 # INVALID QUERY:
 {"genre": {"$eq": ["comedy", "documentary"]}}
 ```
@@ -15795,7 +15795,7 @@ Requests to one of [Pinecone's hosted embedding models](/guides/index-data/creat
 For example, the following request to use the `multilingual-e5-large` model to generate embeddings for sentences related to the word “apple” might return this request and summary of embedding tokens generated:
 
 <CodeGroup>
-  ```python Python theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```python Python theme={null}
   # Import the Pinecone library
   from pinecone.grpc import PineconeGRPC as Pinecone
   from pinecone import ServerlessSpec
@@ -15824,7 +15824,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   print(embeddings)
   ```
 
-  ```javascript JavaScript theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```javascript JavaScript theme={null}
   // Import the Pinecone library
   import { Pinecone } from '@pinecone-database/pinecone';
 
@@ -15853,7 +15853,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   console.log(embeddings);
   ```
 
-  ```java Java theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```java Java theme={null}
   // Import the required classes
   import io.pinecone.clients.Index;
   import io.pinecone.clients.Inference;
@@ -15925,7 +15925,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   }
   ```
 
-  ```go Go theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```go Go theme={null}
   package main
 
   // Import the required packages
@@ -16000,7 +16000,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   }
   ```
 
-  ```shell curl theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
   curl https://api.pinecone.io/embed \
@@ -16028,7 +16028,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
 The returned object looks like this:
 
 <CodeGroup>
-  ```python Python theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```python Python theme={null}
   EmbeddingsList(
       model='llama-text-embed-v2',
       data=[
@@ -16039,7 +16039,7 @@ The returned object looks like this:
   )
   ```
 
-  ```javascript JavaScript theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```javascript JavaScript theme={null}
   EmbeddingsList(1) [
     {
       values: [
@@ -16056,7 +16056,7 @@ The returned object looks like this:
   ]
   ```
 
-  ```java Java theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```java Java theme={null}
   class EmbeddingsList {
       model: llama-text-embed-v2
       data: [class Embedding {
@@ -16071,7 +16071,7 @@ The returned object looks like this:
   }
   ```
 
-  ```go Go theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```go Go theme={null}
   {
     "data": [
       {
@@ -16091,7 +16091,7 @@ The returned object looks like this:
   }
   ```
 
-  ```json curl theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```json curl theme={null}
   {
     "data": [
       {

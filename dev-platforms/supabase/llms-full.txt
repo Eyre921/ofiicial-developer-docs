@@ -208106,6 +208106,17 @@ Initiates the OAuth authorization flow for the specified provider. After success
 
 ## Organizations
 
+## Assign or change an organization member role
+
+`PATCH /v2/organizations/{slug}/members/{user_id}/roles`
+
+Assigns an org-wide role when projects is omitted, or creates a project-scoped assignment when projects is provided. Uses an org-level role template id from GET /v2/organizations/{slug}/roles. Stale role assignments are automatically cleaned up: if a role no longer has any projects, it is deleted; overlapping project assignments in other roles are automatically removed to avoid duplication.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
+- `user_id` (string, required)
+
 ## Create an organization
 
 `POST /v1/organizations`
@@ -208158,13 +208169,23 @@ Returns a cursor-paginated list of organization members including their roles an
 
 `GET /v2/organizations/{slug}/roles`
 
-Returns a cursor-paginated list of organization roles including both org-scoped and project-scoped roles.
+Returns a list of org-level roles for the organization.
 
 ### Parameters
 
 - `slug` (string, required): Organization slug
-- `page` (object, optional)
-- `filter` (object, optional)
+
+## Organizations Members Invitations
+
+## Creates organization invitations
+
+`POST /v2/organizations/{slug}/members/invitations`
+
+Creates member invitations for an organization. Each invitation can have different role and project scope settings.
+
+### Parameters
+
+- `slug` (string, required): Organization slug
 
 ## Profile
 
@@ -208186,6 +208207,16 @@ Returns a cursor-paginated list of organization roles including both org-scoped 
 
 `POST /v1/projects`
 
+## Add an AWS account to the project PrivateLink share
+
+`POST /v2/projects/{ref}/private-link/associations`
+
+Adds an AWS account to the project's PrivateLink configuration and schedules the AWS resources to be created.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+
 ## Deletes the given project
 
 `DELETE /v1/projects/{ref}`
@@ -208201,6 +208232,17 @@ Returns a cursor-paginated list of organization roles including both org-scoped 
 ### Parameters
 
 - `ref` (string, required): Project ref
+
+## Remove an AWS account from the project PrivateLink share
+
+`DELETE /v2/projects/{ref}/private-link/associations/aws-account/{aws_account_id}`
+
+Removes an AWS account from the project's PrivateLink configuration. Cleans up the associated AWS resources.
+
+### Parameters
+
+- `ref` (string, required): Project ref
+- `aws_account_id` (string, optional): AWS account ID used in PrivateLink association
 
 ## Gets all projects for the given organization
 
@@ -208323,6 +208365,14 @@ Returns a list of all projects you've previously created.
 ## Lists available restore versions for the given project
 
 `GET /v1/projects/{ref}/restore`
+
+### Parameters
+
+- `ref` (string, required): Project ref
+
+## List AWS accounts attached to the project PrivateLink share
+
+`GET /v2/projects/{ref}/private-link/associations`
 
 ### Parameters
 

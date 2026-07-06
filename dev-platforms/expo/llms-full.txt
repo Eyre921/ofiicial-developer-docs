@@ -12428,7 +12428,7 @@ AI agents don't produce identical results every time, so your app won't match ou
 ---
 
 ---
-modificationDate: June 22, 2026
+modificationDate: July 06, 2026
 title: Set up your tools
 description: In this chapter, install an AI coding agent, Node.js, and Expo Go, and teach your agent about Expo.
 ---
@@ -12590,9 +12590,9 @@ Click the following link to install the MCP server for Cursor, then sign in with
 
 #### Optional: let your agent see and tap your app
 
-The MCP server also offers local capabilities: with extra setup, a multimodal agent can take screenshots of your app running in a simulator, tap buttons, and verify its own work. This requires a simulator on your computer (macOS only for iOS), so it's beyond this tutorial. In the chapters ahead, **you** are the one verifying the app on your phone. If you want to explore it later, see [Set up local capabilities](/eas/ai/mcp.md#set-up-local-capabilities-recommended).
+The MCP server also offers local capabilities: with extra setup, a multimodal agent can take screenshots of your app running in a simulator, tap buttons, and verify its own work. This requires a simulator on your computer (macOS only for iOS), so it's beyond this tutorial. In the chapters ahead, **you** are the one verifying the app on your phone. If you want to explore it later, see [Set up local capabilities](/mcp.md#set-up-local-capabilities-recommended).
 
-[Expo MCP server](/eas/ai/mcp.md) — Full installation instructions, available tools, and data privacy details.
+[Expo MCP server](/mcp.md) — Full installation instructions, available tools, and data privacy details.
 
 ## Test your setup
 
@@ -12877,7 +12877,7 @@ In the next chapter, you'll polish the status bar, splash screen, and app icon, 
 ---
 
 ---
-modificationDate: June 19, 2026
+modificationDate: July 06, 2026
 title: Finishing touches
 description: In this chapter, direct your AI agent to polish the status bar, splash screen, and app icon, then take your next steps as a builder.
 ---
@@ -12936,7 +12936,7 @@ Fill in the About screen: explain what the app does and credit me as the builder
 
 [Expo Skills](/skills.md) — Browse the full list of skills your agent can use, with example prompts for each.
 
-[Expo MCP server](/eas/ai/mcp.md) — Explore everything your agent can do with Expo's tools, including triggering builds and reading crash reports.
+[Expo MCP server](/mcp.md) — Explore everything your agent can do with Expo's tools, including triggering builds and reading crash reports.
 
 Need help or want to show off what you built? Join the Expo community on [Discord](https://chat.expo.dev/).
 

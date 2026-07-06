@@ -148,7 +148,7 @@ Every [record](/guides/get-started/concepts#record) in an index must contain an 
 **Examples**
 
 <CodeGroup>
-  ```json Valid metadata theme={null} theme={null} theme={null}
+  ```json Valid metadata theme={null}
   {
     "document_id": "document1",
     "document_title": "Introduction to Vector Databases",
@@ -160,7 +160,7 @@ Every [record](/guides/get-started/concepts#record) in an index must contain an 
   }
   ```
 
-  ```json Invalid metadata theme={null} theme={null} theme={null}
+  ```json Invalid metadata theme={null}
   {
     "document": {       // Nested JSON objects are not supported
       "document_id": "document1",
@@ -207,13 +207,13 @@ Pinecone's filtering language supports the following operators:
 
 For example, the following has a `"genre"` metadata field with a list of strings:
 
-```JSON JSON theme={null} theme={null} theme={null}
+```JSON JSON theme={null}
 { "genre": ["comedy", "documentary"] }
 ```
 
 This means `"genre"` takes on both values, and requests with the following filters will match:
 
-```JSON JSON theme={null} theme={null} theme={null}
+```JSON JSON theme={null}
 {"genre":"comedy"}
 
 {"genre": {"$in":["documentary","action"]}}
@@ -223,18 +223,18 @@ This means `"genre"` takes on both values, and requests with the following filte
 
 However, requests with the following filter will **not** match:
 
-```JSON JSON theme={null} theme={null} theme={null}
+```JSON JSON theme={null}
 { "$and": [{ "genre": "comedy" }, { "genre": "drama" }] }
 ```
 
 Additionally, requests with the following filters will **not** match because they are invalid. They will result in a compilation error:
 
-```json JSON theme={null} theme={null} theme={null}
+```json JSON theme={null}
 # INVALID QUERY:
 {"genre": ["comedy", "documentary"]}
 ```
 
-```json JSON theme={null} theme={null} theme={null}
+```json JSON theme={null}
 # INVALID QUERY:
 {"genre": {"$eq": ["comedy", "documentary"]}}
 ```

@@ -76211,7 +76211,7 @@ When you deploy an Express app to Vercel, your Express application becomes a sin
 
 Additionally, all [Vercel Functions limitations](/docs/functions/limitations) apply to the Express application, including:
 
-- **Application size**: The Express application becomes a single bundle, which must fit within the 250MB limit of Vercel Functions. Our bundling process removes all unneeded files from the deployment's bundle to reduce size, but does not perform application bundling (e.g., Webpack or Rollup).
+- **Application size**: The Express application becomes a single bundle, which has a standard bundle size limit of 250MB. [Large Functions](/docs/functions/limitations#large-functions-beta) support Node.js bundles up to 5GB on Fluid compute when enabled (public beta). Our bundling process removes all unneeded files from the deployment's bundle to reduce size, but does not perform application bundling (e.g., Webpack or Rollup).
 - **Error handling**: Express.js will swallow errors that can put the main function into an undefined state unless properly handled. Express.js will render its own error pages (500), which prevents Vercel from discarding the function and resetting its state. Implement robust error handling to ensure errors are properly managed and do not interfere with the serverless function's lifecycle.
 
 ## More resources
@@ -76403,7 +76403,7 @@ property](/docs/project-configuration/vercel-json#functions).
 
 All [Vercel Functions limitations](/docs/functions/limitations) apply to FastAPI applications, including:
 
-- **Application size**: The FastAPI application becomes a single bundle, which must fit within the 500MB limit of Vercel Functions. Our bundling process removes `__pycache__` and `.pyc` files from the deployment's bundle to reduce size, but does not perform application bundling.
+- **Application size**: The FastAPI application becomes a single bundle, which has a standard bundle size limit of 500MB. [Large Functions](/docs/functions/limitations#large-functions-beta) support Python bundles up to 5GB on Fluid compute when enabled (public beta). Our bundling process removes `__pycache__` and `.pyc` files from the deployment's bundle to reduce size, but does not perform application bundling.
 
 ## More resources
 
@@ -76488,7 +76488,7 @@ When you deploy a Fastify app to Vercel, your Fastify application becomes a sing
 
 ## Limitations
 
-All [Vercel Functions limitations](/docs/functions/limitations) apply to the Fastify application, including the size of the application being limited to 250MB.
+All [Vercel Functions limitations](/docs/functions/limitations) apply to the Fastify application, including the standard bundle size limit of 250MB for Node.js applications. [Large Functions](/docs/functions/limitations#large-functions-beta) support Node.js bundles up to 5GB on Fluid compute when enabled (public beta).
 
 ## More resources
 
@@ -76653,7 +76653,7 @@ property](/docs/project-configuration/vercel-json#functions).
 
 All [Vercel Functions limitations](/docs/functions/limitations) apply to Flask applications, including:
 
-- **Application size**: The Flask application becomes a single bundle, which must fit within the 500MB limit of Vercel Functions. Our bundling process removes `__pycache__` and `.pyc` files from the deployment's bundle to reduce size, but does not perform application bundling.
+- **Application size**: The Flask application becomes a single bundle, which has a standard bundle size limit of 500MB. [Large Functions](/docs/functions/limitations#large-functions-beta) support Python bundles up to 5GB on Fluid compute when enabled (public beta). Our bundling process removes `__pycache__` and `.pyc` files from the deployment's bundle to reduce size, but does not perform application bundling.
 
 ## More resources
 
@@ -76854,7 +76854,7 @@ When you deploy a Koa app to Vercel, your Koa application becomes a single [Verc
 
 ## Limitations
 
-All [Vercel Functions limitations](/docs/functions/limitations) apply to the Koa application, including the size of the application being limited to 250MB.
+All [Vercel Functions limitations](/docs/functions/limitations) apply to the Koa application, including the standard bundle size limit of 250MB for Node.js applications. [Large Functions](/docs/functions/limitations#large-functions-beta) support Node.js bundles up to 5GB on Fluid compute when enabled (public beta).
 
 ## More resources
 
@@ -76939,7 +76939,7 @@ When you deploy a NestJS app to Vercel, your NestJS application becomes a single
 
 ## Limitations
 
-All [Vercel Functions limitations](/docs/functions/limitations) apply to the NestJS application, including the size of the application being limited to 250MB.
+All [Vercel Functions limitations](/docs/functions/limitations) apply to the NestJS application, including the standard bundle size limit of 250MB for Node.js applications. [Large Functions](/docs/functions/limitations#large-functions-beta) support Node.js bundles up to 5GB on Fluid compute when enabled (public beta).
 
 ## More resources
 
@@ -79315,7 +79315,7 @@ property](/docs/project-configuration/vercel-json#functions).
 
 All [Vercel Functions limitations](/docs/functions/limitations) apply to Django applications, including:
 
-- **Application size**: The Django application becomes a single bundle, which must fit within the 500 MB limit of Vercel Functions. The bundling process removes `__pycache__` and `.pyc` files from the deployment's bundle to reduce size, but does not perform application bundling.
+- **Application size**: The Django application becomes a single bundle, which has a standard bundle size limit of 500MB. [Large Functions](/docs/functions/limitations#large-functions-beta) support Python bundles up to 5GB on Fluid compute when enabled (public beta). The bundling process removes `__pycache__` and `.pyc` files from the deployment's bundle to reduce size, but does not perform application bundling.
 
 ## More resources
 
@@ -87384,10 +87384,12 @@ Make sure your `pyproject.toml` or `requirements.txt` only lists packages
 necessary at runtime. Explicitly exclude files you don't need to keep bundles
 small and avoid hitting size limits.
 
-> **💡 Note:** Python functions have a maximum uncompressed bundle size of .
+> **💡 Note:** The standard Python bundle size limit is  uncompressed.
+>
+> support Python bundles up to  on Fluid compute when enabled (public beta).
 > See the
 >
-> for larger bundle options.
+> for details.
 
 To exclude unnecessary files (tests, static assets, test data), configure
 `excludeFiles` in `vercel.json` under the `functions` key. The pattern is a

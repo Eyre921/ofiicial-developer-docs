@@ -324,7 +324,7 @@ Requests to one of [Pinecone's hosted embedding models](/guides/index-data/creat
 For example, the following request to use the `multilingual-e5-large` model to generate embeddings for sentences related to the word “apple” might return this request and summary of embedding tokens generated:
 
 <CodeGroup>
-  ```python Python theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```python Python theme={null}
   # Import the Pinecone library
   from pinecone.grpc import PineconeGRPC as Pinecone
   from pinecone import ServerlessSpec
@@ -353,7 +353,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   print(embeddings)
   ```
 
-  ```javascript JavaScript theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```javascript JavaScript theme={null}
   // Import the Pinecone library
   import { Pinecone } from '@pinecone-database/pinecone';
 
@@ -382,7 +382,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   console.log(embeddings);
   ```
 
-  ```java Java theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```java Java theme={null}
   // Import the required classes
   import io.pinecone.clients.Index;
   import io.pinecone.clients.Inference;
@@ -454,7 +454,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   }
   ```
 
-  ```go Go theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```go Go theme={null}
   package main
 
   // Import the required packages
@@ -529,7 +529,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
   }
   ```
 
-  ```shell curl theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```shell curl theme={null}
   PINECONE_API_KEY="YOUR_API_KEY"
 
   curl https://api.pinecone.io/embed \
@@ -557,7 +557,7 @@ For example, the following request to use the `multilingual-e5-large` model to g
 The returned object looks like this:
 
 <CodeGroup>
-  ```python Python theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```python Python theme={null}
   EmbeddingsList(
       model='llama-text-embed-v2',
       data=[
@@ -568,7 +568,7 @@ The returned object looks like this:
   )
   ```
 
-  ```javascript JavaScript theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```javascript JavaScript theme={null}
   EmbeddingsList(1) [
     {
       values: [
@@ -585,7 +585,7 @@ The returned object looks like this:
   ]
   ```
 
-  ```java Java theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```java Java theme={null}
   class EmbeddingsList {
       model: llama-text-embed-v2
       data: [class Embedding {
@@ -600,7 +600,7 @@ The returned object looks like this:
   }
   ```
 
-  ```go Go theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```go Go theme={null}
   {
     "data": [
       {
@@ -620,7 +620,7 @@ The returned object looks like this:
   }
   ```
 
-  ```json curl theme={null} theme={null} theme={null} theme={null} theme={null} theme={null}
+  ```json curl theme={null}
   {
     "data": [
       {

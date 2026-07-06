@@ -12,13 +12,13 @@ This quickstart walks you through creating a Pinecone index and building a sampl
   1. Install the CLI.
 
      <CodeGroup>
-       ```shell macOS theme={null} theme={null} theme={null}
+       ```shell macOS theme={null}
        # Using Homebrew (https://brew.sh)
        brew tap pinecone-io/tap
        brew install pinecone-io/tap/pinecone
        ```
 
-       ```shell Linux/Windows theme={null} theme={null} theme={null}
+       ```shell Linux/Windows theme={null}
        Download pre-build binaries from https://github.com/pinecone-io/cli/releases
        ```
      </CodeGroup>
@@ -91,7 +91,7 @@ Choose your approach to build with Pinecone below. Each approach achieves the sa
       npm install @pinecone-database/pinecone
       ```
 
-      ```shell Java theme={null} theme={null} theme={null}
+      ```shell Java theme={null}
       # Maven
       <dependency>
         <groupId>io.pinecone</groupId>
