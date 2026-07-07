@@ -177,12 +177,53 @@ There are two subtle and important points to note here:
 
 Reducers are key to understanding how updates from nodes are applied to the `State`. Each key in the `State` has its own independent reducer function. If no reducer function is explicitly specified then it is assumed that all updates to that key should override it. There are a few different types of reducers, starting with the default type of reducer:
 
+#### Reducer arguments
+
+Every reducer is a binary function with two positional arguments:
+
+* **Left argument**: The current value already stored in state for that key.
+* **Right argument**: The update for that key returned by a node.
+
+When a node returns a partial update, LangGraph calls the reducer for each updated key and saves the return value as the new state value:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+new_value = reducer(left=current_state[key], right=node_update[key])
+```
+
+The left argument always comes from accumulated state. The right argument always comes from the latest node update. The following example names both arguments explicitly:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import Annotated
+
+from typing_extensions import TypedDict
+
+
+def append_strings(left: list[str], right: list[str]) -> list[str]:
+    """Combine the existing state value (left) with a node update (right)."""
+    return left + right
+
+
+class State(TypedDict):
+    tags: Annotated[list[str], append_strings]
+```
+
+Suppose the state is `{"tags": ["draft"]}` and a node returns `{"tags": ["review"]}`. LangGraph calls:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+append_strings(left=["draft"], right=["review"])  # returns ["draft", "review"]
+```
+
+The new state value for `tags` is `["draft", "review"]`.
+
+Custom reducers combine the left and right arguments. The [default reducer](#default-reducer) discards the left argument and keeps only the right.
+
 #### Default reducer
 
-These two examples show how to use the default reducer:
+The default reducer ignores the left argument and replaces the state value with the right argument. This example shows how to use the default reducer:
 
-```python Example A theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing_extensions import TypedDict
+
 
 class State(TypedDict):
     foo: int
@@ -193,10 +234,16 @@ In this example, no reducer functions are specified for any key. Let's assume th
 
 `{"foo": 1, "bar": ["hi"]}`. Let's then assume the first `Node` returns `{"foo": 2}`. This is treated as an update to the state. Notice that the `Node` does not need to return the whole `State` schema - just an update. After applying this update, the `State` would then be `{"foo": 2, "bar": ["hi"]}`. If the second node returns `{"bar": ["bye"]}` then the `State` would then be `{"foo": 2, "bar": ["bye"]}`
 
-```python Example B theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing import Annotated
-from typing_extensions import TypedDict
+#### Custom reducers
+
+A custom reducer combines the left and right arguments instead of replacing the state value, which is useful for accumulating values, such as appending updates to a list. This example shows how to specify a custom reducer:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from operator import add
+from typing import Annotated
+
+from typing_extensions import TypedDict
+
 
 class State(TypedDict):
     foo: int

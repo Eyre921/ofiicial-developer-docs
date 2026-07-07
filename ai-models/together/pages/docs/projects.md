@@ -41,6 +41,20 @@ Every Organization has a **Default Project**. A few things to know about it:
 * It has an "Organization Default Key" that is only accessible to the Organization Owner (see [API Keys & Authentication](/docs/api-keys-authentication#organization-default-key-deprecated)).
 * Because all Organization Members have access, do not use the Default Project for sensitive resources. Create a separate Project for those.
 
+## Project Slugs
+
+A **project slug** is a short, URL-safe, human-readable identifier for a Project. It's globally unique across Together and distinct from the Project's internal `project_id`, the permanent identifier behind ownership, permissions, and billing. The slug is the friendly handle; the `project_id` never changes.
+
+You choose a slug when creating a new Project, and you can copy any Project's slug from the Projects list in [**Organization Settings**](https://api.together.ai/settings/organization/~current).
+
+### Changing a Project Slug
+
+Project Admins can change an existing Project's slug from [**Project Settings**](https://api.together.ai/settings/projects/~current): find the **Project Slug** field and select **Change**. The new slug takes effect immediately.
+
+<Warning>
+  Changing a slug can break existing API requests, scripts, and integrations that reference resources by their slug-qualified path (for example, `<slug>/<endpoint-name>`). Update any references that rely on the old slug.
+</Warning>
+
 ## Managing Project Collaborators
 
 You can manage Project Collaborators from [**Settings > Project > Collaborators**](https://api.together.ai/settings/projects/~current/collaborators).

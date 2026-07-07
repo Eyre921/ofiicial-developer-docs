@@ -8,20 +8,33 @@ path: billing/subscriptions/coupons
 
 Add discounts to subscriptions and subscription items using coupons and promotion codes.
 
-Redeem coupons to apply discounts to the subscriptions you offer. You can also use coupons to create promotion codes to share with your customers. Customers can redeem these promotion codes to apply discounts to their subscriptions.
+Create and manage coupons and promotion codes to apply discounts to a customer’s subscriptions, subscription items, or invoices using either the Dashboard or Stripe APIs. Use coupons to:
 
-- [Coupons](https://docs.stripe.com/billing/subscriptions/coupons.md#coupons): You create and manage coupons to define discounts, such as a percentage or amount off from the subscription price.
-- [Promotion codes](https://docs.stripe.com/billing/subscriptions/coupons.md#promotion-codes): You create customer-facing codes that map to your coupons. For example, FALLPROMO and SPRINGPROMO can both map to a single 25% off coupon. You can share promotion codes directly with your customers, who can enter and redeem the codes during payment.
-
-You can use coupons and promotion codes to:
-
-- Apply one or more discounts to an invoice, subscription, or subscription item
-- Apply one or more discounts for a certain duration of time
+- Apply [discounts](https://docs.stripe.com/api/discounts.md) to a subscription, subscription item, or invoice
+- Set a coupon to apply once, for a set number of months, or indefinitely
 - Reduce invoice amounts by a percentage or a flat amount
 
-You can also define a coupon that a customer must redeem by a certain date, or that’s limited to a set number of redemptions across all of your customers. To use discounts for one-time payments, see [Add discounts for one-time payments](https://docs.stripe.com/payments/checkout/discounts.md).
+## Coupons versus promotion codes
 
-> On this page, “discount” has two meanings. In everyday language, a discount is any price reduction. In the Stripe API, a [Discount](https://docs.stripe.com/api/discounts/object.md) is a specific object that represents the application of a coupon to a customer, subscription, or invoice. When a customer redeems a coupon, Stripe creates a `Discount` object to track that redemption.
+These are the differences between a coupon and a promotion code:
+
+- [Coupons](https://docs.stripe.com/billing/subscriptions/coupons.md#coupons): You decide who and when a customer gets the discount. These are backend-driven discounts (your system decides who gets the discount).
+- [Promotion codes](https://docs.stripe.com/billing/subscriptions/coupons.md#promotion-codes): Your customer decides when to apply a discount. This is a customer-facing code that wraps around a coupon, adding a distribution and control layer on top of coupons. Many promotion codes can reference one coupon. Promotion codes inherit the product restrictions of their parent coupon. For example, if a coupon only applies to certain products, any promotion code created from it has the same restrictions.
+
+On this page, “discount” has two meanings. In everyday language, a discount is any price reduction. In the Stripe API, a [Discount](https://docs.stripe.com/api/discounts/object.md) is a specific object that represents the application of a coupon to a customer, subscription, or invoice. When a customer redeems a coupon, Stripe creates a `Discount` object to track that redemption.
+
+You can apply up to 20 discounts to a subscription, subscription item, or invoice. This limit is shared between  coupons and promotion codes.
+
+|  | **Coupon** | **Promotion code** |
+| --- | --- | --- |
+| Definition | API object that defines the discount logic. Apply these directly to a customer’s subscription using the Dashboard or API. | Customer-facing code that maps to your coupons. This is the string the customer enters at checkout. For example, `FALLPROMO` and `SPRINGPROMO` can both map to a single 25% off coupon. |
+| Use case | Your sales team closes a deal with a customer for a negotiated 20% off their annual subscription. Your backend applies the discount directly, and the customer never types anything in. | Your marketing team launches a social media campaign and wants creators to share a code `EXAMPLE2026` that gives new subscribers 25% off for 3 months. It only works for first-time customers with a minimum spend of 50 USD, and you want to cap it at 500 redemptions. |
+| Restrict to a specific customer | ❌ Unsupported | ✓ Supported |
+| Apply to first-time purchase only | ❌ Unsupported | ✓ Supported |
+| Minimum spend to redeem | ❌ Unsupported | ✓ Supported |
+| Deactivate without deletion | You can only delete, not deactivate coupons. Deletion doesn’t remove existing discounts, but prevents new applications. Deleting a coupon will archive its associated promotion codes. | You can archive the promotion code by toggling `active` flag |
+
+To use discounts for one-time payments, see [Add discounts for one-time payments](https://docs.stripe.com/payments/checkout/discounts.md) instead.
 
 Service period coupons let you apply discounts based on when services were rendered, not when the invoice was issued. For example, a discount for January services applies to January, regardless of whether the invoice is generated in February. Sign up to join the private preview.
 

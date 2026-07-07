@@ -3765,6 +3765,18 @@ Source: https://docs.together.ai/docs/changelog
   * `google/gemma-4-31B-it-VLM`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+
+  ## GPU cluster creation region selection
+
+  The create cluster flow now defaults the **Region** field to **Any region**. Together picks the region with the most available capacity for your GPU type at create time. Changing the GPU type resets the region to **Any region** and clears any selected shared volume.
+
+  See the [GPU Clusters quickstart](/docs/gpu-clusters-quickstart) for the full create flow.
+</Update>
+
+<Update label="July 2, 2026">
+  ## Bring your own model: Transformers v5
+
+  [BYOM fine-tuning](/docs/fine-tuning/byom) now supports Hugging Face models built with Transformers v5 or earlier.
 </Update>
 
 <Update label="July 1, 2026">
@@ -7752,9 +7764,9 @@ The following table lists the single-GPU price for each hardware type.
 
 | GPU            | Hardware ID                | Cost/hour |
 | -------------- | -------------------------- | --------- |
-| H100 80GB SXM  | `1x_nvidia_h100_80gb_sxm`  | \$6.49    |
-| H200 140GB SXM | `1x_nvidia_h200_140gb_sxm` | \$7.89    |
-| B200 180GB SXM | `1x_nvidia_b200_180gb_sxm` | \$11.95   |
+| H100 80GB SXM  | `1x_nvidia_h100_80gb_sxm`  | \$5.40    |
+| H200 140GB SXM | `1x_nvidia_h200_140gb_sxm` | \$6.60    |
+| B200 180GB SXM | `1x_nvidia_b200_180gb_sxm` | \$9.00    |
 
 ### Scaling out
 
@@ -12692,7 +12704,7 @@ Source: https://docs.together.ai/docs/fine-tuning/pricing
 
 Fine-tuning is billed per token processed, scaled by model size, training method, and training type.
 
-Together AI bills fine-tuning by the total number of tokens processed across training and validation. The per-token rate depends on three factors: the model size bracket, the training method (supervised or DPO), and the training type (LoRA or full fine-tuning). For current rates, see the [together.ai/pricing](https://www.together.ai/pricing#fine-tuning).
+Together AI bills fine-tuning by the total number of tokens processed across training and validation. The per-token rate depends on three factors: the model size bracket, the training method (supervised or DPO), and the training type (LoRA or full fine-tuning). For current rates, see [together.ai/pricing](https://www.together.ai/pricing#fine-tuning).
 
 After training, hosting on a [dedicated endpoint](/docs/fine-tuning/deployment) is billed separately by the minute.
 
@@ -15978,7 +15990,9 @@ Select the billing mode that fits your needs:
 
 **Region**
 
-* Select the datacenter region closest to your data or team
+* Defaults to **Any region**. Together assigns the region with the most available capacity for your selected GPU type when you create the cluster.
+* Select a specific datacenter region instead if you need the cluster in a particular location.
+* Changing the GPU type resets the region to **Any region** and clears any selected shared volume, because volumes are region-specific.
 
 **Duration** (Reserved only)
 
@@ -34992,6 +35006,20 @@ Every Organization has a **Default Project**. A few things to know about it:
 * All Playground usage is attributed to this Project.
 * It has an "Organization Default Key" that is only accessible to the Organization Owner (see [API Keys & Authentication](/docs/api-keys-authentication#organization-default-key-deprecated)).
 * Because all Organization Members have access, do not use the Default Project for sensitive resources. Create a separate Project for those.
+
+## Project Slugs
+
+A **project slug** is a short, URL-safe, human-readable identifier for a Project. It's globally unique across Together and distinct from the Project's internal `project_id`, the permanent identifier behind ownership, permissions, and billing. The slug is the friendly handle; the `project_id` never changes.
+
+You choose a slug when creating a new Project, and you can copy any Project's slug from the Projects list in [**Organization Settings**](https://api.together.ai/settings/organization/~current).
+
+### Changing a Project Slug
+
+Project Admins can change an existing Project's slug from [**Project Settings**](https://api.together.ai/settings/projects/~current): find the **Project Slug** field and select **Change**. The new slug takes effect immediately.
+
+<Warning>
+  Changing a slug can break existing API requests, scripts, and integrations that reference resources by their slug-qualified path (for example, `<slug>/<endpoint-name>`). Update any references that rely on the old slug.
+</Warning>
 
 ## Managing Project Collaborators
 

@@ -275,7 +275,6 @@ Create `agent.py` in your project directory:
 
     Example:
     ## Key Findings
-
     Context engineering is a critical technique for AI agents [1]. Studies show that proper context management can improve performance by 40% [2].
 
     ### Sources
@@ -331,280 +330,44 @@ Create `agent.py` in your project directory:
 
     <Tabs>
       <Tab title="Claude">
-        <CodeGroup>
-          ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
+        ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        from datetime import datetime
 
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
+        from deepagents import create_deep_agent
+        from langchain.chat_models import init_chat_model
 
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
+        max_concurrent_research_units = 3
+        max_researcher_iterations = 3
 
-          current_date = datetime.now().strftime("%Y-%m-%d")
+        current_date = datetime.now().strftime("%Y-%m-%d")
 
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
+        INSTRUCTIONS = (
+            RESEARCH_WORKFLOW_INSTRUCTIONS
+            + "\n\n"
+            + "=" * 80
+            + "\n\n"
+            + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
+                max_concurrent_research_units=max_concurrent_research_units,
+                max_researcher_iterations=max_researcher_iterations,
+            )
+        )
 
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
+        research_sub_agent = {
+            "name": "research-agent",
+            "description": "Delegate research to the sub-agent. Give one topic at a time.",
+            "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
+            "tools": [tavily_search],
+        }
 
-          model = init_chat_model(model="google_genai:gemini-3.5-flash", temperature=0.0)
+        model = init_chat_model(model="anthropic:claude-sonnet-4-5-20250929", temperature=0.0)
 
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="openai:gpt-5.5", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="anthropic:claude-sonnet-4-6", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="openrouter:z-ai/glm-5.2", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="fireworks:accounts/fireworks/models/glm-5p2", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="baseten:zai-org/GLM-5.2", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="ollama:north-mini-code-1.0", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-        </CodeGroup>
+        agent = create_deep_agent(
+            model=model,
+            tools=[tavily_search],
+            system_prompt=INSTRUCTIONS,
+            subagents=[research_sub_agent],
+        )
+        ```
       </Tab>
 
       <Tab title="Gemini">

@@ -68,6 +68,7 @@ agent = create_deep_agent(
         {
             "name": "researcher",
             "description": "Research assistant",
+            "system_prompt": "You are a research assistant.",
         }
     ],
 )

@@ -128192,15 +128192,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128387,15 +128383,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128601,15 +128593,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128780,15 +128768,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -128998,15 +128982,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129133,15 +129113,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129312,15 +129288,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129530,15 +129502,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129700,15 +129668,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -129853,15 +129817,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -130025,15 +129985,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -130346,15 +130302,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -130640,15 +130592,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -130803,15 +130751,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -131012,15 +130956,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -131192,15 +131132,11 @@ npx skills add supabase/agent-skills
 
 ## 3. Set up your database
 
-When your Supabase project is up and running, create an `instruments` table with some sample data.
+When your Supabase project is up and running, create an `instruments` table with some sample data. Then set only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in the table publicly readable.
 
-Then set a secure baseline by setting only the privileges each Postgres role needs, add [Row Level Security (RLS)](https://supabase.com/docs/guides/database/postgres/row-level-security) for enhanced security for database data by default, and create an RLS policy to make the data in your table publicly readable.
+Tip: Save some steps by clicking here to prefill the SQL in the SQL Editor, and then clicking **Run**.
 
-You can click this button to prefill all the SQL needed in [the SQL editor of your project](https://supabase.com/dashboard/project/_/sql) in the Dashboard.
-
-Prefill SQL
-
-Run the following snippet in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new). You can also choose the SQL and prefill it from the **Reference > Samples** menu at the side of the SQL Editor.
+Or do this manually in your project's [SQL Editor](https://supabase.com/dashboard/project/_/sql/new), by pasting the SQL below, and clicking **Run**.
 
 ```sql SQL_EDITOR
 -- Create the table
@@ -163862,14 +163798,14 @@ sb_secret_<22-char-random>_<8-char-checksum>
 
 ### Verifying the setup
 
-Test with the new publishable key:
+Test with the new secret key:
 
 ```sh
 curl http://<your-domain>/rest/v1/ \
 -H "apikey: your-supabase-secret-key"
 ```
 
-You should receive a valid response from PostgREST. Then verify that the legacy key still works:
+You should receive a valid response from PostgREST. Then verify that the legacy service role key still works:
 
 ```sh
 curl http://<your-domain>/rest/v1/ \
@@ -163877,6 +163813,8 @@ curl http://<your-domain>/rest/v1/ \
 ```
 
 Both should work and return the same result.
+
+Note: `/rest/v1/` is the Open API root and requires admin-level keys (`sb_secret_*` or legacy `SERVICE_ROLE_KEY`). Public keys (`sb_publishable_*` or legacy `ANON_KEY`) return `403` for this endpoint.
 
 You can also verify the public JWKS endpoint:
 
@@ -164170,28 +164108,29 @@ docker compose -f docker-compose.yml -f docker-compose.envoy.yml restart api-gw
 
 Routes are matched in the order declared. The first matching prefix wins. Protected routes require a valid `apikey` header; open routes pass through without API key validation.
 
-| Path prefix                               | Upstream  | Path rewrite             | Access control    | Notes                                                                  |
-| ----------------------------------------- | --------- | ------------------------ | ----------------- | ---------------------------------------------------------------------- |
-| `/auth/v1/verify`                         | auth      | `/verify`                | Open              | Email verification                                                     |
-| `/auth/v1/callback`                       | auth      | `/callback`              | Open              | OAuth callback                                                         |
-| `/auth/v1/authorize`                      | auth      | `/authorize`             | Open              | OAuth authorize                                                        |
-| `/auth/v1/.well-known/jwks.json`          | auth      | `/.well-known/jwks.json` | Open              | JWKS for third-party verification                                      |
-| `/.well-known/oauth-authorization-server` | auth      | -                        | Open              | OAuth 2.0 Authorization Server Metadata (RFC 8414)                     |
-| `/auth/v1/sso/saml/acs`                   | auth      | `/sso/saml/acs`          | Open              | SAML assertion consumer                                                |
-| `/auth/v1/sso/saml/metadata`              | auth      | `/sso/saml/metadata`     | Open              | SAML metadata                                                          |
-| `/functions/v1/`                          | functions | `/`                      | Bypass            | Edge Functions runtime performs its own JWT verification; 150s timeout |
-| `/storage/v1/`                            | storage   | `/`                      | Bypass            | Storage performs its own authorization                                 |
-| `/auth/v1/`                               | auth      | `/`                      | API key           | Protected Auth endpoints                                               |
-| `/rest/v1/`                               | rest      | `/`                      | API key           | PostgREST                                                              |
-| `/graphql/v1`                             | rest      | `/rpc/graphql`           | API key           | pg\_graphql (adds `Content-Profile: graphql_public`)                   |
-| `/realtime/v1/api/tenants`                | realtime  | -                        | Denied            | Realtime management API (blocked by default)                           |
-| `/realtime/v1/api/openapi`                | realtime  | -                        | Denied            | Realtime OpenAPI spec (blocked by default)                             |
-| `/realtime/v1/api`                        | realtime  | `/api`                   | API key           | Realtime REST API (broadcast, channels, ping)                          |
-| `/realtime/v1/`                           | realtime  | `/socket/`               | API key           | Realtime WebSocket                                                     |
-| `/pg/`                                    | meta      | `/`                      | Service role only | postgres-meta - used by Studio for database access                     |
-| `/api/mcp`                                | studio    | -                        | Denied            | MCP endpoint (blocked by default via RBAC DENY)                        |
-| `/mcp`                                    | studio    | `/api/mcp`               | Denied            | MCP endpoint (blocked by default via RBAC DENY)                        |
-| `/` (catch-all)                           | studio    | -                        | Basic auth        | Dashboard; strips inbound `Authorization` header                       |
+| Path prefix                               | Upstream  | Path rewrite             | Access control | Notes                                                                  |
+| ----------------------------------------- | --------- | ------------------------ | -------------- | ---------------------------------------------------------------------- |
+| `/auth/v1/verify`                         | auth      | `/verify`                | Open           | Email verification                                                     |
+| `/auth/v1/callback`                       | auth      | `/callback`              | Open           | OAuth callback                                                         |
+| `/auth/v1/authorize`                      | auth      | `/authorize`             | Open           | OAuth authorize                                                        |
+| `/auth/v1/.well-known/jwks.json`          | auth      | `/.well-known/jwks.json` | Open           | JWKS for third-party verification                                      |
+| `/.well-known/oauth-authorization-server` | auth      | -                        | Open           | OAuth 2.0 Authorization Server Metadata (RFC 8414)                     |
+| `/auth/v1/sso/saml/acs`                   | auth      | `/sso/saml/acs`          | Open           | SAML assertion consumer                                                |
+| `/auth/v1/sso/saml/metadata`              | auth      | `/sso/saml/metadata`     | Open           | SAML metadata                                                          |
+| `/functions/v1/`                          | functions | `/`                      | Bypass         | Edge Functions runtime performs its own JWT verification; 150s timeout |
+| `/storage/v1/`                            | storage   | `/`                      | Bypass         | Storage performs its own authorization                                 |
+| `/auth/v1/`                               | auth      | `/`                      | API key        | Protected Auth endpoints                                               |
+| `/rest/v1/`                               | rest      | `/`                      | API key        | PostgREST Open API root (requires secret key)                          |
+| `/rest/v1/*`                              | rest      | `/`                      | API key        | PostgREST data endpoints                                               |
+| `/graphql/v1`                             | rest      | `/rpc/graphql`           | API key        | pg\_graphql (adds `Content-Profile: graphql_public`)                   |
+| `/realtime/v1/api/tenants`                | realtime  | -                        | Denied         | Realtime management API (blocked by default)                           |
+| `/realtime/v1/api/openapi`                | realtime  | -                        | Denied         | Realtime OpenAPI spec (blocked by default)                             |
+| `/realtime/v1/api`                        | realtime  | `/api`                   | API key        | Realtime REST API (broadcast, channels, ping)                          |
+| `/realtime/v1/`                           | realtime  | `/socket/`               | API key        | Realtime WebSocket                                                     |
+| `/pg/`                                    | meta      | `/`                      | API key        | postgres-meta / Studio database operations (requires secret key)       |
+| `/api/mcp`                                | studio    | -                        | Denied         | MCP endpoint (blocked by default via RBAC DENY)                        |
+| `/mcp`                                    | studio    | `/api/mcp`               | Denied         | MCP endpoint (blocked by default via RBAC DENY)                        |
+| `/` (catch-all)                           | studio    | -                        | Basic auth     | Dashboard; strips inbound `Authorization` header                       |
 
 Note: MCP routes are denied at the gateway by default. Allowing local access requires editing the RBAC rule on the `/mcp` route. See the inline comments in `lds.template.yaml` for the allowed pattern, and [Enabling MCP Server Access](https://supabase.com/docs/guides/self-hosting/enable-mcp) for the security model.
 
@@ -164209,8 +164148,9 @@ The protected routes (`/auth/v1/`, `/rest/v1/`, `/graphql/v1`, `/realtime/v1/api
 
 A Lua filter rejects missing or invalid keys with HTTP `401 Unauthorized`. An RBAC filter then applies finer-grained rules:
 
-- `/pg/` - only `service_role` keys (`sb_secret_*` or legacy `SERVICE_ROLE_KEY`) are allowed (HTTP `403` otherwise).
-- All other protected routes - any valid configured key is allowed.
+- `/pg/` - only `service_role` keys (`sb_secret_*` or legacy `SERVICE_ROLE_KEY`) are allowed
+- `/rest/v1/` (exact path, OpenAPI schema root) - only `service_role` keys are allowed
+- `/rest/v1/<table>` and other Data API paths remain accessible to all valid keys
 
 ### Opaque key translation
 
@@ -188570,11 +188510,12 @@ supabase.auth.exchangeCodeForSession('34e770dd-9ff9-416c-87fa-43b31d7ef225')
 Extracts the JWT claims present in the access token by first verifying the
 JWT against the server's JSON Web Key Set endpoint
 `/.well-known/jwks.json` which is often cached, resulting in significantly
-faster responses. Prefer this method over #getUser which always
+faster responses. Prefer this method over GoTrueClient.getUser which always
 sends a request to the Auth server for each JWT.
 
 If the project is not using an asymmetric JWT signing key (like ECC or
-RSA) it always sends a request to the Auth server (similar to #getUser) to verify the JWT.
+RSA) it always sends a request to the Auth server (similar to
+GoTrueClient.getUser) to verify the JWT.
 
 ### Examples
 
@@ -188594,7 +188535,7 @@ The session returned can be null if the session is not detected which can happen
 to the client. If that storage is based on request cookies for example,
 the values in it may not be authentic and therefore it's strongly advised
 against using this method and its results in such circumstances. A warning
-will be emitted if this is detected. Use #getUser() instead.
+will be emitted if this is detected. Use GoTrueClient.getUser instead.
 
 ### Examples
 
@@ -189426,7 +189367,7 @@ background, which may not be desirable. You should hook into your
 platform's foreground indication mechanism and call these methods
 appropriately to conserve resources.
 
-\#stopAutoRefresh
+GoTrueClient.stopAutoRefresh
 
 ### Examples
 
@@ -189452,7 +189393,7 @@ Stops an active auto refresh process running in the background (if any).
 If you call this method any managed visibility change callback will be
 removed and you must manage visibility changes on your own.
 
-See #startAutoRefresh for more details.
+See GoTrueClient.startAutoRefresh for more details.
 
 ### Examples
 
@@ -190624,7 +190565,7 @@ supabase
 ## onHeartbeat
 
 Sets a callback that receives lifecycle events for internal heartbeat messages.
-Useful for instrumenting connection health (e.g. sent/ok/timeout/disconnected).
+Useful for instrumenting connection health (e.g. sent/ok/timeout).
 
 ## presenceState
 

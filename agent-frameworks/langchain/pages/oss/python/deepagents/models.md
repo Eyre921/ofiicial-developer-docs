@@ -125,15 +125,17 @@ Pass the user's model selection through [runtime context](/oss/python/langchain/
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from dataclasses import dataclass
-from langchain.chat_models import init_chat_model
-from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-from deepagents import create_deep_agent
 from typing import Callable
+
+from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
+from langchain.chat_models import init_chat_model
+from deepagents import create_deep_agent
 
 
 @dataclass
 class Context:
     model: str
+
 
 @wrap_model_call
 def configurable_model(
@@ -143,6 +145,7 @@ def configurable_model(
     model_name = request.runtime.context.model
     model = init_chat_model(model_name)
     return handler(request.override(model=model))
+
 
 agent = create_deep_agent(
     model="google_genai:gemini-3.5-flash",

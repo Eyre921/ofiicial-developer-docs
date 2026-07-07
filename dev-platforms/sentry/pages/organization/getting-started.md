@@ -98,7 +98,7 @@ If you haven't set up any teams to associate with your project because you skipp
 A *project* is a logical entity that connects the errors in your application (or a part of it) to the team members assigned to that project. The project settings determine:
 
 * Which errors should be ingested into your Sentry account and which should be dropped, through [Inbound Filters](https://docs.sentry.io/pricing/quotas.md#inbound-data-filters)
-* Who to notify, about what error, and how, using [Alert Rules](https://docs.sentry.io/product/monitors-and-alerts/alerts.md)
+* Who to notify, about what error, and how, using [Alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md)
 * Which errors should be automatically assigned to which member or team using [Ownership Rules](https://docs.sentry.io/product/issues/ownership-rules.md)
 * Custom rules to fine-tune [Event Grouping](https://docs.sentry.io/concepts/data-management/event-grouping.md) into issues
 
@@ -121,7 +121,7 @@ Depending on your development life cycle, your applications are probably deploye
 
 Having the environment defined in your SDK will allow you to:
 
-* Create environment-specific alert rules.
+* Create environment-specific alerts.
 * Filter the **Issues** page based on the environment.
 * Gain comparative insights, based on the environment, through queries in **Discover**.
 

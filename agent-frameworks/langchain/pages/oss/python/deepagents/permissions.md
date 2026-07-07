@@ -64,7 +64,6 @@ Set `mode="interrupt"` to pause for human approval instead of allowing or denyin
 from deepagents import FilesystemPermission, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
 
-
 agent = create_deep_agent(
     model=model,
     permissions=[

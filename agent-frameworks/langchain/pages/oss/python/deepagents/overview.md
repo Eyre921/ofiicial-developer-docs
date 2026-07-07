@@ -22,161 +22,154 @@ See [Core capabilities](#core-capabilities) for a full breakdown of each compone
 
 ## Quickstart
 
-<Tabs>
-  <Tab title="Google">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-google-genai
-    from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
 
-  <Tab title="OpenAI">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-openai
-    from deepagents import create_deep_agent
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
 
-    agent = create_deep_agent(
-        model="openai:gpt-5.5",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
 
-  <Tab title="Anthropic">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-anthropic
-    from deepagents import create_deep_agent
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="anthropic:claude-sonnet-4-6",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
 
-  <Tab title="OpenRouter">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-openrouter
-    from deepagents import create_deep_agent
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="openrouter:anthropic/claude-sonnet-4-6",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
 
-  <Tab title="Fireworks">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-fireworks
-    from deepagents import create_deep_agent
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
 
-    agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/qwen3p5-397b-a17b",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
 
-  <Tab title="Baseten">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-baseten
-    from deepagents import create_deep_agent
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="baseten:zai-org/GLM-5.2",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
 
-  <Tab title="Ollama">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-ollama
-    from deepagents import create_deep_agent
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="ollama:devstral-2",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
-</Tabs>
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
+</CodeGroup>
 
 See the [Quickstart](/oss/python/deepagents/quickstart/) and [Customization guide](/oss/python/deepagents/customization/) to get started building your own agents and applications with Deep Agents.
 

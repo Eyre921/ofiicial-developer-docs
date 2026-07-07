@@ -50,9 +50,9 @@ The following table lists the single-GPU price for each hardware type.
 
 | GPU            | Hardware ID                | Cost/hour |
 | -------------- | -------------------------- | --------- |
-| H100 80GB SXM  | `1x_nvidia_h100_80gb_sxm`  | \$6.49    |
-| H200 140GB SXM | `1x_nvidia_h200_140gb_sxm` | \$7.89    |
-| B200 180GB SXM | `1x_nvidia_b200_180gb_sxm` | \$11.95   |
+| H100 80GB SXM  | `1x_nvidia_h100_80gb_sxm`  | \$5.40    |
+| H200 140GB SXM | `1x_nvidia_h200_140gb_sxm` | \$6.60    |
+| B200 180GB SXM | `1x_nvidia_b200_180gb_sxm` | \$9.00    |
 
 ### Scaling out
 

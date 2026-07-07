@@ -30,7 +30,7 @@ There are several configuration options for your integration, which are describe
 
 Webhooks allow your service to get requests about specific resources, depending on your selection. For more information, check out the [full Webhooks documentation](https://docs.sentry.io/integrations/integration-platform/webhooks.md).
 
-In order to receive webhook events, you must specify the webhook URL when creating an integration. After you've specified the webhook URL, you'll be able to toggle on "Alert Rule Action" and create issue and metric alerts that send notifications to your integration.
+In order to receive webhook events, you must specify the webhook URL when creating an integration. After you've specified the webhook URL, you'll be able to toggle on "Alert Action" and create alerts that send notifications to your integration.
 
 ## [UI Components](https://docs.sentry.io/integrations/integration-platform.md#ui-components)
 
@@ -38,9 +38,11 @@ The Sentry integration platform provides the ability to add rich UI components t
 
 ## [Alerts](https://docs.sentry.io/integrations/integration-platform.md#alerts)
 
-You can make any integration available as an action in [issue alerts](https://docs.sentry.io/integrations/integration-platform/webhooks/issue-alerts.md) and [metric alerts](https://docs.sentry.io/integrations/integration-platform/webhooks/metric-alerts.md) by enabling the "Alert Rule Action" toggle. The integration will then show up as a service in the action section when creating or updating an alert rule. The interactive demo below shows how to set up an integration that can receive Sentry alerts.
+You can make any integration available as an action in alerts by enabling the "Alert Action" toggle. The integration will then show up as a service in the action section when creating or updating an alert. The interactive demo below shows how to set up an integration that can receive Sentry alerts.
 
-For your service to receive webhooks for alert rules, you must have `Send a notification via <your integration>` as an action in the rule. Once that's set up, you'll start receiving webhook requests for triggered alerts. For more information about the request and payload, check out the [full Webhooks documentation](https://docs.sentry.io/integrations/integration-platform/webhooks.md). If you'd like users to provide more app-specific information to handle these webhooks (e.g. assignees, teams, notification channels), consider implementing the [alert rule action UI component](https://docs.sentry.io/integrations/integration-platform/ui-components/alert-rule-action.md).
+For your service to receive webhooks for alerts, you must have `Send a notification via <your integration>` as an action. Once that's set up, you'll start receiving webhook requests for triggered alerts. For more information about the request and payload, check out the [full Webhooks documentation](https://docs.sentry.io/integrations/integration-platform/webhooks.md).
+
+If you'd like users to provide more app-specific information to handle these webhooks (e.g. assignees, teams, notification channels), consider implementing the [alert action UI component](https://docs.sentry.io/integrations/integration-platform/ui-components/alert-action.md).
 
 ## [Permissions](https://docs.sentry.io/integrations/integration-platform.md#permissions)
 

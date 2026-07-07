@@ -8,6 +8,16 @@ Understand how costs are incurred in Pinecone, including read units (RUs), write
 
 For the latest pricing details, see [Pricing](https://www.pinecone.io/pricing/).
 
+Pinecone serverless is usage-based, so you pay only for the data you store and the operations you run. Idle indexes cost nothing. Most early and small workloads fit within the free [Starter plan](https://www.pinecone.io/pricing/), and you can lower costs further as you scale.
+
+## Ways to reduce cost
+
+* **Start free.** The Starter plan has no monthly minimum, so you can build and test before committing to any spend.
+* **Prepaid credits and annual commitments.** Committing usage upfront earns discounted rates. See [Prepaid credits](#prepaid-credits).
+* **Bulk import credit.** Standard and Enterprise organizations receive a one-time 1 TB import credit for loading data from object storage. See [Imports](#imports).
+* **Optimize your workload.** Use namespaces and right-size your reads to cut ongoing query cost. See [Save on costs](/guides/optimize/save-on-costs).
+* **Talk to us.** Standard and Enterprise customers can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to optimize costs and discuss volume discounts.
+
 ## Minimum usage
 
 The Builder, Standard, and Enterprise [pricing plans](https://www.pinecone.io/pricing/) include a monthly minimum usage commitment:
@@ -20,6 +30,8 @@ The Builder, Standard, and Enterprise [pricing plans](https://www.pinecone.io/pr
 | Enterprise | \$500/month       |
 
 On the Builder plan, the monthly minimum is a flat fee that covers included usage; additional usage beyond [Builder limits](/reference/api/database-limits) is blocked rather than billed. On the Standard and Enterprise plans, customers are charged for what they use each month beyond the monthly minimum.
+
+The minimum is a commitment you grow into rather than an extra charge. Once your usage exceeds the minimum, you pay only for what you use.
 
 **Examples**
 
@@ -339,7 +351,9 @@ What happens past the allowance depends on your plan:
 
 If the import operation fails (e.g., after encountering a vector of the wrong dimension in an import with `on_error="abort"`), you will still be charged for the records read. However, if the import fails because of an internal system error, you will not incur charges. In this case, the import will return the error message `"We were unable to process your request. If the problem persists, please contact us at https://support.pinecone.io"`.
 
-Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through July 31, 2026. Usage beyond the free allotment is billed at the standard import rate. Builder and Free plans are not eligible.
+<Note>
+  Standard and Enterprise organizations receive a **one-time 1 TB bulk import credit**, valid through July 31, 2026. Usage beyond the free allotment is billed at the standard import rate. Builder and Free plans are not eligible.
+</Note>
 
 For the latest import pricing rates, see [Pricing](https://www.pinecone.io/pricing/).
 

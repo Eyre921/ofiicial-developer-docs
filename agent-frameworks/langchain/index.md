@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1462 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1463 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -336,6 +336,7 @@
 - `langsmith/manage-datasets` — [Manage datasets](pages/langsmith/manage-datasets.md) · [原文](https://docs.langchain.com/langsmith/manage-datasets)
 - `langsmith/manage-datasets-in-application` — [Create and manage datasets in the UI](pages/langsmith/manage-datasets-in-application.md) · [原文](https://docs.langchain.com/langsmith/manage-datasets-in-application)
 - `langsmith/manage-datasets-programmatically` — [How to create and manage datasets programmatically](pages/langsmith/manage-datasets-programmatically.md) · [原文](https://docs.langchain.com/langsmith/manage-datasets-programmatically)
+- `langsmith/manage-evaluators-sdk` — [Manage evaluators with the SDK](pages/langsmith/manage-evaluators-sdk.md) · [原文](https://docs.langchain.com/langsmith/manage-evaluators-sdk)
 - `langsmith/manage-organization-by-api` — [Manage your organization using the API](pages/langsmith/manage-organization-by-api.md) · [原文](https://docs.langchain.com/langsmith/manage-organization-by-api)
 - `langsmith/manage-prompts` — [Manage prompts](pages/langsmith/manage-prompts.md) · [原文](https://docs.langchain.com/langsmith/manage-prompts)
 - `langsmith/manage-prompts-programmatically` — [Manage prompts programmatically](pages/langsmith/manage-prompts-programmatically.md) · [原文](https://docs.langchain.com/langsmith/manage-prompts-programmatically)

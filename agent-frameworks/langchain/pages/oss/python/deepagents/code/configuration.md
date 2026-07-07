@@ -565,12 +565,38 @@ In a session, run `/install my_package --package --force`. Both install the pack
 
 When you switch to `my_custom:my-model-v1` (via `/model` or `--model`), the model name (`my-model-v1`) is passed as the `model` kwarg:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-MyChatModel(model="my-model-v1", base_url="...", api_key="...", temperature=0, max_tokens=4096)
-```
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="google_genai:gemini-3.5-flash", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="openai:gpt-5.5", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="anthropic:claude-sonnet-4-6", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="openrouter:z-ai/glm-5.2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="fireworks:accounts/fireworks/models/glm-5p2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="baseten:zai-org/GLM-5.2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="ollama:north-mini-code-1.0", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+</CodeGroup>
 
 <Warning>
-  `class_path` executes arbitrary Python code from your config file. This has the same trust model as `pyproject.toml` build scripts — you control your own machine.
+  `class_path` executes arbitrary Python code from your config file. This has the same trust model as `pyproject.toml` build scripts—you control your own machine.
 </Warning>
 
 Your provider package may optionally provide model profiles at a `_PROFILES` dict in `<package>.data._profiles` in lieu of defining them under the `models` key. See LangChain [model profiles](https://github.com/langchain-ai/langchain/tree/master/libs/model-profiles) for more info.
@@ -1084,17 +1110,21 @@ No additional fields.
 <Accordion title="Python handler">
   Write a handler script that reads the JSON payload from stdin:
 
-  ```python title="my_handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import json
   import sys
 
-  payload = json.load(sys.stdin)
-  event = payload["event"]
 
-  if event == "session.start":
-      print(f"Session started: {payload['thread_id']}", file=sys.stderr)
-  elif event == "permission.request":
-      print(f"Approval needed for: {payload['tool_names']}", file=sys.stderr)
+  def handle_hook_payload(payload: dict) -> None:
+      event = payload["event"]
+      if event == "session.start":
+          print(f"Session started: {payload['thread_id']}", file=sys.stderr)
+      elif event == "permission.request":
+          print(f"Approval needed for: {payload['tool_names']}", file=sys.stderr)
+
+
+  if __name__ == "__main__":
+      handle_hook_payload(json.load(sys.stdin))
   ```
 
   ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

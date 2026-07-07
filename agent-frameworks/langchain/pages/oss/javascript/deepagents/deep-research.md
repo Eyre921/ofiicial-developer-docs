@@ -335,280 +335,44 @@ Create `agent.ts` in your project directory:
   <Step title="Create the agent">
     Add the model initialization and agent creation to `agent.ts`:
 
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { ChatAnthropic } from "@langchain/anthropic";
 
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
+    const maxConcurrentResearchUnits = 3;
+    const maxResearcherIterations = 3;
 
-      const currentDate = new Date().toISOString().split("T")[0];
+    const currentDate = new Date().toISOString().split("T")[0];
 
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
+    const INSTRUCTIONS =
+      RESEARCH_WORKFLOW_INSTRUCTIONS +
+      "\n\n" +
+      "=".repeat(80) +
+      "\n\n" +
+      SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
+        "{maxConcurrentResearchUnits}",
+        String(maxConcurrentResearchUnits),
+      ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
 
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
+    const researchSubAgent = {
+      name: "research-agent",
+      description: "Delegate research to the sub-agent. Give one topic at a time.",
+      systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
+      tools: [tavilySearch],
+    };
 
-      const model = new ChatAnthropic({
-        model: "google-genai:gemini-3.5-flash",
-        temperature: 0,
-      });
+    const model = new ChatAnthropic({
+      model: "claude-sonnet-4-5-20250929",
+      temperature: 0,
+    });
 
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "openai:gpt-5.5",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "anthropic:claude-sonnet-4-6",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "baseten:zai-org/GLM-5.2",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "ollama:north-mini-code-1.0",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-    </CodeGroup>
+    const agent = await createDeepAgent({
+      model,
+      tools: [tavilySearch],
+      systemPrompt: INSTRUCTIONS,
+      subagents: [researchSubAgent],
+    });
+    ```
   </Step>
 </Steps>
 

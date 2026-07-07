@@ -1650,6 +1650,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/copilot-cli/comparing-cli-features
 /en/copilot/concepts/agents/copilot-cli/copilot-cli-in-github-actions
 /en/copilot/concepts/agents/copilot-cli/cancel-and-roll-back
+/en/copilot/concepts/agents/copilot-cli/context-management
 /en/copilot/concepts/agents/copilot-cli/about-remote-control
 /en/copilot/concepts/agents/copilot-cli/about-custom-agents
 /en/copilot/concepts/agents/copilot-cli/autopilot
@@ -1658,7 +1659,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/agents/copilot-cli/chronicle
 /en/copilot/concepts/agents/copilot-cli/rubber-duck
 /en/copilot/concepts/agents/copilot-cli/lsp-servers
-/en/copilot/concepts/agents/copilot-cli/context-management
+/en/copilot/concepts/agents/copilot-cli/about-cli-extensions
 /en/copilot/concepts/agents/copilot-cli/tool-search
 /en/copilot/concepts/agents/github-copilot-app
 /en/copilot/concepts/agents/copilot-in-jetbrains
@@ -1795,6 +1796,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-cli/customize-copilot
 /en/copilot/how-tos/copilot-cli/customize-copilot/overview
 /en/copilot/how-tos/copilot-cli/customize-copilot/add-custom-instructions
+/en/copilot/how-tos/copilot-cli/customize-copilot/change-settings
 /en/copilot/how-tos/copilot-cli/customize-copilot/use-hooks
 /en/copilot/how-tos/copilot-cli/customize-copilot/add-skills
 /en/copilot/how-tos/copilot-cli/customize-copilot/add-mcp-servers
@@ -2117,6 +2119,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/tutorials/roll-out-at-scale/govern-at-scale/resources-for-approval
 /en/copilot/tutorials/roll-out-at-scale/govern-at-scale/establish-ai-managers
 /en/copilot/tutorials/roll-out-at-scale/govern-at-scale/govern-for-adoption
+/en/copilot/tutorials/roll-out-at-scale/govern-at-scale/pilot-a-feature-or-model
 /en/copilot/tutorials/roll-out-at-scale/govern-at-scale/maintain-codebase-standards
 /en/copilot/tutorials/roll-out-at-scale/enable-developers
 /en/copilot/tutorials/roll-out-at-scale/enable-developers/drive-adoption
@@ -2145,6 +2148,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/tutorials/upgrade-projects
 /en/copilot/tutorials/copilot-cli-hooks
 /en/copilot/tutorials/use-an-ai-sme
+/en/copilot/tutorials/create-an-extension
 /en/copilot/responsible-use
 /en/copilot/responsible-use/chat
 /en/copilot/responsible-use/inline-suggestions

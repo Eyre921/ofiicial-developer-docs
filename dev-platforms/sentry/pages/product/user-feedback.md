@@ -87,7 +87,7 @@ For a list of search fields, refer to the [search documentation](https://docs.se
 
 ## [Spam Detection for User Feedback](https://docs.sentry.io/product/user-feedback.md#spam-detection-for-user-feedback)
 
-If your organization has enabled Generative AI Features, Sentry will auto-detect user feedback submissions that are likely to be spam and put them in the “Spam” folder on the **User Feedback** page. This improves the quality and actionability of the feedback that are in the main list. To improve the quality of your alerts, feedback that's labeled as spam will bypass any User Feedback Alert Rules you may have configured, and you will not receive alerts for spam.
+If your organization has enabled Generative AI Features, Sentry will auto-detect user feedback submissions that are likely to be spam and put them in the “Spam” folder on the **User Feedback** page. This improves the quality and actionability of the feedback that are in the main list. To improve the quality of your alerts, feedback that's labeled as spam will bypass any User Feedback Alerts you may have configured, and you will not receive alerts for spam.
 
 To make automatic spam detection possible, we use a Large Language Model that classifies messages. This language model is internal to Google Cloud Platform and no data is stored or persisted. This is part of our existing [sub-processor agreement](https://sentry.io/legal/dpa/#subprocessors).
 
@@ -95,11 +95,11 @@ If you'd like to opt out of spam detection, turn off "Enable Spam Detection" in 
 
 ## [Getting User Feedback Alerts](https://docs.sentry.io/product/user-feedback.md#getting-user-feedback-alerts)
 
-If you have Sentry's default issue alert ("Alert me on every new issue") turned on for the project(s) with user feedback set up, then you should automatically get alerted every time new user feedback comes in via the User Feedback Widget.
+If you have Sentry's default alert ("Alert me on every new issue") turned on for the project(s) with user feedback set up, then you should automatically get alerted every time new user feedback comes in via the User Feedback Widget.
 
-If you don't have Sentry's default issue alert turned on, follow these steps to set up alerts for every new feedback:
+If you don't have Sentry's default alert turned on, follow these steps to set up alerts for every new feedback:
 
-1. Create a [New Alert Rule](https://sentry.io/alerts/new/issue/) in Sentry.
+1. Create a [New Alert](https://sentry.io/alerts/new/issue/) in Sentry.
 2. Scroll to the "Set conditions" section and set the "IF" filter to `The issue's category is equal to… "Feedback"`.
 3. Choose which actions to perform in the “THEN” filter.
 4. Add an alert name and owner.
@@ -108,11 +108,11 @@ To get notifications when crash-report feedback comes in, make sure to turn on "
 
 ## [Automated Issue Creation for User Feedback](https://docs.sentry.io/product/user-feedback.md#automated-issue-creation-for-user-feedback)
 
-If you'd like to automatically create an external issue (such as a GitHub or Jira issue) every time you receive user feedback, you can do so through the Alerts page in Sentry, similar to how you would create an issue alert for user feedback (illustrated in the section above).
+If you'd like to automatically create an external issue (such as a GitHub or Jira issue) every time you receive user feedback, you can do so through the Alerts page in Sentry, similar to how you would create an alert for user feedback (illustrated in the section above).
 
 Follow these steps to set up automated GitHub or Jira issue creation for every new feedback:
 
-1. Create a [New Alert Rule](https://sentry.io/alerts/new/issue/) in Sentry.
+1. Create a [New Alert](https://sentry.io/alerts/new/issue/) in Sentry.
 2. Scroll to the "Set conditions" section and set the "IF" filter to `The issue's category is equal to… "Feedback"`.
 3. Under the "THEN" filter actions, scroll to the "Create new\..." section and select the integration you'd like to use.
 4. Default issue link settings, such as the repository, labels, and assignees, can be configured by clicking the "Issue Link Settings" button.

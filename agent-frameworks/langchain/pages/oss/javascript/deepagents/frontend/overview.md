@@ -67,6 +67,7 @@ const agent = createDeepAgent({
     {
       name: "researcher",
       description: "Research assistant",
+      systemPrompt: "You are a research assistant.",
     },
   ],
 });

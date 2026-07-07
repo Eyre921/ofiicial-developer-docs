@@ -258,11 +258,55 @@ There are two subtle and important points to note here:
 
 Reducers are key to understanding how updates from nodes are applied to the `State`. Each key in the `State` has its own independent reducer function. If no reducer function is explicitly specified then it is assumed that all updates to that key should override it. There are a few different types of reducers, starting with the default type of reducer:
 
+#### Reducer arguments
+
+Every reducer is a binary function with two positional arguments:
+
+* **Left argument**: The current value already stored in state for that key.
+* **Right argument**: The update for that key returned by a node.
+
+When a node returns a partial update, LangGraph calls the reducer for each updated key and saves the return value as the new state value:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const newValue = reducer(currentState[key], nodeUpdate[key]); // left, right
+```
+
+The left argument always comes from accumulated state. The right argument always comes from the latest node update. The following example names both arguments explicitly:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ReducedValue, StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
+
+const State = new StateSchema({
+  tags: new ReducedValue(
+    z.array(z.string()).default(() => []),
+    {
+      reducer: (left: string[], right: string[]) => {
+        // left: existing state; right: update from a node
+        return left.concat(right);
+      },
+    }
+  ),
+});
+```
+
+Suppose the state is `{ tags: ["draft"] }` and a node returns `{ tags: ["review"] }`. LangGraph calls:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const reducer = (left: string[], right: string[]) => left.concat(right);
+
+reducer(["draft"], ["review"]); // left, right → ["draft", "review"]
+```
+
+The new state value for `tags` is `["draft", "review"]`.
+
+Custom reducers combine the left and right arguments. The [default reducer](#default-reducer) discards the left argument and keeps only the right.
+
 #### Default reducer
 
-These two examples show how to use the default reducer:
+The default reducer ignores the left argument and replaces the state value with the right argument. This example shows how to use the default reducer:
 
-```typescript Example A theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -276,8 +320,12 @@ In this example, no reducer functions are specified for any key. Let's assume th
 
 `{ foo: 1, bar: ["hi"] }`. Let's then assume the first `Node` returns `{ foo: 2 }`. This is treated as an update to the state. Notice that the `Node` does not need to return the whole `State` schema - just an update. After applying this update, the `State` would then be `{ foo: 2, bar: ["hi"] }`. If the second node returns `{ bar: ["bye"] }` then the `State` would then be `{ foo: 2, bar: ["bye"] }`
 
-```typescript Example B theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { StateSchema, ReducedValue } from "@langchain/langgraph";
+#### Custom reducers
+
+A custom reducer combines the left and right arguments instead of replacing the state value, which is useful for accumulating values, such as appending updates to a list. This example shows how to specify a custom reducer:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
 const State = new StateSchema({

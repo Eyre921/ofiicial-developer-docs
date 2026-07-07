@@ -10,6 +10,8 @@ For the latest pricing details, see our [pricing page](https://www.pinecone.io/p
 
 For help estimating total cost, see [Understanding cost](/guides/manage-cost/understanding-cost). To view or download a detailed report of your current usage and costs, see [Monitor usage and costs](/guides/manage-cost/monitor-usage-and-costs#monitor-organization-level-usage).
 
+To lower your bill, see [Ways to reduce cost](/guides/manage-cost/understanding-cost#ways-to-reduce-cost) and [Save on costs](/guides/optimize/save-on-costs), which cover available credits and discounts plus ways to optimize your workload.
+
 ## Set monthly spend alerts
 
 You can set up email alerts to monitor your organization's monthly spending. These alerts notify designated recipients when spending reaches specified thresholds. The alerts automatically reset at the start of each monthly billing cycle.

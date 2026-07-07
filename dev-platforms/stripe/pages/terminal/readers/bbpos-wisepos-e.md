@@ -139,7 +139,7 @@ The BBPOS WisePOS E software consists of four components: the reader application
 
 ### Reader software changelog
 
-#### 2026-06-29 (version 2.43.2.0)
+#### 2026-06-29 (version 2.43.3.0)
 
 - General bug fixes and improvements.
 

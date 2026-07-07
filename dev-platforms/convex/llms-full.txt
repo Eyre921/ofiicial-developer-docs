@@ -252,6 +252,7 @@
 - [History](/dashboard/deployments/history.md): View an audit log of configuration-related events in your Convex deployment including function deployments, index changes, and environment variable updates.
 - [Logs](/dashboard/deployments/logs.md): View real-time function logs and deployment activity in your dashboard
 - [Schedules](/dashboard/deployments/schedules.md): Monitor and manage scheduled functions and cron jobs in your deployment
+- [Schema](/dashboard/deployments/schema.md): Visualize your deployment's schema and the relationships between tables in the dashboard
 - [Dashboard](/dashboard/overview.md): Learn how to use the Convex dashboard
 - [Profile](/dashboard/profile.md): Manage your Convex account name, email addresses, and account deletion
 - [Projects](/dashboard/projects.md): Create and manage Convex projects, settings, and deployments
@@ -4675,13 +4676,12 @@ npx -y convex@latest mcp start
 Or see editor-specific instructions:
 
 * [Codex](/ai/using-codex.md#setup-the-convex-mcp-server)
-* [Cursor](/ai/using-cursor.md#setup-the-convex-mcp-server)
 * [GitHub Copilot](/ai/using-github-copilot.md#setup-the-convex-mcp-server)
 * [![](/assets/images/conductor-logo-fa2224a9c0b89cba358b3a954a8e9051.png)](/ai/using-conductor.md#setup-the-convex-mcp-server)
 
   [Conductor](/ai/using-conductor.md#setup-the-convex-mcp-server)
 
-When using **Claude Code**, we recommend installing the [Convex plugin](/ai/using-claude-code.md#install-the-convex-plugin-in-claude-code), which automatically starts the MCP server.
+When using  Claude Code or  Cursor, we recommend installing the [Convex plugin](/ai/overview.md#plugins), which automatically starts the MCP server.
 
 ## Configuration Options[​](#configuration-options "Direct link to Configuration Options")
 
@@ -4841,19 +4841,33 @@ Convex is designed around a small set of composable abstractions with strong gua
 
 Together, these features mean AI can focus on your business logic while Convex's guarantees prevent common failure modes. For up-to-date information on which models work best with Convex, check out our LLM [leaderboard](https://convex.dev/llm-leaderboard).
 
+## Agent plugins[​](#plugins "Direct link to Agent plugins")
+
+Convex publishes official plugins for coding agents that include:
+
+* **Tools** that let your agent securely interact with your dev deployment (e.g. read the data/logs/insights or run functions).
+* **Hooks and monitors** that help your agent automatically identify issues in your code.
+* **Skills and specialized agents** that teach your agent how to use Convex the most effectively.
+
+See these documents for install instructions:
+
+* [Claude Code](/ai/using-claude-code.md#install-the-convex-plugin-in-claude-code)
+* [Codex](/ai/using-codex.md#install-the-convex-plugin)
+* [Cursor](/ai/using-cursor.md#install-the-convex-plugin-in-cursor)
+
 ## Convex AI rules[​](#convex-ai-rules "Direct link to Convex AI rules")
 
 AI code generation is most effective when you provide it with a set of rules to follow.
 
 See these documents for install instructions:
 
-* [Claude Code](/ai/using-claude-code.md)
 * [Codex](/ai/using-codex.md)
-* [Cursor](/ai/using-cursor.md)
 * [GitHub Copilot](/ai/using-github-copilot.md)
 * [![](/assets/images/conductor-logo-fa2224a9c0b89cba358b3a954a8e9051.png)](/ai/using-conductor.md)
 
   [Conductor](/ai/using-conductor.md)
+
+When using  Claude Code or  Cursor, we recommend installing the [Convex plugin](/ai/overview.md#plugins), which automatically include these rules.
 
 For all other IDEs, add the following rules file to your project and refer to it when prompting for changes:
 
@@ -5202,9 +5216,31 @@ Now you can ask the agent questions like:
 
 # Using Cursor with Convex
 
-[Cursor](https://cursor.com), the AI code editor, makes it easy to write and maintain apps built with Convex. Let's walk through how to setup Cursor for the best possible results with Convex.
+[Cursor](https://cursor.com), the AI code editor, makes it easy to write and maintain apps built with Convex. Let's walk through how to set up Cursor for the best possible results with Convex.
 
-## Add Convex `.cursor/rules`[​](#add-convex-cursorrules "Direct link to add-convex-cursorrules")
+## Install the Convex plugin in Cursor[​](#install-the-convex-plugin-in-cursor "Direct link to Install the Convex plugin in Cursor")
+
+The official Convex plugin makes Cursor work better with your Convex project. It includes:
+
+* **Tools** that let your agent securely interact with your dev deployment (e.g. read the data/logs/insights or run functions).
+* **Development hooks** that help your agent automatically identify issues in your code.
+* **Rules, skills, and specialized agents** that teach your agent how to use Convex the most effectively.
+
+To install the plugin, go to the *Customize* page of the Agents window, search for the *Convex* plugin and click *Add*.
+
+Installing the Cursor plugin from the Agents window
+
+Alternatively, you can run `/add-plugin convex` from an agent conversation.
+
+Using Cursor Cloud Agents / Cursor CLI
+
+Cursor plugins aren't available in Cloud Agents or the Cursor CLI. In those environments, we recommend installing rules and the MCP server manually.
+
+## Manual setup[​](#manual-setup "Direct link to Manual setup")
+
+If you'd rather not install the plugin, you can wire up rules and the MCP server yourself.
+
+### Add Convex `.cursor/rules`[​](#add-convex-cursorrules "Direct link to add-convex-cursorrules")
 
 To get the best results from Cursor put the model specific `.mdc` files in your project's `.cursor/rules` directory.
 
@@ -5214,17 +5250,17 @@ To get the best results from Cursor put the model specific `.mdc` files in your 
 
 We're constantly working on improving the quality of these rules for Convex by using rigorous evals. You can help by [contributing to our evals repo](https://github.com/get-convex/convex-evals).
 
-## Setup the Convex MCP Server[​](#setup-the-convex-mcp-server "Direct link to Setup the Convex MCP Server")
+### Setup the Convex MCP Server[​](#setup-the-convex-mcp-server "Direct link to Setup the Convex MCP Server")
 
 The Convex CLI comes with a [Convex Model Context Protocol](/ai/convex-mcp-server.md) (MCP) server built in. The Convex MCP server gives your AI coding agent access to the your Convex deployment to query and optimize your project.
 
-### Quick Install[​](#quick-install "Direct link to Quick Install")
+#### Quick Install[​](#quick-install "Direct link to Quick Install")
 
 You can click this handy deep-link below:
 
 [![Install MCP Server](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=convex\&config=eyJjb21tYW5kIjoibnB4IC15IGNvbnZleEBsYXRlc3QgbWNwIHN0YXJ0In0%3D)
 
-### Manual Install[​](#manual-install "Direct link to Manual Install")
+#### Manual Install[​](#manual-install "Direct link to Manual Install")
 
 To get started with Cursor, open "Cursor Settings > Tools & Integrations", click on "New MCP Server", and add a "convex" section to "mcpServers" in the `mcp.json` file that's opened.
 
@@ -6424,7 +6460,7 @@ This loads reactive queries and executes mutations over a WebSocket.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react/client.ts:317](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L317)
+[react/client.ts:332](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L332)
 
 ## Accessors[​](#accessors "Direct link to Accessors")
 
@@ -6442,7 +6478,7 @@ Not guaranteed to match the address with which this client was constructed: it m
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[react/client.ts:352](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L352)
+[react/client.ts:367](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L367)
 
 ***
 
@@ -6460,7 +6496,7 @@ The Logger for this client.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[react/client.ts:714](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L714)
+[react/client.ts:731](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L731)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -6484,7 +6520,7 @@ Set the authentication token to be used for subsequent queries and mutations. `f
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[react/client.ts:409](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L409)
+[react/client.ts:426](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L426)
 
 ***
 
@@ -6500,7 +6536,7 @@ Clear the current authentication token if set.
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[react/client.ts:433](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L433)
+[react/client.ts:450](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L450)
 
 ***
 
@@ -6535,7 +6571,7 @@ The [Watch](/api/interfaces/react.Watch.md) object.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[react/client.ts:466](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L466)
+[react/client.ts:483](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L483)
 
 ***
 
@@ -6567,7 +6603,7 @@ To use this in a React component, call useQuery() and ignore the return value.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[react/client.ts:542](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L542)
+[react/client.ts:559](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L559)
 
 ***
 
@@ -6598,7 +6634,7 @@ A promise of the mutation's result.
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[react/client.ts:619](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L619)
+[react/client.ts:636](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L636)
 
 ***
 
@@ -6629,7 +6665,7 @@ A promise of the action's result.
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[react/client.ts:640](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L640)
+[react/client.ts:657](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L657)
 
 ***
 
@@ -6662,7 +6698,7 @@ A promise of the query's result.
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[react/client.ts:660](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L660)
+[react/client.ts:677](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L677)
 
 ***
 
@@ -6680,7 +6716,7 @@ The [ConnectionState](/api/modules/browser.md#connectionstate) with the Convex b
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[react/client.ts:687](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L687)
+[react/client.ts:704](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L704)
 
 ***
 
@@ -6718,7 +6754,7 @@ An unsubscribe function to stop listening.
 
 #### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
-[react/client.ts:703](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L703)
+[react/client.ts:720](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L720)
 
 ***
 
@@ -6738,7 +6774,7 @@ A `Promise` fulfilled when the connection has been completely closed.
 
 #### Defined in[​](#defined-in-12 "Direct link to Defined in")
 
-[react/client.ts:726](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L726)
+[react/client.ts:743](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L743)
 
 
 ---
@@ -17131,7 +17167,7 @@ Type representing the state of an auth integration with Convex.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[react/client.ts:800](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L800)
+[react/client.ts:817](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L817)
 
 ***
 
@@ -17150,7 +17186,7 @@ Result returned by object-form [useQuery\_experimental](/api/modules/react.md#us
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[react/client.ts:810](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L810)
+[react/client.ts:827](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L827)
 
 ***
 
@@ -17534,7 +17570,7 @@ The active [ConvexReactClient](/api/classes/react.ConvexReactClient.md) object, 
 
 #### Defined in[​](#defined-in-19 "Direct link to Defined in")
 
-[react/client.ts:775](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L775)
+[react/client.ts:792](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L792)
 
 ***
 
@@ -17646,7 +17682,7 @@ the result of the query. Returns `undefined` while loading.
 
 #### Defined in[​](#defined-in-21 "Direct link to Defined in")
 
-[react/client.ts:867](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L867)
+[react/client.ts:884](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L884)
 
 ***
 
@@ -17709,7 +17745,7 @@ the current query state as a [UseQueryResult](/api/modules/react.md#usequeryresu
 
 #### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[react/client.ts:931](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L931)
+[react/client.ts:948](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L948)
 
 ***
 
@@ -17777,7 +17813,7 @@ The [ReactMutation](/api/interfaces/react.ReactMutation.md) object with that nam
 
 #### Defined in[​](#defined-in-23 "Direct link to Defined in")
 
-[react/client.ts:1027](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1027)
+[react/client.ts:1044](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1044)
 
 ***
 
@@ -17857,7 +17893,7 @@ The [ReactAction](/api/interfaces/react.ReactAction.md) object with that name.
 
 #### Defined in[​](#defined-in-24 "Direct link to Defined in")
 
-[react/client.ts:1096](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1096)
+[react/client.ts:1113](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1113)
 
 ***
 
@@ -17881,7 +17917,7 @@ The current [ConnectionState](/api/modules/browser.md#connectionstate) with the 
 
 #### Defined in[​](#defined-in-25 "Direct link to Defined in")
 
-[react/client.ts:1135](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1135)
+[react/client.ts:1152](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1152)
 
 ***
 
@@ -32154,11 +32190,7 @@ If the internet connection drops, the client will handle reconnecting and re-est
 
 # Rust
 
-See the [Rust Quickstart](/quickstart/rust.md) and
-
-[`convex` on docs.rs docs](https://docs.rs/convex/latest/convex/)
-
-. The Rust client is open source and available on [GitHub](https://github.com/get-convex/convex-rs).
+See the [Rust Quickstart](/quickstart/rust.md) and [`convex` on docs.rs docs](https://docs.rs/convex/latest/convex/). The Rust client is open source and available on [GitHub](https://github.com/get-convex/convex-rs).
 
 
 ---
@@ -36338,17 +36370,13 @@ Deleting a table is irreversible. In production environments, the Convex dashboa
 
 The "Delete table" button can be found by clicking on the `⋮` overflow menu at the top of the data page. This action will delete all documents this table, and remove the table from your list of tables. If this table had indexes, you will need to redeploy your convex functions (by running `npx convex deploy` or `npx convex dev` for production or development, respectively) to recreate the indexes.
 
-## Generating a schema[​](#generating-a-schema "Direct link to Generating a schema")
-
-At the bottom-left of the page is a "Generate Schema" button which you can click to have Convex generate a [schema](/database/schemas.md) of all your documents within this table.
-
-![Generate Schema button](/screenshots/storybook/pages_project_deployment_data_generate_schema_light.webp)
-
 ## View the schema of a table[​](#view-the-schema-of-a-table "Direct link to View the schema of a table")
 
 The "Schema" button can be found by clicking on the `⋮` overflow menu at the top of the data page.
 
 This button will open a panel showing the saved and generated [schemas](/database/schemas.md) associated with the selected table.
+
+To see the [schema](/database/schemas.md) of your whole deployment, including the relationships between tables, use the [Schema page](/dashboard/deployments/schema.md).
 
 ## View the indexes of a table[​](#view-the-indexes-of-a-table "Direct link to View the indexes of a table")
 
@@ -36689,6 +36717,35 @@ Expanding a specific cron job will open the execution history for the selected j
 
 ---
 
+# Schema
+
+![The Schema page of the dashboard](/screenshots/storybook/pages_project_deployment_schema_light.webp)
+
+The [schema page](https://dashboard.convex.dev/deployment/schema) shows a diagram of all the tables in your deployment and the relationships between them.
+
+The diagram is built from your deployment's saved [schema](/database/schemas.md) (the `convex/schema.ts` you've pushed). Each table is a node listing its fields and their types. Whenever a field references another document with [`v.id("...")`](/database/schemas.md), an arrow is drawn from that field to the table it points at, so you can see how your data is connected at a glance.
+
+If a table exists in your data but isn't declared in your schema, it's still shown in the diagram and flagged as not being part of the schema.
+
+If you haven't saved a schema at all, the schema page instead shows a diagram of your *generated* schema - the tables that Convex infers from the shape of your existing documents. This lets you visualize your data even before you add a `convex/schema.ts`.
+
+## Navigating the diagram[​](#navigating-the-diagram "Direct link to Navigating the diagram")
+
+You can pan and zoom the diagram, and drag tables to rearrange them. Your layout is saved per deployment, so the diagram stays how you left it the next time you open the page.
+
+Selecting a table opens a side panel with more detail about that table, including the full type of each field and the table's [indexes](/database/reading-data/indexes/.md). From the side panel you can jump to a referenced table in the diagram, or open the table on the [Data page](/dashboard/deployments/data.md) to view and edit its documents.
+
+## Viewing the schema file[​](#viewing-the-schema-file "Direct link to Viewing the schema file")
+
+Click the "View schema file" button in the top-right of the page to see the saved and generated [schema](/database/schemas.md) for your deployment as code.
+
+![Viewing the schema file](/screenshots/storybook/pages_project_deployment_schema_schema_file_light.webp)
+
+If you haven't defined a schema yet, Convex can generate one from the documents already in your tables, which you can copy into your `convex/schema.ts` to get started.
+
+
+---
+
 # Dashboard
 
 ![Dashboard Projects View](/screenshots/storybook/pages_projects_light.webp)
@@ -36787,7 +36844,9 @@ You may change the name of a team or invite new members to a team by clicking on
 
 ## General[​](#general "Direct link to General")
 
-The [general page](https://dashboard.convex.dev/team/settings) allows changing the team name and slug.
+The [general page](https://dashboard.convex.dev/team/settings) allows changing the team name, slug, and the [default region](/production/regions.md) for new deployments. Each setting can be edited and saved independently.
+
+This page also displays your team ID, which is used to identify your team when working with the [Convex Platform APIs](/platform-apis/overview.md).
 
 You may also delete the team from this page. You can only delete a team after deleting all of it's projects, and removing all other team members from your team. Deleting your team will automatically cancel your Convex subscription.
 
@@ -36824,7 +36883,7 @@ Admins can do everything developers can, as well as:
 * Remove members from the team
 * Change the role of other team members
 * Manage the team's Convex subscription and billing details.
-* Change the team name and slug
+* Change the team name, slug, and default region
 * Team Admins are also implicitly granted project admin access to all projects within the team. See [Project Admins](#project-admins) for more information.
 
 #### Project Admins[​](#project-admins "Direct link to Project Admins")
@@ -39168,7 +39227,7 @@ This schema (which is based on our [users and auth example](https://github.com/g
 
 Generating a Schema
 
-While writing your schema, it can be helpful to consult the [Convex Dashboard](/dashboard/deployments/data.md#generating-a-schema). The "Generate Schema" button in the "Data" view suggests a schema declaration based on the data in your tables.
+While writing your schema, it can be helpful to consult the [Convex Dashboard](/dashboard/deployments/schema.md). The "View schema file" panel on the "Schema" page can generate a schema declaration based on the data in your tables.
 
 ### Validators[​](#validators "Direct link to Validators")
 
@@ -44410,7 +44469,7 @@ You don't have to think all that much about maintaining these properties of dete
 
 #### Using randomness and time in queries and mutations[​](#using-randomness-and-time-in-queries-and-mutations "Direct link to Using randomness and time in queries and mutations")
 
-Convex provides a "seeded" strong pseudo-random number generator at `Math.random()` so that it can guarantee the determinism of your function. The random number generator's seed is an implicit parameter to your function. Multiple calls to `Math.random()` in one function call will return different random values. Note that Convex does not reevaluate the JavaScript modules on every function run, so a call to `Math.random()` stored in a global variable will not change between function runs.
+Convex provides a "seeded" strong pseudo-random number generator at `Math.random()` so that it can guarantee the determinism of your function. The random number generator's seed is an implicit parameter to your function. Multiple calls to `Math.random()` in one function call will return different random values. However, a call to `Math.random()` stored in a global variable will not change between function runs, because during import-time, the random number generator's seed is fixed to a value set at the most recent deployment.
 
 To ensure the logic within your function is reproducible, the system time used globally (outside of any function) is "frozen" at deploy time, while the system time during Convex function execution is "frozen" when the function begins. `Date.now()` will return the same result for the entirety of your function's execution. For example,
 
@@ -47768,6 +47827,14 @@ Any queries or mutations called in an action (using `ctx.runMutation` or `ctx.ru
 ## Billing[​](#billing "Direct link to Billing")
 
 Audit logs are rounded up to the nearest 5KB when calculating bandwidth for billing. See more information about billing on our [pricing page](https://www.convex.dev/enterprise/pricing).
+
+## Development[​](#development "Direct link to Development")
+
+While developing, you can enable the `custom_audit` topic on a configured [log stream](/production/integrations/log-streams/.md) to see your audit logs without setting up S3 delivery. To do so, select `custom_audit` in the “Topics” section of the log stream configuration.
+
+![Enabling the custom\_audit topic on a log stream](/screenshots/storybook/pages_project_deployment_settings_integrations_custom_audit_topic_light.webp)
+
+The `custom_audit` topic is intended for testing. `custom_audit` logs sent through a log stream do not share the same durability guarantees as S3 delivery, and are billed the same as other [log streams](/production/integrations/log-streams/.md).
 
 ## Configuration[​](#configuration "Direct link to Configuration")
 

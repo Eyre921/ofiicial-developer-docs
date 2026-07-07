@@ -20792,13 +20792,22 @@ When streaming classifiers detect content that violates Anthropic's policies, th
       "text": "Hello.."
     }
   ],
-  "stop_reason": "refusal"
+  "stop_reason": "refusal",
+  "stop_details": {
+    "type": "refusal",
+    "category": "cyber",
+    "explanation": "This request was declined because it could enable cyber harm."
+  }
 }
 ```
 
-<Warning>
-  No additional refusal message is included. You must handle the response and provide appropriate user-facing messaging.
-</Warning>
+In the event stream, `stop_details` arrives on the `message_delta` event alongside `stop_reason`.
+
+<Note>
+  A `refusal` response from streaming classifiers may include a `stop_details` object with a `category` and a human-readable `explanation` that you can surface to the user. See [Refusals and fallback](/docs/en/build-with-claude/refusals-and-fallback#refusal-response) for the full response shape and the available categories.
+
+  `stop_details` (and its `category` / `explanation`) can be `null`, for example when the refusal maps to no named category, or on earlier models. Branch on `stop_reason` rather than assuming `stop_details` is populated, and provide your own user-facing messaging when it is `null`.
+</Note>
 
 ## Reset context after refusal
 
@@ -23800,7 +23809,7 @@ Structured outputs support standard JSON Schema with some limitations. Both JSON
 
 <Accordion title="Supported features">
   * All basic types: object, array, string, integer, number, boolean, null
-  * `enum` (strings, numbers, bools, or nulls only - no complex types)
+  * `enum` (strings, numbers, bools, or nulls only - no complex types; see [Invalid outputs](#invalid-outputs) for a capitalization caveat)
   * `const`
   * `anyOf` and `allOf` (with limitations - `allOf` with `$ref` not supported)
   * `$ref`, `$def`, and `definitions` (external `$ref` not supported)
@@ -23904,6 +23913,19 @@ If the response is cut off due to reaching the `max_tokens` limit:
 * The response has `stop_reason: "max_tokens"`
 * The output may be incomplete and not match your schema
 * Retry with a higher `max_tokens` value to get the complete structured output
+
+**Enum value casing**
+
+Structured outputs don't guarantee the capitalization of string `enum` and `const` values: Claude may return a value that differs from your schema only in capitalization, typically in the first letter of a word following a space. For example, given this schema:
+
+```json
+{
+  "type": "string",
+  "enum": ["Conversation Topic 1", "Conversation Topic 2", "Conversation topic 3"]
+}
+```
+
+The output may contain `"Conversation Topic 3"` (capital "T") even though that exact value isn't in the enum. The response completes normally, with no error and no special `stop_reason`. This applies to both JSON outputs and strict tool use. Compare enum values case-insensitively, and avoid enum values that differ only in capitalization.
 
 ### Schema complexity limits
 
@@ -25054,6 +25076,30 @@ The advisor tool is available in beta on the Claude API and on [Claude Platform 
   fmt.Println(response)
   ```
 
+  ```java Java
+  import com.anthropic.models.beta.messages.BetaAdvisorTool20260301;
+  import com.anthropic.models.beta.messages.BetaMessage;
+  import com.anthropic.models.beta.messages.MessageCreateParams;
+  import com.anthropic.models.messages.Model;
+
+  void main() {
+      AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+
+      MessageCreateParams params = MessageCreateParams.builder()
+          .model(Model.CLAUDE_SONNET_4_6)
+          .maxTokens(4096L)
+          .addTool(BetaAdvisorTool20260301.builder()
+              .model(Model.CLAUDE_OPUS_4_8)
+              .build())
+          .addUserMessage("Build a concurrent worker pool in Go with graceful shutdown.")
+          .addBeta("advisor-tool-2026-03-01")
+          .build();
+
+      BetaMessage response = client.beta().messages().create(params);
+      IO.println(response);
+  }
+  ```
+
   ```php PHP
   $client = new Client();
 
@@ -25346,6 +25392,59 @@ Pass the full assistant content, including `advisor_tool_result` blocks, back to
       Messages = messages,
       Betas = ["advisor-tool-2026-03-01"]
   });
+  ```
+
+  ```java Java
+  import com.anthropic.models.beta.messages.BetaAdvisorTool20260301;
+  import com.anthropic.models.beta.messages.BetaContentBlock;
+  import com.anthropic.models.beta.messages.BetaMessage;
+  import com.anthropic.models.beta.messages.BetaMessageParam;
+  import com.anthropic.models.beta.messages.BetaToolUnion;
+  import com.anthropic.models.beta.messages.MessageCreateParams;
+  import com.anthropic.models.messages.Model;
+
+  void main() {
+      AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+
+      List<BetaToolUnion> tools = List.of(
+          BetaToolUnion.ofAdvisorTool20260301(
+              BetaAdvisorTool20260301.builder().model(Model.CLAUDE_OPUS_4_8).build()));
+
+      List<BetaMessageParam> messages = new ArrayList<>();
+      messages.add(BetaMessageParam.builder()
+          .role(BetaMessageParam.Role.USER)
+          .content("Build a concurrent worker pool in Go with graceful shutdown.")
+          .build());
+
+      BetaMessage response = client.beta().messages().create(MessageCreateParams.builder()
+          .model(Model.CLAUDE_SONNET_4_6)
+          .maxTokens(4096L)
+          .tools(tools)
+          .messages(messages)
+          .addBeta("advisor-tool-2026-03-01")
+          .build());
+
+      // Append the full response content, including any advisor_tool_result blocks
+      messages.add(BetaMessageParam.builder()
+          .role(BetaMessageParam.Role.ASSISTANT)
+          .contentOfBetaContentBlockParams(
+              response.content().stream().map(BetaContentBlock::toParam).toList())
+          .build());
+
+      // Continue the conversation
+      messages.add(BetaMessageParam.builder()
+          .role(BetaMessageParam.Role.USER)
+          .content("Now add a max-in-flight limit of 10.")
+          .build());
+
+      BetaMessage followUp = client.beta().messages().create(MessageCreateParams.builder()
+          .model(Model.CLAUDE_SONNET_4_6)
+          .maxTokens(4096L)
+          .tools(tools)
+          .messages(messages)
+          .addBeta("advisor-tool-2026-03-01")
+          .build());
+  }
   ```
 
   ```php PHP
@@ -25648,6 +25747,100 @@ With the default `NUDGE_TURN` of 2, the reminder typically arrives after the mod
       if (turn == NudgeTurn - 1 && !advisorCalled)
       {
           messages.Add(new BetaMessageParam { Role = Role.User, Content = NudgeText });
+      }
+  }
+  ```
+
+  ```java Java
+  import com.anthropic.models.beta.messages.BetaAdvisorTool20260301;
+  import com.anthropic.models.beta.messages.BetaContentBlock;
+  import com.anthropic.models.beta.messages.BetaContentBlockParam;
+  import com.anthropic.models.beta.messages.BetaMessage;
+  import com.anthropic.models.beta.messages.BetaMessageParam;
+  import com.anthropic.models.beta.messages.BetaServerToolUseBlock;
+  import com.anthropic.models.beta.messages.BetaStopReason;
+  import com.anthropic.models.beta.messages.BetaToolResultBlockParam;
+  import com.anthropic.models.beta.messages.BetaToolUnion;
+  import com.anthropic.models.beta.messages.MessageCreateParams;
+  import com.anthropic.models.messages.Model;
+
+  static final int NUDGE_TURN = 2; // inject before this assistant turn if no advisor call yet
+  static final String NUDGE_TEXT =
+      "You have not consulted the advisor yet. If the task has a non-obvious "
+          + "design decision or a failure mode you haven't ruled out, call advisor "
+          + "now before committing to an approach.";
+  static final int MAX_TURNS = 10; // agent loop cap
+
+  // Replace with your tool dispatch. Returns one tool_result block per tool_use block.
+  List<BetaContentBlockParam> runYourTools(List<BetaContentBlock> content) {
+      List<BetaContentBlockParam> results = new ArrayList<>();
+      for (BetaContentBlock block : content) {
+          if (block.isToolUse()) {
+              results.add(BetaContentBlockParam.ofToolResult(
+                  BetaToolResultBlockParam.builder()
+                      .toolUseId(block.asToolUse().id())
+                      .content("Replace with your tool output.")
+                      .build()));
+          }
+      }
+      return results;
+  }
+
+  void main() {
+      AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+
+      List<BetaToolUnion> tools = List.of(
+          BetaToolUnion.ofAdvisorTool20260301(
+              BetaAdvisorTool20260301.builder().model(Model.CLAUDE_OPUS_4_8).build())
+          // ... your other tools
+      );
+      String task = "Build a concurrent worker pool in Go with graceful shutdown.";
+      List<BetaMessageParam> messages = new ArrayList<>();
+      messages.add(BetaMessageParam.builder()
+          .role(BetaMessageParam.Role.USER)
+          .content(task)
+          .build());
+      boolean advisorCalled = false;
+
+      for (int turn = 1; turn <= MAX_TURNS; turn++) {
+          BetaMessage response = client.beta().messages().create(MessageCreateParams.builder()
+              .model(Model.CLAUDE_HAIKU_4_5)
+              .maxTokens(4096L)
+              .tools(tools)
+              .messages(messages)
+              .addBeta("advisor-tool-2026-03-01")
+              .build());
+          messages.add(BetaMessageParam.builder()
+              .role(BetaMessageParam.Role.ASSISTANT)
+              .contentOfBetaContentBlockParams(
+                  response.content().stream().map(BetaContentBlock::toParam).toList())
+              .build());
+          advisorCalled = advisorCalled
+              || response.content().stream().anyMatch(block ->
+                  block.isServerToolUse()
+                      && block.asServerToolUse().name().equals(BetaServerToolUseBlock.Name.ADVISOR));
+          BetaStopReason stopReason = response.stopReason().orElse(null);
+          if (BetaStopReason.END_TURN.equals(stopReason)) {
+              break;
+          }
+          if (BetaStopReason.PAUSE_TURN.equals(stopReason)) {
+              continue; // server tool pending; re-send to let the API complete it
+          }
+
+          List<BetaContentBlockParam> results = runYourTools(response.content()); // list of tool_result blocks
+          if (!results.isEmpty()) {
+              messages.add(BetaMessageParam.builder()
+                  .role(BetaMessageParam.Role.USER)
+                  .contentOfBetaContentBlockParams(results)
+                  .build());
+          }
+          // Skip this if your system prompt already tells the model to call sparingly.
+          if (turn == NUDGE_TURN - 1 && !advisorCalled) {
+              messages.add(BetaMessageParam.builder()
+                  .role(BetaMessageParam.Role.USER)
+                  .content(NUDGE_TEXT)
+                  .build());
+          }
       }
   }
   ```
@@ -51925,7 +52118,7 @@ Search finds sources; code execution analyzes and synthesizes. Claude searches f
 {
   "tools": [
     { "type": "web_search_20260209", "name": "web_search" },
-    { "type": "code_execution_20250825", "name": "code_execution" }
+    { "type": "code_execution_20260521", "name": "code_execution" }
   ]
 }
 ```
@@ -74330,9 +74523,8 @@ Skills are available across Claude's agent products:
 
 The Claude API supports both pre-built Agent Skills and custom Skills. Both work identically: specify the relevant `skill_id` in the `container` parameter along with the code execution tool.
 
-**Prerequisites**: Using Skills via the API requires three beta headers:
+**Prerequisites:** Using Skills through the API requires the [code execution tool](/docs/en/agents-and-tools/tool-use/code-execution-tool), whose container Skills run in, and two beta headers:
 
-* `code-execution-2025-08-25` - Skills run in the code execution container
 * `skills-2025-10-02` - Enables Skills functionality
 * `files-api-2025-04-14` - Required for uploading/downloading files to/from the container
 
@@ -74652,7 +74844,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
       -H "content-type: application/json" \
       -H "x-api-key: $ANTHROPIC_API_KEY" \
       -H "anthropic-version: 2023-06-01" \
-      -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
+      -H "anthropic-beta: skills-2025-10-02" \
       -d @- <<'EOF'
   {
     "model": "claude-opus-4-8",
@@ -74663,7 +74855,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
     "messages": [
       {"role": "user", "content": "Create a presentation about renewable energy with 5 slides"}
     ],
-    "tools": [{"type": "code_execution_20250825", "name": "code_execution"}]
+    "tools": [{"type": "code_execution_20260521", "name": "code_execution"}]
   }
   EOF
   )
@@ -74673,7 +74865,6 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
   ```bash CLI
   # Create a message with the PowerPoint Skill
   response=$(ant beta:messages create --format json \
-    --beta code-execution-2025-08-25 \
     --beta skills-2025-10-02 <<'YAML'
   model: claude-opus-4-8
   max_tokens: 16000
@@ -74686,7 +74877,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
     - role: user
       content: Create a presentation about renewable energy with 5 slides
   tools:
-    - type: code_execution_20250825
+    - type: code_execution_20260521
       name: code_execution
   YAML
   )
@@ -74699,7 +74890,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
   response = client.beta.messages.create(
       model="claude-opus-4-8",
       max_tokens=16000,
-      betas=["code-execution-2025-08-25", "skills-2025-10-02"],
+      betas=["skills-2025-10-02"],
       container={
           "skills": [{"type": "anthropic", "skill_id": "pptx", "version": "latest"}]
       },
@@ -74709,7 +74900,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
               "content": "Create a presentation about renewable energy with 5 slides",
           }
       ],
-      tools=[{"type": "code_execution_20250825", "name": "code_execution"}],
+      tools=[{"type": "code_execution_20260521", "name": "code_execution"}],
   )
 
   print(f"stop_reason={response.stop_reason}, blocks={len(response.content)}")
@@ -74720,7 +74911,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
   const response = await client.beta.messages.create({
     model: "claude-opus-4-8",
     max_tokens: 16000,
-    betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
+    betas: ["skills-2025-10-02"],
     container: {
       skills: [{ type: "anthropic", skill_id: "pptx", version: "latest" }],
     },
@@ -74730,7 +74921,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
         content: "Create a presentation about renewable energy with 5 slides",
       },
     ],
-    tools: [{ type: "code_execution_20250825", name: "code_execution" }],
+    tools: [{ type: "code_execution_20260521", name: "code_execution" }],
   });
 
   console.log(
@@ -74744,7 +74935,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
   {
       Model = Model.ClaudeOpus4_8,
       MaxTokens = 16000,
-      Betas = ["code-execution-2025-08-25", "skills-2025-10-02"],
+      Betas = ["skills-2025-10-02"],
       Container = new BetaContainerParams
       {
           Skills =
@@ -74765,7 +74956,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
               Content = "Create a presentation about renewable energy with 5 slides",
           },
       ],
-      Tools = [new BetaCodeExecutionTool20250825()],
+      Tools = [new BetaCodeExecutionTool20260521()],
   });
 
   Console.WriteLine($"stop_reason={response.StopReason?.Raw()}, blocks={response.Content.Count}");
@@ -74777,7 +74968,6 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
   	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 16000,
   	Betas: []anthropic.AnthropicBeta{
-  		"code-execution-2025-08-25",
   		anthropic.AnthropicBetaSkills2025_10_02,
   	},
   	Container: anthropic.BetaMessageNewParamsContainerUnion{
@@ -74797,7 +74987,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
   		),
   	},
   	Tools: []anthropic.BetaToolUnionParam{
-  		{OfCodeExecutionTool20250825: &anthropic.BetaCodeExecutionTool20250825Param{}},
+  		{OfCodeExecutionTool20260521: &anthropic.BetaCodeExecutionTool20260521Param{}},
   	},
   })
   if err != nil {
@@ -74813,7 +75003,6 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
       MessageCreateParams.builder()
           .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(16000)
-          .addBeta("code-execution-2025-08-25")
           .addBeta(AnthropicBeta.SKILLS_2025_10_02)
           .container(
               BetaContainerParams.builder()
@@ -74827,7 +75016,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
                   .build()
           )
           .addUserMessage("Create a presentation about renewable energy with 5 slides")
-          .addTool(BetaCodeExecutionTool20250825.builder().build())
+          .addTool(BetaCodeExecutionTool20260521.builder().build())
           .build()
   );
 
@@ -74842,7 +75031,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
   $response = $client->beta->messages->create(
       model: 'claude-opus-4-8',
       maxTokens: 16000,
-      betas: ['code-execution-2025-08-25', 'skills-2025-10-02'],
+      betas: ['skills-2025-10-02'],
       container: [
           'skills' => [['type' => 'anthropic', 'skill_id' => 'pptx', 'version' => 'latest']],
       ],
@@ -74852,7 +75041,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
               'content' => 'Create a presentation about renewable energy with 5 slides',
           ],
       ],
-      tools: [['type' => 'code_execution_20250825', 'name' => 'code_execution']],
+      tools: [['type' => 'code_execution_20260521', 'name' => 'code_execution']],
   );
 
   printf("stop_reason=%s, blocks=%d\n", $response->stopReason, count($response->content));
@@ -74863,7 +75052,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
   response = client.beta.messages.create(
     model: "claude-opus-4-8",
     max_tokens: 16_000,
-    betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
+    betas: ["skills-2025-10-02"],
     container: {
       skills: [{type: "anthropic", skill_id: "pptx", version: "latest"}]
     },
@@ -74873,7 +75062,7 @@ Now use the PowerPoint Skill to create a presentation about renewable energy. Sp
         content: "Create a presentation about renewable energy with 5 slides"
       }
     ],
-    tools: [{type: "code_execution_20250825", name: "code_execution"}]
+    tools: [{type: "code_execution_20260521", name: "code_execution"}]
   )
 
   puts "stop_reason=#{response.stop_reason}, blocks=#{response.content.length}"
@@ -74887,10 +75076,10 @@ Let's break down what each part does:
 * **`skill_id: "pptx"`:** The PowerPoint Skill identifier
 * **`version: "latest"`:** The Skill version set to the most recently published
 * **`tools`:** Enables code execution (required for Skills)
-* **Beta headers:** `code-execution-2025-08-25` and `skills-2025-10-02`
+* **Beta header:** `skills-2025-10-02`
 
 <Note>
-  The examples here use the `code_execution_20250825` tool version with its matching `code-execution-2025-08-25` beta header. Skills also work with the newer [code execution tool](/docs/en/agents-and-tools/tool-use/code-execution-tool) revisions (`code_execution_20260120` and later); any code execution tool version satisfies the Skills requirement. Whichever version you use, keep its tool `type` and beta header consistent with the code execution tool page, and always include `skills-2025-10-02`.
+  The examples here use the `code_execution_20260521` tool version, which is generally available and requires no code execution beta header. Skills also work with older [code execution tool](/docs/en/agents-and-tools/tool-use/code-execution-tool) versions (such as `code_execution_20250825`); any code execution tool version satisfies the Skills requirement. Whichever version you use, keep its tool `type` and any beta header consistent with the code execution tool page, and always include `skills-2025-10-02`.
 </Note>
 
 When you make this request, Claude automatically matches your task to the relevant Skill. Since you asked for a presentation, Claude determines the PowerPoint Skill is relevant and loads its full instructions: the second level of progressive disclosure. Then Claude executes the Skill's code to create your presentation.
@@ -75189,7 +75378,7 @@ Now that you've created your first document with Skills, try these variations:
     -H "content-type: application/json" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
+    -H "anthropic-beta: skills-2025-10-02" \
     -d '{
       "model": "claude-opus-4-8",
       "max_tokens": 16000,
@@ -75199,13 +75388,12 @@ Now that you've created your first document with Skills, try these variations:
       "messages": [
         {"role": "user", "content": "Create a quarterly sales tracking spreadsheet with sample data"}
       ],
-      "tools": [{"type": "code_execution_20250825", "name": "code_execution"}]
+      "tools": [{"type": "code_execution_20260521", "name": "code_execution"}]
     }' | jq -r '"stop_reason=\(.stop_reason)"'
   ```
 
   ```bash CLI
   ant beta:messages create --format json \
-    --beta code-execution-2025-08-25 \
     --beta skills-2025-10-02 <<'YAML' | jq -r '"stop_reason=\(.stop_reason)"'
   model: claude-opus-4-8
   max_tokens: 16000
@@ -75218,7 +75406,7 @@ Now that you've created your first document with Skills, try these variations:
     - role: user
       content: Create a quarterly sales tracking spreadsheet with sample data
   tools:
-    - type: code_execution_20250825
+    - type: code_execution_20260521
       name: code_execution
   YAML
   ```
@@ -75227,7 +75415,7 @@ Now that you've created your first document with Skills, try these variations:
   response = client.beta.messages.create(
       model="claude-opus-4-8",
       max_tokens=16000,
-      betas=["code-execution-2025-08-25", "skills-2025-10-02"],
+      betas=["skills-2025-10-02"],
       container={
           "skills": [{"type": "anthropic", "skill_id": "xlsx", "version": "latest"}]
       },
@@ -75237,7 +75425,7 @@ Now that you've created your first document with Skills, try these variations:
               "content": "Create a quarterly sales tracking spreadsheet with sample data",
           }
       ],
-      tools=[{"type": "code_execution_20250825", "name": "code_execution"}],
+      tools=[{"type": "code_execution_20260521", "name": "code_execution"}],
   )
   ```
 
@@ -75245,7 +75433,7 @@ Now that you've created your first document with Skills, try these variations:
   const response = await client.beta.messages.create({
     model: "claude-opus-4-8",
     max_tokens: 16000,
-    betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
+    betas: ["skills-2025-10-02"],
     container: {
       skills: [{ type: "anthropic", skill_id: "xlsx", version: "latest" }]
     },
@@ -75255,7 +75443,7 @@ Now that you've created your first document with Skills, try these variations:
         content: "Create a quarterly sales tracking spreadsheet with sample data"
       }
     ],
-    tools: [{ type: "code_execution_20250825", name: "code_execution" }]
+    tools: [{ type: "code_execution_20260521", name: "code_execution" }]
   });
   ```
 
@@ -75265,7 +75453,7 @@ Now that you've created your first document with Skills, try these variations:
       {
           Model = Model.ClaudeOpus4_8,
           MaxTokens = 16000,
-          Betas = ["code-execution-2025-08-25", "skills-2025-10-02"],
+          Betas = ["skills-2025-10-02"],
           Container = new BetaContainerParams
           {
               Skills =
@@ -75286,7 +75474,7 @@ Now that you've created your first document with Skills, try these variations:
                   Content = "Create a quarterly sales tracking spreadsheet with sample data",
               },
           ],
-          Tools = [new BetaCodeExecutionTool20250825()],
+          Tools = [new BetaCodeExecutionTool20260521()],
       }
   );
   ```
@@ -75296,7 +75484,6 @@ Now that you've created your first document with Skills, try these variations:
   	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 16000,
   	Betas: []anthropic.AnthropicBeta{
-  		"code-execution-2025-08-25",
   		anthropic.AnthropicBetaSkills2025_10_02,
   	},
   	Container: anthropic.BetaMessageNewParamsContainerUnion{
@@ -75315,7 +75502,7 @@ Now that you've created your first document with Skills, try these variations:
   	},
   	Tools: []anthropic.BetaToolUnionParam{
   		{
-  			OfCodeExecutionTool20250825: &anthropic.BetaCodeExecutionTool20250825Param{},
+  			OfCodeExecutionTool20260521: &anthropic.BetaCodeExecutionTool20260521Param{},
   		},
   	},
   })
@@ -75330,7 +75517,6 @@ Now that you've created your first document with Skills, try these variations:
           MessageCreateParams.builder()
               .model(CLAUDE_OPUS_4_8)
               .maxTokens(16000)
-              .addBeta("code-execution-2025-08-25")
               .addBeta(AnthropicBeta.SKILLS_2025_10_02)
               .container(
                   BetaContainerParams.builder()
@@ -75344,7 +75530,7 @@ Now that you've created your first document with Skills, try these variations:
                       .build()
               )
               .addUserMessage("Create a quarterly sales tracking spreadsheet with sample data")
-              .addTool(BetaCodeExecutionTool20250825.builder().build())
+              .addTool(BetaCodeExecutionTool20260521.builder().build())
               .build()
       );
 
@@ -75354,7 +75540,7 @@ Now that you've created your first document with Skills, try these variations:
   $response = $client->beta->messages->create(
       model: 'claude-opus-4-8',
       maxTokens: 16000,
-      betas: ['code-execution-2025-08-25', 'skills-2025-10-02'],
+      betas: ['skills-2025-10-02'],
       container: [
           'skills' => [
               ['type' => 'anthropic', 'skillID' => 'xlsx', 'version' => 'latest'],
@@ -75366,7 +75552,7 @@ Now that you've created your first document with Skills, try these variations:
               'content' => 'Create a quarterly sales tracking spreadsheet with sample data',
           ],
       ],
-      tools: [new BetaCodeExecutionTool20250825()],
+      tools: [new BetaCodeExecutionTool20260521()],
   );
   ```
 
@@ -75374,7 +75560,7 @@ Now that you've created your first document with Skills, try these variations:
   response = client.beta.messages.create(
     model: "claude-opus-4-8",
     max_tokens: 16_000,
-    betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
+    betas: ["skills-2025-10-02"],
     container: {
       skills: [{type: "anthropic", skill_id: "xlsx", version: "latest"}]
     },
@@ -75384,7 +75570,7 @@ Now that you've created your first document with Skills, try these variations:
         content: "Create a quarterly sales tracking spreadsheet with sample data"
       }
     ],
-    tools: [{type: "code_execution_20250825", name: "code_execution"}]
+    tools: [{type: "code_execution_20260521", name: "code_execution"}]
   )
   ```
 </CodeGroup>
@@ -75397,7 +75583,7 @@ Now that you've created your first document with Skills, try these variations:
     -H "content-type: application/json" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
+    -H "anthropic-beta: skills-2025-10-02" \
     -d '{
       "model": "claude-opus-4-8",
       "max_tokens": 16000,
@@ -75407,13 +75593,12 @@ Now that you've created your first document with Skills, try these variations:
       "messages": [
         {"role": "user", "content": "Write a 2-page report on the benefits of renewable energy"}
       ],
-      "tools": [{"type": "code_execution_20250825", "name": "code_execution"}]
+      "tools": [{"type": "code_execution_20260521", "name": "code_execution"}]
     }' | jq -r '"stop_reason=\(.stop_reason)"'
   ```
 
   ```bash CLI
   ant beta:messages create --format json \
-    --beta code-execution-2025-08-25 \
     --beta skills-2025-10-02 <<'YAML' | jq -r '"stop_reason=\(.stop_reason)"'
   model: claude-opus-4-8
   max_tokens: 16000
@@ -75426,7 +75611,7 @@ Now that you've created your first document with Skills, try these variations:
     - role: user
       content: Write a 2-page report on the benefits of renewable energy
   tools:
-    - type: code_execution_20250825
+    - type: code_execution_20260521
       name: code_execution
   YAML
   ```
@@ -75435,7 +75620,7 @@ Now that you've created your first document with Skills, try these variations:
   response = client.beta.messages.create(
       model="claude-opus-4-8",
       max_tokens=16000,
-      betas=["code-execution-2025-08-25", "skills-2025-10-02"],
+      betas=["skills-2025-10-02"],
       container={
           "skills": [{"type": "anthropic", "skill_id": "docx", "version": "latest"}]
       },
@@ -75445,7 +75630,7 @@ Now that you've created your first document with Skills, try these variations:
               "content": "Write a 2-page report on the benefits of renewable energy",
           }
       ],
-      tools=[{"type": "code_execution_20250825", "name": "code_execution"}],
+      tools=[{"type": "code_execution_20260521", "name": "code_execution"}],
   )
   ```
 
@@ -75453,7 +75638,7 @@ Now that you've created your first document with Skills, try these variations:
   const response = await client.beta.messages.create({
     model: "claude-opus-4-8",
     max_tokens: 16000,
-    betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
+    betas: ["skills-2025-10-02"],
     container: {
       skills: [{ type: "anthropic", skill_id: "docx", version: "latest" }]
     },
@@ -75463,7 +75648,7 @@ Now that you've created your first document with Skills, try these variations:
         content: "Write a 2-page report on the benefits of renewable energy"
       }
     ],
-    tools: [{ type: "code_execution_20250825", name: "code_execution" }]
+    tools: [{ type: "code_execution_20260521", name: "code_execution" }]
   });
   ```
 
@@ -75473,7 +75658,7 @@ Now that you've created your first document with Skills, try these variations:
       {
           Model = Model.ClaudeOpus4_8,
           MaxTokens = 16000,
-          Betas = ["code-execution-2025-08-25", "skills-2025-10-02"],
+          Betas = ["skills-2025-10-02"],
           Container = new BetaContainerParams
           {
               Skills =
@@ -75494,7 +75679,7 @@ Now that you've created your first document with Skills, try these variations:
                   Content = "Write a 2-page report on the benefits of renewable energy",
               },
           ],
-          Tools = [new BetaCodeExecutionTool20250825()],
+          Tools = [new BetaCodeExecutionTool20260521()],
       }
   );
   ```
@@ -75504,7 +75689,6 @@ Now that you've created your first document with Skills, try these variations:
   	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 16000,
   	Betas: []anthropic.AnthropicBeta{
-  		"code-execution-2025-08-25",
   		anthropic.AnthropicBetaSkills2025_10_02,
   	},
   	Container: anthropic.BetaMessageNewParamsContainerUnion{
@@ -75523,7 +75707,7 @@ Now that you've created your first document with Skills, try these variations:
   	},
   	Tools: []anthropic.BetaToolUnionParam{
   		{
-  			OfCodeExecutionTool20250825: &anthropic.BetaCodeExecutionTool20250825Param{},
+  			OfCodeExecutionTool20260521: &anthropic.BetaCodeExecutionTool20260521Param{},
   		},
   	},
   })
@@ -75538,7 +75722,6 @@ Now that you've created your first document with Skills, try these variations:
           MessageCreateParams.builder()
               .model(CLAUDE_OPUS_4_8)
               .maxTokens(16000)
-              .addBeta("code-execution-2025-08-25")
               .addBeta(AnthropicBeta.SKILLS_2025_10_02)
               .container(
                   BetaContainerParams.builder()
@@ -75552,7 +75735,7 @@ Now that you've created your first document with Skills, try these variations:
                       .build()
               )
               .addUserMessage("Write a 2-page report on the benefits of renewable energy")
-              .addTool(BetaCodeExecutionTool20250825.builder().build())
+              .addTool(BetaCodeExecutionTool20260521.builder().build())
               .build()
       );
 
@@ -75562,7 +75745,7 @@ Now that you've created your first document with Skills, try these variations:
   $response = $client->beta->messages->create(
       model: 'claude-opus-4-8',
       maxTokens: 16000,
-      betas: ['code-execution-2025-08-25', 'skills-2025-10-02'],
+      betas: ['skills-2025-10-02'],
       container: [
           'skills' => [
               ['type' => 'anthropic', 'skillID' => 'docx', 'version' => 'latest'],
@@ -75574,7 +75757,7 @@ Now that you've created your first document with Skills, try these variations:
               'content' => 'Write a 2-page report on the benefits of renewable energy',
           ],
       ],
-      tools: [new BetaCodeExecutionTool20250825()],
+      tools: [new BetaCodeExecutionTool20260521()],
   );
   ```
 
@@ -75582,7 +75765,7 @@ Now that you've created your first document with Skills, try these variations:
   response = client.beta.messages.create(
     model: "claude-opus-4-8",
     max_tokens: 16_000,
-    betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
+    betas: ["skills-2025-10-02"],
     container: {
       skills: [{type: "anthropic", skill_id: "docx", version: "latest"}]
     },
@@ -75592,7 +75775,7 @@ Now that you've created your first document with Skills, try these variations:
         content: "Write a 2-page report on the benefits of renewable energy"
       }
     ],
-    tools: [{type: "code_execution_20250825", name: "code_execution"}]
+    tools: [{type: "code_execution_20260521", name: "code_execution"}]
   )
   ```
 </CodeGroup>
@@ -75605,7 +75788,7 @@ Now that you've created your first document with Skills, try these variations:
     -H "content-type: application/json" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: code-execution-2025-08-25,skills-2025-10-02" \
+    -H "anthropic-beta: skills-2025-10-02" \
     -d '{
       "model": "claude-opus-4-8",
       "max_tokens": 16000,
@@ -75615,13 +75798,12 @@ Now that you've created your first document with Skills, try these variations:
       "messages": [
         {"role": "user", "content": "Generate a PDF invoice template"}
       ],
-      "tools": [{"type": "code_execution_20250825", "name": "code_execution"}]
+      "tools": [{"type": "code_execution_20260521", "name": "code_execution"}]
     }' | jq -r '"stop_reason=\(.stop_reason)"'
   ```
 
   ```bash CLI
   ant beta:messages create --format json \
-    --beta code-execution-2025-08-25 \
     --beta skills-2025-10-02 <<'YAML' | jq -r '"stop_reason=\(.stop_reason)"'
   model: claude-opus-4-8
   max_tokens: 16000
@@ -75634,7 +75816,7 @@ Now that you've created your first document with Skills, try these variations:
     - role: user
       content: Generate a PDF invoice template
   tools:
-    - type: code_execution_20250825
+    - type: code_execution_20260521
       name: code_execution
   YAML
   ```
@@ -75643,7 +75825,7 @@ Now that you've created your first document with Skills, try these variations:
   response = client.beta.messages.create(
       model="claude-opus-4-8",
       max_tokens=16000,
-      betas=["code-execution-2025-08-25", "skills-2025-10-02"],
+      betas=["skills-2025-10-02"],
       container={
           "skills": [{"type": "anthropic", "skill_id": "pdf", "version": "latest"}]
       },
@@ -75653,7 +75835,7 @@ Now that you've created your first document with Skills, try these variations:
               "content": "Generate a PDF invoice template",
           }
       ],
-      tools=[{"type": "code_execution_20250825", "name": "code_execution"}],
+      tools=[{"type": "code_execution_20260521", "name": "code_execution"}],
   )
   ```
 
@@ -75661,7 +75843,7 @@ Now that you've created your first document with Skills, try these variations:
   const response = await client.beta.messages.create({
     model: "claude-opus-4-8",
     max_tokens: 16000,
-    betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
+    betas: ["skills-2025-10-02"],
     container: {
       skills: [{ type: "anthropic", skill_id: "pdf", version: "latest" }]
     },
@@ -75671,7 +75853,7 @@ Now that you've created your first document with Skills, try these variations:
         content: "Generate a PDF invoice template"
       }
     ],
-    tools: [{ type: "code_execution_20250825", name: "code_execution" }]
+    tools: [{ type: "code_execution_20260521", name: "code_execution" }]
   });
   ```
 
@@ -75681,7 +75863,7 @@ Now that you've created your first document with Skills, try these variations:
       {
           Model = Model.ClaudeOpus4_8,
           MaxTokens = 16000,
-          Betas = ["code-execution-2025-08-25", "skills-2025-10-02"],
+          Betas = ["skills-2025-10-02"],
           Container = new BetaContainerParams
           {
               Skills =
@@ -75702,7 +75884,7 @@ Now that you've created your first document with Skills, try these variations:
                   Content = "Generate a PDF invoice template",
               },
           ],
-          Tools = [new BetaCodeExecutionTool20250825()],
+          Tools = [new BetaCodeExecutionTool20260521()],
       }
   );
   ```
@@ -75712,7 +75894,6 @@ Now that you've created your first document with Skills, try these variations:
   	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 16000,
   	Betas: []anthropic.AnthropicBeta{
-  		"code-execution-2025-08-25",
   		anthropic.AnthropicBetaSkills2025_10_02,
   	},
   	Container: anthropic.BetaMessageNewParamsContainerUnion{
@@ -75731,7 +75912,7 @@ Now that you've created your first document with Skills, try these variations:
   	},
   	Tools: []anthropic.BetaToolUnionParam{
   		{
-  			OfCodeExecutionTool20250825: &anthropic.BetaCodeExecutionTool20250825Param{},
+  			OfCodeExecutionTool20260521: &anthropic.BetaCodeExecutionTool20260521Param{},
   		},
   	},
   })
@@ -75746,7 +75927,6 @@ Now that you've created your first document with Skills, try these variations:
           MessageCreateParams.builder()
               .model(CLAUDE_OPUS_4_8)
               .maxTokens(16000)
-              .addBeta("code-execution-2025-08-25")
               .addBeta(AnthropicBeta.SKILLS_2025_10_02)
               .container(
                   BetaContainerParams.builder()
@@ -75760,7 +75940,7 @@ Now that you've created your first document with Skills, try these variations:
                       .build()
               )
               .addUserMessage("Generate a PDF invoice template")
-              .addTool(BetaCodeExecutionTool20250825.builder().build())
+              .addTool(BetaCodeExecutionTool20260521.builder().build())
               .build()
       );
 
@@ -75770,7 +75950,7 @@ Now that you've created your first document with Skills, try these variations:
   $response = $client->beta->messages->create(
       model: 'claude-opus-4-8',
       maxTokens: 16000,
-      betas: ['code-execution-2025-08-25', 'skills-2025-10-02'],
+      betas: ['skills-2025-10-02'],
       container: [
           'skills' => [
               ['type' => 'anthropic', 'skillID' => 'pdf', 'version' => 'latest'],
@@ -75782,7 +75962,7 @@ Now that you've created your first document with Skills, try these variations:
               'content' => 'Generate a PDF invoice template',
           ],
       ],
-      tools: [new BetaCodeExecutionTool20250825()],
+      tools: [new BetaCodeExecutionTool20260521()],
   );
   ```
 
@@ -75790,7 +75970,7 @@ Now that you've created your first document with Skills, try these variations:
   response = client.beta.messages.create(
     model: "claude-opus-4-8",
     max_tokens: 16_000,
-    betas: ["code-execution-2025-08-25", "skills-2025-10-02"],
+    betas: ["skills-2025-10-02"],
     container: {
       skills: [{type: "anthropic", skill_id: "pdf", version: "latest"}]
     },
@@ -75800,7 +75980,7 @@ Now that you've created your first document with Skills, try these variations:
         content: "Generate a PDF invoice template"
       }
     ],
-    tools: [{type: "code_execution_20250825", name: "code_execution"}]
+    tools: [{type: "code_execution_20260521", name: "code_execution"}]
   )
   ```
 </CodeGroup>
@@ -83226,7 +83406,7 @@ A two-container [tunnel stack](/docs/en/agents-and-tools/mcp-tunnels/concepts#co
         cat > docker-compose.yaml <<'EOF'
         services:
           mcp-proxy:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:dab8c3f6ac44c15d91b1580af23a7da6e579865d5852e9ad31e35b6940daf436
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
             volumes:
               - ./config/mcp-proxy.yaml:/etc/mcp-gateway/config.yaml:ro
               - ./data:/data:ro
@@ -83266,7 +83446,7 @@ A two-container [tunnel stack](/docs/en/agents-and-tools/mcp-tunnels/concepts#co
         @'
         services:
           mcp-proxy:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:dab8c3f6ac44c15d91b1580af23a7da6e579865d5852e9ad31e35b6940daf436
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
             volumes:
               - ./config/mcp-proxy.yaml:/etc/mcp-gateway/config.yaml:ro
               - ./data:/data:ro
@@ -83509,7 +83689,7 @@ This guide provides one reference approach using Docker Compose. You are respons
         cat > docker-compose.yaml <<'EOF'
         services:
           setup:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:dab8c3f6ac44c15d91b1580af23a7da6e579865d5852e9ad31e35b6940daf436
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
             entrypoint: ["/setup"]
             command:
               - init
@@ -83553,7 +83733,7 @@ This guide provides one reference approach using Docker Compose. You are respons
                 max-file: "3"
 
           mcp-proxy:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:dab8c3f6ac44c15d91b1580af23a7da6e579865d5852e9ad31e35b6940daf436
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
             volumes:
               - ./config/mcp-proxy.yaml:/etc/mcp-gateway/config.yaml:ro
               - ./data:/data:ro
@@ -83768,7 +83948,7 @@ This guide provides one reference approach using Docker Compose. You are respons
                 max-file: "3"
 
           mcp-proxy:
-            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:dab8c3f6ac44c15d91b1580af23a7da6e579865d5852e9ad31e35b6940daf436
+            image: us-docker.pkg.dev/anthropic-public-registry/images/mcp-proxy@sha256:9d4c80593b559fc3ca3814866418744fa94858b02a4d4a4cc52d423e732ccc81
             volumes:
               - ./config/mcp-proxy.yaml:/etc/mcp-gateway/config.yaml:ro
               - ./data:/data:ro
@@ -84035,7 +84215,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm show values \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.0 > values.yaml
+          --version 2.0.1 > values.yaml
         ```
       </Step>
 
@@ -84079,7 +84259,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm template mcp-tunnel \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.0 \
+          --version 2.0.1 \
           -n mcp-tunnel \
           -f values.yaml > rendered.yaml
         ```
@@ -84089,7 +84269,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm install mcp-tunnel \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.0 \
+          --version 2.0.1 \
           --namespace mcp-tunnel --create-namespace \
           -f values.yaml
         ```
@@ -84180,7 +84360,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm show values \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.0 > values.yaml
+          --version 2.0.1 > values.yaml
         ```
       </Step>
 
@@ -84218,7 +84398,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm template mcp-tunnel \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.0 \
+          --version 2.0.1 \
           -n mcp-tunnel \
           -f values.yaml > rendered.yaml
         ```
@@ -84228,7 +84408,7 @@ The Install steps that follow note where to add the corresponding route.
         ```bash
         helm install mcp-tunnel \
           oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-          --version 2.0.0 \
+          --version 2.0.1 \
           --namespace mcp-tunnel --create-namespace \
           -f values.yaml
         ```
@@ -84272,7 +84452,7 @@ For routine changes such as routes, replica count, or NetworkPolicy:
 ```bash
 helm upgrade mcp-tunnel \
   oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-  --version 2.0.0 \
+  --version 2.0.1 \
   -n mcp-tunnel \
   -f values.yaml
 ```
@@ -84288,7 +84468,7 @@ With programmatic access, increment `tunnel.tokenVersion` in `values.yaml` and u
 ```bash
 helm upgrade mcp-tunnel \
   oci://us-docker.pkg.dev/anthropic-public-registry/charts/mcp-tunnel \
-  --version 2.0.0 \
+  --version 2.0.1 \
   -n mcp-tunnel \
   -f values.yaml \
   --set setup.force=true
@@ -85321,9 +85501,9 @@ Access Claude models through Microsoft Foundry with Azure-native endpoints and a
 
 ---
 
-This guide walks you through the process of setting up and making API calls to Claude in Microsoft Foundry using one of Anthropic's client SDKs or direct HTTP requests. When you access Claude in Microsoft Foundry, you are billed for Claude usage in the Azure Marketplace, allowing you to access Claude's latest capabilities while managing costs through your Azure subscription.
+This guide shows you how to set up and make API calls to Claude in Microsoft Foundry using one of Anthropic's client SDKs or direct HTTP requests. When you access Claude in Microsoft Foundry, you are billed for Claude usage in the Azure Marketplace. You can use the latest Claude models, including Claude Opus 4.8 and Claude Sonnet 5, and features such as the [1M-token context window](/docs/en/build-with-claude/context-windows), while managing costs through your Azure subscription.
 
-Claude is available in Global Standard and US Data Zone Standard deployment types in Foundry resources, billed in Claude Consumption Units through the Azure Marketplace. Visit [Pricing](https://claude.com/pricing#api) for details.
+Claude is available in Global Standard and US Data Zone Standard deployment types in Foundry resources, billed in Claude Consumption Units through the Azure Marketplace. Visit [Claude in Microsoft Foundry pricing](/docs/en/about-claude/pricing#claude-in-microsoft-foundry-pricing) for details.
 
 ## Hosting options
 
@@ -85337,7 +85517,7 @@ Claude models in Microsoft Foundry are available in two hosting options. You cho
 | Recommended for      | Most workloads                                             | [Access to features or models not yet hosted on Azure](#additional-features-not-supported-when-hosted-on-azure) |
 
 <Note>
-  Anthropic acts as an independent processor for Microsoft. Customers using Claude through Microsoft Foundry are subject to Anthropic's data use terms. For deployments hosted on Azure, prompts and completions remain within Azure; only usage metadata and content flagged by Anthropic's safety systems egress to Anthropic. Anthropic continues to provide its safety and data commitments.
+  Anthropic acts as an independent processor for Microsoft. Customers using Claude through Microsoft Foundry are subject to Anthropic's data use terms. For deployments hosted on Azure, prompts and completions remain within Azure. Only usage metadata and content flagged by Anthropic's safety systems egress to Anthropic. Anthropic continues to provide its safety and data commitments.
 </Note>
 
 ## Prerequisites
@@ -85346,11 +85526,12 @@ Before you begin, ensure you have:
 
 * An active Azure subscription
 * Access to [Foundry](https://ai.azure.com/)
-* The [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) installed (optional, for resource management)
+* The [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli) installed (required for the Entra ID cURL example, optional otherwise)
+* An Azure RBAC role that allows you to use the resource, such as **Foundry User** (formerly Azure AI User) or **Cognitive Services User**
 
 ## Install an SDK
 
-Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Foundry through a platform-specific package or client class.
+Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Foundry through a platform-specific package or client class. The examples on this page also show requests with cURL and the ant CLI. To set up the CLI, see [CLI quickstart](/docs/en/cli-sdks-libraries/cli/quickstart).
 
 <Note>
   Foundry is supported by the C#, Java, PHP, Python, and TypeScript SDKs. Foundry is not currently available in the Go and Ruby SDKs.
@@ -85360,12 +85541,18 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Foundry 
   <Tab title="Python">
     ```bash
     pip install -U "anthropic"
+
+    # For Entra ID authentication, also install the Azure Identity library
+    pip install azure-identity
     ```
   </Tab>
 
   <Tab title="TypeScript">
     ```bash
     npm install @anthropic-ai/foundry-sdk
+
+    # For Entra ID authentication, also install the Azure Identity library
+    npm install @azure/identity
     ```
   </Tab>
 
@@ -85375,11 +85562,22 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Foundry 
     ```
   </Tab>
 
+  <Tab title="Go">
+    ```bash
+    # The Go SDK does not yet support Foundry natively (see the Authentication
+    # examples for using the standard Go SDK as a workaround)
+    go get github.com/anthropics/anthropic-sdk-go
+    ```
+  </Tab>
+
   <Tab title="Java">
     <Tabs>
       <Tab title="Gradle">
         ```kotlin
-        implementation("com.anthropic:anthropic-java-foundry:2.47.1")
+        implementation("com.anthropic:anthropic-java-foundry:2.48.0")
+
+        // For Entra ID authentication, also add the Azure Identity library
+        implementation("com.azure:azure-identity:1.18.3")
         ```
       </Tab>
 
@@ -85388,7 +85586,13 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Foundry 
         <dependency>
             <groupId>com.anthropic</groupId>
             <artifactId>anthropic-java-foundry</artifactId>
-            <version>2.47.1</version>
+            <version>2.48.0</version>
+        </dependency>
+        <!-- For Entra ID authentication, also add the Azure Identity library -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.18.3</version>
         </dependency>
         ```
       </Tab>
@@ -85398,6 +85602,15 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Foundry 
   <Tab title="PHP">
     ```bash
     composer require anthropic-ai/sdk
+    ```
+  </Tab>
+
+  <Tab title="Ruby">
+    ```bash
+    # The Ruby SDK does not yet support Foundry natively (see the Authentication
+    # examples for using the standard Ruby SDK as a workaround)
+    # Gemfile
+    gem "anthropic"
     ```
   </Tab>
 </Tabs>
@@ -85412,11 +85625,11 @@ Create a Foundry resource, which is required to use and manage services in Azure
 
 To provision your resource:
 
-1. Navigate to the [Foundry portal](https://ai.azure.com/)
-2. Create a new Foundry resource or select an existing one
-3. Configure access management using Azure-issued API keys or Entra ID (formerly Azure Active Directory) for role-based access control
-4. Optionally configure the resource to be part of a private network (Azure Virtual Network) for enhanced security
-5. Note your resource name. You'll use this as `{resource}` in API endpoints (for example, `https://{resource}.services.ai.azure.com/anthropic/v1/*`)
+1. Navigate to the [Foundry portal](https://ai.azure.com/).
+2. Create a new Foundry resource or select an existing one.
+3. Configure access management using Azure-issued API keys or Entra ID (formerly Azure Active Directory) for role-based access control.
+4. Optionally configure the resource to be part of a private network (Azure Virtual Network) to restrict network access to your resource.
+5. Note your resource name. You'll use this as `{resource}` in API endpoints (for example, `https://{resource}.services.ai.azure.com/anthropic/v1/*`).
 
 ### Creating Foundry deployments
 
@@ -85424,7 +85637,7 @@ After creating your resource, deploy a Claude model to make it available for API
 
 1. Sign in to the Foundry portal. From the portal homepage, select **Discover** in the upper-right navigation, then **Models** in the left pane to open the model catalog.
 
-2. Search for and select a Claude model (for example, `claude-opus-4-8`). Each model appears once in the catalog regardless of how many hosting options it supports.
+2. Search for and select a Claude model (for example, claude-opus-4-8). Each model appears once in the catalog regardless of how many hosting options it supports.
 
 3. On the model card, select **Deploy**, then **Custom settings** to open the deployment settings pane. If you choose **Default settings** instead, the deployment is automatically configured as Hosted on Azure for models available in both hosting options.
 
@@ -85433,16 +85646,14 @@ After creating your resource, deploy a Claude model to make it available for API
 5. Configure the deployment:
 
    * **Deployment name:** Defaults to the model ID, but you can customize it (for example, `my-claude-deployment`). The deployment name cannot be changed after creation.
-   * **Region scope:** Select Global, or for models hosted on Azure, Data Zone. Selecting Data Zone creates a US Data Zone Standard deployment, which keeps inference within the United States and is equivalent to setting `inference_geo: "us"` on the Claude API.
+   * **Region scope:** Select Global, or for models hosted on Azure, Data Zone. Selecting Data Zone creates a US Data Zone Standard deployment, which keeps inference within the United States and is equivalent to setting [`inference_geo: "us"`](/docs/en/manage-claude/data-residency#inference-geo) on the Claude API.
    * **Model version:** Expand **Model version settings** and select a version from the **Model version** dropdown. Each [hosting option](#hosting-options) is listed as a separate model version, labeled with its hosting option (for example, version 1 for Hosted on Anthropic, version 2 for Hosted on Azure).
 
 6. Select **Deploy** and wait for provisioning to complete.
 
 7. Once deployed, select **Build** in the upper-right navigation, then **Models** in the left pane, and open your deployment. The **Details** tab shows the **Target URI** (your endpoint URL) and **Key** (your API key).
 
-<Note>
-  If the **New Foundry** toggle is off, you are in the classic portal layout. There, open **Model catalog** in the left pane to find and deploy a model, and open **Models + endpoints** (under **My assets**) to view your deployments and their endpoint details.
-</Note>
+If the **New Foundry** toggle is off, you are in the classic portal layout. There, open **Model catalog** in the left pane to find and deploy a model, and open **Models + endpoints** (under **My assets**) to view your deployments and their endpoint details.
 
 <Note>
   The deployment name you choose becomes the value you pass in the `model` parameter of your API requests. You can create multiple deployments of the same model with different names to manage separate configurations or rate limits.
@@ -85465,7 +85676,7 @@ The Foundry SDKs require an API key and either a resource name or base URL. The 
 
 * `ANTHROPIC_FOUNDRY_API_KEY` - Your API key
 * `ANTHROPIC_FOUNDRY_RESOURCE` - Your resource name (for example, `example-resource`)
-* `ANTHROPIC_FOUNDRY_BASE_URL` - Alternative to resource name; the full base URL (for example, `https://example-resource.services.ai.azure.com/anthropic/`)
+* `ANTHROPIC_FOUNDRY_BASE_URL` - Alternative to resource name: the full base URL (for example, `https://example-resource.services.ai.azure.com/anthropic/`). The C# SDK does not read this variable: it always constructs the base URL from the resource name.
 
 <Note>
   The `resource` and `base_url` parameters are mutually exclusive. Provide either the resource name (which the SDK uses to construct the URL as `https://{resource}.services.ai.azure.com/anthropic/`) or the full base URL directly.
@@ -85473,155 +85684,199 @@ The Foundry SDKs require an API key and either a resource name or base URL. The 
 
 **Example using API key:**
 
-<Tabs>
-  <Tab title="cURL">
-    ```bash cURL
-    curl https://{resource}.services.ai.azure.com/anthropic/v1/messages \
-      -H "content-type: application/json" \
-      -H "api-key: YOUR_AZURE_API_KEY" \
-      -H "anthropic-version: 2023-06-01" \
-      -d '{
-        "model": "claude-opus-4-8",
-        "max_tokens": 1024,
-        "messages": [
-          {"role": "user", "content": "Hello!"}
-        ]
-      }'
-    ```
-  </Tab>
+<CodeGroup>
+  ```bash cURL
+  curl https://{resource}.services.ai.azure.com/anthropic/v1/messages \
+    -H "content-type: application/json" \
+    -H "api-key: YOUR_AZURE_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -d '{
+      "model": "claude-opus-4-8",
+      "max_tokens": 1024,
+      "messages": [
+        {"role": "user", "content": "Hello!"}
+      ]
+    }'
+  ```
 
-  <Tab title="CLI">
-    ```bash CLI
-    # ant reads ANTHROPIC_API_KEY and sends it as x-api-key, which Foundry accepts
-    export ANTHROPIC_API_KEY="YOUR_AZURE_API_KEY"
+  ```bash CLI
+  # ant reads ANTHROPIC_API_KEY and sends it as x-api-key, which Foundry accepts
+  export ANTHROPIC_API_KEY="YOUR_AZURE_API_KEY"
 
-    ant messages create \
-      --base-url https://example-resource.services.ai.azure.com/anthropic \
-      --model claude-opus-4-8 \
-      --max-tokens 1024 \
-      --message '{role: user, content: "Hello!"}' \
-      --transform content
-    ```
-  </Tab>
+  ant messages create \
+    --base-url https://example-resource.services.ai.azure.com/anthropic \
+    --model claude-opus-4-8 \
+    --max-tokens 1024 \
+    --message '{role: user, content: "Hello!"}' \
+    --transform content
+  ```
 
-  <Tab title="Python">
-    ```python
-    import os
-    from anthropic import AnthropicFoundry
+  ```python Python
+  import os
+  from anthropic import AnthropicFoundry
 
-    client = AnthropicFoundry(
-        api_key=os.environ.get("ANTHROPIC_FOUNDRY_API_KEY"),
-        resource="example-resource",  # your resource name
-    )
+  client = AnthropicFoundry(
+      api_key=os.environ.get("ANTHROPIC_FOUNDRY_API_KEY"),
+      resource="example-resource",  # your resource name
+  )
 
-    message = client.messages.create(
-        model="claude-opus-4-8",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": "Hello!"}],
-    )
-    print(message.content)
-    ```
-  </Tab>
+  message = client.messages.create(
+      model="claude-opus-4-8",
+      max_tokens=1024,
+      messages=[{"role": "user", "content": "Hello!"}],
+  )
+  print(message.content)
+  ```
 
-  <Tab title="TypeScript">
-    ```typescript
-    import AnthropicFoundry from "@anthropic-ai/foundry-sdk";
+  ```typescript TypeScript
+  import AnthropicFoundry from "@anthropic-ai/foundry-sdk";
 
-    const client = new AnthropicFoundry({
-      apiKey: process.env.ANTHROPIC_FOUNDRY_API_KEY,
-      resource: "example-resource" // your resource name
-    });
+  const client = new AnthropicFoundry({
+    apiKey: process.env.ANTHROPIC_FOUNDRY_API_KEY,
+    resource: "example-resource" // your resource name
+  });
 
-    const message = await client.messages.create({
-      model: "claude-opus-4-8",
-      max_tokens: 1024,
-      messages: [{ role: "user", content: "Hello!" }]
-    });
-    console.log(message.content);
-    ```
-  </Tab>
+  const message = await client.messages.create({
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "Hello!" }]
+  });
+  console.log(message.content);
+  ```
 
-  <Tab title="C#">
-    ```csharp
-    using Anthropic.Foundry;
-    using Anthropic.Models.Messages;
+  ```csharp C#
+  using Anthropic.Foundry;
+  using Anthropic.Models.Messages;
 
-    var client = new AnthropicFoundryClient(
-        new AnthropicFoundryApiKeyCredentials(
-            Environment.GetEnvironmentVariable("ANTHROPIC_FOUNDRY_API_KEY")!,
-            "example-resource"
-        )
-    );
+  var client = new AnthropicFoundryClient(
+      new AnthropicFoundryApiKeyCredentials(
+          Environment.GetEnvironmentVariable("ANTHROPIC_FOUNDRY_API_KEY")!,
+          "example-resource"
+      )
+  );
 
-    var response = await client.Messages.Create(new MessageCreateParams
-    {
-        Model = "claude-opus-4-8",
-        MaxTokens = 1024,
-        Messages = [new() { Role = Role.User, Content = "Hello!" }],
-    });
+  var response = await client.Messages.Create(new MessageCreateParams
+  {
+      Model = "claude-opus-4-8",
+      MaxTokens = 1024,
+      Messages = [new() { Role = Role.User, Content = "Hello!" }],
+  });
 
-    Console.WriteLine(
-        string.Join("", response.Content
-            .Select(block => block.Value)
-            .OfType<TextBlock>()
-            .Select(textBlock => textBlock.Text)));
-    ```
-  </Tab>
+  Console.WriteLine(
+      string.Join("", response.Content
+          .Select(block => block.Value)
+          .OfType<TextBlock>()
+          .Select(textBlock => textBlock.Text)));
+  ```
 
-  <Tab title="Java">
-    ```java Java
-    import com.anthropic.client.AnthropicClient;
-    import com.anthropic.client.okhttp.AnthropicOkHttpClient;
-    import com.anthropic.foundry.backends.FoundryBackend;
-    import com.anthropic.models.messages.MessageCreateParams;
+  ```go Go
+  // The Go SDK does not yet support Foundry natively. This example uses the
+  // standard Go SDK as a workaround. WithoutEnvironmentDefaults keeps the
+  // client from also reading ANTHROPIC_API_KEY or ANTHROPIC_AUTH_TOKEN from
+  // the environment and sending a Claude API credential to your Foundry
+  // endpoint. Features that Foundry does not support fail server-side rather
+  // than client-side. For full Foundry support, use the C#, Java, PHP,
+  // Python, or TypeScript SDKs.
+  package main
 
-    void main() {
-        // Requires env vars: ANTHROPIC_FOUNDRY_API_KEY, ANTHROPIC_FOUNDRY_RESOURCE
-        AnthropicClient client = AnthropicOkHttpClient.builder()
-            .backend(FoundryBackend.fromEnv())
-            .build();
+  import (
+  	"context"
+  	"fmt"
+  	"os"
 
-        MessageCreateParams params = MessageCreateParams.builder()
-            .model("claude-opus-4-8")
-            .maxTokens(1024)
-            .addUserMessage("Hello!")
-            .build();
+  	"github.com/anthropics/anthropic-sdk-go"
+  	"github.com/anthropics/anthropic-sdk-go/option"
+  )
 
-        client.messages().create(params).content().stream()
-            .flatMap(block -> block.text().stream())
-            .forEach(textBlock -> System.out.println(textBlock.text()));
-    }
-    ```
-  </Tab>
+  func main() {
+  	client := anthropic.NewClient(
+  		option.WithoutEnvironmentDefaults(),
+  		option.WithBaseURL("https://example-resource.services.ai.azure.com/anthropic"),
+  		option.WithAPIKey(os.Getenv("ANTHROPIC_FOUNDRY_API_KEY")),
+  	)
 
-  <Tab title="PHP">
-    ```php PHP
-    <?php
+  	message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+  		Model:     "claude-opus-4-8",
+  		MaxTokens: 1024,
+  		Messages: []anthropic.MessageParam{
+  			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello!")),
+  		},
+  	})
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Println(message.Content)
+  }
+  ```
 
-    use Anthropic\Foundry;
+  ```java Java
+  import com.anthropic.client.AnthropicClient;
+  import com.anthropic.client.okhttp.AnthropicOkHttpClient;
+  import com.anthropic.foundry.backends.FoundryBackend;
+  import com.anthropic.models.messages.MessageCreateParams;
 
-    $client = Foundry\Client::withCredentials(
-        apiKey: getenv('ANTHROPIC_FOUNDRY_API_KEY'),
-        baseUrl: 'https://example-resource.services.ai.azure.com/anthropic/v1',
-    );
+  void main() {
+      // Requires env vars: ANTHROPIC_FOUNDRY_API_KEY, ANTHROPIC_FOUNDRY_RESOURCE
+      AnthropicClient client = AnthropicOkHttpClient.builder()
+          .backend(FoundryBackend.fromEnv())
+          .build();
 
-    $message = $client->messages->create(
-        maxTokens: 1024,
-        messages: [
-            ['role' => 'user', 'content' => 'Hello!']
-        ],
-        model: 'claude-opus-4-8',
-    );
-    echo $message->content[0]->text;
-    ```
-  </Tab>
+      MessageCreateParams params = MessageCreateParams.builder()
+          .model("claude-opus-4-8")
+          .maxTokens(1024)
+          .addUserMessage("Hello!")
+          .build();
 
-  <Tab title="Ruby">
-    <Note>
-      The Anthropic Ruby SDK does not currently support Microsoft Foundry. You can use the standard `Anthropic::Client` with a custom `base_url` pointing to your Foundry endpoint, but Azure-specific authentication (Entra ID) is not built in. For full Foundry support, use the C#, Java, PHP, Python, or TypeScript SDKs.
-    </Note>
-  </Tab>
-</Tabs>
+      client.messages().create(params).content().stream()
+          .flatMap(block -> block.text().stream())
+          .forEach(textBlock -> System.out.println(textBlock.text()));
+  }
+  ```
+
+  ```php PHP
+  <?php
+
+  use Anthropic\Foundry;
+
+  $client = Foundry\Client::withCredentials(
+      apiKey: getenv('ANTHROPIC_FOUNDRY_API_KEY'),
+      baseUrl: 'https://example-resource.services.ai.azure.com/anthropic',
+  );
+
+  $message = $client->messages->create(
+      maxTokens: 1024,
+      messages: [
+          ['role' => 'user', 'content' => 'Hello!']
+      ],
+      model: 'claude-opus-4-8',
+  );
+  echo $message->content[0]->text;
+  ```
+
+  ```ruby Ruby
+  # The Ruby SDK does not yet support Foundry natively. This example uses the
+  # standard Ruby SDK as a workaround. Pass credentials explicitly: without
+  # them, the client falls back to the ANTHROPIC_API_KEY or
+  # ANTHROPIC_AUTH_TOKEN environment variables and could send a Claude API
+  # credential to your Foundry endpoint. Features that Foundry
+  # does not support fail server-side rather than client-side. For full
+  # Foundry support, use the C#, Java, PHP, Python, or TypeScript SDKs.
+  require "anthropic"
+
+  client = Anthropic::Client.new(
+    base_url: "https://example-resource.services.ai.azure.com/anthropic",
+    api_key: ENV.fetch("ANTHROPIC_FOUNDRY_API_KEY")
+  )
+
+  message = client.messages.create(
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: [{role: "user", content: "Hello!"}]
+  )
+
+  puts message.content.first.text
+  ```
+</CodeGroup>
 
 <Warning>
   Keep your API keys secure. Never commit them to version control or share them publicly. Anyone with access to your API key can make requests to Claude through your Foundry resource.
@@ -85629,194 +85884,252 @@ The Foundry SDKs require an API key and either a resource name or base URL. The 
 
 ### Microsoft Entra authentication
 
-For enhanced security and centralized access management, you can use Entra ID tokens:
+Entra ID authentication lets you manage access with Azure RBAC, integrate with your organization's identity management, and avoid handling API keys manually. To use Entra ID tokens:
 
-1. Enable Entra authentication for your Foundry resource
-2. Obtain an access token from Entra ID
-3. Use the token in the `Authorization: Bearer {TOKEN}` header
+1. Enable [Microsoft Entra ID authentication](https://learn.microsoft.com/en-us/azure/ai-foundry/model-inference/how-to/configure-entra-id) for your Foundry resource.
+2. Obtain an access token from Entra ID.
+3. Use the token in the `Authorization: Bearer {TOKEN}` header.
 
 **Example using Entra ID:**
 
-<Tabs>
-  <Tab title="cURL">
-    ```bash cURL
-    # Get Microsoft Entra ID token
-    ACCESS_TOKEN=$(az account get-access-token --resource https://ai.azure.com --query accessToken -o tsv)
+<CodeGroup>
+  ```bash cURL
+  # Get Microsoft Entra ID token
+  ACCESS_TOKEN=$(az account get-access-token --resource https://ai.azure.com --query accessToken -o tsv)
 
-    # Make request with token. Replace {resource} with your resource name
-    curl https://{resource}.services.ai.azure.com/anthropic/v1/messages \
-      -H "content-type: application/json" \
-      -H "Authorization: Bearer $ACCESS_TOKEN" \
-      -H "anthropic-version: 2023-06-01" \
-      -d '{
-        "model": "claude-opus-4-8",
-        "max_tokens": 1024,
-        "messages": [
-          {"role": "user", "content": "Hello!"}
-        ]
-      }'
-    ```
-  </Tab>
+  # Make request with token. Replace {resource} with your resource name
+  curl https://{resource}.services.ai.azure.com/anthropic/v1/messages \
+    -H "content-type: application/json" \
+    -H "Authorization: Bearer $ACCESS_TOKEN" \
+    -H "anthropic-version: 2023-06-01" \
+    -d '{
+      "model": "claude-opus-4-8",
+      "max_tokens": 1024,
+      "messages": [
+        {"role": "user", "content": "Hello!"}
+      ]
+    }'
+  ```
 
-  <Tab title="Python">
-    ```python
-    import os
-    from anthropic import AnthropicFoundry
-    from azure.identity import DefaultAzureCredential, get_bearer_token_provider
+  ```bash CLI
+  # The ant CLI can send a bearer token with --auth-token, but a set
+  # ANTHROPIC_API_KEY environment variable takes precedence over it (the CLI
+  # prints only a console notice), so your request could authenticate with
+  # the wrong credential. For the Entra ID flow, use the cURL example or one
+  # of the SDK examples instead.
+  ```
 
-    # Get Microsoft Entra ID token using token provider pattern
-    token_provider = get_bearer_token_provider(
-        DefaultAzureCredential(), "https://ai.azure.com/.default"
-    )
+  ```python Python
+  from anthropic import AnthropicFoundry
+  from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
-    # Create client with Entra ID authentication
-    client = AnthropicFoundry(
-        resource="example-resource",  # your resource name
-        azure_ad_token_provider=token_provider,  # Use token provider for Entra ID auth
-    )
+  # Get Microsoft Entra ID token using token provider pattern
+  token_provider = get_bearer_token_provider(
+      DefaultAzureCredential(), "https://ai.azure.com/.default"
+  )
 
-    # Make request
-    message = client.messages.create(
-        model="claude-opus-4-8",
-        max_tokens=1024,
-        messages=[{"role": "user", "content": "Hello!"}],
-    )
-    print(message.content)
-    ```
-  </Tab>
+  # Create client with Entra ID authentication
+  client = AnthropicFoundry(
+      resource="example-resource",  # your resource name
+      azure_ad_token_provider=token_provider,  # Use token provider for Entra ID auth
+  )
 
-  <Tab title="TypeScript">
-    ```typescript
-    import AnthropicFoundry from "@anthropic-ai/foundry-sdk";
-    import { DefaultAzureCredential, getBearerTokenProvider } from "@azure/identity";
+  # Make request
+  message = client.messages.create(
+      model="claude-opus-4-8",
+      max_tokens=1024,
+      messages=[{"role": "user", "content": "Hello!"}],
+  )
+  print(message.content)
+  ```
 
-    // Get Entra ID token using token provider pattern
-    const credential = new DefaultAzureCredential();
-    const tokenProvider = getBearerTokenProvider(credential, "https://ai.azure.com/.default");
+  ```typescript TypeScript
+  import AnthropicFoundry from "@anthropic-ai/foundry-sdk";
+  import { DefaultAzureCredential, getBearerTokenProvider } from "@azure/identity";
 
-    // Create client with Entra ID authentication
-    const client = new AnthropicFoundry({
-      resource: "example-resource", // your resource name
-      azureADTokenProvider: tokenProvider // Use token provider for Entra ID auth
-    });
+  // Get Entra ID token using token provider pattern
+  const credential = new DefaultAzureCredential();
+  const tokenProvider = getBearerTokenProvider(credential, "https://ai.azure.com/.default");
 
-    // Make request
-    const message = await client.messages.create({
-      model: "claude-opus-4-8",
-      max_tokens: 1024,
-      messages: [{ role: "user", content: "Hello!" }]
-    });
-    console.log(message.content);
-    ```
-  </Tab>
+  // Create client with Entra ID authentication
+  const client = new AnthropicFoundry({
+    resource: "example-resource", // your resource name
+    azureADTokenProvider: tokenProvider // Use token provider for Entra ID auth
+  });
 
-  <Tab title="C#">
-    ```csharp
-    using Anthropic.Foundry;
-    using Anthropic.Models.Messages;
-    using Azure.Identity;
+  // Make request
+  const message = await client.messages.create({
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "Hello!" }]
+  });
+  console.log(message.content);
+  ```
 
-    var client = new AnthropicFoundryClient(
-        new AnthropicFoundryIdentityTokenCredentials(
-            new DefaultAzureCredential(),
-            "example-resource"
-        )
-    );
+  ```csharp C#
+  using Anthropic.Foundry;
+  using Anthropic.Models.Messages;
+  using Azure.Identity;
 
-    var response = await client.Messages.Create(new MessageCreateParams
-    {
-        Model = "claude-opus-4-8",
-        MaxTokens = 1024,
-        Messages = [new() { Role = Role.User, Content = "Hello!" }],
-    });
+  var client = new AnthropicFoundryClient(
+      new AnthropicFoundryIdentityTokenCredentials(
+          new DefaultAzureCredential(),
+          "example-resource"
+      )
+  );
 
-    Console.WriteLine(
-        string.Join("", response.Content
-            .Select(block => block.Value)
-            .OfType<TextBlock>()
-            .Select(textBlock => textBlock.Text)));
-    ```
-  </Tab>
+  var response = await client.Messages.Create(new MessageCreateParams
+  {
+      Model = "claude-opus-4-8",
+      MaxTokens = 1024,
+      Messages = [new() { Role = Role.User, Content = "Hello!" }],
+  });
 
-  <Tab title="Java">
-    ```java Java
-    import com.anthropic.foundry.backends.FoundryBackend;
-    // ...
-    import com.azure.identity.AuthenticationUtil;
-    import com.azure.identity.DefaultAzureCredentialBuilder;
-    import java.util.function.Supplier;
-    // ...
-    void main() {
-        Supplier<String> bearerTokenSupplier = AuthenticationUtil.getBearerTokenSupplier(
-            new DefaultAzureCredentialBuilder().build(),
-            "https://ai.azure.com/.default"
-        );
+  Console.WriteLine(
+      string.Join("", response.Content
+          .Select(block => block.Value)
+          .OfType<TextBlock>()
+          .Select(textBlock => textBlock.Text)));
+  ```
 
-        AnthropicClient client = AnthropicOkHttpClient.builder()
-            .backend(FoundryBackend.builder()
-                .bearerTokenSupplier(bearerTokenSupplier)
-                .resource("example-resource")
-                .build())
-            .build();
+  ```go Go
+  // The Go SDK does not yet support Foundry natively. This example uses the
+  // standard Go SDK as a workaround, with a static Entra ID token: automatic
+  // token refresh is not built in, so your application must refresh tokens
+  // itself (they typically expire after 1 hour). WithoutEnvironmentDefaults
+  // keeps the client from also reading ANTHROPIC_API_KEY or
+  // ANTHROPIC_AUTH_TOKEN from the environment and sending a Claude API
+  // credential to your Foundry endpoint. For full Foundry support, use the
+  // C#, Java, PHP, Python, or TypeScript SDKs.
+  package main
 
-        MessageCreateParams params = MessageCreateParams.builder()
-            .model("claude-opus-4-8")
-            .maxTokens(1024)
-            .addUserMessage("Hello!")
-            .build();
+  import (
+  	"context"
+  	"fmt"
+  	"os"
 
-        client.messages().create(params).content().stream()
-            .flatMap(block -> block.text().stream())
-            .forEach(textBlock -> System.out.println(textBlock.text()));
-    }
-    ```
-  </Tab>
+  	"github.com/anthropics/anthropic-sdk-go"
+  	"github.com/anthropics/anthropic-sdk-go/option"
+  )
 
-  <Tab title="PHP">
-    ```php PHP
-    <?php
+  func main() {
+  	// Obtain an Entra ID access token, for example using the Azure CLI:
+  	//   az account get-access-token --resource https://ai.azure.com \
+  	//     --query accessToken -o tsv
+  	client := anthropic.NewClient(
+  		option.WithoutEnvironmentDefaults(),
+  		option.WithBaseURL("https://example-resource.services.ai.azure.com/anthropic"),
+  		option.WithAuthToken(os.Getenv("AZURE_ACCESS_TOKEN")),
+  	)
 
-    use Anthropic\Foundry;
+  	message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+  		Model:     "claude-opus-4-8",
+  		MaxTokens: 1024,
+  		Messages: []anthropic.MessageParam{
+  			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello!")),
+  		},
+  	})
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Println(message.Content)
+  }
+  ```
 
-    // Obtain an Entra ID access token, for example using the Azure CLI:
-    //   az account get-access-token --resource https://ai.azure.com \
-    //     --query accessToken -o tsv
-    $token = getenv('AZURE_ACCESS_TOKEN');
+  ```java Java
+  import com.anthropic.client.AnthropicClient;
+  import com.anthropic.client.okhttp.AnthropicOkHttpClient;
+  import com.anthropic.foundry.backends.FoundryBackend;
+  import com.anthropic.models.messages.MessageCreateParams;
+  import com.azure.identity.AuthenticationUtil;
+  import com.azure.identity.DefaultAzureCredentialBuilder;
+  import java.util.function.Supplier;
 
-    $client = Foundry\Client::withCredentials(
-        authToken: $token,
-        baseUrl: 'https://example-resource.services.ai.azure.com/anthropic/v1',
-    );
+  void main() {
+      Supplier<String> bearerTokenSupplier = AuthenticationUtil.getBearerTokenSupplier(
+          new DefaultAzureCredentialBuilder().build(),
+          "https://ai.azure.com/.default"
+      );
 
-    $message = $client->messages->create(
-        maxTokens: 1024,
-        messages: [
-            ['role' => 'user', 'content' => 'Hello!']
-        ],
-        model: 'claude-opus-4-8',
-    );
-    echo $message->content[0]->text;
-    ```
-  </Tab>
+      AnthropicClient client = AnthropicOkHttpClient.builder()
+          .backend(FoundryBackend.builder()
+              .bearerTokenSupplier(bearerTokenSupplier)
+              .resource("example-resource")
+              .build())
+          .build();
 
-  <Tab title="Ruby">
-    <Note>
-      The Anthropic Ruby SDK does not currently support Microsoft Foundry. You can use the standard `Anthropic::Client` with a custom `base_url` pointing to your Foundry endpoint, but Azure-specific authentication (Entra ID) is not built in. For full Foundry support, use the C#, Java, PHP, Python, or TypeScript SDKs.
-    </Note>
-  </Tab>
-</Tabs>
+      MessageCreateParams params = MessageCreateParams.builder()
+          .model("claude-opus-4-8")
+          .maxTokens(1024)
+          .addUserMessage("Hello!")
+          .build();
 
-<Note>
-  Microsoft Entra ID authentication allows you to manage access using Azure RBAC, integrate with your organization's identity management, and avoid managing API keys manually.
-</Note>
+      client.messages().create(params).content().stream()
+          .flatMap(block -> block.text().stream())
+          .forEach(textBlock -> System.out.println(textBlock.text()));
+  }
+  ```
+
+  ```php PHP
+  <?php
+
+  use Anthropic\Foundry;
+
+  // Obtain an Entra ID access token, for example using the Azure CLI:
+  //   az account get-access-token --resource https://ai.azure.com \
+  //     --query accessToken -o tsv
+  $token = getenv('AZURE_ACCESS_TOKEN');
+
+  $client = Foundry\Client::withCredentials(
+      authToken: $token,
+      baseUrl: 'https://example-resource.services.ai.azure.com/anthropic',
+  );
+
+  $message = $client->messages->create(
+      maxTokens: 1024,
+      messages: [
+          ['role' => 'user', 'content' => 'Hello!']
+      ],
+      model: 'claude-opus-4-8',
+  );
+  echo $message->content[0]->text;
+  ```
+
+  ```ruby Ruby
+  # The Ruby SDK does not yet support Foundry natively. This example uses the
+  # standard Ruby SDK as a workaround, with a static Entra ID token: automatic
+  # token refresh is not built in, so your application must refresh tokens
+  # itself (they typically expire after 1 hour). Pass credentials explicitly:
+  # without them, the client falls back to the ANTHROPIC_API_KEY or
+  # ANTHROPIC_AUTH_TOKEN environment variables. For full Foundry support, use
+  # the C#, Java, PHP, Python, or TypeScript SDKs.
+  require "anthropic"
+
+  # Obtain an Entra ID access token, for example using the Azure CLI:
+  #   az account get-access-token --resource https://ai.azure.com \
+  #     --query accessToken -o tsv
+  client = Anthropic::Client.new(
+    base_url: "https://example-resource.services.ai.azure.com/anthropic",
+    auth_token: ENV.fetch("AZURE_ACCESS_TOKEN")
+  )
+
+  message = client.messages.create(
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: [{role: "user", content: "Hello!"}]
+  )
+
+  puts message.content.first.text
+  ```
+</CodeGroup>
 
 ## Correlation request IDs
 
-Foundry includes request identifiers in HTTP response headers for debugging and tracing. When contacting support, provide both the `request-id` and `apim-request-id` values to help teams quickly locate and investigate your request across both Anthropic and Azure systems.
+Foundry includes request identifiers in HTTP response headers for debugging and tracing. When contacting support, provide both the `request-id` and `apim-request-id` (Azure API Management) values to help teams quickly locate and investigate your request across both Anthropic and Azure systems.
 
 ## Feature support
 
-Claude in Microsoft Foundry supports most of Claude's powerful features. You can find all the features currently supported in [Features overview](/docs/en/build-with-claude/overview).
+Claude in Microsoft Foundry supports most Claude features. You can find all the features currently supported in [Features overview](/docs/en/build-with-claude/overview).
 
 ### Context window
 
@@ -85872,13 +86185,17 @@ The following Claude models are available through Foundry:
 
 By default, deployment names match the model IDs shown in the preceding table. However, you can create custom deployments with different names in the Foundry portal to manage different configurations, versions, or rate limits. Use the deployment name (not necessarily the model ID) in your API requests.
 
+<Info>
+  [Claude Mythos Preview](https://anthropic.com/glasswing) is a research preview available to invited customers on Microsoft Foundry.
+</Info>
+
 <Tip>
   Upgrading to a newer Claude model? In Claude Code, run `/claude-api migrate` to apply model ID swaps and breaking parameter changes across your codebase. The skill detects which cloud platform your code targets and adjusts model ID formats and feature changes for that platform. See [Migrating to a newer Claude model](/docs/en/agents-and-tools/agent-skills/claude-api-skill#migrating-to-a-newer-claude-model).
 </Tip>
 
 ## Billing
 
-Claude in Microsoft Foundry bills through the [Azure Marketplace](https://azuremarketplace.microsoft.com/). Usage is denominated in Claude Consumption Units (CCUs), metered hourly, and invoiced monthly in arrears on your Azure bill. CCUs are not prepaid credits; there is no CCU balance or commitment.
+Claude in Microsoft Foundry bills through the [Azure Marketplace](https://azuremarketplace.microsoft.com/). Usage is denominated in Claude Consumption Units (CCUs), metered hourly, and invoiced monthly in arrears on your Azure bill. CCUs are not prepaid credits. There is no CCU balance or commitment.
 
 For the CCU price, conversion mechanics, and per-model token rates, see [Claude in Microsoft Foundry pricing](/docs/en/about-claude/pricing#claude-in-microsoft-foundry-pricing).
 
@@ -85894,7 +86211,7 @@ If the new deployment is in the same Foundry resource, your endpoint URL and aut
 
 ## Monitoring and logging
 
-Azure provides comprehensive monitoring and logging capabilities for your Claude usage through standard Azure patterns:
+Azure provides monitoring and logging for your Claude usage through standard Azure patterns:
 
 * **Azure Monitor:** Track API usage, latency, and error rates
 * **Azure Log Analytics:** Query and analyze request/response logs
@@ -85934,24 +86251,48 @@ Foundry does not include Anthropic's standard rate limit headers (`anthropic-rat
 
 **Error:** `Model not found` or `Deployment not found`
 
-* **Solution:** Verify you're using the correct deployment name. If you haven't created a custom deployment, use the default model ID (for example, `claude-sonnet-4-6`).
+* **Solution:** Verify you're using the correct deployment name. If you haven't created a custom deployment, use the default model ID (for example, claude-opus-4-8).
 * **Solution:** Ensure the model/deployment is available in your Azure region.
 
 **Error:** `Invalid model parameter`
 
 * **Solution:** The model parameter should contain your deployment name, which can be customized in the Foundry portal. Verify the deployment exists and is properly configured.
 
-<Info>
-  [Claude Mythos Preview](https://anthropic.com/glasswing) is a research preview available to invited customers on Microsoft Foundry. For more information, see [Project Glasswing](https://anthropic.com/glasswing).
-</Info>
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Features overview" icon="stack" href="/docs/en/build-with-claude/overview">
+    Explore Claude's advanced features and capabilities.
+  </Card>
+
+  <Card title="Pricing" icon="chart" href="/docs/en/about-claude/pricing#claude-in-microsoft-foundry-pricing">
+    Learn about Anthropic's pricing structure for models and features.
+  </Card>
+
+  <Card title="Model deprecations" icon="arrow-clockwise" href="/docs/en/about-claude/model-deprecations">
+    As safer and more capable models launch, Anthropic regularly retires older ones. See all API deprecations, along with recommended replacements.
+  </Card>
+</CardGroup>
 
 ## Additional resources
 
-* **Foundry documentation:** [ai.azure.com/catalog](https://ai.azure.com/catalog/publishers/anthropic)
-* **Azure pricing:** [azure.microsoft.com/en-us/pricing/details/ai-foundry](https://azure.microsoft.com/en-us/pricing/details/ai-foundry/#pricing)
-* **Anthropic pricing details:** [Model pricing](/docs/en/about-claude/pricing#model-pricing)
-* **Authentication guide:** See [Authentication](#authentication)
-* **Azure portal:** [portal.azure.com](https://portal.azure.com/)
+<CardGroup cols={2}>
+  <Card title="Foundry model catalog" icon="grid" href="https://ai.azure.com/catalog/publishers/anthropic">
+    Browse Anthropic models in the Foundry catalog.
+  </Card>
+
+  <Card title="Azure AI Foundry pricing" icon="calculator" href="https://azure.microsoft.com/en-us/pricing/details/ai-foundry/#pricing">
+    View Microsoft's pricing details for Azure AI Foundry.
+  </Card>
+
+  <Card title="Model pricing" icon="table" href="/docs/en/about-claude/pricing#model-pricing">
+    View Anthropic's per-model pricing details.
+  </Card>
+
+  <Card title="Azure portal" icon="cloud" href="https://portal.azure.com/">
+    Manage your Azure resources.
+  </Card>
+</CardGroup>
 
 
 ---
@@ -88224,7 +88565,7 @@ The following models are available on Claude Platform on AWS:
 | Claude Opus 4.8   | claude-opus-4-8   |
 | Claude Opus 4.7   | claude-opus-4-7   |
 | Claude Opus 4.6   | claude-opus-4-6   |
-| Claude Sonnet 5   | `claude-sonnet-5` |
+| Claude Sonnet 5   | claude-sonnet-5   |
 | Claude Sonnet 4.6 | claude-sonnet-4-6 |
 | Claude Opus 4.5   | claude-opus-4-5   |
 | Claude Sonnet 4.5 | claude-sonnet-4-5 |
@@ -88253,7 +88594,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
     -H "anthropic-version: 2023-06-01" \
     -H "anthropic-workspace-id: $ANTHROPIC_AWS_WORKSPACE_ID" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-sonnet-5",
       "max_tokens": 1024,
       "messages": [
         {"role": "user", "content": "Hello!"}
@@ -88267,7 +88608,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   client = AnthropicAWS()
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-5",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello!"}],
   )
@@ -88280,7 +88621,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   const client = new AnthropicAws();
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello!" }]
   });
@@ -88295,7 +88636,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeSonnet5,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello!" }]
   });
@@ -88310,7 +88651,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   }
 
   message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-  	Model:     anthropic.ModelClaudeSonnet4_6,
+  	Model:     anthropic.ModelClaudeSonnet5,
   	MaxTokens: 1024,
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello!")),
@@ -88338,7 +88679,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
 
       Message message = client.messages().create(
           MessageCreateParams.builder()
-              .model(Model.CLAUDE_SONNET_4_6)
+              .model(Model.CLAUDE_SONNET_5)
               .maxTokens(1024)
               .addUserMessage("Hello!")
               .build()
@@ -88354,7 +88695,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   $client = new Client();
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-5',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello!']],
   );
@@ -88368,7 +88709,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   client = Anthropic::AWSClient.new
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello!" }]
   )
@@ -88459,7 +88800,7 @@ Set the inference geography per request with the `inference_geo` parameter:
     -H "anthropic-version: 2023-06-01" \
     -H "anthropic-workspace-id: $ANTHROPIC_AWS_WORKSPACE_ID" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-sonnet-5",
       "max_tokens": 1024,
       "inference_geo": "us",
       "messages": [
@@ -88473,7 +88814,7 @@ Set the inference geography per request with the `inference_geo` parameter:
 
   client = AnthropicAWS()
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-5",
       max_tokens=1024,
       inference_geo="us",
       messages=[{"role": "user", "content": "Hello!"}],
@@ -88485,7 +88826,7 @@ Set the inference geography per request with the `inference_geo` parameter:
   import AnthropicAws from "@anthropic-ai/aws-sdk";
   const client = new AnthropicAws();
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
     inference_geo: "us",
     messages: [{ role: "user", content: "Hello!" }]
@@ -88501,7 +88842,7 @@ Set the inference geography per request with the `inference_geo` parameter:
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeSonnet5,
       MaxTokens = 1024,
       InferenceGeo = "us",
       Messages = [new() { Role = Role.User, Content = "Hello!" }]
@@ -88517,7 +88858,7 @@ Set the inference geography per request with the `inference_geo` parameter:
   }
 
   message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-  	Model:        anthropic.ModelClaudeSonnet4_6,
+  	Model:        anthropic.ModelClaudeSonnet5,
   	MaxTokens:    1024,
   	InferenceGeo: anthropic.String("us"),
   	Messages: []anthropic.MessageParam{
@@ -88546,7 +88887,7 @@ Set the inference geography per request with the `inference_geo` parameter:
 
       Message message = client.messages().create(
           MessageCreateParams.builder()
-              .model(Model.CLAUDE_SONNET_4_6)
+              .model(Model.CLAUDE_SONNET_5)
               .maxTokens(1024)
               .inferenceGeo("us")
               .addUserMessage("Hello!")
@@ -88563,7 +88904,7 @@ Set the inference geography per request with the `inference_geo` parameter:
   $client = new Client();
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-5',
       maxTokens: 1024,
       inferenceGeo: 'us',
       messages: [['role' => 'user', 'content' => 'Hello!']],
@@ -88578,7 +88919,7 @@ Set the inference geography per request with the `inference_geo` parameter:
   client = Anthropic::AWSClient.new
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
     inference_geo: "us",
     messages: [{ role: "user", content: "Hello!" }]
@@ -88691,7 +89032,7 @@ Each response includes two request IDs in the response headers:
   client = AnthropicAWS()
 
   response = client.messages.with_raw_response.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-5",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello!"}],
   )
@@ -88710,7 +89051,7 @@ Each response includes two request IDs in the response headers:
 
   const { data: message, response } = await client.messages
     .create({
-      model: "claude-sonnet-4-6",
+      model: "claude-sonnet-5",
       max_tokens: 1024,
       messages: [{ role: "user", content: "Hello!" }]
     })
@@ -88729,7 +89070,7 @@ Each response includes two request IDs in the response headers:
 
   var response = await client.WithRawResponse.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeSonnet5,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello!" }]
   });
@@ -88749,7 +89090,7 @@ Each response includes two request IDs in the response headers:
   message, err := client.Messages.New(
   	context.Background(),
   	anthropic.MessageNewParams{
-  		Model:     anthropic.ModelClaudeSonnet4_6,
+  		Model:     anthropic.ModelClaudeSonnet5,
   		MaxTokens: 1024,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello!")),
@@ -88782,7 +89123,7 @@ Each response includes two request IDs in the response headers:
 
       HttpResponseFor<Message> response = client.messages().withRawResponse().create(
           MessageCreateParams.builder()
-              .model(Model.CLAUDE_SONNET_4_6)
+              .model(Model.CLAUDE_SONNET_5)
               .maxTokens(1024)
               .addUserMessage("Hello!")
               .build()
@@ -88800,7 +89141,7 @@ Each response includes two request IDs in the response headers:
   $client = new Client();
 
   $response = $client->messages->raw->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-5',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello!']],
   );
@@ -88834,7 +89175,7 @@ The migration delta depends on which Bedrock integration you're coming from. The
 | ----------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | **Base URL**            | `bedrock-mantle.{region}.api.aws`                                                                       | `bedrock-runtime.{region}.amazonaws.com`                                                                | `aws-external-anthropic.{region}.api.aws`                                                     |
 | **API format**          | Messages API at `/anthropic/v1/messages`                                                                | Bedrock Converse / InvokeModel                                                                          | Claude API (`/v1/{endpoint}`)                                                                 |
-| **Model IDs**           | `anthropic.claude-opus-4-6`                                                                             | `anthropic.claude-opus-4-6-v1` (with optional `us.`/`global.` prefix)                                   | `claude-opus-4-6`                                                                             |
+| **Model IDs**           | `anthropic.claude-haiku-4-5`                                                                            | `anthropic.claude-haiku-4-5-20251001-v1:0` (with optional `us.`/`global.` prefix)                       | `claude-haiku-4-5`                                                                            |
 | **SDK client**          | `AnthropicBedrockMantle`                                                                                | `AnthropicBedrock` / Bedrock SDK                                                                        | Platform-specific client (see [Install an SDK](#install-an-sdk)), in beta                     |
 | **SDK package**         | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, and others                                           | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, or AWS SDK                                           | `anthropic[aws]`, `@anthropic-ai/aws-sdk`, and others (see [Install an SDK](#install-an-sdk)) |
 | **SigV4 service name**  | `bedrock-mantle`                                                                                        | `bedrock`                                                                                               | `aws-external-anthropic`                                                                      |
@@ -88930,12 +89271,37 @@ The `GetBatchInference` action authorizes both the batch metadata route and the 
 
 AWS provides five managed policies (`AnthropicFullAccess`, `AnthropicReadOnlyAccess`, `AnthropicInferenceAccess`, `AnthropicLimitedAccess`, and `AnthropicSelfHostedEnvironmentAccess`) for common access patterns. For the actions each policy grants, the complete list of IAM actions, the route-to-action mapping, and additional policy examples, see [IAM actions for Claude Platform on AWS](/docs/en/api/claude-platform-on-aws-iam-actions#managed-policies).
 
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Features overview" icon="stack" href="/docs/en/build-with-claude/overview">
+    Explore Claude's advanced features and capabilities.
+  </Card>
+
+  <Card title="Pricing" icon="chart" href="/docs/en/about-claude/pricing#claude-platform-on-aws-pricing">
+    Learn about Claude Platform on AWS pricing and Claude Consumption Unit rates.
+  </Card>
+
+  <Card title="Model deprecations" icon="arrow-clockwise" href="/docs/en/about-claude/model-deprecations">
+    As safer and more capable models launch, Anthropic regularly retires older ones. See all API deprecations, along with recommended replacements.
+  </Card>
+</CardGroup>
+
 ## Additional resources
 
-* **Claude Console for Claude Platform on AWS:** [platform.claude.com](https://platform.claude.com) (access through the AWS Console)
-* **Pricing details:** [Pricing](/docs/en/about-claude/pricing#claude-platform-on-aws-pricing)
-* **Bedrock (AWS-operated Claude):** [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock)
-* **AWS Marketplace:** [aws.amazon.com/marketplace](https://aws.amazon.com/marketplace)
+<CardGroup cols={2}>
+  <Card title="Claude Console" icon="browser" href="https://platform.claude.com">
+    View usage, cost, and workspaces in the Claude Console. Sign in through the AWS Console.
+  </Card>
+
+  <Card title="Claude in Amazon Bedrock" icon="cloud" href="/docs/en/build-with-claude/claude-in-amazon-bedrock">
+    Use AWS-operated Claude if you need AWS as the sole data processor.
+  </Card>
+
+  <Card title="AWS Marketplace" icon="coins" href="https://aws.amazon.com/marketplace">
+    Manage your AWS Marketplace subscription and billing.
+  </Card>
+</CardGroup>
 
 
 ## Managed Agents
@@ -93637,9 +94003,9 @@ The CLI and SDK both ship pre-built workers. The `ant` CLI supports the always-o
 You need:
 
 * **An existing agent.** If you don't have one, complete the [Quickstart](/docs/en/managed-agents/quickstart) first and note its agent ID.
-* **A Linux host** with `/bin/bash` at that exact path. The TypeScript SDK additionally requires `unzip`, `tar`, and Node.js 22 or later; the Python SDK uses the standard library for archive extraction and has no additional binary requirements. These dependencies are resolved at fixed paths and do not respect `PATH` overrides.
+* **A Linux host** with `/bin/bash` at that exact path. The worker's bash tool invokes it directly, without consulting `PATH`. The TypeScript SDK additionally requires `unzip` and `tar` on the `PATH` and Node.js 22 or later; the Python and Go SDKs use their standard libraries for archive extraction and have no additional binary requirements.
 * **The `ant` CLI or an Anthropic SDK** (Python, TypeScript, or Go) on the worker host.
-* **Two credentials:** an environment key (generated in the steps that follow) authenticates the worker to its queue; your Claude API key creates sessions and reads queue stats from outside the worker host.
+* **Two credentials:** an environment key (generated in the Console in the steps that follow) authenticates the worker to its queue; your Claude API key creates sessions and reads queue stats from outside the worker host. Key generation is Console-only.
 
 <Note>
   On [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), the worker authenticates with AWS IAM (SigV4) or an [API key generated in the AWS Console](/docs/en/build-with-claude/claude-platform-on-aws#api-key-authentication), not an environment key. Attach the [`AnthropicSelfHostedEnvironmentAccess`](/docs/en/api/claude-platform-on-aws-iam-actions#managed-policies) managed policy to the IAM principal your worker runs as. Environment keys generated in the Claude Console don't work with the Claude Platform on AWS endpoint.
@@ -93769,7 +94135,7 @@ You need:
 </Steps>
 
 <Note>
-  Skills can include executables that the agent may run directly. The CLI and SDK workers automatically mark downloaded skill files as executable in the sandbox. If you implement skills download manually, you are responsible for setting executable permissions.
+  Skills can include executables that the agent may run directly. The CLI and SDK workers preserve the executable permissions recorded in the skill bundle when they extract it. If you implement skills download manually, you are responsible for setting executable permissions.
 </Note>
 
 ## Run a worker
@@ -93782,22 +94148,36 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
       <Step title="Install the ant CLI">
         Run this on the worker host.
 
-        ```bash
-        VERSION=1.15.0
-        OS=$(uname -s | tr '[:upper:]' '[:lower:]')
-        case $(uname -m) in
-          x86_64) ARCH=amd64 ;;
-          aarch64) ARCH=arm64 ;;
-        esac
-        curl -fsSL "https://github.com/anthropics/anthropic-cli/releases/download/v${VERSION}/ant_${VERSION}_${OS}_${ARCH}.tar.gz" \
-          | sudo tar -xz -C /usr/local/bin ant
-        ```
+        <Tabs>
+          <Tab title="curl (Linux/WSL)">
+            For Linux environments, download the release binary directly.
+
+            ```bash
+            VERSION=1.15.0
+            OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+            case $(uname -m) in
+              x86_64) ARCH=amd64 ;;
+              aarch64) ARCH=arm64 ;;
+            esac
+            curl -fsSL "https://github.com/anthropics/anthropic-cli/releases/download/v${VERSION}/ant_${VERSION}_${OS}_${ARCH}.tar.gz" \
+              | sudo tar -xz -C /usr/local/bin ant
+            ```
+
+            You can find all releases on the [GitHub releases page](https://github.com/anthropics/anthropic-cli/releases).
+          </Tab>
+
+          <Tab title="Homebrew (macOS)">
+            ```bash
+            brew install anthropics/tap/ant
+            ```
+          </Tab>
+        </Tabs>
       </Step>
 
       <Step title="Run the worker">
         **In-process**
 
-        `ant beta:worker poll` claims work items assigned to the environment, downloads skills, executes tool calls in the working directory, and posts results back.
+        `ant beta:worker poll` claims work items assigned to the environment, downloads skills, executes tool calls in the working directory, and posts results back. It reads `ANTHROPIC_ENVIRONMENT_KEY` and `ANTHROPIC_ENVIRONMENT_ID` from the environment.
 
         ```bash
         ant beta:worker poll \
@@ -93826,7 +94206,7 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
 
         ```bash
         #!/bin/bash
-        # spawn.sh: called once per session
+        # spawn.sh: called once per claimed work item
         mkdir -p "/host/outputs/$ANTHROPIC_SESSION_ID"
         exec docker run --rm \
           -e ANTHROPIC_SESSION_ID -e ANTHROPIC_ENVIRONMENT_KEY \
@@ -93955,7 +94335,7 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
       </Step>
 
       <Step title="Export the webhook signing key">
-        In addition to the environment ID and key from [Before you begin](#before-you-begin), export the webhook signing key on your handler host so the handler can verify incoming payloads:
+        In addition to the environment ID and key from [Before you begin](#before-you-begin), export the webhook signing key on your handler host so the handler can verify incoming payloads. Signature verification in the Python handler needs the webhooks extra: `pip install "anthropic[webhooks]"`.
 
         ```bash
         export ANTHROPIC_WEBHOOK_SIGNING_KEY="whsec_..."
@@ -94157,15 +94537,15 @@ The SDK provides three helpers at different levels of control. `EnvironmentWorke
 
 * **`EnvironmentWorker`:** the out-of-the-box worker. Handles polling, setup, and execution end to end.
 
-  * `.run()`: runs indefinitely, picking up sessions as they arrive. Exits cleanly on SIGTERM.
-  * `.handle_item()`: picks up one pending session, handles it, and exits.
+  * `.run()`: runs indefinitely, picking up sessions as they arrive.
+  * `.handle_item()`: handles a single claimed work item and exits. Pass the work, session, and environment identifiers explicitly, or let it read the `ANTHROPIC_*` variables that `ant beta:worker poll --on-work` sets for the process it spawns.
 
 * **`work.poller()`:** polls the work queue on your behalf and gives you each claimed session. Use this when you want to decide what happens for each session, for example launching a sandbox rather than running tools in-process.
 
   * `drain`: whether to stop polling once the queue is empty rather than waiting for new work.
   * `block_ms`: how long to wait for work to arrive before returning, in milliseconds. Must be between 1 and 999 (per-poll wait; the helper re-polls automatically). Pass `null` (`None` in Python, `param.Null[int64]()` in Go) for a non-blocking check; omitting the parameter uses the default 999 ms long-poll.
-  * `reclaim_older_than_ms`: re-claim work items leased to a worker that has stopped responding.
-  * `auto_stop`: whether to post a stop signal on the work item after the iterator exits. The Go poller has no opt-out and always posts the stop signal, so block in the loop body until the session completes rather than detaching.
+  * `reclaim_older_than_ms`: re-claim work items that were claimed but never acknowledged within this many milliseconds.
+  * `auto_stop`: whether to post a stop signal for each work item once your loop body finishes with it. The Go poller has no opt-out and always posts the stop signal, so block in the loop body until the session completes rather than detaching.
 
 * **`client.beta.sessions.events.tool_runner()`:** runs tool calls for a single session, given the session ID and a tool list. Use when you've already claimed the work and only need the execution layer.
 
@@ -94243,8 +94623,8 @@ Use the work poller directly when you want to launch your own per-session proces
   ```
 
   ```csharp C#
-  // Work polling is not currently available in the C# SDK.
-  // From the shell, use `ant beta:worker poll --on-work` instead.
+  // A work-polling helper is not currently available in the C# SDK.
+  // To claim work directly, see the Environments Work endpoints.
   ```
 
   ```go Go
@@ -94293,22 +94673,22 @@ Use the work poller directly when you want to launch your own per-session proces
   ```
 
   ```java Java
-  // Work polling is not currently available in the Java SDK.
-  // From the shell, use `ant beta:worker poll --on-work` instead.
+  // A work-polling helper is not currently available in the Java SDK.
+  // To claim work directly, see the Environments Work endpoints.
   ```
 
   ```php PHP
-  // Work polling is not currently available in the PHP SDK.
-  // From the shell, use `ant beta:worker poll --on-work` instead.
+  // A work-polling helper is not currently available in the PHP SDK.
+  // To claim work directly, see the Environments Work endpoints.
   ```
 
   ```ruby Ruby
-  # Work polling is not currently available in the Ruby SDK.
-  # From the shell, use `ant beta:worker poll --on-work` instead.
+  # A work-polling helper is not currently available in the Ruby SDK.
+  # To claim work directly, see the Environments Work endpoints.
   ```
 </CodeGroup>
 
-**`AgentToolContext`** is the execution context for tool calls. It defines the working directory and path policy, and optionally downloads the session's skills when used as a context manager. **`beta_agent_toolset_20260401(env)`** takes an `AgentToolContext` and returns the standard tool implementations (`bash`, `read`, `write`, `edit`, `glob`, `grep`).
+**`AgentToolContext`** is the execution context for tool calls. It defines the working directory and path policy, and can download the session's skills. **`beta_agent_toolset_20260401(env)`** takes an `AgentToolContext` and returns the standard tool implementations (`bash`, `read`, `write`, `edit`, `glob`, `grep`).
 
 **With `EnvironmentWorker`:** both are managed automatically. Pass a `tools` factory to customize the tool list:
 
@@ -94371,7 +94751,7 @@ EnvironmentWorker(client, ..., tools=lambda env: [beta_bash_tool(env), my_custom
 
 ### Verify the worker is connected
 
-From a separate shell, using your Claude API key (not the environment key), confirm `workers_polling` is at least 1:
+From a separate shell, with `ANTHROPIC_API_KEY` set to your Claude API key (not the environment key), confirm `workers_polling` is at least 1:
 
 ```bash
 ant beta:environments:work stats --environment-id "$ANTHROPIC_ENVIRONMENT_ID"
@@ -94381,9 +94761,9 @@ If `workers_polling` stays at 0, the worker isn't reaching the queue: confirm `A
 
 ## Start a session
 
-Once your worker is running, create a session that targets the environment. The session enters the environment's work queue and waits there until a worker claims it; if no worker is connected, the session stays queued rather than failing.
+Once your worker is running, create a session that targets the environment. Set `AGENT_ID` to the agent ID you noted in [Before you begin](#before-you-begin). The session enters the environment's work queue and waits there until a worker claims it; if no worker is connected, the session stays queued rather than failing.
 
-Anthropic doesn't mount files or GitHub repositories into self-hosted sandboxes. To make session-specific files available, pass file references (such as an S3 path or commit SHA) in the session `metadata` field. Your spawn script or `--on-work` handler reads that metadata from the claimed work item (through the [Environments Work endpoints](/docs/en/api/beta/environments/work)) and stages the files into the working directory before tool execution begins.
+Anthropic doesn't mount files or GitHub repositories into self-hosted sandboxes. To make session-specific files available, pass file references (such as an S3 path or commit SHA) in the session `metadata` field. Your spawn script or `--on-work` handler reads that metadata from the claimed work item (the CLI poller pipes the work item's JSON to the script's stdin, and SDK handlers can read it through the [Environments Work endpoints](/docs/en/api/beta/environments/work)) and stages the files into the working directory before tool execution begins.
 
 <CodeGroup>
   ```bash cURL
@@ -94493,7 +94873,7 @@ These calls run from your monitoring or operations tooling, authenticated with y
 
 * `depth` is the number of items waiting to be claimed. Scale your worker fleet or alert on backlog based on this value.
 * `pending` is the number of items a worker has claimed and is currently processing.
-* `oldest_queued_at` is the timestamp of the oldest item in the queue, or `null` if the queue is empty.
+* `oldest_queued_at` is the timestamp of the oldest item still queued or being processed, or `null` when there is none.
 * `workers_polling` is the number of workers that have polled in the last 30 seconds. Use this for liveness alerting.
 
 <CodeGroup>
@@ -94621,9 +95001,9 @@ These calls run from your monitoring or operations tooling, authenticated with y
 
 ### Stop a session gracefully
 
-Use `work.stop` to ask the worker handling a specific session to shut it down cleanly. The worker finishes any in-flight tool call, posts a final status, and releases the session. Pass `force: true` in the request body to interrupt immediately instead of waiting for the current tool call to complete.
+Use `work.stop` to ask the worker handling a specific session to shut it down cleanly. The worker finishes any in-flight tool call, posts a final status, and releases the session. Pass `force: true` in the request body (with the CLI, pass `--force`) to interrupt immediately instead of waiting for the current tool call to complete.
 
-Because these calls run from your operations tooling rather than the worker host, `ANTHROPIC_WORK_ID` isn't set automatically. Set it to the target work item's ID before running the following examples.
+Because these calls run from your operations tooling rather than the worker host, `ANTHROPIC_WORK_ID` isn't set automatically. Set it to the target work item's ID before running the following examples. To find a work item's ID, list the environment's work items through the [Environments Work endpoints](/docs/en/api/beta/environments/work).
 
 <CodeGroup>
   ```bash cURL
@@ -94765,16 +95145,16 @@ Because these calls run from your operations tooling rather than the worker host
 ## Next steps
 
 <CardGroup cols={2}>
-  <Card title="Managed Agent sessions" icon="settings" href="/docs/en/managed-agents/sessions">
+  <Card title="Security model" icon="lock" href="/docs/en/managed-agents/self-hosted-sandboxes-security">
+    Shared responsibility model for self-hosted sandbox environments.
+  </Card>
+
+  <Card title="Start a session" icon="settings" href="/docs/en/managed-agents/sessions">
     Create a session to run your agent and begin executing tasks.
   </Card>
 
-  <Card title="MCP tunnels overview" icon="bolt" href="/docs/en/agents-and-tools/mcp-tunnels/overview">
-    Reach MCP servers inside your private network from any execution environment.
-  </Card>
-
-  <Card title="Security model" icon="lock" href="/docs/en/managed-agents/self-hosted-sandboxes-security">
-    Understand the shared responsibility model for self-hosted sandbox environments.
+  <Card title="MCP tunnels" icon="bolt" href="/docs/en/agents-and-tools/mcp-tunnels/overview">
+    Securely connect Claude to MCP servers running in your private network without opening inbound ports or exposing services to the public internet.
   </Card>
 </CardGroup>
 
@@ -106846,7 +107226,7 @@ Read the rate limits configured for your organization and its workspaces with th
 
 ## Compliance API
 
-Retrieve audit and activity data for your organization with the [Compliance API](/docs/en/manage-claude/compliance-api). Admin API keys can read the Activity Feed only; for full access, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+Retrieve audit and activity data for your organization with the [Compliance API](/docs/en/manage-claude/compliance-api). Admin API keys can read the Activity Feed only; for full access, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 
 ## Best practices
 
@@ -107389,10 +107769,10 @@ Where you create the key depends on which Claude product your organization uses.
 
 ## Which key do you need?
 
-| Your organization                                           | Create the key in                                                                         | Key prefix           | Who can create it                            | Works with                                                                                                                                                                                                                                                                                                                                    |
-| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------- | -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Claude Console** (Claude Platform, `platform.claude.com`) | [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys) | `sk-ant-admin01-...` | Organization members with the **admin** role | [Admin API](/docs/en/manage-claude/admin-api), [Usage and Cost API](/docs/en/manage-claude/usage-cost-api), [Rate Limits API](/docs/en/manage-claude/rate-limits-api), [Claude Code Analytics API](/docs/en/manage-claude/claude-code-analytics-api), and the Compliance API [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) |
-| **Claude Enterprise** (`claude.ai`)                         | [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access)    | `sk-ant-api01-...`   | The organization's **primary owner**         | [Compliance API](/docs/en/manage-claude/compliance-api), [Claude Enterprise Analytics API](/docs/en/manage-claude/analytics-api), and [Spend Limits API](/docs/en/manage-claude/spend-limits-api), according to the [scopes](#choose-scopes-for-a-claude-enterprise-key) you select                                                           |
+| Your organization                                           | Create the key in                                                                         | Key prefix           | Who can create it                                                                                                                                                                          | Works with                                                                                                                                                                                                                                                                                                                                    |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Console** (Claude Platform, `platform.claude.com`) | [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys) | `sk-ant-admin01-...` | Organization members with the **admin** role                                                                                                                                               | [Admin API](/docs/en/manage-claude/admin-api), [Usage and Cost API](/docs/en/manage-claude/usage-cost-api), [Rate Limits API](/docs/en/manage-claude/rate-limits-api), [Claude Code Analytics API](/docs/en/manage-claude/claude-code-analytics-api), and the Compliance API [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) |
+| **Claude Enterprise** (`claude.ai`)                         | [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access)    | `sk-ant-api01-...`   | The parent organization's **primary owner** (all linked organizations). An **organization owner** can create one carrying Compliance API scopes only, restricted to their own organization | [Compliance API](/docs/en/manage-claude/compliance-api), [Claude Enterprise Analytics API](/docs/en/manage-claude/analytics-api), and [Spend Limits API](/docs/en/manage-claude/spend-limits-api), according to the [scopes](#choose-scopes-for-a-claude-enterprise-key) you select                                                           |
 
 A key created in one organization cannot be used to manage a different organization. If your company uses both Claude Console and Claude Enterprise, create one key in each.
 
@@ -107419,8 +107799,8 @@ A key created in one organization cannot be used to manage a different organizat
 ## Create a key for a Claude Enterprise organization
 
 <Steps>
-  <Step title="Sign in as the primary owner">
-    Only the **primary owner** of the Claude Enterprise parent organization can create these keys.
+  <Step title="Sign in as the primary owner or an organization owner">
+    The **primary owner** of the Claude Enterprise parent organization can create a key that can access every linked organization, or one restricted to a single organization. An **organization owner** can create a key with Compliance API scopes only, restricted to their own organization.
   </Step>
 
   <Step title="Open API settings">
@@ -107428,7 +107808,7 @@ A key created in one organization cannot be used to manage a different organizat
   </Step>
 
   <Step title="Click + Create key">
-    Name the key and select the scopes you need from the [scopes table](#choose-scopes-for-a-claude-enterprise-key). You can combine scopes from different APIs (for example, `read:analytics` and `read:spend_limits`) on a single key.
+    Name the key and select the scopes you need from the [scopes table](#choose-scopes-for-a-claude-enterprise-key). The primary owner can combine scopes from different APIs (for example, `read:analytics` and `read:spend_limits`) on a single key.
   </Step>
 
   <Step title="Copy and store the secret">
@@ -107450,7 +107830,7 @@ When you create a Claude Enterprise key, select every scope that the APIs you pl
 | [Compliance API content endpoints](/docs/en/manage-claude/compliance-content-data): delete chats, files, and projects                  | `delete:compliance_user_data` |
 | [Compliance API organization endpoints](/docs/en/manage-claude/compliance-org-data): read organization metadata and effective settings | `read:compliance_org_data`    |
 
-The Compliance and Analytics APIs must be enabled for your organization before keys with those scopes can be used. See [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access#request-compliance-api-access) and [Analytics APIs](/docs/en/manage-claude/analytics-api#get-access-to-the-claude-enterprise-analytics-api).
+The Compliance and Analytics APIs must be enabled for your organization before keys with those scopes can be used. See [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api) and [Analytics APIs](/docs/en/manage-claude/analytics-api#get-access-to-the-claude-enterprise-analytics-api).
 
 ## Use the key
 
@@ -112584,7 +112964,7 @@ If your organization uses Claude Code through Amazon Bedrock, the Claude Enterpr
     Endpoint reference for engagement, adoption, and cost data.
   </Card>
 
-  <Card title="Get access to the Compliance API" href="/docs/en/manage-claude/compliance-api-access">
+  <Card title="Set up the Compliance API" href="/docs/en/manage-claude/compliance-api-access">
     Audit and compliance data uses its own key types.
   </Card>
 </CardGroup>
@@ -114047,7 +114427,7 @@ In the [feature eligibility table](#feature-eligibility), some features are mark
 
 Claude Fable 5 and Claude Mythos 5 are designated [Covered Models](https://support.claude.com/en/articles/15425695) and require 30-day data retention. Zero data retention is not available for Claude Fable 5 or Claude Mythos 5. On the Claude API, requests to either model from an organization whose data retention configuration does not meet this requirement return a `400 invalid_request_error`.
 
-The 30-day data retention requirement applies on every platform where these models are offered. On the Claude API (including Claude Platform on AWS), Anthropic handles retained data. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, retained data stays within your cloud provider's environment; review each platform's documentation for enablement steps.
+The 30-day data retention requirement applies wherever Covered Models are offered. On the Claude API (including Claude Platform on AWS), Anthropic handles retained data. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, retained data stays within your cloud provider's environment; review each platform's documentation for enablement steps.
 
 Organizations with a ZDR arrangement can configure data retention at the workspace level in [Claude Console > Settings > Workspaces](https://platform.claude.com/settings/workspaces): open a workspace's **Privacy controls** tab and turn on 30-day data retention for that workspace. This makes Claude Fable 5 and Claude Mythos 5 available in the designated workspace while the organization's other workspaces keep zero data retention. Workspaces without an override follow the organization default.
 
@@ -114196,7 +114576,7 @@ The following table lists which Claude API features are eligible for ZDR and HIP
 
 ### Data retention for policy violations and where required by law
 
-Even with ZDR or HIPAA arrangements in place, Anthropic may retain data where required by law or to combat Usage Policy violations and malicious uses of Anthropic's platform. As a result, if a chat or session is flagged for such a violation, Anthropic may retain inputs and outputs for up to 2 years.
+Even with ZDR or HIPAA arrangements in place, Anthropic may retain data where required by law or where it has been flagged by Anthropic's automated trust and safety systems. As a result, if a chat or session is flagged, Anthropic may retain inputs and outputs for up to 2 years.
 
 ## Frequently asked questions
 
@@ -115353,7 +115733,7 @@ The Compliance API gives Claude Enterprise customers programmatic access to thei
   Two key types unlock the Compliance API. A **Compliance Access Key** (created in claude.ai) reaches every endpoint, and an **Admin API key** (created in Claude Console) reaches the Activity Feed only. See [Which key do you need?](/docs/en/manage-claude/compliance-api-access#which-key-do-you-need) for the full key-type comparison.
 </Note>
 
-The following call returns the most recent activity event in your organization. Any key with the `read:compliance_activities` scope can make it. To create a key and grant it that scope, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+The following call returns the most recent activity event in your organization. Any key with the `read:compliance_activities` scope can make it. To create a key and grant it that scope, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 
 <CodeGroup>
   ```bash cURL
@@ -115395,11 +115775,11 @@ A successful response returns a JSON object containing `data` (an array of `Acti
 
 ## How the Compliance API works
 
-Every endpoint lives under `/v1/compliance/*` on `https://api.anthropic.com` and authenticates through the `x-api-key` header. To provision a key, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+Every endpoint lives under `/v1/compliance/*` on `https://api.anthropic.com` and authenticates through the `x-api-key` header. To provision a key, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 
 The Activity Feed (`GET /v1/compliance/activities`) is available to any key that carries the `read:compliance_activities` scope; see [Query the Activity Feed](/docs/en/manage-claude/compliance-activity-feed) for filters, pagination, and the full `Activity` object. The remaining endpoints require a Compliance Access Key carrying the relevant scope.
 
-A Claude Enterprise tenant has one parent organization (the top-level container that centralizes identity) with linked organizations of two kinds: claude.ai organizations, where users chat and store content, and Claude Console organizations, where users manage Claude API workloads. The directory endpoints (organizations, users, roles, and groups) return data from every linked organization of either kind. The content endpoints (chats, files, projects, and project attachments) serve claude.ai data only.
+A Claude Enterprise tenant has one parent organization (the top-level container that centralizes identity) with linked organizations of two kinds: claude.ai organizations, where users chat and store content, and Claude Console organizations, where users manage Claude API workloads. For a key that covers the parent organization, the directory endpoints (organizations, users, roles, and groups) return data from every linked organization of either kind. The content endpoints (chats, files, projects, and project attachments) serve claude.ai data only.
 
 All `/v1/compliance/*` endpoints share a single rate limit of 600 requests per minute per parent organization; see [429 Too Many Requests](/docs/en/manage-claude/compliance-errors#429-too-many-requests) for the response headers and retry contract.
 
@@ -115422,8 +115802,8 @@ Anthropic provides two analytics APIs: the Claude Enterprise Analytics API and t
 ## In this section
 
 <CardGroup>
-  <Card href="/docs/en/manage-claude/compliance-api-access" title="Get access to the Compliance API">
-    Request Compliance API access for your organization, then create a Compliance Access Key (with scoped permissions) or an Admin API key, and learn which to use.
+  <Card href="/docs/en/manage-claude/compliance-api-access" title="Set up the Compliance API">
+    Enable the Compliance API for your organization, then create a Compliance Access Key (with scoped permissions) or an Admin API key, and learn which to use.
   </Card>
 
   <Card href="/docs/en/manage-claude/compliance-activity-feed" title="Query the Activity Feed">
@@ -115469,7 +115849,7 @@ Answers to common questions about Compliance API access, scopes, retention, and 
 ---
 
 <Note>
-  To enable the Compliance API, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+  To enable the Compliance API, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 </Note>
 
 ## Access and scopes
@@ -115480,7 +115860,7 @@ Answers to common questions about Compliance API access, scopes, retention, and 
 
     To call the Compliance API, you create one of two key types instead:
 
-    * **For full Compliance API access ([Activity Feed](/docs/en/manage-claude/compliance-activity-feed) plus chats, files, projects, users, organization metadata, and organization settings),** the primary owner of the parent organization creates a [Compliance Access Key](/docs/en/manage-claude/compliance-api-access#create-a-compliance-access-key) in claude.ai.
+    * **For full Compliance API access ([Activity Feed](/docs/en/manage-claude/compliance-activity-feed) plus chats, files, projects, users, organization metadata, and organization settings),** the primary owner of the parent organization (or an organization owner, for a key restricted to their own organization only) creates a [Compliance Access Key](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api) in claude.ai.
     * **For Activity Feed access only,** an organization admin in your Claude Console organization creates an [Admin API key](/docs/en/manage-claude/compliance-api-access#create-an-admin-api-key) in Claude Console. The Compliance API must already be enabled for the organization, and the admin must create the Admin API key after enablement for it to carry the `read:compliance_activities` scope.
   </Accordion>
 
@@ -115500,7 +115880,7 @@ Answers to common questions about Compliance API access, scopes, retention, and 
     }
     ```
 
-    To access content endpoints, the primary owner of your parent organization must [create a Compliance Access Key](/docs/en/manage-claude/compliance-api-access#create-a-compliance-access-key) with `read:compliance_user_data` (and `delete:compliance_user_data` for deletes), or `read:compliance_org_data` for organization, role, group, and effective-settings endpoints. See [Handle Compliance API errors](/docs/en/manage-claude/compliance-errors#403-forbidden) for the full per-endpoint catalog.
+    To access content endpoints, the primary owner of your parent organization (or an organization owner, for their own organization only) must [create a Compliance Access Key](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api) with `read:compliance_user_data` (and `delete:compliance_user_data` for deletes), or `read:compliance_org_data` for organization, role, group, and effective-settings endpoints. See [Handle Compliance API errors](/docs/en/manage-claude/compliance-errors#403-forbidden) for the full per-endpoint catalog.
   </Accordion>
 </AccordionGroup>
 
@@ -115534,7 +115914,7 @@ Answers to common questions about Compliance API access, scopes, retention, and 
   </Accordion>
 
   <Accordion title="Can one customer have multiple organizations under one parent?">
-    Yes. A Claude Enterprise parent organization can have many linked organizations, including a mix of claude.ai organizations and Claude Console organizations (for example, separate production and staging Claude Console organizations). Identity, SSO, and SCIM are shared across the parent; billing, members, projects, and API keys remain separate for each organization. Compliance API enablement happens at the parent organization level and cascades to all linked organizations, and a Compliance Access Key with `read:compliance_org_data` can enumerate every organization beneath the parent through `GET /v1/compliance/organizations`.
+    Yes. A Claude Enterprise parent organization can have many linked organizations, including a mix of claude.ai organizations and Claude Console organizations (for example, separate production and staging Claude Console organizations). Identity, SSO, and SCIM are shared across the parent; billing, members, projects, and API keys remain separate for each organization. Compliance API enablement happens at the parent organization level and cascades to all linked organizations, and a Compliance Access Key that covers the parent organization and carries `read:compliance_org_data` can enumerate every organization beneath the parent through `GET /v1/compliance/organizations`.
   </Accordion>
 
   <Accordion title="Are activities returned in order, and how do I detect when I have caught up to real time?">
@@ -115544,11 +115924,11 @@ Answers to common questions about Compliance API access, scopes, retention, and 
   <Accordion title="How do I get a sandbox to test the Compliance API?">
     Set up a Claude Enterprise sandbox organization linked to a Claude Console organization under the same parent. This lets the sandbox exercise both the Activity Feed (through an Admin API key) and the chat, file, and project endpoints (through a Compliance Access Key).
 
-    1. **Provision the Claude Enterprise organization.** Contact your Anthropic representative to set up a Claude Enterprise sandbox organization. On an existing Claude Enterprise organization, the primary owner can [enable the Compliance API directly in claude.ai](/docs/en/manage-claude/compliance-api-access#request-compliance-api-access).
+    1. **Provision the Claude Enterprise organization.** Contact your Anthropic representative to set up a Claude Enterprise sandbox organization. On an existing Claude Enterprise organization, the primary owner can [enable the Compliance API directly in claude.ai](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api).
     2. **Create the Claude Console organization.** Create a Claude Console organization yourself at `platform.claude.com` using the same email address.
     3. **Link the two organizations.** Sign in as the primary owner of the Claude Enterprise organization, go to [claude.ai > Organization settings > Identity and access](https://claude.ai/admin-settings/identity), and use **Merge Organizations** to link the two under a shared parent.
 
-    Once linked, follow [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access) to create keys and start querying. Test organizations use the same enablement process as production organizations.
+    Once linked, follow [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access) to create keys and start querying. Test organizations use the same enablement process as production organizations.
   </Accordion>
 </AccordionGroup>
 
@@ -115566,7 +115946,7 @@ Choose between polling and cursor-driven Activity Feed consumption, correlate Co
 ---
 
 <Note>
-  To enable the Compliance API, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+  To enable the Compliance API, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 </Note>
 
 <Check>
@@ -115721,171 +116101,6 @@ For chain of custody, store the exported records with provenance metadata: sourc
 
 ---
 
-# Get access to the Compliance API
-
-# Get access to the Compliance API
-
-**URL:** https://platform.claude.com/docs/en/manage-claude/compliance-api-access
-
-Request Compliance API access for your organization, then create a Compliance Access Key (with scoped permissions) or an Admin API key, and learn which to use.
-
----
-
-<Note>
-  Claude Enterprise organizations have self-service access to the full API. Claude Console organizations are enabled on request; contact your account team. This page describes how to request access and create API keys.
-</Note>
-
-<Check>
-  **Required role:** organization admin (Claude Console) or primary owner (claude.ai).
-</Check>
-
-The Compliance API uses two key types, and which one you create depends on which Claude product your organization uses. Primary owners create Compliance Access Keys in claude.ai; these keys unlock the full Compliance API. Organization admins create Admin API keys in Claude Console; these keys unlock the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) only.
-
-## Which key do you need?
-
-| Key type                                       | Created in                                                                                | Used for                                                                                         | Works with the Compliance API? |
-| ---------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------ |
-| **Compliance Access Key** (`sk-ant-api01-...`) | [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access)    | Activity Feed, chats, files, projects, users, organization metadata, and organization settings   | Yes (all endpoints)            |
-| **Admin API key** (`sk-ant-admin01-...`)       | [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys) | The [Admin API](/docs/en/manage-claude/admin-api) and the Compliance API Activity Feed           | Activity Feed only             |
-| **Analytics API key**                          | [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access)    | The Claude Enterprise Analytics API (see [Analytics APIs](/docs/en/manage-claude/analytics-api)) | No                             |
-| **Claude API key** (`sk-ant-api03-...`)        | [Claude Console > Settings > API keys](https://platform.claude.com/settings/keys)         | Calling Claude models through the [Claude API](/docs/en/api/overview)                            | No                             |
-
-A Claude Enterprise tenant has one **parent organization** that centralizes identity, SSO, and SCIM for every workload organization beneath it. These workload organizations are the parent's **linked organizations**.
-
-<Warning>
-  **Claude Enterprise parent organizations do not appear in Claude Console (`platform.claude.com`).** The parent carries no workloads, no Claude API keys, and no Admin API keys. Create Compliance Access Keys in claude.ai **Organization settings**, not in Claude Console.
-</Warning>
-
-## Request Compliance API access
-
-Claude Enterprise primary owners can enable the Compliance API directly in claude.ai. Claude Console organizations should contact their account team to request access. In either case, enablement happens at the parent organization level and cascades to every linked organization, both claude.ai and Claude Console. What changes after enablement depends on which Claude product your organization uses.
-
-### After enablement: claude.ai organizations
-
-Once the Compliance API is enabled for your parent organization, the primary owner can [create Compliance Access Keys](#create-a-compliance-access-key) from the **Keys** section at [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access).
-
-### After enablement: Claude Console organizations
-
-After Anthropic enables the Compliance API for your parent organization, Admin API keys created from then on carry the `read:compliance_activities` scope. Admin API keys created before enablement continue to work with the Admin API, but calling the Activity Feed with one returns [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden); [create a new Admin API key](#create-an-admin-api-key) to pick up the scope.
-
-## Create a Compliance Access Key
-
-<Note>
-  The Compliance API must already be [enabled for your claude.ai parent organization](#request-compliance-api-access) before a Compliance Access Key can be created.
-</Note>
-
-<Warning>
-  A Compliance Access Key with `read:compliance_user_data` can read every chat, file, and project in every linked organization, including content the primary owner has not seen. A key with `delete:compliance_user_data` can permanently delete that content. Treat Compliance Access Keys like production database credentials: store them in a secrets manager, never in source control or SIEM forwarder configuration.
-</Warning>
-
-<Steps>
-  <Step title="Sign in as the primary owner">
-    Only the primary owner of the parent organization can create Compliance Access Keys. If the **API** page described in the next step is not visible, or compliance scopes are unavailable when creating a key, either you are not the primary owner, or the Compliance API has not been enabled for your organization yet (see [Request Compliance API access](#request-compliance-api-access)).
-  </Step>
-
-  <Step title="Open API settings">
-    Go to [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access) and find the **Keys** section.
-  </Step>
-
-  <Step title="Create the key">
-    Click **Create key**, name the key, and select one or more scopes from the following table. Click **Create**.
-
-    | Scope                         | Grants                                                                                                                                                                                                                    |
-    | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `read:compliance_activities`  | Read the Activity Feed for the parent organization and all linked organizations                                                                                                                                           |
-    | `read:compliance_user_data`   | Read user chats, messages, files, projects, organization users, and group members                                                                                                                                         |
-    | `delete:compliance_user_data` | Delete user chats, files, and projects                                                                                                                                                                                    |
-    | `read:compliance_org_data`    | Read organization metadata (names, types, roles, and groups) and the effective settings in force for organizations under the parent organization. User listings and group membership require `read:compliance_user_data`. |
-
-    Choose the smallest scope set that your integration needs:
-
-    * An audit pipeline that reads the Activity Feed only needs `read:compliance_activities`.
-    * An eDiscovery tool that reads chats and files but never deletes them does not need `delete:compliance_user_data`.
-    * If your workflow both reads and deletes, use **two keys** with separate scopes so a leaked read key cannot delete data.
-
-    Compliance Access Key scopes are immutable after creation. To change scopes, create a new key with the scopes you want, then delete the old one.
-  </Step>
-
-  <Step title="Copy and store the secret">
-    Copy the displayed secret key (starting with `sk-ant-api01-`) and store it in your secrets manager. The full secret is displayed only once.
-  </Step>
-
-  <Step title="Export the key for the examples in this guide">
-    Set the key as an environment variable so the shell samples in this guide can read it:
-
-    ```bash
-    export ANTHROPIC_COMPLIANCE_ACCESS_KEY=sk-ant-api01-...
-    ```
-  </Step>
-</Steps>
-
-## Create an Admin API key
-
-<Note>
-  The Compliance API must already be [enabled for your Claude Console organization](#request-compliance-api-access) before an Admin API key can call the Activity Feed.
-</Note>
-
-Follow the steps in [Create an Admin API key](/docs/en/manage-claude/admin-api-keys#create-a-key-for-a-claude-console-organization), then set the key as an environment variable:
-
-```bash
-export ANTHROPIC_ADMIN_KEY=sk-ant-admin01-...
-```
-
-The distinct variable name keeps the Admin API key from overwriting a Compliance Access Key if you provision both. The cURL examples in this guide read the key from `$ANTHROPIC_COMPLIANCE_ACCESS_KEY`; substitute `$ANTHROPIC_ADMIN_KEY` when calling the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) with an Admin API key.
-
-Admin API keys carry the `read:compliance_activities` scope only when the Compliance API was enabled for the organization before the key was created; see [After enablement: Claude Console organizations](#after-enablement-claude-console-organizations). They cannot be granted any other Compliance API scope, so calls to any endpoint other than the Activity Feed return [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden).
-
-For the same key's role in managing your Claude Console organization, see [Admin API](/docs/en/manage-claude/admin-api).
-
-## Check your key's scopes
-
-To inspect the scopes on a key you already have, use one of the following signals.
-
-* **Key prefix.** `sk-ant-admin01-` is an Admin API key (carries `read:compliance_activities` only, subject to the enablement timing in the preceding section). `sk-ant-api01-` is a Compliance Access Key; its scopes are the subset you selected at creation.
-* **Settings UI.** Open the **Keys** section in [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access), or the **Admin keys** section in [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys), and read the **Scopes** column for the key.
-* **Error responses.** A call that exceeds the key's scopes returns a 403 with a message in the format `Missing required scopes. Got: [<scopes the key carries>] Needed: [<scopes the endpoint requires>]`. See [Handle Compliance API errors](/docs/en/manage-claude/compliance-errors#403-forbidden) for the full error catalog.
-
-```json
-{
-  "error": {
-    "type": "permission_error",
-    "message": "Missing required scopes. Got: ['read:compliance_activities'] Needed: ['read:compliance_user_data']"
-  }
-}
-```
-
-## Manage and rotate keys
-
-Delete a Compliance Access Key from the same **Keys** table where you created it: go to [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access). Delete an Admin API key from [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys).
-
-Deleting a key takes effect on the next request: there is no grace period. Compliance Access Keys do not expire on their own.
-
-To rotate a key without an outage:
-
-1. Create a new key with the same scopes.
-2. Update your integration to use the new key.
-3. Verify the integration succeeds with the new key.
-4. Delete the old key.
-
-Pagination cursors stored before a rotation remain valid: cursors are scoped to the organization, not the key.
-
-If a Compliance Access Key leaks, delete it immediately, audit the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) for `compliance_api_accessed` activities by the compromised key, and rotate any downstream credentials that the leaked key could reach. Pass `activity_types[]=compliance_api_accessed` to scope the query, then in your client, keep the activities whose `actor.type` is `api_actor` and whose `actor.api_key_id` matches the compromised key; see [Understand the Activity object](/docs/en/manage-claude/compliance-activity-feed#understand-the-activity-object) for the actor schema.
-
-## Next steps
-
-<CardGroup cols={2}>
-  <Card title="Query the Activity Feed" href="/docs/en/manage-claude/compliance-activity-feed">
-    Read organization-wide activity events with any key that has `read:compliance_activities`.
-  </Card>
-
-  <Card title="Retrieve and delete chats, files, and projects" href="/docs/en/manage-claude/compliance-content-data">
-    Use a Compliance Access Key with `read:compliance_user_data` to retrieve claude.ai content, and `delete:compliance_user_data` to delete it.
-  </Card>
-</CardGroup>
-
-
----
-
 # Handle Compliance API errors
 
 # Handle Compliance API errors
@@ -115897,7 +116112,7 @@ Every Compliance API error message with cause and fix, organized by HTTP status 
 ---
 
 <Note>
-  To enable the Compliance API, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+  To enable the Compliance API, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 </Note>
 
 This page lists the response messages each documented Compliance API endpoint returns, the cause, and the fix.
@@ -115984,7 +116199,7 @@ The API key provided is invalid or has been revoked.
 
 **Cause:** The key in `x-api-key` does not exist, has been deleted, or has been disabled. A missing or empty `x-api-key` header returns the same body, so check both your secret store and the key's revocation status.
 
-**Fix:** Confirm the key value, check that it has not been deleted in claude.ai (Compliance Access Keys) or Claude Console (Admin API keys), and confirm it is enabled. See [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+**Fix:** Confirm the key value, check that it has not been deleted in claude.ai (Compliance Access Keys) or Claude Console (Admin API keys), and confirm it is enabled. See [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 
 ## 403 Forbidden
 
@@ -116001,7 +116216,7 @@ Missing required scopes. Got: ['read:compliance_user_data'] Needed: ['read:compl
 **Cause:** A key without `read:compliance_activities` was used to call `GET /v1/compliance/activities`. There are two common paths to this error:
 
 * A Compliance Access Key (`sk-ant-api01-...`) was created without the `read:compliance_activities` scope.
-* A Claude Console Admin API key (`sk-ant-admin01-...`) was created before the Compliance API was enabled for the organization. Keys created before enablement do not carry the scope; see [After enablement: Claude Console organizations](/docs/en/manage-claude/compliance-api-access#after-enablement-claude-console-organizations).
+* A Claude Console Admin API key (`sk-ant-admin01-...`) was created before the Compliance API was enabled for the organization. Keys created before enablement do not carry the scope; see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api).
 
 **Fix:** Compliance Access Key scopes are immutable after creation. Create a new key that includes `read:compliance_activities`, or use a Claude Console Admin API key. See [Which key do you need?](/docs/en/manage-claude/compliance-api-access#which-key-do-you-need) for the conditions under which an Admin API key carries this scope.
 
@@ -116018,7 +116233,7 @@ Missing required scopes. Got: ['read:compliance_user_data'] Needed: ['read:compl
 * A Compliance Access Key (`sk-ant-api01-...`) was created without the `read:compliance_org_data` scope.
 * A Claude Console Admin API key (`sk-ant-admin01-...`) was used. Admin API keys carry only `read:compliance_activities` and cannot read organization metadata.
 
-**Fix:** [Create a new Compliance Access Key](/docs/en/manage-claude/compliance-api-access#create-a-compliance-access-key) with `read:compliance_org_data` selected. Admin API keys cannot read organization metadata; the Compliance Access Key is required.
+**Fix:** [Create a new Compliance Access Key](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api) with `read:compliance_org_data` selected. Admin API keys cannot read organization metadata; the Compliance Access Key is required.
 
 ### Retired scope: organization settings
 
@@ -116030,7 +116245,7 @@ Missing required scopes. Got: ['read:compliance_org_settings'] Needed: ['read:co
 
 **Cause:** The `read:compliance_org_settings` scope was retired on June 30, 2026. `GET /v1/compliance/organizations/{organization_id}/settings` now requires `read:compliance_org_data`, the same scope as the other organization endpoints, and the retired scope no longer authorizes anything. A Compliance Access Key that carries only `read:compliance_org_settings` returns this error on every call to the settings endpoint, even though the key worked before the retirement. The retired scope can no longer be selected or granted when creating a key.
 
-**Fix:** Compliance Access Key scopes are immutable after creation. [Create a new Compliance Access Key](/docs/en/manage-claude/compliance-api-access#create-a-compliance-access-key) with `read:compliance_org_data` selected, update your integration to use it, then delete the old key. A key that already carries `read:compliance_org_data` is unaffected by the retirement.
+**Fix:** Compliance Access Key scopes are immutable after creation. [Create a new Compliance Access Key](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api) with `read:compliance_org_data` selected, update your integration to use it, then delete the old key. A key that already carries `read:compliance_org_data` is unaffected by the retirement.
 
 ### Insufficient scope: user data
 
@@ -116045,7 +116260,7 @@ Missing required scopes. Got: ['read:compliance_activities'] Needed: ['read:comp
 * A Compliance Access Key (`sk-ant-api01-...`) was created without the `read:compliance_user_data` scope.
 * A Claude Console Admin API key (`sk-ant-admin01-...`) was used. Admin API keys carry only `read:compliance_activities` and cannot be granted `read:compliance_user_data`, so they cannot call the chat, file, project, project attachment, user, or group-member endpoints.
 
-**Fix:** Use a [Compliance Access Key](/docs/en/manage-claude/compliance-api-access#create-a-compliance-access-key) created in claude.ai with `read:compliance_user_data` selected. If the request really should be Activity Feed only, point the Admin API key at `GET /v1/compliance/activities` instead.
+**Fix:** Use a [Compliance Access Key](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api) created in claude.ai with `read:compliance_user_data` selected. If the request really should be Activity Feed only, point the Admin API key at `GET /v1/compliance/activities` instead.
 
 ### Insufficient scope: delete
 
@@ -116057,7 +116272,7 @@ Missing required scopes. Got: ['read:compliance_user_data'] Needed: ['delete:com
 
 **Cause:** A Compliance Access Key without `delete:compliance_user_data` was used to call a `DELETE` endpoint on chats, files, or projects.
 
-**Fix:** [Create a new Compliance Access Key](/docs/en/manage-claude/compliance-api-access#create-a-compliance-access-key) with `delete:compliance_user_data` selected. The delete scope is separate from `read:compliance_user_data` so that read-only audit keys cannot delete content.
+**Fix:** [Create a new Compliance Access Key](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api) with `delete:compliance_user_data` selected. The delete scope is separate from `read:compliance_user_data` so that read-only audit keys cannot delete content.
 
 ## 404 Not Found
 
@@ -116151,7 +116366,7 @@ The "claude_proj_01KGp4eZNug9ri4kE35RSppq" project cannot be deleted as it has c
 
 **Cause:** `DELETE /v1/compliance/apps/projects/{project_id}` was called on a project that still has chats attached.
 
-**Fix:** List the project's chats with `GET /v1/compliance/apps/chats?user_ids[]={user_id}&project_ids[]={project_id}` (the chat list endpoint requires at least one `user_ids[]` value; enumerate IDs through [List organization users](/docs/en/manage-claude/compliance-org-data#list-organization-users)), delete each one with `DELETE /v1/compliance/apps/chats/{claude_chat_id}`, and then retry the project delete.
+**Fix:** List the project's chats with `GET /v1/compliance/apps/chats?user_ids[]={user_id}&project_ids[]={project_id}` (the `project_ids[]` filter requires at least one `user_ids[]` value; enumerate IDs through [List organization users](/docs/en/manage-claude/compliance-org-data#list-organization-users)), delete each one with `DELETE /v1/compliance/apps/chats/{claude_chat_id}`, and then retry the project delete.
 
 ## 429 Too Many Requests
 
@@ -116225,16 +116440,16 @@ Enumerate organizations under your parent organization (their users, roles, and 
 ---
 
 <Note>
-  To enable the Compliance API, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+  To enable the Compliance API, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 </Note>
 
 <Check>
   **Required scope:** `read:compliance_org_data` on the Compliance Access Key. The user and group-member endpoints require `read:compliance_user_data` instead.
 
-  Compliance Access Keys (`sk-ant-api01-...`) created in claude.ai are the only key type accepted; see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access) to provision one. Calls authenticated with an Admin API key (`sk-ant-admin01-...`) return [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden).
+  Compliance Access Keys (`sk-ant-api01-...`) created in claude.ai are the only key type accepted; see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access) to provision one. Calls authenticated with an Admin API key (`sk-ant-admin01-...`) return [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden).
 </Check>
 
-The endpoints on this page expose the directory side of a Claude Enterprise organization: its linked organizations, the users in each one, the roles defined on each, and its role-based access control (RBAC) or SCIM (System for Cross-domain Identity Management)-provisioned groups and their members. Use them to seed eDiscovery user lists, build reporting dashboards, and reconcile group membership against an external system of record. Compliance Access Keys are bound to a parent organization and return data from every linked organization underneath, so a single key reaches the entire tree. The [effective-settings endpoint](#get-effective-organization-settings) complements the directory: it returns the data-privacy, security, and capability settings actually in force for one organization.
+The endpoints on this page expose the directory side of a Claude Enterprise organization: its linked organizations, the users in each one, the roles defined on each, and its role-based access control (RBAC) or SCIM (System for Cross-domain Identity Management)-provisioned groups and their members. Use them to seed eDiscovery user lists, build reporting dashboards, and reconcile group membership against an external system of record. A Compliance Access Key that covers the parent organization returns data from every linked organization underneath, so a single key reaches the entire tree. The [effective-settings endpoint](#get-effective-organization-settings) complements the directory: it returns the data-privacy, security, and capability settings actually in force for one organization.
 
 ## List organizations
 
@@ -116521,13 +116736,13 @@ Retrieve, filter, and paginate your organization's Compliance API Activity Feed.
 ---
 
 <Note>
-  To enable the Compliance API, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+  To enable the Compliance API, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 </Note>
 
 <Check>
   **Required scope:** `read:compliance_activities` on the Compliance Access Key or Admin API key.
 
-  Both Compliance Access Keys (`sk-ant-api01-...`) carrying this scope and Admin API keys (`sk-ant-admin01-...`) can call the Activity Feed. See [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access) for the conditions under which each key type carries the scope.
+  Both Compliance Access Keys (`sk-ant-api01-...`) carrying this scope and Admin API keys (`sk-ant-admin01-...`) can call the Activity Feed. See [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access) for the conditions under which each key type carries the scope.
 </Check>
 
 The Activity Feed records every authentication, chat, file, project, administrative, and platform action that occurs in your organization, in reverse chronological order. Activities are queryable within 1 minute of occurring and are retained for 6 years.
@@ -116712,18 +116927,18 @@ Access chat content, file attachments, and projects for claude.ai organizations 
 ---
 
 <Note>
-  The endpoints on this page retrieve and delete claude.ai content and are available only to Claude Enterprise organizations, which have self-service access to the Compliance API. See [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+  The endpoints on this page retrieve and delete claude.ai content and are available only to Claude Enterprise organizations, which have self-service access to the Compliance API. See [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 </Note>
 
 <Check>
   **Required scope:** `read:compliance_user_data` on the Compliance Access Key. The delete endpoints also require `delete:compliance_user_data`.
 
-  **Prerequisite:** To list chats, at least one user ID from [List organization users](/docs/en/manage-claude/compliance-org-data#list-organization-users). The other endpoints on this page take resource IDs directly.
+  **Prerequisite:** None for listing chats organization-wide. To filter the chat list to specific users, you need user IDs from [List organization users](/docs/en/manage-claude/compliance-org-data#list-organization-users). The other endpoints on this page take resource IDs directly.
 </Check>
 
 The endpoints on this page expose claude.ai chat content, file uploads, projects, and project attachments to compliance reviewers. They support eDiscovery (electronic discovery) exports, data loss prevention (DLP) enforcement, and account-deletion responses. Content is retained for as long as your organization's retention policy allows. Chats that a user has soft-deleted in claude.ai remain visible through the Compliance API with `deleted_at` populated; chats that have been hard-deleted (through the Compliance API itself, or after the organization's retention window expires) are not retrievable.
 
-Both scopes are granted only on Compliance Access Keys (`sk-ant-api01-...`) created in claude.ai; see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access) to provision one. The `read:compliance_user_data` scope covers retrieval; `delete:compliance_user_data` is required only for the delete endpoints. The chat, file, project, and attachment endpoints are not available to Admin API keys (`sk-ant-admin01-...`); calls authenticated with an Admin API key return [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden).
+Both scopes are granted only on Compliance Access Keys (`sk-ant-api01-...`) created in claude.ai; see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access) to provision one. The `read:compliance_user_data` scope covers retrieval; `delete:compliance_user_data` is required only for the delete endpoints. The chat, file, project, and attachment endpoints are not available to Admin API keys (`sk-ant-admin01-...`); calls authenticated with an Admin API key return [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden).
 
 Endpoints on this page paginate two ways; see [Paginate results](/docs/en/manage-claude/compliance-activity-feed#paginate-results) for the full reference. Each section notes which scheme applies.
 
@@ -116731,16 +116946,15 @@ Endpoints on this page paginate two ways; see [Paginate results](/docs/en/manage
 
 Use [List chats](/docs/en/api/compliance/apps/chats/list) to page through chat metadata, then [Get chat messages](/docs/en/api/compliance/apps/chats/messages/list) to fetch the full message content of one chat.
 
-The chat list endpoint requires at least one `user_ids[]` value (and accepts up to 10 in one request), so enumerate user IDs first with [List organization users](/docs/en/manage-claude/compliance-org-data#list-organization-users), then list chats for each user or for each batch of users. The following request lists chats owned by a specific user since a given date.
+The chat list endpoint defaults to organization-wide scope: leave off `user_ids[]` to include every chat under your parent organization. Add `order_by=updated_at` to sort by last update time. This combination is the recommended way to export chats and keep an export current, because one paginated loop picks up both new and modified chats for every user without enumerating users first. The following request lists chats updated since a given date.
 
 <CodeGroup>
   ```bash cURL
   curl --fail-with-body -sS -G \
     "https://api.anthropic.com/v1/compliance/apps/chats" \
     --header "x-api-key: $ANTHROPIC_COMPLIANCE_ACCESS_KEY" \
-    --data-urlencode "user_ids[]=user_01XyDMpzjS89pFZXqSFUBDr6" \
-    --data-urlencode "organization_ids[]=91012d09-e48b-438e-a489-1bebfd8fa6f9" \
-    --data-urlencode "created_at.gte=2025-06-01T00:00:00Z" \
+    --data-urlencode "order_by=updated_at" \
+    --data-urlencode "updated_at.gte=2025-06-01T00:00:00Z" \
     --data-urlencode "limit=100"
   ```
 </CodeGroup>
@@ -116765,16 +116979,31 @@ The chat list endpoint requires at least one `user_ids[]` value (and accepts up 
     }
   ],
   "has_more": true,
-  "first_id": "claude_chat_01H5CWunD7RpVJ5bHa8RCkja",
-  "last_id": "claude_chat_01H5CWunD7RpVJ5bHa8RCkja"
+  "first_id": "eyJrIjogInVwZGF0ZWRfYXQiLCAidCI6ICIyMDI2LTA0LTEwVDA5OjEwOjExKzAwOjAwIiwgImlkIjogImFiY2RlZjAxLS4uLiJ9",
+  "last_id": "eyJrIjogInVwZGF0ZWRfYXQiLCAidCI6ICIyMDI2LTA0LTEwVDA5OjEwOjExKzAwOjAwIiwgImlkIjogImFiY2RlZjAxLS4uLiJ9"
 }
 ```
 
-Listing chats returns metadata only. See [List chats](/docs/en/api/compliance/apps/chats/list) for the full filter list; in addition to the required `user_ids[]`, the `updated_at.*` bounds are useful for incremental review of chats that have changed since a previous export.
+Results sort ascending by the `order_by` field, oldest first, with ties broken by `id`. Pagination uses the standard `first_id`/`last_id`/`has_more` cursor fields described in [Paginate results](/docs/en/manage-claude/compliance-activity-feed#paginate-results). To walk forward toward newer chats, pass the response's `last_id` back as `after_id` on the next request.
 
-Chat results are sorted by `created_at` ascending (oldest first), with ties broken by `id`. Pagination uses the same `first_id`/`last_id`/`has_more` cursor fields as [Paginate results](/docs/en/manage-claude/compliance-activity-feed#paginate-results); pass `last_id` as `after_id` to walk forward toward newer chats, or `first_id` as `before_id` to walk back toward older ones.
+That forward walk is also how you keep an export current across runs: persist the final page's `last_id` and resume from it as `after_id` on the next run. Because the list is ordered by `updated_at`, a chat that changes after your saved cursor reappears ahead of it, so each incremental run returns both brand-new chats and older chats that have since been modified. Process results idempotently, keyed by chat `id`, to handle those reappearances.
 
-To pull the actual chat content, attached files, and inline artifacts (structured documents Claude generates inside a chat), follow up with the messages endpoint for each chat ID:
+A few constraints apply to these organization-wide queries. Cursors are opaque and bound to the sort key, so an `after_id` issued under one `order_by` value is rejected with a 400 error under the other. Time-filter bounds must match the sort key too: pair `updated_at.*` bounds with `order_by=updated_at`, and `created_at.*` bounds with the default `order_by=created_at`. Backward pagination with `before_id` is not supported, and the `project_ids[]` filter is not available. See [List chats](/docs/en/api/compliance/apps/chats/list) for the full filter reference.
+
+To scope the list to specific users instead (for example, a legal hold on named custodians), pass 1–10 `user_ids[]` values. Obtain the IDs from [List organization users](/docs/en/manage-claude/compliance-org-data#list-organization-users). User-filtered queries always sort by `created_at` (passing `order_by=updated_at` returns a 400 error) and support both `after_id` and `before_id`. Filtering by `project_ids[]` is only available in this user-filtered form.
+
+<CodeGroup>
+  ```bash cURL
+  curl --fail-with-body -sS -G \
+    "https://api.anthropic.com/v1/compliance/apps/chats" \
+    --header "x-api-key: $ANTHROPIC_COMPLIANCE_ACCESS_KEY" \
+    --data-urlencode "user_ids[]=user_01XyDMpzjS89pFZXqSFUBDr6" \
+    --data-urlencode "created_at.gte=2025-06-01T00:00:00Z" \
+    --data-urlencode "limit=100"
+  ```
+</CodeGroup>
+
+The list response carries chat metadata only. To pull the actual chat content, attached files, and inline artifacts (structured documents Claude generates inside a chat), follow up with the messages endpoint for each chat ID:
 
 <CodeGroup>
   ```bash cURL
@@ -117002,7 +117231,7 @@ A project cannot be deleted while any chats remain attached to it. The API retur
 }
 ```
 
-To resolve, list the project's chats with `GET /v1/compliance/apps/chats?user_ids[]={user_id}&project_ids[]={project_id}` (the chat list endpoint requires at least one `user_ids[]` value; enumerate IDs through [List organization users](/docs/en/manage-claude/compliance-org-data#list-organization-users)), delete each one with `DELETE /v1/compliance/apps/chats/{claude_chat_id}` (or move it out of the project from claude.ai), and then retry the project delete.
+To resolve, list the project's chats with `GET /v1/compliance/apps/chats?user_ids[]={user_id}&project_ids[]={project_id}` (the `project_ids[]` filter requires at least one `user_ids[]` value; enumerate IDs through [List organization users](/docs/en/manage-claude/compliance-org-data#list-organization-users)), delete each one with `DELETE /v1/compliance/apps/chats/{claude_chat_id}` (or move it out of the project from claude.ai), and then retry the project delete.
 
 ## Next steps
 
@@ -117013,6 +117242,173 @@ To resolve, list the project's chats with `GET /v1/compliance/apps/chats?user_id
 
   <Card title="List organizations, users, roles, groups, and settings" href="/docs/en/manage-claude/compliance-org-data">
     Enumerate the people and teams associated with the chats and projects on this page.
+  </Card>
+</CardGroup>
+
+
+---
+
+# Set up the Compliance API
+
+# Set up the Compliance API
+
+**URL:** https://platform.claude.com/docs/en/manage-claude/compliance-api-access
+
+Enable the Compliance API for your organization, then create a Compliance Access Key (with scoped permissions) or an Admin API key, and learn which to use.
+
+---
+
+<Note>
+  Claude Enterprise organizations have self-service access to the full API. Claude Console organizations are enabled on request; contact your account team. This page describes how to enable the Compliance API and create API keys.
+</Note>
+
+<Check>
+  **Required role:** organization admin (Claude Console), or primary owner or organization owner (claude.ai).
+</Check>
+
+The Compliance API uses two key types, and which one you create depends on which Claude product your organization uses. Primary owners and organization owners create Compliance Access Keys in claude.ai; these keys unlock the full Compliance API. A primary owner's key can cover every organization under the parent organization; an organization owner's key covers their own organization only. Organization admins create Admin API keys in Claude Console; these keys unlock the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) only.
+
+## Which key do you need?
+
+| Key type                                       | Created in                                                                                | Used for                                                                                         | Works with the Compliance API? |
+| ---------------------------------------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | ------------------------------ |
+| **Compliance Access Key** (`sk-ant-api01-...`) | [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access)    | Activity Feed, chats, files, projects, users, organization metadata, and organization settings   | Yes (all endpoints)            |
+| **Admin API key** (`sk-ant-admin01-...`)       | [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys) | The [Admin API](/docs/en/manage-claude/admin-api) and the Compliance API Activity Feed           | Activity Feed only             |
+| **Analytics API key**                          | [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access)    | The Claude Enterprise Analytics API (see [Analytics APIs](/docs/en/manage-claude/analytics-api)) | No                             |
+| **Claude API key** (`sk-ant-api03-...`)        | [Claude Console > Settings > API keys](https://platform.claude.com/settings/keys)         | Calling Claude models through the [Claude API](/docs/en/api/overview)                            | No                             |
+
+A Claude Enterprise tenant has one **parent organization** that centralizes identity, SSO, and SCIM for every workload organization beneath it. These workload organizations are the parent's **linked organizations**.
+
+<Warning>
+  **Claude Enterprise parent organizations do not appear in Claude Console (`platform.claude.com`).** The parent carries no workloads, no Claude API keys, and no Admin API keys. Create Compliance Access Keys in claude.ai **Organization settings**, not in Claude Console.
+</Warning>
+
+## Set up the Compliance API
+
+Setup is one flow: enable the Compliance API for your organization, then create a Compliance Access Key in claude.ai. A Claude Console organization instead [creates an Admin API key](#create-an-admin-api-key) after enablement; Admin API keys reach the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) only.
+
+<Warning>
+  A Compliance Access Key with `read:compliance_user_data` can read every chat, file, and project in every linked organization, including content the primary owner has not seen. A key with `delete:compliance_user_data` can permanently delete that content. Treat Compliance Access Keys like production database credentials: store them in a secrets manager, never in source control or SIEM forwarder configuration.
+</Warning>
+
+<Steps>
+  <Step title="Enable the Compliance API">
+    How you enable the Compliance API depends on which Claude product your organization uses. In either case, enablement happens at the parent organization level and cascades to every linked organization.
+
+    * **Claude Enterprise (`claude.ai`):** Enablement is self-service.
+    * **Claude Console (`platform.claude.com`):** Enablement is on request: contact your Anthropic account team.
+  </Step>
+
+  <Step title="Decide the key's scope">
+    A key's access is set when it is created. Decide which organizations the key covers:
+
+    * A key for the **parent organization** can access every organization under the parent organization.
+    * A key for a **single organization** can access that organization only.
+  </Step>
+
+  <Step title="Sign in with the matching role">
+    Sign in to claude.ai. The primary owner of the parent organization can create a key with either scope. An organization owner can create a key restricted to their own organization only.
+
+    If the **API** page described in the next step is not visible, or compliance scopes are unavailable when creating a key, either your role cannot create Compliance Access Keys, or the Compliance API has not been enabled for your organization yet (return to the first step).
+  </Step>
+
+  <Step title="Open API settings">
+    Go to [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access) and find the **Keys** section.
+  </Step>
+
+  <Step title="Create the key">
+    Click **Create key**, name the key, and select one or more scopes from the following table. Click **Create**.
+
+    | Scope                         | Grants                                                                                                                                                                                                                    |
+    | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+    | `read:compliance_activities`  | Read the Activity Feed. A key covering the parent organization reads events for the parent organization and all linked organizations.                                                                                     |
+    | `read:compliance_user_data`   | Read user chats, messages, files, projects, organization users, and group members                                                                                                                                         |
+    | `delete:compliance_user_data` | Delete user chats, files, and projects                                                                                                                                                                                    |
+    | `read:compliance_org_data`    | Read organization metadata (names, types, roles, and groups) and the effective settings in force for organizations under the parent organization. User listings and group membership require `read:compliance_user_data`. |
+
+    Choose the smallest scope set that your integration needs:
+
+    * An audit pipeline that reads the Activity Feed only needs `read:compliance_activities`.
+    * An eDiscovery tool that reads chats and files but never deletes them does not need `delete:compliance_user_data`.
+    * If your workflow both reads and deletes, use **two keys** with separate scopes so a leaked read key cannot delete data.
+
+    Compliance Access Key scopes are immutable after creation. To change scopes, create a new key with the scopes you want, then delete the old one.
+  </Step>
+
+  <Step title="Copy and store the secret">
+    Copy the displayed secret key (starting with `sk-ant-api01-`) and store it in your secrets manager. The full secret is displayed only once.
+  </Step>
+
+  <Step title="Export the key for the examples in this guide">
+    Set the key as an environment variable so the shell samples in this guide can read it:
+
+    ```bash
+    export ANTHROPIC_COMPLIANCE_ACCESS_KEY=sk-ant-api01-...
+    ```
+  </Step>
+</Steps>
+
+## Create an Admin API key
+
+<Note>
+  The Compliance API must already be [enabled for your Claude Console organization](#set-up-the-compliance-api) before an Admin API key can call the Activity Feed.
+</Note>
+
+Follow the steps in [Create an Admin API key](/docs/en/manage-claude/admin-api-keys#create-a-key-for-a-claude-console-organization), then set the key as an environment variable:
+
+```bash
+export ANTHROPIC_ADMIN_KEY=sk-ant-admin01-...
+```
+
+The distinct variable name keeps the Admin API key from overwriting a Compliance Access Key if you provision both. The cURL examples in this guide read the key from `$ANTHROPIC_COMPLIANCE_ACCESS_KEY`; substitute `$ANTHROPIC_ADMIN_KEY` when calling the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) with an Admin API key.
+
+Admin API keys carry the `read:compliance_activities` scope only when the Compliance API was enabled for the organization before the key was created; see [Set up the Compliance API](#set-up-the-compliance-api). They cannot be granted any other Compliance API scope, so calls to any endpoint other than the Activity Feed return [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden).
+
+For the same key's role in managing your Claude Console organization, see [Admin API](/docs/en/manage-claude/admin-api).
+
+## Check your key's scopes
+
+To inspect the scopes on a key you already have, use one of the following signals.
+
+* **Key prefix.** `sk-ant-admin01-` is an Admin API key (carries `read:compliance_activities` only, subject to the enablement timing in the preceding section). `sk-ant-api01-` is a Compliance Access Key; its scopes are the subset you selected at creation.
+* **Settings UI.** Open the **Keys** section in [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access), or the **Admin keys** section in [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys), and read the **Scopes** column for the key.
+* **Error responses.** A call that exceeds the key's scopes returns a 403 with a message in the format `Missing required scopes. Got: [<scopes the key carries>] Needed: [<scopes the endpoint requires>]`. See [Handle Compliance API errors](/docs/en/manage-claude/compliance-errors#403-forbidden) for the full error catalog.
+
+```json
+{
+  "error": {
+    "type": "permission_error",
+    "message": "Missing required scopes. Got: ['read:compliance_activities'] Needed: ['read:compliance_user_data']"
+  }
+}
+```
+
+## Manage and rotate keys
+
+Delete a Compliance Access Key from the same **Keys** table where you created it: go to [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access). Delete an Admin API key from [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys).
+
+Deleting a key takes effect on the next request: there is no grace period. Compliance Access Keys do not expire on their own.
+
+To rotate a key without an outage:
+
+1. Create a new key with the same scopes.
+2. Update your integration to use the new key.
+3. Verify the integration succeeds with the new key.
+4. Delete the old key.
+
+Pagination cursors stored before a rotation remain valid: cursors are scoped to the organization, not the key.
+
+If a Compliance Access Key leaks, delete it immediately, audit the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) for `compliance_api_accessed` activities by the compromised key, and rotate any downstream credentials that the leaked key could reach. Pass `activity_types[]=compliance_api_accessed` to scope the query, then in your client, keep the activities whose `actor.type` is `api_actor` and whose `actor.api_key_id` matches the compromised key; see [Understand the Activity object](/docs/en/manage-claude/compliance-activity-feed#understand-the-activity-object) for the actor schema.
+
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Query the Activity Feed" href="/docs/en/manage-claude/compliance-activity-feed">
+    Read organization-wide activity events with any key that has `read:compliance_activities`.
+  </Card>
+
+  <Card title="Retrieve and delete chats, files, and projects" href="/docs/en/manage-claude/compliance-content-data">
+    Use a Compliance Access Key with `read:compliance_user_data` to retrieve claude.ai content, and `delete:compliance_user_data` to delete it.
   </Card>
 </CardGroup>
 

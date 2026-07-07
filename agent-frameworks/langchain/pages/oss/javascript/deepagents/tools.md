@@ -9,18 +9,81 @@ Connect Deep Agents to custom functions, APIs, databases, and any MCP server
 Deep Agents can call any tool you define, any [LangChain tool](https://python.langchain.com/docs/concepts/tools/), and tools from any [MCP server](#mcp-tools).
 Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/javascript/deepagents/overview#execution-environment) for planning, file management, and subagent spawning.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const agent = await createDeepAgent({
-  model: "anthropic:claude-sonnet-4-6",
-  tools: [search, fetchUrl, runQuery],
-});
-```
+
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+</CodeGroup>
 
 ## Custom tools
 
-Pass any callable — plain functions, LangChain `@tool`-decorated functions, or tool dicts — directly to `tools=`.
+Pass any callable, such as plain functions, LangChain `@tool`-decorated functions, or tool dicts—directly to `tools=`.
 Deep Agents infers the tool schema from the function signature and docstring, so you don't need to define a separate schema in most cases.
 
 <CodeGroup>
@@ -359,10 +422,10 @@ For full details on defining and using LangChain tools (tool dicts, `StructuredT
 ## MCP tools
 
 <Note>
-  Deep Agents fully support [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp) — the open standard for connecting agents to external services. Load tools from any MCP server and pass them directly to `create_deep_agent`.
+  Deep Agents fully support [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp), the open standard for connecting agents to external services. Load tools from any MCP server and pass them directly to `create_deep_agent`.
 </Note>
 
-MCP is an open protocol that lets agents connect to a growing ecosystem of servers — databases, APIs, file systems, browsers, and more — through a standard interface. Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
+MCP is an open protocol that lets agents connect to a growing ecosystem of servers—databases, APIs, file systems, browsers, and more—through a standard interface. Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
 
 Install `@langchain/mcp-adapters` to connect to MCP servers:
 
@@ -370,28 +433,175 @@ Install `@langchain/mcp-adapters` to connect to MCP servers:
 npm install @langchain/mcp-adapters
 ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const client = new MultiServerMCPClient({
-  my_server: {
-    transport: "http",
-    url: "http://localhost:8000/mcp",
-  },
-});
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-const tools = await client.getTools();
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
 
-const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
-  tools,
-});
+  const tools = await client.getTools();
 
-const result = await agent.invoke({
-  messages: [{ role: "user", content: "Use the MCP server to help me." }],
-});
-```
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+</CodeGroup>
 
 For detailed configuration options — including stdio servers, OAuth authentication, tool filtering, and stateful sessions — see the full [MCP guide](/oss/javascript/langchain/mcp).
 

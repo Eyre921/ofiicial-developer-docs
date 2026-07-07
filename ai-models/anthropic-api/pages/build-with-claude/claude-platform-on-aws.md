@@ -320,7 +320,7 @@ The following models are available on Claude Platform on AWS:
 | Claude Opus 4.8   | claude-opus-4-8   |
 | Claude Opus 4.7   | claude-opus-4-7   |
 | Claude Opus 4.6   | claude-opus-4-6   |
-| Claude Sonnet 5   | `claude-sonnet-5` |
+| Claude Sonnet 5   | claude-sonnet-5   |
 | Claude Sonnet 4.6 | claude-sonnet-4-6 |
 | Claude Opus 4.5   | claude-opus-4-5   |
 | Claude Sonnet 4.5 | claude-sonnet-4-5 |
@@ -349,7 +349,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
     -H "anthropic-version: 2023-06-01" \
     -H "anthropic-workspace-id: $ANTHROPIC_AWS_WORKSPACE_ID" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-sonnet-5",
       "max_tokens": 1024,
       "messages": [
         {"role": "user", "content": "Hello!"}
@@ -363,7 +363,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   client = AnthropicAWS()
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-5",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello!"}],
   )
@@ -376,7 +376,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   const client = new AnthropicAws();
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello!" }]
   });
@@ -391,7 +391,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeSonnet5,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello!" }]
   });
@@ -406,7 +406,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   }
 
   message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-  	Model:     anthropic.ModelClaudeSonnet4_6,
+  	Model:     anthropic.ModelClaudeSonnet5,
   	MaxTokens: 1024,
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello!")),
@@ -434,7 +434,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
 
       Message message = client.messages().create(
           MessageCreateParams.builder()
-              .model(Model.CLAUDE_SONNET_4_6)
+              .model(Model.CLAUDE_SONNET_5)
               .maxTokens(1024)
               .addUserMessage("Hello!")
               .build()
@@ -450,7 +450,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   $client = new Client();
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-5',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello!']],
   );
@@ -464,7 +464,7 @@ Claude Platform on AWS uses the same API endpoints as the first-party Claude API
   client = Anthropic::AWSClient.new
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello!" }]
   )
@@ -555,7 +555,7 @@ Set the inference geography per request with the `inference_geo` parameter:
     -H "anthropic-version: 2023-06-01" \
     -H "anthropic-workspace-id: $ANTHROPIC_AWS_WORKSPACE_ID" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-sonnet-5",
       "max_tokens": 1024,
       "inference_geo": "us",
       "messages": [
@@ -569,7 +569,7 @@ Set the inference geography per request with the `inference_geo` parameter:
 
   client = AnthropicAWS()
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-5",
       max_tokens=1024,
       inference_geo="us",
       messages=[{"role": "user", "content": "Hello!"}],
@@ -581,7 +581,7 @@ Set the inference geography per request with the `inference_geo` parameter:
   import AnthropicAws from "@anthropic-ai/aws-sdk";
   const client = new AnthropicAws();
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
     inference_geo: "us",
     messages: [{ role: "user", content: "Hello!" }]
@@ -597,7 +597,7 @@ Set the inference geography per request with the `inference_geo` parameter:
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeSonnet5,
       MaxTokens = 1024,
       InferenceGeo = "us",
       Messages = [new() { Role = Role.User, Content = "Hello!" }]
@@ -613,7 +613,7 @@ Set the inference geography per request with the `inference_geo` parameter:
   }
 
   message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-  	Model:        anthropic.ModelClaudeSonnet4_6,
+  	Model:        anthropic.ModelClaudeSonnet5,
   	MaxTokens:    1024,
   	InferenceGeo: anthropic.String("us"),
   	Messages: []anthropic.MessageParam{
@@ -642,7 +642,7 @@ Set the inference geography per request with the `inference_geo` parameter:
 
       Message message = client.messages().create(
           MessageCreateParams.builder()
-              .model(Model.CLAUDE_SONNET_4_6)
+              .model(Model.CLAUDE_SONNET_5)
               .maxTokens(1024)
               .inferenceGeo("us")
               .addUserMessage("Hello!")
@@ -659,7 +659,7 @@ Set the inference geography per request with the `inference_geo` parameter:
   $client = new Client();
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-5',
       maxTokens: 1024,
       inferenceGeo: 'us',
       messages: [['role' => 'user', 'content' => 'Hello!']],
@@ -674,7 +674,7 @@ Set the inference geography per request with the `inference_geo` parameter:
   client = Anthropic::AWSClient.new
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-sonnet-5",
     max_tokens: 1024,
     inference_geo: "us",
     messages: [{ role: "user", content: "Hello!" }]
@@ -787,7 +787,7 @@ Each response includes two request IDs in the response headers:
   client = AnthropicAWS()
 
   response = client.messages.with_raw_response.create(
-      model="claude-sonnet-4-6",
+      model="claude-sonnet-5",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello!"}],
   )
@@ -806,7 +806,7 @@ Each response includes two request IDs in the response headers:
 
   const { data: message, response } = await client.messages
     .create({
-      model: "claude-sonnet-4-6",
+      model: "claude-sonnet-5",
       max_tokens: 1024,
       messages: [{ role: "user", content: "Hello!" }]
     })
@@ -825,7 +825,7 @@ Each response includes two request IDs in the response headers:
 
   var response = await client.WithRawResponse.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeSonnet5,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello!" }]
   });
@@ -845,7 +845,7 @@ Each response includes two request IDs in the response headers:
   message, err := client.Messages.New(
   	context.Background(),
   	anthropic.MessageNewParams{
-  		Model:     anthropic.ModelClaudeSonnet4_6,
+  		Model:     anthropic.ModelClaudeSonnet5,
   		MaxTokens: 1024,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello!")),
@@ -878,7 +878,7 @@ Each response includes two request IDs in the response headers:
 
       HttpResponseFor<Message> response = client.messages().withRawResponse().create(
           MessageCreateParams.builder()
-              .model(Model.CLAUDE_SONNET_4_6)
+              .model(Model.CLAUDE_SONNET_5)
               .maxTokens(1024)
               .addUserMessage("Hello!")
               .build()
@@ -896,7 +896,7 @@ Each response includes two request IDs in the response headers:
   $client = new Client();
 
   $response = $client->messages->raw->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-sonnet-5',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello!']],
   );
@@ -930,7 +930,7 @@ The migration delta depends on which Bedrock integration you're coming from. The
 | ----------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | **Base URL**            | `bedrock-mantle.{region}.api.aws`                                                                       | `bedrock-runtime.{region}.amazonaws.com`                                                                | `aws-external-anthropic.{region}.api.aws`                                                     |
 | **API format**          | Messages API at `/anthropic/v1/messages`                                                                | Bedrock Converse / InvokeModel                                                                          | Claude API (`/v1/{endpoint}`)                                                                 |
-| **Model IDs**           | `anthropic.claude-opus-4-6`                                                                             | `anthropic.claude-opus-4-6-v1` (with optional `us.`/`global.` prefix)                                   | `claude-opus-4-6`                                                                             |
+| **Model IDs**           | `anthropic.claude-haiku-4-5`                                                                            | `anthropic.claude-haiku-4-5-20251001-v1:0` (with optional `us.`/`global.` prefix)                       | `claude-haiku-4-5`                                                                            |
 | **SDK client**          | `AnthropicBedrockMantle`                                                                                | `AnthropicBedrock` / Bedrock SDK                                                                        | Platform-specific client (see [Install an SDK](#install-an-sdk)), in beta                     |
 | **SDK package**         | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, and others                                           | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, or AWS SDK                                           | `anthropic[aws]`, `@anthropic-ai/aws-sdk`, and others (see [Install an SDK](#install-an-sdk)) |
 | **SigV4 service name**  | `bedrock-mantle`                                                                                        | `bedrock`                                                                                               | `aws-external-anthropic`                                                                      |
@@ -1026,12 +1026,37 @@ The `GetBatchInference` action authorizes both the batch metadata route and the 
 
 AWS provides five managed policies (`AnthropicFullAccess`, `AnthropicReadOnlyAccess`, `AnthropicInferenceAccess`, `AnthropicLimitedAccess`, and `AnthropicSelfHostedEnvironmentAccess`) for common access patterns. For the actions each policy grants, the complete list of IAM actions, the route-to-action mapping, and additional policy examples, see [IAM actions for Claude Platform on AWS](/docs/en/api/claude-platform-on-aws-iam-actions#managed-policies).
 
+## Next steps
+
+<CardGroup cols={2}>
+  <Card title="Features overview" icon="stack" href="/docs/en/build-with-claude/overview">
+    Explore Claude's advanced features and capabilities.
+  </Card>
+
+  <Card title="Pricing" icon="chart" href="/docs/en/about-claude/pricing#claude-platform-on-aws-pricing">
+    Learn about Claude Platform on AWS pricing and Claude Consumption Unit rates.
+  </Card>
+
+  <Card title="Model deprecations" icon="arrow-clockwise" href="/docs/en/about-claude/model-deprecations">
+    As safer and more capable models launch, Anthropic regularly retires older ones. See all API deprecations, along with recommended replacements.
+  </Card>
+</CardGroup>
+
 ## Additional resources
 
-* **Claude Console for Claude Platform on AWS:** [platform.claude.com](https://platform.claude.com) (access through the AWS Console)
-* **Pricing details:** [Pricing](/docs/en/about-claude/pricing#claude-platform-on-aws-pricing)
-* **Bedrock (AWS-operated Claude):** [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock)
-* **AWS Marketplace:** [aws.amazon.com/marketplace](https://aws.amazon.com/marketplace)
+<CardGroup cols={2}>
+  <Card title="Claude Console" icon="browser" href="https://platform.claude.com">
+    View usage, cost, and workspaces in the Claude Console. Sign in through the AWS Console.
+  </Card>
+
+  <Card title="Claude in Amazon Bedrock" icon="cloud" href="/docs/en/build-with-claude/claude-in-amazon-bedrock">
+    Use AWS-operated Claude if you need AWS as the sole data processor.
+  </Card>
+
+  <Card title="AWS Marketplace" icon="coins" href="https://aws.amazon.com/marketplace">
+    Manage your AWS Marketplace subscription and billing.
+  </Card>
+</CardGroup>
 
 
 ## Managed Agents

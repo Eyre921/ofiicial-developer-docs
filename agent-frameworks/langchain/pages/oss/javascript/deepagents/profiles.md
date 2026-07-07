@@ -16,7 +16,7 @@ Package per-provider and per-model defaults that Deep Agents applies when a mode
 
 A harness profile describes prompt-assembly, tool-visibility, middleware, and default-subagent adjustments that `createDeepAgent` applies after the chat model has been constructed:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { registerHarnessProfile } from "deepagents";
 
 registerHarnessProfile("openai:gpt-5.5", {
@@ -60,7 +60,7 @@ registerHarnessProfile("openai:gpt-5.5", {
 </Note>
 
 <Warning>
-  Listing `FilesystemMiddleware` or `SubAgentMiddleware` in `excludedMiddleware` throws at construction time — they are required scaffolding. To hide their tools from the model without removing the middleware, use `excludedTools` instead.
+  Listing `FilesystemMiddleware` or `SubAgentMiddleware` in `excludedMiddleware` throws at construction time—they are required scaffolding. To hide their tools from the model without removing the middleware, use `excludedTools` instead.
 </Warning>
 
 <Accordion title="Lookup order for preconfigured model instances">
@@ -75,8 +75,8 @@ registerHarnessProfile("openai:gpt-5.5", {
 
 Both profile types use the same key format:
 
-* **Provider-level** — a bare provider name like `"openai"` applies to every model from that provider.
-* **Model-level** — a fully qualified `provider:model` key like `"openai:gpt-5.5"` applies only to that specific model.
+* **Provider-level**—a bare provider name like `"openai"` applies to every model from that provider.
+* **Model-level**—a fully qualified `provider:model` key like `"openai:gpt-5.5"` applies only to that specific model.
 
 When both a provider-level and a model-level profile exist, they are merged at resolution time. Unset model-level fields inherit from the provider-level profile; explicit model-level values override them.
 
@@ -102,7 +102,7 @@ Provider profiles (for controlling model-construction kwargs like `temperature`)
 
 ## Load profiles from config files
 
-For YAML/JSON-backed workflows, use `parseHarnessProfileConfig`. It validates and builds a `HarnessProfile` from a plain object with camelCase keys. Runtime-only state — `extraMiddleware` instances — cannot be represented in JSON/YAML and must be set programmatically.
+For YAML/JSON-backed workflows, use `parseHarnessProfileConfig`. It validates and builds a `HarnessProfile` from a plain object with camelCase keys. Runtime-only state such as `extraMiddleware` instances cannot be represented in JSON/YAML and must be set programmatically.
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # profile.yaml
@@ -117,7 +117,7 @@ generalPurposeSubagent:
   enabled: false
 ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { readFileSync } from "fs";
 import YAML from "yaml";
 import { parseHarnessProfileConfig, registerHarnessProfile } from "deepagents";
@@ -128,13 +128,13 @@ registerHarnessProfile("openai", parseHarnessProfileConfig(raw));
 
 To serialize a profile back to JSON/YAML, use `serializeProfile`:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { serializeProfile } from "deepagents";
 
 const data = serializeProfile(profile); // JSON-compatible object
 ```
 
-Profiles with non-empty `extraMiddleware` cannot be serialized — `serializeProfile` throws if middleware instances are present.
+Profiles with non-empty `extraMiddleware` cannot be serialized; `serializeProfile` throws if middleware instances are present.
 
 ## Ship a profile as a plugin
 
@@ -142,11 +142,11 @@ The plugin registration system (via package entry points) is a Python-only featu
 
 ## Related
 
-* [Harness Overview](/oss/javascript/deepagents/overview) — harness capabilities overview
+* [Harness Overview](/oss/javascript/deepagents/overview)—harness capabilities overview
 
-* [Models](/oss/javascript/deepagents/models) — configure model providers and parameters
+* [Models](/oss/javascript/deepagents/models)—configure model providers and parameters
 
-* [Customization](/oss/javascript/deepagents/customization) — full `createDeepAgent` configuration surface
+* [Customization](/oss/javascript/deepagents/customization)—full `createDeepAgent` configuration surface
 
 ***
 

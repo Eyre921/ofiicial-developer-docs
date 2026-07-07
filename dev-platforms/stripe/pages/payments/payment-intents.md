@@ -141,7 +141,6 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=1099 \
   -d currency=usd \
-  -d "payment_method_types[]=card" \
   -d "statement_descriptor_suffix=Custom descriptor"
 ```
 
@@ -168,7 +167,6 @@ curl https://api.stripe.com/v1/payment_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d amount=1099 \
   -d currency=usd \
-  -d "payment_method_types[]=card" \
   -d "metadata[order_id]=6735"
 ```
 

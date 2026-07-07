@@ -6,7 +6,7 @@ path: docs/fine-tuning/pricing
 
 Fine-tuning is billed per token processed, scaled by model size, training method, and training type.
 
-Together AI bills fine-tuning by the total number of tokens processed across training and validation. The per-token rate depends on three factors: the model size bracket, the training method (supervised or DPO), and the training type (LoRA or full fine-tuning). For current rates, see the [together.ai/pricing](https://www.together.ai/pricing#fine-tuning).
+Together AI bills fine-tuning by the total number of tokens processed across training and validation. The per-token rate depends on three factors: the model size bracket, the training method (supervised or DPO), and the training type (LoRA or full fine-tuning). For current rates, see [together.ai/pricing](https://www.together.ai/pricing#fine-tuning).
 
 After training, hosting on a [dedicated endpoint](/docs/fine-tuning/deployment) is billed separately by the minute.
 

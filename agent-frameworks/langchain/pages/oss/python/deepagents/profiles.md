@@ -65,15 +65,15 @@ register_harness_profile(
 </Note>
 
 <Warning>
-  To run an agent without the `task` tool, see [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents) — set `general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)` and pass no synchronous subagents via `subagents=`. `SubAgentMiddleware` (and the `task` tool) is only attached when at least one synchronous subagent exists, so this configuration leaves it out cleanly. Async subagents are unaffected.
+  To run an agent without the `task` tool, see [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)—set `general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)` and pass no synchronous subagents via `subagents=`. `SubAgentMiddleware` (and the `task` tool) is only attached when at least one synchronous subagent exists, so this configuration leaves it out cleanly. Async subagents are unaffected.
 
-  Listing `FilesystemMiddleware`, `SubAgentMiddleware`, or the internal permission middleware in `excluded_middleware` raises a `ValueError` — they're required scaffolding in the [default middleware stack](/oss/python/deepagents/customization#default-stack-main-agent). To hide their tools from the model without removing the middleware, use `excluded_tools` instead — see [Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access).
+  Listing `FilesystemMiddleware`, `SubAgentMiddleware`, or the internal permission middleware in `excluded_middleware` raises a `ValueError`—they're required scaffolding in the [default middleware stack](/oss/python/deepagents/customization#default-stack-main-agent). To hide their tools from the model without removing the middleware, use `excluded_tools` instead—see [Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access).
 </Warning>
 
 Entries in `excluded_middleware` accept two forms:
 
 * A middleware *class* (matched by exact type), or a plain string that matches `AgentMiddleware.name`. Use plain strings for built-ins and public aliases such as `"SummarizationMiddleware"`.
-* An `module:Class` import ref (for example, `"my_pkg.middleware:TelemetryMiddleware"`) to target an exact middleware class from a config file. Import refs resolve lazily, so use them only for trusted local configuration — loading one imports Python code.
+* An `module:Class` import ref (for example, `"my_pkg.middleware:TelemetryMiddleware"`) to target an exact middleware class from a config file. Import refs resolve lazily, so use them only for trusted local configuration—loading one imports Python code.
 
 <Accordion title="Lookup order for preconfigured model instances">
   When you pass a preconfigured chat model instance instead of a `provider:model` string, the harness synthesizes the canonical `provider:identifier` key from the instance and looks it up in this order:
@@ -87,8 +87,8 @@ Entries in `excluded_middleware` accept two forms:
 
 Both profile types use the same key format:
 
-* **Provider-level** — a bare provider name like `"openai"` applies to every model from that provider.
-* **Model-level** — a fully qualified `provider:model` key like `"openai:gpt-5.5"` applies only to that specific model.
+* **Provider-level**—a bare provider name like `"openai"` applies to every model from that provider.
+* **Model-level**—a fully qualified `provider:model` key like `"openai:gpt-5.5"` applies only to that specific model.
 
 When both a provider-level and a model-level profile exist, they are merged at resolution time. Unset model-level fields inherit from the provider-level profile; explicit model-level values override them.
 
@@ -139,7 +139,7 @@ register_provider_profile(
 
 ## Load profiles from config files
 
-For YAML/JSON-backed workflows, use `HarnessProfileConfig`. It mirrors the declarative subset of `HarnessProfile` (prompt text, tool-description overrides, excluded tools and middleware, general-purpose subagent edits) and owns `to_dict` / `from_dict`. Runtime-only state — middleware instances, factories, and class-form `excluded_middleware` entries — stays on `HarnessProfile`.
+For YAML/JSON-backed workflows, use `HarnessProfileConfig`. It mirrors the declarative subset of `HarnessProfile` (prompt text, tool-description overrides, excluded tools and middleware, general-purpose subagent edits) and owns `to_dict` / `from_dict`. Runtime-only state—middleware instances, factories, and class-form `excluded_middleware` entries—stays on `HarnessProfile`.
 
 `register_harness_profile` accepts either type, so config-backed callers don't need a manual conversion step:
 
@@ -171,7 +171,7 @@ with open("openai.yaml") as f:
 To go the other direction, `HarnessProfileConfig.from_harness_profile(...)` exports a runtime profile back to the declarative shape when it only uses serializable features:
 
 * Class-form `excluded_middleware` entries serialize as a public alias (when the class exposes one via `serialized_name: ClassVar[str]`) or as a `module:Class` import ref.
-* Non-empty `extra_middleware` and middleware classes declared in `__main__` or inside a function scope cannot be serialized — export raises `ValueError`.
+* Non-empty `extra_middleware` and middleware classes declared in `__main__` or inside a function scope cannot be serialized—export raises `ValueError`.
 
 ## Ship a profile as a plugin
 
@@ -214,9 +214,9 @@ def register_provider() -> None:
 
 ## Related
 
-* [Harness Overview](/oss/python/deepagents/overview) — harness capabilities overview
-* [Models](/oss/python/deepagents/models) — configure model providers and parameters
-* [Customization](/oss/python/deepagents/customization) — full `create_deep_agent` configuration surface
+* [Harness Overview](/oss/python/deepagents/overview)—harness capabilities overview
+* [Models](/oss/python/deepagents/models)—configure model providers and parameters
+* [Customization](/oss/python/deepagents/customization)—full `create_deep_agent` configuration surface
 
 ***
 

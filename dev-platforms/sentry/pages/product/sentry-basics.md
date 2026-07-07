@@ -31,8 +31,7 @@ Set up your [GitHub](https://docs.sentry.io/integrations/source-code-mgmt/github
 
 Alerts make sure the right people know when things go wrong. Sentry supports:
 
-* **[Issue alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md)** — notify on new errors, regressions, or error spikes
-* **[Metric alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md)** — trigger on thresholds like error rate, latency, or crash-free session rate
+* **[Alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md)** — notify on new errors, regressions, error spikes, or when thresholds like error rate, latency and crash-free session rate are crossed
 * **[Uptime monitors](https://docs.sentry.io/product/monitors-and-alerts/monitors/uptime-monitoring.md)** — watch your endpoints for downtime
 * **[Cron monitors](https://docs.sentry.io/product/monitors-and-alerts/monitors/crons.md)** — track scheduled jobs for failures or missed runs
 

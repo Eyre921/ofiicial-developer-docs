@@ -30,9 +30,44 @@ Netlify offers an [MCP server](https://github.com/netlify/netlify-mcp), which yo
 
 Learn more about [Netlify's MCP server](https://github.com/netlify/netlify-mcp).
 
-For specific guidance on connecting to Netlify's remote MCP server, check your agent setup guide or MCP server directory or marketplace.
+For general guidance on connecting to Netlify's remote MCP server, see the section below. For agent-specific instructions, check your agent setup guide or MCP server directory or marketplace.
 
 For example, you can find Netlify in [Cursor's marketplace](https://cursor.com/marketplace/netlify) or in [Claude's Connector Directory](https://claude.com/connectors/netlify).
+
+### Connect to Netlify's remote MCP server
+
+Netlify's remote MCP server is hosted at `https://netlify-mcp.netlify.app/mcp`.
+
+To start connecting to Netlify's remote MCP server, you can copy this basic instruction and share it with your AI agent:
+
+```
+mcp add https://netlify-mcp.netlify.app/mcp
+```
+
+Note that your AI agent or tool may have its own official setup command. For example, Claude Code uses this command:
+
+```
+claude mcp add --transport http netlify https://netlify-mcp.netlify.app/mcp
+```
+
+### One-click setup
+
+Your AI agent tool may have a one-click setup path. Check the following for how to do that:
+- docs for your AI agent or tool
+- our agent setup guides, such as [Set up Claude Code for Netlify](/build/build-with-ai/agent-setup-guides/set-up-claude-code-for-netlify/)
+- [Quick setup for code editors](#quick-setup-for-code-editors)
+
+### Manual setup with JSON
+
+To manually connect to Netlify's remote MCP Server with a `.json` file, check out our [manual setup docs](#connect-to-mcp-server-with-json-file) for an example.
+
+### Connect to Netlify's MCP server locally
+
+If remote MCP servers are blocked in your environment, you can run the local MCP server instead with this command:
+
+```
+npx -y @netlify/mcp
+```
 
 ### Quick setup for Code Editors
 
@@ -92,7 +127,7 @@ Here are some highlights of agent skills for building and deploying on Netlify. 
 | [netlify-db](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-db) | [Netlify Database](/build/data-and-storage/netlify-database/) | Managed Postgres, Drizzle ORM integration, and migrations |
 | [netlify-image-cdn](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-image-cdn) | [Image CDN](/build/image-cdn/overview/) | On-the-fly image transformation and optimization |
 | [netlify-forms](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-forms) | [Netlify Forms](/manage/forms/setup/) | HTML form handling, AJAX submissions, and spam filtering |
-| [netlify-config](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-config) | [File-based configuration](/build/configure-builds/file-based-configuration/) | `netlify.toml` configuration - redirects, headers, build settings, and deploy contexts |
+| [netlify-config](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-config) | [File-based configuration](/build/configure-builds/file-based-configuration/) | `netlify.toml` configuration, including redirects, headers, build settings, and deploy contexts |
 | [netlify-cli-and-deploy](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-cli-and-deploy) | [Netlify CLI](/api-and-cli-guides/cli-guides/get-started-with-cli/) | Commands, Git and manual deploys, and environment variables |
 | [netlify-deploy](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-deploy) | [Create deploys](/deploy/create-deploys/) | Authentication, site linking, Deploy Previews, and production deploys |
 | [netlify-frameworks](https://github.com/netlify/context-and-tools/tree/main/skills/netlify-frameworks) | [Framework adapters](/build/frameworks/frameworks-api/) | Vite, Astro, TanStack Start, and Next.js on Netlify |

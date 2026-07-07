@@ -43,7 +43,9 @@ Select the billing mode that fits your needs:
 
 **Region**
 
-* Select the datacenter region closest to your data or team
+* Defaults to **Any region**. Together assigns the region with the most available capacity for your selected GPU type when you create the cluster.
+* Select a specific datacenter region instead if you need the cluster in a particular location.
+* Changing the GPU type resets the region to **Any region** and clears any selected shared volume, because volumes are region-specific.
 
 **Duration** (Reserved only)
 

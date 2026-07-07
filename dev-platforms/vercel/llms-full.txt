@@ -767,6 +767,7 @@ The table below shows a list of events logged on the Activity page.
 | team-name-update | Active | The name of a team was updated. |
 | team-paid-invoice | Active | A team invoice was paid. |
 | team-program-enrollment-changed | Active | Program enrollment was updated for a team. |
+| team-remote-caching-purge | Active | All Remote Cache artifacts were deleted. |
 | team-remote-caching-update | Active | The Remote Caching status was changed. |
 | team-saml-enforced | Active | SAML enforcement was configured for a team. |
 | team-saml-roles | Active | SAML roles were configured for a team. |
@@ -2961,7 +2962,7 @@ The Vercel plugin gives [supported AI coding tools](#supported-tools) Vercel-spe
 
 ### Prerequisites
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenAI Codex](https://openai.com/codex), [Grok Build](https://x.ai/news/grok-build-cli), [Cursor](https://www.cursor.com), or [GitHub Copilot](https://github.com/features/copilot)
+- [Claude Code](https://docs.anthropic.com/en/docs/claude-code), [OpenAI Codex](https://openai.com/codex), [Grok Build](https://x.ai/news/grok-build-cli), [Cursor](https://www.cursor.com), [GitHub Copilot](https://github.com/features/copilot), or [Kimi Code](https://kimi.com)
 - Node.js 18 or later
 - [Bun](https://bun.sh)
 
@@ -3001,6 +3002,7 @@ After installation, session context is injected automatically only for empty dir
 | [Grok Build](https://x.ai/news/grok-build-cli)                 | Supported   |
 | [Cursor](https://www.cursor.com)                              | Supported   |
 | [GitHub Copilot](https://github.com/features/copilot)          | Supported   |
+| [Kimi Code](https://kimi.com)                                  | Supported   |
 
 ## How it works
 
@@ -4418,35 +4420,46 @@ Configure Codex to use AI Gateway through its configuration file for persistent 
 - ### Set up the Codex config file
   Open `~/.codex/config.toml` and add the following:
   ```toml filename="~/.codex/config.toml"
+  model_provider = "vercel"
+  model = "openai/gpt-5.5"
+
   [model_providers.vercel]
   name = "Vercel AI Gateway"
   base_url = "https://ai-gateway.vercel.sh/v1"
   env_key = "AI_GATEWAY_API_KEY"
-  wire_api = "responses"
-
-  [profiles.vercel]
-  model_provider = "vercel"
-  model = "openai/gpt-5.5"
   ```
   The configuration above:
   - Sets up a model provider named `vercel` that points to the AI Gateway
   - References your `AI_GATEWAY_API_KEY` environment variable
-  - Creates a `vercel` profile that uses the Vercel provider
+  - Sets the `vercel` provider as the default for all sessions
   - Specifies `openai/gpt-5.5` as the default model
-  - Uses `wire_api = "responses"` for the OpenAI Responses API format
 
 - ### Run Codex
-  Start Codex with the `vercel` profile:
+  Start Codex:
   ```bash
-  codex --profile vercel
+  codex
   ```
   Vercel AI Gateway routes your requests. To confirm, check your [AI Gateway Overview](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) in the Vercel dashboard.
+
+- ### (Optional) Enable WebSocket streaming
+  Codex can stream Responses API traffic over a persistent WebSocket connection, reducing per-turn latency. Enable it in your config:
+  ```toml filename="~/.codex/config.toml"
+  [features]
+  responses_websockets_v2 = true
+
+  [model_providers.vercel]
+  name = "Vercel AI Gateway"
+  base_url = "https://ai-gateway.vercel.sh/v1"
+  env_key = "AI_GATEWAY_API_KEY"
+  supports_websockets = true
+  ```
+  > **💡 Note:** WebSocket streaming is available for OpenAI models such as `openai/gpt-5.5`.
+  > Other models return a `Model <name> is not available over WebSocket` error,
+  > so remove `supports_websockets = true` when switching to a non-OpenAI model.
 
 - ### (Optional) Use a different model
   To use a different model, update the `model` field in your config:
   ```toml filename="~/.codex/config.toml"
-  [profiles.vercel]
-  model_provider = "vercel"
   model = "anthropic/claude-sonnet-4.6"
   # Or try other models:
   # model = "google/gemini-3.1-flash-lite-preview"
@@ -4457,35 +4470,23 @@ Configure Codex to use AI Gateway through its configuration file for persistent 
   > gateway handles model routing.
 
 - ### (Optional) Define multiple profiles
-  Add each profile to your config file:
-  ```toml filename="~/.codex/config.toml"
-  [model_providers.vercel]
-  name = "Vercel AI Gateway"
-  base_url = "https://ai-gateway.vercel.sh/v1"
-  env_key = "AI_GATEWAY_API_KEY"
-  wire_api = "responses"
-
-  [profiles.vercel]
-  model_provider = "vercel"
-  model = "openai/gpt-5.5"
-
-  [profiles.fast]
-  model_provider = "vercel"
+  Profiles let you switch models from the CLI. Create a file named `~/.codex/<profile-name>.config.toml` for each profile, using top-level keys for the values that differ from your base config:
+  ```toml filename="~/.codex/fast.config.toml"
   model = "openai/gpt-5.4-nano"
-
-  [profiles.reasoning]
-  model_provider = "vercel"
-  model = "openai/gpt-5.5-pro"
-
-  [profiles.claude]
-  model_provider = "vercel"
+  ```
+  ```toml filename="~/.codex/claude.config.toml"
   model = "anthropic/claude-sonnet-4.6"
   ```
+  Codex loads `~/.codex/config.toml` first, then overlays the profile file, so `model_provider = "vercel"` is inherited from your base config.
+
   Switch between profiles using the `--profile` flag:
   ```bash
-  codex --profile vercel
+  codex --profile fast
   codex --profile claude
   ```
+  > **💡 Note:** Codex 0.134.0 and later no longer reads `[profiles.<name>]` tables or the
+  > `profile` selector from `config.toml`. If you have legacy profile tables,
+  > move each one into its own `~/.codex/<profile-name>.config.toml` file.
 
 
 --------------------------------------------------------------------------------
@@ -12173,55 +12174,6 @@ You can view the available models for a provider
 in the [**Model List**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway%2Fmodels\&title=Go+to+Model+List) section under
 the [**AI Gateway**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fai-gateway\&title=Go+to+AI+Gateway) section in your Vercel dashboard sidebar
 or in the public [models page](https://vercel.com/ai-gateway/models).
-
-| **Slug**     | **Name**          | **Website**                                                      |
-| ------------ | ----------------- | ---------------------------------------------------------------- |
-| `alibaba`    | Alibaba Cloud     | [alibabacloud.com](https://www.alibabacloud.com)                 |
-| `anthropic`  | Anthropic         | [anthropic.com](https://anthropic.com)                           |
-| `arcee-ai`   | Arcee AI          | [arcee.ai](https://arcee.ai)                                     |
-| `azure`      | Azure             | [ai.azure.com](https://ai.azure.com/)                            |
-| `baseten`    | Baseten           | [baseten.co](https://www.baseten.co/)                            |
-| `bedrock`    | Amazon Bedrock    | [aws.amazon.com/bedrock](https://aws.amazon.com/bedrock)         |
-| `bfl`        | Black Forest Labs | [bfl.ai](https://bfl.ai/)                                        |
-| `blackbox`   | Blackbox          | [blackbox.ai](https://www.blackbox.ai)                           |
-| `bytedance`  | ByteDance         | [byteplus.com](https://www.byteplus.com/en)                      |
-| `cerebras`   | Cerebras          | [cerebras.net](https://www.cerebras.net)                         |
-| `claudeaws`  | Claude Platform on AWS | [aws.amazon.com/claude-platform](https://aws.amazon.com/claude-platform/) |
-| `cohere`     | Cohere            | [cohere.com](https://cohere.com)                                 |
-| `crusoe`     | Crusoe            | [crusoe.ai](https://crusoe.ai)                                   |
-| `deepinfra`  | DeepInfra         | [deepinfra.com](https://deepinfra.com)                           |
-| `deepseek`   | DeepSeek          | [deepseek.ai](https://deepseek.ai)                               |
-| `fireworks`  | Fireworks         | [fireworks.ai](https://fireworks.ai)                             |
-| `google`     | Google            | [ai.google.dev](https://ai.google.dev/)                          |
-| `groq`       | Groq              | [groq.com](https://groq.com)                                     |
-| `inception`  | Inception         | [inceptionlabs.ai](https://inceptionlabs.ai)                     |
-| `inceptron`  | Inceptron         | [inceptron.io](https://inceptron.io)                             |
-| `interfaze`  | Interfaze         | [interfaze.ai](https://interfaze.ai)                             |
-| `klingai`    | Kling AI          | [klingai.com/](http://klingai.com/)                              |
-| `meituan`    | Meituan           | [longcat.ai](https://longcat.ai/)                                |
-| `minimax`    | MiniMax           | [minimax.io](https://www.minimax.io/)                            |
-| `mistral`    | Mistral           | [mistral.ai](https://mistral.ai)                                 |
-| `moonshotai` | Moonshot AI       | [moonshot.ai](https://www.moonshot.ai)                           |
-| `morph`      | Morph             | [morphllm.com](https://morphllm.com)                             |
-| `nebius`     | Nebius            | [nebius.com](https://nebius.com)                                 |
-| `novita`     | Novita            | [novita.ai](https://novita.ai/)                                  |
-| `openai`     | OpenAI            | [openai.com](https://openai.com)                                 |
-| `parasail`   | Parasail          | [parasail.io](https://www.parasail.io)                           |
-| `perplexity` | Perplexity        | [perplexity.ai](https://www.perplexity.ai)                       |
-| `prodia`     | Prodia            | [prodia.com](https://www.prodia.com)                             |
-| `quiverai`   | QuiverAI          | [quiver.ai](https://quiver.ai)                                   |
-| `recraft`    | Recraft           | [recraft.ai](https://www.recraft.ai)                             |
-| `sakana`     | Sakana AI         | [sakana.ai](https://sakana.ai)                                   |
-| `sambanova`  | SambaNova         | [sambanova.ai](https://sambanova.ai/)                            |
-| `stepfun`    | StepFun           | [platform.stepfun.ai](https://platform.stepfun.ai)               |
-| `streamlake` | StreamLake        | [streamlake.ai](https://streamlake.ai/)                          |
-| `togetherai` | Together AI       | [together.ai](https://together.ai/)                              |
-| `vertex`     | Vertex AI         | [cloud.google.com/vertex-ai](https://cloud.google.com/vertex-ai) |
-| `voyage`     | Voyage AI         | [voyageai.com](https://www.voyageai.com)                         |
-| `wafer`      | Wafer             | [wafer.ai](https://wafer.ai/)                                    |
-| `xiaomi`     | Xiaomi            | [mimo.xiaomi.com](https://mimo.xiaomi.com)                       |
-| `xai`        | xAI               | [x.ai](https://x.ai)                                             |
-| `zai`        | Z.ai              | [z.ai](https://z.ai/model-api)                                   |
 
 > **💡 Note:** Provider availability may vary by model. Some models may only be available
 > through specific providers or may have different capabilities depending on the
@@ -28578,6 +28530,8 @@ When new AI bots emerge, Vercel automatically adds them to its managed list and 
 
 ### Enable the ruleset
 
+The ruleset is **inactive by default**. In the dashboard this is labeled **Allow**. Matching traffic is not evaluated and reaches your application.
+
 You can apply the ruleset to your project in [log](/docs/vercel-firewall/firewall-concepts#log) or [deny](/docs/vercel-firewall/firewall-concepts#deny) mode. Learn how to [configure the AI bots managed ruleset](/docs/vercel-waf/managed-rulesets#configure-ai-bots-managed-ruleset).
 
 ## Verified bots
@@ -43534,14 +43488,14 @@ vercel whoami
 
 --------------------------------------------------------------------------------
 title: "vercel project"
-description: "Perform the following commands from the terminal for your Vercel Projects: list, add, inspect, rename, remove, and configure access, checks, protection, analytics."
+description: "Perform the following commands from the terminal for your Vercel Projects: list, add, inspect, update settings, rename, remove, and configure access, checks, protection, analytics."
 last_updated: "2018-10-20T01:46:40.000Z"
 source: "https://vercel.com/docs/cli/project"
 --------------------------------------------------------------------------------
 
 # vercel project
 
-The `vercel project` command manages your Vercel Projects from the terminal: list, add, inspect, rename, and remove projects, plus configure deployment checks, deployment protection, access groups, member access, Web Analytics, Speed Insights, and project-scoped OIDC tokens.
+The `vercel project` command manages your Vercel Projects from the terminal: list, add, inspect, update, rename, and remove projects, plus configure framework and build settings, deployment checks, deployment protection, access groups, member access, Web Analytics, Speed Insights, and project-scoped OIDC tokens.
 
 `vercel projects` is an alias for the same command.
 
@@ -43619,6 +43573,42 @@ vercel project inspect
 
 # Inspect a project by name
 vercel project inspect my-project
+```
+
+### `update`
+
+Aliases: `set`.
+
+Update the framework preset and build settings for a project. Only the settings you pass are changed; omitted settings remain unchanged. Defaults to the linked project. At least one setting option is required.
+
+```bash filename="terminal"
+vercel project update [name] [options]
+```
+
+#### Options
+
+| Option                        | Description                                                                                                                       |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `--framework <SLUG>`          | Set the framework preset by slug (for example `nextjs`). Use `other` to clear the preset.                                          |
+| `--build-command <COMMAND>`   | Set the build command.                                                                                                             |
+| `--dev-command <COMMAND>`     | Set the development command.                                                                                                       |
+| `--install-command <COMMAND>` | Set the install command.                                                                                                           |
+| `--output-directory <DIR>`    | Set the output directory.                                                                                                          |
+| `--auto-detect <SETTING>`     | Reset a setting to automatic detection: `build-command`, `dev-command`, `install-command`, or `output-directory`. Repeat the flag or pass a comma-separated list. Can't be combined with the explicit flag for the same setting. |
+| `--format`                    | Output format. Supports `json`.                                                                                                    |
+
+#### Examples
+
+```bash filename="terminal"
+vercel project update --framework nextjs
+
+vercel project update my-project --framework vite
+
+vercel project update my-project --build-command "pnpm build" --output-directory dist
+
+vercel project update my-project --auto-detect build-command --auto-detect output-directory
+
+vercel project update my-project --framework other --format json
 ```
 
 ### `rename`
@@ -84405,6 +84395,7 @@ The same [limits](/docs/functions/limitations) and [Active CPU pricing model](/d
 
 - [Vercel Functions](/docs/functions)
 - [Vercel Container Registry](/docs/container-registry)
+- [Container Images Demo template](https://vercel.com/templates/container-images/container-images-demo)
 
 
 --------------------------------------------------------------------------------
@@ -94584,7 +94575,12 @@ This has the same effect as undoing from the dashboard: it promotes the specifie
 ## Who can roll back deployments?
 
 - **Hobby** plan: On the hobby plan you can roll back to the previous deployment
-- **Pro** and **Enterprise** plan: Owners and Members on these plans can roll back to any [eligible deployment](#eligible-deployments).
+- **Pro** and **Enterprise** plan: Owners, Members, and Developers on these plans can roll back to any [eligible deployment](#eligible-deployments).
+
+Rollback can also be initiated by:
+
+- A [Project Administrator](/docs/rbac/access-roles#project-administrators) on a given project
+- Anyone with the [**Full Production Deployment**](/docs/rbac/access-roles/extended-permissions#full-production-deployment) permission set on an [access group](/docs/rbac/access-groups)
 
 ## Eligible deployments
 
@@ -99517,6 +99513,7 @@ The following table lists all API rate limits that apply when using the [Vercel 
 | Requests per minute to fetch the microfrontends config for a team. | 30 | 60 | `owner` |
 | Requests per minute to fetch the deployment of the best default app. | 30 | 60 | `owner` |
 | Artifacts requests per minute (Paid). | 10000 | 60 | `owner` |
+| Remote Cache purge requests per minute. | 5 | 60 | `owner` |
 | Project production deployment per minute. | 500 | 60 | `user` |
 | Project expiration updates per minute. | 100 | 60 | `owner` |
 | Project expiration lock requests per minute. | 200 | 60 | `owner` |
@@ -135736,6 +135733,8 @@ When you delete or update (overwrite) a blob, the changes may take up to 60 seco
 />
 ```
 
+For private blobs served through your [Functions](/docs/functions), your server code can skip the propagation delay entirely and read the latest version with [`useCache: false`](/docs/vercel-blob/private-storage#consistent-reads).
+
 For more information about updating existing blobs, see the [overwriting blobs](#overwriting-blobs) section.
 
 ### Best practice: Treat blobs as immutable
@@ -135774,7 +135773,7 @@ Overwriting blobs can be appropriate for certain use cases:
 1. **Regularly updated files**: For files that need to maintain the same URL but contain updated content (like JSON data files or configuration files)
 2. **Content with predictable update patterns**: For data that changes on a schedule and where consumers expect updates at the same URL
 
-When overwriting blobs, be aware that due to [caching](#caching), changes won't be immediately visible. The minimum time for changes to propagate is 60 seconds, and browser caches may need to be explicitly refreshed.
+When overwriting blobs, be aware that due to [caching](#caching), changes won't be immediately visible. The minimum time for changes to propagate is 60 seconds, and browser caches may need to be explicitly refreshed. For private blobs, you can read the latest version immediately by passing [`useCache: false`](/docs/vercel-blob/private-storage#consistent-reads) to `get()`.
 
 ### Alternatives to overwriting
 
@@ -136281,6 +136280,16 @@ return new NextResponse(result.stream, {
 ```
 
 For sensitive data (tokens, banking, PII), use `Cache-Control: private, no-store` instead. Nothing is stored on disk and every request is a full fetch.
+
+### Consistent reads
+
+Reads are eventually consistent by default due to [caching](/docs/vercel-blob#caching): after you overwrite a blob at the same pathname, [`get()`](/docs/vercel-blob/using-blob-sdk#get) can briefly return the previous version. When a read must reflect the latest write — for example, fetching a file right after updating it — pass `useCache: false`:
+
+```ts
+const result = await get(pathname, { access: 'private', useCache: false });
+```
+
+This guarantees the latest content by serving the read directly from origin storage. These reads are slower and incur [Fast Origin Transfer](/docs/pricing/networking#fast-origin-transfer) on each request, so keep the default for content that doesn't change after upload, such as blobs uploaded with unique pathnames or random suffixes.
 
 ### Browser caching with conditional requests
 
@@ -137268,6 +137277,7 @@ It accepts the following parameters:
 | `oidcToken`   | No       | A Vercel OIDC token, used in place of `process.env.VERCEL_OIDC_TOKEN`. Pair with `storeId` (or `BLOB_STORE_ID`). Useful when your framework does not load `.env.local` into `process.env` automatically. See [Authentication](#authentication). |
 | `storeId`     | No       | The Blob store id, used with OIDC. Defaults to `process.env.BLOB_STORE_ID`. The SDK accepts either `store_<id>` or `<id>` form. See [Authentication](#authentication). |
 | `ifNoneMatch` | No       | An ETag value. When the blob's current ETag matches, returns `statusCode: 304` with `stream: null` instead of the full response. See [browser caching with conditional requests](/docs/vercel-blob/private-storage#browser-caching-with-conditional-requests) for a full example. |
+| `useCache`    | No       | Set to `false` to guarantee the read returns the latest version of the blob, at the cost of slower reads. Defaults to `true`. See [Consistent reads](/docs/vercel-blob/private-storage#consistent-reads).                                                     |
 | `headers`     | No       | Additional headers to include in the fetch request. The authorization header is set automatically.                                                                                                                                                                                |
 | `abortSignal` | No       | An [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal) to cancel the operation                                                                                                                                                                            |
 
@@ -150824,6 +150834,23 @@ source: "https://vercel.com/docs/rest-api/artifacts/query-information-about-an-a
 Query information about an array of artifacts.
 
 Full reference: https://vercel.com/docs/md/rest-api/artifacts/query-information-about-an-artifact
+
+--------------------------------------------------------------------------------
+title: "Delete all cache artifacts"
+description: "DELETE /v8/artifacts — Deletes all cache artifacts stored for the authenticated team or user, clearing the Remote Cache. Subsequent builds will re-populate the cache."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/artifacts/delete-all-cache-artifacts"
+--------------------------------------------------------------------------------
+
+# Delete all cache artifacts
+
+`DELETE /v8/artifacts`
+
+**Authentication**: Bearer token
+
+Deletes all cache artifacts stored for the authenticated team or user, clearing the Remote Cache. Subsequent builds will re-populate the cache.
+
+Full reference: https://vercel.com/docs/md/rest-api/artifacts/delete-all-cache-artifacts
 
 --------------------------------------------------------------------------------
 title: "List FOCUS billing charges"

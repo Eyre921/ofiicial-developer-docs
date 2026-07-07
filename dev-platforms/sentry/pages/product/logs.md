@@ -113,7 +113,7 @@ Instead of jumping between different tools and trying to correlate timestamps, t
 
 ## [Log-based Alerts and Dashboard widgets](https://docs.sentry.io/product/logs.md#log-based-alerts-and-dashboard-widgets)
 
-You can create [Alert rules](https://docs.sentry.io/product/monitors-and-alerts/alerts.md) and [dashboard widgets](https://docs.sentry.io/product/dashboards/widget-builder.md) based on your log queries.
+You can create [Alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md) and [dashboard widgets](https://docs.sentry.io/product/dashboards/widget-builder.md) based on your log queries.
 
 Learn more about [Alerts](https://docs.sentry.io/product/monitors-and-alerts/alerts.md) and [custom dashboards](https://docs.sentry.io/product/dashboards/custom-dashboards.md).
 

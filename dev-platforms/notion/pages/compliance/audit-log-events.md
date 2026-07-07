@@ -288,6 +288,7 @@ Events are split into the following categories:
 * **”Guest can create private pages” toggled for the organization**: That the guest private page creation setting was toggled for an organization.
 * **“People cards” toggled for the organization**: That the people hover card setting was toggled for an organization.
 * **“People directory” toggled for the organization**: That the people directory setting was toggled for an organization.
+* **“Workspace support access consent” toggled for the organization**: That the workspace support access consent setting was toggled for an organization.
 * **A managed user was logged out by an admin**: That an admin has logged out a single managed user account in the organization.
 * **A managed user’s password was cleared by an admin**: That an admin has cleared a single managed user account's password in the organization.
 * **Ability for managed users to edit their profile information updated**: That the ability for managed users to edit their profile information was updated for an organization.

@@ -633,6 +633,7 @@ SKILLS_BY_ROLE = {
     "support": ["/skills/ticket-triage/", "/skills/runbook/"],
 }
 
+
 def create_agent_for_user(user_role: str):
     return create_deep_agent(
         model="anthropic:claude-sonnet-4-6",

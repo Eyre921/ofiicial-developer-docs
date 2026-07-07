@@ -9,7 +9,7 @@ Choose between polling and cursor-driven Activity Feed consumption, correlate Co
 ---
 
 <Note>
-  To enable the Compliance API, see [Get access to the Compliance API](/docs/en/manage-claude/compliance-api-access).
+  To enable the Compliance API, see [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access).
 </Note>
 
 <Check>
@@ -164,4 +164,4 @@ For chain of custody, store the exported records with provenance metadata: sourc
 
 ---
 
-# Get access to the Compliance API
+# Handle Compliance API errors

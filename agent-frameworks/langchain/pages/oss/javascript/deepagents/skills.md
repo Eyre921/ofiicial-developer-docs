@@ -101,7 +101,7 @@ Skills help you avoid context bloat by loading only summaries at startup and rea
   <Step title="Pass the skills path when creating your agent">
     Pass the path to your top-level skills directory in the `skills` argument when creating your agent:
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { createDeepAgent, FilesystemBackend } from "deepagents";
 
     const backend = new FilesystemBackend({ rootDir: process.cwd() });
@@ -135,7 +135,7 @@ Skills help you avoid context bloat by loading only summaries at startup and rea
   <Step title="Invoke the agent">
     Send a task to the agent with `invoke()`. At startup, the agent loads each skill's [`name`](#frontmatter-fields) and [`description`](#frontmatter-fields) from [frontmatter](#frontmatter-fields) into the system prompt. When your task matches a skill's description, the agent reads that skill's `SKILL.md` and follows its instructions.
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const result = await agent.invoke(
       { messages: [{ role: "user", content: "What is LangGraph?" }] },
       { configurable: { thread_id: "1" } },
@@ -434,12 +434,20 @@ When you have a large collection of skills but only a subset is relevant for a g
 
 The simplest approach is to construct the `skills` array before creating the agent. Choose which skill paths to include based on whatever runtime context you have:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const SKILLS_BY_ROLE: Record<string, string[]> = {
-  engineering: ["/skills/code-review/", "/skills/testing/", "/skills/deployment/"],
-  data: ["/skills/sql-analysis/", "/skills/visualization/", "/skills/data-pipeline/"],
+  engineering: [
+    "/skills/code-review/",
+    "/skills/testing/",
+    "/skills/deployment/",
+  ],
+  data: [
+    "/skills/sql-analysis/",
+    "/skills/visualization/",
+    "/skills/data-pipeline/",
+  ],
   support: ["/skills/ticket-triage/", "/skills/runbook/"],
 };
 
@@ -478,7 +486,7 @@ This works well when skills live on disk or in a shared backend and you just nee
 
 For multi-tenant applications where each user's skill set is managed independently, route `/skills/` to a [StoreBackend](https://reference.langchain.com/javascript/deepagents/backends/StoreBackend) with a namespace factory. Populate each namespace with only the skills that user should have access to, and the middleware resolves to the correct set at runtime:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -489,16 +497,13 @@ import {
 const agent = await createDeepAgent({
   model: "anthropic:claude-sonnet-4-6",
   skills: ["/skills/"],
-  backend: new CompositeBackend({
-    default: new StateBackend(),
-    routes: {
-      "/skills/": new StoreBackend({
-        namespace: (ctx) => [
-          ctx.assistantId ?? "default",
-          ctx.config?.configurable?.user_id ?? "anonymous",
-        ],
-      }),
-    },
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (ctx) => [
+        ctx.assistantId ?? "default",
+        ctx.config?.configurable?.user_id ?? "anonymous",
+      ],
+    }),
   }),
 });
 ```
@@ -514,19 +519,21 @@ When you use [subagents](/oss/javascript/deepagents/subagents), you can configur
 
 Skill state is fully isolated: the main agent's skills are not visible to subagents, and subagent skills are not visible to the main agent.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
 const researchSubagent = {
   name: "researcher",
   description: "Research assistant with specialized skills",
   systemPrompt: "You are a researcher.",
   tools: [webSearch],
-  skills: ["/skills/research/", "/skills/web-search/"],  // Subagent-specific skills
+  skills: ["/skills/research/", "/skills/web-search/"], // Subagent-specific skills
 };
 
 const agent = await createDeepAgent({
   model: "google_genai:gemini-3.5-flash",
-  skills: ["/skills/main/"],  // Main agent and GP subagent get these
-  subagents: [researchSubagent],  // Researcher gets only its own skills
+  skills: ["/skills/main/"], // Main agent and GP subagent get these
+  subagents: [researchSubagent], // Researcher gets only its own skills
 });
 ```
 
@@ -780,7 +787,7 @@ Use this for enterprise knowledge bases, approved tool instructions, or shared s
 
 If agents may write to skill files but you want a human in the loop first, use either [`interrupt_on`](/oss/javascript/deepagents/human-in-the-loop) or a permission rule with `mode="interrupt"`. Both pause before `write_file` or `edit_file` runs and use the same resume flow.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createDeepAgent } from "deepagents";
 
@@ -808,7 +815,7 @@ By default, agents can write to skill files if the backend permits it and no per
 2. Pass that path (along with any shared paths) in `skills`.
 3. Do not add a `deny` rule for the writable path. Place more specific rules before broader deny rules if you mix shared and personal paths ([rule ordering](/oss/javascript/deepagents/permissions#rule-ordering)).
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -818,19 +825,16 @@ import {
 
 const agent = await createDeepAgent({
   model: "anthropic:claude-sonnet-4-6",
-  backend: new CompositeBackend({
-    default: new StateBackend(),
-    routes: {
-      "/skills/shared/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
-      "/skills/personal/": new StoreBackend({
-        namespace: (ctx) => [
-          "user-skills",
-          ctx.config?.configurable?.user_id ?? "anonymous",
-        ],
-      }),
-    },
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/shared/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
+    }),
+    "/skills/personal/": new StoreBackend({
+      namespace: (ctx) => [
+        "user-skills",
+        ctx.config?.configurable?.user_id ?? "anonymous",
+      ],
+    }),
   }),
   skills: ["/skills/shared/", "/skills/personal/"],
   permissions: [

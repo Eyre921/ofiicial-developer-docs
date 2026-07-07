@@ -16,23 +16,23 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
-  Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.
+  <p>Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.</p>
 
 * [Creating an account on GitHub](/en/get-started/start-your-journey/creating-an-account-on-github)
 
-  Create a personal account to get started with GitHub.
+  <p>Create a personal account to get started with GitHub.</p>
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
-  At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.
+  <p>At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.</p>
 
 * [Hello World](/en/get-started/start-your-journey/hello-world)
 
-  Follow this Hello World exercise to learn GitHub's pull request workflow.
+  <p>Follow this Hello World exercise to learn GitHub's pull request workflow.</p>
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
-  With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.
+  <p>With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.</p>
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
@@ -44,7 +44,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Finding ways to contribute to open source on GitHub](/en/get-started/exploring-projects-on-github/finding-ways-to-contribute-to-open-source-on-github)
 
-  You can find ways to contribute to open source projects on GitHub that are relevant to you.
+  <p>You can find ways to contribute to open source projects on GitHub that are relevant to you.</p>
 
 ## Links
 

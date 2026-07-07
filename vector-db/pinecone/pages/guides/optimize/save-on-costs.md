@@ -6,6 +6,15 @@ path: guides/optimize/save-on-costs
 
 Learn techniques to reduce spend when ingesting data, querying, and operating indexes.
 
+## Credits and discounts
+
+In addition to the workload optimizations below, you can lower your effective rate:
+
+* **Prepaid credits and annual commitments** earn discounted usage rates. See [Prepaid credits](/guides/manage-cost/understanding-cost#prepaid-credits).
+* **One-time bulk import credit.** Standard and Enterprise organizations receive a one-time 1 TB credit for [importing data from object storage](/guides/manage-cost/understanding-cost#imports).
+* **Dedicated read nodes** can lower cost for sustained, high read throughput when you fully use the provisioned capacity (see [Choose the right index capacity mode](#choose-the-right-index-capacity-mode)).
+* **Volume discounts.** Standard and Enterprise customers can [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) to discuss cost optimization and discounts.
+
 ## Prefer bulk import over upsert for large loads
 
 When you need to populate a new namespace or load a large dataset (for example, millions of records or hundreds of GB), [importing from object storage](/guides/index-data/import-data) is usually the most efficient and cost-effective path compared to streaming [upserts](/guides/index-data/upsert-data).

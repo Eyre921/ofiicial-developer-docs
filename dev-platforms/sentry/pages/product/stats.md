@@ -147,7 +147,7 @@ The "Time to Resolution" chart shows the mean time it took for issues to be reso
 
 This feature is available only if your organization is on a [Business or Enterprise plan](https://sentry.io/pricing/).
 
-The "Health" tab shows information about the overall health of your projects; the crash free sessions, user misery of your team’s key transactions, the number of alerts triggered by your team’s alert rules, and the number of releases per project.
+The "Health" tab shows information about the overall health of your projects; the crash free sessions, user misery of your team’s key transactions, the number of alerts triggered by your team’s alerts, and the number of releases per project.
 
 #### [Crash Free Sessions](https://docs.sentry.io/product/stats.md#crash-free-sessions)
 
@@ -157,9 +157,9 @@ The "Crash Free Sessions" table shows the percentage of sessions that didn’t c
 
 The "User Misery" table shows transactions where users experienced load times four times the project’s configured threshold, with the number of unique users for each of those transactions.
 
-#### [Metric Alerts Triggered](https://docs.sentry.io/product/stats.md#metric-alerts-triggered)
+#### [Alerts Triggered](https://docs.sentry.io/product/stats.md#alerts-triggered)
 
-The "Metric Alerts Triggered" chart and table show alert rules that have been triggered for the projects your team owns.
+The "Alerts Triggered" chart and table show alerts that have been triggered for the projects your team owns.
 
 #### [Number of Releases](https://docs.sentry.io/product/stats.md#number-of-releases)
 

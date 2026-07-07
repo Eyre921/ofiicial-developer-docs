@@ -14,7 +14,11 @@ url: https://docs.sentry.io/concepts/migration/
 
 Sentry offers a cloud-hosted, software-as-a-service (SaaS) solution in addition to a self-hosted solution, which are both functionally the same. However, many customers find that self-hosted Sentry can quickly become expensive to maintain, scale, and support, making our SaaS product the better and less costly option. To facilitate moving from self-hosted to SaaS, we provide a self-serve process known as "relocation".
 
-Check out this video on [**Migrating to Sentry SaaS**](https://sentry.io/resources/migrate-to-sentry-saas-workshop/) to learn about our relocation tooling.
+Check out this video on
+
+[**Migrating to Sentry SaaS**](https://sentry.io/resources/migrate-to-sentry-saas-workshop/)
+
+to learn about our relocation tooling.
 
 For additional reading on considering SaaS, take a look at:
 
@@ -36,7 +40,7 @@ All of the configurations, team and project structure, and most metadata will be
 * User accounts and options for all organization members
 * Projects and their settings
 * Teams and their settings
-* Alert rules
+* Alerts
 * Crons
 * Dashboards
 * Enabled data scrubbers
@@ -49,7 +53,7 @@ Any data related to specific issues, events, stack traces, or files like replays
 
 Below is a non-exhaustive list of some items that will not be relocated:
 
-* Integrations, including parts of relocated items that depend on them (ex: if an Alert Rule triggers Slack notifications, that trigger will be omitted)
+* Integrations, including parts of relocated items that depend on them (ex: if an alert triggers Slack notifications, that trigger will be omitted)
 * Webhooks
 * Issues
 * Events

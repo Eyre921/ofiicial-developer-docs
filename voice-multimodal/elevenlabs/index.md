@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 760 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 761 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -699,6 +699,7 @@
 - `docs/eleven-creative/voices/voice-cloning/instant-voice-cloning` — [Instant Voice Cloning](pages/docs/eleven-creative/voices/voice-cloning/instant-voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-cloning/instant-voice-cloning.md)
 - `docs/eleven-creative/voices/voice-cloning/professional-voice-cloning` — [Professional Voice Cloning](pages/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-cloning/professional-voice-cloning.md)
 - `docs/eleven-creative/voices/voice-design` — [Voice Design](pages/docs/eleven-creative/voices/voice-design.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-design.md)
+- `docs/eleven-creative/voices/voice-library` — [Voice Library](pages/docs/eleven-creative/voices/voice-library.md) · [原文](https://elevenlabs.io/docs/eleven-creative/voices/voice-library.md)
 - `docs/overview/administration/account` — [Account](pages/docs/overview/administration/account.md) · [原文](https://elevenlabs.io/docs/overview/administration/account.md)
 - `docs/overview/administration/assets` — [Assets](pages/docs/overview/administration/assets.md) · [原文](https://elevenlabs.io/docs/overview/administration/assets.md)
 - `docs/overview/administration/billing` — [Billing](pages/docs/overview/administration/billing.md) · [原文](https://elevenlabs.io/docs/overview/administration/billing.md)

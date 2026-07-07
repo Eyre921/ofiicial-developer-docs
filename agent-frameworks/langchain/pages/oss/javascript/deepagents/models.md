@@ -58,23 +58,23 @@ Pass a model string to [`createDeepAgent`](https://reference.langchain.com/javas
 To configure model-specific parameters, use [`init_chat_model`](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) or instantiate a provider model class directly:
 
 <CodeGroup>
-  ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { initChatModel } from "langchain/chat_models/universal";
   import { createDeepAgent } from "deepagents";
 
   const model = await initChatModel("google_genai:gemini-3.5-flash", {
-      reasoningEffort: "medium",  // [!code highlight]
+    reasoningEffort: "medium", // [!code highlight]
   });
   const agent = createDeepAgent({ model });
   ```
 
-  ```typescript Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { ChatGoogle } from "@langchain/google";
   import { createDeepAgent } from "deepagents";
 
   const model = new ChatGoogle({
-      model: "gemini-3.1-pro-preview",
-      reasoningEffort: "medium",  // [!code highlight]
+    model: "gemini-3.1-pro-preview",
+    reasoningEffort: "medium", // [!code highlight]
   });
   const agent = createDeepAgent({ model });
   ```
@@ -93,23 +93,6 @@ You can register at two levels, and both can coexist:
 * **Provider level** — a bare provider key like `"openai"` applies to every model from the `openai` provider.
 * **Model level** — a `provider:model` key like `"openai:gpt-5.4"` applies only to that specific model, and merges on top of any matching provider-level profile.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import ProviderProfile, register_provider_profile
-
-# Provider-wide default: every openai model gets temperature=0.
-register_provider_profile(
-    "openai",
-    ProviderProfile(init_kwargs={"temperature": 0}),
-)
-
-# Model-level override: gpt-5.5 additionally gets a specific reasoning effort.
-# Inherits temperature=0 from the provider-level profile above.
-register_provider_profile(
-    "openai:gpt-5.5",
-    ProviderProfile(init_kwargs={"reasoning_effort": "medium"}),
-)
-```
-
 See [Profiles](/oss/javascript/deepagents/profiles) for the full field list, merge semantics, and plugin packaging.
 
 <Tip>
@@ -120,8 +103,8 @@ See [Profiles](/oss/javascript/deepagents/profiles) for the full field list, mer
 
 If your application lets users choose a model (for example using a dropdown in the UI), use [middleware](/oss/javascript/langchain/middleware) to swap the model at runtime without rebuilding the agent.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel, createMiddleware } from "langchain";
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, initChatModel } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
 

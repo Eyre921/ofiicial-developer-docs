@@ -14,15 +14,17 @@ Built-in [context compression](/oss/javascript/deepagents/context-engineering#co
 
 Pass multimodal content in the `messages` you send to the agent, using the same [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks) as LangChain chat models:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const result = await agent.invoke({
-  messages: [{
-    role: "user",
-    content: [
-      { type: "text", text: "What is in this screenshot?" },
-      { type: "image", url: "https://example.com/screenshot.png" },
-    ],
-  }],
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "What is in this screenshot?" },
+        { type: "image", url: "https://example.com/screenshot.png" },
+      ],
+    },
+  ],
 });
 ```
 
@@ -45,7 +47,7 @@ The harness `read_file` tool returns [standard content blocks](/oss/javascript/l
 
 [Custom tools](/oss/javascript/deepagents/tools#custom-tools) can contain multimodal files, such as images:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { z } from "zod";
 
@@ -58,7 +60,7 @@ const captureScreenshot = tool(
     name: "capture_screenshot",
     description: "Capture a screenshot of the current page.",
     schema: z.object({}),
-  }
+  },
 );
 ```
 
@@ -77,22 +79,29 @@ Built-in offloading and summarization are optimized for text and message history
 
   When summarization runs, media blocks in older turns drop out of the active context:
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // Before — model receives image blocks in older turns
-  { role: "user", content: [
+  void {
+    role: "user",
+    content: [
       { type: "text", text: "What trends do you see in this chart?" },
       { type: "image", url: "https://example.com/chart.png" },
-  ]}
-  { role: "tool", content: [
+    ],
+  };
+  void {
+    role: "tool",
+    content: [
       { type: "text", text: "Updated chart:" },
       { type: "image", url: "https://example.com/chart-v2.png" },
-  ]}
+    ],
+  };
 
   // After — those turns collapse to text; image blocks are gone
-  { content:
+  void {
+    content:
       "User asked about trends in a chart screenshot. " +
-      "Tool returned an updated chart. Agent identified Q3 revenue growth."
-  }
+      "Tool returned an updated chart. Agent identified Q3 revenue growth.",
+  };
   ```
 
   The original conversation is still written to the filesystem as text. See [Summarization](/oss/javascript/deepagents/context-engineering#summarization) for triggers, keep thresholds, and the full flow.

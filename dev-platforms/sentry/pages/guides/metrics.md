@@ -152,7 +152,7 @@ Alerts and dashboard widgets for Metrics are coming soon.
 
 You'll soon be able to:
 
-* Create alert rules based on metric queries
+* Create alerts based on metric queries
 * Add metric visualizations to dashboards
 * Set up notifications when metrics cross thresholds
 * Save common queries for quick access

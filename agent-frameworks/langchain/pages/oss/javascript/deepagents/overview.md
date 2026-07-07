@@ -28,18 +28,15 @@ import * as z from "zod";
 import { createDeepAgent } from "deepagents";
 import { tool } from "langchain";
 
-const getWeather = tool(
-  ({ city }) => `It's always sunny in ${city}!`,
-  {
-    name: "get_weather",
-    description: "Get the weather for a given city",
-    schema: z.object({
-      city: z.string(),
-    }),
-  },
-);
+const getWeather = tool(({ city }) => `It's always sunny in ${city}!`, {
+  name: "get_weather",
+  description: "Get the weather for a given city",
+  schema: z.object({
+    city: z.string(),
+  }),
+});
 
-const agent = createDeepAgent({
+const agent = await createDeepAgent({
   tools: [getWeather],
   systemPrompt: "You are a helpful assistant",
 });
@@ -47,7 +44,7 @@ const agent = createDeepAgent({
 console.log(
   await agent.invoke({
     messages: [{ role: "user", content: "What's the weather in Tokyo?" }],
-  })
+  }),
 );
 ```
 
@@ -102,15 +99,6 @@ The execution environment is where an agent acts. It has four layers:
 ### Tools and MCP
 
 Pass custom functions, LangChain tools, or tools from any [MCP server](/oss/javascript/deepagents/tools#mcp-tools) with the `tools=` parameter. Deep Agents fully support the [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp), letting you connect to databases, APIs, file systems, and more through a standard interface.
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
-    tools=[search, fetch_page, run_query],
-)
-```
 
 For more information on defining custom tools, using MCP servers, and the full list of built-in harness tools, see [Tools](/oss/javascript/deepagents/tools).
 

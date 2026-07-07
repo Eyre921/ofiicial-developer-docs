@@ -12,6 +12,18 @@ path: docs/changelog
   * `google/gemma-4-31B-it-VLM`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+
+  ## GPU cluster creation region selection
+
+  The create cluster flow now defaults the **Region** field to **Any region**. Together picks the region with the most available capacity for your GPU type at create time. Changing the GPU type resets the region to **Any region** and clears any selected shared volume.
+
+  See the [GPU Clusters quickstart](/docs/gpu-clusters-quickstart) for the full create flow.
+</Update>
+
+<Update label="July 2, 2026">
+  ## Bring your own model: Transformers v5
+
+  [BYOM fine-tuning](/docs/fine-tuning/byom) now supports Hugging Face models built with Transformers v5 or earlier.
 </Update>
 
 <Update label="July 1, 2026">

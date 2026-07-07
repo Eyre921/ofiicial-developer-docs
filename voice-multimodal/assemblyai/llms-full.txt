@@ -28459,20 +28459,17 @@ Accounts on a feature flag for dated `universal-3-5-pro` variants may see additi
 
 #### Deprecated `speech_model` (singular) parameter on async `/v2/transcript`
 
-```json
-# Status code: 400 — POST /v2/transcript
-{
-"error": "speech_model is deprecated. Use \"speech_models\" instead. See documentation: https://www.assemblyai.com/docs/pre-recorded-audio/select-the-speech-model"
-}
-```
+On the **async pre-recorded API**, `speech_model` no longer selects a model. Use **`speech_models`** (plural) instead.
 
-On the async pre-recorded API, the singular `speech_model` field no longer selects a model. Submitting a current model name (`universal-2`, `universal-3-5-pro`, `slam-1`, `conformer-2`) returns this 400 deprecation. Submitting a legacy value (`best`, `nano`, `universal`) returns 200, but the value is silently ignored and the job runs the default model (currently `universal-2`). Only the plural `speech_models` field actually selects a model on async.
+- Passing a current model name (`universal-2`, `universal-3-5-pro`) to `speech_model` returns a **400 error** — deprecated.
+- Passing a legacy name (`best`, `universal`) to `speech_model` returns **200**, but always routes to the default model.
+- Omitting both `speech_model` and `speech_models` also routes to the default model.
 
-Newer accounts may receive a slightly different deprecation message, but it points to the same fix.
+This default-routing behavior is intentional — it keeps requests without an explicit current-model selection on the best model available, rather than pinned to an outdated one.
+
+**Default model:** `speech_model` currently defaults to `universal-2`, the default will be updated to `universal-3-5-pro` on August 7. If you would like to explicitly pin a model, set the `speech_models` parameter. See [model selection](/pre-recorded-audio/select-the-speech-model) to compare models.
 
 This entry applies to the async pre-recorded API (`POST /v2/transcript`) only. The Streaming API is a separate system that uses its own singular `speech_model` field with values like `universal-streaming-english` and `universal-3-5-pro` — see [Streaming model selection](/streaming/select-the-speech-model). Don't treat the singular `speech_model` field as universally deprecated.
-
-- **Solution**: On async, replace `speech_model: "<name>"` with `speech_models: ["<name>"]`. See [Select the speech model](/pre-recorded-audio/select-the-speech-model).
 
 #### `language_detection` conflicts with `language_code`
 

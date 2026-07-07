@@ -10,17 +10,91 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
 
 `createDeepAgent` ships with a pre-assembled harness: filesystem, summarization, subagents, and prompt caching by default. The parameters below let you define the agent's persona, connect it to your data and tools, and extend the [default middleware stack](#default-stack-main-agent) with additional middleware.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const agent = await createDeepAgent({
-  model: "anthropic:claude-sonnet-4-6",
-  systemPrompt: "You are a helpful assistant.",
-  tools: [search, fetchUrl],
-  memory: ["./AGENTS.md"],
-  skills: ["./skills/"],
-});
-```
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+</CodeGroup>
 
 | Parameter                                                                         | What it does                                                                |
 | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
@@ -729,28 +803,175 @@ Install `@langchain/mcp-adapters` to connect to MCP servers:
 npm install @langchain/mcp-adapters
 ```
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const client = new MultiServerMCPClient({
-    my_server: {
-        transport: "http",
-        url: "http://localhost:8000/mcp",
-    },
-});
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-const tools = await client.getTools();
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
 
-const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools,
-});
+  const tools = await client.getTools();
 
-const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-});
-```
+  const agent = await createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "openai:gpt-5.5",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+</CodeGroup>
 
 For detailed configuration options including stdio servers, OAuth authentication, tool filtering, and stateful sessions, see the full [MCP guide](/oss/javascript/langchain/mcp).
 
@@ -897,18 +1118,112 @@ Assembled shapes (✓ = field is set, - = field is unset):
 
 Worked example—built-in profiles (Anthropic, OpenAI) ship only a `system_prompt_suffix`, so a typical call lands in the `str` + `-` + `✓` row:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
-    system_prompt="You are a customer-support agent for ACME Corp.",
-)
-# Final = USER + BASE + SUFFIX
-#       = "You are a customer-support agent for ACME Corp."
-#         + "\n\n"
-#         + BASE_AGENT_PROMPT
-#         + "\n\n"
-#         + <Claude-specific guidance>
-```
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+</CodeGroup>
 
 <Note>
   Passing a `SystemMessage` (rather than a string) triggers a different concatenation path: the right-hand assembly (`BASE`-or-`CUSTOM` plus any `SUFFIX`) is appended as an additional text content block onto the message's existing `content_blocks`. The same logical ordering applies (caller blocks first), and any `cache_control` markers on the caller's blocks are preserved—useful for placing explicit Anthropic prompt-cache breakpoints.
@@ -934,6 +1249,12 @@ agent = create_deep_agent(
     The two override fields can both carry a base-prompt replacement, but they are not interchangeable. `general_purpose_subagent.system_prompt` is general-purpose-specific configuration; `base_system_prompt` is a global override that primarily targets the main agent. When both are set, the **general-purpose-specific intent wins for the general-purpose subagent** so a user tuning both fields never sees their GP override silently dropped:
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from deepagents import (
+        GeneralPurposeSubagentProfile,
+        HarnessProfile,
+        register_harness_profile,
+    )
+
     register_harness_profile(
         "anthropic",
         HarnessProfile(

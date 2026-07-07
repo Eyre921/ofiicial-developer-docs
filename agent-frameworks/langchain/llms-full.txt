@@ -14896,7 +14896,7 @@ To deploy your first application to Cloud, follow the [Cloud deployment quicksta
 ## Cloud architecture and scalability
 
 <Note>
-  This section is only relevant for cloud-managed LangSmith at [https://smith.langchain.com?utm\_source=docs\&utm\_medium=cta\&utm\_campaign=langsmith-signup\&utm\_content=langsmith-cloud](https://smith.langchain.com), [https://eu.smith.langchain.com](https://eu.smith.langchain.com), [https://apac.smith.langchain.com](https://apac.smith.langchain.com), and [https://aws.smith.langchain.com](https://aws.smith.langchain.com).
+  This section is only relevant for cloud-managed LangSmith at [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud), [https://eu.smith.langchain.com](https://eu.smith.langchain.com), [https://apac.smith.langchain.com](https://apac.smith.langchain.com), and [https://aws.smith.langchain.com](https://aws.smith.langchain.com).
 
   For information on the self-hosted LangSmith solution, please refer to the [self-hosted documentation](/langsmith/self-hosted).
 </Note>
@@ -14921,14 +14921,14 @@ The US-based LangSmith service (default GCP region) is deployed in the `us-centr
 
 The resources and services in this table are stored in the location corresponding to the URL where sign-up occurred (GCP US, GCP EU, GCP APAC, or AWS US). Cloud-managed LangSmith uses [Supabase](https://supabase.com) for authentication/authorization and [ClickHouse Cloud](https://clickhouse.com/cloud) for the data warehouse.
 
-|                                               | GCP US                                                                                                                                                     | GCP EU                                                                   | GCP APAC                                                                     | AWS US                                                                     |
-| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
-| URL                                           | [https://smith.langchain.com?utm\_source=docs\&utm\_medium=cta\&utm\_campaign=langsmith-signup\&utm\_content=langsmith-cloud](https://smith.langchain.com) | [https://eu.smith.langchain.com](https://eu.smith.langchain.com)         | [https://apac.smith.langchain.com](https://apac.smith.langchain.com)         | [https://aws.smith.langchain.com](https://aws.smith.langchain.com)         |
-| API URL                                       | [https://api.smith.langchain.com](https://api.smith.langchain.com)                                                                                         | [https://eu.api.smith.langchain.com](https://eu.api.smith.langchain.com) | [https://apac.api.smith.langchain.com](https://apac.api.smith.langchain.com) | [https://aws.api.smith.langchain.com](https://aws.api.smith.langchain.com) |
-| Cloud                                         | GCP us-central1 (Iowa)                                                                                                                                     | GCP europe-west4 (Netherlands)                                           | GCP australia-southeast1 (Sydney)                                            | AWS us-east-2 (Ohio)                                                       |
-| Supabase                                      | AWS us-east-1 (N. Virginia)                                                                                                                                | AWS eu-central-1 (Germany)                                               | AWS ap-southeast-2 (Sydney)                                                  | AWS us-east-2 (Ohio)                                                       |
-| ClickHouse Cloud                              | us-central1 (Iowa)                                                                                                                                         | europe-west4 (Netherlands)                                               | australia-southeast1 (Sydney)                                                | us-east-2 (Ohio)                                                           |
-| [LangSmith deployment](/langsmith/deployment) | GCP us-central1 (Iowa); `*.us.langgraph.app`                                                                                                               | GCP europe-west4 (Netherlands); `*.eu.langgraph.app`                     | GCP australia-southeast1 (Sydney); `*.apac.langgraph.app`                    | AWS us-east-2 (Ohio); `*.aws.us.langgraph.app`                             |
+|                                               | GCP US                                                                                                                                                 | GCP EU                                                                   | GCP APAC                                                                     | AWS US                                                                     |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| URL                                           | [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud) | [https://eu.smith.langchain.com](https://eu.smith.langchain.com)         | [https://apac.smith.langchain.com](https://apac.smith.langchain.com)         | [https://aws.smith.langchain.com](https://aws.smith.langchain.com)         |
+| API URL                                       | [https://api.smith.langchain.com](https://api.smith.langchain.com)                                                                                     | [https://eu.api.smith.langchain.com](https://eu.api.smith.langchain.com) | [https://apac.api.smith.langchain.com](https://apac.api.smith.langchain.com) | [https://aws.api.smith.langchain.com](https://aws.api.smith.langchain.com) |
+| Cloud                                         | GCP us-central1 (Iowa)                                                                                                                                 | GCP europe-west4 (Netherlands)                                           | GCP australia-southeast1 (Sydney)                                            | AWS us-east-2 (Ohio)                                                       |
+| Supabase                                      | AWS us-east-1 (N. Virginia)                                                                                                                            | AWS eu-central-1 (Germany)                                               | AWS ap-southeast-2 (Sydney)                                                  | AWS us-east-2 (Ohio)                                                       |
+| ClickHouse Cloud                              | us-central1 (Iowa)                                                                                                                                     | europe-west4 (Netherlands)                                               | australia-southeast1 (Sydney)                                                | us-east-2 (Ohio)                                                           |
+| [LangSmith deployment](/langsmith/deployment) | GCP us-central1 (Iowa); `*.us.langgraph.app`                                                                                                           | GCP europe-west4 (Netherlands); `*.eu.langgraph.app`                     | GCP australia-southeast1 (Sydney); `*.apac.langgraph.app`                    | AWS us-east-2 (Ohio); `*.aws.us.langgraph.app`                             |
 
 See the [Regions FAQ](/langsmith/regions-faq) for more information.
 
@@ -15683,7 +15683,7 @@ Source: https://docs.langchain.com/langsmith/code-evaluator-ui
 Code evaluators in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-code-evaluator-ui) allow you to write custom evaluation logic using Python or TypeScript code directly in the interface. Unlike [LLM-as-a-judge](/langsmith/llm-as-judge) evaluators that use a model to evaluate outputs, code evaluators use deterministic logic you define.
 
 <Note>
-  To define code evaluators programmatically using the SDK, refer to [How to define a code evaluator (SDK)](/langsmith/code-evaluator-sdk). To grade outputs against assertions saved on dataset examples, refer to [Use assertions](/langsmith/assertions).
+  To create a code evaluator that appears in the LangSmith UI programmatically, refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk). To define a code evaluator function that you pass to `evaluate()`, refer to [How to define a code evaluator (SDK)](/langsmith/code-evaluator-sdk). To grade outputs against assertions saved on dataset examples, refer to [Use assertions](/langsmith/assertions).
 </Note>
 
 ## Step 1. Create the evaluator
@@ -37898,6 +37898,10 @@ The evaluators table shows the following columns:
 
 ## Create an evaluator
 
+You can create an evaluator in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators) or programmatically with the [SDK](#create-an-evaluator-with-the-sdk). Evaluators created either way are workspace-level resources that appear in the **Evaluators** table.
+
+### Create an evaluator in the UI
+
 1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators), select **Evaluators** in the left sidebar.
 2. Click **+ Evaluator** to open the new evaluator panel.
 3. The panel lets you:
@@ -37916,6 +37920,50 @@ The evaluators table shows the following columns:
 
 You can also add an evaluator directly from a [tracing project](/langsmith/observability-concepts#projects) or [dataset](/langsmith/evaluation-concepts#datasets). In that flow, you can additionally **attach an existing evaluator** from your workspace, or create a [Composite](/langsmith/composite-evaluators-ui) evaluator. Refer to [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge) and [Automatically run evaluators on experiments](/langsmith/bind-evaluator-to-dataset).
 
+### Create an evaluator with the SDK
+
+Use the LangSmith SDK to create evaluators programmatically. The SDK is available for [Python](/langsmith/smith-python-sdk) and [TypeScript](/langsmith/smith-js-ts-sdk). Evaluators created through the SDK appear in the **Evaluators** table alongside those created in the UI.
+
+<Note>
+  Managing evaluators through the SDK requires `langsmith>=0.9.8` (Python, PyPI) or `langsmith>=0.7.16` (TypeScript, npm).
+</Note>
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+
+  client = Client()
+
+  created = client.evaluators.create(
+      name="Correctness evaluator",
+      type="code",
+      code_evaluator={
+          "code": "def perform_eval(run, example):\n    return {'score': 1}",
+          "language": "python",
+      },
+  )
+  print("Created evaluator:", created.evaluator.id)
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { Client } from "langsmith";
+
+  const client = new Client();
+
+  const created = await client.evaluators.create({
+    name: "Correctness evaluator",
+    type: "code",
+    code_evaluator: {
+      code: "def perform_eval(run, example):\n    return {'score': 1}",
+      language: "python",
+    },
+  });
+  console.log("Created evaluator:", created.evaluator?.id);
+  ```
+</CodeGroup>
+
+To create an LLM-as-a-judge evaluator and to retrieve, update, list, or delete evaluators, refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
+
 ## View evaluator details
 
 Click any evaluator in the table to open its detail view. The detail view has four tabs:
@@ -37923,7 +37971,7 @@ Click any evaluator in the table to open its detail view. The detail view has fo
 * **Overview**: The evaluator's feedback configuration and prompt or code definition.
 * **Traces**: Traces processed by this evaluator across all attached resources.
 * **Logs**: Execution logs for this evaluator across all attached resources.
-* **Resources**: The tracing projects and datasets this evaluator is attached to.
+* **Projects & Datasets**: The tracing projects and datasets this evaluator is attached to.
 
 ## Edit an evaluator
 
@@ -37947,7 +37995,12 @@ The change applies to traces scored after you save the evaluator. Existing score
 
 ## Delete an evaluator
 
-An evaluator cannot be deleted while it is attached to a tracing project or dataset. To delete an evaluator, first remove it from all resources via the **Resources** tab, then delete it.
+You cannot delete an evaluator while it is attached to a tracing project or dataset. To delete an evaluator:
+
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-evaluators), select **Evaluators** in the left sidebar.
+2. Select the evaluator you want to delete.
+3. Open the **Projects & Datasets** tab. For each attached tracing project and dataset, select **Detach** in the **Actions** menu at the right of the row.
+4. Return to the **Evaluators** page and click **Delete** at the top of the page.
 
 ***
 
@@ -49457,6 +49510,8 @@ LLM applications can be challenging to evaluate since they often generate conver
 This guide shows you how to define an [LLM-as-a-judge evaluator](/langsmith/evaluation-concepts#llm-as-judge) for [offline evaluation](/langsmith/evaluation-concepts#offline-evaluations) using the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-as-judge).
 
 <Note>
+  This guide uses the LangSmith UI. You can also create an LLM-as-a-judge evaluator programmatically with the SDK, and it appears in the LangSmith UI the same as one created here. Refer to [Manage evaluators with the SDK](/langsmith/manage-evaluators-sdk).
+
   To run evaluations in real-time on your production traces, refer to [setting up online evaluations](/langsmith/online-evaluations-llm-as-judge).
 </Note>
 
@@ -55634,6 +55689,496 @@ You can also programmatically update multiple examples in a single request with 
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-datasets-programmatically.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Manage evaluators with the SDK
+Source: https://docs.langchain.com/langsmith/manage-evaluators-sdk
+
+Create, retrieve, update, list, and delete LangSmith evaluators programmatically with the SDK.
+
+Use the LangSmith SDK to create and manage [evaluators](/langsmith/evaluation-concepts#evaluators) programmatically. Evaluators created through the SDK are [workspace-level](/langsmith/administration-overview#workspaces) resources that appear in the **Evaluators** table in the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-manage-evaluators-sdk), the same as [evaluators created in the UI](/langsmith/evaluators#create-an-evaluator-in-the-ui). You can attach them to datasets to run [offline evaluations](/langsmith/evaluation-concepts#offline-evaluations) and to tracing projects to run [online evaluations](/langsmith/evaluation-concepts#online-evaluations). Use the SDK to automate evaluator management and integrate evaluation into your existing workflows.
+
+## Prerequisites
+
+Managing evaluators through the SDK requires:
+
+* Python: `langsmith>=0.9.8` (PyPI)
+* TypeScript: `langsmith>=0.7.16` (npm)
+
+<Note>
+  For installation and setup, refer to the [Python SDK documentation](https://reference.langchain.com/python/langsmith) and [TypeScript SDK documentation](https://reference.langchain.com/javascript/modules/langsmith.html).
+</Note>
+
+The examples on this page initialize the client with no arguments, so it reads the `LANGSMITH_API_KEY` and `LANGSMITH_ENDPOINT` environment variables. Configure your [API key](/langsmith/create-account-api-key) through environment variables rather than hardcoding it.
+
+In the following examples, replace placeholders such as `<evaluator-uuid>` with the corresponding information from LangSmith.
+
+## Create an evaluator
+
+### Code evaluator
+
+A code evaluator scores each run or example with a function that you define.
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from langsmith import Client
+
+  client = Client()
+
+  created = client.evaluators.create(
+      name="Correctness evaluator",
+      type="code",
+      code_evaluator={
+          "code": "def perform_eval(run, example):\n    return {'score': 1}",
+          "language": "python",
+      },
+  )
+  evaluator_id = created.evaluator.id
+  print("Created evaluator:", evaluator_id)
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { Client } from "langsmith";
+
+  const client = new Client();
+
+  const created = await client.evaluators.create({
+    name: "Correctness evaluator",
+    type: "code",
+    code_evaluator: {
+      code: "def perform_eval(run, example):\n    return {'score': 1}",
+      language: "python",
+    },
+  });
+  const evaluatorId = created.evaluator?.id;
+  console.log("Created evaluator:", evaluatorId);
+  ```
+</CodeGroup>
+
+### LLM-as-a-judge evaluator
+
+An LLM-as-a-judge evaluator references a prompt from the [prompt hub](/langsmith/prompt-engineering-quickstart) and maps your run or example fields to the prompt variables.
+
+<Note>
+  The prompt must be a structured prompt (type `StructuredPrompt`). A `StructuredPrompt` combines a prompt template with an output schema, ensuring the model returns data in a defined structure.
+</Note>
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  created = client.evaluators.create(
+      name="LLM judge",
+      type="llm",
+      llm_evaluator={
+          "prompt_repo_handle": "<prompt-repo-handle>",
+          "commit_hash_or_tag": "<commit-hash-or-tag>",
+          "variable_mapping": {
+              "input": "inputs.question",
+              "output": "outputs.answer",
+              "reference": "reference.answer",
+          },
+      },
+  )
+  evaluator_id = created.evaluator.id
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const created = await client.evaluators.create({
+    name: "LLM judge",
+    type: "llm",
+    llm_evaluator: {
+      prompt_repo_handle: "<prompt-repo-handle>",
+      commit_hash_or_tag: "<commit-hash-or-tag>",
+      variable_mapping: {
+        input: "inputs.question",
+        output: "outputs.answer",
+        reference: "reference.answer",
+      },
+    },
+  });
+  const evaluatorId = created.evaluator?.id;
+  ```
+</CodeGroup>
+
+The `prompt_repo_handle` is the prompt's internal repository name, not its display title or URL. To find it, list your workspace prompts and read the `repo_handle` field, or retrieve a specific prompt by its identifier in LangSmith. The identifier of a prompt can be in the format:
+
+* `promptName` (for private prompts), for example `my-prompt`.
+* `owner/promptName` (for public prompts), for example `langchain-ai/correctness`.
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # List workspace prompts and read each repo handle
+  for prompt in client.list_prompts(limit=10).repos:
+      print("prompt-repo-handle:", prompt.repo_handle)   # value to use for prompt_repo_handle
+      print("prompt-full-name:", prompt.full_name)     # display name
+      print("description:", prompt.description)
+
+  # Or retrieve a specific prompt by identifier
+  prompt = client.get_prompt("<prompt-identifier>")
+  print("prompt-repo-handle:", prompt.repo_handle)
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  // List workspace prompts and read each repo handle.
+  // listPrompts() has no `limit` option in this SDK version — it's an async
+  // generator over all prompts, so cap the count client-side and break.
+  const prompts = client.listPrompts();
+  let count = 0;
+  for await (const prompt of prompts) {
+    console.log("prompt-repo-handle:", prompt.repo_handle);
+    console.log("prompt-full-name:", prompt.full_name);
+    console.log("description:", prompt.description);
+    console.log("---");
+    if (++count >= 10) break; // first 10 only; stops further pagination
+  }
+
+  // Or retrieve a specific prompt by identifier
+  const prompt = await client.getPrompt("<prompt-identifier>");
+  console.log("prompt-repo-handle:", prompt.repo_handle);
+  ```
+</CodeGroup>
+
+## Retrieve an evaluator
+
+Fetch a single evaluator by its ID to read its configuration, including its name, type, feedback keys, and run rules.
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  evaluator = client.evaluators.retrieve(evaluator_id)
+  print(evaluator.name)
+  print(evaluator.type)
+  print(evaluator.feedback_keys)
+  print(evaluator.run_rules)
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const evaluator = await client.evaluators.retrieve(evaluatorId);
+  console.log(evaluator.name);
+  console.log(evaluator.type);
+  console.log(evaluator.feedback_keys);
+  console.log(evaluator.run_rules);
+  ```
+</CodeGroup>
+
+## Update an evaluator
+
+Pass the field that matches the evaluator type: `code_evaluator` for a code evaluator or `llm_evaluator` for an LLM-as-a-judge evaluator. `update` changes only the fields you pass.
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Update a code evaluator
+  code_evaluator_id = "<code-evaluator-uuid>"
+
+  updated = client.evaluators.update(
+      code_evaluator_id,
+      name="Updated correctness evaluator",
+      code_evaluator={
+          "code": "def perform_eval(run, example):\n    return {'score': 0.8}",
+          "language": "python",
+      },
+  )
+  print(updated.evaluator.name if updated.evaluator else None)
+
+  # Update the name and prompt of an LLM-as-a-judge evaluator
+  llm_evaluator_id = "<llm-evaluator-uuid>"
+
+  client.evaluators.update(
+      llm_evaluator_id,
+      name="Updated LLM judge",
+      llm_evaluator={
+          "prompt_repo_handle": "<prompt-repo-handle>",
+          "commit_hash_or_tag": "<commit-hash-or-tag>",
+      },
+  )
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  // Update a code evaluator
+  const codeEvaluatorId = "<code-evaluator-uuid>";
+
+  const updated = await client.evaluators.update(codeEvaluatorId, {
+    name: "Updated correctness evaluator",
+    code_evaluator: {
+      code: "def perform_eval(run, example):\n    return {'score': 0.8}",
+      language: "python",
+    },
+  });
+  console.log(updated.evaluator?.name);
+
+  // Update the name and prompt of an LLM-as-a-judge evaluator
+  const llmEvaluatorId = "<llm-evaluator-uuid>";
+
+  await client.evaluators.update(llmEvaluatorId, {
+    name: "Updated LLM judge",
+    llm_evaluator: {
+      prompt_repo_handle: "<prompt-repo-handle>",
+      commit_hash_or_tag: "<commit-hash-or-tag>",
+    },
+  });
+  ```
+</CodeGroup>
+
+### Configure runtime settings
+
+An LLM-as-a-judge evaluator accepts additional settings that control how it scores traces:
+
+* **`variable_mapping`**: Maps run or example fields to the judge prompt variables. It applies when the evaluator runs.
+* **`use_corrections_dataset`** and **`num_few_shot_examples`**: Enable few-shot learning from human score corrections. They apply only when the evaluator is attached to a project or dataset and corrections have been submitted.
+
+<Note>
+  These settings take effect on the next evaluation run, not when you call `update`.
+</Note>
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  llm_evaluator_id = "<llm-evaluator-uuid>"
+
+  client.evaluators.update(
+      llm_evaluator_id,
+      llm_evaluator={
+          "prompt_repo_handle": "<prompt-repo-handle>",
+          "commit_hash_or_tag": "<commit-hash-or-tag>",
+          "variable_mapping": {
+              "input": "inputs.question",
+              "output": "outputs.answer",
+          },
+          "use_corrections_dataset": True,
+          "num_few_shot_examples": 3,
+      },
+  )
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const llmEvaluatorId = "<llm-evaluator-uuid>";
+
+  await client.evaluators.update(llmEvaluatorId, {
+    llm_evaluator: {
+      prompt_repo_handle: "<prompt-repo-handle>",
+      commit_hash_or_tag: "<commit-hash-or-tag>",
+      variable_mapping: {
+        input: "inputs.question",
+        output: "outputs.answer",
+      },
+      use_corrections_dataset: true,
+      num_few_shot_examples: 3,
+    },
+  });
+  ```
+</CodeGroup>
+
+## List evaluators
+
+Filter by name, type, feedback key, attached resource, or tag value, and sort or paginate the results. `list()` auto-paginates through every match when you iterate the returned object directly. `limit` sets the per-request page size (1 to 100), not the total number of results. `sort_by` is optional, accepts `created_at` or `updated_at`, and defaults to `created_at`.
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  # Read a single page of results
+  page = client.evaluators.list(
+      name_contains="correctness",
+      type="code",
+      limit=10,
+  )
+  for evaluator in page.evaluators:
+      print(evaluator.id, evaluator.name, evaluator.type)
+
+  # Collect every match into a list
+  evaluators = list(
+      client.evaluators.list(feedback_key="correctness", limit=20)
+  )
+
+  # Filter, sort, and paginate
+  evaluators = client.evaluators.list(
+      feedback_key="correctness",
+      name_contains="judge",
+      resource_id=["<project-or-dataset-uuid>"],
+      tag_value_id=["<tag-value-uuid>"],
+      type="llm",
+      sort_by="updated_at",  # "created_at" (default) or "updated_at"
+      sort_by_desc=False,
+      limit=20,
+      offset=0,
+  )
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  // Read a single page of results
+  const page = await client.evaluators.list({
+    name_contains: "correctness",
+    type: "code",
+    limit: 10,
+  });
+  for (const evaluator of page.evaluators) {
+    console.log(evaluator.id, evaluator.name, evaluator.type);
+  }
+
+  // Collect every match into an array
+  const evaluators = [];
+  for await (const evaluator of client.evaluators.list({
+    feedback_key: "correctness",
+    limit: 20,
+  })) {
+    evaluators.push(evaluator);
+  }
+
+  // Filter, sort, and paginate
+  await client.evaluators.list({
+    feedback_key: "correctness",
+    name_contains: "judge",
+    resource_id: ["<project-or-dataset-uuid>"],
+    tag_value_id: ["<tag-value-uuid>"],
+    type: "llm",
+    sort_by: "updated_at", // "created_at" (default) or "updated_at"
+    sort_by_desc: false,
+    limit: 20,
+    offset: 0,
+  });
+  ```
+</CodeGroup>
+
+## Track evaluator spend
+
+Retrieve estimated USD spend and trace counts for your evaluators:
+
+* **`period_start`**: A date-only ISO string, such as `2026-06-29`. Passing a datetime returns a 400 error.
+  * **Window**: `period_start` starts a fixed 7-day window that includes `period_start` and the six days after it. The window is half-open, `[period_start, period_start + 7 days)`, so `period_end` (`period_start` plus 7 days) is excluded. For example, a `period_start` of `2026-06-29` covers `2026-06-29` through `2026-07-05`, and `2026-07-06` is excluded.
+* **`type`**: Scopes results to a single evaluator type, `llm` or `code`. Omit it to include all types.
+* **Empty result**: If no spend is recorded for the window, the returned `groups` list is empty.
+
+<Note>
+  Pass exactly one of `group_by`, `evaluator_id`, `session_id` (the LangSmith tracing project UUID), or `dataset_id`.
+</Note>
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  evaluator_uuid = "<evaluator-uuid>"
+  start_date = "<period-start-date>" # for example, "2026-06-29"
+
+  # Spend for a single evaluator
+  spend = client.evaluators.spend(
+      period_start=start_date,
+      evaluator_id=evaluator_uuid,
+  )
+  for group in spend.groups or []:
+      print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
+
+  # Group spend by evaluator
+  spend_by_evaluator = client.evaluators.spend(
+      period_start=start_date,
+      group_by="evaluator",
+      type="llm",
+  )
+  print("Group by evaluator")
+  for group in spend_by_evaluator.groups or []:
+      print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
+
+  # Group spend by resource
+  spend_by_resource = client.evaluators.spend(
+      period_start=start_date,
+      group_by="resource",
+      type="llm",
+  )
+  print("Group by resource")
+  for group in spend_by_resource.groups or []:
+      print(group.session_name, group.dataset_name, group.total_spend_usd, group.total_trace_count)
+
+  # Group spend by run_rule
+  spend_by_run_rule = client.evaluators.spend(
+      period_start=start_date,
+      group_by="run_rule",
+      type="llm",
+  )
+  print("Group by run_rule")
+  for group in spend_by_run_rule.groups or []:
+      print(group.run_rule_name, group.total_spend_usd, group.total_trace_count)
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const evaluatorUUID = "<evaluator-uuid>";
+  const startDate = "<period-start-date>"; // for example, "2026-06-29"
+
+  // Spend for a single evaluator
+  const spend = await client.evaluators.spend({
+    period_start: startDate,
+    evaluator_id: evaluatorUUID,
+  });
+  for (const group of spend.groups ?? []) {
+    console.log(group.evaluator_name, group.total_spend_usd, group.total_trace_count);
+  }
+
+  // Group spend by evaluator
+  const spendByEvaluator = await client.evaluators.spend({
+    period_start: startDate,
+    group_by: "evaluator",
+    type: "llm",
+  });
+  console.log("Group by evaluator");
+  for (const group of spendByEvaluator.groups ?? []) {
+    console.log(group.evaluator_name, group.total_spend_usd, group.total_trace_count);
+  }
+
+  // Group spend by resource
+  const spendByResource = await client.evaluators.spend({
+    period_start: startDate,
+    group_by: "resource",
+    type: "llm",
+  });
+  console.log("Group by resource");
+  for (const group of spendByResource.groups ?? []) {
+    console.log(group.session_name, group.dataset_name, group.total_spend_usd, group.total_trace_count);
+  }
+
+  // Group spend by run_rule
+  const spendByRunRule = await client.evaluators.spend({
+    period_start: startDate,
+    group_by: "run_rule",
+    type: "llm",
+  });
+  console.log("Group by run_rule");
+  for (const group of spendByRunRule.groups ?? []) {
+    console.log(group.run_rule_name, group.total_spend_usd, group.total_trace_count);
+  }
+  ```
+</CodeGroup>
+
+## Delete an evaluator
+
+You cannot delete an evaluator while it is attached to a tracing project or dataset. Set `delete_run_rules` to `true` to delete the run rules that reference the evaluator before deleting the evaluator.
+
+<CodeGroup>
+  ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  evaluator_id = "<evaluator-uuid>"
+
+  client.evaluators.delete(
+      evaluator_id,
+      delete_run_rules=True, # run rules referencing the evaluator are deleted first
+  )
+  ```
+
+  ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  const evaluatorId = "<evaluator-uuid>";
+
+  await client.evaluators.delete(evaluatorId, {
+    delete_run_rules: true, // run rules referencing the evaluator are deleted first
+  });
+  ```
+</CodeGroup>
+
+## Related
+
+* [Manage evaluators](/langsmith/evaluators): View and manage evaluators in the LangSmith UI.
+* [Set up LLM-as-a-judge online evaluators](/langsmith/online-evaluations-llm-as-judge): Configure LLM-as-a-judge online evaluators in the LangSmith UI.
+* [Set up online code evaluators](/langsmith/online-evaluations-code): Configure online code evaluators in the LangSmith UI.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/manage-evaluators-sdk.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -62693,6 +63238,26 @@ To configure feature access in the [UI](https://smith.langchain.com?utm_source=d
 3. Click **Enabled Providers** and toggle providers on or off for that feature.
 4. Click **Available Models** and select which models users can choose from.
 5. Use the **Default Model** dropdown to set the model preselected when users open the feature.
+
+<Note>
+  Providers disabled for the whole organization in **Settings** > **Model providers** appear locked in this table and can't be re-enabled per workspace. See [Organization-wide provider control](#organization-wide-provider-control).
+</Note>
+
+## Organization-wide provider control
+
+Provider availability is controlled at two levels:
+
+* **Organization** (organization admins): turn a provider on or off for the **entire organization**—every [workspace](/langsmith/administration-overview#workspaces) and every feature. Managed in **Settings** > **Model providers**.
+* **Workspace** (workspace admins): the [Feature Access](#feature-access) table above, which controls provider and model availability **per feature** within a single workspace.
+
+The organization level takes precedence. A provider disabled for the organization is unavailable in every workspace and every feature, and shows as **locked** in each workspace's Feature Access table—workspace admins can see it but can't re-enable it. Workspaces choose only among the providers the organization allows.
+
+Managing organization-wide providers requires the [Organization Admin](/langsmith/rbac#organization-admin) role (the `organization:manage` permission), and is available on LangSmith [Cloud](/langsmith/cloud) and [Self-hosted](/langsmith/self-hosted) for organizations (not personal accounts).
+
+### Disable a provider for the organization
+
+1. Navigate to the [Model providers](https://smith.langchain.com/settings/model-providers) page under **Settings**.
+2. Toggle a provider off to disable it across the organization, or on to re-enable it.
 
 ## Configurations
 
@@ -71255,8 +71820,8 @@ For a comprehensive list of required permissions along with the operations and r
 **Key Capabilities:**
 
 * Create and manage [workspaces](/langsmith/set-up-hierarchy#set-up-a-workspace)
-* Invite organization members (Organization User and Viewer roles only)
-* Manage non-admin organization members (modify and remove Organization Users and Viewers)
+* Invite organization members (all roles except Organization Admin)
+* Manage non-admin organization members (modify and remove Organization Users, Viewers, and Operators)
 * Assign workspace roles to members
 * Create workspace-scoped service keys and service accounts
 * View organization [usage](/langsmith/usage-and-billing#usage-limits) and analytics
@@ -71883,7 +72448,7 @@ See the [cloud architecture reference](/langsmith/cloud#cloud-architecture-and-s
 
 #### *How can I see my organization's region?*
 
-Check your URL - organizations on [https://smith.langchain.com?utm\_source=docs\&utm\_medium=cta\&utm\_campaign=langsmith-signup\&utm\_content=langsmith-regions-faq](https://smith.langchain.com) are in GCP US, organizations on [https://eu.smith.langchain.com](https://eu.smith.langchain.com) are in GCP EU, organizations on [https://apac.smith.langchain.com](https://apac.smith.langchain.com) are in GCP APAC, and organizations on [https://aws.smith.langchain.com](https://aws.smith.langchain.com) are in AWS US.
+Check your URL - organizations on [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-regions-faq) are in GCP US, organizations on [https://eu.smith.langchain.com](https://eu.smith.langchain.com) are in GCP EU, organizations on [https://apac.smith.langchain.com](https://apac.smith.langchain.com) are in GCP APAC, and organizations on [https://aws.smith.langchain.com](https://aws.smith.langchain.com) are in AWS US.
 
 #### *Can I switch my organization between regions?*
 
@@ -117621,12 +118186,38 @@ In a session, run `/install my_package --package --force`. Both install the pack
 
 When you switch to `my_custom:my-model-v1` (via `/model` or `--model`), the model name (`my-model-v1`) is passed as the `model` kwarg:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-MyChatModel(model="my-model-v1", base_url="...", api_key="...", temperature=0, max_tokens=4096)
-```
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="google_genai:gemini-3.5-flash", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="openai:gpt-5.5", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="anthropic:claude-sonnet-4-6", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="openrouter:z-ai/glm-5.2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="fireworks:accounts/fireworks/models/glm-5p2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="baseten:zai-org/GLM-5.2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="ollama:north-mini-code-1.0", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+</CodeGroup>
 
 <Warning>
-  `class_path` executes arbitrary Python code from your config file. This has the same trust model as `pyproject.toml` build scripts — you control your own machine.
+  `class_path` executes arbitrary Python code from your config file. This has the same trust model as `pyproject.toml` build scripts—you control your own machine.
 </Warning>
 
 Your provider package may optionally provide model profiles at a `_PROFILES` dict in `<package>.data._profiles` in lieu of defining them under the `models` key. See LangChain [model profiles](https://github.com/langchain-ai/langchain/tree/master/libs/model-profiles) for more info.
@@ -118140,17 +118731,21 @@ No additional fields.
 <Accordion title="Python handler">
   Write a handler script that reads the JSON payload from stdin:
 
-  ```python title="my_handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import json
   import sys
 
-  payload = json.load(sys.stdin)
-  event = payload["event"]
 
-  if event == "session.start":
-      print(f"Session started: {payload['thread_id']}", file=sys.stderr)
-  elif event == "permission.request":
-      print(f"Approval needed for: {payload['tool_names']}", file=sys.stderr)
+  def handle_hook_payload(payload: dict) -> None:
+      event = payload["event"]
+      if event == "session.start":
+          print(f"Session started: {payload['thread_id']}", file=sys.stderr)
+      elif event == "permission.request":
+          print(f"Approval needed for: {payload['tool_names']}", file=sys.stderr)
+
+
+  if __name__ == "__main__":
+      handle_hook_payload(json.load(sys.stdin))
   ```
 
   ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -121744,17 +122339,91 @@ Build the harness around your goal. `create_deep_agent` gives you a production-r
 
 `createDeepAgent` ships with a pre-assembled harness: filesystem, summarization, subagents, and prompt caching by default. The parameters below let you define the agent's persona, connect it to your data and tools, and extend the [default middleware stack](#default-stack-main-agent) with additional middleware.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const agent = await createDeepAgent({
-  model: "anthropic:claude-sonnet-4-6",
-  systemPrompt: "You are a helpful assistant.",
-  tools: [search, fetchUrl],
-  memory: ["./AGENTS.md"],
-  skills: ["./skills/"],
-});
-```
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    systemPrompt: "You are a helpful assistant.",
+    tools: [search, fetchUrl],
+    memory: ["./AGENTS.md"],
+    skills: ["./skills/"],
+  });
+  ```
+</CodeGroup>
 
 | Parameter                                                                         | What it does                                                                |
 | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
@@ -122463,28 +123132,175 @@ Install `@langchain/mcp-adapters` to connect to MCP servers:
 npm install @langchain/mcp-adapters
 ```
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const client = new MultiServerMCPClient({
-    my_server: {
-        transport: "http",
-        url: "http://localhost:8000/mcp",
-    },
-});
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-const tools = await client.getTools();
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
 
-const agent = await createDeepAgent({
-    model: "openai:gpt-5.5",
-    tools,
-});
+  const tools = await client.getTools();
 
-const result = await agent.invoke({
-    messages: [{ role: "user", content: "Use the MCP server to help me." }],
-});
-```
+  const agent = await createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "openai:gpt-5.5",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+      my_server: {
+          transport: "http",
+          url: "http://localhost:8000/mcp",
+      },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      tools,
+  });
+
+  const result = await agent.invoke({
+      messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+</CodeGroup>
 
 For detailed configuration options including stdio servers, OAuth authentication, tool filtering, and stateful sessions, see the full [MCP guide](/oss/javascript/langchain/mcp).
 
@@ -122631,18 +123447,112 @@ Assembled shapes (✓ = field is set, - = field is unset):
 
 Worked example—built-in profiles (Anthropic, OpenAI) ship only a `system_prompt_suffix`, so a typical call lands in the `str` + `-` + `✓` row:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
-    system_prompt="You are a customer-support agent for ACME Corp.",
-)
-# Final = USER + BASE + SUFFIX
-#       = "You are a customer-support agent for ACME Corp."
-#         + "\n\n"
-#         + BASE_AGENT_PROMPT
-#         + "\n\n"
-#         + <Claude-specific guidance>
-```
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+</CodeGroup>
 
 <Note>
   Passing a `SystemMessage` (rather than a string) triggers a different concatenation path: the right-hand assembly (`BASE`-or-`CUSTOM` plus any `SUFFIX`) is appended as an additional text content block onto the message's existing `content_blocks`. The same logical ordering applies (caller blocks first), and any `cache_control` markers on the caller's blocks are preserved—useful for placing explicit Anthropic prompt-cache breakpoints.
@@ -122668,6 +123578,12 @@ agent = create_deep_agent(
     The two override fields can both carry a base-prompt replacement, but they are not interchangeable. `general_purpose_subagent.system_prompt` is general-purpose-specific configuration; `base_system_prompt` is a global override that primarily targets the main agent. When both are set, the **general-purpose-specific intent wins for the general-purpose subagent** so a user tuning both fields never sees their GP override silently dropped:
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from deepagents import (
+        GeneralPurposeSubagentProfile,
+        HarnessProfile,
+        register_harness_profile,
+    )
+
     register_harness_profile(
         "anthropic",
         HarnessProfile(
@@ -125674,280 +126590,44 @@ Create `agent.ts` in your project directory:
   <Step title="Create the agent">
     Add the model initialization and agent creation to `agent.ts`:
 
-    <CodeGroup>
-      ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { createDeepAgent } from "deepagents";
+    import { ChatAnthropic } from "@langchain/anthropic";
 
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
+    const maxConcurrentResearchUnits = 3;
+    const maxResearcherIterations = 3;
 
-      const currentDate = new Date().toISOString().split("T")[0];
+    const currentDate = new Date().toISOString().split("T")[0];
 
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
+    const INSTRUCTIONS =
+      RESEARCH_WORKFLOW_INSTRUCTIONS +
+      "\n\n" +
+      "=".repeat(80) +
+      "\n\n" +
+      SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
+        "{maxConcurrentResearchUnits}",
+        String(maxConcurrentResearchUnits),
+      ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
 
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
+    const researchSubAgent = {
+      name: "research-agent",
+      description: "Delegate research to the sub-agent. Give one topic at a time.",
+      systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
+      tools: [tavilySearch],
+    };
 
-      const model = new ChatAnthropic({
-        model: "google-genai:gemini-3.5-flash",
-        temperature: 0,
-      });
+    const model = new ChatAnthropic({
+      model: "claude-sonnet-4-5-20250929",
+      temperature: 0,
+    });
 
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "openai:gpt-5.5",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "anthropic:claude-sonnet-4-6",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "openrouter:openrouter:z-ai/glm-5.2",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "fireworks:accounts/fireworks/models/glm-5p2",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "baseten:zai-org/GLM-5.2",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-
-      ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-      import { createDeepAgent } from "deepagents";
-      import { ChatAnthropic } from "@langchain/anthropic";
-
-      const maxConcurrentResearchUnits = 3;
-      const maxResearcherIterations = 3;
-
-      const currentDate = new Date().toISOString().split("T")[0];
-
-      const INSTRUCTIONS =
-        RESEARCH_WORKFLOW_INSTRUCTIONS +
-        "\n\n" +
-        "=".repeat(80) +
-        "\n\n" +
-        SUBAGENT_DELEGATION_INSTRUCTIONS.replace(
-          "{maxConcurrentResearchUnits}",
-          String(maxConcurrentResearchUnits),
-        ).replace("{maxResearcherIterations}", String(maxResearcherIterations));
-
-      const researchSubAgent = {
-        name: "research-agent",
-        description: "Delegate research to the sub-agent. Give one topic at a time.",
-        systemPrompt: RESEARCHER_INSTRUCTIONS.replace("{date}", currentDate),
-        tools: [tavilySearch],
-      };
-
-      const model = new ChatAnthropic({
-        model: "ollama:north-mini-code-1.0",
-        temperature: 0,
-      });
-
-      const agent = createDeepAgent({
-        model,
-        tools: [tavilySearch],
-        systemPrompt: INSTRUCTIONS,
-        subagents: [researchSubAgent],
-      });
-      ```
-    </CodeGroup>
+    const agent = await createDeepAgent({
+      model,
+      tools: [tavilySearch],
+      systemPrompt: INSTRUCTIONS,
+      subagents: [researchSubAgent],
+    });
+    ```
   </Step>
 </Steps>
 
@@ -127740,6 +128420,7 @@ const agent = createDeepAgent({
     {
       name: "researcher",
       description: "Research assistant",
+      systemPrompt: "You are a research assistant.",
     },
   ],
 });
@@ -131717,23 +132398,23 @@ Pass a model string to [`createDeepAgent`](https://reference.langchain.com/javas
 To configure model-specific parameters, use [`init_chat_model`](https://reference.langchain.com/javascript/langchain/chat_models/universal/initChatModel) or instantiate a provider model class directly:
 
 <CodeGroup>
-  ```typescript initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts initChatModel theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { initChatModel } from "langchain/chat_models/universal";
   import { createDeepAgent } from "deepagents";
 
   const model = await initChatModel("google_genai:gemini-3.5-flash", {
-      reasoningEffort: "medium",  // [!code highlight]
+    reasoningEffort: "medium", // [!code highlight]
   });
   const agent = createDeepAgent({ model });
   ```
 
-  ```typescript Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Provider package theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { ChatGoogle } from "@langchain/google";
   import { createDeepAgent } from "deepagents";
 
   const model = new ChatGoogle({
-      model: "gemini-3.1-pro-preview",
-      reasoningEffort: "medium",  // [!code highlight]
+    model: "gemini-3.1-pro-preview",
+    reasoningEffort: "medium", // [!code highlight]
   });
   const agent = createDeepAgent({ model });
   ```
@@ -131752,23 +132433,6 @@ You can register at two levels, and both can coexist:
 * **Provider level** — a bare provider key like `"openai"` applies to every model from the `openai` provider.
 * **Model level** — a `provider:model` key like `"openai:gpt-5.4"` applies only to that specific model, and merges on top of any matching provider-level profile.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import ProviderProfile, register_provider_profile
-
-# Provider-wide default: every openai model gets temperature=0.
-register_provider_profile(
-    "openai",
-    ProviderProfile(init_kwargs={"temperature": 0}),
-)
-
-# Model-level override: gpt-5.5 additionally gets a specific reasoning effort.
-# Inherits temperature=0 from the provider-level profile above.
-register_provider_profile(
-    "openai:gpt-5.5",
-    ProviderProfile(init_kwargs={"reasoning_effort": "medium"}),
-)
-```
-
 See [Profiles](/oss/javascript/deepagents/profiles) for the full field list, merge semantics, and plugin packaging.
 
 <Tip>
@@ -131779,8 +132443,8 @@ See [Profiles](/oss/javascript/deepagents/profiles) for the full field list, mer
 
 If your application lets users choose a model (for example using a dropdown in the UI), use [middleware](/oss/javascript/langchain/middleware) to swap the model at runtime without rebuilding the agent.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { initChatModel, createMiddleware } from "langchain";
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createMiddleware, initChatModel } from "langchain";
 import { createDeepAgent } from "deepagents";
 import * as z from "zod";
 
@@ -131844,15 +132508,17 @@ Built-in [context compression](/oss/javascript/deepagents/context-engineering#co
 
 Pass multimodal content in the `messages` you send to the agent, using the same [standard content blocks](/oss/javascript/langchain/messages#standard-content-blocks) as LangChain chat models:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const result = await agent.invoke({
-  messages: [{
-    role: "user",
-    content: [
-      { type: "text", text: "What is in this screenshot?" },
-      { type: "image", url: "https://example.com/screenshot.png" },
-    ],
-  }],
+  messages: [
+    {
+      role: "user",
+      content: [
+        { type: "text", text: "What is in this screenshot?" },
+        { type: "image", url: "https://example.com/screenshot.png" },
+      ],
+    },
+  ],
 });
 ```
 
@@ -131875,7 +132541,7 @@ The harness `read_file` tool returns [standard content blocks](/oss/javascript/l
 
 [Custom tools](/oss/javascript/deepagents/tools#custom-tools) can contain multimodal files, such as images:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { tool } from "langchain";
 import { z } from "zod";
 
@@ -131888,7 +132554,7 @@ const captureScreenshot = tool(
     name: "capture_screenshot",
     description: "Capture a screenshot of the current page.",
     schema: z.object({}),
-  }
+  },
 );
 ```
 
@@ -131907,22 +132573,29 @@ Built-in offloading and summarization are optimized for text and message history
 
   When summarization runs, media blocks in older turns drop out of the active context:
 
-  ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   // Before — model receives image blocks in older turns
-  { role: "user", content: [
+  void {
+    role: "user",
+    content: [
       { type: "text", text: "What trends do you see in this chart?" },
       { type: "image", url: "https://example.com/chart.png" },
-  ]}
-  { role: "tool", content: [
+    ],
+  };
+  void {
+    role: "tool",
+    content: [
       { type: "text", text: "Updated chart:" },
       { type: "image", url: "https://example.com/chart-v2.png" },
-  ]}
+    ],
+  };
 
   // After — those turns collapse to text; image blocks are gone
-  { content:
+  void {
+    content:
       "User asked about trends in a chart screenshot. " +
-      "Tool returned an updated chart. Agent identified Q3 revenue growth."
-  }
+      "Tool returned an updated chart. Agent identified Q3 revenue growth.",
+  };
   ```
 
   The original conversation is still written to the filesystem as text. See [Summarization](/oss/javascript/deepagents/context-engineering#summarization) for triggers, keep thresholds, and the full flow.
@@ -131976,18 +132649,15 @@ import * as z from "zod";
 import { createDeepAgent } from "deepagents";
 import { tool } from "langchain";
 
-const getWeather = tool(
-  ({ city }) => `It's always sunny in ${city}!`,
-  {
-    name: "get_weather",
-    description: "Get the weather for a given city",
-    schema: z.object({
-      city: z.string(),
-    }),
-  },
-);
+const getWeather = tool(({ city }) => `It's always sunny in ${city}!`, {
+  name: "get_weather",
+  description: "Get the weather for a given city",
+  schema: z.object({
+    city: z.string(),
+  }),
+});
 
-const agent = createDeepAgent({
+const agent = await createDeepAgent({
   tools: [getWeather],
   systemPrompt: "You are a helpful assistant",
 });
@@ -131995,7 +132665,7 @@ const agent = createDeepAgent({
 console.log(
   await agent.invoke({
     messages: [{ role: "user", content: "What's the weather in Tokyo?" }],
-  })
+  }),
 );
 ```
 
@@ -132050,15 +132720,6 @@ The execution environment is where an agent acts. It has four layers:
 ### Tools and MCP
 
 Pass custom functions, LangChain tools, or tools from any [MCP server](/oss/javascript/deepagents/tools#mcp-tools) with the `tools=` parameter. Deep Agents fully support the [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp), letting you connect to databases, APIs, file systems, and more through a standard interface.
-
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
-    tools=[search, fetch_page, run_query],
-)
-```
 
 For more information on defining custom tools, using MCP servers, and the full list of built-in harness tools, see [Tools](/oss/javascript/deepagents/tools).
 
@@ -132567,7 +133228,7 @@ Package per-provider and per-model defaults that Deep Agents applies when a mode
 
 A harness profile describes prompt-assembly, tool-visibility, middleware, and default-subagent adjustments that `createDeepAgent` applies after the chat model has been constructed:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { registerHarnessProfile } from "deepagents";
 
 registerHarnessProfile("openai:gpt-5.5", {
@@ -132611,7 +133272,7 @@ registerHarnessProfile("openai:gpt-5.5", {
 </Note>
 
 <Warning>
-  Listing `FilesystemMiddleware` or `SubAgentMiddleware` in `excludedMiddleware` throws at construction time — they are required scaffolding. To hide their tools from the model without removing the middleware, use `excludedTools` instead.
+  Listing `FilesystemMiddleware` or `SubAgentMiddleware` in `excludedMiddleware` throws at construction time—they are required scaffolding. To hide their tools from the model without removing the middleware, use `excludedTools` instead.
 </Warning>
 
 <Accordion title="Lookup order for preconfigured model instances">
@@ -132626,8 +133287,8 @@ registerHarnessProfile("openai:gpt-5.5", {
 
 Both profile types use the same key format:
 
-* **Provider-level** — a bare provider name like `"openai"` applies to every model from that provider.
-* **Model-level** — a fully qualified `provider:model` key like `"openai:gpt-5.5"` applies only to that specific model.
+* **Provider-level**—a bare provider name like `"openai"` applies to every model from that provider.
+* **Model-level**—a fully qualified `provider:model` key like `"openai:gpt-5.5"` applies only to that specific model.
 
 When both a provider-level and a model-level profile exist, they are merged at resolution time. Unset model-level fields inherit from the provider-level profile; explicit model-level values override them.
 
@@ -132653,7 +133314,7 @@ Provider profiles (for controlling model-construction kwargs like `temperature`)
 
 ## Load profiles from config files
 
-For YAML/JSON-backed workflows, use `parseHarnessProfileConfig`. It validates and builds a `HarnessProfile` from a plain object with camelCase keys. Runtime-only state — `extraMiddleware` instances — cannot be represented in JSON/YAML and must be set programmatically.
+For YAML/JSON-backed workflows, use `parseHarnessProfileConfig`. It validates and builds a `HarnessProfile` from a plain object with camelCase keys. Runtime-only state such as `extraMiddleware` instances cannot be represented in JSON/YAML and must be set programmatically.
 
 ```yaml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # profile.yaml
@@ -132668,7 +133329,7 @@ generalPurposeSubagent:
   enabled: false
 ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { readFileSync } from "fs";
 import YAML from "yaml";
 import { parseHarnessProfileConfig, registerHarnessProfile } from "deepagents";
@@ -132679,13 +133340,13 @@ registerHarnessProfile("openai", parseHarnessProfileConfig(raw));
 
 To serialize a profile back to JSON/YAML, use `serializeProfile`:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { serializeProfile } from "deepagents";
 
 const data = serializeProfile(profile); // JSON-compatible object
 ```
 
-Profiles with non-empty `extraMiddleware` cannot be serialized — `serializeProfile` throws if middleware instances are present.
+Profiles with non-empty `extraMiddleware` cannot be serialized; `serializeProfile` throws if middleware instances are present.
 
 ## Ship a profile as a plugin
 
@@ -132693,11 +133354,11 @@ The plugin registration system (via package entry points) is a Python-only featu
 
 ## Related
 
-* [Harness Overview](/oss/javascript/deepagents/overview) — harness capabilities overview
+* [Harness Overview](/oss/javascript/deepagents/overview)—harness capabilities overview
 
-* [Models](/oss/javascript/deepagents/models) — configure model providers and parameters
+* [Models](/oss/javascript/deepagents/models)—configure model providers and parameters
 
-* [Customization](/oss/javascript/deepagents/customization) — full `createDeepAgent` configuration surface
+* [Customization](/oss/javascript/deepagents/customization)—full `createDeepAgent` configuration surface
 
 ***
 
@@ -133668,7 +134329,7 @@ Skills help you avoid context bloat by loading only summaries at startup and rea
   <Step title="Pass the skills path when creating your agent">
     Pass the path to your top-level skills directory in the `skills` argument when creating your agent:
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     import { createDeepAgent, FilesystemBackend } from "deepagents";
 
     const backend = new FilesystemBackend({ rootDir: process.cwd() });
@@ -133702,7 +134363,7 @@ Skills help you avoid context bloat by loading only summaries at startup and rea
   <Step title="Invoke the agent">
     Send a task to the agent with `invoke()`. At startup, the agent loads each skill's [`name`](#frontmatter-fields) and [`description`](#frontmatter-fields) from [frontmatter](#frontmatter-fields) into the system prompt. When your task matches a skill's description, the agent reads that skill's `SKILL.md` and follows its instructions.
 
-    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     const result = await agent.invoke(
       { messages: [{ role: "user", content: "What is LangGraph?" }] },
       { configurable: { thread_id: "1" } },
@@ -134001,12 +134662,20 @@ When you have a large collection of skills but only a subset is relevant for a g
 
 The simplest approach is to construct the `skills` array before creating the agent. Choose which skill paths to include based on whatever runtime context you have:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { createDeepAgent } from "deepagents";
 
 const SKILLS_BY_ROLE: Record<string, string[]> = {
-  engineering: ["/skills/code-review/", "/skills/testing/", "/skills/deployment/"],
-  data: ["/skills/sql-analysis/", "/skills/visualization/", "/skills/data-pipeline/"],
+  engineering: [
+    "/skills/code-review/",
+    "/skills/testing/",
+    "/skills/deployment/",
+  ],
+  data: [
+    "/skills/sql-analysis/",
+    "/skills/visualization/",
+    "/skills/data-pipeline/",
+  ],
   support: ["/skills/ticket-triage/", "/skills/runbook/"],
 };
 
@@ -134045,7 +134714,7 @@ This works well when skills live on disk or in a shared backend and you just nee
 
 For multi-tenant applications where each user's skill set is managed independently, route `/skills/` to a [StoreBackend](https://reference.langchain.com/javascript/deepagents/backends/StoreBackend) with a namespace factory. Populate each namespace with only the skills that user should have access to, and the middleware resolves to the correct set at runtime:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -134056,16 +134725,13 @@ import {
 const agent = await createDeepAgent({
   model: "anthropic:claude-sonnet-4-6",
   skills: ["/skills/"],
-  backend: new CompositeBackend({
-    default: new StateBackend(),
-    routes: {
-      "/skills/": new StoreBackend({
-        namespace: (ctx) => [
-          ctx.assistantId ?? "default",
-          ctx.config?.configurable?.user_id ?? "anonymous",
-        ],
-      }),
-    },
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/": new StoreBackend({
+      namespace: (ctx) => [
+        ctx.assistantId ?? "default",
+        ctx.config?.configurable?.user_id ?? "anonymous",
+      ],
+    }),
   }),
 });
 ```
@@ -134081,19 +134747,21 @@ When you use [subagents](/oss/javascript/deepagents/subagents), you can configur
 
 Skill state is fully isolated: the main agent's skills are not visible to subagents, and subagent skills are not visible to the main agent.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
 const researchSubagent = {
   name: "researcher",
   description: "Research assistant with specialized skills",
   systemPrompt: "You are a researcher.",
   tools: [webSearch],
-  skills: ["/skills/research/", "/skills/web-search/"],  // Subagent-specific skills
+  skills: ["/skills/research/", "/skills/web-search/"], // Subagent-specific skills
 };
 
 const agent = await createDeepAgent({
   model: "google_genai:gemini-3.5-flash",
-  skills: ["/skills/main/"],  // Main agent and GP subagent get these
-  subagents: [researchSubagent],  // Researcher gets only its own skills
+  skills: ["/skills/main/"], // Main agent and GP subagent get these
+  subagents: [researchSubagent], // Researcher gets only its own skills
 });
 ```
 
@@ -134347,7 +135015,7 @@ Use this for enterprise knowledge bases, approved tool instructions, or shared s
 
 If agents may write to skill files but you want a human in the loop first, use either [`interrupt_on`](/oss/javascript/deepagents/human-in-the-loop) or a permission rule with `mode="interrupt"`. Both pause before `write_file` or `edit_file` runs and use the same resume flow.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { MemorySaver } from "@langchain/langgraph";
 import { createDeepAgent } from "deepagents";
 
@@ -134375,7 +135043,7 @@ By default, agents can write to skill files if the backend permits it and no per
 2. Pass that path (along with any shared paths) in `skills`.
 3. Do not add a `deny` rule for the writable path. Place more specific rules before broader deny rules if you mix shared and personal paths ([rule ordering](/oss/javascript/deepagents/permissions#rule-ordering)).
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import {
   createDeepAgent,
   CompositeBackend,
@@ -134385,19 +135053,16 @@ import {
 
 const agent = await createDeepAgent({
   model: "anthropic:claude-sonnet-4-6",
-  backend: new CompositeBackend({
-    default: new StateBackend(),
-    routes: {
-      "/skills/shared/": new StoreBackend({
-        namespace: (rt) => ["curated-skills", rt.context.orgId],
-      }),
-      "/skills/personal/": new StoreBackend({
-        namespace: (ctx) => [
-          "user-skills",
-          ctx.config?.configurable?.user_id ?? "anonymous",
-        ],
-      }),
-    },
+  backend: new CompositeBackend(new StateBackend(), {
+    "/skills/shared/": new StoreBackend({
+      namespace: (rt) => ["curated-skills", rt.context.orgId],
+    }),
+    "/skills/personal/": new StoreBackend({
+      namespace: (ctx) => [
+        "user-skills",
+        ctx.config?.configurable?.user_id ?? "anonymous",
+      ],
+    }),
   }),
   skills: ["/skills/shared/", "/skills/personal/"],
   permissions: [
@@ -137666,18 +138331,81 @@ Connect Deep Agents to custom functions, APIs, databases, and any MCP server
 Deep Agents can call any tool you define, any [LangChain tool](https://python.langchain.com/docs/concepts/tools/), and tools from any [MCP server](#mcp-tools).
 Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/javascript/deepagents/overview#execution-environment) for planning, file management, and subagent spawning.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const agent = await createDeepAgent({
-  model: "anthropic:claude-sonnet-4-6",
-  tools: [search, fetchUrl, runQuery],
-});
-```
+
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    tools: [search, fetchUrl, runQuery],
+  });
+  ```
+</CodeGroup>
 
 ## Custom tools
 
-Pass any callable — plain functions, LangChain `@tool`-decorated functions, or tool dicts — directly to `tools=`.
+Pass any callable, such as plain functions, LangChain `@tool`-decorated functions, or tool dicts—directly to `tools=`.
 Deep Agents infers the tool schema from the function signature and docstring, so you don't need to define a separate schema in most cases.
 
 <CodeGroup>
@@ -138016,10 +138744,10 @@ For full details on defining and using LangChain tools (tool dicts, `StructuredT
 ## MCP tools
 
 <Note>
-  Deep Agents fully support [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp) — the open standard for connecting agents to external services. Load tools from any MCP server and pass them directly to `create_deep_agent`.
+  Deep Agents fully support [Model Context Protocol (MCP)](/oss/javascript/langchain/mcp), the open standard for connecting agents to external services. Load tools from any MCP server and pass them directly to `create_deep_agent`.
 </Note>
 
-MCP is an open protocol that lets agents connect to a growing ecosystem of servers — databases, APIs, file systems, browsers, and more — through a standard interface. Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
+MCP is an open protocol that lets agents connect to a growing ecosystem of servers—databases, APIs, file systems, browsers, and more—through a standard interface. Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
 
 Install `@langchain/mcp-adapters` to connect to MCP servers:
 
@@ -138027,28 +138755,175 @@ Install `@langchain/mcp-adapters` to connect to MCP servers:
 npm install @langchain/mcp-adapters
 ```
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { MultiServerMCPClient } from "@langchain/mcp-adapters";
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const client = new MultiServerMCPClient({
-  my_server: {
-    transport: "http",
-    url: "http://localhost:8000/mcp",
-  },
-});
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
 
-const tools = await client.getTools();
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
 
-const agent = await createDeepAgent({
-  model: "openai:gpt-5.5",
-  tools,
-});
+  const tools = await client.getTools();
 
-const result = await agent.invoke({
-  messages: [{ role: "user", content: "Use the MCP server to help me." }],
-});
-```
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
+
+  const client = new MultiServerMCPClient({
+    my_server: {
+      transport: "http",
+      url: "http://localhost:8000/mcp",
+    },
+  });
+
+  const tools = await client.getTools();
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    tools,
+  });
+
+  const result = await agent.invoke({
+    messages: [{ role: "user", content: "Use the MCP server to help me." }],
+  });
+  ```
+</CodeGroup>
 
 For detailed configuration options — including stdio servers, OAuth authentication, tool filtering, and stateful sessions — see the full [MCP guide](/oss/javascript/langchain/mcp).
 
@@ -190191,11 +191066,55 @@ There are two subtle and important points to note here:
 
 Reducers are key to understanding how updates from nodes are applied to the `State`. Each key in the `State` has its own independent reducer function. If no reducer function is explicitly specified then it is assumed that all updates to that key should override it. There are a few different types of reducers, starting with the default type of reducer:
 
+#### Reducer arguments
+
+Every reducer is a binary function with two positional arguments:
+
+* **Left argument**: The current value already stored in state for that key.
+* **Right argument**: The update for that key returned by a node.
+
+When a node returns a partial update, LangGraph calls the reducer for each updated key and saves the return value as the new state value:
+
+```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const newValue = reducer(currentState[key], nodeUpdate[key]); // left, right
+```
+
+The left argument always comes from accumulated state. The right argument always comes from the latest node update. The following example names both arguments explicitly:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ReducedValue, StateSchema } from "@langchain/langgraph";
+import * as z from "zod";
+
+const State = new StateSchema({
+  tags: new ReducedValue(
+    z.array(z.string()).default(() => []),
+    {
+      reducer: (left: string[], right: string[]) => {
+        // left: existing state; right: update from a node
+        return left.concat(right);
+      },
+    }
+  ),
+});
+```
+
+Suppose the state is `{ tags: ["draft"] }` and a node returns `{ tags: ["review"] }`. LangGraph calls:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const reducer = (left: string[], right: string[]) => left.concat(right);
+
+reducer(["draft"], ["review"]); // left, right → ["draft", "review"]
+```
+
+The new state value for `tags` is `["draft", "review"]`.
+
+Custom reducers combine the left and right arguments. The [default reducer](#default-reducer) discards the left argument and keeps only the right.
+
 #### Default reducer
 
-These two examples show how to use the default reducer:
+The default reducer ignores the left argument and replaces the state value with the right argument. This example shows how to use the default reducer:
 
-```typescript Example A theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { StateSchema } from "@langchain/langgraph";
 import * as z from "zod";
 
@@ -190209,8 +191128,12 @@ In this example, no reducer functions are specified for any key. Let's assume th
 
 `{ foo: 1, bar: ["hi"] }`. Let's then assume the first `Node` returns `{ foo: 2 }`. This is treated as an update to the state. Notice that the `Node` does not need to return the whole `State` schema - just an update. After applying this update, the `State` would then be `{ foo: 2, bar: ["hi"] }`. If the second node returns `{ bar: ["bye"] }` then the `State` would then be `{ foo: 2, bar: ["bye"] }`
 
-```typescript Example B theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { StateSchema, ReducedValue } from "@langchain/langgraph";
+#### Custom reducers
+
+A custom reducer combines the left and right arguments instead of replacing the state value, which is useful for accumulating values, such as appending updates to a list. This example shows how to specify a custom reducer:
+
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { ReducedValue, StateSchema } from "@langchain/langgraph";
 import { z } from "zod/v4";
 
 const State = new StateSchema({
@@ -203489,7 +204412,7 @@ The following are out-of-scope for security vulnerability reports:
 
 Please report security vulnerabilities associated with LangSmith by email to `security@langchain.dev`.
 
-* LangSmith site: [https://smith.langchain.com?utm\_source=docs\&utm\_medium=cta\&utm\_campaign=langsmith-signup\&utm\_content=oss-security-policy](https://smith.langchain.com)
+* LangSmith site: [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-security-policy)
 * SDK client: [https://github.com/langchain-ai/langsmith-sdk](https://github.com/langchain-ai/langsmith-sdk)
 
 ### Other security concerns
@@ -208613,12 +209536,38 @@ In a session, run `/install my_package --package --force`. Both install the pack
 
 When you switch to `my_custom:my-model-v1` (via `/model` or `--model`), the model name (`my-model-v1`) is passed as the `model` kwarg:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-MyChatModel(model="my-model-v1", base_url="...", api_key="...", temperature=0, max_tokens=4096)
-```
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="google_genai:gemini-3.5-flash", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="openai:gpt-5.5", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="anthropic:claude-sonnet-4-6", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="openrouter:z-ai/glm-5.2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="fireworks:accounts/fireworks/models/glm-5p2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="baseten:zai-org/GLM-5.2", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  MyChatModel(model="ollama:north-mini-code-1.0", base_url="...", api_key="...", temperature=0, max_tokens=4096)
+  ```
+</CodeGroup>
 
 <Warning>
-  `class_path` executes arbitrary Python code from your config file. This has the same trust model as `pyproject.toml` build scripts — you control your own machine.
+  `class_path` executes arbitrary Python code from your config file. This has the same trust model as `pyproject.toml` build scripts—you control your own machine.
 </Warning>
 
 Your provider package may optionally provide model profiles at a `_PROFILES` dict in `<package>.data._profiles` in lieu of defining them under the `models` key. See LangChain [model profiles](https://github.com/langchain-ai/langchain/tree/master/libs/model-profiles) for more info.
@@ -209132,17 +210081,21 @@ No additional fields.
 <Accordion title="Python handler">
   Write a handler script that reads the JSON payload from stdin:
 
-  ```python title="my_handler.py" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import json
   import sys
 
-  payload = json.load(sys.stdin)
-  event = payload["event"]
 
-  if event == "session.start":
-      print(f"Session started: {payload['thread_id']}", file=sys.stderr)
-  elif event == "permission.request":
-      print(f"Approval needed for: {payload['tool_names']}", file=sys.stderr)
+  def handle_hook_payload(payload: dict) -> None:
+      event = payload["event"]
+      if event == "session.start":
+          print(f"Session started: {payload['thread_id']}", file=sys.stderr)
+      elif event == "permission.request":
+          print(f"Approval needed for: {payload['tool_names']}", file=sys.stderr)
+
+
+  if __name__ == "__main__":
+      handle_hook_payload(json.load(sys.stdin))
   ```
 
   ```json title="~/.deepagents/hooks.json" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -212892,17 +213845,91 @@ Learn how to customize Deep Agents with system prompts, tools, subagents, and mo
 
 Build the harness around your goal. `create_deep_agent` gives you a production-ready foundation: connect it to your data, shape its behavior, and add the capabilities your use case needs.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
-    system_prompt="You are a helpful assistant.",
-    tools=[search, fetch_url],
-    memory=["./AGENTS.md"],
-    skills=["./skills/"],
-)
-```
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt="You are a helpful assistant.",
+      tools=[search, fetch_url],
+      memory=["./AGENTS.md"],
+      skills=["./skills/"],
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt="You are a helpful assistant.",
+      tools=[search, fetch_url],
+      memory=["./AGENTS.md"],
+      skills=["./skills/"],
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt="You are a helpful assistant.",
+      tools=[search, fetch_url],
+      memory=["./AGENTS.md"],
+      skills=["./skills/"],
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt="You are a helpful assistant.",
+      tools=[search, fetch_url],
+      memory=["./AGENTS.md"],
+      skills=["./skills/"],
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt="You are a helpful assistant.",
+      tools=[search, fetch_url],
+      memory=["./AGENTS.md"],
+      skills=["./skills/"],
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt="You are a helpful assistant.",
+      tools=[search, fetch_url],
+      memory=["./AGENTS.md"],
+      skills=["./skills/"],
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt="You are a helpful assistant.",
+      tools=[search, fetch_url],
+      memory=["./AGENTS.md"],
+      skills=["./skills/"],
+  )
+  ```
+</CodeGroup>
 
 | Parameter                                                                         | What it does                                                                |
 | --------------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
@@ -212927,7 +213954,7 @@ agent = create_deep_agent(
       model: str | BaseChatModel | None = None,
       tools: Sequence[BaseTool | Callable | dict[str, Any]] | None = None,
       *,
-      system_prompt: str | SystemMessage | None = None,
+      system_prompt: str | SystemMessage | SystemPromptConfig | None = None,
       middleware: Sequence[AgentMiddleware] = (),
       subagents: Sequence[SubAgent | CompiledSubAgent | AsyncSubAgent] | None = None,
       skills: list[str] | None = None,
@@ -213516,34 +214543,224 @@ Install `langchain-mcp-adapters` to connect to MCP servers:
 pip install langchain-mcp-adapters
 ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import asyncio
-from langchain_mcp_adapters.client import MultiServerMCPClient
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
 
-async def main():
-    async with MultiServerMCPClient(
-        {
-            "my_server": {
-                "transport": "http",
-                "url": "http://localhost:8000/mcp",
-            }
-        }
-    ) as client:
-        tools = await client.get_tools()
 
-        agent = create_deep_agent(
-            model="openai:gpt-5.5",
-            tools=tools,
-        )
+  async def main():
+      async with MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      ) as client:
+          tools = await client.get_tools()
 
-        result = await agent.ainvoke(
-            {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
-            config={"configurable": {"thread_id": "1"}},
-        )
+          agent = create_deep_agent(
+              model="google_genai:gemini-3.5-flash",
+              tools=tools,
+          )
 
-asyncio.run(main())
-```
+          result = await agent.ainvoke(
+              {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+              config={"configurable": {"thread_id": "1"}},
+          )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      async with MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      ) as client:
+          tools = await client.get_tools()
+
+          agent = create_deep_agent(
+              model="openai:gpt-5.5",
+              tools=tools,
+          )
+
+          result = await agent.ainvoke(
+              {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+              config={"configurable": {"thread_id": "1"}},
+          )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      async with MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      ) as client:
+          tools = await client.get_tools()
+
+          agent = create_deep_agent(
+              model="anthropic:claude-sonnet-4-6",
+              tools=tools,
+          )
+
+          result = await agent.ainvoke(
+              {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+              config={"configurable": {"thread_id": "1"}},
+          )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      async with MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      ) as client:
+          tools = await client.get_tools()
+
+          agent = create_deep_agent(
+              model="openrouter:z-ai/glm-5.2",
+              tools=tools,
+          )
+
+          result = await agent.ainvoke(
+              {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+              config={"configurable": {"thread_id": "1"}},
+          )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      async with MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      ) as client:
+          tools = await client.get_tools()
+
+          agent = create_deep_agent(
+              model="fireworks:accounts/fireworks/models/glm-5p2",
+              tools=tools,
+          )
+
+          result = await agent.ainvoke(
+              {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+              config={"configurable": {"thread_id": "1"}},
+          )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      async with MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      ) as client:
+          tools = await client.get_tools()
+
+          agent = create_deep_agent(
+              model="baseten:zai-org/GLM-5.2",
+              tools=tools,
+          )
+
+          result = await agent.ainvoke(
+              {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+              config={"configurable": {"thread_id": "1"}},
+          )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      async with MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      ) as client:
+          tools = await client.get_tools()
+
+          agent = create_deep_agent(
+              model="ollama:north-mini-code-1.0",
+              tools=tools,
+          )
+
+          result = await agent.ainvoke(
+              {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+              config={"configurable": {"thread_id": "1"}},
+          )
+
+
+  asyncio.run(main())
+  ```
+</CodeGroup>
 
 For detailed configuration options including stdio servers, OAuth authentication, tool filtering, and stateful sessions, see the full [MCP guide](/oss/python/langchain/mcp).
 
@@ -213690,18 +214907,112 @@ Assembled shapes (✓ = field is set, - = field is unset):
 
 Worked example—built-in profiles (Anthropic, OpenAI) ship only a `system_prompt_suffix`, so a typical call lands in the `str` + `-` + `✓` row:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
-    system_prompt="You are a customer-support agent for ACME Corp.",
-)
-# Final = USER + BASE + SUFFIX
-#       = "You are a customer-support agent for ACME Corp."
-#         + "\n\n"
-#         + BASE_AGENT_PROMPT
-#         + "\n\n"
-#         + <Claude-specific guidance>
-```
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt="You are a customer-support agent for ACME Corp.",
+  )
+  # Final = USER + BASE + SUFFIX
+  #       = "You are a customer-support agent for ACME Corp."
+  #         + "\n\n"
+  #         + BASE_AGENT_PROMPT
+  #         + "\n\n"
+  #         + <Claude-specific guidance>
+  ```
+</CodeGroup>
 
 <Note>
   Passing a `SystemMessage` (rather than a string) triggers a different concatenation path: the right-hand assembly (`BASE`-or-`CUSTOM` plus any `SUFFIX`) is appended as an additional text content block onto the message's existing `content_blocks`. The same logical ordering applies (caller blocks first), and any `cache_control` markers on the caller's blocks are preserved—useful for placing explicit Anthropic prompt-cache breakpoints.
@@ -213727,6 +215038,12 @@ agent = create_deep_agent(
     The two override fields can both carry a base-prompt replacement, but they are not interchangeable. `general_purpose_subagent.system_prompt` is general-purpose-specific configuration; `base_system_prompt` is a global override that primarily targets the main agent. When both are set, the **general-purpose-specific intent wins for the general-purpose subagent** so a user tuning both fields never sees their GP override silently dropped:
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from deepagents import (
+        GeneralPurposeSubagentProfile,
+        HarnessProfile,
+        register_harness_profile,
+    )
+
     register_harness_profile(
         "anthropic",
         HarnessProfile(
@@ -217663,7 +218980,6 @@ Create `agent.py` in your project directory:
 
     Example:
     ## Key Findings
-
     Context engineering is a critical technique for AI agents [1]. Studies show that proper context management can improve performance by 40% [2].
 
     ### Sources
@@ -217719,280 +219035,44 @@ Create `agent.py` in your project directory:
 
     <Tabs>
       <Tab title="Claude">
-        <CodeGroup>
-          ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
+        ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        from datetime import datetime
 
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
+        from deepagents import create_deep_agent
+        from langchain.chat_models import init_chat_model
 
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
+        max_concurrent_research_units = 3
+        max_researcher_iterations = 3
 
-          current_date = datetime.now().strftime("%Y-%m-%d")
+        current_date = datetime.now().strftime("%Y-%m-%d")
 
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
+        INSTRUCTIONS = (
+            RESEARCH_WORKFLOW_INSTRUCTIONS
+            + "\n\n"
+            + "=" * 80
+            + "\n\n"
+            + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
+                max_concurrent_research_units=max_concurrent_research_units,
+                max_researcher_iterations=max_researcher_iterations,
+            )
+        )
 
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
+        research_sub_agent = {
+            "name": "research-agent",
+            "description": "Delegate research to the sub-agent. Give one topic at a time.",
+            "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
+            "tools": [tavily_search],
+        }
 
-          model = init_chat_model(model="google_genai:gemini-3.5-flash", temperature=0.0)
+        model = init_chat_model(model="anthropic:claude-sonnet-4-5-20250929", temperature=0.0)
 
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="openai:gpt-5.5", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="anthropic:claude-sonnet-4-6", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="openrouter:z-ai/glm-5.2", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="fireworks:accounts/fireworks/models/glm-5p2", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="baseten:zai-org/GLM-5.2", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-
-          ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-          from datetime import datetime
-
-          from deepagents import create_deep_agent
-          from langchain.chat_models import init_chat_model
-
-          max_concurrent_research_units = 3
-          max_researcher_iterations = 3
-
-          current_date = datetime.now().strftime("%Y-%m-%d")
-
-          INSTRUCTIONS = (
-              RESEARCH_WORKFLOW_INSTRUCTIONS
-              + "\n\n"
-              + "=" * 80
-              + "\n\n"
-              + SUBAGENT_DELEGATION_INSTRUCTIONS.format(
-                  max_concurrent_research_units=max_concurrent_research_units,
-                  max_researcher_iterations=max_researcher_iterations,
-              )
-          )
-
-          research_sub_agent = {
-              "name": "research-agent",
-              "description": "Delegate research to the sub-agent. Give one topic at a time.",
-              "system_prompt": RESEARCHER_INSTRUCTIONS.format(date=current_date),
-              "tools": [tavily_search],
-          }
-
-          model = init_chat_model(model="ollama:north-mini-code-1.0", temperature=0.0)
-
-          agent = create_deep_agent(
-              model=model,
-              tools=[tavily_search],
-              system_prompt=INSTRUCTIONS,
-              subagents=[research_sub_agent],
-          )
-          ```
-        </CodeGroup>
+        agent = create_deep_agent(
+            model=model,
+            tools=[tavily_search],
+            system_prompt=INSTRUCTIONS,
+            subagents=[research_sub_agent],
+        )
+        ```
       </Tab>
 
       <Tab title="Gemini">
@@ -219797,6 +220877,7 @@ agent = create_deep_agent(
         {
             "name": "researcher",
             "description": "Research assistant",
+            "system_prompt": "You are a research assistant.",
         }
     ],
 )
@@ -224747,15 +225828,17 @@ Pass the user's model selection through [runtime context](/oss/python/langchain/
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from dataclasses import dataclass
-from langchain.chat_models import init_chat_model
-from langchain.agents.middleware import wrap_model_call, ModelRequest, ModelResponse
-from deepagents import create_deep_agent
 from typing import Callable
+
+from langchain.agents.middleware import ModelRequest, ModelResponse, wrap_model_call
+from langchain.chat_models import init_chat_model
+from deepagents import create_deep_agent
 
 
 @dataclass
 class Context:
     model: str
+
 
 @wrap_model_call
 def configurable_model(
@@ -224765,6 +225848,7 @@ def configurable_model(
     model_name = request.runtime.context.model
     model = init_chat_model(model_name)
     return handler(request.override(model=model))
+
 
 agent = create_deep_agent(
     model="google_genai:gemini-3.5-flash",
@@ -224944,161 +226028,154 @@ See [Core capabilities](#core-capabilities) for a full breakdown of each compone
 
 ## Quickstart
 
-<Tabs>
-  <Tab title="Google">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-google-genai
-    from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
 
-  <Tab title="OpenAI">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-openai
-    from deepagents import create_deep_agent
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
 
-    agent = create_deep_agent(
-        model="openai:gpt-5.5",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
 
-  <Tab title="Anthropic">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-anthropic
-    from deepagents import create_deep_agent
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="anthropic:claude-sonnet-4-6",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
 
-  <Tab title="OpenRouter">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-openrouter
-    from deepagents import create_deep_agent
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="openrouter:anthropic/claude-sonnet-4-6",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
 
-  <Tab title="Fireworks">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-fireworks
-    from deepagents import create_deep_agent
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
 
-    agent = create_deep_agent(
-        model="fireworks:accounts/fireworks/models/qwen3p5-397b-a17b",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
 
-  <Tab title="Baseten">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-baseten
-    from deepagents import create_deep_agent
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="baseten:zai-org/GLM-5.2",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
 
-  <Tab title="Ollama">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    # pip install -qU deepagents langchain-ollama
-    from deepagents import create_deep_agent
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-    def get_weather(city: str) -> str:
-        """Get weather for a given city."""
-        return f"It's always sunny in {city}!"
 
-    agent = create_deep_agent(
-        model="ollama:devstral-2",
-        tools=[get_weather],
-        system_prompt="You are a helpful assistant",
-    )
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
 
-    # Run the agent
-    agent.invoke(
-        {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
-    )
-    ```
-  </Tab>
-</Tabs>
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def get_weather(city: str) -> str:
+      """Get weather for a given city."""
+      return f"It's always sunny in {city}!"
+
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      tools=[get_weather],
+      system_prompt="You are a helpful assistant",
+  )
+
+  # Run the agent
+  agent.invoke(
+      {"messages": [{"role": "user", "content": "what is the weather in sf"}]}
+  )
+  ```
+</CodeGroup>
 
 See the [Quickstart](/oss/python/deepagents/quickstart/) and [Customization guide](/oss/python/deepagents/customization/) to get started building your own agents and applications with Deep Agents.
 
@@ -225444,7 +226521,6 @@ Set `mode="interrupt"` to pause for human approval instead of allowing or denyin
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import FilesystemPermission, create_deep_agent
 from langgraph.checkpoint.memory import InMemorySaver
-
 
 agent = create_deep_agent(
     model=model,
@@ -225797,15 +226873,15 @@ register_harness_profile(
 </Note>
 
 <Warning>
-  To run an agent without the `task` tool, see [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents) — set `general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)` and pass no synchronous subagents via `subagents=`. `SubAgentMiddleware` (and the `task` tool) is only attached when at least one synchronous subagent exists, so this configuration leaves it out cleanly. Async subagents are unaffected.
+  To run an agent without the `task` tool, see [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents)—set `general_purpose_subagent=GeneralPurposeSubagentProfile(enabled=False)` and pass no synchronous subagents via `subagents=`. `SubAgentMiddleware` (and the `task` tool) is only attached when at least one synchronous subagent exists, so this configuration leaves it out cleanly. Async subagents are unaffected.
 
-  Listing `FilesystemMiddleware`, `SubAgentMiddleware`, or the internal permission middleware in `excluded_middleware` raises a `ValueError` — they're required scaffolding in the [default middleware stack](/oss/python/deepagents/customization#default-stack-main-agent). To hide their tools from the model without removing the middleware, use `excluded_tools` instead — see [Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access).
+  Listing `FilesystemMiddleware`, `SubAgentMiddleware`, or the internal permission middleware in `excluded_middleware` raises a `ValueError`—they're required scaffolding in the [default middleware stack](/oss/python/deepagents/customization#default-stack-main-agent). To hide their tools from the model without removing the middleware, use `excluded_tools` instead—see [Running without the default filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access).
 </Warning>
 
 Entries in `excluded_middleware` accept two forms:
 
 * A middleware *class* (matched by exact type), or a plain string that matches `AgentMiddleware.name`. Use plain strings for built-ins and public aliases such as `"SummarizationMiddleware"`.
-* An `module:Class` import ref (for example, `"my_pkg.middleware:TelemetryMiddleware"`) to target an exact middleware class from a config file. Import refs resolve lazily, so use them only for trusted local configuration — loading one imports Python code.
+* An `module:Class` import ref (for example, `"my_pkg.middleware:TelemetryMiddleware"`) to target an exact middleware class from a config file. Import refs resolve lazily, so use them only for trusted local configuration—loading one imports Python code.
 
 <Accordion title="Lookup order for preconfigured model instances">
   When you pass a preconfigured chat model instance instead of a `provider:model` string, the harness synthesizes the canonical `provider:identifier` key from the instance and looks it up in this order:
@@ -225819,8 +226895,8 @@ Entries in `excluded_middleware` accept two forms:
 
 Both profile types use the same key format:
 
-* **Provider-level** — a bare provider name like `"openai"` applies to every model from that provider.
-* **Model-level** — a fully qualified `provider:model` key like `"openai:gpt-5.5"` applies only to that specific model.
+* **Provider-level**—a bare provider name like `"openai"` applies to every model from that provider.
+* **Model-level**—a fully qualified `provider:model` key like `"openai:gpt-5.5"` applies only to that specific model.
 
 When both a provider-level and a model-level profile exist, they are merged at resolution time. Unset model-level fields inherit from the provider-level profile; explicit model-level values override them.
 
@@ -225871,7 +226947,7 @@ register_provider_profile(
 
 ## Load profiles from config files
 
-For YAML/JSON-backed workflows, use `HarnessProfileConfig`. It mirrors the declarative subset of `HarnessProfile` (prompt text, tool-description overrides, excluded tools and middleware, general-purpose subagent edits) and owns `to_dict` / `from_dict`. Runtime-only state — middleware instances, factories, and class-form `excluded_middleware` entries — stays on `HarnessProfile`.
+For YAML/JSON-backed workflows, use `HarnessProfileConfig`. It mirrors the declarative subset of `HarnessProfile` (prompt text, tool-description overrides, excluded tools and middleware, general-purpose subagent edits) and owns `to_dict` / `from_dict`. Runtime-only state—middleware instances, factories, and class-form `excluded_middleware` entries—stays on `HarnessProfile`.
 
 `register_harness_profile` accepts either type, so config-backed callers don't need a manual conversion step:
 
@@ -225903,7 +226979,7 @@ with open("openai.yaml") as f:
 To go the other direction, `HarnessProfileConfig.from_harness_profile(...)` exports a runtime profile back to the declarative shape when it only uses serializable features:
 
 * Class-form `excluded_middleware` entries serialize as a public alias (when the class exposes one via `serialized_name: ClassVar[str]`) or as a `module:Class` import ref.
-* Non-empty `extra_middleware` and middleware classes declared in `__main__` or inside a function scope cannot be serialized — export raises `ValueError`.
+* Non-empty `extra_middleware` and middleware classes declared in `__main__` or inside a function scope cannot be serialized—export raises `ValueError`.
 
 ## Ship a profile as a plugin
 
@@ -225946,9 +227022,9 @@ def register_provider() -> None:
 
 ## Related
 
-* [Harness Overview](/oss/python/deepagents/overview) — harness capabilities overview
-* [Models](/oss/python/deepagents/models) — configure model providers and parameters
-* [Customization](/oss/python/deepagents/customization) — full `create_deep_agent` configuration surface
+* [Harness Overview](/oss/python/deepagents/overview)—harness capabilities overview
+* [Models](/oss/python/deepagents/models)—configure model providers and parameters
+* [Customization](/oss/python/deepagents/customization)—full `create_deep_agent` configuration surface
 
 ***
 
@@ -229141,6 +230217,7 @@ SKILLS_BY_ROLE = {
     "support": ["/skills/ticket-triage/", "/skills/runbook/"],
 }
 
+
 def create_agent_for_user(user_role: str):
     return create_deep_agent(
         model="anthropic:claude-sonnet-4-6",
@@ -232038,18 +233115,81 @@ Connect Deep Agents to custom functions, APIs, databases, and any MCP server
 Deep Agents can call any tool you define, any [LangChain tool](https://python.langchain.com/docs/concepts/tools/), and tools from any [MCP server](#mcp-tools).
 Pass them to `create_deep_agent` via the `tools=` parameter alongside the [built-in harness tools](/oss/python/deepagents/overview#execution-environment) for planning, file management, and subagent spawning.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
-    tools=[search, fetch_url, run_query],
-)
-```
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      tools=[search, fetch_url, run_query],
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      tools=[search, fetch_url, run_query],
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      tools=[search, fetch_url, run_query],
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      tools=[search, fetch_url, run_query],
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      tools=[search, fetch_url, run_query],
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      tools=[search, fetch_url, run_query],
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      tools=[search, fetch_url, run_query],
+  )
+  ```
+</CodeGroup>
 
 ## Custom tools
 
-Pass any callable — plain functions, LangChain `@tool`-decorated functions, or tool dicts — directly to `tools=`.
+Pass any callable, such as plain functions, LangChain `@tool`-decorated functions, or tool dicts—directly to `tools=`.
 Deep Agents infers the tool schema from the function signature and docstring, so you don't need to define a separate schema in most cases.
 
 <CodeGroup>
@@ -232269,10 +233409,10 @@ For full details on defining and using LangChain tools (tool dicts, `StructuredT
 ## MCP tools
 
 <Note>
-  Deep Agents fully support [Model Context Protocol (MCP)](/oss/python/langchain/mcp) — the open standard for connecting agents to external services. Load tools from any MCP server and pass them directly to `create_deep_agent`.
+  Deep Agents fully support [Model Context Protocol (MCP)](/oss/python/langchain/mcp), the open standard for connecting agents to external services. Load tools from any MCP server and pass them directly to `create_deep_agent`.
 </Note>
 
-MCP is an open protocol that lets agents connect to a growing ecosystem of servers — databases, APIs, file systems, browsers, and more — through a standard interface. Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
+MCP is an open protocol that lets agents connect to a growing ecosystem of servers—databases, APIs, file systems, browsers, and more—through a standard interface. Instead of writing custom integration code for each service, you point Deep Agents at an MCP server and it gets all the tools that server exposes.
 
 Install `langchain-mcp-adapters` to connect to MCP servers:
 
@@ -232280,34 +233420,224 @@ Install `langchain-mcp-adapters` to connect to MCP servers:
 pip install langchain-mcp-adapters
 ```
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import asyncio
-from langchain_mcp_adapters.client import MultiServerMCPClient
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
 
-async def main():
-    client = MultiServerMCPClient(
-        {
-            "my_server": {
-                "transport": "http",
-                "url": "http://localhost:8000/mcp",
-            }
-        }
-    )
-    tools = await client.get_tools()
 
-    agent = create_deep_agent(
-        model="openai:gpt-5.5",
-        tools=tools,
-    )
+  async def main():
+      client = MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      )
+      tools = await client.get_tools()
 
-    result = await agent.ainvoke(
-        {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
-        config={"configurable": {"thread_id": "1"}},
-    )
+      agent = create_deep_agent(
+          model="google_genai:gemini-3.5-flash",
+          tools=tools,
+      )
 
-asyncio.run(main())
-```
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+          config={"configurable": {"thread_id": "1"}},
+      )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      client = MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      )
+      tools = await client.get_tools()
+
+      agent = create_deep_agent(
+          model="openai:gpt-5.5",
+          tools=tools,
+      )
+
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+          config={"configurable": {"thread_id": "1"}},
+      )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      client = MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      )
+      tools = await client.get_tools()
+
+      agent = create_deep_agent(
+          model="anthropic:claude-sonnet-4-6",
+          tools=tools,
+      )
+
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+          config={"configurable": {"thread_id": "1"}},
+      )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      client = MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      )
+      tools = await client.get_tools()
+
+      agent = create_deep_agent(
+          model="openrouter:z-ai/glm-5.2",
+          tools=tools,
+      )
+
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+          config={"configurable": {"thread_id": "1"}},
+      )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      client = MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      )
+      tools = await client.get_tools()
+
+      agent = create_deep_agent(
+          model="fireworks:accounts/fireworks/models/glm-5p2",
+          tools=tools,
+      )
+
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+          config={"configurable": {"thread_id": "1"}},
+      )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      client = MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      )
+      tools = await client.get_tools()
+
+      agent = create_deep_agent(
+          model="baseten:zai-org/GLM-5.2",
+          tools=tools,
+      )
+
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+          config={"configurable": {"thread_id": "1"}},
+      )
+
+
+  asyncio.run(main())
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+  from langchain_mcp_adapters.client import MultiServerMCPClient
+  from deepagents import create_deep_agent
+
+
+  async def main():
+      client = MultiServerMCPClient(
+          {
+              "my_server": {
+                  "transport": "http",
+                  "url": "http://localhost:8000/mcp",
+              }
+          }
+      )
+      tools = await client.get_tools()
+
+      agent = create_deep_agent(
+          model="ollama:north-mini-code-1.0",
+          tools=tools,
+      )
+
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Use the MCP server to help me."}]},
+          config={"configurable": {"thread_id": "1"}},
+      )
+
+
+  asyncio.run(main())
+  ```
+</CodeGroup>
 
 For detailed configuration options — including stdio servers, OAuth authentication, tool filtering, and stateful sessions — see the full [MCP guide](/oss/python/langchain/mcp).
 
@@ -254253,7 +255583,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
 **API reference:** [`RubricMiddleware`](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
 
 <CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -254269,7 +255599,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -254285,7 +255615,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -254301,7 +255631,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -254317,7 +255647,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -254333,7 +255663,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -254349,7 +255679,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -280938,12 +282268,53 @@ There are two subtle and important points to note here:
 
 Reducers are key to understanding how updates from nodes are applied to the `State`. Each key in the `State` has its own independent reducer function. If no reducer function is explicitly specified then it is assumed that all updates to that key should override it. There are a few different types of reducers, starting with the default type of reducer:
 
+#### Reducer arguments
+
+Every reducer is a binary function with two positional arguments:
+
+* **Left argument**: The current value already stored in state for that key.
+* **Right argument**: The update for that key returned by a node.
+
+When a node returns a partial update, LangGraph calls the reducer for each updated key and saves the return value as the new state value:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+new_value = reducer(left=current_state[key], right=node_update[key])
+```
+
+The left argument always comes from accumulated state. The right argument always comes from the latest node update. The following example names both arguments explicitly:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from typing import Annotated
+
+from typing_extensions import TypedDict
+
+
+def append_strings(left: list[str], right: list[str]) -> list[str]:
+    """Combine the existing state value (left) with a node update (right)."""
+    return left + right
+
+
+class State(TypedDict):
+    tags: Annotated[list[str], append_strings]
+```
+
+Suppose the state is `{"tags": ["draft"]}` and a node returns `{"tags": ["review"]}`. LangGraph calls:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+append_strings(left=["draft"], right=["review"])  # returns ["draft", "review"]
+```
+
+The new state value for `tags` is `["draft", "review"]`.
+
+Custom reducers combine the left and right arguments. The [default reducer](#default-reducer) discards the left argument and keeps only the right.
+
 #### Default reducer
 
-These two examples show how to use the default reducer:
+The default reducer ignores the left argument and replaces the state value with the right argument. This example shows how to use the default reducer:
 
-```python Example A theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from typing_extensions import TypedDict
+
 
 class State(TypedDict):
     foo: int
@@ -280954,10 +282325,16 @@ In this example, no reducer functions are specified for any key. Let's assume th
 
 `{"foo": 1, "bar": ["hi"]}`. Let's then assume the first `Node` returns `{"foo": 2}`. This is treated as an update to the state. Notice that the `Node` does not need to return the whole `State` schema - just an update. After applying this update, the `State` would then be `{"foo": 2, "bar": ["hi"]}`. If the second node returns `{"bar": ["bye"]}` then the `State` would then be `{"foo": 2, "bar": ["bye"]}`
 
-```python Example B theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from typing import Annotated
-from typing_extensions import TypedDict
+#### Custom reducers
+
+A custom reducer combines the left and right arguments instead of replacing the state value, which is useful for accumulating values, such as appending updates to a list. This example shows how to specify a custom reducer:
+
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from operator import add
+from typing import Annotated
+
+from typing_extensions import TypedDict
+
 
 class State(TypedDict):
     foo: int
@@ -296329,7 +297706,7 @@ The following are out-of-scope for security vulnerability reports:
 
 Please report security vulnerabilities associated with LangSmith by email to `security@langchain.dev`.
 
-* LangSmith site: [https://smith.langchain.com?utm\_source=docs\&utm\_medium=cta\&utm\_campaign=langsmith-signup\&utm\_content=oss-security-policy](https://smith.langchain.com)
+* LangSmith site: [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-security-policy)
 * SDK client: [https://github.com/langchain-ai/langsmith-sdk](https://github.com/langchain-ai/langsmith-sdk)
 
 ### Other security concerns

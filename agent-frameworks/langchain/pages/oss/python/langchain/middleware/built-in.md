@@ -1563,7 +1563,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
 **API reference:** [`RubricMiddleware`](https://reference.langchain.com/python/deepagents/middleware/rubric/RubricMiddleware)
 
 <CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -1579,7 +1579,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -1595,7 +1595,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -1611,7 +1611,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -1627,7 +1627,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -1643,7 +1643,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 
@@ -1659,7 +1659,7 @@ Some tasks have a clear definition of "done" that an agent cannot reliably hit o
   )
   ```
 
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   from deepagents import RubricMiddleware, create_deep_agent
   from langgraph.checkpoint.memory import InMemorySaver
 

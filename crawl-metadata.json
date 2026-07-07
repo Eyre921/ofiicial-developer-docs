@@ -10,7 +10,7 @@
     "status": "ok"
   },
   "ai-models/perplexity": {
-    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://docs.perplexity.ai/llms-full.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "ai-models/anthropic-claude-code": {
     "pages": 163,
@@ -47,7 +47,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1462,
+    "pages": 1463,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -103,7 +103,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -189,7 +189,7 @@
     "status": "ok"
   },
   "dev-platforms/github": {
-    "pages": 90,
+    "pages": 105,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -205,8 +205,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 760,
+    "pages": 761,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-07T11:30:39Z"
+  "_last_crawl": "2026-07-07T23:30:47Z"
 }

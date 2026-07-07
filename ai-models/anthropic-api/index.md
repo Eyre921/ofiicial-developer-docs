@@ -276,7 +276,7 @@
 - `manage-claude/cmek-google-cloud-kms` — [Terraform](pages/manage-claude/cmek-google-cloud-kms.md) · [原文](https://platform.claude.com/docs/en/manage-claude/cmek-google-cloud-kms)
 - `manage-claude/compliance-activity-feed` — [Query the Activity Feed](pages/manage-claude/compliance-activity-feed.md) · [原文](https://platform.claude.com/docs/en/manage-claude/compliance-activity-feed)
 - `manage-claude/compliance-api` — [Compliance API](pages/manage-claude/compliance-api.md) · [原文](https://platform.claude.com/docs/en/manage-claude/compliance-api)
-- `manage-claude/compliance-api-access` — [Get access to the Compliance API](pages/manage-claude/compliance-api-access.md) · [原文](https://platform.claude.com/docs/en/manage-claude/compliance-api-access)
+- `manage-claude/compliance-api-access` — [Set up the Compliance API](pages/manage-claude/compliance-api-access.md) · [原文](https://platform.claude.com/docs/en/manage-claude/compliance-api-access)
 - `manage-claude/compliance-content-data` — [Retrieve and delete chats, files, and projects](pages/manage-claude/compliance-content-data.md) · [原文](https://platform.claude.com/docs/en/manage-claude/compliance-content-data)
 - `manage-claude/compliance-errors` — [Handle Compliance API errors](pages/manage-claude/compliance-errors.md) · [原文](https://platform.claude.com/docs/en/manage-claude/compliance-errors)
 - `manage-claude/compliance-faq` — [Compliance API FAQ](pages/manage-claude/compliance-faq.md) · [原文](https://platform.claude.com/docs/en/manage-claude/compliance-faq)
