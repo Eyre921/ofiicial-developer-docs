@@ -3757,10 +3757,36 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
-<Update label="June 29, 2026">
-  ## Model deprecation
+<Update label="July 6, 2026">
+  ## New models available for fine-tuning
 
-  `Qwen/Qwen3.5-397B-A17B` has been deprecated and is no longer available on serverless. See [Deprecations](/docs/deprecations) for migration options.
+  You can now fine-tune the following vision-language model:
+
+  * `google/gemma-4-31B-it-VLM`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
+<Update label="July 1, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `google/flash-image-3.1-lite` (Gemini 3.1 Flash-Lite Image).
+  * `Qwen/Qwen3.6-35B-A3B-Lora`: 262,144 context length.
+  * `alibaba/happyhorse-1.1-i2v` (image-to-video).
+  * `alibaba/happyhorse-1.1-r2v` (reference-to-video).
+  * `alibaba/happyhorse-1.1-t2v` (text-to-video).
+</Update>
+
+<Update label="June 29, 2026">
+  ## Model deprecations
+
+  The following model has been deprecated and is no longer available on serverless:
+
+  * `Qwen/Qwen3.5-397B-A17B`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
 <Update label="June 26, 2026">
@@ -7884,6 +7910,29 @@ Dedicated endpoints have two scaling axes: how many GPUs go into each replica (v
 
 Only horizontal scaling is dynamic. You configure a minimum and maximum replica count when you create the endpoint, and the platform autoscales between those bounds based on demand. Vertical scaling is set at create time by picking a multi-GPU [hardware SKU](/docs/dedicated-endpoints/settings#hardware-and-gpu-count); changing it later requires redeploying the endpoint.
 
+```mermaid theme={null}
+flowchart TD
+    EP["Dedicated endpoint"]
+    R1["Replica 1"]
+    R2["Replica 2"]
+    R3["Replica 3"]
+    G1["GPU 1"]
+    G2["GPU 2"]
+
+    EP -->|"Horizontal: autoscale replica count (min to max)"| R1
+    EP --> R2
+    EP --> R3
+    R1 -->|"Vertical: GPUs per replica (fixed at create)"| G1
+    R1 --> G2
+
+    class EP client
+    class R1,R2,R3 endpoint
+    class G1,G2 replica
+    classDef client fill:#b65a7c,stroke:#76374d,stroke-width:1.5px,color:#ffffff;
+    classDef endpoint fill:#fc4c02,stroke:#b83702,stroke-width:1.5px,color:#ffffff;
+    classDef replica fill:#cbd5e1,stroke:#64748b,stroke-width:1.5px,color:#132133;
+```
+
 ## Vertical vs. horizontal
 
 ### When to add GPUs per replica (vertical)
@@ -7905,7 +7954,7 @@ together endpoints create \
   --wait
 ```
 
-Hardware can't be changed on a running endpoint, redeploy if you need a different SKU. See [Hardware and GPU count](/docs/dedicated-endpoints/settings#hardware-and-gpu-count).
+Hardware can't be changed on a running endpoint; redeploy if you need a different SKU. See [Hardware and GPU count](/docs/dedicated-endpoints/settings#hardware-and-gpu-count).
 
 ### When to add replicas (horizontal)
 
@@ -12121,6 +12170,7 @@ When you don't set `lora_trainable_modules`, it defaults to `all-linear`, which 
   | `google/gemma-3-4b-it-VLM`                          | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
   | `google/gemma-3-12b-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
   | `google/gemma-3-27b-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `google/gemma-4-31B-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
 </Accordion>
 
 ## What to expect from full fine-tuning
@@ -13548,6 +13598,7 @@ The tables below list every model available through the fine-tuning API. Context
 | Google       | Gemma 3 27B IT VLM                         | `google/gemma-3-27b-it-VLM`                             | 32768         | 24576         | 8               | 8               | 8         | 1          | 64            |
 | Google       | Gemma 3 27B PT                             | `google/gemma-3-27b-pt`                                 | 49152         | 24576         | 8               | 8               | 8         | 1          | 64            |
 | Google       | Gemma 4 31B IT                             | `google/gemma-4-31B-it`                                 | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| Google       | Gemma 4 31B IT VLM                         | `google/gemma-4-31B-it-VLM`                             | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
 | Google       | Gemma 4 26B A4B IT                         | `google/gemma-4-26B-A4B-it`                             | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
 | Qwen         | Qwen3 Next 80B A3B Instruct                | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3 Next 80B A3B Thinking                | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
@@ -13645,6 +13696,7 @@ The tables below list every model available through the fine-tuning API. Context
 | Google       | Gemma 3 27B IT VLM                    | `google/gemma-3-27b-it-VLM`                        | 32768         | 24576         | 16              | 16              | 16        |
 | Google       | Gemma 3 27B PT                        | `google/gemma-3-27b-pt`                            | 49152         | 24576         | 16              | 16              | 16        |
 | Google       | Gemma 4 31B IT                        | `google/gemma-4-31B-it`                            | 49152         | 24576         | 8               | 8               | 8         |
+| Google       | Gemma 4 31B IT VLM                    | `google/gemma-4-31B-it-VLM`                        | 24576         | 12288         | 16              | 16              | 16        |
 | Google       | Gemma 4 26B A4B IT                    | `google/gemma-4-26B-A4B-it`                        | 49152         | 24576         | 8               | 8               | 8         |
 | Qwen         | Qwen3 0.6B                            | `Qwen/Qwen3-0.6B`                                  | 40960         | 40960         | 64              | 64              | 8         |
 | Qwen         | Qwen3 0.6B Base                       | `Qwen/Qwen3-0.6B-Base`                             | 32768         | 32768         | 64              | 64              | 8         |
@@ -13697,6 +13749,7 @@ The following models support vision-language fine-tuning on image and text data.
 | `google/gemma-3-4b-it-VLM`                          |         ✅        |         ✅        |
 | `google/gemma-3-12b-it-VLM`                         |         ✅        |         ✅        |
 | `google/gemma-3-27b-it-VLM`                         |         ✅        |         ✅        |
+| `google/gemma-4-31B-it-VLM`                         |         ✅        |         ✅        |
 
 ## LoRA target modules
 
@@ -13770,6 +13823,7 @@ This page covers the VLM-specific data shape, supported models, and launch param
 | `google/gemma-3-4b-it-VLM`                          |         ✅        |         ✅        |
 | `google/gemma-3-12b-it-VLM`                         |         ✅        |         ✅        |
 | `google/gemma-3-27b-it-VLM`                         |         ✅        |         ✅        |
+| `google/gemma-4-31B-it-VLM`                         |         ✅        |         ✅        |
 
 ## Prepare your data
 
@@ -20871,14 +20925,14 @@ Together's Identity and Access Management (IAM) model controls how your team col
 
 Together's IAM is built around five concepts that work together:
 
-| Concept                                                                                  | What it is                                                                                                     |
-| ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| [Organization](/docs/organizations)                                                      | Your company's account on Together. One org = one bill.                                                        |
-| [Project](/docs/projects)                                                                | An isolated workspace within your Organization. Resources, Collaborators, and API keys are scoped to Projects. |
-| [Resource](#resources)                                                                   | Anything you create: fine-tuned models, dedicated endpoints, clusters, evaluations, files.                     |
-| [Member](#organization-members-and-project-collaborators)                                | A user with access to your organization.                                                                       |
-| [Collaborator](https://docs.together.ai/#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user).                               |
-| [API key](/docs/api-keys-authentication)                                                 | A Project-scoped credential for authenticating API requests.                                                   |
+| Concept                                                         | What it is                                                                                                     |
+| --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| [Organization](/docs/organizations)                             | Your company's account on Together. One org = one bill.                                                        |
+| [Project](/docs/projects)                                       | An isolated workspace within your Organization. Resources, Collaborators, and API keys are scoped to Projects. |
+| [Resource](#resources)                                          | Anything you create: fine-tuned models, dedicated endpoints, clusters, evaluations, files.                     |
+| [Member](#organization-members-and-project-collaborators)       | A user with access to your organization.                                                                       |
+| [Collaborator](#organization-members-and-project-collaborators) | A user with access to a specific Project (Organization Member or external user).                               |
+| [API key](/docs/api-keys-authentication)                        | A Project-scoped credential for authenticating API requests.                                                   |
 
 ## How It All Fits Together
 
@@ -24813,6 +24867,26 @@ Function calling lets LLMs respond with structured function names and arguments 
 Function calling (also called *tool calling*) lets LLMs respond with structured function names and arguments that you can execute in your application. It enables models to interact with external systems, retrieve real-time data, and power agentic AI workflows.
 
 Pass function descriptions to the `tools` parameter, and the model returns `tool_calls` when it determines a function should be used. You then execute these functions and optionally pass the results back to the model for further processing.
+
+```mermaid theme={null}
+flowchart TD
+    A1["Your app<br/>sends a request"]
+    M1["Model<br/>returns tool_calls"]
+    A2["Your app<br/>runs functions"]
+    M2["Model<br/>evaluates results"]
+    A3["Final response<br/>to your app"]
+
+    A1 -->|"messages + tools"| M1
+    M1 -->|"tool_calls"| A2
+    A2 -->|"results appended to messages"| M2
+    M2 -->|"more tool_calls"| A2
+    M2 -->|"no more tool_calls"| A3
+
+    class A1,A2,A3 client
+    class M1,M2 model
+    classDef client fill:#b65a7c,stroke:#76374d,stroke-width:1.5px,color:#ffffff;
+    classDef model fill:#7f6caa,stroke:#50426e,stroke-width:1.5px,color:#ffffff;
+```
 
 ## Patterns
 
@@ -45248,6 +45322,14 @@ Source: https://docs.together.ai/reference/get-fine-tunes-id-metrics
 GET /fine-tunes/{id}/metrics
 Retrieves recorded training metrics for a fine-tuning job in chronological order. All query parameters are optional: omit them to retrieve all metrics.
 
+
+
+
+# Get model limits
+Source: https://docs.together.ai/reference/get-fine-tunes-models-limits
+
+GET /fine-tunes/models/limits
+Get model limits for a specific fine-tuning model.
 
 
 

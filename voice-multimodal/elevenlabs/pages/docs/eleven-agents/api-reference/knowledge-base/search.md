@@ -254,16 +254,16 @@ components:
       discriminator:
         propertyName: type
       title: GetKnowledgeBaseSummaryFileResponseModelDependentAgentsItem
-    type_:ExternalSyncType:
+    type_:ExternalSyncProvider:
       type: string
       enum:
         - google_drive
-      title: ExternalSyncType
+      title: ExternalSyncProvider
     type_:ExternalFileSyncInfo:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/type_:ExternalSyncType'
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -373,7 +373,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/type_:ExternalSyncType'
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -821,7 +821,7 @@ components:
         "metadata": {
           "created_at_unix_secs": 1672531200,
           "last_updated_at_unix_secs": 1680307200,
-          "size_bytes": 2540000
+          "size_bytes": 2457600
         },
         "name": "Introduction to Machine Learning.pdf",
         "supported_usages": [
@@ -831,9 +831,9 @@ components:
           {
             "type": "available",
             "access_level": "admin",
-            "created_at_unix_secs": 1675000000,
+            "created_at_unix_secs": 1675123200,
             "id": "agent-1234",
-            "name": "ML Research Assistant"
+            "name": "ML Assistant"
           }
         ]
       },

@@ -363,8 +363,10 @@ components:
         - telegram_integration
         - intercom_integration
         - freshdesk_integration
+        - salesforce_integration
         - template_preview
         - genesys_bot_connector
+        - subagent_tool
       default: unknown
       description: Enum representing the possible sources for conversation initiation.
       title: ConversationInitiationSource

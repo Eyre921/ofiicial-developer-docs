@@ -1324,8 +1324,10 @@ components:
         - telegram_integration
         - intercom_integration
         - freshdesk_integration
+        - salesforce_integration
         - template_preview
         - genesys_bot_connector
+        - subagent_tool
       description: Source of the conversation initiation
       title: ConversationInitiationClientDataSourceInfoSource
     ConversationInitiationClientDataSourceInfo:

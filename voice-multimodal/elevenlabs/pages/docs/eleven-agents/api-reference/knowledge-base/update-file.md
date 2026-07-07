@@ -205,16 +205,16 @@ components:
             Unix timestamp for the next scheduled sync or None (in case of
             folders)
       title: AutoSyncInfo
-    type_:ExternalSyncType:
+    type_:ExternalSyncProvider:
       type: string
       enum:
         - google_drive
-      title: ExternalSyncType
+      title: ExternalSyncProvider
     type_:ExternalFileSyncInfo:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/type_:ExternalSyncType'
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -250,7 +250,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/type_:ExternalSyncType'
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -273,6 +273,72 @@ components:
         - integration_connection_id
       description: Metadata for a KB folder that mirrors an external source folder.
       title: ExternalFolderSyncInfo
+    type_:ExternalSyncJobTrigger:
+      type: string
+      enum:
+        - on_demand
+        - on_connect
+        - auto
+      title: ExternalSyncJobTrigger
+    type_:CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    type_:ExternalSyncJobType:
+      type: string
+      enum:
+        - full
+        - incremental
+      title: ExternalSyncJobType
+    type_:KbExternalSyncJob:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
+        folder_id:
+          type: string
+        integration_connection_id:
+          type: string
+        triggered_by:
+          $ref: '#/components/schemas/type_:ExternalSyncJobTrigger'
+        status:
+          $ref: '#/components/schemas/type_:CrawlStatus'
+        sync_type:
+          $ref: '#/components/schemas/type_:ExternalSyncJobType'
+        items_identified:
+          type: integer
+          default: 0
+        items_processed:
+          type: integer
+          default: 0
+        error_message:
+          type: string
+        started_at:
+          type: integer
+        completed_at:
+          type: integer
+        updated_at:
+          type: integer
+        id:
+          type: string
+        created_at:
+          type: integer
+      required:
+        - type
+        - folder_id
+        - integration_connection_id
+        - triggered_by
+        - updated_at
+        - id
+        - created_at
+      title: KbExternalSyncJob
     type_conversationalAi/knowledgeBase/document:DocumentUpdateFileResponse:
       oneOf:
         - type: object
@@ -459,6 +525,11 @@ components:
             is_frozen:
               type: boolean
               default: false
+            active_sync_job:
+              $ref: '#/components/schemas/type_:KbExternalSyncJob'
+              description: >-
+                Most recent (in-flight or terminal) external sync job for this
+                folder, if any. Used by clients to render sync progress.
           required:
             - type
             - id
@@ -525,28 +596,28 @@ components:
     "anonymous_access_level_override": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<p>This is the product manual for the 2024 model.</p>",
-  "id": "21m00Tcm4TlvDq8ikWAM",
+  "extracted_inner_html": "<p>This is the product manual for 2024 edition.</p>",
+  "id": "doc_9f8b7c6a2d3e4f1a",
   "metadata": {
-    "created_at_unix_secs": 1688208000,
-    "last_updated_at_unix_secs": 1719744000,
+    "created_at_unix_secs": 1685600000,
+    "last_updated_at_unix_secs": 1688201600,
     "size_bytes": 2457600
   },
   "name": "Product_Manual_2024.pdf",
   "supported_usages": [
     "prompt"
   ],
-  "url": "https://docs.example.com/product_manuals/2024/Product_Manual_2024.pdf",
+  "url": "https://storage.elevenlabs.io/docs/Product_Manual_2024.pdf",
   "auto_sync_info": {
     "minimum_frequency_days": 7,
     "auto_remove": true,
     "consec_failures": 0,
-    "next_refresh_by": 1720339200
+    "next_refresh_by": 1688806400
   },
-  "folder_parent_id": "folder_9a8b7c6d5e4f3g2h1i0j",
+  "folder_parent_id": "folder_12345abcde",
   "folder_path": [
     {
-      "id": "folder_1234567890abcdef",
+      "id": "folder_12345abcde",
       "name": "Product Documentation"
     }
   ]

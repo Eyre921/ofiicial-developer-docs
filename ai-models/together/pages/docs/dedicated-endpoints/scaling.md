@@ -10,6 +10,29 @@ Dedicated endpoints have two scaling axes: how many GPUs go into each replica (v
 
 Only horizontal scaling is dynamic. You configure a minimum and maximum replica count when you create the endpoint, and the platform autoscales between those bounds based on demand. Vertical scaling is set at create time by picking a multi-GPU [hardware SKU](/docs/dedicated-endpoints/settings#hardware-and-gpu-count); changing it later requires redeploying the endpoint.
 
+```mermaid theme={null}
+flowchart TD
+    EP["Dedicated endpoint"]
+    R1["Replica 1"]
+    R2["Replica 2"]
+    R3["Replica 3"]
+    G1["GPU 1"]
+    G2["GPU 2"]
+
+    EP -->|"Horizontal: autoscale replica count (min to max)"| R1
+    EP --> R2
+    EP --> R3
+    R1 -->|"Vertical: GPUs per replica (fixed at create)"| G1
+    R1 --> G2
+
+    class EP client
+    class R1,R2,R3 endpoint
+    class G1,G2 replica
+    classDef client fill:#b65a7c,stroke:#76374d,stroke-width:1.5px,color:#ffffff;
+    classDef endpoint fill:#fc4c02,stroke:#b83702,stroke-width:1.5px,color:#ffffff;
+    classDef replica fill:#cbd5e1,stroke:#64748b,stroke-width:1.5px,color:#132133;
+```
+
 ## Vertical vs. horizontal
 
 ### When to add GPUs per replica (vertical)
@@ -31,7 +54,7 @@ together endpoints create \
   --wait
 ```
 
-Hardware can't be changed on a running endpoint, redeploy if you need a different SKU. See [Hardware and GPU count](/docs/dedicated-endpoints/settings#hardware-and-gpu-count).
+Hardware can't be changed on a running endpoint; redeploy if you need a different SKU. See [Hardware and GPU count](/docs/dedicated-endpoints/settings#hardware-and-gpu-count).
 
 ### When to add replicas (horizontal)
 

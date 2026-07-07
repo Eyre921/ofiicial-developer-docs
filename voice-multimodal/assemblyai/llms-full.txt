@@ -91,7 +91,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Code Switching](#code-switching-docs-pre-recorded-audio-code-switching-mdx)
 - [Automatic Language Detection](#automatic-language-detection-docs-pre-recorded-audio-language-detection-mdx)
 - [Set Language Manually](#set-language-manually-docs-pre-recorded-audio-set-language-manually-mdx)
-- [Supported Languages & Features](#supported-languages-features-docs-pre-recorded-audio-supported-languages-mdx)
+- [Supported Languages](#supported-languages-docs-pre-recorded-audio-supported-languages-mdx)
 - [Custom Spelling](#custom-spelling-docs-pre-recorded-audio-correct-spelling-of-terms-mdx)
 - [Filler Words](#filler-words-docs-pre-recorded-audio-include-filler-words-mdx)
 - [Word Search](#word-search-docs-pre-recorded-audio-search-for-words-in-transcript-mdx)
@@ -369,7 +369,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Identifying speakers in audio recordings](#identifying-speakers-in-audio-recordings-docs-pre-recorded-audio-guides-identifying-speakers-in-audio-recordings-mdx)
 - [Streaming v2 (Legacy)](#streaming-v2-legacy-docs-pre-recorded-audio-legacy-streaming-mdx)
 - [Self-Hosted Async Transcription](#self-hosted-async-transcription-docs-pre-recorded-audio-self-hosted-async-mdx)
-- [Universal-2](#universal-2-docs-pre-recorded-audio-universal-2-mdx)
 - [Universal-3.5 Pro](#universal-3-5-pro-docs-pre-recorded-audio-universal-3-5-pro-mdx)
 - [Tracking customer transcription usage](#tracking-customer-transcription-usage-docs-tracking-your-customers-usage-mdx)
 - [Use case guides](#use-case-guides-docs-use-cases-mdx)
@@ -5769,14 +5768,26 @@ Voice agents need speed, accuracy, and natural turn-taking. Universal-3.5 Pro St
 
 ## What Languages Does Universal-3.5 Pro Streaming Support?
 
-Universal-3.5 Pro Streaming supports six languages with automatic code-switching:
+Universal-3.5 Pro Streaming supports 18 languages with automatic code-switching:
 
 - English
 - Spanish
-- French
 - German
-- Italian
+- French
 - Portuguese
+- Italian
+- Turkish
+- Dutch
+- Swedish
+- Norwegian
+- Danish
+- Finnish
+- Hindi
+- Vietnamese
+- Arabic
+- Hebrew
+- Japanese
+- Mandarin
 
 The model handles code-switching natively. Speakers can switch between supported languages mid-conversation without any configuration changes. Accuracy improves when you specify the expected language in the prompt. See [Supported languages](/streaming/getting-started/transcribe-streaming-audio) for the full language list and regional dialect reference.
 
@@ -17326,39 +17337,43 @@ while (true) {
 }
 ```
 
-See the [Supported Languages & Features](/pre-recorded-audio/supported-languages) page for all supported languages and their codes.
+See the [Supported languages](/pre-recorded-audio/supported-languages) page for all supported languages and their codes.
 
 ---
 
-<a id="supported-languages-features-docs-pre-recorded-audio-supported-languages-mdx"></a>
+<a id="supported-languages-docs-pre-recorded-audio-supported-languages-mdx"></a>
 
-# Supported Languages & Features
+# Supported Languages
 
 URL: https://www.assemblyai.com/docs/pre-recorded-audio/supported-languages
 Source: docs/pre-recorded-audio/supported-languages.mdx
 Navigation: Pre-recorded STT > Features > Languages
-Description: Supported Languages & Features documentation.
+Description: Supported languages for pre-recorded audio speech-to-text models.
 
-AssemblyAI supports a wide range of languages across our speech-to-text models for pre-recorded audio. The available languages and features vary by model. Check out the [Models](/getting-started/models) page to learn more about our different models and how to choose the best one for your use case. See our [Model selection](/pre-recorded-audio/select-the-speech-model) page for more details on specifying a model in your request.
-
-## Unsupported feature behavior
-
-Not all features are available for every language. If you enable a feature that isn't supported for the language of your audio, the API's behavior depends on how the language was specified:
-
-- **With `language_code` (manual):** The API rejects the request and returns an error, such as `"The following models are not available in this language: speaker_labels"`. This lets you catch configuration issues before processing.
-- **With `language_detection` (automatic):** The request completes normally, but any features that aren't supported for the detected language are silently omitted from the response. The transcription itself still succeeds. This is because the language isn't known until after the request is submitted, so the API can't validate feature compatibility upfront.
-
-To avoid unexpected results when using Automatic Language Detection, check the [feature tables below](#universal-3-5-pro) to confirm which features are available for the languages you expect in your audio. You can also use the `language_code` and `language_confidence` fields in the response to verify the detected language and handle cases where a feature may not have been applied.
+AssemblyAI supports a wide range of languages across our speech-to-text models for pre-recorded audio. The available languages vary by model. Check out the [Models](/getting-started/models) page to learn more about our different models and how to choose the best one for your use case. See our [Model selection](/pre-recorded-audio/select-the-speech-model) page for more details on specifying a model in your request.
 
 ## Universal-3.5 Pro
 
-<iframe
-  className="airtable-embed"
-  src="https://airtable.com/embed/apptQjwE6ZsC2Zfoi/shr0akLmAjn8bE9RP?backgroundColor=green"
-  width="100%"
-  height="400"
-  style={{ background: "transparent", border: "1px solid #ccc" }}
-/>
+Universal-3.5 Pro supports the following 18 languages. To automatically fall back to Universal-2 for anything outside this set, set `speech_models` to `["universal-3-5-pro", "universal-2"]` and set `language_detection` to `true`.
+
+- Arabic
+- Chinese (Mandarin)
+- Danish
+- Dutch
+- English (Global, Australian, British, US)
+- Finnish
+- French
+- German
+- Hebrew
+- Hindi
+- Italian
+- Japanese
+- Norwegian
+- Portuguese
+- Spanish
+- Swedish
+- Turkish
+- Vietnamese
 
 ### Regional dialects and variants
 
@@ -17401,36 +17416,38 @@ You do not need to specify a dialect code to get accurate dialect transcription.
 
 ## Universal-2
 
-<iframe
-  className="airtable-embed"
-  src="https://airtable.com/embed/appAHNKtjqyFB83AF/shrhQFfUxq1PROjTf?backgroundColor=green"
-  width="100%"
-  height="533"
-  style={{ background: "transparent", border: "1px solid #ccc" }}
-/>
+Universal-2 supports 99 languages. Pass the corresponding `language_code` in your transcription request to specify the language.
 
-**Breakdown of Universal-2 language support**
+### Accuracy metrics
 
-  
-  
-    English, Spanish, French, German, Indonesian, Italian, Japanese, Dutch, Polish, Portuguese, Russian, Swedish, Turkish, Ukrainian, Catalan
-  
+The following groups Universal-2 languages by transcription accuracy, measured by Word Error Rate (WER).
+
+English, Spanish, French, German, Indonesian, Italian, Japanese, Dutch, Polish, Portuguese, Russian, Swedish, Turkish, Ukrainian, Catalan
 
 10% to ≤25% WER)">
-  Arabic, Azerbaijani, Bulgarian, Bosnian, Mandarin Chinese, Czech, Danish,
-  Greek, Estonian, Finnish, Galician, Hebrew, Hindi, Croatian, Hungarian, Korean,
-  Macedonian, Malay, Norwegian, Romanian, Slovak, Swiss German,
-  Tagalog, Thai, Urdu, Vietnamese
+Arabic, Azerbaijani, Bulgarian, Bosnian, Mandarin Chinese, Czech, Danish,
+Greek, Estonian, Finnish, Galician, Hebrew, Hindi, Croatian, Hungarian, Korean,
+Macedonian, Malay, Norwegian, Romanian, Slovak, Swiss German,
+Tagalog, Thai, Urdu, Vietnamese
 
 25% to ≤50% WER)">
-  Afrikaans, Belarusian, Welsh, Persian (Farsi), Armenian, Icelandic,
-  Kazakh, Lithuanian, Latvian, Maori, Marathi, Slovenian, Swahili, Tamil
+Afrikaans, Belarusian, Welsh, Persian (Farsi), Armenian, Icelandic,
+Kazakh, Lithuanian, Latvian, Maori, Marathi, Slovenian, Swahili, Tamil
 
 50% WER)">
-  Amharic, Assamese, Bengali, Gujarati, Hausa, Javanese, Georgian, Khmer,
-  Kannada, Luxembourgish, Lingala, Lao, Malayalam, Mongolian, Maltese, Burmese,
-  Nepali, Occitan, Punjabi, Pashto, Sindhi, Shona, Somali, Serbian, Telugu,
-  Tajik, Uzbek, Yoruba
+Amharic, Assamese, Bengali, Gujarati, Hausa, Javanese, Georgian, Khmer,
+Kannada, Luxembourgish, Lingala, Lao, Malayalam, Mongolian, Maltese, Burmese,
+Nepali, Occitan, Punjabi, Pashto, Sindhi, Shona, Somali, Serbian, Telugu,
+Tajik, Uzbek, Yoruba
+
+## Unsupported feature behavior
+
+Not all features are available for every language. If you enable a feature that isn't supported for the language of your audio, the API's behavior depends on how the language was specified:
+
+- **With `language_code` (manual):** The API rejects the request and returns an error, such as `"The following models are not available in this language: speaker_labels"`. This lets you catch configuration issues before processing.
+- **With `language_detection` (automatic):** The request completes normally, but any features that aren't supported for the detected language are silently omitted from the response. The transcription itself still succeeds. This is because the language isn't known until after the request is submitted, so the API can't validate feature compatibility upfront.
+
+To avoid unexpected results when using Automatic Language Detection, use the `language_code` and `language_confidence` fields in the response to verify the detected language and handle cases where a feature may not have been applied.
 
 ---
 
@@ -28423,7 +28440,7 @@ This error occurs when the request body does not include the required `audio_url
 
 The `language_code` value you submitted isn't recognized.
 
-- **Solution**: Check the [Supported Languages & Features](/pre-recorded-audio/supported-languages) page and submit a supported language code. You can also enable [Automatic Language Detection](/pre-recorded-audio/language-detection) instead of setting `language_code` manually.
+- **Solution**: Check the [Supported languages](/pre-recorded-audio/supported-languages) page and submit a supported language code. You can also enable [Automatic Language Detection](/pre-recorded-audio/language-detection) instead of setting `language_code` manually.
 
 #### Invalid `speech_models` value
 
@@ -28565,7 +28582,7 @@ This error occurs when you set `language_code` explicitly and enable a feature t
 
 This error only applies when using `language_code`. If you use [Automatic Language Detection](/pre-recorded-audio/language-detection) instead, the request will complete successfully, but any unsupported features will be silently omitted from the response. See [Unsupported feature behavior](/pre-recorded-audio/supported-languages#unsupported-feature-behavior) for more details.
 
-- **Solution**: Check the [Supported Languages & Features](/pre-recorded-audio/supported-languages) page to verify which features are available for your language before submitting a request.
+- **Solution**: Check the [Supported languages](/pre-recorded-audio/supported-languages) page to verify which features are available for your language before submitting a request.
 
 #### Insufficient Funds
 
@@ -37533,7 +37550,7 @@ ws.send(json.dumps({"type": "ForceEndpoint"}))
 
 **Universal Streaming** transcribes English by default. For multilingual support, use `speech_model: "universal-streaming-multilingual"`. ([Source](/streaming/getting-started/transcribe-streaming-audio))
 
-**Universal-3.5 Pro** natively code-switches between 6 languages in a single model — no separate multilingual model needed: English, Spanish, German, French, Portuguese, Italian. It also supports automatic language detection, returning `language_code` and `language_confidence` fields in Turn messages. To bias toward the languages you expect, pass the `language_codes` connection parameter with a list of codes (a single-element list for one language) ([Language selection](/streaming/getting-started/optimizing-accuracy-and-latency#language-selection)). See [Supported languages](/streaming/getting-started/transcribe-streaming-audio) for the full list.
+**Universal-3.5 Pro** natively code-switches between 18 languages in a single model — no separate multilingual model needed: English, Spanish, German, French, Portuguese, Italian, Turkish, Dutch, Swedish, Norwegian, Danish, Finnish, Hindi, Vietnamese, Arabic, Hebrew, Japanese, and Mandarin. It also supports automatic language detection, returning `language_code` and `language_confidence` fields in Turn messages. To bias toward the languages you expect, pass the `language_codes` connection parameter with a list of codes (a single-element list for one language) ([Language selection](/streaming/getting-started/optimizing-accuracy-and-latency#language-selection)). See [Supported languages](/streaming/getting-started/transcribe-streaming-audio) for the full list.
 
 **Language Detection:** Universal Streaming supports the `language_detection` connection parameter (`true`/`false`, default `false`) with the multilingual model. When enabled, Turn messages include `language_code` and `language_confidence` fields. Universal-3.5 Pro also supports language detection with code-switching — see [Supported languages](/streaming/getting-started/transcribe-streaming-audio) for details.
 
@@ -41777,14 +41794,26 @@ Voice agents need speed, accuracy, and natural turn-taking. Universal-3.5 Pro St
 
 ## What Languages Does Universal-3.5 Pro Streaming Support?
 
-Universal-3.5 Pro Streaming supports six languages with automatic code-switching:
+Universal-3.5 Pro Streaming supports 18 languages with automatic code-switching:
 
 - English
 - Spanish
-- French
 - German
-- Italian
+- French
 - Portuguese
+- Italian
+- Turkish
+- Dutch
+- Swedish
+- Norwegian
+- Danish
+- Finnish
+- Hindi
+- Vietnamese
+- Arabic
+- Hebrew
+- Japanese
+- Mandarin
 
 The model handles code-switching natively. Speakers can switch between supported languages mid-conversation without any configuration changes. Accuracy improves when you specify the expected language in the prompt. See [Supported languages](/streaming/getting-started/transcribe-streaming-audio) for the full language list and regional dialect reference.
 
@@ -77587,15 +77616,13 @@ Language support for Real-time STT depends on the model you select. AssemblyAI o
 
 | Model | Languages Supported |
 | --- | --- |
-| **Universal-3.5 Pro Streaming** (Preview) | English, Spanish, German, French, Portuguese, Italian, Turkish, Dutch, Swedish, Norwegian, Danish, Finnish, Hindi, Vietnamese, Arabic, Hebrew, Japanese, Chinese (native code switching) |
-| **Universal-3.5 Pro Streaming** | English, Spanish, German, French, Portuguese, Italian (native code switching) |
+| **Universal-3.5 Pro Streaming** | English, Spanish, German, French, Portuguese, Italian, Turkish, Dutch, Swedish, Norwegian, Danish, Finnish, Hindi, Vietnamese, Arabic, Hebrew, Japanese, Mandarin (native code switching across 18 languages) |
 | **Universal-Streaming English** | English only |
 | **Universal-Streaming Multilingual** | English, Spanish, German, French, Portuguese, Italian (per turn) |
 
 ## Choosing the Right Model
 
-- If you need real-time transcription in a language beyond EN/ES/DE/FR/PT/IT (for example Japanese, Chinese, Hindi, Arabic, or Hebrew), use [Universal-3.5 Pro Streaming](/streaming/select-the-speech-model) (`universal-3-5-pro`, Preview).
-- If you need the highest accuracy with multilingual code switching support across EN/ES/DE/FR/PT/IT, use [Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) (`universal-3-5-pro`).
+- If you need the highest accuracy with multilingual code switching across up to 18 languages, use [Universal-3.5 Pro Streaming](/streaming/getting-started/transcribe-streaming-audio) (`universal-3-5-pro`).
 - If you only need English transcription at the lowest cost, use Universal-Streaming English (`universal-streaming-english`).
 - If you need multilingual support at a lower cost, use Universal-Streaming Multilingual (`universal-streaming-multilingual`).
 
@@ -80281,200 +80308,6 @@ For technical support or questions about the self-hosted async solution, contact
 ## Simplified installation
 
 AssemblyAI is working on packaging solutions and installation scripts to simplify the deployment process for customers. For the latest information on simplified installation options, contact your AssemblyAI representative.
-
----
-
-<a id="universal-2-docs-pre-recorded-audio-universal-2-mdx"></a>
-
-# Universal-2
-
-URL: https://www.assemblyai.com/docs/pre-recorded-audio/universal-2
-Source: docs/pre-recorded-audio/universal-2.mdx
-Navigation: Additional pages
-Description: Set up and configure Universal-2 for pre-recorded audio transcription.
-
-Universal-2 offers accurate, cost-effective transcription across 99 languages with low latency. It supports code switching and optional keyterms prompting for domain-specific vocabulary (up to 200 words).
-
-## Key capabilities
-
-- **99 language support:** Transcribe audio in 99 languages with high accuracy
-- **Keyterms prompting:** Improve recognition of up to 200 domain-specific terms, rare words, and proper nouns
-- **Code switching:** Handle audio that switches between languages
-
-## Supported languages
-
-  
-  <br />
-
-## Quickstart
-
-Get started with Universal-2 using the code below. This example transcribes a pre-recorded audio file using the Universal-2 model and prints the transcript text to your terminal.
-
-    
-    Install the required library
-
-    ```bash
-    pip install requests
-    ```
-
-    
-    
-    Create a new file `main.py` and paste the code below. Replace `<YOUR_API_KEY>` with your API key.
-    
-    
-    Run with `python main.py`.
-    
-
-```python  expandable
-import requests
-import time
-
-base_url = "https://api.assemblyai.com"
-headers = {"authorization": "<YOUR_API_KEY>"}
-
-data = {
-    "audio_url": "https://assembly.ai/wildfires.mp3",
-    "speech_models": ["universal-2"],
-    "language_detection": True
-}
-
-response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
-
-if response.status_code != 200:
-    print(f"Error: {response.status_code}, Response: {response.text}")
-    response.raise_for_status()
-
-transcript_response = response.json()
-transcript_id = transcript_response["id"]
-polling_endpoint = f"{base_url}/v2/transcript/{transcript_id}"
-
-while True:
-    transcript = requests.get(polling_endpoint, headers=headers).json()
-    if transcript["status"] == "completed":
-        print(transcript["text"])
-        break
-    elif transcript["status"] == "error":
-        raise RuntimeError(f"Transcription failed: {transcript['error']}")
-    else:
-        time.sleep(3)
-```
-
-    
-    Install the required library
-
-    ```bash
-    pip install "assemblyai>=1.0.0"
-    ```
-
-    
-    
-    Create a new file `main.py` and paste the code below. Replace `<YOUR_API_KEY>` with your API key.
-    
-    
-    Run with `python main.py`.
-    
-
-```python 
-import assemblyai as aai
-
-aai.settings.api_key = "<YOUR_API_KEY>"
-
-audio_file = "https://assembly.ai/wildfires.mp3"
-
-config = aai.TranscriptionConfig(
-  speech_models=["universal-2"],
-  language_detection=True,
-)
-
-transcript = aai.Transcriber().transcribe(audio_file, config)
-
-print(transcript.text)
-```
-
-    
-    Create a new file `index.mjs` and paste the code below. Replace `<YOUR_API_KEY>` with your API key.
-    
-    
-    Run with `node index.mjs`.
-    
-
-```javascript  expandable
-const baseUrl = "https://api.assemblyai.com";
-const headers = {
-  authorization: "<YOUR_API_KEY>",
-};
-
-const data = {
-  audio_url: "https://assembly.ai/wildfires.mp3",
-  speech_models: ["universal-2"],
-  language_detection: true,
-};
-
-const url = `${baseUrl}/v2/transcript`;
-let res = await fetch(url, {
-  method: "POST",
-  headers: { ...headers, "Content-Type": "application/json" },
-  body: JSON.stringify(data),
-});
-if (!res.ok) throw new Error(`Error: ${res.status}`);
-const response = await res.json();
-
-const transcriptId = response.id;
-const pollingEndpoint = `${baseUrl}/v2/transcript/${transcriptId}`;
-
-while (true) {
-  res = await fetch(pollingEndpoint, { headers });
-  if (!res.ok) throw new Error(`Error: ${res.status}`);
-  const transcriptionResult = await res.json();
-
-  if (transcriptionResult.status === "completed") {
-    console.log(transcriptionResult.text);
-    break;
-  } else if (transcriptionResult.status === "error") {
-    throw new Error(`Transcription failed: ${transcriptionResult.error}`);
-  } else {
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-  }
-}
-```
-
-    
-    Install the required library
-
-    ```bash
-    npm install assemblyai
-    ```
-
-    
-    
-    Create a new file `index.mjs` and paste the code below. Replace `<YOUR_API_KEY>` with your API key.
-    
-    
-    Run with `node index.mjs`.
-    
-
-```javascript 
-import { AssemblyAI } from "assemblyai";
-
-const client = new AssemblyAI({
-  apiKey: "<YOUR_API_KEY>",
-});
-
-const audioFile = "https://assembly.ai/wildfires.mp3";
-
-const params = {
-  audio: audioFile,
-  speech_models: ["universal-2"],
-  language_detection: true,
-};
-
-const run = async () => {
-  const transcript = await client.transcripts.transcribe(params);
-  console.log(transcript.text);
-};
-
-run();
-```
 
 ---
 

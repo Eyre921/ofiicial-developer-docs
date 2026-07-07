@@ -22,6 +22,7 @@ This page covers the VLM-specific data shape, supported models, and launch param
 | `google/gemma-3-4b-it-VLM`                          |         ✅        |         ✅        |
 | `google/gemma-3-12b-it-VLM`                         |         ✅        |         ✅        |
 | `google/gemma-3-27b-it-VLM`                         |         ✅        |         ✅        |
+| `google/gemma-4-31B-it-VLM`                         |         ✅        |         ✅        |
 
 ## Prepare your data
 

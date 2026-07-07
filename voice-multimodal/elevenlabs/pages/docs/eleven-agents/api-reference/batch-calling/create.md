@@ -376,8 +376,10 @@ components:
         - telegram_integration
         - intercom_integration
         - freshdesk_integration
+        - salesforce_integration
         - template_preview
         - genesys_bot_connector
+        - subagent_tool
       default: unknown
       description: Enum representing the possible sources for conversation initiation.
       title: ConversationInitiationSource
@@ -606,13 +608,13 @@ components:
   "status": "pending",
   "retry_count": 0,
   "telephony_call_config": {
-    "ringing_timeout_secs": 60
+    "ringing_timeout_secs": 45
   },
-  "agent_name": "Survey Agent Alpha",
+  "agent_name": "Support Agent Team A",
   "phone_number_id": "phone_num_9876543210fedcba",
   "phone_provider": "twilio",
   "whatsapp_params": {
-    "whatsapp_call_permission_request_template_name": "whatsapp_call_permission_template_01",
+    "whatsapp_call_permission_request_template_name": "permission_request_template_01",
     "whatsapp_call_permission_request_template_language_code": "en_US",
     "whatsapp_phone_number_id": "wa_num_1122334455"
   },

@@ -83,6 +83,7 @@ The tables below list every model available through the fine-tuning API. Context
 | Google       | Gemma 3 27B IT VLM                         | `google/gemma-3-27b-it-VLM`                             | 32768         | 24576         | 8               | 8               | 8         | 1          | 64            |
 | Google       | Gemma 3 27B PT                             | `google/gemma-3-27b-pt`                                 | 49152         | 24576         | 8               | 8               | 8         | 1          | 64            |
 | Google       | Gemma 4 31B IT                             | `google/gemma-4-31B-it`                                 | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| Google       | Gemma 4 31B IT VLM                         | `google/gemma-4-31B-it-VLM`                             | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
 | Google       | Gemma 4 26B A4B IT                         | `google/gemma-4-26B-A4B-it`                             | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
 | Qwen         | Qwen3 Next 80B A3B Instruct                | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
 | Qwen         | Qwen3 Next 80B A3B Thinking                | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
@@ -180,6 +181,7 @@ The tables below list every model available through the fine-tuning API. Context
 | Google       | Gemma 3 27B IT VLM                    | `google/gemma-3-27b-it-VLM`                        | 32768         | 24576         | 16              | 16              | 16        |
 | Google       | Gemma 3 27B PT                        | `google/gemma-3-27b-pt`                            | 49152         | 24576         | 16              | 16              | 16        |
 | Google       | Gemma 4 31B IT                        | `google/gemma-4-31B-it`                            | 49152         | 24576         | 8               | 8               | 8         |
+| Google       | Gemma 4 31B IT VLM                    | `google/gemma-4-31B-it-VLM`                        | 24576         | 12288         | 16              | 16              | 16        |
 | Google       | Gemma 4 26B A4B IT                    | `google/gemma-4-26B-A4B-it`                        | 49152         | 24576         | 8               | 8               | 8         |
 | Qwen         | Qwen3 0.6B                            | `Qwen/Qwen3-0.6B`                                  | 40960         | 40960         | 64              | 64              | 8         |
 | Qwen         | Qwen3 0.6B Base                       | `Qwen/Qwen3-0.6B-Base`                             | 32768         | 32768         | 64              | 64              | 8         |
@@ -232,6 +234,7 @@ The following models support vision-language fine-tuning on image and text data.
 | `google/gemma-3-4b-it-VLM`                          |         ✅        |         ✅        |
 | `google/gemma-3-12b-it-VLM`                         |         ✅        |         ✅        |
 | `google/gemma-3-27b-it-VLM`                         |         ✅        |         ✅        |
+| `google/gemma-4-31B-it-VLM`                         |         ✅        |         ✅        |
 
 ## LoRA target modules
 

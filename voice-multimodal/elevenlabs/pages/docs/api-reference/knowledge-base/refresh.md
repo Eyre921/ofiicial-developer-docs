@@ -211,16 +211,16 @@ components:
             Unix timestamp for the next scheduled sync or None (in case of
             folders)
       title: AutoSyncInfo
-    ExternalSyncType:
+    ExternalSyncProvider:
       type: string
       enum:
         - google_drive
-      title: ExternalSyncType
+      title: ExternalSyncProvider
     ExternalFileSyncInfo:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/ExternalSyncType'
+          $ref: '#/components/schemas/ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -258,7 +258,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/ExternalSyncType'
+          $ref: '#/components/schemas/ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -287,6 +287,81 @@ components:
         - integration_connection_id
       description: Metadata for a KB folder that mirrors an external source folder.
       title: ExternalFolderSyncInfo
+    ExternalSyncJobTrigger:
+      type: string
+      enum:
+        - on_demand
+        - on_connect
+        - auto
+      title: ExternalSyncJobTrigger
+    CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    ExternalSyncJobType:
+      type: string
+      enum:
+        - full
+        - incremental
+      title: ExternalSyncJobType
+    KbExternalSyncJob:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ExternalSyncProvider'
+        folder_id:
+          type: string
+        integration_connection_id:
+          type: string
+        triggered_by:
+          $ref: '#/components/schemas/ExternalSyncJobTrigger'
+        status:
+          $ref: '#/components/schemas/CrawlStatus'
+          default: queued
+        sync_type:
+          oneOf:
+            - $ref: '#/components/schemas/ExternalSyncJobType'
+            - type: 'null'
+        items_identified:
+          type: integer
+          default: 0
+        items_processed:
+          type: integer
+          default: 0
+        error_message:
+          type:
+            - string
+            - 'null'
+        started_at:
+          type:
+            - integer
+            - 'null'
+        completed_at:
+          type:
+            - integer
+            - 'null'
+        updated_at:
+          type: integer
+        id:
+          type: string
+        created_at:
+          type: integer
+      required:
+        - type
+        - folder_id
+        - integration_connection_id
+        - triggered_by
+        - updated_at
+        - id
+        - created_at
+      title: KbExternalSyncJob
     conversational_ai_knowledge_base_document_refresh_Response_200:
       oneOf:
         - type: object
@@ -488,6 +563,13 @@ components:
             is_frozen:
               type: boolean
               default: false
+            active_sync_job:
+              oneOf:
+                - $ref: '#/components/schemas/KbExternalSyncJob'
+                - type: 'null'
+              description: >-
+                Most recent (in-flight or terminal) external sync job for this
+                folder, if any. Used by clients to render sync progress.
           required:
             - type
             - id
@@ -559,7 +641,7 @@ components:
   "metadata": {
     "created_at_unix_secs": 1685000000,
     "last_updated_at_unix_secs": 1687600000,
-    "size_bytes": 24576
+    "size_bytes": 245678
   },
   "name": "ElevenLabs API Documentation",
   "supported_usages": [

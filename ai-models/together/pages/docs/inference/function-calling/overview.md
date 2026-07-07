@@ -10,6 +10,26 @@ Function calling (also called *tool calling*) lets LLMs respond with structured 
 
 Pass function descriptions to the `tools` parameter, and the model returns `tool_calls` when it determines a function should be used. You then execute these functions and optionally pass the results back to the model for further processing.
 
+```mermaid theme={null}
+flowchart TD
+    A1["Your app<br/>sends a request"]
+    M1["Model<br/>returns tool_calls"]
+    A2["Your app<br/>runs functions"]
+    M2["Model<br/>evaluates results"]
+    A3["Final response<br/>to your app"]
+
+    A1 -->|"messages + tools"| M1
+    M1 -->|"tool_calls"| A2
+    A2 -->|"results appended to messages"| M2
+    M2 -->|"more tool_calls"| A2
+    M2 -->|"no more tool_calls"| A3
+
+    class A1,A2,A3 client
+    class M1,M2 model
+    classDef client fill:#b65a7c,stroke:#76374d,stroke-width:1.5px,color:#ffffff;
+    classDef model fill:#7f6caa,stroke:#50426e,stroke-width:1.5px,color:#ffffff;
+```
+
 ## Patterns
 
 Function calling fits a handful of common shapes. Pick the one that matches what you're building, then follow the link for runnable Python, TypeScript, and cURL examples.

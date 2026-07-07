@@ -389,8 +389,10 @@ components:
         - telegram_integration
         - intercom_integration
         - freshdesk_integration
+        - salesforce_integration
         - template_preview
         - genesys_bot_connector
+        - subagent_tool
       default: unknown
       description: Enum representing the possible sources for conversation initiation.
       title: ConversationInitiationSource
@@ -555,7 +557,7 @@ components:
 {
   "success": true,
   "message": "Outbound call initiated successfully.",
-  "conversation_id": "conv_20240615_001",
+  "conversation_id": "conv_abc123xyz789",
   "callSid": "EXO1234567890abcdef"
 }
 ```

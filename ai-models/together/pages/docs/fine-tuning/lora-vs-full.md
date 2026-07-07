@@ -217,6 +217,7 @@ When you don't set `lora_trainable_modules`, it defaults to `all-linear`, which 
   | `google/gemma-3-4b-it-VLM`                          | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
   | `google/gemma-3-12b-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
   | `google/gemma-3-27b-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
+  | `google/gemma-4-31B-it-VLM`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       |
 </Accordion>
 
 ## What to expect from full fine-tuning

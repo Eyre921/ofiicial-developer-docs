@@ -522,6 +522,25 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersion-Input
+    SubAgent-Input:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        branch_id:
+          type:
+            - string
+            - 'null'
+        description:
+          type: string
+        parameters:
+          oneOf:
+            - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Input'
+            - type: 'null'
+      required:
+        - agent_id
+        - description
+      title: SubAgent-Input
     AgentTransfer:
       type: object
       properties:
@@ -888,6 +907,21 @@ components:
 
             navigating phone menus, entering extensions, or inputting numeric
             codes.
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
+                - run_subagent
+              description: 'Discriminator value: run_subagent'
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/SubAgent-Input'
+          required:
+            - system_tool_type
+            - agents
+          description: RunSubagentToolConfig variant
         - type: object
           properties:
             system_tool_type:
@@ -1773,6 +1807,25 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersion-Output
+    SubAgent-Output:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        branch_id:
+          type:
+            - string
+            - 'null'
+        description:
+          type: string
+        parameters:
+          oneOf:
+            - $ref: '#/components/schemas/ObjectJsonSchemaProperty-Output'
+            - type: 'null'
+      required:
+        - agent_id
+        - description
+      title: SubAgent-Output
     ToolResponseModelToolConfigDiscriminatorMappingSystemParams:
       oneOf:
         - type: object
@@ -1850,6 +1903,21 @@ components:
 
             navigating phone menus, entering extensions, or inputting numeric
             codes.
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
+                - run_subagent
+              description: 'Discriminator value: run_subagent'
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/SubAgent-Output'
+          required:
+            - system_tool_type
+            - agents
+          description: RunSubagentToolConfig variant
         - type: object
           properties:
             system_tool_type:

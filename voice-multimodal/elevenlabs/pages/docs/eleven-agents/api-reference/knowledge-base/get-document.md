@@ -195,16 +195,16 @@ components:
             Unix timestamp for the next scheduled sync or None (in case of
             folders)
       title: AutoSyncInfo
-    type_:ExternalSyncType:
+    type_:ExternalSyncProvider:
       type: string
       enum:
         - google_drive
-      title: ExternalSyncType
+      title: ExternalSyncProvider
     type_:ExternalFileSyncInfo:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/type_:ExternalSyncType'
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -240,7 +240,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/type_:ExternalSyncType'
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -263,6 +263,72 @@ components:
         - integration_connection_id
       description: Metadata for a KB folder that mirrors an external source folder.
       title: ExternalFolderSyncInfo
+    type_:ExternalSyncJobTrigger:
+      type: string
+      enum:
+        - on_demand
+        - on_connect
+        - auto
+      title: ExternalSyncJobTrigger
+    type_:CrawlStatus:
+      type: string
+      enum:
+        - queued
+        - processing
+        - succeeded
+        - failed
+        - skipped
+        - cancelled
+      default: queued
+      title: CrawlStatus
+    type_:ExternalSyncJobType:
+      type: string
+      enum:
+        - full
+        - incremental
+      title: ExternalSyncJobType
+    type_:KbExternalSyncJob:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
+        folder_id:
+          type: string
+        integration_connection_id:
+          type: string
+        triggered_by:
+          $ref: '#/components/schemas/type_:ExternalSyncJobTrigger'
+        status:
+          $ref: '#/components/schemas/type_:CrawlStatus'
+        sync_type:
+          $ref: '#/components/schemas/type_:ExternalSyncJobType'
+        items_identified:
+          type: integer
+          default: 0
+        items_processed:
+          type: integer
+          default: 0
+        error_message:
+          type: string
+        started_at:
+          type: integer
+        completed_at:
+          type: integer
+        updated_at:
+          type: integer
+        id:
+          type: string
+        created_at:
+          type: integer
+      required:
+        - type
+        - folder_id
+        - integration_connection_id
+        - triggered_by
+        - updated_at
+        - id
+        - created_at
+      title: KbExternalSyncJob
     type_conversationalAi/knowledgeBase/documents:DocumentsGetResponse:
       oneOf:
         - type: object
@@ -449,6 +515,11 @@ components:
             is_frozen:
               type: boolean
               default: false
+            active_sync_job:
+              $ref: '#/components/schemas/type_:KbExternalSyncJob'
+              description: >-
+                Most recent (in-flight or terminal) external sync job for this
+                folder, if any. Used by clients to render sync progress.
           required:
             - type
             - id
@@ -507,17 +578,17 @@ components:
   "type": "url",
   "access_info": {
     "is_creator": true,
-    "creator_name": "John Doe",
-    "creator_email": "john.doe@example.com",
+    "creator_name": "Alice Johnson",
+    "creator_email": "alice.johnson@elevenlabs.io",
     "role": "admin",
-    "anonymous_access_level_override": "admin",
+    "anonymous_access_level_override": "viewer",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation...</p>",
+  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. Here you can find all the information needed to integrate with our services.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
-    "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1688201600,
+    "created_at_unix_secs": 1685606400,
+    "last_updated_at_unix_secs": 1688294400,
     "size_bytes": 4523
   },
   "name": "ElevenLabs API Overview",
@@ -527,9 +598,9 @@ components:
   "url": "https://docs.elevenlabs.io/api-overview",
   "auto_sync_info": {
     "minimum_frequency_days": 7,
-    "auto_remove": true,
+    "auto_remove": false,
     "consec_failures": 0,
-    "next_refresh_by": 1688806400
+    "next_refresh_by": 1688899200
   },
   "folder_parent_id": "root_folder_01",
   "folder_path": [

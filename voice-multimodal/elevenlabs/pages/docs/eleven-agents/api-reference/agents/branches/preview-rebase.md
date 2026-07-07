@@ -263,6 +263,14 @@ components:
             List of terms that should not trigger an interruption when spoken by
             the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact
             matching.
+        interruption_ignore_term_languages:
+          type: array
+          items:
+            type: string
+          description: >-
+            Language codes for which preset ignore-term categories have been
+            activated. Stored explicitly so display is not inferred from term
+            overlap.
         transcribe_on_disabled_interruptions:
           type: boolean
           default: false
@@ -1131,6 +1139,220 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersionOutput
+    type_:LiteralJsonSchemaPropertyType:
+      oneOf:
+        - type: string
+          enum:
+            - boolean
+        - type: string
+          enum:
+            - string
+        - type: string
+          enum:
+            - integer
+        - type: string
+          enum:
+            - number
+        - type: array
+          items:
+            type: string
+      title: LiteralJsonSchemaPropertyType
+    type_:LiteralJsonSchemaPropertyConstantValue:
+      oneOf:
+        - type: string
+        - type: integer
+        - type: number
+          format: double
+        - type: boolean
+      description: >-
+        A constant value to use for this property. Mutually exclusive with
+        description, dynamic_variable, is_system_provided, and is_omitted.
+      title: LiteralJsonSchemaPropertyConstantValue
+    type_:LiteralJsonSchemaProperty:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/type_:LiteralJsonSchemaPropertyType'
+        description:
+          type: string
+          default: ''
+          description: >-
+            The description of the property. When set, the LLM will provide the
+            value based on this description. Mutually exclusive with
+            dynamic_variable, is_system_provided, constant_value, and
+            is_omitted.
+        enum:
+          type: array
+          items:
+            type: string
+          description: List of allowed string values for string type parameters
+        is_system_provided:
+          type: boolean
+          default: false
+          description: >-
+            If true, the value will be populated by the system at runtime. Used
+            by API Integration Webhook tools for templating. Mutually exclusive
+            with description, dynamic_variable, constant_value, and is_omitted.
+        dynamic_variable:
+          type: string
+          default: ''
+          description: >-
+            The name of the dynamic variable to use for this property's value.
+            Mutually exclusive with description, is_system_provided,
+            constant_value, and is_omitted.
+        allowed_values_dynamic_variable:
+          type: string
+          default: ''
+          description: >-
+            When set, the LLM provides the value but the runtime rejects any
+            value not present in the list held by this dynamic variable. Use to
+            let the LLM pick from a server-verified set (e.g. the IDs the
+            current user is allowed to access). Requires description; mutually
+            exclusive with dynamic_variable, is_system_provided, constant_value,
+            and is_omitted.
+        constant_value:
+          $ref: '#/components/schemas/type_:LiteralJsonSchemaPropertyConstantValue'
+          description: >-
+            A constant value to use for this property. Mutually exclusive with
+            description, dynamic_variable, is_system_provided, and is_omitted.
+        is_omitted:
+          type: boolean
+          default: false
+          description: >-
+            If true, this parameter will be completely omitted from the request.
+            Only valid for optional parameters. Mutually exclusive with
+            description, dynamic_variable, is_system_provided, and
+            constant_value.
+      required:
+        - type
+      description: >-
+        Schema property for literal JSON types. IMPORTANT: Only ONE of the
+        following fields can be set: description (LLM provides value),
+        dynamic_variable (value from variable), is_system_provided (system
+        provides value), constant_value (fixed value), or is_omitted (parameter
+        is omitted). These are mutually exclusive.
+      title: LiteralJsonSchemaProperty
+    type_:ArrayJsonSchemaPropertyOutputItems:
+      oneOf:
+        - $ref: '#/components/schemas/type_:LiteralJsonSchemaProperty'
+        - $ref: '#/components/schemas/type_:ObjectJsonSchemaPropertyOutput'
+        - $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutput'
+      description: Schema for array elements.
+      title: ArrayJsonSchemaPropertyOutputItems
+    type_:ArrayJsonSchemaPropertyOutputConstantValueItem:
+      oneOf:
+        - type: string
+        - type: integer
+        - type: number
+          format: double
+        - type: boolean
+      title: ArrayJsonSchemaPropertyOutputConstantValueItem
+    type_:ArrayJsonSchemaPropertyOutput:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - array
+        description:
+          type: string
+          default: ''
+        items:
+          $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutputItems'
+          description: Schema for array elements.
+        dynamic_variable:
+          type: string
+          default: ''
+          description: >-
+            When set, the entire array is populated from this dynamic variable
+            at runtime. Mutually exclusive with description (LLM-provided
+            array), constant_value, and is_omitted.
+        constant_value:
+          type: array
+          items:
+            $ref: >-
+              #/components/schemas/type_:ArrayJsonSchemaPropertyOutputConstantValueItem
+          description: >-
+            When set, the entire array uses this constant value at runtime.
+            Mutually exclusive with description (LLM-provided array),
+            dynamic_variable, and is_omitted.
+        is_omitted:
+          type: boolean
+          default: false
+          description: >-
+            If true, this array parameter will be completely omitted from the
+            request. Only valid for optional parameters. Mutually exclusive with
+            description, dynamic_variable, and constant_value.
+      title: ArrayJsonSchemaPropertyOutput
+    type_:ObjectJsonSchemaPropertyOutputPropertiesValue:
+      oneOf:
+        - $ref: '#/components/schemas/type_:LiteralJsonSchemaProperty'
+        - $ref: '#/components/schemas/type_:ObjectJsonSchemaPropertyOutput'
+        - $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutput'
+      title: ObjectJsonSchemaPropertyOutputPropertiesValue
+    type_:RequiredConstraint:
+      type: object
+      properties:
+        required:
+          type: array
+          items:
+            type: string
+      required:
+        - required
+      description: A set of fields that must all be present to satisfy this constraint.
+      title: RequiredConstraint
+    type_:RequiredConstraints:
+      type: object
+      properties:
+        any_of:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:RequiredConstraint'
+        all_of:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:RequiredConstraint'
+      description: >-
+        Wrapper for anyOf/allOf composition constraints scoped to required
+        fields.
+      title: RequiredConstraints
+    type_:ObjectJsonSchemaPropertyOutput:
+      type: object
+      properties:
+        type:
+          type: string
+          enum:
+            - object
+        required:
+          type: array
+          items:
+            type: string
+        description:
+          type: string
+          default: ''
+        properties:
+          type: object
+          additionalProperties:
+            $ref: >-
+              #/components/schemas/type_:ObjectJsonSchemaPropertyOutputPropertiesValue
+        required_constraints:
+          $ref: '#/components/schemas/type_:RequiredConstraints'
+      title: ObjectJsonSchemaPropertyOutput
+    type_:SubAgentOutput:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        branch_id:
+          type: string
+        description:
+          type: string
+        parameters:
+          $ref: '#/components/schemas/type_:ObjectJsonSchemaPropertyOutput'
+      required:
+        - agent_id
+        - description
+      title: SubAgentOutput
     type_:AgentTransfer:
       type: object
       properties:
@@ -1449,6 +1671,20 @@ components:
                 interfering with IVR systems.
           required:
             - system_tool_type
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
+                - run_subagent
+              description: 'Discriminator value: run_subagent'
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/type_:SubAgentOutput'
+          required:
+            - system_tool_type
+            - agents
         - type: object
           properties:
             system_tool_type:
@@ -1961,205 +2197,6 @@ components:
         A whitelist of fields that can be overridden by users when
         configuring an API Integration Webhook Tool.
       title: ApiIntegrationWebhookOverrides
-    type_:LiteralJsonSchemaPropertyType:
-      oneOf:
-        - type: string
-          enum:
-            - boolean
-        - type: string
-          enum:
-            - string
-        - type: string
-          enum:
-            - integer
-        - type: string
-          enum:
-            - number
-        - type: array
-          items:
-            type: string
-      title: LiteralJsonSchemaPropertyType
-    type_:LiteralJsonSchemaPropertyConstantValue:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      description: >-
-        A constant value to use for this property. Mutually exclusive with
-        description, dynamic_variable, is_system_provided, and is_omitted.
-      title: LiteralJsonSchemaPropertyConstantValue
-    type_:LiteralJsonSchemaProperty:
-      type: object
-      properties:
-        type:
-          $ref: '#/components/schemas/type_:LiteralJsonSchemaPropertyType'
-        description:
-          type: string
-          default: ''
-          description: >-
-            The description of the property. When set, the LLM will provide the
-            value based on this description. Mutually exclusive with
-            dynamic_variable, is_system_provided, constant_value, and
-            is_omitted.
-        enum:
-          type: array
-          items:
-            type: string
-          description: List of allowed string values for string type parameters
-        is_system_provided:
-          type: boolean
-          default: false
-          description: >-
-            If true, the value will be populated by the system at runtime. Used
-            by API Integration Webhook tools for templating. Mutually exclusive
-            with description, dynamic_variable, constant_value, and is_omitted.
-        dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            The name of the dynamic variable to use for this property's value.
-            Mutually exclusive with description, is_system_provided,
-            constant_value, and is_omitted.
-        allowed_values_dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            When set, the LLM provides the value but the runtime rejects any
-            value not present in the list held by this dynamic variable. Use to
-            let the LLM pick from a server-verified set (e.g. the IDs the
-            current user is allowed to access). Requires description; mutually
-            exclusive with dynamic_variable, is_system_provided, constant_value,
-            and is_omitted.
-        constant_value:
-          $ref: '#/components/schemas/type_:LiteralJsonSchemaPropertyConstantValue'
-          description: >-
-            A constant value to use for this property. Mutually exclusive with
-            description, dynamic_variable, is_system_provided, and is_omitted.
-        is_omitted:
-          type: boolean
-          default: false
-          description: >-
-            If true, this parameter will be completely omitted from the request.
-            Only valid for optional parameters. Mutually exclusive with
-            description, dynamic_variable, is_system_provided, and
-            constant_value.
-      required:
-        - type
-      description: >-
-        Schema property for literal JSON types. IMPORTANT: Only ONE of the
-        following fields can be set: description (LLM provides value),
-        dynamic_variable (value from variable), is_system_provided (system
-        provides value), constant_value (fixed value), or is_omitted (parameter
-        is omitted). These are mutually exclusive.
-      title: LiteralJsonSchemaProperty
-    type_:ArrayJsonSchemaPropertyOutputItems:
-      oneOf:
-        - $ref: '#/components/schemas/type_:LiteralJsonSchemaProperty'
-        - $ref: '#/components/schemas/type_:ObjectJsonSchemaPropertyOutput'
-        - $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutput'
-      description: Schema for array elements.
-      title: ArrayJsonSchemaPropertyOutputItems
-    type_:ArrayJsonSchemaPropertyOutputConstantValueItem:
-      oneOf:
-        - type: string
-        - type: integer
-        - type: number
-          format: double
-        - type: boolean
-      title: ArrayJsonSchemaPropertyOutputConstantValueItem
-    type_:ArrayJsonSchemaPropertyOutput:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - array
-        description:
-          type: string
-          default: ''
-        items:
-          $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutputItems'
-          description: Schema for array elements.
-        dynamic_variable:
-          type: string
-          default: ''
-          description: >-
-            When set, the entire array is populated from this dynamic variable
-            at runtime. Mutually exclusive with description (LLM-provided
-            array), constant_value, and is_omitted.
-        constant_value:
-          type: array
-          items:
-            $ref: >-
-              #/components/schemas/type_:ArrayJsonSchemaPropertyOutputConstantValueItem
-          description: >-
-            When set, the entire array uses this constant value at runtime.
-            Mutually exclusive with description (LLM-provided array),
-            dynamic_variable, and is_omitted.
-        is_omitted:
-          type: boolean
-          default: false
-          description: >-
-            If true, this array parameter will be completely omitted from the
-            request. Only valid for optional parameters. Mutually exclusive with
-            description, dynamic_variable, and constant_value.
-      title: ArrayJsonSchemaPropertyOutput
-    type_:ObjectJsonSchemaPropertyOutputPropertiesValue:
-      oneOf:
-        - $ref: '#/components/schemas/type_:LiteralJsonSchemaProperty'
-        - $ref: '#/components/schemas/type_:ObjectJsonSchemaPropertyOutput'
-        - $ref: '#/components/schemas/type_:ArrayJsonSchemaPropertyOutput'
-      title: ObjectJsonSchemaPropertyOutputPropertiesValue
-    type_:RequiredConstraint:
-      type: object
-      properties:
-        required:
-          type: array
-          items:
-            type: string
-      required:
-        - required
-      description: A set of fields that must all be present to satisfy this constraint.
-      title: RequiredConstraint
-    type_:RequiredConstraints:
-      type: object
-      properties:
-        any_of:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:RequiredConstraint'
-        all_of:
-          type: array
-          items:
-            $ref: '#/components/schemas/type_:RequiredConstraint'
-      description: >-
-        Wrapper for anyOf/allOf composition constraints scoped to required
-        fields.
-      title: RequiredConstraints
-    type_:ObjectJsonSchemaPropertyOutput:
-      type: object
-      properties:
-        type:
-          type: string
-          enum:
-            - object
-        required:
-          type: array
-          items:
-            type: string
-        description:
-          type: string
-          default: ''
-        properties:
-          type: object
-          additionalProperties:
-            $ref: >-
-              #/components/schemas/type_:ObjectJsonSchemaPropertyOutputPropertiesValue
-        required_constraints:
-          $ref: '#/components/schemas/type_:RequiredConstraints'
-      title: ObjectJsonSchemaPropertyOutput
     type_:WebhookToolApiSchemaConfigOutputRequestHeadersValue:
       oneOf:
         - type: string
@@ -5223,6 +5260,14 @@ components:
             List of terms that should not trigger an interruption when spoken by
             the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact
             matching.
+        interruption_ignore_term_languages:
+          type: array
+          items:
+            type: string
+          description: >-
+            Language codes for which preset ignore-term categories have been
+            activated. Stored explicitly so display is not inferred from term
+            overlap.
         transcribe_on_disabled_interruptions:
           type: boolean
           description: >-
@@ -6665,6 +6710,9 @@ components:
       "interruption_ignore_terms": [
         "interruption_ignore_terms"
       ],
+      "interruption_ignore_term_languages": [
+        "interruption_ignore_term_languages"
+      ],
       "transcribe_on_disabled_interruptions": false,
       "soft_timeout_config": {
         "timeout_seconds": -1,
@@ -7254,6 +7302,9 @@ components:
             "interruption_ignore_terms": [
               "interruption_ignore_terms"
             ],
+            "interruption_ignore_term_languages": [
+              "interruption_ignore_term_languages"
+            ],
             "transcribe_on_disabled_interruptions": false,
             "soft_timeout_config": {
               "timeout_seconds": -1,
@@ -7510,6 +7561,9 @@ components:
             "turn_model": "turn_v3",
             "interruption_ignore_terms": [
               "interruption_ignore_terms"
+            ],
+            "interruption_ignore_term_languages": [
+              "interruption_ignore_term_languages"
             ],
             "transcribe_on_disabled_interruptions": false,
             "soft_timeout_config": {
@@ -7777,6 +7831,9 @@ components:
             "turn_model": "turn_v3",
             "interruption_ignore_terms": [
               "interruption_ignore_terms"
+            ],
+            "interruption_ignore_term_languages": [
+              "interruption_ignore_term_languages"
             ],
             "transcribe_on_disabled_interruptions": false,
             "soft_timeout_config": {

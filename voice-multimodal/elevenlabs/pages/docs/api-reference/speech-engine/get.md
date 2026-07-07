@@ -446,6 +446,14 @@ components:
             List of terms that should not trigger an interruption when spoken by
             the user (e.g. 'gotcha', 'understood'). Uses case-insensitive exact
             matching.
+        interruption_ignore_term_languages:
+          type: array
+          items:
+            type: string
+          description: >-
+            Language codes for which preset ignore-term categories have been
+            activated. Stored explicitly so display is not inferred from term
+            overlap.
         transcribe_on_disabled_interruptions:
           type: boolean
           default: false

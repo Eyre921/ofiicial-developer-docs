@@ -70258,9 +70258,9 @@ The [configuration panel above](#step-2-configure-your-ai-tool) can set these op
 | `project_ref=<id>`  | Scope to a specific project (disables account tools) | `?project_ref=abc123`     |
 | `features=<groups>` | Enable only specific tool groups (comma-separated)   | `?features=database,docs` |
 
-Parameters can be combined: `https://mcp.supabase.com/mcp?project_ref=abc123&read_only=true`
+Parameters can be combined: https://mcp.supabase.com/mcp?project_ref=abc123&read_only=true
 
-Tip: When using [Supabase CLI](https://supabase.com/docs/guides/cli) for local development, the MCP server is available at `http://localhost:54321/mcp`.
+Tip: When using [Supabase CLI](https://supabase.com/docs/guides/cli) for local development, the MCP server is available at http://localhost:54321/mcp.
 
 ## Manual authentication
 
@@ -115743,6 +115743,14 @@ Pipelines currently supports **BigQuery** as the managed destination. See the [B
 
 We are working on new destinations. Supported destinations can be Supabase-managed or third-party systems as support expands. Availability may continue to vary based on the planned roll-out strategy.
 
+## Does the destination's region affect performance?
+
+Yes. The further apart your source database, the pipeline, and your destination are, the more network latency is added to replication, which increases replication lag and reduces throughput.
+
+Pipelines run out of **eu-central-1 (Frankfurt)**. For the best performance, place both your source project and your destination as close to this region as possible.
+
+If you can only optimize one side, prioritize placing your **destination** close to the pipeline's region. Replicated data continuously streams out to the destination, so latency on that leg has a bigger impact on overall replication lag than latency between the pipeline and the source.
+
 ## Which plans support Pipelines?
 
 Pipelines is available on the Pro, Team, and Enterprise plans.
@@ -128172,7 +128180,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -128213,7 +128231,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create an Astro app
+## 4. Create an Astro app
 
 Create an Astro app using the `npm create` command.
 
@@ -128222,7 +128240,7 @@ npm create astro@latest my-app
 cd my-app
 ```
 
-## 4. Install Supabase client library and Node adapter
+## 5. Install Supabase client library and Node adapter
 
 Install the `supabase-js` client library and the `@astrojs/node` adapter to enable server-side rendering.
 
@@ -128230,7 +128248,7 @@ Install the `supabase-js` client library and the `@astrojs/node` adapter to enab
 npm install @supabase/supabase-js @astrojs/node
 ```
 
-## 5. Configure Astro for SSR
+## 6. Configure Astro for SSR
 
 Update your `astro.config.mjs`.
 
@@ -128246,16 +128264,18 @@ export default defineConfig({
 })
 ```
 
-## 6. Declare Supabase environment variables
+## 7. Declare Supabase environment variables
 
 Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=astro\&tab=frameworks):
+
+Open Connect panel
 
 ```text name=.env.local
 PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 7. Create a Supabase client helper
+## 8. Create a Supabase client helper
 
 Create a utility file to initialize the Supabase client:
 
@@ -128270,11 +128290,7 @@ export function createServerClient() {
 }
 ```
 
-## 8. Query Supabase data from Astro
-
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
+## 9. Query Supabase data from Astro
 
 Create a new file at `src/pages/instruments.astro` and populate with the following.
 
@@ -128302,7 +128318,7 @@ const { data: instruments } = await supabase.from("instruments").select();
 </html>
 ```
 
-## 9. Start the app
+## 10. Start the app
 
 Run the development server, go to [http://localhost:4321/instruments](http://localhost:4321/instruments) in your browser of choice to check the list of instruments.
 
@@ -128312,6 +128328,7 @@ npm run dev
 
 ## Next steps
 
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
@@ -128358,7 +128375,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -128399,7 +128426,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create an Expo app
+## 4. Create an Expo app
 
 Create a minimal Expo app using the `create-expo-app` command with the blank TypeScript template.
 
@@ -128407,7 +128434,7 @@ Create a minimal Expo app using the `create-expo-app` command with the blank Typ
 npx create-expo-app my-app --template blank-typescript
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The fastest way to get started is to use the `@supabase/supabase-js` client library which provides a convenient interface for working with Supabase from a React Native app.
 
@@ -128417,9 +128444,11 @@ Navigate to the Expo app and install `supabase-js` along with the required depen
 cd my-app && npx expo install @supabase/supabase-js react-native-url-polyfill expo-sqlite
 ```
 
-## 5. Declare Supabase environment variables
+## 6. Declare Supabase environment variables
 
 Create a `.env` file in the root of your project and populate it with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true).
+
+Open Connect panel
 
 Expo requires environment variables to be prefixed with `EXPO_PUBLIC_` to be accessible in your app code.
 
@@ -128428,7 +128457,7 @@ EXPO_PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 EXPO_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 6. Initialize the Supabase client
+## 7. Initialize the Supabase client
 
 Create a helper file at `lib/supabase.ts` to initialize the Supabase client using the environment variables.
 
@@ -128454,7 +128483,7 @@ export const supabase = createClient(supabaseUrl, supabasePublishableKey, {
 })
 ```
 
-## 7. Query data from the app
+## 8. Query data from the app
 
 Replace the contents of `App.tsx` with the following code to fetch and display the instruments from your database.
 
@@ -128504,7 +128533,7 @@ const styles = StyleSheet.create({
 })
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Run the development server and scan the QR code with the Expo Go app on your phone, or press `i` for iOS simulator or `a` for Android emulator.
 
@@ -128560,7 +128589,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -128601,7 +128640,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a Python app with Flask
+## 4. Create a Python app with Flask
 
 Create a new directory for your Python app and set up a virtual environment.
 
@@ -128611,7 +128650,7 @@ python3 -m venv venv
 source venv/bin/activate
 ```
 
-## 4. Install Flask and the Supabase client library
+## 5. Install Flask and the Supabase client library
 
 The fastest way to get started is to use Flask for the web framework and the `supabase-py` client library which provides a convenient interface for working with Supabase from a Python app.
 
@@ -128621,16 +128660,18 @@ Install both packages using pip.
 pip install flask supabase
 ```
 
-## 5. Create environment variables file
+## 6. Create environment variables file
 
 Create a `.env` file in your project root and populate it with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true):
+
+Open Connect panel
 
 ```text name=.env
 SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 6. Query data from the app
+## 7. Query data from the app
 
 Install the `python-dotenv` package to load environment variables:
 
@@ -128671,7 +128712,7 @@ if __name__ == '__main__':
     app.run(debug=True)
 ```
 
-## 7. Start the app
+## 8. Start the app
 
 Run the Flask development server, and go to [http://localhost:5000](http://localhost:5000) in your browser, you should see the list of instruments.
 
@@ -128727,7 +128768,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -128768,7 +128819,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a Flutter app
+## 4. Create a Flutter app
 
 Create a Flutter app using the `flutter create` command.
 
@@ -128776,7 +128827,7 @@ Create a Flutter app using the `flutter create` command.
 flutter create my_app
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The fastest way to get started is to use the [`supabase_flutter`](https://pub.dev/packages/supabase_flutter) client library which provides a convenient interface for working with Supabase from a Flutter app.
 
@@ -128786,9 +128837,11 @@ Open the `pubspec.yaml` file inside your Flutter app and add `supabase_flutter` 
 supabase_flutter: ^2.0.0
 ```
 
-## 5. Initialize the Supabase client
+## 6. Initialize the Supabase client
 
 Open `lib/main.dart` and edit the main function to initialize Supabase using your project URL and publishable key, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=flutter\&tab=mobiles):
+
+Open Connect panel
 
 ```dart name=lib/main.dart
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -128804,7 +128857,7 @@ Future<void> main() async {
 }
 ```
 
-## 6. Query data from the app
+## 7. Query data from the app
 
 Use a `FutureBuilder` to fetch the data when the home page loads and display the query result in a `ListView`.
 
@@ -128861,7 +128914,7 @@ class _HomePageState extends State<HomePage> {
 }
 ```
 
-## 7. Start the app
+## 8. Start the app
 
 Run your app on a platform of your choosing! By default an app should launch in your web browser.
 
@@ -128872,7 +128925,7 @@ Running the app on macOS requires additional configuration to [set the entitleme
 flutter run
 ```
 
-## Setup deep links
+## 9. Setup deep links (optional)
 
 Many sign in methods require deep links to redirect the user back to your app after authentication. Read more about setting deep links up for all platforms (including web) in the [Flutter Mobile Guide](https://supabase.com/docs/guides/getting-started/tutorials/with-flutter#setup-deep-links).
 
@@ -128933,7 +128986,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -128974,7 +129037,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a Hono app
+## 4. Create a Hono app
 
 Bootstrap the Hono example app from the Supabase Samples using the CLI.
 
@@ -128982,7 +129045,7 @@ Bootstrap the Hono example app from the Supabase Samples using the CLI.
 npx supabase@latest bootstrap hono
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The `package.json` file in the project includes the necessary dependencies, including `@supabase/supabase-js` and `@supabase/ssr` to help with server-side auth.
 
@@ -128990,7 +129053,7 @@ The `package.json` file in the project includes the necessary dependencies, incl
 npm install
 ```
 
-## 5. Set up the required environment variables
+## 6. Set up the required environment variables
 
 Copy the `.env.example` file to `.env` and update the values with your Supabase project URL and publishable key, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&tab=frameworks).
 
@@ -129000,7 +129063,7 @@ Lastly, [enable anonymous sign-ins](https://supabase.com/dashboard/project/_/aut
 cp .env.example .env
 ```
 
-## 6. Start the app
+## 7. Start the app
 
 Start the app, go to [http://localhost:5173](http://localhost:5173).
 
@@ -129058,7 +129121,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -129099,11 +129172,11 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create an iOS SwiftUI app with Xcode
+## 4. Create an iOS SwiftUI app with Xcode
 
 Select the **Xcode > New Project > iOS > App** menu item.
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 Add the [supabase-swift](https://github.com/supabase/supabase-swift) package to your app using the Swift Package Manager.
 
@@ -129111,9 +129184,11 @@ In Xcode, navigate to **File > Add Package Dependencies...** and enter the repos
 
 Make sure to add `Supabase` product package as a dependency to your application target.
 
-## 5. Initialize the Supabase client
+## 6. Initialize the Supabase client
 
 Create a new `Supabase.swift` file add a new Supabase instance using your project URL and publishable key, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=swift\&tab=mobiles):
+
+Open Connect panel
 
 ```swift name=Supabase.swift
 import Supabase
@@ -129124,7 +129199,7 @@ let supabase = SupabaseClient(
 )
 ```
 
-## 6. Create a data model for instruments
+## 7. Create a data model for instruments
 
 Create a decodable struct to deserialize the data from the database.
 
@@ -129137,7 +129212,7 @@ struct Instrument: Decodable, Identifiable {
 }
 ```
 
-## 7. Query data from the app
+## 8. Query data from the app
 
 Use a `task` to fetch the data from the database and display it using a `List`.
 
@@ -129170,11 +129245,11 @@ struct ContentView: View {
 }
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Run the app on a simulator or a physical device by hitting `Cmd + R` on Xcode.
 
-## Setting up deep links
+## 10. Setting up deep links (optional)
 
 If you want to implement authentication features like magic links or OAuth, you need to set up deep links to redirect users back to your app. For instructions on configuring custom URL schemes for your iOS app, see the [deep linking guide](https://supabase.com/docs/guides/auth/native-mobile-deep-linking?platform=swift).
 
@@ -129225,7 +129300,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -129266,11 +129351,11 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create an Android app with Android Studio
+## 4. Create an Android app with Android Studio
 
 Select the **Android Studio > New > New Android Project** menu item.
 
-## 4. Install dependencies
+## 5. Install dependencies
 
 Open `build.gradle.kts` (app) file and add the serialization plugin, Ktor client, and Supabase client.
 
@@ -129292,7 +129377,7 @@ dependencies {
 }
 ```
 
-## 5. Add internet access permission
+## 6. Add internet access permission
 
 Add the following line to the `AndroidManifest.xml` file under the `manifest` tag and outside the `application` tag.
 
@@ -129302,13 +129387,15 @@ Add the following line to the `AndroidManifest.xml` file under the `manifest` ta
 ...
 ```
 
-## 6. Initialize the Supabase client
+## 7. Initialize the Supabase client
 
 You can create a Supabase client whenever you need to perform an API call.
 
 For a quick example, create a client at the top of the `MainActivity.kt` file below the imports.
 
 Replace the `supabaseUrl` and `supabaseKey` with your own, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=androidkotlin\&tab=mobiles):
+
+Open Connect panel
 
 ```kotlin
 import ...
@@ -129322,7 +129409,7 @@ val supabase = createSupabaseClient(
 ...
 ```
 
-## 7. Create a data model for instruments
+## 8. Create a data model for instruments
 
 Create a serializable data class to represent the data from the database.
 
@@ -129336,7 +129423,7 @@ data class Instrument(
 )
 ```
 
-## 8. Query data from the app
+## 9. Query data from the app
 
 Use `LaunchedEffect` to fetch data from the database and display it in a `LazyColumn`.
 
@@ -129385,7 +129472,7 @@ fun InstrumentsList() {
 }
 ```
 
-## 9. Start the app
+## 10. Start the app
 
 Run the app on an emulator or a physical device by clicking the `Run app` button in Android Studio.
 
@@ -129431,7 +129518,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -129472,7 +129569,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a Laravel project
+## 4. Create a Laravel project
 
 Make sure your PHP and Composer versions are up to date, then use `composer create-project` to scaffold a new Laravel project.
 
@@ -129482,7 +129579,7 @@ See the [Laravel docs](https://laravel.com/docs/10.x/installation#creating-a-lar
 composer create-project laravel/laravel example-app
 ```
 
-## 4. Install the authentication template
+## 5. Install the authentication template
 
 Install [Laravel Breeze](https://laravel.com/docs/10.x/starter-kits#laravel-breeze), a basic implementation of all of Laravel's [authentication features](https://laravel.com/docs/10.x/authentication).
 
@@ -129491,7 +129588,7 @@ composer require laravel/breeze --dev
 php artisan breeze:install
 ```
 
-## 5. Set up the Postgres connection details
+## 6. Set up the Postgres connection details
 
 Go to [database.new](https://database.new) and create a new Supabase project. Save your database password securely.
 
@@ -129506,7 +129603,7 @@ DB_CONNECTION=pgsql
 DB_URL=postgres://postgres.xxxx:password@xxxx.pooler.supabase.com:5432/postgres
 ```
 
-## 6. Change the default schema
+## 7. Change the default schema
 
 By default Laravel uses the `public` schema. We recommend changing this as Supabase exposes the `public` schema as a [data API](https://supabase.com/docs/guides/api).
 
@@ -129531,7 +129628,7 @@ The schema you specify in `search_path` has to exist on Supabase. You can create
 ],
 ```
 
-## 7. Run the database migrations
+## 8. Run the database migrations
 
 Laravel ships with database migration files that set up the required tables for Laravel Authentication and User Management.
 
@@ -129541,7 +129638,7 @@ Note: Laravel does not use Supabase Auth but rather implements its own authentic
 php artisan migrate
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Run the development server. Go to [http://127.0.0.1:8000](http://127.0.0.1:8000) in a browser to see your application. You can also navigate to [http://127.0.0.1:8000/register](http://127.0.0.1:8000/register) and [http://127.0.0.1:8000/login](http://127.0.0.1:8000/login) to register and log in users.
 
@@ -129591,7 +129688,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -129632,7 +129739,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a Next.js app
+## 4. Create a Next.js app
 
 Use the `create-next-app` command and the `with-supabase` template, to create a Next.js app pre-configured with [Cookie-based Auth](https://supabase.com/docs/guides/auth/server-side/creating-a-client?queryGroups=package-manager\&package-manager=npm\&queryGroups=framework\&framework=nextjs\&queryGroups=environment\&environment=server), [TypeScript](https://www.typescriptlang.org/), and [Tailwind CSS](https://tailwindcss.com/).
 
@@ -129640,20 +129747,18 @@ Use the `create-next-app` command and the `with-supabase` template, to create a 
 npx create-next-app -e with-supabase
 ```
 
-## 4. Declare Supabase environment variables
+## 5. Declare Supabase environment variables
 
-Rename `.env.example` to `.env.local` and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nextjs\&tab=frameworks):
+Rename `.env.example` to `.env.local` and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nextjs\&tab=frameworks).
+
+Open Connect panel
 
 ```text name=.env.local
 NEXT_PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 5. Query Supabase data from Next.js
-
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
+## 6. Query Supabase data from Next.js
 
 Create a new file at `app/instruments/page.tsx` and populate with the following.
 
@@ -129679,7 +129784,7 @@ export default function Instruments() {
 }
 ```
 
-## 6. Start the app
+## 7. Start the app
 
 Run the development server, go to [http://localhost:3000/instruments](http://localhost:3000/instruments) in a browser and you should see the list of instruments.
 
@@ -129689,6 +129794,7 @@ npm run dev
 
 ## Next steps
 
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
@@ -129735,7 +129841,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -129776,7 +129892,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a Nuxt app
+## 4. Create a Nuxt app
 
 Create a Nuxt app using the `npx nuxi` command.
 
@@ -129784,7 +129900,7 @@ Create a Nuxt app using the `npx nuxi` command.
 npx nuxi@latest init my-app
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a Nuxt app.
 
@@ -129794,9 +129910,11 @@ Navigate to the Nuxt app and install `supabase-js`.
 cd my-app && npm install @supabase/supabase-js
 ```
 
-## 5. Declare Supabase environment variables
+## 6. Declare Supabase environment variables
 
 Create a `.env` file and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=nuxt\&tab=frameworks):
+
+Open Connect panel
 
 ```text name=.env
 SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
@@ -129814,7 +129932,7 @@ export default defineNuxtConfig({
 })
 ```
 
-## 6. Query data from the app
+## 7. Query data from the app
 
 In `app.vue`, create a Supabase client using your config values and replace the existing content with the following code.
 
@@ -129843,7 +129961,7 @@ onMounted(() => {
 </template>
 ```
 
-## 7. Start the app
+## 8. Start the app
 
 Start the app, navigate to [http://localhost:3000](http://localhost:3000) in the browser, and you should see the list of instruments.
 
@@ -129895,7 +130013,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -129936,7 +130064,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a React app
+## 4. Create a React app
 
 Create a React app using a [Vite](https://vitejs.dev/guide/) template.
 
@@ -129944,7 +130072,7 @@ Create a React app using a [Vite](https://vitejs.dev/guide/) template.
 npm create vite@latest my-app -- --template react
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library, which provides a convenient interface for working with Supabase from a React app.
 
@@ -129954,20 +130082,18 @@ Navigate to the React app and install `supabase-js`.
 cd my-app && npm install @supabase/supabase-js
 ```
 
-## 5. Declare Supabase environment variables
+## 6. Declare Supabase environment variables
 
-Create a `.env.local` file and populate it with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=react\&tab=frameworks):
+Create a `.env.local` file and populate it with your Supabase URL and publishable key that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=react\&tab=frameworks)
+
+Open Connect panel
 
 ```text name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 6. Query data from the app
-
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
+## 7. Query data from the app
 
 Replace the contents of `App.jsx` with a `getInstruments` function that fetches the data and displays the query result on the page using a Supabase client.
 
@@ -130010,7 +130136,7 @@ function App() {
 export default App
 ```
 
-## 7. Start the app
+## 8. Start the app
 
 Run the development server, go to [http://localhost:5173](http://localhost:5173) in a browser, and you should see the list of instruments.
 
@@ -130020,6 +130146,7 @@ npm run dev
 
 ## Next steps
 
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
@@ -130207,7 +130334,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -130248,7 +130385,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a Refine app
+## 4. Create a Refine app
 
 Create a [Refine](https://github.com/refinedev/refine) app using the [create refine-app](https://refine.dev/docs/getting-started/quickstart/).
 
@@ -130260,9 +130397,11 @@ npm create refine-app@latest -- --preset refine-supabase my-app
 
 ![Refine welcome page](/docs/img/refine-qs-welcome-page.png)
 
-## 4. Update `supabaseClient` with environment variables
+## 5. Update `supabaseClient` with environment variables
 
 Update the `supabaseClient` with the `SUPABASE_URL` and `SUPABASE_KEY` of your Supabase API, which you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=refine\&tab=frameworks). The `supabaseClient` is used in auth provider and data provider methods that allow the Refine app to connect to your Supabase backend.
+
+Open Connect panel
 
 ```ts name=src/utility/supabaseClient.ts
 import { createClient } from '@refinedev/supabase'
@@ -130280,7 +130419,7 @@ export const supabaseClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
 })
 ```
 
-## 5. Add instruments resource and pages
+## 6. Add instruments resource and pages
 
 Use the following code to automatically add resources and generate code for the pages to show the `instruments` data using Refine Inferencer.
 
@@ -130296,7 +130435,7 @@ Read more on [how the Inferencer works is in the Refine docs](https://refine.dev
 npm run refine create-resource instruments
 ```
 
-## 6. Add routes for instruments pages
+## 7. Add routes for instruments pages
 
 Add routes for the `list`, `create`, `show`, and `edit` pages.
 
@@ -130368,7 +130507,7 @@ function App() {
 export default App
 ```
 
-## 7. View instruments pages
+## 8. View instruments pages
 
 Start the app with the following command:
 
@@ -130489,7 +130628,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -130530,7 +130679,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a SolidJS app
+## 4. Create a SolidJS app
 
 Create a SolidJS app using the `degit` command.
 
@@ -130538,7 +130687,7 @@ Create a SolidJS app using the `degit` command.
 npx degit solidjs/templates/js my-app
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a SolidJS app.
 
@@ -130548,16 +130697,18 @@ Navigate to the SolidJS app and install `supabase-js`.
 cd my-app && npm install @supabase/supabase-js
 ```
 
-## 5. Declare Supabase environment variables
+## 6. Declare Supabase environment variables
 
 Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=solidjs\&tab=frameworks):
+
+Open Connect panel
 
 ```text name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 6. Query data from the app
+## 7. Query data from the app
 
 In `App.jsx`, create a Supabase client to fetch the instruments data.
 
@@ -130590,7 +130741,7 @@ function App() {
 export default App
 ```
 
-## 7. Start the app
+## 8. Start the app
 
 Start the app and go to [http://localhost:3000](http://localhost:3000) in a browser and you should see the list of instruments.
 
@@ -130640,7 +130791,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -130681,7 +130842,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a SvelteKit app
+## 4. Create a SvelteKit app
 
 Create a SvelteKit app using the `npm create` command.
 
@@ -130689,7 +130850,7 @@ Create a SvelteKit app using the `npm create` command.
 npx sv create my-app
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a SvelteKit app.
 
@@ -130699,16 +130860,18 @@ Navigate to the SvelteKit app and install `supabase-js`.
 cd my-app && npm install @supabase/supabase-js
 ```
 
-## 5. Declare Supabase environment variables
+## 6. Declare Supabase environment variables
 
 Create a `.env` file at the root of your project and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=sveltekit\&tab=frameworks):
+
+Open Connect panel
 
 ```text name=.env
 PUBLIC_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 PUBLIC_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 6. Create the Supabase client
+## 7. Create the Supabase client
 
 Create a `src/lib` directory in your SvelteKit app, create a file called `supabaseClient.js` and add the following code to initialize the Supabase client:
 
@@ -130726,7 +130889,7 @@ import { PUBLIC_SUPABASE_PUBLISHABLE_KEY, PUBLIC_SUPABASE_URL } from '$env/stati
 export const supabase = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_PUBLISHABLE_KEY)
 ```
 
-## 7. Query data from the app
+## 8. Query data from the app
 
 Use `load` method to fetch the data server-side and display the query results as a list.
 
@@ -130781,7 +130944,7 @@ Replace the existing content in your `+page.svelte` file in the `src/routes` dir
 </ul>
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Start the app and go to [http://localhost:5173](http://localhost:5173) in a browser and you should see the list of instruments.
 
@@ -130837,7 +131000,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -130878,7 +131051,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a TanStack Start app
+## 4. Create a TanStack Start app
 
 Create a TanStack Start app using the official CLI.
 
@@ -130886,7 +131059,7 @@ Create a TanStack Start app using the official CLI.
 npm create @tanstack/start@latest my-app -- --package-manager npm --toolchain biome
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a TanStack Start app.
 
@@ -130896,16 +131069,18 @@ Navigate to the TanStack Start app and install `supabase-js`.
 cd my-app && npm install @supabase/supabase-js
 ```
 
-## 5. Declare Supabase environment variables
+## 6. Declare Supabase environment variables
 
 Create a `.env` file in the root of your project and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true):
+
+Open Connect panel
 
 ```text name=.env
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 6. Create a Supabase client utility
+## 7. Create a Supabase client utility
 
 Create a new file at `src/utils/supabase.ts` to initialize the Supabase client.
 
@@ -130918,11 +131093,7 @@ export const supabase = createClient(
 )
 ```
 
-## 7. Query data from the app
-
-Tip: UI components built on shadcn/ui that connect to Supabase via a single command.
-
-Explore Components
+## 8. Query data from the app
 
 Replace the contents of `src/routes/index.tsx` with the following code to add a loader function that fetches the instruments data and displays it on the page.
 
@@ -130952,7 +131123,7 @@ function Home() {
 }
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Run the development server, go to [http://localhost:3000](http://localhost:3000) in a browser and you should see the list of instruments.
 
@@ -130962,6 +131133,7 @@ npm run dev
 
 ## Next steps
 
+- Explore [drop-in UI components](https://supabase.com/ui) for your Supabase app
 - Set up [Auth](https://supabase.com/docs/guides/auth) for your app
 - [Insert more data](https://supabase.com/docs/guides/database/import-data) into your database
 - Upload and serve static files using [Storage](https://supabase.com/docs/guides/storage)
@@ -131008,7 +131180,17 @@ curl -X POST https://api.supabase.com/v1/projects \
   }'
 ```
 
-## 2. Set up your database
+## 2. Install agent skills (optional)
+
+[Agent Skills](https://supabase.com/docs/guides/ai-tools/ai-skills) are curated instruction sets that give your AI agent procedural knowledge about working with Supabase.
+
+Install them in your project with:
+
+```bash
+npx skills add supabase/agent-skills
+```
+
+## 3. Set up your database
 
 When your Supabase project is up and running, create an `instruments` table with some sample data.
 
@@ -131049,7 +131231,7 @@ using (true);
 
 Note: If you disabled the Data API during project setup, enable it in the [**Integrations > Data API**](https://supabase.com/dashboard/project/_/integrations/data_api/settings) section of the Dashboard and expose the specific tables or functions you want to access. To automatically grant access for new tables and functions in `public`, enable **Automatically expose new tables**.
 
-## 3. Create a Vue app
+## 4. Create a Vue app
 
 Create a Vue app using the `npm init` command.
 
@@ -131057,7 +131239,7 @@ Create a Vue app using the `npm init` command.
 npm init vue@latest my-app
 ```
 
-## 4. Install the Supabase client library
+## 5. Install the Supabase client library
 
 The fastest way to get started is to use the `supabase-js` client library which provides a convenient interface for working with Supabase from a Vue app.
 
@@ -131067,16 +131249,18 @@ Navigate to the Vue app and install `supabase-js`.
 cd my-app && npm install @supabase/supabase-js
 ```
 
-## 5. Declare Supabase environment variables
+## 6. Declare Supabase environment variables
 
 Create a `.env.local` file and populate with your Supabase connection variables that you can get from the helper above, or [from the project **Connect** panel](https://supabase.com/dashboard/project/_?showConnect=true\&framework=vue\&tab=frameworks):
+
+Open Connect panel
 
 ```text name=.env.local
 VITE_SUPABASE_URL=<SUBSTITUTE_SUPABASE_URL>
 VITE_SUPABASE_PUBLISHABLE_KEY=<SUBSTITUTE_SUPABASE_PUBLISHABLE_KEY>
 ```
 
-## 6. Create the Supabase client
+## 7. Create the Supabase client
 
 Create a `/src/lib` directory in your Vue app, create a file called `supabaseClient.js` and add the following code to initialize the Supabase client:
 
@@ -131089,7 +131273,7 @@ const supabasePublishableKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
 export const supabase = createClient(supabaseUrl, supabasePublishableKey)
 ```
 
-## 7. Query data from the app
+## 8. Query data from the app
 
 Replace the existing content in your `App.vue` file with the following code.
 
@@ -131118,7 +131302,7 @@ onMounted(() => {
 </template>
 ```
 
-## 8. Start the app
+## 9. Start the app
 
 Start the app and go to [http://localhost:5173](http://localhost:5173) in a browser and you should see the list of instruments.
 
@@ -162457,7 +162641,7 @@ For a description of all secrets refer to the [related section](#configuring-sec
 Review and change URL configuration variables:
 
 - `SUPABASE_PUBLIC_URL`: base URL for accessing Supabase from the Internet (Dashboard, API, Storage, etc.), e.g., `http://example.com:8000`
-- `API_EXTERNAL_URL`: used by the Auth service to configure callback URLs, e.g., `http://example.com:8000`
+- `API_EXTERNAL_URL`: used by the Auth service to configure callback URLs, e.g., `http://example.com:8000/auth/v1`
 - `SITE_URL`: default [redirect URL](https://supabase.com/docs/guides/auth/redirect-urls) for Auth, e.g., `http://example.com:3000`
 
 Note: Throughout the self-hosting guides, `<your-domain>` stands for the host where your Supabase instance is reachable: your domain name, your server's IP, or `localhost`, depending on your setup.
@@ -163993,8 +164177,8 @@ Routes are matched in the order declared. The first matching prefix wins. Protec
 | `/auth/v1/authorize`                      | auth      | `/authorize`             | Open              | OAuth authorize                                                        |
 | `/auth/v1/.well-known/jwks.json`          | auth      | `/.well-known/jwks.json` | Open              | JWKS for third-party verification                                      |
 | `/.well-known/oauth-authorization-server` | auth      | -                        | Open              | OAuth 2.0 Authorization Server Metadata (RFC 8414)                     |
-| `/sso/saml/acs`                           | auth      | -                        | Open              | SAML assertion consumer                                                |
-| `/sso/saml/metadata`                      | auth      | -                        | Open              | SAML metadata                                                          |
+| `/auth/v1/sso/saml/acs`                   | auth      | `/sso/saml/acs`          | Open              | SAML assertion consumer                                                |
+| `/auth/v1/sso/saml/metadata`              | auth      | `/sso/saml/metadata`     | Open              | SAML metadata                                                          |
 | `/functions/v1/`                          | functions | `/`                      | Bypass            | Edge Functions runtime performs its own JWT verification; 150s timeout |
 | `/storage/v1/`                            | storage   | `/`                      | Bypass            | Storage performs its own authorization                                 |
 | `/auth/v1/`                               | auth      | `/`                      | API key           | Protected Auth endpoints                                               |
@@ -164401,7 +164585,7 @@ This guide covers the **server-side configuration** required to enable social lo
 You need:
 
 - A working self-hosted Supabase installation. See [Self-Hosting with Docker](https://supabase.com/docs/guides/self-hosting/docker).
-- `API_EXTERNAL_URL` set to the publicly reachable URL of your Supabase instance (e.g., `https://<your-domain>`).
+- `API_EXTERNAL_URL` set to the publicly reachable URL of your Supabase instance (e.g., `https://<your-domain>/auth/v1`).
 
 Danger: HTTPS is required by most OAuth providers - `http://` callback URLs are rejected (except `localhost`). See the HTTPS [how-to guide](https://supabase.com/docs/guides/self-hosting/self-hosted-proxy-https) for setup instructions.
 
@@ -164463,7 +164647,7 @@ auth:
     GOTRUE_EXTERNAL_GOOGLE_ENABLED: ${GOOGLE_ENABLED}
     GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     GOTRUE_EXTERNAL_GOOGLE_SECRET: ${GOOGLE_SECRET}
-    GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI: ${API_EXTERNAL_URL}/auth/v1/callback
+    GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI: ${API_EXTERNAL_URL}/callback
 ```
 
 Note: For providers **not** pre-configured in the files (see the [full provider list](#other-supported-providers) below), add the lines manually following the same pattern: variables in `.env`, passthrough with `GOTRUE_EXTERNAL_PROVIDER_` in `docker-compose.yml`.
@@ -164522,7 +164706,7 @@ auth:
     GOTRUE_EXTERNAL_GOOGLE_ENABLED: ${GOOGLE_ENABLED}
     GOTRUE_EXTERNAL_GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
     GOTRUE_EXTERNAL_GOOGLE_SECRET: ${GOOGLE_SECRET}
-    GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI: ${API_EXTERNAL_URL}/auth/v1/callback
+    GOTRUE_EXTERNAL_GOOGLE_REDIRECT_URI: ${API_EXTERNAL_URL}/callback
 ```
 
 **GitHub**
@@ -164549,7 +164733,7 @@ auth:
     GOTRUE_EXTERNAL_GITHUB_ENABLED: ${GITHUB_ENABLED}
     GOTRUE_EXTERNAL_GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
     GOTRUE_EXTERNAL_GITHUB_SECRET: ${GITHUB_SECRET}
-    GOTRUE_EXTERNAL_GITHUB_REDIRECT_URI: ${API_EXTERNAL_URL}/auth/v1/callback
+    GOTRUE_EXTERNAL_GITHUB_REDIRECT_URI: ${API_EXTERNAL_URL}/callback
 ```
 
 **Azure**
@@ -164582,7 +164766,7 @@ auth:
     GOTRUE_EXTERNAL_AZURE_ENABLED: ${AZURE_ENABLED}
     GOTRUE_EXTERNAL_AZURE_CLIENT_ID: ${AZURE_CLIENT_ID}
     GOTRUE_EXTERNAL_AZURE_SECRET: ${AZURE_SECRET}
-    GOTRUE_EXTERNAL_AZURE_REDIRECT_URI: ${API_EXTERNAL_URL}/auth/v1/callback
+    GOTRUE_EXTERNAL_AZURE_REDIRECT_URI: ${API_EXTERNAL_URL}/callback
     ## Optional: uncomment for tenant-specific Azure login
     # GOTRUE_EXTERNAL_AZURE_URL: ${AZURE_URL}
 ```
@@ -164608,7 +164792,7 @@ auth:
     GOTRUE_EXTERNAL_APPLE_ENABLED: ${APPLE_ENABLED}
     GOTRUE_EXTERNAL_APPLE_CLIENT_ID: ${APPLE_CLIENT_ID}
     GOTRUE_EXTERNAL_APPLE_SECRET: ${APPLE_SECRET}
-    GOTRUE_EXTERNAL_APPLE_REDIRECT_URI: ${API_EXTERNAL_URL}/auth/v1/callback
+    GOTRUE_EXTERNAL_APPLE_REDIRECT_URI: ${API_EXTERNAL_URL}/callback
 ```
 
 Note: Apple uses `response_mode=form_post` for its OAuth flow. The Auth service handles this automatically - no additional configuration is needed.
@@ -164641,7 +164825,7 @@ auth:
     GOTRUE_EXTERNAL_KEYCLOAK_ENABLED: ${KEYCLOAK_ENABLED}
     GOTRUE_EXTERNAL_KEYCLOAK_CLIENT_ID: ${KEYCLOAK_CLIENT_ID}
     GOTRUE_EXTERNAL_KEYCLOAK_SECRET: ${KEYCLOAK_SECRET}
-    GOTRUE_EXTERNAL_KEYCLOAK_REDIRECT_URI: ${API_EXTERNAL_URL}/auth/v1/callback
+    GOTRUE_EXTERNAL_KEYCLOAK_REDIRECT_URI: ${API_EXTERNAL_URL}/callback
     GOTRUE_EXTERNAL_KEYCLOAK_URL: ${KEYCLOAK_URL}
 ```
 
@@ -164753,7 +164937,7 @@ Run `docker compose exec auth env | grep GOTRUE_EXTERNAL` to verify the variable
 
 After a successful OAuth login, the Auth service redirects to `SITE_URL` or a URL from `ADDITIONAL_REDIRECT_URLS`. Ensure:
 
-- `SITE_URL` in `.env` is set to your application's URL
+- `SITE_URL` in `.env` is set to your **application's URL**
 - If your app uses a different redirect URL, add it to `ADDITIONAL_REDIRECT_URLS` (comma-separated)
 
 ### Nonce check failure on mobile (Google Sign In)
@@ -164786,7 +164970,7 @@ docker compose logs auth
 Common causes:
 
 - Missing required environment variable (e.g., `CLIENT_ID` or `SECRET` is empty)
-- Invalid `API_EXTERNAL_URL` (must be a valid URL with protocol)
+- Invalid `API_EXTERNAL_URL` (must be a valid URL - including protocol and ending with `/auth/v1`)
 
 ## Environment variable reference
 
@@ -164797,7 +164981,7 @@ All OAuth-related environment variables for the `auth` service in `docker-compos
 | `GOTRUE_EXTERNAL_*_ENABLED`      | Enable the provider (`true`/`false`)                                     | Yes      |
 | `GOTRUE_EXTERNAL_*_CLIENT_ID`    | OAuth client ID from the provider                                        | Yes      |
 | `GOTRUE_EXTERNAL_*_SECRET`       | OAuth client secret from the provider                                    | Yes      |
-| `GOTRUE_EXTERNAL_*_REDIRECT_URI` | Callback URL: `${API_EXTERNAL_URL}/auth/v1/callback`                     | Yes      |
+| `GOTRUE_EXTERNAL_*_REDIRECT_URI` | Callback URL: `${API_EXTERNAL_URL}/callback`                             | Yes      |
 | `GOTRUE_SITE_URL`                | Default redirect URL after authentication (set via `SITE_URL` in `.env`) | Yes      |
 
 ## Additional resources
@@ -165060,9 +165244,11 @@ Update the URL configuration in your `.env` file to use your HTTPS domain:
 
 ```sh name=.env
 SUPABASE_PUBLIC_URL=https://<your-domain>
-API_EXTERNAL_URL=https://<your-domain>
-SITE_URL=https://<your-domain>
+API_EXTERNAL_URL=https://<your-domain>/auth/v1
+SITE_URL=https://<your-app-domain>
 ```
+
+Note: `<your-app-domain>` is the URL of your own frontend application (where users land after signing in) - not your Supabase instance. It's often a different domain, and possibly a different service entirely, from `<your-domain>` used above.
 
 For Nginx, change the following to your domain name and a **valid** email address:
 
@@ -165166,8 +165352,8 @@ Edit your `.env` file to use HTTPS with the Kong HTTPS port:
 
 ```sh name=.env
 SUPABASE_PUBLIC_URL=https://<your-domain>:8443
-API_EXTERNAL_URL=https://<your-domain>:8443
-SITE_URL=https://<your-domain>:8443
+API_EXTERNAL_URL=https://<your-domain>:8443/auth/v1
+SITE_URL=https://<your-app-domain>
 ```
 
 ### Step 4: Restart and verify
@@ -165204,8 +165390,8 @@ If Realtime subscriptions fail to connect:
 
 If OAuth redirects fail with a callback URL error:
 
-- Verify `API_EXTERNAL_URL` in `.env` is set to your HTTPS URL
-- Verify the callback URL registered with your OAuth provider matches `API_EXTERNAL_URL` followed by `/auth/v1/callback`
+- Verify `API_EXTERNAL_URL` in `.env` is set to your HTTPS URL + `/auth/v1`
+- Verify the callback URL registered with your OAuth provider matches `API_EXTERNAL_URL` followed by `/callback`
 - After changing `API_EXTERNAL_URL`, restart all services with `docker compose down && docker compose up -d`
 
 ### Mixed content warnings
@@ -165419,7 +165605,7 @@ Setting a bucket to "Public" only allows unauthenticated **downloads**. Uploads 
 
 ### Upload URLs point to localhost
 
-If uploads from a browser fail (CORS or mixed content errors), check that `API_EXTERNAL_URL` and `SUPABASE_PUBLIC_URL` in your `.env` file match your actual domain and protocol - not `http://localhost:8000`.
+If uploads from a browser fail (CORS or mixed content errors), check that `SUPABASE_PUBLIC_URL` in your `.env` file matches your actual domain and protocol - not `http://localhost:8000`.
 
 ### Additional resources
 
@@ -165447,7 +165633,7 @@ You need:
 - Open SSL installed (for key generation)
 - Your IdP's SAML metadata URL or metadata XML
 - The `SERVICE_ROLE_KEY` from your `.env` file (needed for admin API calls)
-- `API_EXTERNAL_URL` set to the publicly-accessible URL of your Supabase Auth service (e.g., `https://<your-domain>`). This URL is used as the SAML Service Provider entity ID and for constructing the ACS endpoint URL
+- `API_EXTERNAL_URL` set to the publicly-accessible URL of your Supabase Auth service (e.g., `https://<your-domain>/auth/v1`). Used as the base for constructing the SAML Service Provider entity ID and ACS endpoint URL
 
 ## How SAML SSO works in Supabase
 
@@ -165461,7 +165647,7 @@ The login flow works as follows:
 1. Your app calls `POST /auth/v1/sso` with a domain or provider\_id
 2. Auth generates a SAML `AuthnRequest` and returns a redirect URL to the IdP
 3. The user authenticates at the IdP
-4. The IdP POSTs a SAML Response to `POST /sso/saml/acs`
+4. The IdP POSTs a SAML Response to `POST /auth/v1/sso/saml/acs`
 5. Auth validates the assertion, creates or links the user, and issues a session
 6. The user is redirected back to your app with session tokens
 
@@ -165505,10 +165691,6 @@ SAML_PRIVATE_KEY=<your-base64-encoded-private-key>
 # Optional: how long relay state tokens remain valid (default: 2m0s)
 # SAML_RELAY_STATE_VALIDITY_PERIOD=2m0s
 
-# Optional: override the SAML entity ID / ACS base URL
-# Defaults to API_EXTERNAL_URL if not set
-# SAML_EXTERNAL_URL=https://supabase.example.com:8000
-
 # Optional: rate limit on the ACS endpoint (requests per second, default: 15)
 # SAML_RATE_LIMIT_ASSERTION=15
 ```
@@ -165527,7 +165709,6 @@ auth:
     GOTRUE_SAML_PRIVATE_KEY: ${SAML_PRIVATE_KEY}
     # GOTRUE_SAML_ALLOW_ENCRYPTED_ASSERTIONS: ${SAML_ALLOW_ENCRYPTED_ASSERTIONS}
     # GOTRUE_SAML_RELAY_STATE_VALIDITY_PERIOD: ${SAML_RELAY_STATE_VALIDITY_PERIOD}
-    # GOTRUE_SAML_EXTERNAL_URL: ${SAML_EXTERNAL_URL}
     # GOTRUE_SAML_RATE_LIMIT_ASSERTION: ${SAML_RATE_LIMIT_ASSERTION}
 ```
 
@@ -165553,7 +165734,7 @@ Once SAML is enabled, your Supabase instance exposes service provider (SP) metad
 Verify it using `curl`:
 
 ```sh
-curl http://<your-domain>/sso/saml/metadata
+curl http://<your-domain>/auth/v1/sso/saml/metadata
 ```
 
 This returns an XML document containing your SP entity ID, ACS endpoint URL, and signing certificate. You will need to provide this to your IdP.
@@ -165688,6 +165869,19 @@ On the IdP side, create a new SAML application and configure it with your SP det
 - ACS URL: `{API_EXTERNAL_URL}/sso/saml/acs`
 - Entity ID: `{API_EXTERNAL_URL}/sso/saml/metadata`
 - Name ID format: `PERSISTENT`
+
+**Auth0**
+
+**Auth0:**
+
+- Dashboard → Applications → Applications → Create Application → Regular Web Application
+- Settings tab → Advanced Settings → Endpoints tab
+- Copy the **SAML Metadata URL** (this is the IdP metadata URL for Supabase)
+- Settings tab → Advanced Settings → Add-ons → SAML2 Web App
+- Enable SAML2 Web App add-on
+- Settings tab in the add-on:
+  - Application Callback URL (ACS): `{API_EXTERNAL_URL}/sso/saml/acs`
+- Enable the add-on
 
 ## Attribute mapping
 
@@ -165900,14 +166094,13 @@ The response should include `app_metadata.provider: "sso:saml"` and any mapped a
 
 ## Environment variable reference
 
-| Variable                           | Default            | Description                                                                                                                                                        |
-| ---------------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `SAML_ENABLED`                     | `false`            | Enable the SAML SSO engine                                                                                                                                         |
-| `SAML_PRIVATE_KEY`                 | -                  | Base64-encoded PKCS#1 RSA private key (min 2048-bit). Used to sign SAML requests and optionally decrypt assertions.                                                |
-| `SAML_ALLOW_ENCRYPTED_ASSERTIONS`  | `false`            | Accept encrypted SAML assertions from IdPs                                                                                                                         |
-| `SAML_RELAY_STATE_VALIDITY_PERIOD` | `2m0s`             | How long relay state tokens remain valid. Increase if users on slow networks time out during the IdP redirect.                                                     |
-| `SAML_EXTERNAL_URL`                | `API_EXTERNAL_URL` | Override the base URL used for the SAML entity ID and ACS endpoint. Only needed if the SAML endpoints are served on a different URL than the rest of the Auth API. |
-| `SAML_RATE_LIMIT_ASSERTION`        | `15`               | Maximum ACS requests per second. Protects against assertion replay floods.                                                                                         |
+| Variable                           | Default | Description                                                                                                         |
+| ---------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------- |
+| `SAML_ENABLED`                     | `false` | Enable the SAML SSO engine                                                                                          |
+| `SAML_PRIVATE_KEY`                 | -       | Base64-encoded PKCS#1 RSA private key (min 2048-bit). Used to sign SAML requests and optionally decrypt assertions. |
+| `SAML_ALLOW_ENCRYPTED_ASSERTIONS`  | `false` | Accept encrypted SAML assertions from IdPs                                                                          |
+| `SAML_RELAY_STATE_VALIDITY_PERIOD` | `2m0s`  | How long relay state tokens remain valid. Increase if users on slow networks time out during the IdP redirect.      |
+| `SAML_RATE_LIMIT_ASSERTION`        | `15`    | Maximum ACS requests per second. Protects against assertion replay floods.                                          |
 
 ## Troubleshooting
 
@@ -165937,8 +166130,8 @@ base64 -w 0 -i pk_rsa1.der
 
 ### IdP cannot reach the ACS endpoint
 
-- Verify `API_EXTERNAL_URL` is set to a URL the IdP can reach (not `localhost` unless testing locally)
-- Check that the API gateway routes for `/sso/saml/acs` and `/sso/saml/metadata` are configured as open (no `key-auth` plugin).
+- Verify `API_EXTERNAL_URL` is set to a URL containing `/auth/v1` the IdP can reach (not set to `localhost` unless testing locally)
+- Check that the API gateway routes for `/auth/v1/sso/saml/acs` and `/auth/v1/sso/saml/metadata` are configured as open (no `key-auth` plugin).
 - Check the Auth container logs: `docker compose logs auth`
 
 ### "No SSO provider found for this domain"
@@ -183671,7 +183864,7 @@ eliminate 'anon' users without taxing the database to process the rest of the RL
 
 ### Sample results
 
-The code used for the below tests can be found here: [LINK](https://github.com/GaryAustin1/RLS-Perfomance):
+The code used for the below tests can be found here: [LINK](https://github.com/GaryAustin1/RLS-Performance):
 The tests are doing selects on a 100K row table. Some have an additional join table.
 
 Show RLS and before after for above examples.

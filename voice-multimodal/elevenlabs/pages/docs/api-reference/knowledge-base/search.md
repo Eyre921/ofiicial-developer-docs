@@ -282,16 +282,16 @@ components:
         propertyName: type
       title: >-
         V1ConvaiKnowledgeBaseSummariesGetResponsesContentApplicationJsonSchemaDiscriminatorMappingSuccessDataDiscriminatorMappingFileDependentAgentsItems
-    ExternalSyncType:
+    ExternalSyncProvider:
       type: string
       enum:
         - google_drive
-      title: ExternalSyncType
+      title: ExternalSyncProvider
     ExternalFileSyncInfo:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/ExternalSyncType'
+          $ref: '#/components/schemas/ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -410,7 +410,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/ExternalSyncType'
+          $ref: '#/components/schemas/ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string

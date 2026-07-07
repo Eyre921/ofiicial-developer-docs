@@ -13,7 +13,7 @@ MCP is an open protocol that standardizes how applications provide context to LL
 Resend hosts the MCP server at:
 
 ```
-https://mcp.resend.com
+https://mcp.resend.com/mcp
 ```
 
 Connect any MCP client that supports remote servers (Streamable HTTP). There's nothing to install and no local process to run, which makes it the best option for web-based clients like Claude and hosted agent platforms.
@@ -23,7 +23,7 @@ When you connect, your client opens a browser window to log in to Resend and app
 <Tabs>
   <Tab title="Claude Code">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add --transport http resend https://mcp.resend.com
+    claude mcp add --transport http resend https://mcp.resend.com/mcp
     ```
 
     Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
@@ -33,7 +33,7 @@ When you connect, your client opens a browser window to log in to Resend and app
     In Claude (web or desktop), open **Settings** > **Connectors** > **Add custom connector** and enter:
 
     ```
-    https://mcp.resend.com
+    https://mcp.resend.com/mcp
     ```
   </Tab>
 
@@ -44,7 +44,7 @@ When you connect, your client opens a browser window to log in to Resend and app
     {
       "mcpServers": {
         "resend": {
-          "url": "https://mcp.resend.com"
+          "url": "https://mcp.resend.com/mcp"
         }
       }
     }
@@ -53,7 +53,7 @@ When you connect, your client opens a browser window to log in to Resend and app
 
   <Tab title="Codex">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex mcp add resend --url https://mcp.resend.com
+    codex mcp add resend --url https://mcp.resend.com/mcp
     ```
   </Tab>
 
@@ -66,7 +66,7 @@ When you connect, your client opens a browser window to log in to Resend and app
         "servers": {
           "resend": {
             "type": "http",
-            "url": "https://mcp.resend.com"
+            "url": "https://mcp.resend.com/mcp"
           }
         }
       }
@@ -79,7 +79,7 @@ When you connect, your client opens a browser window to log in to Resend and app
     {
       "mcpServers": {
         "resend": {
-          "serverUrl": "https://mcp.resend.com"
+          "serverUrl": "https://mcp.resend.com/mcp"
         }
       }
     }
@@ -94,7 +94,7 @@ When you connect, your client opens a browser window to log in to Resend and app
 <Tabs>
   <Tab title="Claude Code">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add --transport http resend https://mcp.resend.com --header "Authorization: Bearer re_xxxxxxxxx"
+    claude mcp add --transport http resend https://mcp.resend.com/mcp --header "Authorization: Bearer re_xxxxxxxxx"
     ```
   </Tab>
 
@@ -105,7 +105,7 @@ When you connect, your client opens a browser window to log in to Resend and app
     {
       "mcpServers": {
         "resend": {
-          "url": "https://mcp.resend.com",
+          "url": "https://mcp.resend.com/mcp",
           "headers": {
             "Authorization": "Bearer re_xxxxxxxxx"
           }

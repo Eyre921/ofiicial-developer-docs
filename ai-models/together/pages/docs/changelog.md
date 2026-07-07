@@ -4,10 +4,36 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
-<Update label="June 29, 2026">
-  ## Model deprecation
+<Update label="July 6, 2026">
+  ## New models available for fine-tuning
 
-  `Qwen/Qwen3.5-397B-A17B` has been deprecated and is no longer available on serverless. See [Deprecations](/docs/deprecations) for migration options.
+  You can now fine-tune the following vision-language model:
+
+  * `google/gemma-4-31B-it-VLM`.
+
+  See [Supported models](/docs/fine-tuning/supported-models) for the full list.
+</Update>
+
+<Update label="July 1, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `google/flash-image-3.1-lite` (Gemini 3.1 Flash-Lite Image).
+  * `Qwen/Qwen3.6-35B-A3B-Lora`: 262,144 context length.
+  * `alibaba/happyhorse-1.1-i2v` (image-to-video).
+  * `alibaba/happyhorse-1.1-r2v` (reference-to-video).
+  * `alibaba/happyhorse-1.1-t2v` (text-to-video).
+</Update>
+
+<Update label="June 29, 2026">
+  ## Model deprecations
+
+  The following model has been deprecated and is no longer available on serverless:
+
+  * `Qwen/Qwen3.5-397B-A17B`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
 <Update label="June 26, 2026">

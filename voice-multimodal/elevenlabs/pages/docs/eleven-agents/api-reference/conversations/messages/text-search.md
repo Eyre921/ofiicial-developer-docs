@@ -272,8 +272,10 @@ components:
         - telegram_integration
         - intercom_integration
         - freshdesk_integration
+        - salesforce_integration
         - template_preview
         - genesys_bot_connector
+        - subagent_tool
       default: unknown
       description: Enum representing the possible sources for conversation initiation.
       title: ConversationInitiationSource
@@ -416,12 +418,12 @@ components:
 {
   "results": [
     {
-      "conversation_id": "conv_20240615_123456",
+      "conversation_id": "conv_9f8b7c6d5e4a3b2c1d0e",
       "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-      "transcript_index": 5,
+      "transcript_index": 3,
       "chunk_text": "I understand your concern about the refund policy. Let me explain how it works.",
-      "score": 0.95,
-      "conversation_start_time_unix_secs": 1686825600,
+      "score": 0.87,
+      "conversation_start_time_unix_secs": 1685000000,
       "agent_name": "Customer Support Bot",
       "chunk_highlights": [
         {
@@ -445,7 +447,7 @@ components:
     "page": 1,
     "page_size": 1
   },
-  "next_cursor": "eyJwYWdlIjoxfQ=="
+  "next_cursor": "cursor_eyJwYWdlIjoxfQ=="
 }
 ```
 
@@ -455,55 +457,48 @@ components:
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-    });
+    const client = new ElevenLabsClient();
     await client.conversationalAi.conversations.messages.textSearch({
-        agentId: "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-        branchId: "branch_987654321",
-        callDurationMaxSecs: 3600,
-        callDurationMinSecs: 60,
-        callStartAfterUnix: 1600000000,
-        callStartBeforeUnix: 1700000000,
+        agentId: "agent_id",
+        branchId: "branch_id",
+        callDurationMaxSecs: 1,
+        callDurationMinSecs: 1,
+        callStartAfterUnix: 1,
+        callStartBeforeUnix: 1,
         callSuccessful: "success",
-        conversationInitiationSource: "widget",
+        conversationInitiationSource: "unknown",
         conversationProductType: "agents",
-        cursor: "eyJwYWdlIjoxfQ==",
+        cursor: "cursor",
         dataCollectionParams: [
-            "region:eq:us-east",
-            "device:in:mobile|desktop",
+            "data_collection_params",
         ],
         evaluationParams: [
-            "value_framing:success",
-            "tone:failure",
+            "evaluation_params",
         ],
         hasFeedbackComment: true,
         mainLanguages: [
-            "en",
-            "es",
+            "main_languages",
         ],
-        pageSize: 20,
-        ratingMax: 5,
-        ratingMin: 3,
+        pageSize: 1,
+        ratingMax: 1,
+        ratingMin: 1,
         sortBy: "search_score",
-        summaryMode: "include",
-        textOnly: false,
+        summaryMode: "exclude",
+        textOnly: true,
         textQuery: "refund policy",
         toolNames: [
-            "crm_integration",
-            "voice_recorder",
+            "tool_names",
         ],
         toolNamesErrored: [
-            "voice_recorder",
+            "tool_names_errored",
         ],
         toolNamesSuccessful: [
-            "crm_integration",
+            "tool_names_successful",
         ],
         topicIds: [
-            "topic_abc123",
-            "topic_def456",
+            "topic_ids",
         ],
-        userId: "user_1234567890",
+        userId: "user_id",
     });
 }
 main();
@@ -513,56 +508,49 @@ main();
 ```python
 from elevenlabs import ElevenLabs
 
-client = ElevenLabs(
-    api_key="sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-)
+client = ElevenLabs()
 
 client.conversational_ai.conversations.messages.text_search(
-    agent_id="agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-    branch_id="branch_987654321",
-    call_duration_max_secs=3600,
-    call_duration_min_secs=60,
-    call_start_after_unix=1600000000,
-    call_start_before_unix=1700000000,
+    agent_id="agent_id",
+    branch_id="branch_id",
+    call_duration_max_secs=1,
+    call_duration_min_secs=1,
+    call_start_after_unix=1,
+    call_start_before_unix=1,
     call_successful="success",
-    conversation_initiation_source="widget",
+    conversation_initiation_source="unknown",
     conversation_product_type="agents",
-    cursor="eyJwYWdlIjoxfQ==",
+    cursor="cursor",
     data_collection_params=[
-        "region:eq:us-east",
-        "device:in:mobile|desktop"
+        "data_collection_params"
     ],
     evaluation_params=[
-        "value_framing:success",
-        "tone:failure"
+        "evaluation_params"
     ],
     has_feedback_comment=True,
     main_languages=[
-        "en",
-        "es"
+        "main_languages"
     ],
-    page_size=20,
-    rating_max=5,
-    rating_min=3,
+    page_size=1,
+    rating_max=1,
+    rating_min=1,
     sort_by="search_score",
-    summary_mode="include",
-    text_only=False,
+    summary_mode="exclude",
+    text_only=True,
     text_query="refund policy",
     tool_names=[
-        "crm_integration",
-        "voice_recorder"
+        "tool_names"
     ],
     tool_names_errored=[
-        "voice_recorder"
+        "tool_names_errored"
     ],
     tool_names_successful=[
-        "crm_integration"
+        "tool_names_successful"
     ],
     topic_ids=[
-        "topic_abc123",
-        "topic_def456"
+        "topic_ids"
     ],
-    user_id="user_1234567890",
+    user_id="user_id",
 )
 
 ```
@@ -579,13 +567,12 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_987654321&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1600000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxfQ%3D%3D&data_collection_params=%5B%22region%3Aeq%3Aus-east%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&text_only=false&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22voice_recorder%22%5D&tool_names_errored=%5B%22voice_recorder%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&sort_by=search_score&summary_mode=exclude&text_only=true&text_query=refund+policy&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id"
 
 	payload := strings.NewReader("{}")
 
 	req, _ := http.NewRequest("GET", url, payload)
 
-	req.Header.Add("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
 	req.Header.Add("Content-Type", "application/json")
 
 	res, _ := http.DefaultClient.Do(req)
@@ -603,13 +590,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_987654321&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1600000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxfQ%3D%3D&data_collection_params=%5B%22region%3Aeq%3Aus-east%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&text_only=false&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22voice_recorder%22%5D&tool_names_errored=%5B%22voice_recorder%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&sort_by=search_score&summary_mode=exclude&text_only=true&text_query=refund+policy&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c'
 request["Content-Type"] = 'application/json'
 request.body = "{}"
 
@@ -621,8 +607,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_987654321&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1600000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxfQ%3D%3D&data_collection_params=%5B%22region%3Aeq%3Aus-east%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&text_only=false&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22voice_recorder%22%5D&tool_names_errored=%5B%22voice_recorder%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890")
-  .header("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&sort_by=search_score&summary_mode=exclude&text_only=true&text_query=refund+policy&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -634,11 +619,10 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_987654321&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1600000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxfQ%3D%3D&data_collection_params=%5B%22region%3Aeq%3Aus-east%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&text_only=false&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22voice_recorder%22%5D&tool_names_errored=%5B%22voice_recorder%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890', [
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&sort_by=search_score&summary_mode=exclude&text_only=true&text_query=refund+policy&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
-    'xi-api-key' => 'sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c',
   ],
 ]);
 
@@ -648,9 +632,8 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_987654321&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1600000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxfQ%3D%3D&data_collection_params=%5B%22region%3Aeq%3Aus-east%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&text_only=false&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22voice_recorder%22%5D&tool_names_errored=%5B%22voice_recorder%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&sort_by=search_score&summary_mode=exclude&text_only=true&text_query=refund+policy&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c");
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
@@ -659,15 +642,12 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let headers = [
-  "xi-api-key": "sk_live_4f3b2a1c9d8e7f6a5b4c3d2e1f0a9b8c",
-  "Content-Type": "application/json"
-]
+let headers = ["Content-Type": "application/json"]
 let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_3701k3ttaq12ewp8b7qv5rfyszkz&branch_id=branch_987654321&call_duration_max_secs=3600&call_duration_min_secs=60&call_start_after_unix=1600000000&call_start_before_unix=1700000000&call_successful=success&conversation_initiation_source=widget&conversation_product_type=agents&cursor=eyJwYWdlIjoxfQ%3D%3D&data_collection_params=%5B%22region%3Aeq%3Aus-east%22%2C%22device%3Ain%3Amobile%7Cdesktop%22%5D&evaluation_params=%5B%22value_framing%3Asuccess%22%2C%22tone%3Afailure%22%5D&has_feedback_comment=true&main_languages=%5B%22en%22%2C%22es%22%5D&page_size=20&rating_max=5&rating_min=3&sort_by=search_score&summary_mode=include&text_only=false&text_query=refund+policy&tool_names=%5B%22crm_integration%22%2C%22voice_recorder%22%5D&tool_names_errored=%5B%22voice_recorder%22%5D&tool_names_successful=%5B%22crm_integration%22%5D&topic_ids=%5B%22topic_abc123%22%2C%22topic_def456%22%5D&user_id=user_1234567890")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/messages/text-search?agent_id=agent_id&branch_id=branch_id&call_duration_max_secs=1&call_duration_min_secs=1&call_start_after_unix=1&call_start_before_unix=1&call_successful=success&conversation_initiation_source=unknown&conversation_product_type=agents&cursor=cursor&data_collection_params=%5B%22data_collection_params%22%5D&evaluation_params=%5B%22evaluation_params%22%5D&has_feedback_comment=true&main_languages=%5B%22main_languages%22%5D&page_size=1&rating_max=1&rating_min=1&sort_by=search_score&summary_mode=exclude&text_only=true&text_query=refund+policy&tool_names=%5B%22tool_names%22%5D&tool_names_errored=%5B%22tool_names_errored%22%5D&tool_names_successful=%5B%22tool_names_successful%22%5D&topic_ids=%5B%22topic_ids%22%5D&user_id=user_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

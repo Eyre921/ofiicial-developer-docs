@@ -543,6 +543,45 @@ components:
             result_type:
               type: string
               enum:
+                - run_subagent_error
+              default: run_subagent_error
+            status:
+              type: string
+              enum:
+                - error
+              default: error
+            error:
+              type: string
+          required:
+            - result_type
+            - error
+          description: RunSubagentToolResultErrorModel variant
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - run_subagent_success
+              default: run_subagent_success
+            status:
+              type: string
+              enum:
+                - success
+              default: success
+            query:
+              type: string
+            agent_response:
+              type: string
+          required:
+            - result_type
+            - query
+            - agent_response
+          description: RunSubagentToolResultSuccessModel variant
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
                 - skip_turn_success
               default: skip_turn_success
             status:
@@ -1309,8 +1348,10 @@ components:
         - telegram_integration
         - intercom_integration
         - freshdesk_integration
+        - salesforce_integration
         - template_preview
         - genesys_bot_connector
+        - subagent_tool
       default: unknown
       description: Enum representing the possible sources for conversation initiation.
       title: ConversationInitiationSource
@@ -2095,6 +2136,45 @@ components:
             - result_type
             - dtmf_tones
           description: PlayDTMFResultSuccessModel variant
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - run_subagent_error
+              default: run_subagent_error
+            status:
+              type: string
+              enum:
+                - error
+              default: error
+            error:
+              type: string
+          required:
+            - result_type
+            - error
+          description: RunSubagentToolResultErrorModel variant
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - run_subagent_success
+              default: run_subagent_success
+            status:
+              type: string
+              enum:
+                - success
+              default: success
+            query:
+              type: string
+            agent_response:
+              type: string
+          required:
+            - result_type
+            - query
+            - agent_response
+          description: RunSubagentToolResultSuccessModel variant
         - type: object
           properties:
             result_type:

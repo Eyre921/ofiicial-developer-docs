@@ -1005,6 +1005,8 @@ The [permission mode](/docs/en/permissions) depends on how you started the sessi
 
 The permission mode, model, and effort a background session was started with, along with the [configuration flags it carries](#from-inside-a-session), all persist when the supervisor later [stops and restarts](#the-supervisor-process) its process. A session you launched with `claude --bg --dangerously-skip-permissions` or `claude --bg --permission-mode bypassPermissions` stays in `bypassPermissions` after that restart instead of falling back to the directory's `defaultMode`, and a model or effort you changed mid-session with `/model` or `/effort` is kept.
 
+A name you set with [`/rename`](/docs/en/commands) or `Ctrl+R` also persists across that restart, so [`claude --resume <name>`](/docs/en/sessions#name-your-sessions) still resolves the session. Before v2.1.202, the restart reverted the session to the name it was dispatched with and the new name stopped resolving.
+
 To set defaults for every session you dispatch from agent view, pass any of `--permission-mode`, `--model`, `--effort`, or `--agent` when opening it:
 
 ```bash theme={null}
@@ -1222,6 +1224,7 @@ Agent view has evolved quickly during research preview. If you are on an older C
 
 | Version  | Change                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| v2.1.202 | A name set with `/rename` or `Ctrl+R` on a background session persists when the supervisor stops and restarts its process, instead of reverting to the name the session was dispatched with.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | v2.1.200 | An older Claude Code version that rewrites the session list in `roster.json` preserves fields written by a newer version, matching the existing `state.json` guarantee, so sessions started by the newer version keep accepting input after the supervisor restarts. When you open a session that has stopped responding, the supervisor restarts its process and the session continues the interrupted response from where it left off.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 | v2.1.199 | A background session whose process exits before it finishes starting on a low-memory host shows `possibly low memory — free some up and retry` in its row status instead of only the bare exit reason. Backgrounding a session with `←` or `/background` carries its `/color` over to the new row.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | v2.1.198 | Agent view sends a notification through `preferredNotifChannel` when a background session needs input, finishes, or fails, and fires the `Notification` hook with the `agent_needs_input` or `agent_completed` type. `←` and `/exit` inside `claude attach <id>` return to agent view instead of exiting to the shell; `Ctrl+Z` returns to the shell. A background session that isolated its work in a worktree commits, pushes its own isolated branch, never `main` or `master`, and opens a draft pull request when it finishes instead of asking first. `/login` runs in agent view and opens the sign-in dialog. The `Background work is running` exit dialog offers `Move to background and exit`. The exit handoff also covers background subagents, which resume from their transcript on the next wake instead of being reported as failed. `claude --bg` combined with `-p` or `--print` is rejected with an error. |
@@ -3406,6 +3409,27 @@ Release notes for Claude Code, including new features, improvements, and bug fix
 This page is generated from the [CHANGELOG.md on GitHub](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md).
 
 Run `claude --version` to check your installed version.
+
+<Update label="2.1.202" description="July 6, 2026">
+  * Added a "Dynamic workflow size" setting in `/config` for controlling how large Claude generally makes dynamic workflows (small/medium/large agent counts) — an advisory guideline, not an enforced cap
+  * Added `workflow.run_id` and `workflow.name` OpenTelemetry attributes to telemetry emitted by workflow-spawned agents, so a workflow run's activity can be reconstructed from OTel data
+  * Fixed a crash in the inline Ctrl+R history search when accepting or cancelling while the search was still scanning the history file
+  * Fixed `/rename` on background sessions being reverted when the job restarts, which broke addressing the session by its new name
+  * Fixed transient mTLS handshake failures when settings were re-applied during an in-place client certificate rotation
+  * Fixed commands sent from Remote Control (mobile/web) into an interactive session failing with "Unknown command"
+  * Fixed images and files sent from the Remote Control mobile or web app without a caption being silently dropped
+  * Fixed the sign-in URL printed by `claude auth login` and `claude mcp login --no-browser` not being reliably clickable when it wraps over SSH — it is now emitted as a single hyperlink
+  * Fixed opening a chat from `claude agents` sometimes failing with "currently running as a background agent" followed by a worker crash/respawn loop
+  * Fixed workflow scripts with unicode quote escapes in strings being corrupted before parsing; workflow parse errors now show the offending line instead of always blaming TypeScript
+  * Fixed voice dictation retrying in an unbounded loop when the microphone or audio recorder fails — repeated capture failures now pause voice input
+  * Fixed `/remote-control` sessions showing the wrong permission mode in the mobile and web apps
+  * Fixed resuming a session by name, or opening the resume picker, taking minutes and using a large amount of memory in repositories with many git worktrees
+  * Fixed installer and updater downloads failing immediately with "aborted" when a proxy or network drops the connection mid-download — transient connection drops now retry
+  * Fixed re-invoking an already-loaded skill appending a duplicate copy of its instructions to context
+  * Improved `/workflows` agent list layout: wider titles, a dedicated time column, shorter model names, and no per-row tool-call counts
+  * Improved MCP error messages: clearer error when a server config has `url` but no `type`, suggesting `"type": "http"` instead of the misleading "command: expected string"
+  * Changed `/review <pr>` back to a fast single-pass review; use `/code-review <level> <pr#>` for the multi-agent review at a chosen effort level
+</Update>
 
 <Update label="2.1.201" description="July 3, 2026">
   * Claude Sonnet 5 sessions no longer use the mid-conversation system role for harness reminders
@@ -14796,6 +14820,12 @@ Install from Anthropic's apt repository so that updates arrive through your syst
 
 <Steps>
   <Step title="Add Anthropic's apt repository">
+    This step downloads the signing key with `curl`, which fresh Debian and Ubuntu installations may not include. If the download command fails with `sudo: curl: command not found`, install curl first:
+
+    ```bash theme={null}
+    sudo apt install curl
+    ```
+
     Download Anthropic's signing key:
 
     ```bash theme={null}
@@ -14834,11 +14864,13 @@ Install from Anthropic's apt repository so that updates arrive through your syst
 
 ### Install from a downloaded file
 
-If you can't use the apt repository, download the `.deb` package for your architecture (x64 or arm64) from [claude.com/download](https://claude.com/download), then either open it with your software installer or run from your download directory:
+If you can't use the apt repository, first download the `.deb` package for your architecture, x64 or arm64, from [claude.com/download](https://claude.com/download). Then open the downloaded file with your software installer, or install it with apt from the directory that contains the downloaded file:
 
 ```bash theme={null}
 sudo apt install ./claude-desktop_*.deb
 ```
+
+If apt reports `E: Unsupported file ./claude-desktop_*.deb given on commandline`, the pattern didn't match a `.deb` file in the current directory. Confirm the download completed, then run the command again from the directory that contains the file.
 
 A `.deb` installed this way doesn't receive updates. To get updates through apt, add the repository as shown above, or uncomment the `deb` line in the placeholder entry the package writes to `/etc/apt/sources.list.d/claude-desktop.list`.
 
@@ -15850,6 +15882,7 @@ Match the message you see in your terminal to a section below.
 | `API Error: 400 due to tool use concurrency issues`                                           | [Request errors](#tool-use-or-thinking-block-mismatch)                                                                        |
 | `Claude Code is unable to respond to this request, which appears to violate our Usage Policy` | [Request errors](#usage-policy-refusal)                                                                                       |
 | `Installation was killed before it could finish (exit code 137)`                              | [Installation errors](#installation-was-killed-before-it-could-finish)                                                        |
+| `The connection dropped while downloading the update`                                         | [Installation errors](#the-connection-dropped-while-downloading-the-update)                                                   |
 | `--bg and --print conflict`                                                                   | [Command-line errors](#command-line-errors)                                                                                   |
 | `Ignoring N permissions.allow entries from ... this workspace has not been trusted`           | [Configuration warnings](#workspace-has-not-been-trusted)                                                                     |
 | Responses seem lower quality than usual                                                       | [Response quality](#responses-seem-lower-quality-than-usual)                                                                  |
@@ -16663,7 +16696,7 @@ The check evaluates the full conversation, not only your latest prompt, so sendi
 
 ## Installation errors
 
-These errors come from the [install script](/docs/en/setup#install-claude-code) before Claude Code has started. For `command not found`, PATH, permission, and TLS problems during setup, see [Troubleshoot installation and login](/docs/en/troubleshoot-install).
+These errors appear while installing or updating Claude Code, from the [install script](/docs/en/setup#install-claude-code), `claude install`, or `claude update`. For `command not found`, PATH, permission, and TLS problems during setup, see [Troubleshoot installation and login](/docs/en/troubleshoot-install).
 
 ### Installation was killed before it could finish
 
@@ -16680,6 +16713,25 @@ For any other fatal signal, and for exit code 137 on macOS, the script prints `I
 
 * Stop other processes to free memory, then rerun the installer
 * Add swap space or move to a larger instance. See [Install killed on low-memory Linux servers](/docs/en/troubleshoot-install#install-killed-on-low-memory-linux-servers) for the swap-file commands.
+
+### The connection dropped while downloading the update
+
+The connection to the download server closed while `claude install`, `claude update`, or the [automatic updater](/docs/en/setup#auto-updates) was fetching the Claude Code binary, and the retries didn't recover. Claude Code retries the download when the connection drops, the transfer stalls, or the downloaded file fails its checksum, up to three attempts in total. A completed HTTP error, such as a 404, isn't retried because the server already answered. Before v2.1.202, a single dropped connection failed the download immediately with the bare error `aborted` instead of retrying.
+
+```text theme={null}
+The connection dropped while downloading the update (attempt 3/3: aborted). Check your network — proxies sometimes cut off large downloads.
+```
+
+The text in parentheses names which attempt failed and the underlying network error. `claude update` precedes the message with `Error: Failed to install native update` on stderr.
+
+The usual cause is a proxy or gateway that closes a long transfer before it finishes. The Claude Code binary is a large download, so a proxy connection limit that never affects normal API traffic can still interrupt it.
+
+**What to do:**
+
+* Run `claude update` again. On an otherwise healthy network, the download usually succeeds on the next run.
+* If your network requires a proxy, set `HTTPS_PROXY` before running the installer or `claude update`. See [Check network connectivity](/docs/en/troubleshoot-install#check-network-connectivity).
+* If a corporate proxy keeps closing the transfer, ask your network team to allow the full download from `downloads.claude.ai`. See [Network access requirements](/docs/en/network-config#network-access-requirements).
+* Run `claude doctor` from your shell for installation diagnostics
 
 ## Command-line errors
 
@@ -16736,6 +16788,8 @@ Check these first:
 When a response goes wrong, rewinding usually works better than replying with corrections. Press Esc twice or run `/rewind` to step back to before the bad turn, then rephrase the prompt with more specifics. Correcting in-thread keeps the wrong attempt in context, which can anchor later answers to it. See [Checkpointing](/docs/en/checkpointing).
 
 If quality still seems off after checking the above, run `/feedback` and describe what you expected versus what you got. Feedback submitted this way includes the conversation transcript, which is the fastest way for Anthropic to diagnose a real regression. See [Report an error](#report-an-error) if `/feedback` is unavailable in your environment.
+
+If Sonnet 5 refuses a request and cites a suspected prompt injection on Claude Code v2.1.200 or earlier, run `claude update` to pick up the v2.1.201 fix.
 
 ## Report an error
 
@@ -18304,7 +18358,7 @@ Connect Claude Code to your self-hosted GitHub Enterprise Server instance for we
   GitHub Enterprise Server support is available for Team and Enterprise plans.
 </Note>
 
-GitHub Enterprise Server (GHES) support lets your organization use Claude Code with repositories hosted on your self-managed GitHub instance instead of github.com. Once an Owner connects your GHES instance, developers can run web sessions, get automated code reviews, and install plugins from internal marketplaces without any per-repository configuration.
+GitHub Enterprise Server (GHES) support lets your organization use Claude Code with repositories hosted on your self-managed GitHub instance instead of github.com. Once an Owner connects your GHES instance, developers can run web sessions and get automated code reviews without any per-repository configuration. Plugin marketplaces hosted on your instance are also supported; credential requirements vary by surface, as described in [Plugin marketplaces on GHES](#plugin-marketplaces-on-ghes).
 
 For repositories on github.com, see [Claude Code on the web](/docs/en/claude-code-on-the-web) and [Code Review](/docs/en/code-review). To run Claude in your own CI infrastructure, see [GitHub Actions](/docs/en/github-actions).
 
@@ -18318,7 +18372,7 @@ The table below shows which Claude Code features support GHES and any difference
 | Code Review            | ✅ Supported     | Same automated PR reviews as github.com                                                                                        |
 | Claude Security        | ✅ Supported     | Available in public beta for Enterprise plans at [claude.ai/security](https://claude.ai/security)                              |
 | Teleport sessions      | ✅ Supported     | Move sessions between web and terminal with `--teleport`                                                                       |
-| Plugin marketplaces    | ✅ Supported     | Use full git URLs instead of `owner/repo` shorthand                                                                            |
+| Plugin marketplaces    | ✅ Supported     | Credential requirements differ by surface. See [Plugin marketplaces on GHES](#plugin-marketplaces-on-ghes)                     |
 | Contribution metrics   | ✅ Supported     | Delivered via webhooks to the [analytics dashboard](/docs/en/analytics)                                                             |
 | GitHub Actions         | ✅ Supported     | Requires manual workflow setup; `/install-github-app` is github.com only                                                       |
 | GitHub MCP server      | ❌ Not supported | The GitHub MCP server does not work with GHES instances                                                                        |
@@ -18400,23 +18454,61 @@ Pull a web session into your local terminal with `claude --teleport`. Teleport v
 
 ## Plugin marketplaces on GHES
 
-Host plugin marketplaces on your GHES instance to distribute internal tooling across your organization. The marketplace structure is identical to github.com-hosted marketplaces; the only difference is how you reference them.
+Host plugin marketplaces on your GHES instance to distribute internal tooling across your organization. The marketplace structure is identical to github.com-hosted marketplaces, but installation works differently depending on where you add the marketplace, and credentials differ across surfaces:
+
+| Surface                                     | How installation works                                                                                                                                                                                                               | What each user needs                                                                                                                                                                                      |
+| :------------------------------------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Claude Code CLI and desktop                 | Claude Code clones the marketplace repository using the machine's existing git credentials                                                                                                                                           | Git access to your GHES host from their machine                                                                                                                                                           |
+| Managed settings (`extraKnownMarketplaces`) | Claude Code registers the entry and clones the repository using the machine's existing git credentials                                                                                                                               | Git access to your GHES host from their machine                                                                                                                                                           |
+| claude.ai organization plugin settings      | An Owner selects the GHES instance as the source; Anthropic's backend fetches and syncs the repository using the GitHub App from [admin setup](#admin-setup)                                                                         | Nothing per user once added. The Owner adding it needs their own GitHub Enterprise account connected as an access check, and the GitHub App must be installed on the marketplace repository               |
+| claude.ai user settings                     | Anthropic's backend fetches the repository using the submitting user's GitHub Enterprise connection                                                                                                                                  | Their own GitHub Enterprise account connected to Claude                                                                                                                                                   |
+| Claude Code on the web                      | Cloud sessions clone marketplaces inside the session sandbox. The sandbox can reach your GHES instance only when the session's repository is on that same instance, and its git credentials are scoped to the session's repositories | Not reliable for GHES-hosted marketplaces: a different host than the session's repository is not reachable, and even same-instance installs can fail. Use the CLI, managed settings, or claude.ai instead |
+
+<Warning>
+  GitHub Enterprise connections on claude.ai are per user when a marketplace is added from user settings. The [admin setup](#admin-setup) connects your GHES instance to your organization, but it does not connect individual user accounts: each user who adds a GHES marketplace from their own settings must first connect their own GitHub Enterprise account, and one user's connection, including the Owner's, does not cover anyone else. Marketplaces added by an Owner in the organization plugin settings do not put this requirement on users, because ongoing fetches use the organization's GitHub App. The Owner adding the marketplace still needs their own GitHub Enterprise account connected at add time.
+</Warning>
 
 ### Add a GHES marketplace
 
-The `owner/repo` shorthand always resolves to github.com. For GHES-hosted marketplaces, use the full git URL:
-
-```bash theme={null}
-/plugin marketplace add git@github.example.com:platform/claude-plugins.git
-```
-
-HTTPS URLs work as well:
+The `owner/repo` shorthand always resolves to github.com. For GHES-hosted marketplaces, use the full git URL. HTTPS URLs are recommended:
 
 ```bash theme={null}
 /plugin marketplace add https://github.example.com/platform/claude-plugins.git
 ```
 
+SSH URLs work if the machine already trusts your GHES host:
+
+```bash theme={null}
+/plugin marketplace add git@github.example.com:platform/claude-plugins.git
+```
+
+Claude Code runs git non-interactively and rejects SSH connections to hosts that are not in the machine's `known_hosts` file. An HTTPS URL with a git credential helper avoids the `known_hosts` requirement.
+
 See [Create and distribute a plugin marketplace](/docs/en/plugin-marketplaces) for the full guide to building marketplaces.
+
+### Pre-register GHES marketplaces with managed settings
+
+The `extraKnownMarketplaces` setting pre-registers a marketplace so developers get it without manual setup. It works from [any settings file](/docs/en/settings#extraknownmarketplaces), including a repository's `.claude/settings.json`; managed settings deliver it organization-wide:
+
+```json theme={null}
+{
+  "extraKnownMarketplaces": {
+    "internal-tools": {
+      "source": {
+        "source": "git",
+        "url": "https://github.example.com/platform/claude-plugins.git"
+      }
+    }
+  }
+}
+```
+
+Claude Code installs these marketplaces locally: it registers each entry and clones the repository with the machine's existing git credentials. This path does not go through claude.ai, so the per-user GitHub Enterprise connection is not required. For a successful rollout:
+
+* **Use a full git URL.** The `owner/repo` shorthand always resolves to github.com and cannot reference a GHES host.
+* **Prefer HTTPS URLs.** SSH clones fail on machines that do not already trust your GHES host key. An HTTPS URL with your organization's standard git credential helper works on any machine with credentials configured.
+* **Confirm each machine can clone from your GHES host.** If a machine lacks credentials, the marketplace is registered but never installed, and its plugins report as not found instead of prompting for credentials.
+* **Confirm the setting reaches each machine.** A managed settings file only takes effect on machines it's deployed to, for example through your device management system. See [managed settings](/docs/en/settings#settings-files) for file locations.
 
 ### Allowlist GHES marketplaces in managed settings
 
@@ -18430,21 +18522,6 @@ If your organization uses [managed settings](/docs/en/settings) to restrict whic
       "hostPattern": "^github\\.example\\.com$"
     }
   ]
-}
-```
-
-You can also pre-register marketplaces for developers so they appear without manual setup. This example makes an internal tools marketplace available organization-wide:
-
-```json theme={null}
-{
-  "extraKnownMarketplaces": {
-    "internal-tools": {
-      "source": {
-        "source": "git",
-        "url": "git@github.example.com:platform/claude-plugins.git"
-      }
-    }
-  }
 }
 ```
 
@@ -18466,6 +18543,14 @@ If `claude --cloud` fails with a clone error, verify that an Owner has completed
 ### Marketplace add fails with a policy error
 
 If `/plugin marketplace add` is blocked for your GHES URL, your organization has restricted marketplace sources. Ask your admin to add a `hostPattern` entry for your GHES hostname in [managed settings](#allowlist-ghes-marketplaces-in-managed-settings).
+
+### Marketplace add on claude.ai fails with a GitHub access error
+
+If adding a GHES marketplace from your user settings fails with a generic error like "Marketplace couldn't be added", check your GitHub Enterprise connection first. This is what appears when your own GitHub Enterprise account is not connected to Claude, even if your organization's GHES instance is configured and other users are connected. The dialog does not point to the GitHub Enterprise connect flow, and the "Connect to GitHub" option on the Browse tab signs in to github.com, which does not grant access to GHES repositories.
+
+To connect your GitHub Enterprise account: the repository picker on [claude.ai/code](https://claude.ai/code) offers a connect option for each configured GHES instance, and Owners can also connect from the GitHub Enterprise section of the [Claude Code admin settings](https://claude.ai/admin-settings/claude-code). Then add the marketplace again. Alternatively, ask an Owner to add the marketplace in the organization plugin settings, which removes the per-user connection requirement.
+
+On other claude.ai surfaces, a "Repository not found. If it's private, GitHub access is required" error on a GHES marketplace usually indicates the same missing connection. Connect your GitHub Enterprise account through one of the paths above, then try again.
 
 ### GHES instance not reachable
 
@@ -22898,6 +22983,8 @@ claude mcp add --transport http secure-api https://api.example.com/mcp \
 
 When configuring MCP servers via JSON in `.mcp.json`, `~/.claude.json`, or `claude mcp add-json`, the `type` field accepts `streamable-http` as an alias for `http`. The MCP specification uses the name `streamable-http` for this transport, so configurations copied from server documentation work without modification.
 
+A JSON entry that has a `url` but no `type` is a configuration error, because Claude Code reads an entry with no `type` as a stdio server. Claude Code skips that server and reports `MCP server "<name>" has a "url" but no "type"; add "type": "http" (or "sse" / "ws") to this entry`. Before v2.1.202, Claude Code reported this misconfiguration as `command: expected string, received undefined`.
+
 ### Option 2: Add a remote SSE server
 
 <Warning>
@@ -25705,7 +25792,7 @@ Claude Code doesn't pass `OTEL_*` environment variables to the subprocesses it s
 | `OTEL_LOGS_EXPORT_INTERVAL`                         | Logs export interval in milliseconds (default: 5000)                                                                                                                                                                                                                                                                              | `1000`, `10000`                                                                                                                 |
 | `OTEL_LOG_USER_PROMPTS`                             | Enable logging of user prompt content (default: disabled)                                                                                                                                                                                                                                                                         | `1` to enable                                                                                                                   |
 | `OTEL_LOG_ASSISTANT_RESPONSES`                      | Enable logging of assistant response text on `assistant_response` events (default: disabled). When unset, falls back to the value of `OTEL_LOG_USER_PROMPTS`. Requires Claude Code v2.1.193 or later                                                                                                                              | `1` to enable, `0` to keep redacted                                                                                             |
-| `OTEL_LOG_TOOL_DETAILS`                             | Enable logging of tool parameters and input arguments in tool events and trace span attributes: Bash commands, MCP server and tool names, skill names, and tool input. Also enables custom, plugin, and MCP command names on `user_prompt` events (default: disabled)                                                             | `1` to enable                                                                                                                   |
+| `OTEL_LOG_TOOL_DETAILS`                             | Enable logging of tool parameters and input arguments in tool events and trace span attributes: Bash commands, MCP server and tool names, skill names, user-authored workflow names, and tool input. Also enables custom, plugin, and MCP command names on `user_prompt` events (default: disabled)                               | `1` to enable                                                                                                                   |
 | `OTEL_LOG_TOOL_CONTENT`                             | Enable logging of tool input and output content in span events (default: disabled). Requires [tracing](#traces-beta). Content is truncated at 60 KB                                                                                                                                                                               | `1` to enable                                                                                                                   |
 | `OTEL_LOG_RAW_API_BODIES`                           | Emit the full Anthropic Messages API request and response JSON as `api_request_body` / `api_response_body` log events (default: disabled). Bodies include the entire conversation history. Enabling this implies consent to everything `OTEL_LOG_USER_PROMPTS`, `OTEL_LOG_TOOL_DETAILS`, and `OTEL_LOG_TOOL_CONTENT` would reveal | `1` for inline bodies truncated at 60 KB, or `file:<dir>` for untruncated bodies on disk with a `body_ref` pointer in the event |
 | `OTEL_EXPORTER_OTLP_METRICS_TEMPORALITY_PREFERENCE` | Metrics temporality preference (default: `delta`). Set to `cumulative` if your backend expects cumulative temporality                                                                                                                                                                                                             | `delta`, `cumulative`                                                                                                           |
@@ -25791,32 +25878,34 @@ Every span carries the [standard attributes](#standard-attributes) plus a `span.
 
 **`claude_code.llm_request`**
 
-| Attribute                        | Description                                                                                                           | Gated by |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------- | -------- |
-| `model`                          | Model identifier                                                                                                      |          |
-| `gen_ai.system`                  | Always `anthropic`. OpenTelemetry GenAI semantic convention                                                           |          |
-| `gen_ai.request.model`           | Same value as `model`. OpenTelemetry GenAI semantic convention                                                        |          |
-| `query_source`                   | Subsystem that issued the request, such as `repl_main_thread` or a subagent name                                      |          |
-| `agent_id`                       | Identifier of the subagent or teammate that issued the request. Absent on the main session                            |          |
-| `parent_agent_id`                | Identifier of the agent that spawned this one. Absent for the main session and for agents spawned directly from it    |          |
-| `speed`                          | `fast` or `normal`                                                                                                    |          |
-| `llm_request.context`            | `interaction`, `tool`, or `standalone` depending on the parent span                                                   |          |
-| `duration_ms`                    | Wall-clock duration including retries                                                                                 |          |
-| `ttft_ms`                        | Time to first token in milliseconds                                                                                   |          |
-| `input_tokens`                   | Input token count from the API usage block                                                                            |          |
-| `output_tokens`                  | Output token count                                                                                                    |          |
-| `cache_read_tokens`              | Tokens read from prompt cache                                                                                         |          |
-| `cache_creation_tokens`          | Tokens written to prompt cache                                                                                        |          |
-| `request_id`                     | Anthropic API request ID from the `request-id` response header                                                        |          |
-| `gen_ai.response.id`             | Same value as `request_id`. OpenTelemetry GenAI semantic convention                                                   |          |
-| `client_request_id`              | Client-generated `x-client-request-id` of the final attempt                                                           |          |
-| `attempt`                        | Total attempts made for this request                                                                                  |          |
-| `success`                        | `true` or `false`                                                                                                     |          |
-| `status_code`                    | HTTP status code when the request failed                                                                              |          |
-| `error`                          | Error message when the request failed                                                                                 |          |
-| `response.has_tool_call`         | `true` when the response contained tool-use blocks                                                                    |          |
-| `stop_reason`                    | API response `stop_reason`, such as `end_turn`, `tool_use`, `max_tokens`, `stop_sequence`, `pause_turn`, or `refusal` |          |
-| `gen_ai.response.finish_reasons` | Same value as `stop_reason`, wrapped in a string array. OpenTelemetry GenAI semantic convention                       |          |
+| Attribute                        | Description                                                                                                                                   | Gated by                |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------- |
+| `model`                          | Model identifier                                                                                                                              |                         |
+| `gen_ai.system`                  | Always `anthropic`. OpenTelemetry GenAI semantic convention                                                                                   |                         |
+| `gen_ai.request.model`           | Same value as `model`. OpenTelemetry GenAI semantic convention                                                                                |                         |
+| `query_source`                   | Subsystem that issued the request, such as `repl_main_thread` or a subagent name                                                              |                         |
+| `agent_id`                       | Identifier of the subagent or teammate that issued the request. Absent on the main session                                                    |                         |
+| `parent_agent_id`                | Identifier of the agent that spawned this one. Absent for the main session and for agents spawned directly from it                            |                         |
+| `workflow.run_id`                | Run identifier of the [Workflow](/docs/en/workflows) tool run that spawned this agent, prefixed `wf_`. Absent for agents not spawned by a workflow |                         |
+| `workflow.name`                  | Name of the workflow that spawned this agent. User-authored names are replaced with `custom` unless the gate is set                           | `OTEL_LOG_TOOL_DETAILS` |
+| `speed`                          | `fast` or `normal`                                                                                                                            |                         |
+| `llm_request.context`            | `interaction`, `tool`, or `standalone` depending on the parent span                                                                           |                         |
+| `duration_ms`                    | Wall-clock duration including retries                                                                                                         |                         |
+| `ttft_ms`                        | Time to first token in milliseconds                                                                                                           |                         |
+| `input_tokens`                   | Input token count from the API usage block                                                                                                    |                         |
+| `output_tokens`                  | Output token count                                                                                                                            |                         |
+| `cache_read_tokens`              | Tokens read from prompt cache                                                                                                                 |                         |
+| `cache_creation_tokens`          | Tokens written to prompt cache                                                                                                                |                         |
+| `request_id`                     | Anthropic API request ID from the `request-id` response header                                                                                |                         |
+| `gen_ai.response.id`             | Same value as `request_id`. OpenTelemetry GenAI semantic convention                                                                           |                         |
+| `client_request_id`              | Client-generated `x-client-request-id` of the final attempt                                                                                   |                         |
+| `attempt`                        | Total attempts made for this request                                                                                                          |                         |
+| `success`                        | `true` or `false`                                                                                                                             |                         |
+| `status_code`                    | HTTP status code when the request failed                                                                                                      |                         |
+| `error`                          | Error message when the request failed                                                                                                         |                         |
+| `response.has_tool_call`         | `true` when the response contained tool-use blocks                                                                                            |                         |
+| `stop_reason`                    | API response `stop_reason`, such as `end_turn`, `tool_use`, `max_tokens`, `stop_sequence`, `pause_turn`, or `refusal`                         |                         |
+| `gen_ai.response.finish_reasons` | Same value as `stop_reason`, wrapped in a string array. OpenTelemetry GenAI semantic convention                                               |                         |
 
 Each retry attempt is also recorded as a `gen_ai.request.attempt` span event with `attempt` and `client_request_id` attributes.
 
@@ -25829,6 +25918,8 @@ Each retry attempt is also recorded as a `gen_ai.request.attempt` span event wit
 | `result_tokens`       | Approximate token size of the tool result                                                                                                                                                                                            |                         |
 | `agent_id`            | Identifier of the subagent or teammate that ran the tool. Absent on the main session                                                                                                                                                 |                         |
 | `parent_agent_id`     | Identifier of the agent that spawned this one. Absent for the main session and for agents spawned directly from it                                                                                                                   |                         |
+| `workflow.run_id`     | Run identifier of the Workflow tool run that spawned this agent, prefixed `wf_`. Absent for agents not spawned by a workflow                                                                                                         |                         |
+| `workflow.name`       | Name of the workflow that spawned this agent. User-authored names are replaced with `custom` unless the gate is set                                                                                                                  | `OTEL_LOG_TOOL_DETAILS` |
 | `tool_use_id`         | The model's `tool_use` block id for this call. Matches the `tool_use_id` on the [tool\_result](#tool-result-event) and [tool\_decision](#tool-decision-event) events and in hook payloads, so you can join the span to those records |                         |
 | `gen_ai.tool.call.id` | Same value as `tool_use_id`. OpenTelemetry GenAI semantic convention                                                                                                                                                                 |                         |
 | `file_path`           | Target file path for Read, Edit, and Write tools                                                                                                                                                                                     | `OTEL_LOG_TOOL_DETAILS` |
@@ -26028,6 +26119,8 @@ Events additionally include the following attributes. These are never attached t
 
 * `prompt.id`: UUID correlating a user prompt with all subsequent events until the next prompt. See [Event correlation attributes](#event-correlation-attributes).
 * `workspace.host_paths`: host workspace directories selected in the desktop app, as a string array
+* `workflow.run_id`: run identifier, prefixed `wf_`, on the API and tool events emitted by agents that belong to a [Workflow](/docs/en/workflows) tool run. Filtering events by one `workflow.run_id` reconstructs that run's API requests and tool results. The identifier covers the agents the workflow script spawns and any agents those spawn in turn, such as skill invocations. It matches the run identifier reported in the Workflow tool result. Absent on all other events. Requires Claude Code v2.1.202 or later
+* `workflow.name`: name of the workflow, its script's `meta.name`, emitted alongside `workflow.run_id`. Built-in workflow names appear verbatim when the run executes the unmodified built-in script. User-authored names, including edited copies of built-in scripts, are replaced with `custom` unless `OTEL_LOG_TOOL_DETAILS=1` is set. Requires Claude Code v2.1.202 or later
 
 ### Metrics
 
@@ -26929,6 +27022,8 @@ export CLAUDE_CODE_CLIENT_KEY=/path/to/client-key.pem
 export CLAUDE_CODE_CLIENT_KEY_PASSPHRASE="your-passphrase"
 ```
 
+Claude Code reads the certificate and key files at startup and re-reads them each time it applies settings, including when settings change during a session. To rotate the certificate and key, replace the files at the same paths.
+
 ## Network access requirements
 
 Claude Code requires access to the following URLs. Allowlist these in your proxy configuration and firewall rules, especially in containerized or restricted network environments.
@@ -27296,7 +27391,7 @@ You can switch modes mid-session, at startup, or as a persistent default. The mo
     Use the mode dropdown next to the prompt box on [claude.ai/code](https://claude.ai/code) or in the mobile app. Permission prompts appear in claude.ai for approval. Which modes appear depends on where the session runs:
 
     * **Cloud sessions** on [Claude Code on the web](/docs/en/claude-code-on-the-web): Accept edits, Plan mode, and Auto mode. Accept edits corresponds to `default` mode: the cloud environment pre-approves file edits regardless of mode, so the dropdown shows Accept edits instead of Ask permissions. `defaultMode: "acceptEdits"` from settings is still honored. Auto mode appears only when your organization allows it and the selected model supports it. Bypass permissions is not available.
-    * **[Remote Control](/docs/en/remote-control) sessions** on your local machine: Ask permissions, Auto accept edits, and Plan mode. Auto and Bypass permissions are not available.
+    * **[Remote Control](/docs/en/remote-control) sessions** on your local machine: Ask permissions, Auto accept edits, and Plan mode. You can't select Auto or Bypass permissions from the app. The dropdown shows the mode the local session is in, including a mode set from the terminal, and updates when the mode changes in the app or in the terminal. The one exception is Bypass permissions: the session never reports that mode to claude.ai, so switching into it from the terminal doesn't change what the dropdown shows. Before v2.1.202, sessions connected with `/remote-control` or `claude --remote-control` didn't report their mode at all, so claude.ai and the mobile app could show a mode the session wasn't in. The mismatch affected only the label: permission prompts were generated from the session's actual mode and still appeared in the app for approval.
 
     For Remote Control, you can also set the starting mode when launching the host:
 
@@ -27811,7 +27906,7 @@ Claude Code recognizes a built-in set of Bash commands as read-only and runs the
 
 Unquoted glob patterns are permitted for commands whose every flag is read-only, so `ls *.ts` and `wc -l src/*.py` run without a prompt. Commands with write-capable or exec-capable flags, such as `find`, `sort`, `sed`, and `git`, still prompt when an unquoted glob is present because the glob could expand to a flag like `-delete`.
 
-A `cd` into a path inside your working directory or an [additional directory](#working-directories) is also read-only. A compound command like `cd packages/api && ls` runs without a prompt when each part qualifies on its own. Combining `cd` with `git` in one compound command always prompts, regardless of the target directory.
+A `cd` into a path inside your working directory or an [additional directory](#working-directories) is also read-only. A compound command like `cd packages/api && ls` runs without a prompt when each part qualifies on its own. Combining `cd` with `git` in one compound command prompts when the `cd` changes into a different directory, since running `git` in a new directory can execute that directory's hooks. A `cd` whose target resolves to the current working directory is a no-op and doesn't trigger this prompt.
 
 <Warning>
   Bash permission patterns that try to constrain command arguments are fragile. For example, `Bash(curl http://github.com/ *)` intends to restrict curl to GitHub URLs, but won't match variations like:
@@ -27904,6 +27999,8 @@ A rule only matches files under its anchor, so the anchor determines how far a d
 <Note>
   In gitignore patterns, `*` matches within a single path segment and can appear at any position in the pattern, while `**` matches across directories. To allow all file access, use only the tool name without parentheses: `Read`, `Edit`, or `Write`.
 </Note>
+
+When you approve a file path with "Yes, don't ask again", Claude Code escapes gitignore pattern characters in that path, such as `[`, `]`, and `*`, so the generated rule matches only the literal path you approved. Rules you write yourself aren't escaped. Before v2.1.202, Claude Code saved the path unescaped, so a generated rule for a directory named `[2024-06] Reports` could fail to match its own path or match unintended sibling directories.
 
 When Claude accesses a symlink, permission rules check two paths: the symlink itself and the file it resolves to. Allow and deny rules treat that pair differently: allow rules fall back to prompting you, while deny rules block outright.
 
@@ -31017,6 +31114,7 @@ When you start a Remote Control session on your machine, Claude keeps running lo
 
 * **Use your full local environment remotely**: your filesystem, [MCP servers](/docs/en/mcp), tools, and project configuration all stay available, and typing `@` autocompletes file paths from your local project
 * **Work from both surfaces at once**: the conversation stays in sync across all connected devices, so you can send messages from your terminal, browser, and phone interchangeably
+* **Send images and files from your phone or browser**: when you add an attachment in the Claude app or at claude.ai/code, Claude Code downloads it to your machine and passes it to Claude as an `@` file reference, with or without a caption. Before v2.1.202, Claude Code could drop an attachment sent without a caption before it reached the session.
 * **Survive interruptions**: if your laptop sleeps or your network drops, the session reconnects automatically when your machine comes back online
 
 Unlike [Claude Code on the web](/docs/en/claude-code-on-the-web), which runs on cloud infrastructure, Remote Control sessions run directly on your machine and interact with your local filesystem. The web and mobile interfaces are just a window into that local session.
@@ -32455,7 +32553,9 @@ Edits to `loop.md` take effect on the next iteration, so you can refine the inst
 
 To stop a `/loop` while it is waiting for the next iteration, press `Esc`. This clears the pending wakeup so the loop does not fire again. Tasks you scheduled by [asking Claude directly](#manage-scheduled-tasks) are not affected by `Esc` and stay in place until you delete them.
 
-In [self-paced mode](#let-claude-choose-the-interval), Claude can also end the loop on its own by not scheduling the next wakeup once the task is provably complete. Loops on a fixed interval keep running until you stop them or [seven days elapse](#seven-day-expiry).
+In [self-paced mode](#let-claude-choose-the-interval), Claude can also end the loop on its own once the task is complete. Claude calls the [`ScheduleWakeup` tool](/docs/en/tools-reference) with `stop: true`, which cancels the pending wakeup immediately. If an iteration ends without either rescheduling or stopping, Claude Code schedules one fallback wakeup about 20 minutes later and ends the loop when that iteration doesn't reschedule either. Before v2.1.202, not rescheduling was the only way Claude could end a loop on its own.
+
+Loops on a fixed interval keep running until you stop them or [seven days elapse](#seven-day-expiry).
 
 ## Set a one-time reminder
 
@@ -33674,12 +33774,13 @@ These settings are stored in `~/.claude.json` rather than `settings.json`. Addin
   Versions before v2.1.119 also store a number of `/config` preference keys here instead of in `settings.json`, including `theme`, `verbose`, `editorMode`, `autoCompactEnabled`, and `preferredNotifChannel`.
 </Note>
 
-| Key                       | Description                                                                                                                                                                                                                                                                                                                               | Example    |
-| :------------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- |
-| `autoConnectIde`          | **Default**: `false`. Automatically connect to a running IDE when Claude Code starts from an external terminal. Appears in `/config` as **Auto-connect to IDE (external terminal)** when running outside a VS Code or JetBrains terminal. The [`CLAUDE_CODE_AUTO_CONNECT_IDE`](/en/env-vars) environment variable overrides this when set | `true`     |
-| `autoInstallIdeExtension` | **Default**: `true`. Automatically install the Claude Code IDE extension when running from a VS Code terminal. Appears in `/config` as **Auto-install IDE extension** when running inside a VS Code or JetBrains terminal. You can also set the [`CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL`](/en/env-vars) environment variable to `1`           | `false`    |
-| `externalEditorContext`   | **Default**: `false`. Prepend Claude's previous response as `#`-commented context when you open the external editor with `Ctrl+G`. Appears in `/config` as **Show last response in external editor**                                                                                                                                      | `true`     |
-| `teammateDefaultModel`    | Default model for [agent team](/en/agent-teams) teammates when the spawn prompt doesn't specify one. Set to a model alias such as `"sonnet"`, or `null` to inherit the lead's current `/model` selection. Appears in `/config` as **Default teammate model**                                                                              | `"sonnet"` |
+| Key                       | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Example    |
+| :------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------- |
+| `autoConnectIde`          | **Default**: `false`. Automatically connect to a running IDE when Claude Code starts from an external terminal. Appears in `/config` as **Auto-connect to IDE (external terminal)** when running outside a VS Code or JetBrains terminal. The [`CLAUDE_CODE_AUTO_CONNECT_IDE`](/en/env-vars) environment variable overrides this when set                                                                                                                             | `true`     |
+| `autoInstallIdeExtension` | **Default**: `true`. Automatically install the Claude Code IDE extension when running from a VS Code terminal. Appears in `/config` as **Auto-install IDE extension** when running inside a VS Code or JetBrains terminal. You can also set the [`CLAUDE_CODE_IDE_SKIP_AUTO_INSTALL`](/en/env-vars) environment variable to `1`                                                                                                                                       | `false`    |
+| `externalEditorContext`   | **Default**: `false`. Prepend Claude's previous response as `#`-commented context when you open the external editor with `Ctrl+G`. Appears in `/config` as **Show last response in external editor**                                                                                                                                                                                                                                                                  | `true`     |
+| `teammateDefaultModel`    | Default model for [agent team](/en/agent-teams) teammates when the spawn prompt doesn't specify one. Set to a model alias such as `"sonnet"`, or `null` to inherit the lead's current `/model` selection. Appears in `/config` as **Default teammate model**                                                                                                                                                                                                          | `"sonnet"` |
+| `workflowSizeGuideline`   | **Default**: `unrestricted`, which sends no guideline. Sets the [agent count Claude aims for](/en/workflows#set-a-size-guideline) in the dynamic workflows it writes. Claude Code sends the value to Claude as advice, not an enforced cap. Accepts `unrestricted`, `small`, `medium`, or `large`. Appears in `/config` as **Dynamic workflow size**. You can also set it directly with `/config workflowSizeGuideline=small`. Requires Claude Code v2.1.202 or later | `"small"`  |
 
 ### Worktree settings
 
@@ -34542,19 +34643,19 @@ To install Claude Code, use one of the following methods:
   <Tab title="Native Install (Recommended)">
     **macOS, Linux, WSL:**
 
-    ```bash theme={null}
+    ```bash theme={null} theme={null} theme={null} theme={null} theme={null}
     curl -fsSL https://claude.ai/install.sh | bash
     ```
 
     **Windows PowerShell:**
 
-    ```powershell theme={null}
+    ```powershell theme={null} theme={null} theme={null} theme={null} theme={null}
     irm https://claude.ai/install.ps1 | iex
     ```
 
     **Windows CMD:**
 
-    ```batch theme={null}
+    ```batch theme={null} theme={null} theme={null} theme={null} theme={null}
     curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
     ```
 
@@ -34570,7 +34671,7 @@ To install Claude Code, use one of the following methods:
   </Tab>
 
   <Tab title="Homebrew">
-    ```bash theme={null}
+    ```bash theme={null} theme={null} theme={null} theme={null} theme={null}
     brew install --cask claude-code
     ```
 
@@ -34582,7 +34683,7 @@ To install Claude Code, use one of the following methods:
   </Tab>
 
   <Tab title="WinGet">
-    ```powershell theme={null}
+    ```powershell theme={null} theme={null} theme={null} theme={null} theme={null}
     winget install Anthropic.ClaudeCode
     ```
 
@@ -34845,7 +34946,13 @@ All repositories are signed with the [Claude Code release signing key](#binary-i
 
 <Tabs>
   <Tab title="apt">
-    For Debian and Ubuntu. The following commands configure the `stable` channel:
+    For Debian and Ubuntu. The install commands below download the signing key with `curl`, which fresh Debian and Ubuntu installations may not include. If the download fails with `sudo: curl: command not found`, install curl first:
+
+    ```bash theme={null}
+    sudo apt install curl
+    ```
+
+    The following commands configure the `stable` channel:
 
     ```bash theme={null}
     sudo install -d -m 0755 /etc/apt/keyrings
@@ -35500,6 +35607,8 @@ Here's how the two fields affect invocation and context loading:
 ### Skill content lifecycle
 
 When you or Claude invoke a skill, the rendered `SKILL.md` content enters the conversation as a single message and stays there for the rest of the session. Claude Code does not re-read the skill file on later turns, so write guidance that should apply throughout a task as standing instructions rather than one-time steps.
+
+When Claude re-invokes a skill whose rendered content is identical to the copy already in context, Claude Code adds a short note that the skill is already loaded rather than a second copy of the content. When the rendered content differs, because the arguments changed or a [dynamic context](#inject-dynamic-context) command produced new output, Claude Code appends the full content again. Before v2.1.202, every re-invocation appended another full copy of the skill's instructions.
 
 [Auto-compaction](/en/how-claude-code-works#when-context-fills-up) carries invoked skills forward within a token budget. When the conversation is summarized to free context, Claude Code re-attaches the most recent invocation of each skill after the summary, keeping the first 5,000 tokens of each. Re-attached skills share a combined budget of 25,000 tokens. Claude Code fills this budget starting from the most recently invoked skill, so older skills can be dropped entirely after compaction if you have invoked many in one session.
 
@@ -38523,6 +38632,7 @@ This page covers performance, stability, and search problems once Claude Code is
 | Symptom                                                                                                                                              | Go to                                                                                    |
 | :--------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
 | `command not found`, install fails, PATH issues, `EACCES`, TLS errors                                                                                | [Troubleshoot installation and login](/docs/en/troubleshoot-install)                          |
+| Update or install download fails with `The connection dropped while downloading the update` or `aborted`                                             | [Error reference](/docs/en/errors#the-connection-dropped-while-downloading-the-update)        |
 | Login loops, OAuth errors, `403 Forbidden`, "organization disabled", Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry credentials | [Troubleshoot installation and login](/docs/en/troubleshoot-install#login-and-authentication) |
 | Settings not applying, hooks not firing, MCP servers not loading                                                                                     | [Debug your configuration](/docs/en/debug-your-config)                                        |
 | `API Error: 5xx`, `529 Overloaded`, `429`, request validation errors                                                                                 | [Error reference](/docs/en/errors)                                                            |
@@ -38735,7 +38845,7 @@ Ultrareview is a deep code review that runs on Claude Code on the web infrastruc
 Compared to a local `/code-review` or `/review`, ultrareview offers:
 
 * **Higher signal**: every reported finding is independently reproduced and verified, so the results focus on real bugs rather than style suggestions
-* **Broader coverage**: a larger fleet of reviewer agents explores the change in parallel, which surfaces issues that a medium-effort local review can miss
+* **Broader coverage**: a larger fleet of reviewer agents explores the change in parallel, which surfaces issues that a local review can miss
 * **No local resource use**: the review runs entirely in a remote sandbox, so your terminal stays free for other work while it runs
 
 Ultrareview requires authentication with a Claude.ai account because it runs on Claude Code on the web infrastructure. If you are signed in with an API key only, run `/login` and authenticate with Claude.ai first. Ultrareview is not available when using Claude Code with Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry, and it is not available to organizations that have enabled Zero Data Retention.
@@ -38813,14 +38923,14 @@ For automatic reviews on GitHub pull requests, [Code Review](/docs/en/code-revie
 
 All three commands review code, but they target different stages of your workflow.
 
-|          | `/code-review`                  | `/review <pr>`                             | `/code-review ultra`                                            |
-| -------- | ------------------------------- | ------------------------------------------ | --------------------------------------------------------------- |
-| Target   | your working diff               | a GitHub pull request                      | your working diff or a pull request                             |
-| Runs     | locally in your session         | locally in your session                    | remotely in a cloud sandbox                                     |
-| Depth    | scales with the effort argument | the medium `/code-review` engine           | multi-agent fleet with independent verification                 |
-| Duration | seconds to a few minutes        | a few minutes                              | roughly 5 to 10 minutes                                         |
-| Cost     | counts toward normal usage      | counts toward normal usage                 | free runs, then roughly \$5 to \$20 per review as usage credits |
-| Best for | quick feedback while iterating  | reviewing a teammate's PR before approving | pre-merge confidence on substantial changes                     |
+|          | `/code-review`                  | `/review <pr>`                               | `/code-review ultra`                                            |
+| -------- | ------------------------------- | -------------------------------------------- | --------------------------------------------------------------- |
+| Target   | your working diff               | a GitHub pull request                        | your working diff or a pull request                             |
+| Runs     | locally in your session         | locally in your session                      | remotely in a cloud sandbox                                     |
+| Depth    | scales with the effort argument | a single-pass review at the session's effort | multi-agent fleet with independent verification                 |
+| Duration | seconds to a few minutes        | seconds to a few minutes                     | roughly 5 to 10 minutes                                         |
+| Cost     | counts toward normal usage      | counts toward normal usage                   | free runs, then roughly \$5 to \$20 per review as usage credits |
+| Best for | quick feedback while iterating  | reviewing a teammate's PR before approving   | pre-merge confidence on substantial changes                     |
 
 Use `/code-review` for fast feedback as you work. Use `/review <pr>` to look over a pull request the same way you would before approving it. Use `/code-review ultra` before merging a substantial change when you want a deeper pass that catches issues a local review might miss.
 
@@ -39912,12 +40022,27 @@ Resume works within the same Claude Code session. If you exit Claude Code while 
 
 A workflow spawns many agents, so a single run can use meaningfully more tokens than working through the same task in conversation. Runs count toward your plan's usage and rate limits like any other session.
 
-To gauge the spend before committing to a large task, run the workflow on a small slice first: one directory instead of the whole repo, or a narrow question instead of a broad one. The `/workflows` view shows each agent's token usage as the run progresses, and you can stop the run there at any time without losing completed work. The runtime's [agent caps](#behavior-and-limits) limit how many agents a single run can spawn, which bounds the cost of a runaway script.
+To gauge the spend before committing to a large task, run the workflow on a small slice first: one directory instead of the whole repo, or a narrow question instead of a broad one. The `/workflows` view shows each agent's token usage as the run progresses, and you can stop the run there at any time without losing completed work. The runtime's [agent caps](#behavior-and-limits) limit how many agents a single run can spawn, which bounds the cost of a runaway script. To keep every run smaller by default, [set a size guideline](#set-a-size-guideline) in `/config`.
 
 Every agent in a workflow uses your session's model unless the script routes a stage to a different one. To control the model cost:
 
 * Check `/model` before a large run if you usually switch to a smaller model for routine work
 * Ask Claude to use a smaller model for stages that don't need the strongest one when you describe the task
+
+### Set a size guideline
+
+The Dynamic workflow size setting in `/config` keeps the workflows Claude writes to a smaller scale by default. Claude Code sends the setting to Claude as advice, so a prompt that calls for a different scale still overrides it. Requires Claude Code v2.1.202 or later.
+
+Each value sets the agent count Claude aims for in the scripts it writes.
+
+| Value          | Guidance sent to Claude            |
+| :------------- | :--------------------------------- |
+| `unrestricted` | No guideline. This is the default. |
+| `small`        | Aim for fewer than 5 agents.       |
+| `medium`       | Aim for fewer than 15 agents.      |
+| `large`        | Aim for fewer than 50 agents.      |
+
+Changes take effect on the next prompt. The [runtime agent caps](#behavior-and-limits) still apply regardless of the setting.
 
 ### Turn workflows off
 
@@ -55300,13 +55425,14 @@ function getSessionMessages(
 
 #### Return type: `SessionMessage`
 
-| Property             | Type                    | Description                                                                                                                     |
-| :------------------- | :---------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
-| `type`               | `"user" \| "assistant"` | Message role                                                                                                                    |
-| `uuid`               | `string`                | Unique message identifier                                                                                                       |
-| `session_id`         | `string`                | Session this message belongs to                                                                                                 |
-| `message`            | `unknown`               | Raw message payload from the transcript                                                                                         |
-| `parent_tool_use_id` | `string \| null`        | For subagent messages, the `tool_use_id` of the spawning `Agent` tool call. `null` for main-session messages and older sessions |
+| Property             | Type                    | Description                                                                                                                                                                                                                                                  |
+| :------------------- | :---------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`               | `"user" \| "assistant"` | Message role                                                                                                                                                                                                                                                 |
+| `uuid`               | `string`                | Unique message identifier                                                                                                                                                                                                                                    |
+| `session_id`         | `string`                | Session this message belongs to                                                                                                                                                                                                                              |
+| `message`            | `unknown`               | Raw message payload from the transcript                                                                                                                                                                                                                      |
+| `parent_tool_use_id` | `string \| null`        | For subagent messages, the `tool_use_id` of the spawning `Agent` tool call. `null` for main-session messages and older sessions                                                                                                                              |
+| `parent_agent_id`    | `string \| null`        | For messages from a [nested subagent](/docs/en/sub-agents#spawn-nested-subagents), the `agentId` of the subagent that spawned it. `null` for main-session messages, messages from top-level subagents, and older sessions. Requires Claude Code v2.1.202 or later |
 
 #### Example
 
@@ -60882,7 +61008,7 @@ Most commands are useful at a specific point in a session, from setting up a pro
 
 **Run work in parallel.** Claude delegates side tasks to [subagents](/docs/en/sub-agents), and `/tasks` lists what's running in the background of the current session. `/background` detaches the whole session to keep running as a [background agent](/docs/en/agent-view) and frees your terminal. For a large change that spans the codebase, `/batch` decomposes it into independent units and runs each in its own [worktree](/docs/en/worktrees). See [Run agents in parallel](/docs/en/agents) for how these approaches relate.
 
-**Before you ship.** `/diff` shows what changed, `/code-review` checks the diff for correctness bugs and cleanups and can apply the findings with `--fix`, `/review` runs the same read-only review on a GitHub pull request, and `/security-review` gives a deeper read-only pass. `/code-review ultra` runs a multi-agent review in the cloud.
+**Before you ship.** `/diff` shows what changed, `/code-review` checks the diff for correctness bugs and cleanups and can apply the findings with `--fix`, `/review` gives a read-only review of a GitHub pull request, and `/security-review` checks the diff for security vulnerabilities. `/code-review ultra` runs a multi-agent review in the cloud.
 
 **Between sessions.** `/clear` starts fresh on a new task while keeping project memory. `/resume` and `/branch` let you return to or fork an earlier conversation. `/teleport` pulls a web session into this terminal, and `/remote-control` lets you continue this local session from another device.
 
@@ -60973,7 +61099,7 @@ In the table below, `<arg>` indicates a required argument and `[arg]` indicates 
 | `/remote-env`                                                                      | Choose the default environment for [cloud agents](/docs/en/claude-code-on-the-web#configure-your-environment)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `/rename [name]`                                                                   | Rename the current session and show the name on the prompt bar. Without a name, auto-generates one from conversation history                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `/resume [session]`                                                                | Resume a conversation by ID or name, or open the session picker. As of v2.1.144, [background sessions](/docs/en/agent-view) appear in the picker marked with `bg`. Alias: `/continue`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `/review [PR]`                                                                     | Review a GitHub pull request by number, using the same review engine as `/code-review`. With no arguments, lists open PRs to pick from. For a cloud-based review, see [`/code-review ultra`](/docs/en/ultrareview)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `/review [PR]`                                                                     | Review a GitHub pull request by number. With no argument, lists open PRs to pick from. For a cloud-based review, see [`/code-review ultra`](/docs/en/ultrareview)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `/rewind`                                                                          | Rewind the conversation and/or code to a previous point, or summarize from a selected message. See [checkpointing](/docs/en/checkpointing). Aliases: `/checkpoint`, `/undo`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `/run`                                                                             | **[Skill](/docs/en/skills#bundled-skills).** Launch and drive your project's app to see a change working, not only passing tests. See [Run and verify your app](/docs/en/skills#run-and-verify-your-app). Requires Claude Code v2.1.145 or later                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | `/run-skill-generator`                                                             | **[Skill](/docs/en/skills#bundled-skills).** Teach `/run` and `/verify` how to build, launch, and drive your project's app from a clean environment by writing a per-project [skill](/docs/en/skills#run-and-verify-your-app). Requires Claude Code v2.1.145 or later                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
@@ -61367,7 +61493,7 @@ Claude Code reads environment variables at startup, so changes take effect the n
 | `OTEL_LOG_ASSISTANT_RESPONSES`                          | Set to `1` to include the model's response text on `assistant_response` OpenTelemetry log events. When unset, the value of `OTEL_LOG_USER_PROMPTS` is used instead. Set to `0` to keep responses redacted even when `OTEL_LOG_USER_PROMPTS` is set. Requires Claude Code v2.1.193 or later. See [Monitoring](/docs/en/monitoring-usage#assistant-response-event)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `OTEL_LOG_RAW_API_BODIES`                               | Emit Anthropic Messages API request and response JSON as `api_request_body` / `api_response_body` log events. Set to `1` for inline bodies truncated at 60 KB, or `file:<dir>` to write untruncated bodies to disk and emit a `body_ref` path instead. Disabled by default; bodies include the entire conversation history. See [Monitoring](/docs/en/monitoring-usage#api-request-body-event)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `OTEL_LOG_TOOL_CONTENT`                                 | Set to `1` to include tool input and output content in OpenTelemetry span events. Disabled by default to protect sensitive data. See [Monitoring](/docs/en/monitoring-usage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-| `OTEL_LOG_TOOL_DETAILS`                                 | Set to `1` to include tool input arguments, MCP server names, raw error strings on tool failures, the refusal `category` on `api_refusal` events, and other tool details in OpenTelemetry traces and logs. Disabled by default to protect PII. See [Monitoring](/docs/en/monitoring-usage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `OTEL_LOG_TOOL_DETAILS`                                 | Set to `1` to include tool input arguments, MCP server names, user-authored workflow names, raw error strings on tool failures, the refusal `category` on `api_refusal` events, and other tool details in OpenTelemetry traces and logs. Disabled by default to protect PII. See [Monitoring](/docs/en/monitoring-usage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `OTEL_LOG_USER_PROMPTS`                                 | Set to `1` to include user prompt text in OpenTelemetry traces and logs. Disabled by default (prompts are redacted). See [Monitoring](/docs/en/monitoring-usage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | `OTEL_METRICS_INCLUDE_ACCOUNT_UUID`                     | Set to `false` to exclude account UUID from metrics attributes (default: included). See [Monitoring](/docs/en/monitoring-usage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
 | `OTEL_METRICS_INCLUDE_ENTRYPOINT`                       | Set to `true` to include the session entrypoint in metrics attributes (default: excluded). Added in v2.1.152. See [Monitoring](/docs/en/monitoring-usage)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
@@ -64894,6 +65020,8 @@ When an async hook fires, Claude Code starts the hook process and immediately co
 
 After the background process exits, if the hook produced a JSON response with an `additionalContext` field, that content is delivered to Claude as context on the next conversation turn. A `systemMessage` field is shown to you, not to Claude.
 
+Claude Code validates that JSON response against the same [output schema](#json-output) as synchronous hooks, and drops any field whose value has the wrong type, such as a `systemMessage` that isn't a string, instead of delivering it. Run with `--debug` to see a warning naming each dropped field. Before v2.1.202, malformed JSON output from an async hook could crash the session, and the crash recurred each time the session was resumed.
+
 Async hook completion notifications are suppressed by default. To see them, enable verbose mode with `Ctrl+O` or start Claude Code with `--verbose`.
 
 ### Run tests after file changes
@@ -65067,7 +65195,7 @@ Complete reference for keyboard shortcuts, input modes, and interactive features
 | `Ctrl+T`                                                  | Toggle Claude's task checklist                                                                                                                             | Show or hide [Claude's to-do checklist](#task-list) in the status area. This is not the background-task view; use [`/tasks`](/docs/en/commands) to see running shells and subagents                                                                                                                         |
 | `Left/Right arrows`                                       | Cycle through dialog tabs                                                                                                                                  | Navigate between tabs in permission dialogs and menus                                                                                                                                                                                                                                                  |
 | `Up/Down arrows` or `Ctrl+P`/`Ctrl+N`                     | Move cursor or navigate command history                                                                                                                    | When the input spans more than one visual row, whether wrapped or multiline, first moves the cursor within the prompt. Once the cursor is on the first or last visual row, pressing again navigates command history. As of v2.1.169, wrapped single-line input behaves the same as multiline           |
-| `Esc`                                                     | Interrupt Claude                                                                                                                                           | Stop the current response or tool call mid-turn so you can redirect. Claude keeps the work done so far                                                                                                                                                                                                 |
+| `Esc`                                                     | Interrupt Claude, or close a dialog                                                                                                                        | Stop the current response or tool call mid-turn so you can redirect. Claude keeps the work done so far. When a dialog such as a permission prompt is open, `Esc` closes the dialog rather than interrupting Claude. Before v2.1.202, `Esc` on some dialogs interrupted Claude and left the dialog open |
 | `Esc` + `Esc`                                             | Clear input draft, or rewind                                                                                                                               | When the prompt input contains text, double `Esc` clears it and saves the draft to history so `Up` recalls it. When the input is empty, double `Esc` opens the [rewind menu](/docs/en/checkpointing) to restore or summarize code and conversation from a previous point                                    |
 | `Shift+Tab` or `Alt+M` (some configurations)              | Cycle permission modes                                                                                                                                     | Cycle through `default` (labeled Manual in the mode indicator), `acceptEdits`, `plan`, and any modes you have enabled, such as `auto` or `bypassPermissions`. See [permission modes](/docs/en/permission-modes).                                                                                            |
 | `Option+P` (macOS) or `Alt+P` (Windows/Linux)             | Switch model                                                                                                                                               | Switch models without clearing your prompt                                                                                                                                                                                                                                                             |
@@ -65266,6 +65394,8 @@ Press `Ctrl+R` to interactively search through your command history:
    * Press `Backspace` on empty search to cancel
 
 The search loads the 100 most recent unique prompts in the selected scope, with duplicates collapsed to the newest occurrence. Matching prompts display with the search term highlighted, so you can find and reuse previous inputs.
+
+Accepting a match or canceling the search takes effect immediately, even while Claude Code is still loading the history. Before v2.1.202, accepting or canceling during that load could report an internal error.
 
 ## Background Bash commands
 
@@ -68743,7 +68873,7 @@ To add custom tools, connect an [MCP server](/docs/en/mcp). To extend Claude wit
 | `ReadMcpResourceTool`  | Reads a specific MCP resource by URI                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | No                  |
 | `RemoteTrigger`        | Creates, updates, runs, and lists [Routines](/docs/en/routines) on claude.ai. Backs the `/schedule` command. Routines live on claude.ai and require a Pro, Max, Team, or Enterprise plan, so this tool is not accessible from Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | No                  |
 | `ReportFindings`       | Reports code-review findings as a structured list, with a file, summary, and failure scenario per finding, so Claude Code can render them instead of printing them as text. Claude calls it when active code-review instructions tell it to. Requires Claude Code v2.1.196 or later. As of v2.1.199, a finding can also carry an optional `category` slug, such as `correctness` or `test-coverage`, shown next to the file location in the rendered list                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | No                  |
-| `ScheduleWakeup`       | Reschedules the next iteration of a [self-paced `/loop`](/docs/en/scheduled-tasks#let-claude-choose-the-interval). Claude calls this at the end of each iteration to pick when the next one runs, between one minute and one hour out; you don't call it directly. The pending wakeup appears in `session_crons` in [Stop hook input](/docs/en/hooks#stop-input). Not available on Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry, where a `/loop` prompt with no interval runs on a fixed schedule instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | No                  |
+| `ScheduleWakeup`       | Reschedules the next iteration of a [self-paced `/loop`](/docs/en/scheduled-tasks#let-claude-choose-the-interval). Claude calls this at the end of each iteration to pick when the next one runs, between one minute and one hour out; you don't call it directly. To end the loop instead, Claude calls it with `stop: true`, which cancels the pending wakeup. The `stop` field requires Claude Code v2.1.202 or later. The pending wakeup appears in `session_crons` in [Stop hook input](/docs/en/hooks#stop-input). Not available on Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry, where a `/loop` prompt with no interval runs on a fixed schedule instead                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | No                  |
 | `SendMessage`          | Sends a message to an [agent team](/docs/en/agent-teams) teammate, or [resumes a subagent](/docs/en/sub-agents#resume-subagents) by its agent ID or name. Stopped subagents auto-resume in the background. Structured team-protocol messages require agent teams. A receiver never treats a message from another agent as your consent or approval. As of v2.1.198, a subagent treats a message from the agent that launched it as normal task direction rather than as a peer request. As of v2.1.199, a send to a name that now resolves to a different agent than it did earlier in the conversation is refused instead of delivered; see [Resume subagents](/docs/en/sub-agents#resume-subagents)                                                                                                                                                                                                                                                                                                                                                                                                                                                          | No                  |
 | `SendUserFile`         | Sends files from the session to you with an optional caption, so a generated report, diagram, screenshot, or built artifact reaches your device instead of only being mentioned in the transcript. As of v2.1.196, the optional `display` input controls presentation: `render` opens the file inline in the client, `attach` shows a download card only, and when unset the client decides by file type. Available when a [Remote Control](/docs/en/remote-control) client is connected or the session runs in a managed cloud environment such as [Claude Code on the web](/docs/en/claude-code-on-the-web). Delivery runs through Anthropic-hosted infrastructure, so the tool is not available on Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry                                                                                                                                                                                                                                                                                                                                                                                 | No                  |
 | `ShareOnboardingGuide` | Uploads `ONBOARDING.md` and returns a share link teammates can open in Claude Code. Called from `/team-onboarding` after the guide is written. Available to claude.ai subscribers on Pro, Max, Team, and Enterprise plans                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Yes                 |
@@ -69247,7 +69377,7 @@ Common issues when voice dictation does not activate or record:
 * **`No audio recording tool found` on Linux**: the native audio module could not load and no fallback is installed. Install SoX with the command shown in the error message, for example `sudo apt-get install sox`.
 * **`Voice mode requires a microphone, but SoX could not open an audio capture device`**: SoX is installed, but the host has no audio capture device, for example a headless server or a container. Run Claude Code on a machine with a microphone. As of v2.1.195, Claude Code on Linux reports this message in that situation; earlier versions asked you to install SoX even when it was already installed.
 * **`Voice mode could not find a working audio recorder in WSL`**: WSLg routes audio through PulseAudio rather than an ALSA device, so SoX needs its PulseAudio backend installed explicitly. Run `sudo apt install sox libsox-fmt-pulse`. Installing `sox` alone pulls in the ALSA backend, which cannot record on WSL because there is no `/dev/snd` device.
-* **`Voice input is failing repeatedly and has been paused`**: voice dictation hit several start-up failures in a row and stopped attempting new sessions until one succeeds. This usually means the microphone or audio stack on this host can't capture audio, for example a headless server, a remote shell with no audio passthrough, or a denied microphone permission. Confirm a working input device, fix the underlying cause from the entries above, then trigger voice again.
+* **`Voice input is failing repeatedly and has been paused`**: voice dictation hit several capture failures in a row and stopped attempting new sessions until one succeeds. A failure counts whether the microphone fails to start or the recorder starts and then stops without producing any audio. This usually means the microphone or audio stack on this host can't capture audio, for example a headless server, a remote shell with no audio passthrough, or a denied microphone permission. Confirm a working input device, fix the underlying cause from the entries above, then trigger voice again. Before v2.1.202, only start-up failures counted toward the pause.
 * **Nothing happens when holding `Space` in hold mode**: watch the prompt input while you hold. If spaces keep accumulating, voice dictation is likely off; run `/voice hold` to enable it. If only one or two spaces appear and then nothing, voice dictation is on but hold detection is not triggering. Hold detection requires your terminal to send key-repeat events, so it can't detect a held key if key-repeat is disabled at the OS level. Switch to tap mode with `/voice tap` to avoid the key-repeat requirement.
 * **Tapping `Space` types a space instead of recording in tap mode**: the first tap only starts recording when the prompt input is empty. Clear the input first, or check that you are in tap mode by running `/voice tap`.
 * **`No audio detected from microphone`**: recording started but captured silence. Confirm the correct input device is set as the system default and that its input level is not muted or near zero. On Windows, open Settings → System → Sound → Input and select your microphone. On macOS, open System Settings → Sound → Input.

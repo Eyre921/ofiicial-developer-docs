@@ -33,13 +33,13 @@ MCP is an open protocol that standardizes how applications provide context to LL
 Resend hosts the MCP server, so you can connect any MCP client without installing anything:
 
 ```
-https://mcp.resend.com
+https://mcp.resend.com/mcp
 ```
 
 For example, with Claude Code:
 
 ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-claude mcp add --transport http resend https://mcp.resend.com
+claude mcp add --transport http resend https://mcp.resend.com/mcp
 ```
 
 When you connect, your client authenticates with OAuth by opening a browser to log in to Resend. Clients that can't complete a browser login can pass an API key as a Bearer token instead. You can also run the server locally with `npx` using the `resend-mcp` package on NPM.

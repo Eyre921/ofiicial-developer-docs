@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 262 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 263 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -242,6 +242,7 @@
 - `reference/get-fine-tunes-id-checkpoint` — [List checkpoints](pages/reference/get-fine-tunes-id-checkpoint.md) · [原文](https://docs.together.ai/reference/get-fine-tunes-id-checkpoint)
 - `reference/get-fine-tunes-id-events` — [List job events](pages/reference/get-fine-tunes-id-events.md) · [原文](https://docs.together.ai/reference/get-fine-tunes-id-events)
 - `reference/get-fine-tunes-id-metrics` — [Get metrics](pages/reference/get-fine-tunes-id-metrics.md) · [原文](https://docs.together.ai/reference/get-fine-tunes-id-metrics)
+- `reference/get-fine-tunes-models-limits` — [Get model limits](pages/reference/get-fine-tunes-models-limits.md) · [原文](https://docs.together.ai/reference/get-fine-tunes-models-limits)
 - `reference/get-finetune-download` — [Download model](pages/reference/get-finetune-download.md) · [原文](https://docs.together.ai/reference/get-finetune-download)
 - `reference/get-videos-id` — [Fetch video metadata](pages/reference/get-videos-id.md) · [原文](https://docs.together.ai/reference/get-videos-id)
 - `reference/getendpoint` — [Get endpoint by ID](pages/reference/getendpoint.md) · [原文](https://docs.together.ai/reference/getendpoint)

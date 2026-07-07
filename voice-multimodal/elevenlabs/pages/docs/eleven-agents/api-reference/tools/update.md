@@ -509,6 +509,21 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersionInput
+    type_:SubAgentInput:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        branch_id:
+          type: string
+        description:
+          type: string
+        parameters:
+          $ref: '#/components/schemas/type_:ObjectJsonSchemaPropertyInput'
+      required:
+        - agent_id
+        - description
+      title: SubAgentInput
     type_:AgentTransfer:
       type: object
       properties:
@@ -827,6 +842,20 @@ components:
                 interfering with IVR systems.
           required:
             - system_tool_type
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
+                - run_subagent
+              description: 'Discriminator value: run_subagent'
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/type_:SubAgentInput'
+          required:
+            - system_tool_type
+            - agents
         - type: object
           properties:
             system_tool_type:
@@ -1609,6 +1638,21 @@ components:
         - content
         - agent_id
       title: ProcedureAtVersionOutput
+    type_:SubAgentOutput:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        branch_id:
+          type: string
+        description:
+          type: string
+        parameters:
+          $ref: '#/components/schemas/type_:ObjectJsonSchemaPropertyOutput'
+      required:
+        - agent_id
+        - description
+      title: SubAgentOutput
     type_:SystemToolConfigOutputParams:
       oneOf:
         - type: object
@@ -1673,6 +1717,20 @@ components:
                 interfering with IVR systems.
           required:
             - system_tool_type
+        - type: object
+          properties:
+            system_tool_type:
+              type: string
+              enum:
+                - run_subagent
+              description: 'Discriminator value: run_subagent'
+            agents:
+              type: array
+              items:
+                $ref: '#/components/schemas/type_:SubAgentOutput'
+          required:
+            - system_tool_type
+            - agents
         - type: object
           properties:
             system_tool_type:

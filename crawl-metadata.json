@@ -23,7 +23,7 @@
     "status": "error: curl failed (22) for https://developers.openai.com/api/docs/llms-full.txt: curl: (22) The requested URL returned error: 403\n"
   },
   "ai-models/together": {
-    "pages": 262,
+    "pages": 263,
     "status": "ok"
   },
   "ai-models/fireworks": {
@@ -103,7 +103,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -189,7 +189,7 @@
     "status": "ok"
   },
   "dev-platforms/github": {
-    "pages": 100,
+    "pages": 90,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -201,12 +201,12 @@
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 352,
+    "pages": 356,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 759,
+    "pages": 760,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-06T23:30:35Z"
+  "_last_crawl": "2026-07-07T11:30:39Z"
 }

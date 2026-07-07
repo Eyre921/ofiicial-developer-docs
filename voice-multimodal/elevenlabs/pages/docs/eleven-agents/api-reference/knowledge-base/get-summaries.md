@@ -225,16 +225,16 @@ components:
       discriminator:
         propertyName: type
       title: GetKnowledgeBaseSummaryFileResponseModelDependentAgentsItem
-    type_:ExternalSyncType:
+    type_:ExternalSyncProvider:
       type: string
       enum:
         - google_drive
-      title: ExternalSyncType
+      title: ExternalSyncProvider
     type_:ExternalFileSyncInfo:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/type_:ExternalSyncType'
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string
@@ -344,7 +344,7 @@ components:
       type: object
       properties:
         type:
-          $ref: '#/components/schemas/type_:ExternalSyncType'
+          $ref: '#/components/schemas/type_:ExternalSyncProvider'
           description: Provider identifier
         source_entity_id:
           type: string

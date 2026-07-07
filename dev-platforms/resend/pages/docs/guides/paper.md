@@ -83,12 +83,12 @@ See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
 
 ## 2. Connect the Resend MCP server
 
-Connect to Resend's hosted MCP server at `https://mcp.resend.com`. When you connect, your client opens a browser window to log in to Resend and approve access.
+Connect to Resend's hosted MCP server at `https://mcp.resend.com/mcp`. When you connect, your client opens a browser window to log in to Resend and approve access.
 
 <Tabs>
   <Tab title="Claude Code">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add --transport http resend https://mcp.resend.com
+    claude mcp add --transport http resend https://mcp.resend.com/mcp
     ```
 
     Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
@@ -96,7 +96,7 @@ Connect to Resend's hosted MCP server at `https://mcp.resend.com`. When you conn
 
   <Tab title="Codex">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex mcp add resend --url https://mcp.resend.com
+    codex mcp add resend --url https://mcp.resend.com/mcp
     ```
   </Tab>
 
@@ -107,7 +107,7 @@ Connect to Resend's hosted MCP server at `https://mcp.resend.com`. When you conn
     {
       "mcpServers": {
         "resend": {
-          "url": "https://mcp.resend.com"
+          "url": "https://mcp.resend.com/mcp"
         }
       }
     }
@@ -118,7 +118,7 @@ Connect to Resend's hosted MCP server at `https://mcp.resend.com`. When you conn
     Open **Settings** > **Connectors** > **Add custom connector** and enter:
 
     ```
-    https://mcp.resend.com
+    https://mcp.resend.com/mcp
     ```
   </Tab>
 </Tabs>

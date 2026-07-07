@@ -527,8 +527,10 @@ components:
         - telegram_integration
         - intercom_integration
         - freshdesk_integration
+        - salesforce_integration
         - template_preview
         - genesys_bot_connector
+        - subagent_tool
       default: unknown
       description: Enum representing the possible sources for conversation initiation.
       title: ConversationInitiationSource
@@ -1658,6 +1660,41 @@ components:
           required:
             - result_type
             - dtmf_tones
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - run_subagent_error
+              description: 'Discriminator value: run_subagent_error'
+            status:
+              type: string
+              enum:
+                - error
+            error:
+              type: string
+          required:
+            - result_type
+            - error
+        - type: object
+          properties:
+            result_type:
+              type: string
+              enum:
+                - run_subagent_success
+              description: 'Discriminator value: run_subagent_success'
+            status:
+              type: string
+              enum:
+                - success
+            query:
+              type: string
+            agent_response:
+              type: string
+          required:
+            - result_type
+            - query
+            - agent_response
         - type: object
           properties:
             result_type:
