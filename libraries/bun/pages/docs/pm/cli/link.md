@@ -55,6 +55,7 @@ bun unlink
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
 bun unlink v1.3.3 (7416672e)
+success: unlinked package "cool-pkg"
 ```
 
 ***
@@ -160,7 +161,7 @@ bun link <packages>
 ### Performance & Resource
 
 <ParamField type="number">
-  Maximum number of concurrent jobs for lifecycle scripts
+  Maximum number of concurrent jobs for lifecycle scripts (default: 2x CPU cores)
 </ParamField>
 
 ### Caching

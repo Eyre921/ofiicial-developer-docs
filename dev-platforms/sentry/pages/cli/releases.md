@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/releases/
 
 # Release Management
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 The `sentry-cli` tool can be used for release management on Sentry. It allows you to create, edit and delete releases as well as upload release artifacts for them. Note that releases are global per organization. If you want the releases in different projects to be treated as separate entities, make the version name unique across the organization. For example, if you have projectA and projectB that share version numbers, you can name the releases `projectA-1.0` and `projectB-1.0` respectively.
 
 Because releases work on projects you will need to specify the organization and project you are working with. For more information about this refer to [Working with Projects](https://docs.sentry.io/cli/configuration.md#sentry-cli-working-with-projects).

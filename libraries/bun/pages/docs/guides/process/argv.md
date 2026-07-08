@@ -19,7 +19,7 @@ bun run cli.ts --flag1 --flag2 value
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-[ '/path/to/bun', '/path/to/cli.ts', '--flag1', '--flag2', 'value' ]
+[ "/path/to/bun", "/path/to/cli.ts", "--flag1", "--flag2", "value" ]
 ```
 
 ***
@@ -56,7 +56,7 @@ bun run cli.ts --flag1 --flag2 value
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-{
+[Object: null prototype] {
   flag1: true,
   flag2: "value",
 }

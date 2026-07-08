@@ -28,13 +28,12 @@ bun --inspect server.ts
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
------------------- Bun Inspector ------------------
-Listening at:
+--------------------- Bun Inspector ---------------------
+Listening:
   ws://localhost:6499/0tqxs9exrgrm
-
 Inspect in browser:
   https://debug.bun.sh/#localhost:6499/0tqxs9exrgrm
------------------- Bun Inspector ------------------
+--------------------- Bun Inspector ---------------------
 ```
 
 ***

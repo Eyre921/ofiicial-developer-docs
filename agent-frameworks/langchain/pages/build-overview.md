@@ -55,7 +55,7 @@ Build agents with LangChain, LangGraph, and Deep Agents.
     <Tabs>
       <Tab title="Python">
         <CardGroup>
-          <Card title="Deep Agents Code" href="/oss/python/deepagents/code/overview" icon="terminal">
+          <Card title="Deep Agents Code" href="/oss/python/deepagents/code/overview" icon="code">
             Open source terminal coding agent (`dcode`) built on the Deep Agents SDK. Switch models mid-session, customize skills and memory, and approve shell execution from the CLI.
           </Card>
         </CardGroup>
@@ -63,7 +63,7 @@ Build agents with LangChain, LangGraph, and Deep Agents.
 
       <Tab title="TypeScript">
         <CardGroup>
-          <Card title="Deep Agents Code" href="/oss/javascript/deepagents/code/overview" icon="terminal">
+          <Card title="Deep Agents Code" href="/oss/javascript/deepagents/code/overview" icon="code">
             Open source terminal coding agent (`dcode`) built on the Deep Agents SDK. Switch models mid-session, customize skills and memory, and approve shell execution from the CLI.
           </Card>
         </CardGroup>
@@ -167,9 +167,15 @@ Source: https://docs.langchain.com/index
       </Card>
     </CardGroup>
 
-    <Card title="Find and fix issues with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
-      Find and fix recurring agent issues automatically with LangSmith Engine.
-    </Card>
+    <CardGroup>
+      <Card title="Find and fix issues with Engine" icon="https://mintcdn.com/langchain-5e9cc07a/auWE6_dMRp183OCf/images/brand/engine-icon-no-bg-dark.svg?fit=max&auto=format&n=auWE6_dMRp183OCf&q=85&s=dd41aef3ce789c1a04ea3c37b5903eac" href="/langsmith/engine-overview">
+        Find and fix recurring agent issues automatically with LangSmith Engine.
+      </Card>
+
+      <Card title="Deep Agents Code" icon="code" href="/oss/python/deepagents/code/overview">
+        Code with an AI agent in your terminal using the open source `dcode` CLI.
+      </Card>
+    </CardGroup>
 
     <h2>Resources</h2>
 

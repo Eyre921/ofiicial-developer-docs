@@ -14,8 +14,6 @@ This works with any of the following:
 * `new Date()`
 * `new Intl.DateTimeFormat().format()`
 
-<Note>Timers are not impacted yet, but may be in a future release of Bun.</Note>
-
 ## setSystemTime
 
 To change the system time, use `setSystemTime`:
@@ -58,8 +56,6 @@ test("unlike in jest", () => {
   }
 });
 ```
-
-<Warning>**Timers** — Built-in timer mocking is not implemented yet, but it is on the roadmap.</Warning>
 
 ## Reset the system time
 

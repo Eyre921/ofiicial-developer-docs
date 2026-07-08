@@ -19,8 +19,8 @@ Fine-tuning needs training GPU quota, granted automatically by [spending tier](/
 | No payment method | —                                        |            0            |   0  |      0      |
 | Tier 1            | Valid payment method and billing profile |            0            |  16  |      8      |
 | Tier 2            | Spend or add \$50 in credits             |            16           |  16  |      16     |
-| Tier 3            | Spend or add \$500 in credits            |            32           |  32  |      32     |
-| Tier 4            | Spend or add \$5,000 in credits          |            64           |  64  |      64     |
+| Tier 3            | Spend or add \$500 in credits            |            24           |  24  |      24     |
+| Tier 4            | Spend or add \$5,000 in credits          |            32           |  32  |      32     |
 
 Check your quota with `firectl quota list`. A job rejected with HTTP 429 `quota_exceeded` (sometimes a `403` on the job poll) is a tier issue, not a dataset/config problem.
 

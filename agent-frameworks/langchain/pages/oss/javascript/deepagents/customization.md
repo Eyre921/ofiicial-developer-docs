@@ -1721,6 +1721,8 @@ You can provide additional middleware to extend functionality, add tools, or imp
   If you must use mutation in custom middleware, consider what happens when subagents, parallel tools, or concurrent agent invocations run at the same time.
 </Warning>
 
+### Override a default middleware instance
+
 ### Interpreters
 
 Use [interpreters](/oss/javascript/deepagents/interpreters) to add an `eval` tool that runs JavaScript in a scoped QuickJS runtime. Interpreters are useful when the agent needs to compose tools programmatically, batch work, handle errors in code, or transform structured data without a full shell environment.

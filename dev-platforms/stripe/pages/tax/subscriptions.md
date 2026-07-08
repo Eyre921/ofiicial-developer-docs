@@ -10,12 +10,19 @@ Learn how to collect and report taxes for recurring payments.
 
 Stripe Tax allows you to calculate the tax amount on your recurring payments when using Stripe Billing. Use your customer’s location details to preview the tax amount before creating a subscription and then create it with Stripe Tax enabled when your customer is ready to pay. Stripe Tax integrates with Stripe Billing and automatically handles tax calculation with your [pricing model](https://docs.stripe.com/products-prices/pricing-models.md), [prorations](https://docs.stripe.com/billing/subscriptions/prorations.md), [discounts](https://docs.stripe.com/billing/subscriptions/coupons.md), [trials](https://docs.stripe.com/billing/subscriptions/trials.md), and so on.
 
+> #### Tax guides for other subscription integrations
+> 
+> You can also enable tax for subscriptions using the following integration methods:
+> 
+> - [Collect tax with Payment Links](https://docs.stripe.com/tax/payment-links.md)
+- [Collect tax on Checkout sessions](https://docs.stripe.com/tax/checkout.md)
+
+Watch a demonstration enabling Stripe Tax with a subscription Checkout. 
+[Watch on YouTube](https://www.youtube.com/watch?v=3QBRs4IfDNo)
 #### Customer v1
 A diagram providing a high level overview of a Stripe Tax and Billing integration using Customer v1. (See full diagram at https://docs.stripe.com/tax/subscriptions)
 This guide assumes you’re setting up Stripe Tax and Billing for the first time. See how to [update existing subscriptions](https://docs.stripe.com/tax/subscriptions/update.md).
 
-If you’re using Stripe Checkout to create new subscriptions, see how to [automatically collect tax on Checkout sessions](https://docs.stripe.com/tax/checkout.md), or watch the short video below: 
-[Watch on YouTube](https://www.youtube.com/watch?v=3QBRs4IfDNo)
 ## Add tax registrations [Dashboard] [Server-side]
 
 Stripe Tax only collects tax in jurisdictions where you have an active registration. You must both register with the jurisdictional government for each country or state where you’re required to collect tax, then add that registration to your Stripe account.

@@ -174,6 +174,24 @@ Every webhook request from Notion includes an `X-Notion-Signature` header, which
 
 To validate the request, you can use the `verification_token` along with the event's payload to recompute the signature and verify the request's authenticity. If they match, the payload is trustworthy.
 
+<Tip>
+  **Using the SDK for JavaScript and TypeScript?**
+
+  [`@notionhq/client`](https://github.com/makenotion/notion-sdk-js) v5.23.0 and later includes a `verifyWebhookSignature()` helper that performs this check for you, including the constant-time comparison. Pass the raw request body exactly as it arrived (re-serialized JSON produces different bytes and fails verification), the `X-Notion-Signature` header value, and your `verification_token`:
+
+  ```javascript theme={null}
+  import { verifyWebhookSignature } from "@notionhq/client"
+
+  const isTrustedPayload = await verifyWebhookSignature({
+    body: rawRequestBody,
+    signature: request.headers["x-notion-signature"],
+    verificationToken,
+  })
+  ```
+
+  It works without configuration in Node.js 18+, Bun, Deno, Cloudflare Workers, Vercel Edge Functions, and browsers. The SDK also exports `signWebhookPayload()` for generating signatures when testing your handler.
+</Tip>
+
 **Sample code for computing the signature and validating the webhook payload:**
 
 <CodeGroup>

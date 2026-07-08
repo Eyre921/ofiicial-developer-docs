@@ -113,7 +113,7 @@ console.log(AWS.ACCESS_KEY); // => "abc"
 To:
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
-console.log("abc");
+console.log({ ACCESS_KEY: "abc", SECRET_KEY: "def" }.ACCESS_KEY);
 ```
 
 ### Replace values with other properties

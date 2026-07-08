@@ -101,12 +101,6 @@ bun init <folder?>
   Initializes project files and configuration for the chosen options. Exact files vary by template.
 </ParamField>
 
-### Global Configuration & Context
-
-<ParamField type="string">
-  Run <code>bun init</code> as if started in a different working directory (useful in scripts).
-</ParamField>
-
 ### Help
 
 <ParamField type="boolean">

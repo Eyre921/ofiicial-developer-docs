@@ -98,7 +98,7 @@ Success Criteria:
 - The user was redirected to a relevant support channel if needed.
 ```
 
-In the **Data Collection** section, configure details to be extracted from each conversation.
+In the **Data collection** section, configure details to be extracted from each conversation.
 
 Click **Add item** and configure the following:
 

@@ -25,17 +25,10 @@ Admins may invite users for both cases at the same time.
 
 #### Configuration
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  config:
-    workspaceScopeOrgInvitesEnabled: true
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env file
-  WORKSPACE_SCOPE_ORG_INVITES_ENABLED="true"
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  workspaceScopeOrgInvitesEnabled: true
+```
 
 ### SSO new member login flow
 
@@ -74,17 +67,10 @@ By default, any user can create an organization in LangSmith. For self-hosted cu
   The `userOrgCreationDisabled` feature flag is set to `true` by default for organizations using [basic auth](/langsmith/self-host-basic-auth) or [SSO](/langsmith/self-host-sso).
 </Note>
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  config:
-    userOrgCreationDisabled: true
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env file
-  FF_ORG_CREATION_DISABLED="true"
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  userOrgCreationDisabled: true
+```
 
 ### Disabling personal organizations
 
@@ -96,17 +82,10 @@ By default, any user who logs in to LangSmith will have a personal organization 
   The `personalOrgsDisabled` feature flag is set to `true` by default for organizations using [basic auth](/langsmith/self-host-basic-auth) or [SSO](/langsmith/self-host-sso).
 </Note>
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  config:
-    personalOrgsDisabled: true
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env file
-  FF_PERSONAL_ORGS_DISABLED="true"
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  personalOrgsDisabled: true
+```
 
 ### Disabling personal access token creation
 
@@ -120,18 +99,11 @@ To disable PAT creation for a single organization instead, see the [per-organiza
 
 #### Configuration
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  commonEnv:
-    - name: PAT_CREATION_DISABLED
-      value: "true"
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env file
-  PAT_CREATION_DISABLED="true"
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+commonEnv:
+  - name: PAT_CREATION_DISABLED
+    value: "true"
+```
 
 ***
 

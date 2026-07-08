@@ -19,34 +19,23 @@ Many model providers support setting credentials and other configuration options
 
 ## Configuration
 
-With the parameters from above, you can configure your LangSmith instance to use environment variables for model providers. You can do this by modifying the `langsmith_config.yaml` file for your LangSmith Helm Chart installation or the `docker-compose.yaml` file for your Docker installation.
+With the parameters from above, you can configure your LangSmith instance to use environment variables for model providers. You can do this by modifying the `langsmith_config.yaml` file for your LangSmith Helm Chart installation.
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  playground:
-    deployment:
-      extraEnv:
-        - name: OPENAI_BASE_URL
-          value: https://<my_proxy_url>
-        - name: OPENAI_API_KEY
-          valueFrom:
-            secretKeyRef:
-              name: <your_secret_name>
-              key: api_key
-    serviceAccount: # Can be useful if you want to use IRSA or workload identity
-      annotations:
-        eks.amazonaws.com/role-arn: <your_role_arn>
-  ```
-
-  ```yaml Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your docker-compose.yaml file
-  langchain-playground:
-    environment:
-      .. # Other environment variables
-      - OPENAI_BASE_URL=https://<my_proxy_url>
-      - OPENAI_API_KEY=<your_key> # This will be set in the .env file
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+playground:
+  deployment:
+    extraEnv:
+      - name: OPENAI_BASE_URL
+        value: https://<my_proxy_url>
+      - name: OPENAI_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: <your_secret_name>
+            key: api_key
+  serviceAccount: # Can be useful if you want to use IRSA or workload identity
+    annotations:
+      eks.amazonaws.com/role-arn: <your_role_arn>
+```
 
 ## VertexAI configuration
 
@@ -56,53 +45,36 @@ You can configure VertexAI credentials for the playground service using either e
 
 Configure VertexAI credentials using Kubernetes secrets:
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  playground:
-    deployment:
-      extraEnv:
-        # Playground-specific secret (recommended)
-        - name: GOOGLE_VERTEX_AI_WEB_CREDENTIALS
-          valueFrom:
-            secretKeyRef:
-              name: gcp-vertexai-secret
-              key: credentials_json  # Your full service account JSON as string
-        # Standard fallback option
-        - name: GOOGLE_APPLICATION_CREDENTIALS
-          value: /secrets/gcp-key.json
-        # Optional: Set project/location if not in model config
-        - name: GOOGLE_CLOUD_PROJECT
-          value: "your-gcp-project-id"
-        - name: VERTEXAI_PROJECT_ID
-          value: "your-gcp-project-id"
-        - name: VERTEXAI_LOCATION
-          value: "us-central1"
-      extraVolumeMounts:
-        - name: gcp-secret-volume
-          mountPath: /secrets
-          readOnly: true
-      extraVolumes:
-        - name: gcp-secret-volume
-          secret:
-            secretName: gcp-key-json  # JSON file secret
-            defaultMode: 0444
-  ```
-
-  ```yaml Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your docker-compose.yaml file
-  langchain-playground:
-    environment:
-      .. # Other environment variables
-      - GOOGLE_VERTEX_AI_WEB_CREDENTIALS=<your_service_account_json>  # Full JSON as string
-      # Or use file path
-      - GOOGLE_APPLICATION_CREDENTIALS=/secrets/gcp-key.json
-      - GOOGLE_CLOUD_PROJECT=your-gcp-project-id
-      - VERTEXAI_PROJECT_ID=your-gcp-project-id
-      - VERTEXAI_LOCATION=us-central1
-    volumes:
-      - ./gcp-key.json:/secrets/gcp-key.json:ro
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+playground:
+  deployment:
+    extraEnv:
+      # Playground-specific secret (recommended)
+      - name: GOOGLE_VERTEX_AI_WEB_CREDENTIALS
+        valueFrom:
+          secretKeyRef:
+            name: gcp-vertexai-secret
+            key: credentials_json  # Your full service account JSON as string
+      # Standard fallback option
+      - name: GOOGLE_APPLICATION_CREDENTIALS
+        value: /secrets/gcp-key.json
+      # Optional: Set project/location if not in model config
+      - name: GOOGLE_CLOUD_PROJECT
+        value: "your-gcp-project-id"
+      - name: VERTEXAI_PROJECT_ID
+        value: "your-gcp-project-id"
+      - name: VERTEXAI_LOCATION
+        value: "us-central1"
+    extraVolumeMounts:
+      - name: gcp-secret-volume
+        mountPath: /secrets
+        readOnly: true
+    extraVolumes:
+      - name: gcp-secret-volume
+        secret:
+          secretName: gcp-key-json  # JSON file secret
+          defaultMode: 0444
+```
 
 ### Using workload identity
 

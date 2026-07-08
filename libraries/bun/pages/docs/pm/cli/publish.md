@@ -173,7 +173,7 @@ bun publish dist
   ```
 </ParamField>
 
-<ParamField type="string">
+<ParamField type="boolean">
   Simulate the publish process without publishing the package, to verify its contents first.
 
   ```sh theme={"theme":{"light":"github-light","dark":"dracula"}}
@@ -299,7 +299,7 @@ bun publish --registry https://my-private-registry.com
 </ParamField>
 
 <ParamField type="number">
-  Maximum concurrent lifecycle scripts
+  Maximum concurrent lifecycle scripts (default: 2x CPU cores)
 </ParamField>
 
 #### Output Control

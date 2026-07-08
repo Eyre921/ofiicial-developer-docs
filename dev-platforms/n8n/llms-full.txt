@@ -930,7 +930,7 @@ npm is a quick way to get started with n8n on your local machine. You must have 
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Try n8n with npx <a href="#try-n8n-with-npx" id="try-n8n-with-npx"></a>
@@ -1080,7 +1080,7 @@ Before proceeding, install Docker:
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Starting n8n <a href="#starting-n8n" id="starting-n8n"></a>
@@ -1110,6 +1110,12 @@ This command creates a volume to store persistent data, downloads the required n
 * Enforces secure file permissions for the n8n configuration file.
 * Enables [task runners](/deploy/host-n8n/configure-n8n/set-up-task-runners), the recommended way of executing tasks in n8n.
 * Mounts the `n8n_data` volume to the `/home/node/.n8n` directory to persist your data across container restarts.
+
+{% hint style="info" %}
+**`N8N_RUNNERS_ENABLED` is deprecated from version 2.0**
+
+From version 2.0 onwards, `N8N_RUNNERS_ENABLED` is deprecated and you no longer need to set it. It's still supported in version 1.x, where you must set it to `true` to enable task runners.
+{% endhint %}
 
 Once running, you can access n8n by opening: <http://localhost:5678>
 
@@ -1305,7 +1311,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Create a Droplet <a href="#create-a-droplet" id="create-a-droplet"></a>
@@ -1530,7 +1536,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Use the deployment template to create a Heroku project <a href="#use-the-deployment-template-to-create-a-heroku-project" id="use-the-deployment-template-to-create-a-heroku-project"></a>
@@ -1618,7 +1624,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Create a server <a href="#create-a-server" id="create-a-server"></a>
@@ -1831,7 +1837,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Create a cluster <a href="#create-a-cluster" id="create-a-cluster"></a>
@@ -2024,7 +2030,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Hosting options <a href="#hosting-options" id="hosting-options"></a>
@@ -2218,7 +2224,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Before you begin: get a Google Cloud project <a href="#before-you-begin-get-a-google-cloud-project" id="before-you-begin-get-a-google-cloud-project"></a>
@@ -2487,7 +2493,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## Create project <a href="#create-project" id="create-project"></a>
@@ -3747,7 +3753,7 @@ n8n recommends self-hosting for expert users. Mistakes can lead to data loss, se
 
 n8n releases a new minor version most weeks. The `stable` version is for production use. `beta` is the most recent release. The `beta` version may be unstable. To report issues, use the [forum](https://community.n8n.io/c/questions/12).
 
-Current `stable`: 2.28.5 Current `beta`: 2.29.3
+Current `stable`: 2.29.8 Current `beta`: 2.30.1
 {% endhint %}
 
 ## 1. Install Docker and Docker Compose <a href="#id-1-install-docker-and-docker-compose" id="id-1-install-docker-and-docker-compose"></a>
@@ -3975,6 +3981,10 @@ If you have trouble reaching your instance, check your server's firewall setting
 
 {% content-ref url="/pages/TvMvdEdlJ4JBXsxwF1Pc" %}
 [Set up task runners](/deploy/host-n8n/configure-n8n/set-up-task-runners)
+{% endcontent-ref %}
+
+{% content-ref url="/pages/8loQlsjDmtfvjslS5Kbi" %}
+[Set up AI Assistant (Preview)](/deploy/host-n8n/configure-n8n/set-up-ai-assistant-preview)
 {% endcontent-ref %}
 
 {% content-ref url="/pages/Ljv5adv9oCTKuAvqhHNb" %}
@@ -4604,21 +4614,22 @@ This page lists the environment variables configuration options for managing nod
 
 ## Nodes and community node settings <a href="#nodes-and-community-node-settings" id="nodes-and-community-node-settings"></a>
 
-| Variable                                 | Type             | Default                                                                    | Description                                                                                                                                                                                                                                                                    |
-| ---------------------------------------- | ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `N8N_COMMUNITY_PACKAGES_AUTH_TOKEN`      | String           | -                                                                          | Authentication token for a private npm registry. Use with `N8N_COMMUNITY_PACKAGES_REGISTRY` to authenticate requests when installing community nodes from a private registry.                                                                                                  |
-| `N8N_COMMUNITY_PACKAGES_ENABLED`         | Boolean          | `true`                                                                     | Enables (true) or disables (false) the functionality to install and load community nodes. If set to false, neither verified nor unverified community packages will be available, regardless of their individual settings.                                                      |
-| `N8N_COMMUNITY_PACKAGES_PREVENT_LOADING` | Boolean          | `false`                                                                    | Prevents (true) or allows (false) loading installed community nodes on instance startup. Use this if a faulty node prevents the instance from starting.                                                                                                                        |
-| `N8N_COMMUNITY_PACKAGES_REGISTRY`        | String           | `https://registry.npmjs.org`                                               | NPM registry URL to pull community packages from (license required).                                                                                                                                                                                                           |
-| `N8N_CUSTOM_EXTENSIONS`                  | String           | -                                                                          | Specify the path to directories containing your custom nodes.                                                                                                                                                                                                                  |
-| `N8N_PYTHON_ENABLED`                     | Boolean          | `true`                                                                     | Whether to enable Python execution on the Code node.                                                                                                                                                                                                                           |
-| `N8N_UNVERIFIED_PACKAGES_ENABLED`        | Boolean          | `true`                                                                     | When `N8N_COMMUNITY_PACKAGES_ENABLED` is true, this variable controls whether to enable the installation and use of unverified community nodes from an NPM registry (true) or not (false).                                                                                     |
-| `N8N_VERIFIED_PACKAGES_ENABLED`          | Boolean          | `true`                                                                     | When `N8N_COMMUNITY_PACKAGES_ENABLED` is true, this variable controls whether to show verified community nodes in the nodes panel for installation and use (true) or to hide them (false).                                                                                     |
-| `NODE_FUNCTION_ALLOW_BUILTIN`            | String           | -                                                                          | Permit users to import specific built-in modules in the Code node. Use \* to allow all. n8n disables importing modules by default.                                                                                                                                             |
-| `NODE_FUNCTION_ALLOW_EXTERNAL`           | String           | -                                                                          | Permit users to import specific external modules (from `n8n/node_modules`) in the Code node. n8n disables importing modules by default.                                                                                                                                        |
-| `NODES_ERROR_TRIGGER_TYPE`               | String           | `n8n-nodes-base.errorTrigger`                                              | Specify which node type to use as Error Trigger.                                                                                                                                                                                                                               |
-| `NODES_EXCLUDE`                          | Array of strings | `[\"n8n-nodes-base.executeCommand\", \"n8n-nodes-base.localFileTrigger\"]` | Specify which nodes not to load. For example, to block nodes that can be a security risk if users aren't trustworthy: `NODES_EXCLUDE: "[\"n8n-nodes-base.executeCommand\", \"@n8n/n8n-nodes-langchain.lmChatDeepSeek\"]"`. To enable all nodes, specify `NODES_EXCLUDE: "[]"`. |
-| `NODES_INCLUDE`                          | Array of strings | -                                                                          | Specify which nodes to load.                                                                                                                                                                                                                                                   |
+| Variable                                  | Type             | Default                                                                    | Description                                                                                                                                                                                                                                                                    |
+| ----------------------------------------- | ---------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `N8N_COMMUNITY_PACKAGES_AUTH_TOKEN`       | String           | -                                                                          | Authentication token for a private npm registry. Use with `N8N_COMMUNITY_PACKAGES_REGISTRY` to authenticate requests when installing community nodes from a private registry.                                                                                                  |
+| `N8N_COMMUNITY_PACKAGES_ENABLED`          | Boolean          | `true`                                                                     | Enables (true) or disables (false) the functionality to install and load community nodes. If set to false, neither verified nor unverified community packages will be available, regardless of their individual settings.                                                      |
+| `N8N_COMMUNITY_PACKAGES_PREVENT_LOADING`  | Boolean          | `false`                                                                    | Prevents (true) or allows (false) loading installed community nodes on instance startup. Use this if a faulty node prevents the instance from starting.                                                                                                                        |
+| `N8N_COMMUNITY_PACKAGES_REGISTRY`         | String           | `https://registry.npmjs.org`                                               | NPM registry URL to pull community packages from (license required).                                                                                                                                                                                                           |
+| `N8N_CUSTOM_EXTENSIONS`                   | String           | -                                                                          | Specify the path to directories containing your custom nodes.                                                                                                                                                                                                                  |
+| `N8N_PYTHON_ENABLED`                      | Boolean          | `true`                                                                     | Whether to enable Python execution on the Code node.                                                                                                                                                                                                                           |
+| `N8N_UNVERIFIED_PACKAGES_ENABLED`         | Boolean          | `true`                                                                     | When `N8N_COMMUNITY_PACKAGES_ENABLED` is true, this variable controls whether to enable the installation and use of unverified community nodes from an NPM registry (true) or not (false).                                                                                     |
+| `N8N_VERIFIED_PACKAGES_ENABLED`           | Boolean          | `true`                                                                     | When `N8N_COMMUNITY_PACKAGES_ENABLED` is true, this variable controls whether to show verified community nodes in the nodes panel for installation and use (true) or to hide them (false).                                                                                     |
+| `NODE_FUNCTION_ALLOW_BUILTIN`             | String           | -                                                                          | Permit users to import specific built-in modules in the Code node. Use \* to allow all. n8n disables importing modules by default.                                                                                                                                             |
+| `NODE_FUNCTION_ALLOW_EXTERNAL`            | String           | -                                                                          | Permit users to import specific external modules (from `n8n/node_modules`) in the Code node. n8n disables importing modules by default.                                                                                                                                        |
+| `NODES_ERROR_TRIGGER_TYPE`                | String           | `n8n-nodes-base.errorTrigger`                                              | Specify which node type to use as Error Trigger.                                                                                                                                                                                                                               |
+| `NODES_EXCLUDE`                           | Array of strings | `[\"n8n-nodes-base.executeCommand\", \"n8n-nodes-base.localFileTrigger\"]` | Specify which nodes not to load. For example, to block nodes that can be a security risk if users aren't trustworthy: `NODES_EXCLUDE: "[\"n8n-nodes-base.executeCommand\", \"@n8n/n8n-nodes-langchain.lmChatDeepSeek\"]"`. To enable all nodes, specify `NODES_EXCLUDE: "[]"`. |
+| `NODES_INCLUDE`                           | Array of strings | -                                                                          | Specify which nodes to load.                                                                                                                                                                                                                                                   |
+| `NODES_MERGE_SQL_SANDBOX_MEMORY_LIMIT_MB` | Number           | `64`                                                                       | Memory limit in MB for the Merge node's SQL sandbox. Increase this if Combine by SQL fails with large datasets and your instance has enough memory available.                                                                                                                  |
 
 ## Compression node settings <a href="#compression-node-settings" id="compression-node-settings"></a>
 
@@ -4913,20 +4924,20 @@ Unlike the main n8n image, you CANNOT use file-based configuration for secrets i
 
 ## n8n instance environment variables <a href="#n8n-instance-environment-variables" id="n8n-instance-environment-variables"></a>
 
-| Variable                            | Type                                | Default         | Description                                                                                                                                                                                                   |
-| ----------------------------------- | ----------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_RUNNERS_ENABLED`               | Boolean                             | `false`         | Are task runners enabled.                                                                                                                                                                                     |
-| `N8N_RUNNERS_MODE`                  | Enum string: `internal`, `external` | `internal`      | How to launch and run the task runner. `internal` means n8n will launch a task runner as child process. `external` means an external orchestrator will launch the task runner.                                |
-| `N8N_RUNNERS_AUTH_TOKEN`            | String                              | Random string   | Shared secret used by a task runner to authenticate to n8n. Required when using `external` mode.                                                                                                              |
-| `N8N_RUNNERS_BROKER_PORT`           | Number                              | `5679`          | Port the task broker listens on for task runner connections.                                                                                                                                                  |
-| `N8N_RUNNERS_BROKER_LISTEN_ADDRESS` | String                              | `127.0.0.1`     | Address the task broker listens on.                                                                                                                                                                           |
-| `N8N_RUNNERS_MAX_PAYLOAD`           | Number                              | `1 073 741 824` | Maximum payload size in bytes for communication between a task broker and a task runner.                                                                                                                      |
-| `N8N_RUNNERS_MAX_OLD_SPACE_SIZE`    | String                              |                 | The `--max-old-space-size` option to use for a task runner (in MB). By default, Node.js will set this based on available memory.                                                                              |
-| `N8N_RUNNERS_MAX_CONCURRENCY`       | Number                              | `5`             | The number of concurrent tasks a task runner can execute at a time.                                                                                                                                           |
-| `N8N_RUNNERS_TASK_TIMEOUT`          | Number                              | `300`           | The maximum time, in seconds, a task can run before the runner stops it and restarts. This value must be greater than 0.                                                                                      |
-| `N8N_RUNNERS_HEARTBEAT_INTERVAL`    | Number                              | `30`            | The interval, in seconds, at which the runner must send a heartbeat to the broker. If the runner doesn't send a heartbeat in time, the task stops and the runner restarts. This value must be greater than 0. |
-| `N8N_RUNNERS_INSECURE_MODE`         | Boolean                             | `false`         | Whether to disable all security measures in the task runner, for compatibility with modules that rely on insecure JS features. **Discouraged for production use.**                                            |
-| `N8N_RUNNERS_TASK_REQUEST_TIMEOUT`  | Number                              | `60`            | How long (in seconds) a task request can wait for a runner to become available before timing out. This prevents workflows from hanging indefinitely when no runners are available. Must be greater than 0.    |
+| Variable                               | Type                                | Default         | Description                                                                                                                                                                                                   |
+| -------------------------------------- | ----------------------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_RUNNERS_ENABLED` (**deprecated**) | Boolean                             | `false`         | Are task runners enabled. **Deprecated** from v2.0.                                                                                                                                                           |
+| `N8N_RUNNERS_MODE`                     | Enum string: `internal`, `external` | `internal`      | How to launch and run the task runner. `internal` means n8n will launch a task runner as child process. `external` means an external orchestrator will launch the task runner.                                |
+| `N8N_RUNNERS_AUTH_TOKEN`               | String                              | Random string   | Shared secret used by a task runner to authenticate to n8n. Required when using `external` mode.                                                                                                              |
+| `N8N_RUNNERS_BROKER_PORT`              | Number                              | `5679`          | Port the task broker listens on for task runner connections.                                                                                                                                                  |
+| `N8N_RUNNERS_BROKER_LISTEN_ADDRESS`    | String                              | `127.0.0.1`     | Address the task broker listens on.                                                                                                                                                                           |
+| `N8N_RUNNERS_MAX_PAYLOAD`              | Number                              | `1 073 741 824` | Maximum payload size in bytes for communication between a task broker and a task runner.                                                                                                                      |
+| `N8N_RUNNERS_MAX_OLD_SPACE_SIZE`       | String                              |                 | The `--max-old-space-size` option to use for a task runner (in MB). By default, Node.js will set this based on available memory.                                                                              |
+| `N8N_RUNNERS_MAX_CONCURRENCY`          | Number                              | `5`             | The number of concurrent tasks a task runner can execute at a time.                                                                                                                                           |
+| `N8N_RUNNERS_TASK_TIMEOUT`             | Number                              | `300`           | The maximum time, in seconds, a task can run before the runner stops it and restarts. This value must be greater than 0.                                                                                      |
+| `N8N_RUNNERS_HEARTBEAT_INTERVAL`       | Number                              | `30`            | The interval, in seconds, at which the runner must send a heartbeat to the broker. If the runner doesn't send a heartbeat in time, the task stops and the runner restarts. This value must be greater than 0. |
+| `N8N_RUNNERS_INSECURE_MODE`            | Boolean                             | `false`         | Whether to disable all security measures in the task runner, for compatibility with modules that rely on insecure JS features. **Discouraged for production use.**                                            |
+| `N8N_RUNNERS_TASK_REQUEST_TIMEOUT`     | Number                              | `60`            | How long (in seconds) a task request can wait for a runner to become available before timing out. This prevents workflows from hanging indefinitely when no runners are available. Must be greater than 0.    |
 
 ## Task runner launcher environment variables <a href="#task-runner-launcher-environment-variables" id="task-runner-launcher-environment-variables"></a>
 
@@ -7646,9 +7657,15 @@ There are three layers of configuration: the n8n container, the runners containe
 
 These are the main environment variables that you can set on the n8n container running in external mode:
 
+{% hint style="info" %}
+**`N8N_RUNNERS_ENABLED` is deprecated from version 2.0**
+
+From version 2.0 onwards, `N8N_RUNNERS_ENABLED` is deprecated and you no longer need to set it. It's still supported in version 1.x, where you must set it to `true` to enable task runners.
+{% endhint %}
+
 | Environment variables                                  | Description                                                                                                                                                                   |
 | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `N8N_RUNNERS_ENABLED=true`                             | Enables task runners.                                                                                                                                                         |
+| `N8N_RUNNERS_ENABLED=true`                             | Enables task runners. Deprecated from version 2.0 onwards. Still supported in version 1.x.                                                                                    |
 | `N8N_RUNNERS_MODE=external`                            | Use task runners in external mode.                                                                                                                                            |
 | `N8N_RUNNERS_AUTH_TOKEN=<random secure shared secret>` | A shared secret task runners use to connect to the broker.                                                                                                                    |
 | `N8N_RUNNERS_BROKER_LISTEN_ADDRESS=0.0.0.0`            | By default, the task broker only listens to localhost. When using multiple containers (for example, with Docker Compose), it needs to be able to accept external connections. |
@@ -7749,6 +7766,362 @@ docker run --rm -it \
   -p 5680:5680 \
   n8nio/runners:custom
 ```
+
+
+# Set up AI Assistant (Preview)
+
+Set up the AI Assistant on self-hosted n8n using environment variables.
+
+{% hint style="info" %}
+AI Assistant is a preview feature.
+{% endhint %}
+
+To run AI Assistant on a self-hosted instance, you need:
+
+* An API key for an LLM provider.
+* An AI model. n8n uses `anthropic/claude-opus-4-8` by default, or you can set your own.
+* A sandbox provider. Daytona is recommended.
+* A search provider if you want web search. Brave Search is recommended.
+
+{% hint style="info" %}
+Most AI Assistant settings use `N8N_INSTANCE_AI_*` environment variables. `INSTANCE_AI_BRAVE_SEARCH_API_KEY` is a deliberate exception. The internal module name is `instance-ai`.
+{% endhint %}
+
+### Before you start
+
+Make sure you have:
+
+* Access to configure environment variables for the n8n instance.
+* A recent version of n8n. Run the latest stable release or later; older versions may work, but newer is better.
+* An API key for a supported LLM provider:
+  * Anthropic
+  * OpenAI
+  * OpenRouter
+* A sandbox provider. Daytona is recommended.
+* A search provider if you want web search. Brave Search is recommended.
+
+### Quick setup with Daytona
+
+Daytona is the recommended sandbox provider for most self-hosted setups.
+
+This setup enables AI Assistant with an Anthropic model, Daytona, and Brave Search for web search.
+
+Set these environment variables on your n8n instance:
+
+```bash
+# Enable the module and choose a model
+N8N_ENABLED_MODULES=instance-ai
+N8N_INSTANCE_AI_MODEL=anthropic/claude-opus-4-8
+N8N_INSTANCE_AI_MODEL_API_KEY=sk-ant-xxx
+
+# Sandbox, required
+N8N_INSTANCE_AI_SANDBOX_ENABLED=true
+N8N_INSTANCE_AI_SANDBOX_PROVIDER=daytona
+N8N_INSTANCE_AI_SANDBOX_IMAGE=daytonaio/sandbox:0.5.3-slim
+
+# Daytona
+DAYTONA_API_URL=https://app.daytona.io/api
+DAYTONA_API_KEY=dtn_xxx
+
+# Web search, recommended
+INSTANCE_AI_BRAVE_SEARCH_API_KEY=BSA-xxx
+```
+
+These variables do the following:
+
+| Variable                           | Description                                                                                                         |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `N8N_ENABLED_MODULES`              | Must include `instance-ai` to enable the module.                                                                    |
+| `N8N_INSTANCE_AI_MODEL`            | Selects the LLM in `provider/model` format. Has a default (`anthropic/claude-opus-4-8`), so setting it is optional. |
+| `N8N_INSTANCE_AI_MODEL_API_KEY`    | API key for the selected provider.                                                                                  |
+| `N8N_INSTANCE_AI_SANDBOX_ENABLED`  | Set to `true`. AI Assistant requires a sandbox.                                                                     |
+| `N8N_INSTANCE_AI_SANDBOX_PROVIDER` | Sandbox provider. Use `daytona` for Daytona.                                                                        |
+| `N8N_INSTANCE_AI_SANDBOX_IMAGE`    | Base container image for Daytona sandboxes.                                                                         |
+| `DAYTONA_API_URL`                  | Daytona API endpoint.                                                                                               |
+| `DAYTONA_API_KEY`                  | Your Daytona API key.                                                                                               |
+| `INSTANCE_AI_BRAVE_SEARCH_API_KEY` | Brave Search API key for web search. This variable intentionally doesn't use the `N8N_` prefix.                     |
+
+### Docker Compose example
+
+```yaml
+services:
+  n8n:
+    image: docker.n8n.io/n8nio/n8n
+    environment:
+      N8N_ENABLED_MODULES: instance-ai
+      N8N_INSTANCE_AI_MODEL: anthropic/claude-opus-4-8
+      N8N_INSTANCE_AI_MODEL_API_KEY: sk-ant-xxx
+      N8N_INSTANCE_AI_SANDBOX_ENABLED: 'true'
+      N8N_INSTANCE_AI_SANDBOX_PROVIDER: daytona
+      N8N_INSTANCE_AI_SANDBOX_IMAGE: daytonaio/sandbox:0.5.3-slim
+      DAYTONA_API_URL: https://app.daytona.io/api
+      DAYTONA_API_KEY: dtn_xxx
+      INSTANCE_AI_BRAVE_SEARCH_API_KEY: BSA-xxx
+```
+
+### Apply and verify
+
+After you set the variables:
+
+1. Restart all n8n processes.
+2. Open the editor.
+3. Confirm that AI Assistant appears and responds.
+
+### Choose a model provider
+
+`N8N_INSTANCE_AI_MODEL` uses this format:
+
+```
+provider/model
+```
+
+Supported providers are:
+
+* `anthropic`
+* `openai`
+* `openrouter`
+
+For a hosted provider, start with `anthropic/claude-opus-4-8` or `openai/gpt-5.5`.
+
+Examples:
+
+```bash
+# Anthropic
+N8N_INSTANCE_AI_MODEL=anthropic/claude-opus-4-8
+
+# OpenAI
+N8N_INSTANCE_AI_MODEL=openai/gpt-5.5
+
+# OpenRouter
+N8N_INSTANCE_AI_MODEL=openrouter/deepseek/deepseek-v4-pro
+```
+
+Set `N8N_INSTANCE_AI_MODEL_API_KEY` to the API key for the provider you choose.
+
+If `N8N_INSTANCE_AI_MODEL_API_KEY` isn't set, n8n uses the provider's standard environment variable as a fallback:
+
+* `ANTHROPIC_API_KEY`
+* `OPENAI_API_KEY`
+* `OPENROUTER_API_KEY`
+
+### Use a local or custom OpenAI-compatible endpoint
+
+To use a local or custom OpenAI-compatible endpoint, set `N8N_INSTANCE_AI_MODEL_URL`.
+
+```bash
+N8N_INSTANCE_AI_MODEL_URL=http://localhost:1234/v1
+N8N_INSTANCE_AI_MODEL_API_KEY=optional-key
+```
+
+Some local servers don't require an API key.
+
+### Configure a sandbox provider
+
+AI Assistant runs its work in an isolated sandbox, so a sandbox provider is required.
+
+| Provider      | Best for                                                           |
+| ------------- | ------------------------------------------------------------------ |
+| `daytona`     | Recommended setup for most self-hosted instances.                  |
+| `n8n-sandbox` | Advanced setup when you want to host the sandbox service yourself. |
+
+### Daytona
+
+If you follow [Quick setup with Daytona](#quick-setup-with-daytona), you already have the required Daytona variables in place.
+
+Daytona creates sandboxes on demand.
+
+Tune the sandbox lifecycle with these variables:
+
+```bash
+N8N_INSTANCE_AI_SANDBOX_AUTO_STOP_MINUTES=15
+N8N_INSTANCE_AI_SANDBOX_AUTO_ARCHIVE_MINUTES=60
+N8N_INSTANCE_AI_SANDBOX_AUTO_DELETE_MINUTES=10080
+```
+
+{% hint style="info" %}
+By default, Daytona stops an idle sandbox after 15 minutes, archives a stopped sandbox after 1 hour, and deletes it after 7 days. Change these with the auto-stop, auto-archive, and auto-delete variables above.
+{% endhint %}
+
+### Option B: n8n Sandbox Service
+
+Use the [n8n Sandbox Service](https://github.com/n8n-io/n8n-sandbox-service) if you want to host the sandbox service yourself.
+
+{% hint style="warning" %}
+This is an advanced setup. Use Daytona unless you need to run the sandbox service yourself.
+{% endhint %}
+
+The n8n Sandbox Service has two containers:
+
+* `n8nio/n8n-sandbox-service-api`: the HTTP API that n8n talks to.
+* `n8nio/n8n-sandbox-service-runner-dind`: the runner that executes sandboxes as Docker-in-Docker containers.
+
+{% hint style="warning" %}
+The runner must run in privileged mode.
+{% endhint %}
+
+The API and runner communicate over mutual TLS. The API image includes a `bootstrap-mtls.sh` script that generates the certificates.
+
+#### Full Docker Compose example
+
+Run this alongside your n8n service:
+
+{% code expandable="true" %}
+
+```yaml
+volumes:
+  sandbox-tls:
+
+services:
+  # One-shot: generates mTLS certificates, then exits
+  sandbox-certs:
+    image: n8nio/n8n-sandbox-service-api:latest
+    user: '0:0'
+    entrypoint: ['sh', '-c']
+    command:
+      - >
+        bootstrap-mtls.sh --out-dir /tls --api-san sandbox-api
+        --control-san-prefix sandbox-runner --world-readable &&
+        chown -R sandbox-api:sandbox-api /tls/api && chmod -R a+rX /tls
+    environment:
+      NUM_RUNNERS: '1'
+    volumes:
+      - sandbox-tls:/tls
+
+  sandbox-api:
+    image: n8nio/n8n-sandbox-service-api:latest
+    depends_on:
+      sandbox-certs:
+        condition: service_completed_successfully
+    environment:
+      SANDBOX_API_KEYS: my-sandbox-api-key
+      SANDBOX_API_RUNNER_REGISTRATION_TOKEN: my-registration-token
+      SANDBOX_API_RUNNER_API_KEY: my-runner-key
+      SANDBOX_API_GRPC_TLS_CERT_FILE: /tls/api/grpc-server.crt
+      SANDBOX_API_GRPC_TLS_KEY_FILE: /tls/api/grpc-server.key
+      SANDBOX_API_GRPC_TLS_CLIENT_CA_FILE: /tls/api/ca.crt
+      SANDBOX_API_RUNNER_CONTROL_GRPC_TLS_CA_FILE: /tls/api/ca.crt
+      SANDBOX_API_RUNNER_CONTROL_GRPC_TLS_CERT_FILE: /tls/api/control-grpc-api-client.crt
+      SANDBOX_API_RUNNER_CONTROL_GRPC_TLS_KEY_FILE: /tls/api/control-grpc-api-client.key
+      SANDBOX_API_RUNNER_CONTROL_GRPC_TLS_SERVER_NAME: sandbox-runner-1
+    volumes:
+      - sandbox-tls:/tls:ro
+
+  sandbox-runner-1:
+    image: n8nio/n8n-sandbox-service-runner-dind:latest
+    privileged: true
+    depends_on:
+      - sandbox-api
+    environment:
+      SANDBOX_RUNNER_API_KEYS: my-runner-key
+      SANDBOX_RUNNER_REGISTRATION_TOKEN: my-registration-token
+      SANDBOX_RUNNER_API_GRPC_ADDR: sandbox-api:9090
+      SANDBOX_RUNNER_HTTP_BASE_URL: http://sandbox-runner-1:8080
+      SANDBOX_RUNNER_CONTROL_GRPC_LISTEN_ADDR: ':9091'
+      SANDBOX_RUNNER_CONTROL_GRPC_ADVERTISE_ADDR: sandbox-runner-1:9091
+      SANDBOX_RUNNER_ID: runner-1
+      SANDBOX_RUNNER_DOCKER_SANDBOX_IMAGE: n8nio/n8n-sandbox-service-sandbox:latest
+      SANDBOX_RUNNER_REGISTRATION_GRPC_CA_FILE: /tls/runner/ca.crt
+      SANDBOX_RUNNER_REGISTRATION_GRPC_CERT_FILE: /tls/runner/grpc-client.crt
+      SANDBOX_RUNNER_REGISTRATION_GRPC_KEY_FILE: /tls/runner/grpc-client.key
+      SANDBOX_RUNNER_REGISTRATION_GRPC_SERVER_NAME: sandbox-api
+      SANDBOX_RUNNER_CONTROL_GRPC_TLS_CERT_FILE: /tls/runner/control-grpc-server.crt
+      SANDBOX_RUNNER_CONTROL_GRPC_TLS_KEY_FILE: /tls/runner/control-grpc-server.key
+      SANDBOX_RUNNER_CONTROL_GRPC_TLS_CLIENT_CA_FILE: /tls/runner/ca.crt
+    volumes:
+      - sandbox-tls:/tls:ro
+```
+
+{% endcode %}
+
+#### Point n8n at the sandbox service
+
+After the service is running, set these variables on your n8n instance:
+
+```bash
+N8N_INSTANCE_AI_SANDBOX_ENABLED=true
+N8N_INSTANCE_AI_SANDBOX_PROVIDER=n8n-sandbox
+N8N_SANDBOX_SERVICE_URL=http://sandbox-api:8080
+N8N_SANDBOX_SERVICE_API_KEY=my-sandbox-api-key
+```
+
+| Variable                           | Description                                         |
+| ---------------------------------- | --------------------------------------------------- |
+| `N8N_INSTANCE_AI_SANDBOX_ENABLED`  | Set to `true`.                                      |
+| `N8N_INSTANCE_AI_SANDBOX_PROVIDER` | Set to `n8n-sandbox`.                               |
+| `N8N_SANDBOX_SERVICE_URL`          | URL of the sandbox API, reachable from n8n.         |
+| `N8N_SANDBOX_SERVICE_API_KEY`      | Must match `SANDBOX_API_KEYS` on the API container. |
+
+Verify that the service is running:
+
+```bash
+curl http://<sandbox-api-host>:8080/healthz
+```
+
+Expected response:
+
+```json
+{"status":"ok"}
+```
+
+Notes:
+
+* Replace `my-sandbox-api-key`, `my-registration-token`, and `my-runner-key` with your own secrets.
+* The runner pulls `n8nio/n8n-sandbox-service-sandbox` from Docker Hub on first use.
+* For air-gapped setups, preload `n8nio/n8n-sandbox-service-sandbox` into the runner's inner Docker.
+* Hostnames matter. The certificates are issued for `sandbox-api` and `sandbox-runner-<n>`, so keep those service names or regenerate certificates with matching SANs.
+
+### Optional features
+
+After the base setup works, you can adjust web search.
+
+#### Enable web search
+
+Web search lets AI Assistant look things up on the web. It requires a search provider.
+
+Brave Search is the recommended provider. The recommended setup includes Brave Search by default. If you don't configure web search, the rest of AI Assistant still works, but the web-search action stays disabled.
+
+```bash
+# Brave Search
+INSTANCE_AI_BRAVE_SEARCH_API_KEY=BSA-xxx
+
+# SearXNG
+N8N_INSTANCE_AI_SEARXNG_URL=http://searxng:8080
+```
+
+{% hint style="info" %}
+`INSTANCE_AI_BRAVE_SEARCH_API_KEY` intentionally doesn't use the `N8N_` prefix. Use the variable exactly as shown.
+{% endhint %}
+
+If you want web search, configure Brave Search. If you also configure SearXNG, Brave Search takes priority over SearXNG.
+
+Free or unauthenticated providers, including SearXNG, can hit rate limits. Use Brave Search for a more reliable setup.
+
+If an instance admin selects a Brave Search or SearXNG credential in the AI settings UI, n8n uses that credential instead of these environment variables.
+
+### Disable AI Assistant
+
+To disable AI Assistant, remove `instance-ai` from `N8N_ENABLED_MODULES`.
+
+You can also disable the module explicitly:
+
+```bash
+N8N_DISABLED_MODULES=instance-ai
+```
+
+### Troubleshooting
+
+If AI Assistant doesn't appear or doesn't work, check that:
+
+* `N8N_ENABLED_MODULES` includes `instance-ai`.
+* The model value uses `provider/model` format if you set `N8N_INSTANCE_AI_MODEL`.
+* The API key is valid for the selected provider.
+* `N8N_INSTANCE_AI_SANDBOX_ENABLED` is set to `true`.
+* A sandbox provider is configured.
+* The sandbox provider is reachable from the n8n instance.
+* For Daytona, `DAYTONA_API_URL` and `DAYTONA_API_KEY` are set.
+* If you want web search, `INSTANCE_AI_BRAVE_SEARCH_API_KEY` is set, or `N8N_INSTANCE_AI_SEARXNG_URL` is set.
+* For n8n Sandbox Service, `N8N_SANDBOX_SERVICE_API_KEY` matches `SANDBOX_API_KEYS` on the API container.
+* The sandbox service health check returns `{"status":"ok"}`.
 
 
 # Manage your license
@@ -8975,46 +9348,6 @@ If needed, you can adjust the leader key options:
 | --------------------------- | --------------------------------------- | ------------------------------------------------------------- |
 | `multiMainSetup.ttl:10`     | `N8N_MULTI_MAIN_SETUP_KEY_TTL=10`       | Time to live (in seconds) for leader key in multi-main setup. |
 | `multiMainSetup.interval:3` | `N8N_MULTI_MAIN_SETUP_CHECK_INTERVAL=3` | Interval (in seconds) for leader check in multi-main setup.   |
-
-
-# Control concurrency
-
-{% hint style="info" %}
-**Only for self-hosted n8n**
-
-This document is for self-hosted concurrency control. Read [Cloud concurrency](/deploy/use-n8n-cloud/understand-concurrency) to learn how concurrency works with n8n Cloud accounts.
-{% endhint %}
-
-In regular mode, n8n doesn't limit how many production executions may run at the same time. This can lead to a scenario where too many concurrent executions thrash the event loop, causing performance degradation and unresponsiveness.
-
-To prevent this, you can set a concurrency limit for production executions in regular mode. Use this to control how many production executions run concurrently, and queue up any concurrent production executions over the limit. These executions remain in the queue until concurrency capacity frees up, and are then processed in FIFO order.
-
-Concurrency control is disabled by default. To enable it:
-
-```sh
-export N8N_CONCURRENCY_PRODUCTION_LIMIT=20
-```
-
-Keep in mind:
-
-* Concurrency control applies only to production executions: those started from a webhook or trigger[^1] node. It doesn't apply to any other kinds, such as manual executions, sub-workflow executions, error executions, or started from CLI.
-* You can't retry queued executions. Cancelling or deleting a queued execution also removes it from the queue.
-* On instance startup, n8n resumes queued executions up to the concurrency limit and re-enqueues the rest.
-* To monitor concurrency control, watch logs for executions being added to the queue and released. In a future version, n8n will show concurrency control in the UI.
-
-When you enable concurrency control, you can view the number of active executions and the configured limit at the top of a project's or workflow's executions tab.
-
-## Comparison to queue mode <a href="#comparison-to-queue-mode" id="comparison-to-queue-mode"></a>
-
-In queue mode, you can control how many jobs a worker may run concurrently using the [`--concurrency` flag](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode#configure-worker-concurrency).
-
-Concurrency control in queue mode is a separate mechanism from concurrency control in regular mode, but the environment variable `N8N_CONCURRENCY_PRODUCTION_LIMIT` controls both of them. In queue mode, n8n takes the limit from this variable if set to a value other than `-1`, falling back to the `--concurrency` flag or its default.
-
-## Evaluation concurrency <a href="#evaluation-concurrency" id="evaluation-concurrency"></a>
-
-Evaluation test runs use a separate concurrency limit from production executions. By default, the limit follows the instance's license tier (Community/Pro 1, Business 3, Enterprise 5). Override it with [`N8N_CONCURRENCY_EVALUATION_LIMIT`](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/executions). Refer to [Metric-based evaluations](/build/integrate-ai/test-and-improve-ai-workflows/use-metrics-to-measure-quality#run-test-cases-in-parallel) for how the slider behaves in the UI.
-
-[^1]: A trigger node is a special node responsible for executing the workflow in response to certain conditions. All production workflows need at least one trigger to determine when the workflow should run.
 
 
 

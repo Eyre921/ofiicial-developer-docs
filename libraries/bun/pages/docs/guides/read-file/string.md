@@ -16,7 +16,7 @@ const text = await file.text();
 
 ***
 
-Bun resolves relative paths from the project root (the nearest directory containing a `package.json` file).
+Bun resolves relative paths from the current working directory.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const path = "./file.txt";

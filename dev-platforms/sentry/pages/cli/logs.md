@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/logs/
 
 # Logs
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 The `sentry-cli` tool can be used to view and stream logs from your Sentry projects. This allows you to monitor your application logs directly from the command line.
 
 ## [Requirements](https://docs.sentry.io/cli/logs.md#requirements)

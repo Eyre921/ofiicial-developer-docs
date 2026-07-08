@@ -26,7 +26,7 @@ Choose how to host LangSmith to match your infrastructure and data residency req
   </Card>
 
   <Card title="Self-hosted" icon="server-2" href="/langsmith/self-hosted">
-    Deploy LangSmith entirely within your own infrastructure using Docker Compose or Kubernetes.
+    Deploy LangSmith entirely within your own infrastructure using Kubernetes.
   </Card>
 </CardGroup>
 

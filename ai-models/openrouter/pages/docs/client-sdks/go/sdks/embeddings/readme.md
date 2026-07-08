@@ -63,65 +63,6 @@ func main() {
 ### Parameters
 
 | Parameter | Type                                                                                      | Required             | Description                                |
-| -------> ## Documentation Index
-> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
-> Use this file to discover all available pages before exploring further.
-
-# Embeddings
-
-> Text embedding endpoints
-
-## Overview
-
-Text embedding endpoints
-
-### Available Operations
-
-* [Generate](#generate) - Submit an embedding request
-* [ListModels](#listmodels) - List all embeddings models
-
-## Generate
-
-Submits an embedding request to the embeddings router
-
-### Example Usage
-
-```go theme={null}
-package main
-
-import(
-	"context"
-	"os"
-	openrouter "github.com/OpenRouterTeam/go-sdk"
-	"github.com/OpenRouterTeam/go-sdk/models/operations"
-	"log"
-)
-
-func main() {
-    ctx := context.Background()
-
-    s := openrouter.New(
-        openrouter.WithSecurity(os.Getenv("OPENROUTER_API_KEY")),
-    )
-
-    res, err := s.Embeddings.Generate(ctx, operations.CreateEmbeddingsRequest{
-        Input: operations.CreateInputUnionStr(
-            "The quick brown fox jumps over the lazy dog",
-        ),
-        Model: "openai/text-embedding-3-small",
-    })
-    if err != nil {
-        log.Fatal(err)
-    }
-    if res != nil {
-        // handle response
-    }
-}
-```
-
-### Parameters
-
-| Parameter | Type                                                                                      | Required             | Description                                |
 | --------- | ----------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------ |
 | `ctx`     | [context.Context](https://pkg.go.dev/context#Context)                                     | :heavy\_check\_mark: | The context to use for the request.        |
 | `request` | [operations.CreateEmbeddingsRequest](../../models/operations/createembeddingsrequest.mdx) | :heavy\_check\_mark: | The request object to use for the request. |

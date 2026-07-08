@@ -227,7 +227,7 @@ Checkout collects the following tax ID types in the given regions:
 | MR | mr_nif | Mauritania Tax Identification Number (Número de Identificação Fiscal) | 12345678 | No |
 | MT | eu_vat | European VAT number | MT12345678 | Yes |
 | MX | mx_rfc | Mexican RFC number | ABC010203AB9 | No |
-| NG | ng_tin | Nigerian Tax Identification Number | 12345678-0001 | No |
+| NG | ng_tin | Nigerian Tax Identification Number | 1234567890123 | No |
 | NL | eu_vat | European VAT number | NL123456789B12 | Yes |
 | NO | no_vat | Norwegian VAT number | 123456789MVA | Yes |
 | NP | np_pan | Nepal PAN Number | 123456789 | Yes |

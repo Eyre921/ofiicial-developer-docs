@@ -149,6 +149,8 @@ DeepgramClient client = DeepgramClient.builder()
 **Self-hosted** — set the `baseUrl` to your port-forwarded or load-balanced endpoint:
 
 ```python Python
+import os
+
 from deepgram import DeepgramClient
 from deepgram.environment import DeepgramClientEnvironment
 
@@ -156,7 +158,7 @@ self_hosted_env = DeepgramClientEnvironment(
     base="http://localhost:8080",
     production="ws://localhost:8080",
     agent="ws://localhost:8080",
-    preview="ws://localhost:8080"
+    agent_rest="http://localhost:8080"  # requires Python SDK v7.2.0+
 )
 
 api_key = os.getenv("DEEPGRAM_API_KEY")

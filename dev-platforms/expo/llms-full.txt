@@ -9329,7 +9329,7 @@ Unlike the previous eject workflow, authors can configure their libraries to wor
 ---
 
 ---
-modificationDate: June 22, 2026
+modificationDate: July 08, 2026
 title: Overview of Expo and EAS tutorials
 ---
 
@@ -9344,6 +9344,8 @@ The **Learn** section is a collection of tutorials and other guides that help yo
 [Build with AI tutorial](/tutorial/build-with-ai/introduction.md) — Build your first app by directing an AI coding agent, with no programming experience required. It covers setting up your tools from scratch and verifying the app on your phone at every step.
 
 [EAS tutorial](/tutorial/eas/introduction.md) — If you are looking to learn about building your Android and iOS apps using Expo Application Services (EAS), this tutorial covers the EAS Build, Update, and Submit workflows.
+
+[CI/CD tutorial](/tutorial/cicd/introduction.md) — Automate building, testing, and releasing your Expo app with EAS Workflows. This tutorial covers development, preview, and production pipelines, from your first workflow file to tag-based releases and web deployments.
 
 ---
 
@@ -9421,7 +9423,7 @@ We're ready to start building our app.
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 08, 2026
 title: Create your first app
 description: In this chapter, learn how to create a new Expo project.
 ---
@@ -9602,12 +9604,12 @@ We've successfully created a new Expo project, used React Native core components
 
 In the next chapter, we will learn how to add a stack and a tab navigator to our app.
 
-[Next: Add navigation](/tutorial/add-navigation.md)
+[Next: Chapter 2: Add navigation](/tutorial/add-navigation.md)
 
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 08, 2026
 title: Add navigation
 description: In this chapter, learn how to add navigation to the Expo app.
 ---
@@ -9913,12 +9915,12 @@ We've successfully added a stack and a tab navigator to our app.
 
 In the next chapter, we'll learn how to build the app's first screen.
 
-[Next: Build your app's first screen](/tutorial/build-a-screen.md)
+[Next: Chapter 3: Build a screen](/tutorial/build-a-screen.md)
 
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 08, 2026
 title: Build a screen
 description: In this tutorial, learn how to use components such as React Native's Pressable and Expo Image to build a screen.
 ---
@@ -10276,12 +10278,12 @@ We've successfully implemented the initial design to start building our app's fi
 
 In the next chapter, we'll add the functionality to pick an image from the device's media library.
 
-[Next: Use an image picker](/tutorial/image-picker.md)
+[Next: Chapter 4: Use an image picker](/tutorial/image-picker.md)
 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 08, 2026
 title: Use an image picker
 description: In this tutorial, learn how to use Expo Image Picker.
 ---
@@ -10654,12 +10656,12 @@ We've successfully added the functionality to pick an image from the device's me
 
 In the next chapter, we'll learn how to create an emoji picker modal component.
 
-[Next: Create an emoji picker modal](/tutorial/create-a-modal.md)
+[Next: Chapter 5: Create a modal](/tutorial/create-a-modal.md)
 
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 08, 2026
 title: Create a modal
 description: In this tutorial, learn how to create a React Native modal to select an image.
 ---
@@ -11435,12 +11437,12 @@ We've successfully created the emoji picker modal and implemented the logic to s
 
 In the next chapter, let's add user interactions with gestures to drag the emoji and scale the size by tapping it.
 
-[Next: Add gestures](/tutorial/gestures.md)
+[Next: Chapter 6: Add gestures](/tutorial/gestures.md)
 
 ---
 
 ---
-modificationDate: June 14, 2026
+modificationDate: July 08, 2026
 title: Add gestures
 description: In this tutorial, learn how to implement gestures from React Native Gesture Handler and Reanimated libraries.
 ---
@@ -11750,12 +11752,12 @@ We've successfully implemented pan and tap gestures.
 
 In the next chapter, we'll learn how to take a screenshot of the image and the sticker, and save it on the device's library.
 
-[Next: Take a screenshot](/tutorial/screenshot.md)
+[Next: Chapter 7: Take a screenshot](/tutorial/screenshot.md)
 
 ---
 
 ---
-modificationDate: July 03, 2026
+modificationDate: July 08, 2026
 title: Take a screenshot
 description: In this tutorial, learn how to capture a screenshot using a third-party library and Expo Media Library.
 ---
@@ -12002,12 +12004,14 @@ We've successfully used `react-native-view-shot` and `expo-media-library` to cap
 
 In the next chapter, let's learn how to handle the differences between mobile and web platforms to implement the same functionality on web.
 
-[Next: Handle platform differences](/tutorial/platform-differences.md)
+[Next: Chapter 8: Handle platform differences](/tutorial/platform-differences.md)
+
+} nextChapterDescription="In the next chapter, let's learn how to handle the differences between mobile and web platforms to implement the same functionality on web." nextChapterTitle="Handle platform differences" nextChapterLink="/tutorial/platform-differences" />
 
 ---
 
 ---
-modificationDate: July 03, 2026
+modificationDate: July 08, 2026
 title: Handle platform differences
 description: In this tutorial, learn how to handle platform differences between native and web when creating a universal app.
 ---
@@ -12220,12 +12224,12 @@ The app does everything we set out for it to do, so it's time to shift our focus
 
 In the next chapter, we will customize the app's status bar, splash screen, and app icon.
 
-[Next: Configure status bar, splash screen and app icon](/tutorial/configuration.md)
+[Next: Chapter 9: Configure status bar, splash screen and app icon](/tutorial/configuration.md)
 
 ---
 
 ---
-modificationDate: June 29, 2026
+modificationDate: July 08, 2026
 title: Configure status bar, splash screen and app icon
 description: In this tutorial, learn the basics of how to configure a status bar, app icon, and splash screen.
 ---
@@ -12437,7 +12441,7 @@ AI agents don't produce identical results every time, so your app won't match ou
 ---
 
 ---
-modificationDate: July 06, 2026
+modificationDate: July 08, 2026
 title: Set up your tools
 description: In this chapter, install an AI coding agent, Node.js, and Expo Go, and teach your agent about Expo.
 ---
@@ -12621,12 +12625,12 @@ Your toolkit is complete: an AI agent that knows how to build Expo apps, Node.js
 
 In the next chapter, your agent creates a new app and you see it running on your phone.
 
-[Next: Create your first app](/tutorial/build-with-ai/create-your-first-app.md)
+[Next: Chapter 2: Create your first app](/tutorial/build-with-ai/create-your-first-app.md)
 
 ---
 
 ---
-modificationDate: June 19, 2026
+modificationDate: July 08, 2026
 title: Create your first app
 description: In this chapter, direct your AI agent to create a new Expo app and see it running on your phone.
 ---
@@ -12717,12 +12721,12 @@ You created an app, ran it on your phone, and changed it with a single prompt.
 
 In the next chapter, you'll turn this empty screen into the real thing: navigation tabs, the photo viewer, and an image picker.
 
-[Next: Build the home screen](/tutorial/build-with-ai/build-the-home-screen.md)
+[Next: Chapter 3: Build the home screen](/tutorial/build-with-ai/build-the-home-screen.md)
 
 ---
 
 ---
-modificationDate: June 19, 2026
+modificationDate: July 08, 2026
 title: Build the home screen
 description: In this chapter, direct your AI agent to add tab navigation, the photo viewer, and an image picker.
 ---
@@ -12779,12 +12783,12 @@ The app now has navigation, a styled home screen, and a working photo picker. Yo
 
 In the next chapter, you'll add an emoji picker modal and play with the sticker using gestures.
 
-[Next: Add stickers](/tutorial/build-with-ai/add-stickers.md)
+[Next: Chapter 4: Add stickers](/tutorial/build-with-ai/add-stickers.md)
 
 ---
 
 ---
-modificationDate: June 19, 2026
+modificationDate: July 08, 2026
 title: Add stickers
 description: In this chapter, direct your AI agent to add an emoji picker modal and make the sticker respond to drag and tap gestures.
 ---
@@ -12829,12 +12833,12 @@ Your photo now wears a draggable, resizable emoji sticker. All that's missing is
 
 In the next chapter, you'll save the decorated photo to your phone's photo library.
 
-[Next: Save your creation](/tutorial/build-with-ai/save-your-creation.md)
+[Next: Chapter 5: Save your creation](/tutorial/build-with-ai/save-your-creation.md)
 
 ---
 
 ---
-modificationDate: June 10, 2026
+modificationDate: July 08, 2026
 title: Save your creation
 description: In this chapter, direct your AI agent to save the decorated photo to your phone, and optionally make it work in the browser too.
 ---
@@ -12881,12 +12885,12 @@ StickerSmash is feature-complete: pick a photo, smash a sticker on it, and save 
 
 In the next chapter, you'll polish the status bar, splash screen, and app icon, and take your next steps.
 
-[Next: Finishing touches](/tutorial/build-with-ai/finishing-touches.md)
+[Next: Chapter 6: Finishing touches](/tutorial/build-with-ai/finishing-touches.md)
 
 ---
 
 ---
-modificationDate: July 06, 2026
+modificationDate: July 08, 2026
 title: Finishing touches
 description: In this chapter, direct your AI agent to polish the status bar, splash screen, and app icon, then take your next steps as a builder.
 ---
@@ -13019,7 +13023,7 @@ We're ready for this journey after setting up an Expo project locally. In the ne
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 08, 2026
 title: Configure a development build in cloud
 description: Learn how to configure a development build for a project using EAS Build.
 ---
@@ -13228,12 +13232,12 @@ We successfully used the EAS CLI to initialize, and configure our project, link 
 
 In the next chapter, let's create a development build for Android, install it on a device and an emulator, and get it running with the development server.
 
-[Next: Create and run a cloud build for Android](/tutorial/eas/android-development-build.md)
+[Next: Chapter 2: Create and run a cloud build for Android](/tutorial/eas/android-development-build.md)
 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 08, 2026
 title: Create and run a cloud build for Android
 description: Learn how to configure a development build for Android devices and emulators using EAS Build.
 ---
@@ -13369,12 +13373,14 @@ We successfully used EAS Build to create and run development builds on Android d
 
 In the next chapter, learn how to configure a development build for iOS Simulators using EAS Build and get it running.
 
-[Next: Create and run a cloud build for iOS Simulator](/tutorial/eas/ios-development-build-for-simulators.md)
+[Next: Chapter 3: Create and run a cloud build for iOS Simulator](/tutorial/eas/ios-development-build-for-simulators.md)
+
+} nextChapterDescription="In the next chapter, learn how to configure a development build for iOS Simulators using EAS Build and get it running." nextChapterTitle="Create and run a cloud build for iOS Simulator" nextChapterLink="/tutorial/eas/ios-development-build-for-simulators/" />
 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 08, 2026
 title: Create and run a cloud build for iOS Simulator
 description: Learn how to configure a development build for iOS Simulators using EAS Build.
 ---
@@ -13488,12 +13494,12 @@ We successfully used EAS Build to create and run development builds on iOS Simul
 
 In the next chapter, let's create a development build for iOS, install it on a device, and get it running.
 
-[Next: Create and run a cloud build for iOS device](/tutorial/eas/ios-development-build-for-devices.md)
+[Next: Chapter 4: Create and run a cloud build for iOS device](/tutorial/eas/ios-development-build-for-devices.md)
 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 08, 2026
 title: Create and run a cloud build for iOS device
 description: Learn how to configure a development build for iOS devices using EAS Build.
 ---
@@ -13646,12 +13652,12 @@ We successfully used EAS Build to create and run development builds on iOS devic
 
 In the next chapter, learn how to configure our app config to install multiple app variants on a single device.
 
-[Next: Configure multiple app variants](/tutorial/eas/multiple-app-variants.md)
+[Next: Chapter 5: Configure multiple app variants](/tutorial/eas/multiple-app-variants.md)
 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 08, 2026
 title: Configure multiple app variants
 description: Learn how to configure dynamic app config to install multiple app variants on a single device.
 ---
@@ -13823,12 +13829,14 @@ We successfully created **app.config.js** just for our dynamic configuration whi
 
 In the next chapter, learn about what are internal distribution builds, why we need them, and how to create them.
 
-[Next: Create and share internal distribution build](/tutorial/eas/internal-distribution-builds.md)
+[Next: Chapter 6: Create and share internal distribution build](/tutorial/eas/internal-distribution-builds.md)
+
+} nextChapterDescription="In the next chapter, learn about what are internal distribution builds, why we need them, and how to create them." nextChapterTitle="Create and share internal distribution build" nextChapterLink="/tutorial/eas/internal-distribution-builds/" />
 
 ---
 
 ---
-modificationDate: May 18, 2026
+modificationDate: July 08, 2026
 title: Create and share internal distribution build
 description: Learn about internal distribution builds, why we need them, and how to create them.
 ---
@@ -13976,12 +13984,12 @@ We successfully created internal distribution builds for Android and iOS, used a
 
 In the next chapter, learn about developer-facing and user-facing app versions and how to manage them automatically.
 
-[Next: Manage different app versions](/tutorial/eas/manage-app-versions.md)
+[Next: Chapter 7: Manage different app versions](/tutorial/eas/manage-app-versions.md)
 
 ---
 
 ---
-modificationDate: May 18, 2026
+modificationDate: July 08, 2026
 title: Manage different app versions
 description: Learn about developer-facing and user-facing app versions and how EAS Build automatically manages developer-facing versions.
 ---
@@ -14074,12 +14082,14 @@ We successfully explored app versioning differences, addressed the importance of
 
 In the next chapter, learn about the process of creating a production build for Android.
 
-[Next: Create a production build for Android](/tutorial/eas/android-production-build.md)
+[Next: Chapter 8: Create a production build for Android](/tutorial/eas/android-production-build.md)
+
+} nextChapterDescription="In the next chapter, learn about the process of creating a production build for Android." nextChapterTitle="Create a production build for Android" nextChapterLink="/tutorial/eas/android-production-build/" />
 
 ---
 
 ---
-modificationDate: May 18, 2026
+modificationDate: July 08, 2026
 title: Create a production build for Android
 description: Learn about the process of creating a production build for Android and automating the release process.
 ---
@@ -14262,12 +14272,14 @@ We successfully created a production-ready Android build, discussed manual and a
 
 In the next chapter, learn about the process of creating a production build for iOS.
 
-[Next: Create a production build for iOS](/tutorial/eas/ios-production-build.md)
+[Next: Chapter 9: Create a production build for iOS](/tutorial/eas/ios-production-build.md)
+
+} nextChapterDescription=" In the next chapter, learn about the process of creating a production build for iOS." nextChapterTitle="Create a production build for iOS" nextChapterLink="/tutorial/eas/ios-production-build/" />
 
 ---
 
 ---
-modificationDate: May 22, 2026
+modificationDate: July 08, 2026
 title: Create a production build for iOS
 description: Learn about the process of creating a production build for iOS and automating the release process.
 ---
@@ -14382,12 +14394,14 @@ We successfully created a production-ready iOS build, discussed distribution usi
 
 In the next chapter, learn how to use the EAS Update to send OTA updates and share previews with our team.
 
-[Next: Share previews with your team](/tutorial/eas/team-development.md)
+[Next: Chapter 10: Share previews with your team](/tutorial/eas/team-development.md)
+
+} nextChapterDescription="In the next chapter, learn how to use the EAS Update to send OTA updates and share previews with our team." nextChapterTitle="Share previews with your team" nextChapterLink="/tutorial/eas/team-development/" />
 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 08, 2026
 title: Share previews with your team
 description: Learn how to use EAS Update to send OTA updates and share previews with a team.
 ---
@@ -14536,12 +14550,12 @@ We successfully configured EAS Update to manage and publish over-the-air updates
 
 In the next chapter, learn about the process of triggering builds from a GitHub repository.
 
-[Next: Trigger builds from a GitHub repository](/tutorial/eas/using-github.md)
+[Next: Chapter 11: Trigger builds from a GitHub repository](/tutorial/eas/using-github.md)
 
 ---
 
 ---
-modificationDate: March 09, 2026
+modificationDate: July 08, 2026
 title: Trigger builds from a GitHub repository
 description: Learn about the process of triggering builds from a GitHub repository.
 ---
@@ -14683,6 +14697,1734 @@ But this is just the beginning. Here are some next steps to continue your journe
 [Develop an app with Expo](/workflow/overview.md) — An overview of the development process of building an Expo app to help build a mental model of the core development loop.
 
 We hope you enjoyed this course. If you have any questions or feedback, don't hesitate to reach out to us on [Discord](https://chat.expo.dev/), or share your experience on [X](https://x.com/expo).
+
+---
+
+---
+modificationDate: July 08, 2026
+title: 'CI/CD Tutorial: Introduction'
+description: An introduction to EAS Workflows tutorial and the core concepts for setting up a CI/CD pipeline for Expo and React Native apps.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# CI/CD Tutorial: Introduction
+
+An introduction to EAS Workflows tutorial and the core concepts for setting up a CI/CD pipeline for Expo and React Native apps.
+
+Building, testing, and delivering an Expo and React Native app is rarely a one-step process. Each code change goes through a similar flow of building for Android and iOS, running unit and end-to-end (E2E) tests, and handing it off to teammates, QA, or the app stores. Doing this on every commit gets tedious fast, and it's exactly the kind of work a CI/CD pipeline should handle for us.
+
+By the end of this tutorial, every push to our Expo project builds, tests, or ships automatically. The service that makes this possible is [EAS Workflows](/eas/workflows/introduction.md), a Continuous Integration (CI)/Continuous Delivery (CD) service from Expo Application Services (EAS) for Expo and React Native apps.
+
+We define a workflow in a [YAML](https://en.wikipedia.org/wiki/YAML) file that lives in **.eas/workflows/** at the root of our Expo project. Here is a complete example that builds an Android development build on every push to the `main` branch in a GitHub repository:
+
+```yaml
+name: Build Android
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  build:
+    type: build
+    params:
+      platform: android
+      profile: development
+```
+
+That handful of lines is the entire workflow, and EAS handles the rest. We build on this pattern throughout the tutorial.
+
+## Why use EAS Workflows?
+
+EAS Workflows runs Android, iOS, and web builds, publishes [OTA updates](/deploy/send-over-the-air-updates.md), submits to app stores, and runs E2E tests with Maestro, all defined in YAML files like the example above. Because jobs run in a managed cloud environment, there is no build server for us to set up or maintain.
+
+We can trigger workflows from GitHub events (push, pull request, tags, or labels), on a schedule (cron), or manually with [EAS CLI](/eas/cli.md).
+
+## Topics covered
+
+The tutorial has three parts:
+
+-   **Development.** Create custom jobs, automate [development builds](/develop/development-builds/introduction.md) with [fingerprinting](/tutorial/cicd/development-builds.md), and ship [pull request (PR) preview updates](/tutorial/cicd/preview-builds.md) for stakeholders.
+-   **Testing and releasing.** Run E2E tests with Maestro in a workflow, then create a production workflow that uses fingerprinting to choose between a native build and an OTA update.
+-   **Extensions.** Switch production triggers from branches to version tags and deploy web builds with [EAS Hosting](/eas/hosting/introduction.md).
+
+## Concepts worth knowing first
+
+> **Tip:** Already familiar with EAS Build and EAS Update? Skip to the next section.
+
+Before we create our first workflow, here are a few concepts worth knowing:
+
+#### Where does an Expo app ship?
+
+An Expo app can ship to three targets. Which one, and which EAS service delivers it, depends on what changed in the code:
+
+| Target | EAS service | When to use |
+| --- | --- | --- |
+| App stores | EAS Build and EAS Submit | New releases, native code changes |
+| Installed devices | EAS Update | TypeScript/JavaScript-only fixes, delivered over the air in seconds |
+| Web | EAS Hosting | Web app alongside native releases |
+
+#### Build profiles
+
+[EAS Build](/build/introduction.md) is a service for building app binaries for our Expo projects. It supports three build profiles by default: `development`, `preview`, and `production`. Each profile corresponds to a different stage of development. We use each of these three profiles in this tutorial.
+
+#### Builds vs. updates
+
+Like EAS Build, [EAS Update](/eas-update/introduction.md) is a service that serves OTA updates for Expo projects using the [`expo-updates`](/versions/latest/sdk/updates.md) library.
+
+```
+Decision flow: Native changes require EAS Build (minutes). JS-only changes use EAS Update (seconds).
+```
+
+-   EAS Build compiles native code into a full app binary. Builds take longer to run. We need a new build when native code in our project changes. For example, adding a new native library, changing permissions, or upgrading the Expo SDK.
+-   EAS Update delivers TypeScript/JavaScript changes over-the-air to devices that already have a compatible native build installed. If a change requires native code, we create and install that build before publishing an update. That way, each update remains compatible with the build it targets. Publishing an update itself takes seconds. For example, we can publish an update to fix a UI bug or change the copy of a button.
+
+Depending on the change, we use one service or the other. EAS Workflows wires them together so the pipeline can decide when to build and when to publish an update.
+
+## Prerequisites
+
+> **Tip:** Already have an Expo project set up with EAS Build and EAS Update? Skip to the next chapter.
+
+This tutorial is a hands-on experience. To make progress, we need an existing Expo project that uses [Continuous Native Generation](/workflow/continuous-native-generation.md). Set it up on our machine and EAS with the following requirements:
+
+#### Prerequisites
+
+##### An Expo account
+
+We need to [sign up](https://expo.dev/signup) for an Expo account.
+
+##### Install EAS CLI and log in
+
+To install EAS CLI, run the following command:
+
+```sh
+# npm
+npm install --global eas-cli
+
+# yarn
+yarn global add eas-cli
+
+# pnpm
+pnpm add -g eas-cli
+
+# bun
+bun add -g eas-cli
+```
+
+Then, run the following login command to authenticate EAS CLI with the Expo account:
+
+```sh
+eas login
+```
+
+##### Create an Expo project
+
+To create a new Expo project, run the following command:
+
+```sh
+# npm
+npx create-expo-app@latest --template default@sdk-57
+
+# yarn
+yarn create expo-app --template default@sdk-57
+
+# pnpm
+pnpm create expo-app --template default@sdk-57
+
+# bun
+bun create expo --template default@sdk-57
+```
+
+Creating a new project with `create-expo-app` sets up a project without native **android** and **ios** directories committed. This pattern is called Continuous Native Generation (CNG) and EAS Build creates those native project directories for us automatically.
+
+##### Initialize EAS in the project
+
+To initialize EAS in our project, run the following command:
+
+```sh
+eas build:configure
+```
+
+This generates an **eas.json** file in the root of our Expo project and creates an EAS project linked to our local project.
+
+##### GitHub repository linked with EAS dashboard
+
+We need a GitHub repository for the project. We can create a new repository or use an existing one. Then, connect the GitHub repository to EAS:
+
+1.  Navigate to the project's [GitHub settings](https://expo.dev/accounts/%5Baccount%5D/projects/%5BprojectName%5D/github) on the EAS dashboard.
+2.  Follow the UI in the dashboard to install the Expo GitHub app.
+3.  Select the GitHub repository that matches the Expo project and connect it.
+
+##### Store submission credentials for EAS Submit (optional)
+
+Only needed if we add automated app store submission as an adaptation after Chapter 5. See the [Google Play Store](/submit/android.md) and [Apple App Store](/submit/ios.md) guides for instructions on how to configure credentials for EAS Submit.
+
+## Coming from GitHub Actions?
+
+EAS Workflows files live in the **.eas/workflows/** directory at the root of an Expo project, similar to how GitHub Actions workflows live in **.github/workflows/**. The trigger syntax (`on.push`, `on.pull_request`, and so on) also looks much the same.
+
+The main difference is pre-packaged jobs: setting `type: build` lets EAS handle the environment and build artifacts, with no `runs-on` or setup step to write. We cover these as we go.
+
+## Next step
+
+With our project set up, we can move to the first chapter and write our first workflow.
+
+[Start](/tutorial/cicd/first-workflow.md) — Create and run our first workflow with EAS Workflows.
+
+---
+
+---
+modificationDate: July 08, 2026
+title: 'Run your first EAS Workflows job'
+description: Learn basics of EAS Workflows by creating workflow files, jobs, triggers, and chain jobs together for an Expo app.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# Run your first EAS Workflows job
+
+Learn basics of EAS Workflows by creating workflow files, jobs, triggers, and chain jobs together for an Expo app.
+
+In this chapter, we create our first EAS Workflows job.
+
+## Learning outcomes
+
+-   Create and run a custom workflow that prints a message to the EAS dashboard
+-   Set up an automatic trigger so every push to `main` runs the workflow
+-   Chain multiple jobs together so one job's output feeds the next
+-   Read workflow logs and job graphs in the EAS dashboard
+
+## How workflow files work
+
+Workflow files are YAML files stored in our project's **.eas/workflows/** directory. Each file defines the jobs to run and the steps each job follows.
+
+```
+A workflow file contains a name, trigger, and jobs. Jobs are either pre-packaged (using type field) or custom (using steps with run commands).
+```
+
+A workflow file contains one or more jobs and an optional trigger. When it runs, EAS reads the file, provisions the environment, and executes the jobs in that environment.
+
+## Types of jobs in EAS Workflows
+
+EAS Workflows has two types of jobs:
+
+-   **Pre-packaged job:** This job uses the `type` field. It tells EAS which operation to run, like `build`, `submit`, or `update`. EAS then runs the pre-configured steps for that operation.
+-   **Custom job:** This type of job uses `steps` instead of the `type` field. We write our own commands using `run` for each step. A custom job allows us to control what happens when a workflow runs and when to run a specific command.
+
+## Create our first workflow
+
+Let's create our first workflow using a custom job and run it on EAS.
+
+### Create the workflow directory
+
+Create the **.eas/workflows/** directory at the root of our Expo project. EAS looks for workflow files only in this location.
+
+```sh
+mkdir -p .eas/workflows
+```
+
+### Add a hello.yml file
+
+Inside **.eas/workflows/**, create a file named **hello.yml**. This file defines our first workflow using a single custom job. The job runs a shell command that prints `"Hello, Workflows"`:
+
+```yaml
+name: Hello
+
+jobs:
+  greet:
+    steps:
+      - run: echo "Hello, Workflows" # Any shell command works here
+```
+
+The above workflow uses the following syntax:
+
+-   `name` is the workflow's name as shown on the EAS dashboard.
+-   `jobs` contains one or more jobs to run. Each job has a unique ID (in this case, `greet`).
+-   `steps` is a sequence of tasks the job executes in order. A job with `steps` but no `type` field is a custom job.
+-   `run` is the shell command to execute in a step. Here, it runs `echo` to print a message. Any shell command works.
+
+### Manually run the workflow
+
+To run the workflow on the EAS dashboard, run the following command from a terminal window:
+
+```sh
+eas workflow:run .eas/workflows/hello.yml
+```
+
+The `eas workflow:run` command uploads the workflow file to EAS. It then runs any job defined inside the file and the EAS CLI prints a URL to the EAS dashboard where we can watch the job.
+
+### View the job logs
+
+Open the URL from the previous step in a browser window. On the workflow page, we can see the `greet` job and its status. Once the job completes, expand the step output to see the logged message: `Hello, Workflows`.
+
+The EAS dashboard is where we view and debug any workflow job. The **Workflow graph** shows what triggered our job and the job's unique ID.
+
+Switch to the **Workflow file** tab. This is the workflow file we wrote in Step 2, preserved with the run.
+
+> **Tip:** View all of our project's workflows and filter them by status or type on the [Workflows page](https://expo.dev/accounts/%5Baccount%5D/projects/%5Bproject%5D/workflows).
+
+## Automatically run a workflow
+
+Running `eas workflow:run` from the terminal works for a one-off, but most teams want workflows that fire automatically on GitHub events. Automatic triggers mean no one has to remember to run a workflow. The workflow's configuration lives in the repository alongside the code it builds.
+
+> **Note:** A trigger is a rule that tells a CI/CD pipeline when to start. It defines the event (such as a code push or a pull request) that causes the pipeline to run automatically instead of requiring manual execution.
+
+We define a trigger with the `on` key in the workflow file. EAS watches for the matching GitHub event and runs the workflow automatically.
+
+### Add an automatic trigger
+
+Let's add an `on.push.branches` trigger to our existing workflow file.
+
+-   The `on` key defines which GitHub event triggers the workflow
+-   The `push` field defines when to trigger
+-   The `branches` field allows us to specify that whenever the code is pushed to the `main` branch, the workflow should run automatically
+
+```yaml
+name: Hello
+
+on:
+  push:
+    branches: ['main'] # Fires on every push to main branch
+
+jobs:
+  greet:
+    steps:
+      - run: echo "Hello, Workflows"
+```
+
+The `branches` field can include any branch name that exists in a GitHub repository. We can specify multiple branches such as `['main', 'develop', 'staging']` to trigger the workflow when we push to any of those branches.
+
+### Commit the change and push to GitHub
+
+Commit the workflow file and push it to the `main` branch:
+
+```sh
+git add .eas/workflows/hello.yml
+git commit -m "Add hello workflow"
+git push origin main
+```
+
+### Verify the automatic trigger
+
+> **Tip:** This step depends on our local Expo project being pushed to GitHub and the GitHub repository being connected to EAS. To confirm: run `git remote -v` to verify the local repo points to a GitHub URL and open the project's [GitHub settings on EAS](https://expo.dev/accounts/%5Baccount%5D/projects/%5BprojectName%5D/github) to check that a repository is connected.
+
+Let's open our project's [Workflows page](https://expo.dev/accounts/%5Baccount%5D/projects/%5Bproject%5D/workflows) on the EAS dashboard to see the new job.
+
+In the EAS dashboard, notice that the **Workflow graph** tab shows the commit message and branch reference for this push. In the status under the workflow header, the **Trigger** and **Triggered by** reflect the same information.
+
+## Other trigger types
+
+Other trigger types we use later in this tutorial:
+
+-   `on.pull_request`: Runs when a pull request opens or updates against a matching branch
+-   `on.push` with `tags`: Runs when a matching tag pattern is pushed to the GitHub repository
+-   `on.pull_request_labeled`: Runs when a specific label gets added to a pull request
+
+## Chain jobs together
+
+So far, we have implemented a single job in our workflow file. A workflow file can have multiple jobs. A job's input can depend on the output of the previous job. Let's chain multiple jobs together in a workflow file.
+
+### Update hello.yml
+
+Let's update the **hello.yml** file to add a custom job and a pre-packaged job. This pre-packaged job is called [`doc`](/eas/workflows/pre-packaged-jobs.md#doc) and it renders Markdown on the EAS dashboard:
+
+```yaml
+name: Hello
+
+jobs:
+  greet:
+    outputs:
+      greeting: ${{ steps.set_greeting.outputs.greeting }} # Expose the step output at the job level
+    steps:
+      - id: set_greeting
+        run: set-output greeting "Hello from EAS Workflows"
+  show_info:
+    needs: [greet] # Wait for greet to finish, then read its outputs
+    type: doc # Pre-packaged job that renders Markdown on the dashboard
+    params:
+      md: |
+        # Workflow Output
+        **${{ needs.greet.outputs.greeting }}**
+```
+
+The above workflow file does the following:
+
+-   Defines a `greet` job, which is a custom job. It uses the [`set-output`](/eas/workflows/syntax.md#set-output) shell function to set a value called `greeting`. The `outputs` field at the job level exposes the step output so other jobs can reference it.
+-   Defines a `show_info` job which uses `needs: [greet]` to wait for the `greet` job to complete and access its output. Then, it uses the pre-packaged `doc` job type to render a Markdown document in the EAS dashboard. The Markdown content includes the value of `greeting` set in the previous job.
+
+> **Tip:** In EAS Workflows, jobs run in parallel by default. The `needs` field is what makes a job wait: it lists the job IDs that must complete successfully before the job using `needs` can start. If a job in the `needs` list fails, the dependent job is skipped.
+
+### Run the chained workflow
+
+Run the following command from a terminal window to see the chained jobs in action:
+
+```sh
+eas workflow:run .eas/workflows/hello.yml
+```
+
+Open the EAS dashboard link from the EAS CLI. Under **Logs**, notice that the `greet` job runs first. Once it completes, the `show_info` job runs and renders the Markdown content using the output from the previous job.
+
+## Clean up
+
+After this chapter, delete the **hello.yml** file because we do not use it in the next chapters. If we prefer to keep it, remove the `on.push` trigger so it does not fire on every push to `main`.
+
+## Summary
+
+Chapter 1: First EAS Workflows job
+
+We created a custom job workflow, triggered it manually and automatically, chained jobs using needs and outputs, and used the EAS dashboard to verify job execution.
+
+In the next chapter, learn how to automate development builds with fingerprinting to skip unnecessary rebuilds.
+
+[Next: Chapter 2: Development builds](/tutorial/cicd/development-builds.md)
+
+---
+
+---
+modificationDate: July 08, 2026
+title: 'Automate development builds with EAS Workflows'
+description: Learn how to automate Android and iOS development builds with EAS Workflows and use fingerprints to skip rebuilds when only JavaScript changes.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# Automate development builds with EAS Workflows
+
+Learn how to automate Android and iOS development builds with EAS Workflows and use fingerprints to skip rebuilds when only JavaScript changes.
+
+Manually rebuilding a development client on every push to a GitHub repository can be slow. Team members or new contributors who pull native changes (a new module, a new permission, an SDK upgrade) wait for a fresh build before they can run the project.
+
+Automating development builds on the `main` branch keeps a current build ready to install. We can run `eas build:dev` to install the latest compatible build. If the project fingerprint matches an existing build, EAS downloads that build instead of creating a new one.
+
+## Learning outcomes
+
+-   Automate [development builds](/develop/development-builds/introduction.md) for Android and iOS with the `build` job type
+-   Use `fingerprint` and `get-build` jobs to skip rebuilding when native code hasn't changed
+-   Add a custom unit testing job that gates the workflow on passing tests
+
+#### Prerequisites
+
+##### EAS Build configured for development
+
+EAS CLI prompts to generate credentials the first time we trigger a build for a profile. Trigger the development build manually for both Android and iOS so the credentials exist before the workflow runs:
+
+```sh
+eas build --profile development --platform all
+```
+
+## The `build` job type for development builds
+
+The `build` job type is one of the [pre-packaged jobs](/tutorial/cicd/first-workflow.md#types-of-jobs-in-eas-workflows) from EAS Workflows. Instead of defining each step of the build process, we use the `build` job type to run an EAS Build for Android and iOS.
+
+For this chapter, we use the `development` build profile from our **eas.json**. We use this profile during Expo app development.
+
+### Add a build.yml
+
+Inside **.eas/workflows/**, add a new file called **build.yml**. It uses the `build` job type with `profile` and `platform` parameters to create development builds for Android and iOS.
+
+Add the following code to the **build.yml** file:
+
+```yaml
+name: Development builds
+
+jobs:
+  build_android:
+    name: Build Android
+    type: build
+    params:
+      platform: android
+      profile: development
+  build_ios:
+    name: Build iOS
+    type: build
+    params:
+      platform: ios
+      profile: development
+```
+
+We add two jobs: `build_android` and `build_ios`. Both are of type `build` with different parameters for platform and build profile.
+
+The `params` key for each job includes:
+
+-   [`platform`](/eas/workflows/pre-packaged-jobs.md#build) sets the target OS for the build (`android` or `ios`)
+-   [`profile`](/build/eas-json.md#build-profiles) specifies the build profile from our **eas.json**
+
+### Run the workflow manually
+
+Let's run the workflow manually using the command:
+
+```sh
+eas workflow:run .eas/workflows/build.yml
+```
+
+### Verify on the EAS dashboard
+
+On the EAS dashboard, notice that it says "Triggered manually" under the **Workflow graph** tab. Any time the **Trigger** shows **Manual**, that means the workflow was started with the `eas workflow:run` command.
+
+The logs for each build appear inside the workflow interface. Click a build's ID to open its EAS Build page.
+
+> Jobs without dependencies run in parallel by default in EAS Workflows. In the above workflow, since both `build_android` and `build_ios` jobs don't have any dependencies, they start at the same time.
+
+Wait for both builds to complete before moving to the next step. Once they complete, we can use the **Install** or **Open with [Orbit](/build/orbit.md)** buttons, or download from **Artifacts** to install on our device/emulator/simulator.
+
+## Skip unnecessary builds with fingerprints
+
+When our project has only TypeScript/JavaScript changes, the existing development build is still compatible, so we do not need a new one.
+
+[**Expo Fingerprint**](/versions/latest/sdk/fingerprint.md) automates this decision. It hashes the project's native characteristics (dependencies, native project files, configuration). If the hash matches an existing build, native code has not changed, and EAS skips the rebuild. If the hash is different, native code changed, and EAS creates a new build.
+
+```
+Fingerprint hashes native characteristics. If hash matches an existing build, rebuild is skipped. If hash differs, a new build is created.
+```
+
+Let's update **build.yml** step by step to detect native changes and build only when needed.
+
+### Add a fingerprint job
+
+The [`fingerprint`](/eas/workflows/pre-packaged-jobs.md#fingerprint) pre-packaged job hashes the project's native characteristics and outputs a fingerprint hash for each platform. The `environment` field tells EAS which [environment variable configuration](/eas/environment-variables.md) to use. Note that `environment` and `profile` can share the same name but refer to different things. `profile` points to a build profile in **eas.json** (how to build). `environment` points to environment variables configured on EAS (which values to inject at build time).
+
+Update **build.yml** to add the `fingerprint` job before the build jobs:
+
+```yaml
+name: Development builds
+
+jobs:
+  fingerprint:
+    name: Fingerprint
+    type: fingerprint
+    environment: development
+  build_android:
+    # ...
+  build_ios:
+    # ...
+```
+
+The `fingerprint` job produces two outputs: `android_fingerprint_hash` and `ios_fingerprint_hash`. We use these hashes in the next step to check if a compatible build already exists.
+
+### Add get-build jobs
+
+The [`get-build`](/eas/workflows/pre-packaged-jobs.md#get-build) pre-packaged job checks if a build already exists for a given fingerprint hash and profile. If a matching build exists, it outputs a `build_id`. If not, `build_id` is empty.
+
+In our workflow file, let's add `get_android_build` and `get_ios_build` jobs between `fingerprint` and the build jobs. Each one uses `needs: [fingerprint]` to wait for the fingerprint job to complete and access its output:
+
+```yaml
+name: Development builds
+
+jobs:
+  fingerprint:
+    # ...
+  get_android_build:
+    name: Check for existing Android build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.android_fingerprint_hash }}
+      profile: development
+  get_ios_build:
+    name: Check for existing iOS build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+      profile: development
+  build_android:
+    # ...
+  build_ios:
+    # ...
+```
+
+In the above workflow, `get-build` jobs receive the fingerprint hash from the previous job using the `${{ needs.fingerprint.outputs.* }}` expression syntax.
+
+### Add conditional builds
+
+The [`if`](/eas/workflows/syntax.md#jobsjob_idif) field controls whether a job runs. The expression `${{ !needs.get_android_build.outputs.build_id }}` means: _run a job only if `get-build` did not find a matching build_. The `!` is a negation operator. If a compatible build already exists for this fingerprint, the build job is skipped.
+
+Let's update each build job to depend on its `get-build` job and add the `if` condition:
+
+```yaml
+name: Development builds
+
+jobs:
+  fingerprint:
+    # ...
+  get_android_build:
+    # ...
+  get_ios_build:
+    # ...
+  build_android:
+    name: Build Android
+    needs: [get_android_build]
+    if: ${{ !needs.get_android_build.outputs.build_id }}
+    type: build
+    params:
+      platform: android
+      profile: development
+  build_ios:
+    name: Build iOS
+    needs: [get_ios_build]
+    if: ${{ !needs.get_ios_build.outputs.build_id }}
+    type: build
+    params:
+      platform: ios
+      profile: development
+```
+
+### Add a trigger and run the workflow
+
+Let's add the `on.push` trigger to the workflow so it runs automatically on every push to `main`:
+
+```yaml
+name: Development builds
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  fingerprint:
+    name: Fingerprint
+    type: fingerprint
+    environment: development
+  get_android_build:
+    name: Check for existing Android build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.android_fingerprint_hash }}
+      profile: development
+  get_ios_build:
+    name: Check for existing iOS build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+      profile: development
+  build_android:
+    name: Build Android
+    needs: [get_android_build]
+    if: ${{ !needs.get_android_build.outputs.build_id }}
+    type: build
+    params:
+      platform: android
+      profile: development
+  build_ios:
+    name: Build iOS
+    needs: [get_ios_build]
+    if: ${{ !needs.get_ios_build.outputs.build_id }}
+    type: build
+    params:
+      platform: ios
+      profile: development
+```
+
+Let's assume we made some TypeScript/JavaScript changes to our Expo project, like changing a button's color or updating the text on a screen. After doing so, we can push a commit to the `main` branch to trigger the workflow from our GitHub repository:
+
+```sh
+git add .
+git commit -m "Update button label and tweak styling"
+git push origin main
+```
+
+This triggers a new workflow that completes in seconds. On the EAS dashboard, both Android and iOS builds are skipped because a matching build already exists from the previous section.
+
+We pull the latest from the `main` branch and run `npx expo start`. The existing development build picks up the JS changes.
+
+## Custom jobs for unit testing
+
+> This section assumes Jest is set up in the project. For setup instructions, see [Unit testing with Jest](/develop/unit-testing.md).
+
+When working in a team, we want every change pushed to the `main` branch to pass tests before triggering a new build.
+
+Without automation, the team has to remember to run tests locally before pushing to `main`. If they forget and the code has a failing test, the next workflow can create a build from broken code.
+
+With **EAS Workflows**, we can automate this process by mixing a custom job with our existing pre-packaged jobs. This custom job runs before fingerprint and build jobs. If a test fails, EAS stops the workflow and creates no build.
+
+```
+Unit tests run first as a custom job. If tests pass, the build pipeline continues. If tests fail, the workflow stops and no build is created.
+```
+
+### Add a custom job for unit tests
+
+In our **build.yml** workflow file, let's add a custom job that runs unit tests before the builds start:
+
+```yaml
+name: Development builds
+
+on:
+  push:
+    branches: ['main']
+
+jobs:
+  run_tests:
+    name: Run unit tests
+    steps:
+      - uses: eas/checkout # Check out the repo
+      - uses: eas/install_node_modules
+      - run: npx jest --ci
+  fingerprint:
+    name: Fingerprint
+    needs: [run_tests]
+    type: fingerprint
+    environment: development
+  get_android_build:
+    # ...
+  get_ios_build:
+    # ...
+  build_android:
+    # ...
+  build_ios:
+    # ...
+```
+
+The custom `run_tests` job does the following:
+
+-   `uses: eas/checkout` checks out the project source files from the GitHub repository. Custom jobs run on a new virtual machine, so the code is not available by default. This step is required before accessing any project files.
+-   `uses: eas/install_node_modules` installs dependencies using the package manager detected in the project (bun, npm, pnpm, or Yarn). This is needed before running any commands that depend on packages from **node_modules**, like Jest.
+-   `run: npx jest --ci` executes the test suite. The `run` key runs any shell command, similar to the `echo` command. The `--ci` flag tells Jest to run in CI mode, which skips watching for file changes and exits after running all tests.
+
+Now, the `fingerprint` job has `needs: [run_tests]`, so it only runs after the tests pass. If tests fail, EAS skips the rest of the workflow.
+
+### Trigger the workflow
+
+Commit and push the updated workflow along with the test file to `main`:
+
+```sh
+git add .
+git commit -m "Add unit tests to development builds workflow"
+git push origin main
+```
+
+After triggering the workflow, open the EAS dashboard and notice the flow of the jobs inside our workflow.
+
+## Summary
+
+Chapter 2: Development builds
+
+We automated development builds using pre-packaged jobs, added fingerprints to skip unnecessary rebuilds, and integrated unit tests as a custom job before the build pipeline.
+
+In the next chapter, learn how to create preview builds with Slack notifications and PR preview updates.
+
+[Next: Chapter 3: Preview builds](/tutorial/cicd/preview-builds.md)
+
+---
+
+---
+modificationDate: July 08, 2026
+title: 'Create preview builds for pull requests with EAS Workflows'
+description: Learn how to create preview build workflows for Slack notifications and PR previews using EAS Workflows.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# Create preview builds for pull requests with EAS Workflows
+
+Learn how to create preview build workflows for Slack notifications and PR previews using EAS Workflows.
+
+Sharing in-progress mobile changes with teammates and pull request (PR) reviewers often requires them to check out a branch and run a development server locally.
+
+## Learning outcomes
+
+-   Automate preview builds with fingerprinting for internal distribution
+-   Post Slack notifications when a build finishes
+-   Publish an [OTA update](/deploy/send-over-the-air-updates.md) on every pull request and comment on the PR with a link to test it
+
+#### Prerequisites
+
+##### expo-updates installed
+
+Install the [`expo-updates`](/versions/latest/sdk/updates.md) library:
+
+```sh
+# npm
+npx expo install expo-updates
+
+# yarn
+yarn dlx expo install expo-updates
+
+# pnpm
+pnpm dlx expo install expo-updates
+
+# bun
+bunx expo install expo-updates
+```
+
+##### EAS Update configured
+
+To configure EAS Update, run:
+
+```sh
+eas update:configure
+```
+
+The above command adds the update URL and runtime version to **app.json**, and adds a [`channel`](/eas-update/deployment.md) field to each build profile in **eas.json**.
+
+##### Preview build created
+
+To receive PR preview updates, reviewers need a preview build with `expo-updates` and the EAS Update channel installed on their device. To create one:
+
+```sh
+eas build --profile preview --platform all
+```
+
+Since `expo-updates` is a native library, this build embeds both its native code and the channel from **eas.json**. Running the above command also allows EAS CLI to generate [credentials](/app-signing/app-credentials.md) the first time we trigger a preview build.
+
+## The `build` job type for preview builds
+
+Teams use preview builds for stakeholder testing. Members install the build through internal distribution onto their device/emulator/simulator. They do not have to run a development server or check out the branch to test changes.
+
+```
+Preview workflow pipeline: fingerprint checks native changes, get-build checks for existing builds, then creates a new preview build with Slack notification.
+```
+
+Like [development builds](/tutorial/cicd/development-builds.md#skip-unnecessary-builds-with-fingerprints), we add fingerprints to avoid unnecessary rebuilds when native code doesn't change.
+
+### Add a preview.yml
+
+Inside **.eas/workflows/**, let's add a new file called **preview.yml**. This workflow file uses the `preview` profile.
+
+```yaml
+name: Preview builds
+
+jobs:
+  fingerprint:
+    name: Fingerprint
+    type: fingerprint
+    environment: preview
+  get_android_build:
+    name: Check for existing Android build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.android_fingerprint_hash }}
+      profile: preview
+  get_ios_build:
+    name: Check for existing iOS build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+      profile: preview
+  build_android:
+    name: Build Android
+    needs: [get_android_build]
+    if: ${{ !needs.get_android_build.outputs.build_id }}
+    type: build
+    params:
+      platform: android
+      profile: preview
+  build_ios:
+    name: Build iOS
+    needs: [get_ios_build]
+    if: ${{ !needs.get_ios_build.outputs.build_id }}
+    type: build
+    params:
+      platform: ios
+      profile: preview
+```
+
+### Run the workflow
+
+Run the workflow manually using the following command:
+
+```sh
+eas workflow:run .eas/workflows/preview.yml
+```
+
+In the EAS dashboard, notice that the workflow follows the same fingerprint pattern we implemented for [development builds](/tutorial/cicd/development-builds.md#skip-unnecessary-builds-with-fingerprints). Since we are creating the preview build for the first time, it runs the build jobs for Android and iOS. If we push another commit to the `main` branch without changing native code, the workflow skips the build jobs since compatible builds already exist.
+
+## Slack notifications
+
+> This section is optional. Not using Slack? Skip to the next section about PR previews.
+
+Many teams use Slack for build notifications so their team sees build status without checking the EAS dashboard. When a build completes (or skips), the [`slack`](/eas/workflows/pre-packaged-jobs.md#slack) pre-packaged job posts the status to a channel.
+
+### Create a Slack webhook URL
+
+To send messages from EAS Workflows to our Slack channel, we need a webhook URL from Slack's settings:
+
+1.  Go to [api.slack.com/apps](https://api.slack.com/apps) and create a new Slack app (or use an existing one).
+2.  Under **Features**, select **Incoming Webhooks** and toggle it on.
+3.  Click **Add New Webhook** and select the channel to publish notifications.
+4.  Copy the webhook URL. It looks like: `https://hooks.slack.com/services/TD000/B000/XXXXXXXXXX`
+5.  Add the webhook URL as an EAS environment variable named `SLACK_WEBHOOK_URL`. Open our project's [Environment variables](https://expo.dev/accounts/%5Baccount%5D/projects/%5Bproject%5D/environment-variables) page on the EAS dashboard, create the variable for the `preview` environment, and set its [visibility](/eas/environment-variables.md#visibility-settings-for-environment-variables) to **secret** since only EAS servers need to read it. Alternatively, create it with [EAS CLI](/eas/environment-variables/manage.md):
+
+```sh
+eas env:create --name SLACK_WEBHOOK_URL --value https://hooks.slack.com/services/TD000/B000/XXXXXXXXXX --environment preview --visibility secret
+```
+
+### Add a Slack notification job
+
+Let's update **preview.yml** to add a `notify` job after the build jobs. The `notify` job uses `webhook_url` and `message` parameters, or a `payload` parameter for rich formatting with [Slack Block Kit](https://docs.slack.dev/block-kit). The job reads the webhook URL from the [`SLACK_WEBHOOK_URL` environment variable we created earlier](/tutorial/cicd/preview-builds.md#create-a-slack-webhook-url) through its `environment` field. Jobs default to the `production` environment, so setting `environment: preview` here is what makes the variable available.
+
+```yaml
+name: Preview builds
+
+jobs:
+  fingerprint: # ...
+  get_android_build: # ...
+  get_ios_build: # ...
+  build_android: # ...
+  build_ios: # ...
+  notify:
+    name: Notify on Slack
+    after: [build_android, build_ios]
+    type: slack
+    environment: preview
+    params:
+      webhook_url: ${{ env.SLACK_WEBHOOK_URL }}
+      message: 'Preview builds are ready - Android: ${{ after.build_android.status }}, iOS: ${{ after.build_ios.status }}'
+```
+
+The `after` field ensures the notification fires once the builds finish, regardless of the outcome. The `message` uses `${{ after.build_android.status }}` and `${{ after.build_ios.status }}` to include each platform's outcome (success, failure, or skipped). The team sees what happened without leaving Slack.
+
+### Run the workflow
+
+Run the workflow manually using the following command:
+
+```sh
+eas workflow:run .eas/workflows/preview.yml
+```
+
+On the EAS dashboard, we can verify that the `Notify on Slack` job runs successfully.
+
+We can also verify this in the Slack channel integrated with the app.
+
+## PR previews using EAS Update
+
+A PR reviewer can read the diff, but cannot see the changes visually or test them on a device.
+
+Web teams solve this with deploy previews. When someone opens a pull request, a CI/CD workflow generates a preview link. Reviewers open the link and test the changes without checking out the branch.
+
+For mobile, we can set up the equivalent using [EAS Update](/eas-update/introduction.md). It delivers a JavaScript bundle to devices that already have a compatible build installed, skipping the native compilation step. For PR previews, an update is the right fit because reviewers can open and test quickly, then leave feedback on the PR.
+
+EAS Workflows provides a [`github-comment`](/eas/workflows/pre-packaged-jobs.md#github-comment) pre-packaged job for this. It posts a comment on the pull request after the update publishes, giving reviewers a link or QR code to open the update on their device.
+
+### Create a pr-preview.yml
+
+Inside **.eas/workflows/**, let's add a new file called **pr-preview.yml**. This workflow runs when a pull request is created using the `on.pull_request` trigger. It only publishes an update using the `update` job type and then posts a comment on the PR with the link to the update.
+
+```yaml
+name: PR Preview
+
+on:
+  pull_request:
+    branches: ['*']
+
+jobs:
+  publish_preview:
+    name: Publish PR preview update
+    type: update
+    environment: preview
+    params:
+      channel: preview
+  comment:
+    needs: [publish_preview]
+    type: github-comment
+```
+
+> Before testing the above workflow, commit **pr-preview.yml** and push it to the `main` branch of our GitHub repository. **EAS Workflows reads workflow files from the default branch.**
+
+### Test with a pull request
+
+Let's test the workflow by creating a pull request in our GitHub repository. A pull request requires a separate branch from `main`. Run the following command to create and switch to a new branch:
+
+```sh
+git checkout -b test-preview
+```
+
+Now, let's make a visible change in the Expo project (for example, change a text string or background color). Then, commit and push the branch:
+
+```sh
+git add .
+git commit -m "Test PR preview"
+git push origin test-preview
+```
+
+Open a pull request from `test-preview` to `main` on GitHub. The workflow runs automatically after we have created a pull request. On the EAS dashboard, we can verify that the `publish_preview` job runs first and the `comment` job runs after it succeeds.
+
+On the GitHub pull request, a comment should appear with a link or QR code to test the update on a device.
+
+Using the link or QR code in the comment, we can now open the update on our device or emulator/simulator and test the changes.
+
+## Summary
+
+Chapter 3: Preview builds
+
+We created a preview build workflow with fingerprinting, added Slack notifications for build status, and set up PR previews using EAS Update so reviewers can test changes without checking out a branch.
+
+In the next chapter, learn how to run end-to-end tests with Maestro in an EAS Workflows job.
+
+[Next: Chapter 4: E2E tests](/tutorial/cicd/e2e-tests.md)
+
+---
+
+---
+modificationDate: July 08, 2026
+title: 'Run E2E tests with Maestro on EAS Workflows'
+description: Learn how to automate end-to-end (E2E) tests with Maestro using Android and iOS development builds on EAS Workflows.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# Run E2E tests with Maestro on EAS Workflows
+
+Learn how to automate end-to-end (E2E) tests with Maestro using Android and iOS development builds on EAS Workflows.
+
+Broken navigation flows and crashing screens often slip past code review because reviewers cannot run the app on every pull request.
+
+## Learning outcomes
+
+-   Write [Maestro](https://maestro.mobile.dev/) flow files for navigation and screen-content tests
+-   Run E2E tests against Android and iOS [development builds](/develop/development-builds/introduction.md) in a workflow
+-   Trigger E2E tests automatically on pull requests with `on.pull_request` or on demand with `on.pull_request_labeled`
+
+> The Maestro job type in EAS Workflows is currently in [alpha](/more/release-statuses.md#alpha).
+
+## Why are E2E tests useful?
+
+The pipeline from previous chapters builds our project and delivers updates, with Slack notifications. However, a broken navigation flow or a crashing screen can still make it to production silently. E2E tests can help catch these issues before they reach production by simulating real user interactions and verifying that the app behaves as expected.
+
+[Maestro](https://maestro.mobile.dev/) runs automated flows against a built app on an Android Emulator or an iOS Simulator. It can tap buttons, type text, assert screen content, and navigate between screens. EAS Workflows runs these flows in the cloud after building an APK for Android or an iOS Simulator build.
+
+## Set up E2E tests
+
+For Android and iOS, we need to add a special [build profile](/build/eas-json.md) for E2E tests. This profile skips credential setup for Android and allows running our iOS build inside a simulator.
+
+### Add the e2e-test build profile
+
+Add an `e2e-test` profile to **eas.json**. This profile creates an unsigned APK for Android and a simulator build for iOS:
+
+```json
+{
+  ... 
+  "build": {
+    "e2e-test": {
+      "withoutCredentials": true,
+      "android": {
+        "buildType": "apk",
+        "image": "latest"
+      },
+      "ios": {
+        "simulator": true,
+        "image": "latest"
+      }
+    }
+  }
+}
+```
+
+### Add Maestro flow files
+
+Create a **.maestro/** directory at the root of the Expo project and then add the following test files.
+
+For example, the following code snippet adds a basic home screen test that launches the app and checks that the "Welcome" text is visible. Replace `com.yourname.yourapp` in `appId` with our app's [`android.package`](/versions/latest/config/app.md#package) on Android or [`ios.bundleIdentifier`](/versions/latest/config/app.md#bundleidentifier) on iOS, both defined in the **app.json**:
+
+```yaml
+appId: com.yourname.yourapp # Replace with your app's package name/bundle identifier from app config file
+---
+- launchApp
+- assertVisible: 'Welcome'
+```
+
+Then, we can add another test for the settings screen:
+
+```yaml
+appId: com.yourname.yourapp # Replace with your app's package name/bundle identifier from app config file
+---
+- launchApp
+- tapOn: 'Settings'
+- assertVisible: 'Settings'
+```
+
+## Create a workflow for E2E tests
+
+### Create an e2e-tests.yml
+
+Inside **.eas/workflows/**, add a new file called **e2e-tests.yml** with the following code:
+
+```yaml
+name: E2E Tests
+
+jobs:
+  build_android:
+    name: Build Android for E2E
+    type: build
+    params:
+      platform: android
+      profile: e2e-test
+  build_ios:
+    name: Build iOS for E2E
+    type: build
+    params:
+      platform: ios
+      profile: e2e-test
+  test_android:
+    name: Run Maestro tests (Android)
+    needs: [build_android]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_android.outputs.build_id }}
+      flow_path: ['.maestro/home.yml', '.maestro/navigate.yml']
+  test_ios:
+    name: Run Maestro tests (iOS)
+    needs: [build_ios]
+    type: maestro
+    params:
+      build_id: ${{ needs.build_ios.outputs.build_id }}
+      flow_path: ['.maestro/home.yml', '.maestro/navigate.yml']
+```
+
+In the above workflow, there are two build jobs for Android and iOS: `build_android` and `build_ios`. After each build, a corresponding Maestro job (`test_android` or `test_ios`) runs the tests for that platform.
+
+Each Maestro job references the build via `build_id` and points at the Maestro flow files via `flow_path`.
+
+### Run the workflow manually
+
+Use the `eas workflow:run` command to run the workflow manually:
+
+```sh
+eas workflow:run .eas/workflows/e2e-tests.yml
+```
+
+On the EAS dashboard, notice that the Android and iOS builds start in parallel. Once each build completes, the corresponding Maestro test job runs the flow files against it.
+
+## Trigger E2E tests automatically
+
+So far we've run the workflow manually. We can trigger it from GitHub events so it runs on every pull request or on demand with a pull request label.
+
+### Run on every pull request
+
+To run E2E tests on every pull request, add an `on.pull_request` trigger to the workflow:
+
+```yaml
+on:
+  pull_request:
+    branches: ['*']
+```
+
+### Run on demand with a label
+
+To run E2E tests only when needed, use the [`on.pull_request_labeled`](/eas/workflows/syntax.md#onpull_request_labeled) trigger. It accepts a `labels` parameter, and the workflow only runs when someone adds one of those labels to a pull request. For example, we can use the `test` label to trigger our E2E tests workflow:
+
+```yaml
+on:
+  pull_request_labeled:
+    labels: ['test']
+```
+
+## Summary
+
+Chapter 4: E2E tests
+
+We created a Maestro E2E test workflow on development builds for Android and iOS, kept the trigger manual by default, and learned how to use a pull request label trigger for on-demand runs.
+
+In the next chapter, learn how to create a production workflow with fingerprinting and OTA updates.
+
+[Next: Chapter 5: Production deployments](/tutorial/cicd/production.md)
+
+---
+
+---
+modificationDate: July 08, 2026
+title: 'Automate production deployments with EAS Workflows'
+description: Learn how to automate production builds and over-the-air updates with EAS Workflows from a release branch for Android and iOS.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# Automate production deployments with EAS Workflows
+
+Learn how to automate production builds and over-the-air updates with EAS Workflows from a release branch for Android and iOS.
+
+Rebuilding the app for every production change is wasteful when most changes are TypeScript/JavaScript only.
+
+## Learning outcomes
+
+-   Trigger production deployments from a `release/*` branch instead of every push to `main`
+-   Branch between a native build and an [OTA update](/deploy/send-over-the-air-updates.md) based on the project fingerprint
+-   Automate app store submissions as a follow-up step in the production workflow
+
+#### Prerequisites
+
+##### EAS Build configured for production
+
+[EAS CLI](/eas/cli.md) prompts to generate credentials the first time we trigger a build for a profile. Trigger the production build manually for both Android and iOS so the credentials exist before the workflow runs:
+
+```sh
+eas build --profile production --platform all
+```
+
+## Using a release branch
+
+Previously, with development builds, we have seen that using the `on.push.branches` trigger runs our workflow on every push to the specified `main` branch. For production deployments, triggering a workflow on every push to the `main` branch means every change merged is a new release. Teams usually want a deliberate release process, so they use a release branch or tag instead.
+
+In a release branch strategy, we usually specify the branch with a pattern such as `release/*`, where `*` is the feature or version name. This is what separates Continuous Integration (CI) from Continuous Delivery (CD). CI runs on every push to the `main` branch, while CD runs on a release branch when the team is ready to deploy to production.
+
+The table below shows how each workflow's trigger defines its purpose:
+
+| Workflow file | Trigger | Build profile | Purpose |
+| --- | --- | --- | --- |
+| **.eas/workflows/build.yml** | `on.push.branches: ['main']` | `development` | CI workflow that runs on every push to the `main` branch. It can run unit tests and generate development builds. |
+| **.eas/workflows/preview.yml** | `on.push.branches: ['main']` | `preview` | Preview workflow that runs on every push to the `main` branch. It can generate preview builds for internal testing and sharing with stakeholders. |
+| **.eas/workflows/production.yml** | `on.push.branches: ['release/*']` | `production` | CD workflow that runs on every push to a release branch. |
+
+The above files coexist inside a project's GitHub repository without any conflict. Each uses a different build profile and a trigger.
+
+```
+Production workflow decision: a push to a release branch fires the workflow, fingerprint hashes the project, get-build looks up an existing build with the same hash, then the workflow publishes an OTA update if a match is found, or runs a new native build if not.
+```
+
+## The `build` job type for production builds
+
+Let's start by creating a production workflow. It uses the [pre-packaged](/tutorial/cicd/first-workflow.md#types-of-jobs-in-eas-workflows) `build` job type from EAS Workflows and runs for both Android and iOS.
+
+### Add a production.yml
+
+Inside **.eas/workflows/**, create a new file called **production.yml** that uses the `production` build profile from **eas.json**:
+
+```yaml
+name: Deploy to production
+
+on:
+  push:
+    branches: ['release/*']
+
+jobs:
+  build_android:
+    name: Build Android
+    type: build
+    params:
+      platform: android
+      profile: production
+  build_ios:
+    name: Build iOS
+    type: build
+    params:
+      platform: ios
+      profile: production
+```
+
+This creates a **.aab** artifact for Android and an **.ipa** artifact for iOS on a push to any branch that matches the pattern `release/*`.
+
+### Add fingerprints to the workflow
+
+Let's add a [`fingerprint`](/eas/workflows/pre-packaged-jobs.md#fingerprint) job to the workflow to check if there are changes to native code and update existing `build_android` and `build_ios` jobs based on that. We are also adding [`get-build`](/eas/workflows/pre-packaged-jobs.md#get-build) jobs to look up existing builds for Android and iOS.
+
+Update the **production.yml** file with the following code:
+
+```yaml
+name: Deploy to production
+
+on:
+  push:
+    branches: ['release/*']
+
+jobs:
+  fingerprint:
+    name: Fingerprint
+    type: fingerprint
+    environment: production
+  get_android_build:
+    name: Check for existing Android build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.android_fingerprint_hash }}
+      profile: production
+  get_ios_build:
+    name: Check for existing iOS build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+      profile: production
+  build_android:
+    name: Build Android
+    needs: [get_android_build]
+    if: ${{ !needs.get_android_build.outputs.build_id }}
+    type: build
+    params:
+      platform: android
+      profile: production
+  build_ios:
+    name: Build iOS
+    needs: [get_ios_build]
+    if: ${{ !needs.get_ios_build.outputs.build_id }}
+    type: build
+    params:
+      platform: ios
+      profile: production
+```
+
+In the above workflow, the `fingerprint` job runs first and generates a hash based on the changes in the codebase. The `get-build` jobs then check if there are existing builds for Android and iOS with the same fingerprint hash. If there are no existing builds, the `build` jobs run to create new builds for production.
+
+The [`environment`](/eas/workflows/syntax.md#jobsjob_idenvironment) field on the `fingerprint` job tells EAS which environment variables to load when computing the fingerprint. Our production environment may have different values for variables such as `API_URL` or feature flags. Those values can affect the native layer when EAS bakes them into the build. Setting `environment: production` ensures the fingerprint reflects what ships.
+
+The [`if`](/eas/workflows/syntax.md#jobsjob_idif) field used on the `build_android` and `build_ios` jobs is a boolean expression. When it evaluates to `false`, the build jobs are skipped. The `!` operator means the build job runs only when `get-build` did not find a matching build.
+
+### Add a job for updates
+
+Currently, our workflow only creates production builds when there are changes to native code. If there are only changes to TypeScript/JavaScript files, we want to trigger an OTA update instead of a native build.
+
+Let's add two jobs `update_android` and `update_ios` that run when there are no changes to native code and use `update` job type to trigger an OTA update:
+
+```yaml
+name: Deploy to production
+
+on:
+  push:
+    branches: ['release/*']
+
+jobs:
+  fingerprint:
+    # ...
+  get_android_build:
+    # ...
+  get_ios_build:
+    # ...
+  build_android:
+    # ...
+  build_ios:
+    # ...
+  update_android:
+    name: Publish Android update
+    needs: [get_android_build]
+    if: ${{ needs.get_android_build.outputs.build_id }}
+    type: update
+    params:
+      branch: production
+      platform: android
+  update_ios:
+    name: Publish iOS update
+    needs: [get_ios_build]
+    if: ${{ needs.get_ios_build.outputs.build_id }}
+    type: update
+    params:
+      branch: production
+      platform: ios
+```
+
+Our workflow only builds production-ready app binaries or publishes OTA updates. Automating store submission is a common next step discussed below in the [Automate app store submissions](/tutorial/cicd/production.md#automate-app-store-submissions) section.
+
+### Create a release branch and push changes
+
+> **Note:** Ensure that the workflow file is already part of our GitHub repository and available on the `main` branch at this point.
+
+To test our workflow, let's create a release branch and push it to our GitHub repository from a terminal window:
+
+```sh
+git checkout -b release/1.0.0
+git push origin release/1.0.0
+```
+
+Open the EAS dashboard and find the workflow run. Since no build exists yet for this fingerprint, the `build` jobs should run, and the `update` jobs should be grayed out.
+
+Both Android and iOS builds are running in parallel. Once each job completes, we receive a new artifact for Android and iOS.
+
+Now, let's make a TypeScript/JavaScript only change in our example project on the same release branch and push again using the commands below:
+
+```sh
+git add .
+git commit -m "Update welcome text"
+git push origin release/1.0.0
+```
+
+After the workflow runs, notice in the EAS dashboard that the fingerprint matches the build from the last push. The `build` jobs are skipped entirely, and the `update` jobs publish an OTA update.
+
+## Automate app store submissions
+
+The workflow we have built in this chapter only builds production-ready app binaries or publishes OTA updates to an existing production app. [Automating store submission](/build/automate-submissions.md) is a common next step in a production release workflow.
+
+EAS Workflows provides a `submit` pre-packaged job for automating app store submissions. It requires us to manage our app store credentials with EAS CLI. It also requires us to fulfill app store requirements, such as manually uploading the first Android release (**.aab**) to the Google Play Store. iOS has its own Apple Developer Program enrollment and signing credentials to set up.
+
+Once the app store requirements are in place, we can add two new jobs `submit_android` and `submit_ios` to our workflow that run after the `build` jobs:
+
+```yaml
+# rest of the workflow file
+
+submit_android:
+  name: Submit Android
+  needs: [build_android]
+  type: submit
+  params:
+    build_id: ${{ needs.build_android.outputs.build_id }}
+submit_ios:
+  name: Submit iOS
+  needs: [build_ios]
+  type: submit
+  params:
+    build_id: ${{ needs.build_ios.outputs.build_id }}
+```
+
+The above `submit_android` and `submit_ios` jobs require a `build_id` parameter to know which build to submit to the app stores. They run only when the `build_android` and `build_ios` jobs run, which means a new production build is created. If there are only changes to TypeScript/JavaScript files, the `submit` jobs are skipped as well since no new build is created.
+
+## Summary
+
+Chapter 5: Production deployments
+
+We created a production workflow for Android and iOS triggered by pushes to a release branch, used fingerprinting to choose between a native build and an OTA update, and saw how EAS Submit automates app store submissions.
+
+In the next chapter, learn how to switch production deployments from release branches to version tags.
+
+[Next: Chapter 6: Tag-based releases](/tutorial/cicd/tag-based-releases.md)
+
+---
+
+---
+modificationDate: July 08, 2026
+title: 'Using Git tags to trigger production deployments'
+description: Learn how to trigger production deployments from Git tags on EAS Workflows.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# Using Git tags to trigger production deployments
+
+Learn how to trigger production deployments from Git tags on EAS Workflows.
+
+Pushing to a release branch runs the production workflow on every commit, even ones we never meant as a release.
+
+## Learning outcomes
+
+-   Switch the production workflow trigger from a `release/*` branch to a Git tag matching `v*.*.*`
+-   Cut a release by pushing a tag from `main` and watch the workflow run on the EAS dashboard
+-   Exclude pre-release tags like `v1.0.0-rc.1` from production and run release candidates in a separate workflow
+
+## Tags as release events
+
+EAS Workflows supports tag-based triggers through [`on.push`](/eas/workflows/syntax.md#onpush) with a `tags` list. The workflow runs only when a tag matching a glob pattern is pushed to the remote. A Git tag is a one-time event tied to a specific commit and version, unlike a branch that can be updated over time. That makes tags well-suited for marking releases.
+
+A tag-based release workflow fits teams that:
+
+-   Want the version number in Git to match the version they ship to app users
+-   Release from `main` directly rather than maintaining long-lived release branches
+-   Want a clear audit trail of every release commit by version
+
+```
+Trigger comparison: a push to a release branch runs the production workflow on every commit, while a push of a version tag runs the workflow only when a tag is pushed.
+```
+
+## Switch production.yml to a tag trigger
+
+Open the **.eas/workflows/production.yml** workflow from the [previous chapter](/tutorial/cicd/production.md) and replace the `on.push.branches` trigger with `on.push.tags`. Everything else inside the workflow stays the same.
+
+### Change the trigger
+
+Replace the `branches` trigger with a `tags` trigger. The `tags` glob matches tags like `v1.0.0`, `v2.3.7`, and `v10.0.0-beta.1`.
+
+```yaml
+name: Deploy to production
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  fingerprint:
+    name: Fingerprint
+    type: fingerprint
+    environment: production
+  get_android_build:
+    name: Check for existing Android build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.android_fingerprint_hash }}
+      profile: production
+  get_ios_build:
+    name: Check for existing iOS build
+    needs: [fingerprint]
+    type: get-build
+    params:
+      fingerprint_hash: ${{ needs.fingerprint.outputs.ios_fingerprint_hash }}
+      profile: production
+  build_android:
+    name: Build Android
+    needs: [get_android_build]
+    if: ${{ !needs.get_android_build.outputs.build_id }}
+    type: build
+    params:
+      platform: android
+      profile: production
+  build_ios:
+    name: Build iOS
+    needs: [get_ios_build]
+    if: ${{ !needs.get_ios_build.outputs.build_id }}
+    type: build
+    params:
+      platform: ios
+      profile: production
+  update_android:
+    name: Publish Android update
+    needs: [get_android_build]
+    if: ${{ needs.get_android_build.outputs.build_id }}
+    type: update
+    params:
+      branch: production
+      platform: android
+  update_ios:
+    name: Publish iOS update
+    needs: [get_ios_build]
+    if: ${{ needs.get_ios_build.outputs.build_id }}
+    type: update
+    params:
+      branch: production
+      platform: ios
+```
+
+For tags to trigger the workflow, we need to pick a pattern that matches our team's flow. Common patterns include:
+
+-   `['v*']` matches any tag that starts with `v`
+-   `['v*.*.*']` matches strict three-part semantic versions (recommended)
+
+We don't need to change any other jobs. The `fingerprint`, `get-build`, `build`, and `update` jobs work identically because they operate on the commit.
+
+### Commit and push the workflow change
+
+Commit the change to **production.yml** and push it to `main`. This doesn't trigger the workflow because we switched from a branch trigger to a tag trigger.
+
+```sh
+git add .eas/workflows/production.yml
+git commit -m "Switch production workflow to tag trigger"
+git push origin main
+```
+
+### Create a tag to test the workflow
+
+To run the workflow, we need to push a tag that matches the glob pattern defined in **production.yml**.
+
+Make a TypeScript/JavaScript change in our example project, commit it, and push a new tag:
+
+```sh
+git add .
+git commit -m "Fix welcome copy"
+git tag v0.1.0
+git push origin main --tags
+```
+
+The workflow triggers on the `v0.1.0` tag. Open the EAS dashboard, and under **Workflows**, notice "Deploy to production" running with `refs/tags/v0.1.0` as its branch:
+
+Since this is the first production run with the fingerprint generated for a tag-based release, the `build` jobs run for both Android and iOS. Subsequent tags that point to TypeScript/JavaScript changes skip the build jobs and go straight to `update` jobs.
+
+## Pre-release tags for release candidates
+
+The `v*.*.*` glob also matches pre-release tags like `v1.0.0-rc.1`, which would ship a release candidate to app users. To keep release candidates out of production, exclude them from the production workflow's trigger:
+
+```yaml
+on:
+  push:
+    tags: ['v*.*.*', '!v*.*.*-rc.*']
+```
+
+To exercise a release candidate before the real release, create a separate workflow that matches only pre-release tags (`tags: ['v*.*.*-rc.*']`) and reuses the `fingerprint`, `get-build`, and `build` jobs without the `update` and `submit` jobs. The same pipeline runs, and nothing reaches app users.
+
+## Summary
+
+Chapter 6: Tag-based releases
+
+We switched the production workflow trigger from a release branch to a Git tag, tested the change by pushing a versioned tag from main, and learned how to gate release candidates with a pre-release tag glob.
+
+In the next chapter, learn how to deploy web builds to EAS Hosting from a workflow.
+
+[Next: Chapter 7: Web deployments](/tutorial/cicd/web-deployments.md)
+
+---
+
+---
+modificationDate: July 08, 2026
+title: 'Deploy web apps to EAS Hosting with EAS Workflows'
+description: Learn how to deploy web builds to EAS Hosting alongside Android and iOS releases to existing EAS Workflows.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# Deploy web apps to EAS Hosting with EAS Workflows
+
+Learn how to deploy web builds to EAS Hosting alongside Android and iOS releases to existing EAS Workflows.
+
+Our workflows from previous chapters cover Android and iOS. Let's extend them to also deploy the web build to [EAS Hosting](/eas/hosting/introduction.md) alongside the same release.
+
+## Learning outcomes
+
+-   Configure the Expo project to export a static web build
+-   Add a web deployment job to **preview.yml** to generate a non-production web build
+-   Add a web deployment job to **production.yml** to generate a production web build
+
+## EAS Hosting and the deploy job
+
+**EAS Hosting** is a service for hosting and deploying web builds of an Expo app. Each deployment gets its own unique URL, and a project has a single production URL that serves whatever we last deployed to production.
+
+The [`deploy`](/eas/workflows/pre-packaged-jobs.md#deploy) pre-packaged job in EAS Workflows runs the web export, uploads the output of the export step to EAS Hosting, and returns the deployment URL as the job output. The `deploy` job has two parameters:
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `prod` | boolean | Optional. If `true`, deploys to the project's production URL. If omitted, deploys as a preview. |
+| `alias` | string | Optional. Names a stable alias URL like `awesome-project--staging.expo.app`. |
+
+## Configure web.output for static export
+
+Before we add web deployment jobs to our workflows, we need to configure our Expo project to export a [static web build](/router/web/static-rendering.md). In **app.json**, set the [`web.output`](/versions/latest/config/app.md#web) field to `static`:
+
+```json
+{
+  "expo": {
+    ... 
+    "web": {
+      "output": "static"
+    }
+  }
+}
+```
+
+`static` tells the Expo CLI to produce a directory of static HTML, JavaScript, and asset files that EAS Hosting can serve. Expo also supports `single` and `server` output; `static` produces plain files that any host can serve, which is all we need here.
+
+After updating the **app.json** with the above configuration, commit the change and push it to the repository's `main` branch.
+
+## Add a web preview deployment
+
+Setting `prod: true` is the difference between a preview deployment and a production deployment. Previews get unique per-deployment URLs. We created a preview workflow in [Chapter 3 Step 1](/tutorial/cicd/preview-builds.md#add-a-previewyml). Let's add a `deploy_web` job to that workflow so any time we create a new preview build, we also get a new web deployment.
+
+### Add a deploy_web job
+
+Open **.eas/workflows/preview.yml** and add a `deploy_web` job. This new job runs in parallel with existing build jobs because it has no `needs` dependency.
+
+```yaml
+name: Preview builds
+
+jobs:
+  # ... existing fingerprint, get-build, build_android, build_ios, notify jobs
+
+  deploy_web:
+    name: Deploy web (preview)
+    type: deploy
+```
+
+With no `prod` parameter, this deploys as a non-production version. Each push gets a unique URL like `https://awesome-project--abc123.expo.app`.
+
+### Push the workflow change to the repository
+
+Commit the change to **preview.yml** and push it to the `main` branch of the GitHub repository. EAS Workflows reads workflow files from the default branch, so this is what makes the change effective.
+
+```sh
+git add .eas/workflows/preview.yml
+git commit -m "Add web preview deploy job to preview workflow"
+git push origin main
+```
+
+### Test the workflow
+
+Now, manually run the preview workflow using the following command:
+
+```sh
+eas workflow:run .eas/workflows/preview.yml
+```
+
+On the EAS dashboard, the preview workflow run shows the `deploy_web` job alongside the build jobs.
+
+Under **Deploy web (preview)**, click the **View Deployment** link to open the deployed web build in the browser.
+
+## Add a web production deployment
+
+The production workflow from [Chapter 6, Step 1](/tutorial/cicd/tag-based-releases.md#change-the-trigger) runs when we push a new Git tag, and it builds or updates the native app. Let's add a `deploy_web` job to that workflow so that releasing a new version of the app also updates the web version on the production URL.
+
+### Add a deploy_web job
+
+Open **.eas/workflows/production.yml** and add a `deploy_web` job. This new job runs in parallel with existing build jobs because it has no `needs` dependency.
+
+```yaml
+name: Deploy to production
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+jobs:
+  # ... existing fingerprint, get-build, build, update jobs ...
+
+  deploy_web:
+    name: Deploy web (production)
+    type: deploy
+    params:
+      prod: true
+```
+
+In the above workflow, the `['v*.*.*']` matches strict three-part semantic versions. The `params.prod: true` deploys the web app to the production URL like `https://awesome-project.expo.app`.
+
+### Create a tag to test the workflow
+
+Commit the workflow change to the `main` branch of the repository:
+
+```sh
+git add .eas/workflows/production.yml
+git commit -m "Add web production deploy to production workflow"
+git push origin main
+```
+
+To run the workflow, create a new tag and push it to the repository:
+
+```sh
+git tag v0.2.0
+git push origin v0.2.0
+```
+
+The production workflow now runs on the release of the `v0.2.0` tag. The `deploy_web` job deploys the web build to the production URL.
+
+## Summary
+
+Chapter 7: Web deployments
+
+We configured the Expo project for static web export, added a deploy job to the preview workflow for non-production web URLs, and added a deploy job with \`prod: true\` to the production workflow so every release ships the web build with the native release.
+
+Learn about the next steps to use EAS Workflows.
+
+[Next: Next steps in your journey with EAS Workflows](/tutorial/cicd/next-steps.md)
+
+---
+
+---
+modificationDate: July 08, 2026
+title: Next steps
+description: Learn about the next steps in your journey with EAS Workflows.
+---
+
+This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+
+# Next steps
+
+Learn about the next steps in your journey with EAS Workflows.
+
+Congratulations! You've completed the CI/CD tutorial and built a full pipeline for an Expo project with [EAS Workflows](/eas/workflows/introduction.md). Every push, pull request, and version tag now runs the right automation, from development builds through production releases and web deploys.
+
+## EAS Workflows references
+
+[EAS Workflows syntax reference](/eas/workflows/syntax.md) — See the complete syntax reference for workflow files, including triggers, jobs, expressions, and conditional execution.
+
+[Pre-packaged jobs](/eas/workflows/pre-packaged-jobs.md) — See the catalog of pre-packaged job types for builds, updates, fingerprinting, submissions, deploys, Slack notifications, and more.
+
+[EAS environment variables](/eas/environment-variables.md) — Learn how to define and use environment variables in EAS Workflows for secrets, config, and per-environment values.
+
+## Related EAS services
+
+[EAS Build](/build/introduction.md) — See EAS Build documentation to learn more about compiling and signing Android and iOS apps.
+
+[EAS Update](/eas-update/introduction.md) — See EAS Update documentation to learn more about publishing over-the-air updates and customizable rollout strategies.
+
+[EAS Submit](/submit/introduction.md) — See EAS Submit documentation to learn more about uploading app binaries to the Google Play Store and Apple App Store from one CLI command.
+
+[EAS Hosting](/eas/hosting/introduction.md) — See EAS Hosting documentation to learn more about deploying Expo Router and React Native web apps.
+
+## Relevant guides
+
+[Automate submissions](/build/automate-submissions.md) — See the automate submissions guide to enable automatic submissions to app stores after every EAS Build.
+
+[App credentials](/app-signing/app-credentials.md) — See the app credentials guide to learn more about credentials requirements for Android and iOS production builds and submissions.
+
+[Custom builds](/custom-builds/get-started.md) — See the custom builds documentation to extend EAS Build with your own configuration and build steps.
+
+[GitHub Actions with EAS Update](/eas-update/github-actions.md) — See the GitHub Actions guide on how to publish updates with EAS Update from a GitHub Actions workflow.
+
+We hope you enjoyed this tutorial. If you have any questions or feedback, don't hesitate to reach out to us on [Discord](https://chat.expo.dev/), or share your experience on [X](https://x.com/expo).
 
 ---
 

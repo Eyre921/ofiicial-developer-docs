@@ -22,6 +22,19 @@ Instantly increase accuracy and recognition of up to 100 important terminology, 
 
 Keyterm Prompting is available for both monolingual and multilingual transcription using the [Nova-3 Models](/docs/models-languages-overview#nova-3), as well as [Flux](/docs/models-languages-overview#flux). To boost recognition of keywords using another Deepgram model (such as Nova-2), use the [Keywords](/docs/keywords) feature.
 
+`keyterm` does **not** use the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. `keyterm` accepts plain terms only—it does not support weights or intensifiers. The `keywords=KEYWORD:INTENSIFIER` pattern is valid for `keywords`, not for `keyterm`.
+
+|                                                  | Example                        |
+| ------------------------------------------------ | ------------------------------ |
+| **Do** — repeat the parameter for separate terms | `?keyterm=term1&keyterm=term2` |
+| **Do** — encode a multi-word phrase with `%20`   | `?keyterm=customer%20service`  |
+| **Do** — encode a multi-word phrase with `+`     | `?keyterm=customer+service`    |
+| **Don't** — add a weight or intensifier          | `?keyterm=term:0.15`           |
+| **Don't** — separate terms with a comma          | `?keyterm=term1,term2`         |
+| **Don't** — separate terms with a semicolon      | `?keyterm=term1;term2`         |
+
+To pass multiple separate keyterms, repeat the `keyterm` parameter. To boost one multi-word phrase, join the words with `%20` or `+`. Do not separate keyterms with commas, semicolons, or line breaks.
+
 ## Enable Feature
 
 To enable Keyterm Prompting, add a `keyterm` parameter in the query string and set it to your chosen key term:
@@ -99,9 +112,9 @@ Note that while the model was trained with formatted keyterms, the final transcr
 
 A space must be properly URL-encoded to ensure compatibility. Both `%20` and `+` are valid encodings, but their usage depends on context. In URL paths, spaces must be encoded as `%20`, while in query parameters, either `%20` or `+` can be used.
 
-You can pass in multiple keywords in your query string in several ways:
+You can pass in multiple keyterms in your query string in several ways. Do not separate keyterms with commas, semicolons, or line breaks, and do not append a weight or intensifier (for example, `keyterm=term:0.15` is invalid)—`keyterm` does not support weights.
 
-Repeat the `keyterm` parameter for each keyterm to ensure each keyterm is processed individually.
+To boost multiple separate keyterms, repeat the `keyterm` parameter so each keyterm is processed individually.
 
 ```bash cURL
 curl \
@@ -112,7 +125,7 @@ curl \
   --url "https://api.deepgram.com/v1/listen?model=nova-3&keyterm=KEYTERM1&keyterm=KEYTERM2"
 ```
 
-Use an encoded space `%20` to separate each keyterm and combine multiple keyterms into a single space-delimited value and boost an entire phrase as a cohesive unit.
+To boost one multi-word phrase as a single keyterm, join the words with an encoded space `%20`:
 
 ```bash cURL
 curl \
@@ -123,7 +136,7 @@ curl \
   --url "https://api.deepgram.com/v1/listen?model=nova-3&keyterm=term1%20term2"
 ```
 
-Use a plus `+` to separate each keyterm and combine multiple keyterms into a single space-delimited value and boost an entire phrase as a cohesive unit.
+In query parameters, you can also join the words of a phrase with a plus `+`:
 
 ```bash cURL
 curl \

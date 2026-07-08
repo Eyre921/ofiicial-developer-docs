@@ -44,6 +44,8 @@ You can update the following parameters mid-stream:
 
 All parameters are optional in a Configure message. Omitted parameters retain their current values.
 
+Each entry in the `keyterms` array is a plain term or phrase. Like the query-string [`keyterm`](/docs/keyterm) parameter, Flux keyterms do **not** support the weight/intensifier syntax from the legacy [Keywords](/docs/keywords) feature. Do not append a weight such as `"term:0.15"`; pass a multi-word phrase as a single array element, for example `["customer service"]`.
+
 ## Message Structure
 
 ### Configure Message

@@ -43,10 +43,10 @@ int hello() {
 }
 ```
 
-Running `hello.js` prints:
+Running `hello.ts` prints:
 
 ```sh terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
-bun hello.js
+bun hello.ts
 What is the answer to the universe? 42
 ```
 

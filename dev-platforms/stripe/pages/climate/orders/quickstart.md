@@ -117,7 +117,7 @@ Add the dependency to your build and import the library. Alternatively, if youâ€
 Make sure to initialize with Go Modules:
 
 ```bash
-go get -u github.com/stripe/stripe-go/v85
+go get -u github.com/stripe/stripe-go/v86
 ```
 
 #### GitHub

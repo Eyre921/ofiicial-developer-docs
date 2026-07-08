@@ -22,7 +22,7 @@ Deploy LangSmith agents to LangChain-managed Cloud infrastructure on AWS and GCP
   </Card>
 
   <Card title="Managed Deep Agents" icon="robot" href="/langsmith/managed-deep-agents-overview">
-    Private preview API for creating, running, and operating Managed Deep Agents on Cloud.
+    CLI-first private beta for deploying code-first Deep Agents to managed LangSmith infrastructure.
   </Card>
 
   <Card title="Quickstart" icon="bolt" href="/langsmith/deployment-quickstart">

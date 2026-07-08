@@ -543,13 +543,16 @@ In addition to the tools you provide, every Deep Agent comes with a built-in set
 | ------------- | ----------------------------------------------------------- |
 | `ls`          | List files in a directory                                   |
 | `read_file`   | Read file contents (with pagination and multimodal support) |
-| `write_file`  | Create new files                                            |
+| `write_file`  | Create a new file, or overwrite an existing one             |
 | `edit_file`   | Perform exact string replacements in files                  |
+| `delete`      | Delete a file, or a directory and its contents recursively  |
 | `glob`        | Find files matching a glob pattern                          |
 | `grep`        | Search file contents                                        |
 | `execute`     | Run shell commands (sandbox backends only)                  |
 | `task`        | Spawn a subagent to handle a delegated task                 |
 | `write_todos` | Manage a structured todo list                               |
+
+<Note>The `delete` tool requires `deepagents` 0.7.a1 or newer. Recursive directory deletion requires 0.7.a2 or newer.</Note>
 
 For a full breakdown of what each built-in tool does, see [Harness overview](/oss/python/deepagents/overview#execution-environment).
 

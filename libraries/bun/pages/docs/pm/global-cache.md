@@ -67,5 +67,5 @@ The same applies on macOS, with a caveat. There Bun uses `clonefile`, which is c
   node --preserve-symlinks ./foo.js
   ```
 
-  Bun's runtime does not expose an equivalent of `--preserve-symlinks`.
+  Bun's runtime also supports `--preserve-symlinks`.
 </Accordion>

@@ -103,11 +103,11 @@ Each month, Visa calculates the VAMP count, ratio, and volume from the previous 
 | Criteria | Non-compliant threshold | Excessive threshold |
 | --- | --- | --- |
 | VAMP count | 5 | - 150 in CEMEA
-- 1,500 elsewhere |
+- 1,500 elsewhere (AP, Canada, EU, US and LAC) |
 | VAMP ratio | 0.5% | - 2.2% in CEMEA
-- 1.5% elsewhere |
+- 1.5% elsewhere (AP, Canada, EU, US and LAC) |
 | VAMP volume | N/A | - 75,000 USD in CEMEA
-- N/A elsewhere |
+- N/A elsewhere (AP, Canada, EU, US and LAC) |
 
 Visa assesses fees to merchants that exceed the `Excessive` threshold and may assess fees to merchants that exceed the `Non-Compliant` threshold. If Visa assesses fines, Stripe notifies the account about the fee.
 
@@ -129,7 +129,7 @@ Visa doesn’t assess fines for VAMP enumeration monitoring.
 
 #### View your VAMP metrics
 
-Accounts can view Stripe’s estimates of their VAMP metrics in their [VAMP dashboard](https://dashboard.stripe.com/test/radar/cbmp/vamp). The dashboard has the following sections:
+Accounts can view their VAMP metrics in their [VAMP dashboard](https://dashboard.stripe.com/radar/cbmp/vamp). The dashboard has the following sections:
 
 | Section | Description |
 | --- | --- |

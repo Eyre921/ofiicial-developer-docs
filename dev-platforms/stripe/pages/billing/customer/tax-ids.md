@@ -85,6 +85,7 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | HR | hr_oib | Croatian Personal Identification Number | 12345678901 | No |
 | HU | eu_vat | European VAT number | HU12345678 | Yes |
 | HU | hu_tin | Hungary tax number (adószám) | 12345678-1-23 | No |
+| IC | ic_nif | Canary Islands NIF number (Número de Identificación Fiscal) | A12345678 | No |
 | ID | id_npwp | Indonesian NPWP number | 012.345.678.9-012.345 | No |
 | IE | eu_vat | European VAT number | IE1234567AB | Yes |
 | IL | il_vat | Israel VAT | 000012345 | No |
@@ -117,7 +118,7 @@ Currently, Stripe supports the following Tax ID types in the following regions:
 | MY | my_frp | Malaysian FRP number | 12345678 | No |
 | MY | my_itn | Malaysian ITN | C 1234567890 | No |
 | MY | my_sst | Malaysian SST number | A12-3456-78912345 | No |
-| NG | ng_tin | Nigerian Tax Identification Number | 12345678-0001 | No |
+| NG | ng_tin | Nigerian Tax Identification Number | 1234567890123 | No |
 | NL | eu_vat | European VAT number | NL123456789B12 | Yes |
 | NO | no_vat | Norwegian VAT number | 123456789MVA | Yes |
 | NO | no_voec | Norwegian VAT on e-commerce number | 1234567 | No |

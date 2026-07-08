@@ -10,6 +10,19 @@ Log of updates and improvements to our Python packages
   **Subscribe**: Our changelog includes an [RSS feed](https://docs.langchain.com/oss/python/releases/changelog/rss.xml) that can integrate with [Slack](https://slack.com/help/articles/218688467-Add-RSS-feeds-to-Slack), [email](https://zapier.com/apps/email/integrations/rss/1441/send-new-rss-feed-entries-via-email), Discord bots like [Readybot](https://readybot.io/) or [RSS Feeds to Discord Bot](https://rss.app/en/bots/rssfeeds-discord-bot), and other subscription tools.
 </Callout>
 
+<Update label="Jul 7, 2026">
+  ## `deepagents` v0.7.0
+
+  * **New [`delete`](/oss/python/deepagents/tools#built-in-harness-tools) filesystem tool**: Delete a file, or recursively delete a directory and its contents. Backends that don't support deletion have the tool automatically hidden from the model.
+  * **`write_file` now overwrites existing files**: `write_file` used to error if the target file already existed. It now overwrites it — use `edit_file` for targeted changes to an existing file.
+  * **[Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance)**: A `middleware=` (or subagent `middleware`) instance whose `.name` matches a default now replaces that default in place, instead of erroring on duplicate middleware.
+  * **[Restrict filesystem tools](/oss/python/deepagents/overview#virtual-filesystem-access)**: `FilesystemMiddleware` now accepts a `tools` allowlist to expose only a subset of the built-in filesystem tools to the model, building on the middleware-override behavior above.
+
+  <Note>
+    The above changes are available only in the `deepagents` Python SDK.
+  </Note>
+</Update>
+
 <Update label="May 12, 2026">
   ## `deepagents` v0.6.0
 

@@ -119,35 +119,21 @@ You will need to provide several parameters to your LangSmith installation to co
 
 ## Configuration
 
-With these parameters in hand, you can configure your LangSmith instance to use the provisioned ClickHouse database. You can do this by modifying the `config.yaml` file for your LangSmith Helm Chart installation or the `.env` file for your Docker installation.
+With these parameters in hand, you can configure your LangSmith instance to use the provisioned ClickHouse database. You can do this by modifying the `config.yaml` file for your LangSmith Helm Chart installation.
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  clickhouse:
-    external:
-      enabled: true
-      host: "host"
-      port: "http port"
-      nativePort: "native port"
-      user: "default"
-      password: "password"
-      database: "default"
-      tls: false
-      cluster: "my_cluster_name"  # Optional: Set this if using an external Clickhouse cluster
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env file
-  CLICKHOUSE_HOST=langchain-clickhouse # Change to your Clickhouse host if using external Clickhouse. Otherwise, leave it as is
-  CLICKHOUSE_USER=default # Change to your Clickhouse user if needed
-  CLICKHOUSE_DB=default # Change to your Clickhouse database if needed
-  CLICKHOUSE_PORT=8123 # Change to your Clickhouse port if needed
-  CLICKHOUSE_TLS=false # Change to true if you are using TLS to connect to Clickhouse. Otherwise, leave it as is
-  CLICKHOUSE_PASSWORD=password # Change to your Clickhouse password if needed
-  CLICKHOUSE_NATIVE_PORT=9000 # Change to your Clickhouse native port if needed
-  CLICKHOUSE_CLUSTER=my_cluster_name # Optional: Set this if using an external Clickhouse cluster
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+clickhouse:
+  external:
+    enabled: true
+    host: "host"
+    port: "http port"
+    nativePort: "native port"
+    user: "default"
+    password: "password"
+    database: "default"
+    tls: false
+    cluster: "my_cluster_name"  # Optional: Set this if using an external Clickhouse cluster
+```
 
 Once configured, you should be able to reinstall your LangSmith instance. If everything is configured correctly, your LangSmith instance should now be using your external ClickHouse database.
 

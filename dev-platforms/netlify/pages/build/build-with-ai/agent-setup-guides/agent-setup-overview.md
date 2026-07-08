@@ -24,82 +24,46 @@ Equip your agent with the latest Netlify context, including agent skills:
 fetch https://netlify.ai to help me deploy and build with Netlify using the latest agent skills
 ```
 
-## MCP servers, plugins, and more
+## MCP Server support
+
+Connect to the Netlify MCP server to equip your agent with the best of Netlify expertise and the Netlify CLI.
+
+### Connect to Netlify's remote MCP server 
 
 Netlify offers an [MCP server](https://github.com/netlify/netlify-mcp), which you can connect to through a connector, plugin, or your agent.
 
-Learn more about [Netlify's MCP server](https://github.com/netlify/netlify-mcp).
-
-For general guidance on connecting to Netlify's remote MCP server, see the section below. For agent-specific instructions, check your agent setup guide or MCP server directory or marketplace.
-
-For example, you can find Netlify in [Cursor's marketplace](https://cursor.com/marketplace/netlify) or in [Claude's Connector Directory](https://claude.com/connectors/netlify).
-
-### Connect to Netlify's remote MCP server
-
-Netlify's remote MCP server is hosted at `https://netlify-mcp.netlify.app/mcp`.
-
-To start connecting to Netlify's remote MCP server, you can copy this basic instruction and share it with your AI agent:
+To start connecting to Netlify's remote MCP server by running this command and following the prompts to select the agents you want to configure:
 
 ```
-mcp add https://netlify-mcp.netlify.app/mcp
+npx -y add-mcp https://netlify-mcp.netlify.app/mcp
 ```
 
-Note that your AI agent or tool may have its own official setup command. For example, Claude Code uses this command:
+If you would like to use your agent's own official setup command, check out the agent-specific MCP instructions below:
+
+- [Claude Code](/build/build-with-ai/agent-setup-guides/set-up-claude-code-for-netlify/#connect-to-the-netlify-mcp-server)
+- [Codex](/build/build-with-ai/agent-setup-guides/set-up-codex-for-netlify/#install-netlify-mcp-server)
+- [Claude Web](/build/build-with-ai/agent-setup-guides/set-up-claude-web-for-netlify/#connect-netlify-to-claude-web) via Claude's Netlify Connector
+- [Claude Desktop](/build/build-with-ai/agent-setup-guides/set-up-claude-desktop-for-netlify/#connect-to-the-netlify-connector) via Claude's Netlify Connector
+- [ChatGPT](/build/build-with-ai/agent-setup-guides/use-netlify-with-chatgpt/#find-netlify-in-chatgpt-apps) via ChatGPT's Netlify App
+- [Antigravity](/build/build-with-ai/agent-setup-guides/set-up-antigravity-for-netlify/#connect-to-the-netlify-mcp-server)
+
+The following editors allow one-click install of our MCP with the following links
+
+[![Install MCP Server on Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=netlify&config=eyJ1cmwiOiJodHRwczovL25ldGxpZnktbWNwLm5ldGxpZnkuYXBwL21jcCJ9)
+
+[![Add MCP Server netlify to LM Studio](https://files.lmstudio.ai/deeplink/mcp-install-light.svg)](https://lmstudio.ai/install-mcp?name=netlify&config=eyJ1cmwiOiJodHRwczovL25ldGxpZnktbWNwLm5ldGxpZnkuYXBwL21jcCJ9)
+
+[![Install on VS Code](https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Server&color=0098FF)](https://insiders.vscode.dev/redirect/mcp/install?name=netlify&config=%7B%22url%22%3A%20%22https%3A%2F%2Fnetlify-mcp.netlify.app%2Fmcp%22%7D)
+
+[![Install on VS Code Insiders Edition](https://img.shields.io/badge/VS_Code_Insiders-VS_Code_Insiders?style=flat-square&label=Install%20Server&color=24bfa5)](https://insiders.vscode.dev/redirect/mcp/install?name=netlify&config=%7B%22url%22%3A%20%22https%3A%2F%2Fnetlify-mcp.netlify.app%2Fmcp%22%7D&quality=insiders)
+
+### Connect to Netlify's Local MCP server
+
+Our recommendation is to use the remote MCP server to have the most up-to-date version of the MCP capabilities. However, some developers are required to use local MCP servers in their environments. You can use the following command to install Netlify's local MCP:
 
 ```
-claude mcp add --transport http netlify https://netlify-mcp.netlify.app/mcp
+npx -y add-mcp "npx -y @netlify/mcp"
 ```
-
-### One-click setup
-
-Your AI agent tool may have a one-click setup path. Check the following for how to do that:
-- docs for your AI agent or tool
-- our agent setup guides, such as [Set up Claude Code for Netlify](/build/build-with-ai/agent-setup-guides/set-up-claude-code-for-netlify/)
-- [Quick setup for code editors](#quick-setup-for-code-editors)
-
-### Manual setup with JSON
-
-To manually connect to Netlify's remote MCP Server with a `.json` file, check out our [manual setup docs](#connect-to-mcp-server-with-json-file) for an example.
-
-### Connect to Netlify's MCP server locally
-
-If remote MCP servers are blocked in your environment, you can run the local MCP server instead with this command:
-
-```
-npx -y @netlify/mcp
-```
-
-### Quick setup for Code Editors
-
-Some code editors support a quick MCP server connection that you can click to get started. Learn more in your code editor docs or MCP server directory.
-
-[![Install MCP Server on Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/install-mcp?name=netlify&config=eyJjb21tYW5kIjoibnB4IC15IEBuZXRsaWZ5L21jcCJ9)
-
-[![Add MCP Server netlify to LM Studio](https://files.lmstudio.ai/deeplink/mcp-install-light.svg)](https://lmstudio.ai/install-mcp?name=netlify&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIkBuZXRsaWZ5L21jcCJdfQ%3D%3D)
-
-[![Install on VS Code](https://img.shields.io/badge/VS_Code-VS_Code?style=flat-square&label=Install%20Server&color=0098FF)](https://insiders.vscode.dev/redirect/mcp/install?name=netlify&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40netlify%2Fmcp%22%5D%7D)
-
-[![Install on VS Code Insiders Edition](https://img.shields.io/badge/VS_Code_Insiders-VS_Code_Insiders?style=flat-square&label=Install%20Server&color=24bfa5)](https://insiders.vscode.dev/redirect/mcp/install?name=netlify&config=%7B%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22%40netlify%2Fmcp%22%5D%7D&quality=insiders)
-
-### Connect to MCP server with `.json` file
-
-To connect to the Netlify MCP server with a `.json` file, we recommend you check with your AI tool, IDE, or agent to learn specific configuration requirements.
-
-In general, we recommend Netlify's remote MCP server setup over using Netlify's local MCP server. Most often people only use the local MCP server when their local environment restricts remote MCP servers.
-
-Here is a general example of a `.json` MCP server configuration file used to connect to Netlify's remote MCP server at `https://netlify-mcp.netlify.app/mcp`:
-
-```json
-{
-  "context_servers": {
-    "netlify": {
-      "url": "https://netlify-mcp.netlify.app/mcp"
-    }
-  }
-}
-```
-
-Note: Your AI tool, IDE, or agent setup may require some changes from the above example, such as saving the file as `mcp.json`, `settings.json`, changing `mcpServers` to `ContextServers` and/or requiring another field such as `"type":"http"`. Check your agent setup guide or MCP server setup docs or marketplace for the most accurate setup instructions.
 
 ## Agent skills
 

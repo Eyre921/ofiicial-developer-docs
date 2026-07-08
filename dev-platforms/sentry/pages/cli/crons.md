@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/crons/
 
 # Crons (CLI)
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 ##### Deprecation Notice
 
 Starting with v2.16.1 of the Sentry CLI, the ability to monitor check-ins using an auth token for authorization has been deprecated. Read on to learn how to update your CLI and use your project's DSN instead.

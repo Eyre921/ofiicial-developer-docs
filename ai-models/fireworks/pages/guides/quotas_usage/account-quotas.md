@@ -53,8 +53,8 @@ Fine-tuning jobs use training GPU quota (separate from on-demand deployment quot
 | No payment method | —                                                     |            0            |    0   |      0      |
 | Tier 1            | Valid payment method and billing profile              |            0            |   16   |      8      |
 | Tier 2            | Spend or add \$50 in credits                          |            16           |   16   |      16     |
-| Tier 3            | Spend or add \$500 in credits                         |            32           |   32   |      32     |
-| Tier 4            | Spend or add \$5,000 in credits                       |            64           |   64   |      64     |
+| Tier 3            | Spend or add \$500 in credits                         |            24           |   24   |      24     |
+| Tier 4            | Spend or add \$5,000 in credits                       |            32           |   32   |      32     |
 | Enterprise        | [Contact us](https://fireworks.ai/company/contact-us) |          Custom         | Custom |    Custom   |
 
 Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) is `0` until Tier 2, and current managed fine-tuning shapes run on Blackwell, so most fine-tuning needs Tier 2. If a job is rejected with HTTP 429 `quota_exceeded`, raise your tier and resubmit.

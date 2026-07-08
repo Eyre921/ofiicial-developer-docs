@@ -30,6 +30,8 @@ Keywords is only available for use with Nova-2, Nova-1, Enhanced, and Base speec
 
 Training a custom model is always the most effective and accurate way to recognize keywords and context in your transcripts. If you require more than 100 keywords, please [contact us](https://deepgram.com/contact-us) to discuss custom model training which is available on our [Enterprise Plan](https://deepgram.com/pricing).
 
+The `keywords=KEYWORD:INTENSIFIER` syntax on this page is specific to the `keywords` feature. When you migrate to [Keyterm Prompting](/docs/keyterm) for Nova-3, drop the `:INTENSIFIER` weight—`keyterm` does not support weights or intensifiers, so `keyterm=term:0.15` is invalid. Pass plain terms instead, repeating the `keyterm` parameter for multiple terms (`keyterm=term1&keyterm=term2`).
+
 ## Enable Feature
 
 To enable Keywords, when you call Deepgram’s API, add a `keywords` parameter in the query string and set it to your chosen keyword and intensifier:

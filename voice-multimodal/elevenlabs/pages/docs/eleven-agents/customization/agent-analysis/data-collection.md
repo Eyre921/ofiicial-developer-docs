@@ -1,12 +1,12 @@
 ---
-title: "Data Collection"
+title: "Data collection"
 source: https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/data-collection.md
 path: docs/eleven-agents/customization/agent-analysis/data-collection
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Data Collection
+# Data collection
 
 Data collection automatically extracts structured information from conversation transcripts using LLM-powered analysis. This enables you to capture valuable data points without manual processing, improving operational efficiency and data accuracy.
 
@@ -14,7 +14,7 @@ Data collection automatically extracts structured information from conversation 
 
 Data collection analyzes conversation transcripts to identify and extract specific information you define. The extracted data is structured according to your specifications and made available for downstream processing and analysis.
 
-### Supported Data Types
+### Supported data types
 
 Data collection supports four data types to handle various information formats:
 

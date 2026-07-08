@@ -24,7 +24,11 @@ Note that for a host that does not have TLS enabled, you will use `http` rather 
 
 ## Python SDK
 
-To configure the Python SDK for self-hosted deployments, create a custom `DeepgramClientEnvironment` with your self-hosted URLs and pass it to the `DeepgramClient`. This approach configures all endpoint types (REST APIs, WebSocket streaming, Agent, and Preview features).
+To configure the Python SDK for self-hosted deployments, create a custom `DeepgramClientEnvironment` with your self-hosted URLs and pass it to the `DeepgramClient`. This approach configures all endpoint types (REST APIs, WebSocket streaming, Agent WebSocket, and Agent REST).
+
+The `agent_rest` field shown below requires Python SDK **v7.2.0 or newer**. On
+v7.0.0–v7.1.1, `DeepgramClientEnvironment` accepted only `base`, `production`,
+and `agent` — omit `agent_rest` on those versions.
 
 Below is an example of how to make your first API request to your self-hosted deployment using the Python SDK. Substitute your own host address in place of `localhost` if needed.
 
@@ -42,7 +46,7 @@ self_hosted_env = DeepgramClientEnvironment(
     base="http://localhost:8080",           # HTTP endpoint for REST APIs
     production="ws://localhost:8080",       # WebSocket endpoint for streaming
     agent="ws://localhost:8080",            # WebSocket endpoint for agent
-    preview="ws://localhost:8080"           # WebSocket endpoint for preview
+    agent_rest="http://localhost:8080"      # HTTP endpoint for agent REST
 )
 
 # Initialize the client with your custom environment
@@ -65,7 +69,7 @@ self_hosted_env = DeepgramClientEnvironment(
     base=os.getenv("DEEPGRAM_BASE_URL", "http://localhost:8080"),
     production=os.getenv("DEEPGRAM_WS_URL", "ws://localhost:8080"),
     agent=os.getenv("DEEPGRAM_AGENT_URL", "ws://localhost:8080"),
-    preview=os.getenv("DEEPGRAM_PREVIEW_URL", "ws://localhost:8080")
+    agent_rest=os.getenv("DEEPGRAM_AGENT_REST_URL", "http://localhost:8080")
 )
 ```
 

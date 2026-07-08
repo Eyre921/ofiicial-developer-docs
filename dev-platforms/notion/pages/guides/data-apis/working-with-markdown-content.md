@@ -613,6 +613,12 @@ curl 'https://api.notion.com/v1/async_tasks/task_abc123' \
   -H "Notion-Version: 2026-03-11"
 ```
 
+In the [SDK for JavaScript and TypeScript](https://github.com/makenotion/notion-sdk-js) (v5.23.0 and later), `pages.create()` and `pages.updateMarkdown()` accept `allow_async: true`, and `asyncTasks.retrieve()` polls the returned task:
+
+```javascript theme={null}
+const task = await notion.asyncTasks.retrieve({ task_id: "task_abc123" })
+```
+
 An active task returns a non-terminal status and another polling hint:
 
 ```json theme={null}

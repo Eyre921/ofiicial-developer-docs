@@ -40,7 +40,7 @@ router.match("/");
   kind: "exact",
   name: "/",
   pathname: "/",
-  src: "https://mydomain.com/_next/static/pages/index.tsx"
+  src: "https://mydomain.com/_next/static/index.tsx"
 }
 ```
 
@@ -52,10 +52,10 @@ router.match("/settings?foo=bar");
 // =>
 {
   filePath: "/Users/colinmcd94/Documents/bun/fun/pages/settings.tsx",
-  kind: "dynamic",
+  kind: "exact",
   name: "/settings",
   pathname: "/settings?foo=bar",
-  src: "https://mydomain.com/_next/static/pages/settings.tsx",
+  src: "https://mydomain.com/_next/static/settings.tsx",
   query: {
     foo: "bar"
   }
@@ -73,7 +73,7 @@ router.match("/blog/my-cool-post");
   kind: "dynamic",
   name: "/blog/[slug]",
   pathname: "/blog/my-cool-post",
-  src: "https://mydomain.com/_next/static/pages/blog/[slug].tsx",
+  src: "https://mydomain.com/_next/static/blog/[slug].tsx",
   params: {
     slug: "my-cool-post"
   }

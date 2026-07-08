@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/installation/
 
 # Installation
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 Depending on your platform, there are different methods available to install `sentry-cli`.
 
 ## [Manual Download](https://docs.sentry.io/cli/installation.md#manual-download)

@@ -65,19 +65,26 @@ Use the LangSmith SDK to create evaluators programmatically. The SDK is availabl
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+
   from langsmith import Client
 
-  client = Client()
 
-  created = client.evaluators.create(
-      name="Correctness evaluator",
-      type="code",
-      code_evaluator={
-          "code": "def perform_eval(run, example):\n    return {'score': 1}",
-          "language": "python",
-      },
-  )
-  print("Created evaluator:", created.evaluator.id)
+  async def main():
+      client = Client()
+
+      created = await client.evaluators.create(
+          name="Correctness evaluator",
+          type="code",
+          code_evaluator={
+              "code": "def perform_eval(run, example):\n    return {'score': 1}",
+              "language": "python",
+          },
+      )
+      print("Created evaluator:", created.evaluator.id)
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

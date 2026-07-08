@@ -25,8 +25,8 @@ providers, lifecycle scoping, seeding files, secrets, deployment, and production
 This setup has three parts:
 
 1. **Deep agent with a sandbox backend:** The agent gets filesystem tools
-   (`read_file`, `write_file`, `edit_file`, `execute`) automatically from the
-   sandbox
+   (`read_file`, `write_file`, `edit_file`, `delete`, `execute`) automatically
+   from the sandbox
 
 2. **Custom API server** — A FastAPI app exposed via `langgraph.json`'s `http.app`
    field, providing file browsing endpoints the frontend can call
@@ -852,13 +852,17 @@ Frontend-specific:
 
 * **Persist `threadId` in `sessionStorage`** so page reloads reconnect to the
   same thread and sandbox instead of creating new ones.
-* **Sync files on every relevant tool call**, not just when the run finishes. Watch for `write_file`, `edit_file`, and `execute`
+
+* **Sync files on every relevant tool call**, not just when the run finishes. Watch for `write_file`, `edit_file`, `delete`, and `execute`
   tool messages and refresh immediately.
+
 * **Default to diff view for changed files**. When a user clicks a file that
   was modified by the agent, show the diff first — that's what they care about.
+
 * **Show compact tool results for read-only operations**. Instead of dumping
   the full output of `read_file` in the chat, show a one-liner like
   `Read router.js L1-42`. Reserve the full output display for mutating tools.
+
 * **Filter `node_modules` from the file tree**. Nobody wants to browse
   thousands of dependency files. Filter them out when fetching the tree.
 

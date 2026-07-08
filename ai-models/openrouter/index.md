@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 289 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 290 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -94,6 +94,7 @@
 - `docs/client-sdks/python/sdks/chat/readme` — [Chat](pages/docs/client-sdks/python/sdks/chat/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/chat/README.md)
 - `docs/client-sdks/python/sdks/classifications/readme` — [Classifications](pages/docs/client-sdks/python/sdks/classifications/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/classifications/README.md)
 - `docs/client-sdks/python/sdks/credits/readme` — [Credits](pages/docs/client-sdks/python/sdks/credits/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/credits/README.md)
+- `docs/client-sdks/python/sdks/datasets/readme` — [Datasets](pages/docs/client-sdks/python/sdks/datasets/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/datasets/README.md)
 - `docs/client-sdks/python/sdks/embeddings/readme` — [Embeddings](pages/docs/client-sdks/python/sdks/embeddings/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/embeddings/README.md)
 - `docs/client-sdks/python/sdks/endpoints/readme` — [Endpoints](pages/docs/client-sdks/python/sdks/endpoints/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/endpoints/README.md)
 - `docs/client-sdks/python/sdks/files/readme` — [Files](pages/docs/client-sdks/python/sdks/files/readme.md) · [原文](https://openrouter.ai/docs/client-sdks/python/sdks/files/README.md)

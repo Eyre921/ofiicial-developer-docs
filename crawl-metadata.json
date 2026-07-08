@@ -27,7 +27,7 @@
     "status": "ok"
   },
   "ai-models/fireworks": {
-    "pages": 381,
+    "pages": 382,
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
@@ -43,10 +43,12 @@
     "status": "ok"
   },
   "ai-models/anthropic-api": {
-    "status": "error: curl failed (28) for https://platform.claude.com/llms-full.txt: curl: (28) Operation timed out after 90005 milliseconds with 11245210 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 11761906 bytes received\ncurl: (28) Operation timed out"
+    "pages": 306,
+    "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "status": "error: curl failed (28) for https://docs.langchain.com/llms-full.txt: curl: (28) Operation timed out after 90000 milliseconds with 6621582 bytes received\ncurl: (28) Operation timed out after 90000 milliseconds with 4577380 bytes received\ncurl: (28) Operation timed out a"
+    "pages": 1437,
+    "status": "ok"
   },
   "voice-multimodal/assemblyai": {
     "pages": 0,
@@ -89,7 +91,8 @@
     "status": "ok"
   },
   "dev-platforms/cloudflare": {
-    "status": "error: curl failed (28) for https://developers.cloudflare.com/llms-full.txt: curl: (28) Operation timed out after 90002 milliseconds with 1220590 out of 56941659 bytes received\ncurl: (28) Operation timed out after 90002 milliseconds with 194318 out of 56941659 bytes received\nc"
+    "pages": 0,
+    "status": "ok"
   },
   "dev-platforms/drizzle": {
     "pages": 0,
@@ -100,7 +103,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15000 milliseconds\ncurl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15000 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -119,7 +122,7 @@
     "status": "ok"
   },
   "dev-platforms/upstash": {
-    "pages": 587,
+    "pages": 590,
     "status": "ok"
   },
   "dev-platforms/expo": {
@@ -185,7 +188,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 93,
+    "pages": 102,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -193,7 +196,7 @@
     "status": "ok"
   },
   "ai-models/openrouter": {
-    "pages": 289,
+    "pages": 290,
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
@@ -201,8 +204,8 @@
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
-    "pages": 761,
+    "pages": 764,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-08T11:30:41Z"
+  "_last_crawl": "2026-07-08T23:31:13Z"
 }

@@ -94,39 +94,47 @@ For streaming features, update WebSocket connection URLs accordingly:
 
 ### Python SDK
 
+Override the endpoint with a custom `DeepgramClientEnvironment`. The v7 client
+does **not** accept a `base_url`; `httpx_client` is for transport concerns only
+(proxies, SSL, pooling, timeout) and does not change the endpoint. For more
+detail, see [Using SDKs with Self-Hosted](/docs/using-sdks-with-self-hosted).
+
 ```python
 # For more Python SDK migration guides, visit:
 # https://github.com/deepgram/deepgram-python-sdk/tree/main/docs
 
 from deepgram import DeepgramClient
-import httpx
+from deepgram.environment import DeepgramClientEnvironment
 
 # Standard endpoint
 # client = DeepgramClient(api_key="YOUR_API_KEY")
 
 # Dedicated endpoint
-client = DeepgramClient(
-    api_key="YOUR_API_KEY",
-    httpx_client=httpx.Client(
-        base_url="https://YOUR_DEDICATED_ENDPOINT"
-    )
+dedicated_env = DeepgramClientEnvironment(
+    base="https://YOUR_DEDICATED_ENDPOINT",         # REST APIs
+    production="wss://YOUR_DEDICATED_ENDPOINT",      # STT/TTS WebSocket
+    agent="wss://YOUR_DEDICATED_ENDPOINT",           # Agent WebSocket
+    agent_rest="https://YOUR_DEDICATED_ENDPOINT",    # Agent REST
 )
+client = DeepgramClient(api_key="YOUR_API_KEY", environment=dedicated_env)
 
 # Self-hosted endpoint (HTTPS)
-client = DeepgramClient(
-    api_key="YOUR_API_KEY",
-    httpx_client=httpx.Client(
-        base_url="https://your-deepgram-instance.com"
-    )
+self_hosted_env = DeepgramClientEnvironment(
+    base="https://your-deepgram-instance.com",
+    production="wss://your-deepgram-instance.com",
+    agent="wss://your-deepgram-instance.com",
+    agent_rest="https://your-deepgram-instance.com",
 )
+client = DeepgramClient(api_key="YOUR_API_KEY", environment=self_hosted_env)
 
 # Self-hosted endpoint (HTTP with custom port)
-client = DeepgramClient(
-    api_key="YOUR_API_KEY",
-    httpx_client=httpx.Client(
-        base_url="http://your-deepgram-instance.com:8080"
-    )
+self_hosted_http_env = DeepgramClientEnvironment(
+    base="http://your-deepgram-instance.com:8080",
+    production="ws://your-deepgram-instance.com:8080",
+    agent="ws://your-deepgram-instance.com:8080",
+    agent_rest="http://your-deepgram-instance.com:8080",
 )
+client = DeepgramClient(api_key="YOUR_API_KEY", environment=self_hosted_http_env)
 ```
 
 ### JavaScript SDK

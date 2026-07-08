@@ -4,6 +4,28 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="July 8, 2026">
+  We released [`v5.23.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.23.0) of `@notionhq/client`, our SDK for JavaScript and TypeScript. Here's what's new:
+
+  ### Verify webhook signatures with one call
+
+  The new `verifyWebhookSignature()` helper confirms that a [webhook](/reference/webhooks) event really came from Notion, so you no longer need to hand-write the HMAC check. Pass the raw request body, the `X-Notion-Signature` header, and your subscription's `verification_token`; the helper compares signatures in constant time and returns `false` instead of throwing on malformed input. It works without configuration in Node.js 18+, Bun, Deno, Cloudflare Workers, Vercel Edge Functions, and browsers. A companion `signWebhookPayload()` generates signatures for testing your handler.
+
+  ### Read every row in a large data source
+
+  A single [data source query](/reference/query-a-data-source) returns at most 10,000 results, so plain pagination can silently miss rows. The new `iterateAllDataSourceRows()` and `collectAllDataSourceRows()` helpers page past the limit using the windowing approach from the [Query large data sources](/guides/data-apis/query-large-data-sources) guide, de-duplicating rows along the way. Stream rows with the iterator, or collect them into an array when the full result fits in memory.
+
+  ### Start and poll async page writes
+
+  `notion.asyncTasks.retrieve({ task_id })` adds typed support for the [Retrieve an async task](/reference/retrieve-async-task) endpoint, and the page create and markdown update methods now accept `allow_async: true`. Together they let you [run large markdown writes asynchronously](/guides/data-apis/working-with-markdown-content#running-large-markdown-writes-asynchronously): start the write without holding a request open, then poll until the task succeeds or fails.
+
+  ### Reliability and fixes
+
+  * The client now automatically retries `service_overload` (HTTP 529) responses, respecting the `Retry-After` header as described in [Request limits](/reference/request-limits). Thanks to @RyanBillard for contributing this.
+  * The relevance sort in search parameters now has the correct type, `{ property: "relevance" }`.
+  * Pagination parameters accept `start_cursor: null`, so you can pass a response's `next_cursor` straight through without a null check.
+</Update>
+
 <Update label="July 3, 2026">
   ### HTML blocks via the API
 

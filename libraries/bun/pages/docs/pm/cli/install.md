@@ -156,7 +156,7 @@ cowsay "Bun!"
 
 ## Production mode
 
-To install in production mode (without `devDependencies` or `optionalDependencies`):
+To install in production mode (without `devDependencies`):
 
 ```bash terminal icon="terminal" theme={"theme":{"light":"github-light","dark":"dracula"}}
 bun install --production
@@ -314,7 +314,7 @@ peer = true
 production = false
 
 # equivalent to `--save-text-lockfile` flag
-saveTextLockfile = false
+saveTextLockfile = true
 
 # equivalent to `--frozen-lockfile` flag
 frozenLockfile = false
@@ -344,9 +344,8 @@ Environment variables take priority over `bunfig.toml`.
 | Name                               | Description                                                                             |
 | ---------------------------------- | --------------------------------------------------------------------------------------- |
 | `BUN_CONFIG_REGISTRY`              | Set an npm registry (default: [https://registry.npmjs.org](https://registry.npmjs.org)) |
-| `BUN_CONFIG_TOKEN`                 | Set an auth token (currently does nothing)                                              |
+| `BUN_CONFIG_TOKEN`                 | Set an auth token for the default registry                                              |
 | `BUN_CONFIG_YARN_LOCKFILE`         | Save a Yarn v1-style yarn.lock                                                          |
-| `BUN_CONFIG_LINK_NATIVE_BINS`      | Point `bin` in package.json to a platform-specific dependency                           |
 | `BUN_CONFIG_SKIP_SAVE_LOCKFILE`    | Don’t save a lockfile                                                                   |
 | `BUN_CONFIG_SKIP_LOAD_LOCKFILE`    | Don’t load a lockfile                                                                   |
 | `BUN_CONFIG_SKIP_INSTALL_PACKAGES` | Don’t install any packages                                                              |
@@ -423,9 +422,9 @@ bun install --cpu=x64 --os=linux
 
 These flags install packages for the specified platform instead of the current system. Use them for cross-platform builds or when preparing deployments for different environments.
 
-**Accepted values for `--cpu`**: `arm64`, `x64`, `ia32`, `ppc64`, `s390x`
+**Accepted values for `--cpu`**: `arm`, `arm64`, `ia32`, `mips`, `mipsel`, `ppc`, `ppc64`, `s390`, `s390x`, `x32`, `x64`
 
-**Accepted values for `--os`**: `linux`, `darwin`, `win32`, `freebsd`, `openbsd`, `sunos`, `aix`
+**Accepted values for `--os`**: `aix`, `darwin`, `freebsd`, `linux`, `openbsd`, `sunos`, `win32`, `android`
 
 ## Peer dependencies?
 
@@ -741,7 +740,7 @@ bun install <name>@<version>
 ### Concurrency & Performance
 
 <ParamField type="number">
-  Maximum number of concurrent jobs for lifecycle scripts
+  Maximum number of concurrent jobs for lifecycle scripts (default: 2x CPU cores)
 </ParamField>
 
 <ParamField type="number">

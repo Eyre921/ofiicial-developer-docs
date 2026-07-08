@@ -10,7 +10,19 @@ Create rules to route payments across your payment processors.
 
 > #### Want access to Orchestration?
 > 
-> Orchestration is in private preview. 
+> Orchestration is in private preview. [Share your email address to request access.](https://docs.stripe.com/payments/orchestration.md#orchestration_preview)
+
+### Want access to Orchestration?
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/payments/orchestration" \
+  -d '{"email": "EMAIL", "preview": "orchestration_preview"}'
+```
 
 ## Route payments to multiple processors
 

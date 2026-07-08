@@ -1,12 +1,12 @@
 ---
-title: "Success Evaluation"
+title: "Success evaluation"
 source: https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/success-evaluation.md
 path: docs/eleven-agents/customization/agent-analysis/success-evaluation
 ---
 
 > This is a page from the ElevenLabs documentation. For a complete page index, fetch https://elevenlabs.io/docs/llms.txt. For the full documentation in a single file, fetch https://elevenlabs.io/docs/llms-full.txt.
 
-# Success Evaluation
+# Success evaluation
 
 Success evaluation allows you to define custom goals and success metrics for your conversations. Each criterion is evaluated against the conversation transcript and returns a result of `success`, `failure`, or `unknown`, along with a detailed rationale.
 
@@ -14,14 +14,14 @@ Success evaluation allows you to define custom goals and success metrics for you
 
 Success evaluation uses LLM-powered analysis to assess conversation quality against your specific business objectives. This enables systematic performance measurement and quality assurance across all customer interactions.
 
-### How It Works
+### How it works
 
 Each evaluation criterion analyzes the conversation transcript using a custom prompt and returns:
 
 * **Result**: `success`, `failure`, or `unknown`
 * **Rationale**: Detailed explanation of why the result was chosen
 
-### Types of Evaluation Criteria
+### Types of evaluation criteria
 
 **Goal prompt criteria** pass the conversation transcript along with a custom prompt to an LLM to verify if a specific goal was met. This is the most flexible type of evaluation and can be used for complex business logic.
 

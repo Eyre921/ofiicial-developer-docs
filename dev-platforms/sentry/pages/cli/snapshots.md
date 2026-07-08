@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/snapshots/
 
 # Snapshots (CLI)
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 This feature is currently in Beta. Beta features are still in progress and may have bugs. We recognize the irony.
 
 The `sentry-cli snapshots upload` command uploads a directory of images to [Snapshots](https://docs.sentry.io/product/snapshots.md) for visual diffing against a base build.

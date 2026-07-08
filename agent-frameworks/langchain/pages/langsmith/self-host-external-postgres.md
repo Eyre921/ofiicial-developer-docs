@@ -75,21 +75,14 @@ my-workload-identity@myhost:5432/mydatabase?sslmode=require
 
 ## Configuration
 
-With your connection string in hand, you can configure your LangSmith instance to use an external PostgreSQL database. You can do this by modifying the `values` file for your LangSmith Helm Chart installation or the `.env` file for your Docker installation.
+With your connection string in hand, you can configure your LangSmith instance to use an external PostgreSQL database. You can do this by modifying the `values` file for your LangSmith Helm Chart installation.
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  postgres:
-    external:
-      enabled: true
-      connectionUrl: "Your connection url"
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env file
-  POSTGRES_DATABASE_URI="Your connection url"
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+postgres:
+  external:
+    enabled: true
+    connectionUrl: "Your connection url"
+```
 
 Once configured, you should be able to reinstall your LangSmith instance. If everything is configured correctly, your LangSmith instance should now be using your external PostgreSQL database.
 

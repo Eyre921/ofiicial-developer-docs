@@ -6,7 +6,7 @@ path: docs/runtime/html-rewriter
 
 Use Bun's HTMLRewriter to transform HTML documents with CSS selectors
 
-HTMLRewriter transforms HTML documents with CSS selectors. It works with `Request`, `Response`, and `string` inputs. Bun's implementation is based on Cloudflare's [lol-html](https://github.com/cloudflare/lol-html).
+HTMLRewriter transforms HTML documents with CSS selectors. It works with `Response`, `string`, and `ArrayBuffer` inputs. Bun's implementation is based on Cloudflare's [lol-html](https://github.com/cloudflare/lol-html).
 
 ***
 
@@ -84,11 +84,11 @@ rewriter.transform("<div>content</div>");
 // From ArrayBuffer
 rewriter.transform(new TextEncoder().encode("<div>content</div>").buffer);
 
-// From Blob
-rewriter.transform(new Blob(["<div>content</div>"]));
+// From Blob (wrap in a Response)
+rewriter.transform(new Response(new Blob(["<div>content</div>"])));
 
-// From File
-rewriter.transform(Bun.file("index.html"));
+// From File (wrap in a Response)
+rewriter.transform(new Response(Bun.file("index.html")));
 ```
 
 The Cloudflare Workers implementation of HTMLRewriter only supports `Response` objects.

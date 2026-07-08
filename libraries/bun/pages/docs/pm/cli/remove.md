@@ -137,7 +137,7 @@ bun remove <package>
 </ParamField>
 
 <ParamField type="number">
-  Maximum number of concurrent jobs for lifecycle scripts (default 5)
+  Maximum number of concurrent jobs for lifecycle scripts (default: 2x CPU cores)
 </ParamField>
 
 ### Scope & Path

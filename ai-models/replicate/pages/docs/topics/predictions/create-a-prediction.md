@@ -31,33 +31,6 @@ Here’s a brief summary of their differences and use cases:
 Choose sync for speed and simplicity, or async for flexibility and managing more time-consuming predictions.
 
 [](#sync-mode)Sync mode
------------------Replicate’s API has three different endpoints for creating [predictions](/docs/topics/predictions) depending on the type of model you want to run:
-
-*   [Community models](/docs/topics/models/community-models) - [`predictions.create`](/docs/reference/http#predictions.create)
-*   [Official models](/docs/topics/models/official-models) - [`models.predictions.create`](https://replicate.com/docs/reference/http#models.predictions.create)
-*   Deployments - [`deployments.predictions.create`](https://replicate.com/docs/reference/http#deployments.predictions.create)
-
-There are two modes for creating predictions with the API: synchronous (sync) and asynchronous (async).
-
-Here’s a brief summary of their differences and use cases:
-
-**Sync mode:**
-
-*   Optimized for quick responses.
-*   Returns prediction output directly in the response.
-*   Ideal for real-time applications or when immediate results are needed.
-*   Best for shorter, faster computations.
-
-**Async mode (default):**
-
-*   Suited for longer-running tasks.
-*   Returns immediately with a prediction ID.
-*   Allows checking status and retrieving results later.
-*   Better for background processing and handling more time-consuming predictions.
-
-Choose sync for speed and simplicity, or async for flexibility and managing more time-consuming predictions.
-
-[](#sync-mode)Sync mode
 -----------------------
 
 Sync mode is optimized to return model output as quickly as possible, and is suited for real-time applications or when immediate results are needed. Sync mode is best for models that take just a few seconds to run.

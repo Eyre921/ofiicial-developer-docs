@@ -52,14 +52,15 @@ For streaming features on the EU endpoint, use the following URLs:
 
 ```python
 from deepgram import DeepgramClient
-import httpx
+from deepgram.environment import DeepgramClientEnvironment
 
-client = DeepgramClient(
-    api_key="YOUR_API_KEY",
-    httpx_client=httpx.Client(
-        base_url="https://api.eu.deepgram.com"
-    )
+eu_env = DeepgramClientEnvironment(
+    base="https://api.eu.deepgram.com",        # REST APIs
+    production="wss://api.eu.deepgram.com",     # STT/TTS WebSocket
+    agent="wss://api.eu.deepgram.com",          # Agent WebSocket
+    agent_rest="https://api.eu.deepgram.com",   # Agent REST
 )
+client = DeepgramClient(api_key="YOUR_API_KEY", environment=eu_env)
 ```
 
 ```javascript
@@ -149,14 +150,15 @@ For streaming features on the AU endpoint, use the following URLs:
 
 ```python
 from deepgram import DeepgramClient
-import httpx
+from deepgram.environment import DeepgramClientEnvironment
 
-client = DeepgramClient(
-    api_key="YOUR_API_KEY",
-    httpx_client=httpx.Client(
-        base_url="https://api.au.deepgram.com"
-    )
+au_env = DeepgramClientEnvironment(
+    base="https://api.au.deepgram.com",        # REST APIs
+    production="wss://api.au.deepgram.com",     # STT/TTS WebSocket
+    agent="wss://api.au.deepgram.com",          # Agent WebSocket
+    agent_rest="https://api.au.deepgram.com",   # Agent REST
 )
+client = DeepgramClient(api_key="YOUR_API_KEY", environment=au_env)
 ```
 
 ```javascript

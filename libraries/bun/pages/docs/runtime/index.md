@@ -193,7 +193,7 @@ bun --console-depth 5 run index.tsx
 ```ts console.ts icon="https://mintcdn.com/bun-1dd33a4e/JUhaF6Mf68z_zHyy/icons/typescript.svg?fit=max&auto=format&n=JUhaF6Mf68z_zHyy&q=85&s=7ac549adaea8d5487d8fbd58cc3ea35b" theme={"theme":{"light":"github-light","dark":"dracula"}}
 const nested = { a: { b: { c: { d: "deep" } } } };
 console.log(nested);
-// With --console-depth 2 (default): { a: { b: [Object] } }
+// With --console-depth 2 (default): { a: { b: { c: [Object] } } }
 // With --console-depth 4: { a: { b: { c: { d: 'deep' } } } }
 ```
 

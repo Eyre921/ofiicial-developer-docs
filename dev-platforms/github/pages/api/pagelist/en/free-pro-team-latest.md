@@ -778,6 +778,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/concepts/about-code-quality
 /en/code-security/concepts/vulnerability-reporting-and-management
 /en/code-security/concepts/vulnerability-reporting-and-management/github-advisory-database
+/en/code-security/concepts/vulnerability-reporting-and-management/innersource-advisories
 /en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories
 /en/code-security/concepts/vulnerability-reporting-and-management/global-security-advisories
 /en/code-security/concepts/vulnerability-reporting-and-management/coordinated-disclosure
@@ -887,6 +888,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-malware-alerts
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-security-updates
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-version-updates
+/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/manage-innersource-advisories
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/auto-update-actions
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configuring-multi-ecosystem-updates
 /en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/enable-dependency-graph
@@ -1998,6 +2000,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/reference/hooks-reference
 /en/copilot/reference/policy-conflicts
 /en/copilot/reference/supported-surfaces-for-policies
+/en/copilot/reference/enterprise-managed-settings-reference
 /en/copilot/reference/copilot-allowlist-reference
 /en/copilot/reference/mcp-allowlist-enforcement
 /en/copilot/reference/metrics-data

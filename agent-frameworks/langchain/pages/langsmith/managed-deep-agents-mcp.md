@@ -4,550 +4,145 @@ source: https://docs.langchain.com/langsmith/managed-deep-agents-mcp
 path: langsmith/managed-deep-agents-mcp
 ---
 
-Register, connect, and reference MCP tools for Managed Deep Agents.
+Declare remote MCP servers with Managed Deep Agents connectors.
 
-[Managed Deep Agents](/langsmith/managed-deep-agents-overview) can call external tools that you expose through the [Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro): for example, GitHub, internal services, or third-party APIs. LangSmith manages the connection to each MCP server, including per-user OAuth, so agents authenticate without custom client code.
-
-MCP servers are [workspace-level](/langsmith/administration-overview#workspaces) resources. Register or connect a server before you deploy an agent that references it. View all of your MCP servers in [LangSmith > Settings > MCP Servers](https://smith.langchain.com/settings/workspaces/mcp-servers).
+Managed Deep Agents use connectors to load tools from remote MCP servers. Declare the MCP servers in `connectors/mcp.ts` or `connectors/mcp.py`, export a named `mcp` declaration, and MDA loads those tools into the agent at runtime.
 
 <Note>
-  Managed Deep Agents is in **private beta**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
+  Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
 </Note>
 
-## Prerequisites
+The current `mda` CLI does not include workspace MCP server management commands. Do not use older `deepagents mcp-servers ...` examples for Managed Deep Agents projects. For MCP tools, use the `connectors/` project convention documented here.
 
-* Managed Deep Agents [private beta access](https://www.langchain.com/langsmith-managed-deep-agents-waitlist).
-* A [LangSmith API key](/langsmith/create-account-api-key) for a workspace with private beta access.
-* An MCP server URL, plus any static headers or OAuth credentials the server requires.
-* A client for your interface: `deepagents-cli` for the CLI, the `managed-deepagents` (Python) or `@langchain/managed-deepagents` (TypeScript) SDK for SDK workflows, or an HTTP client such as curl for the REST API. For install commands and version requirements, see [Install a client](/langsmith/managed-deep-agents-quickstart#install-a-client) in the quickstart.
+## Add a connector
 
-## Quickstart
+Add `connectors/mcp.py` or `connectors/mcp.ts` next to your agent entry file. For the full project layout, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference).
 
-From a project directory created by [`deepagents init`](/langsmith/managed-deep-agents-cli#initialize-projects), connect a static-header tool and deploy:
+The connector module must export a named `mcp` declaration.
 
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# 1. Register the MCP server.
-deepagents mcp-servers add --url https://example.com/mcp --name my-tools
+<CodeGroup>
+  ```python connectors/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from managed_deepagents.connectors import define_mcp_servers
 
-# 2. List its tools and copy the printed tools.json snippet.
-deepagents mcp-servers tools my-tools
-
-# 3. Paste the tool entries into tools.json (manual step).
-
-# 4. Deploy the agent.
-deepagents deploy
-```
-
-For an OAuth server, run `deepagents mcp-servers connect <id|name|url>` after the register step (step 1) and before listing tools (step 2). The following sections cover each step in detail.
-
-Use the [CLI](/langsmith/managed-deep-agents-cli) for most setups. Use the [SDKs](/langsmith/managed-deep-agents-sdk) for Python or TypeScript automation, or use the [REST API](/langsmith/managed-deep-agents-api-overview) when you need direct control over request payloads.
-
-## Connect tools with the CLI
-
-In the CLI, `add` registers a server and `connect` completes OAuth for a registered server. For all MCP server commands and flags, see the [CLI reference](/langsmith/managed-deep-agents-cli#manage-mcp-servers).
-
-### Add a static-header MCP server
-
-Register a server:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents mcp-servers add \
-  --url https://example.com/mcp \
-  --name my-tools
-```
-
-If the server requires static credentials, pass headers:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents mcp-servers add \
-  --url https://example.com/mcp \
-  --name my-tools \
-  --header Authorization="Bearer <token>"
-```
-
-Repeat `--header` for multiple headers:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents mcp-servers add \
-  --url https://example.com/mcp \
-  --name my-tools \
-  --header Authorization="Bearer <token>" \
-  --header X-Workspace-ID="<workspace-id>"
-```
-
-If the CLI can reach the server, it lists the server's tools after registration and prints a `tools.json` snippet. To skip that step, pass `--no-tools`.
-
-### Add an OAuth MCP server
-
-Register and connect an OAuth MCP server:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents mcp-servers add \
-  --url https://example.com/mcp \
-  --name github-tools \
-  --auth-type oauth \
-  --connect
-```
-
-The command runs the full per-user OAuth flow:
-
-1. Registers the MCP server for per-user OAuth.
-2. Prints and opens a verification URL.
-3. Waits while you approve access in the browser.
-4. Confirms the connection once approval completes.
-
-To connect an OAuth MCP server that already exists, run:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents mcp-servers connect <id|name|url>
-```
-
-Use `--scope` to request OAuth scopes:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents mcp-servers connect <id|name|url> \
-  --scope repo \
-  --scope read:user
-```
-
-Use `--timeout 0` to start the OAuth flow without polling:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents mcp-servers connect <id|name|url> --timeout 0
-```
-
-When the command starts an authorization session, it prints the verification URL. Re-run `deepagents mcp-servers connect <id|name|url>` later to complete or reuse the connection.
-
-### List available tools
-
-List the tools exposed by a registered MCP server:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-deepagents mcp-servers tools <id|name|url>
-```
-
-The command prints each tool name with its first description line, then a `tools.json` snippet. Copy the entries you want and [reference them](#reference-tools). Re-run it to refresh entries when a server's tools change. If no tools are listed, confirm the server URL is reachable and, for OAuth servers, that you completed `connect`.
-
-## Connect tools with the SDK or API
-
-### Set request defaults
-
-For SDK usage, install and configure the [Managed Deep Agents SDKs](/langsmith/managed-deep-agents-sdk). For direct REST calls, set the base URL and API key:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-export LANGSMITH_API_KEY="<LANGSMITH_API_KEY>"
-export LANGSMITH_API_URL="https://api.smith.langchain.com"
-export DEEPAGENTS_BASE_URL="$LANGSMITH_API_URL/v1/deepagents"
-```
-
-REST requests require the `X-Api-Key` header:
-
-```txt theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-X-Api-Key: <LANGSMITH_API_KEY>
-```
-
-If a request fails, the SDK raises an SDK-specific error. The REST API returns a non-2xx status with the error detail in the response body. For authentication errors (`401` and `403`), see the [API reference](/langsmith/managed-deep-agents-api-overview#set-request-defaults).
-
-<Note>
-  Creating an MCP server requires the `mcp-servers:create` permission. If your API key's role can read MCP servers but not create them, the request returns `403` with the message `missing permission mcp-servers:create`. The SDK exposes this string on `error.body`. The `code` and `detail` fields are empty. Ask a workspace admin to grant the permission, or use a key whose role has it.
-</Note>
-
-### Register a static-header MCP server
-
-Use `POST /v1/deepagents/mcp-servers`:
-
-<Tabs>
-  <Tab title="Python SDK">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import Client
-
-    with Client() as client:
-        mcp_server = client.mcp_servers.create(
-            name="my-tools",
-            url="https://example.com/mcp",
-            headers=[
-                {"key": "Authorization", "value": "Bearer <token>"},
-            ],
-        )
-
-    print(mcp_server)
-    ```
-  </Tab>
-
-  <Tab title="TypeScript SDK">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/managed-deepagents";
-
-    const client = new Client();
-
-    const mcpServer = await client.mcpServers.create({
-      name: "my-tools",
-      url: "https://example.com/mcp",
-      headers: [{ key: "Authorization", value: "Bearer <token>" }],
-    });
-
-    console.log(mcpServer);
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --request POST \
-      --url "$DEEPAGENTS_BASE_URL/mcp-servers" \
-      --header "X-Api-Key: $LANGSMITH_API_KEY" \
-      --header 'Content-Type: application/json' \
-      --data '{
-        "name": "my-tools",
-        "url": "https://example.com/mcp",
-        "headers": [
-          {"key": "Authorization", "value": "Bearer <token>"}
-        ]
-      }'
-    ```
-  </Tab>
-</Tabs>
-
-### Register an OAuth MCP server
-
-Registering and connecting an OAuth server with the SDK or API is equivalent to the CLI [`deepagents mcp-servers add --auth-type oauth --connect`](#add-an-oauth-mcp-server) command. The flow has three steps: register the server, register an OAuth provider for it, then start an authorization session for the current user.
-
-<Tabs>
-  <Tab title="Python SDK">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import time
-
-    from managed_deepagents import Client
-
-    with Client() as client:
-        mcp_server = client.mcp_servers.create(
-            name="github-tools",
-            url="https://example.com/mcp",
-            auth_type="oauth",
-            oauth_mode="per_user_dynamic_client",
-        )
-
-        provider = client.mcp_servers.register_oauth_provider(mcp_server["id"])
-        oauth_provider_id = provider["oauth_provider_id"]
-
-        auth_session = client.auth_sessions.create(
-            provider_id=oauth_provider_id,
-            scopes=["repo", "read:user"],
-            strategy="REUSE",
-            is_default=True,
-        )
-
-        if auth_session.get("verification_url"):
-            print(f"Open: {auth_session['verification_url']}")
-
-        session_id = auth_session.get("id")
-        while session_id:
-            session = client.auth_sessions.get(session_id)
-            if session.get("status") != "PENDING":
-                print(session)
-                break
-            time.sleep(2)
-    ```
-  </Tab>
-
-  <Tab title="TypeScript SDK">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/managed-deepagents";
-
-    const client = new Client();
-
-    const mcpServer = await client.mcpServers.create({
-      name: "github-tools",
-      url: "https://example.com/mcp",
-      auth_type: "oauth",
-      oauth_mode: "per_user_dynamic_client",
-    });
-
-    const provider = await client.mcpServers.registerOAuthProvider(mcpServer.id);
-    const oauthProviderId = provider.oauth_provider_id;
-
-    const authSession = await client.authSessions.create({
-      provider_id: oauthProviderId,
-      scopes: ["repo", "read:user"],
-      strategy: "REUSE",
-      is_default: true,
-    });
-
-    if (authSession.verification_url) {
-      console.log(`Open: ${authSession.verification_url}`);
-    }
-
-    let sessionId = authSession.id;
-    while (sessionId) {
-      const session = await client.authSessions.get(sessionId);
-      if (session.status !== "PENDING") {
-        console.log(session);
-        break;
-      }
-      await new Promise((resolve) => setTimeout(resolve, 2000));
-    }
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    MCP_SERVER_ID="$(
-      curl --silent --request POST \
-        --url "$DEEPAGENTS_BASE_URL/mcp-servers" \
-        --header "X-Api-Key: $LANGSMITH_API_KEY" \
-        --header 'Content-Type: application/json' \
-        --data '{
-          "name": "github-tools",
-          "url": "https://example.com/mcp",
-          "auth_type": "oauth",
-          "oauth_mode": "per_user_dynamic_client"
-        }' | jq -r '.id'
-    )"
-
-    OAUTH_PROVIDER_ID="$(
-      curl --silent --request POST \
-        --url "$DEEPAGENTS_BASE_URL/mcp-servers/$MCP_SERVER_ID/oauth-provider" \
-        --header "X-Api-Key: $LANGSMITH_API_KEY" \
-        --header 'Content-Type: application/json' \
-        --data '{}' | jq -r '.oauth_provider_id'
-    )"
-
-    AUTH_SESSION="$(
-      curl --silent --request POST \
-        --url "$DEEPAGENTS_BASE_URL/auth-sessions" \
-        --header "X-Api-Key: $LANGSMITH_API_KEY" \
-        --header 'Content-Type: application/json' \
-        --data "{
-          \"provider_id\": \"$OAUTH_PROVIDER_ID\",
-          \"scopes\": [\"repo\", \"read:user\"],
-          \"strategy\": \"REUSE\",
-          \"is_default\": true
-        }"
-    )"
-
-    echo "$AUTH_SESSION" | jq .
-    ```
-  </Tab>
-</Tabs>
-
-Use `strategy="CREATE"` to force a new OAuth session. Use `strategy="REUSE"` to reuse an existing valid token when one is available. If the start-auth-session response includes a `verification_url`, open it and poll the auth session until its status is `COMPLETED`.
-
-### List a server's tools
-
-List the tools exposed by a registered MCP server before you reference them in an agent:
-
-<Tabs>
-  <Tab title="Python SDK">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import Client
-
-    with Client() as client:
-        tools = client.mcp_servers.list_tools(
-            url="https://example.com/mcp",
-        )
-
-    print(tools)
-    ```
-  </Tab>
-
-  <Tab title="TypeScript SDK">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/managed-deepagents";
-
-    const client = new Client();
-
-    const tools = await client.mcpServers.listTools({
-      url: "https://example.com/mcp",
-    });
-
-    console.log(tools);
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --get \
-      --url "$DEEPAGENTS_BASE_URL/mcp/tools" \
-      --header "X-Api-Key: $LANGSMITH_API_KEY" \
-      --data-urlencode "url=https://example.com/mcp"
-    ```
-  </Tab>
-</Tabs>
-
-For OAuth servers, also pass the `oauth_provider_id` returned by the OAuth provider registration:
-
-<Tabs>
-  <Tab title="Python SDK">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import Client
-
-    with Client() as client:
-        tools = client.mcp_servers.list_tools(
-            url="https://example.com/mcp",
-            oauth_provider_id=oauth_provider_id,
-        )
-    ```
-  </Tab>
-
-  <Tab title="TypeScript SDK">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    const tools = await client.mcpServers.listTools({
-      url: "https://example.com/mcp",
-      oauthProviderId,
-    });
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --get \
-      --url "$DEEPAGENTS_BASE_URL/mcp/tools" \
-      --header "X-Api-Key: $LANGSMITH_API_KEY" \
-      --data-urlencode "url=https://example.com/mcp" \
-      --data-urlencode "oauth_provider_id=$OAUTH_PROVIDER_ID"
-    ```
-  </Tab>
-</Tabs>
-
-To bypass cached tool definitions and fetch the latest from the MCP server, set `force_refresh=True` in Python, `forceRefresh: true` in TypeScript, or `force_refresh=true` in REST. After you choose tool names from the response, [reference them](#reference-tools).
-
-## Reference tools
-
-A tool entry requires `name`, a tool exposed by a registered MCP server, and `mcp_server_url`, which points at that server. The `mcp_server_name` and `display_name` fields are optional.
-
-```json theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-{
-  "tools": [
-    {
-      "name": "example_tool",
-      "mcp_server_url": "https://example.com/mcp",
-      "mcp_server_name": "my-tools",
-      "display_name": "example_tool"
-    }
-  ],
-  "interrupt_config": {
-    "https://example.com/mcp::example_tool": true
-  }
-}
-```
-
-With the CLI, add these entries to the `tools.json` file in your project root, which `deepagents init` scaffolds with an empty `tools` array. With the SDKs or API, pass the same object as the `tools` field of an agent create or update request:
-
-<Tabs>
-  <Tab title="Python SDK">
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from managed_deepagents import Client
-
-    tools_config = {
-        "tools": [
-            {
-                "name": "example_tool",
-                "mcp_server_url": "https://example.com/mcp",
-                "mcp_server_name": "my-tools",
-                "display_name": "example_tool",
-            }
-        ],
-        "interrupt_config": {
-            "https://example.com/mcp::example_tool": True,
-        },
-    }
-
-    with Client() as client:
-        agent = client.agents.update(
-            "<agent_id>",
-            tools=tools_config,
-            include_files=True,
-        )
-    ```
-  </Tab>
-
-  <Tab title="TypeScript SDK">
-    ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { Client } from "@langchain/managed-deepagents";
-
-    const client = new Client();
-
-    const toolsConfig = {
-      tools: [
-        {
-          name: "example_tool",
-          mcp_server_url: "https://example.com/mcp",
-          mcp_server_name: "my-tools",
-          display_name: "example_tool",
-        },
-      ],
-      interrupt_config: {
-        "https://example.com/mcp::example_tool": true,
+  mcp = define_mcp_servers(
+      mcp_servers={
+          "langchainDocs": {
+              "transport": "http",
+              "url": "https://docs.langchain.com/mcp",
+          },
       },
-    };
+  )
+  ```
 
-    const agent = await client.agents.update(
-      "<agent_id>",
-      { tools: toolsConfig },
-      { includeFiles: true },
-    );
-    ```
-  </Tab>
+  ```ts connectors/mcp.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { defineMcpServers } from "managed-deepagents";
 
-  <Tab title="cURL">
-    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    curl --request PATCH \
-      --url "$DEEPAGENTS_BASE_URL/agents/<agent_id>?include_files=true" \
-      --header "X-Api-Key: $LANGSMITH_API_KEY" \
-      --header 'Content-Type: application/json' \
-      --data '{
-        "tools": {
-          "tools": [
-            {
-              "name": "example_tool",
-              "mcp_server_url": "https://example.com/mcp",
-              "mcp_server_name": "my-tools",
-              "display_name": "example_tool"
-            }
-          ],
-          "interrupt_config": {
-            "https://example.com/mcp::example_tool": true
-          }
-        }
-      }'
-    ```
-  </Tab>
-</Tabs>
+  export const mcp = defineMcpServers({
+    mcpServers: {
+      langchainDocs: {
+        transport: "http",
+        url: "https://docs.langchain.com/mcp",
+      },
+    },
+  });
+  ```
+</CodeGroup>
 
-Use `interrupt_config` to require human approval before a tool runs. Key each entry by `"{mcp_server_url}::{tool_name}"` and set it to `true`. You can also include the server name in the key: `"{mcp_server_url}::{mcp_server_name}::{tool_name}"`. When an agent calls a tool marked for approval, the run pauses with an interrupt that an operator resolves with the [resolve-interrupt route](/langsmith/managed-deep-agents-api/runs/resolve-interrupt).
+You do not import `MultiServerMCPClient` or call `getTools()` / `get_tools()` yourself. `mda` discovers the connector module, injects the MCP adapter dependency into the compiled build, creates the client in the managed runtime, loads the tools, and appends them to the authored tools from `agent.ts` or `agent.py`.
 
-To deploy an agent with no MCP tools, leave `tools.json` empty or omit the `tools` field.
+## Supported servers
 
-### Validate tools at deploy time
+Connectors support remote MCP servers only:
 
-At deploy time, Managed Deep Agents validates the referenced MCP server URLs:
+| Transport | Use                          |
+| --------- | ---------------------------- |
+| `http`    | Streamable HTTP MCP servers. |
+| `sse`     | Legacy SSE MCP servers.      |
 
-* If a server URL is not registered, register it first.
-  * CLI: `deepagents mcp-servers add`.
-  * SDK: `client.mcp_servers.create(...)` in Python or `client.mcpServers.create(...)` in TypeScript.
-  * API: [`POST /v1/deepagents/mcp-servers`](/langsmith/managed-deep-agents-api/mcp-servers/create-mcp-server).
-* If an OAuth server is registered but the caller cannot invoke it, complete OAuth first.
-  * CLI: `deepagents mcp-servers connect <id|name|url>`.
-  * SDK: `client.auth_sessions.create(...)` in Python or `client.authSessions.create(...)` in TypeScript.
-  * API: run the [OAuth auth-session flow](#register-an-oauth-mcp-server).
+Stdio MCP servers are not supported in connectors. If a server needs local process management, expose it over HTTP/SSE or wrap the behavior as a normal authored tool.
 
-The CLI runs this check locally before it sends the deploy request.
+## Configure server options
 
-## Manage server credentials
+Each server key is the logical server name MDA uses for validation, tracing metadata, and tool-name prefixing. Server configs can include static headers.
 
-Static headers are stored with the MCP server record and are redacted whenever you inspect it.
+Connectors do not run an OAuth authorization flow. If an MCP server requires OAuth, provide a pre-provisioned access token or another static credential through headers. Store the token in `.env` so `mda dev` can load it locally and `mda deploy` can forward it as a hosted deployment secret.
 
-| Task                                   | CLI                                      | Python SDK                                                | TypeScript SDK                                              | API                                                                                                                     |
-| -------------------------------------- | ---------------------------------------- | --------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| List servers                           | `deepagents mcp-servers list`            | `client.mcp_servers.list()`                               | `client.mcpServers.list()`                                  | [`GET /v1/deepagents/mcp-servers`](/langsmith/managed-deep-agents-api/mcp-servers/list-mcp-servers)                     |
-| Inspect a server (headers redacted)    | `deepagents mcp-servers get <server>`    | `client.mcp_servers.get(mcp_server_id)`                   | `client.mcpServers.get(mcpServerId)`                        | [`GET /v1/deepagents/mcp-servers/{mcp_server_id}`](/langsmith/managed-deep-agents-api/mcp-servers/get-mcp-server)       |
-| Change headers                         | `deepagents mcp-servers update <server>` | `client.mcp_servers.update(mcp_server_id, headers=[...])` | `client.mcpServers.update(mcpServerId, { headers: [...] })` | [`PATCH /v1/deepagents/mcp-servers/{mcp_server_id}`](/langsmith/managed-deep-agents-api/mcp-servers/update-mcp-server)  |
-| Remove a server and its stored headers | `deepagents mcp-servers delete <server>` | `client.mcp_servers.delete(mcp_server_id)`                | `client.mcpServers.delete(mcpServerId)`                     | [`DELETE /v1/deepagents/mcp-servers/{mcp_server_id}`](/langsmith/managed-deep-agents-api/mcp-servers/delete-mcp-server) |
+The connector module is normal project code, so read secrets as environment variables with `os.environ` in Python or `process.env` in TypeScript. You do not import the `.env` file directly.
 
-For OAuth servers, credentials are scoped per user, so each caller completes their own connection. For the full command list, see the [CLI reference](/langsmith/managed-deep-agents-cli#manage-mcp-servers). For all MCP server routes, see the [API reference](/langsmith/managed-deep-agents-api-overview#mcp-servers).
+<CodeGroup>
+  ```python connectors/mcp.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  from managed_deepagents.connectors import define_mcp_servers
+
+  mcp = define_mcp_servers(
+      mcp_servers={
+          "github": {
+              "transport": "http",
+              "url": "https://example.com/mcp",
+              "headers": {
+                  "Authorization": f"Bearer {os.environ['GITHUB_MCP_TOKEN']}",
+              },
+          },
+      },
+  )
+  ```
+
+  ```ts connectors/mcp.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { defineMcpServers } from "managed-deepagents";
+
+  export const mcp = defineMcpServers({
+    mcpServers: {
+      github: {
+        transport: "http",
+        url: "https://example.com/mcp",
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_MCP_TOKEN}`,
+        },
+      },
+    },
+  });
+  ```
+</CodeGroup>
+
+<Warning>
+  Do not commit MCP tokens, API keys, OAuth access tokens, or passwords. Put local values in `.env`; `mda dev` loads them for local development, and `mda deploy` forwards non-reserved `.env` values as hosted deployment secrets.
+</Warning>
+
+## Connector defaults
+
+MDA applies managed defaults when it loads connector tools:
+
+| Option                                                               | Default   | Description                                                                                                                  |
+| -------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `prefixToolNameWithServerName` / `prefix_tool_name_with_server_name` | `true`    | Prefix MCP tool names with the server name, for example `github__search`, to avoid collisions.                               |
+| `throwOnLoadError` / `throw_on_load_error`                           | `true`    | Fail when tools cannot be loaded instead of starting with a partial tool surface.                                            |
+| `useStandardContentBlocks` / `use_standard_content_blocks`           | `true`    | Convert MCP tool outputs to standard LangChain content blocks. Python connectors currently require the default `true` value. |
+| `onConnectionError` / `on_connection_error`                          | `"throw"` | Fail when a server cannot be reached. `"throw"` is the only supported value.                                                 |
+
+Disable tool-name prefixing only when you know the MCP tool names do not collide. MDA validates duplicate MCP tool names when prefixing is disabled.
+
+## Combine connectors with authored tools
+
+Connector tools are appended to the tools you define in the agent file. Use [custom tools](/langsmith/managed-deep-agents-tools) for project-owned code and [custom middleware](/langsmith/managed-deep-agents-middleware) for cross-cutting behavior around model calls, tool calls, lifecycle hooks, retries, limits, and data handling.
+
+## Test and deploy
+
+Test the project locally with [`mda dev`](/langsmith/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
+
+Connector misconfiguration surfaces during local startup or first tool load, depending on when the runtime reaches the MCP server.
 
 ## Next steps
 
-After you connect tools, [deploy the agent](/langsmith/managed-deep-agents-deploy) with a `tools.json` file that references the registered MCP server URLs.
+<CardGroup>
+  <Card title="Deploy an agent" icon="upload" href="/langsmith/managed-deep-agents-deploy">
+    Run and deploy the connector-enabled agent.
+  </Card>
+
+  <Card title="CLI reference" icon="terminal" href="/langsmith/managed-deep-agents-cli">
+    Look up `mda dev` and `mda deploy` flags.
+  </Card>
+</CardGroup>
 
 ***
 

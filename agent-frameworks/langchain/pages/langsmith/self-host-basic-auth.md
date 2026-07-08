@@ -22,7 +22,7 @@ LangSmith supports login via username/password with a few limitations:
 
 Migrating an installation from [None](/langsmith/authentication-methods#none) auth mode replaces the single "default" user with a user with the configured credentials and keeps all existing resources. The single pre-existing workspace ID post-migration remains `00000000-0000-0000-0000-000000000000`, but everything else about the migrated installation is standard for a basic auth installation.
 
-To migrate, simply update your configuration as shown below and run `helm upgrade` (or `docker-compose up`) as usual.
+To migrate, simply update your configuration as shown below and run `helm upgrade` as usual.
 
 ### Configuration
 
@@ -30,31 +30,14 @@ To migrate, simply update your configuration as shown below and run `helm upgrad
   Changing the JWT secret will log out your users
 </Note>
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  config:
-    authType: mixed
-    basicAuth:
-      enabled: true
-      initialOrgAdminEmail: <YOUR EMAIL ADDRESS>
-      initialOrgAdminPassword: <PASSWORD> # Must be at least 12 characters long and have at least one lowercase, uppercase, and symbol
-      jwtSecret: <SECRET>
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env file
-  AUTH_TYPE=mixed
-  BASIC_AUTH_ENABLED=true
-  INITIAL_ORG_ADMIN_EMAIL=<YOUR EMAIL ADDRESS>
-  INITIAL_ORG_ADMIN_PASSWORD=<PASSWORD> # Must be at least 12 characters long and have at least one lowercase, uppercase, and symbol
-  BASIC_AUTH_JWT_SECRET=<SECRET>
-  ```
-</CodeGroup>
-
-Additionally, in docker-compose you will need to run the bootstrap command to create the initial organization and user:
-
-```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-docker-compose exec langchain-backend python hooks/auth_bootstrap.pyc
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  authType: mixed
+  basicAuth:
+    enabled: true
+    initialOrgAdminEmail: <YOUR EMAIL ADDRESS>
+    initialOrgAdminPassword: <PASSWORD> # Must be at least 12 characters long and have at least one lowercase, uppercase, and symbol
+    jwtSecret: <SECRET>
 ```
 
 Once configured, you will see a login screen like the one below. You should be able to login with the `initialOrgAdminEmail` and `initialOrgAdminPassword` values, and your user will be auto-provisioned with role `Organization Admin`. See the [admin guide](/langsmith/administration-overview#organization-roles) for more details on organization roles.

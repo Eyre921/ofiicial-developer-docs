@@ -215,6 +215,19 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Webhooks](#webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx)
 - [Events reference](#events-reference-docs-voice-agents-voice-agent-api-events-reference-mdx)
 - [Troubleshooting](#troubleshooting-docs-voice-agents-voice-agent-api-troubleshooting-mdx)
+- [Message Sequence](#message-sequence-docs-voice-agents-voice-agent-api-message-sequence-mdx)
+- [Voice Agent WebSocket API](#voice-agent-websocket-api-docs-voice-agents-voice-agent-api-api-spec-voice-agent-websocket-mdx)
+- [Generate voice agent token](#generate-voice-agent-token-docs-voice-agents-voice-agent-api-api-spec-generate-voice-agent-token-mdx)
+- [Create an agent](#create-an-agent-docs-voice-agents-voice-agent-api-api-spec-create-agent-mdx)
+- [List agents](#list-agents-docs-voice-agents-voice-agent-api-api-spec-list-agents-mdx)
+- [Retrieve an agent](#retrieve-an-agent-docs-voice-agents-voice-agent-api-api-spec-get-agent-mdx)
+- [Update an agent](#update-an-agent-docs-voice-agents-voice-agent-api-api-spec-update-agent-mdx)
+- [Delete an agent](#delete-an-agent-docs-voice-agents-voice-agent-api-api-spec-delete-agent-mdx)
+- [Create a webhook subscription](#create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx)
+- [List webhook subscriptions](#list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx)
+- [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx)
+- [Update a webhook subscription](#update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx)
+- [Delete a webhook subscription](#delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx)
 - [Speech Understanding](#speech-understanding-docs-speech-understanding-getting-started-mdx)
 - [Action Items](#action-items-docs-speech-understanding-action-items-mdx)
 - [Rate limits](#rate-limits-docs-speech-understanding-rate-limits-mdx)
@@ -289,7 +302,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [What logs are available to customers?](#what-logs-are-available-to-customers-docs-faq-what-logs-are-available-to-customers-mdx)
 - [What standards do your internal password policies follow?](#what-standards-do-your-internal-password-policies-follow-docs-faq-what-standards-do-your-internal-password-policies-follow-mdx)
 - [Where are your servers located?](#where-are-your-servers-located-docs-faq-where-are-your-servers-located-mdx)
-- [Where do production and backups reside?](#where-do-production-and-backups-reside-docs-faq-where-do-production-and-backups-reside-mdx)
 - [Am I charged for transcribing silent audio?](#am-i-charged-for-transcribing-silent-audio-docs-faq-am-i-charged-for-transcribing-silent-audio-mdx)
 - [Are Custom Models More Accurate than General Models?](#are-custom-models-more-accurate-than-general-models-docs-faq-are-custom-models-more-accurate-than-general-models-mdx)
 - [Do I Get Charged for Failed API Calls?](#do-i-get-charged-for-failed-api-calls-docs-faq-are-customers-charged-for-api-calls-that-result-in-errors-mdx)
@@ -13516,7 +13528,7 @@ Description: Learn how to transcribe and analyze an audio file.
 
 By the end of this guide, you'll have a working script that transcribes an audio file in a single SDK call. Build it with an AI coding agent, or write it yourself — both are below.
 
-Prefer to try it first? Transcribe audio without writing any code in the [AssemblyAI Playground](https://www.assemblyai.com/playground).
+Prefer to try it first? Transcribe audio without writing any code in the [AssemblyAI Playground](https://www.assemblyai.com/dashboard/playground/transcript).
 
 ## Before you begin
 
@@ -57167,6 +57179,413 @@ See [Ending the session cleanly](/voice-agents/voice-agent-api/browser-integrati
 
 ---
 
+<a id="message-sequence-docs-voice-agents-voice-agent-api-message-sequence-mdx"></a>
+
+# Message Sequence
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/message-sequence
+Source: docs/voice-agents/voice-agent-api/message-sequence.mdx
+Navigation: Voice Agent API > API reference
+Description: Canonical reference for the Voice Agent WebSocket protocol. Covers every client and server event and the order they appear in.
+
+This page is the canonical reference for the Voice Agent WebSocket protocol: every event the client sends, every event the server emits, and the order they appear in. For the field-level schema of each event, see the [Voice Agent WebSocket API reference](/voice-agents/voice-agent-api/api-spec/voice-agent-websocket) and the [Events reference](/voice-agents/voice-agent-api/events-reference).
+
+## Sequence diagram
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant S as Server
+  C->>S: WebSocket connect (Authorization or ?token=)
+  C->>S: session.update (agent_id OR inline system_prompt, tools, input, output)
+  S->>C: session.ready (session_id)
+  loop while conversing
+    C->>S: input.audio (base64 PCM16, ~50 ms chunks)
+    S->>C: input.speech.started
+    S->>C: transcript.user.delta (partial) xN
+    S->>C: input.speech.stopped
+    S->>C: transcript.user (final)
+    S->>C: reply.started
+    S->>C: reply.audio (base64 PCM16 chunks) xN
+    S->>C: transcript.agent
+    opt tool call
+      S->>C: tool.call (name, arguments)
+      S->>C: reply.done
+      C->>S: tool.result
+      S->>C: reply.started
+      S->>C: reply.audio xN
+      S->>C: transcript.agent
+    end
+    S->>C: reply.done
+  end
+  C->>S: session.end
+  S->>C: session.ended
+  S->>C: close (1000)
+```
+
+## Events at a glance
+
+**Client → server**
+
+| Event | Purpose |
+| --- | --- |
+| `session.update` | Configure the agent. First message after connect; can also be sent mid-session to update mutable fields. |
+| `session.resume` | Resume a previous session by `session_id`. |
+| `input.audio` | Stream a chunk of PCM16 audio to the agent (base64-encoded). |
+| `tool.result` | Return the result of a tool invocation the agent requested. |
+| `reply.create` | Ask the agent to generate a reply now, optionally with one-shot instructions. |
+| `session.end` | Cleanly end the session. |
+
+**Server → client**
+
+| Event | When | Purpose |
+| --- | --- | --- |
+| `session.ready` | Once, after `session.update` is applied | Session established. Includes the `session_id`. Start streaming audio. |
+| `session.updated` | After a mid-session `session.update` | Acknowledges the update was applied. |
+| `input.speech.started` | Per user turn | Turn detection determined the user started speaking. |
+| `transcript.user.delta` | Repeatedly during a user turn | Partial transcript of the current user utterance. |
+| `input.speech.stopped` | Per user turn | Turn detection determined the user stopped speaking. |
+| `transcript.user` | Once per user turn | Final transcript of the user's utterance. |
+| `reply.started` | Per agent reply | Agent has begun generating a reply. |
+| `reply.audio` | Repeatedly during a reply | A chunk of the agent's spoken response as base64 PCM16. |
+| `transcript.agent` | Per agent reply | Text of the agent's response, sent after all reply audio has been delivered. |
+| `tool.call` | When the agent invokes a tool | The agent wants to run a registered tool. Respond with `tool.result`. |
+| `reply.done` | End of each reply | Marks the end of a reply. If a `tool.call` preceded it, send `tool.result` next. |
+| `session.ended` | Once, last message | Session totals and clean shutdown. Nothing follows it. |
+| `session.error` | On failure | Session- or protocol-level error. |
+
+## Session initialization
+
+Immediately after the WebSocket opens, send a `session.update` to configure the agent. You have two ways to configure:
+
+- **Stored agent.** Send `{ "agent_id": "<id>" }` to bind to an agent created via the [Agents REST API](/voice-agents/voice-agent-api/api-spec/create-agent). The stored `system_prompt`, `greeting`, `tools`, `input`, and `output` are applied server-side.
+- **Inline configuration.** Omit `agent_id` and send `system_prompt`, `greeting`, `tools`, `input`, and `output` directly.
+
+The two modes are mutually exclusive. See [Deploy your agent](/voice-agents/voice-agent-api/deploy) and [Session configuration](/voice-agents/voice-agent-api/session-configuration) for details.
+
+```json
+{
+  "type": "session.update",
+  "session": {
+    "system_prompt": "You are a concise assistant.",
+    "greeting": "Hi! How can I help?",
+    "input":  { "format": { "encoding": "audio/pcm" } },
+    "output": { "voice": "ivy", "format": { "encoding": "audio/pcm" }, "volume": 100 }
+  }
+}
+```
+
+The server responds with `session.ready` once the session is established:
+
+```json
+{
+  "type": "session.ready",
+  "session_id": "3207b601-2054-48df-ba77-8784dfcf9fb8"
+}
+```
+
+  Save `session_id` — you'll need it to reconnect with `session.resume` if the WebSocket drops mid-conversation.
+
+## Sending audio
+
+After `session.ready`, stream audio to the agent as `input.audio` events. Each event carries a base64-encoded chunk of PCM16 audio:
+
+```json
+{
+  "type": "input.audio",
+  "audio": "<base64-encoded PCM16>"
+}
+```
+
+Send audio in chunks of roughly 50 ms. The default input format is mono 24 kHz PCM16; you can change encoding and sample rate through `session.input.format`. See [Audio format](/voice-agents/voice-agent-api/audio-format) for the full format specification and [Encoding](/voice-agents/voice-agent-api/encoding) for supported encodings.
+
+  Do not send `input.audio` before `session.ready`. Audio sent before the session is established is discarded.
+
+## User turn
+
+When turn detection decides the user has started speaking, the server emits `input.speech.started`. As speech continues, partial transcripts stream back as `transcript.user.delta`. When the user stops speaking, the server emits `input.speech.stopped` followed by a final `transcript.user`:
+
+```json
+{
+  "type": "input.speech.started"
+}
+```
+
+```json
+{
+  "type": "transcript.user.delta",
+  "delta": "hey there"
+}
+```
+
+```json
+{
+  "type": "input.speech.stopped"
+}
+```
+
+```json
+{
+  "type": "transcript.user",
+  "transcript": "Hey there, what's the weather in Paris?"
+}
+```
+
+See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions) for tuning turn detection.
+
+## Agent reply
+
+Once the user turn ends, the agent generates a reply. Every reply is bracketed by `reply.started` and `reply.done`. In between, audio streams back as `reply.audio` events (base64 PCM16), and the full text arrives as `transcript.agent` after all audio has been delivered:
+
+```json
+{ "type": "reply.started" }
+```
+
+```json
+{ "type": "reply.audio", "audio": "<base64 PCM16 chunk>" }
+```
+
+```json
+{
+  "type": "transcript.agent",
+  "transcript": "It's 18 degrees and sunny in Paris right now."
+}
+```
+
+```json
+{ "type": "reply.done" }
+```
+
+  `transcript.agent` is emitted **after** the final `reply.audio` chunk, so it can be used to display the agent's reply once playback completes.
+
+## Tool calls
+
+If the agent decides to invoke a registered tool, the server emits a `tool.call` event. The current reply ends with `reply.done`, and the client is expected to run the tool and return the result via `tool.result`. A fresh `reply.started` … `reply.done` cycle follows once the tool result is received:
+
+```json
+{
+  "type": "tool.call",
+  "tool_call_id": "call_01H...",
+  "name": "get_weather",
+  "arguments": { "city": "Paris" }
+}
+```
+
+```json
+{
+  "type": "tool.result",
+  "tool_call_id": "call_01H...",
+  "result": { "temperature_c": 18, "condition": "sunny" }
+}
+```
+
+See [Tool calling](/voice-agents/voice-agent-api/tools/overview) for the full tool-calling flow, including HTTP tools and client-side tools.
+
+## Updating configuration mid-session
+
+You can send another `session.update` at any time to change mutable fields such as `system_prompt`, `input.turn_detection`, or `output.volume`. The server acknowledges with `session.updated`. Changing immutable fields (for example `greeting`, `output.voice`, or `output.format`) raises `immutable_field`. See [Mutability after `session.ready`](/voice-agents/voice-agent-api/session-configuration#mutability-after-sessionready).
+
+## Session termination
+
+To end a session cleanly, send `session.end`. The server flushes any in-flight events, emits `session.ended`, then closes the WebSocket with code `1000`:
+
+```json
+{ "type": "session.end" }
+```
+
+```json
+{
+  "type": "session.ended",
+  "reason": "client_ended"
+}
+```
+
+  Always terminate sessions explicitly. Sessions that are not ended remain open and continue to accrue charges until the server auto-closes them.
+
+## Errors
+
+If the session fails at any point, the server sends a `session.error` event and closes the connection:
+
+```json
+{
+  "type": "session.error",
+  "error_code": "immutable_field",
+  "message": "Field 'session.output.voice' cannot be changed after session.ready."
+}
+```
+
+See [Troubleshooting](/voice-agents/voice-agent-api/troubleshooting) for the full list of error codes and recovery guidance.
+
+---
+
+<a id="voice-agent-websocket-api-docs-voice-agents-voice-agent-api-api-spec-voice-agent-websocket-mdx"></a>
+
+# Voice Agent WebSocket API
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/voice-agent-websocket
+Source: docs/voice-agents/voice-agent-api/api-spec/voice-agent-websocket.mdx
+Navigation: Voice Agent API > API reference
+Description: Full AsyncAPI reference for the Voice Agent WebSocket.
+
+Metadata:
+- asyncapi: /api-reference/specs/voice-agent-api.yaml voiceAgent
+
+---
+
+<a id="generate-voice-agent-token-docs-voice-agents-voice-agent-api-api-spec-generate-voice-agent-token-mdx"></a>
+
+# Generate voice agent token
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/generate-voice-agent-token
+Source: docs/voice-agents/voice-agent-api/api-spec/generate-voice-agent-token.mdx
+Navigation: Voice Agent API > API reference
+Description: Generate a temporary token for the Voice Agent API.
+
+Metadata:
+- openapi: /api-reference/specs/voice-agent-token.yaml GET /v1/token
+
+---
+
+<a id="create-an-agent-docs-voice-agents-voice-agent-api-api-spec-create-agent-mdx"></a>
+
+# Create an agent
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/create-agent
+Source: docs/voice-agents/voice-agent-api/api-spec/create-agent.mdx
+Navigation: Voice Agent API > API reference > Agents
+Description: Create a reusable voice agent.
+
+Metadata:
+- openapi: /api-reference/specs/agents.yaml POST /v1/agents
+
+---
+
+<a id="list-agents-docs-voice-agents-voice-agent-api-api-spec-list-agents-mdx"></a>
+
+# List agents
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/list-agents
+Source: docs/voice-agents/voice-agent-api/api-spec/list-agents.mdx
+Navigation: Voice Agent API > API reference > Agents
+Description: List all voice agents in your account.
+
+Metadata:
+- openapi: /api-reference/specs/agents.yaml GET /v1/agents
+
+---
+
+<a id="retrieve-an-agent-docs-voice-agents-voice-agent-api-api-spec-get-agent-mdx"></a>
+
+# Retrieve an agent
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/get-agent
+Source: docs/voice-agents/voice-agent-api/api-spec/get-agent.mdx
+Navigation: Voice Agent API > API reference > Agents
+Description: Retrieve a stored voice agent by ID.
+
+Metadata:
+- openapi: /api-reference/specs/agents.yaml GET /v1/agents/{agent_id}
+
+---
+
+<a id="update-an-agent-docs-voice-agents-voice-agent-api-api-spec-update-agent-mdx"></a>
+
+# Update an agent
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/update-agent
+Source: docs/voice-agents/voice-agent-api/api-spec/update-agent.mdx
+Navigation: Voice Agent API > API reference > Agents
+Description: Update the configuration of a stored voice agent.
+
+Metadata:
+- openapi: /api-reference/specs/agents.yaml PUT /v1/agents/{agent_id}
+
+---
+
+<a id="delete-an-agent-docs-voice-agents-voice-agent-api-api-spec-delete-agent-mdx"></a>
+
+# Delete an agent
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/delete-agent
+Source: docs/voice-agents/voice-agent-api/api-spec/delete-agent.mdx
+Navigation: Voice Agent API > API reference > Agents
+Description: Delete a stored voice agent.
+
+Metadata:
+- openapi: /api-reference/specs/agents.yaml DELETE /v1/agents/{agent_id}
+
+---
+
+<a id="create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx"></a>
+
+# Create a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription.mdx
+Navigation: Voice Agent API > API reference > Webhooks
+Description: Create a webhook subscription for Voice Agent API events.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml POST /v1/webhook-subscriptions
+
+---
+
+<a id="list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx"></a>
+
+# List webhook subscriptions
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions
+Source: docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions.mdx
+Navigation: Voice Agent API > API reference > Webhooks
+Description: List all webhook subscriptions in your account.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions
+
+---
+
+<a id="retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx"></a>
+
+# Retrieve a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription.mdx
+Navigation: Voice Agent API > API reference > Webhooks
+Description: Retrieve a webhook subscription by ID.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx"></a>
+
+# Update a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription.mdx
+Navigation: Voice Agent API > API reference > Webhooks
+Description: Update a webhook subscription.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml PATCH /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx"></a>
+
+# Delete a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription.mdx
+Navigation: Voice Agent API > API reference > Webhooks
+Description: Delete a webhook subscription.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml DELETE /v1/webhook-subscriptions/{subscription_id}
+
+---
+
 <a id="speech-understanding-docs-speech-understanding-getting-started-mdx"></a>
 
 # Speech Understanding
@@ -58643,6 +59062,8 @@ The model is designed to automatically detect and classify various types of enti
 | `username`                  | Usernames, login names, or handles                                                                             | @AssemblyAI                                                      |
 | `vehicle_id`                | Vehicle identification numbers (VINs), vehicle serial numbers, and license plate numbers                       | 5FNRL38918B111818; BIF7547                                       |
 | `zodiac_sign`               | Names of Zodiac signs                                                                                          | Aries; Taurus                                                    |
+
+  Entity Detection returns every location reference under the single `location` entity type. It does **not** emit granular subtypes such as `location_address`, `location_city`, or `location_zip` — those are supported by [PII redaction](/guardrails/redact-pii-from-transcripts#granular-location-policies) only.
 
 ## Frequently asked questions
 
@@ -62181,7 +62602,14 @@ curl https://api.assemblyai.com/v2/transcript/transcript_id/redacted-audio \
 | `injury`                    | Bodily injury                                                                                                  | I broke my arm, I have a sprained wrist                          |
 | `ip_address`                | Internet IP address, including IPv4 and IPv6 formats                                                           | 192.168.0.1                                                      |
 | `language`                  | Name of a natural language                                                                                     | Spanish, French                                                  |
-| `location`                  | Any Location reference including mailing address, postal code, city, state, province, country, or coordinates. | Lake Victoria, 145 Windsor St., 90210                            |
+| `location`                  | Any Location reference including mailing address, postal code, city, state, province, country, or coordinates. Also required to redact combined location phrases like `Toronto, Canada` — see [Granular location policies](#granular-location-policies) below. | Lake Victoria, 145 Windsor St., 90210                            |
+| `location_address`          | A complete mailing address                                                                                     | 145 Windsor St., Toronto, ON M5A 2P5                             |
+| `location_address_street`   | Street-level component of an address                                                                           | 145 Windsor St.                                                  |
+| `location_city`             | City name                                                                                                      | Toronto, San Francisco                                           |
+| `location_coordinate`       | Geographic coordinates                                                                                         | 40.7128° N, 74.0060° W                                           |
+| `location_country`          | Country name                                                                                                   | Canada, United States                                            |
+| `location_state`            | State, province, or region name                                                                                | Ontario, California                                              |
+| `location_zip`              | Postal or ZIP code                                                                                             | M5A 2P5, 90210                                                   |
 | `marital_status`            | Terms indicating marital status                                                                                | Single, common-law, ex-wife, married                             |
 | `medical_condition`         | Name of a medical condition, disease, syndrome, deficit, or disorder                                           | chronic fatigue syndrome, arrhythmia, depression                 |
 | `medical_process`           | Medical process, including treatments, procedures, and tests                                                   | heart surgery, CT scan                                           |
@@ -62205,6 +62633,18 @@ curl https://api.assemblyai.com/v2/transcript/transcript_id/redacted-audio \
 | `username`                  | Usernames, login names, or handles                                                                             | @AssemblyAI                                                      |
 | `vehicle_id`                | Vehicle identification numbers (VINs), vehicle serial numbers, and license plate numbers                       | 5FNRL38918B111818, BIF7547                                       |
 | `zodiac_sign`               | Names of Zodiac signs                                                                                          | Aries, Taurus                                                    |
+
+#### Granular location policies
+
+The `location_*` policies let you redact specific parts of a location without redacting the rest — for example, redacting street addresses while keeping city and state visible.
+
+Which policy matches a given span is **shape-dependent**:
+
+* A **full contiguous mailing address** (street, city, state, and ZIP together, e.g. `145 Windsor St., Toronto, ON M5A 2P5`) is treated as a single `location_address` span. To redact it, include `location_address` in `redact_pii_policies`.
+* A **standalone location fragment** is tagged as its specific subtype. A lone street redacts as `location_address_street`, a lone city as `location_city`, a lone state as `location_state`, a lone country as `location_country`, a lone ZIP as `location_zip`, and coordinates as `location_coordinate`.
+* A **combined phrase** that mixes location parts without forming a full address — for example `Toronto, Canada` — is treated as a single generic `location` span. To redact it, include the broad `location` policy in `redact_pii_policies`. The granular subtypes alone won't match it.
+
+  These granular subtypes apply to **PII redaction only**. [Entity Detection](/speech-understanding/entity-detection) returns all location references under the single `location` entity type, not as `location_address`, `location_city`, and so on.
 
 ## Troubleshooting
 
@@ -76557,20 +76997,7 @@ Source: docs/faq/where-are-your-servers-located.mdx
 Navigation: FAQ > Overview > Privacy & Security
 Description: Where are your servers located? documentation.
 
-Our production server resides in AWS US West 2, AWS EU West 1. These are AWS' Oregon and Dublin regions respectively.
-
----
-
-<a id="where-do-production-and-backups-reside-docs-faq-where-do-production-and-backups-reside-mdx"></a>
-
-# Where do production and backups reside?
-
-URL: https://www.assemblyai.com/docs/faq/where-do-production-and-backups-reside
-Source: docs/faq/where-do-production-and-backups-reside.mdx
-Navigation: FAQ > Overview > Privacy & Security
-Description: Where do production and backups reside? documentation.
-
-Production resides in AWS US West 2, AWS EU West 1. These are AWS' Oregon and Dublin regions respectively.
+Our production server resides in AWS US West 2, AWS EU West 1. These are AWS Oregon and Dublin regions respectively.
 
 ---
 
@@ -85286,7 +85713,7 @@ components:
 
     EntityType:
       x-label: Entity type
-      description: The type of entity for the detected entity
+      description: The type of entity for the detected entity. Entity Detection returns every location reference under the single `location` value; granular location subtypes (`location_address`, `location_city`, etc.) are supported only by PII redaction.
       x-fern-sdk-group-name: transcripts
       type: string
       enum:
@@ -85312,13 +85739,6 @@ components:
         - ip_address
         - language
         - location
-        - location_address
-        - location_address_street
-        - location_city
-        - location_coordinate
-        - location_country
-        - location_state
-        - location_zip
         - marital_status
         - medical_condition
         - medical_process
@@ -85406,20 +85826,6 @@ components:
             Any Location reference including mailing address, postal code,
             city, state, province, country, or coordinates. (e.g., Lake Victoria, 145
             Windsor St., 90210)
-        location_address:
-          description: A complete mailing address (e.g., 145 Windsor St., Toronto, ON M5A 2P5)
-        location_address_street:
-          description: Street-level component of an address (e.g., 145 Windsor St.)
-        location_city:
-          description: City name (e.g., Toronto, San Francisco)
-        location_coordinate:
-          description: Geographic coordinates (e.g., 40.7128° N, 74.0060° W)
-        location_country:
-          description: Country name (e.g., Canada, United States)
-        location_state:
-          description: State, province, or region name (e.g., Ontario, California)
-        location_zip:
-          description: Postal or ZIP code (e.g., M5A 2P5, 90210)
         marital_status:
           description:
             Terms indicating marital status (e.g., Single, common-law, ex-wife,
@@ -85536,20 +85942,6 @@ components:
           label: Language
         location:
           label: Location
-        location_address:
-          label: Location address
-        location_address_street:
-          label: Location address street
-        location_city:
-          label: Location city
-        location_coordinate:
-          label: Location coordinate
-        location_country:
-          label: Location country
-        location_state:
-          label: Location state
-        location_zip:
-          label: Location ZIP
         marital_status:
           label: Marital status
         medical_condition:

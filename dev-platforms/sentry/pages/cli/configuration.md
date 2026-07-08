@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/configuration/
 
 # Configuration and Authentication
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 For most functionality you need to authenticate with Sentry. Setting this up can be done either automatically, using `sentry-cli`, or manually via [Organization Tokens](https://sentry.io/orgredirect/organizations/:orgslug/settings/auth-tokens/).
 
 ## [To use the automatic option:](https://docs.sentry.io/cli/configuration.md#to-use-the-automatic-option)

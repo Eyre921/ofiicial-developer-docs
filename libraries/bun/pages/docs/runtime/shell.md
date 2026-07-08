@@ -290,7 +290,7 @@ await $`
   It prints:
 
   ```
-  echo hi
+  `echo hi`
   ```
 
   Use the `$(...)` syntax instead.
@@ -512,7 +512,7 @@ Exposes Bun Shell's escaping logic as a function:
 import { $ } from "bun";
 
 console.log($.escape('$(foo) `bar` "baz"'));
-// => \$(foo) \`bar\` \"baz\"
+// => "\$(foo) \`bar\` \"baz\""
 ```
 
 To skip escaping, wrap the string in a `{ raw: 'str' }` object:

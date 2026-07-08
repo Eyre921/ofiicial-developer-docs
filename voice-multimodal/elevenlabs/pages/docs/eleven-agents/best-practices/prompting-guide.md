@@ -411,7 +411,7 @@ Attach concrete evaluation criteria to each agent to monitor success over time a
 * **Task completion rate:** Percentage of user intents successfully addressed
 * **Escalation rate:** Percentage of conversations requiring human intervention
 
-For detailed guidance on configuring evaluation criteria in ElevenLabs, see [Success Evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation).
+For detailed guidance on configuring evaluation criteria in ElevenLabs, see [Success evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation).
 
 ### Analyze failure patterns
 
@@ -440,7 +440,7 @@ improvements or regressions to specific edits.
 
 Configure your agent to summarize data from each conversation. This allows you to analyze interaction patterns, identify common user requests, and continuously improve your prompt based on real-world usage.
 
-For detailed guidance on configuring data collection in ElevenLabs, see [Data Collection](/docs/eleven-agents/customization/agent-analysis/data-collection).
+For detailed guidance on configuring data collection in ElevenLabs, see [Data collection](/docs/eleven-agents/customization/agent-analysis/data-collection).
 
 ### Use simulation for regression testing
 
@@ -687,8 +687,8 @@ instructions.
 This guide establishes the foundation for reliable agent behavior through prompt engineering, tool configuration, and architectural patterns. To build production-grade systems, continue with:
 
 * **[Workflows](/docs/eleven-agents/customization/agent-workflows):** Design multi-agent orchestration and specialist handoffs
-* **[Success Evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation):** Configure metrics and evaluation criteria
-* **[Data Collection](/docs/eleven-agents/customization/agent-analysis/data-collection):** Capture structured insights from conversations
+* **[Success evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation):** Configure metrics and evaluation criteria
+* **[Data collection](/docs/eleven-agents/customization/agent-analysis/data-collection):** Capture structured insights from conversations
 * **[Testing](/docs/eleven-agents/customization/agent-testing):** Implement regression testing and simulation
 * **[Guardrails](/docs/eleven-agents/best-practices/guardrails):** Configure content moderation for safe agent responses
 * **[Privacy](/docs/eleven-agents/customization/privacy):** Ensure compliance and data protection

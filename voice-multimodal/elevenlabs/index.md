@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 761 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 764 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -129,7 +129,6 @@
 - `docs/api-reference/legacy/knowledge-base/add-to-knowledge-base` — [Add To Knowledge Base](pages/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md)
 - `docs/api-reference/legacy/voices/create-previews` — [Voice design](pages/docs/api-reference/legacy/voices/create-previews.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/create-previews.md)
 - `docs/api-reference/legacy/voices/get-all` — [List voices](pages/docs/api-reference/legacy/voices/get-all.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/get-all.md)
-- `docs/api-reference/legacy/voices/save-a-voice-preview` — [Save a voice preview](pages/docs/api-reference/legacy/voices/save-a-voice-preview.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/save-a-voice-preview.md)
 - `docs/api-reference/llm/calculate` — [Calculate expected LLM usage](pages/docs/api-reference/llm/calculate.md) · [原文](https://elevenlabs.io/docs/api-reference/llm/calculate.md)
 - `docs/api-reference/llm/list` — [List LLMs](pages/docs/api-reference/llm/list.md) · [原文](https://elevenlabs.io/docs/api-reference/llm/list.md)
 - `docs/api-reference/mcp/approval-policies/create` — [Create MCP server tool approval](pages/docs/api-reference/mcp/approval-policies/create.md) · [原文](https://elevenlabs.io/docs/api-reference/mcp/approval-policies/create.md)
@@ -477,9 +476,10 @@
 - `docs/eleven-agents/build/overview` — [Build](pages/docs/eleven-agents/build/overview.md) · [原文](https://elevenlabs.io/docs/eleven-agents/build/overview.md)
 - `docs/eleven-agents/customization/agent-analysis` — [Conversation analysis](pages/docs/eleven-agents/customization/agent-analysis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis.md)
 - `docs/eleven-agents/customization/agent-analysis/coaching` — [Coaching](pages/docs/eleven-agents/customization/agent-analysis/coaching.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/coaching.md)
-- `docs/eleven-agents/customization/agent-analysis/data-collection` — [Data Collection](pages/docs/eleven-agents/customization/agent-analysis/data-collection.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/data-collection.md)
+- `docs/eleven-agents/customization/agent-analysis/data-collection` — [Data collection](pages/docs/eleven-agents/customization/agent-analysis/data-collection.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/data-collection.md)
+- `docs/eleven-agents/customization/agent-analysis/sentiment-analysis` — [Sentiment analysis](pages/docs/eleven-agents/customization/agent-analysis/sentiment-analysis.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/sentiment-analysis.md)
 - `docs/eleven-agents/customization/agent-analysis/smart-search` — [Searching conversations](pages/docs/eleven-agents/customization/agent-analysis/smart-search.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/smart-search.md)
-- `docs/eleven-agents/customization/agent-analysis/success-evaluation` — [Success Evaluation](pages/docs/eleven-agents/customization/agent-analysis/success-evaluation.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/success-evaluation.md)
+- `docs/eleven-agents/customization/agent-analysis/success-evaluation` — [Success evaluation](pages/docs/eleven-agents/customization/agent-analysis/success-evaluation.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-analysis/success-evaluation.md)
 - `docs/eleven-agents/customization/agent-testing` — [Agent Testing](pages/docs/eleven-agents/customization/agent-testing.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-testing.md)
 - `docs/eleven-agents/customization/agent-workflows` — [Workflows](pages/docs/eleven-agents/customization/agent-workflows.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-workflows.md)
 - `docs/eleven-agents/customization/authentication` — [Agent authentication](pages/docs/eleven-agents/customization/authentication.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/authentication.md)
@@ -553,6 +553,9 @@
 - `docs/eleven-agents/customization/voice/speed-control` — [Speed control](pages/docs/eleven-agents/customization/voice/speed-control.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/voice/speed-control.md)
 - `docs/eleven-agents/customization/widget` — [Widget customization](pages/docs/eleven-agents/customization/widget.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/widget.md)
 - `docs/eleven-agents/dashboard` — [Analytics](pages/docs/eleven-agents/dashboard.md) · [原文](https://elevenlabs.io/docs/eleven-agents/dashboard.md)
+- `docs/eleven-agents/dashboard/spotlight` — [Spotlight](pages/docs/eleven-agents/dashboard/spotlight.md) · [原文](https://elevenlabs.io/docs/eleven-agents/dashboard/spotlight.md)
+- `docs/eleven-agents/dashboard/spotlight/real-time-insights` — [Real-time insights](pages/docs/eleven-agents/dashboard/spotlight/real-time-insights.md) · [原文](https://elevenlabs.io/docs/eleven-agents/dashboard/spotlight/real-time-insights.md)
+- `docs/eleven-agents/dashboard/spotlight/topic-discovery` — [Topic discovery](pages/docs/eleven-agents/dashboard/spotlight/topic-discovery.md) · [原文](https://elevenlabs.io/docs/eleven-agents/dashboard/spotlight/topic-discovery.md)
 - `docs/eleven-agents/guides/burst-pricing` — [Burst pricing](pages/docs/eleven-agents/guides/burst-pricing.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/burst-pricing.md)
 - `docs/eleven-agents/guides/chat-mode` — [Chat Mode](pages/docs/eleven-agents/guides/chat-mode.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/chat-mode.md)
 - `docs/eleven-agents/guides/elevenlabs-docs-agent` — [Building the ElevenLabs documentation agent](pages/docs/eleven-agents/guides/elevenlabs-docs-agent.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/elevenlabs-docs-agent.md)
@@ -661,7 +664,7 @@
 - `docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference` — [Python SDK reference](pages/docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/libraries/speech-engine/python-sdk-reference.md)
 - `docs/eleven-api/resources/webhooks` — [Webhooks](pages/docs/eleven-api/resources/webhooks.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/webhooks.md)
 - `docs/eleven-api/resources/zero-retention-mode` — [Zero Retention Mode (Enterprise)](pages/docs/eleven-api/resources/zero-retention-mode.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/zero-retention-mode.md)
-- `docs/eleven-creative/audio-tools/ai-speech-classifier` — [AI speech classifier](pages/docs/eleven-creative/audio-tools/ai-speech-classifier.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/ai-speech-classifier.md)
+- `docs/eleven-creative/audio-tools/audio-detector` — [Audio detector](pages/docs/eleven-creative/audio-tools/audio-detector.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-detector.md)
 - `docs/eleven-creative/audio-tools/audio-native` — [Audio Native](pages/docs/eleven-creative/audio-tools/audio-native.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native.md)
 - `docs/eleven-creative/audio-tools/audio-native/framer` — [Audio Native with Framer](pages/docs/eleven-creative/audio-tools/audio-native/framer.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native/framer.md)
 - `docs/eleven-creative/audio-tools/audio-native/ghost` — [Audio Native with Ghost](pages/docs/eleven-creative/audio-tools/audio-native/ghost.md) · [原文](https://elevenlabs.io/docs/eleven-creative/audio-tools/audio-native/ghost.md)

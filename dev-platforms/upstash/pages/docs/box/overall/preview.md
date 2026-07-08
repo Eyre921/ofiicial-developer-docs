@@ -34,7 +34,7 @@ await box.files.write({
 await box.exec.command("node /work/server.js &")
 
 // Create a public URL
-const publicUrl = await box.getPublicUrl(3000)
+const publicUrl = await box.getPublicURL(3000)
 
 console.log(publicUrl.url)
 // → https://{BOX_ID}-3000.preview.box.upstash.com
@@ -73,13 +73,13 @@ Protect your public URL with bearer token or basic authentication.
 <CodeGroup>
 ```typescript box.ts
 // With bearer token
-const publicUrl = await box.getPublicUrl(3000, { bearerToken: true })
+const publicUrl = await box.getPublicURL(3000, { bearerToken: true })
 
 console.log(publicUrl.token) // Use this in Authorization header
 // → "63d8b153..."
 
 // With basic auth
-const publicUrl = await box.getPublicUrl(8080, { basicAuth: true })
+const publicUrl = await box.getPublicURL(8080, { basicAuth: true })
 
 console.log(publicUrl.username) // → "user"
 console.log(publicUrl.password) // → "f0f145f0..."
@@ -110,7 +110,7 @@ Creates a public URL that exposes a port on your box. Returns the URL and authen
 
 <CodeGroup>
 ```typescript box.ts
-const publicUrl = await box.getPublicUrl(3000)
+const publicUrl = await box.getPublicURL(3000)
 
 console.log(publicUrl.url)
 // → https://{BOX_ID}-3000.preview.box.upstash.com
@@ -130,7 +130,7 @@ Add `bearerToken: true` to require an authorization header when accessing the pu
 
 <CodeGroup>
 ```typescript box.ts
-const publicUrl = await box.getPublicUrl(3000, { bearerToken: true })
+const publicUrl = await box.getPublicURL(3000, { bearerToken: true })
 
 console.log(publicUrl.token)
 // → "63d8b153..."
@@ -156,7 +156,7 @@ Add `basicAuth: true` to require username and password when accessing the public
 
 <CodeGroup>
 ```typescript box.ts
-const publicUrl = await box.getPublicUrl(8080, { basicAuth: true })
+const publicUrl = await box.getPublicURL(8080, { basicAuth: true })
 
 console.log(publicUrl.username) // → "user"
 console.log(publicUrl.password) // → "f0f145f0..."
@@ -182,7 +182,7 @@ Enable both authentication methods. Either one will work when accessing the publ
 
 <CodeGroup>
 ```typescript box.ts
-const publicUrl = await box.getPublicUrl(8080, { bearerToken: true, basicAuth: true })
+const publicUrl = await box.getPublicURL(8080, { bearerToken: true, basicAuth: true })
 
 console.log(publicUrl.token) // → "63d8b153..."
 console.log(publicUrl.username) // → "user"
@@ -206,9 +206,9 @@ Get all active public URLs for this box.
 
 <CodeGroup>
 ```typescript box.ts
-const { publicUrls } = await box.listPublicUrls()
+const { publicURLs } = await box.listPublicURLs()
 
-console.log(publicUrls)
+console.log(publicURLs)
 // [
 //   { url: "https://{BOX_ID}-3000.preview.box.upstash.com", port: 3000 },
 //   { url: "https://{BOX_ID}-8080.preview.box.upstash.com", port: 8080 },
@@ -234,7 +234,7 @@ Remove a public URL by port number.
 
 <CodeGroup>
 ```typescript box.ts
-await box.deletePublicUrl(3000)
+await box.deletePublicURL(3000)
 ```
 
 ```python box.py
@@ -253,10 +253,10 @@ Creating a public URL for a port that already has one will overwrite the previou
 <CodeGroup>
 ```typescript box.ts
 // First public URL
-const publicUrl1 = await box.getPublicUrl(3000)
+const publicUrl1 = await box.getPublicURL(3000)
 
 // Second public URL overwrites the first one
-const publicUrl2 = await box.getPublicUrl(3000, { bearerToken: true })
+const publicUrl2 = await box.getPublicURL(3000, { bearerToken: true })
 
 // publicUrl1.url is no longer accessible
 ```
@@ -287,7 +287,7 @@ Creating a public URL on a paused box automatically resumes it.
 await box.pause()
 
 // This will resume the box
-const publicUrl = await box.getPublicUrl(3000)
+const publicUrl = await box.getPublicURL(3000)
 ```
 
 ```python box.py
@@ -329,7 +329,7 @@ Create a simple Express web server that:
   `,
 })
 
-const publicUrl = await box.getPublicUrl(3000)
+const publicUrl = await box.getPublicURL(3000)
 console.log(`Public URL available at: ${publicUrl.url}`)
 
 // Test the endpoints
@@ -399,7 +399,7 @@ if __name__ == '__main__':
 await box.exec.command("pip install flask && python /work/app.py &")
 
 // Create authenticated public URL
-const publicUrl = await box.getPublicUrl(8080, { basicAuth: true })
+const publicUrl = await box.getPublicURL(8080, { basicAuth: true })
 
 console.log(`Public URL: ${publicUrl.url}`)
 console.log(`Username: ${publicUrl.username}`)
@@ -479,8 +479,8 @@ await box.exec.command("npm install express")
 await box.exec.command("node /work/frontend.js & node /work/api.js &")
 
 // Create a public URL for each service
-const frontendPublicUrl = await box.getPublicUrl(3000)
-const apiPublicUrl = await box.getPublicUrl(8080)
+const frontendPublicUrl = await box.getPublicURL(3000)
+const apiPublicUrl = await box.getPublicURL(8080)
 
 console.log(`Frontend: ${frontendPublicUrl.url}`)
 console.log(`API: ${apiPublicUrl.url}`)
@@ -539,14 +539,14 @@ const box = await Box.create({ runtime: "node" })
 await box.exec.command("npx http-server /work -p 3000 &")
 
 // Create a public URL for testing
-const publicUrl = await box.getPublicUrl(3000)
+const publicUrl = await box.getPublicURL(3000)
 
 // Run your tests against the public URL
 const response = await fetch(publicUrl.url)
 console.log(response.status) // 200
 
 // Clean up
-await box.deletePublicUrl(3000)
+await box.deletePublicURL(3000)
 await box.delete()
 ```
 
@@ -572,4 +572,4 @@ box.delete()
 ```
 </CodeGroup>
 
-<Note>The SDK still supports `getPreviewUrl`, `listPreviews`, and `deletePreview`, but they are deprecated aliases for `getPublicUrl`, `listPublicUrls`, and `deletePublicUrl`.</Note>
+<Note>The SDK still supports `getPreviewUrl`, `listPreviews`, and `deletePreview`, but they are deprecated aliases for `getPublicURL`, `listPublicURLs`, and `deletePublicURL`.</Note>

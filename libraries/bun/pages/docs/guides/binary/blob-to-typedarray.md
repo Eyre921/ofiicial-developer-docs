@@ -4,7 +4,14 @@ source: https://bun.com/docs/guides/binary/blob-to-typedarray
 path: docs/guides/binary/blob-to-typedarray
 ---
 
-The [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) class provides several methods for consuming its contents in different formats. Read the contents into an `ArrayBuffer` with `.arrayBuffer()`, then create a `Uint8Array` from the buffer.
+The [`Blob`](https://developer.mozilla.org/en-US/docs/Web/API/Blob) class provides several methods for consuming its contents in different formats. Use `.bytes()` to read the contents as a `Uint8Array`.
+
+```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
+const blob = new Blob(["hello world"]);
+const arr = await blob.bytes();
+```
+
+Alternatively, read the contents into an `ArrayBuffer` with `.arrayBuffer()`, then create a `Uint8Array` from the buffer.
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const blob = new Blob(["hello world"]);

@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/dif/
 
 # Debug Information Files
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 Debug information files allow Sentry to extract stack traces and provide more information about crash reports for most compiled platforms. `sentry-cli` can be used to validate and upload debug information files. For more general information, refer to [*Debug Information Files*](https://docs.sentry.io/platforms/native/data-management/debug-files.md).
 
 ## [Permissions](https://docs.sentry.io/cli/dif.md#permissions)

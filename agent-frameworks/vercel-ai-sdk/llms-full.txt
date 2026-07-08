@@ -41256,7 +41256,7 @@ import { generateText, tool } from "ai";
 import { z } from "zod";
 
 const { text } = await generateText({
-  model: "xai/grok-4",
+  model: "xai/grok-4.5",
   prompt: "What is the weather like in San Francisco?",
   tools: {
     getWeather: tool({
@@ -41949,10 +41949,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-3`.
+first argument is the model id, e.g. `grok-4.5`.
 
 ```ts
-const model = xai('grok-3');
+const model = xai('grok-4.5');
 ```
 
 By default, `xai(modelId)` uses the Chat API. To use the Responses API with server-side agentic tools, explicitly use `xai.responses(modelId)`.
@@ -41966,7 +41966,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-3'),
+  model: xai('grok-4.5'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -42029,7 +42029,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-2-vision-1212'),
+  model: xai.responses('grok-4.5'),
   messages: [
     {
       role: 'user',
@@ -42504,6 +42504,7 @@ console.log('Sources:', await result.sources);
 
 | Model                       | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Reasoning           |
 | --------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `grok-4.5`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4-fast-non-reasoning` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
 | `grok-4-fast-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-code-fast-1`          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -79866,7 +79867,7 @@ import { generateText, tool } from "ai";
 import { z } from "zod";
 
 const { text } = await generateText({
-  model: "xai/grok-4",
+  model: "xai/grok-4.5",
   prompt: "What is the weather like in San Francisco?",
   tools: {
     getWeather: tool({
@@ -80675,10 +80676,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.20-non-reasoning`.
+first argument is the model id, e.g. `grok-4.5`.
 
 ```ts
-const model = xai('grok-4.20-non-reasoning');
+const model = xai('grok-4.5');
 ```
 
 By default, `xai(modelId)` uses the Chat API. To use the Responses API with server-side agentic tools, explicitly use `xai.responses(modelId)`.
@@ -80692,7 +80693,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.20-non-reasoning'),
+  model: xai('grok-4.5'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -80751,7 +80752,7 @@ The following optional provider options are available for xAI chat models:
 You can use the xAI Responses API with the `xai.responses(modelId)` factory method for server-side agentic tool calling. This enables the model to autonomously orchestrate tool calls and research on xAI's servers.
 
 ```ts
-const model = xai.responses('grok-4.20-non-reasoning');
+const model = xai.responses('grok-4.5');
 ```
 
 The Responses API provides server-side tools that the model can autonomously execute during its reasoning process:
@@ -80773,7 +80774,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-3'),
+  model: xai.responses('grok-4.5'),
   messages: [
     {
       role: 'user',
@@ -80785,6 +80786,42 @@ const { text } = await generateText({
   ],
 });
 ```
+
+You can control the resolution at which the model processes an image with
+the `imageDetail` provider option on the image part:
+
+```ts
+import { xai } from '@ai-sdk/xai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: xai('grok-4.5'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'What do you see in this image?' },
+        {
+          type: 'file',
+          mediaType: 'image/png',
+          data: fs.readFileSync('./image.png'),
+          providerOptions: {
+            xai: { imageDetail: 'low' },
+          },
+        },
+      ],
+    },
+  ],
+});
+```
+
+The following image detail values are supported:
+
+- **low**: processes the image at reduced resolution and consumes fewer input tokens.
+- **high**: processes the image at full resolution.
+- **auto**: lets the xAI API decide.
+
+When not set, the image is processed at full resolution.
 
 ### Web Search Tool
 
@@ -81388,6 +81425,7 @@ console.log('Sources:', await result.sources);
 
 | Model                         | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Reasoning           |
 | ----------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `grok-4.5`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4.20-reasoning`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4.20-non-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
 | `grok-4-1-fast-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -121172,11 +121210,11 @@ const { video } = await generateVideo({
 });
 ```
 
-### Reference Images
+### Reference Inputs
 
 Some video models support reference-to-video generation, where you provide one or
-more reference images that the model incorporates into the generated video. Use the `inputReferences` option to pass
-these images in a provider-agnostic way:
+more reference images or videos that the model incorporates into the generated video. Use the `inputReferences` option to pass
+these inputs in a provider-agnostic way:
 
 ```tsx highlight={"5-8"}
 const { video } = await generateVideo({
@@ -121188,6 +121226,25 @@ const { video } = await generateVideo({
   ],
 });
 ```
+
+For URL-based video references, use the object form with an explicit `mediaType`:
+
+```tsx highlight={"5-10"}
+const { video } = await generateVideo({
+  model: __VIDEO_MODEL__,
+  prompt: 'Match the motion in the reference clip',
+  inputReferences: [
+    {
+      data: 'https://example.com/reference.mp4',
+      mediaType: 'video/mp4',
+    },
+  ],
+});
+```
+
+Providers route each reference by its media type (image vs. video) and emit a
+warning when a reference kind is unsupported (for example, providers that accept
+only image references warn and ignore a video reference).
 
 ### Providing a Seed
 
@@ -127127,12 +127184,12 @@ When the user clicks the "Regenerate" button, the AI provider will regenerate th
 <Note>This feature is currently only available for React.</Note>
 
 By default, the `useChat` hook will trigger a render every time a new chunk is received.
-You can throttle the UI updates with the `experimental_throttle` option.
+You can throttle the UI updates with the `throttle` option.
 
 ```tsx filename="page.tsx" highlight="2-3"
 const { messages, ... } = useChat({
   // Throttle the messages and data updates to 50ms:
-  experimental_throttle: 50
+  throttle: 50
 })
 ```
 
@@ -130502,12 +130559,12 @@ When the user clicks the "Stop" button, the fetch request will be aborted. This 
 <Note>This feature is currently only available for React.</Note>
 
 By default, the `useCompletion` hook will trigger a render every time a new chunk is received.
-You can throttle the UI updates with the `experimental_throttle` option.
+You can throttle the UI updates with the `throttle` option.
 
 ```tsx filename="page.tsx" highlight="2-3"
 const { completion, ... } = useCompletion({
   // Throttle the completion and data updates to 50ms:
-  experimental_throttle: 50
+  throttle: 50
 })
 ```
 
@@ -130552,10 +130609,7 @@ description: Learn how to use the useObject hook.
 
 # Object Generation
 
-<Note>
-  `useObject` is an experimental feature and only available in React, Svelte,
-  and Vue.
-</Note>
+<Note>`useObject` is only available in React, Svelte, and Vue.</Note>
 
 The [`useObject`](/docs/reference/ai-sdk-ui/use-object) hook allows you to create interfaces that represent a structured JSON object that is being streamed.
 
@@ -130593,7 +130647,7 @@ Please note the code for handling `undefined` values in the JSX.
 ```tsx filename='app/page.tsx'
 'use client';
 
-import { experimental_useObject as useObject } from '@ai-sdk/react';
+import { useObject } from '@ai-sdk/react';
 import { notificationSchema } from './api/notifications/schema';
 
 export default function Page() {
@@ -130662,7 +130716,7 @@ When using `useObject` with enum output mode, your schema must be an object with
 ```tsx filename='app/classify/page.tsx'
 'use client';
 
-import { experimental_useObject as useObject } from '@ai-sdk/react';
+import { useObject } from '@ai-sdk/react';
 import { z } from 'zod';
 
 export default function ClassifyPage() {
@@ -130721,7 +130775,7 @@ purposes:
 ```tsx filename='app/page.tsx' highlight="6,13-20,24"
 'use client';
 
-import { experimental_useObject as useObject } from '@ai-sdk/react';
+import { useObject } from '@ai-sdk/react';
 
 export default function Page() {
   const { isLoading, object, submit } = useObject({
@@ -130758,7 +130812,7 @@ The `stop` function can be used to stop the object generation process. This can 
 ```tsx filename='app/page.tsx' highlight="6,14-16"
 'use client';
 
-import { experimental_useObject as useObject } from '@ai-sdk/react';
+import { useObject } from '@ai-sdk/react';
 
 export default function Page() {
   const { isLoading, stop, object, submit } = useObject({
@@ -130803,7 +130857,7 @@ It can be used to display an error message, or to disable the submit button:
 ```tsx file="app/page.tsx" highlight="6,13"
 'use client';
 
-import { experimental_useObject as useObject } from '@ai-sdk/react';
+import { useObject } from '@ai-sdk/react';
 
 export default function Page() {
   const { error, object, submit } = useObject({
@@ -130842,7 +130896,7 @@ These callbacks can be used to trigger additional actions, such as logging, anal
 ```tsx filename='app/page.tsx' highlight="10-20"
 'use client';
 
-import { experimental_useObject as useObject } from '@ai-sdk/react';
+import { useObject } from '@ai-sdk/react';
 import { notificationSchema } from './api/notifications/schema';
 
 export default function Page() {
@@ -135008,7 +135062,7 @@ import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
 const { text } = await generateText({
-  model: 'xai/grok-4',
+  model: 'xai/grok-4.5',
   prompt: 'What is the weather like in San Francisco?',
   tools: {
     getWeather: tool({
@@ -135838,10 +135892,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.20-non-reasoning`.
+first argument is the model id, e.g. `grok-4.5`.
 
 ```ts
-const model = xai('grok-4.20-non-reasoning');
+const model = xai('grok-4.5');
 ```
 
 <Note>
@@ -135860,7 +135914,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.20-non-reasoning'),
+  model: xai('grok-4.5'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -135881,7 +135935,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.3'),
+  model: xai('grok-4.5'),
   prompt: 'Explain quantum entanglement.',
   providerOptions: {
     xai: { reasoningEffort: 'medium' },
@@ -135938,7 +135992,7 @@ calling pattern.
 The xAI Responses API is the default when using `xai(modelId)` (since AI SDK 7). You can also use `xai.responses(modelId)` explicitly. This enables the model to autonomously orchestrate tool calls and research on xAI's servers.
 
 ```ts
-const model = xai.responses('grok-4.20-non-reasoning');
+const model = xai.responses('grok-4.5');
 ```
 
 The Responses API provides server-side tools that the model can autonomously execute during its reasoning process:
@@ -135960,7 +136014,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-3'),
+  model: xai.responses('grok-4.5'),
   messages: [
     {
       role: 'user',
@@ -135976,6 +136030,42 @@ const { text } = await generateText({
   ],
 });
 ```
+
+You can control the resolution at which the model processes an image with
+the `imageDetail` provider option on the image part:
+
+```ts
+import { xai } from '@ai-sdk/xai';
+import { generateText } from 'ai';
+
+const { text } = await generateText({
+  model: xai('grok-4.5'),
+  messages: [
+    {
+      role: 'user',
+      content: [
+        { type: 'text', text: 'What do you see in this image?' },
+        {
+          type: 'file',
+          mediaType: 'image/png',
+          data: fs.readFileSync('./image.png'),
+          providerOptions: {
+            xai: { imageDetail: 'low' },
+          },
+        },
+      ],
+    },
+  ],
+});
+```
+
+The following image detail values are supported:
+
+- **low**: processes the image at reduced resolution and consumes fewer input tokens.
+- **high**: processes the image at full resolution.
+- **auto**: lets the xAI API decide.
+
+When not set, the image is processed at full resolution.
 
 ### Web Search Tool
 
@@ -136287,6 +136377,7 @@ The following provider options are available:
 
 | Model                         | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Reasoning           |
 | ----------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `grok-4.5`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4.20-reasoning`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `grok-4.20-non-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
 | `grok-4-1-fast-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -144034,10 +144125,13 @@ const { image } = await generateImage({
 });
 ```
 
-You can also pass the `providerOptions` object to the `generateImage` function to customize the generation behavior:
+You can also pass the `providerOptions` object to the `generateImage` function to customize the generation behavior. Use the `AmazonBedrockImageModelOptions` type to validate Amazon Bedrock image provider options. The preferred provider option key is `providerOptions.amazonBedrock`; the legacy `providerOptions.bedrock` key remains supported for backward compatibility:
 
 ```ts
-import { amazonBedrock } from '@ai-sdk/amazon-bedrock';
+import {
+  amazonBedrock,
+  type AmazonBedrockImageModelOptions,
+} from '@ai-sdk/amazon-bedrock';
 import { generateImage } from 'ai';
 
 const { image } = await generateImage({
@@ -144046,12 +144140,12 @@ const { image } = await generateImage({
   size: '512x512',
   seed: 42,
   providerOptions: {
-    bedrock: {
+    amazonBedrock: {
       quality: 'premium',
       negativeText: 'blurry, low quality',
       cfgScale: 7.5,
       style: 'PHOTOREALISM',
-    },
+    } satisfies AmazonBedrockImageModelOptions,
   },
 });
 ```
@@ -144100,18 +144194,18 @@ const { images } = await generateImage({
     images: [imageBuffer],
   },
   providerOptions: {
-    bedrock: {
+    amazonBedrock: {
       taskType: 'IMAGE_VARIATION',
-      similarityStrength: 0.7, // 0-1, higher = closer to original
+      similarityStrength: 0.7, // 0.2-1.0, higher = closer to original
       negativeText: 'bad quality, low resolution',
-    },
+    } satisfies AmazonBedrockImageModelOptions,
   },
 });
 ```
 
 - **similarityStrength** _number_
 
-  Controls how similar the output is to the input image. Values range from 0 to 1, where higher values produce results closer to the original.
+  Controls how similar the output is to the input image. Values range from 0.2 to 1.0, where higher values produce results closer to the original.
 
 #### Inpainting
 
@@ -144129,9 +144223,9 @@ const { images } = await generateImage({
     images: [imageBuffer],
   },
   providerOptions: {
-    bedrock: {
+    amazonBedrock: {
       maskPrompt: 'cat', // Describe what to replace
-    },
+    } satisfies AmazonBedrockImageModelOptions,
   },
   seed: 42,
 });
@@ -144171,11 +144265,11 @@ const { images } = await generateImage({
     images: [imageBuffer],
   },
   providerOptions: {
-    bedrock: {
+    amazonBedrock: {
       taskType: 'OUTPAINTING',
       maskPrompt: 'background',
       outPaintingMode: 'DEFAULT', // or 'PRECISE'
-    },
+    } satisfies AmazonBedrockImageModelOptions,
   },
 });
 ```
@@ -144197,9 +144291,9 @@ const { images } = await generateImage({
     images: [imageBuffer],
   },
   providerOptions: {
-    bedrock: {
+    amazonBedrock: {
       taskType: 'BACKGROUND_REMOVAL',
-    },
+    } satisfies AmazonBedrockImageModelOptions,
   },
 });
 ```
@@ -144223,7 +144317,7 @@ The following additional provider options are available for image editing:
 
 - **similarityStrength** _number_
 
-  For `IMAGE_VARIATION`: Controls similarity to the original (0-1).
+  For `IMAGE_VARIATION`: Controls similarity to the original (0.2-1.0).
 
 - **outPaintingMode** _string_
 
@@ -146145,7 +146239,7 @@ You can create DeepInfra image models using the `.image()` factory method.
 For more on image generation with the AI SDK see [generateImage()](/docs/reference/ai-sdk-core/generate-image).
 
 ```ts
-import { deepInfra } from '@ai-sdk/deepinfra';
+import { deepInfra, type DeepInfraImageModelOptions } from '@ai-sdk/deepinfra';
 import { generateImage } from 'ai';
 
 const { image } = await generateImage({
@@ -146176,11 +146270,53 @@ const { image } = await generateImage({
   aspectRatio: '16:9',
   providerOptions: {
     deepinfra: {
-      num_inference_steps: 30, // Control the number of denoising steps (1-50)
-    },
+      num_inference_steps: 30,
+    } satisfies DeepInfraImageModelOptions,
   },
 });
 ```
+
+The following options are available via `providerOptions.deepinfra`. You can
+type them with `DeepInfraImageModelOptions`.
+
+- **negative_prompt** _string_
+
+  Text description of what to avoid in the generated image.
+
+- **num_inference_steps** _number_
+
+  Number of denoising steps for models that expose this option.
+
+- **guidance_scale** _number_
+
+  Guidance scale for models that expose this option.
+
+- **guidance** _number_
+
+  Guidance value for image edit models that expose this option.
+
+- **response_format** _'b64_json'_
+
+  Format for OpenAI-compatible image responses. DeepInfra currently supports
+  `b64_json`.
+
+- **quality** _string_
+
+  OpenAI-compatible image quality option.
+
+- **style** _string_
+
+  OpenAI-compatible image style option.
+
+- **user** _string_
+
+  Unique identifier for your end user.
+
+<Note>
+  DeepInfra image generation models expose model-specific parameters. Additional
+  fields can be passed through `providerOptions.deepinfra` and are validated by
+  DeepInfra.
+</Note>
 
 ### Image Editing
 
@@ -153126,10 +153262,47 @@ import { mistral } from '@ai-sdk/mistral';
 import { embed } from 'ai';
 
 const { embedding } = await embed({
-  model: mistral.embedding('mistral-embed'),
-  value: 'sunny day at the beach',
+  model: mistral.embedding('codestral-embed-2505'),
+  value: 'function add(a: number, b: number) { return a + b; }',
 });
 ```
+
+Mistral embedding models support additional provider options through
+`providerOptions.mistral`. You can validate them with
+`MistralEmbeddingModelOptions`:
+
+```ts
+import { mistral, type MistralEmbeddingModelOptions } from '@ai-sdk/mistral';
+import { embed } from 'ai';
+
+const { embedding } = await embed({
+  model: mistral.embedding('mistral-embed'),
+  value: 'sunny day at the beach',
+  providerOptions: {
+    mistral: {
+      metadata: { source: 'knowledge-base' },
+      outputDimension: 1024,
+      outputDtype: 'float',
+    } satisfies MistralEmbeddingModelOptions,
+  },
+});
+```
+
+The following optional provider options are available for Mistral embedding
+models:
+
+- **metadata** _Record&lt;string, unknown&gt;_
+
+  Additional metadata to attach to the embedding request.
+
+- **outputDimension** _number_
+
+  The dimension of the output embeddings when supported by the model.
+
+- **outputDtype** _string_
+
+  The data type of the output embeddings when supported by the model. Accepts
+  `'float'`, `'int8'`, `'uint8'`, `'binary'`, or `'ubinary'`.
 
 ### Model Capabilities
 
@@ -154239,13 +154412,19 @@ You can create Fireworks image models using the `.image()` factory method.
 For more on image generation with the AI SDK see [generateImage()](/docs/reference/ai-sdk-core/generate-image).
 
 ```ts
-import { fireworks } from '@ai-sdk/fireworks';
+import { fireworks, type FireworksImageModelOptions } from '@ai-sdk/fireworks';
 import { generateImage } from 'ai';
 
 const { image } = await generateImage({
   model: fireworks.image('accounts/fireworks/models/flux-1-dev-fp8'),
   prompt: 'A futuristic cityscape at sunset',
   aspectRatio: '16:9',
+  providerOptions: {
+    fireworks: {
+      guidance_scale: 4.5,
+      num_inference_steps: 8,
+    } satisfies FireworksImageModelOptions,
+  },
 });
 ```
 
@@ -154255,6 +154434,48 @@ const { image } = await generateImage({
   or check the model's documentation on [Fireworks models
   page](https://fireworks.ai/models) for more details.
 </Note>
+
+### Provider Options
+
+Fireworks image models support flexible provider options through the `providerOptions.fireworks` object. Use the `FireworksImageModelOptions` type to validate known Fireworks image options while still allowing model-specific options to pass through.
+
+The following typed provider options are available:
+
+- **guidance_scale** _number_
+
+  Classifier-free guidance scale for the image diffusion process.
+
+- **num_inference_steps** _number_
+
+  Number of denoising steps for FLUX workflow image generation.
+
+- **output_format** _'jpeg' | 'png'_
+
+  Desired output format for FLUX Kontext image generation and editing.
+
+- **prompt_upsampling** _boolean_
+
+  Whether Fireworks should automatically modify the prompt for more creative generation.
+
+- **safety_tolerance** _number_
+
+  Moderation tolerance level for inputs and outputs, from `0` to `6`. Fireworks limits image-to-image requests to `2`.
+
+- **webhook_url** _string_
+
+  URL to receive webhook notifications for async Kontext requests.
+
+- **webhook_secret** _string_
+
+  Secret for webhook signature verification.
+
+- **cfg_scale** _number_
+
+  Guidance scale for legacy `image_generation` models.
+
+- **steps** _number_
+
+  Number of generation steps for legacy `image_generation` models.
 
 ### Image Editing
 
@@ -154281,7 +154502,8 @@ const { images } = await generateImage({
   providerOptions: {
     fireworks: {
       output_format: 'jpeg',
-    },
+      safety_tolerance: 2,
+    } satisfies FireworksImageModelOptions,
   },
 });
 ```
@@ -156288,6 +156510,12 @@ The Perplexity provider includes additional metadata in the response through `pr
 Additional configuration options are available through `providerOptions`.
 
 ```ts
+import {
+  perplexity,
+  type PerplexityLanguageModelOptions,
+} from '@ai-sdk/perplexity';
+import { generateText } from 'ai';
+
 const result = await generateText({
   model: perplexity('sonar-pro'),
   prompt: 'What are the latest developments in quantum computing?',
@@ -156295,7 +156523,7 @@ const result = await generateText({
     perplexity: {
       return_images: true, // Enable image responses (Tier-2 Perplexity users only)
       search_recency_filter: 'week', // Filter search results by recency
-    },
+    } satisfies PerplexityLanguageModelOptions,
   },
 });
 
@@ -156322,7 +156550,7 @@ The following provider-specific options are available:
 
 - **search_recency_filter** _string_
 
-  Filter search results by recency. Possible values: `'hour'`, `'day'`, `'week'`, `'month'`. If not specified, defaults to all time.
+  Filter search results by recency. Possible values: `'hour'`, `'day'`, `'week'`, `'month'`, `'year'`. If not specified, defaults to all time.
 
 <Note>
   Any other [Perplexity API
@@ -156750,10 +156978,7 @@ For more on video generation with the AI SDK see [generateVideo()](/docs/referen
 Generate videos from text prompts:
 
 ```ts
-import {
-  byteDance,
-  type ByteDanceVideoProviderOptions,
-} from '@ai-sdk/bytedance';
+import { byteDance, type ByteDanceVideoModelOptions } from '@ai-sdk/bytedance';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
@@ -156765,7 +156990,7 @@ const { video } = await generateVideo({
   providerOptions: {
     bytedance: {
       watermark: false,
-    } satisfies ByteDanceVideoProviderOptions,
+    } satisfies ByteDanceVideoModelOptions,
   },
 });
 
@@ -156777,10 +157002,7 @@ console.log(video.url);
 Generate videos from a first-frame image with an optional text prompt:
 
 ```ts
-import {
-  byteDance,
-  type ByteDanceVideoProviderOptions,
-} from '@ai-sdk/bytedance';
+import { byteDance, type ByteDanceVideoModelOptions } from '@ai-sdk/bytedance';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
@@ -156793,7 +157015,7 @@ const { video } = await generateVideo({
   providerOptions: {
     bytedance: {
       watermark: false,
-    } satisfies ByteDanceVideoProviderOptions,
+    } satisfies ByteDanceVideoModelOptions,
   },
 });
 ```
@@ -156803,10 +157025,7 @@ const { video } = await generateVideo({
 Seedance 1.5 Pro supports generating synchronized audio alongside the video:
 
 ```ts
-import {
-  byteDance,
-  type ByteDanceVideoProviderOptions,
-} from '@ai-sdk/bytedance';
+import { byteDance, type ByteDanceVideoModelOptions } from '@ai-sdk/bytedance';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
@@ -156820,7 +157039,7 @@ const { video } = await generateVideo({
     bytedance: {
       generateAudio: true,
       watermark: false,
-    } satisfies ByteDanceVideoProviderOptions,
+    } satisfies ByteDanceVideoModelOptions,
   },
 });
 ```
@@ -156830,10 +157049,7 @@ const { video } = await generateVideo({
 Generate smooth transitions between a starting and ending keyframe image:
 
 ```ts
-import {
-  byteDance,
-  type ByteDanceVideoProviderOptions,
-} from '@ai-sdk/bytedance';
+import { byteDance, type ByteDanceVideoModelOptions } from '@ai-sdk/bytedance';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
@@ -156848,7 +157064,7 @@ const { video } = await generateVideo({
       lastFrameImage: 'https://example.com/last-frame.jpg',
       generateAudio: true,
       watermark: false,
-    } satisfies ByteDanceVideoProviderOptions,
+    } satisfies ByteDanceVideoModelOptions,
   },
 });
 ```
@@ -156858,10 +157074,7 @@ const { video } = await generateVideo({
 Using the Seedance 1.0 Lite I2V model, you can provide multiple reference images (1-4) that the model uses to faithfully reproduce object shapes, colors, and textures:
 
 ```ts
-import {
-  byteDance,
-  type ByteDanceVideoProviderOptions,
-} from '@ai-sdk/bytedance';
+import { byteDance, type ByteDanceVideoModelOptions } from '@ai-sdk/bytedance';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
@@ -156878,7 +157091,7 @@ const { video } = await generateVideo({
         'https://example.com/lawn.png',
       ],
       watermark: false,
-    } satisfies ByteDanceVideoProviderOptions,
+    } satisfies ByteDanceVideoModelOptions,
   },
 });
 ```
@@ -156888,10 +157101,7 @@ const { video } = await generateVideo({
 Seedance 2.0 supports reference videos that guide the style, motion, or composition of the generated video:
 
 ```ts
-import {
-  byteDance,
-  type ByteDanceVideoProviderOptions,
-} from '@ai-sdk/bytedance';
+import { byteDance, type ByteDanceVideoModelOptions } from '@ai-sdk/bytedance';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
@@ -156904,7 +157114,7 @@ const { video } = await generateVideo({
     bytedance: {
       referenceVideos: ['https://example.com/reference-video.mp4'],
       watermark: false,
-    } satisfies ByteDanceVideoProviderOptions,
+    } satisfies ByteDanceVideoModelOptions,
   },
 });
 ```
@@ -156914,10 +157124,7 @@ const { video } = await generateVideo({
 Seedance 2.0 supports reference audio that is used as background music or sound for the generated video:
 
 ```ts
-import {
-  byteDance,
-  type ByteDanceVideoProviderOptions,
-} from '@ai-sdk/bytedance';
+import { byteDance, type ByteDanceVideoModelOptions } from '@ai-sdk/bytedance';
 import { experimental_generateVideo as generateVideo } from 'ai';
 
 const { video } = await generateVideo({
@@ -156930,14 +157137,15 @@ const { video } = await generateVideo({
       referenceAudio: ['https://example.com/background-music.mp3'],
       generateAudio: true,
       watermark: false,
-    } satisfies ByteDanceVideoProviderOptions,
+    } satisfies ByteDanceVideoModelOptions,
   },
 });
 ```
 
-### Video Provider Options
+### Video Model Options
 
-The following provider options are available via `providerOptions.bytedance`:
+The following options are available via `providerOptions.bytedance`. You can
+type them with `ByteDanceVideoModelOptions`.
 
 #### Generation Options
 
@@ -156947,7 +157155,8 @@ The following provider options are available via `providerOptions.bytedance`:
 
 - **generateAudio** _boolean_
 
-  Whether to generate synchronized audio for the video. Only supported by Seedance 1.5 Pro.
+  Whether to generate synchronized audio for the video. Supported by Seedance
+  1.5 Pro and Seedance 2.0.
 
 - **cameraFixed** _boolean_
 
@@ -156973,7 +157182,10 @@ The following provider options are available via `providerOptions.bytedance`:
 
 - **referenceImages** _string[]_
 
-  Array of reference image URLs (1-4 images) for multi-reference image-to-video generation. The model extracts key features from each image and reproduces them in the video. Use `[Image 1]`, `[Image 2]`, etc. in your prompt to reference specific images. Supported by Seedance 1.0 Lite I2V.
+  Array of reference image URLs for multi-reference image-to-video generation.
+  The model extracts key features from each image and reproduces them in the
+  video. Use `[Image 1]`, `[Image 2]`, etc. in your prompt to reference
+  specific images.
 
 #### Media Reference Options
 

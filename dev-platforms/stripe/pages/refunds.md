@@ -83,6 +83,10 @@ Refunds to expired or canceled cards are handled by the customer’s card issuer
 
 For other payment methods, like [ACH](https://docs.stripe.com/payments/ach-direct-debit.md) and [iDEAL](https://docs.stripe.com/payments/ideal.md), refund handling varies from bank to bank. If a customer has closed their method of payment, the bank might return the refund to us—at which point it’s marked as [failed](https://docs.stripe.com/refunds.md#failed-refunds).
 
+> #### Bank debit payment methods
+> 
+> For bank debit payment methods such as [SEPA Direct Debit](https://docs.stripe.com/payments/sepa-debit.md#refunds), [Bacs Direct Debit](https://docs.stripe.com/payments/payment-methods/bacs-debit.md#refunds), [ACH Direct Debit](https://docs.stripe.com/payments/ach-direct-debit.md#refunds), [ACSS (Canadian PADs)](https://docs.stripe.com/payments/acss-debit.md#refunds), [AU BECS Direct Debit](https://docs.stripe.com/payments/au-becs-debit.md#refunds), and [NZ bank account debits](https://docs.stripe.com/payments/nz-bank-account.md#refunds), there’s a risk of double refund. If you proactively issue a refund while the customer’s bank also initiates a dispute, the customer might receive two credits for the same transaction. Refer to the refund guidelines for each payment method to avoid this situation.
+
 ## Handle failed refunds 
 
 A refund can fail if the customer’s bank or card issuer can’t process it. For example, a closed bank account or a problem with the card can cause a refund to fail. When this happens, the bank returns the refunded amount to us and we add it back to your Stripe account balance. This process can take up to 30 days from the post date.

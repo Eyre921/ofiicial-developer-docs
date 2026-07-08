@@ -537,12 +537,9 @@ Simplifies unary operations.
 ```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
 123
 123
-123
-123
-x
+- -x
 ~~x
 !!x
-x
 ```
 
 ### Double negation removal
@@ -830,7 +827,7 @@ const arrow = (a, b) => a + b;
 ```
 
 ```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
-function myFunction(a,b){return a+b}const arrow=(a,b)=>a+b;
+function myFunction(param1,param2){return param1+param2}const arrow=(a,b)=>a+b;
 ```
 
 ### Parentheses minimization
@@ -849,20 +846,6 @@ a + (b * c)
 (a+b)*c
 a+b*c
 x
-```
-
-### Property mangling
-
-**Mode:** `--minify-identifiers` (with configuration)
-
-Renames object properties to shorter names when configured.
-
-```ts Input theme={"theme":{"light":"github-light","dark":"dracula"}}
-obj.longPropertyName
-```
-
-```js Output (with property mangling enabled) theme={"theme":{"light":"github-light","dark":"dracula"}}
-obj.a
 ```
 
 ### Template literal value folding
@@ -932,11 +915,11 @@ new Array(x, y)
 Inlines property access for objects with a single property.
 
 ```ts Input theme={"theme":{"light":"github-light","dark":"dracula"}}
-({fn: () => console.log('hi')}).fn()
+({fn: () => console.log('hi')}).fn
 ```
 
 ```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
-(() => console.log('hi'))()
+() => console.log('hi')
 ```
 
 ### String charCodeAt constant folding
@@ -1105,25 +1088,9 @@ const obj = { [Keys.FOO]: value }
 const obj={foo:value}
 ```
 
-### String number to numeric index
-
-**Mode:** `--minify-syntax`
-
-Converts string numeric property access to numeric index.
-
-```ts Input theme={"theme":{"light":"github-light","dark":"dracula"}}
-obj["0"]
-arr["5"]
-```
-
-```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
-obj[0]
-arr[5]
-```
-
 ### Arrow function body shortening
 
-**Mode:** Always active
+**Mode:** `--minify-syntax`
 
 Uses expression body syntax when an arrow function only returns a value.
 
@@ -1151,26 +1118,6 @@ Uses shorthand syntax when property name and value identifier match.
 ```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
 { x, y }
 { name, age }
-```
-
-### Method shorthand
-
-**Mode:** Always active
-
-Uses method shorthand syntax in object literals.
-
-```ts Input theme={"theme":{"light":"github-light","dark":"dracula"}}
-{
-  foo: function() {},
-  bar: async function() {}
-}
-```
-
-```js Output theme={"theme":{"light":"github-light","dark":"dracula"}}
-{
-  foo() {},
-  async bar() {}
-}
 ```
 
 ### Drop debugger statements
@@ -1212,11 +1159,11 @@ x=void 0;
 
 **Mode:** `--drop=<name>`
 
-Removes calls to specified global functions or methods.
+Removes calls to specified global functions and their methods.
 
 ```ts Input theme={"theme":{"light":"github-light","dark":"dracula"}}
 assert(condition);
-obj.assert(test);
+assert.equal(a, b);
 ```
 
 ```js Output with --drop=assert theme={"theme":{"light":"github-light","dark":"dracula"}}

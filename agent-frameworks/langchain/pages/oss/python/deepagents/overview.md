@@ -244,11 +244,14 @@ The backends support the following file system operations:
 | ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `ls`         | List files in a directory with metadata (size, modified time)                                                                                                                                                            |
 | `read_file`  | Read file contents with line numbers, supports offset/limit for large files. Also supports returning multimodal content blocks for non-text files (images, video, audio, and documents). See supported extensions below. |
-| `write_file` | Create new files                                                                                                                                                                                                         |
+| `write_file` | Create a new file, or overwrite an existing one                                                                                                                                                                          |
 | `edit_file`  | Perform exact string replacements in files (with global replace mode)                                                                                                                                                    |
+| `delete`     | Delete a file, or a directory and its contents recursively                                                                                                                                                               |
 | `glob`       | Find files matching patterns (e.g., `**/*.py`)                                                                                                                                                                           |
 | `grep`       | Search file contents with multiple output modes (files only, content with context, or counts)                                                                                                                            |
 | `execute`    | Run shell commands in the environment (available with [sandbox backends](/oss/python/deepagents/sandboxes) only)                                                                                                         |
+
+<Note>The `delete` tool requires `deepagents` 0.7.a1 or newer. Recursive directory deletion requires 0.7.a2 or newer. Backends that do not support deletion have the tool automatically hidden from the model.</Note>
 
 <Accordion title="Supported multimodal file extensions">
   | Type                                               | Extensions                                                                |
@@ -269,13 +272,38 @@ The backends support the following file system operations:
       "anthropic:claude-sonnet-4-6",
       HarnessProfile(
           excluded_tools=frozenset(
-              {"ls", "read_file", "write_file", "edit_file", "glob", "grep"}
+              {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
           ),
       ),
   )
   ```
 
   Removing [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) itself via `excluded_middleware` is intentionally rejected—it is required scaffolding in the [default middleware stack](/oss/python/deepagents/customization#default-stack-main-agent). Use `excluded_tools` to hide only the model-visible tool surface and leave the middleware in place. To remove the `task` tool, see [Running without subagents](/oss/python/deepagents/subagents#running-without-subagents).
+</Accordion>
+
+<Accordion title="Restricting filesystem tools" icon="filter">
+  <Note>
+    The `tools` allowlist on `FilesystemMiddleware` requires `deepagents>=0.7.0a4`.
+  </Note>
+
+  To expose only a subset of the filesystem tools listed above, instead of hiding them all, pass a `tools` allowlist to [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) and provide the instance through `middleware=`. Any built-in filesystem tool left out of the list is removed from both the model's tool list and the middleware's dynamic system prompt section.
+
+  ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.middleware import FilesystemMiddleware
+
+  # Read-only agent: write_file, edit_file, delete, and execute are never shown
+  agent = create_deep_agent(
+      model="claude-sonnet-4-6",
+      middleware=[
+          FilesystemMiddleware(backend=backend, tools=["read_file", "ls", "glob", "grep"]),
+      ],
+  )
+  ```
+
+  `read_file` must always be included in the list—omitting it raises `ValueError` when the agent is created. The `execute` and `delete` tools are also dropped from the tool surface whenever the configured backend doesn't support them, whether or not you include them in `tools`. Custom tools you add through `create_deep_agent`'s own `tools=` argument are never affected by this allowlist.
+
+  Passing your own [`FilesystemMiddleware`](https://reference.langchain.com/python/deepagents/middleware/filesystem/FilesystemMiddleware) instance this way replaces the default one for the main agent and the general-purpose subagent inherits the same restriction. See [Override a default middleware instance](/oss/python/deepagents/customization#override-a-default-middleware-instance) for more information. Declarative subagents don't inherit it: include a `FilesystemMiddleware(tools=...)` instance in that subagent's own `middleware` field to restrict it independently.
 </Accordion>
 
 The virtual filesystem is used by several other harness capabilities such as skills, memory, code execution, and context management.

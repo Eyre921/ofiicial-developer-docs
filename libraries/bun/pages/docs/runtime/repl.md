@@ -62,7 +62,7 @@ SyntaxError: JSON Parse error: Unexpected identifier "oops"
 
 ## Top-level `await`
 
-Promises are automatically awaited. You can `await` any expression directly at the prompt.
+You can `await` any expression directly at the prompt.
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
 > await fetch("https://api.github.com/repos/oven-sh/bun").then(r => r.json()).then(r => r.stargazers_count)

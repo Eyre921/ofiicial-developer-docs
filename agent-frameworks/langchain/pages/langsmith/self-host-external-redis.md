@@ -80,21 +80,14 @@ rediss://<iam-identity>@host:6380
 
 ### Configuration
 
-With your connection string in hand, you can configure your LangSmith instance to use an external Redis instance. You can do this by modifying the `values` file for your LangSmith Helm Chart installation or the `.env` file for your Docker installation.
+With your connection string in hand, you can configure your LangSmith instance to use an external Redis instance. You can do this by modifying the `values` file for your LangSmith Helm Chart installation.
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  redis:
-    external:
-      enabled: true
-      connectionUrl: "Your connection url"
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env file
-  REDIS_DATABASE_URI="Your connection url"
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+redis:
+  external:
+    enabled: true
+    connectionUrl: "Your connection url"
+```
 
 You can also store the connection URL in an existing Kubernetes Secret and reference it in your Helm values.
 

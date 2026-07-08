@@ -16,19 +16,10 @@ When set, all error and support messages throughout the UI will display your cus
   The custom message is rendered as **plain text** only. HTML tags will not be interpreted and will display as literal text.
 </Note>
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  config:
-    customErrorSupportMessage: "For help, contact your internal IT team at helpdesk@example.com"
-  ```
-
-  ```yaml Docker Compose theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  services:
-    langchain-frontend:
-      environment:
-        - CUSTOM_ERROR_SUPPORT_MESSAGE=For help, contact your internal IT team at helpdesk@example.com
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  customErrorSupportMessage: "For help, contact your internal IT team at helpdesk@example.com"
+```
 
 To revert to the default behavior, remove the setting or set it to an empty string.
 

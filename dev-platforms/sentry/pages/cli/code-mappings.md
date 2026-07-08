@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/code-mappings/
 
 # Code Mappings
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 *Available in version 3.3.4 of Sentry CLI*
 
 Code mappings link stack trace paths to source code paths in your repository. They enable features like [source context](https://docs.sentry.io/platforms/java/source-context.md), [suspect commits](https://docs.sentry.io/product/issues/suspect-commits.md), [stack trace linking](https://docs.sentry.io/integrations/source-code-mgmt/github.md#stack-trace-linking), and [code owners](https://docs.sentry.io/product/issues/ownership-rules.md).

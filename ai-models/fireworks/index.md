@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 381 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -255,6 +255,10 @@
 - `fine-tuning/warm-start` — [Warm Start from Fine-Tuned Models](pages/fine-tuning/warm-start.md) · [原文](https://docs.fireworks.ai/fine-tuning/warm-start)
 - `fine-tuning/web-ui-guide` — [Training Guide: UI](pages/fine-tuning/web-ui-guide.md) · [原文](https://docs.fireworks.ai/fine-tuning/web-ui-guide)
 - `fine-tuning/weighted-training` — [Weighted Training](pages/fine-tuning/weighted-training.md) · [原文](https://docs.fireworks.ai/fine-tuning/weighted-training)
+
+## fireworks-for-work
+
+- `fireworks-for-work/usage-limits` — [Per-User Usage Limits](pages/fireworks-for-work/usage-limits.md) · [原文](https://docs.fireworks.ai/fireworks-for-work/usage-limits)
 
 ## getting-started
 

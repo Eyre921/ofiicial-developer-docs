@@ -27,9 +27,11 @@ bun --print process.env
 ```
 
 ```txt theme={"theme":{"light":"github-light","dark":"dracula"}}
-BAZ=stuff
-FOOBAR=aaaaaa
-<lots more lines>
+{
+  BAZ: "stuff",
+  FOOBAR: "aaaaaa",
+  <lots more lines>
+}
 ```
 
 ***

@@ -141,7 +141,7 @@ function buildWindowFilter(
 ```
 
 <Note>
-  The Notion JavaScript SDK includes `iterateAllDataSourceRows` and `collectAllDataSourceRows` helpers that wrap this pattern, so you can stream or collect a full data source without writing the windowing loop yourself.
+  The [SDK for JavaScript and TypeScript](https://github.com/makenotion/notion-sdk-js) includes `iterateAllDataSourceRows` and `collectAllDataSourceRows` helpers (v5.23.0 and later) that wrap this pattern, so you can stream or collect a full data source without writing the windowing loop yourself.
 </Note>
 
 ## When a window can't be split

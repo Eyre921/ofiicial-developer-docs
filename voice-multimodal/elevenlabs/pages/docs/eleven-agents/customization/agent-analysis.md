@@ -8,12 +8,14 @@ path: docs/eleven-agents/customization/agent-analysis
 
 # Conversation analysis
 
-Agent analysis provides powerful tools to systematically evaluate conversation performance and extract valuable information from customer interactions. These LLM-powered features help you measure agent effectiveness and gather actionable business insights.
+Conversation analysis provides tools to evaluate performance, extract information, improve prompts, and search customer interactions.
 
 Define custom criteria to assess conversation quality, goal achievement, and customer
 satisfaction.
 
 Extract structured information from conversations such as contact details and business data.
+
+Understand whether users are having positive, neutral, or negative conversations.
 
 Talk to an internal coach agent to improve your agent's system prompt, memories, and procedures.
 
@@ -21,14 +23,17 @@ Find messages by keyword or meaning across your conversation history.
 
 ## Overview
 
-ElevenAgents provides two complementary analysis capabilities:
+ElevenAgents provides several complementary analysis capabilities:
 
-* **Success Evaluation**: Define custom metrics to assess conversation quality, goal achievement, and customer satisfaction
-* **Data Collection**: Extract specific data points from conversations such as contact information, issue details, or any structured information
+* **Success evaluation**: Define custom criteria to assess conversation quality, goal achievement, and customer satisfaction
+* **Data collection**: Extract specific data points from conversations such as contact information, issue details, or any structured information
+* **Sentiment analysis**: Understand user sentiment across completed conversations
+* **Coaching**: Talk to an internal coach agent to improve your agent's configuration
+* **Searching conversations**: Find relevant messages across conversation history
 
-Both features process conversation transcripts using advanced language models to provide actionable insights that improve agent performance and business outcomes.
+These features process conversation transcripts to provide insights that improve agent performance and business outcomes.
 
-## Key Benefits
+## Key benefits
 
 Track conversation success rates, customer satisfaction, and goal completion across all interactions to identify improvement opportunities.
 
@@ -40,22 +45,29 @@ systematic evaluation.
 
 Gather structured insights about customer preferences, behavior patterns, and interaction outcomes for strategic decision-making.
 
-## Integration with Platform Features
+## Integration with platform features
 
-Agent analysis integrates seamlessly with other ElevenAgents capabilities:
+Conversation analysis integrates with other ElevenAgents capabilities:
 
 * **[Post-call Webhooks](/docs/eleven-agents/workflows/post-call-webhooks)**: Receive evaluation results and extracted data via webhooks for integration with external systems
-* **[Analytics Dashboard](/docs/eleven-agents/dashboard)**: View aggregated performance metrics and trends across all conversations
+* **[Analytics](/docs/eleven-agents/dashboard)**: View aggregated performance metrics and trends across all conversations
+* **[Spotlight](/docs/eleven-agents/dashboard/spotlight)**: Review real-time insights, sentiment analysis, topic discovery, and supporting conversations
 * **[Agent Transfer](/docs/eleven-agents/customization/tools/system-tools/agent-transfer)**: Use evaluation criteria to determine when conversations should be escalated
 
-## Getting Started
+## Getting started
+
+### Choose your analysis approach
 
 Determine whether you need success evaluation, data collection, or both based on your business objectives.
 
-Set up [Success Evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation)
-to measure conversation quality and goal achievement.
+### Configure evaluation criteria
 
-Configure [Data Collection](/docs/eleven-agents/customization/agent-analysis/data-collection) to
-capture structured information from conversations.
+Set up [Success evaluation](/docs/eleven-agents/customization/agent-analysis/success-evaluation) to measure conversation quality and goal achievement.
+
+### Set up data extraction
+
+Configure [Data collection](/docs/eleven-agents/customization/agent-analysis/data-collection) to capture structured information from conversations.
+
+### Monitor and optimize
 
 Review results regularly and refine your criteria and extraction rules based on performance data.

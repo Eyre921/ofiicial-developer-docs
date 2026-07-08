@@ -32,7 +32,7 @@ Unreal Engine SDK builds on top of other Sentry SDKs and extends them with Unrea
 
 * [Release health](https://docs.sentry.io/platforms/unreal/configuration/releases.md) to keep track of crash free users and sessions
 
-* [Session Replay](https://docs.sentry.io/platforms/unreal/session-replay.md) (experimental) to attach gameplay video to crash reports on Windows, macOS, Linux, iOS (UE 5.8+), and Xbox, and native session replay on Android
+* [Session Replay](https://docs.sentry.io/platforms/unreal/session-replay.md) (experimental) to capture gameplay video of the moments before a crash
 
 * [Structured Logging](https://docs.sentry.io/platforms/unreal/logs.md) to capture and send log messages with additional context
 

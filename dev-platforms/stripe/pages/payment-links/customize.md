@@ -363,7 +363,19 @@ curl https://api.stripe.com/v1/payment_links \
 
 Automatic surcharge adds a surcharge to your Payment Links payments based on your customer’s card details, including card brand, funding type, and issuing country. Stripe enables the ability to seamlessly use a third-party surcharging provider to compliantly calculate the surcharge amount.
 
-This feature is in private preview. 
+This feature is in private preview. [Request access.](https://docs.stripe.com/payment-links/customize.md#checkout_beta_preview)
+
+### Automatic surcharge
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/payment-links/customize" \
+  -d '{"email": "EMAIL", "preview": "checkout_beta_preview"}'
+```
 
 > Surcharging laws vary by jurisdiction. Before using this feature, review the [Compliance requirements](https://docs.stripe.com/payments/checkout/surcharge/automatic-surcharge.md#compliance) to understand your obligations.
 

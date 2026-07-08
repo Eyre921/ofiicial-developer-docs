@@ -237,7 +237,7 @@ You can set separate thresholds for line, function, and statement coverage.
 
 ```toml title="bunfig.toml" icon="settings" theme={"theme":{"light":"github-light","dark":"dracula"}}
 [test]
-coverageThreshold = { line = 0.7, function = 0.8, statement = 0.9 }
+coverageThreshold = { lines = 0.7, functions = 0.8, statements = 0.9 }
 ```
 
 ### `test.coverageSkipTestFiles`

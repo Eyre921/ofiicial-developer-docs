@@ -12,6 +12,10 @@ url: https://docs.sentry.io/cli/send-event/
 
 # Sending Events
 
+##### Looking for the new Sentry CLI?
+
+These docs cover `sentry-cli`, used in CI/CD pipelines and build processes. If you're looking for the interactive developer CLI with issue management, AI-powered analysis, and API access for humans and agents, check out the new [Sentry CLI](https://cli.sentry.dev/).
+
 The `sentry-cli` tool can also be used for sending events. If you want to use it, you need to export the `SENTRY_DSN` environment variable and point it to the DSN of a project of yours:
 
 ```bash

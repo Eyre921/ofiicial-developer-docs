@@ -1771,7 +1771,7 @@ If you want to always show Apple Pay when the customer is using a supported plat
 you can set its property in `paymentMethods` to `always`. This causes Apple Pay to be shown in supported browsers even when the customer
 isn't logged in to Apple Pay, resulting in a sign-in flow.
 
-Apple Pay on desktop Chromium browsers is only supported on MacOS when its property in `paymentMethods` is set to `always`.
+Apple Pay on non-Safari desktop browsers is only supported when its property in `paymentMethods` is set to `always`.
       - `googlePay`
         Google Pay has additional configurations
 that determine when Stripe can show it. By default, Google Pay shows when the customer
@@ -4472,7 +4472,7 @@ This is the `auto` behavior.
 If you want to always show Apple Pay when the customer is using a supported platform,
 you can set its property in `paymentMethods` to `always`.
 
-Apple Pay on desktop Chromium browsers is only supported on MacOS when its property in `paymentMethods` is set to `always`.
+Apple Pay on non-Safari desktop browsers is only supported when its property in `paymentMethods` is set to `always`.
       - `googlePay`
         Google Pay has additional configurations
 that determine when Stripe can show it. By default, Google Pay shows when the customer
@@ -4781,7 +4781,7 @@ This is the `auto` behavior.
 If you want to always show Apple Pay when the customer is using a supported platform,
 you can set its property in `paymentMethods` to `always`.
 
-Apple Pay on desktop Chromium browsers is only supported on MacOS when its property in `paymentMethods` is set to `always`.
+Apple Pay on non-Safari desktop browsers is only supported when its property in `paymentMethods` is set to `always`.
         - `googlePay`
           Google Pay has additional configurations
 that determine when Stripe can show it. By default, Google Pay shows when the customer
@@ -6598,7 +6598,7 @@ This is the `auto` behavior.
 If you want to always show Apple Pay when the customer is using a supported platform,
 you can set its property in `paymentMethods` to `always`.
 
-Apple Pay on desktop Chromium browsers is only supported on MacOS when its property in `paymentMethods` is set to `always`.
+Apple Pay on non-Safari desktop browsers is only supported when its property in `paymentMethods` is set to `always`.
       - `googlePay`
         Google Pay has additional configurations
 that determine when Stripe can show it. By default, Google Pay shows when the customer
@@ -8081,7 +8081,7 @@ This is the `auto` behavior.
 If you want to always show Apple Pay when the customer is using a supported platform,
 you can set its property in `paymentMethods` to `always`.
 
-Apple Pay on desktop Chromium browsers is only supported on MacOS when its property in `paymentMethods` is set to `always`.
+Apple Pay on non-Safari desktop browsers is only supported when its property in `paymentMethods` is set to `always`.
         - `googlePay`
           Google Pay has additional configurations
 that determine when Stripe can show it. By default, Google Pay shows when the customer
@@ -9155,7 +9155,7 @@ If you want to always show Apple Pay when the customer is using a supported plat
 you can set its property in `paymentMethods` to `always`. This causes Apple Pay to be shown in supported browsers even when the customer
 isn't logged in to Apple Pay, resulting in a sign-in flow.
 
-Apple Pay on desktop Chromium browsers is only supported on MacOS when its property in `paymentMethods` is set to `always`.
+Apple Pay on non-Safari desktop browsers is only supported when its property in `paymentMethods` is set to `always`.
       - `googlePay`
         Google Pay has additional configurations
 that determine when Stripe can show it. By default, Google Pay shows when the customer

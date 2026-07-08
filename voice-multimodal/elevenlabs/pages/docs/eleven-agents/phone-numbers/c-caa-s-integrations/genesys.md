@@ -134,7 +134,7 @@ ElevenLabs agent prompt: Hi \{\{customer\_name}}, how can I help you today?
 
 You can now receive data from your ElevenLabs agent back to your Genesys flow using output session variables.
 
-Any data collected through [Data Collection](/docs/eleven-agents/customization/agent-analysis/data-collection) in your ElevenLabs agent will be available as output session variables in your Genesys flow after the conversation ends.
+Any data collected through [Data collection](/docs/eleven-agents/customization/agent-analysis/data-collection) in your ElevenLabs agent will be available as output session variables in your Genesys flow after the conversation ends.
 
 ### Example usage
 

@@ -26,7 +26,7 @@ LangSmith Deployment is framework-agnostic which means you can deploy agents bui
   </Card>
 
   <Card title="Managed Deep Agents" href="/langsmith/managed-deep-agents-overview" icon="robot">
-    Create, run, and operate Managed Deep Agents through the private preview API.
+    Deploy code-first Deep Agents with the Managed Deep Agents CLI private beta.
   </Card>
 </CardGroup>
 

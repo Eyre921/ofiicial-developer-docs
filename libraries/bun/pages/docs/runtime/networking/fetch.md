@@ -54,7 +54,7 @@ const response = await fetch("http://example.com", {
 
 ### Proxying requests
 
-To proxy a request, pass an object with the `proxy` property set to a URL string:
+To proxy a request, pass an object with the `proxy` property set to a URL string, or to an object whose `url` is a string or a `URL`:
 
 ```ts theme={"theme":{"light":"github-light","dark":"dracula"}}
 const response = await fetch("http://example.com", {
@@ -234,7 +234,7 @@ await fetch("https://example.com", {
 });
 ```
 
-This option is similar to the one in Node's `net` module.
+This option is similar to the one in Node's `tls` module.
 
 #### Disable TLS validation
 
@@ -446,7 +446,7 @@ To raise the limit, set the `BUN_CONFIG_MAX_HTTP_REQUESTS` environment variable:
 BUN_CONFIG_MAX_HTTP_REQUESTS=512 bun ./my-script.ts
 ```
 
-The max value for this limit is 65,336. The maximum port number is 65,535, so it's quite difficult for any one computer to exceed this limit.
+The max value for this limit is 65,535. The maximum port number is 65,535, so it's quite difficult for any one computer to exceed this limit.
 
 ### Response buffering
 

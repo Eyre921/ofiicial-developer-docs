@@ -17,21 +17,15 @@ You can configure retention through helm or environment variable settings. There
 * *Enabled:* Whether data retention is enabled or disabled. If enabled, via the UI you can your default organization and project TTL tiers to apply to traces (see [data retention guide](/langsmith/usage-and-billing#data-retention) for details).
 * *Retention Periods:* You can configure system-wide retention periods for shortlived and longlived traces. Once configured, you can manage the retention level at each project as well as set an organization-wide default for new projects.
 
-<CodeGroup>
-  ```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  config:
-    ttl:
-      enabled: true
-      ttl_period_seconds:
-        # -- 400 day longlived and 14 day shortlived
-        longlived: "34560000"
-        shortlived: "1209600"
-  ```
-
-  ```bash Docker theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # In your .env fileFF_TRACE_TIERS_ENABLED=trueTRACE_TIER_TTL_DURATION_SEC_MAP='{"longlived": 34560000, "shortlived": 1209600}'
-  ```
-</CodeGroup>
+```yaml Helm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+config:
+  ttl:
+    enabled: true
+    ttl_period_seconds:
+      # -- 400 day longlived and 14 day shortlived
+      longlived: "34560000"
+      shortlived: "1209600"
+```
 
 ## ClickHouse TTL cleanup job
 

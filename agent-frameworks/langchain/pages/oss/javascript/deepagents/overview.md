@@ -137,7 +137,7 @@ The backends support the following file system operations:
       "anthropic:claude-sonnet-4-6",
       HarnessProfile(
           excluded_tools=frozenset(
-              {"ls", "read_file", "write_file", "edit_file", "glob", "grep"}
+              {"ls", "read_file", "write_file", "edit_file", "delete", "glob", "grep"}
           ),
       ),
   )

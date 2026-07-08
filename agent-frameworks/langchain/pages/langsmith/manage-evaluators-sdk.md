@@ -21,7 +21,7 @@ Managing evaluators through the SDK requires:
 
 The examples on this page initialize the client with no arguments, so it reads the `LANGSMITH_API_KEY` and `LANGSMITH_ENDPOINT` environment variables. Configure your [API key](/langsmith/create-account-api-key) through environment variables rather than hardcoding it.
 
-In the following examples, replace placeholders such as `<evaluator-uuid>` with the corresponding information from LangSmith.
+In the following examples, replace placeholders such as `<evaluator-uuid>` with the corresponding information from LangSmith. All Python async examples on this page assume they run inside `async def main(): ... asyncio.run(main())`, as shown in the create a code evaluator example.
 
 ## Create an evaluator
 
@@ -31,20 +31,27 @@ A code evaluator scores each run or example with a function that you define.
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+
   from langsmith import Client
 
-  client = Client()
 
-  created = client.evaluators.create(
-      name="Correctness evaluator",
-      type="code",
-      code_evaluator={
-          "code": "def perform_eval(run, example):\n    return {'score': 1}",
-          "language": "python",
-      },
-  )
-  evaluator_id = created.evaluator.id
-  print("Created evaluator:", evaluator_id)
+  async def main():
+      client = Client()
+
+      created = await client.evaluators.create(
+          name="Correctness evaluator",
+          type="code",
+          code_evaluator={
+              "code": "def perform_eval(run, example):\n    return {'score': 1}",
+              "language": "python",
+          },
+      )
+      evaluator_id = created.evaluator.id
+      print("Created evaluator:", evaluator_id)
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -75,20 +82,31 @@ An LLM-as-a-judge evaluator references a prompt from the [prompt hub](/langsmith
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  created = client.evaluators.create(
-      name="LLM judge",
-      type="llm",
-      llm_evaluator={
-          "prompt_repo_handle": "<prompt-repo-handle>",
-          "commit_hash_or_tag": "<commit-hash-or-tag>",
-          "variable_mapping": {
-              "input": "inputs.question",
-              "output": "outputs.answer",
-              "reference": "reference.answer",
+  import asyncio
+
+  from langsmith import Client
+
+
+  async def main():
+      client = Client()
+
+      created = await client.evaluators.create(
+          name="LLM judge",
+          type="llm",
+          llm_evaluator={
+              "prompt_repo_handle": "<prompt-repo-handle>",
+              "commit_hash_or_tag": "<commit-hash-or-tag>",
+              "variable_mapping": {
+                  "input": "inputs.question",
+                  "output": "outputs.answer",
+                  "reference": "reference.answer",
+              },
           },
-      },
-  )
-  evaluator_id = created.evaluator.id
+      )
+      evaluator_id = created.evaluator.id
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -153,11 +171,23 @@ Fetch a single evaluator by its ID to read its configuration, including its name
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  evaluator = client.evaluators.retrieve(evaluator_id)
-  print(evaluator.name)
-  print(evaluator.type)
-  print(evaluator.feedback_keys)
-  print(evaluator.run_rules)
+  import asyncio
+
+  from langsmith import Client
+
+
+  async def main():
+      client = Client()
+      evaluator_id = "<evaluator-uuid>"
+
+      evaluator = await client.evaluators.retrieve(evaluator_id)
+      print(evaluator.name)
+      print(evaluator.type)
+      print(evaluator.feedback_keys)
+      print(evaluator.run_rules)
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -175,30 +205,41 @@ Pass the field that matches the evaluator type: `code_evaluator` for a code eval
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Update a code evaluator
-  code_evaluator_id = "<code-evaluator-uuid>"
+  import asyncio
 
-  updated = client.evaluators.update(
-      code_evaluator_id,
-      name="Updated correctness evaluator",
-      code_evaluator={
-          "code": "def perform_eval(run, example):\n    return {'score': 0.8}",
-          "language": "python",
-      },
-  )
-  print(updated.evaluator.name if updated.evaluator else None)
+  from langsmith import Client
 
-  # Update the name and prompt of an LLM-as-a-judge evaluator
-  llm_evaluator_id = "<llm-evaluator-uuid>"
 
-  client.evaluators.update(
-      llm_evaluator_id,
-      name="Updated LLM judge",
-      llm_evaluator={
-          "prompt_repo_handle": "<prompt-repo-handle>",
-          "commit_hash_or_tag": "<commit-hash-or-tag>",
-      },
-  )
+  async def main():
+      client = Client()
+
+      # Update a code evaluator
+      code_evaluator_id = "<code-evaluator-uuid>"
+
+      updated = await client.evaluators.update(
+          code_evaluator_id,
+          name="Updated correctness evaluator",
+          code_evaluator={
+              "code": "def perform_eval(run, example):\n    return {'score': 0.8}",
+              "language": "python",
+          },
+      )
+      print(updated.evaluator.name if updated.evaluator else None)
+
+      # Update the name and prompt of an LLM-as-a-judge evaluator
+      llm_evaluator_id = "<llm-evaluator-uuid>"
+
+      await client.evaluators.update(
+          llm_evaluator_id,
+          name="Updated LLM judge",
+          llm_evaluator={
+              "prompt_repo_handle": "<prompt-repo-handle>",
+              "commit_hash_or_tag": "<commit-hash-or-tag>",
+          },
+      )
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -240,21 +281,31 @@ An LLM-as-a-judge evaluator accepts additional settings that control how it scor
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  llm_evaluator_id = "<llm-evaluator-uuid>"
+  import asyncio
 
-  client.evaluators.update(
-      llm_evaluator_id,
-      llm_evaluator={
-          "prompt_repo_handle": "<prompt-repo-handle>",
-          "commit_hash_or_tag": "<commit-hash-or-tag>",
-          "variable_mapping": {
-              "input": "inputs.question",
-              "output": "outputs.answer",
+  from langsmith import Client
+
+
+  async def main():
+      client = Client()
+      llm_evaluator_id = "<llm-evaluator-uuid>"
+
+      await client.evaluators.update(
+          llm_evaluator_id,
+          llm_evaluator={
+              "prompt_repo_handle": "<prompt-repo-handle>",
+              "commit_hash_or_tag": "<commit-hash-or-tag>",
+              "variable_mapping": {
+                  "input": "inputs.question",
+                  "output": "outputs.answer",
+              },
+              "use_corrections_dataset": True,
+              "num_few_shot_examples": 3,
           },
-          "use_corrections_dataset": True,
-          "num_few_shot_examples": 3,
-      },
-  )
+      )
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -281,32 +332,44 @@ Filter by name, type, feedback key, attached resource, or tag value, and sort or
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  # Read a single page of results
-  page = client.evaluators.list(
-      name_contains="correctness",
-      type="code",
-      limit=10,
-  )
-  for evaluator in page.evaluators:
-      print(evaluator.id, evaluator.name, evaluator.type)
+  import asyncio
 
-  # Collect every match into a list
-  evaluators = list(
-      client.evaluators.list(feedback_key="correctness", limit=20)
-  )
+  from langsmith import Client
 
-  # Filter, sort, and paginate
-  evaluators = client.evaluators.list(
-      feedback_key="correctness",
-      name_contains="judge",
-      resource_id=["<project-or-dataset-uuid>"],
-      tag_value_id=["<tag-value-uuid>"],
-      type="llm",
-      sort_by="updated_at",  # "created_at" (default) or "updated_at"
-      sort_by_desc=False,
-      limit=20,
-      offset=0,
-  )
+
+  async def main():
+      client = Client()
+
+      # Read a single page of results
+      page = await client.evaluators.list(
+          name_contains="correctness",
+          type="code",
+          limit=10,
+      )
+      for evaluator in page.evaluators:
+          print(evaluator.id, evaluator.name, evaluator.type)
+
+      # Collect every match into a list
+      evaluators = [
+          evaluator
+          async for evaluator in client.evaluators.list(feedback_key="correctness", limit=20)
+      ]
+
+      # Filter, sort, and paginate
+      page = await client.evaluators.list(
+          feedback_key="correctness",
+          name_contains="judge",
+          resource_id=["<project-or-dataset-uuid>"],
+          tag_value_id=["<tag-value-uuid>"],
+          type="llm",
+          sort_by="updated_at",  # "created_at" (default) or "updated_at"
+          sort_by_desc=False,
+          limit=20,
+          offset=0,
+      )
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -359,46 +422,56 @@ Retrieve estimated USD spend and trace counts for your evaluators:
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  evaluator_uuid = "<evaluator-uuid>"
-  start_date = "<period-start-date>" # for example, "2026-06-29"
+  import asyncio
 
-  # Spend for a single evaluator
-  spend = client.evaluators.spend(
-      period_start=start_date,
-      evaluator_id=evaluator_uuid,
-  )
-  for group in spend.groups or []:
-      print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
+  from langsmith import Client
 
-  # Group spend by evaluator
-  spend_by_evaluator = client.evaluators.spend(
-      period_start=start_date,
-      group_by="evaluator",
-      type="llm",
-  )
-  print("Group by evaluator")
-  for group in spend_by_evaluator.groups or []:
-      print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
 
-  # Group spend by resource
-  spend_by_resource = client.evaluators.spend(
-      period_start=start_date,
-      group_by="resource",
-      type="llm",
-  )
-  print("Group by resource")
-  for group in spend_by_resource.groups or []:
-      print(group.session_name, group.dataset_name, group.total_spend_usd, group.total_trace_count)
+  async def main():
+      client = Client()
+      evaluator_uuid = "<evaluator-uuid>"
+      start_date = "<period-start-date>" # for example, "2026-06-29"
 
-  # Group spend by run_rule
-  spend_by_run_rule = client.evaluators.spend(
-      period_start=start_date,
-      group_by="run_rule",
-      type="llm",
-  )
-  print("Group by run_rule")
-  for group in spend_by_run_rule.groups or []:
-      print(group.run_rule_name, group.total_spend_usd, group.total_trace_count)
+      # Spend for a single evaluator
+      spend = await client.evaluators.spend(
+          period_start=start_date,
+          evaluator_id=evaluator_uuid,
+      )
+      for group in spend.groups or []:
+          print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
+
+      # Group spend by evaluator
+      spend_by_evaluator = await client.evaluators.spend(
+          period_start=start_date,
+          group_by="evaluator",
+          type="llm",
+      )
+      print("Group by evaluator")
+      for group in spend_by_evaluator.groups or []:
+          print(group.evaluator_name, group.total_spend_usd, group.total_trace_count)
+
+      # Group spend by resource
+      spend_by_resource = await client.evaluators.spend(
+          period_start=start_date,
+          group_by="resource",
+          type="llm",
+      )
+      print("Group by resource")
+      for group in spend_by_resource.groups or []:
+          print(group.session_name, group.dataset_name, group.total_spend_usd, group.total_trace_count)
+
+      # Group spend by run_rule
+      spend_by_run_rule = await client.evaluators.spend(
+          period_start=start_date,
+          group_by="run_rule",
+          type="llm",
+      )
+      print("Group by run_rule")
+      for group in spend_by_run_rule.groups or []:
+          print(group.run_rule_name, group.total_spend_usd, group.total_trace_count)
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -455,12 +528,22 @@ You cannot delete an evaluator while it is attached to a tracing project or data
 
 <CodeGroup>
   ```python Python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  evaluator_id = "<evaluator-uuid>"
+  import asyncio
 
-  client.evaluators.delete(
-      evaluator_id,
-      delete_run_rules=True, # run rules referencing the evaluator are deleted first
-  )
+  from langsmith import Client
+
+
+  async def main():
+      client = Client()
+      evaluator_id = "<evaluator-uuid>"
+
+      await client.evaluators.delete(
+          evaluator_id,
+          delete_run_rules=True, # run rules referencing the evaluator are deleted first
+      )
+
+
+  asyncio.run(main())
   ```
 
   ```typescript TypeScript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

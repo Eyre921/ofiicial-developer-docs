@@ -36,10 +36,6 @@ This section is a reference for the SDKs, CLI, and APIs you use to deploy and in
   <Card title="Control Plane API" icon="settings" href="/langsmith/api-ref-control-plane">
     REST endpoints for managing deployments, revisions, and listeners.
   </Card>
-
-  <Card title="Managed Deep Agents API" icon="robot" href="/langsmith/managed-deep-agents-api-overview">
-    Private preview API for creating, running, and operating Managed Deep Agents.
-  </Card>
 </CardGroup>
 
 ## Releases

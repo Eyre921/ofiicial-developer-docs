@@ -33,4 +33,6 @@ Set up automated tests
 
 View performance metrics
 
+Review real-time insights, sentiment, and discovered topics
+
 Analyze conversations

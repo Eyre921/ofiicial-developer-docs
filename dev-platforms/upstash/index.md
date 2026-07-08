@@ -1,6 +1,6 @@
 # dev-platforms/upstash 文档索引
 
-> 共 587 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 590 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -34,6 +34,7 @@
 - `docs/box/guides/code-review-agent` — [Build a Code Review Agent](pages/docs/box/guides/code-review-agent.md) · [原文](https://upstash.com/docs/box/guides/code-review-agent)
 - `docs/box/guides/crabbox-setup` — [Running Tests with Crabbox](pages/docs/box/guides/crabbox-setup.md) · [原文](https://upstash.com/docs/box/guides/crabbox-setup)
 - `docs/box/guides/hermes-setup` — [Hermes Setup](pages/docs/box/guides/hermes-setup.md) · [原文](https://upstash.com/docs/box/guides/hermes-setup)
+- `docs/box/guides/nextjs-setup` — [Next.js Setup](pages/docs/box/guides/nextjs-setup.md) · [原文](https://upstash.com/docs/box/guides/nextjs-setup)
 - `docs/box/guides/openclaw-setup` — [OpenClaw Setup](pages/docs/box/guides/openclaw-setup.md) · [原文](https://upstash.com/docs/box/guides/openclaw-setup)
 - `docs/box/guides/remote-development` — [Remote Development](pages/docs/box/guides/remote-development.md) · [原文](https://upstash.com/docs/box/guides/remote-development)
 - `docs/box/guides/tanstack-ai-file-editor` — [AI File Editor with TanStack AI](pages/docs/box/guides/tanstack-ai-file-editor.md) · [原文](https://upstash.com/docs/box/guides/tanstack-ai-file-editor)
@@ -42,9 +43,11 @@
 - `docs/box/overall/attach-headers` — [Attach Headers](pages/docs/box/overall/attach-headers.md) · [原文](https://upstash.com/docs/box/overall/attach-headers)
 - `docs/box/overall/custom-agent` — [How to Add a Custom Agent](pages/docs/box/overall/custom-agent.md) · [原文](https://upstash.com/docs/box/overall/custom-agent)
 - `docs/box/overall/custom-harness/aider` — [Aider](pages/docs/box/overall/custom-harness/aider.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/aider)
+- `docs/box/overall/custom-harness/crewai` — [CrewAI](pages/docs/box/overall/custom-harness/crewai.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/crewai)
 - `docs/box/overall/custom-harness/gemini` — [Gemini](pages/docs/box/overall/custom-harness/gemini.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/gemini)
 - `docs/box/overall/custom-harness/goose` — [Goose](pages/docs/box/overall/custom-harness/goose.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/goose)
 - `docs/box/overall/custom-harness/pi` — [Pi](pages/docs/box/overall/custom-harness/pi.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/pi)
+- `docs/box/overall/custom-harness/pydantic-ai` — [Pydantic AI](pages/docs/box/overall/custom-harness/pydantic-ai.md) · [原文](https://upstash.com/docs/box/overall/custom-harness/pydantic-ai)
 - `docs/box/overall/ephemeral-box` — [Ephemeral Box](pages/docs/box/overall/ephemeral-box.md) · [原文](https://upstash.com/docs/box/overall/ephemeral-box)
 - `docs/box/overall/files` — [Filesystem](pages/docs/box/overall/files.md) · [原文](https://upstash.com/docs/box/overall/files)
 - `docs/box/overall/git` — [Git](pages/docs/box/overall/git.md) · [原文](https://upstash.com/docs/box/overall/git)

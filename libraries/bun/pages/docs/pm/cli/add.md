@@ -292,7 +292,7 @@ bun add <package> <@version>
 </ParamField>
 
 <ParamField type="number">
-  Maximum number of concurrent jobs for lifecycle scripts
+  Maximum number of concurrent jobs for lifecycle scripts (default: 2x CPU cores)
 </ParamField>
 
 ### Caching

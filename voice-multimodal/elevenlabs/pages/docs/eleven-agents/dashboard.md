@@ -14,6 +14,8 @@ The analytics dashboard provides granular, real-time metrics for your conversati
 
 Analytics data is powered by a high-performance columnar database, enabling fast queries across large volumes of conversation data with flexible filtering and grouping.
 
+For conversation-level themes, use [Spotlight](/docs/eleven-agents/dashboard/spotlight) to review real-time insights, sentiment analysis, topic discovery, and the conversations behind each topic.
+
 ## Accessing analytics
 
 Navigate to the **Analytics** tab in your agents dashboard. You can view metrics across your entire workspace or filter down to a specific agent.
