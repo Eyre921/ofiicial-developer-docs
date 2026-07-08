@@ -18,7 +18,7 @@ Prefer watching a video? Check out our video walkthrough below.
 
 <YouTube />
 
-## What is Apple Branded Mail?
+## Why use Apple Branded Mail
 
 Apple Branded Mail is a proprietary Apple format that displays your logo as an avatar in the inbox of Apple Mail. Displaying your logo can increase brand recognition and trust and improve engagement.
 
@@ -33,74 +33,76 @@ For this reason, we recommend following all possible methods for adding your log
 
 ## Implementing Apple Branded Mail
 
-### 1. Configure DMARC
+<Steps>
+  <Step title="Configure DMARC">
+    <Note>
+      If you haven't set up DMARC yet, follow our [DMARC Setup
+      Guide](/docs/dashboard/domains/dmarc).
+    </Note>
 
-<Note>
-  If you haven't set up DMARC yet, follow our [DMARC Setup
-  Guide](/docs/dashboard/domains/dmarc).
-</Note>
+    To ensure your logo appears with Apple Branded Mail, set your DMARC policy to either `p=quarantine;` or `p=reject;`. This policy guarantees that your emails are authenticated and prevents others from spoofing your domain and sending emails with your logo.
 
-To ensure your logo appears with Apple Branded Mail, set your DMARC policy to either `p=quarantine;` or `p=reject;`. This policy guarantees that your emails are authenticated and prevents others from spoofing your domain and sending emails with your logo.
+    Here's an overview of the required parameters:
 
-Here's an overview of the required parameters:
+    | Parameter | Purpose    | Required Value                 |
+    | --------- | ---------- | ------------------------------ |
+    | `p`       | Policy     | `p=quarantine;` or `p=reject;` |
+    | `pct`     | Percentage | `pct=100;`                     |
 
-| Parameter | Purpose    | Required Value                 |
-| --------- | ---------- | ------------------------------ |
-| `p`       | Policy     | `p=quarantine;` or `p=reject;` |
-| `pct`     | Percentage | `pct=100;`                     |
+    Here is an example of an adequate DMARC record:
 
-Here is an example of an adequate DMARC record:
+    ```
+    "v=DMARC1; p=quarantine; pct=100; rua=mailto:dmarcreports@example.com"
+    ```
 
-```
-"v=DMARC1; p=quarantine; pct=100; rua=mailto:dmarcreports@example.com"
-```
+    As we mention in our [DMARC Setup Guide](/docs/dashboard/domains/dmarc), be sure to test your emails to make sure they are passing DMARC before changing your DMARC policy to `p=quarantine;` or `p=reject;`.
+  </Step>
 
-As we mention in our [DMARC Setup Guide](/docs/dashboard/domains/dmarc), be sure to test your emails to make sure they are passing DMARC before changing your DMARC policy to `p=quarantine;` or `p=reject;`.
+  <Step title="Create an Apple Business Connect account">
+    Apple displays the logo you set in your Business Connect account. [Create an account](https://www.apple.com/business/connect/) if your company does not already have one. Make sure to use your company details when signing up.
+  </Step>
 
-### 2. Create an Apple Business Connect account
+  <Step title="Add your company details">
+    Apple will prompt you to provide details like your company address and name.
+  </Step>
 
-Apple displays the logo you set in your Business Connect account. [Create an account](https://www.apple.com/business/connect/) if your company does not already have one. Make sure to use your company details when signing up.
+  <Step title="Add your brand details">
+    Once your company account is created, in Apple Business Connect, select the **Branded Mail** option in the left sidebar and provide details on your brand. Add details like the brand name and your brand website.
 
-### 3. Add your company details
+    <img alt="Add your brand details" />
 
-Apple will prompt you to provide details like your company address and name.
+    <img alt="Add your brand details" />
+  </Step>
 
-### 4. Add your brand details
+  <Step title="Add your logo">
+    Once you fill out the brand details, upload your logo. Apple requires the logo to be at least 1024 x 1024 px in a `.png`, `.heif`, or `.jpeg` format.
 
-Once your company account is created, in Apple Business Connect, select the **Branded Mail** option in the left sidebar and provide details on your brand. Add details like the brand name and your brand website.
+    <img alt="Add your logo" />
+  </Step>
 
-<img alt="Add your brand details" />
+  <Step title="Add your domain">
+    Confirm the domains or email addresses where you want your brand logo to appear.
 
-<img alt="Add your brand details" />
+    You can register your logo for your root domain or a subdomain. If you don't set a specific logo for a subdomain, the root domain logo will automatically display for any email sent from your subdomains.
+  </Step>
 
-### 5. Add your logo
+  <Step title="Verify your company">
+    Apple requires details to confirm your company identity.
 
-Once you fill out the brand details, upload your logo. Apple requires the logo to be at least 1024 x 1024 px in a `.png`, `.heif`, or `.jpeg` format.
+    If you're in the United States, provide a Federal Taxpayer Identification Number. Other countries will use a local equivalent for this step. Apple also asks that you add a DNS record to verify DNS access.
+  </Step>
 
-<img alt="Add your logo" />
+  <Step title="Verify with Apple">
+    After you submit all your information, Apple will verify your details. This process may take up to seven business days.
 
-### 6. Add your domain
+    Once the logo is verified, Apple will send an email notification and note the verified status in Branded Mail. Your logo will start to display in compatible Apple Mail versions.
 
-Confirm the domains or email addresses where you want your brand logo to appear.
+    <img alt="Verified logo" />
 
-You can register your logo for your root domain or a subdomain. If you don't set a specific logo for a subdomain, the root domain logo will automatically display for any email sent from your subdomains.
-
-### 7. Verify your company
-
-Apple requires details to confirm your company identity.
-
-If you're in the United States, provide a Federal Taxpayer Identification Number. Other countries will use a local equivalent for this step. Apple also asks that you add a DNS record to verify DNS access.
-
-### 8. Verify with Apple
-
-After you submit all your information, Apple will verify your details. This process may take up to seven business days.
-
-Once the logo is verified, Apple will send an email notification and note the verified status in Branded Mail. Your logo will start to display in compatible Apple Mail versions.
-
-<img alt="Verified logo" />
-
-<Tip>
-  See Apple's documentation on [Apple Branded
-  Mail](https://support.apple.com/en-au/guide/apple-business-connect/abcb761b19d2/web)
-  for any detailed questions on adding your logo.
-</Tip>
+    <Tip>
+      See Apple's documentation on [Apple Branded
+      Mail](https://support.apple.com/en-au/guide/apple-business-connect/abcb761b19d2/web)
+      for any detailed questions on adding your logo.
+    </Tip>
+  </Step>
+</Steps>

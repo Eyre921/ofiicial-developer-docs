@@ -10,11 +10,11 @@ Audience hygiene (*also known as list hygiene*) refers to the practice of keepin
 
 Maintaining proper audience hygiene is crucial for ensuring that your emails reach their intended recipients, maximizing your deliverability, and improving your sender reputation.
 
-By removing invalid, outdated, or disengaged contacts, you can improve the effectiveness of your email campaigns and avoid issues like high bounce rates, low engagement, and even being marked as spam.
+By removing invalid, outdated, or disengaged contacts, you can improve the effectiveness of your email campaigns. You'll also avoid issues like high bounce rates, low engagement, and even being marked as spam.
 
 ***
 
-# How to ensure emails are valid?
+# How to ensure emails are valid
 
 To keep your list healthy, it's essential to ensure that the email addresses you collect are valid, accurate, and belong to recipients who are truly interested in hearing from you. Here are a few strategies to help you achieve this:
 
@@ -99,6 +99,6 @@ To re-engage these users, you may want to send a re-engagement campaign or offer
 
 ***
 
-By maintaining strong audience hygiene practices, including validating email addresses, ensuring consent, verifying deliverability, and removing unengaged recipients, you'll improve your email deliverability and foster better relationships with your subscribers.
+Audience hygiene involves validating email addresses, ensuring consent, verifying deliverability, and removing unengaged recipients. By maintaining these practices, you'll improve your email deliverability and foster better relationships with your subscribers.
 
 This will help you achieve better engagement rates and a healthier sender reputation with inbox providers.

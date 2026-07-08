@@ -158,7 +158,7 @@ You can also use our [Broadcast API](/docs/api-reference/broadcasts/create-broad
   ```
 </CodeGroup>
 
-## How to customize the unsubscribe link in my Broadcast?
+## How to customize the unsubscribe link in my Broadcast
 
 Resend generates a unique link for each recipient and each Broadcast. You can use `{{{RESEND_UNSUBSCRIBE_URL}}}` as the link target.
 

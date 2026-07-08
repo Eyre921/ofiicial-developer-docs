@@ -13,111 +13,115 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the [django-anymail](https://anymail.dev/en/stable/esps/resend/) package with Resend support.
+<Steps>
+  <Step title="Install">
+    Get the [django-anymail](https://anymail.dev/en/stable/esps/resend/) package with Resend support.
 
-<CodeGroup>
-  ```bash Pip theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pip install django-anymail[resend]
-  ```
-</CodeGroup>
+    <CodeGroup>
+      ```bash Pip theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pip install django-anymail[resend]
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Configure
+  <Step title="Configure">
+    Add Anymail to your Django settings.
 
-Add Anymail to your Django settings.
+    ```py settings.py theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import os
 
-```py settings.py theme={"theme":{"light":"github-light","dark":"vesper"}}
-import os
+    INSTALLED_APPS = [
+        # ...
+        "anymail",
+    ]
 
-INSTALLED_APPS = [
-    # ...
-    "anymail",
-]
+    EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+    ANYMAIL = {
+        "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),
+    }
+    DEFAULT_FROM_EMAIL = "onboarding@resend.dev"
+    ```
+  </Step>
 
-EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
-ANYMAIL = {
-    "RESEND_API_KEY": os.environ.get("RESEND_API_KEY"),
-}
-DEFAULT_FROM_EMAIL = "onboarding@resend.dev"
-```
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html_message` parameter.
 
-## 3. Send email using HTML
+    ```py views.py theme={"theme":{"light":"github-light","dark":"vesper"}}
+    from django.core.mail import send_mail
+    from django.http import JsonResponse
 
-The easiest way to send an email is by using the `html_message` parameter.
+    def send_email(request):
+        send_mail(
+            subject="Hello from Django + Resend",
+            message="This is a plain text message.",
+            from_email="Acme <onboarding@resend.dev>",
+            recipient_list=["delivered@resend.dev"],
+            html_message="<strong>it works!</strong>",
+        )
 
-```py views.py theme={"theme":{"light":"github-light","dark":"vesper"}}
-from django.core.mail import send_mail
-from django.http import JsonResponse
+        return JsonResponse({"message": "Email sent successfully"})
+    ```
+  </Step>
 
-def send_email(request):
-    send_mail(
-        subject="Hello from Django + Resend",
-        message="This is a plain text message.",
-        from_email="Acme <onboarding@resend.dev>",
-        recipient_list=["delivered@resend.dev"],
-        html_message="<strong>it works!</strong>",
-    )
+  <Step title="Send email using a template">
+    For more complex emails, you can use Django's template system.
 
-    return JsonResponse({"message": "Email sent successfully"})
-```
+    First, create an HTML template at `templates/emails/welcome.html`:
 
-## 4. Send email using a template
+    ```html templates/emails/welcome.html theme={"theme":{"light":"github-light","dark":"vesper"}}
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <meta charset="UTF-8" />
+        <title>Welcome Email</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
+        <h1>Welcome, {{ user_name }}!</h1>
+        <p>Thank you for joining our service.</p>
+        <p>Your account email: <strong>{{ user_email }}</strong></p>
+        <p>
+          <a
+            href="{{ dashboard_url }}"
+            style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;"
+          >
+            Go to Dashboard
+          </a>
+        </p>
+      </body>
+    </html>
+    ```
 
-For more complex emails, you can use Django's template system.
+    Then render and send the template:
 
-First, create an HTML template at `templates/emails/welcome.html`:
+    ```py views.py theme={"theme":{"light":"github-light","dark":"vesper"}}
+    from django.core.mail import EmailMessage
+    from django.http import JsonResponse
+    from django.template.loader import render_to_string
 
-```html templates/emails/welcome.html theme={"theme":{"light":"github-light","dark":"vesper"}}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Welcome Email</title>
-  </head>
-  <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
-    <h1>Welcome, {{ user_name }}!</h1>
-    <p>Thank you for joining our service.</p>
-    <p>Your account email: <strong>{{ user_email }}</strong></p>
-    <p>
-      <a
-        href="{{ dashboard_url }}"
-        style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;"
-      >
-        Go to Dashboard
-      </a>
-    </p>
-  </body>
-</html>
-```
+    def send_template_email(request):
+        html_content = render_to_string('emails/welcome.html', {
+            'user_name': 'Django Developer',
+            'user_email': 'delivered@resend.dev',
+            'dashboard_url': 'https://example.com/dashboard',
+        })
 
-Then render and send the template:
+        message = EmailMessage(
+            subject="Welcome to Our Service!",
+            body=html_content,
+            from_email="Acme <onboarding@resend.dev>",
+            to=["delivered@resend.dev"],
+        )
+        message.content_subtype = "html"
+        message.send()
 
-```py views.py theme={"theme":{"light":"github-light","dark":"vesper"}}
-from django.core.mail import EmailMessage
-from django.http import JsonResponse
-from django.template.loader import render_to_string
+        return JsonResponse({"message": "Email sent successfully"})
+    ```
+  </Step>
+</Steps>
 
-def send_template_email(request):
-    html_content = render_to_string('emails/welcome.html', {
-        'user_name': 'Django Developer',
-        'user_email': 'delivered@resend.dev',
-        'dashboard_url': 'https://example.com/dashboard',
-    })
-
-    message = EmailMessage(
-        subject="Welcome to Our Service!",
-        body=html_content,
-        from_email="Acme <onboarding@resend.dev>",
-        to=["delivered@resend.dev"],
-    )
-    message.content_subtype = "html"
-    message.send()
-
-    return JsonResponse({"message": "Email sent successfully"})
-```
-
-## 5. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Django App" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/python-resend-examples/django_app">

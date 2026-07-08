@@ -13,52 +13,56 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Create a Deno Deploy project
+## Guide
 
-Go to [dash.deno.com/projects](https://dash.deno.com/projects) and create a new playground project.
+<Steps>
+  <Step title="Create a Deno Deploy project">
+    Go to [dash.deno.com/projects](https://dash.deno.com/projects) and create a new playground project.
 
-<img alt="Deno Deploy - New Project" />
+    <img alt="Deno Deploy - New Project" />
+  </Step>
 
-## 2. Edit the handler function
+  <Step title="Edit the handler function">
+    Paste the following code into the browser editor:
 
-Paste the following code into the browser editor:
+    ```ts main.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { Resend } from 'npm:resend';
 
-```ts main.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { Resend } from 'npm:resend';
+    const resend = new Resend('re_123456789');
 
-const resend = new Resend('re_123456789');
+    Deno.serve(async () => {
+      try {
+        const response = await resend.emails.send({
+          from: 'Acme <onboarding@resend.dev>',
+          to: ['delivered@resend.dev'],
+          subject: 'Hello World',
+          html: '<strong>It works!</strong>',
+        });
 
-Deno.serve(async () => {
-  try {
-    const response = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['delivered@resend.dev'],
-      subject: 'Hello World',
-      html: '<strong>It works!</strong>',
+        return new Response(JSON.stringify(response), {
+          status: response.error ? 500 : 200,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      } catch (error) {
+        console.error(error);
+        return new Response(null, {
+          status: 500,
+        });
+      }
     });
+    ```
+  </Step>
 
-    return new Response(JSON.stringify(response), {
-      status: response.error ? 500 : 200,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  } catch (error) {
-    console.error(error);
-    return new Response(null, {
-      status: 500,
-    });
-  }
-});
-```
+  <Step title="Deploy and send email">
+    Click on `Save & Deploy` at the top of the screen.
 
-## 3. Deploy and send email
+    <img alt="Deno Deploy - Playground" />
+  </Step>
+</Steps>
 
-Click on `Save & Deploy` at the top of the screen.
-
-<img alt="Deno Deploy - Playground" />
-
-## 4. Try it yourself
+## Examples
 
 <Card title="Deno Deploy Example" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-deno-deploy-example">
   See the full source code.

@@ -14,6 +14,10 @@ A dedicated endpoint serves a single model on hardware reserved only for you, of
 
 Dedicated endpoints use the same [inference APIs](/docs/inference/overview#shared-inference-api) as [serverless models](/docs/serverless/models), allowing you to prototype with serverless, then switch to dedicated endpoints without changing your application code.
 
+<Tip>
+  If you're running a stock model in production and want a defined SLA without managing hardware, contact sales for [provisioned throughput](/docs/inference/provisioned-throughput).
+</Tip>
+
 ## Get started
 
 <CardGroup>

@@ -13,56 +13,60 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Setup your environment
+## Guide
 
-First, configure your Resend SMTP details in your application's `.env` file:
+<Steps>
+  <Step title="Setup your environment">
+    First, configure your Resend SMTP details in your application's `.env` file:
 
-```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.resend.com
-MAIL_PORT=587
-MAIL_USERNAME=resend
-MAIL_PASSWORD=re_xxxxxxxxx
-MAIL_ENCRYPTION=tls
-MAIL_FROM_ADDRESS=onboarding@resend.dev
-MAIL_FROM_NAME=Acme
-```
+    ```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
+    MAIL_MAILER=smtp
+    MAIL_HOST=smtp.resend.com
+    MAIL_PORT=587
+    MAIL_USERNAME=resend
+    MAIL_PASSWORD=re_xxxxxxxxx
+    MAIL_ENCRYPTION=tls
+    MAIL_FROM_ADDRESS=onboarding@resend.dev
+    MAIL_FROM_NAME=Acme
+    ```
+  </Step>
 
-## 2. Send an email
+  <Step title="Send an email">
+    Now you're ready to send emails with Laravel's powerful email service. Here's an example of how to send your first email using Resend SMTP:
 
-Now you're ready to send emails with Laravel's powerful email service. Here's an example of how to send your first email using Resend SMTP:
+    ```php OrderShipmentController.php theme={"theme":{"light":"github-light","dark":"vesper"}}
+    <?php
 
-```php OrderShipmentController.php theme={"theme":{"light":"github-light","dark":"vesper"}}
-<?php
+    namespace App\Http\Controllers;
 
-namespace App\Http\Controllers;
+    use App\Http\Controllers\Controller;
+    use App\Mail\OrderShipped;
+    use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Mail;
 
-use App\Http\Controllers\Controller;
-use App\Mail\OrderShipped;
-use App\Models\Order;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-
-class OrderShipmentController extends Controller
-{
-    /**
-     * Ship the given order.
-     */
-    public function store(Request $request): RedirectResponse
+    class OrderShipmentController extends Controller
     {
-        $order = Order::findOrFail($request->order_id);
+        /**
+         * Ship the given order.
+         */
+        public function store(Request $request): RedirectResponse
+        {
+            $order = Order::findOrFail($request->order_id);
 
-        // Ship the order...
+            // Ship the order...
 
-        Mail::to($request->user())->send(new OrderShipped($order));
+            Mail::to($request->user())->send(new OrderShipped($order));
 
-        return redirect('/orders');
+            return redirect('/orders');
+        }
     }
-}
-```
+    ```
+  </Step>
+</Steps>
 
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Email Sending" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/laravel-resend-examples/app/Http/Controllers/EmailController.php">

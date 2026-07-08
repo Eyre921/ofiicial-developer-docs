@@ -725,7 +725,7 @@ You can include a `payload` object with your event to pass data into the Automat
   ```
 </CodeGroup>
 
-In this example, `event.amount`, `event.currency`, and `event.retryDate` would be available in email templates, [conditions](/docs/dashboard/automations/condition), and other steps.
+In this example, you can use `event.amount`, `event.currency`, and `event.retryDate` in other automation [conditions](/docs/dashboard/automations/condition) and steps, or in email templates.
 
 View the [Send Event API reference](/docs/api-reference/events/send-event) for the full endpoint specification.
 

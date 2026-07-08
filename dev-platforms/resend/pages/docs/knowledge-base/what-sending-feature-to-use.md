@@ -8,9 +8,9 @@ How to pick between our different sending features depending on your number of r
 
 Resend allows you to send both **Transactional** and **Marketing** emails.
 
-## What's the difference between Transactional and Marketing emails?
+## The difference between Transactional and Marketing emails
 
-### What is a Transactional email?
+### Transactional emails
 
 A **Transactional email** is a message triggered by a user action or required for legal compliance. These emails are essential communications that users **cannot unsubscribe** from. Common examples include:
 
@@ -20,7 +20,7 @@ A **Transactional email** is a message triggered by a user action or required fo
 
 Typically, transactional emails are **1-to-1** messages sent in response to a specific event.
 
-### What is a Marketing email?
+### Marketing emails
 
 A **Marketing email** is any email that is not transactional. These can be **promotional**, **informative**, or **general communication** messages.
 
@@ -34,7 +34,7 @@ Examples of marketing emails:
 
 Marketing emails can be **1-to-1** (e.g., abandoned cart reminders) or **1-to-many** (e.g., newsletters).
 
-## Transactional vs Marketing: Which Do I Need?
+## Transactional vs Marketing: Which to Choose
 
 While not exhaustive, here's a table listing different examples of emails and the most appropriate type for each example.
 
@@ -46,16 +46,16 @@ While not exhaustive, here's a table listing different examples of emails and th
 | Newsletter         | Multiple          | ⨯             | ✓         |
 | Promotional offer  | Multiple          | ⨯             | ✓         |
 
-## How to send an email with Resend?
+## How to send an email with Resend
 
-### How to send a Transactional email?
+### How to send a Transactional email
 
 You can send a Transactional email using:
 
 * Our [Send Email API](/docs/api-reference/emails/send-email)
 * Our [Batch Send API](/docs/api-reference/emails/send-batch-emails) (send up to 100 transactional emails in one API call)
 
-### How to send a Marketing email?
+### How to send a Marketing email
 
 You can send Marketing emails using:
 

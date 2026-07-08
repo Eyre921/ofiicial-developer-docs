@@ -227,7 +227,7 @@ Build collaborative AI agents, crews, and flows — production ready from day on
 
 
 # Agent Capabilities
-Source: https://docs.crewai.com/v1.15.1/en/concepts/agent-capabilities
+Source: https://docs.crewai.com/v1.15.2/en/concepts/agent-capabilities
 
 Understand the five ways to extend CrewAI agents: Tools, MCPs, Apps, Skills, and Knowledge.
 
@@ -381,7 +381,7 @@ Ready to learn more about each capability type?
 
 
 # Agents
-Source: https://docs.crewai.com/v1.15.1/en/concepts/agents
+Source: https://docs.crewai.com/v1.15.2/en/concepts/agents
 
 Detailed guide on creating and managing agents within the CrewAI framework.
 
@@ -1101,7 +1101,7 @@ Remember that agents are most effective when configured according to their speci
 
 
 # Collaboration
-Source: https://docs.crewai.com/v1.15.1/en/concepts/collaboration
+Source: https://docs.crewai.com/v1.15.2/en/concepts/collaboration
 
 How to enable agents to work together, delegate tasks, and communicate effectively within CrewAI teams.
 
@@ -1480,7 +1480,7 @@ Collaboration transforms individual AI agents into powerful teams that can tackl
 
 
 # Crews
-Source: https://docs.crewai.com/v1.15.1/en/concepts/crews
+Source: https://docs.crewai.com/v1.15.2/en/concepts/crews
 
 Understanding and utilizing crews in the crewAI framework with comprehensive attributes and functionalities.
 
@@ -1937,7 +1937,7 @@ These commands let you replay from your latest kickoff tasks, still retaining co
 
 
 # Files
-Source: https://docs.crewai.com/v1.15.1/en/concepts/files
+Source: https://docs.crewai.com/v1.15.2/en/concepts/files
 
 Pass images, PDFs, audio, video, and text files to your agents for multimodal processing.
 
@@ -2209,7 +2209,7 @@ task = Task(
 
 
 # Flows
-Source: https://docs.crewai.com/v1.15.1/en/concepts/flows
+Source: https://docs.crewai.com/v1.15.2/en/concepts/flows
 
 Learn how to create and manage AI workflows using CrewAI Flows.
 
@@ -3359,7 +3359,7 @@ The legacy `crewai flow kickoff` command is deprecated. Use `crewai run` for bot
 
 
 # Knowledge
-Source: https://docs.crewai.com/v1.15.1/en/concepts/knowledge
+Source: https://docs.crewai.com/v1.15.2/en/concepts/knowledge
 
 What is knowledge in CrewAI and how to use it.
 
@@ -4485,7 +4485,7 @@ This is useful when you've updated your knowledge sources and want to ensure tha
 
 
 # LLMs
-Source: https://docs.crewai.com/v1.15.1/en/concepts/llms
+Source: https://docs.crewai.com/v1.15.2/en/concepts/llms
 
 A comprehensive guide to configuring and using Large Language Models (LLMs) in your CrewAI projects
 
@@ -6227,7 +6227,7 @@ Learn how to get the most out of your LLM configuration:
 
 
 # Memory
-Source: https://docs.crewai.com/v1.15.1/en/concepts/memory
+Source: https://docs.crewai.com/v1.15.2/en/concepts/memory
 
 Leveraging the unified memory system in CrewAI to enhance agent capabilities.
 
@@ -7107,7 +7107,7 @@ All configuration is passed as keyword arguments to `Memory(...)`. Every paramet
 
 
 # Processes
-Source: https://docs.crewai.com/v1.15.1/en/concepts/processes
+Source: https://docs.crewai.com/v1.15.2/en/concepts/processes
 
 Detailed guide on workflow management through processes in CrewAI, with updated implementation details.
 
@@ -7176,7 +7176,7 @@ This documentation has been updated to reflect the latest features and enhanceme
 
 
 # Production Architecture
-Source: https://docs.crewai.com/v1.15.1/en/concepts/production-architecture
+Source: https://docs.crewai.com/v1.15.2/en/concepts/production-architecture
 
 Best practices for building production-ready AI applications with CrewAI
 
@@ -7346,156 +7346,8 @@ The new run gets a fresh `state.id` (auto-generated, or `inputs["id"]` if pinned
 * **Deploy with an API and persistence.**
 
 
-# Reasoning
-Source: https://docs.crewai.com/v1.15.1/en/concepts/reasoning
-
-Learn how to enable and use agent reasoning to improve task execution.
-
-## Overview
-
-Agent reasoning is a feature that allows agents to reflect on a task and create a plan before execution. This helps agents approach tasks more methodically and ensures they're ready to perform the assigned work.
-
-## Usage
-
-To enable reasoning for an agent, simply set `reasoning=True` when creating the agent:
-
-```python theme={null}
-from crewai import Agent
-
-agent = Agent(
-    role="Data Analyst",
-    goal="Analyze complex datasets and provide insights",
-    backstory="You are an experienced data analyst with expertise in finding patterns in complex data.",
-    reasoning=True,  # Enable reasoning
-    max_reasoning_attempts=3  # Optional: Set a maximum number of reasoning attempts
-)
-```
-
-## How It Works
-
-When reasoning is enabled, before executing a task, the agent will:
-
-1. Reflect on the task and create a detailed plan
-2. Evaluate whether it's ready to execute the task
-3. Refine the plan as necessary until it's ready or max\_reasoning\_attempts is reached
-4. Inject the reasoning plan into the task description before execution
-
-This process helps the agent break down complex tasks into manageable steps and identify potential challenges before starting.
-
-## Configuration Options
-
-<ParamField type="bool">
-  Enable or disable reasoning
-</ParamField>
-
-<ParamField type="int">
-  Maximum number of attempts to refine the plan before proceeding with execution. If None (default), the agent will continue refining until it's ready.
-</ParamField>
-
-## Example
-
-Here's a complete example:
-
-```python theme={null}
-from crewai import Agent, Task, Crew
-
-# Create an agent with reasoning enabled
-analyst = Agent(
-    role="Data Analyst",
-    goal="Analyze data and provide insights",
-    backstory="You are an expert data analyst.",
-    reasoning=True,
-    max_reasoning_attempts=3  # Optional: Set a limit on reasoning attempts
-)
-
-# Create a task
-analysis_task = Task(
-    description="Analyze the provided sales data and identify key trends.",
-    expected_output="A report highlighting the top 3 sales trends.",
-    agent=analyst
-)
-
-# Create a crew and run the task
-crew = Crew(agents=[analyst], tasks=[analysis_task])
-result = crew.kickoff()
-
-print(result)
-```
-
-## Error Handling
-
-The reasoning process is designed to be robust, with error handling built in. If an error occurs during reasoning, the agent will proceed with executing the task without the reasoning plan. This ensures that tasks can still be executed even if the reasoning process fails.
-
-Here's how to handle potential errors in your code:
-
-```python theme={null}
-from crewai import Agent, Task
-import logging
-
-# Set up logging to capture any reasoning errors
-logging.basicConfig(level=logging.INFO)
-
-# Create an agent with reasoning enabled
-agent = Agent(
-    role="Data Analyst",
-    goal="Analyze data and provide insights",
-    reasoning=True,
-    max_reasoning_attempts=3
-)
-
-# Create a task
-task = Task(
-    description="Analyze the provided sales data and identify key trends.",
-    expected_output="A report highlighting the top 3 sales trends.",
-    agent=agent
-)
-
-# Execute the task
-# If an error occurs during reasoning, it will be logged and execution will continue
-result = agent.execute_task(task)
-```
-
-## Example Reasoning Output
-
-Here's an example of what a reasoning plan might look like for a data analysis task:
-
-```
-Task: Analyze the provided sales data and identify key trends.
-
-Reasoning Plan:
-I'll analyze the sales data to identify the top 3 trends.
-
-1. Understanding of the task:
-   I need to analyze sales data to identify key trends that would be valuable for business decision-making.
-
-2. Key steps I'll take:
-   - First, I'll examine the data structure to understand what fields are available
-   - Then I'll perform exploratory data analysis to identify patterns
-   - Next, I'll analyze sales by time periods to identify temporal trends
-   - I'll also analyze sales by product categories and customer segments
-   - Finally, I'll identify the top 3 most significant trends
-
-3. Approach to challenges:
-   - If the data has missing values, I'll decide whether to fill or filter them
-   - If the data has outliers, I'll investigate whether they're valid data points or errors
-   - If trends aren't immediately obvious, I'll apply statistical methods to uncover patterns
-
-4. Use of available tools:
-   - I'll use data analysis tools to explore and visualize the data
-   - I'll use statistical tools to identify significant patterns
-   - I'll use knowledge retrieval to access relevant information about sales analysis
-
-5. Expected outcome:
-   A concise report highlighting the top 3 sales trends with supporting evidence from the data.
-
-READY: I am ready to execute the task.
-```
-
-This reasoning plan helps the agent organize its approach to the task, consider potential challenges, and ensure it delivers the expected output.
-
-
 # Skills
-Source: https://docs.crewai.com/v1.15.1/en/concepts/skills
+Source: https://docs.crewai.com/v1.15.2/en/concepts/skills
 
 Filesystem-based skill packages that inject domain expertise and instructions into agent prompts.
 
@@ -7800,8 +7652,145 @@ Both skills and knowledge modify the agent's prompt, but they serve different pu
 </AccordionGroup>
 
 
+# Streaming
+Source: https://docs.crewai.com/v1.15.2/en/concepts/streaming
+
+Understand CrewAI's streaming model for Flows, direct LLM calls, tools, and conversational turns.
+
+## Overview
+
+Streaming lets your application receive execution updates while work is still running. Instead of waiting for the final result, you can render LLM tokens, tool activity, Flow lifecycle events, and conversation messages as they happen.
+
+CrewAI has two streaming surfaces:
+
+| Surface              | Used by                                       | Output                        |
+| -------------------- | --------------------------------------------- | ----------------------------- |
+| Frame streaming      | Flows, direct LLM calls, conversational turns | Ordered `StreamFrame` objects |
+| Crew chunk streaming | Crews with `stream=True`                      | `CrewStreamingOutput` chunks  |
+
+For new runtime integrations, UIs, terminal apps, service bridges, and conversational surfaces, use frame streaming. It provides one stable event envelope across the runtime.
+
+## StreamFrame
+
+A `StreamFrame` is the common object emitted by streamable runtimes:
+
+```python theme={null}
+frame.id           # unique frame id
+frame.seq          # execution-local order, when available
+frame.type         # source event type, such as "llm_stream_chunk"
+frame.channel      # "llm", "flow", "tools", "messages", "lifecycle", or "custom"
+frame.namespace    # source/runtime namespace
+frame.timestamp    # event timestamp
+frame.parent_id    # parent event id, when available
+frame.previous_id  # previous event id, when available
+frame.data         # structured event payload
+frame.event        # alias for frame.data
+frame.content      # printable text for token-like frames, otherwise ""
+```
+
+The important fields for most consumers are:
+
+| Field     | Use it for                                                       |
+| --------- | ---------------------------------------------------------------- |
+| `channel` | Routing frames to the right UI region                            |
+| `type`    | Handling a specific event inside a channel                       |
+| `content` | Printing token-like text                                         |
+| `event`   | Reading structured metadata, such as tool names or message roles |
+| `seq`     | Preserving execution order                                       |
+
+## Channels
+
+Frames are grouped into high-level channels:
+
+| Channel     | Contains                                                            |
+| ----------- | ------------------------------------------------------------------- |
+| `llm`       | LLM call lifecycle, text chunks, and thinking chunks                |
+| `flow`      | Flow lifecycle, method execution, routing, pause, and resume events |
+| `tools`     | Tool usage start, finish, and error events                          |
+| `messages`  | Conversation transcript events                                      |
+| `lifecycle` | Runtime lifecycle events that do not belong to another channel      |
+| `custom`    | Events that do not map to a built-in channel                        |
+
+The stream itself remains one ordered timeline. Channel projections let consumers focus on only part of that timeline.
+
+```mermaid theme={null}
+flowchart LR
+    A["flow<br/>flow_started"] --> B["llm<br/>llm_call_started"]
+    B --> C["llm<br/>llm_stream_chunk"]
+    C --> D["tools<br/>tool_usage_started"]
+    D --> E["tools<br/>tool_usage_finished"]
+    E --> F["llm<br/>llm_stream_chunk"]
+    F --> G["flow<br/>flow_finished"]
+```
+
+## Stream Sessions
+
+Frame streaming returns a stream session:
+
+```python theme={null}
+stream = flow.stream_events(inputs={"topic": "AI agents"})
+```
+
+The session is both an iterator and the holder for the final result:
+
+```python theme={null}
+with stream:
+    for frame in stream:
+        print(frame.content, end="", flush=True)
+
+result = stream.result
+```
+
+Consume the stream before reading `stream.result`. Reading the result too early raises an error because the runtime may still be producing frames.
+
+## Channel Projections
+
+Use channel projections when you only need one kind of frame:
+
+```python theme={null}
+with flow.stream_events(inputs={"topic": "AI agents"}) as stream:
+    for frame in stream.llm:
+        print(frame.content, end="", flush=True)
+
+result = stream.result
+```
+
+Available projections:
+
+| Projection                 | Frames                              |
+| -------------------------- | ----------------------------------- |
+| `stream.events`            | All frames                          |
+| `stream.llm`               | LLM frames                          |
+| `stream.flow`              | Flow frames                         |
+| `stream.tools`             | Tool frames                         |
+| `stream.messages`          | Conversation message frames         |
+| `stream.interleave([...])` | Selected channels in relative order |
+
+## Entrypoints
+
+Use the entrypoint that matches the runtime you are streaming:
+
+| Runtime                  | Streaming entrypoint                                                      |
+| ------------------------ | ------------------------------------------------------------------------- |
+| Flow                     | `flow.stream_events(...)`                                                 |
+| Flow with `stream=True`  | `flow.kickoff(...)` returns a stream session                              |
+| Async Flow               | `flow.astream(...)` or `await flow.kickoff_async(...)` when `stream=True` |
+| Direct LLM call          | `llm.stream_events(...)`                                                  |
+| Conversational Flow turn | `flow.stream_turn(...)`                                                   |
+| Crew                     | `Crew(..., stream=True).kickoff(...)` returns `CrewStreamingOutput`       |
+
+Direct `llm.call(...)` still returns the final assembled LLM result. Use `llm.stream_events(...)` when you want to iterate over LLM chunks as they arrive.
+
+## Related Guides
+
+* [Consuming Streams](/edge/en/learn/consuming-streams)
+* [Streaming Runtime Contract](/edge/en/learn/streaming-runtime-contract)
+* [Streaming Flow Execution](/edge/en/learn/streaming-flow-execution)
+* [Streaming Crew Execution](/edge/en/learn/streaming-crew-execution)
+
+
 # Tasks
-Source: https://docs.crewai.com/v1.15.1/en/concepts/tasks
+Source: https://docs.crewai.com/v1.15.2/en/concepts/tasks
 
 Detailed guide on managing and creating tasks within the CrewAI framework.
 
@@ -8829,7 +8818,7 @@ ensuring agents are effectively prepared for their assignments and that tasks ar
 
 
 # Training
-Source: https://docs.crewai.com/v1.15.1/en/concepts/training
+Source: https://docs.crewai.com/v1.15.2/en/concepts/training
 
 Learn how to train your CrewAI agents by giving them feedback early on and get consistent results.
 
@@ -9031,7 +9020,7 @@ Remember to regularly update and retrain your agents to ensure they stay up-to-d
 
 
 # Customizing Prompts
-Source: https://docs.crewai.com/v1.15.1/en/guides/advanced/customizing-prompts
+Source: https://docs.crewai.com/v1.15.2/en/guides/advanced/customizing-prompts
 
 Dive deeper into low-level prompt customization for CrewAI, enabling super custom and complex use cases for different models and languages.
 
@@ -9368,7 +9357,7 @@ Low-level prompt customization in CrewAI opens the door to super custom, complex
 
 
 # Fingerprinting
-Source: https://docs.crewai.com/v1.15.1/en/guides/advanced/fingerprinting
+Source: https://docs.crewai.com/v1.15.2/en/guides/advanced/fingerprinting
 
 Learn how to use CrewAI's fingerprinting system to uniquely identify and track components throughout their lifecycle.
 
@@ -9503,7 +9492,7 @@ metadata = fingerprint.metadata  # A dictionary, defaults to {}
 
 
 # Crafting Effective Agents
-Source: https://docs.crewai.com/v1.15.1/en/guides/agents/crafting-effective-agents
+Source: https://docs.crewai.com/v1.15.2/en/guides/agents/crafting-effective-agents
 
 Learn best practices for designing powerful, specialized AI agents that collaborate effectively to solve complex problems.
 
@@ -9988,7 +9977,7 @@ Remember that agent and task design is an iterative process. Start with these be
 
 
 # Coding Tools
-Source: https://docs.crewai.com/v1.15.1/en/guides/coding-tools/agents-md
+Source: https://docs.crewai.com/v1.15.2/en/guides/coding-tools/agents-md
 
 Use AGENTS.md to guide coding agents and IDEs across your CrewAI projects.
 
@@ -10049,7 +10038,7 @@ If you are using Windsurf’s native assistant, configure its project rules or i
 
 
 # Build with AI
-Source: https://docs.crewai.com/v1.15.1/en/guides/coding-tools/build-with-ai
+Source: https://docs.crewai.com/v1.15.2/en/guides/coding-tools/build-with-ai
 
 Everything AI coding agents need to build, deploy, and scale with CrewAI — skills, machine-readable docs, deployment, and enterprise features.
 
@@ -10296,7 +10285,7 @@ CrewAI AMP is built for production teams. Here's what you get beyond deployment.
 
 
 # Evaluating Use Cases for CrewAI
-Source: https://docs.crewai.com/v1.15.1/en/guides/concepts/evaluating-use-cases
+Source: https://docs.crewai.com/v1.15.2/en/guides/concepts/evaluating-use-cases
 
 Learn how to assess your AI application needs and choose the right approach between Crews and Flows based on complexity and precision requirements.
 
@@ -10808,7 +10797,7 @@ Remember that the best approach often evolves as your application matures. Start
 
 
 # Build Your First Crew
-Source: https://docs.crewai.com/v1.15.1/en/guides/crews/first-crew
+Source: https://docs.crewai.com/v1.15.2/en/guides/crews/first-crew
 
 Step-by-step tutorial to create a collaborative AI team with JSON-first crew configuration.
 
@@ -10970,7 +10959,7 @@ You can add:
 
 
 # Conversational Flows
-Source: https://docs.crewai.com/v1.15.1/en/guides/flows/conversational-flows
+Source: https://docs.crewai.com/v1.15.2/en/guides/flows/conversational-flows
 
 Build multi-turn chat apps with handle_turn per turn, message history, intent routing, tracing, and WebSocket bridges.
 
@@ -10994,6 +10983,7 @@ Use **`flow.handle_turn(message, session_id=...)`** for every user message from 
 | API                                    | Use for                                                      |
 | -------------------------------------- | ------------------------------------------------------------ |
 | `handle_turn(message, session_id=...)` | Ergonomic one-turn wrapper for conversational `Flow`         |
+| `stream_turn(message, session_id=...)` | Stream one conversational turn as ordered runtime frames     |
 | `chat()`                               | Local terminal REPL for conversational `Flow`                |
 | `kickoff(inputs={...})`                | Advanced flow execution without conversational turn handling |
 | `ask()`                                | Blocking prompt **inside** one step (wizard, clarification)  |
@@ -11053,6 +11043,23 @@ try:
 finally:
     flow.finalize_session_traces()  # one trace link for the whole chat
 ```
+
+## Streaming a turn
+
+Use `stream_turn()` when a UI or runtime needs structured events for one chat turn. It returns a stream session with ordered frames for Flow routing, LLM chunks, tool activity, and conversation messages.
+
+```python theme={null}
+stream = flow.stream_turn("Where is my order?", session_id=session_id)
+
+with stream:
+    for frame in stream.events:
+        if frame.channel == "llm" and frame.type == "llm_stream_chunk":
+            print(frame.data.get("chunk", ""), end="", flush=True)
+
+result = stream.result
+```
+
+For the full frame contract, channel list, and async API, see [Streaming Runtime Contract](/edge/en/learn/streaming-runtime-contract).
 
 ## Turn lifecycle
 
@@ -11471,7 +11478,7 @@ from crewai.flow import (
 
 
 # Build Your First Flow
-Source: https://docs.crewai.com/v1.15.1/en/guides/flows/first-flow
+Source: https://docs.crewai.com/v1.15.2/en/guides/flows/first-flow
 
 Learn how to create structured, event-driven workflows with precise control over execution.
 
@@ -12030,7 +12037,7 @@ Now that you've built your first flow, you can:
 
 
 # Migrating from inputs.id to restore_from_state_id
-Source: https://docs.crewai.com/v1.15.1/en/guides/flows/inputs-id-deprecation
+Source: https://docs.crewai.com/v1.15.2/en/guides/flows/inputs-id-deprecation
 
 Move @persist flows off the deprecated inputs.id hydration onto the supported restore_from_state_id field
 
@@ -12174,7 +12181,7 @@ previous run.
 
 
 # Mastering Flow State Management
-Source: https://docs.crewai.com/v1.15.1/en/guides/flows/mastering-flow-state
+Source: https://docs.crewai.com/v1.15.2/en/guides/flows/mastering-flow-state
 
 A comprehensive guide to managing, persisting, and leveraging state in CrewAI Flows for building robust AI applications.
 
@@ -13018,7 +13025,7 @@ As you develop more complex flows, remember that good state management is about 
 
 
 # Moving from LangGraph to CrewAI: A Practical Guide for Engineers
-Source: https://docs.crewai.com/v1.15.1/en/guides/migration/migrating-from-langgraph
+Source: https://docs.crewai.com/v1.15.2/en/guides/migration/migrating-from-langgraph
 
 If you already have built with LangGraph, learn how to quickly port your projects to CrewAI
 
@@ -13536,7 +13543,7 @@ Start with `crewai create flow`. You won't look back.
 
 
 # Upgrading CrewAI
-Source: https://docs.crewai.com/v1.15.1/en/guides/migration/upgrading-crewai
+Source: https://docs.crewai.com/v1.15.2/en/guides/migration/upgrading-crewai
 
 How to upgrade CrewAI in your project and adapt to breaking changes between versions.
 
@@ -13729,7 +13736,7 @@ Set the relevant provider credentials (`OPENAI_API_KEY`, `OLLAMA_HOST`, etc.) in
 
 
 # Publish Custom Tools
-Source: https://docs.crewai.com/v1.15.1/en/guides/tools/publish-custom-tools
+Source: https://docs.crewai.com/v1.15.2/en/guides/tools/publish-custom-tools
 
 How to build, package, and publish your own CrewAI-compatible tools to PyPI so any CrewAI user can install and use them.
 
@@ -14034,7 +14041,7 @@ agent = Agent(
 
 
 # Installation
-Source: https://docs.crewai.com/v1.15.1/en/installation
+Source: https://docs.crewai.com/v1.15.2/en/installation
 
 Get started with CrewAI - Install, configure, and build your first AI crew
 
@@ -14272,7 +14279,7 @@ If you haven't installed `uv` yet, follow **step 1** to quickly get it set up on
 
 
 # Introduction
-Source: https://docs.crewai.com/v1.15.1/en/introduction
+Source: https://docs.crewai.com/v1.15.2/en/introduction
 
 Build AI agent teams that work together to tackle complex tasks
 
@@ -14412,7 +14419,7 @@ For any production-ready application, **start with a Flow**.
 
 
 # Quickstart
-Source: https://docs.crewai.com/v1.15.1/en/quickstart
+Source: https://docs.crewai.com/v1.15.2/en/quickstart
 
 Build your first CrewAI Flow in minutes — orchestration, state, and an agent crew that produces a real report.
 
@@ -14663,7 +14670,7 @@ Push your Flow to **[CrewAI AMP](https://app.crewai.com)** once it runs locally 
 
 
 # Skills
-Source: https://docs.crewai.com/v1.15.1/en/skills
+Source: https://docs.crewai.com/v1.15.2/en/skills
 
 Install crewaiinc/skills from the official registry at skills.sh—Flows, Crews, and docs-aware agents for Claude Code, Cursor, Codex, and more.
 
@@ -14717,7 +14724,7 @@ That pulls the official skill pack into your agent workflow so it can apply Crew
 
 
 # Checkpointing
-Source: https://docs.crewai.com/v1.15.1/en/concepts/checkpointing
+Source: https://docs.crewai.com/v1.15.2/en/concepts/checkpointing
 
 Automatically save execution state so crews, flows, and agents can resume after failures.
 
@@ -15147,7 +15154,7 @@ Accepted by `Crew`, `Flow`, and `Agent`.
 
 
 # CLI
-Source: https://docs.crewai.com/v1.15.1/en/concepts/cli
+Source: https://docs.crewai.com/v1.15.2/en/concepts/cli
 
 Learn how to use the CrewAI CLI to interact with CrewAI.
 
@@ -15697,7 +15704,7 @@ Trace collection is controlled by checking three settings in priority order:
 
 
 # Event Listeners
-Source: https://docs.crewai.com/v1.15.1/en/concepts/event-listener
+Source: https://docs.crewai.com/v1.15.2/en/concepts/event-listener
 
 Tap into CrewAI events to build custom integrations and monitoring
 
@@ -16111,7 +16118,7 @@ By leveraging CrewAI's event system, you can extend its functionality and integr
 
 
 # Planning
-Source: https://docs.crewai.com/v1.15.1/en/concepts/planning
+Source: https://docs.crewai.com/v1.15.2/en/concepts/planning
 
 Learn how to add planning to your CrewAI Crew and improve their performance.
 
@@ -16265,8 +16272,156 @@ responsible for creating the step-by-step logic to add to the Agents' tasks.
 </CodeGroup>
 
 
+# Reasoning
+Source: https://docs.crewai.com/v1.15.2/en/concepts/reasoning
+
+Learn how to enable and use agent reasoning to improve task execution.
+
+## Overview
+
+Agent reasoning is a feature that allows agents to reflect on a task and create a plan before execution. This helps agents approach tasks more methodically and ensures they're ready to perform the assigned work.
+
+## Usage
+
+To enable reasoning for an agent, simply set `reasoning=True` when creating the agent:
+
+```python theme={null}
+from crewai import Agent
+
+agent = Agent(
+    role="Data Analyst",
+    goal="Analyze complex datasets and provide insights",
+    backstory="You are an experienced data analyst with expertise in finding patterns in complex data.",
+    reasoning=True,  # Enable reasoning
+    max_reasoning_attempts=3  # Optional: Set a maximum number of reasoning attempts
+)
+```
+
+## How It Works
+
+When reasoning is enabled, before executing a task, the agent will:
+
+1. Reflect on the task and create a detailed plan
+2. Evaluate whether it's ready to execute the task
+3. Refine the plan as necessary until it's ready or max\_reasoning\_attempts is reached
+4. Inject the reasoning plan into the task description before execution
+
+This process helps the agent break down complex tasks into manageable steps and identify potential challenges before starting.
+
+## Configuration Options
+
+<ParamField type="bool">
+  Enable or disable reasoning
+</ParamField>
+
+<ParamField type="int">
+  Maximum number of attempts to refine the plan before proceeding with execution. If None (default), the agent will continue refining until it's ready.
+</ParamField>
+
+## Example
+
+Here's a complete example:
+
+```python theme={null}
+from crewai import Agent, Task, Crew
+
+# Create an agent with reasoning enabled
+analyst = Agent(
+    role="Data Analyst",
+    goal="Analyze data and provide insights",
+    backstory="You are an expert data analyst.",
+    reasoning=True,
+    max_reasoning_attempts=3  # Optional: Set a limit on reasoning attempts
+)
+
+# Create a task
+analysis_task = Task(
+    description="Analyze the provided sales data and identify key trends.",
+    expected_output="A report highlighting the top 3 sales trends.",
+    agent=analyst
+)
+
+# Create a crew and run the task
+crew = Crew(agents=[analyst], tasks=[analysis_task])
+result = crew.kickoff()
+
+print(result)
+```
+
+## Error Handling
+
+The reasoning process is designed to be robust, with error handling built in. If an error occurs during reasoning, the agent will proceed with executing the task without the reasoning plan. This ensures that tasks can still be executed even if the reasoning process fails.
+
+Here's how to handle potential errors in your code:
+
+```python theme={null}
+from crewai import Agent, Task
+import logging
+
+# Set up logging to capture any reasoning errors
+logging.basicConfig(level=logging.INFO)
+
+# Create an agent with reasoning enabled
+agent = Agent(
+    role="Data Analyst",
+    goal="Analyze data and provide insights",
+    reasoning=True,
+    max_reasoning_attempts=3
+)
+
+# Create a task
+task = Task(
+    description="Analyze the provided sales data and identify key trends.",
+    expected_output="A report highlighting the top 3 sales trends.",
+    agent=agent
+)
+
+# Execute the task
+# If an error occurs during reasoning, it will be logged and execution will continue
+result = agent.execute_task(task)
+```
+
+## Example Reasoning Output
+
+Here's an example of what a reasoning plan might look like for a data analysis task:
+
+```
+Task: Analyze the provided sales data and identify key trends.
+
+Reasoning Plan:
+I'll analyze the sales data to identify the top 3 trends.
+
+1. Understanding of the task:
+   I need to analyze sales data to identify key trends that would be valuable for business decision-making.
+
+2. Key steps I'll take:
+   - First, I'll examine the data structure to understand what fields are available
+   - Then I'll perform exploratory data analysis to identify patterns
+   - Next, I'll analyze sales by time periods to identify temporal trends
+   - I'll also analyze sales by product categories and customer segments
+   - Finally, I'll identify the top 3 most significant trends
+
+3. Approach to challenges:
+   - If the data has missing values, I'll decide whether to fill or filter them
+   - If the data has outliers, I'll investigate whether they're valid data points or errors
+   - If trends aren't immediately obvious, I'll apply statistical methods to uncover patterns
+
+4. Use of available tools:
+   - I'll use data analysis tools to explore and visualize the data
+   - I'll use statistical tools to identify significant patterns
+   - I'll use knowledge retrieval to access relevant information about sales analysis
+
+5. Expected outcome:
+   A concise report highlighting the top 3 sales trends with supporting evidence from the data.
+
+READY: I am ready to execute the task.
+```
+
+This reasoning plan helps the agent organize its approach to the task, consider potential challenges, and ensure it delivers the expected output.
+
+
 # Testing
-Source: https://docs.crewai.com/v1.15.1/en/concepts/testing
+Source: https://docs.crewai.com/v1.15.2/en/concepts/testing
 
 Learn how to test your CrewAI Crew and evaluate their performance.
 
@@ -16315,7 +16470,7 @@ The example above shows the test results for two runs of the crew with two tasks
 
 
 # Tools
-Source: https://docs.crewai.com/v1.15.1/en/concepts/tools
+Source: https://docs.crewai.com/v1.15.2/en/concepts/tools
 
 Understanding and leveraging tools within the CrewAI framework for agent collaboration and task execution.
 
@@ -16656,7 +16811,7 @@ caching mechanisms, and the flexibility of tool arguments to optimize your agent
 
 
 # MCP DSL Integration
-Source: https://docs.crewai.com/v1.15.1/en/mcp/dsl-integration
+Source: https://docs.crewai.com/v1.15.2/en/mcp/dsl-integration
 
 Learn how to use CrewAI's simple DSL syntax to integrate MCP servers directly with your agents using the mcps field.
 
@@ -17005,7 +17160,7 @@ For complex scenarios requiring manual connection management, use the `MCPServer
 
 
 # Connecting to Multiple MCP Servers
-Source: https://docs.crewai.com/v1.15.1/en/mcp/multiple-servers
+Source: https://docs.crewai.com/v1.15.2/en/mcp/multiple-servers
 
 Learn how to use MCPServerAdapter in CrewAI to connect to multiple MCP servers simultaneously and aggregate their tools.
 
@@ -17070,7 +17225,7 @@ When using the context manager (`with` statement), `MCPServerAdapter` handles th
 
 
 # MCP Servers as Tools in CrewAI
-Source: https://docs.crewai.com/v1.15.1/en/mcp/overview
+Source: https://docs.crewai.com/v1.15.2/en/mcp/overview
 
 Learn how to integrate MCP servers as tools in your CrewAI agents using the `crewai-tools` library.
 
@@ -17761,7 +17916,7 @@ For more details, see the [Anthropic's MCP Transport Security docs](https://mode
 
 
 # MCP Security Considerations
-Source: https://docs.crewai.com/v1.15.1/en/mcp/security
+Source: https://docs.crewai.com/v1.15.2/en/mcp/security
 
 Learn about important security best practices when integrating MCP servers with your CrewAI agents.
 
@@ -17930,7 +18085,7 @@ The threats will continue to evolve, so it's important to stay informed and adap
 
 
 # SSE Transport
-Source: https://docs.crewai.com/v1.15.1/en/mcp/sse
+Source: https://docs.crewai.com/v1.15.2/en/mcp/sse
 
 Learn how to connect CrewAI to remote MCP servers using Server-Sent Events (SSE) for real-time communication.
 
@@ -18082,7 +18237,7 @@ For a comprehensive overview of security best practices, please refer to our [Se
 
 
 # Stdio Transport
-Source: https://docs.crewai.com/v1.15.1/en/mcp/stdio
+Source: https://docs.crewai.com/v1.15.2/en/mcp/stdio
 
 Learn how to connect CrewAI to local MCP servers using the Stdio (Standard Input/Output) transport mechanism.
 
@@ -18217,7 +18372,7 @@ be used to set environment variables for the server process, which can be useful
 
 
 # Streamable HTTP Transport
-Source: https://docs.crewai.com/v1.15.1/en/mcp/streamable-http
+Source: https://docs.crewai.com/v1.15.2/en/mcp/streamable-http
 
 Learn how to connect CrewAI to remote MCP servers using the flexible Streamable HTTP transport.
 
@@ -18355,7 +18510,7 @@ For a comprehensive guide on securing your MCP integrations, please refer to our
 
 
 # Arize Phoenix
-Source: https://docs.crewai.com/v1.15.1/en/observability/arize-phoenix
+Source: https://docs.crewai.com/v1.15.2/en/observability/arize-phoenix
 
 Arize Phoenix integration for CrewAI with OpenTelemetry and OpenInference
 
@@ -18507,7 +18662,7 @@ Log into your Phoenix Cloud account and navigate to the project you specified in
 
 
 # Braintrust
-Source: https://docs.crewai.com/v1.15.1/en/observability/braintrust
+Source: https://docs.crewai.com/v1.15.2/en/observability/braintrust
 
 Braintrust integration for CrewAI with OpenTelemetry tracing and evaluation
 
@@ -18746,7 +18901,7 @@ See the [Braintrust Eval SDK guide](https://www.braintrust.dev/docs/start/eval-s
 
 
 # Datadog Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/datadog
+Source: https://docs.crewai.com/v1.15.2/en/observability/datadog
 
 Learn how to integrate Datadog with CrewAI to submit LLM Observability traces to Datadog.
 
@@ -18855,7 +19010,7 @@ Additionally, you can view the execution graph view of the trace, which shows th
 
 
 # Galileo
-Source: https://docs.crewai.com/v1.15.1/en/observability/galileo
+Source: https://docs.crewai.com/v1.15.2/en/observability/galileo
 
 Galileo integration for CrewAI tracing and evaluation
 
@@ -18969,307 +19124,8 @@ log stream specified by your environment configuration
 (for example, GALILEO\_PROJECT and GALILEO\_LOG\_STREAM).
 
 
-# LangDB Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/langdb
-
-Govern, secure, and optimize your CrewAI workflows with LangDB AI Gateway—access 350+ models, automatic routing, cost optimization, and full observability.
-
-# Introduction
-
-[LangDB AI Gateway](https://langdb.ai) provides OpenAI-compatible APIs to connect with multiple Large Language Models and serves as an observability platform that makes it effortless to trace CrewAI workflows end-to-end while providing access to 350+ language models. With a single `init()` call, all agent interactions, task executions, and LLM calls are captured, providing comprehensive observability and production-ready AI infrastructure for your applications.
-
-<Frame>
-  <img alt="LangDB CrewAI trace example" />
-</Frame>
-
-**Checkout:** [View the live trace example](https://app.langdb.ai/sharing/threads/3becbfed-a1be-ae84-ea3c-4942867a3e22)
-
-## Features
-
-### AI Gateway Capabilities
-
-* **Access to 350+ LLMs**: Connect to all major language models through a single integration
-* **Virtual Models**: Create custom model configurations with specific parameters and routing rules
-* **Virtual MCP**: Enable compatibility and integration with MCP (Model Context Protocol) systems for enhanced agent communication
-* **Guardrails**: Implement safety measures and compliance controls for agent behavior
-
-### Observability & Tracing
-
-* **Automatic Tracing**: Single `init()` call captures all CrewAI interactions
-* **End-to-End Visibility**: Monitor agent workflows from start to finish
-* **Tool Usage Tracking**: Track which tools agents use and their outcomes
-* **Model Call Monitoring**: Detailed insights into LLM interactions
-* **Performance Analytics**: Monitor latency, token usage, and costs
-* **Debugging Support**: Step-through execution for troubleshooting
-* **Real-time Monitoring**: Live traces and metrics dashboard
-
-## Setup Instructions
-
-<Steps>
-  <Step title="Install LangDB">
-    Install the LangDB client with CrewAI feature flag:
-
-    ```bash theme={null}
-    pip install 'pylangdb[crewai]'
-    ```
-  </Step>
-
-  <Step title="Set Environment Variables">
-    Configure your LangDB credentials:
-
-    ```bash theme={null}
-    export LANGDB_API_KEY="<your_langdb_api_key>"
-    export LANGDB_PROJECT_ID="<your_langdb_project_id>"
-    export LANGDB_API_BASE_URL='https://api.us-east-1.langdb.ai'
-    ```
-  </Step>
-
-  <Step title="Initialize Tracing">
-    Import and initialize LangDB before configuring your CrewAI code:
-
-    ```python theme={null}
-    from pylangdb.crewai import init
-    # Initialize LangDB
-    init()
-    ```
-  </Step>
-
-  <Step title="Configure CrewAI with LangDB">
-    Set up your LLM with LangDB headers:
-
-    ```python theme={null}
-    from crewai import Agent, Task, Crew, LLM
-    import os
-
-    # Configure LLM with LangDB headers
-    llm = LLM(
-        model="openai/gpt-4o", # Replace with the model you want to use
-        api_key=os.getenv("LANGDB_API_KEY"),
-        base_url=os.getenv("LANGDB_API_BASE_URL"),
-        extra_headers={"x-project-id": os.getenv("LANGDB_PROJECT_ID")}
-    )
-    ```
-  </Step>
-</Steps>
-
-## Quick Start Example
-
-Here's a simple example to get you started with LangDB and CrewAI:
-
-```python theme={null}
-import os
-from pylangdb.crewai import init
-from crewai import Agent, Task, Crew, LLM
-
-# Initialize LangDB before any CrewAI imports
-init()
-
-def create_llm(model):
-    return LLM(
-        model=model,
-        api_key=os.environ.get("LANGDB_API_KEY"),
-        base_url=os.environ.get("LANGDB_API_BASE_URL"),
-        extra_headers={"x-project-id": os.environ.get("LANGDB_PROJECT_ID")}
-    )
-
-# Define your agent
-researcher = Agent(
-    role="Research Specialist",
-    goal="Research topics thoroughly",
-    backstory="Expert researcher with skills in finding information",
-    llm=create_llm("openai/gpt-4o"), # Replace with the model you want to use
-    verbose=True
-)
-
-# Create a task
-task = Task(
-    description="Research the given topic and provide a comprehensive summary",
-    agent=researcher,
-    expected_output="Detailed research summary with key findings"
-)
-
-# Create and run the crew
-crew = Crew(agents=[researcher], tasks=[task])
-result = crew.kickoff()
-print(result)
-```
-
-## Complete Example: Research and Planning Agent
-
-This comprehensive example demonstrates a multi-agent workflow with research and planning capabilities.
-
-### Prerequisites
-
-```bash theme={null}
-pip install crewai 'pylangdb[crewai]' crewai_tools setuptools python-dotenv
-```
-
-### Environment Setup
-
-```bash theme={null}
-# LangDB credentials
-export LANGDB_API_KEY="<your_langdb_api_key>"
-export LANGDB_PROJECT_ID="<your_langdb_project_id>"
-export LANGDB_API_BASE_URL='https://api.us-east-1.langdb.ai'
-
-# Additional API keys (optional)
-export SERPER_API_KEY="<your_serper_api_key>"  # For web search capabilities
-```
-
-### Complete Implementation
-
-```python theme={null}
-#!/usr/bin/env python3
-
-import os
-import sys
-from pylangdb.crewai import init
-init()  # Initialize LangDB before any CrewAI imports
-from dotenv import load_dotenv
-from crewai import Agent, Task, Crew, Process, LLM
-from crewai_tools import SerperDevTool
-
-load_dotenv()
-
-def create_llm(model):
-    return LLM(
-        model=model,
-        api_key=os.environ.get("LANGDB_API_KEY"),
-        base_url=os.environ.get("LANGDB_API_BASE_URL"),
-        extra_headers={"x-project-id": os.environ.get("LANGDB_PROJECT_ID")}
-    )
-
-class ResearchPlanningCrew:
-    def researcher(self) -> Agent:
-        return Agent(
-            role="Research Specialist",
-            goal="Research topics thoroughly and compile comprehensive information",
-            backstory="Expert researcher with skills in finding and analyzing information from various sources",
-            tools=[SerperDevTool()],
-            llm=create_llm("openai/gpt-4o"),
-            verbose=True
-        )
-    
-    def planner(self) -> Agent:
-        return Agent(
-            role="Strategic Planner",
-            goal="Create actionable plans based on research findings",
-            backstory="Strategic planner who breaks down complex challenges into executable plans",
-            reasoning=True,
-            max_reasoning_attempts=3,
-            llm=create_llm("openai/anthropic/claude-3.7-sonnet"),
-            verbose=True
-        )
-    
-    def research_task(self) -> Task:
-        return Task(
-            description="Research the topic thoroughly and compile comprehensive information",
-            agent=self.researcher(),
-            expected_output="Comprehensive research report with key findings and insights"
-        )
-    
-    def planning_task(self) -> Task:
-        return Task(
-            description="Create a strategic plan based on the research findings",
-            agent=self.planner(),
-            expected_output="Strategic execution plan with phases, goals, and actionable steps",
-            context=[self.research_task()]
-        )
-    
-    def crew(self) -> Crew:
-        return Crew(
-            agents=[self.researcher(), self.planner()],
-            tasks=[self.research_task(), self.planning_task()],
-            verbose=True,
-            process=Process.sequential
-        )
-
-def main():
-        topic = sys.argv[1] if len(sys.argv) > 1 else "Artificial Intelligence in Healthcare"
-        
-        crew_instance = ResearchPlanningCrew()
-        
-        # Update task descriptions with the specific topic
-        crew_instance.research_task().description = f"Research {topic} thoroughly and compile comprehensive information"
-    crew_instance.planning_task().description = f"Create a strategic plan for {topic} based on the research findings"
-    
-    result = crew_instance.crew().kickoff()
-    print(result)
-
-if __name__ == "__main__":
-    main()
-```
-
-### Running the Example
-
-```bash theme={null}
-python main.py "Sustainable Energy Solutions"
-```
-
-## Viewing Traces in LangDB
-
-After running your CrewAI application, you can view detailed traces in the LangDB dashboard:
-
-<Frame>
-  <img alt="LangDB trace dashboard showing CrewAI workflow" />
-</Frame>
-
-### What You'll See
-
-* **Agent Interactions**: Complete flow of agent conversations and task handoffs
-* **Tool Usage**: Which tools were called, their inputs, and outputs
-* **Model Calls**: Detailed LLM interactions with prompts image.pngand responses
-* **Performance Metrics**: Latency, token usage, and cost tracking
-* **Execution Timeline**: Step-by-step view of the entire workflow
-
-## Troubleshooting
-
-### Common Issues
-
-* **No traces appearing**: Ensure `init()` is called before any CrewAI imports
-* **Authentication errors**: Verify your LangDB API key and project ID
-
-## Resources
-
-<CardGroup>
-  <Card title="LangDB Documentation" icon="book" href="https://docs.langdb.ai">
-    Official LangDB documentation and guides
-  </Card>
-
-  <Card title="LangDB Guides" icon="graduation-cap" href="https://docs.langdb.ai/guides">
-    Step-by-step tutorials for building AI agents
-  </Card>
-
-  <Card title="GitHub Examples" icon="github" href="https://github.com/langdb/langdb-samples/tree/main/examples/crewai">
-    Complete CrewAI integration examples
-  </Card>
-
-  <Card title="LangDB Dashboard" icon="chart-line" href="https://app.langdb.ai">
-    Access your traces and analytics
-  </Card>
-
-  <Card title="Model Catalog" icon="list" href="https://app.langdb.ai/models">
-    Browse 350+ available language models
-  </Card>
-
-  <Card title="Enterprise Features" icon="building" href="https://docs.langdb.ai/enterprise">
-    Self-hosted options and enterprise capabilities
-  </Card>
-</CardGroup>
-
-## Next Steps
-
-This guide covered the basics of integrating LangDB AI Gateway with CrewAI. To further enhance your AI workflows, explore:
-
-* **Virtual Models**: Create custom model configurations with routing strategies
-* **Guardrails & Safety**: Implement content filtering and compliance controls
-* **Production Deployment**: Configure fallbacks, retries, and load balancing
-
-For more advanced features and use cases, visit the [LangDB Documentation](https://docs.langdb.ai) or explore the [Model Catalog](https://app.langdb.ai/models) to discover all available models.
-
-
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/observability/overview
+Source: https://docs.crewai.com/v1.15.2/en/observability/overview
 
 Monitor, evaluate, and optimize your CrewAI agents with comprehensive observability tools
 
@@ -19394,7 +19250,7 @@ Choose the observability tools that best fit your use case, infrastructure, and 
 
 
 # CrewAI Tracing
-Source: https://docs.crewai.com/v1.15.1/en/observability/tracing
+Source: https://docs.crewai.com/v1.15.2/en/observability/tracing
 
 Built-in tracing for CrewAI Crews and Flows with the CrewAI AMP platform
 
@@ -19609,7 +19465,7 @@ If traces aren't showing up in the dashboard:
 
 
 # AI Mind Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/aimindtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/aimindtool
 
 The `AIMindTool` is designed to query data sources in natural language.
 
@@ -19729,7 +19585,7 @@ The `AIMindTool` provides a powerful way to query your data sources using natura
 
 
 # Code Interpreter
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/codeinterpretertool
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/codeinterpretertool
 
 The `CodeInterpreterTool` is a powerful tool designed for executing Python 3 code within a secure, isolated environment.
 
@@ -19943,7 +19799,7 @@ The `CodeInterpreterTool` provides a powerful way for CrewAI agents to execute P
 
 
 # DALL-E Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/dalletool
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/dalletool
 
 The `DallETool` is a powerful tool designed for generating images from textual descriptions.
 
@@ -19996,7 +19852,7 @@ please refer to the [OpenAI API documentation](https://platform.openai.com/docs/
 
 
 # Daytona Sandbox Tools
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/daytona
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/daytona
 
 Run shell commands, execute Python, and manage files inside isolated [Daytona](https://www.daytona.io/) sandboxes.
 
@@ -20226,7 +20082,7 @@ All three tools accept these parameters at initialization:
 
 
 # E2B Sandbox Tools
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/e2bsandboxtools
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/e2bsandboxtools
 
 The `E2BExecTool`, `E2BPythonTool`, and `E2BFileTool` give CrewAI agents shell, Python, and filesystem access inside isolated, ephemeral E2B remote sandboxes.
 
@@ -20422,7 +20278,7 @@ These tools give agents arbitrary shell, Python, and filesystem access inside th
 
 
 # LangChain Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/langchaintool
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/langchaintool
 
 The `LangChainTool` is a wrapper for LangChain tools and query engines.
 
@@ -20481,7 +20337,7 @@ and the flexibility of tool arguments to optimize your agents' performance and c
 
 
 # LlamaIndex Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/llamaindextool
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/llamaindextool
 
 The `LlamaIndexTool` is a wrapper for LlamaIndex tools and query engines.
 
@@ -20628,7 +20484,7 @@ The `LlamaIndexTool` provides a powerful way to integrate LlamaIndex's capabilit
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/overview
 
 Leverage AI services, generate images, process vision, and build intelligent systems
 
@@ -20692,7 +20548,7 @@ agent = Agent(
 
 
 # RAG Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/ragtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/ragtool
 
 The `RagTool` is a dynamic knowledge base tool for answering questions using Retrieval-Augmented Generation.
 
@@ -21382,7 +21238,7 @@ The `RagTool` provides a powerful way to create and query knowledge bases from v
 
 
 # Vision Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/ai-ml/visiontool
+Source: https://docs.crewai.com/v1.15.2/en/tools/ai-ml/visiontool
 
 The `VisionTool` is designed to extract text from images.
 
@@ -21432,7 +21288,7 @@ The VisionTool requires the following arguments:
 
 
 # Apify Actors
-Source: https://docs.crewai.com/v1.15.1/en/tools/automation/apifyactorstool
+Source: https://docs.crewai.com/v1.15.2/en/tools/automation/apifyactorstool
 
 `ApifyActorsTool` lets you call Apify Actors to provide your CrewAI workflows with web scraping, crawling, data extraction, and web automation capabilities.
 
@@ -21533,7 +21389,7 @@ The `ApifyActorsTool` requires these inputs to work:
 
 
 # Composio Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/automation/composiotool
+Source: https://docs.crewai.com/v1.15.2/en/tools/automation/composiotool
 
 Composio provides 250+ production-ready tools for AI agents with flexible authentication management.
 
@@ -21625,7 +21481,7 @@ crew.kickoff()
 
 
 # MultiOn Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/automation/multiontool
+Source: https://docs.crewai.com/v1.15.2/en/tools/automation/multiontool
 
 The `MultiOnTool` empowers CrewAI agents with the capability to navigate and interact with the web through natural language instructions.
 
@@ -21752,7 +21608,7 @@ The `MultiOnTool` provides a powerful way to integrate web browsing capabilities
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/automation/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/automation/overview
 
 Automate workflows and integrate with external platforms and services
 
@@ -21812,7 +21668,7 @@ agent = Agent(
 
 
 # Zapier Actions Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/automation/zapieractionstool
+Source: https://docs.crewai.com/v1.15.2/en/tools/automation/zapieractionstool
 
 The `ZapierActionsAdapter` exposes Zapier actions as CrewAI tools for automation.
 
@@ -21869,7 +21725,7 @@ result = crew.kickoff()
 
 
 # Bedrock Knowledge Base Retriever
-Source: https://docs.crewai.com/v1.15.1/en/tools/cloud-storage/bedrockkbretriever
+Source: https://docs.crewai.com/v1.15.2/en/tools/cloud-storage/bedrockkbretriever
 
 Retrieve information from Amazon Bedrock Knowledge Bases using natural language queries
 
@@ -22040,7 +21896,7 @@ policy_expert = Agent(
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/cloud-storage/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/cloud-storage/overview
 
 Interact with cloud services, storage systems, and cloud-based AI platforms
 
@@ -22092,7 +21948,7 @@ agent = Agent(
 
 
 # S3 Reader Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/cloud-storage/s3readertool
+Source: https://docs.crewai.com/v1.15.2/en/tools/cloud-storage/s3readertool
 
 The `S3ReaderTool` enables CrewAI agents to read files from Amazon S3 buckets.
 
@@ -22237,7 +22093,7 @@ The `S3ReaderTool` provides a straightforward way to read files from Amazon S3 b
 
 
 # S3 Writer Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/cloud-storage/s3writertool
+Source: https://docs.crewai.com/v1.15.2/en/tools/cloud-storage/s3writertool
 
 The `S3WriterTool` enables CrewAI agents to write content to files in Amazon S3 buckets.
 
@@ -22388,7 +22244,7 @@ The `S3WriterTool` provides a straightforward way to write content to files in A
 
 
 # MongoDB Vector Search Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/mongodbvectorsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/mongodbvectorsearchtool
 
 The `MongoDBVectorSearchTool` performs vector search on MongoDB Atlas with optional indexing helpers.
 
@@ -22555,7 +22411,7 @@ result = crew.kickoff()
 
 
 # MySQL RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/mysqltool
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/mysqltool
 
 The `MySQLSearchTool` is designed to search MySQL databases and return the most relevant results.
 
@@ -22625,7 +22481,7 @@ tool = MySQLSearchTool(
 
 
 # NL2SQL Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/nl2sqltool
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/nl2sqltool
 
 The `NL2SQLTool` is designed to convert natural language to SQL queries.
 
@@ -22796,7 +22652,7 @@ The Tool provides endless possibilities on the logic of the Agent and how it can
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/overview
 
 Connect to databases, vector stores, and data warehouses for comprehensive data access
 
@@ -22863,7 +22719,7 @@ agent = Agent(
 
 
 # PG RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/pgsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/pgsearchtool
 
 The `PGSearchTool` is designed to search PostgreSQL databases and return the most relevant results.
 
@@ -22946,7 +22802,7 @@ tool = PGSearchTool(
 
 
 # Qdrant Vector Search Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/qdrantvectorsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/qdrantvectorsearchtool
 
 Semantic search capabilities for CrewAI agents using Qdrant vector database
 
@@ -23301,7 +23157,7 @@ export OPENAI_API_KEY="your_openai_key"  # If using default embeddings
 
 
 # SingleStore Search Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/singlestoresearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/singlestoresearchtool
 
 The `SingleStoreSearchTool` safely executes SELECT/SHOW queries on SingleStore with pooling.
 
@@ -23361,7 +23217,7 @@ result = crew.kickoff()
 
 
 # Snowflake Search Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/snowflakesearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/snowflakesearchtool
 
 The `SnowflakeSearchTool` enables CrewAI agents to execute SQL queries and perform semantic search on Snowflake data warehouses.
 
@@ -23564,7 +23420,7 @@ The `SnowflakeSearchTool` provides a powerful way to integrate Snowflake data wa
 
 
 # Weaviate Vector Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/database-data/weaviatevectorsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/database-data/weaviatevectorsearchtool
 
 The `WeaviateVectorSearchTool` is designed to search a Weaviate vector database for semantically similar documents using hybrid search.
 
@@ -23732,7 +23588,7 @@ The `WeaviateVectorSearchTool` provides a powerful way to search for semanticall
 
 
 # CSV RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/csvsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/csvsearchtool
 
 The `CSVSearchTool` is a powerful RAG (Retrieval-Augmented Generation) tool designed for semantic searches within a CSV file's content.
 
@@ -23828,7 +23684,7 @@ URL inputs are validated: `file://` URIs and requests targeting private or reser
 
 
 # Directory Read
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/directoryreadtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/directoryreadtool
 
 The `DirectoryReadTool` is a powerful utility designed to provide a comprehensive listing of directory contents.
 
@@ -23882,7 +23738,7 @@ The following parameters can be used to customize the `DirectoryReadTool`'s beha
 
 
 # Directory RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/directorysearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/directorysearchtool
 
 The `DirectorySearchTool` is a powerful RAG (Retrieval-Augmented Generation) tool designed for semantic searches within a directory's content.
 
@@ -23966,7 +23822,7 @@ CREWAI_TOOLS_ALLOW_UNSAFE_PATHS=true
 
 
 # DOCX RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/docxsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/docxsearchtool
 
 The `DOCXSearchTool` is a RAG tool designed for semantic searching within DOCX documents.
 
@@ -24046,7 +23902,7 @@ tool = DOCXSearchTool(
 
 
 # File Read
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/filereadtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/filereadtool
 
 The `FileReadTool` is designed to read files from the local file system.
 
@@ -24091,7 +23947,7 @@ file_read_tool = FileReadTool(file_path='path/to/your/file.txt')
 
 
 # File Write
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/filewritetool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/filewritetool
 
 The `FileWriterTool` is designed to write content to files.
 
@@ -24142,7 +23998,7 @@ By adhering to the setup and usage guidelines provided, incorporating this tool 
 
 
 # JSON RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/jsonsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/jsonsearchtool
 
 The `JSONSearchTool` is designed to search JSON files and return the most relevant results.
 
@@ -24234,7 +24090,7 @@ URL inputs are validated: `file://` URIs and requests targeting private or reser
 
 
 # MDX RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/mdxsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/mdxsearchtool
 
 The `MDXSearchTool` is designed to search MDX files and return the most relevant results.
 
@@ -24306,7 +24162,7 @@ tool = MDXSearchTool(
 
 
 # OCR Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/ocrtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/ocrtool
 
 The `OCRTool` extracts text from local images or image URLs using an LLM with vision.
 
@@ -24394,7 +24250,7 @@ result = crew.kickoff()
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/overview
 
 Read, write, and search through various file formats with CrewAI's document processing tools
 
@@ -24491,7 +24347,7 @@ agent = Agent(
 
 
 # PDF Text Writing Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/pdf-text-writing-tool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/pdf-text-writing-tool
 
 The `PDFTextWritingTool` writes text to specific positions in a PDF, supporting custom fonts.
 
@@ -24566,7 +24422,7 @@ PDFTextWritingTool().run(
 
 
 # PDF RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/pdfsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/pdfsearchtool
 
 The `PDFSearchTool` is designed to search PDF files and return the most relevant results.
 
@@ -24693,7 +24549,7 @@ URL inputs are validated: `file://` URIs and requests targeting private or reser
 
 
 # TXT RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/txtsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/txtsearchtool
 
 The `TXTSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a text file.
 
@@ -24791,7 +24647,7 @@ tool = TXTSearchTool(
 
 
 # XML RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/file-document/xmlsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/file-document/xmlsearchtool
 
 The `XMLSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a XML file.
 
@@ -24869,7 +24725,7 @@ tool = XMLSearchTool(
 
 
 # Bedrock Invoke Agent Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/integration/bedrockinvokeagenttool
+Source: https://docs.crewai.com/v1.15.2/en/tools/integration/bedrockinvokeagenttool
 
 Enables CrewAI agents to invoke Amazon Bedrock Agents and leverage their capabilities within your workflows
 
@@ -25062,7 +24918,7 @@ result = crew.kickoff()
 
 
 # CrewAI Run Automation Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/integration/crewaiautomationtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/integration/crewaiautomationtool
 
 Enables CrewAI agents to invoke CrewAI Platform automations and leverage external crew services within your workflows.
 
@@ -25344,7 +25200,7 @@ The tool interacts with two main API endpoints:
 
 
 # Merge Agent Handler Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/integration/mergeagenthandlertool
+Source: https://docs.crewai.com/v1.15.2/en/tools/integration/mergeagenthandlertool
 
 Enables CrewAI agents to securely access third-party integrations like Linear, GitHub, Slack, and more through Merge's Agent Handler platform
 
@@ -25716,7 +25572,7 @@ All errors are wrapped in `MergeAgentHandlerToolError` for consistent error hand
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/integration/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/integration/overview
 
 Connect CrewAI agents with external automations and managed AI services
 
@@ -25792,7 +25648,7 @@ Crew(agents=[automation_strategist], tasks=[execute_playbook]).kickoff()
 
 
 # Tools Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/overview
 
 Discover CrewAI's extensive library of 40+ tools to supercharge your AI agents
 
@@ -25898,7 +25754,7 @@ Ready to explore? Pick a category above to discover tools that fit your use case
 
 
 # Arxiv Paper Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/arxivpapertool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/arxivpapertool
 
 The `ArxivPaperTool` searches arXiv for papers matching a query and optionally downloads PDFs.
 
@@ -26010,7 +25866,7 @@ When `download_pdfs=True`, PDFs are saved to disk and the summary mentions saved
 
 
 # Brave Search Tools
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/bravesearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/bravesearchtool
 
 A suite of tools for querying the Brave Search API — covering web, news, image, and video search.
 
@@ -26327,7 +26183,7 @@ The Brave Search tool suite gives your CrewAI agents flexible, endpoint-specific
 
 
 # Code Docs RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/codedocssearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/codedocssearchtool
 
 The `CodeDocsSearchTool` is a powerful RAG (Retrieval-Augmented Generation) tool designed for semantic searches within code documentation.
 
@@ -26413,7 +26269,7 @@ tool = CodeDocsSearchTool(
 
 
 # Databricks SQL Query Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/databricks-query-tool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/databricks-query-tool
 
 The `DatabricksQueryTool` executes SQL queries against Databricks workspace tables.
 
@@ -26492,7 +26348,7 @@ print(result)
 
 
 # Exa Search Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/exasearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/exasearchtool
 
 Search the web with Exa, the fastest and most accurate web search API. Get token-efficient highlights and full page content.
 
@@ -26644,7 +26500,7 @@ Get your API key from the [Exa dashboard](https://dashboard.exa.ai/api-keys). Fo
 
 
 # Github Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/githubsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/githubsearchtool
 
 The `GithubSearchTool` is designed to search websites and convert them into clean markdown or structured data.
 
@@ -26731,7 +26587,7 @@ tool = GithubSearchTool(
 
 
 # Linkup Search Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/linkupsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/linkupsearchtool
 
 The `LinkupSearchTool` enables querying the Linkup API for contextual information.
 
@@ -26846,7 +26702,7 @@ The `LinkupSearchTool` provides a seamless way to integrate Linkup's contextual 
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/overview
 
 Perform web searches, find repositories, and research information across the internet
 
@@ -26966,7 +26822,7 @@ agent = Agent(
 
 
 # SerpApi Google Search Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/serpapi-googlesearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/serpapi-googlesearchtool
 
 The `SerpApiGoogleSearchTool` performs Google searches using the SerpApi service.
 
@@ -27030,7 +26886,7 @@ result = crew.kickoff()
 
 
 # SerpApi Google Shopping Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/serpapi-googleshoppingtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/serpapi-googleshoppingtool
 
 The `SerpApiGoogleShoppingTool` searches Google Shopping results using SerpApi.
 
@@ -27090,7 +26946,7 @@ result = crew.kickoff()
 
 
 # Google Serper Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/serperdevtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/serperdevtool
 
 The `SerperDevTool` is designed to search the internet and return the most relevant results.
 
@@ -27200,7 +27056,7 @@ The updated parameters allow for more customized and localized search results. B
 
 
 # Tavily Extractor Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/tavilyextractortool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/tavilyextractortool
 
 Extract structured content from web pages using the Tavily API
 
@@ -27341,7 +27197,7 @@ Refer to the [Tavily API documentation](https://docs.tavily.com/docs/tavily-api/
 
 
 # Tavily Research Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/tavilyresearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/tavilyresearchtool
 
 Run multi-step research tasks and get cited reports using the Tavily Research API
 
@@ -27466,7 +27322,7 @@ Refer to the [Tavily API documentation](https://docs.tavily.com/) for full detai
 
 
 # Tavily Search Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/tavilysearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/tavilysearchtool
 
 Perform comprehensive web searches using the Tavily Search API
 
@@ -27592,7 +27448,7 @@ Content for each result is automatically truncated to prevent context window iss
 
 
 # Website RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/websitesearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/websitesearchtool
 
 The `WebsiteSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a website.
 
@@ -27669,7 +27525,7 @@ tool = WebsiteSearchTool(
 
 
 # You.com Search & Research Tools
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/youai-search
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/youai-search
 
 Web search and AI-powered research via You.com's remote MCP server — includes a free tier with 100 queries/day.
 
@@ -27845,7 +27701,7 @@ See [MCP Security](/en/mcp/security) for full security best practices.
 
 
 # YouTube Channel RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/youtubechannelsearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/youtubechannelsearchtool
 
 The `YoutubeChannelSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a Youtube channel.
 
@@ -28040,7 +27896,7 @@ The `YoutubeChannelSearchTool` provides a powerful way to search and extract inf
 
 
 # YouTube Video RAG Search
-Source: https://docs.crewai.com/v1.15.1/en/tools/search-research/youtubevideosearchtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/search-research/youtubevideosearchtool
 
 The `YoutubeVideoSearchTool` is designed to perform a RAG (Retrieval-Augmented Generation) search within the content of a Youtube video.
 
@@ -28228,7 +28084,7 @@ The `YoutubeVideoSearchTool` provides a powerful way to search and extract infor
 
 
 # Bright Data Tools
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/brightdata-tools
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/brightdata-tools
 
 Bright Data integrations for SERP search, Web Unlocker scraping, and Dataset API.
 
@@ -28338,7 +28194,7 @@ result = crew.kickoff()
 
 
 # Browserbase Web Loader
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/browserbaseloadtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/browserbaseloadtool
 
 Browserbase is a developer platform to reliably run, manage, and monitor headless browsers.
 
@@ -28389,7 +28245,7 @@ The following parameters can be used to customize the `BrowserbaseLoadTool`'s be
 
 
 # Firecrawl Crawl Website
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/firecrawlcrawlwebsitetool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/firecrawlcrawlwebsitetool
 
 The `FirecrawlCrawlWebsiteTool` is designed to crawl and convert websites into clean markdown or structured data.
 
@@ -28437,7 +28293,7 @@ tool = FirecrawlCrawlWebsiteTool(url='firecrawl.dev')
 
 
 # Firecrawl Scrape Website
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/firecrawlscrapewebsitetool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/firecrawlscrapewebsitetool
 
 The `FirecrawlScrapeWebsiteTool` is designed to scrape websites and convert them into clean markdown or structured data.
 
@@ -28481,7 +28337,7 @@ tool = FirecrawlScrapeWebsiteTool(url='firecrawl.dev')
 
 
 # Hyperbrowser Load Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/hyperbrowserloadtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/hyperbrowserloadtool
 
 The `HyperbrowserLoadTool` enables web scraping and crawling using Hyperbrowser.
 
@@ -28572,7 +28428,7 @@ The `HyperbrowserLoadTool` provides a powerful way to scrape and crawl websites,
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/overview
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/overview
 
 Extract data from websites and automate browser interactions with powerful scraping tools
 
@@ -28684,7 +28540,7 @@ agent = Agent(
 
 
 # Oxylabs Scrapers
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/oxylabsscraperstool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/oxylabsscraperstool
 
 Oxylabs Scrapers allow to easily access the information from the respective sources. Please see the list of available sources below:
   - `Amazon Product`
@@ -28922,7 +28778,7 @@ print(result)
 
 
 # Scrape Element From Website Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/scrapeelementfromwebsitetool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/scrapeelementfromwebsitetool
 
 The `ScrapeElementFromWebsiteTool` enables CrewAI agents to extract specific elements from websites using CSS selectors.
 
@@ -29062,7 +28918,7 @@ The `ScrapeElementFromWebsiteTool` provides a powerful way to extract specific e
 
 
 # Scrapegraph Scrape Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/scrapegraphscrapetool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/scrapegraphscrapetool
 
 The `ScrapegraphScrapeTool` leverages Scrapegraph AI's SmartScraper API to intelligently extract content from websites.
 
@@ -29259,7 +29115,7 @@ The `ScrapegraphScrapeTool` provides a powerful way to extract content from webs
 
 
 # Scrape Website
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/scrapewebsitetool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/scrapewebsitetool
 
 The `ScrapeWebsiteTool` is designed to extract and read the content of a specified website.
 
@@ -29307,7 +29163,7 @@ print(text)
 
 
 # Scrapfly Scrape Website Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/scrapflyscrapetool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/scrapflyscrapetool
 
 The `ScrapflyScrapeWebsiteTool` leverages Scrapfly's web scraping API to extract content from websites in various formats.
 
@@ -29528,7 +29384,7 @@ The `ScrapflyScrapeWebsiteTool` provides a powerful way to extract content from 
 
 
 # Selenium Scraper
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/seleniumscrapingtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/seleniumscrapingtool
 
 The `SeleniumScrapingTool` is designed to extract and read the content of a specified website using Selenium.
 
@@ -29725,7 +29581,7 @@ The `SeleniumScrapingTool` provides a powerful way to extract content from websi
 
 
 # Spider Scraper
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/spidertool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/spidertool
 
 The `SpiderTool` is designed to extract and read the content of a specified website using Spider.
 
@@ -29819,7 +29675,7 @@ if __name__ == "__main__":
 
 
 # Stagehand Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/stagehandtool
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/stagehandtool
 
 Web automation tool that integrates Stagehand with CrewAI for browser interaction and automation
 
@@ -30063,7 +29919,7 @@ For questions about the CrewAI integration:
 
 
 # You.com Content Extraction Tool
-Source: https://docs.crewai.com/v1.15.1/en/tools/web-scraping/youai-contents
+Source: https://docs.crewai.com/v1.15.2/en/tools/web-scraping/youai-contents
 
 Extract full page content from URLs in markdown, HTML, or metadata format via You.com's remote MCP server.
 
@@ -30275,7 +30131,7 @@ with MCPServerAdapter({
 
 
 # A2A on AMP
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/a2a
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/a2a
 
 Production-grade Agent-to-Agent communication with distributed state and multi-scheme authentication
 
@@ -30508,7 +30364,7 @@ AMP validates A2A protocol versions and extensions at the transport layer.
 
 
 # Agent Repositories
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/agent-repositories
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/agent-repositories
 
 Learn how to use Agent Repositories to share and reuse your agents across teams and projects
 
@@ -30662,7 +30518,7 @@ crewai org list
 
 
 # Automations
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/automations
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/automations
 
 Manage, deploy, and monitor your live crews (automations) in one place.
 
@@ -30773,7 +30629,7 @@ Once deployed, you can view the automation details and have the **Options** drop
 
 
 # Crew Studio
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/crew-studio
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/crew-studio
 
 Build new automations with AI assistance, a visual editor, and integrated testing.
 
@@ -30864,7 +30720,7 @@ Once published, you can view the automation details and have the **Options** dro
 
 
 # Flow HITL Management
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/flow-hitl-management
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/flow-hitl-management
 
 Enterprise-grade human review for Flows with email-first notifications, routing rules, and auto-response capabilities
 
@@ -31439,7 +31295,7 @@ All HITL actions are logged:
 
 
 # Hallucination Guardrail
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/hallucination-guardrail
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/hallucination-guardrail
 
 Prevent and detect AI hallucinations in your CrewAI tasks
 
@@ -31696,7 +31552,7 @@ The guardrail integrates with CrewAI's event system to provide observability:
 
 
 # Marketplace
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/marketplace
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/marketplace
 
 Discover, install, and govern reusable assets for your enterprise crews.
 
@@ -31744,7 +31600,7 @@ you can use them locally or refine them to your needs.
 
 
 # One Card per Step
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/merged-step-card
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/merged-step-card
 
 Each step on the Studio canvas is a single card that combines the task and the agent that performs it.
 
@@ -31827,7 +31683,7 @@ There are two distinct ways to work with the agent on a card, and they do differ
 
 
 # PII Redaction for Traces
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/pii-trace-redactions
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/pii-trace-redactions
 
 Automatically redact sensitive data from crew and flow execution traces
 
@@ -32171,7 +32027,7 @@ After creating your custom recognizer, enable it for each deployment:
 
 
 # Role-Based Access Control (RBAC)
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/rbac
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/rbac
 
 Control access to crews, tools, and data with roles, scopes, and granular permissions.
 
@@ -32432,7 +32288,7 @@ A role for platform operators who manage infrastructure settings but may not bui
 
 
 # AWS Secrets Manager (Static Credentials)
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/aws
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/aws
 
 Configure AWS Secrets Manager as a secret provider for CrewAI Platform using static access keys or AssumeRole
 
@@ -32698,7 +32554,7 @@ If you want **rotation-aware** secrets that propagate without re-deploying, swit
 
 
 # AWS Workload Identity (OIDC Federation)
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/aws-workload-identity
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/aws-workload-identity
 
 Configure AWS Secrets Manager via Workload Identity for rotation-aware, credential-free secret access
 
@@ -33002,7 +32858,7 @@ This line appears for every kickoff and indicates a fresh `GetSecretValue` call 
 
 
 # Azure Key Vault
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/azure
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/azure
 
 Configure Azure Key Vault as a secret provider for CrewAI Platform, end-to-end
 
@@ -33182,7 +33038,7 @@ The placeholders above map to:
 
 
 # Azure Workload Identity Federation
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/azure-workload-identity
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/azure-workload-identity
 
 Configure Azure Key Vault via Microsoft Entra Workload Identity Federation for rotation-aware, credential-free secret access
 
@@ -33444,7 +33300,7 @@ The placeholders above map to:
 
 
 # Google Cloud Secret Manager
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/gcp
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/gcp
 
 Configure Google Cloud Secret Manager as a secret provider for CrewAI Platform, end-to-end
 
@@ -33618,7 +33474,7 @@ If you want **rotation-aware** secrets that propagate without re-deploying, swit
 
 
 # GCP Workload Identity Federation
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/gcp-workload-identity
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/gcp-workload-identity
 
 Configure Google Cloud Secret Manager via Workload Identity Federation for rotation-aware, credential-free secret access
 
@@ -33886,7 +33742,7 @@ This line appears for every kickoff and indicates a fresh `accessSecretVersion` 
 
 
 # Secrets Manager Overview
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/overview
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/overview
 
 Connect external secret stores to CrewAI Platform and reference managed secrets from environment variables
 
@@ -33982,7 +33838,7 @@ Pick your path:
 
 
 # Using the Secrets Manager
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/usage
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/usage
 
 Manage permissions and reference managed secrets from environment variables in CrewAI Platform
 
@@ -34104,7 +33960,7 @@ If the deploy or run fails with an error related to your secret, check the most 
 
 
 # Verify Rotation
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/secrets-manager/verify-rotation
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/secrets-manager/verify-rotation
 
 A self-contained example crew that proves secret rotation propagates to running deployments without re-deploy.
 
@@ -34365,7 +34221,7 @@ The tool-based pattern in this guide sidesteps both issues: the prompt is static
 
 
 # Single Sign-On (SSO)
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/sso
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/sso
 
 Configure enterprise SSO authentication for CrewAI Platform — SaaS and Factory
 
@@ -34922,7 +34778,7 @@ For Factory deployments using Entra ID, admin access is controlled via App Roles
 
 
 # Tools & Integrations
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/tools-and-integrations
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/tools-and-integrations
 
 Connect external apps and manage internal tools your agents can use.
 
@@ -35172,7 +35028,7 @@ Tools & Integrations is the central hub for connecting third‑party apps and ma
 
 
 # Traces
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/traces
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/traces
 
 Using Traces to monitor your Crews
 
@@ -35329,7 +35185,7 @@ This yields more stable tracing under load while preserving detailed task/agent 
 
 
 # Webhook Streaming
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/features/webhook-streaming
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/features/webhook-streaming
 
 Using Webhook Streaming to stream events to your webhook
 
@@ -35499,7 +35355,7 @@ You can emit your own custom events, and they will be delivered through the webh
 
 
 # Triggers Overview
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/automation-triggers
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/automation-triggers
 
 Understand how CrewAI AMP triggers work, how to manage them, and where to find integration-specific playbooks
 
@@ -35805,7 +35661,7 @@ Automation triggers transform your CrewAI deployments into responsive, event-dri
 
 
 # Gmail Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/gmail-trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/gmail-trigger
 
 Trigger automations when Gmail events occur (e.g., new emails, labels).
 
@@ -35896,7 +35752,7 @@ Track history and performance of triggered runs:
 
 
 # Google Calendar Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/google-calendar-trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/google-calendar-trigger
 
 Kick off crews when Google Calendar events are created, updated, or cancelled
 
@@ -35973,7 +35829,7 @@ The **Executions** list in the deployment dashboard tracks every triggered run a
 
 
 # Google Drive Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/google-drive-trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/google-drive-trigger
 
 Respond to Google Drive file events with automated crews
 
@@ -36046,65 +35902,8 @@ Track history and performance of triggered runs with the **Executions** list in 
 * Remember: use `crewai triggers run` (not `crewai run`) to simulate trigger execution
 
 
-# HubSpot Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/hubspot-trigger
-
-Trigger CrewAI crews directly from HubSpot Workflows
-
-This guide provides a step-by-step process to set up HubSpot triggers for CrewAI AMP, enabling you to initiate crews directly from HubSpot Workflows.
-
-## Prerequisites
-
-* A CrewAI AMP account
-* A HubSpot account with the [HubSpot Workflows](https://knowledge.hubspot.com/workflows/create-workflows) feature
-
-## Setup Steps
-
-<Steps>
-  <Step title="Connect your HubSpot account with CrewAI AMP">
-    * Log in to your `CrewAI AMP account > Triggers` - Select `HubSpot` from the
-      list of available triggers - Choose the HubSpot account you want to connect
-      with CrewAI AMP - Follow the on-screen prompts to authorize CrewAI AMP
-      access to your HubSpot account - A confirmation message will appear once
-      HubSpot is successfully connected with CrewAI AMP
-  </Step>
-
-  <Step title="Create a HubSpot Workflow">
-    * Log in to your `HubSpot account > Automations > Workflows > New workflow`
-    * Select the workflow type that fits your needs (e.g., Start from scratch) -
-      In the workflow builder, click the Plus (+) icon to add a new action. -
-      Choose `Integrated apps > CrewAI > Kickoff a Crew`. - Select the Crew you
-      want to initiate. - Click `Save` to add the action to your workflow
-
-    <Frame>
-      <img alt="HubSpot Workflow 1" />
-    </Frame>
-  </Step>
-
-  <Step title="Use Crew results with other actions">
-    * After the Kickoff a Crew step, click the Plus (+) icon to add a new
-      action. - For example, to send an internal email notification, choose
-      `Communications > Send internal email notification` - In the Body field,
-      click `Insert data`, select `View properties or action outputs from > Action
-          outputs > Crew Result` to include Crew data in the email
-
-    <Frame>
-      <img alt="HubSpot Workflow 2" />
-    </Frame>
-
-    * Configure any additional actions as needed - Review your workflow
-      steps to ensure everything is set up correctly - Activate the workflow
-      <Frame>
-        <img alt="HubSpot Workflow 3" />
-      </Frame>
-  </Step>
-</Steps>
-
-For more detailed information on available actions and customization options, refer to the [HubSpot Workflows Documentation](https://knowledge.hubspot.com/workflows/create-workflows).
-
-
 # Microsoft Teams Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/microsoft-teams-trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/microsoft-teams-trigger
 
 Kick off crews from Microsoft Teams chat activity
 
@@ -36171,7 +35970,7 @@ The `crewai triggers run` command will execute your crew with a complete Teams p
 
 
 # OneDrive Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/onedrive-trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/onedrive-trigger
 
 Automate responses to OneDrive file activity
 
@@ -36237,7 +36036,7 @@ The `crewai triggers run` command will execute your crew with a complete OneDriv
 
 
 # Outlook Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/outlook-trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/outlook-trigger
 
 Launch automations from Outlook emails and calendar updates
 
@@ -36302,51 +36101,8 @@ The `crewai triggers run` command will execute your crew with a complete Outlook
 * Remember: use `crewai triggers run` (not `crewai run`) to simulate trigger execution
 
 
-# Salesforce Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/salesforce-trigger
-
-Trigger CrewAI crews from Salesforce workflows for CRM automation
-
-CrewAI AMP can be triggered from Salesforce to automate customer relationship management workflows and enhance your sales operations.
-
-## Overview
-
-Salesforce is a leading customer relationship management (CRM) platform that helps businesses streamline their sales, service, and marketing operations. By setting up CrewAI triggers from Salesforce, you can:
-
-* Automate lead scoring and qualification
-* Generate personalized sales materials
-* Enhance customer service with AI-powered responses
-* Streamline data analysis and reporting
-
-## Demo
-
-<iframe title="CrewAI + Salesforce trigger demo" />
-
-## Getting Started
-
-To set up Salesforce triggers:
-
-1. **Contact Support**: Reach out to CrewAI AMP support for assistance with Salesforce trigger setup
-2. **Review Requirements**: Ensure you have the necessary Salesforce permissions and API access
-3. **Configure Connection**: Work with the support team to establish the connection between CrewAI and your Salesforce instance
-4. **Test Triggers**: Verify the triggers work correctly with your specific use cases
-
-## Use Cases
-
-Common Salesforce + CrewAI trigger scenarios include:
-
-* **Lead Processing**: Automatically analyze and score incoming leads
-* **Proposal Generation**: Create customized proposals based on opportunity data
-* **Customer Insights**: Generate analysis reports from customer interaction history
-* **Follow-up Automation**: Create personalized follow-up messages and recommendations
-
-## Next Steps
-
-For detailed setup instructions and advanced configuration options, please contact CrewAI AMP support who can provide tailored guidance for your specific Salesforce environment and business needs.
-
-
 # Slack Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/slack-trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/slack-trigger
 
 Trigger CrewAI crews directly from Slack using slash commands
 
@@ -36410,115 +36166,8 @@ This guide explains how to start a crew directly from Slack using CrewAI trigger
 * If you don't see your desired crew in the dropdown, ensure it's properly configured and online in CrewAI.
 
 
-# Zapier Trigger
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/zapier-trigger
-
-Trigger CrewAI crews from Zapier workflows to automate cross-app workflows
-
-This guide will walk you through the process of setting up Zapier triggers for CrewAI AMP, allowing you to automate workflows between CrewAI AMP and other applications.
-
-## Prerequisites
-
-* A CrewAI AMP account
-* A Zapier account
-* A Slack account (for this specific example)
-
-## Step-by-Step Setup
-
-<Steps>
-  <Step title="Set Up the Slack Trigger">
-    * In Zapier, create a new Zap.
-
-    <Frame>
-      <img alt="Zapier 1" />
-    </Frame>
-  </Step>
-
-  <Step title="Choose Slack as your trigger app">
-    <Frame>
-      <img alt="Zapier 2" />
-    </Frame>
-
-    * Select `New Pushed Message` as the Trigger Event.
-    * Connect your Slack account if you haven't already.
-  </Step>
-
-  <Step title="Configure the CrewAI AMP Action">
-    * Add a new action step to your Zap.
-    * Choose CrewAI+ as your action app and Kickoff as the Action Event
-
-    <Frame>
-      <img alt="Zapier 5" />
-    </Frame>
-  </Step>
-
-  <Step title="Connect your CrewAI AMP account">
-    * Connect your CrewAI AMP account.
-    * Select the appropriate Crew for your workflow.
-
-    <Frame>
-      <img alt="Zapier 6" />
-    </Frame>
-
-    * Configure the inputs for the Crew using the data from the Slack message.
-  </Step>
-
-  <Step title="Format the CrewAI AMP Output">
-    * Add another action step to format the text output from CrewAI AMP.
-    * Use Zapier's formatting tools to convert the Markdown output to HTML.
-
-    <Frame>
-      <img alt="Zapier 8" />
-    </Frame>
-
-    <Frame>
-      <img alt="Zapier 9" />
-    </Frame>
-  </Step>
-
-  <Step title="Send the Output via Email">
-    * Add a final action step to send the formatted output via email.
-    * Choose your preferred email service (e.g., Gmail, Outlook).
-    * Configure the email details, including recipient, subject, and body.
-    * Insert the formatted CrewAI AMP output into the email body.
-
-    <Frame>
-      <img alt="Zapier 7" />
-    </Frame>
-  </Step>
-
-  <Step title="Kick Off the crew from Slack">
-    * Enter the text in your Slack channel
-
-    <Frame>
-      <img alt="Zapier 10" />
-    </Frame>
-
-    * Select the 3 ellipsis button and then chose Push to Zapier
-
-    <Frame>
-      <img alt="Zapier 11" />
-    </Frame>
-  </Step>
-
-  <Step title="Select the crew and then Push to Kick Off">
-    <Frame>
-      <img alt="Zapier 12" />
-    </Frame>
-  </Step>
-</Steps>
-
-## Tips for Success
-
-* Ensure that your CrewAI AMP inputs are correctly mapped from the Slack message.
-* Test your Zap thoroughly before turning it on to catch any potential issues.
-* Consider adding error handling steps to manage potential failures in the workflow.
-
-By following these steps, you'll have successfully set up Zapier triggers for CrewAI AMP, allowing for automated workflows triggered by Slack messages and resulting in email notifications with CrewAI AMP output.
-
-
 # Asana Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/asana
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/asana
 
 Team task and project coordination with Asana integration for CrewAI.
 
@@ -36789,7 +36438,7 @@ crew.kickoff()
 
 
 # Box Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/box
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/box
 
 File storage and document management with Box integration for CrewAI.
 
@@ -37070,7 +36719,7 @@ crew.kickoff()
 
 
 # ClickUp Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/clickup
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/clickup
 
 Task and productivity management with ClickUp integration for CrewAI.
 
@@ -37371,7 +37020,7 @@ crew.kickoff()
 
 
 # Databricks Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/databricks
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/databricks
 
 Connect CrewAI agents to Databricks Genie, SQL, Unity Catalog Functions, and Vector Search through Databricks managed MCP servers.
 
@@ -37498,7 +37147,7 @@ Your agents can now ask Genie for grounded answers, run SQL against your warehou
 
 
 # GitHub Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/github
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/github
 
 Repository and issue management with GitHub integration for CrewAI.
 
@@ -37829,7 +37478,7 @@ crew.kickoff()
 
 
 # Gmail Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/gmail
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/gmail
 
 Email and contact management with Gmail integration for CrewAI.
 
@@ -38132,7 +37781,7 @@ crew.kickoff()
 
 
 # Google Calendar Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/google_calendar
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/google_calendar
 
 Event and schedule management with Google Calendar integration for CrewAI.
 
@@ -38499,7 +38148,7 @@ crew.kickoff()
 
 
 # Google Contacts Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/google_contacts
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/google_contacts
 
 Contact and directory management with Google Contacts integration for CrewAI.
 
@@ -38993,7 +38642,7 @@ crew.kickoff()
 
 
 # Google Docs Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/google_docs
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/google_docs
 
 Document creation and editing with Google Docs integration for CrewAI.
 
@@ -39544,7 +39193,7 @@ crew.kickoff()
 
 
 # Google Drive Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/google_drive
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/google_drive
 
 File storage and management with Google Drive integration for CrewAI.
 
@@ -39783,7 +39432,7 @@ crew.kickoff()
 
 
 # Google Sheets Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/google_sheets
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/google_sheets
 
 Spreadsheet data synchronization with Google Sheets integration for CrewAI.
 
@@ -40152,7 +39801,7 @@ crew.kickoff()
 
 
 # Google Slides Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/google_slides
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/google_slides
 
 Presentation creation and management with Google Slides integration for CrewAI.
 
@@ -40698,7 +40347,7 @@ crew.kickoff()
 
 
 # HubSpot Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/hubspot
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/hubspot
 
 Manage companies and contacts in HubSpot with CrewAI.
 
@@ -41314,7 +40963,7 @@ crew.kickoff()
 
 
 # Jira Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/jira
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/jira
 
 Issue tracking and project management with Jira integration for CrewAI.
 
@@ -41717,7 +41366,7 @@ crew.kickoff()
 
 
 # Linear Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/linear
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/linear
 
 Software project and bug tracking with Linear integration for CrewAI.
 
@@ -42183,7 +41832,7 @@ crew.kickoff()
 
 
 # Microsoft Excel Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/microsoft_excel
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/microsoft_excel
 
 Workbook and data management with Microsoft Excel integration for CrewAI.
 
@@ -42690,7 +42339,7 @@ crew.kickoff()
 
 
 # Microsoft OneDrive Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/microsoft_onedrive
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/microsoft_onedrive
 
 File and folder management with Microsoft OneDrive integration for CrewAI.
 
@@ -43019,7 +42668,7 @@ crew.kickoff()
 
 
 # Microsoft Outlook Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/microsoft_outlook
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/microsoft_outlook
 
 Email, calendar, and contact management with Microsoft Outlook integration for CrewAI.
 
@@ -43349,7 +42998,7 @@ crew.kickoff()
 
 
 # Microsoft SharePoint Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/microsoft_sharepoint
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/microsoft_sharepoint
 
 Site, list, and document management with Microsoft SharePoint integration for CrewAI.
 
@@ -44082,7 +43731,7 @@ crew.kickoff()
 
 
 # Microsoft Teams Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/microsoft_teams
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/microsoft_teams
 
 Team collaboration and communication with Microsoft Teams integration for CrewAI.
 
@@ -44405,7 +44054,7 @@ crew.kickoff()
 
 
 # Microsoft Word Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/microsoft_word
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/microsoft_word
 
 Document creation and management with Microsoft Word integration for CrewAI.
 
@@ -44645,7 +44294,7 @@ crew.kickoff()
 
 
 # Notion Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/notion
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/notion
 
 User management and commenting with Notion integration for CrewAI.
 
@@ -44941,7 +44590,7 @@ crew.kickoff()
 
 
 # Salesforce Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/salesforce
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/salesforce
 
 CRM and sales automation with Salesforce integration for CrewAI.
 
@@ -45669,7 +45318,7 @@ This comprehensive documentation covers all the Salesforce tools organized by fu
 
 
 # Shopify Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/shopify
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/shopify
 
 E-commerce and online store management with Shopify integration for CrewAI.
 
@@ -46079,7 +45728,7 @@ crew.kickoff()
 
 
 # Slack Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/slack
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/slack
 
 Team communication and collaboration with Slack integration for CrewAI.
 
@@ -46407,7 +46056,7 @@ crew.kickoff()
 
 
 # Snowflake Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/snowflake
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/snowflake
 
 Connect CrewAI agents to Snowflake Cortex Analyst, Cortex Search, and SQL execution through the Snowflake-managed MCP server.
 
@@ -46544,7 +46193,7 @@ Your agents can now ask Cortex Analyst for metrics, run Cortex Search over your 
 
 
 # Stripe Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/stripe
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/stripe
 
 Payment processing and subscription management with Stripe integration for CrewAI.
 
@@ -46873,7 +46522,7 @@ This integration enables comprehensive payment and subscription management autom
 
 
 # Zendesk Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/integrations/zendesk
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/integrations/zendesk
 
 Customer support and helpdesk management with Zendesk integration for CrewAI.
 
@@ -47242,7 +46891,7 @@ crew.kickoff()
 
 
 # CrewAI AMP
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/introduction
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/introduction
 
 Deploy, monitor, and scale your AI agent workflows
 
@@ -47341,7 +46990,7 @@ For detailed instructions, check out our [deployment guide](/en/enterprise/guide
 
 
 # Coding Agents
-Source: https://docs.crewai.com/v1.15.1/en/learn/coding-agents
+Source: https://docs.crewai.com/v1.15.2/en/learn/coding-agents
 
 Learn how to enable your CrewAI Agents to write and execute code, and explore advanced features for enhanced functionality.
 
@@ -47440,7 +47089,7 @@ In this example, the `coding_agent` can write and execute Python code to perform
 
 
 # Conditional Tasks
-Source: https://docs.crewai.com/v1.15.1/en/learn/conditional-tasks
+Source: https://docs.crewai.com/v1.15.2/en/learn/conditional-tasks
 
 Learn how to use conditional tasks in a crewAI kickoff
 
@@ -47529,8 +47178,185 @@ print("results", result)
 ```
 
 
+# Consuming Streams
+Source: https://docs.crewai.com/v1.15.2/en/learn/consuming-streams
+
+Print LLM chunks, observe tool events, and read final results from CrewAI streams.
+
+## Overview
+
+Use this guide when you want to subscribe to a CrewAI stream and print or route frames as they arrive.
+
+The basic pattern is:
+
+```python theme={null}
+stream = flow.stream_events(inputs={"topic": "AI agents"})
+
+with stream:
+    for frame in stream:
+        ...
+
+result = stream.result
+```
+
+Always consume the stream before reading `stream.result`.
+
+## Print LLM Output
+
+If you only care about text generated by LLM calls, subscribe to the `llm` projection and print `frame.content`:
+
+```python theme={null}
+stream = flow.stream_events(inputs={"topic": "AI agents"})
+
+with stream:
+    for frame in stream.llm:
+        print(frame.content, end="", flush=True)
+
+print()
+result = stream.result
+```
+
+`frame.content` is an empty string for frames that do not carry printable text, so this is also safe:
+
+```python theme={null}
+with flow.stream_events(inputs={"topic": "AI agents"}) as stream:
+    for frame in stream.events:
+        if frame.channel == "llm" and frame.content:
+            print(frame.content, end="", flush=True)
+
+result = stream.result
+```
+
+## Print Tool Activity
+
+Tool events arrive on the `tools` channel. Use `frame.type` to distinguish starts, finishes, and errors.
+
+```python theme={null}
+with flow.stream_events(inputs={"topic": "AI agents"}) as stream:
+    for frame in stream.events:
+        if frame.channel == "llm" and frame.content:
+            print(frame.content, end="", flush=True)
+
+        if frame.channel == "tools" and frame.type == "tool_usage_started":
+            print(f"\nTool started: {frame.event.get('tool_name')}")
+
+        if frame.channel == "tools" and frame.type == "tool_usage_finished":
+            print(f"\nTool finished: {frame.event.get('tool_name')}")
+
+result = stream.result
+```
+
+`frame.event` is the structured payload for the source event. Use it for metadata such as tool names, arguments, message roles, and runtime identifiers.
+
+## Watch Flow Progress
+
+Flow lifecycle and method execution frames arrive on the `flow` channel:
+
+```python theme={null}
+with flow.stream_events(inputs={"topic": "AI agents"}) as stream:
+    for frame in stream.flow:
+        print(frame.type, frame.namespace)
+
+result = stream.result
+```
+
+Use this when you want a progress log instead of token-level output.
+
+## Interleave Selected Channels
+
+Use `interleave()` when you want a subset of channels while preserving their relative order:
+
+```python theme={null}
+with flow.stream_events(inputs={"topic": "AI agents"}) as stream:
+    for frame in stream.interleave(["llm", "tools"]):
+        if frame.channel == "llm":
+            print(frame.content, end="", flush=True)
+        elif frame.type == "tool_usage_started":
+            print(f"\nTool: {frame.event.get('tool_name')}")
+
+result = stream.result
+```
+
+## Stream a Direct LLM Call
+
+Direct `llm.call(...)` returns the final assembled result. To stream a direct LLM call, use `llm.stream_events(...)`:
+
+```python theme={null}
+from crewai import LLM
+
+
+llm = LLM(model="gpt-4o-mini")
+stream = llm.stream_events("Explain streaming in one sentence.")
+
+with stream:
+    for frame in stream.llm:
+        print(frame.content, end="", flush=True)
+
+print()
+result = stream.result
+```
+
+## Stream a Conversational Turn
+
+Conversational Flows expose `stream_turn()` for one user message:
+
+```python theme={null}
+stream = flow.stream_turn(
+    "What can you help me with?",
+    session_id="session-1",
+)
+
+with stream:
+    for frame in stream.interleave(["llm", "messages"]):
+        if frame.channel == "llm":
+            print(frame.content, end="", flush=True)
+        elif frame.channel == "messages":
+            print(f"\n{frame.event.get('role')}: {frame.event.get('content')}")
+
+reply = stream.result
+```
+
+## Async Consumers
+
+Async streams use the same channel projections:
+
+```python theme={null}
+stream = flow.astream(inputs={"topic": "AI agents"})
+
+async with stream:
+    async for frame in stream.llm:
+        print(frame.content, end="", flush=True)
+
+result = stream.result
+```
+
+## Cleanup
+
+Use the stream as a context manager when possible. If a client disconnects or you stop consuming early, close the stream:
+
+```python theme={null}
+stream = flow.stream_events(inputs={"topic": "AI agents"})
+
+try:
+    for frame in stream.events:
+        print(frame.content, end="", flush=True)
+finally:
+    if not stream.is_exhausted:
+        stream.close()
+```
+
+For async streams, call `await stream.aclose()`.
+
+## See Also
+
+* [Streaming](/edge/en/concepts/streaming)
+* [Streaming Runtime Contract](/edge/en/learn/streaming-runtime-contract)
+* [Streaming Flow Execution](/edge/en/learn/streaming-flow-execution)
+* [Streaming Crew Execution](/edge/en/learn/streaming-crew-execution)
+
+
 # Create Custom Tools
-Source: https://docs.crewai.com/v1.15.1/en/learn/create-custom-tools
+Source: https://docs.crewai.com/v1.15.2/en/learn/create-custom-tools
 
 Comprehensive guide on crafting, using, and managing custom tools within the CrewAI framework, including new functionalities and error handling.
 
@@ -47759,7 +47585,7 @@ you can leverage the full capabilities of the CrewAI framework, enhancing both t
 
 
 # Custom LLM Implementation
-Source: https://docs.crewai.com/v1.15.1/en/learn/custom-llm
+Source: https://docs.crewai.com/v1.15.2/en/learn/custom-llm
 
 Learn how to create custom LLM implementations in CrewAI.
 
@@ -48114,7 +47940,7 @@ This guide covers the essentials of implementing custom LLMs in CrewAI.
 
 
 # Custom Manager Agent
-Source: https://docs.crewai.com/v1.15.1/en/learn/custom-manager-agent
+Source: https://docs.crewai.com/v1.15.2/en/learn/custom-manager-agent
 
 Learn how to set a custom agent as the manager in CrewAI, providing more control over task management and coordination.
 
@@ -48205,7 +48031,7 @@ crew = Crew(
 
 
 # Customize Agents
-Source: https://docs.crewai.com/v1.15.1/en/learn/customizing-agents
+Source: https://docs.crewai.com/v1.15.2/en/learn/customizing-agents
 
 A comprehensive guide to tailoring agents for specific roles, tasks, and advanced customizations within the CrewAI framework.
 
@@ -48317,7 +48143,7 @@ equips a nuanced and capable AI team ready for complex challenges.
 
 
 # Image Generation with DALL-E
-Source: https://docs.crewai.com/v1.15.1/en/learn/dalle-image-generation
+Source: https://docs.crewai.com/v1.15.2/en/learn/dalle-image-generation
 
 Learn how to use DALL-E for AI-powered image generation in your CrewAI projects
 
@@ -48391,7 +48217,7 @@ The agent with the DALL-E tool will be able to generate the image and provide a 
 
 
 # Execution Hooks Overview
-Source: https://docs.crewai.com/v1.15.1/en/learn/execution-hooks
+Source: https://docs.crewai.com/v1.15.2/en/learn/execution-hooks
 
 Understanding and using execution hooks in CrewAI for fine-grained control over agent operations
 
@@ -48925,7 +48751,7 @@ Execution hooks provide powerful control over agent runtime behavior. Use them t
 
 
 # Force Tool Output as Result
-Source: https://docs.crewai.com/v1.15.1/en/learn/force-tool-output-as-result
+Source: https://docs.crewai.com/v1.15.2/en/learn/force-tool-output-as-result
 
 Learn how to force tool output as the result in an Agent's task in CrewAI.
 
@@ -48979,7 +48805,7 @@ task_result = coding_agent.execute_task(task)
 
 
 # Hierarchical Process
-Source: https://docs.crewai.com/v1.15.1/en/learn/hierarchical-process
+Source: https://docs.crewai.com/v1.15.2/en/learn/hierarchical-process
 
 A comprehensive guide to understanding and applying the hierarchical process within your CrewAI projects, updated to reflect the latest coding practices and functionalities.
 
@@ -49090,7 +48916,7 @@ Utilize the advanced features and customizations to tailor the workflow to your 
 
 
 # Human Feedback in Flows
-Source: https://docs.crewai.com/v1.15.1/en/learn/human-feedback-in-flows
+Source: https://docs.crewai.com/v1.15.2/en/learn/human-feedback-in-flows
 
 Learn how to integrate human feedback directly into your CrewAI Flows using the @human_feedback decorator
 
@@ -49795,7 +49621,7 @@ class ArticleReviewFlow(Flow):
 
 
 # Human-in-the-Loop (HITL) Workflows
-Source: https://docs.crewai.com/v1.15.1/en/learn/human-in-the-loop
+Source: https://docs.crewai.com/v1.15.2/en/learn/human-in-the-loop
 
 Learn how to implement Human-in-the-Loop workflows in CrewAI for enhanced decision-making
 
@@ -49966,7 +49792,7 @@ HITL workflows are particularly valuable for:
 
 
 # Human Input on Execution
-Source: https://docs.crewai.com/v1.15.1/en/learn/human-input-on-execution
+Source: https://docs.crewai.com/v1.15.2/en/learn/human-input-on-execution
 
 Integrating CrewAI with human input during execution in complex decision-making processes and leveraging the full capabilities of the agent's attributes and tools.
 
@@ -50065,7 +49891,7 @@ print(result)
 
 
 # Kickoff Crew Asynchronously
-Source: https://docs.crewai.com/v1.15.1/en/learn/kickoff-async
+Source: https://docs.crewai.com/v1.15.2/en/learn/kickoff-async
 
 Kickoff a Crew Asynchronously
 
@@ -50371,7 +50197,7 @@ asyncio.run(main())
 
 
 # Kickoff Crew for Each
-Source: https://docs.crewai.com/v1.15.1/en/learn/kickoff-for-each
+Source: https://docs.crewai.com/v1.15.2/en/learn/kickoff-for-each
 
 Kickoff Crew for Each Item in a List
 
@@ -50425,7 +50251,7 @@ result = analysis_crew.kickoff_for_each(inputs=datasets)
 
 
 # Using CrewAI Without LiteLLM
-Source: https://docs.crewai.com/v1.15.1/en/learn/litellm-removal-guide
+Source: https://docs.crewai.com/v1.15.2/en/learn/litellm-removal-guide
 
 How to use CrewAI with native provider integrations and remove the LiteLLM dependency from your project.
 
@@ -50801,7 +50627,7 @@ llm = LLM(
 
 
 # Connect to any LLM
-Source: https://docs.crewai.com/v1.15.1/en/learn/llm-connections
+Source: https://docs.crewai.com/v1.15.2/en/learn/llm-connections
 
 Comprehensive guide on integrating CrewAI with various Large Language Models (LLMs) using LiteLLM, including supported providers and configuration options.
 
@@ -51023,7 +50849,7 @@ By leveraging LiteLLM, CrewAI offers seamless integration with a vast array of L
 
 
 # LLM Call Hooks
-Source: https://docs.crewai.com/v1.15.1/en/learn/llm-hooks
+Source: https://docs.crewai.com/v1.15.2/en/learn/llm-hooks
 
 Learn how to use LLM call hooks to intercept, modify, and control language model interactions in CrewAI
 
@@ -51459,7 +51285,7 @@ LLM Call Hooks provide powerful capabilities for controlling and monitoring lang
 
 
 # Strategic LLM Selection Guide
-Source: https://docs.crewai.com/v1.15.1/en/learn/llm-selection-guide
+Source: https://docs.crewai.com/v1.15.2/en/learn/llm-selection-guide
 
 Strategic framework for choosing the right LLM for your CrewAI AI agents and writing effective task and agent definitions
 
@@ -52257,7 +52083,7 @@ The tables below show a representative sample of current top-performing models a
 
 
 # Using Multimodal Agents
-Source: https://docs.crewai.com/v1.15.1/en/learn/multimodal-agents
+Source: https://docs.crewai.com/v1.15.2/en/learn/multimodal-agents
 
 Learn how to enable and use multimodal capabilities in your agents for processing images and other non-text content within the CrewAI framework.
 
@@ -52399,7 +52225,7 @@ When working with multimodal agents, keep these best practices in mind:
 
 
 # Overview
-Source: https://docs.crewai.com/v1.15.1/en/learn/overview
+Source: https://docs.crewai.com/v1.15.2/en/learn/overview
 
 Learn how to build, customize, and optimize your CrewAI applications with comprehensive guides and tutorials
 
@@ -52570,7 +52396,7 @@ Start with the guides that match your current needs and gradually explore more a
 
 
 # Replay Tasks from Latest Crew Kickoff
-Source: https://docs.crewai.com/v1.15.1/en/learn/replay-tasks-from-latest-crew-kickoff
+Source: https://docs.crewai.com/v1.15.2/en/learn/replay-tasks-from-latest-crew-kickoff
 
 Replay tasks from the latest crew.kickoff(...)
 
@@ -52653,7 +52479,7 @@ Ensure you follow the commands and steps precisely to make the most of these fea
 
 
 # Sequential Processes
-Source: https://docs.crewai.com/v1.15.1/en/learn/sequential-process
+Source: https://docs.crewai.com/v1.15.2/en/learn/sequential-process
 
 A comprehensive guide to utilizing the sequential processes for task execution in CrewAI projects.
 
@@ -52780,8 +52606,202 @@ This updated documentation ensures that details accurately reflect the latest ch
 The content is kept simple and direct to ensure easy understanding.
 
 
+# Streaming Runtime Contract
+Source: https://docs.crewai.com/v1.15.2/en/learn/streaming-runtime-contract
+
+Stream ordered runtime frames from Flows, direct LLM calls, and conversational turns.
+
+## Overview
+
+CrewAI exposes a frame-based streaming contract for runtimes that need more than plain text chunks. The contract emits ordered `StreamFrame` objects for Flow lifecycle events, direct LLM tokens, tool activity, conversation messages, and custom events.
+
+Use this API when you are building a UI, service bridge, terminal app, or deployment runtime that needs a stable stream of structured events while a Flow, chat turn, or direct LLM call is running.
+
+## StreamFrame
+
+Every frame has the same envelope:
+
+```python theme={null}
+from crewai.types.streaming import StreamFrame
+
+frame.id           # unique frame id
+frame.seq          # execution-local order, when available
+frame.type         # source event type, such as "flow_started"
+frame.channel      # "llm", "flow", "tools", "messages", "lifecycle", or "custom"
+frame.namespace    # source/runtime namespace
+frame.timestamp    # event timestamp
+frame.parent_id    # parent event id, when available
+frame.previous_id  # previous event id, when available
+frame.data         # event payload
+frame.event        # alias for frame.data
+frame.content      # printable text for token-like frames, otherwise ""
+```
+
+The `channel` field is the fastest way to route frames in consumers:
+
+| Channel     | Contains                                                           |
+| ----------- | ------------------------------------------------------------------ |
+| `llm`       | Token and thinking chunks from LLM streaming events                |
+| `flow`      | Flow lifecycle, method execution, routing, and pause/resume events |
+| `tools`     | Tool usage events                                                  |
+| `messages`  | Conversation transcript events                                     |
+| `lifecycle` | Runtime lifecycle events that are not specific to another channel  |
+| `custom`    | Events that do not map to a built-in channel                       |
+
+`frame.type` preserves the source event type, so consumers can handle specific events inside a channel.
+
+## Stream a Flow
+
+Set `stream=True` on a Flow to make `kickoff()` return a stream session:
+
+```python theme={null}
+from crewai.flow import Flow, start
+
+
+class ReportFlow(Flow):
+    @start()
+    def generate(self):
+        return "done"
+
+
+flow = ReportFlow(stream=True)
+stream = flow.kickoff()
+
+with stream:
+    for chunk in stream:
+        print(chunk.content, end="", flush=True)
+        if chunk.type == "tool_usage_started":
+            print(chunk.event["tool_name"])
+
+result = stream.result
+```
+
+You must consume the stream before reading `stream.result`. Accessing the result early raises a `RuntimeError` so consumers do not accidentally treat a partial run as complete.
+
+You can also call `flow.stream_events(...)` directly when you want streaming for a single invocation without setting `stream=True` on the Flow instance.
+
+## Filter by Channel
+
+`StreamSession` exposes channel projections that preserve global frame order within the selected channel:
+
+```python theme={null}
+stream = flow.stream_events()
+
+with stream:
+    for frame in stream.llm:
+        print(frame.content, end="", flush=True)
+
+result = stream.result
+```
+
+Available projections are:
+
+| Projection                 | Frames                      |
+| -------------------------- | --------------------------- |
+| `stream.events`            | All frames                  |
+| `stream.llm`               | LLM frames                  |
+| `stream.messages`          | Conversation message frames |
+| `stream.flow`              | Flow frames                 |
+| `stream.tools`             | Tool frames                 |
+| `stream.interleave([...])` | A selected set of channels  |
+
+Use `stream.interleave(["flow", "llm", "messages"])` when a consumer wants only some channels but still needs their relative order.
+
+## Async Streaming
+
+Use `astream()` for async consumers:
+
+```python theme={null}
+flow = ReportFlow()
+stream = flow.astream()
+
+async with stream:
+    async for chunk in stream.events:
+        print(chunk.channel, chunk.type, chunk.content)
+
+result = stream.result
+```
+
+The async session has the same projections as the sync session.
+
+## Stream a Direct LLM Call
+
+`llm.call(...)` still returns the final assembled result. Use `llm.stream_events(...)` when you want to iterate over chunks as they arrive while keeping the structured event payload:
+
+```python theme={null}
+from crewai import LLM
+
+
+llm = LLM(model="gpt-4o-mini")
+stream = llm.stream_events(
+    messages=[
+        {
+            "role": "user",
+            "content": "Explain CrewAI streaming in two short sentences.",
+        }
+    ]
+)
+
+with stream:
+    for chunk in stream:
+        print(chunk.content, end="", flush=True)
+
+result = stream.result
+```
+
+`llm.stream_events(...)` temporarily enables streaming for the wrapped call and restores the LLM's previous `stream` setting afterward. Provider integrations continue to emit the underlying LLM stream events; this helper provides a common iterator API over those events for every LLM provider.
+
+## Conversational Turns
+
+Conversational Flows can stream one user turn with `stream_turn()`:
+
+```python theme={null}
+from crewai import Flow
+from crewai.experimental.conversational import ConversationConfig, ConversationState
+
+
+@ConversationConfig(llm="gpt-4o-mini", defer_trace_finalization=True)
+class ChatFlow(Flow[ConversationState]):
+    conversational = True
+
+
+flow = ChatFlow()
+stream = flow.stream_turn("What can you help me with?", session_id="session-1")
+
+with stream:
+    for frame in stream.events:
+        if frame.channel == "llm" and frame.type == "llm_stream_chunk":
+            print(frame.content, end="", flush=True)
+
+reply = stream.result
+```
+
+During `stream_turn()`, the built-in conversational answer path enables LLM token streaming for that turn and restores the LLM's previous `stream` setting afterward. Custom route handlers that create their own agents or LLM instances should configure those LLMs for streaming if they need token-level output.
+
+## Cleanup
+
+Use the session as a context manager when possible. If a client disconnects before the stream is exhausted, close the session explicitly:
+
+```python theme={null}
+stream = flow.stream_events()
+
+try:
+    for frame in stream.events:
+        print(frame.type)
+finally:
+    if not stream.is_exhausted:
+        stream.close()
+```
+
+For async streams, use `await stream.aclose()`.
+
+## Legacy Chunk Streaming
+
+Crew streaming with `stream=True` still returns the chunk-oriented `CrewStreamingOutput` API described in [Streaming Crew Execution](/en/learn/streaming-crew-execution). Direct `llm.call(...)` still returns the final LLM result. The frame contract is intended for runtimes that need a stable event envelope across Flows, direct LLM calls, conversational turns, tools, and messages.
+
+
 # Tool Call Hooks
-Source: https://docs.crewai.com/v1.15.1/en/learn/tool-hooks
+Source: https://docs.crewai.com/v1.15.2/en/learn/tool-hooks
 
 Learn how to use tool call hooks to intercept, modify, and control tool execution in CrewAI
 
@@ -53394,7 +53414,7 @@ Tool Call Hooks provide powerful capabilities for controlling and monitoring too
 
 
 # Using Annotations in crew.py
-Source: https://docs.crewai.com/v1.15.1/en/learn/using-annotations
+Source: https://docs.crewai.com/v1.15.2/en/learn/using-annotations
 
 Learn how to use classic Python annotations to structure agents, tasks, and components in CrewAI
 
@@ -53548,8 +53568,307 @@ Note how the `llm` and `tools` in the YAML file correspond to the methods decora
 By following these guidelines and properly using annotations, you can maintain classic Python/YAML crews cleanly. For new crews, prefer the JSON-first structure covered in [Crews](/en/concepts/crews).
 
 
+# LangDB Integration
+Source: https://docs.crewai.com/v1.15.2/en/observability/langdb
+
+Govern, secure, and optimize your CrewAI workflows with LangDB AI Gateway—access 350+ models, automatic routing, cost optimization, and full observability.
+
+# Introduction
+
+[LangDB AI Gateway](https://langdb.ai) provides OpenAI-compatible APIs to connect with multiple Large Language Models and serves as an observability platform that makes it effortless to trace CrewAI workflows end-to-end while providing access to 350+ language models. With a single `init()` call, all agent interactions, task executions, and LLM calls are captured, providing comprehensive observability and production-ready AI infrastructure for your applications.
+
+<Frame>
+  <img alt="LangDB CrewAI trace example" />
+</Frame>
+
+**Checkout:** [View the live trace example](https://app.langdb.ai/sharing/threads/3becbfed-a1be-ae84-ea3c-4942867a3e22)
+
+## Features
+
+### AI Gateway Capabilities
+
+* **Access to 350+ LLMs**: Connect to all major language models through a single integration
+* **Virtual Models**: Create custom model configurations with specific parameters and routing rules
+* **Virtual MCP**: Enable compatibility and integration with MCP (Model Context Protocol) systems for enhanced agent communication
+* **Guardrails**: Implement safety measures and compliance controls for agent behavior
+
+### Observability & Tracing
+
+* **Automatic Tracing**: Single `init()` call captures all CrewAI interactions
+* **End-to-End Visibility**: Monitor agent workflows from start to finish
+* **Tool Usage Tracking**: Track which tools agents use and their outcomes
+* **Model Call Monitoring**: Detailed insights into LLM interactions
+* **Performance Analytics**: Monitor latency, token usage, and costs
+* **Debugging Support**: Step-through execution for troubleshooting
+* **Real-time Monitoring**: Live traces and metrics dashboard
+
+## Setup Instructions
+
+<Steps>
+  <Step title="Install LangDB">
+    Install the LangDB client with CrewAI feature flag:
+
+    ```bash theme={null}
+    pip install 'pylangdb[crewai]'
+    ```
+  </Step>
+
+  <Step title="Set Environment Variables">
+    Configure your LangDB credentials:
+
+    ```bash theme={null}
+    export LANGDB_API_KEY="<your_langdb_api_key>"
+    export LANGDB_PROJECT_ID="<your_langdb_project_id>"
+    export LANGDB_API_BASE_URL='https://api.us-east-1.langdb.ai'
+    ```
+  </Step>
+
+  <Step title="Initialize Tracing">
+    Import and initialize LangDB before configuring your CrewAI code:
+
+    ```python theme={null}
+    from pylangdb.crewai import init
+    # Initialize LangDB
+    init()
+    ```
+  </Step>
+
+  <Step title="Configure CrewAI with LangDB">
+    Set up your LLM with LangDB headers:
+
+    ```python theme={null}
+    from crewai import Agent, Task, Crew, LLM
+    import os
+
+    # Configure LLM with LangDB headers
+    llm = LLM(
+        model="openai/gpt-4o", # Replace with the model you want to use
+        api_key=os.getenv("LANGDB_API_KEY"),
+        base_url=os.getenv("LANGDB_API_BASE_URL"),
+        extra_headers={"x-project-id": os.getenv("LANGDB_PROJECT_ID")}
+    )
+    ```
+  </Step>
+</Steps>
+
+## Quick Start Example
+
+Here's a simple example to get you started with LangDB and CrewAI:
+
+```python theme={null}
+import os
+from pylangdb.crewai import init
+from crewai import Agent, Task, Crew, LLM
+
+# Initialize LangDB before any CrewAI imports
+init()
+
+def create_llm(model):
+    return LLM(
+        model=model,
+        api_key=os.environ.get("LANGDB_API_KEY"),
+        base_url=os.environ.get("LANGDB_API_BASE_URL"),
+        extra_headers={"x-project-id": os.environ.get("LANGDB_PROJECT_ID")}
+    )
+
+# Define your agent
+researcher = Agent(
+    role="Research Specialist",
+    goal="Research topics thoroughly",
+    backstory="Expert researcher with skills in finding information",
+    llm=create_llm("openai/gpt-4o"), # Replace with the model you want to use
+    verbose=True
+)
+
+# Create a task
+task = Task(
+    description="Research the given topic and provide a comprehensive summary",
+    agent=researcher,
+    expected_output="Detailed research summary with key findings"
+)
+
+# Create and run the crew
+crew = Crew(agents=[researcher], tasks=[task])
+result = crew.kickoff()
+print(result)
+```
+
+## Complete Example: Research and Planning Agent
+
+This comprehensive example demonstrates a multi-agent workflow with research and planning capabilities.
+
+### Prerequisites
+
+```bash theme={null}
+pip install crewai 'pylangdb[crewai]' crewai_tools setuptools python-dotenv
+```
+
+### Environment Setup
+
+```bash theme={null}
+# LangDB credentials
+export LANGDB_API_KEY="<your_langdb_api_key>"
+export LANGDB_PROJECT_ID="<your_langdb_project_id>"
+export LANGDB_API_BASE_URL='https://api.us-east-1.langdb.ai'
+
+# Additional API keys (optional)
+export SERPER_API_KEY="<your_serper_api_key>"  # For web search capabilities
+```
+
+### Complete Implementation
+
+```python theme={null}
+#!/usr/bin/env python3
+
+import os
+import sys
+from pylangdb.crewai import init
+init()  # Initialize LangDB before any CrewAI imports
+from dotenv import load_dotenv
+from crewai import Agent, Task, Crew, Process, LLM
+from crewai_tools import SerperDevTool
+
+load_dotenv()
+
+def create_llm(model):
+    return LLM(
+        model=model,
+        api_key=os.environ.get("LANGDB_API_KEY"),
+        base_url=os.environ.get("LANGDB_API_BASE_URL"),
+        extra_headers={"x-project-id": os.environ.get("LANGDB_PROJECT_ID")}
+    )
+
+class ResearchPlanningCrew:
+    def researcher(self) -> Agent:
+        return Agent(
+            role="Research Specialist",
+            goal="Research topics thoroughly and compile comprehensive information",
+            backstory="Expert researcher with skills in finding and analyzing information from various sources",
+            tools=[SerperDevTool()],
+            llm=create_llm("openai/gpt-4o"),
+            verbose=True
+        )
+    
+    def planner(self) -> Agent:
+        return Agent(
+            role="Strategic Planner",
+            goal="Create actionable plans based on research findings",
+            backstory="Strategic planner who breaks down complex challenges into executable plans",
+            reasoning=True,
+            max_reasoning_attempts=3,
+            llm=create_llm("openai/anthropic/claude-3.7-sonnet"),
+            verbose=True
+        )
+    
+    def research_task(self) -> Task:
+        return Task(
+            description="Research the topic thoroughly and compile comprehensive information",
+            agent=self.researcher(),
+            expected_output="Comprehensive research report with key findings and insights"
+        )
+    
+    def planning_task(self) -> Task:
+        return Task(
+            description="Create a strategic plan based on the research findings",
+            agent=self.planner(),
+            expected_output="Strategic execution plan with phases, goals, and actionable steps",
+            context=[self.research_task()]
+        )
+    
+    def crew(self) -> Crew:
+        return Crew(
+            agents=[self.researcher(), self.planner()],
+            tasks=[self.research_task(), self.planning_task()],
+            verbose=True,
+            process=Process.sequential
+        )
+
+def main():
+        topic = sys.argv[1] if len(sys.argv) > 1 else "Artificial Intelligence in Healthcare"
+        
+        crew_instance = ResearchPlanningCrew()
+        
+        # Update task descriptions with the specific topic
+        crew_instance.research_task().description = f"Research {topic} thoroughly and compile comprehensive information"
+    crew_instance.planning_task().description = f"Create a strategic plan for {topic} based on the research findings"
+    
+    result = crew_instance.crew().kickoff()
+    print(result)
+
+if __name__ == "__main__":
+    main()
+```
+
+### Running the Example
+
+```bash theme={null}
+python main.py "Sustainable Energy Solutions"
+```
+
+## Viewing Traces in LangDB
+
+After running your CrewAI application, you can view detailed traces in the LangDB dashboard:
+
+<Frame>
+  <img alt="LangDB trace dashboard showing CrewAI workflow" />
+</Frame>
+
+### What You'll See
+
+* **Agent Interactions**: Complete flow of agent conversations and task handoffs
+* **Tool Usage**: Which tools were called, their inputs, and outputs
+* **Model Calls**: Detailed LLM interactions with prompts image.pngand responses
+* **Performance Metrics**: Latency, token usage, and cost tracking
+* **Execution Timeline**: Step-by-step view of the entire workflow
+
+## Troubleshooting
+
+### Common Issues
+
+* **No traces appearing**: Ensure `init()` is called before any CrewAI imports
+* **Authentication errors**: Verify your LangDB API key and project ID
+
+## Resources
+
+<CardGroup>
+  <Card title="LangDB Documentation" icon="book" href="https://docs.langdb.ai">
+    Official LangDB documentation and guides
+  </Card>
+
+  <Card title="LangDB Guides" icon="graduation-cap" href="https://docs.langdb.ai/guides">
+    Step-by-step tutorials for building AI agents
+  </Card>
+
+  <Card title="GitHub Examples" icon="github" href="https://github.com/langdb/langdb-samples/tree/main/examples/crewai">
+    Complete CrewAI integration examples
+  </Card>
+
+  <Card title="LangDB Dashboard" icon="chart-line" href="https://app.langdb.ai">
+    Access your traces and analytics
+  </Card>
+
+  <Card title="Model Catalog" icon="list" href="https://app.langdb.ai/models">
+    Browse 350+ available language models
+  </Card>
+
+  <Card title="Enterprise Features" icon="building" href="https://docs.langdb.ai/enterprise">
+    Self-hosted options and enterprise capabilities
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+This guide covered the basics of integrating LangDB AI Gateway with CrewAI. To further enhance your AI workflows, explore:
+
+* **Virtual Models**: Create custom model configurations with routing strategies
+* **Guardrails & Safety**: Implement content filtering and compliance controls
+* **Production Deployment**: Configure fallbacks, retries, and load balancing
+
+For more advanced features and use cases, visit the [LangDB Documentation](https://docs.langdb.ai) or explore the [Model Catalog](https://app.langdb.ai/models) to discover all available models.
+
+
 # Langfuse Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/langfuse
+Source: https://docs.crewai.com/v1.15.2/en/observability/langfuse
 
 Learn how to integrate Langfuse with CrewAI via OpenTelemetry using OpenLit
 
@@ -53658,7 +53977,7 @@ After running the agent, you can view the traces generated by your CrewAI applic
 
 
 # Langtrace Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/langtrace
+Source: https://docs.crewai.com/v1.15.2/en/observability/langtrace
 
 How to monitor cost, latency, and performance of CrewAI Agents using Langtrace, an external observability tool.
 
@@ -53736,7 +54055,7 @@ This integration allows you to log hyperparameters, monitor performance regressi
 
 
 # Maxim Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/maxim
+Source: https://docs.crewai.com/v1.15.2/en/observability/maxim
 
 Start Agent monitoring, evaluation, and observability
 
@@ -53974,7 +54293,7 @@ After running your CrewAI application:
 
 
 # MLflow Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/mlflow
+Source: https://docs.crewai.com/v1.15.2/en/observability/mlflow
 
 Quickly start monitoring your Agents with MLflow.
 
@@ -54185,7 +54504,7 @@ Tracing provides a way to record the inputs, outputs, and metadata associated wi
 
 
 # Neatlogs Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/neatlogs
+Source: https://docs.crewai.com/v1.15.2/en/observability/neatlogs
 
 Understand, debug, and share your CrewAI agent runs
 
@@ -54303,7 +54622,7 @@ No setup overhead. Full trace transparency. Full team collaboration.
 
 
 # OpenLIT Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/openlit
+Source: https://docs.crewai.com/v1.15.2/en/observability/openlit
 
 Quickly start monitoring your Agents in just a single line of code with OpenTelemetry.
 
@@ -54496,7 +54815,7 @@ This setup enables you to track hyperparameters and monitor for performance issu
 
 
 # Opik Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/opik
+Source: https://docs.crewai.com/v1.15.2/en/observability/opik
 
 Learn how to use Comet Opik to debug, evaluate, and monitor your CrewAI applications with comprehensive tracing, automated evaluations, and production-ready dashboards.
 
@@ -54632,7 +54951,7 @@ For this guide we will use CrewAI’s quickstart example.
 
 
 # Patronus AI Evaluation
-Source: https://docs.crewai.com/v1.15.1/en/observability/patronus-evaluation
+Source: https://docs.crewai.com/v1.15.2/en/observability/patronus-evaluation
 
 Monitor and evaluate CrewAI agent performance using Patronus AI's comprehensive evaluation platform for LLM outputs and agent behaviors.
 
@@ -54838,7 +55157,7 @@ The Patronus evaluation tools provide a powerful way to evaluate and score model
 
 
 # Portkey Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/portkey
+Source: https://docs.crewai.com/v1.15.2/en/observability/portkey
 
 How to use Portkey with CrewAI
 
@@ -55676,7 +55995,7 @@ Portkey adds a comprehensive governance layer to address these enterprise needs.
 
 
 # TrueFoundry Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/truefoundry
+Source: https://docs.crewai.com/v1.15.2/en/observability/truefoundry
 
 
 
@@ -55825,7 +56144,7 @@ This provides additional trace correlation across your entire CrewAI workflow.
 
 
 # Weave Integration
-Source: https://docs.crewai.com/v1.15.1/en/observability/weave
+Source: https://docs.crewai.com/v1.15.2/en/observability/weave
 
 Learn how to use Weights & Biases (W&B) Weave to track, experiment with, evaluate, and improve your CrewAI applications.
 
@@ -55955,7 +56274,7 @@ For detailed information on what's supported, visit the [Weave CrewAI documentat
 
 
 # Telemetry
-Source: https://docs.crewai.com/v1.15.1/en/telemetry
+Source: https://docs.crewai.com/v1.15.2/en/telemetry
 
 Understanding the telemetry data collected by CrewAI and how it contributes to the enhancement of the library.
 
@@ -56139,15 +56458,15 @@ Build collaborative AI agents, crews, and flows — production ready from day on
 
 
 # GET /inputs
-Source: https://docs.crewai.com/v1.15.1/en/api-reference/inputs
+Source: https://docs.crewai.com/v1.15.2/en/api-reference/inputs
 
-v1.15.1/enterprise-api.en.yaml GET /inputs
+v1.15.2/enterprise-api.en.yaml GET /inputs
 Get required inputs for your crew
 
 
 
 # Introduction
-Source: https://docs.crewai.com/v1.15.1/en/api-reference/introduction
+Source: https://docs.crewai.com/v1.15.2/en/api-reference/introduction
 
 Complete reference for the CrewAI AMP REST API
 
@@ -56276,33 +56595,135 @@ Each endpoint page shows you:
 
 
 # POST /kickoff
-Source: https://docs.crewai.com/v1.15.1/en/api-reference/kickoff
+Source: https://docs.crewai.com/v1.15.2/en/api-reference/kickoff
 
-v1.15.1/enterprise-api.en.yaml POST /kickoff
+v1.15.2/enterprise-api.en.yaml POST /kickoff
 Start a crew execution
 
 
 
 # POST /resume
-Source: https://docs.crewai.com/v1.15.1/en/api-reference/resume
+Source: https://docs.crewai.com/v1.15.2/en/api-reference/resume
 
-v1.15.1/enterprise-api.en.yaml POST /resume
+v1.15.2/enterprise-api.en.yaml POST /resume
 Resume crew execution with human feedback
 
 
 
 # GET /status/{kickoff_id}
-Source: https://docs.crewai.com/v1.15.1/en/api-reference/status
+Source: https://docs.crewai.com/v1.15.2/en/api-reference/status
 
-v1.15.1/enterprise-api.en.yaml GET /status/{kickoff_id}
+v1.15.2/enterprise-api.en.yaml GET /status/{kickoff_id}
 Get execution status
 
 
 
 # Changelog
-Source: https://docs.crewai.com/v1.15.1/en/changelog
+Source: https://docs.crewai.com/v1.15.2/en/changelog
 
 Product updates, improvements, and bug fixes for CrewAI
+
+<Update label="Jul 07, 2026">
+  ## v1.15.2
+
+  [View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/1.15.2)
+
+  ## What's Changed
+
+  ### Features
+
+  * Pull latest LLM models dynamically in the crew wizard.
+  * Support inline skill definitions.
+  * Add generated Flow Definition authoring skill.
+  * Support templated Flow action inputs.
+  * Add text helper for flow CEL prompts.
+  * Add text helper to flow skill example.
+  * Implement message setup and feedback handling in AgentExecutor.
+  * Add repository agents to flow definitions.
+  * Define stream frame protocol for flows.
+  * Type tool and app in CrewDefinition.
+  * Repoint template commands to crewAIInc-fde org.
+
+  ### Bug Fixes
+
+  * Key model-catalog cache by exact API key, shorten TTL, and skip Ollama.
+  * Unify `crewai run` flow input resolution and prompt from the state schema.
+  * Resolve pip-audit failures for onnx 1.22.0 and nltk PYSEC-2026-597.
+  * Ensure we are writing version for flows.
+  * Include aiobotocore in the bedrock extra.
+  * Reject self-listening flow methods.
+  * Cut docs version nav from Edge so new pages aren't dropped.
+
+  ### Documentation
+
+  * Update language from Rules to Policies to match new dashboard changes.
+  * Document flow agent options.
+  * Add streaming docs to the navigation.
+  * Document Cost Limit rule type in Agent Control Plane.
+  * Drop CREWAI\_LOG\_FORMAT references from Datadog guide.
+
+  ## Contributors
+
+  @akaKuruma, @danielfsbarreto, @github-code-quality\[bot], @joaomdmoura, @lorenzejay, @lucasgomide, @manisrinivasan2k1, @renatonitta, @vinibrsl
+</Update>
+
+<Update label="Jul 01, 2026">
+  ## v1.15.2a2
+
+  [View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/1.15.2a2)
+
+  ## What's Changed
+
+  ### Features
+
+  * Add aiobotocore to the bedrock extra
+  * Document flow agent options
+  * Add text helper to flow skill example
+  * Add text helper for flow CEL prompts
+  * Add streaming docs to the navigation
+
+  ### Bug Fixes
+
+  * Reject self-listening flow methods
+
+  ### Documentation
+
+  * Update snapshot and changelog for v1.15.2a1
+  * Squeeze AGENTS.md file
+
+  ## Contributors
+
+  @akaKuruma, @github-code-quality\[bot], @lorenzejay, @vinibrsl
+</Update>
+
+<Update label="Jun 30, 2026">
+  ## v1.15.2a1
+
+  [View release on GitHub](https://github.com/crewAIInc/crewAI/releases/tag/1.15.2a1)
+
+  ## What's Changed
+
+  ### Features
+
+  * Repoint template commands to crewAIInc-fde org
+  * Support inline skill definitions
+  * Define stream frame protocol for flows
+  * Add type tool and app in CrewDefinition
+  * Add generated Flow Definition authoring skill
+
+  ### Bug Fixes
+
+  * Cut docs version navigation from Edge to prevent new pages from being dropped
+
+  ### Documentation
+
+  * Document Cost Limit rule type in Agent Control Plane
+  * Drop CREWAI\_LOG\_FORMAT references from Datadog guide
+
+  ## Contributors
+
+  @danielfsbarreto, @joaomdmoura, @lorenzejay, @lucasgomide, @vinibrsl
+</Update>
 
 <Update label="Jun 26, 2026">
   ## v1.15.1
@@ -60976,7 +61397,7 @@ Product updates, improvements, and bug fixes for CrewAI
 
 
 # Azure OpenAI Setup
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/azure-openai-setup
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/azure-openai-setup
 
 Configure Azure OpenAI with Crew Studio for enterprise LLM connections
 
@@ -61029,7 +61450,7 @@ If you encounter issues:
 
 
 # Build Crew
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/build-crew
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/build-crew
 
 A Crew is a group of agents that work together to complete a task.
 
@@ -61066,7 +61487,7 @@ For Enterprise-specific support or questions, contact our dedicated support team
 
 
 # OpenTelemetry Export
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/capture_telemetry_logs
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/capture_telemetry_logs
 
 Export traces and logs from your CrewAI AMP deployments to your own OpenTelemetry collector
 
@@ -61127,7 +61548,7 @@ Telemetry data follows the [OpenTelemetry GenAI semantic conventions](https://op
 
 
 # Custom MCP Servers
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/custom-mcp-server
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/custom-mcp-server
 
 Connect your own MCP servers to CrewAI AMP with public access, API key authentication, or OAuth 2.0
 
@@ -61264,7 +61685,7 @@ Once connected, your custom MCP server's tools appear alongside built-in connect
 
 
 # Datadog Integration
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/datadog
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/datadog
 
 Monitor self-hosted CrewAI AMP deployments in Datadog via the Datadog Agent or Datadog's OTLP intake — either path lands the same structured facets so you can import the ready-made operations dashboard.
 
@@ -61280,13 +61701,12 @@ CrewAI supports two log-ingestion paths to Datadog — both are first-class and 
 
 <Tabs>
   <Tab title="Datadog Agent">
-    The Datadog Agent runs alongside your CrewAI containers (typically as a DaemonSet on Kubernetes) and tails their stdout. With `CREWAI_LOG_FORMAT=json` set, each log event ships as a single billable line with structured attributes.
+    The Datadog Agent runs alongside your CrewAI containers (typically as a DaemonSet on Kubernetes) and tails their stdout. Each log event ships as a single billable line with structured attributes — see the [log schema reference](#log-schema-reference) for the full field contract.
 
     **Setup:**
 
     1. Run the Datadog Agent next to your CrewAI containers — see [Datadog's deployment docs](https://docs.datadoghq.com/agent/) for Kubernetes, ECS, or VM setup. Enable log collection (`logs_enabled: true`) and container log collection (`logs_config.container_collect_all: true`).
-    2. Set `CREWAI_LOG_FORMAT=json` as an **automation environment variable** in CrewAI AMP (open your automation → **Settings → Environment Variables**) so each log event is a single line instead of a multi-line traceback. AMP propagates the value to every container in the deployment (API + workers) — don't set it on the container or host directly. See [Enabling JSON output](#enabling-json-output) below for the AMP UI walkthrough and the [log schema reference](#log-schema-reference) for the full field contract.
-    3. Confirm logs arrive in Datadog Logs with the JSON fields parsed — see [Verify ingestion](#verify-ingestion).
+    2. Confirm logs arrive in Datadog Logs with the JSON fields parsed — see [Verify ingestion](#verify-ingestion).
 
     **Pick this path if** you already operate Datadog Agents (e.g. for infrastructure metrics), or your log volume makes per-event ingestion cost a real concern — collapsing tracebacks into single events keeps Agent ingestion cheap at scale.
   </Tab>
@@ -61321,10 +61741,10 @@ Either path lands the same structured facets in Datadog (`@automation_id`, `@kic
 ## Log schema reference
 
 <Info>
-  This schema applies to the **Datadog Agent path** — stdout JSON logs produced when `CREWAI_LOG_FORMAT=json` is set. Logs delivered via the **Datadog OTLP intake** use OpenTelemetry attribute names and may differ; see [OpenTelemetry Export](./capture_telemetry_logs).
+  This schema applies to the **Datadog Agent path** — structured stdout JSON logs emitted by every CrewAI worker container. Logs delivered via the **Datadog OTLP intake** use OpenTelemetry attribute names and may differ; see [OpenTelemetry Export](./capture_telemetry_logs).
 </Info>
 
-When `CREWAI_LOG_FORMAT=json` is set, every log event is emitted as a **single JSON object per line** to stdout, with internal newlines escaped. The format is plain JSON — Datadog parses it natively, and the same payload is also consumable by Splunk, Loki, Elasticsearch, and CloudWatch without custom log pipelines.
+Every log event is emitted as a **single JSON object per line** to stdout, with internal newlines escaped. The format is plain JSON — Datadog parses it natively, and the same payload is also consumable by Splunk, Loki, Elasticsearch, and CloudWatch without custom log pipelines.
 
 ### Why JSON output
 
@@ -61345,20 +61765,6 @@ When `CREWAI_LOG_FORMAT=json` is set, every log event is emitted as a **single J
     The `schema` field gates compatibility — within `v1`, fields are added but never renamed or removed.
   </Card>
 </CardGroup>
-
-### Enabling JSON output
-
-`CREWAI_LOG_FORMAT=json` must be set as an **automation environment variable** in CrewAI AMP — it is **not** a container, host, or Docker setting. Open your automation in AMP, click the **Settings** icon, and add the variable under the **Environment Variables** section. AMP applies the value to every container in the deployment (API + workers) on the next restart. See [Update Your Crew](./update-crew) for the full UI walkthrough with screenshots.
-
-```shell theme={null}
-CREWAI_LOG_FORMAT=json
-```
-
-Restart the deployment to pick up the change. Every log line on stdout from that point on is a single JSON object.
-
-<Note>
-  The default value is `text`, which preserves the legacy human-readable line format byte-for-byte. Setting any value other than `json` falls back to text mode. There is no migration step — the variable is read at process start and the format switches immediately.
-</Note>
 
 ### Example events
 
@@ -61402,7 +61808,7 @@ An error with a Python exception is collapsed into a single event with the trace
 }
 ```
 
-The same error in legacy text mode would have produced \~25 separate log events (one per traceback line) — all of which the backend would bill and index individually.
+Without JSON output, that same error would produce \~25 separate log events (one per traceback line) — all of which the backend would bill and index individually.
 
 ### Schema v1 fields
 
@@ -61507,7 +61913,7 @@ Open [Logs Explorer](https://app.datadoghq.com/logs) and run a query that matche
   <Tab title="Datadog Agent">
     Search `service:crewai* @schema:v1`. You should see structured logs with the JSON fields parsed into Datadog facets. Pick a recent event and verify it has `@automation_id`, `@kickoff_id`, `@execution_id`, `@crewai_version`, and (when running inside a span) `@trace_id` / `@span_id` populated.
 
-    If nothing appears, confirm `CREWAI_LOG_FORMAT=json` is set under your automation's **Environment Variables** in AMP, the deployment was restarted after the change, and the Datadog Agent is tailing container stdout.
+    If nothing appears, confirm the Datadog Agent is tailing container stdout and that the deployment is running a recent enough CrewAI Enterprise build.
   </Tab>
 
   <Tab title="Datadog OTLP intake">
@@ -61546,13 +61952,13 @@ The `$service` template variable defaults to `*` and will catch every CrewAI dep
 
 ## Troubleshooting
 
-| Symptom                                           | Likely cause                                                     | Fix                                                                                                                                                                                                                                                                     |
-| ------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| All widgets show "No data"                        | Facets aren't promoted                                           | Re-do the [Promote facets](#prerequisite-promote-facets) step. Datadog won't query against an un-promoted field.                                                                                                                                                        |
-| Error Rate widget shows `NaN`                     | No executions in the time window                                 | Either no traffic, or `@execution_id` isn't faceted. Expand the time range and re-check facets.                                                                                                                                                                         |
-| Throughput chart is flat at the same value        | Logs aren't reaching Datadog                                     | Search `service:crewai*` in Logs Explorer. If nothing shows, verify the Datadog Agent is running (Agent path) or the OTel collector endpoint is correct (OTLP path).                                                                                                    |
-| `crewai_version` shows fewer values than expected | Some containers predate the structured-logs work                 | The `crewai_version` field was added alongside JSON output. Older deployments running text mode (or older AMP builds) won't emit it. Upgrade those deployments to pick up the field. See the [log schema reference](#log-schema-reference) for the full field contract. |
-| Template variables don't filter widgets           | The widget's filter line doesn't reference the template variable | Edit the widget and confirm the search includes `$automation $version $service`.                                                                                                                                                                                        |
+| Symptom                                           | Likely cause                                                     | Fix                                                                                                                                                                                                                                                              |
+| ------------------------------------------------- | ---------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| All widgets show "No data"                        | Facets aren't promoted                                           | Re-do the [Promote facets](#prerequisite-promote-facets) step. Datadog won't query against an un-promoted field.                                                                                                                                                 |
+| Error Rate widget shows `NaN`                     | No executions in the time window                                 | Either no traffic, or `@execution_id` isn't faceted. Expand the time range and re-check facets.                                                                                                                                                                  |
+| Throughput chart is flat at the same value        | Logs aren't reaching Datadog                                     | Search `service:crewai*` in Logs Explorer. If nothing shows, verify the Datadog Agent is running (Agent path) or the OTel collector endpoint is correct (OTLP path).                                                                                             |
+| `crewai_version` shows fewer values than expected | Some containers predate the structured-logs work                 | The `crewai_version` field was added alongside JSON output. Older deployments (pre-structured-logs AMP builds) won't emit it. Upgrade those deployments to pick up the field. See the [log schema reference](#log-schema-reference) for the full field contract. |
+| Template variables don't filter widgets           | The widget's filter line doesn't reference the template variable | Edit the widget and confirm the search includes `$automation $version $service`.                                                                                                                                                                                 |
 
 ## Next steps
 
@@ -61568,7 +61974,7 @@ The `$service` template variable defaults to `*` and will catch every CrewAI dep
 
 
 # Deploy to AMP
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/deploy-to-amp
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/deploy-to-amp
 
 Deploy your Crew or Flow to CrewAI AMP
 
@@ -61999,7 +62405,7 @@ type = "flow"
 
 
 # Enable Crew Studio
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/enable-crew-studio
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/enable-crew-studio
 
 Enabling Crew Studio on CrewAI AMP
 
@@ -62169,8 +62575,65 @@ Here's a typical workflow for creating a crew with Crew Studio:
 </Card>
 
 
+# HubSpot Trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/hubspot-trigger
+
+Trigger CrewAI crews directly from HubSpot Workflows
+
+This guide provides a step-by-step process to set up HubSpot triggers for CrewAI AMP, enabling you to initiate crews directly from HubSpot Workflows.
+
+## Prerequisites
+
+* A CrewAI AMP account
+* A HubSpot account with the [HubSpot Workflows](https://knowledge.hubspot.com/workflows/create-workflows) feature
+
+## Setup Steps
+
+<Steps>
+  <Step title="Connect your HubSpot account with CrewAI AMP">
+    * Log in to your `CrewAI AMP account > Triggers` - Select `HubSpot` from the
+      list of available triggers - Choose the HubSpot account you want to connect
+      with CrewAI AMP - Follow the on-screen prompts to authorize CrewAI AMP
+      access to your HubSpot account - A confirmation message will appear once
+      HubSpot is successfully connected with CrewAI AMP
+  </Step>
+
+  <Step title="Create a HubSpot Workflow">
+    * Log in to your `HubSpot account > Automations > Workflows > New workflow`
+    * Select the workflow type that fits your needs (e.g., Start from scratch) -
+      In the workflow builder, click the Plus (+) icon to add a new action. -
+      Choose `Integrated apps > CrewAI > Kickoff a Crew`. - Select the Crew you
+      want to initiate. - Click `Save` to add the action to your workflow
+
+    <Frame>
+      <img alt="HubSpot Workflow 1" />
+    </Frame>
+  </Step>
+
+  <Step title="Use Crew results with other actions">
+    * After the Kickoff a Crew step, click the Plus (+) icon to add a new
+      action. - For example, to send an internal email notification, choose
+      `Communications > Send internal email notification` - In the Body field,
+      click `Insert data`, select `View properties or action outputs from > Action
+          outputs > Crew Result` to include Crew data in the email
+
+    <Frame>
+      <img alt="HubSpot Workflow 2" />
+    </Frame>
+
+    * Configure any additional actions as needed - Review your workflow
+      steps to ensure everything is set up correctly - Activate the workflow
+      <Frame>
+        <img alt="HubSpot Workflow 3" />
+      </Frame>
+  </Step>
+</Steps>
+
+For more detailed information on available actions and customization options, refer to the [HubSpot Workflows Documentation](https://knowledge.hubspot.com/workflows/create-workflows).
+
+
 # HITL Workflows
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/human-in-the-loop
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/human-in-the-loop
 
 Learn how to implement Human-In-The-Loop workflows in CrewAI for enhanced decision-making
 
@@ -62341,7 +62804,7 @@ HITL workflows are particularly valuable for:
 
 
 # Kickoff Crew
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/kickoff-crew
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/kickoff-crew
 
 Kickoff a Crew on CrewAI AMP
 
@@ -62529,7 +62992,7 @@ If an execution fails:
 
 
 # Monorepo Deployments
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/monorepo-deployments
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/monorepo-deployments
 
 Deploy a Crew or Flow from a subfolder in a larger repository
 
@@ -62758,7 +63221,7 @@ or trigger redeployments from CI/CD with the AMP API instead.
 
 
 # Prepare for Deployment
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/prepare-for-deployment
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/prepare-for-deployment
 
 Ensure your Crew or Flow is ready for deployment to CrewAI AMP
 
@@ -63110,7 +63573,7 @@ Once your project passes all checklist items, you're ready to deploy:
 
 
 # Private Package Registries
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/private-package-registry
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/private-package-registry
 
 Install private Python packages from authenticated PyPI registries in CrewAI AMP
 
@@ -63382,7 +63845,7 @@ Then commit the updated `uv.lock`.
 
 
 # React Component Export
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/react-component-export
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/react-component-export
 
 Learn how to export and integrate CrewAI AMP React components into your applications
 
@@ -63487,8 +63950,51 @@ You can then customise the `CrewLead.jsx` to add color, title etc
 * Add error handling and loading states
 
 
+# Salesforce Trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/salesforce-trigger
+
+Trigger CrewAI crews from Salesforce workflows for CRM automation
+
+CrewAI AMP can be triggered from Salesforce to automate customer relationship management workflows and enhance your sales operations.
+
+## Overview
+
+Salesforce is a leading customer relationship management (CRM) platform that helps businesses streamline their sales, service, and marketing operations. By setting up CrewAI triggers from Salesforce, you can:
+
+* Automate lead scoring and qualification
+* Generate personalized sales materials
+* Enhance customer service with AI-powered responses
+* Streamline data analysis and reporting
+
+## Demo
+
+<iframe title="CrewAI + Salesforce trigger demo" />
+
+## Getting Started
+
+To set up Salesforce triggers:
+
+1. **Contact Support**: Reach out to CrewAI AMP support for assistance with Salesforce trigger setup
+2. **Review Requirements**: Ensure you have the necessary Salesforce permissions and API access
+3. **Configure Connection**: Work with the support team to establish the connection between CrewAI and your Salesforce instance
+4. **Test Triggers**: Verify the triggers work correctly with your specific use cases
+
+## Use Cases
+
+Common Salesforce + CrewAI trigger scenarios include:
+
+* **Lead Processing**: Automatically analyze and score incoming leads
+* **Proposal Generation**: Create customized proposals based on opportunity data
+* **Customer Insights**: Generate analysis reports from customer interaction history
+* **Follow-up Automation**: Create personalized follow-up messages and recommendations
+
+## Next Steps
+
+For detailed setup instructions and advanced configuration options, please contact CrewAI AMP support who can provide tailored guidance for your specific Salesforce environment and business needs.
+
+
 # Team Management
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/team-management
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/team-management
 
 Learn how to invite and manage team members in your CrewAI AMP organization
 
@@ -63590,7 +64096,7 @@ By following these steps, you can easily expand your team and collaborate more e
 
 
 # Tool Repository
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/tool-repository
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/tool-repository
 
 Using the Tool Repository to manage your tools
 
@@ -63744,7 +64250,7 @@ You can check the security check status of a tool at:
 
 
 # Update Crew
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/update-crew
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/update-crew
 
 Updating a Crew on CrewAI AMP
 
@@ -63839,7 +64345,7 @@ After performing any update:
 
 
 # Vertex AI with Workload Identity
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/vertex-ai-workload-identity-setup
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/vertex-ai-workload-identity-setup
 
 Connect Google Vertex AI to CrewAI AMP with no service account keys — credentials are minted per-execution via OIDC workload identity federation.
 
@@ -64137,7 +64643,7 @@ Or, equivalently, `roles/owner` on the project.
 
 
 # Webhook Automation
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/guides/webhook-automation
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/webhook-automation
 
 Automate CrewAI AMP workflows using webhooks with platforms like ActivePieces, Zapier, and Make.com
 
@@ -64298,8 +64804,115 @@ CrewAI AMP allows you to automate your workflow using webhooks. This article wil
 </Tabs>
 
 
+# Zapier Trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/zapier-trigger
+
+Trigger CrewAI crews from Zapier workflows to automate cross-app workflows
+
+This guide will walk you through the process of setting up Zapier triggers for CrewAI AMP, allowing you to automate workflows between CrewAI AMP and other applications.
+
+## Prerequisites
+
+* A CrewAI AMP account
+* A Zapier account
+* A Slack account (for this specific example)
+
+## Step-by-Step Setup
+
+<Steps>
+  <Step title="Set Up the Slack Trigger">
+    * In Zapier, create a new Zap.
+
+    <Frame>
+      <img alt="Zapier 1" />
+    </Frame>
+  </Step>
+
+  <Step title="Choose Slack as your trigger app">
+    <Frame>
+      <img alt="Zapier 2" />
+    </Frame>
+
+    * Select `New Pushed Message` as the Trigger Event.
+    * Connect your Slack account if you haven't already.
+  </Step>
+
+  <Step title="Configure the CrewAI AMP Action">
+    * Add a new action step to your Zap.
+    * Choose CrewAI+ as your action app and Kickoff as the Action Event
+
+    <Frame>
+      <img alt="Zapier 5" />
+    </Frame>
+  </Step>
+
+  <Step title="Connect your CrewAI AMP account">
+    * Connect your CrewAI AMP account.
+    * Select the appropriate Crew for your workflow.
+
+    <Frame>
+      <img alt="Zapier 6" />
+    </Frame>
+
+    * Configure the inputs for the Crew using the data from the Slack message.
+  </Step>
+
+  <Step title="Format the CrewAI AMP Output">
+    * Add another action step to format the text output from CrewAI AMP.
+    * Use Zapier's formatting tools to convert the Markdown output to HTML.
+
+    <Frame>
+      <img alt="Zapier 8" />
+    </Frame>
+
+    <Frame>
+      <img alt="Zapier 9" />
+    </Frame>
+  </Step>
+
+  <Step title="Send the Output via Email">
+    * Add a final action step to send the formatted output via email.
+    * Choose your preferred email service (e.g., Gmail, Outlook).
+    * Configure the email details, including recipient, subject, and body.
+    * Insert the formatted CrewAI AMP output into the email body.
+
+    <Frame>
+      <img alt="Zapier 7" />
+    </Frame>
+  </Step>
+
+  <Step title="Kick Off the crew from Slack">
+    * Enter the text in your Slack channel
+
+    <Frame>
+      <img alt="Zapier 10" />
+    </Frame>
+
+    * Select the 3 ellipsis button and then chose Push to Zapier
+
+    <Frame>
+      <img alt="Zapier 11" />
+    </Frame>
+  </Step>
+
+  <Step title="Select the crew and then Push to Kick Off">
+    <Frame>
+      <img alt="Zapier 12" />
+    </Frame>
+  </Step>
+</Steps>
+
+## Tips for Success
+
+* Ensure that your CrewAI AMP inputs are correctly mapped from the Slack message.
+* Test your Zap thoroughly before turning it on to catch any potential issues.
+* Consider adding error handling steps to manage potential failures in the workflow.
+
+By following these steps, you'll have successfully set up Zapier triggers for CrewAI AMP, allowing for automated workflows triggered by Slack messages and resulting in email notifications with CrewAI AMP output.
+
+
 # FAQs
-Source: https://docs.crewai.com/v1.15.1/en/enterprise/resources/frequently-asked-questions
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/resources/frequently-asked-questions
 
 Frequently asked questions about CrewAI AMP
 
@@ -64450,7 +65063,7 @@ Frequently asked questions about CrewAI AMP
 
 
 # CrewAI Cookbooks
-Source: https://docs.crewai.com/v1.15.1/en/examples/cookbooks
+Source: https://docs.crewai.com/v1.15.2/en/examples/cookbooks
 
 Feature-focused quickstarts and notebooks for learning patterns fast.
 
@@ -64500,7 +65113,7 @@ Feature-focused quickstarts and notebooks for learning patterns fast.
 
 
 # CrewAI Examples
-Source: https://docs.crewai.com/v1.15.1/en/examples/example
+Source: https://docs.crewai.com/v1.15.2/en/examples/example
 
 Explore curated examples organized by Crews, Flows, Integrations, and Notebooks.
 
@@ -64597,6 +65210,120 @@ Explore curated examples organized by Crews, Flows, Integrations, and Notebooks.
 
   <Card title="All Notebooks" icon="book" href="https://github.com/crewAIInc/crewAI-examples/tree/main/Notebooks">
     Interactive examples for learning and experimentation.
+  </Card>
+</CardGroup>
+
+
+# CrewAI Documentation
+Source: https://docs.crewai.com/index
+
+Build collaborative AI agents, crews, and flows — production ready from day one.
+
+<div>
+  <img alt="CrewAI" />
+
+  <div>
+    <h1>Ship multi‑agent systems with confidence</h1>
+
+    <p>
+      Design agents, orchestrate crews, and automate flows with guardrails, memory, knowledge, and observability baked in.
+    </p>
+  </div>
+
+  <div>
+    <a href="/en/quickstart">
+      Get started
+    </a>
+
+    <button type="button">
+      Copy agent setup prompt
+    </button>
+
+    <a href="/guides/coding-tools/build-with-ai">
+      Coding-agent guide
+    </a>
+
+    <a href="/en/api-reference/introduction">
+      API Reference
+    </a>
+  </div>
+</div>
+
+<div />
+
+## Get started
+
+<CardGroup>
+  <Card title="Introduction" href="/en/introduction" icon="sparkles">
+    Overview of CrewAI concepts, architecture, and what you can build with agents, crews, and flows.
+  </Card>
+
+  <Card title="Installation" href="/en/installation" icon="wrench">
+    Install via `uv`, configure API keys, and set up the CLI for local development.
+  </Card>
+
+  <Card title="Quickstart" href="/en/quickstart" icon="rocket">
+    Spin up your first crew in minutes. Learn the core runtime, project layout, and dev loop.
+  </Card>
+</CardGroup>
+
+## Build the basics
+
+<CardGroup>
+  <Card title="Agents" href="/en/concepts/agents" icon="users">
+    Compose agents with tools, memory, knowledge, and structured outputs using Pydantic. Includes templates and best practices.
+  </Card>
+
+  <Card title="Flows" href="/en/concepts/flows" icon="arrow-progress">
+    Orchestrate start/listen/router steps, manage state, persist execution, and resume long-running workflows.
+  </Card>
+
+  <Card title="Tasks & Processes" href="/en/concepts/tasks" icon="check">
+    Define sequential, hierarchical, or hybrid processes with guardrails, callbacks, and human-in-the-loop triggers.
+  </Card>
+</CardGroup>
+
+## Enterprise journey
+
+<CardGroup>
+  <Card title="Deploy automations" href="/en/enterprise/features/automations" icon="server">
+    Manage environments, redeploy safely, and monitor live runs directly from the Enterprise console.
+  </Card>
+
+  <Card title="Triggers & Flows" href="/en/enterprise/guides/automation-triggers" icon="bolt">
+    Connect Gmail, Slack, Salesforce, and more. Pass trigger payloads into crews and flows automatically.
+  </Card>
+
+  <Card title="Team management" href="/en/enterprise/guides/team-management" icon="users-gear">
+    Invite teammates, configure RBAC, and control access to production automations.
+  </Card>
+</CardGroup>
+
+## What’s new
+
+<CardGroup>
+  <Card title="Triggers overview" href="/en/enterprise/guides/automation-triggers" icon="sparkles">
+    Unified overview for Gmail, Drive, Outlook, Teams, OneDrive, HubSpot, and more — now with sample payloads and crews.
+  </Card>
+
+  <Card title="Integration tools" href="/en/tools/integration/overview" icon="plug">
+    Call existing CrewAI automations or Amazon Bedrock Agents directly from your crews using the updated integration toolkit.
+  </Card>
+</CardGroup>
+
+<Callout title="Explore real-world patterns" icon="github">
+  Browse the <a href="/en/examples/cookbooks">examples and cookbooks</a> for end-to-end reference implementations across agents, flows, and enterprise automations.
+</Callout>
+
+## Stay connected
+
+<CardGroup>
+  <Card title="Star us on GitHub" href="https://github.com/crewAIInc/crewAI" icon="star">
+    If CrewAI helps you ship faster, give us a star and share your builds with the community.
+  </Card>
+
+  <Card title="Join the community" href="https://community.crewai.com" icon="comments">
+    Ask questions, showcase workflows, and request features alongside other builders.
   </Card>
 </CardGroup>
 

@@ -17,64 +17,68 @@ Prefer watching a video? Check out our video walkthrough below.
 
 <YouTube />
 
-## 1. Install
+## Guide
 
-<CodeGroup>
-  ```bash dotnet CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
-  dotnet add package Resend
-  ```
+<Steps>
+  <Step title="Install">
+    <CodeGroup>
+      ```bash dotnet CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+      dotnet add package Resend
+      ```
 
-  ```bash Visual Studio (Package Manager Console) theme={"theme":{"light":"github-light","dark":"vesper"}}
-  PM> Install-Package Resend
-  ```
-</CodeGroup>
+      ```bash Visual Studio (Package Manager Console) theme={"theme":{"light":"github-light","dark":"vesper"}}
+      PM> Install-Package Resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send emails using HTML
+  <Step title="Send emails using HTML">
+    In the startup of your application, configure the DI container as follows:
 
-In the startup of your application, configure the DI container as follows:
+    ```csharp theme={"theme":{"light":"github-light","dark":"vesper"}}
+    using Resend;
 
-```csharp theme={"theme":{"light":"github-light","dark":"vesper"}}
-using Resend;
-
-builder.Services.AddOptions();
-builder.Services.AddHttpClient<ResendClient>();
-builder.Services.Configure<ResendClientOptions>( o =>
-{
-    o.ApiToken = Environment.GetEnvironmentVariable( "RESEND_APITOKEN" )!;
-} );
-builder.Services.AddTransient<IResend, ResendClient>();
-```
-
-Send an email using the injected `IResend` instance:
-
-```csharp theme={"theme":{"light":"github-light","dark":"vesper"}}
-using Resend;
-
-public class FeatureImplementation
-{
-    private readonly IResend _resend;
-
-
-    public FeatureImplementation( IResend resend )
+    builder.Services.AddOptions();
+    builder.Services.AddHttpClient<ResendClient>();
+    builder.Services.Configure<ResendClientOptions>( o =>
     {
-        _resend = resend;
-    }
+        o.ApiToken = Environment.GetEnvironmentVariable( "RESEND_APITOKEN" )!;
+    } );
+    builder.Services.AddTransient<IResend, ResendClient>();
+    ```
 
+    Send an email using the injected `IResend` instance:
 
-    public Task Execute()
+    ```csharp theme={"theme":{"light":"github-light","dark":"vesper"}}
+    using Resend;
+
+    public class FeatureImplementation
     {
-        var message = new EmailMessage();
-        message.From = "Acme <onboarding@resend.dev>";
-        message.To.Add( "delivered@resend.dev" );
-        message.Subject = "hello world";
-        message.HtmlBody = "<strong>it works!</strong>";
+        private readonly IResend _resend;
 
-        await _resend.EmailSendAsync( message );
+
+        public FeatureImplementation( IResend resend )
+        {
+            _resend = resend;
+        }
+
+
+        public Task Execute()
+        {
+            var message = new EmailMessage();
+            message.From = "Acme <onboarding@resend.dev>";
+            message.To.Add( "delivered@resend.dev" );
+            message.Subject = "hello world";
+            message.HtmlBody = "<strong>it works!</strong>";
+
+            await _resend.EmailSendAsync( message );
+        }
     }
-}
-```
+    ```
+  </Step>
+</Steps>
 
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/dotnet-resend-examples/Examples/BasicSend.cs">

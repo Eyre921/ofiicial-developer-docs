@@ -12,30 +12,34 @@ If you prefer to watch a video, check out our video walkthrough below.
 
 <YouTube />
 
-## 1. Call the Resend integration in Anything
+## Guide
 
-Type `/Resend` in the chat and select the integration, and ask Anything to add email functionality to your project.
+<Steps>
+  <Step title="Call the Resend integration in Anything">
+    Type `/Resend` in the chat and select the integration, and ask Anything to add email functionality to your project.
 
-<img alt="adding the Resend integration to a Anything chat" />
+    <img alt="adding the Resend integration to a Anything chat" />
+  </Step>
 
-## 2. Add your Resend API key
+  <Step title="Add your Resend API key">
+    Anything usually prompts you for a Resend API key, which you can add in the [Resend Dashboard](https://resend.com/api-keys). If Anything doesn't prompt you for a Resend API key, click the **More options** <Icon icon="ellipsis-vertical" /> button and select **Secrets**.
 
-Anything usually prompts you for a Resend API key, which you can add in the [Resend Dashboard](https://resend.com/api-keys). If Anything doesn't prompt you for a Resend API key, click the **More options** <Icon icon="ellipsis-vertical" /> button and select **Secrets**.
+    Click the <Icon icon="plus" /> **Add new secret** button.
 
-Click the <Icon icon="plus" /> **Add new secret** button.
+    * **Name:** `RESEND_API_KEY`
+    * **Value:** Your Resend API key (e.g., `re_xxxxxxxxx0`)
 
-* **Name:** `RESEND_API_KEY`
-* **Value:** Your Resend API key (e.g., `re_xxxxxxxxx0`)
+    Learn more about [Secrets in Create](https://www.createanything.com/docs/essentials#project-settings).
+  </Step>
 
-Learn more about [Secrets in Create](https://www.createanything.com/docs/essentials#project-settings).
+  <Step title="Add a custom domain to your Resend account">
+    By default, you can only send emails to your own email address.
 
-## 3. Add a custom domain to your Resend account
+    To send emails to other email addresses:
 
-By default, you can only send emails to your own email address.
+    1. Add a [custom domain to your Resend account](https://resend.com/domains).
+    2. Add the custom domain to the `from` field in the `resend` function in Create.
 
-To send emails to other email addresses:
-
-1. Add a [custom domain to your Resend account](https://resend.com/domains).
-2. Add the custom domain to the `from` field in the `resend` function in Create.
-
-Learn more about [Functions in Create](https://www.createanything.com/docs/builder/functions).
+    Learn more about [Functions in Create](https://www.createanything.com/docs/builder/functions).
+  </Step>
+</Steps>

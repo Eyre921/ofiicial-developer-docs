@@ -49,7 +49,7 @@ resend.emails.send({
   verified in Resend, including any subdomains.
 </Warning>
 
-## Still Having Issues?
+## If You're Still Having Issues
 
 If you've verified that your domain matches and you're still getting a 403 error:
 

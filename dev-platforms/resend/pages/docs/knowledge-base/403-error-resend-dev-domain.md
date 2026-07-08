@@ -43,7 +43,7 @@ To send emails to recipients other than your own email address, you need to add 
   specific provider.
 </Info>
 
-## Still Having Issues?
+## If You're Still Having Issues
 
 If you've verified your domain and updated your API request but you're still getting a 403 error:
 

@@ -44,7 +44,7 @@ echo "Your order has shipped." | resend emails send \
   --text-file -
 ```
 
-This works with `--html-file -` on send and `--file -` on [batch commands](/docs/cli#resend-emails-batch).
+This works with `--html-file -` on send and `--file -` on [batch commands](/docs/cli#emails).
 
 ## Batch sending
 

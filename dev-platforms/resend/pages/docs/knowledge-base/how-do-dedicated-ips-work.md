@@ -24,7 +24,7 @@ Resend goes one step further and exclusively provisions "Managed Dedicated IP Po
   as **Dedicated IPs** in this article to be succinct.
 </Note>
 
-## When are Dedicated IPs helpful?
+## When Dedicated IPs are helpful
 
 Historically, Dedicated IPs were seen as the primary ingredient to great deliverability. This is not true anymore as Inbox Providers have incorporated dozens of other factors like sending history, domain reputation, and sending feedback (bounces and complaints) more predominantly than IP reputation.
 
@@ -32,7 +32,7 @@ Though Dedicated IPs are not a deliverability silver bullet, they maintain a hel
 
 There is power in numbers, and for many senders it can be helpful to leverage the positive reputation of other senders in an IP pool. For some senders though, they want to maintain their own IP reputation without any chance of being impacted, positively or negatively, by other senders. For them, Dedicated IPs are a helpful solution.
 
-## When are Dedicated IPs not helpful?
+## When Dedicated IPs are not helpful
 
 Dedicated IPs can be helpful, but there are some situations where they can actually hinder your ability to reach the inbox. If any of these situations match your use case, Dedicated IPs may hinder more than help:
 
@@ -42,7 +42,7 @@ Dedicated IPs can be helpful, but there are some situations where they can actua
 * **New sender**: If you're starting out and have no sending history.
 * **IP Allowlisting**: Resend does not expose the IPs included in your dedicated pool.
 
-## How does IP warmup work?
+## How IP warmup works
 
 With Resend's Managed Dedicated IP Pools, the warmup process is handled automatically:
 

@@ -13,49 +13,53 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Ruby SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Ruby SDK.
 
-<CodeGroup>
-  ```bash RubyGems theme={"theme":{"light":"github-light","dark":"vesper"}}
-  gem install resend
-  ```
+    <CodeGroup>
+      ```bash RubyGems theme={"theme":{"light":"github-light","dark":"vesper"}}
+      gem install resend
+      ```
 
-  ```bash Gemfile theme={"theme":{"light":"github-light","dark":"vesper"}}
-  gem 'resend'
-  ```
-</CodeGroup>
+      ```bash Gemfile theme={"theme":{"light":"github-light","dark":"vesper"}}
+      gem 'resend'
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```rb index.rb theme={"theme":{"light":"github-light","dark":"vesper"}}
+    require "sinatra"
+    require "resend"
 
-```rb index.rb theme={"theme":{"light":"github-light","dark":"vesper"}}
-require "sinatra"
-require "resend"
+    set :port, 5000
+    set :bind, "0.0.0.0"
 
-set :port, 5000
-set :bind, "0.0.0.0"
+    Resend.api_key = ENV["RESEND_API_KEY"]
 
-Resend.api_key = ENV["RESEND_API_KEY"]
+    get "/" do
 
-get "/" do
+      content_type :json
 
-  content_type :json
+      params = {
+        from: 'Acme <onboarding@resend.dev>',
+        to: ['delivered@resend.dev'],
+        subject: 'hello world',
+        html: '<strong>it works!</strong>',
+      }
 
-  params = {
-    from: 'Acme <onboarding@resend.dev>',
-    to: ['delivered@resend.dev'],
-    subject: 'hello world',
-    html: '<strong>it works!</strong>',
-  }
+      Resend::Emails.send(params).to_hash.to_json
+    end
+    ```
+  </Step>
+</Steps>
 
-  Resend::Emails.send(params).to_hash.to_json
-end
-```
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Sinatra App" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/ruby-resend-examples/sinatra_app">

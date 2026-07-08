@@ -40,7 +40,7 @@ Learn how to send your first email using Encore and the Resend Go SDK.
 
   ### **Define Secrets**
 
-  Encore Go uses an unexported `secrets` struct to securely inject secrets at runtime. Do **not** use `os.Getenv()`.
+  Encore Go uses an unexported `secrets` struct to securely inject secrets at runtime. Do not use `os.Getenv()`.
 
   ```go theme={"theme":{"light":"github-light","dark":"vesper"}}
   var secrets struct {
@@ -132,7 +132,7 @@ Learn how to send your first email using Encore and the Resend Go SDK.
   | ---------- | ---------------- | -------------------------- |
   | `Template` | `*EmailTemplate` | Published template to use. |
 
-  If `Template` is provided, do **not** include `Html` or `Text`.
+  If `Template` is provided, do not include `Html` or `Text`.
 
   ### **Response**
 
@@ -258,94 +258,98 @@ Before you start, you'll need:
 * A [verified domain](/docs/add-a-domain)
 * Install [Encore](https://encore.dev/docs/go/install) (`brew install encoredev/tap/encore`)
 
-## 1. Create an Encore app
+## Guide
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-encore app create --lang=go my-app
-```
+<Steps>
+  <Step title="Create an Encore app">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    encore app create --lang=go my-app
+    ```
 
-Then install the Resend Go SDK:
+    Then install the Resend Go SDK:
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-go get github.com/resend/resend-go/v3
-```
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    go get github.com/resend/resend-go/v3
+    ```
+  </Step>
 
-## 2. Set your API key
+  <Step title="Set your API key">
+    Encore has built-in [secrets management](https://encore.dev/docs/go/primitives/secrets). Store your Resend API key as a secret - no `.env` files needed:
 
-Encore has built-in [secrets management](https://encore.dev/docs/go/primitives/secrets). Store your Resend API key as a secret - no `.env` files needed:
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    encore secret set --type dev,local,pr,production ResendAPIKey
+    ```
+  </Step>
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-encore secret set --type dev,local,pr,production ResendAPIKey
-```
+  <Step title="Send email using an API endpoint">
+    Create an `email` service directory and define your endpoint:
 
-## 3. Send email using an API endpoint
+    ```go email/email.go theme={"theme":{"light":"github-light","dark":"vesper"}}
+    package email
 
-Create an `email` service directory and define your endpoint:
+    import (
+        "context"
 
-```go email/email.go theme={"theme":{"light":"github-light","dark":"vesper"}}
-package email
+        "github.com/resend/resend-go/v3"
+    )
 
-import (
-    "context"
-
-    "github.com/resend/resend-go/v3"
-)
-
-var secrets struct {
-    ResendAPIKey string
-}
-
-type SendRequest struct {
-    To      string `json:"to"`
-    Subject string `json:"subject"`
-    HTML    string `json:"html"`
-}
-
-type SendResponse struct {
-    ID string `json:"id"`
-}
-
-//encore:api public method=POST path=/email/send
-func Send(ctx context.Context, req *SendRequest) (*SendResponse, error) {
-    client := resend.NewClient(secrets.ResendAPIKey)
-
-    sent, err := client.Emails.Send(&resend.SendEmailRequest{
-        From:    "Acme <onboarding@resend.dev>",
-        To:      []string{req.To},
-        Subject: req.Subject,
-        Html:    req.HTML,
-    })
-    if err != nil {
-        return nil, err
+    var secrets struct {
+        ResendAPIKey string
     }
 
-    return &SendResponse{ID: sent.Id}, nil
-}
-```
+    type SendRequest struct {
+        To      string `json:"to"`
+        Subject string `json:"subject"`
+        HTML    string `json:"html"`
+    }
 
-## 4. Run the app
+    type SendResponse struct {
+        ID string `json:"id"`
+    }
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-encore run
-```
+    //encore:api public method=POST path=/email/send
+    func Send(ctx context.Context, req *SendRequest) (*SendResponse, error) {
+        client := resend.NewClient(secrets.ResendAPIKey)
 
-Your API is running at `http://localhost:4000`. Send a test email:
+        sent, err := client.Emails.Send(&resend.SendEmailRequest{
+            From:    "Acme <onboarding@resend.dev>",
+            To:      []string{req.To},
+            Subject: req.Subject,
+            Html:    req.HTML,
+        })
+        if err != nil {
+            return nil, err
+        }
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-curl -X POST http://localhost:4000/email/send \
-  -H "Content-Type: application/json" \
-  -d '{"to":"delivered@resend.dev","subject":"Hello World","html":"<strong>It works!</strong>"}'
-```
+        return &SendResponse{ID: sent.Id}, nil
+    }
+    ```
+  </Step>
 
-## 5. AI skills for Encore Go
+  <Step title="Run the app">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    encore run
+    ```
 
-If you're using an AI coding assistant, install the [Encore skills](https://github.com/encoredev/skills) for context-aware help with APIs, services, Pub/Sub, databases, auth, and more:
+    Your API is running at `http://localhost:4000`. Send a test email:
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-npx skills add encoredev/skills
-```
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    curl -X POST http://localhost:4000/email/send \
+      -H "Content-Type: application/json" \
+      -d '{"to":"delivered@resend.dev","subject":"Hello World","html":"<strong>It works!</strong>"}'
+    ```
+  </Step>
 
-## 6. Try it yourself
+  <Step title="AI skills for Encore Go">
+    If you're using an AI coding assistant, install the [Encore skills](https://github.com/encoredev/skills). They provide context-aware help with topics such as APIs, services, Pub/Sub, databases, and auth:
+
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npx skills add encoredev/skills
+    ```
+  </Step>
+</Steps>
+
+# Examples
 
 <CardGroup>
   <Card title="Encore Go Docs" icon="arrow-up-right-from-square" href="https://encore.dev/docs/go">

@@ -18,7 +18,7 @@ Mailbox providers like Gmail and Outlook closely monitor how recipients react to
 
 ## What *doesn’t* count as permission
 
-These common methods are **not** considered valid:
+These common methods are not considered valid:
 
 * Including a clause in your Terms of Service that says users “agree to receive emails”
 * Using a **pre-checked** box on your signup form for marketing messages
@@ -39,7 +39,7 @@ Valid consent means the recipient **clearly and knowingly agreed** to receive th
 
 In other words, recipients must be able to consent to each message type from a particular sender.
 
-## What happens if you send without consent?
+## What happens if you send without consent
 
 If you send to recipients who didn’t explicitly opt in, here’s what can happen:
 
@@ -64,7 +64,7 @@ The easiest way to get consent is to **ask for it clearly and separately**. Add 
 
 <img alt="Example of a consent checkbox and unsubscribe link" />
 
-## Still have questions?
+## Get more help
 
 Following best practices helps everyone: your recipients, your deliverability, and the health of the email ecosystem. When you start with clear consent, your messages are the ones people are *glad* to receive.
 

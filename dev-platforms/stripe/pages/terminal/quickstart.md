@@ -1256,6 +1256,7 @@ You can configure the simulated reader to test different flows within your point
 // Sign in to see your own test API key embedded in code samples.
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 const stripe = require("stripe")("<<YOUR_SECRET_KEY>>");
+app.use(express.static("public"));
 const createLocation = async () => {
   const location = await stripe.terminal.locations.create({
     display_name: '{{TERMINAL_LOCATION_NAME}}',
@@ -1506,6 +1507,12 @@ require 'stripe'
 # Sign in to see your own test API key embedded in code samples.
 \# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 $client = Stripe::StripeClient.new('<<YOUR_SECRET_KEY>>')
+set :public_folder, -> { File.join(root, 'public') }
+set :static, true
+
+get '/' do
+  redirect '/index.html'
+end
 def create_location
   $client.v1.terminal.locations.create({
     display_name: '{{TERMINAL_LOCATION_NAME}}',
@@ -1707,6 +1714,14 @@ import stripe
 # Sign in to see your own test API key embedded in code samples.
 \# Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 client = stripe.StripeClient('<<YOUR_SECRET_KEY>>')
+app = flask.Flask(__name__)
+app = flask.Flask(__name__)
+app = flask.Flask(__name__, static_folder='public',
+            static_url_path='', template_folder='public')
+
+@app.route('/')
+def index():
+  return flask.render_template('index.html')
 def create_location():
   location = client.v1.terminal.locations.create(params={
     'display_name': '{{TERMINAL_LOCATION_NAME}}',
@@ -1721,7 +1736,7 @@ def create_location():
     },
   })
 
-  return jsonify(location.to_dict())
+  return flask.jsonify(location.to_dict())
 def create_location():
   location = client.v1.terminal.locations.create(params={
     'display_name': '{{TERMINAL_LOCATION_NAME}}',
@@ -1746,10 +1761,10 @@ def create_location():
     },
   })
 
-  return jsonify(location.to_dict())
+  return flask.jsonify(location.to_dict())
 @app.route('/create_location', methods=['POST'])
 def create_location():
-  data = json.loads(request.data)
+  data = json.loads(flask.request.data)
 
   location = client.v1.terminal.locations.create(params={
     'display_name': data['display_name'],
@@ -1762,7 +1777,7 @@ def create_location():
     },
   })
 
-  return jsonify(location.to_dict())
+  return flask.jsonify(location.to_dict())
 @app.route('/create_location', methods=['POST'])
 def create_location():
   location = client.v1.terminal.locations.create(params={
@@ -1788,10 +1803,10 @@ def create_location():
     },
   })
 
-  return jsonify(location.to_dict())
+  return flask.jsonify(location.to_dict())
 @app.route('/register_reader', methods=['POST'])
 def register_reader():
-  data = json.loads(request.data)
+  data = json.loads(flask.request.data)
 
   reader = client.v1.terminal.readers.create(params={
     'location': data['location_id'],
@@ -1805,10 +1820,10 @@ def register_reader():
     'registration_code': 'simulated-wpe',
   })
 
-  return jsonify(reader.to_dict())
+  return flask.jsonify(reader.to_dict())
 @app.route('/create_payment_intent', methods=['POST'])
 def secret():
-  data = json.loads(request.data)
+  data = json.loads(flask.request.data)
 
   \# For Terminal payments, the 'payment_method_types' parameter must include
   # 'card_present'.
@@ -1827,10 +1842,10 @@ def secret():
       }
     },
   })
-  return jsonify(intent.to_dict())
+  return flask.jsonify(intent.to_dict())
 @app.route('/process_payment', methods=['POST'])
 def process_payment():
-  data = json.loads(request.data)
+  data = json.loads(flask.request.data)
 
   tries = 3
   for attempt in range(tries):
@@ -1841,7 +1856,7 @@ def process_payment():
           'payment_intent': data['payment_intent_id'],
         },
       )
-      return jsonify(reader.to_dict())
+      return flask.jsonify(reader.to_dict())
     except stripe.error.InvalidRequestError as e:
       if e.code == 'terminal_reader_timeout':
         \# Temporary networking blip, automatically retry a few times.
@@ -1871,7 +1886,7 @@ def process_payment():
         return e.json_body
 @app.route('/simulate_payment', methods=['POST'])
 def simulate_payment():
-  data = json.loads(request.data)
+  data = json.loads(flask.request.data)
 
   options = {
       "card_present": {
@@ -1885,23 +1900,23 @@ def simulate_payment():
     params=options
   )
 
-  return jsonify(reader.to_dict())
+  return flask.jsonify(reader.to_dict())
 \# The ConnectionToken's secret lets you connect to any Stripe Terminal reader
 # and take payments with your Stripe account.
 # Be sure to authenticate the endpoint for creating connection tokens.
 @app.route('/connection_token', methods=['POST'])
 def token():
   connection_token = client.v1.terminal.connection_tokens.create()
-  return jsonify(secret=connection_token.secret)
+  return flask.jsonify(secret=connection_token.secret)
 @app.route('/capture_payment_intent', methods=['POST'])
 def capture():
-  data = json.loads(request.data)
+  data = json.loads(flask.request.data)
 
   intent = client.v1.payment_intents.capture(
     data['payment_intent_id']
   )
 
-  return jsonify(intent.to_dict())
+  return flask.jsonify(intent.to_dict())
 certifi==2026.1.4
 chardet==5.2.0
 click==8.3.1
@@ -1914,6 +1929,18 @@ requests==2.32.5
 stripe==15.2.0
 toml==0.10.2
 Werkzeug==3.1.5
+  case '/':
+    header('Content-Type: text/html; charset=UTF-8');
+    readfile(__DIR__ . '/public/index.html');
+    break;
+  case '/global.css':
+    header('Content-Type: text/css');
+    readfile(__DIR__ . '/public/global.css');
+    break;
+  case '/client.js':
+    header('Content-Type: text/javascript');
+    readfile(__DIR__ . '/public/client.js');
+    break;
 // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
 $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
   $data = json_decode(file_get_contents('php://input'), true);
@@ -2037,6 +2064,7 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
 $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
   $connectionToken = $stripe->terminal->connectionTokens->create();
   echo json_encode(array('secret' => $connectionToken->secret));
+        .UseWebRoot("public")
   private static Location createLocation(){
     var options = new LocationCreateOptions
     {
@@ -2097,6 +2125,8 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
       // Sign in to see your own test API key embedded in code samples.
       // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
       services.AddSingleton(new StripeClient("<<YOUR_SECRET_KEY>>"));
+      app.UseDefaultFiles();
+      app.UseStaticFiles();
   // The ConnectionToken's secret lets you connect to any Stripe Terminal reader
   // and take payments with your Stripe account.
   // Be sure to authenticate the endpoint for creating connection tokens.
@@ -2440,6 +2470,7 @@ $stripe = new \Stripe\StripeClient('<<YOUR_SECRET_KEY>>');
   // Sign in to see your own test API key embedded in code samples.
   // Don't put any keys in code. See https://docs.stripe.com/keys-best-practices.
   sc := stripe.NewClient("<<YOUR_SECRET_KEY>>")
+  http.Handle("/", http.FileServer(http.Dir("public")))
   http.HandleFunc("/connection_token", func(w http.ResponseWriter, r *http.Request) { handleConnectionToken(sc, w, r) })
   http.HandleFunc("/create_location", func(w http.ResponseWriter, r *http.Request) { handleCreateLocation(sc, w, r) })
   http.HandleFunc("/register_reader", func(w http.ResponseWriter, r *http.Request) { handleRegisterReader(sc, w, r) })
@@ -2748,6 +2779,8 @@ func handleCapture(sc *stripe.Client, w http.ResponseWriter, r *http.Request) {
   writeJSON(w, pi)
 }
 require github.com/stripe/stripe-go/v85 v85.2.0
+import java.nio.file.Paths;
+import static spark.Spark.staticFiles;
 import com.stripe.model.terminal.ConnectionToken;
 import com.stripe.model.terminal.Reader;
 import com.stripe.param.terminal.ReaderProcessPaymentIntentParams;
@@ -2823,6 +2856,7 @@ import com.stripe.param.terminal.ReaderCreateParams;
       return payment_intent_id;
     }
   }
+    staticFiles.externalLocation(Paths.get("public").toAbsolutePath().toString());
     // This is a public sample test API key.
     // Don't submit any personally identifiable information in requests made with this key.
     // Sign in to see your own test API key embedded in code samples.

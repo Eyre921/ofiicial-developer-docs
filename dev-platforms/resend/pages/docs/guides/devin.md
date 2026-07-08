@@ -18,69 +18,73 @@ Before you start, make sure you have:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Open Devin Settings
+## Guide
 
-In Devin, open the **Settings** menu from your account dropdown.
+<Steps>
+  <Step title="Open Devin Settings">
+    In Devin, open the **Settings** menu from your account dropdown.
+  </Step>
 
-## 2. Go to Connections > MCP Servers
+  <Step title="Go to Connections > MCP Servers">
+    In the Settings sidebar, click **Connections**, then select the **MCP Servers** tab. Click **Add a custom MCP**.
 
-In the Settings sidebar, click **Connections**, then select the **MCP Servers** tab. Click **Add a custom MCP**.
+    <img alt="Selecting MCP Servers under Connections in Devin" />
+  </Step>
 
-<img alt="Selecting MCP Servers under Connections in Devin" />
+  <Step title="Add the Resend MCP configuration">
+    Click **Import JSON** and paste the following configuration into the modal.
 
-## 3. Add the Resend MCP configuration
-
-Click **Import JSON** and paste the following configuration into the modal.
-
-```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-{
-  "mcpServers": {
-    "resend": {
-      "command": "npx",
-      "args": ["-y", "resend-mcp"],
-      "env": {
-        "RESEND_API_KEY": "re_xxxxxxxxx",
-        "SENDER_EMAIL_ADDRESS": "onboarding@resend.dev"
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "mcpServers": {
+        "resend": {
+          "command": "npx",
+          "args": ["-y", "resend-mcp"],
+          "env": {
+            "RESEND_API_KEY": "re_xxxxxxxxx",
+            "SENDER_EMAIL_ADDRESS": "onboarding@resend.dev"
+          }
+        }
       }
     }
-  }
-}
-```
+    ```
 
-<img alt="Pasting the Resend MCP configuration in Devin" />
+    <img alt="Pasting the Resend MCP configuration in Devin" />
+  </Step>
 
-## 4. Update the Environment Variables
+  <Step title="Update the Environment Variables">
+    Scroll down and update the environment variables:
 
-Scroll down and update the environment variables:
+    * `RESEND_API_KEY`: delete this and add it as a secret (see the next step).
+    * `SENDER_EMAIL_ADDRESS`: update this with your sender email address you've verified in the [Resend Dashboard](https://resend.com/domains).
 
-* `RESEND_API_KEY`: delete this and add it as a secret ([below](#5-add-the-resend-api-key-as-a-secret)).
-* `SENDER_EMAIL_ADDRESS`: update this with your sender email address you've verified in the [Resend Dashboard](https://resend.com/domains).
+      <img alt="Update the environment variables" />
+  </Step>
 
-<img alt="Update the environment variables" />
+  <Step title="Add the Resend API key as a secret">
+    Add the `RESEND_API_KEY` as a secret. Click **Save secret** to confirm.
 
-## 5. Add the Resend API key as a secret
+    <img alt="Adding the Resend API key as a Devin secret" />
 
-Add the `RESEND_API_KEY` as a secret. Click **Save secret** to confirm.
+    <Info>
+      You can create a new API key in the [Resend
+      Dashboard](https://resend.com/api-keys).
+    </Info>
+  </Step>
 
-<img alt="Adding the Resend API key as a Devin secret" />
+  <Step title="Confirm and enable the MCP server">
+    Add a description, click **Install and Enable**, and confirm in the dialog. Devin will install the server and mark it as connected.
 
-<Info>
-  You can create a new API key in the [Resend
-  Dashboard](https://resend.com/api-keys).
-</Info>
+    <img alt="Confirming the Resend MCP server in Devin" />
+  </Step>
 
-## 6. Confirm and enable the MCP server
+  <Step title="Test the connection">
+    Ask Devin to send a test email. For example:
 
-Add a description, click **Install and Enable**, and confirm in the dialog. Devin will install the server and mark it as connected.
+    ```text theme={"theme":{"light":"github-light","dark":"vesper"}}
+    Send a test email to delivered@resend.dev using the Resend MCP server. Subject: "Hello from Devin".
+    ```
 
-<img alt="Confirming the Resend MCP server in Devin" />
-
-## 7. Test the connection
-
-Ask Devin to send a test email. For example:
-
-```text theme={"theme":{"light":"github-light","dark":"vesper"}}
-Send a test email to delivered@resend.dev using the Resend MCP server. Subject: "Hello from Devin".
-```
-
-Devin will call the Resend MCP server and confirm the send.
+    Devin will call the Resend MCP server and confirm the send.
+  </Step>
+</Steps>

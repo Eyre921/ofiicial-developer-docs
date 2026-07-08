@@ -13,37 +13,41 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Get the Resend SMTP credentials
+## Guide
 
-When configuring your SMTP integration, you'll need to use the following credentials:
+<Steps>
+  <Step title="Get the Resend SMTP credentials">
+    When configuring your SMTP integration, you'll need to use the following credentials:
 
-* **Host**: `smtp.resend.com`
-* **Port**: `465`
-* **Username**: `resend`
-* **Password**: `YOUR_API_KEY`
+    * **Host**: `smtp.resend.com`
+    * **Port**: `465`
+    * **Username**: `resend`
+    * **Password**: `YOUR_API_KEY`
+  </Step>
 
-## 2. Integrate with Liferay
+  <Step title="Integrate with Liferay">
+    After logging into your Liferay instance as the admin user, you'll need to enable the SMTP integration.
 
-After logging into your Liferay instance as the admin user, you'll need to enable the SMTP integration.
+    1. Navigate to **Control Panel** → **Server Administration** → **Mail**.
 
-1. Navigate to **Control Panel** → **Server Administration** → **Mail**.
+    <img alt="Liferay - SMTP" />
 
-<img alt="Liferay - SMTP" />
+    2. Copy-and-paste the SMTP credentials from Resend to Liferay.
 
-2. Copy-and-paste the SMTP credentials from Resend to Liferay.
+    * **Outgoing SMTP Server**: `smtp.resend.com`
+    * **Outgoing Port**: `465`
+    * **Enable StartTLS**: `True`
+    * **User Name**: `resend`
+    * **Password**: `YOUR_API_KEY`
 
-* **Outgoing SMTP Server**: `smtp.resend.com`
-* **Outgoing Port**: `465`
-* **Enable StartTLS**: `True`
-* **User Name**: `resend`
-* **Password**: `YOUR_API_KEY`
+    Make sure to replace `YOUR_API_KEY` with an existing key or create a new [API Key](https://resend.com/api-keys).
 
-Make sure to replace `YOUR_API_KEY` with an existing key or create a new [API Key](https://resend.com/api-keys).
+    For the additional JavaMail properties, you can use:
 
-For the additional JavaMail properties, you can use:
-
-```
-mail.smtp.auth=true
-mail.smtp.starttls.enable=true
-mail.smtp.starttls.required=true
-```
+    ```
+    mail.smtp.auth=true
+    mail.smtp.starttls.enable=true
+    mail.smtp.starttls.required=true
+    ```
+  </Step>
+</Steps>

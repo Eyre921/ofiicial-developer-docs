@@ -126,7 +126,7 @@ Learn how to send your first email using Bun and the Resend Node.js SDK.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -282,62 +282,66 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Node.js SDK.
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-bun install resend
-```
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    bun install resend
+    ```
+  </Step>
 
-## 2. Create an email template
+  <Step title="Create an email template">
+    Start by creating your email template on `email-template.tsx`.
 
-Start by creating your email template on `email-template.tsx`.
+    ```tsx email-template.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import * as React from 'react';
 
-```tsx email-template.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
-import * as React from 'react';
+    interface EmailTemplateProps {
+      firstName: string;
+    }
 
-interface EmailTemplateProps {
-  firstName: string;
-}
+    export const EmailTemplate = ({ firstName }: EmailTemplateProps) => (
+      <div>
+        <h1>Welcome, {firstName}!</h1>
+      </div>
+    );
+    ```
+  </Step>
 
-export const EmailTemplate = ({ firstName }: EmailTemplateProps) => (
-  <div>
-    <h1>Welcome, {firstName}!</h1>
-  </div>
-);
-```
+  <Step title="Send email using React">
+    Create a new file `index.tsx` and send your first email.
 
-## 3. Send email using React
+    ```tsx index.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { Resend } from 'resend';
+    import { EmailTemplate } from './email-template';
 
-Create a new file `index.tsx` and send your first email.
+    const resend = new Resend(process.env.RESEND_API_KEY);
 
-```tsx index.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { Resend } from 'resend';
-import { EmailTemplate } from './email-template';
+    const server = Bun.serve({
+      port: 3000,
+      async fetch() {
+        const data = await resend.emails.send({
+          from: 'Acme <onboarding@resend.dev>',
+          to: ['delivered@resend.dev'],
+          subject: 'Hello World',
+          react: EmailTemplate({ firstName: 'Vitor' }),
+        });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-const server = Bun.serve({
-  port: 3000,
-  async fetch() {
-    const data = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['delivered@resend.dev'],
-      subject: 'Hello World',
-      react: EmailTemplate({ firstName: 'Vitor' }),
+        return new Response(JSON.stringify(data));
+      },
     });
 
-    return new Response(JSON.stringify(data));
-  },
-});
+    console.log(`Listening on http://localhost:${server.port} ...`);
+    ```
 
-console.log(`Listening on http://localhost:${server.port} ...`);
-```
+    Start the local server by running `bun index.tsx` and navigate to `http://localhost:3000`.
+  </Step>
+</Steps>
 
-Start the local server by running `bun index.tsx` and navigate to `http://localhost:3000`.
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/bun-resend-examples/typescript/examples/basic-send.ts">

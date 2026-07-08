@@ -26,7 +26,7 @@ Our Broadcasts feature was made to enable your entire team to send email campaig
 
 ### Markdown Support
 
-You can also write your emails using Markdown. This works with headings, lists, italic, bold, links, and quotes.
+You can also write your emails using Markdown. This works with headings, lists, and quotes. It also works with italic, bold, and links.
 
 If you copy and paste content from applications like Notion, Google Docs, or iA Writer, the editor maintains formatting consistency.
 
@@ -40,7 +40,7 @@ To do this, click on **Styles** at the top left of the Broadcast editor. You can
 
 <video />
 
-You can also edit individual styles for each component, including the font size, font weight, letter spacing, line height, and text alignment. You can also set custom properties for each component, such as image alt, button links, and social links,
+You can also edit individual styles for each component. These include the font size, font weight, letter spacing, line height, and text alignment. You can also set custom properties for each component, such as image alt, button links, and social links.
 
 <video />
 

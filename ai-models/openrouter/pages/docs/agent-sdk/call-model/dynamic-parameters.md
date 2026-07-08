@@ -89,6 +89,91 @@ const result = openrouter.callModel({
       return 'openai/gpt-5-nano';
     }
 
+    // Complex conversations: cap> ## Documentation Index
+> Fetch the complete documentation index at: https://openrouter.ai/docs/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Dynamic Parameters
+
+> Use async functions for adaptive model behavior across turns
+
+## Basic Usage
+
+Any parameter in `callModel` can be a function that computes its value based on conversation context. This enables adaptive behavior - changing models, adjusting temperature, or modifying instructions as the conversation evolves.
+
+Pass a function instead of a static value:
+
+```typescript lines theme={null}
+import { OpenRouter } from '@openrouter/agent';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const result = openrouter.callModel({
+  // Dynamic model selection based on turn count
+  model: (ctx) => {
+    return ctx.numberOfTurns > 3 ? 'openai/gpt-5.2' : 'openai/gpt-5-nano';
+  },
+  input: 'Hello!',
+  tools: [myTool],
+});
+```
+
+## Function Signature
+
+Parameter functions receive a `TurnContext` and return the parameter value:
+
+```typescript lines theme={null}
+type ParameterFunction<T> = (context: TurnContext) => T | Promise<T>;
+```
+
+### TurnContext
+
+| Property        | Type                                         | Description                                                   |
+| --------------- | -------------------------------------------- | ------------------------------------------------------------- |
+| `numberOfTurns` | `number`                                     | Current turn number (1-indexed)                               |
+| `turnRequest`   | `OpenResponsesRequest \| undefined`          | Current request object containing messages and model settings |
+| `toolCall`      | `OpenResponsesFunctionToolCall \| undefined` | The specific tool call being executed                         |
+
+## Async Functions
+
+Functions can be async for fetching external data:
+
+```typescript lines theme={null}
+const result = openrouter.callModel({
+  model: 'openai/gpt-5-nano',
+
+  // Fetch user preferences from database
+  temperature: async (ctx) => {
+    const prefs = await fetchUserPreferences(userId);
+    return prefs.preferredTemperature ?? 0.7;
+  },
+
+  // Load dynamic instructions
+  instructions: async (ctx) => {
+    const rules = await fetchBusinessRules();
+    return `Follow these rules:\n${rules.join('\n')}`;
+  },
+
+  input: 'Hello!',
+});
+```
+
+## Common Patterns
+
+### Progressive Model Upgrade
+
+Start with a fast model, upgrade for complex tasks:
+
+```typescript lines theme={null}
+const result = openrouter.callModel({
+  model: (ctx) => {
+    // First few turns: fast model
+    if (ctx.numberOfTurns <= 2) {
+      return 'openai/gpt-5-nano';
+    }
+
     // Complex conversations: capable model
     return 'openai/gpt-5.2';
   },

@@ -17,160 +17,164 @@ Prefer watching a video? Check out this video walkthrough below.
 
 <YouTube />
 
-## 1. Install
+## Guide
 
-First, install Resend for Laravel using the Composer package manager:
+<Steps>
+  <Step title="Install">
+    First, install Resend for Laravel using the Composer package manager:
 
-```bash Composer theme={"theme":{"light":"github-light","dark":"vesper"}}
-composer require resend/resend-laravel
-```
+    ```bash Composer theme={"theme":{"light":"github-light","dark":"vesper"}}
+    composer require resend/resend-laravel
+    ```
+  </Step>
 
-## 2. Configuration
+  <Step title="Configuration">
+    ### API key
 
-### API key
+    Next, configure your Resend API key in your application's `.env` file:
 
-Next, configure your Resend API key in your application's `.env` file:
+    ```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
+    RESEND_API_KEY=re_xxxxxxxxx
+    ```
 
-```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
-RESEND_API_KEY=re_xxxxxxxxx
-```
+    <Note>
+      If you've upgraded your Laravel project from an older version (pre-5.5) and haven't enabled auto service provider discovery, you'll need to manually register the Resend service provider. Add the provider to the `providers` array in your `config/app.php` file:
 
-<Note>
-  If you've upgraded your Laravel project from an older version (pre-5.5) and haven't enabled auto service provider discovery, you'll need to manually register the Resend service provider. Add the provider to the `providers` array in your `config/app.php` file:
+      ```php config/app.php theme={"theme":{"light":"github-light","dark":"vesper"}}
+      'providers' => [
+          // ... other providers
+          Resend\Laravel\ResendServiceProvider::class,
+      ],
+      ```
 
-  ```php config/app.php theme={"theme":{"light":"github-light","dark":"vesper"}}
-  'providers' => [
-      // ... other providers
-      Resend\Laravel\ResendServiceProvider::class,
-  ],
-  ```
+      Without this registration, the Facade may reference the core Resend PHP client instead of the Resend Laravel library, causing unexpected behavior.
+    </Note>
 
-  Without this registration, the Facade may reference the core Resend PHP client instead of the Resend Laravel library, causing unexpected behavior.
-</Note>
+    ### Mail driver
 
-### Mail driver
+    To use Resend as your mail driver, first create a new mailer definition, in the `mailers` array within your application's `config/mail.php` configuration file:
 
-To use Resend as your mail driver, first create a new mailer definition, in the `mailers` array within your application's `config/mail.php` configuration file:
+    ```php mail.php theme={"theme":{"light":"github-light","dark":"vesper"}}
+    'resend' => [
+        'transport' => 'resend',
+    ],
+    ```
 
-```php mail.php theme={"theme":{"light":"github-light","dark":"vesper"}}
-'resend' => [
-    'transport' => 'resend',
-],
-```
+    Next, update your application's `.env` file to use the Resend mail driver:
 
-Next, update your application's `.env` file to use the Resend mail driver:
+    ```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
+    MAIL_MAILER=resend
+    MAIL_FROM_ADDRESS=onboarding@resend.dev
+    MAIL_FROM_NAME=Acme
+    ```
+  </Step>
 
-```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
-MAIL_MAILER=resend
-MAIL_FROM_ADDRESS=onboarding@resend.dev
-MAIL_FROM_NAME=Acme
-```
+  <Step title="Send an email">
+    Resend for Laravel provides two convenient ways to send emails, using Laravel's email service or the `Resend` API facade.
 
-## 3. Send an email
+    ### Using the Mail Facade
 
-Resend for Laravel provides two convenient ways to send emails, using Laravel's email service or the `Resend` API facade.
+    ```php OrderShipmentController.php theme={"theme":{"light":"github-light","dark":"vesper"}}
+    <?php
 
-### Using the Mail Facade
+    namespace App\Http\Controllers;
 
-```php OrderShipmentController.php theme={"theme":{"light":"github-light","dark":"vesper"}}
-<?php
+    use App\Http\Controllers\Controller;
+    use App\Mail\OrderShipped;
+    use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
+    use Illuminate\Http\Request;
+    use Illuminate\Support\Facades\Mail;
 
-namespace App\Http\Controllers;
-
-use App\Http\Controllers\Controller;
-use App\Mail\OrderShipped;
-use App\Models\Order;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
-
-class OrderShipmentController extends Controller
-{
-    /**
-     * Ship the given order.
-     */
-    public function store(Request $request): RedirectResponse
+    class OrderShipmentController extends Controller
     {
-        $order = Order::findOrFail($request->order_id);
+        /**
+         * Ship the given order.
+         */
+        public function store(Request $request): RedirectResponse
+        {
+            $order = Order::findOrFail($request->order_id);
 
-        // Ship the order...
+            // Ship the order...
 
-        Mail::to($request->user())->send(new OrderShipped($order));
+            Mail::to($request->user())->send(new OrderShipped($order));
 
-        return redirect('/orders');
+            return redirect('/orders');
+        }
     }
-}
-```
+    ```
 
-### Using the Resend Facade
+    ### Using the Resend Facade
 
-```php OrderShipmentController.php theme={"theme":{"light":"github-light","dark":"vesper"}}
-<?php
+    ```php OrderShipmentController.php theme={"theme":{"light":"github-light","dark":"vesper"}}
+    <?php
 
-namespace App\Http\Controllers;
+    namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Mail\OrderShipped;
-use App\Models\Order;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Resend\Laravel\Facades\Resend;
+    use App\Http\Controllers\Controller;
+    use App\Mail\OrderShipped;
+    use App\Models\Order;
+    use Illuminate\Http\RedirectResponse;
+    use Illuminate\Http\Request;
+    use Resend\Laravel\Facades\Resend;
 
-class OrderShipmentController extends Controller
-{
-    /**
-     * Ship the given order.
-     */
-    public function store(Request $request): RedirectResponse
+    class OrderShipmentController extends Controller
     {
-        $order = Order::findOrFail($request->order_id);
+        /**
+         * Ship the given order.
+         */
+        public function store(Request $request): RedirectResponse
+        {
+            $order = Order::findOrFail($request->order_id);
 
-        // Ship the order...
+            // Ship the order...
 
-        Resend::emails()->send([
-            'from' => 'Acme <onboarding@resend.dev>',
-            'to' => [$request->user()->email],
-            'subject' => 'hello world',
-            'html' => (new OrderShipped($order))->render(),
-        ])
+            Resend::emails()->send([
+                'from' => 'Acme <onboarding@resend.dev>',
+                'to' => [$request->user()->email],
+                'subject' => 'hello world',
+                'html' => (new OrderShipped($order))->render(),
+            ])
 
-        return redirect('/orders');
+            return redirect('/orders');
+        }
     }
-}
-```
+    ```
+  </Step>
 
-## 4. Receiving webhook requests
+  <Step title="Receiving webhook requests">
+    By default, Resend for Laravel includes a webhook controller to respond to the `/resend/webhook` URL path. The controller will dispatch a Laravel event that corresponds to a Resend event. For example, an `email.delivered` event type will send an `EmailDelivered` Laravel event.
 
-By default, Resend for Laravel includes a webhook controller to respond to the `/resend/webhook` URL path. The controller will dispatch a Laravel event that corresponds to a Resend event. For example, an `email.delivered` event type will send an `EmailDelivered` Laravel event.
+    ### Register the webhook endpoint
 
-### Register the webhook endpoint
+    Register your publicly accessible HTTPS URL in the Resend dashboard.
 
-Register your publicly accessible HTTPS URL in the Resend dashboard.
+    <Tip>
+      For development, you can create a tunnel to your localhost server using a tool like
+      [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
 
-<Tip>
-  For development, you can create a tunnel to your localhost server using a tool like
-  [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
+      Example: `https://example123.ngrok.io/api/webhook`
+    </Tip>
 
-  Example: `https://example123.ngrok.io/api/webhook`
-</Tip>
+    <img alt="Add Webhook" />
 
-<img alt="Add Webhook" />
+    ### CSRF protection
 
-### CSRF protection
+    Webhook requests from Resend need to bypass Laravel's CSRF protection. Be sure to list the URI as an exception in your application's `App\Http\Middleware\VerifyCsrfToken` middleware or list the route outside of the web middleware group:
 
-Webhook requests from Resend need to bypass Laravel's CSRF protection. Be sure to list the URI as an exception in your application's `App\Http\Middleware\VerifyCsrfToken` middleware or list the route outside of the web middleware group:
+    ```php theme={"theme":{"light":"github-light","dark":"vesper"}}
+    protected $except = [
+        'resend/*',
+    ];
+    ```
 
-```php theme={"theme":{"light":"github-light","dark":"vesper"}}
-protected $except = [
-    'resend/*',
-];
-```
+    ### Verifying webhook signatures
 
-### Verifying webhook signatures
+    To enable webhook verification, ensure that the `RESEND_WEBHOOK_SECRET` environment variable is set in your application's `.env` file. The **Signing secret** can be retrieved from your [Resend dashboard](https://resend.com/webhooks).
+  </Step>
+</Steps>
 
-To enable webhook verification, ensure that the `RESEND_WEBHOOK_SECRET` environment variable is set in your application's `.env` file. The **Signing secret** can be retrieved from your [Resend dashboard](https://resend.com/webhooks).
-
-## 5. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Email Sending" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/laravel-resend-examples/app/Http/Controllers/EmailController.php">

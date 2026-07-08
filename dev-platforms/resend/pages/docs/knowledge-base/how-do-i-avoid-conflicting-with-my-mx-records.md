@@ -6,7 +6,7 @@ path: docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records
 
 Learn how to avoid conflicts with your existing MX records when setting up a Resend domain.
 
-## What is an MX record?
+## MX records for sending and receiving emails
 
 MX (Mail Exchanger) records specify where incoming mail is delivered on behalf of a domain. Every MX value has a unique priority (also known as preference) value. The lower the number, the higher the priority.
 
@@ -16,7 +16,7 @@ Resend requires that you setup a MX record on two occasions:
 
 2. **[Enabling your domain to receive emails](https://resend.com/docs/dashboard/receiving/custom-domains)**: You can setup an MX record on your domain to route all received emails to Resend.
 
-## Won't this conflict with my existing Inbox Provider?
+## Avoiding conflicts with MX record priorities
 
 Let's look at an example for each occasion Resend requires you to setup a MX record.
 
@@ -52,8 +52,8 @@ example.com    MX    9  inbound-smtp.us-east-1.amazonaws.com
 Now this MX record priority has a lower value (higher priority) so it will be prioritized. But keep in mind that:
 
 <Note>
-  * This *will* route **all** emails destined to `<anything>@example.com` to Resend, insted of your previous provider(e.g. G Suite)
-  * If two MX records have the same priority value, this does **not** mean it will send to both servers — instead only one server will be chosen, randomly, per email delivery attempt.
+  * This will route all emails destined to `<anything>@example.com` to Resend, instead of your previous provider (e.g., G Suite).
+  * If two MX records have the same priority value, this does not mean it will send to both servers. Instead, only one server will be chosen, randomly, per email delivery attempt.
 </Note>
 
 ## Solving common conflicts

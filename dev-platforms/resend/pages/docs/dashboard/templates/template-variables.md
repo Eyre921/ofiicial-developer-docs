@@ -262,7 +262,7 @@ When you define a variable, you can optionally define a fallback value. This val
 
 In the editor, if you fail to provide a fallback value, a warning sign will show for the variable. To edit a variable's fallback value, click on the variable chip in your template and use the Inspector sidebar on the right to update the fallback value.
 
-[As shown above](#create-template-with-variables), you can also include fallback values when creating a Template via the API.
+[As shown above](#create-custom-variables), you can also include fallback values when creating a Template via the API.
 
 ## Send Test Emails
 

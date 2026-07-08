@@ -8,6 +8,8 @@ Connect your AI agent to Resend using the hosted MCP server.
 
 MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. We offer both a [remote MCP server](#remote-mcp-server) and a [local MCP server](#local-mcp-server).
 
+<YouTube />
+
 ## Remote MCP Server
 
 Resend hosts the MCP server at:
@@ -81,6 +83,18 @@ When you connect, your client opens a browser window to log in to Resend and app
         "resend": {
           "serverUrl": "https://mcp.resend.com/mcp"
         }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Warp">
+    In Warp's Settings, navigate to **Agents** > **MCP servers**, and click **+ Add** to add a new server.
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "resend": {
+        "serverUrl": "https://mcp.resend.com/mcp"
       }
     }
     ```
@@ -246,6 +260,22 @@ Choose your preferred mode and client below to get started. Remember to replace 
           "env": {
             "RESEND_API_KEY": "re_xxxxxxxxx"
           }
+        }
+      }
+    }
+    ```
+  </Tab>
+
+  <Tab title="Warp">
+    In Warp's Settings, navigate to **Agents** > **MCP servers**, and click **+ Add** to add a new server.
+
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "resend": {
+        "command": "npx",
+        "args": ["-y", "resend-mcp"],
+        "env": {
+          "RESEND_API_KEY": "re_xxxxxxxxx"
         }
       }
     }

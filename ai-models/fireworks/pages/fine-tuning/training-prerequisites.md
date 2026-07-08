@@ -135,14 +135,18 @@ If validation fails, you'll receive specific error messages with instructions to
        * Copy exact evaluator ID
   </Accordion>
 
-  <Accordion title="Insufficient quota">
-    **Error**: `Insufficient GPU quota for this job`
+  <Accordion title="Insufficient quota (quota_exceeded / 403)">
+    **Error**: HTTP 429 `quota_exceeded` ("This job requires more GPUs than your current quota"), sometimes surfacing as a `403 Forbidden` on the training job poll
+
+    Training runs on Blackwell GPUs (B200/B300), and Blackwell quota is unlocked by your [spending tier](/guides/quotas_usage/account-quotas#spending-tiers), not by the base model you pick. Managed jobs run on a GPU shape the platform selects, so switching to a smaller model does not remove the requirement. Blackwell quota is 0 below Tier 2 and is granted automatically at Tier 2. This is separate from any A100/H100/H200 quota you may already have.
 
     **Fix**:
 
-    1. Check your current quota at [Account Settings](https://app.fireworks.ai/account/settings)
-    2. Request a quota increase through the dashboard
-    3. Or choose a smaller base model to reduce GPU requirements
+    1. Check your current quota: `firectl quota list`
+    2. Reach Tier 2 by adding a payment method and either spending $50 or adding $50 in [prepaid credits](https://fireworks.ai/billing). The quota is granted automatically, typically within about 15 minutes.
+    3. Resubmit your job.
+
+    See [Account quotas](/guides/quotas_usage/account-quotas) for the full tier table.
   </Accordion>
 
   <Accordion title="Parameter out of range">

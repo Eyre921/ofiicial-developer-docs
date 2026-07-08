@@ -110,7 +110,7 @@ After adding or correcting your DNS records:
 2. Use the "Restart verification" button in the Resend dashboard to trigger a fresh verification check
 3. If verification still fails after 24 hours, use [dns.email](https://dns.email) to check if your records are visible publicly
 
-## Need more help?
+## Get more help
 
 If you've followed all the steps above and your domain still isn't verifying, contact [Resend support](https://resend.com/help) with:
 

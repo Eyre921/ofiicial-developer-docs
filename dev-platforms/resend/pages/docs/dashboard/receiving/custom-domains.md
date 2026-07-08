@@ -8,156 +8,158 @@ Receive emails using your own domain.
 
 Besides [using Resend-managed domains](/docs/dashboard/receiving/introduction), you can also receive emails using your own custom domain, such as `yourdomain.tld`.
 
-Here's how to receive emails using a *new* custom domain.
+## Enabling receiving for a new domain
 
-## 1. Add the DNS record
+<Steps>
+  <Step title="Add the DNS record">
+    First, [verify your domain](/docs/dashboard/domains/introduction).
 
-First, [verify your domain](/docs/dashboard/domains/introduction).
+    Receiving emails requires an extra [MX record](https://resend.com/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records) to work. You'll need to add this record to your DNS provider.
 
-Receiving emails requires an extra [MX record](https://resend.com/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records) to work. You'll need to add this record to your DNS provider.
+    1. Go to the [Domains](https://resend.com/domains) page
+    2. Copy the MX record
+    3. Paste the MX record into your domain's DNS service
 
-1. Go to the [Domains](https://resend.com/domains) page
-2. Copy the MX record
-3. Paste the MX record into your domain's DNS service
+    <img alt="Add DNS records for Receiving Emails" />
 
-<img alt="Add DNS records for Receiving Emails" />
+    <Info>
+      If you already have existing MX records for your domain (because you're already
+      using it for a real inbox, for example), we recommend that you
+      create a subdomain (e.g. `subdomain.yourdomain.tld`) and add the MX record
+      there. This way, you can use Resend for receiving emails without affecting
+      your existing email service. Note that you will *not* receive emails at Resend
+      if the required `MX` record is not the lowest priority value for the domain.
 
-<Info>
-  If you already have existing MX records for your domain (because you're already
-  using it for a real inbox, for example), we recommend that you
-  create a subdomain (e.g. `subdomain.yourdomain.tld`) and add the MX record
-  there. This way, you can use Resend for receiving emails without affecting
-  your existing email service. Note that you will *not* receive emails at Resend
-  if the required `MX` record is not the lowest priority value for the domain.
+      Alternatively, you can configure your email service to forward emails to an address
+      that's configured in Resend or forward them directly to the SMTP server address
+      that appears in the receiving `MX` record.
+    </Info>
+  </Step>
 
-  Alternatively, you can configure your email service to forward emails to an address
-  that's configured in Resend or forward them directly to the SMTP server address
-  that appears in the receiving `MX` record.
-</Info>
+  <Step title="Configure webhooks">
+    Next, create a new webhook endpoint to receive email events.
 
-## 2. Configure webhooks
+    1. Go to the [Webhooks](https://resend.com/webhooks) page
+    2. Click "Add Webhook"
+    3. Enter the URL of your webhook endpoint
+    4. Select the event type `email.received`
+    5. Click "Add"
 
-Next, create a new webhook endpoint to receive email events.
+    <img alt="Add Webhook for Receiving Emails" />
+  </Step>
 
-1. Go to the [Webhooks](https://resend.com/webhooks) page
-2. Click "Add Webhook"
-3. Enter the URL of your webhook endpoint
-4. Select the event type `email.received`
-5. Click "Add"
+  <Step title="Receive email events">
+    In your application, create a new route that can accept `POST` requests.
 
-<img alt="Add Webhook for Receiving Emails" />
+    Here's how you can implement this:
 
-## 3. Receive email events
+    <CodeGroup>
+      ```js Next.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+      // app/api/events/route.ts
+      import type { NextRequest } from 'next/server';
+      import { NextResponse } from 'next/server';
 
-In your application, create a new route that can accept `POST` requests.
+      export const POST = async (request: NextRequest) => {
+        const event = await request.json();
 
-Here's how you can implement this:
+        if (event.type === 'email.received') {
+          return NextResponse.json(event);
+        }
 
-<CodeGroup>
-  ```js Next.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  // app/api/events/route.ts
-  import type { NextRequest } from 'next/server';
-  import { NextResponse } from 'next/server';
+        return NextResponse.json({});
+      };
+      ```
 
-  export const POST = async (request: NextRequest) => {
-    const event = await request.json();
+      ```php Laravel theme={"theme":{"light":"github-light","dark":"vesper"}}
+      // routes/api.php
+      use Illuminate\Http\Request;
+      use Illuminate\Support\Facades\Route;
 
-    if (event.type === 'email.received') {
-      return NextResponse.json(event);
-    }
+      Route::post('/events', function (Request $request) {
+          $event = $request->json()->all();
 
-    return NextResponse.json({});
-  };
-  ```
+          if ($event['type'] === 'email.received') {
+              return response()->json($event);
+          }
 
-  ```php Laravel theme={"theme":{"light":"github-light","dark":"vesper"}}
-  // routes/api.php
-  use Illuminate\Http\Request;
-  use Illuminate\Support\Facades\Route;
+          return response()->json([]);
+      });
+      ```
 
-  Route::post('/events', function (Request $request) {
-      $event = $request->json()->all();
+      ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+      // index.php
+      header('Content-Type: application/json');
+
+      if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+          http_response_code(405);
+          echo json_encode(['error' => 'Method Not Allowed']);
+          exit;
+      }
+
+      $body = file_get_contents('php://input');
+      $event = json_decode($body, true);
+
+      if (json_last_error() !== JSON_ERROR_NONE) {
+          http_response_code(400);
+          echo json_encode(['error' => 'Invalid JSON']);
+          exit;
+      }
 
       if ($event['type'] === 'email.received') {
-          return response()->json($event);
+          echo json_encode($event);
+          exit;
       }
 
-      return response()->json([]);
-  });
-  ```
+      echo json_encode([]);
+      ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  // index.php
-  header('Content-Type: application/json');
+      ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+      #[derive(Serialize)]
+      struct Empty {}
 
-  if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-      http_response_code(405);
-      echo json_encode(['error' => 'Method Not Allowed']);
-      exit;
-  }
-
-  $body = file_get_contents('php://input');
-  $event = json_decode($body, true);
-
-  if (json_last_error() !== JSON_ERROR_NONE) {
-      http_response_code(400);
-      echo json_encode(['error' => 'Invalid JSON']);
-      exit;
-  }
-
-  if ($event['type'] === 'email.received') {
-      echo json_encode($event);
-      exit;
-  }
-
-  echo json_encode([]);
-  ```
-
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  #[derive(Serialize)]
-  struct Empty {}
-
-  async fn example(Json(event): Json<resend_rs::events::EmailEvent>) -> Response {
-      if matches!(
-          event.r#type,
-          resend_rs::events::EmailEventType::EmailReceived
-      ) {
-          Json(event).into_response()
-      } else {
-          Json(Empty {}).into_response()
+      async fn example(Json(event): Json<resend_rs::events::EmailEvent>) -> Response {
+          if matches!(
+              event.r#type,
+              resend_rs::events::EmailEventType::EmailReceived
+          ) {
+              Json(event).into_response()
+          } else {
+              Json(Empty {}).into_response()
+          }
       }
-  }
-  ```
-</CodeGroup>
+      ```
+    </CodeGroup>
 
-Once you receive the email event, you can process the email body and attachments. We also recommend implementing [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
+    Once you receive the email event, you can process the email body and attachments. We also recommend implementing [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-{
-  "type": "email.received",
-  "created_at": "2026-02-22T23:41:12.126Z",
-  "data": {
-    "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
-    "created_at": "2026-02-22T23:41:11.894719+00:00",
-    "from": "onboarding@resend.dev",
-    "to": ["delivered@resend.dev"],
-    "bcc": [],
-    "cc": [],
-    "received_for": ["forwarded@example.com"],
-    "message_id": "<111-222-333@email.example.com>",
-    "subject": "Sending this example",
-    "attachments": [
-      {
-        "id": "2a0c9ce0-3112-4728-976e-47ddcd16a318",
-        "filename": "avatar.png",
-        "content_type": "image/png",
-        "content_disposition": "inline",
-        "content_id": "img001"
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "type": "email.received",
+      "created_at": "2026-02-22T23:41:12.126Z",
+      "data": {
+        "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
+        "created_at": "2026-02-22T23:41:11.894719+00:00",
+        "from": "onboarding@resend.dev",
+        "to": ["delivered@resend.dev"],
+        "bcc": [],
+        "cc": [],
+        "received_for": ["forwarded@example.com"],
+        "message_id": "<111-222-333@email.example.com>",
+        "subject": "Sending this example",
+        "attachments": [
+          {
+            "id": "2a0c9ce0-3112-4728-976e-47ddcd16a318",
+            "filename": "avatar.png",
+            "content_type": "image/png",
+            "content_disposition": "inline",
+            "content_id": "img001"
+          }
+        ]
       }
-    ]
-  }
-}
-```
+    }
+    ```
+  </Step>
+</Steps>
 
 ## Enabling receiving for an existing domain
 

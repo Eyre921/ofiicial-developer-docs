@@ -8,8 +8,8 @@ Learn what quotas and limits apply to accounts.
 
 Resend regulates email volume in three ways:
 
-1. email volume (quota) - for [Transactional Email](/docs/knowledge-base/what-sending-feature-to-use#what-is-a-transactional-email)
-2. number of contacts - for [Marketing Email](/docs/knowledge-base/what-sending-feature-to-use#what-is-a-marketing-email)
+1. email volume (quota) - for [Transactional Email](/docs/knowledge-base/what-sending-feature-to-use#transactional-emails)
+2. number of contacts - for [Marketing Email](/docs/knowledge-base/what-sending-feature-to-use#marketing-emails)
 3. sending rate
 
 These limits help improve your deliverability and likelihood of reaching your recipient's inbox.

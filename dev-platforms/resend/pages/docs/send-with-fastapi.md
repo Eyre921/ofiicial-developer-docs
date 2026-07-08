@@ -13,43 +13,47 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Python SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Python SDK.
 
-<CodeGroup>
-  ```bash Pip theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pip install resend
-  ```
-</CodeGroup>
+    <CodeGroup>
+      ```bash Pip theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pip install resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```py main.py theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import os
+    from typing import Dict
+    from fastapi import FastAPI
+    import resend
 
-```py main.py theme={"theme":{"light":"github-light","dark":"vesper"}}
-import os
-from typing import Dict
-from fastapi import FastAPI
-import resend
+    resend.api_key = os.environ["RESEND_API_KEY"]
 
-resend.api_key = os.environ["RESEND_API_KEY"]
+    app = FastAPI()
 
-app = FastAPI()
+    @app.post("/")
+    def send_mail() -> Dict:
+        params: resend.Emails.SendParams = {
+            "from": "Acme <onboarding@resend.dev>",
+            "to": ["delivered@resend.dev"],
+            "subject": "hello world",
+            "html": "<strong>it works!</strong>",
+        }
+        email: resend.Emails.SendResponse = resend.Emails.send(params)
+        return email
+    ```
+  </Step>
+</Steps>
 
-@app.post("/")
-def send_mail() -> Dict:
-    params: resend.Emails.SendParams = {
-        "from": "Acme <onboarding@resend.dev>",
-        "to": ["delivered@resend.dev"],
-        "subject": "hello world",
-        "html": "<strong>it works!</strong>",
-    }
-    email: resend.Emails.SendResponse = resend.Emails.send(params)
-    return email
-```
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="FastAPI App" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/python-resend-examples/examples/fastapi_app.py">

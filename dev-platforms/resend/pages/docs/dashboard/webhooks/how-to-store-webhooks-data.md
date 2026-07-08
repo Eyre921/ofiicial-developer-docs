@@ -17,11 +17,11 @@ These events contain valuable data, however, by default webhooks are ephemeral. 
 
 This guide explains [why storing your webhook data matters](#why-store-webhook-data) and [how to get started](#how-to-store-webhook-data).
 
-## Why Store Webhook Data?
+## Why Store Webhook Data
 
 Storing your own data offers several benefits.
 
-### 1. Meet Compliance Requirements
+### Meet Compliance Requirements
 
 Many industries have regulations around data retention and audit trails:
 
@@ -31,11 +31,11 @@ Many industries have regulations around data retention and audit trails:
 
 Storing your own webhook data gives you full control over retention periods and access controls.
 
-### 2. Enable Long-term Retention
+### Enable Long-term Retention
 
 Resend retains email data for 30 days across all plans (with flexible retention for Enterprise). If you need access to historical email data beyond that window, storing events in your own database ensures you never lose important information.
 
-### 3. Power Automated Workflows
+### Power Automated Workflows
 
 With webhook data in your database, you can build powerful automations:
 

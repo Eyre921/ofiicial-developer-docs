@@ -6,12 +6,12 @@ path: docs/knowledge-base/how-do-i-create-an-email-address-or-sender-in-resend
 
 Learn how sending from an email address works on Resend.
 
-Resend does **not** require you to “create an email address”, “set up a sender identity”, or “add a from-address” before sending.
+Resend does not require you to “create an email address”, “set up a sender identity”, or “add a from-address” before sending.
 
-Once a domain is verified in your Resend account, you can send from **any** email address at that domain.
+Once a domain is verified in your Resend account, you can send from any email address at that domain.
 
 <Info>
-  The email address you send from does **not** need to exist in another system.
+  The email address you send from does not need to exist in another system.
   However, we recommend using addresses that can receive replies.
 </Info>
 
@@ -190,7 +190,7 @@ In this example, `onboarding@example.com` is the sender address. As long as `exa
 ## Common misconceptions
 
 Some platforms require you to create, register, or pre-approve a sending address.\
-Resend does **not**. After verifying your domain, you’re free to send from any address at that domain, such as `example.com`, with no extra setup, creation, or configuration of that address.
+Resend does not. After verifying your domain, you’re free to send from any address at that domain, such as `notifications@example.com` or `updates@example.com`. No extra setup, creation, or configuration of that address is needed.
 
 ## Getting started
 

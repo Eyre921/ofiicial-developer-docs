@@ -13,38 +13,42 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Python SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Python SDK.
 
-<CodeGroup>
-  ```bash Pip theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pip install resend
-  ```
-</CodeGroup>
+    <CodeGroup>
+      ```bash Pip theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pip install resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```py index.py theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import os
+    import resend
 
-```py index.py theme={"theme":{"light":"github-light","dark":"vesper"}}
-import os
-import resend
+    resend.api_key = os.environ["RESEND_API_KEY"]
 
-resend.api_key = os.environ["RESEND_API_KEY"]
+    params: resend.Emails.SendParams = {
+        "from": "Acme <onboarding@resend.dev>",
+        "to": ["delivered@resend.dev"],
+        "subject": "hello world",
+        "html": "<strong>it works!</strong>",
+    }
 
-params: resend.Emails.SendParams = {
-    "from": "Acme <onboarding@resend.dev>",
-    "to": ["delivered@resend.dev"],
-    "subject": "hello world",
-    "html": "<strong>it works!</strong>",
-}
+    email = resend.Emails.send(params)
+    print(email)
+    ```
+  </Step>
+</Steps>
 
-email = resend.Emails.send(params)
-print(email)
-```
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/python-resend-examples/examples/basic_send.py">

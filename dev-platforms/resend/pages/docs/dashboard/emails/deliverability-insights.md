@@ -68,13 +68,13 @@ Using a subdomain instead of the root domain helps segment your sending by purpo
 
 You're using a shared tracking domain for click tracking. Shared tracking domains can hurt deliverability because spam filters may flag links rewritten through shared domains as suspicious. Configure a custom tracking subdomain to keep links on your own domain and improve deliverability.
 
-Learn how to [configure a custom tracking subdomain](/docs/dashboard/domains/tracking#open-and-click-tracking).
+Learn how to [configure a custom tracking subdomain](/docs/dashboard/domains/tracking).
 
 #### Use Custom Subdomain for Open Tracking
 
 You're using a shared tracking domain for open tracking. Spam filters are sensitive to tracking pixels served from shared domains, and may flag them as potential spam. Configure a custom tracking subdomain to serve tracking pixels from your own domain and improve deliverability.
 
-Learn how to [configure a custom tracking subdomain](/docs/dashboard/domains/tracking#open-and-click-tracking).
+Learn how to [configure a custom tracking subdomain](/docs/dashboard/domains/tracking).
 
 <Info>
   Open rates are not always accurate. Learn more about [why open rates may not

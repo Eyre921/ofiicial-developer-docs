@@ -8,7 +8,7 @@ Give your AI agent a secure email inbox to receive and act on inbound emails.
 
 The Agent Email Inbox skill enables AI agents to securely receive and respond to emails through Resend's webhook-based architecture. It provides security patterns that prevent untrusted email content from controlling your agent, including sender allowlists, content filtering, and sandboxed processing.
 
-## Why does my agent need a secure inbox?
+## Why your agent needs a secure inbox
 
 An AI agent's inbox receives **untrusted input**. Without proper security, anyone who knows your agent's email address can send instructions that your agent will execute. The Agent Email Inbox skill solves this with a leveled security approach built in from the start.
 

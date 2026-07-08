@@ -25,7 +25,7 @@ If a schema is defined, payloads are validated when the event is sent. Fields th
     <Note>
       The event name can be any string (e.g., `user.created`, `welcome`,
       `my-custom-event`). Dot notation is a recommended convention but is not
-      required. If multiple enabled automations use the same event name, **all** of
+      required. If multiple enabled automations use the same event name, all of
       them will be triggered.
     </Note>
   </Tab>
@@ -180,7 +180,7 @@ If a schema is defined, payloads are validated when the event is sent. Fields th
     <Note>
       The event name can be any string (e.g., `user.created`, `welcome`,
       `my-custom-event`). Dot notation is a recommended convention but is not
-      required. If multiple enabled automations use the same event name, **all** of
+      required. If multiple enabled automations use the same event name, all of
       them will be triggered.
     </Note>
 

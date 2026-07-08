@@ -126,7 +126,7 @@ Learn how to send your first email using Hono and the Resend Node.js SDK.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -282,90 +282,94 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Node.js SDK.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install resend
-  ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install resend
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add resend
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add resend
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add resend
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add resend
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add resend
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Create an email template
+  <Step title="Create an email template">
+    Start by creating your email template on `emails/email-template.tsx`.
 
-Start by creating your email template on `emails/email-template.tsx`.
+    ```tsx emails/email-template.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import * as React from 'react';
 
-```tsx emails/email-template.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
-import * as React from 'react';
+    interface EmailTemplateProps {
+      firstName: string;
+    }
 
-interface EmailTemplateProps {
-  firstName: string;
-}
+    export function EmailTemplate({ firstName }: EmailTemplateProps) {
+      return (
+        <div>
+          <h1>Welcome, {firstName}!</h1>
+        </div>
+      );
+    }
+    ```
 
-export function EmailTemplate({ firstName }: EmailTemplateProps) {
-  return (
-    <div>
-      <h1>Welcome, {firstName}!</h1>
-    </div>
-  );
-}
-```
+    To use JSX/TSX with Hono, we need to modify the `tsconfig.json`.
 
-To use JSX/TSX with Hono, we need to modify the `tsconfig.json`.
+    ```json tsconfig.json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "compilerOptions": {
+        "jsx": "react-jsx",
+        "jsxImportSource": "react"
+      }
+    }
+    ```
+  </Step>
 
-```json tsconfig.json theme={"theme":{"light":"github-light","dark":"vesper"}}
-{
-  "compilerOptions": {
-    "jsx": "react-jsx",
-    "jsxImportSource": "react"
-  }
-}
-```
+  <Step title="Send email using React">
+    Create a new file `index.tsx` and send your first email.
 
-## 3. Send email using React
+    ```ts index.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { Hono } from 'hono';
+    import { Resend } from 'resend';
+    import { EmailTemplate } from './emails/email-template';
 
-Create a new file `index.tsx` and send your first email.
+    const app = new Hono();
+    const resend = new Resend('re_xxxxxxxxx');
 
-```ts index.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { Hono } from 'hono';
-import { Resend } from 'resend';
-import { EmailTemplate } from './emails/email-template';
+    app.get('/', async (c) => {
+      const { data, error } = await resend.emails.send({
+        from: 'Acme <onboarding@resend.dev>',
+        to: ['delivered@resend.dev'],
+        subject: 'hello world',
+        react: <EmailTemplate firstName="John" />,
+      });
 
-const app = new Hono();
-const resend = new Resend('re_xxxxxxxxx');
+      if (error) {
+        return c.json(error, 400);
+      }
 
-app.get('/', async (c) => {
-  const { data, error } = await resend.emails.send({
-    from: 'Acme <onboarding@resend.dev>',
-    to: ['delivered@resend.dev'],
-    subject: 'hello world',
-    react: <EmailTemplate firstName="John" />,
-  });
+      return c.json(data);
+    });
 
-  if (error) {
-    return c.json(error, 400);
-  }
+    export default app;
+    ```
+  </Step>
+</Steps>
 
-  return c.json(data);
-});
-
-export default app;
-```
-
-## 4. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/hono-resend-examples/typescript/examples/basic-send.ts">

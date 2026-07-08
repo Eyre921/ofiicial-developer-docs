@@ -14,41 +14,45 @@ Learn how to add the Resend integration to your Base44 project.
   pricing](https://base44.com/pricing).
 </Info>
 
-## 1. Add the Resend integration in Base44
+## Guide
 
-**If starting a new app:**
+<Steps>
+  <Step title="Add the Resend integration in Base44">
+    **If starting a new app:**
 
-1. Click **Integration** in the top nav.
-2. Search for **Resend**, select it, and choose **Use This Integration**.
+    1. Click **Integration** in the top nav.
+    2. Search for **Resend**, select it, and choose **Use This Integration**.
 
-<img alt="Resend Integration page" />
+    <img alt="Resend Integration page" />
 
-**If adding Resend to an existing app:**
+    **If adding Resend to an existing app:**
 
-1. Enable backend functions.
-2. Ask the chat: "Add the Resend email integration to my app. Prompt me to provide the API key and send a welcome email to new users."
+    1. Enable backend functions.
+    2. Ask the chat: "Add the Resend email integration to my app. Prompt me to provide the API key and send a welcome email to new users."
 
-<Note>
-  See the [Base44
-  documenation](https://docs.base44.com/Integrations/Resend-integration) for
-  more information.
-</Note>
+    <Note>
+      See the [Base44
+      documenation](https://docs.base44.com/Integrations/Resend-integration) for
+      more information.
+    </Note>
+  </Step>
 
-## 2. Add your Resend API key
+  <Step title="Add your Resend API key">
+    However you add Resend to your project, you'll need to add a Resend API key, which you can create in the [Resend Dashboard](https://resend.com/api-keys). Do not share your API key with others or expose it in the browser or other client-side code.
 
-However you add Resend to your project, you'll need to add a Resend API key, which you can create in the [Resend Dashboard](https://resend.com/api-keys). Do not share your API key with others or expose it in the browser or other client-side code.
+    Copy the API key and paste it into the **RESEND\_API\_KEY** field in Base44.
 
-Copy the API key and paste it into the **RESEND\_API\_KEY** field in Base44.
+    <img alt="Adding your Resend API key to Base44" />
+  </Step>
 
-<img alt="Adding your Resend API key to Base44" />
+  <Step title="Add a custom domain to your Resend account">
+    By default, you can only send emails to your own email address.
 
-## 3. Add a custom domain to your Resend account
+    To send emails to other email addresses:
 
-By default, you can only send emails to your own email address.
+    1. Add a [custom domain to your Resend account](/docs/add-a-domain).
+    2. Add the custom domain to the `from` field in the `resend` function in the Base44 backend function (or ask the chat to update these fields).
 
-To send emails to other email addresses:
-
-1. Add a [custom domain to your Resend account](https://resend.com/domains).
-2. Add the custom domain to the `from` field in the `resend` function in the Base44 backend function (or ask the chat to update these fields).
-
-Get more help adding a custom domain in [Resend's documentation](/docs/dashboard/domains/introduction).
+    Get more help adding a custom domain in [Resend's documentation](/docs/dashboard/domains/introduction).
+  </Step>
+</Steps>

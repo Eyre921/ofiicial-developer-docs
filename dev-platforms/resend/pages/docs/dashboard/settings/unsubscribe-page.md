@@ -6,7 +6,7 @@ path: docs/dashboard/settings/unsubscribe-page
 
 Customize your unsubscribe page
 
-When using Resend Broadcasts or Automations, Resend can [automatically handle the unsubscribe flow for you](/docs/dashboard/audiences/introduction#automatic-unsubscribes).
+When using Resend Broadcasts or Automations, Resend can [automatically handle the unsubscribe flow for you](/docs/dashboard/segments/introduction#automatic-unsubscribes).
 
 You can customize your unsubscribe page to match your brand. Your unsubscribe page is used for every domain on your team.
 

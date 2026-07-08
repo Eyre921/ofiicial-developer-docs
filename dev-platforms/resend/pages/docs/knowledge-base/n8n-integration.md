@@ -6,7 +6,7 @@ path: docs/knowledge-base/n8n-integration
 
 Learn how to install and use the official Resend node for n8n to send emails, manage contacts, handle webhooks, and more.
 
-[n8n](https://n8n.io) is a workflow automation platform that lets you connect apps and build powerful automations. The official [Resend node](https://github.com/resend/n8n-nodes-resend) (`n8n-nodes-resend`) provides full coverage of the Resend API, letting you send emails, manage contacts, handle domains, trigger workflows from email events, and much more, all from within n8n.
+[n8n](https://n8n.io) is a workflow automation platform that lets you connect apps and build powerful automations. The official [Resend node](https://github.com/resend/n8n-nodes-resend) (`n8n-nodes-resend`) provides full coverage of the Resend API. From within n8n, you can send emails, manage contacts, handle domains, and trigger workflows from email events.
 
 <img alt="Resend node in the n8n editor" />
 

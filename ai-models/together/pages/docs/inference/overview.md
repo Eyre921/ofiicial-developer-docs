@@ -6,11 +6,13 @@ path: docs/inference/overview
 
 Run inference on 100+ open-source models.
 
-Together AI offers two ways to run inference:
+Together AI offers three ways to run inference:
 
 **[Serverless models](/docs/serverless/models):** A shared fleet of popular open models you can call through a per-token API. No GPUs to provision or manage. Best for prototyping, or apps with variable traffic.
 
-**[Dedicated endpoints](/docs/dedicated-endpoints/overview):** A single model running on GPUs reserved for you, billed per minute by hardware. Best for apps with steady traffic, consistent latency, or for serving fine-tuned models.
+**[Provisioned throughput](/docs/inference/provisioned-throughput):** Reserved capacity for a selected stock model with a defined SLA covering committed throughput and reliability. Best for production workloads that need stronger guarantees than serverless.
+
+**[Dedicated endpoints](/docs/dedicated-endpoints/overview):** A single model running on GPUs reserved for you, billed per minute by hardware. Best for serving fine-tuned models, or workloads that need direct control over hardware, latency, and throughput.
 
 ## Get started
 
@@ -30,7 +32,7 @@ Together AI offers two ways to run inference:
 
 ## Shared inference API
 
-Serverless models and dedicated endpoints use the same inference APIs for generating and retrieving model outputs. Apps work on either deployment mode without code changes; just swap the `model` parameter:
+Serverless, provisioned throughput, and dedicated endpoint workloads all use the same inference APIs for generating and retrieving model outputs. Apps work on either deployment mode without code changes; just swap the `model` parameter:
 
 <CodeGroup>
   ```python Python highlight={7,13} theme={null}

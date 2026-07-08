@@ -126,7 +126,7 @@ Learn how to send your first email using Redwood.js and the Resend Node.js SDK.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -282,55 +282,59 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-### 1. Install
+## Guide
 
-Get the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Node.js SDK.
 
-<CodeGroup>
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn workspace api add resend
-  ```
-</CodeGroup>
+    <CodeGroup>
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn workspace api add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-### 2. Send email using HTML
+  <Step title="Send email using HTML">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    yarn rw g function send
+    ```
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-yarn rw g function send
-```
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```ts api/src/functions/send/send.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { Resend } from 'resend';
+    import type { APIGatewayEvent, Context } from 'aws-lambda';
 
-```ts api/src/functions/send/send.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { Resend } from 'resend';
-import type { APIGatewayEvent, Context } from 'aws-lambda';
+    const resend = new Resend('re_xxxxxxxxx');
 
-const resend = new Resend('re_xxxxxxxxx');
+    export const handler = async (event: APIGatewayEvent, context: Context) => {
+      const { data, error } = await resend.emails.send({
+        from: 'Acme <onboarding@resend.dev>',
+        to: ['delivered@resend.dev'],
+        subject: 'hello world',
+        html: '<strong>it works!</strong>',
+      });
 
-export const handler = async (event: APIGatewayEvent, context: Context) => {
-  const { data, error } = await resend.emails.send({
-    from: 'Acme <onboarding@resend.dev>',
-    to: ['delivered@resend.dev'],
-    subject: 'hello world',
-    html: '<strong>it works!</strong>',
-  });
+      if (error) {
+        return {
+          statusCode: 500,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ error }),
+        };
+      }
 
-  if (error) {
-    return {
-      statusCode: 500,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ error }),
+      return {
+        statusCode: 200,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data }),
+      };
     };
-  }
+    ```
+  </Step>
+</Steps>
 
-  return {
-    statusCode: 200,
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data }),
-  };
-};
-```
-
-### 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Send Email" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/redwoodjs-resend-examples/typescript/api/src/functions/send.ts">

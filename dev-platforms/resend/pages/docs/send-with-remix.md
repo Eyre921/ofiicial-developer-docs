@@ -126,7 +126,7 @@ Learn how to send your first email using Remix and the Resend Node.js SDK.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -282,59 +282,63 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Node.js SDK.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install resend
-  ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install resend
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add resend
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add resend
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add resend
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add resend
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add resend
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    Create a [Resource Route](https://remix.run/docs/en/1.16.1/guides/resource-routes) under `app/routes/send.ts`.
 
-Create a [Resource Route](https://remix.run/docs/en/1.16.1/guides/resource-routes) under `app/routes/send.ts`.
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    <CodeGroup>
+      ```ts app/routes/send.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+      import { json } from '@remix-run/node';
+      import { Resend } from 'resend';
 
-<CodeGroup>
-  ```ts app/routes/send.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { json } from '@remix-run/node';
-  import { Resend } from 'resend';
+      const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+      export const loader = async () => {
+        const { data, error } = await resend.emails.send({
+          from: 'Acme <onboarding@resend.dev>',
+          to: ['delivered@resend.dev'],
+          subject: 'Hello world',
+          html: '<strong>It works!</strong>',
+        });
 
-  export const loader = async () => {
-    const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['delivered@resend.dev'],
-      subject: 'Hello world',
-      html: '<strong>It works!</strong>',
-    });
+        if (error) {
+          return json({ error }, 400);
+        }
 
-    if (error) {
-      return json({ error }, 400);
-    }
+        return json(data, 200);
+      };
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
 
-    return json(data, 200);
-  };
-  ```
-</CodeGroup>
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Send Email" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/remix-resend-examples/typescript/app/routes/api.send.ts">

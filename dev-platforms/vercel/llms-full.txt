@@ -335,6 +335,7 @@ The table below shows a list of events logged on the Activity page.
 | ai-gateway-byok-credential-created | Active | A user created an AI Gateway BYOK credential. |
 | ai-gateway-byok-credential-deleted | Active | A user deleted an AI Gateway BYOK credential. |
 | ai-gateway-byok-credential-updated | Active | A user updated an AI Gateway BYOK credential. |
+| ai-gateway-guardrails-updated | Active | A user updated the AI Gateway guardrail settings. |
 | ai-gateway-model-allowlist-models-updated | Active | Models were added to or removed from the AI Gateway model allowlist. |
 | ai-gateway-model-allowlist-toggled | Active | The AI Gateway model allowlist was enabled or disabled for a team. |
 | ai-gateway-private-model-created | Active | A user created an AI Gateway private model. |
@@ -13080,6 +13081,12 @@ OpenAI, Google AI Studio, and Google Vertex AI offer different processing tiers 
 | `flex`     | Lower cost with potentially higher latency                  |
 
 If you don't specify a service tier, requests use the standard tier.
+
+## Best-effort routing
+
+Service tier is a best-effort routing hint, not a hard guarantee. If the provider serving a request doesn't support service tiers, the tier is ignored and the request runs on the default tier. If a provider supports the tier but doesn't grant it (for example, when priority capacity is full), the request is downgraded to the default tier. In both cases the request still succeeds and is billed at the default rate.
+
+The only request that fails over a service tier is one that passes an invalid value to the native `gateway.serviceTier` option, which accepts `flex` or `priority`.
 
 ## Setting the service tier
 
@@ -102817,6 +102824,12 @@ To use Vercel Remote Caching with Turborepo from an external CI/CD system, you c
 
 When these environment variables are set, Turborepo will use Vercel Remote Caching to store task artifacts.
 
+## Clear the Remote Cache
+
+You can delete all of your team's cached artifacts [from the dashboard](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fbuild-and-deployment%23remote-caching\&title=Clear+your+team%27s+Remote+Cache). This is useful if you believe there are poisoned  artifacts in your cache.
+
+> **💡 Note:** Only team owners can clear the Remote Cache.
+
 ## Usage
 
 Vercel Remote Cache is free for all plans, subject to fair use guidelines.
@@ -102837,7 +102850,7 @@ Vercel Remote Cache is free for all plans, subject to fair use guidelines.
 
 Artifacts are blobs of data or files that are uploaded and downloaded using the [Vercel Remote Cache API](/docs/monorepos/remote-caching), including calls made using [Turborepo](/docs/monorepos/turborepo#setup-remote-caching-for-turborepo-on-vercel) and the [Remote Cache SDK](https://github.com/vercel/remote-cache). Once uploaded, artifacts can be downloaded during the [build](/docs/deployments/configure-a-build) by any [team members](/docs/accounts/team-members-and-roles).
 
-Vercel automatically expires uploaded artifacts after 7 days to avoid unbounded cache growth.
+Vercel automatically expires uploaded artifacts after 7 days to avoid unbounded cache growth. Team owners can also [clear the Remote Cache](#clear-the-remote-cache) manually at any time.
 
 #### Time Saved
 
@@ -108024,6 +108037,14 @@ Start from a working example instead of a blank project. Each template covers a 
 **OSS coding agent**: An open-source AI coding platform built on multi-project deployments. [Learn more →](/docs/platforms/examples/oss-coding-agent)
 
 **Platform template**: A claimable platform template for deploying apps on behalf of users. [Learn more →](/docs/platforms/examples/platform-template)
+
+## Live demos
+
+Try a deployed example in the browser before you clone anything.
+
+**Multi-tenant preview URLs**: Tenant subdomains served by one deployment, each with its own preview URL prefix. [Learn more →](https://multi-tenant-preview-urls-k6oodlv4w.vercel.rocks/all)
+
+**Claim deployments**: Deploy an app on a user's behalf, then let them claim it into their Vercel account. [Learn more →](https://claim-deployments-demo.vercel.app/)
 
 
 --------------------------------------------------------------------------------

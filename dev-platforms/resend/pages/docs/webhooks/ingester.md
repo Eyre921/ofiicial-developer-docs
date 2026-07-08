@@ -13,7 +13,7 @@ The Resend Webhook Ingester is an open-source Next.js application that receives,
   storage guide](/docs/dashboard/webhooks/how-to-store-webhooks-data).
 </Info>
 
-## Why use the Webhook Ingester?
+## Why use the Webhook Ingester
 
 While you can build your own webhook handler, the Webhook Ingester provides a production-ready solution with:
 

@@ -88,4 +88,5 @@ If you need a known, fixed limit (for capacity planning or strict SLAs), use a [
 If your workload needs higher throughput or runs in large bursts, consider:
 
 * [Batch inference](/docs/inference/batch/overview) for high request or token volumes when latency is not critical. You pay for what you use, with discounts on most models.
-* [Dedicated inference](/docs/dedicated-endpoints/overview) for predictable, reserved capacity that you control. Use it for workloads with strict SLAs.
+* [Provisioned throughput](/docs/inference/provisioned-throughput) for production workloads on stock models that need a defined SLA covering committed throughput (TPM) and reliability.
+* [Dedicated inference](/docs/dedicated-endpoints/overview) for predictable, reserved capacity that you control. Use it for fine-tuned models, or workloads that need direct control over hardware, latency, and throughput.

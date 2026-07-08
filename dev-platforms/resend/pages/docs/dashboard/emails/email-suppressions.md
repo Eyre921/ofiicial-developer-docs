@@ -12,7 +12,7 @@ A suppression happens when you try sending an email to a recipient that previous
 
 To protect your sender reputation and our sending infrastructure, we proactively stop that delivery from happening.
 
-## What caused the suppression?
+## What causes a suppression
 
 The suppression is caused by:
 
@@ -30,8 +30,8 @@ The suppression list is **per region**. If a recipient bounces or complains when
 
 This means:
 
-* A hard bounce on **any** domain in your region suppresses the address across **all** domains in the region
-* A spam complaint from **any** domain suppresses the address region-wide
+* A hard bounce on any domain in your region suppresses the address across all domains in the region
+* A spam complaint from any domain suppresses the address region-wide
 * Removing an address from the suppression list removes it for all domains in the region
 
 ## Viewing Suppression Details in Resend

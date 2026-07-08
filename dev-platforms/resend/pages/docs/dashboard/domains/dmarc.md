@@ -32,75 +32,77 @@ An email must pass either SPF or DKIM checks (but not necessarily both) to achie
 
 ## Implementing DMARC
 
-### 1. Add a TXT `_dmarc` Record
+<Steps>
+  <Step title="Add a TXT _dmarc Record">
+    To start, add a flexible DMARC record to your domain.
 
-To start, add a flexible DMARC record to your domain.
+    | Name                | Type | Value                                                    |
+    | ------------------- | ---- | -------------------------------------------------------- |
+    | \_dmarc.example.com | TXT  | `v=DMARC1; p=none; rua=mailto:dmarcreports@example.com;` |
 
-| Name                | Type | Value                                                    |
-| ------------------- | ---- | -------------------------------------------------------- |
-| \_dmarc.example.com | TXT  | `v=DMARC1; p=none; rua=mailto:dmarcreports@example.com;` |
+    This record is specifying a few parameters (see [Reference](#reference) section for more details):
 
-This record is specifying a few parameters (see [Reference](#reference) section for more details):
+    * `v` - Version:
+      This is the version of DMARC
+    * `p` - Policy:
+      This is telling the inbox how to process messages that fail DMARC. Options are `none`, `quarantine`, `reject`. It's a best practice to use `quarantine` or `reject`, but only do this once you know your messages are delivering and fully passing DMARC.
+    * `rua` - Reporting URI of Aggregate:
+      Provide a **valid address** that can receive email. The address can be a different domain than the one on which you set the DMARC policy. The aggregate report comes as an email with a `.xml` file attached that shares the IP sources of your messages and if they passed SPF or DKIM.
 
-* `v` - Version:
-  This is the version of DMARC
-* `p` - Policy:
-  This is telling the inbox how to process messages that fail DMARC. Options are `none`, `quarantine`, `reject`. It's a best practice to use `quarantine` or `reject`, but only do this once you know your messages are delivering and fully passing DMARC.
-* `rua` - Reporting URI of Aggregate:
-  Provide a **valid address** that can receive email. The address can be a different domain than the one on which you set the DMARC policy. The aggregate report comes as an email with a `.xml` file attached that shares the IP sources of your messages and if they passed SPF or DKIM.
+    To ensure you don't accidentally introduce breaking changes to your email sending, we suggest starting with a policy of `p=none;` before moving to a stricter policy.
+  </Step>
 
-To ensure you don't accidentally introduce breaking changes to your email sending, we suggest starting with a policy of `p=none;` before moving to a stricter policy.
+  <Step title="Test to Confirm Delivery and Passing">
+    To test emails, send an email from all the applications and services your domain uses. Confirm that the messages are delivered to the inbox and that the headers show DMARC passing. Spending a few at this step is a good rule of thumb to ensure you're checking all sources of email from your domain and catch email that is sent at a different cadence than daily.
 
-### 2. Test to Confirm Delivery and Passing
+    To confirm DMARC passed, you can inspect the email headers and confirm there is `dmarc=pass`.
 
-To test emails, send an email from all the applications and services your domain uses. Confirm that the messages are delivered to the inbox and that the headers show DMARC passing. Spending a few at this step is a good rule of thumb to ensure you're checking all sources of email from your domain and catch email that is sent at a different cadence than daily.
+    <Tip>
+      Gradually identify email sources using tools like [Google Postmaster
+      Tools](https://gmail.com/postmaster/), which provides DKIM/SPF feedback.
+      [DMARC monitoring
+      services](https://dmarc.org/resources/products-and-services/) can aggregate
+      your email sources by collecting DMARC reports, helping you discover any
+      services sending email on your domain's behalf.
+    </Tip>
+  </Step>
 
-To confirm DMARC passed, you can inspect the email headers and confirm there is `dmarc=pass`.
+  <Step title="Upgrade Policy">
+    Once you have verified DMARC is passing across all your sending, upgrade your Policy to `p=quarantine;`. This policy gives mailbox providers greater confidence in your domain since your domain only allows authenticated email.
 
-<Tip>
-  Gradually identify email sources using tools like [Google Postmaster
-  Tools](https://gmail.com/postmaster/), which provides DKIM/SPF feedback.
-  [DMARC monitoring
-  services](https://dmarc.org/resources/products-and-services/) can aggregate
-  your email sources by collecting DMARC reports, helping you discover any
-  services sending email on your domain's behalf.
-</Tip>
+    Update the value of your existing `_dmarc` TXT record to use a stricter policy:
 
-### 3. Upgrade Policy
+    | Name                | Type | Value                                                          |
+    | ------------------- | ---- | -------------------------------------------------------------- |
+    | \_dmarc.example.com | TXT  | `v=DMARC1; p=quarantine; rua=mailto:dmarcreports@example.com;` |
 
-Once you have verified DMARC is passing across all your sending, upgrade your Policy to `p=quarantine;`. This policy gives mailbox providers greater confidence in your domain since your domain only allows authenticated email.
+    Once you're confident that all legitimate email is passing DMARC, you can further tighten the policy to `reject`:
 
-Update the value of your existing `_dmarc` TXT record to use a stricter policy:
+    | Name                | Type | Value                                                      |
+    | ------------------- | ---- | ---------------------------------------------------------- |
+    | \_dmarc.example.com | TXT  | `v=DMARC1; p=reject; rua=mailto:dmarcreports@example.com;` |
 
-| Name                | Type | Value                                                          |
-| ------------------- | ---- | -------------------------------------------------------------- |
-| \_dmarc.example.com | TXT  | `v=DMARC1; p=quarantine; rua=mailto:dmarcreports@example.com;` |
+    <Info>
+      While tightening your policy, it's important to have visibility into your
+      DMARC failures to ensure you're not blocking legitimate email. We recommend
+      adding aggregate reporting (`rua`) to your DMARC record to help you monitor
+      and troubleshoot DMARC failures. For help analyzing your DMARC reports, see
+      our [guide on how to read a DMARC
+      report](https://resend.com/blog/how-to-read-a-dmarc-report) or use Resend's
+      [DMARC analyzer](/docs/dmarc-analyzer).
+    </Info>
 
-Once you're confident that all legitimate email is passing DMARC, you can further tighten the policy to `reject`:
+    Here is a summary of the available policies and their behavior:
 
-| Name                | Type | Value                                                      |
-| ------------------- | ---- | ---------------------------------------------------------- |
-| \_dmarc.example.com | TXT  | `v=DMARC1; p=reject; rua=mailto:dmarcreports@example.com;` |
+    | Policy        | Value                                            |
+    | ------------- | ------------------------------------------------ |
+    | p=none;       | Allow all email. Monitoring for DMARC failures.  |
+    | p=quarantine; | Send messages that fail DMARC to the spam folder |
+    | p=reject;     | Bounce delivery of emails that fail DMARC.       |
 
-<Info>
-  While tightening your policy, it's important to have visibility into your
-  DMARC failures to ensure you're not blocking legitimate email. We recommend
-  adding aggregate reporting (`rua`) to your DMARC record to help you monitor
-  and troubleshoot DMARC failures. For help analyzing your DMARC reports, see
-  our [guide on how to read a DMARC
-  report](https://resend.com/blog/how-to-read-a-dmarc-report) or use Resend's
-  [DMARC analyzer](/docs/dmarc-analyzer).
-</Info>
-
-Here is a summary of the available policies and their behavior:
-
-| Policy        | Value                                            |
-| ------------- | ------------------------------------------------ |
-| p=none;       | Allow all email. Monitoring for DMARC failures.  |
-| p=quarantine; | Send messages that fail DMARC to the spam folder |
-| p=reject;     | Bounce delivery of emails that fail DMARC.       |
-
-Once your policy is `p=quarantine;` or `p=reject;` you can explore setting up [BIMI](/docs/dashboard/domains/bimi), which can provide established brands even greater sending credibility by displaying a logo as an avatar in an email client.
+    Once your policy is `p=quarantine;` or `p=reject;` you can explore setting up [BIMI](/docs/dashboard/domains/bimi), which can provide established brands even greater sending credibility by displaying a logo as an avatar in an email client.
+  </Step>
+</Steps>
 
 ## Reference
 

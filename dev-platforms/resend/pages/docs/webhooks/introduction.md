@@ -6,11 +6,11 @@ path: docs/webhooks/introduction
 
 Use webhooks to notify your application about events from Resend.
 
-## What is a webhook?
+## Resend webhooks
 
 Resend uses webhooks, which are real-time HTTPS requests that tell your application an event occurred, such as an email delivery notification or subscription status update.
 
-## Why use webhooks?
+## Why use webhooks
 
 All webhooks use HTTPS and deliver a JSON payload that can be used by your application. You can use webhook feeds to do things like:
 
@@ -33,115 +33,117 @@ Prefer video? Watch the tutorial below.
 
 <YouTube />
 
-### 1. Create a dev endpoint to receive requests.
+<Steps>
+  <Step title="Create a dev endpoint to receive requests">
+    In your local application, create a new route that can accept POST requests.
 
-In your local application, create a new route that can accept POST requests.
+    For example, you can add an API route:
 
-For example, you can add an API route:
+    ```js pages/api/webhooks.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    export default (req, res) => {
+      if (req.method === 'POST') {
+        const event = req.body;
+        console.log(event);
+        res.status(200);
+      }
+    };
+    ```
 
-```js pages/api/webhooks.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-export default (req, res) => {
-  if (req.method === 'POST') {
-    const event = req.body;
-    console.log(event);
-    res.status(200);
-  }
-};
-```
+    On receiving an event, respond with an `HTTP 200 OK` to signal to Resend that the event was successfully delivered.
 
-On receiving an event, respond with an `HTTP 200 OK` to signal to Resend that the event was successfully delivered.
+    <Tip>
+      For development, you can create a tunnel to your localhost server using a tool like
+      [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
 
-<Tip>
-  For development, you can create a tunnel to your localhost server using a tool like
-  [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
+      Example: `https://example123.ngrok.io/api/webhook`
+    </Tip>
 
-  Example: `https://example123.ngrok.io/api/webhook`
-</Tip>
+    <Tip>
+      The [Resend CLI](/docs/cli) has a built-in `webhooks listen` command that handles
+      local webhook development. It starts a server, registers a temporary webhook,
+      and streams events to your terminal. See the [CLI reference](/docs/cli#webhooks)
+      for setup instructions.
+    </Tip>
+  </Step>
 
-<Tip>
-  The [Resend CLI](/docs/cli) has a built-in `webhooks listen` command that handles
-  local webhook development. It starts a server, registers a temporary webhook,
-  and streams events to your terminal. See the [CLI
-  reference](/docs/cli#resend-webhooks-listen) for setup instructions.
-</Tip>
+  <Step title="Add a webhook in Resend">
+    Navigate to the [Webhooks page](https://resend.com/webhooks), then select **Add Webhook**.
 
-### 2. Add a webhook in Resend.
+    1. Add your publicly accessible HTTPS URL
+    2. Select all events you want to observe
 
-Navigate to the [Webhooks page](https://resend.com/webhooks), then select **Add Webhook**.
+    <img alt="Add Webhook" />
 
-1. Add your publicly accessible HTTPS URL
-2. Select all events you want to observe
+    <Info>
+      Resend also supports managing webhooks via the API or the SDKs. View the [API reference](/docs/api-reference/webhooks/create-webhook) for more details.
+    </Info>
+  </Step>
 
-<img alt="Add Webhook" />
+  <Step title="Test your local endpoint">
+    To ensure your endpoint is successfully receiving events, perform an event you are tracking with your webhook, like sending an email, creating a contact, or creating a domain.
 
-<Info>
-  Resend also supports managing webhooks via the API or the SDKs. View the [API reference](/docs/api-reference/webhooks/create-webhook) for more details.
-</Info>
+    The webhook will send a JSON payload to your endpoint with the event details. For example:
 
-### 3. Test your local endpoint.
-
-To ensure your endpoint is successfully receiving events, perform an event you are tracking with your webhook, like sending an email, creating a contact, or creating a domain.
-
-The webhook will send a JSON payload to your endpoint with the event details. For example:
-
-```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-{
-  "type": "email.bounced",
-  "created_at": "2026-11-22T23:41:12.126Z",
-  "data": {
-    "broadcast_id": "8b146471-e88e-4322-86af-016cd36fd216",
-    "created_at": "2026-11-22T23:41:11.894719+00:00",
-    "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
-    "message_id": "<111-222-333@email.example.com>",
-    "from": "Acme <onboarding@resend.dev>",
-    "to": ["delivered@resend.dev"],
-    "subject": "Sending this example",
-    "template_id": "43f68331-0622-4e15-8202-246a0388854b",
-    "bounce": {
-      "message": "The recipient's email address is on the suppression list because it has a recent history of producing hard bounces.",
-      "subType": "Suppressed",
-      "type": "Permanent"
-    },
-    "tags": {
-      "category": "confirm_email"
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "type": "email.bounced",
+      "created_at": "2026-11-22T23:41:12.126Z",
+      "data": {
+        "broadcast_id": "8b146471-e88e-4322-86af-016cd36fd216",
+        "created_at": "2026-11-22T23:41:11.894719+00:00",
+        "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
+        "message_id": "<111-222-333@email.example.com>",
+        "from": "Acme <onboarding@resend.dev>",
+        "to": ["delivered@resend.dev"],
+        "subject": "Sending this example",
+        "template_id": "43f68331-0622-4e15-8202-246a0388854b",
+        "bounce": {
+          "message": "The recipient's email address is on the suppression list because it has a recent history of producing hard bounces.",
+          "subType": "Suppressed",
+          "type": "Permanent"
+        },
+        "tags": {
+          "category": "confirm_email"
+        }
+      }
     }
-  }
-}
-```
+    ```
 
-You can also see the webhook details in the dashboard.
+    You can also see the webhook details in the dashboard.
 
-<img alt="Webhook Events List" />
+    <img alt="Webhook Events List" />
 
-<Info>
-  View all possible [event types and their webhook payload
-  responses](/docs/webhooks/event-types).
-</Info>
+    <Info>
+      View all possible [event types and their webhook payload
+      responses](/docs/webhooks/event-types).
+    </Info>
+  </Step>
 
-### 4. Update and deploy your production endpoint.
+  <Step title="Update and deploy your production endpoint">
+    Once you successfully receive events, update your endpoint to process the events.
 
-Once you successfully receive events, update your endpoint to process the events.
+    For example, update your API route:
 
-For example, update your API route:
+    ```js pages/api/webhooks.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
 
-```js pages/api/webhooks.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    export default (req:, res) => {
+      if (req.method === 'POST') {
+        const event = req.body;
+        if(event.type === "email.bounced"){
+          //
+        }
+        res.status(200);
+      }
+    };
+    ```
 
-export default (req:, res) => {
-  if (req.method === 'POST') {
-    const event = req.body;
-    if(event.type === "email.bounced"){
-      //
-    }
-    res.status(200);
-  }
-};
-```
+    After you're done testing, deploy your webhook endpoint to production.
+  </Step>
 
-After you're done testing, deploy your webhook endpoint to production.
-
-### 5. Register your production webhook endpoint
-
-Once your webhook endpoint is deployed to production, you can register it in the Resend dashboard.
+  <Step title="Register your production webhook endpoint">
+    Once your webhook endpoint is deployed to production, you can register it in the Resend dashboard.
+  </Step>
+</Steps>
 
 ## FAQ
 

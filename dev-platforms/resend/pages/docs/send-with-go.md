@@ -13,52 +13,56 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Go SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Go SDK.
 
-<CodeGroup>
-  ```bash bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-  go get github.com/resend/resend-go/v3
-  ```
-</CodeGroup>
+    <CodeGroup>
+      ```bash bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+      go get github.com/resend/resend-go/v3
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```Go main.go theme={"theme":{"light":"github-light","dark":"vesper"}}
+    package main
 
-```Go main.go theme={"theme":{"light":"github-light","dark":"vesper"}}
-package main
+    import (
+    	"fmt"
 
-import (
-	"fmt"
+    	"github.com/resend/resend-go/v3"
+    )
 
-	"github.com/resend/resend-go/v3"
-)
+    func main() {
+        client := resend.NewClient("re_xxxxxxxxx")
 
-func main() {
-    client := resend.NewClient("re_xxxxxxxxx")
+        params := &resend.SendEmailRequest{
+            From:    "Acme <onboarding@resend.dev>",
+            To:      []string{"delivered@resend.dev"},
+            Html:    "<strong>hello world</strong>",
+            Subject: "Hello from Golang",
+            Cc:      []string{"cc@example.com"},
+            Bcc:     []string{"bcc@example.com"},
+            ReplyTo: "replyto@example.com",
+        }
 
-    params := &resend.SendEmailRequest{
-        From:    "Acme <onboarding@resend.dev>",
-        To:      []string{"delivered@resend.dev"},
-        Html:    "<strong>hello world</strong>",
-        Subject: "Hello from Golang",
-        Cc:      []string{"cc@example.com"},
-        Bcc:     []string{"bcc@example.com"},
-        ReplyTo: "replyto@example.com",
+        sent, err := client.Emails.Send(params)
+        if err != nil {
+            fmt.Println(err.Error())
+            return
+        }
+        fmt.Println(sent.Id)
     }
+    ```
+  </Step>
+</Steps>
 
-    sent, err := client.Emails.Send(params)
-    if err != nil {
-        fmt.Println(err.Error())
-        return
-    }
-    fmt.Println(sent.Id)
-}
-```
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/go-resend-examples/examples/basic_send">

@@ -13,13 +13,13 @@ Include an idempotency key in any email requests to ensure that the same email r
       /emails/batch` endpoints on the Resend API.
 </Info>
 
-## How does it work?
+## How it works
 
 When you send an email with an idempotency key, we check if an email with the same idempotency key has already been sent in the last 24 hours. **This is an optional feature** that simplifies managing retries on your side.
 
 This makes it safe to retry requests that send an email. You don't have to worry about checking if the original request was sent -- you can make the same request and our API will give the same response, without actually sending the email again.
 
-## How to use idempotency keys?
+## How to use idempotency keys
 
 Idempotency keys can be **up to 256 characters** and must be unique per API request.
 

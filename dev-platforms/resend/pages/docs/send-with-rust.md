@@ -13,92 +13,94 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## Install
+## Guide
 
-First, create a rust project with cargo and `cd` into it.
+<Steps>
+  <Step title="Install">
+    First, create a rust project with cargo and `cd` into it.
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-cargo init resend-rust-example
-cd resend-rust-example
-```
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    cargo init resend-rust-example
+    cd resend-rust-example
+    ```
 
-Next, add add the Rust Resend SDK as well as [Tokio](https://tokio.rs):
+    Next, add add the Rust Resend SDK as well as [Tokio](https://tokio.rs):
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-cargo add resend-rs
-cargo add tokio -F macros,rt-multi-thread
-```
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    cargo add resend-rs
+    cargo add tokio -F macros,rt-multi-thread
+    ```
 
-The Rust SDK is Async-first so Tokio is needed.
+    The Rust SDK is Async-first so Tokio is needed.
+  </Step>
 
-## Send email
+  <Step title="Send email">
+    ```rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+    use resend_rs::types::CreateEmailBaseOptions;
+    use resend_rs::{Resend, Result};
 
-```rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-use resend_rs::types::CreateEmailBaseOptions;
-use resend_rs::{Resend, Result};
+    #[tokio::main]
+    async fn main() -> Result<()> {
+      let resend = Resend::new("re_xxxxxxxxx");
 
-#[tokio::main]
-async fn main() -> Result<()> {
-  let resend = Resend::new("re_xxxxxxxxx");
+      let from = "Acme <onboarding@resend.dev>";
+      let to = ["delivered@resend.dev"];
+      let subject = "Hello World";
 
-  let from = "Acme <onboarding@resend.dev>";
-  let to = ["delivered@resend.dev"];
-  let subject = "Hello World";
+      let email = CreateEmailBaseOptions::new(from, to, subject)
+        .with_html("<strong>It works!</strong>");
 
-  let email = CreateEmailBaseOptions::new(from, to, subject)
-    .with_html("<strong>It works!</strong>");
+      let _email = resend.emails.send(email).await?;
 
-  let _email = resend.emails.send(email).await?;
+      Ok(())
+    }
+    ```
+  </Step>
 
-  Ok(())
-}
-```
+  <Step title="Reading the API key">
+    Instead of using `Resend::new` and hardcoding the API key, the `RESEND_API_KEY` environment variable
+    can be used instead. Use `Resend::default()` in that scenario instead.
 
-## Reading the API key
+    Another popular option is to use a `.env` file for environment variables. You can use the
+    [`dotenvy`](https://crates.io/crates/dotenvy) crate for that:
 
-Instead of using `Resend::new` and hardcoding the API key, the `RESEND_API_KEY` environment variable
-can be used instead. Use `Resend::default()` in that scenario instead.
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    cargo add dotenvy
+    ```
 
-### Reading the API key from a `.env` file
+    ```rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+    // main.rs
+    use dotenvy::dotenv;
+    use resend_rs::types::CreateEmailBaseOptions;
+    use resend_rs::{Resend, Result};
 
-Another popular option is to use a `.env` file for environment variables. You can use the
-[`dotenvy`](https://crates.io/crates/dotenvy) crate for that:
+    #[tokio::main]
+    async fn main() -> Result<()> {
+      let _env = dotenv().unwrap();
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-cargo add dotenvy
-```
+      let resend = Resend::default();
 
-```rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-// main.rs
-use dotenvy::dotenv;
-use resend_rs::types::CreateEmailBaseOptions;
-use resend_rs::{Resend, Result};
+      let from = "Acme <onboarding@resend.dev>";
+      let to = ["delivered@resend.dev"];
+      let subject = "Hello World";
 
-#[tokio::main]
-async fn main() -> Result<()> {
-  let _env = dotenv().unwrap();
+      let email = CreateEmailBaseOptions::new(from, to, subject)
+        .with_html("<strong>It works!</strong>");
 
-  let resend = Resend::default();
+      let _email = resend.emails.send(email).await?;
 
-  let from = "Acme <onboarding@resend.dev>";
-  let to = ["delivered@resend.dev"];
-  let subject = "Hello World";
+      Ok(())
+    }
+    ```
 
-  let email = CreateEmailBaseOptions::new(from, to, subject)
-    .with_html("<strong>It works!</strong>");
+    ```toml theme={"theme":{"light":"github-light","dark":"vesper"}}
+    # .env
+    RESEND_API_KEY=re_xxxxxxxxx
+    ```
+  </Step>
+</Steps>
 
-  let _email = resend.emails.send(email).await?;
-
-  Ok(())
-}
-```
-
-```toml theme={"theme":{"light":"github-light","dark":"vesper"}}
-# .env
-RESEND_API_KEY=re_xxxxxxxxx
-```
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/rust-resend-examples/examples/basic_send.rs">

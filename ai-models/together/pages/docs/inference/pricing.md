@@ -9,6 +9,7 @@ How Together AI bills for inference.
 Inference billing works differently depending on your deployment mode:
 
 * [Serverless models](/docs/serverless/models) bill based on usage, with no minimums and no provisioning cost.
+* [Provisioned throughput](/docs/inference/provisioned-throughput) bills per provisioned throughput unit (PTU) on a reserved term, with a one-month minimum.
 * [Dedicated endpoints](/docs/dedicated-endpoints/overview) bill per-minute, depending on the hardware you reserve.
 
 For per-model and per-hardware rates, see [together.ai/pricing](https://together.ai/pricing).
@@ -32,6 +33,12 @@ Select serverless chat models bill cached input tokens at a steep discount. Cach
 * **Prefix-based:** Only the longest matching prefix of your input counts as cached. Tokens after the first difference are billed at the standard input rate.
 * **Best-effort and short-lived:** The serverless cache is shared across the fleet and entries are evicted as traffic shifts, so cache hits aren't guaranteed and there's no configurable retention window. For predictable cache behavior, use a [dedicated endpoint](/docs/dedicated-endpoints/settings#prompt-caching), where prompt caching is enabled by default and scoped to your own replicas.
 * **Limited to supported models:** Only models with a value in the **Cached input pricing** column on [Chat models](/docs/serverless/models#chat-models) support cached input billing. Models without a cached price bill all input tokens at the standard rate.
+
+## Provisioned throughput
+
+You commit to a fixed number of PTUs for a selected model or model family over a reserved term, with a one-month minimum. Each PTU is priced at a flat \$0.05 per minute; how many PTUs you need depends on the model, your traffic shape, and your committed capacity. Input tokens, output tokens, and cached reads consume PTUs at model-specific conversion ratios defined in your contract.
+
+Estimate your requirements with the [pricing calculator](https://www.together.ai/provisioned-throughput), and see [Provisioned throughput](/docs/inference/provisioned-throughput) for details on PTUs and the SLA.
 
 ## Dedicated endpoints
 

@@ -98,6 +98,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   Find out about the different ways to cancel an active Copilot operation, and how to roll back changes made during a session if the result isn't what you expected.
 
+* [Managing context in GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/context-management)
+
+  Understand how Copilot manages conversation context, what happens during long sessions, and how to stay in control of your context window.
+
 * [About remote control of GitHub Copilot CLI sessions](/en/copilot/concepts/agents/copilot-cli/about-remote-control)
 
   Remote control lets you monitor and steer a Copilot CLI session from GitHub.com or GitHub Mobile, even after you've stepped away from your machine.
@@ -130,9 +134,9 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 
   LSP servers give Copilot CLI precise code intelligence, enabling it to navigate definitions, find references, and rename symbols accurately across your project.
 
-* [Managing context in GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/context-management)
+* [About extensions for GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-cli-extensions)
 
-  Understand how Copilot manages conversation context, what happens during long sessions, and how to stay in control of your context window.
+  Extensions let you add your own tools and slash commands to GitHub Copilot CLI, using only the SDK that ships with the CLI.
 
 * [Loading tools on demand with tool search](/en/copilot/concepts/agents/copilot-cli/tool-search)
 
@@ -549,6 +553,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Adding custom instructions for GitHub Copilot CLI](/en/copilot/how-tos/copilot-cli/customize-copilot/add-custom-instructions)
 
   Give Copilot additional context on how to understand your project and how to build, test and validate its changes.
+
+* [Changing settings with the `/settings` command](/en/copilot/how-tos/copilot-cli/customize-copilot/change-settings)
+
+  View and change your personal settings for GitHub Copilot CLI with the `/settings` slash command.
 
 * [Using hooks with GitHub Copilot CLI](/en/copilot/how-tos/copilot-cli/customize-copilot/use-hooks)
 
@@ -1673,6 +1681,10 @@ You can use GitHub Copilot to enhance your productivity and assist as you work o
 * [Using Copilot CLI as your AI SME](/en/copilot/tutorials/use-an-ai-sme)
 
   Use Copilot CLI as an always-available subject matter expert to learn how a codebase works, so you can confidently maintain it or add new features.
+
+* [Creating extensions for GitHub Copilot CLI](/en/copilot/tutorials/create-an-extension)
+
+  Build extensions that add your own tools and slash commands to Copilot CLI.
 
 * [Application card: GitHub Copilot Chat](/en/copilot/responsible-use/chat)
 

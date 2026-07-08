@@ -126,7 +126,7 @@ Learn how to send your first email using Express and the Resend Node.js SDK.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -282,60 +282,64 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Node.js SDK.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install resend
-  ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install resend
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add resend
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add resend
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add resend
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add resend
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add resend
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```js server.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import express, { Request, Response } from "express";
+    import { Resend } from "resend";
 
-```js server.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import express, { Request, Response } from "express";
-import { Resend } from "resend";
+    const app = express();
+    const resend = new Resend("re_xxxxxxxxx");
 
-const app = express();
-const resend = new Resend("re_xxxxxxxxx");
+    app.get("/", async (req: Request, res: Response) => {
+      const { data, error } = await resend.emails.send({
+        from: "Acme <onboarding@resend.dev>",
+        to: ["delivered@resend.dev"],
+        subject: "hello world",
+        html: "<strong>it works!</strong>",
+      });
 
-app.get("/", async (req: Request, res: Response) => {
-  const { data, error } = await resend.emails.send({
-    from: "Acme <onboarding@resend.dev>",
-    to: ["delivered@resend.dev"],
-    subject: "hello world",
-    html: "<strong>it works!</strong>",
-  });
+      if (error) {
+        return res.status(400).json({ error });
+      }
 
-  if (error) {
-    return res.status(400).json({ error });
-  }
+      res.status(200).json({ data });
+    });
 
-  res.status(200).json({ data });
-});
+    app.listen(3000, () => {
+      console.log("Listening on http://localhost:3000");
+    });
+    ```
+  </Step>
+</Steps>
 
-app.listen(3000, () => {
-  console.log("Listening on http://localhost:3000");
-});
-```
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/express-resend-examples/typescript/examples/basic-send.ts">

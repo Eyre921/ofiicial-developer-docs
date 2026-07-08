@@ -126,7 +126,7 @@ Learn how to send your first email using Next.js and the Resend Node.js SDK.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -286,106 +286,110 @@ Prefer watching a video? Check out our video walkthrough below.
 
 <YouTube />
 
-## 1. Install
+## Guide
 
-Get the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Node.js SDK.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install resend
-  ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install resend
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add resend
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add resend
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add resend
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add resend
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add resend
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Create an email template
+  <Step title="Create an email template">
+    Start by creating your email template on `components/email-template.tsx`.
 
-Start by creating your email template on `components/email-template.tsx`.
+    ```tsx components/email-template.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import * as React from 'react';
 
-```tsx components/email-template.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
-import * as React from 'react';
+    interface EmailTemplateProps {
+      firstName: string;
+    }
 
-interface EmailTemplateProps {
-  firstName: string;
-}
+    export function EmailTemplate({ firstName }: EmailTemplateProps) {
+      return (
+        <div>
+          <h1>Welcome, {firstName}!</h1>
+        </div>
+      );
+    }
+    ```
+  </Step>
 
-export function EmailTemplate({ firstName }: EmailTemplateProps) {
-  return (
-    <div>
-      <h1>Welcome, {firstName}!</h1>
-    </div>
-  );
-}
-```
+  <Step title="Send email using React">
+    Create a route file under `app/api/send/route.ts` (or `pages/api/send.ts` if you're using [Pages Router](https://nextjs.org/docs/pages/building-your-application/routing/api-routes)).
 
-## 3. Send email using React
+    Import the React email template and send an email using the `react` parameter.
 
-Create a route file under `app/api/send/route.ts` (or `pages/api/send.ts` if you're using [Pages Router](https://nextjs.org/docs/pages/building-your-application/routing/api-routes)).
+    <CodeGroup>
+      ```ts app/api/send/route.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+      import { EmailTemplate } from '../../../components/email-template';
+      import { Resend } from 'resend';
 
-Import the React email template and send an email using the `react` parameter.
+      const resend = new Resend(process.env.RESEND_API_KEY);
 
-<CodeGroup>
-  ```ts app/api/send/route.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { EmailTemplate } from '../../../components/email-template';
-  import { Resend } from 'resend';
+      export async function POST() {
+        try {
+          const { data, error } = await resend.emails.send({
+            from: 'Acme <onboarding@resend.dev>',
+            to: ['delivered@resend.dev'],
+            subject: 'Hello world',
+            react: EmailTemplate({ firstName: 'John' }),
+          });
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+          if (error) {
+            return Response.json({ error }, { status: 500 });
+          }
 
-  export async function POST() {
-    try {
-      const { data, error } = await resend.emails.send({
-        from: 'Acme <onboarding@resend.dev>',
-        to: ['delivered@resend.dev'],
-        subject: 'Hello world',
-        react: EmailTemplate({ firstName: 'John' }),
-      });
-
-      if (error) {
-        return Response.json({ error }, { status: 500 });
+          return Response.json(data);
+        } catch (error) {
+          return Response.json({ error }, { status: 500 });
+        }
       }
+      ```
 
-      return Response.json(data);
-    } catch (error) {
-      return Response.json({ error }, { status: 500 });
-    }
-  }
-  ```
+      ```ts pages/api/send.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+      import type { NextApiRequest, NextApiResponse } from 'next';
+      import { EmailTemplate } from '../../components/email-template';
+      import { Resend } from 'resend';
 
-  ```ts pages/api/send.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import type { NextApiRequest, NextApiResponse } from 'next';
-  import { EmailTemplate } from '../../components/email-template';
-  import { Resend } from 'resend';
+      const resend = new Resend(process.env.RESEND_API_KEY);
 
-  const resend = new Resend(process.env.RESEND_API_KEY);
+      export default async (req: NextApiRequest, res: NextApiResponse) => {
+        const { data, error } = await resend.emails.send({
+          from: 'Acme <onboarding@resend.dev>',
+          to: ['delivered@resend.dev'],
+          subject: 'Hello world',
+          react: EmailTemplate({ firstName: 'John' }),
+        });
 
-  export default async (req: NextApiRequest, res: NextApiResponse) => {
-    const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['delivered@resend.dev'],
-      subject: 'Hello world',
-      react: EmailTemplate({ firstName: 'John' }),
-    });
+        if (error) {
+          return res.status(400).json(error);
+        }
 
-    if (error) {
-      return res.status(400).json(error);
-    }
+        res.status(200).json(data);
+      };
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
 
-    res.status(200).json(data);
-  };
-  ```
-</CodeGroup>
-
-## 4. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Next.js (TypeScript)" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/nextjs-resend-examples/typescript">

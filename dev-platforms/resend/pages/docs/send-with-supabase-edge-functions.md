@@ -15,69 +15,73 @@ Before you start, you'll need:
 
 Make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/cli#installation) installed.
 
-## 1. Create Supabase function
+## Guide
 
-Create a new function locally:
+<Steps>
+  <Step title="Create Supabase function">
+    Create a new function locally:
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-supabase functions new resend
-```
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    supabase functions new resend
+    ```
+  </Step>
 
-## 2. Edit the handler function
+  <Step title="Edit the handler function">
+    Paste the following code into the `index.ts` file:
 
-Paste the following code into the `index.ts` file:
+    ```ts index.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
 
-```ts index.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-const RESEND_API_KEY = Deno.env.get('RESEND_API_KEY');
+    const handler = async (_request: Request): Promise<Response> => {
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+        },
+        body: JSON.stringify({
+          from: 'Acme <onboarding@resend.dev>',
+          to: ['delivered@resend.dev'],
+          subject: 'hello world',
+          html: '<strong>it works!</strong>',
+        }),
+      });
 
-const handler = async (_request: Request): Promise<Response> => {
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${RESEND_API_KEY}`,
-    },
-    body: JSON.stringify({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['delivered@resend.dev'],
-      subject: 'hello world',
-      html: '<strong>it works!</strong>',
-    }),
-  });
+      const data = await res.json();
 
-  const data = await res.json();
+      return new Response(JSON.stringify(data), {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    };
 
-  return new Response(JSON.stringify(data), {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-};
+    Deno.serve(handler);
+    ```
+  </Step>
 
-Deno.serve(handler);
-```
+  <Step title="Deploy and send email">
+    Run function locally:
 
-## 3. Deploy and send email
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    supabase functions start
+    supabase functions serve resend --no-verify-jwt
+    ```
 
-Run function locally:
+    Deploy function to Supabase:
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-supabase functions start
-supabase functions serve resend --no-verify-jwt
-```
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    supabase functions deploy resend
+    ```
 
-Deploy function to Supabase:
+    Open the endpoint URL to send an email:
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-supabase functions deploy resend
-```
+    <img alt="Supabase Edge Functions - Deploy Function" />
+  </Step>
+</Steps>
 
-Open the endpoint URL to send an email:
-
-<img alt="Supabase Edge Functions - Deploy Function" />
-
-## 4. Try it yourself
+## Examples
 
 <Card title="Supabase Edge Functions Example" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-supabase-edge-functions-example">
   See the full source code.

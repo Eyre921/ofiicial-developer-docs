@@ -185,91 +185,86 @@ To get started, you'll need to:
 * [Set up webhooks](/docs/webhooks/introduction) for `email.received` events
 * [Enable receiving](/docs/dashboard/receiving/introduction) on your domain
 
-## 1. Install
+## Guide
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install @resend/chat-sdk-adapter chat @chat-adapter/state-memory
-  ```
+<Steps>
+  <Step title="Install">
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install @resend/chat-sdk-adapter chat @chat-adapter/state-memory
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add @resend/chat-sdk-adapter chat @chat-adapter/state-memory
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add @resend/chat-sdk-adapter chat @chat-adapter/state-memory
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add @resend/chat-sdk-adapter chat @chat-adapter/state-memory
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add @resend/chat-sdk-adapter chat @chat-adapter/state-memory
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add @resend/chat-sdk-adapter chat @chat-adapter/state-memory
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add @resend/chat-sdk-adapter chat @chat-adapter/state-memory
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Configure the adapter
+  <Step title="Configure the adapter">
+    Create a Resend adapter and pass it with [adapter configuration options](#configuration-options) to the Chat SDK.
 
-Create a Resend adapter and pass it to the Chat SDK.
+    ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { createResendAdapter } from '@resend/chat-sdk-adapter';
+    import { MemoryStateAdapter } from '@chat-adapter/state-memory';
+    import { Chat } from 'chat';
 
-```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { createResendAdapter } from '@resend/chat-sdk-adapter';
-import { MemoryStateAdapter } from '@chat-adapter/state-memory';
-import { Chat } from 'chat';
+    const resend = createResendAdapter({
+      fromAddress: 'bot@example.com',
+      fromName: 'My Bot',
+    });
 
-const resend = createResendAdapter({
-  fromAddress: 'bot@example.com',
-  fromName: 'My Bot',
-});
+    const chat = new Chat({
+      userName: 'email-bot',
+      adapters: { resend },
+      state: new MemoryStateAdapter(),
+    });
+    ```
 
-const chat = new Chat({
-  userName: 'email-bot',
-  adapters: { resend },
-  state: new MemoryStateAdapter(),
-});
-```
+    <Info>
+      Set `RESEND_API_KEY` and `RESEND_WEBHOOK_SECRET` as environment variables. You can also pass `apiKey` and `webhookSecret` directly in the config — explicit values take precedence over env vars.
+    </Info>
+  </Step>
 
-<Info>
-  Set `RESEND_API_KEY` and `RESEND_WEBHOOK_SECRET` as environment variables. You can also pass `apiKey` and `webhookSecret` directly in the config — explicit values take precedence over env vars.
-</Info>
+  <Step title="Handle inbound emails">
+    Register handlers for incoming emails. `onNewMention` fires when a new thread starts, and `onSubscribedMessage` fires for follow-up emails in threads you've subscribed to.
 
-### Configuration options
+    ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    chat.onNewMention(async (thread, message) => {
+      console.log(`New email from ${message.author.userId}: ${message.text}`);
+      await thread.subscribe();
+      await thread.post(`Got your email: ${message.text}`);
+    });
 
-| Parameter       | Type     | Required | Description                                                           |
-| --------------- | -------- | -------- | --------------------------------------------------------------------- |
-| `fromAddress`   | `string` | Yes      | Sender email address                                                  |
-| `fromName`      | `string` | No       | Display name for the From header                                      |
-| `apiKey`        | `string` | No       | Resend API key. Falls back to `RESEND_API_KEY` env var                |
-| `webhookSecret` | `string` | No       | Webhook signing secret. Falls back to `RESEND_WEBHOOK_SECRET` env var |
+    chat.onSubscribedMessage(async (thread, message) => {
+      await thread.post(`Reply: ${message.text}`);
+    });
+    ```
+  </Step>
 
-## 3. Handle inbound emails
+  <Step title="Forward webhooks">
+    Point your Resend webhooks to your server's `/webhook` endpoint. The adapter verifies the signature and parses the payload.
 
-Register handlers for incoming emails. `onNewMention` fires when a new thread starts, and `onSubscribedMessage` fires for follow-up emails in threads you've subscribed to.
+    ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    if (req.method === 'POST' && req.url === '/webhook') {
+      const result = await chat.webhooks.resend(request);
+      res.writeHead(result.status);
+      res.end();
+    }
+    ```
 
-```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-chat.onNewMention(async (thread, message) => {
-  console.log(`New email from ${message.author.userId}: ${message.text}`);
-  await thread.subscribe();
-  await thread.post(`Got your email: ${message.text}`);
-});
+    The handler expects a Web `Request` object. If you're using Node.js `http`, convert `IncomingMessage` to a `Request` first. See the [basic example](https://github.com/resend/resend-chat-sdk/tree/main/examples/basic) for a full working server.
 
-chat.onSubscribedMessage(async (thread, message) => {
-  await thread.post(`Reply: ${message.text}`);
-});
-```
-
-## 4. Forward webhooks
-
-Point your Resend webhooks to your server's `/webhook` endpoint. The adapter verifies the signature and parses the payload.
-
-```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-if (req.method === 'POST' && req.url === '/webhook') {
-  const result = await chat.webhooks.resend(request);
-  res.writeHead(result.status);
-  res.end();
-}
-```
-
-The handler expects a Web `Request` object. If you're using Node.js `http`, convert `IncomingMessage` to a `Request` first. See the [basic example](https://github.com/resend/resend-chat-sdk/tree/main/examples/basic) for a full working server.
-
-For webhook setup details, see [Managing Webhooks](/docs/webhooks/introduction) and [Verify Webhook Requests](/docs/webhooks/verify-webhooks-requests).
+    For webhook setup details, see [Managing Webhooks](/docs/webhooks/introduction) and [Verify Webhook Requests](/docs/webhooks/verify-webhooks-requests).
+  </Step>
+</Steps>
 
 ## How threading works
 
@@ -278,6 +273,15 @@ The adapter resolves threads using standard `Message-ID`, `In-Reply-To`, and `Re
 <Warning>
   Email is immutable. The following operations throw `NotImplementedError`: `editMessage`, `deleteMessage`, `addReaction`, `removeReaction`, and `startTyping`.
 </Warning>
+
+## Configuration options
+
+| Parameter       | Type     | Required | Description                                                           |
+| --------------- | -------- | -------- | --------------------------------------------------------------------- |
+| `fromAddress`   | `string` | Yes      | Sender email address                                                  |
+| `fromName`      | `string` | No       | Display name for the From header                                      |
+| `apiKey`        | `string` | No       | Resend API key. Falls back to `RESEND_API_KEY` env var                |
+| `webhookSecret` | `string` | No       | Webhook signing secret. Falls back to `RESEND_WEBHOOK_SECRET` env var |
 
 ## Features
 

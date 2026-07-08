@@ -20,10 +20,10 @@ Before, you had to use external services to handle the scheduling logic, but now
 
 There are two ways to schedule an email:
 
-1. [Using natural language](#1-schedule-using-natural-language)
-2. [Using date format](#2-schedule-using-date-format)
+1. [Using natural language](#schedule-using-natural-language)
+2. [Using date format](#schedule-using-date-format)
 
-## 1. Schedule using natural language
+## Schedule using natural language
 
 You can use the various Resend SDKs to schedule emails.
 
@@ -191,7 +191,7 @@ The date can be defined using natural language, such as `"in 1 hour"`, `"tomorro
   ```
 </CodeGroup>
 
-## 2. Schedule using date format
+## Schedule using date format
 
 You can also use a date in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) format (e.g: `2026-08-05T11:52:01.858Z`).
 

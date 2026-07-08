@@ -126,7 +126,7 @@ Learn how to send your first email using SvelteKit and the Resend Node.js SDK.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -282,63 +282,67 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Node.js SDK.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install resend
-  ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install resend
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add resend
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add resend
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add resend
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add resend
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add resend
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    Create a [+server API route](https://svelte.dev/docs/kit/routing#server) under `src/routes/send/+server.ts`.
 
-Create a [+server API route](https://svelte.dev/docs/kit/routing#server) under `src/routes/send/+server.ts`.
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    <CodeGroup>
+      ```ts src/routes/send/+server.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+      import { Resend } from 'resend';
+      import { RESEND_API_KEY } from '$env/static/private'; // define in your .env file
 
-<CodeGroup>
-  ```ts src/routes/send/+server.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { Resend } from 'resend';
-  import { RESEND_API_KEY } from '$env/static/private'; // define in your .env file
+      const resend = new Resend(RESEND_API_KEY);
 
-  const resend = new Resend(RESEND_API_KEY);
+      export async function POST() {
+        try {
+          const { data, error } = await resend.emails.send({
+            from: 'Acme <onboarding@resend.dev>',
+            to: ['delivered@resend.dev'],
+            subject: 'Hello world',
+            html: '<p>Hello world</p>',
+          });
 
-  export async function POST() {
-    try {
-      const { data, error } = await resend.emails.send({
-        from: 'Acme <onboarding@resend.dev>',
-        to: ['delivered@resend.dev'],
-        subject: 'Hello world',
-        html: '<p>Hello world</p>',
-      });
+          if (error) {
+            return Response.json({ error }, { status: 500 });
+          }
 
-      if (error) {
-        return Response.json({ error }, { status: 500 });
+          return Response.json({ data });
+        } catch (error) {
+          return Response.json({ error }, { status: 500 });
+        }
       }
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
 
-      return Response.json({ data });
-    } catch (error) {
-      return Response.json({ error }, { status: 500 });
-    }
-  }
-  ```
-</CodeGroup>
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Send Email" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/sveltekit-resend-examples/typescript/src/routes/api/send">

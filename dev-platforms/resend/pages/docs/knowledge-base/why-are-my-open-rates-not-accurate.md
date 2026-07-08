@@ -6,11 +6,11 @@ path: docs/knowledge-base/why-are-my-open-rates-not-accurate
 
 Learn why your open rate statistics are not accurate and what you can do about it.
 
-## How are open rates tracked?
+## How open rates are tracked
 
 A 1x1 pixel transparent GIF image is inserted in each email and includes a unique reference. When the image is downloaded, an open event is triggered.
 
-## Why are my open rates not accurate?
+## Why open rates are not accurate
 
 Open tracking is generally not accurate because each inbox handles incoming email differently.
 
@@ -24,13 +24,13 @@ Open tracking is generally not accurate because each inbox handles incoming emai
 
 Because of this, open tracking is **not a statistically accurate way** of detecting if your users are engaging with your content.
 
-## Does open tracking impact inbox placement?
+## How open tracking impacts inbox placement
 
 Though open tracking does not impact whether your email is delivered, it most likely will impact your inbox placement. Trackers are generally **used by marketers and even spammers**. Because of this, inbox providers will often use open tracking as a signal that your email is promotional, or even spam, and categorize accordingly.
 
 **We suggest disabling open rates for transactional email**, to maximize inbox placement.
 
-## What's the alternative?
+## Alternatives to open tracking
 
 Instead of relying on open rates, there are a few other ways to still understand your sending.
 

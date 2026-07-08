@@ -6,7 +6,7 @@ path: docs/openclaw-guide
 
 Learn how to give your AI agent an inbox to send and receive emails.
 
-## Why give your agent an inbox?
+## Why give your agent an inbox
 
 Giving your agent an inbox enables it to:
 

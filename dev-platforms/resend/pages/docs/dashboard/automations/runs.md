@@ -6,7 +6,7 @@ path: docs/dashboard/automations/runs
 
 Monitor and debug your Automation executions.
 
-Every time an event [triggers](/docs/dashboard/automations/introduction#2-add-trigger) an Automation, Resend creates a run.
+Every time an event [triggers](/docs/dashboard/automations/trigger) an Automation, Resend creates a run.
 
 A run tracks the execution of each step in the workflow, including its status and timing, along with any errors.
 

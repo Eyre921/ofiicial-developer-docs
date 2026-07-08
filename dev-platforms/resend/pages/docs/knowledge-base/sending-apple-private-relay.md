@@ -36,7 +36,7 @@ You can add these email addresses one by one or in a comma-separated list. If yo
 
 Since Resend mandates SPF and DKIM authentication for all domains sending emails through its service, your domain will automatically meet Apple’s authentication requirements.
 
-## Still experiencing bounces from @privaterelay.appleid.com?
+## Troubleshooting bounces from @privaterelay.appleid.com
 
 At times, emails sent to `@privaterelay.appleid.com` may still bounce. While the bounce messages may not always contain detailed explanations, common reasons include:
 

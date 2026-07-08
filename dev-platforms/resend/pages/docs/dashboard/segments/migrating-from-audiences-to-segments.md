@@ -12,7 +12,7 @@ In the new model, Contacts are now independent of Audiences, which are now calle
 
 Contacts API endpoints that previously required an `audience_id` can now be used directly instead.
 
-## What's changing?
+## What's changing
 
 We're moving to a **Global Contacts** model.
 
@@ -50,6 +50,6 @@ For details on the new API endpoints view:
 * [Topics](/docs/api-reference/topics/create-topic)
 * [Segments](/docs/api-reference/segments/create-segment)
 
-## How can we help?
+## Get more help
 
 If you have a use case not covered here, [please reach out](https://resend.com/help). We'll make sure your transition is smooth.

@@ -23,7 +23,7 @@ Here are some possible reasons an email address is placed on the Suppression Lis
 * The recipient's email server has **permanently blocked delivery**.
 * The recipient has marked a previous delivery as spam.
 
-## What happens when you send to an address on the Suppression List?
+## What happens when you send to an address on the Suppression List
 
 Whenever you send an email with Resend, we check if the recipient is on the suppression list. If they are, we'll [suppress](/docs/dashboard/emails/email-suppressions) the delivery to prevent damaging your sender reputation and our infrastructure.
 

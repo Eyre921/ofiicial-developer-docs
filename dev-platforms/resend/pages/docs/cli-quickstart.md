@@ -13,49 +13,53 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-<Tabs>
-  <Tab title="cURL">
+<Steps>
+  <Step title="Install">
+    <Tabs>
+      <Tab title="cURL">
+        ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+        curl -fsSL https://resend.com/install.sh | bash
+        ```
+      </Tab>
+
+      <Tab title="npm">
+        ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+        npm install -g resend-cli
+        ```
+      </Tab>
+
+      <Tab title="Homebrew">
+        ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+        brew install resend/cli/resend
+        ```
+      </Tab>
+
+      <Tab title="PowerShell (Windows)">
+        ```powershell theme={"theme":{"light":"github-light","dark":"vesper"}}
+        irm https://resend.com/install.ps1 | iex
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+
+  <Step title="Authenticate">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    curl -fsSL https://resend.com/install.sh | bash
+    resend login
     ```
-  </Tab>
+  </Step>
 
-  <Tab title="npm">
+  <Step title="Send email">
     ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    npm install -g resend-cli
+    resend emails send \
+      --from "Acme <onboarding@resend.dev>" \
+      --to delivered@resend.dev \
+      --subject "Hello World" \
+      --text "Sent from my terminal."
     ```
-  </Tab>
-
-  <Tab title="Homebrew">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    brew install resend/cli/resend
-    ```
-  </Tab>
-
-  <Tab title="PowerShell (Windows)">
-    ```powershell theme={"theme":{"light":"github-light","dark":"vesper"}}
-    irm https://resend.com/install.ps1 | iex
-    ```
-  </Tab>
-</Tabs>
-
-## 2. Authenticate
-
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-resend login
-```
-
-## 3. Send email
-
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-resend emails send \
-  --from "Acme <onboarding@resend.dev>" \
-  --to delivered@resend.dev \
-  --subject "Hello World" \
-  --text "Sent from my terminal."
-```
+  </Step>
+</Steps>
 
 ## Next steps
 

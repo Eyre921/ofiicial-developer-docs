@@ -17,4 +17,4 @@ After clicking **Update email**, you will be signed out and two confirmation ema
 * **To your new email address**: An email with the subject "Confirm email change for Resend" asking you to confirm the update.
 * **To your current email address**: An email with the subject "Request to change your email" asking you to confirm the request.
 
-Click the confirmation link in **both** emails to complete the email change. Once both confirmations are complete, you can log in with your new email address.
+Click the confirmation link in both emails to complete the email change. Once both confirmations are complete, you can log in with your new email address.

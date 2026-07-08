@@ -28,167 +28,167 @@ Before you start, make sure you have:
   prompt.
 </Info>
 
-## 1. Connect the Paper MCP server
+## Guide
 
-Paper Desktop runs a local MCP server at `http://127.0.0.1:29979/mcp` whenever a file is open.
+<Steps>
+  <Step title="Connect the Paper MCP server">
+    Paper Desktop runs a local MCP server at `http://127.0.0.1:29979/mcp` whenever a file is open.
 
-<Tabs>
-  <Tab title="Claude Code">
-    Install the official Paper plugin (recommended):
+    <Tabs>
+      <Tab title="Claude Code">
+        Install the official Paper plugin (recommended):
 
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    /plugin marketplace add paper-design/agent-plugins
-    /plugin install paper-desktop@paper
-    ```
+        ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+        /plugin marketplace add paper-design/agent-plugins
+        /plugin install paper-desktop@paper
+        ```
 
-    Or add the MCP server directly:
+        Or add the MCP server directly:
 
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add paper --transport http http://127.0.0.1:29979/mcp --scope user
-    ```
-  </Tab>
+        ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+        claude mcp add paper --transport http http://127.0.0.1:29979/mcp --scope user
+        ```
+      </Tab>
 
-  <Tab title="Codex">
-    Install the official Paper plugin (recommended):
+      <Tab title="Codex">
+        Install the official Paper plugin (recommended):
 
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex plugin marketplace add paper-design/agent-plugins
-    /plugins
-    ```
+        ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+        codex plugin marketplace add paper-design/agent-plugins
+        /plugins
+        ```
 
-    Select the `paper-design/agent-plugins` marketplace and install the `paper-desktop` plugin.
-  </Tab>
+        Select the `paper-design/agent-plugins` marketplace and install the `paper-desktop` plugin.
+      </Tab>
 
-  <Tab title="Cursor">
-    Run `/add-plugin paper-desktop` in the agent panel, or search for "Paper" in the [Cursor Marketplace](https://cursor.com/marketplace/paper).
-  </Tab>
+      <Tab title="Cursor">
+        Run `/add-plugin paper-desktop` in the agent panel, or search for "Paper" in the [Cursor Marketplace](https://cursor.com/marketplace/paper).
+      </Tab>
 
-  <Tab title="Claude Desktop">
-    Open Claude Desktop settings > "Developer" tab > "Edit Config".
+      <Tab title="Claude Desktop">
+        Open Claude Desktop settings > "Developer" tab > "Edit Config".
 
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "paper": {
-          "command": "npx",
-          "args": ["mcp-remote", "http://127.0.0.1:29979/mcp"]
+        ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+        {
+          "mcpServers": {
+            "paper": {
+              "command": "npx",
+              "args": ["mcp-remote", "http://127.0.0.1:29979/mcp"]
+            }
+          }
         }
-      }
-    }
-    ```
-  </Tab>
-</Tabs>
+        ```
+      </Tab>
+    </Tabs>
 
-See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
+    See the [Paper MCP docs](https://paper.design/docs/mcp) for other clients.
+  </Step>
 
-## 2. Connect the Resend MCP server
+  <Step title="Connect the Resend MCP server">
+    Connect to Resend's hosted MCP server at `https://mcp.resend.com/mcp`. When you connect, your client opens a browser window to log in to Resend and approve access.
 
-Connect to Resend's hosted MCP server at `https://mcp.resend.com/mcp`. When you connect, your client opens a browser window to log in to Resend and approve access.
+    <Tabs>
+      <Tab title="Claude Code">
+        ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+        claude mcp add --transport http resend https://mcp.resend.com/mcp
+        ```
 
-<Tabs>
-  <Tab title="Claude Code">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    claude mcp add --transport http resend https://mcp.resend.com/mcp
-    ```
+        Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
+      </Tab>
 
-    Then run `/mcp` in Claude Code and select **resend** to complete the OAuth login.
-  </Tab>
+      <Tab title="Codex">
+        ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+        codex mcp add resend --url https://mcp.resend.com/mcp
+        ```
+      </Tab>
 
-  <Tab title="Codex">
-    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-    codex mcp add resend --url https://mcp.resend.com/mcp
-    ```
-  </Tab>
+      <Tab title="Cursor">
+        Open the command palette and choose "Cursor Settings" > "MCP" > "Add new global MCP server".
 
-  <Tab title="Cursor">
-    Open the command palette and choose "Cursor Settings" > "MCP" > "Add new global MCP server".
-
-    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-    {
-      "mcpServers": {
-        "resend": {
-          "url": "https://mcp.resend.com/mcp"
+        ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+        {
+          "mcpServers": {
+            "resend": {
+              "url": "https://mcp.resend.com/mcp"
+            }
+          }
         }
-      }
-    }
+        ```
+      </Tab>
+
+      <Tab title="Claude Desktop">
+        Open **Settings** > **Connectors** > **Add custom connector** and enter:
+
+        ```
+        https://mcp.resend.com/mcp
+        ```
+      </Tab>
+    </Tabs>
+
+    For more clients and configuration options, including running the server locally, see the [MCP Server overview](/docs/mcp-server).
+  </Step>
+
+  <Step title="Design your email in Paper">
+    Design your email as an artboard in Paper. A few tips for designs that translate well to email:
+
+    * Use a single-column layout around 600px wide.
+    * Use real copy instead of placeholder text.
+    * Use web-safe fonts like `System Sans-Serif` or `System Serif`.
+    * Use PNG or JPG images instead of SVGs (not supported in email).
+
+    <Tip>
+      Where you want personalization, write the variable directly into the design
+      copy, like `Hi {{{NAME|there}}}`. Your agent will preserve it when
+      creating the template or broadcast.
+    </Tip>
+  </Step>
+
+  <Step title="Ask your agent to create an email">
+    You can create either a [Template](/docs/dashboard/templates/introduction) or a [Broadcast](/docs/dashboard/broadcasts/introduction).
+
+    To create a template, select an artboard in Paper and with both servers connected, prompt your agent with the following:
+
+    ```text theme={"theme":{"light":"github-light","dark":"vesper"}}
+    Look at the selected artboard in Paper and recreate it as an email template
+    in Resend. Convert the design to email-safe HTML (inline styles, table-based
+    layout) using the Resend agent skills. Provide a name, subject, and preview text for the template that fits the content. Publish the template.
     ```
-  </Tab>
 
-  <Tab title="Claude Desktop">
-    Open **Settings** > **Connectors** > **Add custom connector** and enter:
+    Behind the scenes, the agent will:
 
+    1. Call Paper's `get_selection` and `get_screenshot` to see the design.
+    2. Call Paper's `get_jsx` or `get_computed_styles` to read the exact layout, colors, and copy.
+    3. Convert the output into email-safe HTML.
+    4. Call Resend's `create-template` with the HTML, name, and subject.
+    5. Call Resend's `publish-template` to make it available for sending.
+
+    Templates support variables using triple-brace syntax, like `{{{USERNAME}}}`. Once published, you can send the template via the [Emails API](/docs/api-reference/emails/send-email) or the dashboard.
+
+    To create a Broadcast and go from design to a campaign instead:
+
+    ```text theme={"theme":{"light":"github-light","dark":"vesper"}}
+    Look at the selected artboard in Paper and create a Resend broadcast from it.
+    Convert the design to email-safe HTML using the Resend agent skills. Provide a name, subject, and preview text for the template that fits the content. Create it as a
+    draft, don't send it yet.
     ```
-    https://mcp.resend.com/mcp
-    ```
-  </Tab>
-</Tabs>
 
-For more clients and configuration options, including running the server locally, see the [MCP Server overview](/docs/mcp-server).
+    The agent reads the design the same way, then calls Resend's `create-broadcast` with the HTML, sender, subject, and segment. You can review the draft in the [Resend dashboard](https://resend.com/broadcasts) before sending it yourself.
 
-## 3. Design your email in Paper
+    <Info>
+      Before you can send a Broadcast, you must define which
+      [Segment](/docs/dashboard/segments/introduction) should receive it. If you don't
+      have one yet, your agent can create one.
+    </Info>
+  </Step>
 
-Design your email as an artboard in Paper. A few tips for designs that translate well to email:
+  <Step title="Refine in the visual editor">
+    Templates and Broadcasts created by your agent are editable in the Resend dashboard. If you want your agent's content to be fully editable in the visual editor, ask it to use `compose-template` or `compose-broadcast` instead of raw HTML. You'll see the agent appear as a named avatar in the editor while it works, and you can hand-tune the result afterwards.
 
-* Use a single-column layout around 600px wide.
-* Use real copy instead of placeholder text.
-* Use web-safe fonts like `System Sans-Serif` or `System Serif`.
-* Use PNG or JPG images instead of SVGs (not supported in email).
+    <img alt="Hold to confirm" />
 
-<Tip>
-  Where you want personalization, write the variable directly into the design
-  copy, like `Hi {{{NAME|there}}}`. Your agent will preserve it when
-  creating the template or broadcast.
-</Tip>
-
-## 4. Ask your agent to create an email
-
-You can create either a [Template](/docs/dashboard/templates/introduction) or a [Broadcast](/docs/dashboard/broadcasts/introduction).
-
-### Create a Template
-
-Select an artboard in Paper and with both servers connected, prompt your agent with the following:
-
-```text theme={"theme":{"light":"github-light","dark":"vesper"}}
-Look at the selected artboard in Paper and recreate it as an email template
-in Resend. Convert the design to email-safe HTML (inline styles, table-based
-layout) using the Resend agent skills. Provide a name, subject, and preview text for the template that fits the content. Publish the template.
-```
-
-Behind the scenes, the agent will:
-
-1. Call Paper's `get_selection` and `get_screenshot` to see the design.
-2. Call Paper's `get_jsx` or `get_computed_styles` to read the exact layout, colors, and copy.
-3. Convert the output into email-safe HTML.
-4. Call Resend's `create-template` with the HTML, name, and subject.
-5. Call Resend's `publish-template` to make it available for sending.
-
-Templates support variables using triple-brace syntax, like `{{{USERNAME}}}`. Once published, you can send the template via the [Emails API](/docs/api-reference/emails/send-email) or the dashboard.
-
-### Create a Broadcast
-
-To go from design to a campaign instead:
-
-```text theme={"theme":{"light":"github-light","dark":"vesper"}}
-Look at the selected artboard in Paper and create a Resend broadcast from it.
-Convert the design to email-safe HTML using the Resend agent skills. Provide a name, subject, and preview text for the template that fits the content. Create it as a
-draft, don't send it yet.
-```
-
-The agent reads the design the same way, then calls Resend's `create-broadcast` with the HTML, sender, subject, and segment. You can review the draft in the [Resend dashboard](https://resend.com/broadcasts) before sending it yourself.
-
-<Info>
-  Before you can send a Broadcast, you must define which
-  [Segment](/docs/dashboard/segments/introduction) should receive it. If you don't
-  have one yet, your agent can create one.
-</Info>
-
-## 5. Refine in the visual editor
-
-Templates and Broadcasts created by your agent are editable in the Resend dashboard. If you want your agent's content to be fully editable in the visual editor, ask it to use `compose-template` or `compose-broadcast` instead of raw HTML. You'll see the agent appear as a named avatar in the editor while it works, and you can hand-tune the result afterwards.
-
-<img alt="Hold to confirm" />
-
-Alternatively, you can edit the Template or Broadcast in the Resend dashboard. Select the **Editor icon** in the top lefthand corner and **Hold to confirm** and convert the HTML to a visual template or broadcast.
+    Alternatively, you can edit the Template or Broadcast in the Resend dashboard. Select the **Editor icon** in the top lefthand corner and **Hold to confirm** and convert the HTML to a visual template or broadcast.
+  </Step>
+</Steps>
 
 ## Example: end-to-end prompt
 

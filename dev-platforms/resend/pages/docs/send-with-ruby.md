@@ -13,41 +13,45 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Ruby SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Ruby SDK.
 
-<CodeGroup>
-  ```bash RubyGems theme={"theme":{"light":"github-light","dark":"vesper"}}
-  gem install resend
-  ```
+    <CodeGroup>
+      ```bash RubyGems theme={"theme":{"light":"github-light","dark":"vesper"}}
+      gem install resend
+      ```
 
-  ```bash Gemfile theme={"theme":{"light":"github-light","dark":"vesper"}}
-  gem 'resend'
-  ```
-</CodeGroup>
+      ```bash Gemfile theme={"theme":{"light":"github-light","dark":"vesper"}}
+      gem 'resend'
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```rb index.rb theme={"theme":{"light":"github-light","dark":"vesper"}}
+    require "resend"
 
-```rb index.rb theme={"theme":{"light":"github-light","dark":"vesper"}}
-require "resend"
+    Resend.api_key = "re_xxxxxxxxx"
 
-Resend.api_key = "re_xxxxxxxxx"
+    params = {
+      "from": "Acme <onboarding@resend.dev>",
+      "to": ["delivered@resend.dev"],
+      "subject": "hello world",
+      "html": "<strong>it works!</strong>"
+    }
 
-params = {
-  "from": "Acme <onboarding@resend.dev>",
-  "to": ["delivered@resend.dev"],
-  "subject": "hello world",
-  "html": "<strong>it works!</strong>"
-}
+    sent = Resend::Emails.send(params)
+    puts sent
+    ```
+  </Step>
+</Steps>
 
-sent = Resend::Emails.send(params)
-puts sent
-```
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/ruby-resend-examples/examples/basic_send.rb">

@@ -25,7 +25,7 @@ All account data, including email metadata, logs, and API records, is stored in 
 
 If your organization has strict data residency requirements, review the [Resend Subprocessors list](https://resend.com/legal/subprocessors) and [Privacy Policy](https://resend.com/legal/privacy-policy) for details on data handling.
 
-## Why is this important?
+## Benefits of choosing a region
 
 Especially for transactional emails like magic links, password resets, and welcome messages, users expect to receive them right away. If they don't, they might not be able to access your service right away, which is a missed opportunity for your organization.
 

@@ -17,7 +17,7 @@ Contacts in Resend are global entities linked to a specific email address. After
 
 You can add Contacts one at a time via API or manually, or add many at once by [bulk uploading a CSV](#bulk-upload-by-csv).
 
-### 1. Add Contacts programmatically via API
+### Add Contacts programmatically via API
 
 You can add contacts programmatically using the [contacts](/docs/api-reference/contacts/create-contact) endpoint.
 
@@ -152,7 +152,7 @@ When creating a Contact, you can optionally set the following properties:
 
 Once a Contact is created, you can update it using the [update contact](/docs/api-reference/contacts/update-contact) endpoint or [add the contact to a Segment](/docs/api-reference/contacts/add-contact-to-segment).
 
-### 2. Add Contacts by uploading a .csv
+### Add Contacts by uploading a .csv
 
 You can also add Contacts by uploading a .csv file. This is a convenient way to add multiple Contacts at once.
 
@@ -168,7 +168,7 @@ You can also add Contacts by uploading a .csv file. This is a convenient way to 
   update the existing contact with the new data.
 </Note>
 
-### 3. Add Contacts manually
+### Add Contacts manually
 
 1. Go to the [Contacts](https://resend.com/audience) page, and select **Add Contacts**.
 2. Select **Add Manually**.

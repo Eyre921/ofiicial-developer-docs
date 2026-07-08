@@ -3410,6 +3410,50 @@ This page is generated from the [CHANGELOG.md on GitHub](https://github.com/anth
 
 Run `claude --version` to check your installed version.
 
+<Update label="2.1.204" description="July 8, 2026">
+  * Fixed hook events not streaming during SessionStart hooks in headless sessions, which could cause remote workers to be idle-reaped mid-hook
+</Update>
+
+<Update label="2.1.203" description="July 7, 2026">
+  * Added a warning when your login is about to expire, so you can re-authenticate before background sessions are interrupted
+  * Added a grey ⏸ badge to the footer when in manual permission mode, making the active mode always visible
+  * Added the session's additional working directories to MCP `roots/list`, with `notifications/roots/list_changed` sent when the set changes
+  * Fixed opening or switching background agent sessions on macOS stalling for 15–20 seconds due to a false low-memory detection (regression in 2.1.196)
+  * Fixed background sessions becoming permanently unresponsive to attach, replies, and stop when the daemon's session token went stale — the session now recovers automatically
+  * Fixed returning to `claude agents` silently stopping running subagents and re-running the prompt from scratch — their work now carries over
+  * Fixed a memory and per-turn CPU regression in interactive sessions: the context-usage indicator no longer re-analyzes the entire transcript after every turn
+  * Fixed background agents inheriting a stale `PATH` from the daemon instead of the dispatching shell, causing missing tools on Windows
+  * Fixed background and agent-view sessions dropping a shell-exported `ANTHROPIC_BASE_URL`, which sent API keys to the default endpoint and failed with 401
+  * Fixed Bash failing with "argument list too long" in repos with many git worktrees
+  * Fixed worktree-isolated subagents sometimes running shell commands in the parent checkout instead of their own worktree
+  * Fixed worktree creation rejecting nested repositories in multi-repo workspaces, leaving background sessions unable to isolate and edit
+  * Fixed background agents crash-looping when their working directory was deleted, replaced by a file, or became an invalid path — they now fail once with a clear error
+  * Fixed a background daemon auto-upgrade failure silently killing all running background sessions
+  * Fixed `TaskStop` and `TaskOutput` failing to find background agents spawned by another agent — errors now list running agents by id and description
+  * Fixed the `claude agents` composer discarding your typed message when a slash command isn't available there
+  * Fixed the agent list crashing when opening a stopped session whose conversation was already open in another session
+  * Fixed background sessions showing "Needs input" in the agent list after the question was already answered
+  * Fixed background agent startup failures showing only "exit\_with\_message" instead of the actual error
+  * Fixed background sessions ignoring `effortLevel` changes in settings.json when forked through the daemon
+  * Fixed attached background sessions ignoring `CLAUDE_CODE_DISABLE_MOUSE` and `CLAUDE_CODE_DISABLE_MOUSE_CLICKS` opt-outs
+  * Fixed `/exit` incorrectly warning about running background agents after all named agents had completed
+  * Fixed background sessions started from a non-git directory unable to edit files when a `WorktreeCreate` hook was configured
+  * Fixed the `@` directory picker in `claude agents` not showing registered git worktrees
+  * Fixed background task output on Windows being permanently replaced by an empty file after `/clear`
+  * Fixed content jumping when scrolling up through long transcript history
+  * Fixed the terminal flickering and jumping while typing in bash mode when a shell-history suggestion was shown
+  * Fixed literal `^[[I` / `^[[O` escape codes being printed when reattaching to a background session
+  * Fixed LSP-only plugins being incorrectly flagged for disuse when their language servers deliver diagnostics or answer navigation requests
+  * Improved responsiveness while long responses stream: live-preview updates no longer re-render the whole screen
+  * Improved subagent behavior: agents are now less likely to re-delegate their entire task to another subagent
+  * Reduced binary size by \~7 MB and startup memory by \~7 MB by loading a large bundled dependency lazily instead of inlining it
+  * Changed left arrow to no longer close the background tasks, diff, and workflow detail views — press Esc instead
+  * Changed the empty `claude agents` view to always show the organized sections (Needs input / Working / Completed) with descriptions
+  * Removed the startup "claude command missing or broken" warnings — they now appear in `/doctor` and `/status` instead
+  * Removed a redundant navigation hint from the `claude agents` footer
+  * \[VSCode] Added a Settings toggle for "Enable Remote Control for all sessions"
+</Update>
+
 <Update label="2.1.202" description="July 6, 2026">
   * Added a "Dynamic workflow size" setting in `/config` for controlling how large Claude generally makes dynamic workflows (small/medium/large agent counts) — an advisory guideline, not an enforced cap
   * Added `workflow.run_id` and `workflow.name` OpenTelemetry attributes to telemetry emitted by workflow-spawned agents, so a workflow run's activity can be reconstructed from OTel data
@@ -20316,7 +20360,7 @@ The tabs below show a few more matchers on different event types.
   </Tab>
 
   <Tab title="Match MCP tools">
-    MCP tools use a different naming convention than built-in tools: `mcp__<server>__<tool>`, where `<server>` is the MCP server name and `<tool>` is the tool it provides. For example, `mcp__github__search_repositories` or `mcp__filesystem__read_file`. Use a regex matcher to target all tools from a specific server, or match across servers with a pattern like `mcp__.*__write.*`. See [Match MCP tools](/docs/en/hooks#match-mcp-tools) in the reference for the full list of examples.
+    MCP tools use a different naming convention than built-in tools: `mcp__<server>__<tool>`, where `<server>` is the MCP server name and `<tool>` is the tool it provides. For example, `mcp__github__search_repositories` or `mcp__filesystem__read_file`. Tools from a [plugin-bundled server](/docs/en/mcp#plugin-provided-mcp-servers) use a scoped server segment instead, such as `mcp__plugin_my-plugin_db__query`. Use a regex matcher to target all tools from a specific server, or match across servers with a pattern like `mcp__.*__write.*`. See [Match MCP tools](/docs/en/hooks#match-mcp-tools) in the reference for the full list of examples.
 
     The command below extracts the tool name from the hook's JSON input with `jq` and writes it to stderr. Writing to stderr keeps stdout clean for JSON output and sends the message to the [debug log](/docs/en/hooks#debug-hooks):
 
@@ -23106,11 +23150,12 @@ An MCP server can also push messages directly into your session so Claude can re
 <Tip>
   Tips:
 
-  * Use the `--scope` flag to specify where the configuration is stored:
+  * Use the `-s` or `--scope` flag to specify where the configuration is stored:
     * `local` (default): available only to you in the current project. Older versions called this scope `project`
     * `project`: shared with everyone in the project via the `.mcp.json` file
     * `user`: available to you across all projects. Older versions called this scope `global`
-  * Set environment variables with `--env` flags (for example, `--env KEY=value`)
+  * Set environment variables with `-e` or `--env` flags (for example, `-e KEY=value`)
+  * The `--transport` and `--header` flags also accept `-t` and `-H` short forms
   * Configure MCP server startup timeout using the `MCP_TIMEOUT` environment variable (for example, `MCP_TIMEOUT=10000 claude` sets a 10-second timeout)
   * Set a per-server tool execution timeout by adding a `timeout` field in milliseconds to that server's `.mcp.json` entry, for example `"timeout": 600000` for ten minutes. This overrides the `MCP_TOOL_TIMEOUT` environment variable for that server only
   * Claude Code displays a warning when MCP tool output exceeds 10,000 tokens. To increase this limit, set the `MAX_MCP_OUTPUT_TOKENS` environment variable (for example, `MAX_MCP_OUTPUT_TOKENS=50000`)
@@ -23190,7 +23235,9 @@ Tools from a plugin-bundled MCP server include both the plugin name and the serv
 mcp__plugin_my-plugin_database-tools__query
 ```
 
-Use this full name when referencing the tool in [permission rules](/docs/en/permissions), a skill's `allowed-tools` list, or a [subagent's `tools` field](/docs/en/sub-agents#available-tools).
+Use this full name when referencing the tool in [permission rules](/docs/en/permissions), a skill's `allowed-tools` list, a [subagent's `tools` field](/docs/en/sub-agents#available-tools), or a [hook matcher](/docs/en/hooks#match-mcp-tools). A hook matcher written against the bare server key, such as `mcp__database-tools__.*`, never fires for a plugin-bundled server.
+
+The server itself registers under the scoped name `plugin:<plugin-name>:<server-name>`, such as `plugin:my-plugin:database-tools`. Use that name where a configured server name is expected, such as an [`mcp_tool` hook's `server` field](/docs/en/hooks#mcp-tool-hook-fields).
 
 **Benefits of plugin MCP servers**:
 
@@ -34643,19 +34690,19 @@ To install Claude Code, use one of the following methods:
   <Tab title="Native Install (Recommended)">
     **macOS, Linux, WSL:**
 
-    ```bash theme={null} theme={null} theme={null} theme={null} theme={null}
+    ```bash theme={null}
     curl -fsSL https://claude.ai/install.sh | bash
     ```
 
     **Windows PowerShell:**
 
-    ```powershell theme={null} theme={null} theme={null} theme={null} theme={null}
+    ```powershell theme={null}
     irm https://claude.ai/install.ps1 | iex
     ```
 
     **Windows CMD:**
 
-    ```batch theme={null} theme={null} theme={null} theme={null} theme={null}
+    ```batch theme={null}
     curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
     ```
 
@@ -34671,7 +34718,7 @@ To install Claude Code, use one of the following methods:
   </Tab>
 
   <Tab title="Homebrew">
-    ```bash theme={null} theme={null} theme={null} theme={null} theme={null}
+    ```bash theme={null}
     brew install --cask claude-code
     ```
 
@@ -34683,7 +34730,7 @@ To install Claude Code, use one of the following methods:
   </Tab>
 
   <Tab title="WinGet">
-    ```powershell theme={null} theme={null} theme={null} theme={null} theme={null}
+    ```powershell theme={null}
     winget install Anthropic.ClaudeCode
     ```
 
@@ -40681,14 +40728,14 @@ Use lower effort for agents doing simple, well-scoped tasks (like listing files 
 
 The permission mode option (`permission_mode` in Python, `permissionMode` in TypeScript) controls whether the agent asks for approval before using tools:
 
-| Mode                       | Behavior                                                                                                                                                                                                                                                                                                                                                                                                      |
-| :------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `"default"`                | Tools not covered by allow rules trigger your approval callback; no callback means deny                                                                                                                                                                                                                                                                                                                       |
-| `"acceptEdits"`            | Auto-approves file edits and common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, etc.); other Bash commands follow default rules                                                                                                                                                                                                                                                                        |
-| `"plan"`                   | Claude explores and plans without editing your source files; file edits are never auto-approved and prompt through your `canUseTool` callback                                                                                                                                                                                                                                                                 |
-| `"dontAsk"`                | Never prompts. Tools pre-approved by [permission rules](/docs/en/settings#permission-settings) run, everything else is denied                                                                                                                                                                                                                                                                                      |
-| `"auto"` (TypeScript only) | Uses a model classifier to approve or deny each tool call. See [Auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode) for availability and behavior                                                                                                                                                                                                                                               |
-| `"bypassPermissions"`      | Runs all allowed tools without asking, unless an explicit [`ask` rule](/docs/en/settings#permission-settings) matches; see [How permissions are evaluated](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated) for where ask rules sit in the precedence order. Cannot be used when running as root on Unix. Use only in isolated environments where the agent's actions cannot affect systems you care about |
+| Mode                  | Behavior                                                                                                                                                                                                                                                                                                                                                                                                      |
+| :-------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `"default"`           | Tools not covered by allow rules trigger your approval callback; no callback means deny                                                                                                                                                                                                                                                                                                                       |
+| `"acceptEdits"`       | Auto-approves file edits and common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, etc.); other Bash commands follow default rules                                                                                                                                                                                                                                                                        |
+| `"plan"`              | Claude explores and plans without editing your source files; file edits are never auto-approved and prompt through your `canUseTool` callback                                                                                                                                                                                                                                                                 |
+| `"dontAsk"`           | Never prompts. Tools pre-approved by [permission rules](/docs/en/settings#permission-settings) run, everything else is denied                                                                                                                                                                                                                                                                                      |
+| `"auto"`              | Uses a model classifier to approve or deny each tool call. See [Auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode) for availability and behavior                                                                                                                                                                                                                                               |
+| `"bypassPermissions"` | Runs all allowed tools without asking, unless an explicit [`ask` rule](/docs/en/settings#permission-settings) matches; see [How permissions are evaluated](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated) for where ask rules sit in the precedence order. Cannot be used when running as root on Unix. Use only in isolated environments where the agent's actions cannot affect systems you care about |
 
 For interactive applications, use `"default"` with a tool approval callback to surface approval prompts. For autonomous agents on a dev machine, `"acceptEdits"` auto-approves file edits and common filesystem commands (`mkdir`, `touch`, `mv`, `cp`, etc.) while still gating other `Bash` commands behind allow rules. Reserve `"bypassPermissions"` for CI, containers, or other isolated environments. See [Permissions](/docs/en/agent-sdk/permissions) for full details.
 
@@ -41555,7 +41602,7 @@ This guide covers how to define tools with input schemas and handlers, bundle th
 | Pre-approve a tool                           | Add to your allowed tools. See [Configure allowed tools](#configure-allowed-tools).                                                                                                                           |
 | Remove a built-in tool from Claude's context | Pass a `tools` array listing only the built-ins you want. See [Configure allowed tools](#configure-allowed-tools).                                                                                            |
 | Let Claude call tools in parallel            | Set `readOnlyHint: true` on tools with no side effects. See [Add tool annotations](#add-tool-annotations).                                                                                                    |
-| Handle errors without stopping the loop      | Return `isError: true` instead of throwing. See [Handle errors](#handle-errors).                                                                                                                              |
+| Control the error message Claude reads       | Return `isError: true` to compose the message instead of surfacing the raw exception. See [Handle errors](#handle-errors).                                                                                    |
 | Return images or files                       | Use `image` or `resource` blocks in the content array. See [Return images and resources](#return-images-and-resources).                                                                                       |
 | Return a machine-readable JSON result        | Set `structuredContent` on the result. See [Return structured data](#return-structured-data).                                                                                                                 |
 | Scale to many tools                          | Use [tool search](/docs/en/agent-sdk/tool-search) to load tools on demand.                                                                                                                                         |
@@ -41872,14 +41919,16 @@ To remove a built-in entirely, omit it from `tools` or list its bare name in `di
 
 ## Handle errors
 
-How your handler reports errors determines whether the agent loop continues or stops:
+A handler error doesn't stop the agent loop. The SDK's in-process MCP server catches uncaught exceptions and returns them as error results, so how you report an error determines what Claude reads, not whether the query fails:
 
-| What happens                                                                             | Result                                                                                                           |
-| :--------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------- |
-| Handler throws an uncaught exception                                                     | Agent loop stops. Claude never sees the error, and the `query` call fails.                                       |
-| Handler catches the error and returns `isError: true` (TS) / `"is_error": True` (Python) | Agent loop continues. Claude sees the error as data and can retry, try a different tool, or explain the failure. |
+| What happens                                                                             | Result                                                                                                                                    |
+| :--------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------- |
+| Handler throws an uncaught exception                                                     | The MCP server converts it to an error result carrying the raw exception message. Claude sees that message, and the agent loop continues. |
+| Handler catches the error and returns `isError: true` (TS) / `"is_error": True` (Python) | Claude sees the message you compose. You can add context the raw exception lacks, such as which request failed or what to try instead.    |
 
-The example below catches two kinds of failures inside the handler instead of letting them throw. A non-200 HTTP status is caught from the response and returned as an error result. A network error or invalid JSON is caught by the surrounding `try/except` (Python) or `try/catch` (TypeScript) and also returned as an error result. In both cases the handler returns normally and the agent loop continues.
+In both cases Claude can retry, try a different tool, or explain the failure. Catch errors yourself when the raw exception message isn't enough for Claude to act on.
+
+The example below catches two kinds of failures inside the handler and composes the error message Claude reads. A non-200 HTTP status is caught from the response and returned as an error result. A network error or invalid JSON is caught by the surrounding `try/except` (Python) or `try/catch` (TypeScript) and also returned as an error result. In both cases Claude receives a message that describes the failure instead of a bare exception string.
 
 <CodeGroup>
   ```python Python theme={null}
@@ -41913,8 +41962,8 @@ The example below catches two kinds of failures inside the handler instead of le
               data = response.json()
               return {"content": [{"type": "text", "text": json.dumps(data, indent=2)}]}
       except Exception as e:
-          # Catching here keeps the agent loop alive. An uncaught exception
-          # would end the whole query() call.
+          # Composes the message Claude reads. An uncaught exception would
+          # reach Claude as the raw str(e) with no context.
           return {
               "content": [{"type": "text", "text": f"Failed to fetch data: {str(e)}"}],
               "is_error": True,
@@ -41956,8 +42005,8 @@ The example below catches two kinds of failures inside the handler instead of le
           ]
         };
       } catch (error) {
-        // Catching here keeps the agent loop alive. An uncaught throw
-        // would end the whole query() call.
+        // Composes the message Claude reads. An uncaught throw would
+        // reach Claude as the raw error message with no context.
         return {
           content: [
             {
@@ -41975,7 +42024,7 @@ The example below catches two kinds of failures inside the handler instead of le
 
 ## Return images and resources
 
-The `content` array in a tool result accepts `text`, `image`, `audio`, `resource`, and `resource_link` blocks. You can mix them in the same response. Audio blocks are saved to disk and Claude receives a text block with the saved file path. Resource link blocks are converted to a text block containing the link's name, URI, and description.
+The `content` array in a tool result accepts `text`, `image`, `audio`, `resource`, and `resource_link` blocks. You can mix them in the same response. In TypeScript, audio blocks are saved to disk and Claude receives a text block with the saved file path; in Python, the SDK drops audio blocks from the tool result and logs a warning. Resource link blocks are converted to a text block containing the link's name, URI, and description.
 
 ### Images
 
@@ -42044,13 +42093,13 @@ An image block carries the image bytes inline, encoded as base64. There is no UR
 
 A resource block embeds a piece of content identified by a URI. The URI is a label for Claude to reference; the actual content rides in the block's `text` or `blob` field. Use this when your tool produces something that makes sense to address by name later, such as a generated file or a record from an external system.
 
-| Field               | Type         | Notes                                                       |
-| :------------------ | :----------- | :---------------------------------------------------------- |
-| `type`              | `"resource"` |                                                             |
-| `resource.uri`      | `string`     | Identifier for the content. Any URI scheme                  |
-| `resource.text`     | `string`     | The content, if it's text. Provide this or `blob`, not both |
-| `resource.blob`     | `string`     | The content base64-encoded, if it's binary                  |
-| `resource.mimeType` | `string`     | Optional                                                    |
+| Field               | Type         | Notes                                                                                                                                      |
+| :------------------ | :----------- | :----------------------------------------------------------------------------------------------------------------------------------------- |
+| `type`              | `"resource"` |                                                                                                                                            |
+| `resource.uri`      | `string`     | Identifier for the content. Any URI scheme                                                                                                 |
+| `resource.text`     | `string`     | The content, if it's text. Provide this or `blob`, not both                                                                                |
+| `resource.blob`     | `string`     | The content base64-encoded, if it's binary. TypeScript only: the Python SDK drops binary resources from the tool result and logs a warning |
+| `resource.mimeType` | `string`     | Optional                                                                                                                                   |
 
 This example shows a resource block returned from inside a tool handler. The URI `file:///tmp/report.md` is a label that Claude can reference later; the SDK does not read from that path.
 
@@ -43391,7 +43440,7 @@ Every hook callback receives three arguments:
 
 * **Input data:** a typed object containing event details. Each hook type has its own input shape. For example, `PreToolUseHookInput` includes `tool_name` and `tool_input`, while `NotificationHookInput` includes `message`. See the full type definitions in the [TypeScript](/docs/en/agent-sdk/typescript#hookinput) and [Python](/docs/en/agent-sdk/python#hookinput) SDK references.
   * All hook inputs share `session_id`, `cwd`, and `hook_event_name`.
-  * `agent_id` and `agent_type` are populated when the hook fires inside a subagent. In TypeScript, these are on the base hook input and available to all hook types. In Python, they are on `PreToolUse`, `PostToolUse`, and `PostToolUseFailure` only.
+  * `agent_id` and `agent_type` are populated when the hook fires inside a subagent. In TypeScript, these are on the base hook input and available to all hook types. In Python, they are optional fields on `PreToolUse`, `PostToolUse`, `PostToolUseFailure`, and `PermissionRequest`, and required fields on `SubagentStart` and `SubagentStop`.
 * **Tool use ID** (`str | None` / `string | undefined`): correlates `PreToolUse` and `PostToolUse` events for the same tool call.
 * **Context:** in TypeScript, contains a `signal` property (`AbortSignal`) for cancellation. In Python, this argument is reserved for future use.
 
@@ -46770,14 +46819,14 @@ Permission modes provide global control over how Claude uses tools. You can set 
 
 The SDK supports these permission modes:
 
-| Mode                     | Description                  | Tool behavior                                                                                                                                 |
-| :----------------------- | :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
-| `default`                | Standard permission behavior | No auto-approvals; unmatched tools trigger your `canUseTool` callback                                                                         |
-| `dontAsk`                | Deny instead of prompting    | Anything not pre-approved by `allowed_tools` or rules is denied; `canUseTool` is never called                                                 |
-| `acceptEdits`            | Auto-accept file edits       | File edits and [filesystem operations](#accept-edits-mode-acceptedits) (`mkdir`, `rm`, `mv`, etc.) are automatically approved                 |
-| `bypassPermissions`      | Bypass permission checks     | Tools run without permission prompts, unless an explicit [`ask` rule](#how-permissions-are-evaluated) matches (use with caution)              |
-| `plan`                   | Planning mode                | Claude explores and plans without editing your source files; file edits are never auto-approved and prompt through your `canUseTool` callback |
-| `auto` (TypeScript only) | Model-classified approvals   | A model classifier approves or denies each tool call. See [Auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode) for availability |
+| Mode                | Description                  | Tool behavior                                                                                                                                 |
+| :------------------ | :--------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------- |
+| `default`           | Standard permission behavior | No auto-approvals; unmatched tools trigger your `canUseTool` callback                                                                         |
+| `dontAsk`           | Deny instead of prompting    | Anything not pre-approved by `allowed_tools` or rules is denied; `canUseTool` is never called                                                 |
+| `acceptEdits`       | Auto-accept file edits       | File edits and [filesystem operations](#accept-edits-mode-acceptedits) (`mkdir`, `rm`, `mv`, etc.) are automatically approved                 |
+| `bypassPermissions` | Bypass permission checks     | Tools run without permission prompts, unless an explicit [`ask` rule](#how-permissions-are-evaluated) matches (use with caution)              |
+| `plan`              | Planning mode                | Claude explores and plans without editing your source files; file edits are never auto-approved and prompt through your `canUseTool` callback |
+| `auto`              | Model-classified approvals   | A model classifier approves or denies each tool call. See [Auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode) for availability |
 
 <Warning>
   **Subagent inheritance:** When the parent uses `bypassPermissions`, `acceptEdits`, or `auto`, all subagents inherit that mode and it cannot be overridden per subagent. Subagents may have different system prompts and less constrained behavior than your main agent, so inheriting `bypassPermissions` grants them full, autonomous system access. An explicit [`ask` rule](#how-permissions-are-evaluated) still forces a prompt.
@@ -48365,6 +48414,7 @@ PermissionMode = Literal[
     "plan",  # Planning mode - explore without editing
     "dontAsk",  # Deny anything not pre-approved instead of prompting
     "bypassPermissions",  # Bypass permission checks; explicit ask rules still prompt (use with caution)
+    "auto",  # A model classifier approves or denies each tool call
 ]
 ```
 
@@ -49440,14 +49490,18 @@ class PermissionRequestHookInput(BaseHookInput):
     tool_name: str
     tool_input: dict[str, Any]
     permission_suggestions: NotRequired[list[Any]]
+    agent_id: NotRequired[str]
+    agent_type: NotRequired[str]
 ```
 
-| Field                    | Type                           | Description                               |
-| :----------------------- | :----------------------------- | :---------------------------------------- |
-| `hook_event_name`        | `Literal["PermissionRequest"]` | Always "PermissionRequest"                |
-| `tool_name`              | `str`                          | Name of the tool requesting permission    |
-| `tool_input`             | `dict[str, Any]`               | Input parameters for the tool             |
-| `permission_suggestions` | `list[Any]` (optional)         | Suggested permission updates from the CLI |
+| Field                    | Type                           | Description                                                        |
+| :----------------------- | :----------------------------- | :----------------------------------------------------------------- |
+| `hook_event_name`        | `Literal["PermissionRequest"]` | Always "PermissionRequest"                                         |
+| `tool_name`              | `str`                          | Name of the tool requesting permission                             |
+| `tool_input`             | `dict[str, Any]`               | Input parameters for the tool                                      |
+| `permission_suggestions` | `list[Any]` (optional)         | Suggested permission updates from the CLI                          |
+| `agent_id`               | `str` (optional)               | Subagent identifier, present when the hook fires inside a subagent |
+| `agent_type`             | `str` (optional)               | Subagent type, present when the hook fires inside a subagent       |
 
 ### `HookJSONOutput`
 
@@ -51114,14 +51168,14 @@ With `Bash` enabled, try: `"Write unit tests for utils.py, run them, and fix any
 
 **Permission modes** control how much human oversight you want:
 
-| Mode                     | Behavior                                                                                                                            | Use case                                  |
-| ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
-| `acceptEdits`            | Auto-approves file edits and common filesystem commands, asks for other actions                                                     | Trusted development workflows             |
-| `plan`                   | Runs read-only tools; file edits are never auto-approved and reach your `canUseTool` callback                                       | Scoping a task before approving execution |
-| `dontAsk`                | Denies anything not in `allowedTools`                                                                                               | Locked-down headless agents               |
-| `auto` (TypeScript only) | A model classifier approves or denies each tool call                                                                                | Autonomous agents with safety guardrails  |
-| `bypassPermissions`      | Runs every tool without prompting, unless an explicit [`ask` rule](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated) matches | Sandboxed CI, fully trusted environments  |
-| `default`                | Requires a `canUseTool` callback to handle approval                                                                                 | Custom approval flows                     |
+| Mode                | Behavior                                                                                                                            | Use case                                  |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| `acceptEdits`       | Auto-approves file edits and common filesystem commands, asks for other actions                                                     | Trusted development workflows             |
+| `plan`              | Runs read-only tools; file edits are never auto-approved and reach your `canUseTool` callback                                       | Scoping a task before approving execution |
+| `dontAsk`           | Denies anything not in `allowedTools`                                                                                               | Locked-down headless agents               |
+| `auto`              | A model classifier approves or denies each tool call                                                                                | Autonomous agents with safety guardrails  |
+| `bypassPermissions` | Runs every tool without prompting, unless an explicit [`ask` rule](/docs/en/agent-sdk/permissions#how-permissions-are-evaluated) matches | Sandboxed CI, fully trusted environments  |
+| `default`           | Requires a `canUseTool` callback to handle approval                                                                                 | Custom approval flows                     |
 
 The example above uses `acceptEdits` mode, which auto-approves file operations so the agent can run without interactive prompts. If you want to prompt users for approval, use `default` mode and provide a [`canUseTool` callback](/docs/en/agent-sdk/user-input) that collects user input. For more control, see [Permissions](/docs/en/agent-sdk/permissions).
 
@@ -59311,7 +59365,7 @@ The following example asks Claude to create and delete a test file. When Claude 
 </CodeGroup>
 
 <Note>
-  In Python, `can_use_tool` requires [streaming mode](/docs/en/agent-sdk/streaming-vs-single-mode) and a `PreToolUse` hook that returns `{"continue_": True}` to keep the stream open. Without this hook, the stream closes before the permission callback can be invoked.
+  In Python, `can_use_tool` requires [streaming mode](/docs/en/agent-sdk/streaming-vs-single-mode). When you pass a finite message stream through `query(prompt=generator)` or `ClaudeSDKClient.connect(prompt=async_iterable)`, the SDK closes the input stream after the last message, before the permission callback can be invoked, unless a registered hook or in-process MCP server is keeping it open. The example above keeps it open with a `PreToolUse` hook that returns `{"continue_": True}`. Connecting with no prompt and sending messages through `ClaudeSDKClient.query()` keeps the stream open on its own and needs no hook.
 </Note>
 
 This example uses a `y/n` flow where any input other than `y` is treated as a denial. In practice, you might build a richer UI that lets users modify the request, provide feedback, or redirect Claude entirely. See [Respond to tool requests](#respond-to-tool-requests) for all the ways you can respond.
@@ -62329,6 +62383,8 @@ To match every tool from a server, append `.*` to the server prefix. The `.*` is
 
 Hyphens in the exact-match set require Claude Code v2.1.195 or later. On earlier versions a bare hyphenated prefix like `mcp__brave-search` is evaluated as an unanchored regular expression and matches every tool from that server. The `mcp__brave-search__.*` form works on every version.
 
+Tools from a [plugin-bundled MCP server](/docs/en/mcp#plugin-provided-mcp-servers) use a scoped server segment that includes the plugin name: `mcp__plugin_<plugin-name>_<server-name>__<tool>`. A matcher written against the bare server key never fires for these tools. For a plugin named `my-plugin` that bundles a server under the key `db`, a `query` tool appears as `mcp__plugin_my-plugin_db__query`, so the matcher for every tool from that server is `mcp__plugin_my-plugin_db__.*`. Use the same scoped tool name in a handler's [`if` field](#common-fields). See [Plugin-provided MCP servers](/docs/en/mcp#plugin-provided-mcp-servers) for how the scoped name is built.
+
 This example logs all memory server operations and validates write operations from any MCP server:
 
 ```json theme={null}
@@ -62492,11 +62548,11 @@ This example sends `PreToolUse` events to a local validation service, authentica
 
 In addition to the [common fields](#common-fields), MCP tool hooks accept these fields:
 
-| Field    | Required | Description                                                                                                                                                          |
-| :------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `server` | yes      | Name of a configured MCP server. The server must already be connected; the hook never triggers an OAuth or connection flow                                           |
-| `tool`   | yes      | Name of the tool to call on that server                                                                                                                              |
-| `input`  | no       | Arguments passed to the tool. String values support `${path}` substitution from the hook's [JSON input](#hook-input-and-output), such as `"${tool_input.file_path}"` |
+| Field    | Required | Description                                                                                                                                                                                                                                                                                                          |
+| :------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `server` | yes      | Name of a configured MCP server. For a [plugin-bundled server](/docs/en/mcp#plugin-provided-mcp-servers), this is the scoped name `plugin:<plugin-name>:<server-name>`, such as `plugin:my-plugin:db`, not the bare server key. The server must already be connected; the hook never triggers an OAuth or connection flow |
+| `tool`   | yes      | Name of the tool to call on that server                                                                                                                                                                                                                                                                              |
+| `input`  | no       | Arguments passed to the tool. String values support `${path}` substitution from the hook's [JSON input](#hook-input-and-output), such as `"${tool_input.file_path}"`                                                                                                                                                 |
 
 The tool's text content is treated like command-hook stdout: if it parses as valid [JSON output](#json-output) it is processed as a decision, otherwise it is shown as plain text. If the named server is not connected, or the tool returns `isError: true`, the hook produces a non-blocking error and execution continues.
 
@@ -62661,7 +62717,7 @@ Hook events receive these fields as JSON, in addition to event-specific fields d
 | :---------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `session_id`      | Current session identifier                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | `prompt_id`       | UUID identifying the user prompt currently being processed. Matches the [`prompt.id` attribute on OpenTelemetry events](/docs/en/monitoring-usage#event-correlation-attributes), so you can correlate hook output with telemetry for a single prompt. Absent until the first user input. Requires Claude Code v2.1.196 or later                                                                                                                                                                                                                                                                                                                                                                                                                       |
-| `transcript_path` | Path to conversation JSON                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| `transcript_path` | Path to conversation JSON. The transcript file is written asynchronously and may lag the in-memory conversation, so it may not yet include the current turn's most recent messages when a hook fires. Hooks that need the final assistant text of the current turn should use `last_assistant_message` on [Stop](#stop) and [SubagentStop](#subagentstop) instead of reading the transcript                                                                                                                                                                                                                                                                                                                                                      |
 | `cwd`             | Current working directory when the hook is invoked                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | `permission_mode` | Current [permission mode](/docs/en/permissions#permission-modes): `"default"`, `"plan"`, `"acceptEdits"`, `"auto"`, `"dontAsk"`, or `"bypassPermissions"`. The mode labeled **Manual** arrives as `"default"`, never as `"manual"`, so scripts that match `"default"` keep working. Not all events receive this field. Check the JSON example in each [hook event](#hook-events) section                                                                                                                                                                                                                                                                                                                                                              |
 | `effort`          | Object with a `level` field holding the active [effort level](/docs/en/model-config#adjust-effort-level) for the turn: `"low"`, `"medium"`, `"high"`, `"xhigh"`, or `"max"`. If the requested model effort exceeds what the current model supports, this is the downgraded level the model actually used. Ultracode is not a distinct level and reports as `"xhigh"`. The object matches the [status line](/docs/en/statusline#available-data) `effort` field. Present for events that fire within a tool-use context, such as `PreToolUse`, `PostToolUse`, `Stop`, and `SubagentStop`, when the current model supports the effort parameter. The level is also available to hook commands and the Bash tool as the `$CLAUDE_EFFORT` environment variable. |
@@ -64192,7 +64248,7 @@ the stoppage occurred due to a user interrupt. API errors fire
 
 In addition to the [common input fields](#common-input-fields), Stop hooks receive `stop_hook_active`, `last_assistant_message`, `background_tasks`, and `session_crons`. The `stop_hook_active` field is `true` when Claude Code is already continuing as a result of a stop hook. Check this value or process the transcript to avoid blocking on a condition that will never resolve. Claude Code overrides the hook and ends the turn after 8 consecutive blocks.
 
-The `last_assistant_message` field contains the text content of Claude's final response, so hooks can access it without parsing the transcript file.
+The `last_assistant_message` field contains the text content of Claude's final response, so hooks can access it without parsing the transcript file. For hooks that act on the just-completed turn, such as read-aloud or notification hooks, use this field rather than reading `transcript_path`: the transcript file isn't guaranteed to include the final message at Stop time on all versions.
 
 The `background_tasks` and `session_crons` arrays, available in Claude Code v2.1.145 or later, let hooks distinguish "session is done" from "session is paused waiting for background work to wake it back up". Both arrays are present when the task registry is reachable and are empty when nothing is in flight or scheduled.
 
@@ -66356,6 +66412,8 @@ Plugin hooks respond to the same lifecycle events as [user-defined hooks](/docs/
 * `mcp_tool`: call a tool on a configured [MCP server](/docs/en/mcp)
 * `prompt`: evaluate a prompt with an LLM (uses `$ARGUMENTS` placeholder for context)
 * `agent`: run an agentic verifier with tools for complex verification tasks
+
+Hooks that target the plugin's own [bundled MCP server](#mcp-servers) must use its scoped names. Tool matchers and `if` fields take the scoped tool name `mcp__plugin_<plugin-name>_<server-name>__<tool>`, and an `mcp_tool` hook's `server` field takes `plugin:<plugin-name>:<server-name>`. A matcher written against the bare server key never fires. See [Match MCP tools](/docs/en/hooks#match-mcp-tools) and [Plugin-provided MCP servers](/docs/en/mcp#plugin-provided-mcp-servers).
 
 ### MCP servers
 

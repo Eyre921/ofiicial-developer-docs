@@ -64,7 +64,7 @@ webapp:
 ```bash theme={"theme":"css-variables"}
 helm upgrade -n trigger --install trigger \
   oci://ghcr.io/triggerdotdev/charts/trigger \
-  --version "~4.0.0" \
+  --version "^4.5.0" \
   --create-namespace
 ```
 
@@ -110,11 +110,11 @@ The following commands will display the default values:
 ```bash theme={"theme":"css-variables"}
 # Specific version
 helm show values oci://ghcr.io/triggerdotdev/charts/trigger \
-  --version "4.0.5"
+  --version "4.5.0"
 
 # Latest v4
 helm show values oci://ghcr.io/triggerdotdev/charts/trigger \
-  --version "~4.0.0"
+  --version "^4.5.0"
 ```
 
 ### Custom values
@@ -174,7 +174,7 @@ Deploy with your custom values:
 ```bash theme={"theme":"css-variables"}
 helm upgrade -n trigger --install trigger \
   oci://ghcr.io/triggerdotdev/charts/trigger \
-  --version "~4.0.0" \
+  --version "^4.5.0" \
   --create-namespace \
   -f values-custom.yaml
 ```
@@ -513,14 +513,14 @@ You can lock versions in two ways:
 # Pin to a specific version for production
 helm upgrade -n trigger --install trigger \
   oci://ghcr.io/triggerdotdev/charts/trigger \
-  --version "4.0.5"
+  --version "4.5.0"
 
 # The app version will be different from the chart version
 # This is the version of the Trigger.dev webapp and supervisor
 # ..and should always match your Trigger.dev CLI version
 helm show chart \
   oci://ghcr.io/triggerdotdev/charts/trigger \
-  --version "4.0.5" | grep appVersion
+  --version "4.5.0" | grep appVersion
 ```
 
 **Specific image tags:**
@@ -528,11 +528,11 @@ helm show chart \
 ```yaml theme={"theme":"css-variables"}
 webapp:
   image:
-    tag: "v4.0.0"
+    tag: "v4.5.0"
 
 supervisor:
   image:
-    tag: "v4.0.0"
+    tag: "v4.5.0"
 ```
 
 The chart version's `appVersion` field determines the default image tags. Newer image tags may be incompatible with older chart versions and vice versa.

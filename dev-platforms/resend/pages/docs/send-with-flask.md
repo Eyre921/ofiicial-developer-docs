@@ -13,48 +13,52 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Install
+## Guide
 
-Get the Resend Python SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Python SDK.
 
-<CodeGroup>
-  ```bash Pip theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pip install resend
-  ```
-</CodeGroup>
+    <CodeGroup>
+      ```bash Pip theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pip install resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```py index.py theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import resend
+    import os
+    from flask import Flask, jsonify
 
-```py index.py theme={"theme":{"light":"github-light","dark":"vesper"}}
-import resend
-import os
-from flask import Flask, jsonify
+    resend.api_key = os.environ["RESEND_API_KEY"]
 
-resend.api_key = os.environ["RESEND_API_KEY"]
-
-app = Flask(__name__)
-
-
-@app.route("/")
-def index():
-    params: resend.Emails.SendParams = {
-        "from": "Acme <onboarding@resend.dev>",
-        "to": ["delivered@resend.dev"],
-        "subject": "hello world",
-        "html": "<strong>it works!</strong>",
-    }
-
-    r = resend.Emails.send(params)
-    return jsonify(r)
+    app = Flask(__name__)
 
 
-if __name__ == "__main__":
-    app.run()
-```
+    @app.route("/")
+    def index():
+        params: resend.Emails.SendParams = {
+            "from": "Acme <onboarding@resend.dev>",
+            "to": ["delivered@resend.dev"],
+            "subject": "hello world",
+            "html": "<strong>it works!</strong>",
+        }
 
-## 3. Try it yourself
+        r = resend.Emails.send(params)
+        return jsonify(r)
+
+
+    if __name__ == "__main__":
+        app.run()
+    ```
+  </Step>
+</Steps>
+
+## Examples
 
 <CardGroup>
   <Card title="Flask App" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/python-resend-examples/examples/flask_app.py">

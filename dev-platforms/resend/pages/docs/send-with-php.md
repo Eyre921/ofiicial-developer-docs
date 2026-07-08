@@ -17,34 +17,38 @@ Prefer watching a video? Check out this video walkthrough below.
 
 <YouTube />
 
-## 1. Install
+## Guide
 
-Get the Resend PHP SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend PHP SDK.
 
-```bash Composer theme={"theme":{"light":"github-light","dark":"vesper"}}
-composer require resend/resend-php
-```
+    ```bash Composer theme={"theme":{"light":"github-light","dark":"vesper"}}
+    composer require resend/resend-php
+    ```
+  </Step>
 
-## 2. Send email using HTML
+  <Step title="Send email using HTML">
+    The easiest way to send an email is by using the `html` parameter.
 
-The easiest way to send an email is by using the `html` parameter.
+    ```php index.php theme={"theme":{"light":"github-light","dark":"vesper"}}
+    <?php
 
-```php index.php theme={"theme":{"light":"github-light","dark":"vesper"}}
-<?php
+    require __DIR__ . '/vendor/autoload.php';
 
-require __DIR__ . '/vendor/autoload.php';
+    $resend = Resend::client('re_xxxxxxxxx');
 
-$resend = Resend::client('re_xxxxxxxxx');
+    $resend->emails->send([
+      'from' => 'Acme <onboarding@resend.dev>',
+      'to' => ['delivered@resend.dev'],
+      'subject' => 'hello world',
+      'html' => '<strong>it works!</strong>',
+    ]);
+    ```
+  </Step>
+</Steps>
 
-$resend->emails->send([
-  'from' => 'Acme <onboarding@resend.dev>',
-  'to' => ['delivered@resend.dev'],
-  'subject' => 'hello world',
-  'html' => '<strong>it works!</strong>',
-]);
-```
-
-## 3. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Basic Send" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/tree/main/php-resend-examples/src/send">

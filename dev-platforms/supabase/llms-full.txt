@@ -194454,6 +194454,7 @@ final res = await supabase.auth.admin.createUser(AdminUserAttributes(
 Delete a user.
 
 - The `deleteUser()` method requires the user's ID, which maps to the `auth.users.id` column.
+- When `shouldSoftDelete` is `true`, the user is soft-deleted: their record and associated data are retained but the user is marked as deleted. Defaults to `false`, which permanently removes the user.
 
 ### Examples
 
@@ -194462,6 +194463,16 @@ Delete a user.
 ```dart
 await supabase.auth.admin
     .deleteUser('715ed5db-f090-4b8c-a067-640ecee36aa0');
+```
+
+#### Soft-delete a user
+
+```dart
+await supabase.auth.admin
+    .deleteUser(
+      '715ed5db-f090-4b8c-a067-640ecee36aa0',
+      shouldSoftDelete: true,
+    );
 ```
 
 ## generateLink
@@ -195185,6 +195196,38 @@ final String bucketId = await supabase
   .createBucket('avatars');
 ```
 
+## createSignedUploadUrl
+
+Creates a signed upload URL. Signed upload URLs can be used to upload files to a bucket without further authentication. They are valid for 2 hours.
+
+- Policy permissions required:
+  - `buckets` permissions: none
+  - `objects` permissions: `insert`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
+### Examples
+
+#### Create signed upload URL
+
+```dart
+final response = await supabase
+  .storage
+  .from('avatars')
+  .createSignedUploadUrl('folder/avatar1.png');
+```
+
+#### With upsert
+
+```dart
+final response = await supabase
+  .storage
+  .from('avatars')
+  .createSignedUploadUrl(
+    'folder/avatar1.png',
+    upsert: true,
+  );
+```
+
 ## createSignedUrl
 
 Create signed url to download file without requiring permissions. This URL can be valid for a set number of seconds.
@@ -195218,6 +195261,19 @@ final String signedUrl = await supabase
       width: 200,
       height: 200,
     ),
+  );
+```
+
+#### With download
+
+```dart
+final String signedUrl = await supabase
+  .storage
+  .from('avatars')
+  .createSignedUrl(
+    'avatar1.png',
+    60,
+    download: DownloadBehavior.withOriginalName,
   );
 ```
 
@@ -195346,6 +195402,18 @@ final String publicUrl = await supabase
       width: 200,
       height: 200,
     ),
+  );
+```
+
+#### Trigger download
+
+```dart
+final String publicUrl = supabase
+  .storage
+  .from('public-bucket')
+  .getPublicUrl(
+    'avatar1.png',
+    download: DownloadBehavior.withOriginalName,
   );
 ```
 
@@ -196725,6 +196793,8 @@ It's best to only enable this for testing environments but if you wish to enable
 
 Follow the [Performance Debugging Guide](https://supabase.com/docs/guides/database/debugging-performance) to enable the functionality on your project.
 
+The `format` parameter accepts an `ExplainFormat` value — either `.text` (default, human-readable) or `.json` (machine-readable JSON).
+
 ### Examples
 
 #### Get the execution plan
@@ -196748,6 +196818,17 @@ try await supabase
     analyze: true,
     verbose: true
   )
+  .execute()
+  .value
+```
+
+#### Get the execution plan as JSON
+
+```swift
+try await supabase
+  .from("instruments")
+  .select()
+  .explain(format: .json)
   .execute()
   .value
 ```
@@ -198590,7 +198671,7 @@ try await supabase.storage
   .createBucket(
     "avatars",
     options: BucketOptions(
-      public: false,
+      isPublic: false,
       allowedMimeTypes: ["image/png"],
       fileSizeLimit: 1024
     )
@@ -198629,7 +198710,7 @@ try await supabase.storage
   .updateBucket(
     "avatars",
     options: BucketOptions(
-      public: false,
+      isPublic: false,
       fileSizeLimit: 1024,
       allowedMimeTypes: ["image/png"]
     )
@@ -198780,8 +198861,9 @@ let signedURL = try await supabase.storage
 let signedURL = try await supabase.storage
   .from("avatars")
   .createSignedURL(
-    path: "folder/avatar1.png", expiresIn: 60,
-    download: true
+    path: "folder/avatar1.png",
+    expiresIn: 60,
+    download: .withOriginalName
   )
 ```
 
@@ -198916,7 +198998,7 @@ let publicURL = try supabase.storage
   .from("public-bucket")
   .getPublicURL(
     path: "folder/avatar1.png",
-    download: true
+    download: .withOriginalName
   )
 ```
 

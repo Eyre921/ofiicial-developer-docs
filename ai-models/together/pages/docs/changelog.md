@@ -4,6 +4,14 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 8, 2026">
+  ## Provisioned throughput
+
+  [Provisioned throughput](/docs/inference/provisioned-throughput) is now available, allowing you to reserve inference capacity for frontier open models. Commit to a one-month-or-longer term, and Together commits to throughput and reliability targets for traffic within your purchased capacity.
+
+  At launch, provisioned throughput is available for `MiniMaxAI/MiniMax-M3` and `zai-org/GLM-5.2`.
+</Update>
+
 <Update label="July 6, 2026">
   ## New models available for fine-tuning
 

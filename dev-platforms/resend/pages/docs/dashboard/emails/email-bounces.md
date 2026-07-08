@@ -6,11 +6,11 @@ path: docs/dashboard/emails/email-bounces
 
 Understanding and resolving delivery issues.
 
-## Why does an email bounce?
+## Why emails bounce
 
 A bounce happens when an email cannot be delivered to the person it was meant for, and is returned to the sender. It essentially "bounces" back to the person who sent it.
 
-Some reasons include invalid email addresses, full mailboxes, technical issues with email servers, spam filters, message size restrictions, or blacklisting of the sender's email server.
+Some reasons include invalid email addresses, full mailboxes, and technical issues with email servers. Other causes are spam filters, message size restrictions, or blacklisting of the sender's email server.
 
 ## Bounce Types and Subtypes
 

@@ -6,7 +6,7 @@ path: docs/explore-sending-features
 
 Resend has a wide range of features for sending both transactional and marketing emails.
 
-Resend provides an API, webhooks, automations, templates, AI tools, a command-line interface (CLI), and more for both types of emails you need to send:
+Resend provides an API, command-line interface (CLI), webhooks, automations, AI tooling, and a no-code Dashboard interface. These features support both types of emails you need to send:
 
 * **Transactional emails:** personalized, event-driven communication
 * **Marketing campaigns:** bulk email [Broadcasts](/docs/dashboard/broadcasts/introduction) distributed to a contact list
@@ -58,7 +58,7 @@ Some emails do not fit neatly into one category:
 * Marketing emails can be **1-to-1**, based on personalized user activity (e.g., abandoned cart reminders, drip marketing campaigns). You can use Resend's transactional APIs and automations to send these individual marketing emails, as long as proper consent and compliance regulations are followed.
 * Resend's [batch sending API feature](/docs/dashboard/emails/batch-sending) can send multiple transactional emails at once (up to 100), even to different recipients with unique content, instead of making individual API requests for each email.
 
-You can either go with Resend's opinionated, full-featured solutions or design your own architecture from the ground up. You can use all of Resend's APIs, CLI commands, webhooks, automations, AI tools, and Dashboard controls for any type of email sending that you can build.
+You can either go with Resend's opinionated, full-featured solutions or design your own architecture from the ground up. You can use all of Resend's features for any type of email sending that you can build. This includes APIs, CLI commands, webhooks, and automations, plus AI tools and Dashboard controls.
 
 Resend allows you to choose both a Transactional and a Marketing plan, each at the tier that suits your specific use case for your email volume, and features needed. Update each plan individually at any time if your sending habits change, or add pay-as-you-go add-ons if you need a more flexible solution.
 

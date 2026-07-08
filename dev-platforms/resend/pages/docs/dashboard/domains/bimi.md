@@ -34,82 +34,84 @@ Here's an overview of current email client support:
 
 ## Implementing BIMI
 
-### 1. Configure DMARC
+<Steps>
+  <Step title="Configure DMARC">
+    <Note>
+      If you haven't set up DMARC yet, follow our [DMARC Setup
+      Guide](/docs/dashboard/domains/dmarc).
+    </Note>
 
-<Note>
-  If you haven't set up DMARC yet, follow our [DMARC Setup
-  Guide](/docs/dashboard/domains/dmarc).
-</Note>
+    BIMI requires a DMARC policy of `p=quarantine;` or `p=reject;`. This policy assures that your emails are properly authenticated and that no one else can spoof your domain and send them with your logo.
 
-BIMI requires a DMARC policy of `p=quarantine;` or `p=reject;`. This policy assures that your emails are properly authenticated and that no one else can spoof your domain and send them with your logo.
+    Here's an overview of the required parameters:
 
-Here's an overview of the required parameters:
+    | Parameter | Purpose    | Required Value                 |
+    | --------- | ---------- | ------------------------------ |
+    | `p`       | Policy     | `p=quarantine;` or `p=reject;` |
+    | `pct`     | Percentage | `pct=100;`                     |
 
-| Parameter | Purpose    | Required Value                 |
-| --------- | ---------- | ------------------------------ |
-| `p`       | Policy     | `p=quarantine;` or `p=reject;` |
-| `pct`     | Percentage | `pct=100;`                     |
+    Here is an example of an adequate DMARC record:
 
-Here is an example of an adequate DMARC record:
+    ```
+    "v=DMARC1; p=quarantine; pct=100; rua=mailto:dmarcreports@example.com"
+    ```
 
-```
-"v=DMARC1; p=quarantine; pct=100; rua=mailto:dmarcreports@example.com"
-```
+    <Note>
+      For BIMI on a subdomain, the root or APEX domain must also have a DMARC policy
+      of `p=quarantine` or `p=reject` in addition to the subdomain. If not, the
+      subdomain will not be compliant to display a BIMI logo.
+    </Note>
+  </Step>
 
-<Note>
-  For BIMI on a subdomain, the root or APEX domain must also have a DMARC policy
-  of `p=quarantine` or `p=reject` in addition to the subdomain. If not, the
-  subdomain will not be compliant to display a BIMI logo.
-</Note>
+  <Step title="Establish verifiable use of your logo">
+    To display your logo in most email clients using BIMI, you need to prove ownership of your logo by obtaining a mark certificate. This process is similar to acquiring an SSL certificate for your website. You can purchase a mark certificate from one of the following [authorized mark verifying authorities](https://bimigroup.org/vmc-issuers/):
 
-### 2. Establish verifiable use of your logo
+    * [DigiCert](https://www.digicert.com/tls-ssl/verified-mark-certificates)
+    * [GlobalSign](https://www.globalsign.com/)
+    * [SSL.com](https://www.ssl.com/)
 
-To display your logo in most email clients using BIMI, you need to prove ownership of your logo by obtaining a mark certificate. This process is similar to acquiring an SSL certificate for your website. You can purchase a mark certificate from one of the following [authorized mark verifying authorities](https://bimigroup.org/vmc-issuers/):
+    There are two possible mark Certificate's to verify the use of your logo:
 
-* [DigiCert](https://www.digicert.com/tls-ssl/verified-mark-certificates)
-* [GlobalSign](https://www.globalsign.com/)
-* [SSL.com](https://www.ssl.com/)
+    * **Verified Mark Certificate (VMC)**: A certificate issued by a Certificate Authority (CA) that is used to verify that you are the owner of the logo you are trying to display. A VMC is available if you have a trademark of your logo. With a VMC, Gmail will display a blue checkmark.
+    * **Common Mark Certificate (CMC)**: A certificate also issued by Certificate Authority (CA) to verify you. A CMC is available to you if you can establish that you’ve used your logo for one year. Only Gmail and Yahoo support a CMC.
 
-There are two possible mark Certificate's to verify the use of your logo:
+    A VMC offers the widest email client support, though the barrier of a trademark means a CMC is an easier path if you have established use of your logo for one year.
 
-* **Verified Mark Certificate (VMC)**: A certificate issued by a Certificate Authority (CA) that is used to verify that you are the owner of the logo you are trying to display. A VMC is available if you have a trademark of your logo. With a VMC, Gmail will display a blue checkmark.
-* **Common Mark Certificate (CMC)**: A certificate also issued by Certificate Authority (CA) to verify you. A CMC is available to you if you can establish that you’ve used your logo for one year. Only Gmail and Yahoo support a CMC.
+    Here are a some things to know before starting the certificate purchase process:
 
-A VMC offers the widest email client support, though the barrier of a trademark means a CMC is an easier path if you have established use of your logo for one year.
+    * If you don't hold a trademark for your logo or have not used your logo for a year, you will not be able to purchase a certificate.
+    * The process can take weeks, so start early and respond to their requests quickly.
+    * You will need to provide a [SVG Tiny P/S formatted logo](https://bimigroup.org/creating-bimi-svg-logo-files/).
+    * You will need to prove you own the domain by adding a DNS record.
+    * You will need to prove you are the owner of the trademark or logo by providing identification.
+    * You will need publicly available proof that your business exists. For newer startups, recommend [Yellow Pages](https://marketing.yellowpages.com/en/) or [Google Business Profiles](https://support.google.com/business/answer/3039617?hl=en) as the easiest method for proving your existence
+  </Step>
 
-Here are a some things to know before starting the certificate purchase process:
+  <Step title="Set your BIMI DNS Record">
+    Once you have your VMC, you can set your BIMI DNS record. This TXT record points to the location of your VMC and your logo.
 
-* If you don't hold a trademark for your logo or have not used your logo for a year, you will not be able to purchase a certificate.
-* The process can take weeks, so start early and respond to their requests quickly.
-* You will need to provide a [SVG Tiny P/S formatted logo](https://bimigroup.org/creating-bimi-svg-logo-files/).
-* You will need to prove you own the domain by adding a DNS record.
-* You will need to prove you are the owner of the trademark or logo by providing identification.
-* You will need publicly available proof that your business exists. For newer startups, recommend [Yellow Pages](https://marketing.yellowpages.com/en/) or [Google Business Profiles](https://support.google.com/business/answer/3039617?hl=en) as the easiest method for proving your existence
+    | Name           | Type | Value                                               |
+    | -------------- | ---- | --------------------------------------------------- |
+    | default.\_bimi | TXT  | v=BIMI1; l=link\_to\_logo; a=link\_to\_certificate; |
 
-## 3. Set your BIMI DNS Record
+    Here is an example of a BIMI record:
 
-Once you have your VMC, you can set your BIMI DNS record. This TXT record points to the location of your VMC and your logo.
+    ```
+    v=BIMI1; l=https://vmc.digicert.com/00-00.svg; a=https://vmc.digicert.com/00-00.pem;
+    ```
 
-| Name           | Type | Value                                               |
-| -------------- | ---- | --------------------------------------------------- |
-| default.\_bimi | TXT  | v=BIMI1; l=link\_to\_logo; a=link\_to\_certificate; |
+    <Tip>
+      Ensure your logo uses an HTTPS URL. Mailbox providers will not display the
+      logo if served from an HTTP URL.
+    </Tip>
 
-Here is an example of a BIMI record:
+    It contains a publicly and programmatically accessible link to your verified logo (.svg) and a link to your VMC (.pem).
 
-```
-v=BIMI1; l=https://vmc.digicert.com/00-00.svg; a=https://vmc.digicert.com/00-00.pem;
-```
+    To confirm that your BIMI record is published correctly, the [BIMI working group offers a tool](https://bimigroup.org/bimi-generator/) to check it.
 
-<Tip>
-  Ensure your logo uses an HTTPS URL. Mailbox providers will not display the
-  logo if served from an HTTP URL.
-</Tip>
-
-It contains a publicly and programmatically accessible link to your verified logo (.svg) and a link to your VMC (.pem).
-
-To confirm that your BIMI record is published correctly, the [BIMI working group offers a tool](https://bimigroup.org/bimi-generator/) to check it.
-
-It often takes a few days for your logo to display in inboxes after this record propagates. Mailbox providers will also conditionally decide to show the logo based on the domain's sending email volume and reputation. A domain with a high spam or bounce rate may not have their avatar displayed.
+    It often takes a few days for your logo to display in inboxes after this record propagates. Mailbox providers will also conditionally decide to show the logo based on the domain's sending email volume and reputation. A domain with a high spam or bounce rate may not have their avatar displayed.
+  </Step>
+</Steps>
 
 ## Reference
 

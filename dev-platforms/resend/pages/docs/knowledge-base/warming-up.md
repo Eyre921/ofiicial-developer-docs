@@ -8,7 +8,7 @@ Learn how to warm up a domain or IP to avoid deliverability issues.
 
 Warming up a domain or IP refers to the practice of progressively increasing your sending volume to maximize your deliverability. The goal is to send at a consistent rate and avoid any spikes in email volume that might be concerning to inbox service providers.
 
-Whenever you change your sending patterns, whether because you're using a new domain, a new IP, or a new vendor, or because your volume will increase, warm up your domain and/or IP.
+Whenever you change your sending patterns, warm up your domain and/or IP. This applies when you use a new domain, a new IP, or a new vendor, or when your volume will increase.
 
 A thought-out warm-up plan limits greylisting and delivery throttling, as well as helping establish a good domain and IP reputation.
 
@@ -66,7 +66,7 @@ We provide an automatic warm-up process so that you can focus on sending.
 
 [Learn more about requesting a Dedicated IP](https://resend.com/docs/knowledge-base/how-do-dedicated-ips-work#how-to-request-a-dedicated-ip).
 
-# What about third-party warm-up services?
+# Third-party warm-up services
 
 We know email deliverability is important, and it can be tempting to use services promising quick fixes. However, using tools that artificially boost engagement can harm your long-term sender reputation. These services often rely on manipulating anti-spam filters, which can backfire as email providers like Gmail adjust their systems.
 

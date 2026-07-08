@@ -96,7 +96,7 @@ When iCloud rejects or defers a message, it returns an SMTP error explaining why
 1. Review your mail logs and Resend dashboard for SMTP errors
 2. Adjust your sending based on temporary (defer) vs. permanent (reject) errors
 
-## Still Having Issues?
+## If You're Still Having Issues
 
 Apple does not provide allowlists or feedback loops, but for unresolved delivery problems you can contact Apple at **[icloudadmin@apple.com](mailto:icloudadmin@apple.com)**. Include your company name, domain, the SMTP errors you're seeing, and a detailed description of the issue.
 

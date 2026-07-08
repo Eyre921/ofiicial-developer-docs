@@ -13,27 +13,31 @@ Before you start, you'll need:
 * A Resend [API key](/docs/create-an-api-key)
 * A [verified domain](/docs/add-a-domain)
 
-## 1. Get the Resend SMTP credentials
+## Guide
 
-When configuring your SMTP integration, you'll need to use the following credentials:
+<Steps>
+  <Step title="Get the Resend SMTP credentials">
+    When configuring your SMTP integration, you'll need to use the following credentials:
 
-* **Host**: `smtp.resend.com`
-* **Port**: `465`
-* **Username**: `resend`
-* **Password**: `YOUR_API_KEY`
+    * **Host**: `smtp.resend.com`
+    * **Port**: `465`
+    * **Username**: `resend`
+    * **Password**: `YOUR_API_KEY`
+  </Step>
 
-## 2. Integrate with Retool SMTP
+  <Step title="Integrate with Retool SMTP">
+    Log into your [Retool](https://retool.com) account and create a new SMTP Resource.
 
-Log into your [Retool](https://retool.com) account and create a new SMTP Resource.
+    1. Go to **Resources** and click **Create New**
 
-1. Go to **Resources** and click **Create New**
+    <img alt="Retool SMTP - Create new Resources" />
 
-<img alt="Retool SMTP - Create new Resources" />
+    2. Search for **SMTP** and select it
 
-2. Search for **SMTP** and select it
+    <img alt="Retool SMTP - Search for SMTP" />
 
-<img alt="Retool SMTP - Search for SMTP" />
+    3. Add name and SMTP credentials
 
-3. Add name and SMTP credentials
-
-<img alt="Retool SMTP - Add SMTP credentials" />
+    <img alt="Retool SMTP - Add SMTP credentials" />
+  </Step>
+</Steps>

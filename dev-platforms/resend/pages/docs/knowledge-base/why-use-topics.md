@@ -46,7 +46,7 @@ Topics are most valuable when you send **multiple types of marketing content** t
 
 If you only send one type of marketing email (for example, a monthly newsletter and nothing else), Topics add complexity without much benefit. In that case, a simple subscribe/unsubscribe model is sufficient.
 
-## Topics vs Segments: What's the difference?
+## Topics vs Segments: key differences
 
 Topics and Segments serve fundamentally different purposes. Understanding this distinction is key to using them effectively.
 
@@ -135,8 +135,8 @@ Whenever you send a Broadcast, label it with a Topic. This ensures:
 
 <Info>
   If you send a Broadcast without a Topic and someone unsubscribes, they'll be
-  unsubscribed from **all** your emails. Labeling your content protects both you
-  and your recipients.
+  unsubscribed from all your emails. Labeling your content protects both you and
+  your recipients.
 </Info>
 
 ## Getting started with Topics

@@ -126,7 +126,7 @@ Learn how to send your first email using Astro, Resend, and Node.js.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -286,81 +286,85 @@ If you prefer to watch a video, check out our video walkthrough below.
 
 <YouTube />
 
-## 1. Install
+## Guide
 
-Install the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Install the Resend Node.js SDK.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install resend
-  ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install resend
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add resend
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add resend
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add resend
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add resend
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add resend
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Install an SSR adapter
+  <Step title="Install an SSR adapter">
+    Because Astro builds a static site by default, [install an SSR adapter](https://docs.astro.build/en/guides/server-side-rendering/) to enable on-demand rendering of routes.
+  </Step>
 
-Because Astro builds a static site by default, [install an SSR adapter](https://docs.astro.build/en/guides/server-side-rendering/) to enable on-demand rendering of routes.
+  <Step title="Add your API key">
+    [Create an API key](https://resend.com/api-keys) in Resend and add it to your `.env` file to keep your API key secret.
 
-## 3. Add your API key
+    ```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
+    RESEND_API_KEY="re_xxxxxxxxx"
+    ```
+  </Step>
 
-[Create an API key](https://resend.com/api-keys) in Resend and add it to your `.env` file to keep your API key secret.
+  <Step title="Send email using HTML">
+    Create an [Astro Action](https://docs.astro.build/en/guides/actions/) under `actions/index.ts`.
 
-```ini .env theme={"theme":{"light":"github-light","dark":"vesper"}}
-RESEND_API_KEY="re_xxxxxxxxx"
-```
+    The easiest way to send an email is with the `html` parameter.
 
-## 4. Send email using HTML
+    <CodeGroup>
+      ```ts src/actions/index.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+      import { ActionError, defineAction } from 'astro:actions';
+      import { Resend } from 'resend';
 
-Create an [Astro Action](https://docs.astro.build/en/guides/actions/) under `actions/index.ts`.
+      const resend = new Resend(import.meta.env.RESEND_API_KEY);
 
-The easiest way to send an email is with the `html` parameter.
+      export const server = {
+        send: defineAction({
+          accept: 'form',
+          handler: async () => {
+            const { data, error } = await resend.emails.send({
+              from: 'Acme <onboarding@resend.dev>',
+              to: ['delivered@resend.dev'],
+              subject: 'Hello world',
+              html: '<strong>It works!</strong>',
+            });
 
-<CodeGroup>
-  ```ts src/actions/index.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-  import { ActionError, defineAction } from 'astro:actions';
-  import { Resend } from 'resend';
+            if (error) {
+              throw new ActionError({
+                code: 'BAD_REQUEST',
+                message: error.message,
+              });
+            }
 
-  const resend = new Resend(import.meta.env.RESEND_API_KEY);
+            return data;
+          },
+        }),
+      };
+      ```
+    </CodeGroup>
 
-  export const server = {
-    send: defineAction({
-      accept: 'form',
-      handler: async () => {
-        const { data, error } = await resend.emails.send({
-          from: 'Acme <onboarding@resend.dev>',
-          to: ['delivered@resend.dev'],
-          subject: 'Hello world',
-          html: '<strong>It works!</strong>',
-        });
+    Call the `send` action from any frontmatter route, script, or component.
+  </Step>
+</Steps>
 
-        if (error) {
-          throw new ActionError({
-            code: 'BAD_REQUEST',
-            message: error.message,
-          });
-        }
-
-        return data;
-      },
-    }),
-  };
-  ```
-</CodeGroup>
-
-Call the `send` action from any frontmatter route, script, or component.
-
-## 5. Try it yourself
+## Examples
 
 <CardGroup>
   <Card title="Send Email" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-examples/blob/main/astro-resend-examples/typescript/src/pages/api/send.ts">

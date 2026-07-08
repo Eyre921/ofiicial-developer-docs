@@ -6,11 +6,9 @@ path: docs/knowledge-base/why-are-my-emails-going-to-spam
 
 Troubleshoot and resolve emails landing in spam or being quarantined.
 
-# Why Are My Emails Going to Spam?
-
 If your emails are landing in spam or being quarantined, work through this checklist to identify and fix the issue.
 
-## 1. Check your authentication records
+## Check your authentication records
 
 Make sure your domain has all three authentication records properly configured:
 
@@ -23,7 +21,7 @@ Make sure your domain has all three authentication records properly configured:
   Authentication issues are the most common cause of spam placement.
 </Warning>
 
-## 2. Use Deliverability Insights
+## Use Deliverability Insights
 
 If you sent the email through Resend, open the email in your dashboard and review
 [Deliverability Insights](/docs/dashboard/emails/deliverability-insights).
@@ -39,7 +37,7 @@ about:
 * Large email body size
 * Open or click tracking for sensitive emails
 
-## 3. Check the spam banner
+## Check the spam banner
 
 When an email lands in spam, providers like Gmail display a banner explaining why. Here are common messages and what they mean:
 
@@ -48,12 +46,12 @@ When an email lands in spam, providers like Gmail display a banner explaining wh
 | "It's similar to messages that were identified as spam in the past." | Content is triggering spam filters        | Simplify your email content and remove excessive links, images, or marketing language   |
 | "This message seems dangerous"                                       | A URL or content was flagged as malicious | Review the links and content in your email for anything that might be flagged as unsafe |
 
-## 4. Check your domain reputation
+## Check your domain reputation
 
 * Use [Google Postmaster Tools](https://postmaster.google.com) to see your domain and IP reputation with Gmail.
 * If your domain is new, you may need to warm it up by starting with low volume and increasing over time. See our [Domain and/or IP Warm-up Guide](/docs/knowledge-base/warming-up).
 
-## 5. Corporate email filters
+## Corporate email filters
 
 Some recipients use enterprise email security services like Mimecast, Proofpoint, or Barracuda. These services apply their own filtering on top of standard spam checks.
 
@@ -62,7 +60,7 @@ If your emails are being blocked by a specific corporate recipient:
 * Ask the recipient to check their quarantine or junk folder and allowlist your sending domain.
 * These filters often block based on domain age, content patterns, or URL reputation. The fixes in the steps above still apply.
 
-## 6. Review your sending practices
+## Review your sending practices
 
 * Send from a dedicated address per email type, such as `notifications@` for transactional emails and `updates@` for marketing emails. For more guidance on domain setup, review [Is it better to send emails from a subdomain or the root domain?](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain).
 * Do not send to purchased lists or addresses that have not opted in. If you are unsure what qualifies as permission, review [What counts as email consent?](/docs/knowledge-base/what-counts-as-email-consent).
@@ -76,7 +74,7 @@ If your emails are being blocked by a specific corporate recipient:
   folder?](/docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder).
 </Tip>
 
-## 7. Need expert help?
+## Get more help
 
 If you have worked through the steps above and still need help, our support team
 is happy to take a closer look. Contact us through our

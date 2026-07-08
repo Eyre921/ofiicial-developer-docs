@@ -12,6 +12,8 @@ Webhook signing secrets are used to validate the payload data sent to your appli
 
 Calls to [create](/docs/api-reference/webhooks/create-webhook), [retrieve](/docs/api-reference/webhooks/get-webhook), or [list](/docs/api-reference/webhooks/list-webhooks) webhooks will also return the signing secret in the response body.
 
+## How to verify webhook requests
+
 To verify the webhook request, you can use the Resend SDK, as in the example below.
 
 <Tip>
@@ -89,7 +91,7 @@ wh.verify(payload, headers);
 
 If you prefer, you can also [manually verify the headers as well.](https://docs.svix.com/receiving/verifying-payloads/how-manual)
 
-## Why verify webhooks?
+## Why verify webhooks
 
 Webhooks are vulnerable because attackers can send fake HTTP POST requests to endpoints, pretending to be legitimate services. This can lead to security risks or operational issues.
 

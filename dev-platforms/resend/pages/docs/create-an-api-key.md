@@ -6,7 +6,7 @@ path: docs/create-an-api-key
 
 Get started sending emails by creating an API key
 
-## What is an API Key?
+## Resend API keys
 
 API Keys are secret tokens used to authenticate your requests. They are unique to your account and must be kept confidential.
 
@@ -18,7 +18,7 @@ You can create API keys in four ways:
 
 * in the [**API keys** Dashboard page](/docs/dashboard/api-keys/introduction)
 * using the [Resend API](/docs/api-reference/api-keys/create-api-key)
-* with a [Resend CLI command](/docs/cli#apikeys)
+* with a [Resend CLI command](/docs/cli#api-keys)
 * with the [Resend MCP server](/docs/mcp-server)
 
 To create a new API Key from the Resend Dashboard:

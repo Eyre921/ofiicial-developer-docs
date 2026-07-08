@@ -3757,6 +3757,14 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="July 8, 2026">
+  ## Provisioned throughput
+
+  [Provisioned throughput](/docs/inference/provisioned-throughput) is now available, allowing you to reserve inference capacity for frontier open models. Commit to a one-month-or-longer term, and Together commits to throughput and reliability targets for traffic within your purchased capacity.
+
+  At launch, provisioned throughput is available for `MiniMaxAI/MiniMax-M3` and `zai-org/GLM-5.2`.
+</Update>
+
 <Update label="July 6, 2026">
   ## New models available for fine-tuning
 
@@ -7727,6 +7735,10 @@ Reserved-hardware inference endpoints with predictable performance, no shared ra
 A dedicated endpoint serves a single model on hardware reserved only for you, offering predictable latency and no [shared-fleet rate limits](/docs/serverless/rate-limits). They are highly configurable, allowing you to upload custom fine-tuned models, and configure autoscaling and decoding optimizations to match your workload.
 
 Dedicated endpoints use the same [inference APIs](/docs/inference/overview#shared-inference-api) as [serverless models](/docs/serverless/models), allowing you to prototype with serverless, then switch to dedicated endpoints without changing your application code.
+
+<Tip>
+  If you're running a stock model in production and want a defined SLA without managing hardware, contact sales for [provisioned throughput](/docs/inference/provisioned-throughput).
+</Tip>
 
 ## Get started
 
@@ -26939,11 +26951,13 @@ Source: https://docs.together.ai/docs/inference/overview
 
 Run inference on 100+ open-source models.
 
-Together AI offers two ways to run inference:
+Together AI offers three ways to run inference:
 
 **[Serverless models](/docs/serverless/models):** A shared fleet of popular open models you can call through a per-token API. No GPUs to provision or manage. Best for prototyping, or apps with variable traffic.
 
-**[Dedicated endpoints](/docs/dedicated-endpoints/overview):** A single model running on GPUs reserved for you, billed per minute by hardware. Best for apps with steady traffic, consistent latency, or for serving fine-tuned models.
+**[Provisioned throughput](/docs/inference/provisioned-throughput):** Reserved capacity for a selected stock model with a defined SLA covering committed throughput and reliability. Best for production workloads that need stronger guarantees than serverless.
+
+**[Dedicated endpoints](/docs/dedicated-endpoints/overview):** A single model running on GPUs reserved for you, billed per minute by hardware. Best for serving fine-tuned models, or workloads that need direct control over hardware, latency, and throughput.
 
 ## Get started
 
@@ -26963,7 +26977,7 @@ Together AI offers two ways to run inference:
 
 ## Shared inference API
 
-Serverless models and dedicated endpoints use the same inference APIs for generating and retrieving model outputs. Apps work on either deployment mode without code changes; just swap the `model` parameter:
+Serverless, provisioned throughput, and dedicated endpoint workloads all use the same inference APIs for generating and retrieving model outputs. Apps work on either deployment mode without code changes; just swap the `model` parameter:
 
 <CodeGroup>
   ```python Python highlight={7,13} theme={null}
@@ -27085,6 +27099,7 @@ How Together AI bills for inference.
 Inference billing works differently depending on your deployment mode:
 
 * [Serverless models](/docs/serverless/models) bill based on usage, with no minimums and no provisioning cost.
+* [Provisioned throughput](/docs/inference/provisioned-throughput) bills per provisioned throughput unit (PTU) on a reserved term, with a one-month minimum.
 * [Dedicated endpoints](/docs/dedicated-endpoints/overview) bill per-minute, depending on the hardware you reserve.
 
 For per-model and per-hardware rates, see [together.ai/pricing](https://together.ai/pricing).
@@ -27109,6 +27124,12 @@ Select serverless chat models bill cached input tokens at a steep discount. Cach
 * **Best-effort and short-lived:** The serverless cache is shared across the fleet and entries are evicted as traffic shifts, so cache hits aren't guaranteed and there's no configurable retention window. For predictable cache behavior, use a [dedicated endpoint](/docs/dedicated-endpoints/settings#prompt-caching), where prompt caching is enabled by default and scoped to your own replicas.
 * **Limited to supported models:** Only models with a value in the **Cached input pricing** column on [Chat models](/docs/serverless/models#chat-models) support cached input billing. Models without a cached price bill all input tokens at the standard rate.
 
+## Provisioned throughput
+
+You commit to a fixed number of PTUs for a selected model or model family over a reserved term, with a one-month minimum. Each PTU is priced at a flat \$0.05 per minute; how many PTUs you need depends on the model, your traffic shape, and your committed capacity. Input tokens, output tokens, and cached reads consume PTUs at model-specific conversion ratios defined in your contract.
+
+Estimate your requirements with the [pricing calculator](https://www.together.ai/provisioned-throughput), and see [Provisioned throughput](/docs/inference/provisioned-throughput) for details on PTUs and the SLA.
+
 ## Dedicated endpoints
 
 You pay per minute for the hardware you reserve, regardless of your model or request volume. Billing starts when the endpoint is running. Provisioning, queuing, and failed deployments are not billed.
@@ -27118,6 +27139,86 @@ See [Dedicated endpoint pricing](/docs/dedicated-endpoints/overview#pricing) for
 ## Batch processing
 
 When you don't need real-time responses, you can use the [batch processing API](/docs/inference/batch/overview) for a 50% discount when running [selected serverless models](/docs/inference/batch/overview#supported-models). Dedicated endpoints can also run batch jobs, but at full price.
+
+
+# Provisioned throughput
+Source: https://docs.together.ai/docs/inference/provisioned-throughput
+
+Reserved inference capacity for production workloads.
+
+Provisioned throughput gives you reserved capacity for a selected model or model family on Together AI's managed inference infrastructure. You commit to a number of [provisioned throughput units (PTUs)](#how-ptus-work) for a fixed term of one month or more, and Together commits to throughput and reliability targets for traffic within your purchased capacity.
+
+Provisioned throughput uses the same [inference API](/docs/inference/overview#shared-inference-api) surface as serverless and dedicated endpoints, so your application code stays the same after you reserve capacity.
+
+<CardGroup>
+  <Card title="Contact sales to request provisioned throughput" href="https://www.together.ai/contact-sales-pt">
+    Provisioned throughput is currently unavailable for self-service. Contact our sales team to request a quote or scope a commitment.
+  </Card>
+</CardGroup>
+
+## Supported models
+
+Provisioned throughput is available for the following models:
+
+| Model                                                   | Model string           |
+| ------------------------------------------------------- | ---------------------- |
+| [MiniMax M3](https://www.together.ai/models/minimax-m3) | `MiniMaxAI/MiniMax-M3` |
+| [GLM-5.2](https://www.together.ai/models/glm-52)        | `zai-org/GLM-5.2`      |
+
+To request provisioned throughput for a model that isn't listed, [contact sales](https://www.together.ai/contact-sales-pt).
+
+## When to use provisioned throughput
+
+Consider provisioned throughput when:
+
+* You're moving high-volume production traffic off a proprietary model API and want to cut cost by switching to open models without giving up reliability.
+* You need a defined SLA and committed capacity that [serverless models](/docs/serverless/models) can't guarantee.
+* Your traffic is steady and predictable enough to reserve capacity for, rather than competing for the shared serverless pool.
+
+If you need to serve a fine-tuned model, or want direct control over hardware, latency, and throughput, use [dedicated endpoints](/docs/dedicated-endpoints/overview).
+
+|                      | Serverless                                                            | Provisioned throughput                                      | Dedicated endpoints                                                                 |
+| -------------------- | --------------------------------------------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| **What you reserve** | Nothing; shared fleet.                                                | Committed PT capacity for a selected model or model family. | GPUs reserved only for you.                                                         |
+| **Billing unit**     | Per token, per second, or per unit of output.                         | Per PTU, on a fixed term (one-month minimum).               | Per minute of reserved hardware.                                                    |
+| **SLA**              | Best-effort with [dynamic rate limits](/docs/serverless/rate-limits). | Defined targets for throughput and reliability.             | No shared-fleet rate limits; performance shaped by your hardware and settings.      |
+| **Best for**         | Prototyping and variable traffic.                                     | Production workloads on stock models.                       | Fine-tuned models, custom hardware, or fine-grained latency and throughput control. |
+| **How to access**    | Self-serve.                                                           | [Contact sales.](https://www.together.ai/contact-sales-pt)  | Self-serve.                                                                         |
+
+## How PTUs work
+
+A provisioned throughput unit (PTU) is the unit of capacity you buy. Each PTU is a fixed slice of guaranteed throughput for a model or model family, priced at a flat \$0.05 per PTU per minute. You buy PTUs for the volume you expect to send, and as traffic flows through, it draws down your committed capacity.
+
+Input tokens, output tokens, and cached reads consume PTUs at different rates. Output tokens are more expensive to serve than input tokens, and cached reads are cheaper than fresh inputs. The exact conversion ratios are model-specific and defined in your contract.
+
+You don't need to forecast a precise traffic mix. Whatever shape your traffic takes, it converts into a single normalized rate that draws down your PTU capacity: output-heavy or cache-light traffic consumes PTUs faster, while cache-heavy traffic consumes them more slowly. Traffic shape changes how quickly you consume PTUs, not the SLA.
+
+To estimate how many PTUs your workload needs, use the [pricing calculator](https://www.together.ai/provisioned-throughput).
+
+## SLA
+
+Eligible traffic that fits within your purchased PTUs and the published product limits is backed by the following service level agreement (SLA):
+
+| Dimension       | Commitment                                                                                                                                                                  |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Throughput**  | We serve your eligible traffic up to the maximum throughput your purchased PTUs entitle you to for the selected model or model family, measured in tokens per minute (TPM). |
+| **Reliability** | At least 99% of eligible requests complete successfully each month, measured as requests that don't fail due to a Together-caused error.                                    |
+
+<Note>
+  **Eligible requests** include all requests made within your purchased PTU capacity and the published product limits. Customer errors, invalid requests, authentication failures, client cancellations, traffic above your purchased capacity, and requests that violate our published abuse or product protection limits are not covered by the SLA.
+</Note>
+
+## Overage behavior
+
+Traffic above your purchased PTU capacity may fall back to the shared serverless pool on a best-effort basis when capacity is available, billed at standard serverless rates. If serverless capacity isn't available, that traffic may be rate limited or not served. Overage traffic is not covered by the provisioned throughput SLA.
+
+If you consistently run above your PTU commitment, you may be able to expand it through your sales contact. Don't rely on overage as a substitute for buying enough PTUs to handle your steady-state traffic.
+
+PTUs reserve capacity for your contract term. Unused PTUs don't roll over and aren't refunded or credited, so size your commitment to your expected steady-state traffic.
+
+## Model versions
+
+PTUs are scoped to a specific model or model family. To move your commitment to a different model, work with your sales contact.
 
 
 # Recommended models
@@ -39276,7 +39377,8 @@ If you need a known, fixed limit (for capacity planning or strict SLAs), use a [
 If your workload needs higher throughput or runs in large bursts, consider:
 
 * [Batch inference](/docs/inference/batch/overview) for high request or token volumes when latency is not critical. You pay for what you use, with discounts on most models.
-* [Dedicated inference](/docs/dedicated-endpoints/overview) for predictable, reserved capacity that you control. Use it for workloads with strict SLAs.
+* [Provisioned throughput](/docs/inference/provisioned-throughput) for production workloads on stock models that need a defined SLA covering committed throughput (TPM) and reliability.
+* [Dedicated inference](/docs/dedicated-endpoints/overview) for predictable, reserved capacity that you control. Use it for fine-tuned models, or workloads that need direct control over hardware, latency, and throughput.
 
 
 # Slurm management system

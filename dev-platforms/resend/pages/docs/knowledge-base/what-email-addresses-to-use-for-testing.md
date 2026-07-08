@@ -12,7 +12,7 @@ When testing email functionality, it's important to use designated test addresse
 
 Resend provides a set of safe email addresses specifically designed for testing, ensuring that you can simulate different email events without affecting your domain's reputation.
 
-### Why not use @example.com or @test.com?
+### Avoid example or test domains
 
 Many developers attempt to use domains like `@example.com` or `@test.com` for testing purposes. However, these domains are not designed for email traffic and often reject messages, leading to bounces.
 

@@ -34,11 +34,11 @@ Go to [the Domains page](https://resend.com/domains) and click on **Add Domain**
 
 If you want to use Resend to send your Supabase Auth Emails, you have three options:
 
-1. [Using the Resend Integration](#1-using-the-resend-integration): simplest, but less customizable email templates.
-2. [Custom Auth Functions](#2-custom-auth-functions): more customizable email templates, but requires more setup.
-3. [Self-hosted with Custom SMTP](#3-self-hosted-with-custom-smtp): only for those self-hosting Supabase.
+1. [Using the Resend Integration](#send-with-the-resend-integration): simplest, but less customizable email templates.
+2. [Custom Auth Functions](#send-with-custom-auth-functions): more customizable email templates, but requires more setup.
+3. [Self-hosted with custom SMTP](#send-with-custom-smtp-server-for-self-hosting): only for those self-hosting Supabase.
 
-### 1. Using the Resend Integration
+### Send with the Resend Integration
 
 Resend includes a pre-built integration with Supabase. Connecting Resend as your email provider will allow you to send your Supabase emails (for example, password resets and email confirmations) through Resend.
 
@@ -64,7 +64,7 @@ Click on **Supabase Dashboard** to confirm the integration.
   settings](https://supabase.com/docs/guides/deployment/going-into-prod#rate-limiting-resource-allocation--abuse-prevention)).
 </Info>
 
-### 2. Custom Auth Functions
+### Send with custom auth functions
 
 Benefit of using custom auth functions:
 
@@ -79,86 +79,88 @@ Note that this requires enabling [Supabase Auth Hooks](https://supabase.com/docs
   See the full source code.
 </Card>
 
-### 3. Self-hosted with Custom SMTP
+### Send with a custom SMTP server for self-hosting
 
 If you're self-hosting Supabase, you can use a custom SMTP server to send your emails. [Learn more here](/docs/send-with-smtp).
 
 ## Send Emails with Supabase Edge Functions
 
-If you're using Supabase Edge Functions, you can add email sending to your function by using the Resend Node.js SDK. You can use these functions for Auth Emails ([as shown above](#2-custom-auth-functions)) or for other emails (for example, app notifications and account activity).
+If you're using Supabase Edge Functions, you can add email sending to your function by using the Resend Node.js SDK. You can use these functions for Auth Emails ([as shown above](#custom-auth-functions)) or for other emails (for example, app notifications and account activity).
 
 First, make sure you have the latest version of the [Supabase CLI](https://supabase.com/docs/guides/cli#installation) installed.
 
-### 1. Create Supabase function
+<Steps>
+  <Step title="Create Supabase function">
+    Create a new function locally:
 
-Create a new function locally:
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    supabase functions new resend
+    ```
+  </Step>
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-supabase functions new resend
-```
+  <Step title="Edit the handler function">
+    Paste the following code into the `index.ts` file:
 
-### 2. Edit the handler function
+    ```js index.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
-Paste the following code into the `index.ts` file:
+    const RESEND_API_KEY = 're_xxxxxxxxx';
 
-```js index.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+    const handler = async (_request: Request): Promise<Response> => {
+        const res = await fetch('https://api.resend.com/emails', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${RESEND_API_KEY}`
+            },
+            body: JSON.stringify({
+                from: 'Acme <onboarding@resend.dev>',
+                to: ['delivered@resend.dev'],
+                subject: 'hello world',
+                html: '<strong>it works!</strong>',
+            })
+        });
 
-const RESEND_API_KEY = 're_xxxxxxxxx';
+        const data = await res.json();
 
-const handler = async (_request: Request): Promise<Response> => {
-    const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${RESEND_API_KEY}`
-        },
-        body: JSON.stringify({
-            from: 'Acme <onboarding@resend.dev>',
-            to: ['delivered@resend.dev'],
-            subject: 'hello world',
-            html: '<strong>it works!</strong>',
-        })
-    });
+        return new Response(JSON.stringify(data), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+    };
 
-    const data = await res.json();
+    serve(handler);
+    ```
+  </Step>
 
-    return new Response(JSON.stringify(data), {
-        status: 200,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
-};
+  <Step title="Deploy and send email">
+    Run function locally:
 
-serve(handler);
-```
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    supabase functions start
+    supabase functions serve resend --no-verify-jwt
+    ```
 
-### 3. Deploy and send email
+    Deploy function to Supabase:
 
-Run function locally:
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    supabase functions deploy resend
+    ```
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-supabase functions start
-supabase functions serve resend --no-verify-jwt
-```
+    Open the endpoint URL to send an email:
 
-Deploy function to Supabase:
+    <img alt="Supabase Edge Functions - Deploy Function" />
+  </Step>
+</Steps>
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-supabase functions deploy resend
-```
-
-Open the endpoint URL to send an email:
-
-<img alt="Supabase Edge Functions - Deploy Function" />
-
-### 4. Try it yourself
+## Examples
 
 <Card title="Supabase Edge Functions Example" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-supabase-edge-functions-example">
   See the full source code.
 </Card>
 
-## Happy sending!
+## Get more help
 
 If you have any questions, please let us know at [support@resend.com](mailto:support@resend.com).

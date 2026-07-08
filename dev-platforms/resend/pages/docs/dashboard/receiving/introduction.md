@@ -31,154 +31,158 @@ To receive emails, you can either use a domain managed by Resend, or [set up a c
   `anything@yourdomain.tld`.
 </Info>
 
+## Receive emails from your app with a webhook
+
 Here's how to start receiving emails using a domain managed by Resend.
 
-## 1. Get your `.resend.app` domain
+<Steps>
+  <Step title="Get your .resend.app domain">
+    Any emails sent to an `<anything>@<id>.resend.app` address will be received by Resend and forwarded to your webhook.
 
-Any emails sent to an `<anything>@<id>.resend.app` address will be received by Resend and forwarded to your webhook.
+    To see your Resend domain:
 
-To see your Resend domain:
+    1. Go to the [emails page](https://resend.com/emails).
+    2. Select the ["Receiving" tab](https://resend.com/emails/receiving).
+    3. Click the three dots button and select "Receiving address."
 
-1. Go to the [emails page](https://resend.com/emails).
-2. Select the ["Receiving" tab](https://resend.com/emails/receiving).
-3. Click the three dots button and select "Receiving address."
+    <img alt="Get your Resend domain" />
+  </Step>
 
-<img alt="Get your Resend domain" />
+  <Step title="Configure webhooks">
+    1. Go to the [Webhooks](https://resend.com/webhooks) page.
+    2. Click `Add Webhook`.
+    3. Enter the URL of your webhook endpoint.
+    4. Select the event type `email.received`.
+    5. Click `Add`.
 
-## 2. Configure webhooks
+    <Tip>
+      For development, you can create a tunnel to your localhost server using a tool like
+      [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
 
-1. Go to the [Webhooks](https://resend.com/webhooks) page.
-2. Click `Add Webhook`.
-3. Enter the URL of your webhook endpoint.
-4. Select the event type `email.received`.
-5. Click `Add`.
+      Example: `https://example123.ngrok.io/api/webhook`
+    </Tip>
 
-<Tip>
-  For development, you can create a tunnel to your localhost server using a tool like
-  [ngrok](https://ngrok.com/download) or [VS Code Port Forwarding](https://code.visualstudio.com/docs/debugtest/port-forwarding). These tools serve your local dev environment at a public URL you can use to test your local webhook endpoint.
+    <Tip>
+      The [Resend CLI](/docs/cli) also has a built-in `emails receiving listen` command
+      that polls for new inbound emails and displays them as they arrive. See the
+      [CLI reference](/docs/cli#receiving) for setup instructions.
+    </Tip>
 
-  Example: `https://example123.ngrok.io/api/webhook`
-</Tip>
+    <img alt="Add Webhook for Receiving Emails" />
+  </Step>
 
-<Tip>
-  The [Resend CLI](/docs/cli) also has a built-in `emails receiving listen` command
-  that polls for new inbound emails and displays them as they arrive. See the
-  [CLI reference](/docs/cli#receiving) for setup instructions.
-</Tip>
+  <Step title="Receive email events">
+    In your application, create a new route that can accept `POST` requests.
 
-<img alt="Add Webhook for Receiving Emails" />
+    Here's how you can implement this:
 
-## 3. Receive email events
+    <CodeGroup>
+      ```js Next.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+      // app/api/events/route.ts
+      import type { NextRequest } from 'next/server';
+      import { NextResponse } from 'next/server';
 
-In your application, create a new route that can accept `POST` requests.
+      export const POST = async (request: NextRequest) => {
+        const event = await request.json();
 
-Here's how you can implement this:
+        if (event.type === 'email.received') {
+          return NextResponse.json(event);
+        }
 
-<CodeGroup>
-  ```js Next.js theme={"theme":{"light":"github-light","dark":"vesper"}}
-  // app/api/events/route.ts
-  import type { NextRequest } from 'next/server';
-  import { NextResponse } from 'next/server';
+        return NextResponse.json({});
+      };
+      ```
 
-  export const POST = async (request: NextRequest) => {
-    const event = await request.json();
+      ```php Laravel theme={"theme":{"light":"github-light","dark":"vesper"}}
+      // routes/api.php
+      use Illuminate\Http\Request;
+      use Illuminate\Support\Facades\Route;
 
-    if (event.type === 'email.received') {
-      return NextResponse.json(event);
-    }
+      Route::post('/events', function (Request $request) {
+          $event = $request->json()->all();
 
-    return NextResponse.json({});
-  };
-  ```
+          if ($event['type'] === 'email.received') {
+              return response()->json($event);
+          }
 
-  ```php Laravel theme={"theme":{"light":"github-light","dark":"vesper"}}
-  // routes/api.php
-  use Illuminate\Http\Request;
-  use Illuminate\Support\Facades\Route;
+          return response()->json([]);
+      });
+      ```
 
-  Route::post('/events', function (Request $request) {
-      $event = $request->json()->all();
+      ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
+      // index.php
+      header('Content-Type: application/json');
+
+      if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+          http_response_code(405);
+          echo json_encode(['error' => 'Method Not Allowed']);
+          exit;
+      }
+
+      $body = file_get_contents('php://input');
+      $event = json_decode($body, true);
+
+      if (json_last_error() !== JSON_ERROR_NONE) {
+          http_response_code(400);
+          echo json_encode(['error' => 'Invalid JSON']);
+          exit;
+      }
 
       if ($event['type'] === 'email.received') {
-          return response()->json($event);
+          echo json_encode($event);
+          exit;
       }
 
-      return response()->json([]);
-  });
-  ```
+      echo json_encode([]);
+      ```
 
-  ```php PHP theme={"theme":{"light":"github-light","dark":"vesper"}}
-  // index.php
-  header('Content-Type: application/json');
+      ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+      #[derive(Serialize)]
+      struct Empty {}
 
-  if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-      http_response_code(405);
-      echo json_encode(['error' => 'Method Not Allowed']);
-      exit;
-  }
-
-  $body = file_get_contents('php://input');
-  $event = json_decode($body, true);
-
-  if (json_last_error() !== JSON_ERROR_NONE) {
-      http_response_code(400);
-      echo json_encode(['error' => 'Invalid JSON']);
-      exit;
-  }
-
-  if ($event['type'] === 'email.received') {
-      echo json_encode($event);
-      exit;
-  }
-
-  echo json_encode([]);
-  ```
-
-  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
-  #[derive(Serialize)]
-  struct Empty {}
-
-  async fn example(Json(event): Json<resend_rs::events::EmailEvent>) -> Response {
-      if matches!(
-          event.r#type,
-          resend_rs::events::EmailEventType::EmailReceived
-      ) {
-          Json(event).into_response()
-      } else {
-          Json(Empty {}).into_response()
+      async fn example(Json(event): Json<resend_rs::events::EmailEvent>) -> Response {
+          if matches!(
+              event.r#type,
+              resend_rs::events::EmailEventType::EmailReceived
+          ) {
+              Json(event).into_response()
+          } else {
+              Json(Empty {}).into_response()
+          }
       }
-  }
-  ```
-</CodeGroup>
+      ```
+    </CodeGroup>
 
-Once you receive the email event, you can process the email body and attachments. We also recommend implementing [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
+    Once you receive the email event, you can process the email body and attachments. We also recommend implementing [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
 
-```json theme={"theme":{"light":"github-light","dark":"vesper"}}
-{
-  "type": "email.received",
-  "created_at": "2026-02-22T23:41:12.126Z",
-  "data": {
-    "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
-    "created_at": "2026-02-22T23:41:11.894719+00:00",
-    "from": "onboarding@resend.dev",
-    "to": ["delivered@resend.dev"],
-    "bcc": [],
-    "cc": [],
-    "received_for": ["forwarded@example.com"],
-    "message_id": "<111-222-333@email.example.com>",
-    "subject": "Sending this example",
-    "attachments": [
-      {
-        "id": "2a0c9ce0-3112-4728-976e-47ddcd16a318",
-        "filename": "avatar.png",
-        "content_type": "image/png",
-        "content_disposition": "inline",
-        "content_id": "img001"
+    ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+    {
+      "type": "email.received",
+      "created_at": "2026-02-22T23:41:12.126Z",
+      "data": {
+        "email_id": "56761188-7520-42d8-8898-ff6fc54ce618",
+        "created_at": "2026-02-22T23:41:11.894719+00:00",
+        "from": "onboarding@resend.dev",
+        "to": ["delivered@resend.dev"],
+        "bcc": [],
+        "cc": [],
+        "received_for": ["forwarded@example.com"],
+        "message_id": "<111-222-333@email.example.com>",
+        "subject": "Sending this example",
+        "attachments": [
+          {
+            "id": "2a0c9ce0-3112-4728-976e-47ddcd16a318",
+            "filename": "avatar.png",
+            "content_type": "image/png",
+            "content_disposition": "inline",
+            "content_id": "img001"
+          }
+        ]
       }
-    ]
-  }
-}
-```
+    }
+    ```
+  </Step>
+</Steps>
 
 ## What can you do with Receiving emails
 

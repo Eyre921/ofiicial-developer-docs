@@ -126,7 +126,7 @@ Learn how to send your first email using Cloudflare Workers.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -284,83 +284,87 @@ Before you start, you'll need:
 * Have a Cloudflare worker with a bundling setup
   * Recommended to be bootstrapped with `npm create cloudflare`
 
-## 1. Install
+## Guide
 
-Get the Resend Node.js SDK.
+<Steps>
+  <Step title="Install">
+    Get the Resend Node.js SDK.
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install resend
-  ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install resend
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add resend
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add resend
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add resend
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add resend
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add resend
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Create an email template
+  <Step title="Create an email template">
+    Start by creating your email template on `src/emails/email-template.tsx`:
 
-Start by creating your email template on `src/emails/email-template.tsx`:
+    ```tsx src/emails/email-template.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import * as React from 'react';
 
-```tsx src/emails/email-template.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
-import * as React from 'react';
+    interface EmailTemplateProps {
+      firstName: string;
+    }
 
-interface EmailTemplateProps {
-  firstName: string;
-}
+    export function EmailTemplate({ firstName }: EmailTemplateProps) {
+      return (
+        <div>
+          <h1>Welcome, {firstName}!</h1>
+        </div>
+      );
+    }
 
-export function EmailTemplate({ firstName }: EmailTemplateProps) {
-  return (
-    <div>
-      <h1>Welcome, {firstName}!</h1>
-    </div>
-  );
-}
+    export default EmailTemplate;
+    ```
+  </Step>
 
-export default EmailTemplate;
-```
+  <Step title="Send the email using React and the SDK">
+    Change the file extension of the worker's main file to `tsx` and modify your configurations.
 
-## 3. Send the email using React and the SDK
+    After that, you can send your email using the `react` parameter:
 
-Change the file extension of the worker's main file to `tsx` and modify your configurations.
+    ```tsx src/index.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { Resend } from 'resend';
+    import { EmailTemplate } from './emails/email-template';
 
-After that, you can send your email using the `react` parameter:
+    export default {
+      async fetch(request, env, context): Promise<Response> {
+        const resend = new Resend('re_xxxxxxxxx');
 
-```tsx src/index.tsx theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { Resend } from 'resend';
-import { EmailTemplate } from './emails/email-template';
+        const data = await resend.emails.send({
+          from: 'Acme <onboarding@resend.dev>',
+          to: ['delivered@resend.dev'],
+          subject: 'hello world',
+          react: <EmailTemplate firstName="John" />,
+        });
 
-export default {
-  async fetch(request, env, context): Promise<Response> {
-    const resend = new Resend('re_xxxxxxxxx');
+        return Response.json(data);
+      },
+    } satisfies ExportedHandler<Env, ExecutionContext>;
+    ```
+  </Step>
 
-    const data = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: ['delivered@resend.dev'],
-      subject: 'hello world',
-      react: <EmailTemplate firstName="John" />,
-    });
+  <Step title="Deploy and send email">
+    Run `wrangler deploy` and wait for it to finish. Once it's done, it will
+    give you a URL to try out, like `https://my-worker.your_name.workers.dev`,
+    that you can open and verify that your email has been sent.
+  </Step>
+</Steps>
 
-    return Response.json(data);
-  },
-} satisfies ExportedHandler<Env, ExecutionContext>;
-```
-
-## 4. Deploy and send email
-
-Run `wrangler deploy` and wait for it to finish. Once it's done, it will
-give you a URL to try out, like `https://my-worker.your_name.workers.dev`,
-that you can open and verify that your email has been sent.
-
-## 5. Try it yourself
+## Examples
 
 <Card title="Cloudflare Workers Example" icon="arrow-up-right-from-square" href="https://github.com/resend/resend-cloudflare-workers-example">
   See the full source code.

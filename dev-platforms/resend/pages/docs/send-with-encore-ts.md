@@ -43,7 +43,7 @@ Learn how to send your first email using Encore and the Resend Node.js SDK.
 
   ### **Initialize the Client**
 
-  Encore.ts uses `secret()` from `encore.dev/config` to securely inject secrets at runtime. Do **not** use `process.env`.
+  Encore.ts uses `secret()` from `encore.dev/config` to securely inject secrets at runtime. Do not use `process.env`.
 
   ```typescript theme={"theme":{"light":"github-light","dark":"vesper"}}
   import { Resend } from 'resend';
@@ -210,7 +210,7 @@ Learn how to send your first email using Encore and the Resend Node.js SDK.
   | `template.id`        | `string` | Published template identifier.                                   |
   | `template.variables` | `object` | Variable substitutions. Key max 50 chars, value max 2,000 chars. |
 
-  If `template` is provided, do **not** include `html`, `text`, or `react`.
+  If `template` is provided, do not include `html`, `text`, or `react`.
 
   ### **Response**
 
@@ -385,171 +385,175 @@ Before you start, you'll need:
 * A [verified domain](/docs/add-a-domain)
 * Install [Encore](https://encore.dev/docs/ts/install) (`brew install encoredev/tap/encore`)
 
-## 1. Create an Encore app
+## Guide
 
-The quickest way to get started is with the Resend starter template:
+<Steps>
+  <Step title="Create an Encore app">
+    The quickest way to get started is with the Resend starter template:
 
-```shell theme={"theme":{"light":"github-light","dark":"vesper"}}
-encore app create --example=ts/resend
-```
+    ```shell theme={"theme":{"light":"github-light","dark":"vesper"}}
+    encore app create --example=ts/resend
+    ```
 
-Or install the SDK into an existing Encore project:
+    Or install the SDK into an existing Encore project:
 
-<CodeGroup>
-  ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  npm install resend
-  ```
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      npm install resend
+      ```
 
-  ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
-  yarn add resend
-  ```
+      ```bash yarn theme={"theme":{"light":"github-light","dark":"vesper"}}
+      yarn add resend
+      ```
 
-  ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
-  pnpm add resend
-  ```
+      ```bash pnpm theme={"theme":{"light":"github-light","dark":"vesper"}}
+      pnpm add resend
+      ```
 
-  ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
-  bun add resend
-  ```
-</CodeGroup>
+      ```bash bun theme={"theme":{"light":"github-light","dark":"vesper"}}
+      bun add resend
+      ```
+    </CodeGroup>
+  </Step>
 
-## 2. Set your API key
+  <Step title="Set your API key">
+    Encore has built-in [secrets management](https://encore.dev/docs/ts/primitives/secrets). Store your Resend API key as a secret - no `.env` files needed:
 
-Encore has built-in [secrets management](https://encore.dev/docs/ts/primitives/secrets). Store your Resend API key as a secret - no `.env` files needed:
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    encore secret set --type dev,local,pr,production ResendAPIKey
+    ```
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-encore secret set --type dev,local,pr,production ResendAPIKey
-```
+    Initialize the client using the secret:
 
-Initialize the client using the secret:
+    ```ts email/resend.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { Resend } from 'resend';
+    import { secret } from 'encore.dev/config';
 
-```ts email/resend.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { Resend } from 'resend';
-import { secret } from 'encore.dev/config';
+    const resendApiKey = secret('ResendAPIKey');
 
-const resendApiKey = secret('ResendAPIKey');
+    export const resend = new Resend(resendApiKey());
+    ```
+  </Step>
 
-export const resend = new Resend(resendApiKey());
-```
+  <Step title="Define a service">
+    Every Encore.ts service needs a service definition file:
 
-## 3. Define a service
+    ```ts email/encore.service.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { Service } from 'encore.dev/service';
 
-Every Encore.ts service needs a service definition file:
+    export default new Service('email');
+    ```
+  </Step>
 
-```ts email/encore.service.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { Service } from 'encore.dev/service';
+  <Step title="Send email using an API endpoint">
+    Create a type-safe API endpoint to send emails:
 
-export default new Service('email');
-```
+    ```ts email/send.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { api } from 'encore.dev/api';
+    import { resend } from './resend';
 
-## 4. Send email using an API endpoint
-
-Create a type-safe API endpoint to send emails:
-
-```ts email/send.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { api } from 'encore.dev/api';
-import { resend } from './resend';
-
-interface SendRequest {
-  to: string;
-  subject: string;
-  html: string;
-}
-
-interface SendResponse {
-  id: string;
-}
-
-export const sendEmail = api(
-  { expose: true, method: 'POST', path: '/email/send' },
-  async (req: SendRequest): Promise<SendResponse> => {
-    const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: req.to,
-      subject: req.subject,
-      html: req.html,
-    });
-
-    if (error) {
-      throw new Error(`Failed to send email: ${error.message}`);
+    interface SendRequest {
+      to: string;
+      subject: string;
+      html: string;
     }
 
-    return { id: data!.id };
-  },
-);
-```
-
-## 5. Async delivery with Pub/Sub (optional)
-
-For production, use Encore's built-in [Pub/Sub](https://encore.dev/docs/ts/primitives/pubsub) to send emails asynchronously with automatic retries:
-
-```ts email/topic.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { Topic, Subscription } from 'encore.dev/pubsub';
-import { resend } from './resend';
-
-interface EmailEvent {
-  to: string;
-  subject: string;
-  html: string;
-}
-
-export const emailTopic = new Topic<EmailEvent>('emails', {
-  deliveryGuarantee: 'at-least-once',
-});
-
-const _ = new Subscription(emailTopic, 'send-email', {
-  handler: async (event) => {
-    const { data, error } = await resend.emails.send({
-      from: 'Acme <onboarding@resend.dev>',
-      to: event.to,
-      subject: event.subject,
-      html: event.html,
-    });
-
-    if (error) {
-      throw new Error(error.message);
+    interface SendResponse {
+      id: string;
     }
 
-    console.log('Email sent:', data?.id);
-  },
-});
-```
+    export const sendEmail = api(
+      { expose: true, method: 'POST', path: '/email/send' },
+      async (req: SendRequest): Promise<SendResponse> => {
+        const { data, error } = await resend.emails.send({
+          from: 'Acme <onboarding@resend.dev>',
+          to: req.to,
+          subject: req.subject,
+          html: req.html,
+        });
 
-Then publish from any endpoint:
+        if (error) {
+          throw new Error(`Failed to send email: ${error.message}`);
+        }
 
-```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
-import { emailTopic } from './topic';
+        return { id: data!.id };
+      },
+    );
+    ```
+  </Step>
 
-await emailTopic.publish({
-  to: 'delivered@resend.dev',
-  subject: 'Welcome!',
-  html: '<p>Thanks for signing up.</p>',
-});
-```
+  <Step title="Async delivery with Pub/Sub (optional)">
+    For production, use Encore's built-in [Pub/Sub](https://encore.dev/docs/ts/primitives/pubsub) to send emails asynchronously with automatic retries:
 
-## 6. Run the app
+    ```ts email/topic.ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { Topic, Subscription } from 'encore.dev/pubsub';
+    import { resend } from './resend';
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-encore run
-```
+    interface EmailEvent {
+      to: string;
+      subject: string;
+      html: string;
+    }
 
-Your API is running at `http://localhost:4000`. Send a test email:
+    export const emailTopic = new Topic<EmailEvent>('emails', {
+      deliveryGuarantee: 'at-least-once',
+    });
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-curl -X POST http://localhost:4000/email/send \
-  -H "Content-Type: application/json" \
-  -d '{"to":"delivered@resend.dev","subject":"Hello World","html":"<strong>It works!</strong>"}'
-```
+    const _ = new Subscription(emailTopic, 'send-email', {
+      handler: async (event) => {
+        const { data, error } = await resend.emails.send({
+          from: 'Acme <onboarding@resend.dev>',
+          to: event.to,
+          subject: event.subject,
+          html: event.html,
+        });
 
-## 7. AI skills for Encore.ts
+        if (error) {
+          throw new Error(error.message);
+        }
 
-If you're using an AI coding assistant, install the [Encore skills](https://github.com/encoredev/skills) for context-aware help with APIs, services, Pub/Sub, databases, auth, and more:
+        console.log('Email sent:', data?.id);
+      },
+    });
+    ```
 
-```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
-npx skills add encoredev/skills
-```
+    Then publish from any endpoint:
 
-## 8. Try it yourself
+    ```ts theme={"theme":{"light":"github-light","dark":"vesper"}}
+    import { emailTopic } from './topic';
+
+    await emailTopic.publish({
+      to: 'delivered@resend.dev',
+      subject: 'Welcome!',
+      html: '<p>Thanks for signing up.</p>',
+    });
+    ```
+  </Step>
+
+  <Step title="Run the app">
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    encore run
+    ```
+
+    Your API is running at `http://localhost:4000`. Send a test email:
+
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    curl -X POST http://localhost:4000/email/send \
+      -H "Content-Type: application/json" \
+      -d '{"to":"delivered@resend.dev","subject":"Hello World","html":"<strong>It works!</strong>"}'
+    ```
+  </Step>
+
+  <Step title="AI skills for Encore.ts">
+    If you're using an AI coding assistant, install the [Encore skills](https://github.com/encoredev/skills). They provide context-aware help with topics such as APIs, services, Pub/Sub, databases, and auth:
+
+    ```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npx skills add encoredev/skills
+    ```
+  </Step>
+</Steps>
+
+## Examples
 
 <CardGroup>
   <Card title="Resend Starter" icon="arrow-up-right-from-square" href="https://github.com/encoredev/examples/tree/main/ts/resend">

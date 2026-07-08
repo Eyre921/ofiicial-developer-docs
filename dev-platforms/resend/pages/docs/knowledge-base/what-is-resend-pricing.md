@@ -27,7 +27,16 @@ Transactional Email plans are based on the number of emails sent and received ea
 
 The Free plan is limited to 100 emails per day. Paid plans have no daily sending limit, and overage rates apply only to emails sent beyond the included monthly volume.
 
-For teams sending 3 million or more emails per month, Resend offers custom Enterprise plans with volume-based pricing, priority support, SLA guarantees, flexible data retention, SSO, and dedicated IP options. [Contact sales](https://resend.com/contact) to learn more.
+For teams sending 3 million or more emails per month, Resend offers custom Enterprise plans that include:
+
+* Volume-based pricing
+* Priority support
+* SLA guarantees
+* Flexible data retention
+* SSO
+* Dedicated IP options
+
+[Contact sales](https://resend.com/contact) to learn more.
 
 ## Marketing Email
 
@@ -53,6 +62,6 @@ All plans include 10,000 Automation Runs per month. Paid plans can continue beyo
 
 Dedicated IPs are available for \$30/month on the Scale plan for customers sending more than 3,000 emails per day. Dedicated IPs include automatic warmup, monitoring, and autoscaling.
 
-## Do you offer annual plans?
+## Annual plans
 
-Yes, we offer annual subscriptions for Enterprise plans. [Book time with our sales team to learn more.](https://resend.com/enterprise)
+We offer annual subscriptions for Enterprise plans. [Book time with our sales team to learn more.](https://resend.com/enterprise)

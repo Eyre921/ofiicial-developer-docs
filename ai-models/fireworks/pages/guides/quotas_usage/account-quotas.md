@@ -44,6 +44,25 @@ Your account tier determines the maximum budget you can set:
   Fireworks operates on a pre-paid credits billing system. Contracted customers may have the option to move to post-paid billing — [contact our sales team](https://fireworks.ai/company/contact-us) to discuss your options.
 </Note>
 
+### Training GPU quota
+
+Fine-tuning jobs use training GPU quota (separate from on-demand deployment quota), granted automatically by spending tier:
+
+| Tier              | How to reach it                                       | B200 / B300 (Blackwell) |  H200  | H100 / A100 |
+| ----------------- | ----------------------------------------------------- | :---------------------: | :----: | :---------: |
+| No payment method | —                                                     |            0            |    0   |      0      |
+| Tier 1            | Valid payment method and billing profile              |            0            |   16   |      8      |
+| Tier 2            | Spend or add \$50 in credits                          |            16           |   16   |      16     |
+| Tier 3            | Spend or add \$500 in credits                         |            32           |   32   |      32     |
+| Tier 4            | Spend or add \$5,000 in credits                       |            64           |   64   |      64     |
+| Enterprise        | [Contact us](https://fireworks.ai/company/contact-us) |          Custom         | Custom |    Custom   |
+
+Counts are GPUs of that type available to training jobs. Blackwell (B200/B300) is `0` until Tier 2, and current managed fine-tuning shapes run on Blackwell, so most fine-tuning needs Tier 2. If a job is rejected with HTTP 429 `quota_exceeded`, raise your tier and resubmit.
+
+<Note>
+  Need more training quota than your tier allows? [Reach out for enterprise support](https://fireworks.ai/contact-training) and we'll help size the right allocation for your workload.
+</Note>
+
 ### Enterprise accounts
 
 Enterprise accounts do not have the same spend limits. If you have an Enterprise account, the spending tiers and budget controls described on this page do not apply to you. For information about Enterprise quotas and resource allocation, see [Enterprise quotas](/faq/enterprise/service/quotas) or contact your enterprise account representative.

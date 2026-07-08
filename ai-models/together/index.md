@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 263 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 264 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -114,6 +114,7 @@
 - `docs/inference/openai-compatibility` — [OpenAI compatibility](pages/docs/inference/openai-compatibility.md) · [原文](https://docs.together.ai/docs/inference/openai-compatibility)
 - `docs/inference/overview` — [Overview](pages/docs/inference/overview.md) · [原文](https://docs.together.ai/docs/inference/overview)
 - `docs/inference/pricing` — [Pricing](pages/docs/inference/pricing.md) · [原文](https://docs.together.ai/docs/inference/pricing)
+- `docs/inference/provisioned-throughput` — [Provisioned throughput](pages/docs/inference/provisioned-throughput.md) · [原文](https://docs.together.ai/docs/inference/provisioned-throughput)
 - `docs/inference/recommended-models` — [Recommended models](pages/docs/inference/recommended-models.md) · [原文](https://docs.together.ai/docs/inference/recommended-models)
 - `docs/inference/sdk-integrations` — [Third-party integrations](pages/docs/inference/sdk-integrations.md) · [原文](https://docs.together.ai/docs/inference/sdk-integrations)
 - `docs/inference/text-to-speech/overview` — [Generate speech](pages/docs/inference/text-to-speech/overview.md) · [原文](https://docs.together.ai/docs/inference/text-to-speech/overview)

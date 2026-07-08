@@ -113,7 +113,7 @@ Or install individually:
 
 | Skill                                               | Install                                      | What it does                                                                                                       |
 | --------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| [Resend](/docs/resend-skill)                             | `npx skills add resend/resend-skills`        | Send and receive emails, handle errors, prevent duplicate sends, get code examples from various SDKs               |
+| [Resend](/docs/resend-skill)                             | `npx skills add resend/resend-skills`        | Send and receive emails, handle errors, and prevent duplicate sends. Get code examples from various SDKs.          |
 | [React Email](/docs/react-email-skill)                   | `npx skills add resend/react-email`          | Build emails in React, Tailwind, and TypeScript. Audit existing React emails for style and cross-client rendering. |
 | [Email Best Practices](/docs/email-best-practices-skill) | `npx skills add resend/email-best-practices` | Audit SPF/DKIM/DMARC setup, compliance (CAN-SPAM, GDPR), webhook handling                                          |
 

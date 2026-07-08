@@ -6,7 +6,7 @@ path: docs/knowledge-base/does-resend-require-production-approval
 
 Learn about production access and account limitations on Resend.
 
-No, Resend does **not** require production approval. All accounts, including free accounts, have immediate production access from the moment you sign up.
+No, Resend does not require production approval. All accounts, including free accounts, have immediate production access from the moment you sign up.
 
 ## Free accounts have production access
 
