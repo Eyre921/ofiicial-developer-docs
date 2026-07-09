@@ -248,7 +248,7 @@ To add a custom variable, select **Variable** in the commands palette or type `{
 
 Each variable is an object with the following properties:
 
-* `key`: The key of the variable. We recommend capitalizing the key. (e.g. `PRODUCT_NAME`).
+* `key`: The key of the variable, commonly uppercase (e.g., `PRODUCT_NAME`).
 * `type`: The type of the variable (`'string'` or `'number'`).
 * `fallback_value`: The fallback value of the variable. If no fallback value is provided, you must provide a value for the variable when sending an email using the template.
 

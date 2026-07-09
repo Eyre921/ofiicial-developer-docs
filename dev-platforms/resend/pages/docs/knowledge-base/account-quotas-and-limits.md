@@ -35,7 +35,7 @@ Free accounts have the following:
 
 ## Overage Limits
 
-Paid plans include pay-as-you-go overages, which allow you to continue sending emails after you've reached your monthly quota. To prevent extreme overages and unexpected costs, we impose a hard limit of 5x your monthly quota.
+Paid plans include pay-as-you-go overages, which allow you to continue sending emails after you've reached your monthly quota. To prevent extreme overages and unexpected costs, a hard limit of 5x your monthly quota applies.
 
 <Note>
   By default, overage usage is capped at **5x your plan's monthly quota**. Once you reach this limit, sending will be paused until the next billing cycle.

@@ -20,7 +20,7 @@ Giving your agent an inbox enables it to:
 
 ### Step 1: Install the skill
 
-We've prepared an Agent Skill to help your bot understand how to walk through the setup process. Ask your agent to install the skill:
+Ask your agent to install the skill:
 
 ```
 Let's get you set up with an email inbox! Install the resend-skills from https://github.com/resend/resend-skills and review them before continuing.
@@ -66,7 +66,7 @@ We recommend not pasting API keys into the chat. Instead, use one of these two m
 
 ### Step 3: Verify a domain
 
-Next, your agent needs to know the email address it will use to send and receive emails. We [strongly recommend](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) using a subdomain (`agent.example.com`) instead of the root domain (`example.com`), especially if you want to receive emails.
+Next, your agent needs to know the email address it will use to send and receive emails. [Strongly consider](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) using a subdomain (`agent.example.com`) instead of the root domain (`example.com`), especially if you want to receive emails.
 
 You can also use the [Resend CLI](/docs/cli) to verify a domain, although you will need to manually add the DNS records to your DNS provider.
 
@@ -231,7 +231,7 @@ One of the benefits of using Resend over other tools is that you don't need to c
 
 Giving your agent an inbox is incredibly powerful, but it also comes with some security concerns. The risk of prompt injection via email is a real concern.
 
-The Resend Skill [includes security guidelines](https://github.com/resend/resend-skills/blob/main/skills/agent-email-inbox/SKILL.md#security-levels). We've developed a leveled security approach to help you decide which security level is right for your use case.
+The Resend Skill [includes security guidelines](https://github.com/resend/resend-skills/blob/main/skills/agent-email-inbox/SKILL.md#security-levels). Use the leveled security approach below to decide which security level is right for your use case.
 
 1. **Strict Allowlist**: Only allow emails from specific senders. **Recommended for most use cases**.
 2. **Domain Allowlist**: Allow emails from any sender from a given domain (e.g. anyone from `example.com`).

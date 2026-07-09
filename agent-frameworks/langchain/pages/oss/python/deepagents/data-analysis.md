@@ -109,7 +109,11 @@ The examples below use a [LangSmith sandbox](/langsmith/sandboxes). For other pr
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from deepagents.backends import LocalShellBackend
 
-    backend = LocalShellBackend(root_dir=".", env={"PATH": "/usr/bin:/bin"})
+    backend = LocalShellBackend(
+        root_dir=".",
+        virtual_mode=True,
+        env={"PATH": "/usr/bin:/bin"},
+    )
     ```
   </Tab>
 
@@ -256,12 +260,14 @@ The following simple [tool](/oss/python/langchain/tools) downloads them with `ba
 We could also ask our agent to list the relevant file paths instead of uploading them, so interested parties can obtain them separately as needed.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import os
+
 from langchain.tools import tool
 from slack_sdk import WebClient
 
-
 slack_token = os.environ["SLACK_USER_TOKEN"]
 slack_client = WebClient(token=slack_token)
+channel = "C0123456ABC"  # specify your own channel here
 
 
 @tool(parse_docstring=True)
@@ -277,7 +283,7 @@ def slack_send_message(text: str, file_path: str | None = None) -> str:
     else:
         fp = backend.download_files([file_path])
         slack_client.files_upload_v2(
-            channel="C0123456ABC",  # specify your own channel here
+            channel=channel,
             content=fp[0].content,
             initial_comment=text,
         )
@@ -296,9 +302,8 @@ Let's instantiate an agent:
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from langchain_core.utils.uuid import uuid7
 
-from langgraph.checkpoint.memory import InMemorySaver
 from deepagents import create_deep_agent
-
+from langgraph.checkpoint.memory import InMemorySaver
 
 checkpointer = InMemorySaver()
 
@@ -310,7 +315,7 @@ agent = create_deep_agent(
 )
 
 thread_id = str(uuid7())
-config={"configurable": {"thread_id": thread_id}}
+config = {"configurable": {"thread_id": thread_id}}
 ```
 
 We include:

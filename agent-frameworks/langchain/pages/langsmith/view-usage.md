@@ -10,12 +10,13 @@ LangSmith provides several views into your [organization's](/langsmith/administr
 
 ## Usage views
 
-| View                              | Where to find it                                                                                           | Who can see it                          | Plan availability     |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------- | --------------------- |
-| [Usage graph](#usage-graph)       | **Enterprise**: Settings > Usage > Usage graph<br />**Self-serve**: Settings > Billing > Usage graph       | All org members                         | All plans             |
-| [Granular usage](#granular-usage) | **Enterprise**: Settings > Usage > Granular usage<br />**Self-serve**: Settings > Billing > Granular usage | All org members                         | All plans             |
-| [Contract usage](#contract-usage) | **Enterprise**: Settings > Usage > Contract usage<br />**Self-serve**: Settings > Billing > Contract usage | Org admins only (`organization:manage`) | Enterprise only       |
-| [Invoices](#invoices)             | Settings > Billing > Invoices                                                                              | All org members                         | Self-serve cloud only |
+| View                                          | Where to find it                                                                                           | Who can see it                          | Plan availability                                                                            |
+| --------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | --------------------------------------- | -------------------------------------------------------------------------------------------- |
+| [Usage graph](#usage-graph)                   | **Enterprise**: Settings > Usage > Usage graph<br />**Self-serve**: Settings > Billing > Usage graph       | All org members                         | All plans                                                                                    |
+| [Granular usage](#granular-usage)             | **Enterprise**: Settings > Usage > Granular usage<br />**Self-serve**: Settings > Billing > Granular usage | All org members                         | All plans                                                                                    |
+| [Contract usage](#contract-usage)             | **Enterprise**: Settings > Usage > Contract usage<br />**Self-serve**: Settings > Billing > Contract usage | Org admins only (`organization:manage`) | Enterprise only                                                                              |
+| [Invoices](#invoices)                         | Settings > Billing > Invoices                                                                              | All org members                         | Self-serve cloud only                                                                        |
+| [Evaluator spend](/langsmith/evaluator-spend) | Evaluators page, evaluator detail                                                                          | All workspace members                   | Tracked weekly, resetting at Monday 12AM UTC, separate from the monthly billing period below |
 
 ## Usage graph
 
@@ -125,6 +126,7 @@ For programmatic access to trace counts, see [View trace counts across your orga
 * [Granular billable usage API reference](/langsmith/granular-usage)
 * [Manage billing](/langsmith/billing)
 * [Data retention and usage limits](/langsmith/usage-and-billing#data-retention)
+* [Track and limit evaluator spend](/langsmith/evaluator-spend)
 * [Organization and workspace operations](/langsmith/organization-workspace-operations)
 
 ***

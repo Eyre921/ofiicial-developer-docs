@@ -366,11 +366,11 @@ If a task list item description begins with a parenthesis, you'll need to escape
 
 `- [ ] \(Optional) Open a followup issue`
 
-For more information, see [About tasklists](/en/get-started/writing-on-github/working-with-advanced-formatting/about-task-lists).
+For more information, see [About tasklists](/en/get-started/writing-on-github/working-with-advanced-formatting/about-tasklists).
 
 ## Mentioning people and teams
 
-You can mention a person or [team](/en/organizations/organizing-members-into-teams) on GitHub by typing <kbd>@</kbd> plus their username or team name. This will trigger a notification and bring their attention to the conversation. People will also receive a notification if you edit a comment to mention their username or team name. For more information about notifications, see [About notifications](/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/about-notifications).
+You can mention a person or [team](/en/organizations/organizing-members-into-teams) on GitHub by typing <kbd>@</kbd> plus their username or team name. This will trigger a notification and bring their attention to the conversation. People will also receive a notification if you edit a comment to mention their username or team name. For more information about notifications, see [About notifications](/en/subscriptions-and-notifications/concepts/about-notifications).
 
 > \[!NOTE]
 > A person will only be notified about a mention if the person has read access to the repository and, if the repository is owned by an organization, the person is a member of the organization.

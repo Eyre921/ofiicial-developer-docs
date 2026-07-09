@@ -57,5 +57,5 @@ If an organization disables OAuth app access application restrictions, and later
 * [Reviewing GitHub Apps installed in your organization](/en/organizations/managing-programmatic-access-to-your-organization/reviewing-github-apps-installed-in-your-organization)
 * [Denying access to a previously approved OAuth app for your organization](/en/organizations/managing-oauth-access-to-your-organizations-data/denying-access-to-a-previously-approved-oauth-app-for-your-organization)
 * [Disabling OAuth app access restrictions for your organization](/en/organizations/managing-oauth-access-to-your-organizations-data/disabling-oauth-app-access-restrictions-for-your-organization)
-* [Requesting organization approval for OAuth apps](/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-membership-in-organizations/requesting-organization-approval-for-oauth-apps)
+* [Requesting organization approval for OAuth apps](/en/account-and-profile/how-tos/organization-membership/requesting-organization-approval-for-oauth-apps)
 * [Authorizing OAuth apps](/en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps)

@@ -500,7 +500,7 @@ Before adding inline images, consider the following.
 * As these images are sent as attachments, you need to encode your image as Base64 when sending the raw content via the API. There is no need to do this when passing the path of a remote image (the API handles this for you).
 * Inline images increase the size of the email.
 * Inline images may be rejected by some clients (especially webmail).
-* As with all attachments, we recommend adding a `content_type` (e.g. `image/png`) or `filename` (e.g. `logo.png`) parameter to the attachment object, as this often helps email clients render the attachment correctly.
+* As with all attachments, add a `content_type` (e.g. `image/png`) or `filename` (e.g. `logo.png`) parameter to the attachment object. This helps email clients render the attachment correctly.
 
 <Note>
   All attachments (including inline images) do not currently display in the

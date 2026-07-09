@@ -707,7 +707,7 @@ You can view and download attachments from sent emails from the dashboard or pro
 2. Navigate to any email you sent with an attachment.
 3. Click on the attachment to download it locally.
 
-Attachments include the filename and an icon to help you identify the type of attachment. We show unique icons for each attachment type:
+Attachments include the filename and an icon to help you identify the type of attachment. Each attachment type has a unique icon:
 
 * Image
 * PDF

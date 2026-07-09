@@ -48,7 +48,7 @@ With webhook data in your database, you can build powerful automations:
 
 While you can always [build your own webhook handler](/docs/webhooks/introduction), it requires development resources.
 
-To help our customers get started quickly, we've built the [Resend Webhook Ingester](/docs/webhooks/ingester). It's an open-source, ready-to-deploy solution that handles all the complexity for you:
+You can get started quickly with the [Resend Webhook Ingester](/docs/webhooks/ingester). It's an open-source, ready-to-deploy solution that handles all the complexity for you:
 
 * **One-click deployment** to Vercel, Railway, or Render
 * **Signature verification** built-in using Svix

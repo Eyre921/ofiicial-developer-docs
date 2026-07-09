@@ -10,7 +10,7 @@ path: docs/eleven-agents/build/overview
 
 The Build section covers everything you need to create sophisticated conversational agents, from defining their behavior and voice to connecting external tools and knowledge sources.
 
-<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b01da89ad7994300673d0932d321cd0f53fe727b6210e6c1f00e765e498f8722/assets/images/agents/agents-overview-build.png" alt="Build your agent" />
+<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png" alt="Build your agent" />
 
 ### Design and configure
 

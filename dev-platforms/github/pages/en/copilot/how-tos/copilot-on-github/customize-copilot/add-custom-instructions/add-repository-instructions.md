@@ -243,4 +243,4 @@ Custom instructions are enabled for Copilot code review by default but you can d
 
 * [Support for different types of custom instructions](/en/copilot/reference/custom-instructions-support)
 * [Custom instructions](/en/copilot/tutorials/customization-library/custom-instructions)—a curated collection of examples
-* [Using custom instructions to unlock the power of Copilot code review](/en/copilot/tutorials/use-custom-instructions)
+* [Using custom instructions to unlock the power of Copilot code review](/en/copilot/tutorials/customize-code-review)

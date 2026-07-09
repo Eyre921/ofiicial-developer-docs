@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 761 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 762 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -556,6 +556,7 @@
 - `docs/eleven-agents/dashboard/spotlight/topic-discovery` — [Topic discovery](pages/docs/eleven-agents/dashboard/spotlight/topic-discovery.md) · [原文](https://elevenlabs.io/docs/eleven-agents/dashboard/spotlight/topic-discovery.md)
 - `docs/eleven-agents/guides/burst-pricing` — [Burst pricing](pages/docs/eleven-agents/guides/burst-pricing.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/burst-pricing.md)
 - `docs/eleven-agents/guides/chat-mode` — [Chat Mode](pages/docs/eleven-agents/guides/chat-mode.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/chat-mode.md)
+- `docs/eleven-agents/guides/elevenlabs-docs-agent` — [Building the ElevenLabs documentation agent](pages/docs/eleven-agents/guides/elevenlabs-docs-agent.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/elevenlabs-docs-agent.md)
 - `docs/eleven-agents/guides/integrations/expo-react-native` — [Cross-platform Voice Agents with Expo React Native](pages/docs/eleven-agents/guides/integrations/expo-react-native.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/expo-react-native.md)
 - `docs/eleven-agents/guides/integrations/live-avatar` — [LiveAvatar](pages/docs/eleven-agents/guides/integrations/live-avatar.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/live-avatar.md)
 - `docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant` — [Build a Voice Assistant with Agents Platform on a Raspberry Pi](pages/docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant.md)

@@ -1,5 +1,5 @@
 ---
-title: "How do I fix CORS issues?"
+title: "How to fix CORS issues"
 source: https://resend.com/docs/knowledge-base/how-do-i-fix-cors-issues
 path: docs/knowledge-base/how-do-i-fix-cors-issues
 ---
@@ -21,4 +21,4 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 Usually CORS errors happens when you're sending emails from the **client-side**.
 
-We recommend you to send the emails on the **server-side** to not expose your API keys and avoid CORS issues.
+Send the emails on the **server-side** to not expose your API keys and avoid CORS issues.

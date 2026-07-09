@@ -7,7 +7,7 @@ path: docs/api-reference/broadcasts/delete-broadcast
 DELETE /broadcasts/:broadcast_id
 Remove an existing broadcast.
 
-You can only delete broadcasts that are in the `draft` status. In addition, if you delete a broadcast that has already been scheduled to be sent, we will automatically cancel the scheduled delivery and it won't be sent.
+You can only delete Broadcasts that have not yet been sent (i.e., `draft` or `scheduled`). Deleting a `scheduled` Broadcast also cancels the scheduled delivery and the email will not be sent.
 
 ## Path Parameters
 

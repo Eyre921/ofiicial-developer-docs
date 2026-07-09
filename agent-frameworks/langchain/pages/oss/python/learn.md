@@ -32,7 +32,7 @@ Below are tutorials for common use cases, organized by framework.
   Build a semantic search engine over a PDF with LangChain components.
 </Card>
 
-<Card title="RAG Agent" icon="user-search" href="/oss/python/langchain/rag">
+<Card title="RAG Agent" icon="user-search" href="/oss/python/deepagents/rag">
   Create a Retrieval Augmented Generation (RAG) agent.
 </Card>
 

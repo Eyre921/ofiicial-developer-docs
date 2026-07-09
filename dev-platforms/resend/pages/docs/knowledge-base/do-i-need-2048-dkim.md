@@ -1,5 +1,5 @@
 ---
-title: "Do I need 2048-bit DKIM?"
+title: "Do You Need 2048-bit DKIM?"
 source: https://resend.com/docs/knowledge-base/do-i-need-2048-dkim
 path: docs/knowledge-base/do-i-need-2048-dkim
 ---
@@ -20,12 +20,12 @@ The 2024 bulk sender requirements from Google, Yahoo, and Microsoft (which apply
 
 ## 1024-bit vs 2048-bit keys
 
-|                       | 1024-bit                                                  | 2048-bit                                                                                   |
-| --------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Security**          | Meets current RFC recommendations for email signing       | Stronger cryptographic margin, better future-proofing                                      |
-| **Performance**       | Faster signing and verification                           | More system resources required, can add latency                                            |
-| **DNS compatibility** | Fits comfortably in a single TXT record                   | Longer public key. Some DNS providers require splitting the record or hit character limits |
-| **Setup**             | Straightforward, works with every DNS provider we've seen | Requires careful setup. Misconfigured records can fail verification                        |
+|                       | 1024-bit                                                        | 2048-bit                                                                                   |
+| --------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Security**          | Meets current RFC recommendations for email signing             | Stronger cryptographic margin, better future-proofing                                      |
+| **Performance**       | Faster signing and verification                                 | More system resources required, can add latency                                            |
+| **DNS compatibility** | Fits comfortably in a single TXT record                         | Longer public key. Some DNS providers require splitting the record or hit character limits |
+| **Setup**             | Straightforward, works with every DNS provider you'll encounter | Requires careful setup. Misconfigured records can fail verification                        |
 
 ## Trade-offs of 2048-bit
 
@@ -36,8 +36,6 @@ The 2024 bulk sender requirements from Google, Yahoo, and Microsoft (which apply
 ## Our stance
 
 For transactional and marketing mail, **1024-bit DKIM is the right choice.** It meets the RFC, satisfies bulk sender requirements from every major inbox provider, and keeps DNS setup simple and reliable.
-
-We are keeping a close eye on customer interest and evolving industry best practices. If expectations shift, we will update this article and add support accordingly.
 
 <Note>
   If your security or compliance team has a specific requirement for 2048-bit

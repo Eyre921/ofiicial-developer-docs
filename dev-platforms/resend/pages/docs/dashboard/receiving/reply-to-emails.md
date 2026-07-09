@@ -8,7 +8,7 @@ Reply to Receiving emails in the same thread.
 
 Email clients thread emails by using the `message_id` metadata.
 
-If you want to reply to an email, add the `In-Reply-To` header set to the `message_id` of the received email. We also recommend setting the subject to start with `Re:` so that email clients can group the replies together.
+If you want to reply to an email, add the `In-Reply-To` header set to the `message_id` of the received email. To signal the threading, set the subject to start with `Re:` so that email clients can group the replies together.
 
 ## Get the message ID
 

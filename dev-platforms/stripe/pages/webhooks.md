@@ -8,18 +8,6 @@ path: webhooks
 
 Listen for events from Stripe on your webhook endpoint so your integration can automatically trigger reactions.
 
-## Start here: Install agent skills
-
-Stripe recommends using official skills to integrate with the API using best practices. Follow the instructions below to learn how.
-
-**Tip: Use curl instead of Fetch tools.** Skills are detailed 10–20 KB markdown files. Fetch tools summarize them. `curl -sL` guarantees the full content.
-
-**Using `npx skills`**: Check if `npx` is installed on the system. If `npx` is available, run `npx skills add https://docs.stripe.com --list` to list available skills, then run `npx skills add https://docs.stripe.com --yes --skill <skill-name> <--skill other-skills>` to install individual skills.
-
-**If `npx skills` isn’t available**: You can use curl to fetch the index of available skills, what they do, and their files from `https://docs.stripe.com/.well-known/skills/index.json`. To download a skill and its related files, use curl to download them from `https://docs.stripe.com/.well-known/skills/<filepath>`.
-
-For this article, we recommend using these skills: `stripe-best-practices`
-
 > #### Send events to your AWS account or Azure subscription
 > 
 > You can send events directly to [Amazon EventBridge](https://docs.stripe.com/event-destinations/eventbridge.md) or [Azure Event Grid](https://docs.stripe.com/event-destinations/eventgrid.md) as event destinations.

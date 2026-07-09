@@ -36,7 +36,7 @@ There are several ways to use Copilot for free.
 ### Educational and open source benefits
 
 * Copilot Student offers free access to Copilot's premium features for verified students. See [Access GitHub Copilot for free as a student](/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-students).
-* Copilot Pro is free for verified teachers and maintainers of popular open source projects. See [Access Copilot Pro for free as a teacher or open source maintainer](/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/getting-started-with-copilot-on-your-personal-account/getting-free-access-to-copilot-pro-as-a-student-teacher-or-maintainer).
+* Copilot Pro is free for verified teachers and maintainers of popular open source projects. See [Access Copilot Pro for free as a teacher or open source maintainer](/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-teachers-and-os-maintainers).
 
 ## How usage of Copilot licenses is measured
 
@@ -48,7 +48,7 @@ Usage of Copilot licenses is measured by the number of seats used.
 * Downgrades take effect at the start of the next billing cycle and are generally not prorated.
 * Canceling a monthly plan keeps access until the end of the current billing cycle, with no proration.
 
-For details on billing and proration, see [Usage-based billing for individuals](/en/copilot/concepts/billing/billing-for-individuals).
+For details on billing and proration, see [Usage-based billing for individuals](/en/copilot/concepts/billing/usage-based-billing-for-individuals).
 
 ### Organizations and enterprises
 
@@ -86,7 +86,7 @@ To help manage your budget for Copilot licenses, consider the following strategi
 
 > \[!NOTE] Additional usage may be capped. If you use all AI credits available on your plan, we recommend upgrading to a higher plan.
 
-For more information about using budgets to control spending, see [Setting up budgets to control spending on metered products](/en/billing/managing-your-billing/using-budgets-control-spending).
+For more information about using budgets to control spending, see [Setting up budgets to control spending on metered products](/en/billing/how-tos/set-up-budgets).
 
 ### Organizations and enterprises
 

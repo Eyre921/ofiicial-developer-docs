@@ -64,4 +64,4 @@ Dedicated IPs are available for \$30/month on the Scale plan for customers sendi
 
 ## Annual plans
 
-We offer annual subscriptions for Enterprise plans. [Book time with our sales team to learn more.](https://resend.com/enterprise)
+Annual subscriptions are available for Enterprise plans. [Book time with our sales team to learn more.](https://resend.com/enterprise)

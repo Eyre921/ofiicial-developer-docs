@@ -3144,8 +3144,12 @@ components:
         summary: auto
       nullable: true
       properties:
+        context:
+          $ref: '#/components/schemas/ReasoningContext'
         effort:
           $ref: '#/components/schemas/ReasoningEffort'
+        mode:
+          $ref: '#/components/schemas/ReasoningMode'
         summary:
           $ref: '#/components/schemas/ReasoningSummaryVerbosity'
       type: object
@@ -4107,7 +4111,7 @@ components:
         - recraft
         - reka
         - relace
-        - sakana-ai
+        - sakana
         - sambanova
         - seed
         - siliconflow
@@ -9819,9 +9823,6 @@ components:
               type: string
           type: object
         model:
-          enum:
-            - gpt-image-1
-            - gpt-image-1-mini
           type: string
         moderation:
           enum:
@@ -9846,11 +9847,6 @@ components:
             - auto
           type: string
         size:
-          enum:
-            - 1024x1024
-            - 1024x1536
-            - 1536x1024
-            - auto
           type: string
         type:
           enum:
@@ -10674,6 +10670,8 @@ components:
         text: Hello, how can I help you?
         type: input_text
       properties:
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         text:
           type: string
         type:
@@ -16024,6 +16022,9 @@ components:
           type: integer
         input_tokens_details:
           properties:
+            cache_write_tokens:
+              nullable: true
+              type: integer
             cached_tokens:
               type: integer
           required:
@@ -18495,6 +18496,43 @@ components:
       required:
         - type
       type: object
+    PromptCacheBreakpoint:
+      description: >-
+        Marks an explicit prompt-cache boundary on this content block.
+        Everything through the block carrying this marker is part of the
+        candidate cached prefix. Only supported by OpenAI GPT-5.6 and newer.
+      example:
+        mode: explicit
+      nullable: true
+      properties:
+        mode:
+          enum:
+            - explicit
+          type: string
+      required:
+        - mode
+      type: object
+    PromptCacheOptions:
+      description: >-
+        Request-level prompt-cache controls. `mode: "explicit"` disables
+        OpenAI-managed breakpoints so only blocks marked with
+        `prompt_cache_breakpoint` are cached. Only supported by OpenAI GPT-5.6
+        and newer.
+      example:
+        mode: explicit
+        ttl: 30m
+      nullable: true
+      properties:
+        mode:
+          enum:
+            - explicit
+          type: string
+        ttl:
+          nullable: true
+          type: string
+      required:
+        - mode
+      type: object
     PromptInjectionScanScope:
       description: >-
         Which message roles to scan for prompt injection. Only applies to the
@@ -18996,7 +19034,7 @@ components:
           additionalProperties:
             nullable: true
           type: object
-        sakana-ai:
+        sakana:
           additionalProperties:
             nullable: true
           type: object
@@ -19879,6 +19917,20 @@ components:
       example:
         enabled: true
         summary: auto
+    ReasoningContext:
+      description: >-
+        Controls which reasoning is available to the model. `auto` uses the
+        model default (same as omitting); `all_turns` includes reasoning from
+        earlier turns passed in input; `current_turn` limits to the current turn
+        only. Only supported by OpenAI GPT-5.6 and newer.
+      enum:
+        - auto
+        - all_turns
+        - current_turn
+        - null
+      example: all_turns
+      nullable: true
+      type: string
     ReasoningDeltaEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningDeltaEvent'
@@ -19914,6 +19966,44 @@ components:
       required:
         - type
         - data
+      type: object
+    ReasoningDetailServerToolCall:
+      description: >-
+        Record of an OpenRouter server-tool invocation (e.g. openrouter:fusion),
+        carried in reasoning_details so a prior tool call can be rehydrated into
+        a later turn of the same conversation.
+      example:
+        arguments: '{"prompt":"Compare carbon tax proposals"}'
+        result: '{"status":"ok","models":["openai/gpt-4o"]}'
+        tool_call_id: call_abc123
+        tool_name: openrouter:fusion
+        type: reasoning.server_tool_call
+      properties:
+        arguments:
+          type: string
+        format:
+          $ref: '#/components/schemas/ReasoningFormat'
+        id:
+          nullable: true
+          type: string
+        index:
+          type: integer
+        result:
+          type: string
+        tool_call_id:
+          nullable: true
+          type: string
+        tool_name:
+          type: string
+        type:
+          enum:
+            - reasoning.server_tool_call
+          type: string
+      required:
+        - type
+        - tool_name
+        - arguments
+        - result
       type: object
     ReasoningDetailSummary:
       description: Reasoning detail summary schema
@@ -19974,6 +20064,7 @@ components:
       discriminator:
         mapping:
           reasoning.encrypted: '#/components/schemas/ReasoningDetailEncrypted'
+          reasoning.server_tool_call: '#/components/schemas/ReasoningDetailServerToolCall'
           reasoning.summary: '#/components/schemas/ReasoningDetailSummary'
           reasoning.text: '#/components/schemas/ReasoningDetailText'
         propertyName: type
@@ -19986,6 +20077,7 @@ components:
         - $ref: '#/components/schemas/ReasoningDetailSummary'
         - $ref: '#/components/schemas/ReasoningDetailEncrypted'
         - $ref: '#/components/schemas/ReasoningDetailText'
+        - $ref: '#/components/schemas/ReasoningDetailServerToolCall'
     ReasoningDoneEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningDoneEvent'
@@ -20048,6 +20140,18 @@ components:
           - text: Step by step analysis
             type: summary_text
         type: reasoning
+    ReasoningMode:
+      description: >-
+        Selects the reasoning mode. `standard` is the default; `pro` engages
+        deeper reasoning on models that support it, billed at standard token
+        rates. Only supported by OpenAI GPT-5.6 and newer.
+      enum:
+        - standard
+        - pro
+        - null
+      example: standard
+      nullable: true
+      type: string
     ReasoningSummaryPartAddedEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningSummaryPartAddedEvent'
@@ -20336,6 +20440,7 @@ components:
             - empty_image_file
             - failed_to_download_image
             - image_file_not_found
+            - bio_policy
           type: string
         message:
           type: string
@@ -20453,6 +20558,8 @@ components:
         prompt_cache_key:
           nullable: true
           type: string
+        prompt_cache_options:
+          $ref: '#/components/schemas/PromptCacheOptions'
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
         reasoning:
@@ -21742,6 +21849,58 @@ components:
           items:
             $ref: '#/components/schemas/SubagentNestedTool'
           type: array
+      type: object
+    SubmitGenerationFeedbackRequest:
+      description: Structured feedback about a specific generation
+      example:
+        category: incorrect_response
+        comment: The model repeated the same paragraph three times.
+        generation_id: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+      properties:
+        category:
+          description: The category of feedback being reported
+          enum:
+            - latency
+            - incoherence
+            - incorrect_response
+            - formatting
+            - billing
+            - api_error
+            - other
+          example: incorrect_response
+          type: string
+        comment:
+          description: An optional free-text comment describing the feedback
+          example: The model repeated the same paragraph three times.
+          maxLength: 1000
+          type: string
+        generation_id:
+          description: The generation to submit feedback on
+          example: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+          minLength: 1
+          type: string
+      required:
+        - generation_id
+        - category
+      type: object
+    SubmitGenerationFeedbackResponse:
+      description: Confirmation that the feedback was recorded
+      example:
+        data:
+          success: true
+      properties:
+        data:
+          properties:
+            success:
+              const: true
+              description: Whether the feedback was recorded
+              example: true
+              type: boolean
+          required:
+            - success
+          type: object
+      required:
+        - data
       type: object
     SupportedParameters:
       additionalProperties:
@@ -25578,7 +25737,7 @@ paths:
               - recraft
               - reka
               - relace
-              - sakana-ai
+              - sakana
               - sambanova
               - seed
               - siliconflow
@@ -28308,6 +28467,87 @@ paths:
       summary: Get stored prompt and completion content for a generation
       tags:
         - Generations
+  /generation/feedback:
+    post:
+      description: >-
+        Submit structured feedback on a generation the authenticated user made.
+        [Management key](/docs/guides/overview/auth/management-api-keys)
+        required.
+      operationId: submitGenerationFeedback
+      requestBody:
+        content:
+          application/json:
+            example:
+              category: incorrect_response
+              comment: The model repeated the same paragraph three times.
+              generation_id: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
+            schema:
+              $ref: '#/components/schemas/SubmitGenerationFeedbackRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              example:
+                data:
+                  success: true
+              schema:
+                $ref: '#/components/schemas/SubmitGenerationFeedbackResponse'
+          description: Feedback recorded successfully
+        '400':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 400
+                  message: Invalid request parameters
+              schema:
+                $ref: '#/components/schemas/BadRequestResponse'
+          description: Bad Request - Invalid request parameters or malformed input
+        '401':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 401
+                  message: Missing Authentication header
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+          description: Unauthorized - Authentication required or invalid credentials
+        '404':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 404
+                  message: Resource not found
+              schema:
+                $ref: '#/components/schemas/NotFoundResponse'
+          description: Not Found - Resource does not exist
+        '429':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 429
+                  message: Rate limit exceeded
+              schema:
+                $ref: '#/components/schemas/TooManyRequestsResponse'
+          description: Too Many Requests - Rate limit exceeded
+        '500':
+          content:
+            application/json:
+              example:
+                error:
+                  code: 500
+                  message: Internal Server Error
+              schema:
+                $ref: '#/components/schemas/InternalServerResponse'
+          description: Internal Server Error - Unexpected server error
+      summary: Submit feedback for a generation
+      tags:
+        - Generations
+      x-speakeasy-name-override: submitFeedback
   /guardrails:
     get:
       description: >-

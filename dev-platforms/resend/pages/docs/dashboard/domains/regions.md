@@ -32,7 +32,7 @@ Especially for transactional emails like magic links, password resets, and welco
 Here are some of the other benefits of using our multi-region email sending feature:
 
 1. **Faster delivery:** By sending emails from the region closest to your user, you can reduce latency and ensure a faster time-to-inbox. This can be the difference between people using/buying your product or not.
-2. **Easier account management:** Instead of having to maintain different accounts for each region, we're providing multi-region within the same account. That way, you aren't juggling different login credentials.
+2. **Easier account management:** Instead of having to maintain different accounts for each region, you get multi-region support within the same account. That way, you aren't juggling different login credentials.
 3. **Increased resilience:** In case of disruption in one region, our multi-region feature enables you to send emails from a backup domain in a separate region, guaranteeing maximum uptime.
 
 ## Get Started
@@ -43,7 +43,7 @@ Finally, select the region you want to send your emails.
 
 ## How to set up multi-region for the same domain
 
-For advanced needs, you can set up multiple regions for the same domain. We recommend setting a unique subdomain for each region (e.g., us.domain.com, eu.domain.com). When sending transactional emails or marketing emails, choose the right domain for your users.
+For advanced needs, you can set up multiple regions for the same domain. We recommend setting a unique subdomain for each region (e.g., us.example.com, eu.example.com). When sending transactional emails or marketing emails, choose the right domain for your users.
 
 ## Changing Domain Region
 
@@ -53,4 +53,4 @@ If you'd like to switch the region your domain is set to:
 2. Add the same domain again, selecting the new region.
 3. Update your DNS records to point to the new domain.
 
-For more help, please reach out to [Support](https://resend.com/help), and we can help you out.
+For more help, please reach out to [Support](https://resend.com/help) for assistance.

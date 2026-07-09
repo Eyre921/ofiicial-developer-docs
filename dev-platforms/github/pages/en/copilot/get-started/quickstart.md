@@ -18,7 +18,7 @@ Quickly learn how to use GitHub Copilot.
 
 <div class="ghd-tool webui">
 
-You can use Copilot to get answers to coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot).
+You can use Copilot to get answers to coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot).
 
 Instructions for using Copilot differ depending on where you are using it. This version of the quickstart is for using Copilot on the GitHub website. Click the tabs above for instructions on using Copilot in other environments.
 
@@ -64,15 +64,15 @@ There are many more things you can do with GitHub Copilot Chat in GitHub. For ex
 * Find out about the changes in a pull request
 * Ask a question about a specific issue or commit
 
-For more information, see [Asking GitHub Copilot questions in GitHub](/en/copilot/github-copilot-chat/copilot-chat-in-github/using-github-copilot-chat-in-githubcom).
+For more information, see [Asking GitHub Copilot questions in GitHub](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-github).
 
 ## Next steps
 
-* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/github-copilot-chat/using-github-copilot-chat-in-your-ide).
-* **Get Copilot inline suggestions in an IDE** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/enterprise-cloud@latest/copilot/using-github-copilot/using-github-copilot-code-suggestions-in-your-editor).
-* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/using-github-copilot/prompt-engineering-for-github-copilot).
-* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/github-copilot-chat/copilot-chat-in-github-mobile/using-github-copilot-chat-in-github-mobile).
-* **Use Copilot on the command line** - See [Using the GitHub CLI Copilot extension](/en/copilot/github-copilot-in-the-cli/using-github-copilot-in-the-cli).
+* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
+* **Get Copilot inline suggestions in an IDE** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/enterprise-cloud@latest/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions).
+* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering).
+* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-mobile).
+* **Use Copilot on the command line** - See [Using the GitHub CLI Copilot extension](/en/copilot/how-tos/use-copilot-for-common-tasks/use-copilot-in-the-cli).
 
 </div>
 
@@ -319,7 +319,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 ## Prerequisites
 
 * **Subscription to Copilot**. To use GitHub Copilot in a JetBrains IDE, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
-* **A compatible JetBrains IDE**. Copilot is supported in a large number of JetBrains IDEs. For a full list, see [Asking GitHub Copilot questions in your IDE](/en/copilot/github-copilot-chat/copilot-chat-in-ides/using-github-copilot-chat-in-your-ide?tool=jetbrains).
+* **A compatible JetBrains IDE**. Copilot is supported in a large number of JetBrains IDEs. For a full list, see [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=jetbrains).
 * **Latest version of the GitHub Copilot extension**. See the [GitHub Copilot plugin](https://plugins.jetbrains.com/plugin/17718-github-copilot?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the JetBrains Marketplace. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=jetbrains).
 * **Sign in to GitHub in your JetBrains IDE**. For authentication instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=jetbrains#installing-the-github-copilot-plugin-in-your-jetbrains-ide).
 
@@ -397,7 +397,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 * **Subscription to Copilot**. To use GitHub Copilot in Xcode, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
 * **Latest version of the GitHub Copilot extension**. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=xcode).
-* **Sign in to GitHub in Xcode**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/troubleshooting-github-copilot/troubleshooting-issues-with-github-copilot-chat#troubleshooting-authentication-issues-in-your-editor).
+* **Sign in to GitHub in Xcode**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues).
 
 ## Chat with GitHub Copilot
 
@@ -481,7 +481,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 * **Subscription to Copilot**. To use GitHub Copilot in Eclipse, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
 * **Latest version of the GitHub Copilot extension**. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=eclipse).
-* **Sign in to GitHub in Eclipse**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/troubleshooting-github-copilot/troubleshooting-issues-with-github-copilot-chat#troubleshooting-authentication-issues-in-your-editor).
+* **Sign in to GitHub in Eclipse**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues).
 
 ## Chat with GitHub Copilot
 

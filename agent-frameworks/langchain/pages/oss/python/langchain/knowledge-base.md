@@ -787,7 +787,7 @@ retriever.batch(
 
 `VectorStoreRetriever` supports search types of `"similarity"` (default), `"mmr"` (maximum marginal relevance, described above), and `"similarity_score_threshold"`. We can use the latter to threshold documents output by the retriever by similarity score.
 
-Retrievers can easily be incorporated into more complex applications, such as [retrieval-augmented generation (RAG)](/oss/python/langchain/retrieval) applications that combine a given question with retrieved context into a prompt for a LLM. To learn more about building such an application, check out the [RAG tutorial](/oss/python/langchain/rag) tutorial.
+Retrievers can easily be incorporated into more complex applications, such as [retrieval-augmented generation (RAG)](/oss/python/langchain/retrieval) applications that combine a given question with retrieved context into a prompt for a LLM. To learn more about building such an application, check out the [RAG tutorial](/oss/python/deepagents/rag) tutorial.
 
 ## Next steps
 
@@ -805,7 +805,7 @@ For more on vector stores:
 
 For more on RAG, see:
 
-* [Build a Retrieval Augmented Generation (RAG) App](/oss/python/langchain/rag/)
+* [Build a Retrieval Augmented Generation (RAG) App](/oss/python/deepagents/rag)
 
 ***
 

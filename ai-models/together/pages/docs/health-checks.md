@@ -10,7 +10,7 @@ Health checks detect hardware and software issues on your GPU nodes before they 
 
 ## Active health checks
 
-Active health checks let you run targeted diagnostic tests on your GPU nodes to validate GPUs, InfiniBand networking, and other components. These tests require full GPU utilization and run on demand.
+Active health checks let you run targeted diagnostic tests on your GPU nodes to validate GPUs, InfiniBand networking, storage, and other components. These tests require full GPU utilization and run on demand.
 
 ### How to run health checks
 
@@ -27,6 +27,7 @@ Active health checks let you run targeted diagnostic tests on your GPU nodes to 
    * **NVBandwidth: GPU to CPU Bandwidth:** PCIe bandwidth test.
    * **NVBandwidth: GPU-CPU Latency:** PCIe latency test.
    * **InfiniBand Write Bandwidth:** InfiniBand network performance test.
+   * **Storage Performance:** Storage throughput and data-integrity test.
 5. Select **Next: Select Nodes**.
 6. Choose which nodes to test.
 7. (Optional) Configure test parameters like duration or diagnostic level.
@@ -83,11 +84,27 @@ Each health check validates different aspects of your GPU infrastructure:
 * **Use for:** Identifying PCIe bottlenecks or degraded lanes.
 * **Learn more:** [NVIDIA nvbandwidth documentation](https://github.com/NVIDIA/nvbandwidth).
 
+#### Storage
+
+**Storage Performance**
+
+* Runs storage benchmarks against the shared and local storage volumes available to the cluster.
+* Validates data integrity with a checksummed write and read-back, and measures sequential read and write throughput.
+* **Use for:** Detecting slow or degraded storage before it bottlenecks data loading or checkpointing.
+
+<Warning>
+  **Important: shared storage checks on Kubernetes clusters**
+
+  The shared storage performance check reports a **Skipped** result with the message **"Shared volume PVC not created"** when your cluster is not yet set up to use shared storage.
+
+  To use shared storage, follow the steps in [Shared Storage PVC](/docs/gpu-clusters-management#step-1-create-a-persistentvolumeclaim).
+</Warning>
+
 ### Understanding test results
 
 Health check results are displayed in the Health Checks table:
 
-* **Status:** Passed (green) or Failed (red) indicator.
+* **Status:** Passed (green), Failed (red), or Skipped (gray) indicator.
 * **Last Run:** Timestamp of test execution.
 * **Node Tested:** Which nodes were included in the test.
 * **Details:** Select **View details** to see:
@@ -100,14 +117,16 @@ Health check results are displayed in the Health Checks table:
 
 Performance-based health checks compare the measured result against a reference value. For bandwidth tests, a test **passes** when the measured value is greater than or equal to the threshold. For latency tests, lower is better, so a test passes when the measured value is less than or equal to the threshold. The following thresholds are the defaults applied during health checks and automatic acceptance testing.
 
-| Test                              | Metric                           | Pass threshold | Test configuration                                               |
-| --------------------------------- | -------------------------------- | -------------- | ---------------------------------------------------------------- |
-| Single-Node NCCL                  | Average bus bandwidth            | ≥ 300 GB/s     | `all_reduce_perf` across 8 GPUs, 32 GiB message size.            |
-| Multi-Node NCCL                   | Average bus bandwidth            | ≥ 330 GB/s     | `all_reduce_perf` across all GPUs on the selected nodes.         |
-| InfiniBand Write Bandwidth        | Reported write bandwidth         | ≥ 320 Gb/s     | `ib_write_bw` per device, 8 MiB message size, 2-second duration. |
-| NVBandwidth: CPU to GPU Bandwidth | Per-GPU host-to-device bandwidth | ≥ 30 GB/s      | `host_to_device_memcpy_ce`, averaged across 8 GPUs.              |
-| NVBandwidth: GPU to CPU Bandwidth | Per-GPU device-to-host bandwidth | ≥ 30 GB/s      | `device_to_host_memcpy_ce`, averaged across 8 GPUs.              |
-| NVBandwidth: GPU-CPU Latency      | Per-GPU host-device latency      | ≤ 2000 ns      | `host_device_latency_sm`, averaged across 8 GPUs.                |
+| Test                              | Metric                           | Pass threshold | Test configuration                                                                     |
+| --------------------------------- | -------------------------------- | -------------- | -------------------------------------------------------------------------------------- |
+| Single-Node NCCL                  | Average bus bandwidth            | ≥ 300 GB/s     | `all_reduce_perf` across 8 GPUs, 32 GiB message size.                                  |
+| Multi-Node NCCL                   | Average bus bandwidth            | ≥ 330 GB/s     | `all_reduce_perf` across all GPUs on the selected nodes.                               |
+| InfiniBand Write Bandwidth        | Reported write bandwidth         | ≥ 320 Gb/s     | `ib_write_bw` per device, 8 MiB message size, 2-second duration.                       |
+| NVBandwidth: CPU to GPU Bandwidth | Per-GPU host-to-device bandwidth | ≥ 30 GB/s      | `host_to_device_memcpy_ce`, averaged across 8 GPUs.                                    |
+| NVBandwidth: GPU to CPU Bandwidth | Per-GPU device-to-host bandwidth | ≥ 30 GB/s      | `device_to_host_memcpy_ce`, averaged across 8 GPUs.                                    |
+| NVBandwidth: GPU-CPU Latency      | Per-GPU host-device latency      | ≤ 2000 ns      | `host_device_latency_sm`, averaged across 8 GPUs.                                      |
+| Storage: Sequential Read          | Bandwidth                        | ≥ 10 GiB/s     | `fio` sequential read, 1 MiB blocks across 8 jobs at iodepth 64, 30-second timed run.  |
+| Storage: Sequential Write         | Bandwidth                        | ≥ 5 GiB/s      | `fio` sequential write, 1 MiB blocks across 8 jobs at iodepth 64, 30-second timed run. |
 
 <Note>
   **Units differ by test:** NCCL and NVBandwidth bandwidth thresholds are reported in gigabytes per second (GB/s), while InfiniBand write bandwidth is reported in gigabits per second (Gb/s). The two are not directly comparable (320 Gb/s is roughly 40 GB/s). Latency is reported in nanoseconds (ns).
@@ -188,7 +207,7 @@ Automatic acceptance testing provides several benefits:
 **Specific issue investigation:**
 
 * **Training instability:** Run GPU Burn and DCGM Diag.
-* **Slow data loading:** Run NVBandwidth tests.
+* **Slow data loading:** Run Storage Performance and NVBandwidth tests.
 * **Multi-GPU failures:** Run Single-Node NCCL.
 * **Distributed training issues:** Run InfiniBand tests.
 

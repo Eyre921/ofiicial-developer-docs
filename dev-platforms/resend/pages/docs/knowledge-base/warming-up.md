@@ -62,12 +62,12 @@ The guide is meant as a general plan, but always pay careful attention to your d
 
 In order for a Dedicated IP to be beneficial or useful, you first need to establish a certain sending volume and patterns. Once you've established this volume and these patterns, our [Support team](https://resend.com/help) can set it up for you.
 
-We provide an automatic warm-up process so that you can focus on sending.
+Resend provides an automatic warm-up process so that you can focus on sending.
 
 [Learn more about requesting a Dedicated IP](https://resend.com/docs/knowledge-base/how-do-dedicated-ips-work#how-to-request-a-dedicated-ip).
 
 # Third-party warm-up services
 
-We know email deliverability is important, and it can be tempting to use services promising quick fixes. However, using tools that artificially boost engagement can harm your long-term sender reputation. These services often rely on manipulating anti-spam filters, which can backfire as email providers like Gmail adjust their systems.
+Email deliverability is important, and it can be tempting to use services promising quick fixes. However, using tools that artificially boost engagement can harm your long-term sender reputation. These services often rely on manipulating anti-spam filters, which can backfire as email providers like Gmail adjust their systems.
 
-Instead, we recommend focusing on sustainable practices, such as sending relevant content, maintaining a clean list, and using proper authentication. These methods build trust with email providers and improve your deliverability over time.
+Instead, focus on sustainable practices, such as sending relevant content, maintaining a clean list, and using proper authentication. These methods build trust with email providers and improve your deliverability over time.

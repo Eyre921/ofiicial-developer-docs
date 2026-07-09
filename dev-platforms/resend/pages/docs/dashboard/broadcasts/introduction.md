@@ -128,7 +128,7 @@ Cloning reuses a Broadcast's design and content as a starting point for transact
 
 ## Sending a Broadcast from the Broadcast API
 
-We also offer the option to send your Broadcasts from our [Broadcast API](/docs/api-reference/broadcasts/create-broadcast).
+You can also send your Broadcasts from the [Broadcast API](/docs/api-reference/broadcasts/create-broadcast).
 
 The Broadcast API offers 6 endpoints for programmatically creating, updating, and sending broadcasts.
 

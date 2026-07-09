@@ -23,37 +23,266 @@ What's possible with deep agent streaming:
 
 Deep Agents use LangGraph's subgraph streaming to surface events from subagent execution. To receive subagent events, enable `stream_subgraphs` when streaming.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const agent = createDeepAgent({
-  systemPrompt: "You are a helpful research assistant",
-  subagents: [
+  const agent = createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    systemPrompt: "You are a helpful research assistant",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches a topic in depth",
+        systemPrompt: "You are a thorough researcher.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
     {
-      name: "researcher",
-      description: "Researches a topic in depth",
-      systemPrompt: "You are a thorough researcher.",
+      messages: [
+        { role: "user", content: "Research quantum computing advances" },
+      ],
     },
-  ],
-});
+    {
+      streamMode: "updates",
+      subgraphs: true, // [!code highlight]
+    },
+  )) {
+    if (namespace.length > 0) {
+      // Subagent event - namespace identifies the source
+      console.log(`[subagent: ${namespace.join("|")}]`);
+    } else {
+      // Main agent event
+      console.log("[main agent]");
+    }
+    console.log(chunk);
+  }
+  ```
 
-for await (const [namespace, chunk] of await agent.stream(
-  { messages: [{ role: "user", content: "Research quantum computing advances" }] },
-  {
-    streamMode: "updates",
-    subgraphs: true,  // [!code highlight]
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "openai:gpt-5.5",
+    systemPrompt: "You are a helpful research assistant",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches a topic in depth",
+        systemPrompt: "You are a thorough researcher.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Research quantum computing advances" },
+      ],
+    },
+    {
+      streamMode: "updates",
+      subgraphs: true, // [!code highlight]
+    },
+  )) {
+    if (namespace.length > 0) {
+      // Subagent event - namespace identifies the source
+      console.log(`[subagent: ${namespace.join("|")}]`);
+    } else {
+      // Main agent event
+      console.log("[main agent]");
+    }
+    console.log(chunk);
   }
-)) {
-  if (namespace.length > 0) {
-    // Subagent event - namespace identifies the source
-    console.log(`[subagent: ${namespace.join("|")}]`);
-  } else {
-    // Main agent event
-    console.log("[main agent]");
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    systemPrompt: "You are a helpful research assistant",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches a topic in depth",
+        systemPrompt: "You are a thorough researcher.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Research quantum computing advances" },
+      ],
+    },
+    {
+      streamMode: "updates",
+      subgraphs: true, // [!code highlight]
+    },
+  )) {
+    if (namespace.length > 0) {
+      // Subagent event - namespace identifies the source
+      console.log(`[subagent: ${namespace.join("|")}]`);
+    } else {
+      // Main agent event
+      console.log("[main agent]");
+    }
+    console.log(chunk);
   }
-  console.log(chunk);
-}
-```
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    systemPrompt: "You are a helpful research assistant",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches a topic in depth",
+        systemPrompt: "You are a thorough researcher.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Research quantum computing advances" },
+      ],
+    },
+    {
+      streamMode: "updates",
+      subgraphs: true, // [!code highlight]
+    },
+  )) {
+    if (namespace.length > 0) {
+      // Subagent event - namespace identifies the source
+      console.log(`[subagent: ${namespace.join("|")}]`);
+    } else {
+      // Main agent event
+      console.log("[main agent]");
+    }
+    console.log(chunk);
+  }
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    systemPrompt: "You are a helpful research assistant",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches a topic in depth",
+        systemPrompt: "You are a thorough researcher.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Research quantum computing advances" },
+      ],
+    },
+    {
+      streamMode: "updates",
+      subgraphs: true, // [!code highlight]
+    },
+  )) {
+    if (namespace.length > 0) {
+      // Subagent event - namespace identifies the source
+      console.log(`[subagent: ${namespace.join("|")}]`);
+    } else {
+      // Main agent event
+      console.log("[main agent]");
+    }
+    console.log(chunk);
+  }
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    systemPrompt: "You are a helpful research assistant",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches a topic in depth",
+        systemPrompt: "You are a thorough researcher.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Research quantum computing advances" },
+      ],
+    },
+    {
+      streamMode: "updates",
+      subgraphs: true, // [!code highlight]
+    },
+  )) {
+    if (namespace.length > 0) {
+      // Subagent event - namespace identifies the source
+      console.log(`[subagent: ${namespace.join("|")}]`);
+    } else {
+      // Main agent event
+      console.log("[main agent]");
+    }
+    console.log(chunk);
+  }
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    systemPrompt: "You are a helpful research assistant",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches a topic in depth",
+        systemPrompt: "You are a thorough researcher.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Research quantum computing advances" },
+      ],
+    },
+    {
+      streamMode: "updates",
+      subgraphs: true, // [!code highlight]
+    },
+  )) {
+    if (namespace.length > 0) {
+      // Subagent event - namespace identifies the source
+      console.log(`[subagent: ${namespace.join("|")}]`);
+    } else {
+      // Main agent event
+      console.log("[main agent]");
+    }
+    console.log(chunk);
+  }
+  ```
+</CodeGroup>
 
 ## Namespaces
 
@@ -67,14 +296,14 @@ When `subgraphs` is enabled, each streaming event includes a **namespace** that 
 
 Use namespaces to route events to the correct UI component:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 for await (const [namespace, chunk] of await agent.stream(
   { messages: [{ role: "user", content: "Plan my vacation" }] },
-  { streamMode: "updates", subgraphs: true }
+  { streamMode: "updates", subgraphs: true },
 )) {
   // Check if this event came from a subagent
-  const isSubagent = namespace.some(
-    (segment: string) => segment.startsWith("tools:")
+  const isSubagent = namespace.some((segment: string) =>
+    segment.startsWith("tools:"),
   );
 
   if (isSubagent) {
@@ -93,56 +322,385 @@ for await (const [namespace, chunk] of await agent.stream(
 
 Use `stream_mode="updates"` to track subagent progress as each step completes. This is useful for showing which subagents are active and what work they've completed.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const agent = createDeepAgent({
-  systemPrompt:
-    "You are a project coordinator. Always delegate research tasks " +
-    "to your researcher subagent using the task tool. Keep your final response to one sentence.",
-  subagents: [
-    {
-      name: "researcher",
-      description: "Researches topics thoroughly",
-      systemPrompt:
-        "You are a thorough researcher. Research the given topic " +
-        "and provide a concise summary in 2-3 sentences.",
-    },
-  ],
-});
-
-for await (const [namespace, chunk] of await agent.stream(
-  {
-    messages: [
-      { role: "user", content: "Write a short summary about AI safety" },
+  const agent = createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    systemPrompt:
+      "You are a project coordinator with no research knowledge. " +
+      "For every user request, you must call the task() tool with " +
+      "subagent_type set to researcher. Never answer research questions yourself. " +
+      "Keep your final response to one sentence.",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches topics thoroughly",
+        systemPrompt:
+          "You are a thorough researcher. Research the given topic " +
+          "and provide a concise summary in 2-3 sentences.",
+      },
     ],
-  },
-  { streamMode: "updates", subgraphs: true },
-)) {
-  // Main agent updates (empty namespace)
-  if (namespace.length === 0) {
-    for (const [nodeName, data] of Object.entries(chunk)) {
-      if (nodeName === "tools") {
-        // Subagent results returned to main agent
-        for (const msg of (data as any).messages ?? []) {
-          if (msg.type === "tool") {
-            console.log(`\nSubagent complete: ${msg.name}`);
-            console.log(`  Result: ${String(msg.content).slice(0, 200)}...`);
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Write a short summary about AI safety" },
+      ],
+    },
+    { streamMode: "updates", subgraphs: true },
+  )) {
+    // Main agent updates (empty namespace)
+    if (namespace.length === 0) {
+      for (const [nodeName, data] of Object.entries(chunk)) {
+        if (nodeName === "tools") {
+          // Subagent results returned to main agent
+          for (const msg of (data as any).messages ?? []) {
+            if (msg.type === "tool") {
+              console.log(`\nSubagent complete: ${msg.name}`);
+              console.log(`  Result: ${String(msg.content).slice(0, 200)}...`);
+            }
           }
+        } else {
+          console.log(`[main agent] step: ${nodeName}`);
         }
-      } else {
-        console.log(`[main agent] step: ${nodeName}`);
+      }
+    }
+    // Subagent updates (non-empty namespace)
+    else {
+      for (const [nodeName] of Object.entries(chunk)) {
+        console.log(`  [${namespace[0]}] step: ${nodeName}`);
       }
     }
   }
-  // Subagent updates (non-empty namespace)
-  else {
-    for (const [nodeName] of Object.entries(chunk)) {
-      console.log(`  [${namespace[0]}] step: ${nodeName}`);
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "openai:gpt-5.5",
+    systemPrompt:
+      "You are a project coordinator with no research knowledge. " +
+      "For every user request, you must call the task() tool with " +
+      "subagent_type set to researcher. Never answer research questions yourself. " +
+      "Keep your final response to one sentence.",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches topics thoroughly",
+        systemPrompt:
+          "You are a thorough researcher. Research the given topic " +
+          "and provide a concise summary in 2-3 sentences.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Write a short summary about AI safety" },
+      ],
+    },
+    { streamMode: "updates", subgraphs: true },
+  )) {
+    // Main agent updates (empty namespace)
+    if (namespace.length === 0) {
+      for (const [nodeName, data] of Object.entries(chunk)) {
+        if (nodeName === "tools") {
+          // Subagent results returned to main agent
+          for (const msg of (data as any).messages ?? []) {
+            if (msg.type === "tool") {
+              console.log(`\nSubagent complete: ${msg.name}`);
+              console.log(`  Result: ${String(msg.content).slice(0, 200)}...`);
+            }
+          }
+        } else {
+          console.log(`[main agent] step: ${nodeName}`);
+        }
+      }
+    }
+    // Subagent updates (non-empty namespace)
+    else {
+      for (const [nodeName] of Object.entries(chunk)) {
+        console.log(`  [${namespace[0]}] step: ${nodeName}`);
+      }
     }
   }
-}
-```
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    systemPrompt:
+      "You are a project coordinator with no research knowledge. " +
+      "For every user request, you must call the task() tool with " +
+      "subagent_type set to researcher. Never answer research questions yourself. " +
+      "Keep your final response to one sentence.",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches topics thoroughly",
+        systemPrompt:
+          "You are a thorough researcher. Research the given topic " +
+          "and provide a concise summary in 2-3 sentences.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Write a short summary about AI safety" },
+      ],
+    },
+    { streamMode: "updates", subgraphs: true },
+  )) {
+    // Main agent updates (empty namespace)
+    if (namespace.length === 0) {
+      for (const [nodeName, data] of Object.entries(chunk)) {
+        if (nodeName === "tools") {
+          // Subagent results returned to main agent
+          for (const msg of (data as any).messages ?? []) {
+            if (msg.type === "tool") {
+              console.log(`\nSubagent complete: ${msg.name}`);
+              console.log(`  Result: ${String(msg.content).slice(0, 200)}...`);
+            }
+          }
+        } else {
+          console.log(`[main agent] step: ${nodeName}`);
+        }
+      }
+    }
+    // Subagent updates (non-empty namespace)
+    else {
+      for (const [nodeName] of Object.entries(chunk)) {
+        console.log(`  [${namespace[0]}] step: ${nodeName}`);
+      }
+    }
+  }
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    systemPrompt:
+      "You are a project coordinator with no research knowledge. " +
+      "For every user request, you must call the task() tool with " +
+      "subagent_type set to researcher. Never answer research questions yourself. " +
+      "Keep your final response to one sentence.",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches topics thoroughly",
+        systemPrompt:
+          "You are a thorough researcher. Research the given topic " +
+          "and provide a concise summary in 2-3 sentences.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Write a short summary about AI safety" },
+      ],
+    },
+    { streamMode: "updates", subgraphs: true },
+  )) {
+    // Main agent updates (empty namespace)
+    if (namespace.length === 0) {
+      for (const [nodeName, data] of Object.entries(chunk)) {
+        if (nodeName === "tools") {
+          // Subagent results returned to main agent
+          for (const msg of (data as any).messages ?? []) {
+            if (msg.type === "tool") {
+              console.log(`\nSubagent complete: ${msg.name}`);
+              console.log(`  Result: ${String(msg.content).slice(0, 200)}...`);
+            }
+          }
+        } else {
+          console.log(`[main agent] step: ${nodeName}`);
+        }
+      }
+    }
+    // Subagent updates (non-empty namespace)
+    else {
+      for (const [nodeName] of Object.entries(chunk)) {
+        console.log(`  [${namespace[0]}] step: ${nodeName}`);
+      }
+    }
+  }
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    systemPrompt:
+      "You are a project coordinator with no research knowledge. " +
+      "For every user request, you must call the task() tool with " +
+      "subagent_type set to researcher. Never answer research questions yourself. " +
+      "Keep your final response to one sentence.",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches topics thoroughly",
+        systemPrompt:
+          "You are a thorough researcher. Research the given topic " +
+          "and provide a concise summary in 2-3 sentences.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Write a short summary about AI safety" },
+      ],
+    },
+    { streamMode: "updates", subgraphs: true },
+  )) {
+    // Main agent updates (empty namespace)
+    if (namespace.length === 0) {
+      for (const [nodeName, data] of Object.entries(chunk)) {
+        if (nodeName === "tools") {
+          // Subagent results returned to main agent
+          for (const msg of (data as any).messages ?? []) {
+            if (msg.type === "tool") {
+              console.log(`\nSubagent complete: ${msg.name}`);
+              console.log(`  Result: ${String(msg.content).slice(0, 200)}...`);
+            }
+          }
+        } else {
+          console.log(`[main agent] step: ${nodeName}`);
+        }
+      }
+    }
+    // Subagent updates (non-empty namespace)
+    else {
+      for (const [nodeName] of Object.entries(chunk)) {
+        console.log(`  [${namespace[0]}] step: ${nodeName}`);
+      }
+    }
+  }
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    systemPrompt:
+      "You are a project coordinator with no research knowledge. " +
+      "For every user request, you must call the task() tool with " +
+      "subagent_type set to researcher. Never answer research questions yourself. " +
+      "Keep your final response to one sentence.",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches topics thoroughly",
+        systemPrompt:
+          "You are a thorough researcher. Research the given topic " +
+          "and provide a concise summary in 2-3 sentences.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Write a short summary about AI safety" },
+      ],
+    },
+    { streamMode: "updates", subgraphs: true },
+  )) {
+    // Main agent updates (empty namespace)
+    if (namespace.length === 0) {
+      for (const [nodeName, data] of Object.entries(chunk)) {
+        if (nodeName === "tools") {
+          // Subagent results returned to main agent
+          for (const msg of (data as any).messages ?? []) {
+            if (msg.type === "tool") {
+              console.log(`\nSubagent complete: ${msg.name}`);
+              console.log(`  Result: ${String(msg.content).slice(0, 200)}...`);
+            }
+          }
+        } else {
+          console.log(`[main agent] step: ${nodeName}`);
+        }
+      }
+    }
+    // Subagent updates (non-empty namespace)
+    else {
+      for (const [nodeName] of Object.entries(chunk)) {
+        console.log(`  [${namespace[0]}] step: ${nodeName}`);
+      }
+    }
+  }
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    systemPrompt:
+      "You are a project coordinator with no research knowledge. " +
+      "For every user request, you must call the task() tool with " +
+      "subagent_type set to researcher. Never answer research questions yourself. " +
+      "Keep your final response to one sentence.",
+    subagents: [
+      {
+        name: "researcher",
+        description: "Researches topics thoroughly",
+        systemPrompt:
+          "You are a thorough researcher. Research the given topic " +
+          "and provide a concise summary in 2-3 sentences.",
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        { role: "user", content: "Write a short summary about AI safety" },
+      ],
+    },
+    { streamMode: "updates", subgraphs: true },
+  )) {
+    // Main agent updates (empty namespace)
+    if (namespace.length === 0) {
+      for (const [nodeName, data] of Object.entries(chunk)) {
+        if (nodeName === "tools") {
+          // Subagent results returned to main agent
+          for (const msg of (data as any).messages ?? []) {
+            if (msg.type === "tool") {
+              console.log(`\nSubagent complete: ${msg.name}`);
+              console.log(`  Result: ${String(msg.content).slice(0, 200)}...`);
+            }
+          }
+        } else {
+          console.log(`[main agent] step: ${nodeName}`);
+        }
+      }
+    }
+    // Subagent updates (non-empty namespace)
+    else {
+      for (const [nodeName] of Object.entries(chunk)) {
+        console.log(`  [${namespace[0]}] step: ${nodeName}`);
+      }
+    }
+  }
+  ```
+</CodeGroup>
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 Main agent step: model_request
@@ -163,7 +721,7 @@ Main agent step: model_request
 
 Use `stream_mode="messages"` to stream individual tokens from both the main agent and subagents. Each message event includes metadata that identifies the source agent.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 let currentSource = "";
 
 for await (const [namespace, chunk] of await agent.stream(
@@ -211,7 +769,7 @@ process.stdout.write("\n");
 
 When subagents use tools, you can stream tool call events to display what each subagent is doing. Tool call chunks appear in the `messages` stream mode.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import { AIMessageChunk, ToolMessage } from "langchain";
 
 for await (const [namespace, chunk] of await agent.stream(
@@ -270,78 +828,525 @@ process.stdout.write("\n");
 
 Use `config.writer` inside your subagent tools to emit custom progress events:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
-import { tool, type ToolRuntime } from "langchain";
-import { z } from "zod";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool, type ToolRuntime } from "langchain";
+  import { z } from "zod";
 
-/**
- * A tool that emits custom progress events via config.writer.
- * The writer sends data to the "custom" stream mode.
- */
-const analyzeData = tool(
-  async ({ topic }: { topic: string }, config: ToolRuntime) => {
-    const writer = config.writer;
+  /**
+   * A tool that emits custom progress events via config.writer.
+   * The writer sends data to the "custom" stream mode.
+   */
+  const analyzeData = tool(
+    async ({ topic }: { topic: string }, config: ToolRuntime) => {
+      const writer = config.writer;
 
-    writer?.({ status: "starting", topic, progress: 0 });
-    await new Promise((r) => setTimeout(r, 500));
+      writer?.({ status: "starting", topic, progress: 0 });
+      await new Promise((r) => setTimeout(r, 500));
 
-    writer?.({ status: "analyzing", progress: 50 });
-    await new Promise((r) => setTimeout(r, 500));
+      writer?.({ status: "analyzing", progress: 50 });
+      await new Promise((r) => setTimeout(r, 500));
 
-    writer?.({ status: "complete", progress: 100 });
-    return `Analysis of "${topic}": Customer sentiment is 85% positive, driven by product quality and support response times.`;
-  },
-  {
-    name: "analyze_data",
-    description:
-      "Run a data analysis on a given topic. " +
-      "This tool performs the actual analysis and emits progress updates. " +
-      "You MUST call this tool for any analysis request.",
-    schema: z.object({
-      topic: z.string().describe("The topic or subject to analyze"),
-    }),
-  },
-);
-
-const agent = createDeepAgent({
-  systemPrompt:
-    "You are a coordinator. For any analysis request, you MUST delegate " +
-    "to the analyst subagent using the task tool. Never try to answer directly. " +
-    "After receiving the result, summarize it in one sentence.",
-  subagents: [
-    {
-      name: "analyst",
-      description: "Performs data analysis with real-time progress tracking",
-      systemPrompt:
-        "You are a data analyst. You MUST call the analyze_data tool " +
-        "for every analysis request. Do not use any other tools. " +
-        "After the analysis completes, report the result.",
-      tools: [analyzeData],
+      writer?.({ status: "complete", progress: 100 });
+      return `Analysis of "${topic}": Customer sentiment is 85% positive, driven by product quality and support response times.`;
     },
-  ],
-});
+    {
+      name: "analyze_data",
+      description:
+        "Run a data analysis on a given topic. " +
+        "This tool performs the actual analysis and emits progress updates. " +
+        "You MUST call this tool for any analysis request.",
+      schema: z.object({
+        topic: z.string().describe("The topic or subject to analyze"),
+      }),
+    },
+  );
 
-for await (const [namespace, chunk] of await agent.stream(
-  {
-    messages: [
+  const agent = createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    systemPrompt:
+      "You are a coordinator. For any analysis request, you MUST delegate " +
+      "to the analyst subagent using the task tool. Never try to answer directly. " +
+      "After receiving the result, summarize it in one sentence.",
+    subagents: [
       {
-        role: "user",
-        content: "Analyze customer satisfaction trends",
+        name: "analyst",
+        description: "Performs data analysis with real-time progress tracking",
+        systemPrompt:
+          "You are a data analyst. You MUST call the analyze_data tool " +
+          "for every analysis request. Do not use any other tools. " +
+          "After the analysis completes, report the result.",
+        tools: [analyzeData],
       },
     ],
-  },
-  { streamMode: "custom", subgraphs: true },
-)) {
-  const isSubagent = namespace.some((s: string) => s.startsWith("tools:"));
-  if (isSubagent) {
-    const subagentNs = namespace.find((s: string) => s.startsWith("tools:"))!;
-    console.log(`[${subagentNs}]`, chunk);
-  } else {
-    console.log("[main]", chunk);
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Analyze customer satisfaction trends",
+        },
+      ],
+    },
+    { streamMode: "custom", subgraphs: true },
+  )) {
+    const isSubagent = namespace.some((s: string) => s.startsWith("tools:"));
+    if (isSubagent) {
+      const subagentNs = namespace.find((s: string) => s.startsWith("tools:"))!;
+      console.log(`[${subagentNs}]`, chunk);
+    } else {
+      console.log("[main]", chunk);
+    }
   }
-}
-```
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool, type ToolRuntime } from "langchain";
+  import { z } from "zod";
+
+  /**
+   * A tool that emits custom progress events via config.writer.
+   * The writer sends data to the "custom" stream mode.
+   */
+  const analyzeData = tool(
+    async ({ topic }: { topic: string }, config: ToolRuntime) => {
+      const writer = config.writer;
+
+      writer?.({ status: "starting", topic, progress: 0 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "analyzing", progress: 50 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "complete", progress: 100 });
+      return `Analysis of "${topic}": Customer sentiment is 85% positive, driven by product quality and support response times.`;
+    },
+    {
+      name: "analyze_data",
+      description:
+        "Run a data analysis on a given topic. " +
+        "This tool performs the actual analysis and emits progress updates. " +
+        "You MUST call this tool for any analysis request.",
+      schema: z.object({
+        topic: z.string().describe("The topic or subject to analyze"),
+      }),
+    },
+  );
+
+  const agent = createDeepAgent({
+    model: "openai:gpt-5.5",
+    systemPrompt:
+      "You are a coordinator. For any analysis request, you MUST delegate " +
+      "to the analyst subagent using the task tool. Never try to answer directly. " +
+      "After receiving the result, summarize it in one sentence.",
+    subagents: [
+      {
+        name: "analyst",
+        description: "Performs data analysis with real-time progress tracking",
+        systemPrompt:
+          "You are a data analyst. You MUST call the analyze_data tool " +
+          "for every analysis request. Do not use any other tools. " +
+          "After the analysis completes, report the result.",
+        tools: [analyzeData],
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Analyze customer satisfaction trends",
+        },
+      ],
+    },
+    { streamMode: "custom", subgraphs: true },
+  )) {
+    const isSubagent = namespace.some((s: string) => s.startsWith("tools:"));
+    if (isSubagent) {
+      const subagentNs = namespace.find((s: string) => s.startsWith("tools:"))!;
+      console.log(`[${subagentNs}]`, chunk);
+    } else {
+      console.log("[main]", chunk);
+    }
+  }
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool, type ToolRuntime } from "langchain";
+  import { z } from "zod";
+
+  /**
+   * A tool that emits custom progress events via config.writer.
+   * The writer sends data to the "custom" stream mode.
+   */
+  const analyzeData = tool(
+    async ({ topic }: { topic: string }, config: ToolRuntime) => {
+      const writer = config.writer;
+
+      writer?.({ status: "starting", topic, progress: 0 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "analyzing", progress: 50 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "complete", progress: 100 });
+      return `Analysis of "${topic}": Customer sentiment is 85% positive, driven by product quality and support response times.`;
+    },
+    {
+      name: "analyze_data",
+      description:
+        "Run a data analysis on a given topic. " +
+        "This tool performs the actual analysis and emits progress updates. " +
+        "You MUST call this tool for any analysis request.",
+      schema: z.object({
+        topic: z.string().describe("The topic or subject to analyze"),
+      }),
+    },
+  );
+
+  const agent = createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    systemPrompt:
+      "You are a coordinator. For any analysis request, you MUST delegate " +
+      "to the analyst subagent using the task tool. Never try to answer directly. " +
+      "After receiving the result, summarize it in one sentence.",
+    subagents: [
+      {
+        name: "analyst",
+        description: "Performs data analysis with real-time progress tracking",
+        systemPrompt:
+          "You are a data analyst. You MUST call the analyze_data tool " +
+          "for every analysis request. Do not use any other tools. " +
+          "After the analysis completes, report the result.",
+        tools: [analyzeData],
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Analyze customer satisfaction trends",
+        },
+      ],
+    },
+    { streamMode: "custom", subgraphs: true },
+  )) {
+    const isSubagent = namespace.some((s: string) => s.startsWith("tools:"));
+    if (isSubagent) {
+      const subagentNs = namespace.find((s: string) => s.startsWith("tools:"))!;
+      console.log(`[${subagentNs}]`, chunk);
+    } else {
+      console.log("[main]", chunk);
+    }
+  }
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool, type ToolRuntime } from "langchain";
+  import { z } from "zod";
+
+  /**
+   * A tool that emits custom progress events via config.writer.
+   * The writer sends data to the "custom" stream mode.
+   */
+  const analyzeData = tool(
+    async ({ topic }: { topic: string }, config: ToolRuntime) => {
+      const writer = config.writer;
+
+      writer?.({ status: "starting", topic, progress: 0 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "analyzing", progress: 50 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "complete", progress: 100 });
+      return `Analysis of "${topic}": Customer sentiment is 85% positive, driven by product quality and support response times.`;
+    },
+    {
+      name: "analyze_data",
+      description:
+        "Run a data analysis on a given topic. " +
+        "This tool performs the actual analysis and emits progress updates. " +
+        "You MUST call this tool for any analysis request.",
+      schema: z.object({
+        topic: z.string().describe("The topic or subject to analyze"),
+      }),
+    },
+  );
+
+  const agent = createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    systemPrompt:
+      "You are a coordinator. For any analysis request, you MUST delegate " +
+      "to the analyst subagent using the task tool. Never try to answer directly. " +
+      "After receiving the result, summarize it in one sentence.",
+    subagents: [
+      {
+        name: "analyst",
+        description: "Performs data analysis with real-time progress tracking",
+        systemPrompt:
+          "You are a data analyst. You MUST call the analyze_data tool " +
+          "for every analysis request. Do not use any other tools. " +
+          "After the analysis completes, report the result.",
+        tools: [analyzeData],
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Analyze customer satisfaction trends",
+        },
+      ],
+    },
+    { streamMode: "custom", subgraphs: true },
+  )) {
+    const isSubagent = namespace.some((s: string) => s.startsWith("tools:"));
+    if (isSubagent) {
+      const subagentNs = namespace.find((s: string) => s.startsWith("tools:"))!;
+      console.log(`[${subagentNs}]`, chunk);
+    } else {
+      console.log("[main]", chunk);
+    }
+  }
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool, type ToolRuntime } from "langchain";
+  import { z } from "zod";
+
+  /**
+   * A tool that emits custom progress events via config.writer.
+   * The writer sends data to the "custom" stream mode.
+   */
+  const analyzeData = tool(
+    async ({ topic }: { topic: string }, config: ToolRuntime) => {
+      const writer = config.writer;
+
+      writer?.({ status: "starting", topic, progress: 0 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "analyzing", progress: 50 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "complete", progress: 100 });
+      return `Analysis of "${topic}": Customer sentiment is 85% positive, driven by product quality and support response times.`;
+    },
+    {
+      name: "analyze_data",
+      description:
+        "Run a data analysis on a given topic. " +
+        "This tool performs the actual analysis and emits progress updates. " +
+        "You MUST call this tool for any analysis request.",
+      schema: z.object({
+        topic: z.string().describe("The topic or subject to analyze"),
+      }),
+    },
+  );
+
+  const agent = createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    systemPrompt:
+      "You are a coordinator. For any analysis request, you MUST delegate " +
+      "to the analyst subagent using the task tool. Never try to answer directly. " +
+      "After receiving the result, summarize it in one sentence.",
+    subagents: [
+      {
+        name: "analyst",
+        description: "Performs data analysis with real-time progress tracking",
+        systemPrompt:
+          "You are a data analyst. You MUST call the analyze_data tool " +
+          "for every analysis request. Do not use any other tools. " +
+          "After the analysis completes, report the result.",
+        tools: [analyzeData],
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Analyze customer satisfaction trends",
+        },
+      ],
+    },
+    { streamMode: "custom", subgraphs: true },
+  )) {
+    const isSubagent = namespace.some((s: string) => s.startsWith("tools:"));
+    if (isSubagent) {
+      const subagentNs = namespace.find((s: string) => s.startsWith("tools:"))!;
+      console.log(`[${subagentNs}]`, chunk);
+    } else {
+      console.log("[main]", chunk);
+    }
+  }
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool, type ToolRuntime } from "langchain";
+  import { z } from "zod";
+
+  /**
+   * A tool that emits custom progress events via config.writer.
+   * The writer sends data to the "custom" stream mode.
+   */
+  const analyzeData = tool(
+    async ({ topic }: { topic: string }, config: ToolRuntime) => {
+      const writer = config.writer;
+
+      writer?.({ status: "starting", topic, progress: 0 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "analyzing", progress: 50 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "complete", progress: 100 });
+      return `Analysis of "${topic}": Customer sentiment is 85% positive, driven by product quality and support response times.`;
+    },
+    {
+      name: "analyze_data",
+      description:
+        "Run a data analysis on a given topic. " +
+        "This tool performs the actual analysis and emits progress updates. " +
+        "You MUST call this tool for any analysis request.",
+      schema: z.object({
+        topic: z.string().describe("The topic or subject to analyze"),
+      }),
+    },
+  );
+
+  const agent = createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    systemPrompt:
+      "You are a coordinator. For any analysis request, you MUST delegate " +
+      "to the analyst subagent using the task tool. Never try to answer directly. " +
+      "After receiving the result, summarize it in one sentence.",
+    subagents: [
+      {
+        name: "analyst",
+        description: "Performs data analysis with real-time progress tracking",
+        systemPrompt:
+          "You are a data analyst. You MUST call the analyze_data tool " +
+          "for every analysis request. Do not use any other tools. " +
+          "After the analysis completes, report the result.",
+        tools: [analyzeData],
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Analyze customer satisfaction trends",
+        },
+      ],
+    },
+    { streamMode: "custom", subgraphs: true },
+  )) {
+    const isSubagent = namespace.some((s: string) => s.startsWith("tools:"));
+    if (isSubagent) {
+      const subagentNs = namespace.find((s: string) => s.startsWith("tools:"))!;
+      console.log(`[${subagentNs}]`, chunk);
+    } else {
+      console.log("[main]", chunk);
+    }
+  }
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool, type ToolRuntime } from "langchain";
+  import { z } from "zod";
+
+  /**
+   * A tool that emits custom progress events via config.writer.
+   * The writer sends data to the "custom" stream mode.
+   */
+  const analyzeData = tool(
+    async ({ topic }: { topic: string }, config: ToolRuntime) => {
+      const writer = config.writer;
+
+      writer?.({ status: "starting", topic, progress: 0 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "analyzing", progress: 50 });
+      await new Promise((r) => setTimeout(r, 500));
+
+      writer?.({ status: "complete", progress: 100 });
+      return `Analysis of "${topic}": Customer sentiment is 85% positive, driven by product quality and support response times.`;
+    },
+    {
+      name: "analyze_data",
+      description:
+        "Run a data analysis on a given topic. " +
+        "This tool performs the actual analysis and emits progress updates. " +
+        "You MUST call this tool for any analysis request.",
+      schema: z.object({
+        topic: z.string().describe("The topic or subject to analyze"),
+      }),
+    },
+  );
+
+  const agent = createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    systemPrompt:
+      "You are a coordinator. For any analysis request, you MUST delegate " +
+      "to the analyst subagent using the task tool. Never try to answer directly. " +
+      "After receiving the result, summarize it in one sentence.",
+    subagents: [
+      {
+        name: "analyst",
+        description: "Performs data analysis with real-time progress tracking",
+        systemPrompt:
+          "You are a data analyst. You MUST call the analyze_data tool " +
+          "for every analysis request. Do not use any other tools. " +
+          "After the analysis completes, report the result.",
+        tools: [analyzeData],
+      },
+    ],
+  });
+
+  for await (const [namespace, chunk] of await agent.stream(
+    {
+      messages: [
+        {
+          role: "user",
+          content: "Analyze customer satisfaction trends",
+        },
+      ],
+    },
+    { streamMode: "custom", subgraphs: true },
+  )) {
+    const isSubagent = namespace.some((s: string) => s.startsWith("tools:"));
+    if (isSubagent) {
+      const subagentNs = namespace.find((s: string) => s.startsWith("tools:"))!;
+      console.log(`[${subagentNs}]`, chunk);
+    } else {
+      console.log("[main]", chunk);
+    }
+  }
+  ```
+</CodeGroup>
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [tools:call_abc123] { status: 'fetching', progress: 0 }
@@ -353,7 +1358,7 @@ for await (const [namespace, chunk] of await agent.stream(
 
 Combine multiple stream modes to get a complete picture of agent execution:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 // Skip internal middleware steps - only show meaningful node names
 const INTERESTING_NODES = new Set(["model_request", "tools"]);
 
@@ -416,7 +1421,12 @@ process.stdout.write("\n");
 
 Monitor when subagents start, run, and complete:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+const activeSubagents = new Map<
+  string,
+  { type?: string; description?: string; status: string }
+>();
+
 for await (const [namespace, chunk] of await agent.stream(
   {
     messages: [

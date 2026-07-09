@@ -14,13 +14,13 @@ If GitHub Copilot stops working, check GitHub's [Status page](https://githubstat
 
 ## Unable to use the GitHub Copilot extension in the IDE
 
-We recommend you follow the quickstart guide for GitHub Copilot while setting up GitHub Copilot on your machine. For more information, see [Quickstart for GitHub Copilot](/en/copilot/quickstart).
+We recommend you follow the quickstart guide for GitHub Copilot while setting up GitHub Copilot on your machine. For more information, see [Quickstart for GitHub Copilot](/en/copilot/get-started/quickstart).
 
 The GitHub Copilot extension is frequently updated to fix bugs and add new features. It's important to keep your extension up to date because older clients cannot communicate with the GitHub Copilot servers. Update your GitHub Copilot extension on all the machines you have it installed.
 
-If you're using a Copilot plan for a managed user account on GHE.com, you'll need to update some settings before you sign in. See [Using GitHub Copilot with an account on GHE.com](/en/copilot/managing-copilot/configure-personal-settings/using-github-copilot-with-an-account-on-ghecom).
+If you're using a Copilot plan for a managed user account on GHE.com, you'll need to update some settings before you sign in. See [Using GitHub Copilot with an account on GHE.com](/en/copilot/how-tos/configure-personal-settings/authenticate-to-ghecom).
 
-For more information about configuring GitHub Copilot in a supported IDE, see [Configuring GitHub Copilot in your environment](/en/copilot/configuring-github-copilot/configuring-github-copilot-in-your-environment).
+For more information about configuring GitHub Copilot in a supported IDE, see [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/configure-personal-settings/configure-in-ide).
 
 ## GitHub Copilot not working in some files
 
@@ -41,7 +41,7 @@ Content exclusion can be configured at the repository and organization level. Th
 * **Repository administrators** can exclude content for their own repositories. This affects any Copilot users in the enterprise working within those specific repositories.
 * **Organization owners** can exclude content for users assigned a Copilot seat through their organization.
 
-After you add or change content exclusions, it can take up to 30 minutes to take effect in IDEs where the settings are already loaded. You can apply changes to your own IDE, forcing it to reload the content exclusion settings. For more information, see [Excluding content from GitHub Copilot](/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-github-copilot-features-in-your-organization/testing-changes-to-content-exclusions-in-your-ide#propagating-content-exclusion-changes-to-your-ide).
+After you add or change content exclusions, it can take up to 30 minutes to take effect in IDEs where the settings are already loaded. You can apply changes to your own IDE, forcing it to reload the content exclusion settings. For more information, see [Excluding content from GitHub Copilot](/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot#propagate-content-exclusion-changes-to-your-ide).
 
 > \[!NOTE]
 > It's possible that Copilot may use semantic information from an excluded file if the information is provided by the IDE indirectly. Examples of such content include type information and hover-over definitions for symbols used in code, as well as general project properties such as build configuration information.
@@ -52,7 +52,7 @@ This error indicates that you do not have a Copilot plan, or there was an error 
 
 To request another token from api.github.com, try signing in and out of Copilot from your IDE. Once you've logged out, Copilot will prompt you to sign back in.
 
-If you cannot connect to the server, you can create a discussion in our [discussion forum](https://github.com/orgs/community/discussions/categories/copilot). You can include log files from your IDE to help us troubleshoot the issue. For more information on obtaining log files from your specific IDE, see [Viewing logs for GitHub Copilot in your environment](/en/copilot/troubleshooting-github-copilot/viewing-logs-for-github-copilot-in-your-environment).
+If you cannot connect to the server, you can create a discussion in our [discussion forum](https://github.com/orgs/community/discussions/categories/copilot). You can include log files from your IDE to help us troubleshoot the issue. For more information on obtaining log files from your specific IDE, see [Viewing logs for GitHub Copilot in your environment](/en/copilot/how-tos/troubleshoot-copilot/view-logs).
 
 ## Copilot not suggesting multiple lines of code
 
@@ -72,7 +72,7 @@ In case you experience repeated rate limiting in Copilot contact [GitHub Support
 
 ## Can't find Copilot Chat in my IDE
 
-If you can't find Copilot Chat in your editor, make sure you have checked the "Prerequisites" section of [Asking GitHub Copilot questions in your IDE](/en/copilot/github-copilot-chat/copilot-chat-in-ides/using-github-copilot-chat-in-your-ide).
+If you can't find Copilot Chat in your editor, make sure you have checked the "Prerequisites" section of [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
 
 > \[!NOTE]
 > The linked article has tabs for various IDEs.
@@ -87,7 +87,7 @@ To use Copilot Chat, make sure you are using the [latest version of Visual Studi
 
 ## Authentication problems with managed user account accounts
 
-If you're using a Copilot plan for a managed user account on GHE.com, you'll need to update some settings before you sign in. See [Using GitHub Copilot with an account on GHE.com](/en/copilot/managing-copilot/configure-personal-settings/using-github-copilot-with-an-account-on-ghecom).
+If you're using a Copilot plan for a managed user account on GHE.com, you'll need to update some settings before you sign in. See [Using GitHub Copilot with an account on GHE.com](/en/copilot/how-tos/configure-personal-settings/authenticate-to-ghecom).
 
 ## Authentication problems in Visual Studio Code
 

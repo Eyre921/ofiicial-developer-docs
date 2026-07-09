@@ -184,9 +184,9 @@ If your needs change, you can migrate from one approach to the other.
   potential sending interruptions during the DNS propagation window.
 </Warning>
 
-## We want your feedback
+## Share your feedback
 
-Multi-tenant email is a complex space, and we're always looking to make it easier. If you're building a multi-tenant application and have feedback on your experience, we'd love to hear from you.
+Please share any feedback on your experience using Resend for your multi-tenant application to help us better serve this use case.
 
 <Info>
   We're tracking interest for improved multi-tenant capabilities. Share your use

@@ -12,7 +12,7 @@ When you create a repository on GitHub, it exists as a remote repository. You ca
 
 <div class="ghd-tool webui">
 
-You can clone a repository from GitHub.com to your local computer, or to a codespace, to make it easier to fix merge conflicts, add or remove files, and push larger commits. When you clone a repository, you copy the repository from GitHub.com to your local machine, or to a remote virtual machine when you create a codespace. For more information about cloning to a codespace, see [Creating a codespace for a repository](/en/codespaces/developing-in-codespaces/creating-a-codespace-for-a-repository).
+You can clone a repository from GitHub.com to your local computer, or to a codespace, to make it easier to fix merge conflicts, add or remove files, and push larger commits. When you clone a repository, you copy the repository from GitHub.com to your local machine, or to a remote virtual machine when you create a codespace. For more information about cloning to a codespace, see [Creating a codespace for a repository](/en/codespaces/developing-in-a-codespace/creating-a-codespace-for-a-repository).
 
 </div>
 

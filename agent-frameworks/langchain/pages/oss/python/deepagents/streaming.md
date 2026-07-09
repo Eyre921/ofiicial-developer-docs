@@ -23,36 +23,224 @@ What's possible with deep agent streaming:
 
 Deep Agents use LangGraph's subgraph streaming to surface events from subagent execution. To receive subagent events, enable `stream_subgraphs` when streaming.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    system_prompt="You are a helpful research assistant",
-    subagents=[
-        {
-            "name": "researcher",
-            "description": "Researches a topic in depth",
-            "system_prompt": "You are a thorough researcher.",
-        },
-    ],
-)
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt="You are a helpful research assistant",
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches a topic in depth",
+              "system_prompt": "You are a thorough researcher.",
+          },
+      ],
+  )
 
-for chunk in agent.stream(
-    {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
-    stream_mode="updates",
-    subgraphs=True,  # [!code highlight]
-    version="v2",  # [!code highlight]
-):
-    if chunk["type"] == "updates":
-        if chunk["ns"]:
-            # Subagent event - namespace identifies the source
-            print(f"[subagent: {chunk['ns']}]")
-        else:
-            # Main agent event
-            print("[main agent]")
-        print(chunk["data"])
-```
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
+      stream_mode="updates",
+      subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
+  ):
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt="You are a helpful research assistant",
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches a topic in depth",
+              "system_prompt": "You are a thorough researcher.",
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
+      stream_mode="updates",
+      subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
+  ):
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt="You are a helpful research assistant",
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches a topic in depth",
+              "system_prompt": "You are a thorough researcher.",
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
+      stream_mode="updates",
+      subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
+  ):
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt="You are a helpful research assistant",
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches a topic in depth",
+              "system_prompt": "You are a thorough researcher.",
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
+      stream_mode="updates",
+      subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
+  ):
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt="You are a helpful research assistant",
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches a topic in depth",
+              "system_prompt": "You are a thorough researcher.",
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
+      stream_mode="updates",
+      subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
+  ):
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt="You are a helpful research assistant",
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches a topic in depth",
+              "system_prompt": "You are a thorough researcher.",
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
+      stream_mode="updates",
+      subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
+  ):
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt="You are a helpful research assistant",
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches a topic in depth",
+              "system_prompt": "You are a thorough researcher.",
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Research quantum computing advances"}]},
+      stream_mode="updates",
+      subgraphs=True,  # [!code highlight]
+      version="v2",  # [!code highlight]
+  ):
+      if chunk["type"] == "updates":
+          if chunk["ns"]:
+              # Subagent event - namespace identifies the source
+              print(f"[subagent: {chunk['ns']}]")
+          else:
+              # Main agent event
+              print("[main agent]")
+          print(chunk["data"])
+  ```
+</CodeGroup>
 
 ## Namespaces
 
@@ -93,51 +281,343 @@ for chunk in agent.stream(
 
 Use `stream_mode="updates"` to track subagent progress as each step completes. This is useful for showing which subagents are active and what work they've completed.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    system_prompt=(
-        "You are a project coordinator. Always delegate research tasks "
-        "to your researcher subagent using the task tool. Keep your final response to one sentence."
-    ),
-    subagents=[
-        {
-            "name": "researcher",
-            "description": "Researches topics thoroughly",
-            "system_prompt": (
-                "You are a thorough researcher. Research the given topic "
-                "and provide a concise summary in 2-3 sentences."
-            ),
-        },
-    ],
-)
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt=(
+          "You are a project coordinator with no research knowledge. "
+          "For every user request, you must call the task() tool with "
+          "subagent_type set to researcher. Never answer research questions yourself. "
+          "Keep your final response to one sentence."
+      ),
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches topics thoroughly",
+              "system_prompt": (
+                  "You are a thorough researcher. Research the given topic "
+                  "and provide a concise summary in 2-3 sentences."
+              ),
+          },
+      ],
+  )
 
-for chunk in agent.stream(
-    {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
-    stream_mode="updates",
-    subgraphs=True,
-    version="v2",
-):
-    if chunk["type"] == "updates":
-        # Main agent updates (empty namespace)
-        if not chunk["ns"]:
-            for node_name, data in chunk["data"].items():
-                if node_name == "tools":
-                    # Subagent results returned to main agent
-                    for msg in data.get("messages", []):
-                        if msg.type == "tool":
-                            print(f"\nSubagent complete: {msg.name}")
-                            print(f"  Result: {str(msg.content)[:200]}...")
-                else:
-                    print(f"[main agent] step: {node_name}")
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
+      stream_mode="updates",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
 
-        # Subagent updates (non-empty namespace)
-        else:
-            for node_name, data in chunk["data"].items():
-                print(f"  [{chunk['ns'][0]}] step: {node_name}")
-```
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt=(
+          "You are a project coordinator with no research knowledge. "
+          "For every user request, you must call the task() tool with "
+          "subagent_type set to researcher. Never answer research questions yourself. "
+          "Keep your final response to one sentence."
+      ),
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches topics thoroughly",
+              "system_prompt": (
+                  "You are a thorough researcher. Research the given topic "
+                  "and provide a concise summary in 2-3 sentences."
+              ),
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
+      stream_mode="updates",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
+
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt=(
+          "You are a project coordinator with no research knowledge. "
+          "For every user request, you must call the task() tool with "
+          "subagent_type set to researcher. Never answer research questions yourself. "
+          "Keep your final response to one sentence."
+      ),
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches topics thoroughly",
+              "system_prompt": (
+                  "You are a thorough researcher. Research the given topic "
+                  "and provide a concise summary in 2-3 sentences."
+              ),
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
+      stream_mode="updates",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
+
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt=(
+          "You are a project coordinator with no research knowledge. "
+          "For every user request, you must call the task() tool with "
+          "subagent_type set to researcher. Never answer research questions yourself. "
+          "Keep your final response to one sentence."
+      ),
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches topics thoroughly",
+              "system_prompt": (
+                  "You are a thorough researcher. Research the given topic "
+                  "and provide a concise summary in 2-3 sentences."
+              ),
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
+      stream_mode="updates",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
+
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt=(
+          "You are a project coordinator with no research knowledge. "
+          "For every user request, you must call the task() tool with "
+          "subagent_type set to researcher. Never answer research questions yourself. "
+          "Keep your final response to one sentence."
+      ),
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches topics thoroughly",
+              "system_prompt": (
+                  "You are a thorough researcher. Research the given topic "
+                  "and provide a concise summary in 2-3 sentences."
+              ),
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
+      stream_mode="updates",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
+
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt=(
+          "You are a project coordinator with no research knowledge. "
+          "For every user request, you must call the task() tool with "
+          "subagent_type set to researcher. Never answer research questions yourself. "
+          "Keep your final response to one sentence."
+      ),
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches topics thoroughly",
+              "system_prompt": (
+                  "You are a thorough researcher. Research the given topic "
+                  "and provide a concise summary in 2-3 sentences."
+              ),
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
+      stream_mode="updates",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
+
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt=(
+          "You are a project coordinator with no research knowledge. "
+          "For every user request, you must call the task() tool with "
+          "subagent_type set to researcher. Never answer research questions yourself. "
+          "Keep your final response to one sentence."
+      ),
+      subagents=[
+          {
+              "name": "researcher",
+              "description": "Researches topics thoroughly",
+              "system_prompt": (
+                  "You are a thorough researcher. Research the given topic "
+                  "and provide a concise summary in 2-3 sentences."
+              ),
+          },
+      ],
+  )
+
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Write a short summary about AI safety"}]},
+      stream_mode="updates",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "updates":
+          # Main agent updates (empty namespace)
+          if not chunk["ns"]:
+              for node_name, data in chunk["data"].items():
+                  if node_name == "tools":
+                      # Subagent results returned to main agent
+                      for msg in data.get("messages", []):
+                          if msg.type == "tool":
+                              print(f"\nSubagent complete: {msg.name}")
+                              print(f"  Result: {str(msg.content)[:200]}...")
+                  else:
+                      print(f"[main agent] step: {node_name}")
+
+          # Subagent updates (non-empty namespace)
+          else:
+              for node_name, data in chunk["data"].items():
+                  print(f"  [{chunk['ns'][0]}] step: {node_name}")
+  ```
+</CodeGroup>
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [main agent] step: model_request
@@ -230,70 +710,476 @@ print()
 
 Use [`get_stream_writer`](https://reference.langchain.com/python/langgraph/config/get_stream_writer) inside your subagent tools to emit custom progress events:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import time
-from langchain.tools import tool
-from langgraph.config import get_stream_writer
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import time
+  from langchain.tools import tool
+  from langgraph.config import get_stream_writer
+  from deepagents import create_deep_agent
 
 
-@tool
-def analyze_data(topic: str) -> str:
-    """Run a data analysis on a given topic.
+  @tool
+  def analyze_data(topic: str) -> str:
+      """Run a data analysis on a given topic.
 
-    This tool performs the actual analysis and emits progress updates.
-    You MUST call this tool for any analysis request.
-    """
-    writer = get_stream_writer()
+      This tool performs the actual analysis and emits progress updates.
+      You MUST call this tool for any analysis request.
+      """
+      writer = get_stream_writer()
 
-    writer({"status": "starting", "topic": topic, "progress": 0})
-    time.sleep(0.5)
+      writer({"status": "starting", "topic": topic, "progress": 0})
+      time.sleep(0.5)
 
-    writer({"status": "analyzing", "progress": 50})
-    time.sleep(0.5)
+      writer({"status": "analyzing", "progress": 50})
+      time.sleep(0.5)
 
-    writer({"status": "complete", "progress": 100})
-    return (
-        f'Analysis of "{topic}": Customer sentiment is 85% positive, '
-        "driven by product quality and support response times."
-    )
+      writer({"status": "complete", "progress": 100})
+      return (
+          f'Analysis of "{topic}": Customer sentiment is 85% positive, '
+          "driven by product quality and support response times."
+      )
 
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    system_prompt=(
-        "You are a coordinator. For any analysis request, you MUST delegate "
-        "to the analyst subagent using the task tool. Never try to answer directly. "
-        "After receiving the result, summarize it in one sentence."
-    ),
-    subagents=[
-        {
-            "name": "analyst",
-            "description": "Performs data analysis with real-time progress tracking",
-            "system_prompt": (
-                "You are a data analyst. You MUST call the analyze_data tool "
-                "for every analysis request. Do not use any other tools. "
-                "After the analysis completes, report the result."
-            ),
-            "tools": [analyze_data],
-        },
-    ],
-)
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt=(
+          "You are a coordinator. For any analysis request, you MUST delegate "
+          "to the analyst subagent using the task tool. Never try to answer directly. "
+          "After receiving the result, summarize it in one sentence."
+      ),
+      subagents=[
+          {
+              "name": "analyst",
+              "description": "Performs data analysis with real-time progress tracking",
+              "system_prompt": (
+                  "You are a data analyst. You MUST call the analyze_data tool "
+                  "for every analysis request. Do not use any other tools. "
+                  "After the analysis completes, report the result."
+              ),
+              "tools": [analyze_data],
+          },
+      ],
+  )
 
-for chunk in agent.stream(
-    {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
-    stream_mode="custom",
-    subgraphs=True,
-    version="v2",
-):
-    if chunk["type"] == "custom":
-        is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
-        if is_subagent:
-            subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
-            print(f"[{subagent_ns}]", chunk["data"])
-        else:
-            print("[main]", chunk["data"])
-```
+  custom_event_count = 0
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
+      stream_mode="custom",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import time
+  from langchain.tools import tool
+  from langgraph.config import get_stream_writer
+  from deepagents import create_deep_agent
+
+
+  @tool
+  def analyze_data(topic: str) -> str:
+      """Run a data analysis on a given topic.
+
+      This tool performs the actual analysis and emits progress updates.
+      You MUST call this tool for any analysis request.
+      """
+      writer = get_stream_writer()
+
+      writer({"status": "starting", "topic": topic, "progress": 0})
+      time.sleep(0.5)
+
+      writer({"status": "analyzing", "progress": 50})
+      time.sleep(0.5)
+
+      writer({"status": "complete", "progress": 100})
+      return (
+          f'Analysis of "{topic}": Customer sentiment is 85% positive, '
+          "driven by product quality and support response times."
+      )
+
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt=(
+          "You are a coordinator. For any analysis request, you MUST delegate "
+          "to the analyst subagent using the task tool. Never try to answer directly. "
+          "After receiving the result, summarize it in one sentence."
+      ),
+      subagents=[
+          {
+              "name": "analyst",
+              "description": "Performs data analysis with real-time progress tracking",
+              "system_prompt": (
+                  "You are a data analyst. You MUST call the analyze_data tool "
+                  "for every analysis request. Do not use any other tools. "
+                  "After the analysis completes, report the result."
+              ),
+              "tools": [analyze_data],
+          },
+      ],
+  )
+
+  custom_event_count = 0
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
+      stream_mode="custom",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import time
+  from langchain.tools import tool
+  from langgraph.config import get_stream_writer
+  from deepagents import create_deep_agent
+
+
+  @tool
+  def analyze_data(topic: str) -> str:
+      """Run a data analysis on a given topic.
+
+      This tool performs the actual analysis and emits progress updates.
+      You MUST call this tool for any analysis request.
+      """
+      writer = get_stream_writer()
+
+      writer({"status": "starting", "topic": topic, "progress": 0})
+      time.sleep(0.5)
+
+      writer({"status": "analyzing", "progress": 50})
+      time.sleep(0.5)
+
+      writer({"status": "complete", "progress": 100})
+      return (
+          f'Analysis of "{topic}": Customer sentiment is 85% positive, '
+          "driven by product quality and support response times."
+      )
+
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt=(
+          "You are a coordinator. For any analysis request, you MUST delegate "
+          "to the analyst subagent using the task tool. Never try to answer directly. "
+          "After receiving the result, summarize it in one sentence."
+      ),
+      subagents=[
+          {
+              "name": "analyst",
+              "description": "Performs data analysis with real-time progress tracking",
+              "system_prompt": (
+                  "You are a data analyst. You MUST call the analyze_data tool "
+                  "for every analysis request. Do not use any other tools. "
+                  "After the analysis completes, report the result."
+              ),
+              "tools": [analyze_data],
+          },
+      ],
+  )
+
+  custom_event_count = 0
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
+      stream_mode="custom",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import time
+  from langchain.tools import tool
+  from langgraph.config import get_stream_writer
+  from deepagents import create_deep_agent
+
+
+  @tool
+  def analyze_data(topic: str) -> str:
+      """Run a data analysis on a given topic.
+
+      This tool performs the actual analysis and emits progress updates.
+      You MUST call this tool for any analysis request.
+      """
+      writer = get_stream_writer()
+
+      writer({"status": "starting", "topic": topic, "progress": 0})
+      time.sleep(0.5)
+
+      writer({"status": "analyzing", "progress": 50})
+      time.sleep(0.5)
+
+      writer({"status": "complete", "progress": 100})
+      return (
+          f'Analysis of "{topic}": Customer sentiment is 85% positive, '
+          "driven by product quality and support response times."
+      )
+
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt=(
+          "You are a coordinator. For any analysis request, you MUST delegate "
+          "to the analyst subagent using the task tool. Never try to answer directly. "
+          "After receiving the result, summarize it in one sentence."
+      ),
+      subagents=[
+          {
+              "name": "analyst",
+              "description": "Performs data analysis with real-time progress tracking",
+              "system_prompt": (
+                  "You are a data analyst. You MUST call the analyze_data tool "
+                  "for every analysis request. Do not use any other tools. "
+                  "After the analysis completes, report the result."
+              ),
+              "tools": [analyze_data],
+          },
+      ],
+  )
+
+  custom_event_count = 0
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
+      stream_mode="custom",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import time
+  from langchain.tools import tool
+  from langgraph.config import get_stream_writer
+  from deepagents import create_deep_agent
+
+
+  @tool
+  def analyze_data(topic: str) -> str:
+      """Run a data analysis on a given topic.
+
+      This tool performs the actual analysis and emits progress updates.
+      You MUST call this tool for any analysis request.
+      """
+      writer = get_stream_writer()
+
+      writer({"status": "starting", "topic": topic, "progress": 0})
+      time.sleep(0.5)
+
+      writer({"status": "analyzing", "progress": 50})
+      time.sleep(0.5)
+
+      writer({"status": "complete", "progress": 100})
+      return (
+          f'Analysis of "{topic}": Customer sentiment is 85% positive, '
+          "driven by product quality and support response times."
+      )
+
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt=(
+          "You are a coordinator. For any analysis request, you MUST delegate "
+          "to the analyst subagent using the task tool. Never try to answer directly. "
+          "After receiving the result, summarize it in one sentence."
+      ),
+      subagents=[
+          {
+              "name": "analyst",
+              "description": "Performs data analysis with real-time progress tracking",
+              "system_prompt": (
+                  "You are a data analyst. You MUST call the analyze_data tool "
+                  "for every analysis request. Do not use any other tools. "
+                  "After the analysis completes, report the result."
+              ),
+              "tools": [analyze_data],
+          },
+      ],
+  )
+
+  custom_event_count = 0
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
+      stream_mode="custom",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import time
+  from langchain.tools import tool
+  from langgraph.config import get_stream_writer
+  from deepagents import create_deep_agent
+
+
+  @tool
+  def analyze_data(topic: str) -> str:
+      """Run a data analysis on a given topic.
+
+      This tool performs the actual analysis and emits progress updates.
+      You MUST call this tool for any analysis request.
+      """
+      writer = get_stream_writer()
+
+      writer({"status": "starting", "topic": topic, "progress": 0})
+      time.sleep(0.5)
+
+      writer({"status": "analyzing", "progress": 50})
+      time.sleep(0.5)
+
+      writer({"status": "complete", "progress": 100})
+      return (
+          f'Analysis of "{topic}": Customer sentiment is 85% positive, '
+          "driven by product quality and support response times."
+      )
+
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt=(
+          "You are a coordinator. For any analysis request, you MUST delegate "
+          "to the analyst subagent using the task tool. Never try to answer directly. "
+          "After receiving the result, summarize it in one sentence."
+      ),
+      subagents=[
+          {
+              "name": "analyst",
+              "description": "Performs data analysis with real-time progress tracking",
+              "system_prompt": (
+                  "You are a data analyst. You MUST call the analyze_data tool "
+                  "for every analysis request. Do not use any other tools. "
+                  "After the analysis completes, report the result."
+              ),
+              "tools": [analyze_data],
+          },
+      ],
+  )
+
+  custom_event_count = 0
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
+      stream_mode="custom",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import time
+  from langchain.tools import tool
+  from langgraph.config import get_stream_writer
+  from deepagents import create_deep_agent
+
+
+  @tool
+  def analyze_data(topic: str) -> str:
+      """Run a data analysis on a given topic.
+
+      This tool performs the actual analysis and emits progress updates.
+      You MUST call this tool for any analysis request.
+      """
+      writer = get_stream_writer()
+
+      writer({"status": "starting", "topic": topic, "progress": 0})
+      time.sleep(0.5)
+
+      writer({"status": "analyzing", "progress": 50})
+      time.sleep(0.5)
+
+      writer({"status": "complete", "progress": 100})
+      return (
+          f'Analysis of "{topic}": Customer sentiment is 85% positive, '
+          "driven by product quality and support response times."
+      )
+
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt=(
+          "You are a coordinator. For any analysis request, you MUST delegate "
+          "to the analyst subagent using the task tool. Never try to answer directly. "
+          "After receiving the result, summarize it in one sentence."
+      ),
+      subagents=[
+          {
+              "name": "analyst",
+              "description": "Performs data analysis with real-time progress tracking",
+              "system_prompt": (
+                  "You are a data analyst. You MUST call the analyze_data tool "
+                  "for every analysis request. Do not use any other tools. "
+                  "After the analysis completes, report the result."
+              ),
+              "tools": [analyze_data],
+          },
+      ],
+  )
+
+  custom_event_count = 0
+  for chunk in agent.stream(
+      {"messages": [{"role": "user", "content": "Analyze customer satisfaction trends"}]},
+      stream_mode="custom",
+      subgraphs=True,
+      version="v2",
+  ):
+      if chunk["type"] == "custom":
+          custom_event_count += 1
+          is_subagent = any(s.startswith("tools:") for s in chunk["ns"])
+          if is_subagent:
+              subagent_ns = next(s for s in chunk["ns"] if s.startswith("tools:"))
+              print(f"[{subagent_ns}]", chunk["data"])
+          else:
+              print("[main]", chunk["data"])
+  ```
+</CodeGroup>
 
 ```shell title="Output" theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 [tools:call_abc123] {'status': 'starting', 'topic': 'customer satisfaction trends', 'progress': 0}

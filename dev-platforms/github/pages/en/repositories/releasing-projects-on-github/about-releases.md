@@ -14,7 +14,7 @@ Releases are deployable software iterations you can package and make available f
 
 Releases are based on [Git tags](https://git-scm.com/book/en/v2/Git-Basics-Tagging), which mark a specific point in your repository's history. A tag date may be different than a release date since they can be created at different times. For more information about viewing your existing tags, see [Viewing your repository's releases and tags](/en/repositories/releasing-projects-on-github/viewing-your-repositorys-releases-and-tags).
 
-You can receive notifications when new releases are published in a repository without receiving notifications about other updates to the repository. For more information, see [Viewing your subscriptions](/en/account-and-profile/managing-subscriptions-and-notifications-on-github/managing-subscriptions-for-activity-on-github/viewing-your-subscriptions).
+You can receive notifications when new releases are published in a repository without receiving notifications about other updates to the repository. For more information, see [Viewing your subscriptions](/en/subscriptions-and-notifications/how-tos/managing-subscriptions-for-activity-on-github/viewing-your-subscriptions).
 
 Anyone with read access to a repository can view and compare releases, but only people with write permissions to a repository can manage releases. For more information, see [Managing releases in a repository](/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository).
 
@@ -26,9 +26,9 @@ GitHub will automatically include links to download a zip file and a tarball con
 
 People with admin permissions to a repository can choose whether Git Large File Storage (Git LFS) objects are included in the ZIP files and tarballs that GitHub creates for each release. For more information, see [Managing Git LFS objects in archives of your repository](/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-git-lfs-objects-in-archives-of-your-repository).
 
-If a release fixes a security vulnerability, you should publish a security advisory in your repository. GitHub reviews each published security advisory and may use it to send Dependabot alerts to affected repositories. For more information, see [Repository security advisories](/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories).
+If a release fixes a security vulnerability, you should publish a security advisory in your repository. GitHub reviews each published security advisory and may use it to send Dependabot alerts to affected repositories. For more information, see [Repository security advisories](/en/code-security/concepts/vulnerability-reporting-and-management/repository-security-advisories).
 
-You can view the **Dependents** tab of the dependency graph to see which repositories and packages depend on code in your repository, and may therefore be affected by a new release. For more information, see [Dependency graph](/en/code-security/supply-chain-security/understanding-your-software-supply-chain/about-the-dependency-graph).
+You can view the **Dependents** tab of the dependency graph to see which repositories and packages depend on code in your repository, and may therefore be affected by a new release. For more information, see [Dependency graph](/en/code-security/concepts/supply-chain-security/dependency-graph).
 
 You can also use the Releases API to gather information, such as the number of times people download a release asset. For more information, see [REST API endpoints for releases and release assets](/en/rest/releases).
 

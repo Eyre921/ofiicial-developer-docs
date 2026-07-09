@@ -44,29 +44,175 @@ graph TB
 
 Define async subagents as a list of [`AsyncSubAgent`](https://reference.langchain.com/javascript/deepagents/agent/createDeepAgent) specs, each pointing to an Agent Protocol server:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent, AsyncSubAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
 
-const asyncSubagents: AsyncSubAgent[] = [
-  {
-    name: "researcher",
-    description: "Research agent for information gathering and synthesis",
-    graphId: "researcher",
-    // No url → ASGI transport (co-deployed in the same deployment)
-  },
-  {
-    name: "coder",
-    description: "Coding agent for code generation and review",
-    graphId: "coder",
-    // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
-  },
-];
+  const asyncSubagents: AsyncSubAgent[] = [
+    {
+      name: "researcher",
+      description: "Research agent for information gathering and synthesis",
+      graphId: "researcher",
+      // No url → ASGI transport (co-deployed in the same deployment)
+    },
+    {
+      name: "coder",
+      description: "Coding agent for code generation and review",
+      graphId: "coder",
+      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+    },
+  ];
 
-const agent = createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
-  subagents: [...asyncSubagents],
-});
-```
+  const agent = createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    subagents: [...asyncSubagents],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+
+  const asyncSubagents: AsyncSubAgent[] = [
+    {
+      name: "researcher",
+      description: "Research agent for information gathering and synthesis",
+      graphId: "researcher",
+      // No url → ASGI transport (co-deployed in the same deployment)
+    },
+    {
+      name: "coder",
+      description: "Coding agent for code generation and review",
+      graphId: "coder",
+      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+    },
+  ];
+
+  const agent = createDeepAgent({
+    model: "openai:gpt-5.5",
+    subagents: [...asyncSubagents],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+
+  const asyncSubagents: AsyncSubAgent[] = [
+    {
+      name: "researcher",
+      description: "Research agent for information gathering and synthesis",
+      graphId: "researcher",
+      // No url → ASGI transport (co-deployed in the same deployment)
+    },
+    {
+      name: "coder",
+      description: "Coding agent for code generation and review",
+      graphId: "coder",
+      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+    },
+  ];
+
+  const agent = createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    subagents: [...asyncSubagents],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+
+  const asyncSubagents: AsyncSubAgent[] = [
+    {
+      name: "researcher",
+      description: "Research agent for information gathering and synthesis",
+      graphId: "researcher",
+      // No url → ASGI transport (co-deployed in the same deployment)
+    },
+    {
+      name: "coder",
+      description: "Coding agent for code generation and review",
+      graphId: "coder",
+      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+    },
+  ];
+
+  const agent = createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    subagents: [...asyncSubagents],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+
+  const asyncSubagents: AsyncSubAgent[] = [
+    {
+      name: "researcher",
+      description: "Research agent for information gathering and synthesis",
+      graphId: "researcher",
+      // No url → ASGI transport (co-deployed in the same deployment)
+    },
+    {
+      name: "coder",
+      description: "Coding agent for code generation and review",
+      graphId: "coder",
+      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+    },
+  ];
+
+  const agent = createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    subagents: [...asyncSubagents],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+
+  const asyncSubagents: AsyncSubAgent[] = [
+    {
+      name: "researcher",
+      description: "Research agent for information gathering and synthesis",
+      graphId: "researcher",
+      // No url → ASGI transport (co-deployed in the same deployment)
+    },
+    {
+      name: "coder",
+      description: "Coding agent for code generation and review",
+      graphId: "coder",
+      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+    },
+  ];
+
+  const agent = createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    subagents: [...asyncSubagents],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, type AsyncSubAgent } from "deepagents";
+
+  const asyncSubagents: AsyncSubAgent[] = [
+    {
+      name: "researcher",
+      description: "Research agent for information gathering and synthesis",
+      graphId: "researcher",
+      // No url → ASGI transport (co-deployed in the same deployment)
+    },
+    {
+      name: "coder",
+      description: "Coding agent for code generation and review",
+      graphId: "coder",
+      // url: "https://coder-deployment.langsmith.dev"  // Optional: HTTP transport for remote
+    },
+  ];
+
+  const agent = createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    subagents: [...asyncSubagents],
+  });
+  ```
+</CodeGroup>
 
 | Field         | Type                     | Description                                                                                                                                                     |
 | ------------- | ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -179,7 +325,9 @@ Supervisor on one server, subagents on another via HTTP transport. Use when suba
 
 In a hybrid deployment, some subagents are co-deployed via ASGI, others remote via HTTP:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import type { AsyncSubAgent } from "deepagents";
+
 const asyncSubagents: AsyncSubAgent[] = [
   {
     name: "researcher",
@@ -211,21 +359,25 @@ langgraph dev --n-jobs-per-worker 10
 
 The supervisor uses descriptions to decide which subagent to launch. Be specific and action-oriented:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// Good
-{
-  name: "researcher",
-  description: "Conducts in-depth research using web search. Use for questions requiring multiple searches and synthesis.",
-  graphId: "researcher",
-}
+<CodeGroup>
+  ```typescript Good theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  // Good
+  {
+    name: "researcher",
+    description: "Conducts in-depth research using web search. Use for questions requiring multiple searches and synthesis.",
+    graphId: "researcher",
+  }
+  ```
 
-// Bad
-{
-  name: "helper",
-  description: "helps with stuff",
-  graphId: "helper",
-}
-```
+  ```typescript Bad theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  // Bad
+  {
+    name: "helper",
+    description: "helps with stuff",
+    graphId: "helper",
+  }
+  ```
+</CodeGroup>
 
 ### Trace with thread IDs
 
@@ -239,7 +391,9 @@ When using LangGraph-based deployments, every async subagent run is a standard L
 
 **Solution**: The middleware injects system prompt rules to prevent this. If polling persists, reinforce the behavior in your supervisor's system prompt:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { createDeepAgent } from "deepagents";
+
 const agent = createDeepAgent({
   model: "google_genai:gemini-3.5-flash",
   systemPrompt: `...your instructions...

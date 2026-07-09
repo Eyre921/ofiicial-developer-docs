@@ -11,7 +11,7 @@ path: docs/eleven-agents/overview
 Agents accomplish tasks through natural dialogue - from quick requests to complex, open-ended workflows. ElevenLabs provides voice-rich, expressive models, developer tools for building multimodal agents, and tools to monitor and evaluate agent performance at scale.
 
 <a href="/docs/eleven-agents/build/overview">
-  <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b01da89ad7994300673d0932d321cd0f53fe727b6210e6c1f00e765e498f8722/assets/images/agents/agents-overview-build.png" alt="" />
+  <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/aa4e5442250b80183bf690e4bcc3bf9517932e1c5a569e5acb539c98604a213e/assets/images/agents/agents-overview-build.png" alt="" />
 
   <h3>
     Configure
@@ -24,7 +24,7 @@ Agents accomplish tasks through natural dialogue - from quick requests to comple
 </a>
 
 <a href="/docs/eleven-agents/integrate/overview">
-  <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/17a81505a62493491ead763b307b1e854825a0da67ab1a1d86b41b57ad87bc73/assets/images/agents/agents-overview-integrate.png" alt="" />
+  <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7375358c43ac5dd1a170937123f0874e01b3d8b6cf178c282805588a11d39593/assets/images/agents/agents-overview-integrate.png" alt="" />
 
   <h3>
     Deploy
@@ -36,7 +36,7 @@ Agents accomplish tasks through natural dialogue - from quick requests to comple
 </a>
 
 <a href="/docs/eleven-agents/operate/overview">
-  <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/3790a000d203429c852cd4be74f2635ea41222f31b0edb53ae760c61e4a0f07d/assets/images/agents/agents-overview-operate.png" alt="" />
+  <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/2e1cb472973e6328927a6eddfd054e465469bcea3267e27f429ebbe33b8cddf5/assets/images/agents/agents-overview-operate.png" alt="" />
 
   <h3>
     Monitor

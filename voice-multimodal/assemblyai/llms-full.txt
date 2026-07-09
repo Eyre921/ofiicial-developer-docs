@@ -147,8 +147,10 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Quickstart](#quickstart-docs-streaming-getting-started-transcribe-streaming-audio-mdx)
 - [Model selection](#model-selection-docs-streaming-select-the-speech-model-mdx)
 - [Optimizing Accuracy and Latency](#optimizing-accuracy-and-latency-docs-streaming-getting-started-optimizing-accuracy-and-latency-mdx)
+- [Turn Detection](#turn-detection-docs-streaming-turn-detection-mdx)
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-streaming-prompting-and-keyterms-mdx)
 - [Conversation Context](#conversation-context-docs-streaming-universal-3-pro-context-carryover-mdx)
+- [Multilingual Transcription](#multilingual-transcription-docs-streaming-multilingual-transcription-mdx)
 - [Medical Mode](#medical-mode-docs-streaming-medical-mode-mdx)
 - [Voice Focus](#voice-focus-docs-streaming-voice-focus-mdx)
 - [Streaming Diarization and Multichannel](#streaming-diarization-and-multichannel-docs-streaming-label-speakers-and-separate-channels-mdx)
@@ -190,6 +192,12 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Evaluate Streaming transcription accuracy with WER](#evaluate-streaming-transcription-accuracy-with-wer-docs-streaming-guides-evaluate-streaming-wer-mdx)
 - [Determine Optimal Turn Detection Settings from Historical Audio Analysis](#determine-optimal-turn-detection-settings-from-historical-audio-analysis-docs-streaming-guides-turn-detection-improvement-using-async-mdx)
 - [Transcribe a short audio file](#transcribe-a-short-audio-file-docs-sync-stt-getting-started-transcribe-a-short-audio-file-mdx)
+- [Prompting and Keyterms](#prompting-and-keyterms-docs-sync-stt-prompting-and-keyterms-mdx)
+- [Conversation context](#conversation-context-docs-sync-stt-conversation-context-mdx)
+- [Language selection](#language-selection-docs-sync-stt-language-selection-mdx)
+- [Transcribe a short audio file](#transcribe-a-short-audio-file-docs-api-reference-sync-api-transcribe-mdx)
+- [Audio requirements](#audio-requirements-docs-sync-stt-audio-requirements-mdx)
+- [Error handling](#error-handling-docs-sync-stt-error-handling-mdx)
 - [Cloud endpoints & data residency](#cloud-endpoints-data-residency-docs-sync-stt-endpoints-and-data-zones-mdx)
 - [Voice Agent API](#voice-agent-api-docs-voice-agents-voice-agent-api-mdx)
 - [Build with AI coding tools](#build-with-ai-coding-tools-docs-voice-agents-voice-agent-api-build-with-ai-tools-mdx)
@@ -373,7 +381,6 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [What is your API Uptime SLA?](#what-is-your-api-uptime-sla-docs-faq-what-is-your-api-uptime-sla-mdx)
 - [Where can I find AssemblyAI's product roadmap?](#where-can-i-find-assemblyai-s-product-roadmap-docs-faq-where-can-i-find-assemblyais-product-roadmap-mdx)
 - [AssemblyAI integration prompt for AI coding agents](#assemblyai-integration-prompt-for-ai-coding-agents-docs-agent-instructions-mdx)
-- [Transcribe a short audio file](#transcribe-a-short-audio-file-docs-api-reference-sync-api-transcribe-mdx)
 - [CLI](#cli-docs-concepts-cli-mdx)
 - [Frequently asked questions](#frequently-asked-questions-docs-concepts-faq-mdx)
 - [Deployment](#deployment-docs-deployment-mdx)
@@ -1506,9 +1513,9 @@ An English transcription model offering a good balance of speed and cost-effecti
 
 [Learn more about Universal-Streaming English](/streaming/getting-started/transcribe-streaming-audio)
 
-  To learn how to specify a model, click
-  [here](/pre-recorded-audio/select-the-speech-model) for pre-recorded
-  audio and [here](/streaming/select-the-speech-model) for streaming audio.
+  To learn how to specify a model, see
+  [selecting a model for pre-recorded audio](/pre-recorded-audio/select-the-speech-model)
+  or [selecting a model for streaming audio](/streaming/select-the-speech-model).
 
 ## Pricing
 
@@ -7555,8 +7562,8 @@ ASSEMBLYAI_API_KEY=your_assemblyai_key
 # Add API keys for your chosen LLM and TTS providers
 ```
 
-  You can obtain an AssemblyAI API key by signing up
-  [here](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
+  You can obtain an AssemblyAI API key by [signing up for a free
+  account](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 The following example uses `turn_detection="stt"` (recommended). Pay close attention to the comments for using with `MultilingualModel()`.
@@ -8518,8 +8525,8 @@ OPENAI_API_KEY=your_openai_key
 CARTESIA_API_KEY=your_cartesia_key
 ```
 
-  You can obtain an AssemblyAI API key by signing up
-  [here](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
+  You can obtain an AssemblyAI API key by [signing up for a free
+  account](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 The example below uses Pipecat-controlled turn detection (the default). Pay attention to the comments for switching to AssemblyAI's built-in turn detection, and note that the **assistant aggregator** at the end of the pipeline is what enables automatic [conversation context](#conversation-context).
@@ -9500,7 +9507,7 @@ Before you begin, you'll need:
 
 ## Credentials
 
-<img src="/assets/img/integrations/n8n/credentials.png" />
+<img src="/assets/img/integrations/n8n/credentials.png" alt="n8n credentials page for configuring Google Drive and AssemblyAI credentials" />
 
 Before building your workflow, you'll need to configure credentials for both Google Drive and AssemblyAI in n8n.
 
@@ -9534,7 +9541,7 @@ Once both credentials are configured, you can use them throughout your workflow.
    - Search for "AssemblyAI"
    - Click the **Install** button next to the AssemblyAI node
 
-<img src="/assets/img/integrations/n8n/google_trigger.png" />
+<img src="/assets/img/integrations/n8n/google_trigger.png" alt="n8n Google Drive trigger node configuration for detecting new audio files" />
 
 The first step is to decide how n8n will know when your audio file is ready to transcribe. This is your workflow trigger. For this example, we'll use **Google Drive** to automatically trigger the workflow when a new audio file is added to a folder.
 
@@ -9567,7 +9574,7 @@ For more information on supported audio file types, size limits, and using Googl
 
   For the sake of simplicity, this tutorial uses a public Google Drive link, so you must ensure your file is **100 MB or less** and the Google Drive **folder settings are set to Public** (anyone with the link can view).
 
-<img src="/assets/img/integrations/n8n/public_folder.png" />
+<img src="/assets/img/integrations/n8n/public_folder.png" alt="Google Drive folder sharing settings set to public access" />
 
 If you'd like to transcribe private folders/files greater than 100MB, you'll need to add a Google Drive "Download file" node to download the binary data first, then upload it to AssemblyAI using the AssemblyAI "Upload a file" node.
 
@@ -9590,7 +9597,7 @@ Use the **AssemblyAI Upload** node:
 
 ### Step 3: Submit Transcription Request
 
-<img src="/assets/img/integrations/n8n/create_transcript_node.png" />
+<img src="/assets/img/integrations/n8n/create_transcript_node.png" alt="n8n AssemblyAI Create a transcription node added to the workflow" />
 
 Now submit the transcription request with your desired features enabled.
 
@@ -9607,7 +9614,7 @@ In **Additional Fields**, enable the following features for this tutorial:
 - **Speaker Labels**: `true` (identifies different speakers through diarization)
 - **Language Detection**: `true` (automatically detects the language, also known as ALD)
 
-<img src="/assets/img/integrations/n8n/create_transcript_params.png" />
+<img src="/assets/img/integrations/n8n/create_transcript_params.png" alt="Create a transcription node parameters with Speaker Labels and Language Detection enabled" />
 
 You can explore all available features, such as sentiment analysis, entity detection, pii redaction, and more in our [API Reference](/api-reference/transcripts/submit).
 
@@ -9615,7 +9622,7 @@ The response will contain a `transcript_id` that you'll use to poll for completi
 
 ### Step 4: Poll for Transcription Completion
 
-<img src="/assets/img/integrations/n8n/polling.png" />
+<img src="/assets/img/integrations/n8n/polling.png" alt="n8n workflow polling loop that checks transcription status until completion" />
 
 Since transcription is asynchronous, the transcription request returns immediately. You need to poll the API until the transcript is ready.
 
@@ -9635,7 +9642,7 @@ Add an **AssemblyAI** `Get a transcription` node after the `Wait` node and confi
 - **Transcript ID**: `{{ $json.id }}`
   - You can drag and drop the `id` field from the `Create a transcription` response into this field
 
-<img src="/assets/img/integrations/n8n/get_transcript_params.png" />
+<img src="/assets/img/integrations/n8n/get_transcript_params.png" alt="AssemblyAI Get a transcription node parameters with Transcript ID field" />
 
 Add a `Switch` node after the `Get a transcription` node and configure the switch to check the transcript's [status](/api-reference/transcripts/submit#response.body.status):
 
@@ -9652,7 +9659,7 @@ Add 4 routing rules, each with:
 
   Most transcripts go directly to `processing`. The `queued` status is only returned when a job is actually waiting to be processed, such as when you've exceeded your rate limit. The routing rule for `queued` is included so the workflow handles that case correctly when it occurs.
 
-<img src="/assets/img/integrations/n8n/status_switch.png" />
+<img src="/assets/img/integrations/n8n/status_switch.png" alt="n8n Switch node with routing rules for queued, processing, error, and completed statuses" />
 
 Handle each switch node output based on the transcript status:
 
@@ -9674,7 +9681,7 @@ When the transcript is complete, the response will contain the [full transcript 
 
 ### Step 5: Process Transcript Output into a Human-Readable Transcript
 
-<img src="/assets/img/integrations/n8n/python_formatting.png" />
+<img src="/assets/img/integrations/n8n/python_formatting.png" alt="n8n Python Code node formatting the transcript with speaker labels" />
 
 Once you have the completed transcript, we want to manipulate the data into a more usable format.
 
@@ -9705,7 +9712,7 @@ This will output a `formattedText` field containing the transcript with speaker 
 
 To save the formatted transcript back to Google Drive:
 
-<img src="/assets/img/integrations/n8n/upload_file.png" />
+<img src="/assets/img/integrations/n8n/upload_file.png" alt="n8n Convert to File node configured to output a text file" />
 
 Add a `Convert to File` node and configure it:
 
@@ -9713,7 +9720,7 @@ Add a `Convert to File` node and configure it:
 - **Text Input Field**: formattedText
 - **Put Output File in Field**: data
 
-<img src="/assets/img/integrations/n8n/upload_drive.png" />
+<img src="/assets/img/integrations/n8n/upload_drive.png" alt="n8n Google Drive Upload file node configured to save the transcript" />
 
 Add a Google Drive `Upload file` node and configure it:
 
@@ -9727,11 +9734,11 @@ Add a Google Drive `Upload file` node and configure it:
 
 The formatted transcript will be saved as a `.txt` file in your specified Google Drive folder:
 
-<img src="/assets/img/integrations/n8n/google_transcript.png" />
+<img src="/assets/img/integrations/n8n/google_transcript.png" alt="Formatted transcript text file saved in the Google Drive transcripts folder" />
 
 ### Step 7: Delete Transcript (Optional)
 
-<img src="/assets/img/integrations/n8n/delete.png" />
+<img src="/assets/img/integrations/n8n/delete.png" alt="n8n AssemblyAI Delete a transcription node at the end of the workflow" />
 
 Once you're done processing the transcript, as it is now saved in Google Drive, you can **optionally** delete it from AssemblyAI's servers.
 
@@ -9751,11 +9758,11 @@ The transcript will be permanently deleted from AssemblyAI's servers.
 
 Once the transcript has been deleted, the workflow is complete! At this point, it should look like this:
 
-<img src="/assets/img/integrations/n8n/full_tutorial.png" />
+<img src="/assets/img/integrations/n8n/full_tutorial.png" alt="Complete n8n AssemblyAI transcription workflow with all connected nodes" />
 
 Now you can deploy the workflow to n8n Cloud by navigating back to the n8n Cloud **Overview** page, locating your workflow, and moving the slider icon to the `Active` position.
 
-<img src="/assets/img/integrations/n8n/deploy.png" />
+<img src="/assets/img/integrations/n8n/deploy.png" alt="n8n Cloud Overview page with the workflow slider set to Active" />
 
 And we're done! Add a file to `/audio_files` in Google Drive, and within a few seconds to a few minutes (depending on the `Poll Times` set for the [Google Drive trigger](/integrations/n-8-n#choose-your-trigger) and the duration of the audio file), you should see the transcript appear in the `/transcripts` Google Drive folder.
 
@@ -10982,7 +10989,7 @@ Description: Transcribe Your Amazon Connect Recordings documentation.
 
 This guide walks through the process of setting up a transcription pipeline for Amazon Connect recordings using AssemblyAI.
 
-### Get Started
+## Get Started
 
 Before we begin, make sure you have:
 
@@ -10994,11 +11001,11 @@ Before we begin, make sure you have:
 
 In the AWS console, navigate to the **Amazon Connect** services page. Select your instance and then click into the **Data Storage** section. On this page, find the subsection named **Call Recordings** and note the S3 bucket path where your call recordings are stored, you'll need this for later.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep1.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep1.png" alt="Amazon Connect Data Storage page showing the Call Recordings S3 bucket path" />
 
 Navigate to the **Lambda** services page, and create a new function. Set the runtime to **Python 3.13**. In the **Change default execution role** section, choose the option to create a new role with basic Lambda permissions. Assign a function name and then click **Create function**.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep2.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep2.png" alt="AWS Lambda create function page with the Python 3.13 runtime selected" />
 
 In this new function, scroll down to the **Code Source** section and paste the following code into `lambda_function.py`.
 
@@ -11213,29 +11220,29 @@ Once you have finished editing the lambda function, click **Deploy** to save you
 
 On the same page, navigate to the **Configuration** section, under **General configuration** adjust the timeout to 15min 0sec and click **Save**. The processing times for transcription will be a lot shorter, but this ensures plenty of time for the function to complete.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep3.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep3.png" alt="Lambda General configuration with the timeout set to 15 minutes" />
 
 Now from this page, on the left side panel click **Environment variables**. Click edit and then add an environment variable, `ASSEMBLYAI_API_KEY`, and set the value to your AssemblyAI API key. Then click **Save**.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep4.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep4.png" alt="Lambda Environment variables page adding the ASSEMBLYAI_API_KEY variable" />
 
 Now, navigate to the **IAM** services page. On the left side panel under Access Management click **Roles** and search for your Lambda function role (it's structure should look like `function_name-role-id`). Click into the role and then in the **Permissions policies** section click the dropdown for **Add permissions** and then select **Attach policies**.
 
 From this page, find the policy named `AmazonS3FullAccess` and click **Add permissions**.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep5.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep5.png" alt="IAM role permissions page attaching the AmazonS3FullAccess policy" />
 
 Now, navigate to the **S3** services page and click into the general purpose bucket where your Amazon Connect recordings are stored. Browse to the **Properties** tab and then scroll down to **Event notifications**. Click **Create event notification**. Give the event a name and then in the prefix section, insert the folder path we noted from Step 1 to ensure the event is triggered for the correct folder.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep6.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep6.png" alt="S3 Create event notification form with the Call Recordings folder prefix" />
 
 Then in the **Event types** section, select **All object create events**.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep7.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep7.png" alt="S3 event notification Event types with All object create events selected" />
 
 Then scroll down to the **Destination** section, set the destination as **Lambda function** and then select the Lambda function we created in Step 2. Then click **Save changes**.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep8.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep8.png" alt="S3 event notification Destination set to the Lambda function" />
 
 To finalise the integration, we'll need to set the recording behaviour from within your AWS Contact Flows. Navigate to your Amazon Connect instance access URL and sign in to your Admin account. In the left side panel, navigate to the **Routing** section and then select **Flows**.
 
@@ -11243,11 +11250,11 @@ Choose a flow to test with, in this case we'll utilize the `Sample inbound flow 
 
 You can see in our example, we place the block right at the entry of the call flow:
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep9.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep9.png" alt="Amazon Connect flow with the Set recording and analytics behavior block at the call entry" />
 
 After connecting this block, click the 3 vertical dots in the top right of the block and select **Edit settings**. Scroll down to the **Enable recording and analytics** subsection and expand the **Voice** section. Then select `On` and select `Agent and customer` (or whoever you'd like to record). Then click **Save**, click **Save** again in the top right and then click **Publish** to publish the flow.
 
-<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep10.png" />
+<img src="/assets/img/integrations/AWS-Connect/AWSConnectStep10.png" alt="Set recording block settings enabling Voice recording for Agent and customer" />
 
 With this new flow published, you should now receive recordings for your Amazon Connect calls that utilize that flow, and you should now receive AssemblyAI transcripts for those recordings!
 
@@ -11275,7 +11282,7 @@ This guide walks through the process of setting up a transcription pipeline to s
 To accomplish this, we'll stream audio through Genesys's [AudioHook Monitor](https://appfoundry.genesys.com/filter/genesyscloud/listing/a3ff6a99-d866-4734-ab7a-16cff2e4308c) integration to a WebSocket server.
 Upon call completion, the server will process this audio into a wav file and send it to AssemblyAI's Speech-to-text API for [pre-recorded audio](/pre-recorded-audio) transcription.
 
-You can find all the necessary code for this guide [here](https://github.com/gsharp-aai/genesys-async-guide).
+You can find all the necessary code for this guide in the [example GitHub repository](https://github.com/gsharp-aai/genesys-async-guide).
 
 ## Architecture Overview
 
@@ -11327,27 +11334,27 @@ You may already have an inbound call flow set up in Genesys (if so, skip to [Ste
 
 Within the [Architect tool](https://apps.usw2.pure.cloud/architect/#/inboundcall/flows), click **Add** to create a new call flow. Enter a **Name** for your flow and click **Create Flow**. Select the newly created flow to open the drag and drop editor.
 
-<img src="/assets/img/integrations/genesys/async/create_call_flow.png" />
+<img src="/assets/img/integrations/genesys/async/create_call_flow.png" alt="Create Flow dialog for adding a new inbound call flow in Genesys Architect" />
 
 Create a **Reusable Task** from the bottom left of the left-side menu. From the Toolbox, search for **Audio Monitoring** and drag it just after the **Start** step of our flow. In the right-side menu for this option, make sure **Enable Monitoring** is enabled.
 
-<img src="/assets/img/integrations/genesys/async/enable_call_monitoring.png" />
+<img src="/assets/img/integrations/genesys/async/enable_call_monitoring.png" alt="Audio Monitoring step added after Start with Enable Monitoring turned on in Genesys Architect" />
 
 Back in the Toolbox, search for **Transfer to User** and set that as the next step. In the right-hand menu, under **User** select a caller. Under **Pre-Transfer Audio** and **Failed Transfer Audio**, type your preferred messages.
 
-<img src="/assets/img/integrations/genesys/async/transfer_to_user.png" />
+<img src="/assets/img/integrations/genesys/async/transfer_to_user.png" alt="Transfer to User step configured with pre-transfer and failed transfer audio in Genesys Architect" />
 
 Search for **Disconnect** in the toolbox and drag that as the step following **Failure**.
 
-<img src="/assets/img/integrations/genesys/async/disconnect.png" />
+<img src="/assets/img/integrations/genesys/async/disconnect.png" alt="Disconnect step placed after the Failure path in the Genesys call flow" />
 
 Search the Toolbox for **Jump to Reusable Task** and drag this tool to the Main Menu at the top of the left-side menu. Select a **DTMF** and **Speech Recognition** value (this will be used to transfer your call to the agent). Under **Task**, select the task you just created.
 
-<img src="/assets/img/integrations/genesys/async/reusable_task.png" />
+<img src="/assets/img/integrations/genesys/async/reusable_task.png" alt="Jump to Reusable Task tool added to the Main Menu with DTMF and speech recognition values" />
 
 Under Settings in the left-side menu, navigate to the **Recording and Speech Recognition** section. Make sure **Suppress recording for the entire flow** is unchecked.
 
-<img src="/assets/img/integrations/genesys/async/audio_settings.png" />
+<img src="/assets/img/integrations/genesys/async/audio_settings.png" alt="Recording and Speech Recognition settings with Suppress recording for the entire flow unchecked" />
 
 In the top navbar, make sure to click **Save** and then click **Publish** to have your changes take effect.
 
@@ -11355,29 +11362,29 @@ In the top navbar, make sure to click **Save** and then click **Publish** to hav
 
 In the Genesys Cloud Admin section, navigate to the [Phones page](https://apps.usw2.pure.cloud/directory/#/admin/telephony/phone-management/phones) under the **Telephony section** and click **Add** to create a new phone. For **Person**, assign the User from your organization that you selected for the **Transfer to User** step in the [previous section](/integrations/genesys-cloud#step-1-create-a-call-flow-in-genesys-optional).
 
-<img src="/assets/img/integrations/genesys/async/create_phone.png" />
-<img src="/assets/img/integrations/genesys/async/assign_phone.png" />
+<img src="/assets/img/integrations/genesys/async/create_phone.png" alt="Creating a new phone on the Genesys Cloud Phone Management page" />
+<img src="/assets/img/integrations/genesys/async/assign_phone.png" alt="Assigning the transfer-to user as the Person for the new phone in Genesys Cloud" />
 
 Navigate to the [Number Management](https://apps.usw2.pure.cloud/directory/#/admin/telecom/numbers/numbers) page under the **Genesys Cloud Voice** section and select **Purchase Numbers**.
 Enter an area code and click **Search**. Select a phone number from the list and click **Complete Purchase**.
 
-<img src="/assets/img/integrations/genesys/async/purchase_numbers.png" />
-<img src="/assets/img/integrations/genesys/async/purchase_numbers_search.png" />
+<img src="/assets/img/integrations/genesys/async/purchase_numbers.png" alt="Number Management page with the Purchase Numbers option in Genesys Cloud Voice" />
+<img src="/assets/img/integrations/genesys/async/purchase_numbers_search.png" alt="Searching for a phone number by area code before completing purchase in Genesys Cloud" />
 
 Navigate to the [Call Routing](https://apps.usw2.pure.cloud/directory/#/admin/routing/ivrs) page under the **Routing** section and select **Add**. Under **What call flow should be used?** select your flow. For **Inbound Numbers**, type the number you purchased in the above step. Then click **Create**.
 
-<img src="/assets/img/integrations/genesys/async/add_route.png" />
-<img src="/assets/img/integrations/genesys/async/create_route.png" />
+<img src="/assets/img/integrations/genesys/async/add_route.png" alt="Call Routing page with the Add option under the Routing section in Genesys Cloud" />
+<img src="/assets/img/integrations/genesys/async/create_route.png" alt="Creating a call route mapping the purchased inbound number to the call flow" />
 
 Under the **Telephony** section, navigate to the [External Trunks](https://apps.usw2.pure.cloud/directory/#/admin/telephony/trunks/external) page. Click **Create New**. Under **Caller ID**, the **Caller Address** will be an E.164 number and the phone number you created.
 
-<img src="/assets/img/integrations/genesys/async/add_trunk.png" />
-<img src="/assets/img/integrations/genesys/async/name_trunk.png" />
+<img src="/assets/img/integrations/genesys/async/add_trunk.png" alt="Creating a new external trunk on the Genesys Cloud External Trunks page" />
+<img src="/assets/img/integrations/genesys/async/name_trunk.png" alt="Setting the trunk Caller ID caller address to the purchased E.164 phone number" />
 
 Under **SIP Access Control**, select **Allow All** (_note: this is only for development and testing purposes, please specify actual IPs in production_). Under the **Media** section, make sure you select **Record calls on this trunk**. Then click **Save External Trunk** (it may take a few moments for your trunk to be ready).
 
-<img src="/assets/img/integrations/genesys/async/sip_access.png" />
-<img src="/assets/img/integrations/genesys/async/recording.png" />
+<img src="/assets/img/integrations/genesys/async/sip_access.png" alt="SIP Access Control set to Allow All in the external trunk settings" />
+<img src="/assets/img/integrations/genesys/async/recording.png" alt="Media section with Record calls on this trunk enabled for the external trunk" />
 
 ## Step 3: Create a S3 bucket
 
@@ -11385,7 +11392,7 @@ After our Genesys call ends, store the audio file in S3.
 
 Click **Create bucket**. Give your bucket a name like `your-audiohook-bucket`. Scroll down and click **Create bucket**.
 
-<img src="/assets/img/integrations/genesys/async/audiohook_s3_bucket.png" />
+<img src="/assets/img/integrations/genesys/async/audiohook_s3_bucket.png" alt="Creating an S3 bucket named your-audiohook-bucket in the AWS console" />
 
 ## Step 4: Create a WebSocket server
 
@@ -11433,35 +11440,35 @@ RECORDINGS_DIR=./recordings # Temp file storage location
 Download [ngrok](https://ngrok.com/). Assuming your server is running on `port 3000`, run `ngrok http 3000 --inspect=false` in your terminal.
 From the resulting terminal output, note the forwarding url that should look something like this: `https://<id>.ngrok-free.app`. This is our WebSocket server URL that we'll provide to the AudioHook Monitor in the next step.
 
-<img src="/assets/img/integrations/genesys/async/ngrok_connection.png" />
+<img src="/assets/img/integrations/genesys/async/ngrok_connection.png" alt="ngrok terminal output showing the forwarding URL for the local WebSocket server" />
 
 ## Step 5: Setting up AudioHook Monitor
 
 In the Genesys Cloud Admin section, navigate to the [Integrations](https://apps.usw2.pure.cloud/directory/#/admin/integrations/apps) page. Add a new integration via the plus sign in the top right corner.
 
-<img src="/assets/img/integrations/genesys/async/new_integration.png" />
+<img src="/assets/img/integrations/genesys/async/new_integration.png" alt="Adding a new integration from the Genesys Cloud Integrations page" />
 
 Search for **AudioHook Monitor** and install.
 
-<img src="/assets/img/integrations/genesys/async/install.png" />
+<img src="/assets/img/integrations/genesys/async/install.png" alt="Installing the AudioHook Monitor integration from the Genesys Cloud integration catalog" />
 
 Navigate to the AudioHook Monitor's **Configuration** tab. Under the **Properties section**, make sure both channels are selected and the **Connection URI** is set to the ngrok url from the [previous step](/integrations/genesys-cloud#step-4-create-a-websocket-server). For the ngrok url, replace `https` with `wss`.
 
-<img src="/assets/img/integrations/genesys/async/server_url.png" />
+<img src="/assets/img/integrations/genesys/async/server_url.png" alt="AudioHook Monitor Configuration tab with the wss Connection URI and both channels selected" />
 
 In the **Configuration** tab, navigate to the **Credentials** section, and click **Configure**. Here you can set an API key to a value our server will use to verify that requests originated from Genesys. This is done via the `X-API-KEY` request header. Our server will compare this key to the value we set in our `.env` for `API_KEY`, so make sure they match. Click **Save**.
 
-<img src="/assets/img/integrations/genesys/async/configure.png" />
+<img src="/assets/img/integrations/genesys/async/configure.png" alt="Setting the X-API-KEY credential in the AudioHook Monitor Credentials configuration" />
 
 Back on the **Integrations** page, click the toggle button under the **Status** column to activate your AudioHook. Genesys will attempt to verify our server is correctly configured according to the AudioHook protocol. If it is unable to do so, a red error will show with the reason for the failed connection. If it succeeds, the connection will toggle to Active.
 
-<img src="/assets/img/integrations/genesys/async/audiohook_success.png" />
+<img src="/assets/img/integrations/genesys/async/audiohook_success.png" alt="AudioHook Monitor integration toggled to Active status after successful verification" />
 
 ## Step 6: Set up your AssemblyAI API call
 
 Navigate to the [Lambda](https://us-east-1.console.aws.amazon.com/lambda/home) services page, and create a new function. Set the runtime to `Node.js 22.x`. In the **Change default execution role** section, choose the option to create a **new role with basic Lambda permissions**. Assign a function name and then click **Create function**.
 
-<img src="/assets/img/integrations/genesys/async/new_lambda.png" />
+<img src="/assets/img/integrations/genesys/async/new_lambda.png" alt="Creating a new Node.js Lambda function with a basic execution role in the AWS console" />
 
 In this new function, scroll down to the **Code Source** section and paste the following code into `index.js`:
 
@@ -11731,38 +11738,38 @@ ASSEMBLYAI_CONFIG = {
 
 Once you have finished editing the Lambda function, click **Deploy** to save your changes.
 
-<img src="/assets/img/integrations/genesys/async/lambda_example.png" />
+<img src="/assets/img/integrations/genesys/async/lambda_example.png" alt="Lambda code source editor with the transcription handler pasted into index.js" />
 
 On the same page, navigate to the **Configuration** section. Under **General configuration**, click **Edit**, and then adjust **Timeout** to `15min 0sec` and click **Save**. The processing times for transcription will be much shorter, but this ensures the function will have plenty of time to run.
 
-<img src="/assets/img/integrations/genesys/async/configuration.png" />
-<img src="/assets/img/integrations/genesys/async/set_timeout.png" />
+<img src="/assets/img/integrations/genesys/async/configuration.png" alt="Lambda Configuration tab General configuration section in the AWS console" />
+<img src="/assets/img/integrations/genesys/async/set_timeout.png" alt="Setting the Lambda function timeout to 15 minutes in general configuration" />
 
 On the left side panel, click **Environment variables**. Click **Edit**. Add an environment variable, `ASSEMBLYAI_API_KEY`, and set the value to your AssemblyAI [API key](https://www.assemblyai.com/dashboard/home). Then click **Save**.
 
-<img src="/assets/img/integrations/genesys/async/lambda_api_key.png" />
+<img src="/assets/img/integrations/genesys/async/lambda_api_key.png" alt="Adding the ASSEMBLYAI_API_KEY environment variable to the Lambda function" />
 
 Now, navigate to the [IAM](https://us-east-1.console.aws.amazon.com/iam/) services page. On the left side panel under **Access Management**, click **Roles** and search for your Lambda function's role (its structure should look like `<function_name>-<role_id>`). Click the role and then in the **Permissions policies** section click the dropdown for **Add permissions** and then select **Attach policies.**
 
-<img src="/assets/img/integrations/genesys/async/attach_policies.png" />
+<img src="/assets/img/integrations/genesys/async/attach_policies.png" alt="Attaching policies to the Lambda function's IAM role in the AWS console" />
 
 From this page, find the policies named `AmazonS3FullAccess` and `CloudWatchEventsFullAccess`. Click **Add permissions** for both.
 
-<img src="/assets/img/integrations/genesys/async/adding_permissions.png" />
+<img src="/assets/img/integrations/genesys/async/adding_permissions.png" alt="Adding AmazonS3FullAccess and CloudWatchEventsFullAccess permissions to the IAM role" />
 
 `CloudWatchEventsFullAccess` is optional, but helpful for debugging purposes. Once your Lambda runs, it should output all logs to [CloudWatch](https://us-east-1.console.aws.amazon.com/cloudwatch) under a Log group `/aws/lambda/<your-lambda-fn>`
 
 Now, navigate to the [S3](https://us-east-1.console.aws.amazon.com/s3) services page and click into the general purpose bucket where your Genesys recordings are stored. Browse to the **Properties** tab and then scroll down to **Event notifications**. Click **Create event notification**.
 
-<img src="/assets/img/integrations/genesys/async/create_event_notif.png" />
+<img src="/assets/img/integrations/genesys/async/create_event_notif.png" alt="Creating an S3 event notification from the bucket Properties tab in the AWS console" />
 
 Give the event a name and then in the **Prefix** section enter `calls/` (or whatever `S3_KEY_PREFIX` is set to), and in the **Suffix** section enter `.wav`. This will ensure the event is triggered once our `wav` file has been uploaded. In the **Event types** section, select **All object create events**.
 
-<img src="/assets/img/integrations/genesys/async/creation_of_event.png" />
+<img src="/assets/img/integrations/genesys/async/creation_of_event.png" alt="Configuring the S3 event notification with calls/ prefix, .wav suffix, and object create events" />
 
 Scroll down to the **Destination** section, set the destination as **Lambda function** and then select the Lambda function we created in [Step 6](/integrations/genesys-cloud#step-6-set-up-your-assemblyai-api-call). Then click **Save changes**.
 
-<img src="/assets/img/integrations/genesys/async/adding_to_lambda.png" />
+<img src="/assets/img/integrations/genesys/async/adding_to_lambda.png" alt="Setting the S3 event notification destination to the Lambda function" />
 
 ## Step 7: Transcribe your first call
 
@@ -11815,7 +11822,7 @@ Deleted local WAV recording file: '<wav_file>'
   To view the logs for this Lambda function, navigate to the [CloudWatch](https://us-east-1.console.aws.amazon.com/cloudwatch) services page and under the Logs section, select **Log groups**.
   Select the log group that matches your Lambda to view the most recent log stream. This can be very useful for debugging purposes if you run into any issues.
 
-  <img src="/assets/img/integrations/genesys/async/cloudwatch_logs.png" />
+  <img src="/assets/img/integrations/genesys/async/cloudwatch_logs.png" alt="CloudWatch Log groups page for viewing the Lambda function's log streams" />
 
 Head to your S3 bucket. Within the `/calls` directory, files will be stored under a unique identifier with the following structure:
 
@@ -11823,7 +11830,7 @@ Head to your S3 bucket. Within the `/calls` directory, files will be stored unde
 
 with audio files (both `raw` and `wav`) under `/audio` and transcript responses under `/transcripts`.
 
-<img src="/assets/img/integrations/genesys/async/s3_bucket_success.png" />
+<img src="/assets/img/integrations/genesys/async/s3_bucket_success.png" alt="S3 bucket showing stored call recordings and transcript files after a successful run" />
 
   The `raw` file can be nice to have for conversions to other formats in the
   future, but this step can be omitted to save on storage costs.
@@ -11835,7 +11842,7 @@ with audio files (both `raw` and `wav`) under `/audio` and transcript responses 
 ### Supported audio formats
 
 - Audio is sent as binary WebSocket frames containing the raw audio data in the negotiated format. Currently, only μ-law (Mu-law, PCMU) is [supported](https://developer.genesys.cloud/devapps/audiohook/session-walkthrough#audio-streaming).
-- Before being uploaded to S3, the audio is converted to `wav` format using [ffmpeg](https://ffmpeg.org/). As a lossless format, `wav` generally results in high transcription accuracy, but is not required. A full list of file formats supported by AssemblyAI's API can be found [here](/faq/what-audio-and-video-file-types-are-supported-by-your-api).
+- Before being uploaded to S3, the audio is converted to `wav` format using [ffmpeg](https://ffmpeg.org/). As a lossless format, `wav` generally results in high transcription accuracy, but is not required. A full list of [file formats supported by AssemblyAI's API](/faq/what-audio-and-video-file-types-are-supported-by-your-api) can be found in our FAQ.
 
 ### Multichannel
 
@@ -15681,19 +15688,19 @@ Universal-3.5 Pro natively handles code switching across 18 languages. Set `lang
 
 See Universal-3.5 Pro code switching in action.
 
-##### **English \<\> French**
+### **English \<\> French**
 
 ```txt
 I said something like, j'ai dit à mes étudiants que it's time to really pay attention to what the idea of code-switching is.
 ```
 
-##### **English \<\> Hindi**
+### **English \<\> Hindi**
 
 ```txt
 मेरा रुकने का तो बहुत मन है, but I have an exam to give tomorrow.
 ```
 
-##### **English \<\> Mandarin**
+### **English \<\> Mandarin**
 
 ```txt
 But this sentence, 我父母不工作了, you can see the 了 at the end of the sentence indicates that the situation now, my parents don't work, is different from what it was before.
@@ -19838,7 +19845,7 @@ This formula takes the number of Substitutions (S), Deletions (D), and Insertion
   “different” the automatic transcription was compared to the human
   transcription, and *generally*, this is a reliable metric to determine how
   “good” a transcription is. For more info on WER as a metric, read Dylan Fox’s
-  blog post [here](https://www.assemblyai.com/blog/word-error-rate).
+  [blog post on Word Error Rate](https://www.assemblyai.com/blog/word-error-rate).
 
 #### Concatenated minimum-Permutation Word Error Rate (cpWER)
 
@@ -20550,7 +20557,7 @@ Description: Migration guide: Deepgram to AssemblyAI documentation.
 
 This guide walks through the process of migrating from Deepgram to AssemblyAI for transcribing pre-recorded audio.
 
-### Get Started
+## Get Started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
 
@@ -20833,7 +20840,7 @@ Description: Migration guide: OpenAI to AssemblyAI documentation.
 
 This guide walks through the process of migrating from OpenAI to AssemblyAI for transcribing pre-recorded audio.
 
-### Get Started
+## Get Started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
 
@@ -21001,7 +21008,7 @@ Description: Migration guide: AWS Transcribe to AssemblyAI documentation.
 
 This guide walks through the process of migrating from AWS Transcribe to AssemblyAI for transcribing pre-recorded audio.
 
-### Get Started
+## Get Started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
 
@@ -21240,7 +21247,7 @@ Description: Migration guide: Google Speech-to-Text to AssemblyAI documentation.
 
 This guide walks through the process of migrating from Google Speech-to-Text (STT) to AssemblyAI for transcribing pre-recorded audio.
 
-### Get Started
+## Get Started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
 
@@ -21449,7 +21456,7 @@ Description: Migration guide: Gladia to AssemblyAI documentation.
 
 This guide walks through the process of migrating from Gladia to AssemblyAI for transcribing pre-recorded audio.
 
-### Get started
+## Get started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home).
 If you'd prefer to use one of our official SDKs, check our [documentation for the full list of available SDKs](/pre-recorded-audio/guides/do-more-with-sdk).
@@ -25281,7 +25288,7 @@ The overall process looks like this:
 
 ## Prerequisites
 
-First, you'll need an AssemblyAI account. You can sign up [here](https://www.assemblyai.com/dashboard/signup) for a free account if you don't already have one.
+First, you'll need an AssemblyAI account. You can [sign up for a free account](https://www.assemblyai.com/dashboard/signup) if you don't already have one.
 
 Next, you'll need to **take note of your AssemblyAI API key**, which you can find on your [account dashboard](https://www.assemblyai.com/dashboard/home) after signing in. It will be on the left-hand side of the screen under _Your API Key_.
 
@@ -25293,19 +25300,19 @@ Second, you'll need an AWS IAM user with `Programmatic` access and the `AmazonS3
 
 First, log into AWS as a root user or as another IAM user with the appropriate access, and then go to the [IAM Management Console](https://us-east-1.console.aws.amazon.com/iamv2/home?ref=assemblyai.com#/users) to add a new user.
 
-<img src="/assets/pages/guides/cookbooks/images/transcribe_from_s3/img1.png" alt="image" />
+<img src="/assets/pages/guides/cookbooks/images/transcribe_from_s3/img1.png" alt="AWS IAM Users list page with the Add users button highlighted" />
 
 Set the user name you would like, and select _Programmatic access_ under _Select AWS access type:_
 
-<img src="/assets/pages/guides/cookbooks/images/transcribe_from_s3/img2.png" alt="image" />
+<img src="/assets/pages/guides/cookbooks/images/transcribe_from_s3/img2.png" alt="IAM Add user step setting the user name and selecting Access key - Programmatic access" />
 
 Click _Next_, and then _Attach existing policies directly_. Copy and paste _AmazonS3ReadOnlyAccess_ into the _Filter policies_ search box, and then add this permission by clicking on the checkbox next to it:
 
-<img src="/assets/pages/guides/cookbooks/images/transcribe_from_s3/img3.png" alt="image" />
+<img src="/assets/pages/guides/cookbooks/images/transcribe_from_s3/img3.png" alt="IAM Set permissions step with Attach existing policies directly chosen and AmazonS3ReadOnlyAccess checked" />
 
 Click _Next_ and add tags if you wish. Then click _Next_ and review the IAM user profile to ensure that everything looks copacetic before clicking _Create user_.
 
-<img src="/assets/pages/guides/cookbooks/images/transcribe_from_s3/img4.png" alt="image" />
+<img src="/assets/pages/guides/cookbooks/images/transcribe_from_s3/img4.png" alt="IAM Add user Review screen showing user details and the AmazonS3ReadOnlyAccess policy before creating" />
 
 Finally, take note of the IAM user's _Access key ID_ and _Secret access key_. Again, **we will need these values later**, so copy them into a text file before moving on.
 
@@ -25411,18 +25418,18 @@ Source: docs/pre-recorded-audio/guides/transcribing-google-drive-file.mdx
 Navigation: Pre-recorded STT > Guides > Tutorials > Hosting audio files
 Description: Transcribe Google Drive Files documentation.
 
-### **Step 1: Upload Your Audio File to Google Drive**
+## **Step 1: Upload Your Audio File to Google Drive**
 
 - **File Requirements**: Ensure your audio file is smaller than 100MB, as files larger than this cannot be directly downloaded from Google Drive links.
 - **Uploading**: Log into your Google Drive account and upload the audio file you want to use.
 
-### **Step 2: Make Your File Publicly Accessible**
+## **Step 2: Make Your File Publicly Accessible**
 
 - **Right-Click** on the uploaded file in Google Drive.
 - Select **'Get Link'**.
 - Change the setting from “Restricted” to “Anyone with the link”. This makes the file publicly accessible.
 
-### **Step 3: Obtain the Downloadable URL**
+## **Step 3: Obtain the Downloadable URL**
 
 - Click on `Copy link` to copy your shared link.
 - Initially, the shared link will look something like this: https://drive.google.com/file/d/1YvY3gX-4ZwY7K4r3J0THKNTvvolB3D-S/view?usp=sharing.
@@ -25431,9 +25438,9 @@ Description: Transcribe Google Drive Files documentation.
 - **Example**: If your shared link is `https://drive.google.com/file/d/1YvY3gX-4ZwY7K4r3J0THKNTvvolB3D-S/view?usp=sharing`,  
    change it to `https://drive.google.com/u/0/uc?id=1YvY3gX-4ZwY7K4r3J0THKNTvvolB3D-S&export=download`.
 
-<img src="/assets/pages/guides/cookbooks/core-transcription/google_drive_screenshot.png" alt="Google Drive screenshot" />
+<img src="/assets/pages/guides/cookbooks/core-transcription/google_drive_screenshot.png" alt="Google Drive Share dialog for audio.mp3 with General access set to Anyone with the link and a Copy link button" />
 
-### **Step 4: Use the URL with AssemblyAI**
+## **Step 4: Use the URL with AssemblyAI**
 
 - Now, you can use this downloadable link in your AssemblyAI API request. This URL directly points to your audio file, allowing AssemblyAI to access and process it.
 
@@ -25448,7 +25455,7 @@ audio_url = (
 transcript = transcriber.transcribe(audio_url, config)
 ```
 
-### **Notes**
+## **Notes**
 
 - **Security**: Ensure that sharing your audio file publicly complies with your privacy and security policies.
 - If you prefer not to share your file publicly, you can [upload your file to our servers instead.](/api-reference/files/upload)
@@ -25521,11 +25528,11 @@ Description: Iterate over Speaker Labels with Make.com documentation.
 
 This is a quick guide on how to iterate over speaker labels in Make.com. This guide will return speaker labels as a readable format to a Google Doc. The end result will look like the two images below.
 
-#### Make.com Scenario:
+### Make.com Scenario:
 
 ![Image of full Make Sceanrio](/assets/img/cookbooks/makespeakers/make-scenario.png)
 
-#### Google Doc Transcript:
+### Google Doc Transcript:
 
 ![Image of Final Transcript](/assets/img/cookbooks/makespeakers/make-final-transcript.png)
 
@@ -28428,7 +28435,7 @@ if response.status_code != 200:
 
 Unless otherwise noted, these errors are returned from `POST /v2/transcript` with the message in the `error` field of the JSON body.
 
-#### Missing `audio_url`
+### Missing `audio_url`
 
 ```json
 # Status code: 400
@@ -28441,7 +28448,7 @@ This error occurs when the request body does not include the required `audio_url
 
 - **Solution**: Include an `audio_url` field that points to a publicly accessible audio file or to a URL returned by the [Upload endpoint](/api-reference/files/upload).
 
-#### Unsupported language code
+### Unsupported language code
 
 ```json
 # Status code: 400
@@ -28454,7 +28461,7 @@ The `language_code` value you submitted isn't recognized.
 
 - **Solution**: Check the [Supported languages](/pre-recorded-audio/supported-languages) page and submit a supported language code. You can also enable [Automatic Language Detection](/pre-recorded-audio/language-detection) instead of setting `language_code` manually.
 
-#### Invalid `speech_models` value
+### Invalid `speech_models` value
 
 ```json
 # Status code: 400
@@ -28469,7 +28476,7 @@ Accounts on a feature flag for dated `universal-3-5-pro` variants may see additi
 
 - **Solution**: Pass a non-empty list, for example `["universal-3-5-pro", "universal-2"]`. See [Select the speech model](/pre-recorded-audio/select-the-speech-model) for guidance.
 
-#### Deprecated `speech_model` (singular) parameter on async `/v2/transcript`
+### Deprecated `speech_model` (singular) parameter on async `/v2/transcript`
 
 On the **async pre-recorded API**, `speech_model` no longer selects a model. Use **`speech_models`** (plural) instead.
 
@@ -28483,7 +28490,7 @@ This default-routing behavior is intentional — it keeps requests without an ex
 
 This entry applies to the async pre-recorded API (`POST /v2/transcript`) only. The Streaming API is a separate system that uses its own singular `speech_model` field with values like `universal-streaming-english` and `universal-3-5-pro` — see [Streaming model selection](/streaming/select-the-speech-model). Don't treat the singular `speech_model` field as universally deprecated.
 
-#### `language_detection` conflicts with `language_code`
+### `language_detection` conflicts with `language_code`
 
 ```json
 # Status code: 400
@@ -28498,7 +28505,7 @@ The plural `language_codes` field returns a different (similarly worded) message
 
 - **Solution**: Either remove `language_code` and let [Automatic Language Detection](/pre-recorded-audio/language-detection) pick the language, or remove `language_detection` and keep `language_code`.
 
-#### Wrong-type validation (Boolean, etc.)
+### Wrong-type validation (Boolean, etc.)
 
 ```json
 # Status code: 400
@@ -28511,7 +28518,7 @@ This is a generic wrong-type validation message. The field name changes dependin
 
 - **Solution**: Send the parameter with the correct JSON type (`true`/`false` for Booleans, an integer for integer fields, a string for string fields, etc.).
 
-#### Invalid `webhook_url`
+### Invalid `webhook_url`
 
 ```json
 # Status code: 400
@@ -28524,7 +28531,7 @@ The `webhook_url` field must be a valid URL beginning with `http://` or `https:/
 
 - **Solution**: Submit a fully-qualified webhook URL. See [Webhooks](/pre-recorded-audio/webhooks) for details.
 
-#### Missing `redact_pii_policies`
+### Missing `redact_pii_policies`
 
 ```json
 # Status code: 400
@@ -28539,7 +28546,7 @@ This only applies to accounts created after `redact_pii_policies` became require
 
 - **Solution**: Provide an explicit list of policies, for example `"redact_pii_policies": ["person_name", "phone_number"]`. See [Redact PII](/guardrails/redact-pii-from-transcripts) for the full list of supported policy names.
 
-#### Unsupported policy name in `redact_pii_policies`
+### Unsupported policy name in `redact_pii_policies`
 
 ```json
 # Status code: 400
@@ -28552,7 +28559,7 @@ One of the values in `redact_pii_policies` isn't a recognized policy.
 
 - **Solution**: Use only policies from the list in the error message and in the [Redact PII](/guardrails/redact-pii-from-transcripts) docs.
 
-#### Invalid `redact_pii_audio_quality`
+### Invalid `redact_pii_audio_quality`
 
 ```json
 # Status code: 400
@@ -28565,7 +28572,7 @@ One of the values in `redact_pii_policies` isn't a recognized policy.
 
 - **Solution**: Set `redact_pii_audio_quality` to `"mp3"` or `"wav"`.
 
-#### Malformed JSON body
+### Malformed JSON body
 
 ```json
 # Status code: 400
@@ -28578,7 +28585,7 @@ The request body could not be parsed as JSON.
 
 - **Solution**: Verify the body is valid JSON, the `Content-Type: application/json` header is set, and that no stray trailing commas, comments, or unescaped characters are present.
 
-#### Models are not supported for a particular language
+### Models are not supported for a particular language
 
 ```json
 # Status code: 400
@@ -28593,7 +28600,7 @@ This error only applies when using `language_code`. If you use [Automatic Langua
 
 - **Solution**: Check the [Supported languages](/pre-recorded-audio/supported-languages) page to verify which features are available for your language before submitting a request.
 
-#### Insufficient Funds
+### Insufficient Funds
 
 ```json
 # Status code: 400
@@ -28608,7 +28615,7 @@ This error only applies when using `language_code`. If you use [Automatic Langua
 - **Check Funds**: Regularly check your account balance to ensure you have sufficient funds for your transcription requests.
 - **Add Funds**: If needed, add funds to your account to continue using our services without interruption.
 
-#### Invalid API Token
+### Invalid API Token
 
 ```json
 # Status code: 401
@@ -28623,7 +28630,7 @@ An invalid API token will prevent you from making successful requests.
 
 - Double-check that the API token you're using matches exactly with the token shown in your dashboard. Even a small typo can lead to authentication errors.
 
-#### Transcript ID not found
+### Transcript ID not found
 
 ```json
 # Status code: 400
@@ -28638,7 +28645,7 @@ An invalid API token will prevent you from making successful requests.
 - **Token Verification**: Double-check that the API token you're using matches exactly with the token used to make the original request.
 - If you're using Postman, ensure that `Encode URL automatically` under Settings is **disabled**.
 
-#### Server Errors
+### Server Errors
 
 ```json
 # Status code: 500
@@ -28658,7 +28665,7 @@ Server errors rarely happen but can occasionally occur on our side.
 
 ## Errors on export, sub-resource, and upload endpoints
 
-#### Requesting captions, sentences, or paragraphs before the transcript completes
+### Requesting captions, sentences, or paragraphs before the transcript completes
 
 ```json
 # Status code: 400 — GET /v2/transcript/{id}/srt (or /vtt, /sentences, /paragraphs)
@@ -28671,7 +28678,7 @@ The export endpoints can only be called after the transcript reaches `status: co
 
 - **Solution**: Poll `GET /v2/transcript/{id}` (or use a webhook) and only request captions/sentences/paragraphs once `status` is `completed`.
 
-#### `word-search` called without `words`
+### `word-search` called without `words`
 
 ```json
 # Status code: 400 — GET /v2/transcript/{id}/word-search
@@ -28684,7 +28691,7 @@ The `/word-search` endpoint requires the `words` query parameter.
 
 - **Solution**: Pass a comma-separated list of search terms, for example `?words=foo,bar`. See the [Word Search](/api-reference/transcripts/word-search) reference.
 
-#### Redacted audio not available
+### Redacted audio not available
 
 ```json
 # Status code: 400 — GET /v2/transcript/{id}/redacted-audio
@@ -28697,7 +28704,7 @@ The redacted audio file is only generated when [PII Audio Redaction](/guardrails
 
 - **Solution**: Resubmit the audio with `redact_pii: true` and `redact_pii_audio: true`. Set `redact_pii_policies` and (optionally) `redact_pii_audio_quality` to control what is redacted and the output format.
 
-#### Invalid subtitle format
+### Invalid subtitle format
 
 ```text
 # Status code: 404 — GET /v2/transcript/{id}/<invalid-subtitle-format>
@@ -28710,7 +28717,7 @@ This is the only documented endpoint where a 404 does not come back as a JSON ob
 
 - **Solution**: Use `srt` or `vtt`. See [Export SRT/VTT subtitles](/pre-recorded-audio/export-transcripts-as-srt-vtt-or-text).
 
-#### Empty upload body
+### Empty upload body
 
 ```text
 # Status code: 422 — POST /v2/upload
@@ -28721,7 +28728,7 @@ Posting an empty body to `/v2/upload` returns a `422`. The response body is **pl
 
 - **Solution**: Stream the file bytes as the request body. See the [Upload endpoint](/api-reference/files/upload) reference.
 
-#### Out-of-range `limit` when listing transcripts
+### Out-of-range `limit` when listing transcripts
 
 ```json
 # Status code: 400 — GET /v2/transcript
@@ -28738,9 +28745,9 @@ The `limit` query parameter on `GET /v2/transcript` must be `>= 1`.
 
 These errors come back from `GET /v2/transcript/{id}` after the submit call returned `200`. The transcript has `status: error` and the message is in the `error` field.
 
-#### Audio File URL Errors
+### Audio File URL Errors
 
-##### Attempting to transcribe webpages or non-audio URLs
+#### Attempting to transcribe webpages or non-audio URLs
 
 ```json
 {
@@ -28755,7 +28762,7 @@ Our API requires a publicly accessible URL that points to an audio or video file
 
 - **Solution**: Confirm the URL serves a [supported audio or video format](/faq/what-audio-and-video-file-types-are-supported-by-your-api). If the format is supported and you still see this error, contact [support@assemblyai.com](mailto:support@assemblyai.com).
 
-##### No audio stream in the file
+#### No audio stream in the file
 
 ```json
 {
@@ -28768,7 +28775,7 @@ The file downloaded successfully but contains no audio stream (for example, an i
 
 - **Solution**: Verify the file actually contains audio (for example with `ffprobe`). Re-encode or replace the file before resubmitting.
 
-##### File exceeds the 5.5 GB maximum
+#### File exceeds the 5.5 GB maximum
 
 ```json
 {
@@ -28781,7 +28788,7 @@ The file is larger than the 5.5 GB cap. The size is read from the `Content-Lengt
 
 - **Solution**: Split the file into smaller chunks (e.g. with `ffmpeg`) or downsample/transcode before submitting. See [Are there any limits on file size or file duration?](/faq/are-there-any-limits-on-file-size-or-file-duration-for-files-submitted-to-the-api).
 
-##### URL returns an empty body
+#### URL returns an empty body
 
 ```json
 {
@@ -28794,7 +28801,7 @@ The URL was reachable but returned an empty response body.
 
 - **Solution**: Confirm the file is actually present at the URL and the server returns a non-zero `Content-Length`. Re-upload the file if necessary.
 
-##### Uploaded file not found / region mismatch
+#### Uploaded file not found / region mismatch
 
 ```json
 {
@@ -28807,7 +28814,7 @@ The URL returned by `POST /v2/upload` could not be resolved. This usually means 
 
 - **Solution**: Re-upload the file and submit the transcript using the same regional base URL. See [Do you offer servers in the EU?](/faq/do-you-offer-servers-in-the-eu) for the per-region endpoints.
 
-##### Attempting to transcribe audio files that are not accessible
+#### Attempting to transcribe audio files that are not accessible
 
 ```json
 {
@@ -28831,9 +28838,9 @@ To avoid this:
 2. Ensure the URL expiration window is long enough for the file to be downloaded (at least a few minutes).
 3. If you cannot control the URL lifetime, use the [Upload endpoint](/api-reference/files/upload) to upload the file directly to AssemblyAI instead.
 
-#### Audio File Errors
+### Audio File Errors
 
-##### Attempting to transcribe audio files that are too short
+#### Attempting to transcribe audio files that are too short
 
 ```json
 {
@@ -28850,9 +28857,9 @@ The minimum audio duration for a file submitted to our API is 160ms.
 - **Add error handling for this error message**: When this error occurs, handle it safely by checking the error string and returning the error.
 - **Add pre-submit checks for the duration of the audio file**: Prior to submitting a file for transcription, check the duration using a tool like soxi (part of the SoX package): `soxi -D audio.mp3`
 
-#### Language Detection Errors
+### Language Detection Errors
 
-##### No spoken audio detected
+#### No spoken audio detected
 
 ```json
 {
@@ -28865,7 +28872,7 @@ The minimum audio duration for a file submitted to our API is 160ms.
 
 - **Solution**: Disable `language_detection` and set `language_code` explicitly for files where speech may be absent, or skip transcription for files that are known to be non-speech.
 
-##### Detected language confidence below the threshold
+#### Detected language confidence below the threshold
 
 ```json
 {
@@ -30786,84 +30793,22 @@ const transcriber = client.streaming.transcriber({
 
 ## Language selection
 
-By default, Universal-3.5 Pro Streaming runs in multilingual mode and code-switches natively across all supported languages. When you know which languages a session will use, pass the `language_codes` connection parameter to bias the model toward them and improve language accuracy:
+By default, Universal-3.5 Pro Streaming is multilingual and code-switches natively across all supported languages with no configuration. When you know which languages a session will use, pass the `language_codes` connection parameter to steer the model toward them and improve language accuracy.
 
-- For a session limited to a known subset of languages, pass the codes you expect (for example, `["en", "es"]`). The model still code-switches, but heavily biased to the languages you list.
-- For a monolingual session, pass a single-element list (for example, `["es"]`).
+- For a **known subset**, pass the codes you expect (for example, `["en", "es"]`). The model still code-switches, but heavily biased to the languages you list.
+- For a **monolingual session**, pass a single-element list (for example, `["es"]`).
+- For **full multilingual**, omit `language_codes` to keep native code switching.
 
-Omit `language_codes` to keep full multilingual code-switching.
+See [Multilingual transcription](/streaming/multilingual-transcription) for the full feature guide, including supported languages, language detection, and updating `language_codes` mid-stream.
 
-| Model                       | Languages                                                                                              |
-| --------------------------- | ----------------------------------------------------------------------------------------------------- |
-| Universal-3.5 Pro Streaming | `en`, `es`, `fr`, `de`, `it`, `pt`, `tr`, `nl`, `sv`, `no`, `da`, `fi`, `hi`, `vi`, `ar`, `he`, `ja`, `zh` |
+## Turn detection
 
-Set the `language_codes` connection parameter when you open the WebSocket.
+Universal-3.5 Pro Streaming detects the end of a turn using acoustic and contextual cues rather than silence alone. The `mode` preset sets the defaults, and every turn detection parameter can be overridden on the connection or updated mid-stream to tune endpointing for your use case.
 
-```python
-CONNECTION_PARAMS = {
-    "sample_rate": 16000,
-    "speech_model": "universal-3-5-pro",
-    "language_codes": ["en", "es"],
-}
-```
+- Raise `min_turn_silence` when brief pauses end turns too early, for example while a caller dictates a phone number. Raise `max_turn_silence` when you expect longer pauses within a turn.
+- Lower `vad_threshold` when quiet speech is missed. When background noise causes false interruptions, raise `vad_threshold`, increase `interruption_delay`, or enable [Voice Focus](/streaming/voice-focus).
 
-```python
-client.connect(
-    StreamingParameters(
-        sample_rate=16000,
-        speech_model="universal-3-5-pro",
-        language_codes=["en", "es"],
-    )
-)
-```
-
-```javascript
-const CONNECTION_PARAMS = {
-  sample_rate: 16000,
-  speech_model: "universal-3-5-pro",
-  language_codes: ["en", "es"],
-};
-```
-
-```javascript
-const transcriber = client.streaming.transcriber({
-  sampleRate: 16_000,
-  speechModel: "universal-3-5-pro",
-  languageCodes: ["en", "es"],
-});
-```
-
-## Advanced: Tuning turn detection parameters
-
-Beyond the `mode` parameter, you can tune individual turn detection parameters to fine-tune partial cadence and turn endpointing for your use case. The parameters differ by model.
-
-Universal-3.5 Pro Streaming uses **punctuation-based turn detection**. Turns end when terminal punctuation (`.` `?` `!`) is detected; if no punctuation is detected within `max_turn_silence`, the turn ends anyway.
-
-Each `mode` ships with its own set of defaults for these parameters. Override any of them on the connection to fine-tune further.
-
-| Parameter             | Default                                                            | Description                                                                                                                                                  |
-| --------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `min_turn_silence`    | `min_latency: 96`<br />`balanced: 224`<br />`max_accuracy: 800`       | Silence (ms) before a speculative end-of-turn check fires. Lower = faster turn endings; higher = fewer entity splits on numbers and proper nouns.                 |
-| `max_turn_silence`    | `min_latency: 416`<br />`balanced: 1536`<br />`max_accuracy: 1536`    | Maximum silence (ms) before forcing a turn to end, regardless of punctuation. Raise it when you expect a longer pause (caller reading a credit card, address).    |
-| `interruption_delay`  | `min_latency: 0`<br />`balanced: 500`<br />`max_accuracy: 500`        | Time to first partial (ms). Lower = faster TTFT for barge-in detection; higher = more confident first partials. The server adds ~300ms minimum on top.            |
-| `continuous_partials` | `min_latency: true`<br />`balanced: true`<br />`max_accuracy: true`   | When `true`, emit a partial every ~3s during continuous speech. Useful for long utterances where silence-based partials don't fire often enough.                  |
-| `vad_threshold`       | `min_latency: 0.3`<br />`balanced: 0.2`<br />`max_accuracy: 0.2`      | Confidence threshold (0–1) for classifying audio frames as speech. Increase for noisy environments to reduce false speech detection.                              |
-
-**Tuning recipe — long utterance prep**
-
-When your voice agent prompts the user for a long utterance (credit card, phone number, address), raise `min_turn_silence` mid-stream so brief pauses don't fragment the turn:
-
-```json
-{ "type": "UpdateConfiguration", "min_turn_silence": 1000 }
-```
-
-After the response, restore the default:
-
-```json
-{ "type": "UpdateConfiguration", "min_turn_silence": 100 }
-```
-
-See [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream) for the full list of mid-stream parameters.
+See [Turn detection](/streaming/turn-detection) for the full feature guide, including the turn lifecycle, entity capture, and bringing your own turn detection.
 
 Universal Streaming uses **confidence-based turn detection**. The model predicts when speech naturally ends; if confidence exceeds `end_of_turn_confidence_threshold` and `min_turn_silence` has passed, the turn ends. Acoustic (silence-based) detection kicks in as a fallback after `max_turn_silence`.
 
@@ -30872,11 +30817,11 @@ Universal Streaming uses **confidence-based turn detection**. The model predicts
 | `end_of_turn_confidence_threshold` | `0.4`     | Confidence threshold for semantic end-of-turn. Higher = more confident before ending; lower = ends faster. |
 | `min_turn_silence`                 | `400` ms  | Silence required before a semantic end-of-turn fires.                                                      |
 | `max_turn_silence`                 | `1280` ms | Maximum silence before forcing a turn to end via acoustic detection.                                       |
-| `vad_threshold`                    | —         | Confidence threshold (0–1) for classifying audio frames as speech. Increase for noisy environments to reduce false speech detection. |
+| `vad_threshold`                    | `0.4`     | Confidence threshold (0 to 1) for classifying audio frames as speech. Increase for noisy environments to reduce false speech detection. |
 
 **Quick-start configurations**
 
-Aggressive — short, rapid back-and-forth (e.g., IVR replacements, order confirmations):
+Aggressive, for short, rapid back-and-forth (IVR replacements, order confirmations).
 
 ```javascript
 const streamingConfig = {
@@ -30886,7 +30831,7 @@ const streamingConfig = {
 };
 ```
 
-Balanced — most conversational voice agents (e.g., customer support):
+Balanced, for most conversational voice agents (customer support).
 
 ```javascript
 const streamingConfig = {
@@ -30896,7 +30841,7 @@ const streamingConfig = {
 };
 ```
 
-Conservative — reflective or complex speech (e.g., healthcare, sales, legal):
+Conservative, for reflective or complex speech (healthcare, sales, legal).
 
 ```javascript
 const streamingConfig = {
@@ -30914,7 +30859,176 @@ If you're using your own VAD or turn detection model, send a `ForceEndpoint` eve
 ws.send(json.dumps({"type": "ForceEndpoint"}))
 ```
 
-Or set `end_of_turn_confidence_threshold` to `1` (acoustic-only fallback) or `0` (silence-only). Setting it to `0` is **not recommended** unless you have a custom turn detection model running on top — it forces a turn at every `min_turn_silence`-length pause and fragments mid-sentence thinking pauses.
+Or set `end_of_turn_confidence_threshold` to `1` (acoustic-only fallback) or `0` (silence-only). Setting it to `0` is **not recommended** unless you have a custom turn detection model running on top, because it forces a turn at every `min_turn_silence`-length pause and fragments mid-sentence thinking pauses.
+
+---
+
+<a id="turn-detection-docs-streaming-turn-detection-mdx"></a>
+
+# Turn Detection
+
+URL: https://www.assemblyai.com/docs/streaming/turn-detection
+Source: docs/streaming/turn-detection.mdx
+Navigation: Real-time STT > Features
+Description: Turn Detection documentation.
+
+Detect when a speaker has finished their turn.
+
+Streaming transcription is delivered in **turns**. A turn is one continuous unit of speech belonging to a single speaker. Deciding when a turn has ended, called **endpointing**, determines how an interactive voice application feels. End turns too early and you cut speakers off mid-thought or split a complex entity like a phone number into multiple parts. End turns too late and your voice agent feels unresponsive.
+
+## How turn detection works
+
+Universal-3.5 Pro Streaming does not endpoint on silence alone. When a speaker pauses, the model evaluates both acoustic and contextual cues, meaning how the speech sounded and what has been said so far, to judge whether the speaker is finished or just pausing mid-thought.
+
+Two silence thresholds control this behavior.
+
+| Parameter | What it does | Default |
+| --- | --- | --- |
+| `min_turn_silence` | Silence in milliseconds before the model runs an end-of-turn check. If the turn reads as complete, the turn ends. Otherwise a partial is emitted and the turn stays open. | Set by `mode` (`min_latency: 128`, `balanced: 224`, `max_accuracy: 800`) |
+| `max_turn_silence` | Maximum silence in milliseconds before the turn is forced to end, regardless of content. This is the fallback for turns that never read as complete. | `1536` |
+
+Lower values end turns faster. Higher values tolerate longer pauses without fragmenting the turn. Both parameters can be set on the connection and [updated mid-stream](#capturing-entities-like-phone-numbers), and their defaults come from the [`mode` preset](/streaming/getting-started/optimizing-accuracy-and-latency) you select.
+
+**Speaker labels change the defaults**
+
+When `speaker_labels` is enabled, the server applies diarization-tuned defaults instead (`min_turn_silence: 640`, `max_turn_silence: 768`, continuous partials disabled) so turns break cleanly at speaker changes.
+
+## The lifecycle of a turn
+
+Each turn produces a predictable message sequence of one `SpeechStarted` message, one or more partial `Turn` messages, and a final `Turn` message.
+
+Every `Turn` message re-transcribes the full turn audio, so each message supersedes the previous one. Always replace what you have rendered rather than appending. This also means transcripts get more accurate as the turn progresses, since each pass gives the model more audio and more context to work with. For maximum accuracy, use the final transcript marked `end_of_turn: true`. Use partials where responsiveness matters more than accuracy.
+
+### SpeechStarted
+
+The server sends `SpeechStarted` once per turn, immediately before the turn's first `Turn` message. It carries the turn's start `timestamp` in milliseconds from the start of the audio stream, and the `confidence` of a new turn starting.
+
+```json
+{
+  "type": "SpeechStarted",
+  "timestamp": 1216,
+  "confidence": 0.98
+}
+```
+
+`SpeechStarted` is only emitted once the model produces an actual transcript, so background noise alone does not trigger it. That makes it a reliable barge-in signal for voice agents. When it arrives, stop your agent's TTS playback and start listening.
+
+### Partials
+
+While the speaker talks, the session emits `Turn` messages with `end_of_turn: false`.
+
+```json
+{
+  "type": "Turn",
+  "turn_order": 0,
+  "end_of_turn": false,
+  "turn_is_formatted": false,
+  "transcript": "my number is five five five",
+  "end_of_turn_confidence": 0.0
+}
+```
+
+Partials are emitted at three points.
+
+- **Early partials** are emitted shortly after speech begins, timed by the `interruption_delay` parameter.
+- **Pause partials** are emitted when a pause triggers an end-of-turn check but the turn reads as incomplete.
+- **Continuous partials** are emitted roughly every 3 seconds during uninterrupted speech (`continuous_partials`, enabled by default), so long utterances keep updating even without pauses.
+
+Partials are suited to live captions, barge-in handling, and speculative LLM prefetching, where you want text immediately and can tolerate it being revised.
+
+### Finals
+
+When the turn ends, the session emits a `Turn` message with `end_of_turn: true`. The final is fully formatted, with punctuation, casing, and numbers and entities rendered in written form.
+
+```json
+{
+  "type": "Turn",
+  "turn_order": 0,
+  "end_of_turn": true,
+  "turn_is_formatted": true,
+  "transcript": "My number is 555-0134.",
+  "end_of_turn_confidence": 1.0
+}
+```
+
+The final is the most accurate transcript of the turn. Send it to your LLM, store it, and act on it whenever accuracy matters.
+
+## Tuning interruption sensitivity
+
+`SpeechStarted` and early partials are what trigger interruptions in a voice agent, and two parameters control how eagerly they fire.
+
+| Parameter | What it does | Default |
+| --- | --- | --- |
+| `vad_threshold` | Confidence between `0` and `1` required to classify an audio frame as speech. | `0.2` |
+| `interruption_delay` | How long in milliseconds after speech begins the first partial is emitted, from `0` to `1000`. | Set by `mode` (`min_latency: 0`, `balanced: 500`, `max_accuracy: 500`) |
+
+If quiet or distant speech is being missed, lower `vad_threshold` so softer audio counts as speech. If background noise or the agent's own TTS audio is triggering false interruptions, raise `vad_threshold` so the session requires stronger evidence of speech, increase `interruption_delay` so it waits longer before emitting the first partial, or enable [Voice Focus](/streaming/voice-focus) to suppress background audio before it reaches the model.
+
+Like the silence thresholds, both can be set on the connection and updated mid-stream.
+
+## Capturing entities like phone numbers
+
+Speakers naturally pause between the groups of a phone number, credit card, or address, and each of those pauses can read as a completed thought, splitting one entity across several turns. When your application knows an entity is coming (for example, your voice agent just asked for a callback number), raise `min_turn_silence` mid-stream so those pauses don't end the turn. Afterward, set your `mode` again to restore the preset's defaults. Changes take effect immediately, without reconnecting.
+
+```python
+# Before capturing the entity
+websocket.send('{"type": "UpdateConfiguration", "min_turn_silence": 1000}')
+
+# After the response, re-apply your mode to restore its defaults
+websocket.send('{"type": "UpdateConfiguration", "mode": "balanced"}')
+```
+
+```python
+# Before capturing the entity
+client.update_configuration(min_turn_silence=1000)
+
+# After the response, re-apply your mode to restore its defaults
+client.update_configuration(mode="balanced")
+```
+
+```javascript
+// Before capturing the entity
+websocket.send('{"type": "UpdateConfiguration", "min_turn_silence": 1000}');
+
+// After the response, re-apply your mode to restore its defaults
+websocket.send('{"type": "UpdateConfiguration", "mode": "balanced"}');
+```
+
+```javascript
+// Before capturing the entity
+transcriber.updateConfiguration({ minTurnSilence: 1000 });
+
+// After the response, re-apply your mode to restore its defaults
+transcriber.updateConfiguration({ mode: "balanced" });
+```
+
+If turns are still force-ended during very long pauses, raise `max_turn_silence` the same way. See [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream) for the full list of mid-stream parameters.
+
+## Bring your own turn detection
+
+If you run your own VAD or turn detection model, send a `ForceEndpoint` message to end the current turn immediately. The server responds with the turn's final `Turn` message right away, without waiting for silence.
+
+```python
+websocket.send('{"type": "ForceEndpoint"}')
+```
+
+```python
+client.force_endpoint()
+```
+
+```javascript
+websocket.send('{"type": "ForceEndpoint"}');
+```
+
+```javascript
+transcriber.forceEndpoint();
+```
+
+## Going further
+
+- [Optimizing accuracy and latency](/streaming/getting-started/optimizing-accuracy-and-latency) covers the `mode` presets that set turn detection defaults, plus advanced tuning parameters, including turn detection on the Universal Streaming models.
+- [Message sequence](/streaming/message-sequence) documents the complete WebSocket message contract, including turn ordering guarantees.
+- [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream) lists everything you can change during a live session.
 
 ---
 
@@ -31299,6 +31413,245 @@ It has less impact on long, self-contained turns where the audio already provide
 **`keyterms_prompt`.** Use `keyterms_prompt` alongside `agent_context` as needed; the two don't conflict.
 
 **Multilingual sessions.** Carrying prior turns biases the model toward the languages already seen in the conversation. For sessions that mix three or more languages, this can occasionally push the model toward translating rather than transcribing. If you see drift, set a single transcription language in your `prompt` (see [Specifying the transcription language](/streaming/getting-started/transcribe-streaming-audio)).
+
+---
+
+<a id="multilingual-transcription-docs-streaming-multilingual-transcription-mdx"></a>
+
+# Multilingual Transcription
+
+URL: https://www.assemblyai.com/docs/streaming/multilingual-transcription
+Source: docs/streaming/multilingual-transcription.mdx
+Navigation: Real-time STT > Features
+Description: Multilingual Transcription documentation.
+
+Transcribe live audio in any supported language, or several at once, with native code switching.
+
+Universal-3.5 Pro Streaming is multilingual by default. It follows speakers as they shift mid-sentence between languages like English and Spanish, French, Hindi or Mandarin, preserving exactly what was said without translating everything into a single language. No configuration is required.
+
+Hear what code switching sounds like, and how it's transcribed.
+
+##### **English \<\> French**
+
+```txt
+I said something like, j'ai dit à mes étudiants que it's time to really pay attention to what the idea of code-switching is.
+```
+
+##### **English \<\> Hindi**
+
+```txt
+मेरा रुकने का तो बहुत मन है, but I have an exam to give tomorrow.
+```
+
+##### **English \<\> Mandarin**
+
+```txt
+But this sentence, 我父母不工作了, you can see the 了 at the end of the sentence indicates that the situation now, my parents don't work, is different from what it was before.
+```
+
+## Quickstart
+
+Code switching is on by default. Open a streaming session with no language parameters and the model code-switches natively across all supported languages.
+
+```python
+CONNECTION_PARAMS = {
+    "sample_rate": 16000,
+    "speech_model": "universal-3-5-pro",
+}
+```
+
+```python
+client.connect(
+    StreamingParameters(
+        sample_rate=16000,
+        speech_model="universal-3-5-pro",
+    )
+)
+```
+
+```javascript
+const CONNECTION_PARAMS = {
+  sample_rate: 16000,
+  speech_model: "universal-3-5-pro",
+};
+```
+
+```javascript
+const transcriber = client.streaming.transcriber({
+  sampleRate: 16_000,
+  speechModel: "universal-3-5-pro",
+});
+```
+
+## Steering toward known languages
+
+When you know which languages a session will use, pass the `language_codes` connection parameter to steer the model toward them and improve language accuracy.
+
+- For a **known subset**, pass the codes you expect (for example, `["en", "es"]`). The model still code-switches, but heavily biased to the languages you list.
+- For a **monolingual session**, pass a single-element list (for example, `["es"]`).
+- For **full multilingual**, omit `language_codes` to keep native code switching across all supported languages.
+
+Set the `language_codes` connection parameter when you open the WebSocket.
+
+```python
+CONNECTION_PARAMS = {
+    "sample_rate": 16000,
+    "speech_model": "universal-3-5-pro",
+    "language_codes": ["en", "es"],
+}
+```
+
+```python
+client.connect(
+    StreamingParameters(
+        sample_rate=16000,
+        speech_model="universal-3-5-pro",
+        language_codes=["en", "es"],
+    )
+)
+```
+
+```javascript
+const CONNECTION_PARAMS = {
+  sample_rate: 16000,
+  speech_model: "universal-3-5-pro",
+  language_codes: ["en", "es"],
+};
+```
+
+```javascript
+const transcriber = client.streaming.transcriber({
+  sampleRate: 16_000,
+  speechModel: "universal-3-5-pro",
+  languageCodes: ["en", "es"],
+});
+```
+
+**Describing languages in a contextual prompt**
+
+You can also name the expected languages in natural language as part of a contextual prompt (for example, `Multilingual conversation in English, Spanish, and German.`), but `language_codes` is the best-supported way to select languages. See [Prompting and keyterms](/streaming/prompting-and-keyterms#specifying-the-language).
+
+## Supported languages
+
+Universal-3.5 Pro Streaming code-switches across 18 languages.
+
+| Language   | Code | Language   | Code |
+| ---------- | ---- | ---------- | ---- |
+| English    | `en` | Danish     | `da` |
+| Spanish    | `es` | Finnish    | `fi` |
+| French     | `fr` | Hindi      | `hi` |
+| German     | `de` | Vietnamese | `vi` |
+| Italian    | `it` | Arabic     | `ar` |
+| Portuguese | `pt` | Hebrew     | `he` |
+| Turkish    | `tr` | Japanese   | `ja` |
+| Dutch      | `nl` | Mandarin   | `zh` |
+| Swedish    | `sv` | Norwegian  | `no` |
+
+## Detecting the spoken language
+
+Set the `language_detection` connection parameter to `true` to have each turn report which language was spoken. Turn messages then include `language_code` and `language_confidence` (a float between `0` and `1`) fields, populated when an utterance is complete or the turn is final.
+
+```json
+{
+  "type": "Turn",
+  "end_of_turn": true,
+  "transcript": "¿Puedo pagar la factura por teléfono?",
+  "language_code": "es",
+  "language_confidence": 0.92
+}
+```
+
+`language_detection` only controls reporting and doesn't change how the model transcribes. It's available on Universal-3.5 Pro Streaming and Universal-Streaming Multilingual.
+
+```python
+CONNECTION_PARAMS = {
+    "sample_rate": 16000,
+    "speech_model": "universal-3-5-pro",
+    "language_detection": True,
+}
+```
+
+```python
+client.connect(
+    StreamingParameters(
+        sample_rate=16000,
+        speech_model="universal-3-5-pro",
+        language_detection=True,
+    )
+)
+```
+
+```javascript
+const CONNECTION_PARAMS = {
+  sample_rate: 16000,
+  speech_model: "universal-3-5-pro",
+  language_detection: true,
+};
+```
+
+```javascript
+const transcriber = client.streaming.transcriber({
+  sampleRate: 16_000,
+  speechModel: "universal-3-5-pro",
+  languageDetection: true,
+});
+```
+
+## Updating languages mid-stream
+
+`language_codes` can be updated during an active session without reconnecting. This is useful when a voice agent detects the caller's language, or when a conversation is handed off to a speaker of another language. Send an `UpdateConfiguration` message with the new values. The change takes effect from the next turn.
+
+```python
+# Steer transcription toward new languages
+websocket.send('{"type": "UpdateConfiguration", "language_codes": ["en", "fr"]}')
+
+# Clear steering and return to native code switching
+websocket.send('{"type": "UpdateConfiguration", "language_codes": []}')
+```
+
+```python
+# Steer transcription toward new languages
+client.update_configuration(language_codes=["en", "fr"])
+
+# Clear steering and return to native code switching
+client.update_configuration(language_codes=[])
+```
+
+```javascript
+// Steer transcription toward new languages
+websocket.send(
+  '{"type": "UpdateConfiguration", "language_codes": ["en", "fr"]}'
+);
+
+// Clear steering and return to native code switching
+websocket.send('{"type": "UpdateConfiguration", "language_codes": []}');
+```
+
+```javascript
+// Steer transcription toward new languages
+transcriber.updateConfiguration({ languageCodes: ["en", "fr"] });
+
+// Clear steering and return to native code switching
+transcriber.updateConfiguration({ languageCodes: [] });
+```
+
+See [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream) for the full list of parameters you can update mid-stream.
+
+## Other streaming models
+
+Universal-3.5 Pro Streaming is the only streaming model with native (mid-sentence) code switching. The other streaming models handle languages differently.
+
+| Model                            | Languages                              | Code switching |
+| -------------------------------- | -------------------------------------- | -------------- |
+| Universal-3.5 Pro Streaming      | 18 languages (see above)               | Native, mid-sentence |
+| Universal-Streaming Multilingual | `en`, `es`, `de`, `fr`, `pt`, `it`     | Per turn       |
+| Universal-Streaming English      | `en` only                              | No             |
+
+See [Select the speech model](/streaming/select-the-speech-model) for a full model comparison.
+
+## Looking for pre-recorded code switching?
+
+This guide covers code switching for **streaming (real-time audio)**. If you're working with pre-recorded audio, see [Code Switching (Pre-recorded)](/pre-recorded-audio/code-switching).
 
 ---
 
@@ -34529,7 +34882,7 @@ Source: docs/streaming/common-session-errors-and-closures.mdx
 Navigation: Real-time STT > Advanced
 Description: Common session errors and closures documentation.
 
-### Common session errors and closures
+## Common session errors and closures
 
 In WebSocket based connections, closures and errors represent different ways a connection can terminate.
 A closure is a normal, expected termination initiated by either the client or the server, whereas errors are terminations resulting from an unexpected problem like network issues, protocol mismatches, timeouts, or server-side issues.
@@ -34539,7 +34892,7 @@ When a session closes, the `on_close` callback receives a status code and reason
 This information is useful when attempting to debug issues or handle certain closure scenarios programmatically.
 The below table lists some of the common reasons for a session closure along with their corresponding codes and descriptions.
 
-#### The `Error` message
+### The `Error` message
 
 When a session ends because of an error (rather than a normal closure), the server sends an `Error` text frame immediately before it closes the WebSocket. The frame carries the close code and a human-readable message:
 
@@ -34559,7 +34912,7 @@ When a session ends because of an error (rather than a normal closure), the serv
 
   The WebSocket close-frame reason is limited to 123 bytes. For longer errors, the close reason reads `See Error message for details` and the full text is delivered in the `Error` frame above. Read the `Error` message rather than relying on the close reason.
 
-#### Close codes
+### Close codes
 
 | Code   | Reason                                                                         | Description                                                                                                                                                                                                                                                     |
 | ------ | ------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -35483,8 +35836,8 @@ ASSEMBLYAI_API_KEY=your_assemblyai_key
 # Add API keys for your chosen LLM and TTS providers
 ```
 
-  You can obtain an AssemblyAI API key by signing up
-  [here](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
+  You can obtain an AssemblyAI API key by [signing up for a free
+  account](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 The following example uses `turn_detection="stt"` (recommended). Pay close attention to the comments for using with `MultilingualModel()`.
@@ -36446,8 +36799,8 @@ OPENAI_API_KEY=your_openai_key
 CARTESIA_API_KEY=your_cartesia_key
 ```
 
-  You can obtain an AssemblyAI API key by signing up
-  [here](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
+  You can obtain an AssemblyAI API key by [signing up for a free
+  account](https://www.assemblyai.com/dashboard/signup) and navigating to the [API
   Keys tab](https://www.assemblyai.com/dashboard/home) of the dashboard.
 
 The example below uses Pipecat-controlled turn detection (the default). Pay attention to the comments for switching to AssemblyAI's built-in turn detection, and note that the **assistant aggregator** at the end of the pipeline is what enables automatic [conversation context](#conversation-context).
@@ -37147,7 +37500,7 @@ Description: Streaming Migration Guide: Universal Streaming to Universal-3.5 Pro
 
 This guide walks through the process of upgrading from Universal Streaming to Universal-3.5 Pro Streaming for real-time audio transcription.
 
-### Get Started
+## Get Started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your [dashboard](https://www.assemblyai.com/dashboard/home).
 
@@ -37586,7 +37939,7 @@ Description: Streaming Migration Guide: Deepgram to AssemblyAI documentation.
 
 This guide walks through the process of migrating from Deepgram to AssemblyAI for transcribing streaming audio.
 
-### Get Started
+## Get Started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
 
@@ -38370,7 +38723,7 @@ Description: Migration guide: Speechmatics to AssemblyAI documentation.
 
 This guide walks through the process of migrating from **Speechmatics** to **AssemblyAI** for streaming Speech-to-text.
 
-### Get started
+## Get started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
 
@@ -50936,7 +51289,7 @@ curl -X POST https://sync.assemblyai.com/transcribe \
   -F 'audio=@sample.wav;type=audio/wav'
 ```
 
-The Sync API uses our flagship Universal-3.5 Pro model and accepts audio from 80 milliseconds up to 120 seconds. It transcribes with state-of-the-art accuracy in 16(?) languages. 
+The Sync API uses our flagship Universal-3.5 Pro model and accepts audio from 80 milliseconds up to 120 seconds. It transcribes with state-of-the-art accuracy in [19 languages](/sync-stt/language-selection#supported-languages).
 
   **When to use Sync STT**
 
@@ -51087,11 +51440,374 @@ curl -X POST https://sync.assemblyai.com/transcribe \
   | jq '.text'
 ```
 
-## Adding conversation context
+## Sending raw PCM audio
+
+When your audio is raw PCM (S16LE little-endian), set the `audio` part Content-Type to `audio/pcm` and include `sample_rate` and `channels` in the `config` part:
+
+```python
+import json
+import requests
+
+with open("sample.pcm", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://sync.assemblyai.com/transcribe",
+    headers={
+        "Authorization": "<YOUR_API_KEY>",
+        "X-AAI-Model": "universal-3-5-pro",
+    },
+    files={
+        "audio": ("sample.pcm", audio, "audio/pcm"),
+        "config": (
+            None,
+            json.dumps({"sample_rate": 16000, "channels": 1}),
+            "application/json",
+        ),
+    },
+    timeout=60,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const audio = readFileSync("sample.pcm");
+const form = new FormData();
+form.append("audio", new Blob([audio], { type: "audio/pcm" }), "sample.pcm");
+form.append(
+  "config",
+  new Blob(
+    [JSON.stringify({ sample_rate: 16000, channels: 1 })],
+    { type: "application/json" }
+  )
+);
+
+const response = await fetch("https://sync.assemblyai.com/transcribe", {
+  method: "POST",
+  headers: {
+    Authorization: "<YOUR_API_KEY>",
+    "X-AAI-Model": "universal-3-5-pro",
+  },
+  body: form,
+});
+
+const result = await response.json();
+console.log(result.text);
+```
+
+```bash
+curl -X POST https://sync.assemblyai.com/transcribe \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -H 'X-AAI-Model: universal-3-5-pro' \
+  -F 'audio=@sample.pcm;type=audio/pcm' \
+  -F 'config={"sample_rate":16000,"channels":1};type=application/json'
+```
+
+## Next steps
+
+- [Prompting and keyterms](/sync-stt/prompting-and-keyterms) — improve accuracy with custom prompts and keyterm biasing
+- [Conversation context](/sync-stt/conversation-context) — pass prior dialogue for multi-turn continuity
+- [Language selection](/sync-stt/language-selection) — transcribe in any of the 19 supported languages
+- [Audio requirements](/sync-stt/audio-requirements) — duration, size, and format constraints
+- [Error handling](/sync-stt/error-handling) — status codes and retry guidance
+- [Cloud endpoints & data residency](/sync-stt/endpoints-and-data-zones) — use the EU endpoint for data residency
+- [API reference](/api-reference/sync-api/transcribe) — full endpoint documentation
+
+## Need help?
+
+If you get stuck, contact our support team at [support@assemblyai.com](mailto:support@assemblyai.com) or create a [support ticket](https://www.assemblyai.com/contact/support). Include the `session_id` from the response to help us look up your request.
+
+---
+
+<a id="prompting-and-keyterms-docs-sync-stt-prompting-and-keyterms-mdx"></a>
+
+# Prompting and Keyterms
+
+URL: https://www.assemblyai.com/docs/sync-stt/prompting-and-keyterms
+Source: docs/sync-stt/prompting-and-keyterms.mdx
+Navigation: Sync STT > Features
+Description: Prompting and Keyterms documentation.
+
+Use prompting and keyterms to improve Sync STT transcription accuracy.
+
+The Sync API supports two complementary ways to give the model information about your audio, both passed in the optional `config` JSON part alongside the `audio` part:
+
+- **Prompting** (`prompt`) — a custom transcription instruction, optionally including context about the audio: the domain, the scenario, or details of the conversation.
+- **Keyterms** (`keyterms_prompt`) — an explicit list of terms you want the model to recognize accurately.
+
+Both improve recognition accuracy for your use case. Neither changes the output format.
+
+## Prompting
+
+The `prompt` field replaces the default transcription instruction with your own. Use it to control transcription behavior — verbatim style, disfluency handling — or to describe the audio so the model better recognizes the vocabulary that context makes likely: a clip described as a cardiology consultation primes the model for medical terminology; one described as an order-status check primes it for order IDs and product names.
+
+- Maximum length: **4096 characters**
+- When omitted, the [default prompt](#default-prompt) is applied
+- `language_code` is **ignored** when a custom `prompt` is set — the prompt fully controls the model, so state the language inside the prompt if you need both
+
+**Start with no prompt**
+
+We strongly recommend testing with no `prompt` first. Universal-3.5 Pro is optimized out of the box, and a custom prompt helps most when your audio contains domain-specific vocabulary the model is getting wrong. Add context when you see those errors, starting with the broadest description that covers your use case.
+
+Guidelines for writing prompts:
+
+- Write plain, complete sentences. A short description of the audio (`Cardiology consultation about chest pain symptoms.`) is often enough.
+- Include specifics your application already knows — participant names, products, order identifiers — when the audio contains proper nouns the model can't otherwise know.
+- Don't pack lists of keywords into the prompt — that's what [`keyterms_prompt`](#keyterms-prompting) is for.
+- The model stays grounded in the audio: context that turns out to be irrelevant does not cause it to insert words that weren't spoken, so you can safely send the same description with every request of a longer interaction.
+
+```python
+import json
+import requests
+
+with open("sample.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://sync.assemblyai.com/transcribe",
+    headers={
+        "Authorization": "<YOUR_API_KEY>",
+        "X-AAI-Model": "universal-3-5-pro",
+    },
+    files={
+        "audio": ("sample.wav", audio, "audio/wav"),
+        "config": (
+            None,
+            json.dumps({"prompt": "Transcribe verbatim. Preserve disfluencies."}),
+            "application/json",
+        ),
+    },
+    timeout=60,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const audio = readFileSync("sample.wav");
+const form = new FormData();
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "sample.wav");
+form.append(
+  "config",
+  new Blob(
+    [JSON.stringify({ prompt: "Transcribe verbatim. Preserve disfluencies." })],
+    { type: "application/json" }
+  )
+);
+
+const response = await fetch("https://sync.assemblyai.com/transcribe", {
+  method: "POST",
+  headers: {
+    Authorization: "<YOUR_API_KEY>",
+    "X-AAI-Model": "universal-3-5-pro",
+  },
+  body: form,
+});
+
+const result = await response.json();
+console.log(result.text);
+```
+
+```bash
+curl -X POST https://sync.assemblyai.com/transcribe \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -H 'X-AAI-Model: universal-3-5-pro' \
+  -F 'audio=@sample.wav;type=audio/wav' \
+  -F 'config={"prompt":"Transcribe verbatim. Preserve disfluencies."};type=application/json'
+```
+
+### Default prompt
+
+When no `prompt` is provided, the following default is applied:
+
+> Transcribe with context and proper nouns preserved, where speech is present in the audio. Each language as spoken. English as English. Non-native speakers.
+
+## Keyterms prompting
+
+The `keyterms_prompt` field biases the model toward specific tokens — useful for proper nouns, product names, technical jargon, or any term the model might otherwise mishear.
+
+- Value: an array of strings
+- Maximum total length: **2048 characters** across all terms
+- Whitespace is stripped and empty terms are ignored
+
+Keyterms are the right tool when you have an explicit vocabulary list — contact names, product catalogs, medical terms — rather than a description of the conversation. Like prompting, keyterms biasing is robust to terms that don't end up being spoken, so you can pass your full list with every request.
+
+**Start with no keyterms**
+
+**We strongly recommend starting with no `keyterms_prompt` and then adding terms as needed** based on important words for your use case that you are consistently seeing the model struggle with.
+
+Including a large number of terms or common terms that are well represented in the training data could lead to overcorrections and hallucinations.
+
+**Best practices:**
+
+- **Specify unique terminology.** Include proper names, company names, technical terms, or vocabulary specific to your domain that might not be commonly recognized.
+- **Exact spelling and capitalization.** Provide keyterms with the precise spelling and capitalization you expect to see in the output transcript.
+- **Avoid common words.** Do not include single, common English words (e.g., "information") as keyterms. The system is generally proficient with such words, and adding them as keyterms can be redundant.
+
+```python
+import json
+import requests
+
+with open("sample.wav", "rb") as f:
+    audio = f.read()
+
+response = requests.post(
+    "https://sync.assemblyai.com/transcribe",
+    headers={
+        "Authorization": "<YOUR_API_KEY>",
+        "X-AAI-Model": "universal-3-5-pro",
+    },
+    files={
+        "audio": ("sample.wav", audio, "audio/wav"),
+        "config": (
+            None,
+            json.dumps({"keyterms_prompt": ["AssemblyAI", "LeMUR", "U3-Pro"]}),
+            "application/json",
+        ),
+    },
+    timeout=60,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const audio = readFileSync("sample.wav");
+const form = new FormData();
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "sample.wav");
+form.append(
+  "config",
+  new Blob(
+    [JSON.stringify({ keyterms_prompt: ["AssemblyAI", "LeMUR", "U3-Pro"] })],
+    { type: "application/json" }
+  )
+);
+
+const response = await fetch("https://sync.assemblyai.com/transcribe", {
+  method: "POST",
+  headers: {
+    Authorization: "<YOUR_API_KEY>",
+    "X-AAI-Model": "universal-3-5-pro",
+  },
+  body: form,
+});
+
+const result = await response.json();
+console.log(result.text);
+```
+
+```bash
+curl -X POST https://sync.assemblyai.com/transcribe \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -H 'X-AAI-Model: universal-3-5-pro' \
+  -F 'audio=@sample.wav;type=audio/wav' \
+  -F 'config={"keyterms_prompt":["AssemblyAI","LeMUR","U3-Pro"]};type=application/json'
+```
+
+## Using prompt and keyterms together
+
+You can combine `prompt` and `keyterms_prompt` in the same `config` part:
+
+```python
+import json
+import requests
+
+with open("sample.wav", "rb") as f:
+    audio = f.read()
+
+config = {
+    "prompt": "Transcribe verbatim. Preserve disfluencies.",
+    "keyterms_prompt": ["AssemblyAI", "LeMUR", "U3-Pro"],
+}
+
+response = requests.post(
+    "https://sync.assemblyai.com/transcribe",
+    headers={
+        "Authorization": "<YOUR_API_KEY>",
+        "X-AAI-Model": "universal-3-5-pro",
+    },
+    files={
+        "audio": ("sample.wav", audio, "audio/wav"),
+        "config": (None, json.dumps(config), "application/json"),
+    },
+    timeout=60,
+)
+response.raise_for_status()
+print(response.json()["text"])
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const audio = readFileSync("sample.wav");
+const config = {
+  prompt: "Transcribe verbatim. Preserve disfluencies.",
+  keyterms_prompt: ["AssemblyAI", "LeMUR", "U3-Pro"],
+};
+
+const form = new FormData();
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "sample.wav");
+form.append(
+  "config",
+  new Blob([JSON.stringify(config)], { type: "application/json" })
+);
+
+const response = await fetch("https://sync.assemblyai.com/transcribe", {
+  method: "POST",
+  headers: {
+    Authorization: "<YOUR_API_KEY>",
+    "X-AAI-Model": "universal-3-5-pro",
+  },
+  body: form,
+});
+
+const result = await response.json();
+console.log(result.text);
+```
+
+```bash
+curl -X POST https://sync.assemblyai.com/transcribe \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -H 'X-AAI-Model: universal-3-5-pro' \
+  -F 'audio=@sample.wav;type=audio/wav' \
+  -F 'config={"prompt":"Transcribe verbatim. Preserve disfluencies.","keyterms_prompt":["AssemblyAI","LeMUR","U3-Pro"]};type=application/json'
+```
+
+## Related features
+
+- **Conversation context** — supply the dialogue that preceded the current clip with the `conversation_context` field, so the model transcribes multi-turn conversations with better continuity and proper-noun consistency. See [Conversation context](/sync-stt/conversation-context).
+- **Language selection** — steer the default prompt toward one or more languages with `language_code`. See [Language selection](/sync-stt/language-selection).
+
+## Looking for streaming or async prompting?
+
+This guide covers prompting for **Sync STT (short pre-recorded clips)**. For live audio, see [Prompting and keyterms (Real-time)](/streaming/prompting-and-keyterms). For longer pre-recorded audio, see the [Prompting Guide (Async)](/pre-recorded-audio/universal-3-5-pro/prompting).
+
+---
+
+<a id="conversation-context-docs-sync-stt-conversation-context-mdx"></a>
+
+# Conversation context
+
+URL: https://www.assemblyai.com/docs/sync-stt/conversation-context
+Source: docs/sync-stt/conversation-context.mdx
+Navigation: Sync STT > Features
+Description: Improve multi-turn transcription accuracy by passing prior dialogue with each request.
 
 The `conversation_context` field lets you supply dialogue that preceded the audio provided in the current request. It gives the model continuity across a multi-turn conversation (for example, a human speaking with a voice agent) to boost transcription accuracy, while still transcribing only the current turn.
 
 Include turns from either side of the conversation as separate list items in chronological order (oldest first, most recent last), where a single string is treated as one turn.
+
+- Value: an array of strings (one per turn) or a single string (treated as one turn)
+- Maximum: **100 turns / 4096 characters total** — context over either cap is trimmed, not rejected
+- If the context exceeds a cap or the model's context window, the oldest turns (those at the start of the list) are dropped first
+- Entries carry no speaker labels — include the agent's replies and the caller's utterances as separate entries
 
 The example below passes the three previous turns of the conversation, where the current audio being transcribed is the caller responding with their order number.
 
@@ -51183,293 +51899,24 @@ curl -X POST https://sync.assemblyai.com/transcribe \
   -F 'config={"conversation_context":["Hi, thank you for calling. How can I help?","I'"'"'d like to check on the status of my order.","Got it. Do you know your order ID number?"]};type=application/json'
 ```
 
-If the number of turns in `conversation_context` exceeds the context window limit, the oldest turns (those at the start of the list) are dropped first.
+## Combining with other features
 
-## Prompting and keyterms
+`conversation_context` composes with [prompting and keyterms](/sync-stt/prompting-and-keyterms) in the same `config` part — describe the call with `prompt`, list explicit vocabulary with `keyterms_prompt`, and pass the preceding dialogue with `conversation_context`.
 
-The Sync API accepts an optional `config` part alongside the `audio` part. Use it to pass a custom `prompt` to control transcription behavior, or a `word_boost` list to improve recognition of specific terms.
+## Looking for streaming context?
 
-### Custom prompts
+For live audio, Real-time STT carries context across turns automatically within a session, and voice agents can interleave their replies with the `agent_context` parameter. See [Context carryover (Real-time)](/streaming/universal-3-pro/context-carryover).
 
-The `prompt` field lets you prepend a custom instruction to the model's system prompt. Use it to control formatting, verbosity, language, or domain-specific behavior.
+---
 
-- Maximum length: **4096 characters**
-- When omitted, the default prompt is applied (see [Default prompt](#default-prompt) below)
+<a id="language-selection-docs-sync-stt-language-selection-mdx"></a>
 
-```python
-import json
-import requests
+# Language selection
 
-with open("sample.wav", "rb") as f:
-    audio = f.read()
-
-response = requests.post(
-    "https://sync.assemblyai.com/transcribe",
-    headers={
-        "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
-    },
-    files={
-        "audio": ("sample.wav", audio, "audio/wav"),
-        "config": (
-            None,
-            json.dumps({"prompt": "Transcribe verbatim. Preserve disfluencies."}),
-            "application/json",
-        ),
-    },
-    timeout=60,
-)
-response.raise_for_status()
-print(response.json()["text"])
-```
-
-```javascript
-import { readFileSync } from "fs";
-
-const audio = readFileSync("sample.wav");
-const form = new FormData();
-form.append("audio", new Blob([audio], { type: "audio/wav" }), "sample.wav");
-form.append(
-  "config",
-  new Blob(
-    [JSON.stringify({ prompt: "Transcribe verbatim. Preserve disfluencies." })],
-    { type: "application/json" }
-  )
-);
-
-const response = await fetch("https://sync.assemblyai.com/transcribe", {
-  method: "POST",
-  headers: {
-    Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
-  },
-  body: form,
-});
-
-const result = await response.json();
-console.log(result.text);
-```
-
-```bash
-curl -X POST https://sync.assemblyai.com/transcribe \
-  -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
-  -F 'audio=@sample.wav;type=audio/wav' \
-  -F 'config={"prompt":"Transcribe verbatim. Preserve disfluencies."};type=application/json'
-```
-
-### Keyterms (word_boost)
-
-The `word_boost` field biases the model toward specific tokens — useful for proper nouns, product names, technical jargon, or any term the model might otherwise mishear.
-
-- Value: an array of strings
-- Maximum total length: **2048 characters** across all terms
-- Whitespace is stripped and empty terms are ignored
-
-```python
-import json
-import requests
-
-with open("sample.wav", "rb") as f:
-    audio = f.read()
-
-response = requests.post(
-    "https://sync.assemblyai.com/transcribe",
-    headers={
-        "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
-    },
-    files={
-        "audio": ("sample.wav", audio, "audio/wav"),
-        "config": (
-            None,
-            json.dumps({"word_boost": ["AssemblyAI", "LeMUR", "U3-Pro"]}),
-            "application/json",
-        ),
-    },
-    timeout=60,
-)
-response.raise_for_status()
-print(response.json()["text"])
-```
-
-```javascript
-import { readFileSync } from "fs";
-
-const audio = readFileSync("sample.wav");
-const form = new FormData();
-form.append("audio", new Blob([audio], { type: "audio/wav" }), "sample.wav");
-form.append(
-  "config",
-  new Blob(
-    [JSON.stringify({ word_boost: ["AssemblyAI", "LeMUR", "U3-Pro"] })],
-    { type: "application/json" }
-  )
-);
-
-const response = await fetch("https://sync.assemblyai.com/transcribe", {
-  method: "POST",
-  headers: {
-    Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
-  },
-  body: form,
-});
-
-const result = await response.json();
-console.log(result.text);
-```
-
-```bash
-curl -X POST https://sync.assemblyai.com/transcribe \
-  -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
-  -F 'audio=@sample.wav;type=audio/wav' \
-  -F 'config={"word_boost":["AssemblyAI","LeMUR","U3-Pro"]};type=application/json'
-```
-
-### Using prompt and keyterms together
-
-You can combine `prompt` and `word_boost` in the same `config` part:
-
-```python
-import json
-import requests
-
-with open("sample.wav", "rb") as f:
-    audio = f.read()
-
-config = {
-    "prompt": "Transcribe verbatim. Preserve disfluencies.",
-    "word_boost": ["AssemblyAI", "LeMUR", "U3-Pro"],
-}
-
-response = requests.post(
-    "https://sync.assemblyai.com/transcribe",
-    headers={
-        "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
-    },
-    files={
-        "audio": ("sample.wav", audio, "audio/wav"),
-        "config": (None, json.dumps(config), "application/json"),
-    },
-    timeout=60,
-)
-response.raise_for_status()
-print(response.json()["text"])
-```
-
-```javascript
-import { readFileSync } from "fs";
-
-const audio = readFileSync("sample.wav");
-const config = {
-  prompt: "Transcribe verbatim. Preserve disfluencies.",
-  word_boost: ["AssemblyAI", "LeMUR", "U3-Pro"],
-};
-
-const form = new FormData();
-form.append("audio", new Blob([audio], { type: "audio/wav" }), "sample.wav");
-form.append(
-  "config",
-  new Blob([JSON.stringify(config)], { type: "application/json" })
-);
-
-const response = await fetch("https://sync.assemblyai.com/transcribe", {
-  method: "POST",
-  headers: {
-    Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
-  },
-  body: form,
-});
-
-const result = await response.json();
-console.log(result.text);
-```
-
-```bash
-curl -X POST https://sync.assemblyai.com/transcribe \
-  -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
-  -F 'audio=@sample.wav;type=audio/wav' \
-  -F 'config={"prompt":"Transcribe verbatim. Preserve disfluencies.","word_boost":["AssemblyAI","LeMUR","U3-Pro"]};type=application/json'
-```
-
-### Sending raw PCM audio
-
-When your audio is raw PCM (S16LE little-endian), set the `audio` part Content-Type to `audio/pcm` and include `sample_rate` and `channels` in the `config` part:
-
-```python
-import json
-import requests
-
-with open("sample.pcm", "rb") as f:
-    audio = f.read()
-
-response = requests.post(
-    "https://sync.assemblyai.com/transcribe",
-    headers={
-        "Authorization": "<YOUR_API_KEY>",
-        "X-AAI-Model": "universal-3-5-pro",
-    },
-    files={
-        "audio": ("sample.pcm", audio, "audio/pcm"),
-        "config": (
-            None,
-            json.dumps({"sample_rate": 16000, "channels": 1}),
-            "application/json",
-        ),
-    },
-    timeout=60,
-)
-response.raise_for_status()
-print(response.json()["text"])
-```
-
-```javascript
-import { readFileSync } from "fs";
-
-const audio = readFileSync("sample.pcm");
-const form = new FormData();
-form.append("audio", new Blob([audio], { type: "audio/pcm" }), "sample.pcm");
-form.append(
-  "config",
-  new Blob(
-    [JSON.stringify({ sample_rate: 16000, channels: 1 })],
-    { type: "application/json" }
-  )
-);
-
-const response = await fetch("https://sync.assemblyai.com/transcribe", {
-  method: "POST",
-  headers: {
-    Authorization: "<YOUR_API_KEY>",
-    "X-AAI-Model": "universal-3-5-pro",
-  },
-  body: form,
-});
-
-const result = await response.json();
-console.log(result.text);
-```
-
-```bash
-curl -X POST https://sync.assemblyai.com/transcribe \
-  -H 'Authorization: <YOUR_API_KEY>' \
-  -H 'X-AAI-Model: universal-3-5-pro' \
-  -F 'audio=@sample.pcm;type=audio/pcm' \
-  -F 'config={"sample_rate":16000,"channels":1};type=application/json'
-```
-
-### Default prompt
-
-When no `prompt` is provided, the following default is applied:
-
-> Transcribe with context and proper nouns preserved, where speech is present in the audio. Each language as spoken. English as English. Non-native speakers.
-
-## Language selection
+URL: https://www.assemblyai.com/docs/sync-stt/language-selection
+Source: docs/sync-stt/language-selection.mdx
+Navigation: Sync STT > Features
+Description: Steer Sync STT transcription toward one or more languages with the language_code field.
 
 Pass a `language_code` in the `config` part to steer transcription toward a specific language. For multilingual or code-switching audio, pass an array of codes instead of a single code.
 
@@ -51540,7 +51987,7 @@ For multilingual or code-switching audio, pass `language_code` as an array listi
 { "language_code": ["en", "es"] }
 ```
 
-### Supported languages
+## Supported languages
 
 | Code | Language | Code | Language |
 |------|----------|------|----------|
@@ -51555,7 +52002,32 @@ For multilingual or code-switching audio, pass `language_code` as an array listi
 | `sv` | Swedish | `zh` | Mandarin |
 | `no` | Norwegian | | |
 
-## Audio requirements
+---
+
+<a id="transcribe-a-short-audio-file-docs-api-reference-sync-api-transcribe-mdx"></a>
+
+# Transcribe a short audio file
+
+URL: https://www.assemblyai.com/docs/api-reference/sync-api/transcribe
+Source: docs/api-reference/sync-api/transcribe.mdx
+Navigation: Sync STT > API reference
+Description: Synchronously transcribe an audio file up to 120 seconds.
+
+Metadata:
+- openapi: ../specs/sync-api.yaml POST /transcribe
+
+---
+
+<a id="audio-requirements-docs-sync-stt-audio-requirements-mdx"></a>
+
+# Audio requirements
+
+URL: https://www.assemblyai.com/docs/sync-stt/audio-requirements
+Source: docs/sync-stt/audio-requirements.mdx
+Navigation: Sync STT > Advanced
+Description: Duration, size, format, and sample-rate constraints for Sync STT audio.
+
+The Sync API accepts short audio clips with the following constraints:
 
 | Constraint | Value |
 |------------|-------|
@@ -51567,7 +52039,22 @@ For multilingual or code-switching audio, pass `language_code` as an array listi
 | Sample rates | 8000, 16000, 22050, 24000, 32000, 44100, 48000 Hz |
 | Formats | WAV (`audio/wav`) or raw PCM S16LE (`audio/pcm`) |
 
-## Error handling
+For WAV, the sample rate and channel count are read from the file header. For raw PCM, pass `sample_rate` and `channels` in the `config` part — see [Sending raw PCM audio](/sync-stt/getting-started/transcribe-a-short-audio-file#sending-raw-pcm-audio).
+
+Audio that violates a constraint is rejected with a `400`, `413`, or `415` — see [Error handling](/sync-stt/error-handling) for the full error table.
+
+For audio longer than 120 seconds, use [Pre-recorded STT](/pre-recorded-audio/getting-started/transcribe-an-audio-file). For live audio, use [Real-time STT](/streaming/getting-started/transcribe-streaming-audio).
+
+---
+
+<a id="error-handling-docs-sync-stt-error-handling-mdx"></a>
+
+# Error handling
+
+URL: https://www.assemblyai.com/docs/sync-stt/error-handling
+Source: docs/sync-stt/error-handling.mdx
+Navigation: Sync STT > Advanced
+Description: Sync STT error responses, status codes, and retry guidance.
 
 Errors return a JSON body with either an `error_code` field (audio, capacity, and inference errors) or a `detail` field (auth and rate-limit errors).
 
@@ -51589,14 +52076,15 @@ Errors return a JSON body with either an `error_code` field (audio, capacity, an
 | 504 | `inference_timeout` | Request exceeded the 30 s deadline |
 | 500 | `inference_error` | Internal model error |
 
-## Next steps
+## Retry guidance
 
-- [Cloud endpoints & data residency](/sync-stt/endpoints-and-data-zones) — use the EU endpoint for data residency
-- [API reference](/api-reference/sync-api/transcribe) — full endpoint documentation
+- **429 and 503** are transient — retry after the `Retry-After` header (or a short backoff when absent).
+- **400, 413, and 415** indicate a problem with the request itself — fix the audio or config before retrying. See [Audio requirements](/sync-stt/audio-requirements) for the constraints.
+- **500 and 504** are safe to retry once; persistent failures warrant a support ticket.
 
 ## Need help?
 
-If you get stuck, contact our support team at [support@assemblyai.com](mailto:support@assemblyai.com) or create a [support ticket](https://www.assemblyai.com/contact/support). Include the `session_id` from the response to help us look up your request.
+If you get stuck, contact our support team at [support@assemblyai.com](mailto:support@assemblyai.com) or create a [support ticket](https://www.assemblyai.com/contact/support). Include the `session_id` from the response (or the failing request's timestamp and endpoint if no response was returned) to help us look up your request.
 
 ---
 
@@ -51606,7 +52094,7 @@ If you get stuck, contact our support team at [support@assemblyai.com](mailto:su
 
 URL: https://www.assemblyai.com/docs/sync-stt/endpoints-and-data-zones
 Source: docs/sync-stt/endpoints-and-data-zones.mdx
-Navigation: Sync STT > Features
+Navigation: Sync STT > Advanced
 Description: AssemblyAI Sync STT endpoints for global routing and US/EU data residency.
 
 Choose the endpoint that best fits your application's requirements — whether that's using the default endpoint to route to the nearest data center, or ensuring your audio data stays within a given data residency zone such as EU or US.
@@ -53677,7 +54165,9 @@ This page covers what's common to both: how parameter hints sharpen accuracy, ho
 - **Tool-calling accuracy.** A spoken value that doesn't fit the shape is rejected before the tool runs, and the agent re-asks for just that value instead of calling the tool with garbage.
 - **Turn-detection accuracy.** Knowing what a complete value looks like lets the agent tell whether the user has finished speaking it. It waits for all ten digits of a phone number instead of cutting in after "my number is four one five…".
 
-These keywords describe the **value your tool receives**, which is the value the agent extracts and normalizes, not the words the caller says out loud. A caller might say "four one five, five five five…"; the agent turns that into the value `+14155552671`. Your `pattern` and `examples` describe that final value, not the spoken form.
+These keywords describe the **value your tool receives** — the value the agent produces from the caller's speech, not the words the caller says out loud. A caller might say "four one five, five five five…" and the agent produces `+14155552671`. Your `pattern` and `examples` describe that produced value.
+
+The agent's cleanup of spoken input is **best-effort, not guaranteed**. It's reliable for well-known shapes (phone numbers, emails, dates), but for long or free-form digit sequences — card numbers, account numbers, claim IDs — the value can reach your tool **as it was spoken**: with spaces between digits (`"4 2 4 2 4 2 …"`) when the caller reads them one at a time, or with digits missing if speech recognition dropped some. Your `pattern` is matched against that value as-is, so write it to tolerate the forms the value can actually arrive in (see [spoken digit sequences](#spoken-digit-sequences) below). A pattern that only accepts the tidy form (`^\\d{16}$`) will reject the spaced form and trap the caller in a re-ask loop.
 
 | Keyword     | What it does | Good values |
 | ----------- | ------------ | ----------- |
@@ -53704,7 +54194,7 @@ If you omit these, the agent **infers** the expected shape from the property's `
   "examples": ["SFO", "LHR", "JFK"] } }
 ```
 
-**`pattern`**: use this when the value has a strict format. It's a Python regular expression matched against the **whole** value (so you don't need `^` or `$`). In JSON you have to escape backslashes, so write `\\d`, not `\d`. The agent normalizes what it hears, then the value has to match or the agent re-asks for it.
+**`pattern`**: use this when the value has a strict format. It's a Python regular expression matched against the **whole** value (so you don't need `^` or `$`). In JSON you have to escape backslashes, so write `\\d`, not `\d`. The value is matched **as the agent produces it** — for well-known shapes that's the cleaned-up form, but for spoken digit sequences it may still carry the spaces or pauses from speech (see [below](#spoken-digit-sequences)), so the pattern must accept those. If the value doesn't match, the agent re-asks for it.
 
 | Value | `pattern` | `format` | `examples` |
 | ----- | --------- | -------- | ---------- |
@@ -53719,6 +54209,31 @@ If you omit these, the agent **infers** the expected shape from the property's `
 Keep patterns **tight but not brittle**. Too loose (`.*`) gives no benefit; too strict rejects legitimate values and traps the user in a re-ask loop. Make every value in `examples` match the pattern; if you can't, loosen the pattern, not the examples.
 
 **`format`**: a standard JSON-Schema named format (`email`, `date-time`, `uri`, …). Use it for well-known value types instead of hand-rolling a `pattern`.
+
+### Spoken digit sequences
+
+Long digit sequences — card numbers, account numbers, claim IDs — are the most common source of re-ask loops, because callers rarely say them cleanly. They read them one digit at a time or in groups, so the value often reaches your tool **with spaces in it**: `"4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2"`, `"4242 4242 4242 4242"`, or `"4242424242424242"` — all for the same card. A `pattern` written only for the tidy form rejects the spaced ones and the caller gets stuck repeating themselves.
+
+Write the `pattern` to allow interior spaces, bound the **digit** count (not the character count), and give `examples` that include the spaced form so both validation and turn-detection expect it:
+
+```json
+{
+  "card_number": {
+    "type": "string",
+    "description": "The card number as spoken. May contain spaces between digits when the caller reads them one at a time; 13–19 digits once spaces are removed.",
+    "pattern": " *([0-9] *){13,19}",
+    "examples": [
+      "4242424242424242",
+      "4242 4242 4242 4242",
+      "4 2 4 2 4 2 4 2 4 2 4 2 4 2 4 2"
+    ]
+  }
+}
+```
+
+Then strip non-digits in your tool handler before you use the value — e.g. `re.sub(r"\D", "", card_number)` — and run your own length/checksum validation there. Keep the `pattern` as a shape hint that admits real spoken input, not as your final validation.
+
+This tolerates a **complete** number that was spoken with spaces. It does not (and should not) accept a genuinely **incomplete** one — if speech recognition only captured 12 of 16 digits, that value is rejected and the agent re-asks, which is correct. For long numbers, prompt the caller to read them at a steady pace rather than one digit at a time with long pauses.
 
 ### Worked example
 
@@ -54093,6 +54608,10 @@ The anti-fabrication clause matters most here. A bank agent inventing a balance 
 - Parameter description missing format/example. Add `(e.g. 2026-04-30)`, or set `examples`/`pattern`. See [Parameter hints](#parameter-hints-improve-accuracy).
 - Free-text where you want fixed buckets. Use `enum`.
 - User says the value multiple ways. Normalise in the description.
+
+### Agent keeps saying it "didn't catch" a number (re-ask loop)
+
+Almost always a `pattern` that's too strict for spoken input, on a long digit sequence (card, account, claim ID). The caller reads the digits one at a time, so the value arrives with spaces (`"4 2 4 2 …"`), your pattern only accepts the tidy form, and every attempt is silently rejected — the caller just hears "I didn't catch that" on repeat. Widen the pattern to allow interior spaces and add a spaced `example`. See [Spoken digit sequences](#spoken-digit-sequences).
 
 ### Agent invents a result
 
@@ -65603,7 +66122,7 @@ console.log(result.choices[0].message.content);
 
 ````
 
-#### Example output
+### Example output
 
 ```plain
 Based on the transcript, runner's knee is a condition characterized
@@ -66659,7 +67178,7 @@ Learn how to get better results from LLM Gateway by using prompting techniques t
     width="560"
     height="315"
     src="https://www.youtube.com/embed/aOm75o2Z5-o?si=bDWFpSPQ0PLpW6kK"
-    title="YouTube video player"
+    title="Prompt engineering crash course"
     frameborder="0"
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     allowfullscreen
@@ -76610,7 +77129,7 @@ Description: Will AssemblyAI sign a Business Associate Addendum (BAA) as describ
 
 AssemblyAI enables covered entities and their business associates subject to HIPAA to use the AssemblyAI services to process protected health information (PHI). AssemblyAI is considered a business associate under HIPAA, and we offer a standard Business Associate Addendum (BAA) that is required under HIPAA to ensure that AAI appropriately safeguards PHI.
 
-You can review our BAA [here](https://www.assemblyai.com/legal/business-associate-agreement).
+You can review our [standard Business Associate Addendum (BAA)](https://www.assemblyai.com/legal/business-associate-agreement).
 
 Paid customers can review and sign our standard online BAA terms self-serve, at no additional cost, from the [**Data Controls** page](https://www.assemblyai.com/dashboard/settings/data-controls) in the AssemblyAI dashboard. Only members with the **Owner** or **Admin** role can sign. For more detail, see [Data Controls](/data-controls#business-associate-agreement-baa).
 
@@ -76813,7 +77332,7 @@ AssemblyAI provides easy access to our security reports, including our SOC 2 rep
 
 To access AssemblyAI's security reports:
 
-1. Visit our Trust Portal at [https://app.vanta.com/assemblyai/trust](https://app.vanta.com/assemblyai/trust/7n80syl8zln1bn1qm3x8eg)
+1. Visit our [AssemblyAI Trust Center](https://app.vanta.com/assemblyai/trust/7n80syl8zln1bn1qm3x8eg)
 
 2. Navigate through the available reports, which may include:
 
@@ -77048,7 +77567,7 @@ You won't be charged for failed API calls. If your transcript response returns a
 
 You can review any failed transcripts in your [Async Transcription Processing Queue](https://www.assemblyai.com/dashboard/home).
 
-  <img src="/assets/img/faq/error2.jpg" />
+  <img src="/assets/img/faq/error2.jpg" alt="Failed transcripts shown in the dashboard Async Transcription Processing Queue" />
 
 ---
 
@@ -77182,7 +77701,7 @@ Source: docs/faq/do-we-have-resources-for-building-with-make-.mdx
 Navigation: FAQ > Overview > Pre-recorded audio
 Description: Do we have resources for building with Make? documentation.
 
-Yes, we have a Make integration which you can find here: [https://www.make.com/en/integrations/assembly-ai](https://www.make.com/en/integrations/assembly-ai)
+Yes, we have a Make integration which you can find on the [AssemblyAI page in the Make integrations directory](https://www.make.com/en/integrations/assembly-ai).
 
 Make is a no-code platform that enables users to build their own workflows through their drag-and-drop features. Users can automate tasks involving voice and text data processing using AssemblyAI on the Make platform without needing to invest in custom software development.
 
@@ -77235,13 +77754,13 @@ We have use-case-specific cookbooks that may apply to what you're looking to bui
 
 We have an active YouTube channel with more tutorials and AI Content. If you prefer video guides, this is the place for you! You can follow our YouTube channel here:
 
-[https://www.youtube.com/@AssemblyAI](https://www.youtube.com/@AssemblyAI)
+[AssemblyAI on YouTube](https://www.youtube.com/@AssemblyAI)
 
 ## AssemblyAI Blog
 
 The AssemblyAI Blog covers product news, company news, the latest AI research, and AssemblyAI tutorials. The tutorials often cover specific integrations and ideas to implement with our API.
 
-[https://www.assemblyai.com/blog/](https://www.assemblyai.com/blog/)
+[AssemblyAI Blog](https://www.assemblyai.com/blog/)
 
 For any questions about any of these resources, please reach out to us via email [support@assemblyai.com](mailto:support@assemblyai.com) with a detailed summary of how we can help!
 
@@ -77429,7 +77948,7 @@ Source: docs/faq/how-can-i-integrate-assemblyai-with-other-services-.mdx
 Navigation: FAQ > Overview > Pre-recorded audio
 Description: How can I integrate AssemblyAI with other services? documentation.
 
-We have existing integrations with services such as Zapier, Make, AWS, and more! You can find our existing integrations with other tools and services in our Documentation [here](/integrations)
+We have existing integrations with services such as Zapier, Make, AWS, and more! You can find our existing integrations with other tools and services in our [integrations documentation](/integrations).
 
 Using AssemblyAI API involves making GET and POST requests so as long as you can make those you can use our API with any language, framework, or library.
 
@@ -77682,7 +78201,7 @@ Description: Should I use Speaker Labels or Multi-channel? documentation.
 
 The choice depends on your audio source:
 
-### Use Multi-channel when:
+## Use Multi-channel when:
 
 You have audio where each speaker is recorded on a separate channel, such as:
 
@@ -77696,7 +78215,7 @@ Multichannel is more accurate since each speaker's audio is processed independen
   same channel. If you have multiple speakers on a single channel, speaker
   labels are required for speaker separation.
 
-### Use Speaker Labels when:
+## Use Speaker Labels when:
 
 You have single-channel audio with multiple speakers, such as:
 
@@ -78227,7 +78746,7 @@ Source: docs/faq/how-do-your-summarization-models-work.mdx
 Navigation: FAQ > Overview > Speech understanding
 Description: How can I summarize my audio file? documentation.
 
-### [Summarization](/speech-understanding/summarization)
+## [Summarization](/speech-understanding/summarization)
 
 Our standard summarization feature generates a single abstractive summary of your entire audio file.
 
@@ -78314,7 +78833,7 @@ Description: Can you use the Playground with files in languages other than Engli
 
 You can! Automatic Language Detection is selected by default in the Playground. If you know the language of your file you can specify the language by opening up the dropdown menu below where you upload your file.
 
-  <img src="/assets/img/faq/playground2.png" />
+  <img src="/assets/img/faq/playground2.png" alt="Playground language selection dropdown menu below the file upload area" />
 
 ---
 
@@ -78383,7 +78902,7 @@ Description: How do I contact support? documentation.
 
 When logged in to your account dashboard, you can chat with us via our chat widget.
 
-  <img src="/assets/img/faq/support2.png" />
+  <img src="/assets/img/faq/support2.png" alt="Support chat widget open in the AssemblyAI account dashboard" />
 
 You can also reach out to our support team at any time by sending an email to [support@assemblyai.com](mailto:support@assemblyai.com). When reaching out, please include a detailed description of any issues you're experiencing as well as transcript IDs for affected requests, if possible.
 
@@ -78481,7 +79000,7 @@ Source: docs/faq/where-can-i-find-assemblyais-product-roadmap.mdx
 Navigation: FAQ > Overview > Company
 Description: Where can I find AssemblyAI's product roadmap? documentation.
 
-Our public product roadmap can be found [here](https://assemblyai.com/roadmap).
+You can view our [public product roadmap](https://assemblyai.com/roadmap).
 
 ---
 
@@ -79267,20 +79786,6 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 ---
 
-<a id="transcribe-a-short-audio-file-docs-api-reference-sync-api-transcribe-mdx"></a>
-
-# Transcribe a short audio file
-
-URL: https://www.assemblyai.com/docs/api-reference/sync-api/transcribe
-Source: docs/api-reference/sync-api/transcribe.mdx
-Navigation: Additional pages
-Description: Synchronously transcribe an audio file up to 120 seconds.
-
-Metadata:
-- openapi: ../specs/sync-api.yaml POST /transcribe
-
----
-
 <a id="cli-docs-concepts-cli-mdx"></a>
 
 # CLI
@@ -79553,11 +80058,11 @@ In this guide, we'll show you how to configure your code to utilise the EU endpo
 
   Streaming is now available in EU-West via `streaming.eu.assemblyai.com`
 
-### Get Started
+## Get Started
 
 Before we begin, make sure you have an AssemblyAI account and an API key. You can [sign up](https://assemblyai.com/dashboard/signup) for a free account and get your API key from your dashboard.
 
-### Python (Requests)
+## Python (Requests)
 
 The only difference here is adding the `eu.` subdomain to the base URL. Everything else in your request code stays the same:
 
@@ -79569,7 +80074,7 @@ url = "https://api.assemblyai.com"
 url = "https://api.eu.assemblyai.com"
 ```
 
-### Python SDK
+## Python SDK
 
 To set the EU endpoint as the base URL when using the Python SDK, add the following line of code before setting the `Transcriber` object:
 
@@ -79579,7 +80084,7 @@ import assemblyai as aai
 aai.settings.base_url = "https://api.eu.assemblyai.com"  # Set the base URL to the EU endpoint
 ```
 
-### JavaScript (Axios)
+## JavaScript (Axios)
 
 Similar to the requests library for Python, the only difference here is adding the `eu.` subdomain to the base URL as follows:
 
@@ -79591,7 +80096,7 @@ const url = "https://api.assemblyai.com";
 const url = "https://api.eu.assemblyai.com";
 ```
 
-### JavaScript SDK
+## JavaScript SDK
 
 To set the EU endpoint as the base URL when using the JavaScript SDK, set the `baseUrl` parameter in your AssemblyAI client as follows:
 
@@ -80032,7 +80537,7 @@ Description: Transcribe live audio with Streaming Speech-to-Text
 
 This documentation is for a previous, legacy version, of our Real-time STT
   feature. If you are looking for Real-time STT please use our latest Universal
-  Streaming model, which you can learn more about [here](/streaming)
+  Streaming model, which you can learn more about in the [Universal Streaming documentation](/streaming)
 
   Need to migrate to Universal-Streaming from this old model? See [this
   migration guide](/streaming/guides/v2_to_v3_migration)!
@@ -80923,19 +81428,19 @@ Universal-3.5 Pro natively handles code switching across 18 languages — _no pr
 
 See Universal-3.5 Pro code switching in action.
 
-##### **English \<\> French**
+### **English \<\> French**
 
 ```txt
 I said something like, j'ai dit à mes étudiants que it's time to really pay attention to what the idea of code-switching is.
 ```
 
-##### **English \<\> Hindi**
+### **English \<\> Hindi**
 
 ```txt
 मेरा रुकने का तो बहुत मन है, but I have an exam to give tomorrow.
 ```
 
-##### **English \<\> Mandarin**
+### **English \<\> Mandarin**
 
 ```txt
 But this sentence, 我父母不工作了, you can see the 了 at the end of the sentence indicates that the situation now, my parents don't work, is different from what it was before.

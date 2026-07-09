@@ -1,0 +1,313 @@
+---
+title: "Building an OAuth client for Resend"
+source: https://resend.com/docs/guides/building-a-resend-oauth-client
+path: docs/guides/building-a-resend-oauth-client
+---
+
+Implement an OAuth 2.1 + PKCE client against the Resend API, from scratch or with a library.
+
+Resend implements OAuth 2.0 and 2.1, including Proof Key for Code Exchange (PKCE) for authorization code exchanges. Resend also supports Dynamic Client Registration (DCR), which lets a client register itself at runtime via POST /oauth/register. Use DCR when a client, such as a MCP host, can't know its deployment details in advance.
+
+Resend does not yet support confidential clients, so all clients are public, and PKCE is required on every authorization code exchange. Because Resend does not offer self-service verification or domain-ownership checks yet, pre-register remote third-party clients rather than registering them dynamically, but you can register them with the same register endpoint.
+
+The Resend dashboard hosts the login and consent screen. Your client only needs to open the authorization URL in a browser and handle the callback. You don't build any consent UI yourself.
+
+## Recommended implementation paths
+
+Before getting to the integration, decide between registering the client dynamically or registering it beforehand and reusing a fixed `client_id`.
+
+Dynamic registration is for clients that can't predict their own deployment details ahead of time, like an MCP server. The standard case is registering beforehand, and the rest of this guide assumes that path.
+
+If you're registering beforehand, ask us to mark the client `manual_verified`. That gets it a verified badge on the consent screen. It's the only effect it has today. It doesn't change scopes, rate limits, or anything else.
+
+## Scopes
+
+Use the smallest scope that works for your integration:
+
+* `emails:send` is enough for send-only routes, such as `POST /emails`, `POST /email`, `POST /emails/sending`, `POST /email/sending`, and `POST /broadcasts/:broadcastId/send`.
+* `full_access` is required for other API routes.
+
+If a dynamically registered client omits `scope`, Resend registers it with every supported scope. Pass `scope` explicitly during registration and authorization instead of relying on that default.
+
+## Request encoding and `resource`
+
+Dynamic client registration uses JSON. The token and revocation endpoints accept both JSON and `application/x-www-form-urlencoded`, but prefer form encoding for `/oauth/token` and `/oauth/revoke`, since that's what most OAuth libraries send by default.
+
+Resend does not support RFC 8707 resource indicators yet. Don't send or rely on `resource` in authorization or token requests. It's accepted but ignored.
+
+## Generating PKCE values and state
+
+Before starting the authorization request, generate three values:
+
+* `code_verifier`: a high-entropy random string kept only by the client.
+* `code_challenge`: the base64url-encoded SHA-256 hash of the `code_verifier`.
+* `state`: a high-entropy random string used to bind the callback to the request that started the flow.
+
+The `code_verifier` is sent only during the token exchange. The `code_challenge` is sent during authorization. The `state` is sent during authorization and must come back unchanged on the callback.
+
+```javascript theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { createHash, randomBytes } from 'node:crypto';
+
+function base64url(input) {
+  return Buffer.from(input).toString('base64url');
+}
+
+const codeVerifier = base64url(randomBytes(64));
+const codeChallenge = base64url(
+  createHash('sha256').update(codeVerifier).digest(),
+);
+const state = base64url(randomBytes(24));
+```
+
+For a remote client, store `state` and `codeVerifier` server-side before redirecting the user to us. For a local client, keep them in memory while the temporary callback server is running.
+
+## Pre-registered remote client
+
+A remote client must use an HTTPS redirect URI owned by the app, for example `https://example.com/oauth/callback`.
+
+For remote apps, you can still use [POST /oauth/register](/docs/api-reference/oauth/register) manually while we don't have a central place in the app to create clients.
+
+```mermaid theme={"theme":{"light":"github-light","dark":"vesper"}}
+sequenceDiagram
+    autonumber
+    participant C as App backend
+    participant B as User browser
+    participant AS as Resend OAuth API
+    participant D as Resend dashboard
+
+    Note over C: Generate PKCE values and state<br>Store alongside the user's session
+
+    C->>B: 302 redirect to /oauth/authorize URL
+    B->>AS: GET /oauth/authorize<br>client_id, redirect_uri, scope,<br>state, code_challenge
+    AS-->>B: 302 redirect to dashboard consent URL
+    B->>D: User reviews and approves request
+    D-->>B: 302 redirect_uri with code + state
+    B->>C: Callback with code + state
+
+    Note over C: Verify state against the stored session value
+
+    C->>AS: POST /oauth/token<br>grant_type=authorization_code<br>code, redirect_uri, code_verifier
+    AS-->>C: access_token + refresh_token
+```
+
+<Steps>
+  <Step title="Load the pre-issued client_id" />
+
+  <Step title="Generate PKCE and state">
+    `code_verifier`, `code_challenge`, and `state`. See
+    [above](#generating-pkce-values-and-state).
+  </Step>
+
+  <Step title="Store state and code_verifier server-side">
+    Tie them to the user's session.
+  </Step>
+
+  <Step title="Redirect the user's browser to /oauth/authorize" />
+
+  <Step title="Handle the callback on the app's backend" />
+
+  <Step title="Reject invalid callbacks">
+    A missing `code`, mismatched or missing `state`, or an `error` query
+    parameter should all be treated as failures.
+  </Step>
+
+  <Step title="Exchange the code server-side">
+    Use the original `code_verifier`.
+  </Step>
+
+  <Step title="Store the refresh token securely" />
+
+  <Step title="Serialize refreshes">
+    Atomically replace the stored refresh token after every refresh.
+  </Step>
+</Steps>
+
+Example authorization URL:
+
+```
+GET /oauth/authorize?client_id=550e8400-e29b-41d4-a716-446655440000&response_type=code&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&scope=emails%3Asend&state=STATE_VALUE&code_challenge=CODE_CHALLENGE_VALUE&code_challenge_method=S256 HTTP/1.1
+Host: api.resend.com
+```
+
+Example code exchange:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/token' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&code=AUTHORIZATION_CODE&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+```
+
+## Local client
+
+A local client must use a loopback redirect URI. Prefer `127.0.0.1` with a random local port, for example `http://127.0.0.1:49152/oauth/callback`.
+
+Registered loopback redirect URIs allow port variance. The host, path, and query string must still match. For example, a client can register `http://127.0.0.1/oauth/callback` and later authorize with `http://127.0.0.1:49152/oauth/callback`.
+
+```mermaid theme={"theme":{"light":"github-light","dark":"vesper"}}
+sequenceDiagram
+    autonumber
+    participant C as Local client
+    participant B as User browser
+    participant AS as Resend OAuth API
+    participant D as Resend dashboard
+
+    Note over C: Bind loopback callback server<br>Generate PKCE values and state
+
+    C->>AS: POST /oauth/register<br>loopback redirect_uri, minimum scope
+    AS-->>C: client_id
+
+    C->>B: Open /oauth/authorize URL
+    B->>AS: GET /oauth/authorize<br>client_id, redirect_uri, scope,<br>state, code_challenge
+    AS-->>B: 302 redirect to dashboard consent URL
+    B->>D: User reviews and approves request
+    D-->>B: 302 redirect_uri with code + state
+    B->>C: Callback with code + state
+
+    Note over C: Verify state, then close the server
+
+    C->>AS: POST /oauth/token<br>grant_type=authorization_code<br>code, redirect_uri, code_verifier
+    AS-->>C: access_token + refresh_token
+```
+
+<Steps>
+  <Step title="Bind a temporary callback server">
+    Pick a random high port and bind it to `127.0.0.1` or `[::1]`, never
+    `0.0.0.0`.
+  </Step>
+
+  <Step title="Generate PKCE and state">
+    `code_verifier`, `code_challenge`, and `state`. See
+    [above](#generating-pkce-values-and-state).
+  </Step>
+
+  <Step title="Register the client">
+    Dynamically register with a loopback redirect URI and the minimum required
+    scope. See [Register Client](/docs/api-reference/oauth/register).
+  </Step>
+
+  <Step title="Open the authorize URL in the user's browser">
+    Don't prefetch `/oauth/authorize` from your process and follow the redirect
+    yourself. The user needs to see the consent screen.
+  </Step>
+
+  <Step title="Let the browser follow the redirect to the dashboard consent screen" />
+
+  <Step title="Handle exactly one callback, then close the server" />
+
+  <Step title="Reject invalid callbacks">
+    A missing `code`, mismatched or missing `state`, or an `error` query
+    parameter should all be treated as failures.
+  </Step>
+
+  <Step title="Exchange the code">
+    Use the original `code_verifier`. See [Token](/docs/api-reference/oauth/token).
+  </Step>
+
+  <Step title="Store the newest refresh token after every token response" />
+</Steps>
+
+Close the loopback server after success or timeout.
+
+### Dynamic client registration
+
+Pass `scope` explicitly. If DCR omits `scope`, Resend registers the client with every supported scope by default.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/register' \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "client_name": "Example Local OAuth Client",
+  "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "scope": "emails:send"
+}'
+```
+
+The response returns a UUID `client_id`:
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "client_id": "550e8400-e29b-41d4-a716-446655440000",
+  "client_id_issued_at": 1750000000,
+  "client_name": "Example Local OAuth Client",
+  "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "scope": "emails:send"
+}
+```
+
+### Authorization request
+
+Do not have a backend or CLI process prefetch `/oauth/authorize` and then open the returned dashboard URL. Instead, open the authorization URL in the user's browser and let the browser follow the redirect to the dashboard.
+
+```javascript theme={"theme":{"light":"github-light","dark":"vesper"}}
+const authorizationUrl = new URL('https://api.resend.com/oauth/authorize');
+authorizationUrl.search = new URLSearchParams({
+  client_id: '550e8400-e29b-41d4-a716-446655440000',
+  response_type: 'code',
+  redirect_uri: 'http://127.0.0.1:49152/oauth/callback',
+  scope: 'emails:send',
+  state,
+  code_challenge: codeChallenge,
+  code_challenge_method: 'S256',
+}).toString();
+
+openBrowser(authorizationUrl.toString());
+```
+
+After approval, Resend redirects back to the exact `redirect_uri` used in the authorization request:
+
+```
+GET /oauth/callback?code=AUTHORIZATION_CODE&state=STATE_VALUE HTTP/1.1
+Host: 127.0.0.1:49152
+```
+
+Verify that the returned `state` matches the original `state` before exchanging the code.
+
+### Authorization code exchange
+
+The `redirect_uri` in the token request must match the `redirect_uri` from the authorization request.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/token' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&code=AUTHORIZATION_CODE&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+```
+
+The response includes a JWT access token and an opaque refresh token:
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "access_token": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im9hdXRoX2tleSIsInR5cCI6ImF0K2p3dCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 900,
+  "refresh_token": "JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q",
+  "scope": "emails:send"
+}
+```
+
+### Refresh token exchange
+
+Refresh tokens rotate on every successful refresh. Serialize refresh operations for a grant, and store the new refresh token atomically with the rest of the response. If refresh succeeds but the new refresh token isn't persisted, you'll need to reauthorize. Retrying an old token from multiple workers can revoke the whole grant. See [Token](/docs/api-reference/oauth/token) for the reuse-detection details.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/token' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'grant_type=refresh_token&client_id=550e8400-e29b-41d4-a716-446655440000&refresh_token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q'
+```
+
+## Revoking access
+
+To disconnect a client, revoke the refresh token:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/revoke' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'client_id=550e8400-e29b-41d4-a716-446655440000&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
+```
+
+Access tokens are JWTs and can't be revoked individually. Revoking the refresh token revokes the grant. See [Revoke Token](/docs/api-reference/oauth/revoke).

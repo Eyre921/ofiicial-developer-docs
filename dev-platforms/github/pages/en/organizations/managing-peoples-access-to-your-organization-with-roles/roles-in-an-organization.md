@@ -75,9 +75,9 @@ To keep your organization's data secure while allowing access to repositories, y
 
 To manage access to repositories for outside collaborators, see:
 
-* [Adding outside collaborators to repositories in your organization](/en/organizations/managing-user-access-to-your-organizations-repositories/adding-outside-collaborators-to-repositories-in-your-organization)
-* [Converting an organization member to an outside collaborator](/en/organizations/managing-user-access-to-your-organizations-repositories/converting-an-organization-member-to-an-outside-collaborator)
-* [Removing an outside collaborator from an organization repository](/en/organizations/managing-user-access-to-your-organizations-repositories/removing-an-outside-collaborator-from-an-organization-repository)
+* [Adding outside collaborators to repositories in your organization](/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/adding-outside-collaborators-to-repositories-in-your-organization)
+* [Converting an organization member to an outside collaborator](/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/converting-an-organization-member-to-an-outside-collaborator)
+* [Removing an outside collaborator from an organization repository](/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/removing-an-outside-collaborator-from-an-organization-repository)
 
 ## Next steps
 

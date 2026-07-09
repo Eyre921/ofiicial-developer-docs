@@ -1,5 +1,5 @@
 ---
-title: "Which sending feature do I need?"
+title: "Which sending feature do you need?"
 source: https://resend.com/docs/knowledge-base/what-sending-feature-to-use
 path: docs/knowledge-base/what-sending-feature-to-use
 ---

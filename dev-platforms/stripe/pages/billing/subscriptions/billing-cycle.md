@@ -171,7 +171,7 @@ To reset the billing cycle anchor to the current time, make an update request wi
 Call [update the subscription](https://docs.stripe.com/api.md#update_subscription), setting `billing_cycle_anchor` to `now` and `proration_behavior` to `create_prorations` to prevent overcharging the customer for any days they already paid in the previous cycle.
 
 ```curl
-curl https://api.stripe.com/v1/subscriptions/sub_49ty4767H20z6a \
+curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d billing_cycle_anchor=now \
   -d proration_behavior=create_prorations
@@ -201,7 +201,7 @@ Optionally, you can prevent prorations when you update a subscription to start a
 Call [update subscription](https://docs.stripe.com/api.md#update_subscription), setting `trial_end` to a Unix timestamp representing the end date for the trial and `proration_behavior` to `none`. Setting the `trial_end` sets the billing cycle anchor to the same date.
 
 ```curl
-curl https://api.stripe.com/v1/subscriptions/sub_49ty4767H20z6a \
+curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d trial_end=1627801200 \
   -d proration_behavior=none

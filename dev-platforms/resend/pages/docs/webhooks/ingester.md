@@ -116,11 +116,11 @@ docker pull ghcr.io/resend/resend-webhooks-ingester
 
 The ingester creates three tables to store webhook events:
 
-| Table                | Description                                                        |
-| -------------------- | ------------------------------------------------------------------ |
-| `resend_wh_emails`   | All email events (e.g., sent, delivered, bounced, opened, clicked) |
-| `resend_wh_contacts` | Contact events (created, updated, deleted)                         |
-| `resend_wh_domains`  | Domain events (created, updated, deleted)                          |
+| Table                | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `resend_wh_emails`   | All email events (sent, delivered, bounced, opened, clicked) |
+| `resend_wh_contacts` | Contact events (created, updated, deleted)                   |
+| `resend_wh_domains`  | Domain events (created, updated, deleted)                    |
 
 Each table includes:
 

@@ -11,7 +11,7 @@ If you want to use GitHub Models beyond the free usage included in your account,
 > \[!NOTE]
 >
 > * GitHub Models for organizations and repositories is in public preview and subject to change.
-> * Billing for GitHub Models is separate from billing for GitHub Copilot. For more information about how models in GitHub Copilot are billed, see [GitHub Copilot licenses](/en/billing/managing-billing-for-your-products/about-billing-for-github-copilot).
+> * Billing for GitHub Models is separate from billing for GitHub Copilot. For more information about how models in GitHub Copilot are billed, see [GitHub Copilot licenses](/en/billing/concepts/product-billing/github-copilot-licenses).
 
 ## How use of GitHub Models is measured
 
@@ -23,7 +23,7 @@ The number of model requests and tokens you have used is reset after each billin
 
 ### Token units
 
-A token unit is calculated by multiplying the number of input and output tokens by their respective model multipliers. All model usage, regardless of the underlying provider or model, is measured in token units. While some providers display prices per 1,000 or per 1,000,000 tokens, GitHub Models standardizes billing to the token unit level. This means you are billed using a single SKU and a unified price per token unit, no matter which supported model you use. See [Costs and multipliers for using GitHub Models directly](/en/billing/reference/models-multipliers-and-costs).
+A token unit is calculated by multiplying the number of input and output tokens by their respective model multipliers. All model usage, regardless of the underlying provider or model, is measured in token units. While some providers display prices per 1,000 or per 1,000,000 tokens, GitHub Models standardizes billing to the token unit level. This means you are billed using a single SKU and a unified price per token unit, no matter which supported model you use. See [Costs and multipliers for using GitHub Models directly](/en/billing/reference/costs-for-github-models).
 
 ### Example calculation
 
@@ -68,7 +68,7 @@ Free usage includes:
 For full details of rate limits and quotas, see [Rate limits](/en/github-models/use-github-models/prototyping-with-ai-models#rate-limits).
 
 > \[!TIP]
-> If you use custom models from third-party providers with your own API keys, there is no impact on your bill in GitHub. See [Using your own API keys in GitHub Models](/en/github-models/github-models-at-scale/set-up-custom-model-integration-models-byok).
+> If you use custom models from third-party providers with your own API keys, there is no impact on your bill in GitHub. See [Using your own API keys in GitHub Models](/en/github-models/github-models-at-scale/using-your-own-api-keys-in-github-models).
 
 ## Using more than your included quota
 
@@ -92,13 +92,13 @@ You pay for additional use of GitHub Models with the payment method set up for y
 
 GitHub Models pricing is based on the number of token units used, at a fixed price of $0.00001 USD per token unit.
 
-At the end of your billing cycle, GitHub calculates the cost of token units used, starting from your first request after opting in to paid usage. See [Viewing your usage of metered products and licenses](/en/billing/managing-billing-for-your-products/viewing-your-product-usage).
+At the end of your billing cycle, GitHub calculates the cost of token units used, starting from your first request after opting in to paid usage. See [Viewing your usage of metered products and licenses](/en/billing/how-tos/products/view-productlicense-use).
 
 GitHub Models usage can be paid for by one or more of the following methods:
 
 * For enterprises, organizations, or personal accounts directly billed by GitHub, the billing of GitHub Models is based on your metered usage for each billing period, and pricing varies by the number of model requests, tokens, and the model multiplier.
   * For invoiced accounts, contact [GitHub's Sales team](https://github.com/enterprise/contact) to discuss billing for GitHub Models usage.
-* Accounts with an existing Azure subscription can use that subscription to pay for model inference by bringing their own API key for custom models. In this case, billing is based on the model provider’s pricing and is managed through the Azure subscription. See [Using your own API keys in GitHub Models](/en/github-models/github-models-at-scale/set-up-custom-model-integration-models-byok).
+* Accounts with an existing Azure subscription can use that subscription to pay for model inference by bringing their own API key for custom models. In this case, billing is based on the model provider’s pricing and is managed through the Azure subscription. See [Using your own API keys in GitHub Models](/en/github-models/github-models-at-scale/using-your-own-api-keys-in-github-models).
 
 You are considered to be directly billed by GitHub if you pay for GitHub using a credit card, PayPal, or by invoice.
 
@@ -110,7 +110,7 @@ Enterprises and organizations can opt in to paid usage to access expanded model 
 
 Enterprises, organizations and personal accounts may have default budgets to limit spending. Check the budgets for your account to ensure they are appropriate for your usage needs.
 
-For more information, see [Setting up budgets to control spending on metered products](/en/billing/managing-your-billing/using-budgets-control-spending).
+For more information, see [Setting up budgets to control spending on metered products](/en/billing/how-tos/set-up-budgets).
 
 ## Further reading
 

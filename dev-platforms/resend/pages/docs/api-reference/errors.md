@@ -8,7 +8,7 @@ Troubleshoot problems with this comprehensive breakdown of all error codes.
 
 ## Error schema
 
-We use standard HTTP response codes for success and failure notifications, and our errors are further classified by type.
+Resend uses standard HTTP response codes for success and failure notifications, and errors are further classified by type.
 
 ### `invalid_idempotency_key`
 
@@ -19,7 +19,7 @@ We use standard HTTP response codes for success and failure notifications, and o
 ### `validation_error`
 
 * **Status:** 400
-* **Message:** We found an error with one or more fields in the request.
+* **Message:** An error was found with one or more fields in the request.
 * **Suggested action:** The message will contain more details about what field and error were found.
 
 ### `missing_api_key`
@@ -139,7 +139,7 @@ We use standard HTTP response codes for success and failure notifications, and o
 ### `security_error`
 
 * **Status:** 451
-* **Message:** We may have found a security issue with the request.
+* **Message:** A possible security issue was found with the request.
 * **Suggested action:** The message will contain more details. [Contact support](https://resend.com/contact) for more information.
 
 ### `application_error`

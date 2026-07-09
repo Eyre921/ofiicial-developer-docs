@@ -6,16 +6,16 @@ path: docs/explore-sending-features
 
 Resend has a wide range of features for sending both transactional and marketing emails.
 
-Resend provides an API, command-line interface (CLI), webhooks, automations, AI tooling, and a no-code Dashboard interface. These features support both types of emails you need to send:
+Resend provides an API, command-line interface (CLI), webhooks, and automations to support both types of emails you need to send:
 
 * **Transactional emails:** personalized, event-driven communication
 * **Marketing campaigns:** bulk email [Broadcasts](/docs/dashboard/broadcasts/introduction) distributed to a contact list
 
-All of these email features and activities are also available through a user-friendly Dashboard. This allows your entire team to create and send emails, update automations, manage contacts, track performance, and more.
+All of these email features and activities are also available through a user-friendly Dashboard and through AI tooling for agents. This allows your entire team to create and send emails, update automations, manage contacts, track performance, and more.
 
 Get started with Resend's free plan, then choose from multiple [pricing plans and tiers](https://resend.com/pricing) depending on the number and type of emails you need to send as you grow.
 
-## I need to send transactional emails
+## Send transactional emails
 
 A **Transactional email** is a message triggered by a user action or required for legal compliance. Common examples include:
 
@@ -29,7 +29,7 @@ With a Resend Transactional Plan, you can send transactional emails from your ap
 
 You can also trigger emails using [webhooks](/docs/webhooks/introduction), and even [create steps to automate emails](/docs/dashboard/automations/introduction) based on custom events from your application.
 
-## I need to send bulk marketing emails
+## Send bulk marketing emails
 
 Marketing emails are **promotional**, **informative**, or **general communication** messages.
 
@@ -49,7 +49,7 @@ When you use Broadcasts, you get tools for [managing your contacts](/docs/dashbo
 
 Marketing plans also allow you to create [Resend automations](/docs/dashboard/automations/introduction) for repeatable actions like welcoming new subscribers and updating your contact list. Resources such as the [Resend MCP server](/docs/mcp-server), [agent skills](/docs/react-email-skill), and more are all available to your preferred [AI builders and tooling](/docs/ai-onboarding) to help you send and manage your marketing emails.
 
-## I need to send a combination of emails
+## Send a combination of emails
 
 It is common to need to send both transactional and marketing emails to your users. Your customers need personalized emails about their orders, but may also wish to subscribe to a newsletter that is delivered to your entire contact list.
 

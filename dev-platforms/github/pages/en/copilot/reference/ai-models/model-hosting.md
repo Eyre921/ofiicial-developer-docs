@@ -22,6 +22,9 @@ Used for:
 * GPT-5.4 mini
 * GPT-5.4 nano
 * GPT-5.5
+* GPT-5.6 Luna
+* GPT-5.6 Sol
+* GPT-5.6 Terra
 
 These models are hosted by OpenAI and GitHub's Azure infrastructure.
 

@@ -68,4 +68,4 @@ The easiest way to get consent is to **ask for it clearly and separately**. Add 
 
 Following best practices helps everyone: your recipients, your deliverability, and the health of the email ecosystem. When you start with clear consent, your messages are the ones people are *glad* to receive.
 
-If you’re new to permission-based sending, please reach out to [Support](https://resend.com/help) and we’ll help you make sure everything’s on track.
+If you’re new to permission-based sending, Resend [Support](https://resend.com/help) can help you get started.

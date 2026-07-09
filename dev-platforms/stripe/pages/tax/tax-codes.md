@@ -127,6 +127,9 @@ You can also fetch this list of tax codes [using the API](https://docs.stripe.co
 | txcd_20030003 | Pet Grooming | Grooming services for an animal such as haircuts, bathing, nail trimming, and flea dips. | Services |
 | txcd_20030004 | Parking Services (Hourly or Daily basis) | A fee charged for the use of a parking space at a commercial (non residential) facility, when paid on hourly or daily basis. | Services |
 | txcd_20030005 | Pet Services - Obedience Training | Service to train an animal to obey certain commands. | Services |
+| txcd_20031004 | Parking Services (Weekly basis) | A fee charged for the use of a parking space at a commercial (non-residential) facility, when paid for on a weekly basis. This excludes facilities which provide parking exclusively for permanent tenants and their guests. | Services |
+| txcd_20031104 | Parking Services (Monthly basis) | A fee charged for the use of a parking space at a commercial (non-residential) facility, when paid for on a monthly basis. This excludes facilities which provide parking exclusively for permanent tenants and their guests. | Services |
+| txcd_20031105 | Parking Services - Special Resident Exemptions | This category is used to exempt specific parking excise taxes in the following locations according to their respective rules: New York City (Manhattan); Baltimore; Miami; Chicago, Rosemont, Evanston, Cook County and Illinois State; Cleveland and Sandusky Ohio; Jersey City, Elizabeth, and Newark New Jersey. Other than New York City, the exemption is generally triggered if the parking is provided in the lease or in a separate agreement between the landlord and tenant. In New York City, the exemption relies on a Manhattan resident renting a space in Manhattan on a monthly basis or longer. | Services |
 | txcd_20040001 | Hairdressing Services | Services provided by beauty shops and barber shops, including but not limited to haircutting, hair coloring, shampooing, blow drying, permanents, hair extensions, hair straightening, and hair restorations. | Services |
 | txcd_20040002 | Personal Care Services | A charge for personal care services. Please select a more granular product tax category where appropriate. | Services |
 | txcd_20040003 | Body Piercing | A charge for the puncturing or penetration of the skin of a person and the insertion of jewelry or other adornment into the opening. | Services |
@@ -687,7 +690,7 @@ You can also fetch this list of tax codes [using the API](https://docs.stripe.co
 | txcd_92010001 | Shipping | A shipping charge for the delivery of physical goods in conjunction with the sale of these goods. The shipping charge is optional, meaning the customer had other means of obtaining the goods purchased and delivered via this charge. This tax category is not appropriate for stand alone transportation charges that are not associated with the sale of the goods being delivered. | Physical goods |
 | txcd_92010004 | Handling Charge | Handling Charge. | Physical goods |
 
-1 [Events tax codes](https://docs.stripe.com/tax/tax-for-tickets/overview.md) are available in public preview.
+1 [Events tax codes](https://docs.stripe.com/tax/location-sales.md) are available in public preview.
 
 ## See also
 

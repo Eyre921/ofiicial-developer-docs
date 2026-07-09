@@ -73,35 +73,189 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
     </CodeGroup>
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from deepagents import create_deep_agent
-    from deepagents.backends import LangSmithSandbox
-    from langchain_anthropic import ChatAnthropic
-    from langsmith.sandbox import SandboxClient
+    <CodeGroup>
+      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 
-    client = SandboxClient()
-    ls_sandbox = client.create_sandbox()
-    backend = LangSmithSandbox(sandbox=ls_sandbox)
+      client = SandboxClient()
+      ls_sandbox = client.create_sandbox()
+      backend = LangSmithSandbox(sandbox=ls_sandbox)
 
-    agent = create_deep_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        system_prompt="You are a Python coding assistant with sandbox access.",
-        backend=backend,
-    )
-    try:
-        result = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "Create a small Python package and run pytest",
-                    }
-                ]
-            }
-        )
-    finally:
-        client.delete_sandbox(ls_sandbox.name)
-    ```
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="google_genai:gemini-3.5-flash"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          client.delete_sandbox(ls_sandbox.name)
+      ```
+
+      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      client = SandboxClient()
+      ls_sandbox = client.create_sandbox()
+      backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="openai:gpt-5.5"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          client.delete_sandbox(ls_sandbox.name)
+      ```
+
+      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      client = SandboxClient()
+      ls_sandbox = client.create_sandbox()
+      backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="anthropic:claude-sonnet-4-6"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          client.delete_sandbox(ls_sandbox.name)
+      ```
+
+      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      client = SandboxClient()
+      ls_sandbox = client.create_sandbox()
+      backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="openrouter:z-ai/glm-5.2"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          client.delete_sandbox(ls_sandbox.name)
+      ```
+
+      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      client = SandboxClient()
+      ls_sandbox = client.create_sandbox()
+      backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="fireworks:accounts/fireworks/models/glm-5p2"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          client.delete_sandbox(ls_sandbox.name)
+      ```
+
+      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      client = SandboxClient()
+      ls_sandbox = client.create_sandbox()
+      backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="baseten:zai-org/GLM-5.2"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          client.delete_sandbox(ls_sandbox.name)
+      ```
+
+      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      client = SandboxClient()
+      ls_sandbox = client.create_sandbox()
+      backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="ollama:north-mini-code-1.0"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          client.delete_sandbox(ls_sandbox.name)
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="Daytona">
@@ -115,35 +269,189 @@ These examples assume you have already created a sandbox/devbox using the provid
       ```
     </CodeGroup>
 
-    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    from daytona import Daytona
-    from deepagents import create_deep_agent
-    from langchain_anthropic import ChatAnthropic
-    from langchain_daytona import DaytonaSandbox
+    <CodeGroup>
+      ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 
-    sandbox = Daytona().create()
-    backend = DaytonaSandbox(sandbox=sandbox)
+      sandbox = Daytona().create()
+      backend = DaytonaSandbox(sandbox=sandbox)
 
-    agent = create_deep_agent(
-        model=ChatAnthropic(model="claude-sonnet-4-6"),
-        system_prompt="You are a Python coding assistant with sandbox access.",
-        backend=backend,
-    )
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="google_genai:gemini-3.5-flash"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
 
-    try:
-        result = agent.invoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": "Create a small Python package and run pytest",
-                    }
-                ]
-            }
-        )
-    finally:
-        sandbox.stop()
-    ```
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          sandbox.stop()
+      ```
+
+      ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      sandbox = Daytona().create()
+      backend = DaytonaSandbox(sandbox=sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="openai:gpt-5.5"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          sandbox.stop()
+      ```
+
+      ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      sandbox = Daytona().create()
+      backend = DaytonaSandbox(sandbox=sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="anthropic:claude-sonnet-4-6"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          sandbox.stop()
+      ```
+
+      ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      sandbox = Daytona().create()
+      backend = DaytonaSandbox(sandbox=sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="openrouter:z-ai/glm-5.2"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          sandbox.stop()
+      ```
+
+      ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      sandbox = Daytona().create()
+      backend = DaytonaSandbox(sandbox=sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="fireworks:accounts/fireworks/models/glm-5p2"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          sandbox.stop()
+      ```
+
+      ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      sandbox = Daytona().create()
+      backend = DaytonaSandbox(sandbox=sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="baseten:zai-org/GLM-5.2"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          sandbox.stop()
+      ```
+
+      ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+
+      sandbox = Daytona().create()
+      backend = DaytonaSandbox(sandbox=sandbox)
+
+      agent = create_deep_agent(
+          model=ChatAnthropic(model="ollama:north-mini-code-1.0"),
+          system_prompt="You are a Python coding assistant with sandbox access.",
+          backend=backend,
+      )
+
+      try:
+          result = agent.invoke(
+              {
+                  "messages": [
+                      {
+                          "role": "user",
+                          "content": "Create a small Python package and run pytest",
+                      }
+                  ]
+              }
+          )
+      finally:
+          sandbox.stop()
+      ```
+    </CodeGroup>
   </Tab>
 
   <Tab title="E2B">
@@ -347,35 +655,217 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
   When users can return after idle time, configure a TTL on the sandbox so the provider deletes or archives idle environments automatically.
 </Tip>
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends.langsmith import LangSmithSandbox
-from langchain_core.runnables import RunnableConfig
-from langsmith.sandbox import SandboxClient
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
 
-client = SandboxClient()
+  client = SandboxClient()
 
 
-async def agent(config: RunnableConfig):
-    thread_id = config["configurable"]["thread_id"]  # [!code highlight]
-    sandbox_name = f"thread-{thread_id}"
-    existing = [
-        sb
-        for sb in client.list_sandboxes()
-        if getattr(sb, "name", None) == sandbox_name
-    ]
-    if existing:
-        ls_sandbox = existing[0]
-    else:
-        ls_sandbox = client.create_sandbox(
-            name=sandbox_name,
-            idle_ttl_seconds=3600,  # TTL: clean up when idle
-        )
-    return create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
-        backend=LangSmithSandbox(sandbox=ls_sandbox),
-    )
-```
+  async def agent(config: RunnableConfig):
+      thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+      sandbox_name = f"thread-{thread_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(
+              name=sandbox_name,
+              idle_ttl_seconds=3600,  # TTL: clean up when idle
+          )
+      return create_deep_agent(
+          model="google_genai:gemini-3.5-flash",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+      sandbox_name = f"thread-{thread_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(
+              name=sandbox_name,
+              idle_ttl_seconds=3600,  # TTL: clean up when idle
+          )
+      return create_deep_agent(
+          model="openai:gpt-5.5",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+      sandbox_name = f"thread-{thread_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(
+              name=sandbox_name,
+              idle_ttl_seconds=3600,  # TTL: clean up when idle
+          )
+      return create_deep_agent(
+          model="anthropic:claude-sonnet-4-6",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+      sandbox_name = f"thread-{thread_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(
+              name=sandbox_name,
+              idle_ttl_seconds=3600,  # TTL: clean up when idle
+          )
+      return create_deep_agent(
+          model="openrouter:z-ai/glm-5.2",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+      sandbox_name = f"thread-{thread_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(
+              name=sandbox_name,
+              idle_ttl_seconds=3600,  # TTL: clean up when idle
+          )
+      return create_deep_agent(
+          model="fireworks:accounts/fireworks/models/glm-5p2",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+      sandbox_name = f"thread-{thread_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(
+              name=sandbox_name,
+              idle_ttl_seconds=3600,  # TTL: clean up when idle
+          )
+      return create_deep_agent(
+          model="baseten:zai-org/GLM-5.2",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      thread_id = config["configurable"]["thread_id"]  # [!code highlight]
+      sandbox_name = f"thread-{thread_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(
+              name=sandbox_name,
+              idle_ttl_seconds=3600,  # TTL: clean up when idle
+          )
+      return create_deep_agent(
+          model="ollama:north-mini-code-1.0",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+</CodeGroup>
 
 ### Assistant-scoped
 
@@ -385,32 +875,196 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   Assistant-scoped sandboxes accumulate in-sandbox state over time. Configure a TTL with your sandbox provider, use snapshots to reset periodically, or implement cleanup logic so disk and memory do not grow without bound.
 </Warning>
 
-```python agent.py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends.langsmith import LangSmithSandbox
-from langchain_core.runnables import RunnableConfig
-from langsmith.sandbox import SandboxClient
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
 
-client = SandboxClient()
+  client = SandboxClient()
 
 
-async def agent(config: RunnableConfig):
-    assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
-    sandbox_name = f"assistant-{assistant_id}"
-    existing = [
-        sb
-        for sb in client.list_sandboxes()
-        if getattr(sb, "name", None) == sandbox_name
-    ]
-    if existing:
-        ls_sandbox = existing[0]
-    else:
-        ls_sandbox = client.create_sandbox(name=sandbox_name)
-    return create_deep_agent(
-        model="google_genai:gemini-3.5-flash",
-        backend=LangSmithSandbox(sandbox=ls_sandbox),
-    )
-```
+  async def agent(config: RunnableConfig):
+      assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+      sandbox_name = f"assistant-{assistant_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(name=sandbox_name)
+      return create_deep_agent(
+          model="google_genai:gemini-3.5-flash",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+      sandbox_name = f"assistant-{assistant_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(name=sandbox_name)
+      return create_deep_agent(
+          model="openai:gpt-5.5",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+      sandbox_name = f"assistant-{assistant_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(name=sandbox_name)
+      return create_deep_agent(
+          model="anthropic:claude-sonnet-4-6",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+      sandbox_name = f"assistant-{assistant_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(name=sandbox_name)
+      return create_deep_agent(
+          model="openrouter:z-ai/glm-5.2",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+      sandbox_name = f"assistant-{assistant_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(name=sandbox_name)
+      return create_deep_agent(
+          model="fireworks:accounts/fireworks/models/glm-5p2",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+      sandbox_name = f"assistant-{assistant_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(name=sandbox_name)
+      return create_deep_agent(
+          model="baseten:zai-org/GLM-5.2",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langchain_core.runnables import RunnableConfig
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+
+
+  async def agent(config: RunnableConfig):
+      assistant_id = config["configurable"]["assistant_id"]  # [!code highlight]
+      sandbox_name = f"assistant-{assistant_id}"
+      existing = [
+          sb
+          for sb in client.list_sandboxes()
+          if getattr(sb, "name", None) == sandbox_name
+      ]
+      if existing:
+          ls_sandbox = existing[0]
+      else:
+          ls_sandbox = client.create_sandbox(name=sandbox_name)
+      return create_deep_agent(
+          model="ollama:north-mini-code-1.0",
+          backend=LangSmithSandbox(sandbox=ls_sandbox),
+      )
+  ```
+</CodeGroup>
 
 For manual create, execute, and teardown outside a graph factory, see [Basic usage](#basic-usage) and [sandbox integrations](/oss/python/integrations/sandboxes) for provider-specific APIs.
 
@@ -460,41 +1114,224 @@ Trade-offs:
 
 * 🔴 Network latency on each execution call.
 
-```python Example theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends.langsmith import LangSmithSandbox
-from dotenv import load_dotenv
-from langsmith.sandbox import SandboxClient
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langsmith.sandbox import SandboxClient
 
+  client = SandboxClient()
+  ls_sandbox = client.create_sandbox()
+  backend = LangSmithSandbox(sandbox=ls_sandbox)
 
-load_dotenv()
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      backend=backend,
+      system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
+  )
 
-# Can also do this with AgentCore, Daytona, E2B, Modal, NVIDIA OpenShell, Runloop, or Vercel
-client = SandboxClient()
-ls_sandbox = client.create_sandbox()
-backend = LangSmithSandbox(sandbox=ls_sandbox)
+  try:
+      result = agent.invoke(
+          {
+              "messages": [
+                  {
+                      "role": "user",
+                      "content": "Create a hello world Python script and run it",
+                  }
+              ]
+          }
+      )
+      print(result["messages"][-1].content)
+  finally:
+      client.delete_sandbox(ls_sandbox.name)
+  ```
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    backend=backend,
-    system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
-)
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langsmith.sandbox import SandboxClient
 
-try:
-    result = agent.invoke(
-        {
-            "messages": [
-                {
-                    "role": "user",
-                    "content": "Create a hello world Python script and run it",
-                }
-            ]
-        }
-    )
-    print(result["messages"][-1].content)
-finally:
-    client.delete_sandbox(ls_sandbox.name)
-```
+  client = SandboxClient()
+  ls_sandbox = client.create_sandbox()
+  backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      backend=backend,
+      system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
+  )
+
+  try:
+      result = agent.invoke(
+          {
+              "messages": [
+                  {
+                      "role": "user",
+                      "content": "Create a hello world Python script and run it",
+                  }
+              ]
+          }
+      )
+      print(result["messages"][-1].content)
+  finally:
+      client.delete_sandbox(ls_sandbox.name)
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+  ls_sandbox = client.create_sandbox()
+  backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      backend=backend,
+      system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
+  )
+
+  try:
+      result = agent.invoke(
+          {
+              "messages": [
+                  {
+                      "role": "user",
+                      "content": "Create a hello world Python script and run it",
+                  }
+              ]
+          }
+      )
+      print(result["messages"][-1].content)
+  finally:
+      client.delete_sandbox(ls_sandbox.name)
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+  ls_sandbox = client.create_sandbox()
+  backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      backend=backend,
+      system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
+  )
+
+  try:
+      result = agent.invoke(
+          {
+              "messages": [
+                  {
+                      "role": "user",
+                      "content": "Create a hello world Python script and run it",
+                  }
+              ]
+          }
+      )
+      print(result["messages"][-1].content)
+  finally:
+      client.delete_sandbox(ls_sandbox.name)
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+  ls_sandbox = client.create_sandbox()
+  backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      backend=backend,
+      system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
+  )
+
+  try:
+      result = agent.invoke(
+          {
+              "messages": [
+                  {
+                      "role": "user",
+                      "content": "Create a hello world Python script and run it",
+                  }
+              ]
+          }
+      )
+      print(result["messages"][-1].content)
+  finally:
+      client.delete_sandbox(ls_sandbox.name)
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+  ls_sandbox = client.create_sandbox()
+  backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      backend=backend,
+      system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
+  )
+
+  try:
+      result = agent.invoke(
+          {
+              "messages": [
+                  {
+                      "role": "user",
+                      "content": "Create a hello world Python script and run it",
+                  }
+              ]
+          }
+      )
+      print(result["messages"][-1].content)
+  finally:
+      client.delete_sandbox(ls_sandbox.name)
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends.langsmith import LangSmithSandbox
+  from langsmith.sandbox import SandboxClient
+
+  client = SandboxClient()
+  ls_sandbox = client.create_sandbox()
+  backend = LangSmithSandbox(sandbox=ls_sandbox)
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      backend=backend,
+      system_prompt="You are a coding assistant with sandbox access. You can create and run code in the sandbox.",
+  )
+
+  try:
+      result = agent.invoke(
+          {
+              "messages": [
+                  {
+                      "role": "user",
+                      "content": "Create a hello world Python script and run it",
+                  }
+              ]
+          }
+      )
+      print(result["messages"][-1].content)
+  finally:
+      client.delete_sandbox(ls_sandbox.name)
+  ```
+</CodeGroup>
 
 The examples in this doc use the sandbox as a tool pattern.
 Choose the agent in sandbox pattern when your provider's SDK handles the communication layer and you want production to mirror local development.
@@ -549,12 +1386,12 @@ You can also call the backend `execute()` method directly in your application co
 <Tabs>
   <Tab title="LangSmith">
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from deepagents.backends.langsmith import LangSmithSandbox
     from langsmith.sandbox import SandboxClient
 
-    from deepagents.backends.langsmith import LangSmithSandbox
 
     client = SandboxClient()
-    ls_sandbox = client.create_sandbox(template_name="deepagents-deploy")
+    ls_sandbox = client.create_sandbox()
     backend = LangSmithSandbox(sandbox=ls_sandbox)
 
     result = backend.execute("python --version")
@@ -802,12 +1639,12 @@ Use `upload_files()` to populate the sandbox before the agent runs. Paths must b
 <Tabs>
   <Tab title="LangSmith">
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from deepagents.backends.langsmith import LangSmithSandbox
     from langsmith.sandbox import SandboxClient
 
-    from deepagents.backends.langsmith import LangSmithSandbox
 
     client = SandboxClient()
-    ls_sandbox = client.create_sandbox(template_name="deepagents-deploy")
+    ls_sandbox = client.create_sandbox()
     backend = LangSmithSandbox(sandbox=ls_sandbox)
 
     backend.upload_files(
@@ -993,13 +1830,13 @@ Use `download_files()` to retrieve files from the sandbox after the agent finish
 <Tabs>
   <Tab title="LangSmith">
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    from deepagents.backends.langsmith import LangSmithSandbox
     from langsmith.sandbox import SandboxClient
 
-    from deepagents.backends.langsmith import LangSmithSandbox
-
     client = SandboxClient()
-    ls_sandbox = client.create_sandbox(template_name="deepagents-deploy")
+    ls_sandbox = client.create_sandbox()
     backend = LangSmithSandbox(sandbox=ls_sandbox)
+
 
     results = backend.download_files(["/src/index.py", "/output.txt"])
     for result in results:

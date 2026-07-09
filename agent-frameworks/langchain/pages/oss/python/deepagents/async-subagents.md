@@ -153,6 +153,8 @@ ASGI transport eliminates network latency and requires no additional auth config
 Add a `url` field to switch to HTTP transport, where SDK calls go over the network to a remote Agent Protocol server:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import AsyncSubAgent
+
 AsyncSubAgent(
     name="researcher",
     description="Research agent",
@@ -180,6 +182,8 @@ Supervisor on one server, subagents on another via HTTP transport. Use when suba
 In a hybrid deployment, some subagents are co-deployed via ASGI, others remote via HTTP:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import AsyncSubAgent
+
 async_subagents = [
     AsyncSubAgent(
         name="researcher",
@@ -211,21 +215,27 @@ langgraph dev --n-jobs-per-worker 10
 
 The supervisor uses descriptions to decide which subagent to launch. Be specific and action-oriented:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-# Good
-AsyncSubAgent(
-    name="researcher",
-    description="Conducts in-depth research using web search. Use for questions requiring multiple searches and synthesis.",
-    graph_id="researcher",
-)
+<CodeGroup>
+  ```python Good theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import AsyncSubAgent
 
-# Bad
-AsyncSubAgent(
-    name="helper",
-    description="helps with stuff",
-    graph_id="helper",
-)
-```
+  AsyncSubAgent(
+      name="researcher",
+      description="Conducts in-depth research using web search. Use for questions requiring multiple searches and synthesis.",
+      graph_id="researcher",
+  )
+  ```
+
+  ```python Bad theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import AsyncSubAgent
+
+  AsyncSubAgent(
+      name="helper",
+      description="helps with stuff",
+      graph_id="helper",
+  )
+  ```
+</CodeGroup>
 
 ### Trace with thread IDs
 
@@ -240,6 +250,8 @@ When using LangGraph-based deployments, every async subagent run is a standard L
 **Solution**: The middleware injects system prompt rules to prevent this. If polling persists, reinforce the behavior in your supervisor's system prompt:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from deepagents import create_deep_agent
+
 agent = create_deep_agent(
     model="google_genai:gemini-3.5-flash",
     system_prompt="""...your instructions...

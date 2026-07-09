@@ -10,14 +10,14 @@ Simulate different events by sending test emails.
 
 During development, it's important to test different deliverability scenarios.
 
-> **Example**: When an email hard bounces or is marked as spam, it's important to stop sending emails to the recipient, as continuing to send emails to those addresses will damage your domain reputation. We recommend [creating a webhook endpoint](/docs/webhooks/introduction) to capture these events and remove the addresses from your mailing lists.
+> **Example**: When an email hard bounces or is marked as spam, it's important to stop sending emails to the recipient, as continuing to send emails to those addresses will damage your domain reputation. Consider [creating a webhook endpoint](/docs/webhooks/introduction) to capture these events and remove the addresses from your mailing lists.
 
 When testing, avoid:
 
 * sending to fake email addresses
 * setting up a fake SMTP server
 
-We provide the following test email addresses to help you simulate different email events without damaging your domain reputation. These test emails enable the safe use of Resend's Dashboard, Webhooks, and API when developing your application.
+Use the provided `resend.dev` test email addresses to simulate different email events without damaging your domain reputation. These test emails enable the safe use of Resend's Dashboard, Webhooks, and API when developing your application.
 
 <Note>Test emails count against your account's sending quota.</Note>
 

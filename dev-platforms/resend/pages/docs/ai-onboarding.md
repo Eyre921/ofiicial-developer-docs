@@ -20,7 +20,7 @@ If you're developing with AI, Resend offers several resources to improve your ex
 
 ## Prerequisite: Create an API Key
 
-We require a human to create a Resend account. Once you have an account, you'll need to [create an API key](https://resend.com/api-keys). With an API key, your agent can perform many other tasks.
+A human must create the Resend account. Once you have an account, you'll need to [create an API key](/docs/create-an-api-key). With an API key, your agent can perform many other tasks.
 
 <Info>
   To send or receive with Resend, you'll need to [verify a domain](https://resend.com/domains). While an agent can [create a domain](/docs/api-reference/domains/create-domain), the API returns DNS records you will need to add in your DNS provider before [verifying your DNS records](/docs/api-reference/domains/verify-domain). You may find it easier to verify your domain in the dashboard.
@@ -119,7 +119,7 @@ Or install individually:
 
 ## Quick Start Guides
 
-Throughout our documentation, we provide quick start guides for common tasks with Resend. They contain step-by-step instructions for sending emails, creating templates, and more. Copy the prompt for your agent or click to open in Cursor.
+The documentation includes quick start guides for common tasks with Resend. They contain step-by-step instructions for sending emails, creating templates, and more. Copy the prompt for your agent or click to open in Cursor.
 
 <Prompt description="Example agent quick start guide for sending emails." icon="envelope">
   Resend provides two endpoints for sending emails:
@@ -308,7 +308,7 @@ The `@resend/chat-sdk-adapter` package is a Vercel Chat SDK adapter that turns e
 
 ## AI Builder Guides
 
-We offer guides to using Resend with popular AI builders to help you get started with AI agents.
+Get started using Resend with popular AI builders:
 
 * [Anything Integration](/docs/anything-integration)
 * [Lovable Integration](/docs/lovable-integration)

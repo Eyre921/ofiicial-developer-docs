@@ -127,10 +127,13 @@ Define `getOrCreateSandboxForThread` in a shared module. Both the agent graph
 factory and the custom API routes import it:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// src/api/utils.ts
 import { Client } from "@langchain/langgraph-sdk";
 import { LangSmithSandbox } from "deepagents";
 import { SandboxClient } from "langsmith/sandbox";
+
+async function seedSandbox(_sandbox: LangSmithSandbox) {
+  // See File transfers in Going to production for seeding patterns.
+}
 
 export async function getOrCreateSandboxForThread(threadId: string) {
   const client = new Client({ apiUrl: "http://localhost:2024" });
@@ -145,7 +148,7 @@ export async function getOrCreateSandboxForThread(threadId: string) {
   }
 
   const sandbox = await LangSmithSandbox.create({ templateName: "my-template" });
-  await seedSandbox(sandbox);  // See File transfers below
+  await seedSandbox(sandbox);
   await client.threads.update(threadId, { metadata: { sandbox_id: sandbox.id } });
   return sandbox;
 }
@@ -155,26 +158,147 @@ Wire the agent as an async [graph factory](/langsmith/graph-rebuild) that reads
 `thread_id` from the run config and passes the resolved backend to
 `createDeepAgent`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-// src/agents/deep-agent-ide.ts
-import { createDeepAgent } from "deepagents";
-import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-import { getOrCreateSandboxForThread } from "../api/utils.js";
+  import { getOrCreateSandboxForThread } from "./api/utils.js";
 
-export async function agent(config: LangGraphRunnableConfig) {
-  const threadId = config.configurable?.thread_id;
-  if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id;
+    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
 
-  const backend = await getOrCreateSandboxForThread(threadId);
+    const backend = await getOrCreateSandboxForThread(threadId);
 
-  return createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
-    backend,
-    systemPrompt: "You are an expert developer working on a project in /app.",
-  });
-}
-```
+    return createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      backend,
+      systemPrompt: "You are an expert developer working on a project in /app.",
+    });
+  }
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  import { getOrCreateSandboxForThread } from "./api/utils.js";
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id;
+    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+
+    const backend = await getOrCreateSandboxForThread(threadId);
+
+    return createDeepAgent({
+      model: "openai:gpt-5.5",
+      backend,
+      systemPrompt: "You are an expert developer working on a project in /app.",
+    });
+  }
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  import { getOrCreateSandboxForThread } from "./api/utils.js";
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id;
+    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+
+    const backend = await getOrCreateSandboxForThread(threadId);
+
+    return createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      backend,
+      systemPrompt: "You are an expert developer working on a project in /app.",
+    });
+  }
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  import { getOrCreateSandboxForThread } from "./api/utils.js";
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id;
+    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+
+    const backend = await getOrCreateSandboxForThread(threadId);
+
+    return createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      backend,
+      systemPrompt: "You are an expert developer working on a project in /app.",
+    });
+  }
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  import { getOrCreateSandboxForThread } from "./api/utils.js";
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id;
+    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+
+    const backend = await getOrCreateSandboxForThread(threadId);
+
+    return createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
+      backend,
+      systemPrompt: "You are an expert developer working on a project in /app.",
+    });
+  }
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  import { getOrCreateSandboxForThread } from "./api/utils.js";
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id;
+    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+
+    const backend = await getOrCreateSandboxForThread(threadId);
+
+    return createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      backend,
+      systemPrompt: "You are an expert developer working on a project in /app.",
+    });
+  }
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  import { getOrCreateSandboxForThread } from "./api/utils.js";
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id;
+    if (!threadId) throw new Error("No thread_id — agent must run on a thread");
+
+    const backend = await getOrCreateSandboxForThread(threadId);
+
+    return createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      backend,
+      systemPrompt: "You are an expert developer working on a project in /app.",
+    });
+  }
+  ```
+</CodeGroup>
 
 <Note>
   Similar to the example in [Going to production](/oss/javascript/deepagents/going-to-production#lifecycle), the
@@ -594,6 +718,8 @@ Before each agent run, snapshot the current file contents. After files refresh,
 compare against the snapshot to identify which files changed:
 
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+type FileSnapshot = Record<string, string>;
+
 function detectChanges(current: FileSnapshot, original: FileSnapshot): Set<string> {
   const changed = new Set<string>();
   for (const [path, content] of Object.entries(current)) {

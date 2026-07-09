@@ -558,46 +558,6 @@ Every command supports flags for non-interactive environments such as CI/CD pipe
 | `--stream` | Enable streaming output animations. |
 | `--debug` | Enable debug logging for Stripe API requests. |
 
-## Command reference 
-
-| Command | Description |
-| --- | --- |
-| `add <provider>/<service>` | Add a service to your project. |
-| `billing add` | Add or replace a payment method. |
-| `billing show` | View the current payment method. |
-| `billing update` | Update an existing payment method or set a spend limit. Use `--limit` to set a global monthly limit across all providers, or `--limit` with `--provider` to set a per-provider limit. |
-| `catalog` | List available providers, categories, and services. |
-| `downgrade <service_reference> [service]` | Downgrade to a lower tier or free plan if supported by provider. |
-| `env` | List project environment variables without revealing values. |
-| `env --pull` | Sync credentials for the active environment to that environment’s configured output file. |
-| `env list` | List project environments and mark the active environment. |
-| `env show` | Show the active environment, its output file, and resource membership. |
-| `env create <name> --output <path>` | Create an environment and make it active. |
-| `env use <name>` | Switch the active environment for this checkout. |
-| `env update --name <new-name>` | Rename the active environment. |
-| `env update --output <path>` | Change the active environment’s output file. |
-| `env delete <name>` | Delete an environment. |
-| `env add <resource_name>` | Add an existing project resource to the active environment. |
-| `env remove <resource_name>` | Remove a project resource from the active environment. |
-| `import <URL>` | Add services from a shared stack URL to an existing project. |
-| `init <name>` | Create a project and sign in or register. |
-| `link <provider>` | Connect a provider to your project. |
-| `list` | View all projects on your Stripe account. |
-| `llm-context` | Generate a combined LLM context file. |
-| `open <provider>` | Open a provider’s dashboard in the browser. |
-| `pull <projectID>` | Set up an existing project in a new local directory. |
-| `remove <service_reference>` | Remove a service from your project. |
-| `rotate <service_reference>` | Rotate credentials for a service. |
-| `search` | List available provider services based on a keyword. |
-| `services list` | Shows all services in a project. |
-| `share` | Generate a shareable URL that encodes your project’s service stack. |
-| `spend` | View spend for the current and previous months, broken down by provider. |
-| `status` | View project name, services, tiers, and health. |
-| `switch-account` | Switch to a different Stripe account. |
-| `unlink <provider>` | Disconnect a provider from your project. |
-| `update <service_reference> [service]` | Update a resource within the same provider. |
-| `upgrade <service_reference> [service]` | Change the tier of a service. |
-
 ## Agent integration guide
 
 ### When to use Stripe Projects

@@ -42,7 +42,7 @@ Your agent only processes emails that pass your chosen security level. Rejected 
 
 ## Security Levels
 
-Choose a security level before setting up your webhook endpoint. We recommend starting with **Level 1** and relaxing only if needed.
+Choose a security level before setting up your webhook endpoint. Start with **Level 1** and relax only if needed.
 
 | Level | Name                 | Best For                                                  |
 | ----- | -------------------- | --------------------------------------------------------- |

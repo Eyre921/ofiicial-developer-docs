@@ -1,5 +1,5 @@
 ---
-title: "Can I receive emails with Resend?"
+title: "Can You Receive Emails with Resend?"
 source: https://resend.com/docs/knowledge-base/how-can-i-receive-emails-with-resend
 path: docs/knowledge-base/how-can-i-receive-emails-with-resend
 ---

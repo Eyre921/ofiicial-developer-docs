@@ -17,14 +17,14 @@ This means the domain is associated with a different Resend account. A domain ca
 Common reasons a domain may already be registered:
 
 * A team member or contractor added it to a separate account.
-* You are logged into a different account than the one where the domain was originally added.
+* You are logged in to a different account than the one where the domain was originally added.
 
 ## How to Resolve It
 
 ### Check your existing accounts first
 
 1. Check with your team to see if someone is already using Resend.
-2. Make sure you're logged into the right account.
+2. Make sure you're logged in to the right account.
 
 ### Claim the domain
 

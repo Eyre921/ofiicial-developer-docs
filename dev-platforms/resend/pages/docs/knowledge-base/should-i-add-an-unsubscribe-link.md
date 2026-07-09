@@ -1,5 +1,5 @@
 ---
-title: "Do I need to add an unsubscribe link to all of my emails sent with Resend?"
+title: "Do you need to add an unsubscribe link to all of your emails sent with Resend?"
 source: https://resend.com/docs/knowledge-base/should-i-add-an-unsubscribe-link
 path: docs/knowledge-base/should-i-add-an-unsubscribe-link
 ---
@@ -8,7 +8,7 @@ Learn best practices about using unsubscribe links.
 
 Transactional emails are generally exempt from including an unsubscribe link. Unlike marketing emails, transactional emails serve a functional purpose, such as account confirmation, password resets, and order confirmations.
 
-As a best practice, we recommend telling recipients how to opt out of receiving future email from you if the content is more related to nurturing relationships with your customers, rather than pragmatic, action-oriented emails.
+As a best practice, tell recipients how to opt out of receiving future email from you if the content is more related to nurturing relationships with your customers, rather than pragmatic, action-oriented emails.
 
 Laws enforced by the FTC and GDPR prioritize giving recipients a clear way to give and withdraw their consent to receiving email marketing content. Additionally, not having an option for opting out of emails risks recipients complaining or marking the email as spam, which can hurt your reputation as a sender.
 

@@ -14,8 +14,8 @@ By default, all Resend users use our shared IPs, which are a collection of IPs s
 
 Resend goes one step further and exclusively provisions "Managed Dedicated IP Pools". These managed pools handle multiple delicate and time consuming aspects of dedicated IPs:
 
-* **Automatic warmup**: New IPs have no reputation and are therefore under scrutiny by inbox providers. We carefully migrate your sending over from the shared pool to your dedicated pool.
-* **Automatic scaling**: IPs can only send at a certain rate based on the specifications of each inbox provider. We scale your pool dynamically based on the inbox provider feedback, without you lifting a finger.
+* **Automatic warmup**: New IPs have no reputation and are therefore under scrutiny by inbox providers. Resend carefully migrates your sending over from the shared pool to your dedicated pool.
+* **Automatic scaling**: IPs can only send at a certain rate based on the specifications of each inbox provider. Resend scales your pool dynamically based on the inbox provider feedback, without you lifting a finger.
 * **Continuous monitoring**: Resend continuously monitors the reputation and performance of your dedicated IPs.
 * **Fully dedicated**: You can segregate your emails from sending on shared pools to reduce risk of "noisy neighbors".
 
@@ -52,7 +52,7 @@ With Resend's Managed Dedicated IP Pools, the warmup process is handled automati
 4. **Reputation monitoring**: Continuously monitor the reputation of your dedicated IPs.
 5. **Adaptive warmup**: Adapt the warmup process to your sending patterns.
 
-Often IP warmup is a highly manual process and requires great care if you don't want a deliverability degradation in the process. With this automatic warmup process, we handle that for you so you can focus on sending.
+Often IP warmup is a highly manual process and requires great care if you don't want a deliverability degradation in the process. With this automatic warmup process, that's handled for you so you can focus on sending.
 
 <Note>
   Because Managed Dedicated IP Pools are dynamically scaled, **we do not expose
@@ -61,7 +61,7 @@ Often IP warmup is a highly manual process and requires great care if you don't 
 
 ## Requirements for a Dedicated IP
 
-Before we can provision a Dedicated IP, **we require** that:
+You can request a Dedicated IP if you meet the following requirements:
 
 * Your domains are in the same region (Dedicated IPs are provisioned per region).
 * Your sending volume exceeds 3,000 emails sent per day.
@@ -78,7 +78,7 @@ If you're on a Scale plan or higher, you can request a Dedicated IP directly fro
 
 Alternatively, you can request a Dedicated IP by [chatting with support](https://resend.com/help).
 
-**We will request the following information**:
+You will need to provide the following information:
 
 * What types of emails are you sending?
 * How many emails are you sending per day and month on average?

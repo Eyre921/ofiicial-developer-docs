@@ -7,7 +7,7 @@ path: docs/api-reference/emails/send-batch-emails
 POST /emails/batch
 Trigger up to 100 batch emails at once.
 
-Instead of sending one email per HTTP request, we provide a batching endpoint that permits you to send up to 100 emails in a single API call.
+Instead of sending one email per HTTP request, Resend provides a batching endpoint that permits you to send up to 100 emails in a single API call.
 
 ## Body Parameters
 

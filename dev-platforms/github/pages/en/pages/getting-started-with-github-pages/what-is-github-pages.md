@@ -51,7 +51,7 @@ You can host your site on GitHub's `github.io` domain or your own custom domain.
 
 ## Data collection
 
-When a GitHub Pages site is visited, the visitor's IP address is logged and stored for security purposes, regardless of whether the visitor has signed into GitHub or not. For more information about GitHub's security practices, see [GitHub Privacy Statement](/en/site-policy/privacy-policies/github-privacy-statement).
+When a GitHub Pages site is visited, the visitor's IP address is logged and stored for security purposes, regardless of whether the visitor has signed into GitHub or not. For more information about GitHub's security practices, see [GitHub Privacy Statement](/en/site-policy/privacy-policies/github-general-privacy-statement).
 
 ## Further reading
 

@@ -4,6 +4,14 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 9, 2026">
+  ## Storage performance health check
+
+  You can now run a storage performance health check on your GPU clusters. It uses `fio` to validate data integrity and measure sequential read and write bandwidth on the cluster's storage volumes, and it also runs automatically during cluster acceptance testing.
+
+  See [Health checks](/docs/health-checks) for the available tests, thresholds, and results.
+</Update>
+
 <Update label="July 8, 2026">
   ## Provisioned throughput
 

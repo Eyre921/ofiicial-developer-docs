@@ -19,7 +19,7 @@ In some situations, there might be restrictions that prevent certain payment met
 You can override the payment methods that a customer can use to pay a subscription by changing its [payment settings](https://docs.stripe.com/api/subscriptions/object.md#subscription_object-payment_settings).
 
 ```curl
-curl https://api.stripe.com/v1/subscriptions/sub_49ty4767H20z6a \
+curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "payment_settings[payment_method_types][]=card" \
   -d "payment_settings[payment_method_types][]=customer_balance"

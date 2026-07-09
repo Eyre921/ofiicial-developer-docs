@@ -1,5 +1,5 @@
 ---
-title: "How can I delete my Resend team?"
+title: "How to delete your Resend team"
 source: https://resend.com/docs/knowledge-base/how-can-i-delete-my-team
 path: docs/knowledge-base/how-can-i-delete-my-team
 ---

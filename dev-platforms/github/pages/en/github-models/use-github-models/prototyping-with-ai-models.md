@@ -8,9 +8,9 @@ path: en/github-models/use-github-models/prototyping-with-ai-models
 
 Find and experiment with AI models for free.
 
-If you want to develop a generative AI application, you can use GitHub Models to find and experiment with AI models for free. Once you are ready to bring your application to production, [opt in to paid usage](/en/billing/managing-billing-for-your-products/about-billing-for-github-models) for your enterprise.
+If you want to develop a generative AI application, you can use GitHub Models to find and experiment with AI models for free. Once you are ready to bring your application to production, [opt in to paid usage](/en/billing/concepts/product-billing/github-models) for your enterprise.
 
-Organization owners can integrate their preferred custom models into GitHub Models, by using an organization's own LLM API keys. See [Using your own API keys in GitHub Models](/en/github-models/github-models-at-scale/set-up-custom-model-integration-models-byok).
+Organization owners can integrate their preferred custom models into GitHub Models, by using an organization's own LLM API keys. See [Using your own API keys in GitHub Models](/en/github-models/github-models-at-scale/using-your-own-api-keys-in-github-models).
 
 See also [Responsible use of GitHub Models](/en/github-models/responsible-use-of-github-models).
 
@@ -153,8 +153,8 @@ If you prefer to experiment with AI models in your IDE, you can install the AI T
 
 The free rate limits provided in the playground and API usage are intended to help you get started with experimentation. When you are ready to move beyond the free offering, you have two options for accessing AI models beyond the free limits:
 
-* You can opt in to paid usage for GitHub Models, allowing your organization to access increased rate limits, larger context windows, and additional features. See [GitHub Models billing](/en/billing/managing-billing-for-your-products/about-billing-for-github-models).
-* If you have an existing OpenAI or Azure subscription, you can bring your own API keys (BYOK) to access custom models. Billing and usage are managed directly through your provider account, such as your Azure Subscription ID. See [Using your own API keys in GitHub Models](/en/github-models/github-models-at-scale/set-up-custom-model-integration-models-byok).
+* You can opt in to paid usage for GitHub Models, allowing your organization to access increased rate limits, larger context windows, and additional features. See [GitHub Models billing](/en/billing/concepts/product-billing/github-models).
+* If you have an existing OpenAI or Azure subscription, you can bring your own API keys (BYOK) to access custom models. Billing and usage are managed directly through your provider account, such as your Azure Subscription ID. See [Using your own API keys in GitHub Models](/en/github-models/github-models-at-scale/using-your-own-api-keys-in-github-models).
 
 ## Rate limits
 

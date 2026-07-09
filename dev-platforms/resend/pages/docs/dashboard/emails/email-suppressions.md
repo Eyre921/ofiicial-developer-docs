@@ -10,7 +10,7 @@ Understanding and resolving delivery issues.
 
 A suppression happens when you try sending an email to a recipient that previously [bounced](/docs/dashboard/emails/email-bounces) or marked your email as spam.
 
-To protect your sender reputation and our sending infrastructure, we proactively stop that delivery from happening.
+Resend will not attempt to deliver these emails in order to protect your sender reputation and our sending infrastructure.
 
 ## What causes a suppression
 

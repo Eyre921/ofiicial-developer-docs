@@ -6,7 +6,7 @@ path: docs/dashboard/domains/introduction
 
 Visualize all the domains on the Resend Dashboard.
 
-Resend sends emails using a domain you own (i.e., not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send and receive emails with Resend.
+Resend sends emails using a domain you own (not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send and receive emails with Resend.
 
 <Warning>
   Domain not verifying? [Try

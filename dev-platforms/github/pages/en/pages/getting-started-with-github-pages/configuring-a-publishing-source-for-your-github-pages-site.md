@@ -48,7 +48,7 @@ If you choose the `docs` folder on any branch as your publishing source, then la
 
 Your GitHub Pages site will always be deployed with a GitHub Actions workflow run, even if you've configured your GitHub Pages site to be built using a different CI tool. Most external CI workflows "deploy" to GitHub Pages by committing the build output to the `gh-pages` branch of the repository, and typically include a `.nojekyll` file. When this happens, the GitHub Actions workflow will detect the state that the branch does not need a build step, and will execute only the steps necessary to deploy the site to GitHub Pages servers.
 
-To find potential errors with either the build or deployment, you can check the workflow run for your GitHub Pages site by reviewing your repository's workflow runs. For more information, see [Viewing workflow run history](/en/actions/monitoring-and-troubleshooting-workflows/viewing-workflow-run-history). For more information about how to re-run the workflow in case of an error, see [Re-running workflows and jobs](/en/actions/managing-workflow-runs/re-running-workflows-and-jobs).
+To find potential errors with either the build or deployment, you can check the workflow run for your GitHub Pages site by reviewing your repository's workflow runs. For more information, see [Viewing workflow run history](/en/actions/how-tos/monitor-workflows/view-workflow-run-history). For more information about how to re-run the workflow in case of an error, see [Re-running workflows and jobs](/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs).
 
 ## Publishing with a custom GitHub Actions workflow
 
@@ -76,11 +76,11 @@ When you configure your site to publish with GitHub Actions, GitHub will suggest
 4. Use the [`actions/upload-pages-artifact`](https://github.com/actions/upload-pages-artifact) action to upload the static files as an artifact.
 5. If the workflow was triggered by a push to the default branch, use the [`actions/deploy-pages`](https://github.com/actions/deploy-pages) action to deploy the artifact. This step is skipped if the workflow was triggered by a pull request.
 
-The workflow templates use a deployment environment called `github-pages`. If your repository does not already include an environment called `github-pages`, the environment will be created automatically. We recommend that you add a deployment protection rule so that only the default branch can deploy to this environment. For more information, see [Managing environments for deployment](/en/actions/deployment/targeting-different-environments/using-environments-for-deployment).
+The workflow templates use a deployment environment called `github-pages`. If your repository does not already include an environment called `github-pages`, the environment will be created automatically. We recommend that you add a deployment protection rule so that only the default branch can deploy to this environment. For more information, see [Managing environments for deployment](/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments).
 
 > \[!NOTE]
 > A `CNAME` file in your repository file does not automatically add or remove a custom domain. Instead, you must configure the custom domain through your repository settings or through the API. For more information, see [Managing a custom domain for your GitHub Pages site](/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site#configuring-a-subdomain) and [REST API endpoints for GitHub Pages](/en/rest/pages#update-information-about-a-github-pages-site).
 
 ### Troubleshooting publishing with a custom GitHub Actions workflow
 
-For information about how to troubleshoot your GitHub Actions workflow, see [Monitor workflows](/en/actions/monitoring-and-troubleshooting-workflows/about-monitoring-and-troubleshooting).
+For information about how to troubleshoot your GitHub Actions workflow, see [Monitor workflows](/en/actions/how-tos/monitor-workflows).

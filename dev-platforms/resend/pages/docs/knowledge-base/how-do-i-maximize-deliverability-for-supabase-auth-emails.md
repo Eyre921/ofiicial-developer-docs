@@ -1,5 +1,5 @@
 ---
-title: "How do I maximize deliverability for Supabase Auth emails?"
+title: "How to maximize deliverability for Supabase Auth emails"
 source: https://resend.com/docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails
 path: docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails
 ---

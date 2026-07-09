@@ -67,7 +67,7 @@ The returns the set of subscriptions for the specified customer, from which you 
 - `item quantity`: Updating a subscription price automatically reverts the quantity to the default value of `1`. If the existing subscription quantity is anything other than `1` and you want to preserve that value, you must include it in the update.
 
 ```curl
-curl https://api.stripe.com/v1/subscriptions/sub_xxxxxxxxx \
+curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "items[0][id]={{SUB_ITEM_ID}}" \
   -d "items[0][price]={{NEW_PRICE_ID}}"
@@ -78,7 +78,7 @@ curl https://api.stripe.com/v1/subscriptions/sub_xxxxxxxxx \
 Alternatively, you can delete the current subscription item and create a new subscription item with the updated price.
 
 ```curl
-curl https://api.stripe.com/v1/subscriptions/sub_xxxxxxxxx \
+curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "items[0][id]={{SUB_ITEM_ID}}" \
   -d "items[0][deleted]=true" \
@@ -95,7 +95,7 @@ curl https://api.stripe.com/v1/subscriptions/sub_xxxxxxxxx \
 Use this option if you don’t need to make any other changes at the subscription level.
 
 ```curl
-curl https://api.stripe.com/v1/subscription_items/si_xxxxxxxxx \
+curl https://api.stripe.com/v1/subscription_items/{{SUBSCRIPTIONITEM_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d price={{NEW_PRICE_ID}}
 ```
@@ -117,7 +117,7 @@ Details on mid-cycle updates for prices attached to a Billing Meter are describe
 If you have a metered price backed by legacy usage records and update to a new usage records price, the usage is transferred to the new price.
 
 ```curl
-curl https://api.stripe.com/v1/subscriptions/sub_xxxxxxxxx \
+curl https://api.stripe.com/v1/subscriptions/{{SUBSCRIPTION_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "items[0][id]={{SUB_ITEM_ID}}" \
   -d "items[0][price]={{NEW_PRICE_ID}}" \

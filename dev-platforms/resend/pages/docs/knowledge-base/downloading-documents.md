@@ -1,5 +1,5 @@
 ---
-title: "Where can I find Resend documents like DPA or W-9?"
+title: "Where to find Resend documents like DPA or W-9"
 source: https://resend.com/docs/knowledge-base/downloading-documents
 path: docs/knowledge-base/downloading-documents
 ---

@@ -37,10 +37,10 @@ If your business ships goods from locations other than your head office, you can
 
 ### How to use performance location
 
-You can calculate taxes based on [performance location addresses](https://docs.stripe.com/tax/tax-for-tickets/overview.md) that differ from your business address and your customer’s address. If you provide a performance location, Stripe Tax uses its address as the place of taxation for physical goods, services and events. To use performance locations:
+You can calculate taxes based on [performance location addresses](https://docs.stripe.com/tax/location-sales.md) that differ from your business address and your customer’s address. If you provide a performance location, Stripe Tax uses its address as the place of taxation for physical goods, services and events. To use performance locations:
 
 - You must define performance locations through the Stripe Tax API.
-- You can’t use performance locations with Payment Links, Checkout, or Billing and Invoicing.
+- Performance locations aren’t supported through the Dashboard.
 - Unrecognized performance location addresses return a tax calculation error.
 - You can’t use performance locations for digital product tax codes.
 - Some [product tax codes](https://docs.stripe.com/tax/tax-codes.md) **require** the performance location.

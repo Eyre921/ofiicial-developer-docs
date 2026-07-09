@@ -15,7 +15,7 @@ You've verified a domain (or subdomain) in Resend, but your API request is using
 **Example scenario:**
 
 * You verified `sending.domain.com` in Resend
-* Your API request is using `domain.com` (i.e., without the `sending` subdomain)
+* Your API request is using `domain.com` (that is, without the `sending` subdomain)
 
 ## How to Identify This Issue
 

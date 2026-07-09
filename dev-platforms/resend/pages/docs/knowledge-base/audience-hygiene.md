@@ -87,7 +87,7 @@ Regularly cleaning your list of disengaged recipients helps maintain a positive 
 
 Using our [Webhooks](/docs/webhooks/introduction), you can be notified when a delivery bounces or gets marked as spam by the recipient.
 
-This is an opportunity to proactively unsubscribe the recipient and prevent further sending. Indeed, while Resend will automatically suppress further deliveries to that email address, we don't automatically unsubscribe it.
+This allows you to proactively unsubscribe the recipient and prevent further sending. Resend will automatically suppress further deliveries to that email address but will not automatically unsubscribe it for you.
 
 ### Sunset unengaged recipients
 

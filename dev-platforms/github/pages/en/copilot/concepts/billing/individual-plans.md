@@ -94,7 +94,7 @@ Copilot Free and Copilot Student both have an allowance of AI credits and access
 
 For more information on how GitHub AI Credits work, see [Usage-based billing for individuals](/en/copilot/concepts/billing/usage-based-billing-for-individuals) and [Usage-based billing for organizations and enterprises](/en/copilot/concepts/billing/usage-based-billing-for-organizations-and-enterprises).
 
-For a detailed comparison of features and benefits, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
+For a detailed comparison of features and benefits, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
 
 ## Choosing the right plan
 
@@ -106,7 +106,7 @@ Consider the following to decide which plan is right for you:
 * **Want the best performance and premium model access?** [Go with GitHub Copilot Pro+](https://github.com/github-copilot/signup?ref_product=copilot\&ref_type=purchase\&ref_style=text\&ref_plan=pro-plus) to unlock everything Copilot has to offer.
 * **Doing sustained high-volume Copilot development?** [Subscribe to GitHub Copilot Max](https://github.com/github-copilot/signup?ref_product=copilot\&ref_type=purchase\&ref_style=text\&ref_plan=max), which offers the highest monthly allowance of AI credits for individual plans.
 
-To learn how to set up the plan that’s right for you, see [Getting started with a GitHub Copilot plan](/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/getting-started-with-copilot-on-your-personal-account/getting-started-with-a-copilot-plan).
+To learn how to set up the plan that’s right for you, see [Getting started with a GitHub Copilot plan](/en/copilot/how-tos/manage-your-account/get-started-with-a-copilot-plan).
 
 ### Limitations for enterprises
 

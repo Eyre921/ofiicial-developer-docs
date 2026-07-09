@@ -424,6 +424,11 @@ Stripe creates event types marked as **Selection required** only when at least o
 
   Occurs when a Financial Connections account is disconnected.
 
+- `financial_connections.account.expected_deactivation_date_updated`
+  `data.object` is one of: [`financial_connections.account`](https://docs.stripe.com/api#financial_connections_account_object)
+
+  Occurs when a Financial Connections account’s `expected_deactivation_date` changes.
+
 - `financial_connections.account.reactivated`
   `data.object` is one of: [`financial_connections.account`](https://docs.stripe.com/api#financial_connections_account_object)
 
@@ -448,6 +453,21 @@ Stripe creates event types marked as **Selection required** only when at least o
   `data.object` is one of: [`financial_connections.account`](https://docs.stripe.com/api#financial_connections_account_object)
 
   Occurs when an Account’s tokenized account number is about to expire.
+
+- `financial_connections.account.upcoming_deactivation`
+  `data.object` is one of: [`financial_connections.account`](https://docs.stripe.com/api#financial_connections_account_object)
+
+  Occurs when a Financial Connections account is about to become `inactive`.
+
+- `financial_connections.authorization.expected_deactivation_date_updated`
+  `data.object` is one of: [`financial_connections.authorization`](https://docs.stripe.com/api#financial_connections_authorization_object)
+
+  Occurs when a Financial Connections authorization’s `expected_deactivation_date` changes.
+
+- `financial_connections.authorization.upcoming_deactivation`
+  `data.object` is one of: [`financial_connections.authorization`](https://docs.stripe.com/api#financial_connections_authorization_object)
+
+  Occurs when a Financial Connections authorization is about to become `inactive`.
 
 - `identity.verification_session.canceled`
   `data.object` is one of: [`identity.verification_session`](https://docs.stripe.com/api#identity_verification_session_object)

@@ -133,4 +133,4 @@ gh ssh-key add ~/.ssh/id_ed25519.pub --type signing
 
 ## Further reading
 
-* [Authorizing an SSH key for use with single sign-on](/en/authentication/authenticating-with-saml-single-sign-on/authorizing-an-ssh-key-for-use-with-saml-single-sign-on)
+* [Authorizing an SSH key for use with single sign-on](/en/authentication/authenticating-with-single-sign-on/authorizing-an-ssh-key-for-use-with-single-sign-on)

@@ -17,9 +17,10 @@ Each handle's `name` is the sub-agent's configured name: the `subagent_type` the
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(
   { messages: [{ role: "user", content: "Write me a haiku about the sea" }] },
-  { version: "v3" }
+  { version: "v3" },
 );
 
+const subagentNames: string[] = [];
 for await (const subagent of stream.subagents) {
   console.log(subagent.name);
   console.log(await subagent.taskInput);
@@ -27,6 +28,8 @@ for await (const subagent of stream.subagents) {
   for await (const message of subagent.messages) {
     console.log(await message.text);
   }
+
+  subagentNames.push(subagent.name);
 }
 ```
 
@@ -72,8 +75,8 @@ for await (const subagent of stream.subagents) {
         running -= 1;
         failed += 1;
         console.log(`${subagent.name}: failed`);
-      }
-    )
+      },
+    ),
   );
 }
 
@@ -88,8 +91,10 @@ Deep Agents can emit messages from the coordinator agent and from delegated suba
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, { version: "v3" });
 
+const coordinatorMessages: string[] = [];
 for await (const message of stream.messages) {
   console.log("[coordinator]", await message.text);
+  coordinatorMessages.push(await message.text);
 }
 
 for await (const subagent of stream.subagents) {
@@ -106,9 +111,11 @@ Deep Agents expose tool calls at each level of the agent tree. Use the top-level
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, { version: "v3" });
 
+const coordinatorToolNames: string[] = [];
 for await (const call of stream.toolCalls) {
   console.log("[coordinator tool]", call.name, call.input);
   console.log(await call.status);
+  coordinatorToolNames.push(call.name);
 }
 
 for await (const subagent of stream.subagents) {
@@ -132,6 +139,7 @@ You can recurse into a subagent stream to observe nested subagents, messages, an
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, { version: "v3" });
 
+const subagentNames: string[] = [];
 for await (const subagent of stream.subagents) {
   console.log(`subagent ${subagent.name}: started`);
 
@@ -149,6 +157,8 @@ for await (const subagent of stream.subagents) {
   for await (const nested of subagent.subagents) {
     console.log(`nested subagent ${nested.name}: started`);
   }
+
+  subagentNames.push(subagent.name);
 }
 ```
 
@@ -184,6 +194,7 @@ When you need exact arrival order across the coordinator and all subagents, iter
 ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const stream = await agent.streamEvents(input, { version: "v3" });
 
+const textDeltas: string[] = [];
 for await (const event of stream) {
   if (event.method !== "messages") continue;
 
@@ -192,9 +203,12 @@ for await (const event of stream) {
 
   const block = data.delta ?? {};
   if (block.type === "text-delta") {
-    const isSubagent = event.params.namespace.some((seg) => seg.startsWith("tools:"));
+    const isSubagent = event.params.namespace.some((seg) =>
+      seg.startsWith("tools:"),
+    );
     const source = isSubagent ? "subagent" : "coordinator";
     console.log(`[${source}] ${block.text}`);
+    textDeltas.push(block.text);
   }
 }
 ```

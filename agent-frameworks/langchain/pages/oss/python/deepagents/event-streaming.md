@@ -14,16 +14,22 @@ Deep Agents add a subagent projection on top of LangGraph streaming. Use `stream
 
 Each handle's `name` is the sub-agent's configured name: the `subagent_type` the coordinator passes when it calls the `task` tool. Deep Agents binds that name to the delegated run, so the same label you defined in your subagent specs is what you filter and route on in the stream.
 
-```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-stream = agent.stream_events({
-    "messages": [{"role": "user", "content": "Write me a haiku about the sea"}],
-}, version="v3")
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+stream = agent.stream_events(
+    {
+        "messages": [{"role": "user", "content": "Write me a haiku about the sea"}],
+    },
+    version="v3",
+)
 
+subagent_names: list[str] = []
 for subagent in stream.subagents:
     print(subagent.name, subagent.path, subagent.status)
 
     for message in subagent.messages:
         print(message.text)
+
+    subagent_names.append(subagent.name)
 ```
 
 ## Subagent stream fields
@@ -46,7 +52,7 @@ Python uses snake\_case projection names such as `tool_calls`. Each subagent str
 
 Use `stream.subagents` when you only need to show which subagents started and finished. You do not need to subscribe to message or value streams unless you access those projections on an individual subagent.
 
-```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = agent.stream_events(input, version="v3")
 
 running = 0
@@ -72,11 +78,13 @@ for subagent in stream.subagents:
 
 Deep Agents can emit messages from the coordinator agent and from delegated subagents. Use `stream.messages` for top-level messages and `subagent.messages` for each delegated subagent.
 
-```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = agent.stream_events(input, version="v3")
 
+coordinator_messages: list[str] = []
 for message in stream.messages:
     print("[coordinator]", message.text)
+    coordinator_messages.append(message.text)
 
 for subagent in stream.subagents:
     for message in subagent.messages:
@@ -87,12 +95,14 @@ for subagent in stream.subagents:
 
 Deep Agents expose tool calls at each level of the agent tree. Use the top-level `stream.tool_calls` for coordinator tools and each `subagent.tool_calls` for delegated work.
 
-```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = agent.stream_events(input, version="v3")
 
+coordinator_tool_names: list[str] = []
 for call in stream.tool_calls:
     print("[coordinator tool]", call.tool_name, call.input)
     print(call.completed, call.error)
+    coordinator_tool_names.append(call.tool_name)
 
 for subagent in stream.subagents:
     for call in subagent.tool_calls:
@@ -110,9 +120,10 @@ for subagent in stream.subagents:
 
 You can recurse into a subagent stream to observe nested subagents, messages, and tool calls.
 
-```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = agent.stream_events(input, version="v3")
 
+subagent_names: list[str] = []
 for subagent in stream.subagents:
     print(f"subagent {subagent.name}: {subagent.status}")
 
@@ -123,6 +134,8 @@ for subagent in stream.subagents:
 
     for nested in subagent.subagents:
         print(f"nested subagent {nested.name}: {nested.status}")
+
+    subagent_names.append(subagent.name)
 ```
 
 ## Consume concurrently
@@ -150,7 +163,7 @@ await asyncio.gather(consume_coordinator(), consume_subagents())
 
 For synchronous code, use `stream.interleave(...)` instead:
 
-```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = agent.stream_events(input, version="v3")
 
 for name, item in stream.interleave("messages", "subagents"):
@@ -163,9 +176,10 @@ for name, item in stream.interleave("messages", "subagents"):
 
 When you need exact arrival order across the coordinator and all subagents, iterate raw protocol events and use `namespace` to identify the source:
 
-```py theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 stream = agent.stream_events(input, version="v3")
 
+text_deltas: list[str] = []
 for event in stream:
     if event.get("method") != "messages":
         continue
@@ -180,6 +194,7 @@ for event in stream:
     if block.get("type") == "text-delta":
         source = "subagent" if event["params"]["namespace"] else "coordinator"
         print(f"[{source}] {block['text']}")
+        text_deltas.append(block["text"])
 ```
 
 ## Subagents versus subgraphs

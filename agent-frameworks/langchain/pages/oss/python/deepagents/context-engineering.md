@@ -54,17 +54,91 @@ Input context is information provided to your deep agent at startup that becomes
 
 Your custom system prompt is prepended to the built-in system prompt, which includes guidance for planning, filesystem tools, and subagents. Use it to define the agent's role, behavior, and knowledge:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    system_prompt=(
-        "You are a research assistant specializing in scientific literature. "
-        "Always cite sources. Use subagents for parallel research on different topics."
-    ),
-)
-```
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt=(
+          "You are a research assistant specializing in scientific literature. "
+          "Always cite sources. Use subagents for parallel research on different topics."
+      ),
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt=(
+          "You are a research assistant specializing in scientific literature. "
+          "Always cite sources. Use subagents for parallel research on different topics."
+      ),
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt=(
+          "You are a research assistant specializing in scientific literature. "
+          "Always cite sources. Use subagents for parallel research on different topics."
+      ),
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt=(
+          "You are a research assistant specializing in scientific literature. "
+          "Always cite sources. Use subagents for parallel research on different topics."
+      ),
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt=(
+          "You are a research assistant specializing in scientific literature. "
+          "Always cite sources. Use subagents for parallel research on different topics."
+      ),
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt=(
+          "You are a research assistant specializing in scientific literature. "
+          "Always cite sources. Use subagents for parallel research on different topics."
+      ),
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt=(
+          "You are a research assistant specializing in scientific literature. "
+          "Always cite sources. Use subagents for parallel research on different topics."
+      ),
+  )
+  ```
+</CodeGroup>
 
 The `system_prompt` parameter is static which means it does not change per invocation.
 For some use cases you may want a dynamic prompt: for example, to tell the model "You have admin access" vs "You have read-only access," or to inject user preferences like "User prefers concise responses" from [long-term memory](#long-term-memory).
@@ -81,12 +155,56 @@ You do **not** need middleware when tools alone use context or `runtime.store`; 
 
 Memory files ([`AGENTS.md`](https://agents.md/)) provide persistent context that is **always loaded** into the system prompt. Use memory for project conventions, user preferences, and critical guidelines that should apply to every conversation:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
-)
-```
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      memory=["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  )
+  ```
+</CodeGroup>
 
 Unlike skills, memory is always injected—there is no progressive disclosure. Keep memory minimal to avoid context overload; use [skills](/oss/python/deepagents/skills) for detailed workflows and domain-specific content. See [Memory](/oss/python/deepagents/customization#memory) for configuration details.
 
@@ -94,12 +212,56 @@ Unlike skills, memory is always injected—there is no progressive disclosure. K
 
 Skills provide **on-demand** capabilities. The agent reads frontmatter from each `SKILL.md` at startup, then loads full skill content only when it determines the skill is relevant. This reduces token usage while still providing specialized workflows:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    skills=["/skills/research/", "/skills/web-search/"],
-)
-```
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      skills=["/skills/research/", "/skills/web-search/"],
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      skills=["/skills/research/", "/skills/web-search/"],
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      skills=["/skills/research/", "/skills/web-search/"],
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      skills=["/skills/research/", "/skills/web-search/"],
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      skills=["/skills/research/", "/skills/web-search/"],
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      skills=["/skills/research/", "/skills/web-search/"],
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      skills=["/skills/research/", "/skills/web-search/"],
+  )
+  ```
+</CodeGroup>
 
 Keep each skill focused on a single workflow or domain; broad or overlapping skills dilute relevance and bloat context when loaded. Within a skill, keep the main content concise and move detailed reference material to separate files that are referenced in the skill file. Put always-relevant conventions in [memory](#memory). See [Skills](/oss/python/deepagents/skills) for authoring and configuration.
 
@@ -107,7 +269,7 @@ Keep each skill focused on a single workflow or domain; broad or overlapping ski
 
 [Tool](/oss/python/langchain/tools) prompts are instructions that shape how the model uses tools. All tools expose metadata the model sees in its prompt—typically a schema and a description. Tools you pass via the `tools` parameter surface that tool metadata (schema and descriptions) to the model. A deep agent's built-in tools are packaged in the [default middleware stack](/oss/python/deepagents/customization#default-stack-main-agent) and typically also update the system prompt with more guidance for those tools.
 
-**Built-in tools** – Middleware that adds harness capabilities (planning, filesystem, subagents) automatically appends tool-specific instructions to the system prompt, creating tool prompts that explain how to use those tools effectively. See [Customization](/oss/python/deepagents/customization#middleware) for the full list:
+**Built-in tools**: Middleware that adds harness capabilities (planning, filesystem, subagents) automatically appends tool-specific instructions to the system prompt, creating tool prompts that explain how to use those tools effectively. See [Customization](/oss/python/deepagents/customization#middleware) for the full list:
 
 * Planning prompt – Instructions for `write_todos` to maintain a structured task list
 
@@ -119,16 +281,19 @@ Keep each skill focused on a single workflow or domain; broad or overlapping ski
 
 * Local context prompt – Current directory and project info (CLI only)
 
-**Tools you provide** – Tools passed via the `tools` parameter get their descriptions (from the tool schema) sent to the model. You can also add [custom middleware](/oss/python/langchain/middleware) that adds tools and appends its own system prompt instructions.
+**Tools you provide**: Tools passed via the `tools` parameter get their descriptions (from the tool schema) sent to the model. You can also add [custom middleware](/oss/python/langchain/middleware) that adds tools and appends its own system prompt instructions.
 
 For tools you provide, make sure to provide a clear name, description, and argument descriptions. These guide the model's reasoning about when and how to use the tool. Include *when* to use the tool in the description and describe what each argument does.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+from langchain.tools import tool
+
+
 @tool(parse_docstring=True)
 def search_orders(
     user_id: str,
     status: str,
-    limit: int = 10
+    limit: int = 10,
 ) -> str:
     """Search for user orders by status.
 
@@ -141,7 +306,7 @@ def search_orders(
         limit: Maximum number of results to return
     """
     # Implementation here
-    ...
+    return f"orders for {user_id} with status {status} (limit {limit})"
 ```
 
 <Tip>
@@ -172,34 +337,231 @@ Define the shape of that data with `context_schema`: use a `dataclasses.dataclas
 
 Inside tools, read context from the injected [ToolRuntime](https://reference.langchain.com/python/langchain/tools/#langchain.tools.ToolRuntime):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from dataclasses import dataclass
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
 
-from deepagents import create_deep_agent
-from langchain.tools import tool, ToolRuntime
+  from deepagents import create_deep_agent
+  from langchain.tools import ToolRuntime, tool
 
-@dataclass
-class Context:
-    user_id: str
-    api_key: str
 
-@tool
-def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
-    """Fetch data for the current user."""
-    user_id = runtime.context.user_id
-    return f"Data for user {user_id}: {query}"
+  @dataclass
+  class Context:
+      user_id: str
+      api_key: str
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    tools=[fetch_user_data],
-    context_schema=Context,
-)
 
-result = agent.invoke(
-    {"messages": [{"role": "user", "content": "Get my recent activity"}]},
-    context=Context(user_id="user-123", api_key="sk-..."),
-)
-```
+  @tool
+  def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      tools=[fetch_user_data],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "Get my recent activity"}]},
+      context=Context(user_id="user-123", api_key="sk-..."),
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      api_key: str
+
+
+  @tool
+  def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      tools=[fetch_user_data],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "Get my recent activity"}]},
+      context=Context(user_id="user-123", api_key="sk-..."),
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      api_key: str
+
+
+  @tool
+  def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      tools=[fetch_user_data],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "Get my recent activity"}]},
+      context=Context(user_id="user-123", api_key="sk-..."),
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      api_key: str
+
+
+  @tool
+  def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      tools=[fetch_user_data],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "Get my recent activity"}]},
+      context=Context(user_id="user-123", api_key="sk-..."),
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      api_key: str
+
+
+  @tool
+  def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      tools=[fetch_user_data],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "Get my recent activity"}]},
+      context=Context(user_id="user-123", api_key="sk-..."),
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      api_key: str
+
+
+  @tool
+  def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      tools=[fetch_user_data],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "Get my recent activity"}]},
+      context=Context(user_id="user-123", api_key="sk-..."),
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      api_key: str
+
+
+  @tool
+  def fetch_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      tools=[fetch_user_data],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [{"role": "user", "content": "Get my recent activity"}]},
+      context=Context(user_id="user-123", api_key="sk-..."),
+  )
+  ```
+</CodeGroup>
 
 Runtime context **propagates to all subagents**. When a subagent runs, it receives the same runtime context as the parent. See [Subagents](/oss/python/deepagents/subagents#context-management) for per-subagent context (namespaced keys).
 
@@ -220,36 +582,224 @@ Use `state_schema` when data must be part of the agent's mutable graph state, ch
 
 Custom state schemas must subclass [DeepAgentState](https://reference.langchain.com/python/deepagents/graph/DeepAgentState). This preserves the built-in `DeltaChannel` reducer on `messages`, which keeps checkpoint growth linear as conversations get longer.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import DeepAgentState, create_deep_agent
-from langchain.tools import ToolRuntime, tool
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import DeepAgentState, create_deep_agent
+  from langchain.tools import ToolRuntime, tool
 
 
-class ResearchState(DeepAgentState):
-    page_url: str
-    file_urls: list[str]
+  class ResearchState(DeepAgentState):
+      page_url: str
+      file_urls: list[str]
 
 
-@tool
-def cite_page(runtime: ToolRuntime) -> str:
-    """Return the current page URL."""
-    return runtime.state["page_url"]
+  @tool
+  def cite_page(runtime: ToolRuntime) -> str:
+      """Return the current page URL."""
+      return runtime.state["page_url"]
 
 
-agent = create_deep_agent(
-    model="anthropic:claude-sonnet-4-6",
-    tools=[cite_page],
-    state_schema=ResearchState,
-)
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      tools=[cite_page],
+      state_schema=ResearchState,
+  )
 
-result = agent.invoke(
-    {
-        "messages": [{"role": "user", "content": "Cite the current page"}],
-        "page_url": "https://example.com/report",
-        "file_urls": [],
-    }
-)
-```
+  result = agent.invoke(
+      {
+          "messages": [{"role": "user", "content": "Cite the current page"}],
+          "page_url": "https://example.com/report",
+          "file_urls": [],
+      },
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import DeepAgentState, create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  class ResearchState(DeepAgentState):
+      page_url: str
+      file_urls: list[str]
+
+
+  @tool
+  def cite_page(runtime: ToolRuntime) -> str:
+      """Return the current page URL."""
+      return runtime.state["page_url"]
+
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      tools=[cite_page],
+      state_schema=ResearchState,
+  )
+
+  result = agent.invoke(
+      {
+          "messages": [{"role": "user", "content": "Cite the current page"}],
+          "page_url": "https://example.com/report",
+          "file_urls": [],
+      },
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import DeepAgentState, create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  class ResearchState(DeepAgentState):
+      page_url: str
+      file_urls: list[str]
+
+
+  @tool
+  def cite_page(runtime: ToolRuntime) -> str:
+      """Return the current page URL."""
+      return runtime.state["page_url"]
+
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      tools=[cite_page],
+      state_schema=ResearchState,
+  )
+
+  result = agent.invoke(
+      {
+          "messages": [{"role": "user", "content": "Cite the current page"}],
+          "page_url": "https://example.com/report",
+          "file_urls": [],
+      },
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import DeepAgentState, create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  class ResearchState(DeepAgentState):
+      page_url: str
+      file_urls: list[str]
+
+
+  @tool
+  def cite_page(runtime: ToolRuntime) -> str:
+      """Return the current page URL."""
+      return runtime.state["page_url"]
+
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      tools=[cite_page],
+      state_schema=ResearchState,
+  )
+
+  result = agent.invoke(
+      {
+          "messages": [{"role": "user", "content": "Cite the current page"}],
+          "page_url": "https://example.com/report",
+          "file_urls": [],
+      },
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import DeepAgentState, create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  class ResearchState(DeepAgentState):
+      page_url: str
+      file_urls: list[str]
+
+
+  @tool
+  def cite_page(runtime: ToolRuntime) -> str:
+      """Return the current page URL."""
+      return runtime.state["page_url"]
+
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      tools=[cite_page],
+      state_schema=ResearchState,
+  )
+
+  result = agent.invoke(
+      {
+          "messages": [{"role": "user", "content": "Cite the current page"}],
+          "page_url": "https://example.com/report",
+          "file_urls": [],
+      },
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import DeepAgentState, create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  class ResearchState(DeepAgentState):
+      page_url: str
+      file_urls: list[str]
+
+
+  @tool
+  def cite_page(runtime: ToolRuntime) -> str:
+      """Return the current page URL."""
+      return runtime.state["page_url"]
+
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      tools=[cite_page],
+      state_schema=ResearchState,
+  )
+
+  result = agent.invoke(
+      {
+          "messages": [{"role": "user", "content": "Cite the current page"}],
+          "page_url": "https://example.com/report",
+          "file_urls": [],
+      },
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import DeepAgentState, create_deep_agent
+  from langchain.tools import ToolRuntime, tool
+
+
+  class ResearchState(DeepAgentState):
+      page_url: str
+      file_urls: list[str]
+
+
+  @tool
+  def cite_page(runtime: ToolRuntime) -> str:
+      """Return the current page URL."""
+      return runtime.state["page_url"]
+
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      tools=[cite_page],
+      state_schema=ResearchState,
+  )
+
+  result = agent.invoke(
+      {
+          "messages": [{"role": "user", "content": "Cite the current page"}],
+          "page_url": "https://example.com/report",
+          "file_urls": [],
+      },
+  )
+  ```
+</CodeGroup>
 
 The schema is merged with state schemas contributed by middleware. Declarative [SubAgent](https://reference.langchain.com/python/deepagents/middleware/subagents/SubAgent) specs passed to `subagents=` inherit the parent `state_schema` when Deep Agents compiles them for the `task` tool. [CompiledSubAgent](https://reference.langchain.com/python/deepagents/middleware/subagents/CompiledSubAgent) runnables and remote [AsyncSubAgent](https://reference.langchain.com/python/deepagents/middleware/async_subagents/AsyncSubAgent) specs do not inherit it because their graphs are already compiled or hosted separately. Compile those graphs with a compatible schema if they need the same state fields.
 
@@ -335,23 +885,119 @@ Separately, you can give the agent a `compact_conversation` [tool](/oss/python/l
 
 Enable the tool by passing [`create_summarization_tool_middleware`](https://reference.langchain.com/python/deepagents/middleware/summarization/create_summarization_tool_middleware) using the `middleware` argument on `create_deep_agent`. Custom middleware is inserted into the [default stack](/oss/python/deepagents/customization#default-stack-main-agent) after [`PatchToolCallsMiddleware`](https://reference.langchain.com/python/deepagents/middleware/patch_tool_calls/PatchToolCallsMiddleware):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends import StateBackend
-from deepagents.middleware.summarization import (
-    create_summarization_tool_middleware,
-)
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import StateBackend
+  from deepagents.middleware.summarization import create_summarization_tool_middleware
 
-backend = StateBackend  # if using default backend
+  backend = StateBackend  # if using default backend
 
-model = "google_genai:gemini-3.5-flash"
-agent = create_deep_agent(
-    model=model,
-    middleware=[  # [!code highlight]
-        create_summarization_tool_middleware(model, backend),  # [!code highlight]
-    ],  # [!code highlight]
-)
-```
+  model="google_genai:gemini-3.5-flash"
+  agent = create_deep_agent(
+      model=model,
+      middleware=[  # [!code highlight]
+          create_summarization_tool_middleware(model, backend),  # [!code highlight]
+      ],  # [!code highlight]
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import StateBackend
+  from deepagents.middleware.summarization import create_summarization_tool_middleware
+
+  backend = StateBackend  # if using default backend
+
+  model="openai:gpt-5.5"
+  agent = create_deep_agent(
+      model=model,
+      middleware=[  # [!code highlight]
+          create_summarization_tool_middleware(model, backend),  # [!code highlight]
+      ],  # [!code highlight]
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import StateBackend
+  from deepagents.middleware.summarization import create_summarization_tool_middleware
+
+  backend = StateBackend  # if using default backend
+
+  model="anthropic:claude-sonnet-4-6"
+  agent = create_deep_agent(
+      model=model,
+      middleware=[  # [!code highlight]
+          create_summarization_tool_middleware(model, backend),  # [!code highlight]
+      ],  # [!code highlight]
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import StateBackend
+  from deepagents.middleware.summarization import create_summarization_tool_middleware
+
+  backend = StateBackend  # if using default backend
+
+  model="openrouter:z-ai/glm-5.2"
+  agent = create_deep_agent(
+      model=model,
+      middleware=[  # [!code highlight]
+          create_summarization_tool_middleware(model, backend),  # [!code highlight]
+      ],  # [!code highlight]
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import StateBackend
+  from deepagents.middleware.summarization import create_summarization_tool_middleware
+
+  backend = StateBackend  # if using default backend
+
+  model="fireworks:accounts/fireworks/models/glm-5p2"
+  agent = create_deep_agent(
+      model=model,
+      middleware=[  # [!code highlight]
+          create_summarization_tool_middleware(model, backend),  # [!code highlight]
+      ],  # [!code highlight]
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import StateBackend
+  from deepagents.middleware.summarization import create_summarization_tool_middleware
+
+  backend = StateBackend  # if using default backend
+
+  model="baseten:zai-org/GLM-5.2"
+  agent = create_deep_agent(
+      model=model,
+      middleware=[  # [!code highlight]
+          create_summarization_tool_middleware(model, backend),  # [!code highlight]
+      ],  # [!code highlight]
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import StateBackend
+  from deepagents.middleware.summarization import create_summarization_tool_middleware
+
+  backend = StateBackend  # if using default backend
+
+  model="ollama:north-mini-code-1.0"
+  agent = create_deep_agent(
+      model=model,
+      middleware=[  # [!code highlight]
+          create_summarization_tool_middleware(model, backend),  # [!code highlight]
+      ],  # [!code highlight]
+  )
+  ```
+</CodeGroup>
 
 Adding the compaction tool does not disable automatic summarization at 85% of the model's context limit. Both share the same summarization engine and state.
 
@@ -399,25 +1045,154 @@ Deep agents can use long-term memory for storing user preferences, accumulated k
 To use long-term memory, you must use a `CompositeBackend` that routes specific paths (typically `/memories/`) to a LangGraph Store, which provides durable cross-thread persistence.
 The `CompositeBackend` is a hybrid storage system where some files persist indefinitely while others remain scoped to a single thread.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
-from langgraph.store.memory import InMemoryStore
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+  from langgraph.store.memory import InMemoryStore
 
-def make_backend(runtime):
-    return CompositeBackend(
-        default=StateBackend(runtime),
-        routes={"/memories/": StoreBackend(runtime)},
-    )
+  store = InMemoryStore()
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    store=InMemoryStore(),
-    backend=make_backend,
-    system_prompt="""When users tell you their preferences, save them to
-    /memories/user_preferences.txt so you remember them in future conversations.""",
-)
-```
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      store=store,
+      backend=CompositeBackend(
+          default=StateBackend(),
+          routes={
+              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+          },
+      ),
+      system_prompt="""When users tell you their preferences, save them to
+      /memories/user_preferences.txt so you remember them in future conversations.""",
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+  from langgraph.store.memory import InMemoryStore
+
+  store = InMemoryStore()
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      store=store,
+      backend=CompositeBackend(
+          default=StateBackend(),
+          routes={
+              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+          },
+      ),
+      system_prompt="""When users tell you their preferences, save them to
+      /memories/user_preferences.txt so you remember them in future conversations.""",
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+  from langgraph.store.memory import InMemoryStore
+
+  store = InMemoryStore()
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      store=store,
+      backend=CompositeBackend(
+          default=StateBackend(),
+          routes={
+              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+          },
+      ),
+      system_prompt="""When users tell you their preferences, save them to
+      /memories/user_preferences.txt so you remember them in future conversations.""",
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+  from langgraph.store.memory import InMemoryStore
+
+  store = InMemoryStore()
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      store=store,
+      backend=CompositeBackend(
+          default=StateBackend(),
+          routes={
+              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+          },
+      ),
+      system_prompt="""When users tell you their preferences, save them to
+      /memories/user_preferences.txt so you remember them in future conversations.""",
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+  from langgraph.store.memory import InMemoryStore
+
+  store = InMemoryStore()
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      store=store,
+      backend=CompositeBackend(
+          default=StateBackend(),
+          routes={
+              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+          },
+      ),
+      system_prompt="""When users tell you their preferences, save them to
+      /memories/user_preferences.txt so you remember them in future conversations.""",
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+  from langgraph.store.memory import InMemoryStore
+
+  store = InMemoryStore()
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      store=store,
+      backend=CompositeBackend(
+          default=StateBackend(),
+          routes={
+              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+          },
+      ),
+      system_prompt="""When users tell you their preferences, save them to
+      /memories/user_preferences.txt so you remember them in future conversations.""",
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from deepagents.backends import CompositeBackend, StateBackend, StoreBackend
+  from langgraph.store.memory import InMemoryStore
+
+  store = InMemoryStore()
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      store=store,
+      backend=CompositeBackend(
+          default=StateBackend(),
+          routes={
+              "/memories/": StoreBackend(namespace=lambda _rt: ("memories",)),
+          },
+      ),
+      system_prompt="""When users tell you their preferences, save them to
+      /memories/user_preferences.txt so you remember them in future conversations.""",
+  )
+  ```
+</CodeGroup>
 
 You do not need to pre-populate `/memories/` with files.
 You provide the backend config, store, and system prompt instructions that tell the agent *what* to save and *where*.

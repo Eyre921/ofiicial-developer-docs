@@ -133,7 +133,7 @@ Your agent only processes emails that pass your chosen security level. Rejected 
 
 ## Security Levels
 
-Choose a security level before setting up your webhook endpoint. We recommend starting with **Level 1** and relaxing only if needed.
+Choose a security level before setting up your webhook endpoint. Start with **Level 1** and relax only if needed.
 
 | Level | Name                 | Best For                                                  |
 | ----- | -------------------- | --------------------------------------------------------- |
@@ -217,7 +217,7 @@ If you're developing with AI, Resend offers several resources to improve your ex
 
 ## Prerequisite: Create an API Key
 
-We require a human to create a Resend account. Once you have an account, you'll need to [create an API key](https://resend.com/api-keys). With an API key, your agent can perform many other tasks.
+A human must create the Resend account. Once you have an account, you'll need to [create an API key](/docs/create-an-api-key). With an API key, your agent can perform many other tasks.
 
 <Info>
   To send or receive with Resend, you'll need to [verify a domain](https://resend.com/domains). While an agent can [create a domain](/docs/api-reference/domains/create-domain), the API returns DNS records you will need to add in your DNS provider before [verifying your DNS records](/docs/api-reference/domains/verify-domain). You may find it easier to verify your domain in the dashboard.
@@ -316,7 +316,7 @@ Or install individually:
 
 ## Quick Start Guides
 
-Throughout our documentation, we provide quick start guides for common tasks with Resend. They contain step-by-step instructions for sending emails, creating templates, and more. Copy the prompt for your agent or click to open in Cursor.
+The documentation includes quick start guides for common tasks with Resend. They contain step-by-step instructions for sending emails, creating templates, and more. Copy the prompt for your agent or click to open in Cursor.
 
 <Prompt description="Example agent quick start guide for sending emails." icon="envelope">
   Resend provides two endpoints for sending emails:
@@ -505,7 +505,7 @@ The `@resend/chat-sdk-adapter` package is a Vercel Chat SDK adapter that turns e
 
 ## AI Builder Guides
 
-We offer guides to using Resend with popular AI builders to help you get started with AI agents.
+Get started using Resend with popular AI builders:
 
 * [Anything Integration](/docs/anything-integration)
 * [Lovable Integration](/docs/lovable-integration)
@@ -1418,7 +1418,7 @@ Source: https://resend.com/docs/api-reference/broadcasts/delete-broadcast
 DELETE /broadcasts/:broadcast_id
 Remove an existing broadcast.
 
-You can only delete broadcasts that are in the `draft` status. In addition, if you delete a broadcast that has already been scheduled to be sent, we will automatically cancel the scheduled delivery and it won't be sent.
+You can only delete Broadcasts that have not yet been sent (i.e., `draft` or `scheduled`). Deleting a `scheduled` Broadcast also cancels the scheduled delivery and the email will not be sent.
 
 ## Path Parameters
 
@@ -7634,7 +7634,7 @@ Source: https://resend.com/docs/api-reference/emails/send-batch-emails
 POST /emails/batch
 Trigger up to 100 batch emails at once.
 
-Instead of sending one email per HTTP request, we provide a batching endpoint that permits you to send up to 100 emails in a single API call.
+Instead of sending one email per HTTP request, Resend provides a batching endpoint that permits you to send up to 100 emails in a single API call.
 
 ## Body Parameters
 
@@ -8596,7 +8596,7 @@ Troubleshoot problems with this comprehensive breakdown of all error codes.
 
 ## Error schema
 
-We use standard HTTP response codes for success and failure notifications, and our errors are further classified by type.
+Resend uses standard HTTP response codes for success and failure notifications, and errors are further classified by type.
 
 ### `invalid_idempotency_key`
 
@@ -8607,7 +8607,7 @@ We use standard HTTP response codes for success and failure notifications, and o
 ### `validation_error`
 
 * **Status:** 400
-* **Message:** We found an error with one or more fields in the request.
+* **Message:** An error was found with one or more fields in the request.
 * **Suggested action:** The message will contain more details about what field and error were found.
 
 ### `missing_api_key`
@@ -8727,7 +8727,7 @@ We use standard HTTP response codes for success and failure notifications, and o
 ### `security_error`
 
 * **Status:** 451
-* **Message:** We may have found a security issue with the request.
+* **Message:** A possible security issue was found with the request.
 * **Suggested action:** The message will contain more details. [Contact support](https://resend.com/contact) for more information.
 
 ### `application_error`
@@ -8750,7 +8750,7 @@ Understand general concepts, response codes, and authentication strategies.
 
 ## Base URL
 
-The Resend API is built on **REST** principles. We enforce **HTTPS** in every request to improve data security, integrity, and privacy. The API does not support **HTTP**.
+The Resend API is built on **REST** principles. **HTTPS** is enforced in every request to improve data security, integrity, and privacy. The API does not support **HTTP**.
 
 All requests contain the following base URL:
 
@@ -9103,6 +9103,511 @@ Retrieve a single API request log.
   }
   ```
 </ResponseExample>
+
+
+# Authorize
+Source: https://resend.com/docs/api-reference/oauth/authorize
+
+GET /oauth/authorize
+Start the OAuth authorization code + PKCE flow.
+
+This is a browser redirect endpoint, not a JSON API call. Open this URL in the user's browser. Don't fetch it from a backend or CLI process and follow the redirect yourself, since the user has to see and approve the consent screen.
+
+The flow:
+
+1. The client opens `/oauth/authorize` in the user's browser.
+2. Resend redirects (`302`) to the Resend dashboard consent screen, which handles login if needed.
+3. The user reviews and approves (or denies) the request.
+4. The dashboard redirects the browser back to the client's `redirect_uri` with a `code` and the original `state`.
+
+## Query Parameters
+
+<ParamField type="string">
+  The `client_id` from [registration](/docs/api-reference/oauth/register).
+</ParamField>
+
+<ParamField type="string">
+  Must be `"code"`.
+</ParamField>
+
+<ParamField type="string">
+  Must exactly match one of the client's registered redirect URIs. The only
+  exception is loopback URIs (`127.0.0.1`, `localhost`, `[::1]`), where the port
+  is allowed to differ from what was registered.
+</ParamField>
+
+<ParamField type="string">
+  Space-delimited list of requested scopes. If omitted, defaults to the client's
+  full registered scope set.
+</ParamField>
+
+### Scopes
+
+* `emails:send` is enough for send-only routes: `POST /emails`, `POST /email`,
+  `POST /emails/sending`, `POST /email/sending`, and `POST
+  /broadcasts/:broadcastId/send`.
+* `full_access` is required for every other API route. Also satisfies any
+  `emails:send`-scoped check.
+
+<ParamField type="string">
+  An opaque value round-tripped back on the callback unchanged. Use it to bind
+  the callback to the request that started the flow. Recommended, not required
+  by the server, but a client that skips it can't detect CSRF on the callback.
+  Maximum 1024 characters.
+</ParamField>
+
+<ParamField type="string">
+  Base64url-encoded SHA-256 hash of a
+  [code\_verifier](/docs/api-reference/oauth/token#param-code-verifier) your client
+  generates.
+</ParamField>
+
+<ParamField type="string">
+  Must be `"S256"`. Resend does not support the `plain` method.
+</ParamField>
+
+<Info>
+  A `resource` parameter (RFC 8707) is accepted but ignored. Resend does not
+  support resource indicators yet.
+</Info>
+
+<RequestExample>
+  ```bash Browser navigation theme={"theme":{"light":"github-light","dark":"vesper"}}
+  GET https://api.resend.com/oauth/authorize?client_id=550e8400-e29b-41d4-a716-446655440000&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&scope=emails%3Asend&state=STATE_VALUE&code_challenge=CODE_CHALLENGE_VALUE&code_challenge_method=S256
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```http Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  HTTP/1.1 302 Found
+  Location: https://resend.com/oauth/authorize/3f9c1e2a-...
+  ```
+</ResponseExample>
+
+## Errors
+
+Once Resend validates `client_id` and `redirect_uri`, every other error redirects (`302`) back to `redirect_uri` with `error`, `error_description`, and (if provided) `state` as query parameters. The error is not returned as a JSON body, since the user is mid-redirect in a browser. Before that point (unknown `client_id`, invalid or unregistered `redirect_uri`), Resend returns a `400` JSON body instead, since it can't safely redirect to an unvalidated URL.
+
+| `error`               | When                                                                                                       |
+| --------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `invalid_request`     | `response_type` isn't `code`, or `code_challenge_method` isn't `S256`.                                     |
+| `unauthorized_client` | The client isn't registered for the `authorization_code` grant.                                            |
+| `invalid_scope`       | No scope requested, a scope isn't supported, or a scope isn't in the client's registered `scopes_allowed`. |
+| `server_error`        | Resend failed to persist the authorization request.                                                        |
+
+
+# List Grants
+Source: https://resend.com/docs/api-reference/oauth/list-grants
+
+GET /oauth/grants
+Retrieve a list of OAuth grants for the authenticated team.
+
+Returns all of the team's OAuth grants, including revoked ones. A grant's
+`revoked_at` and `revoked_reason` are `null` while it is active. They are set
+once the grant is revoked.
+
+<QueryParams type="OAuth grants" />
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.oauthGrants.list();
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result, list_opts::ListOptions};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend.oauth.list(ListOptions::default()).await?;
+
+    Ok(())
+  }
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/oauth/grants' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "650e8400-e29b-41d4-a716-446655440001",
+        "client_id": "430eed87-632a-4ea6-90db-0aace67ec228",
+        "scopes": ["emails:send"],
+        "resource": null,
+        "created_at": "2026-04-08 00:11:13.110779+00",
+        "revoked_at": null,
+        "revoked_reason": null,
+        "client": {
+          "name": "Resend CLI",
+          "logo_uri": "https://example.com/logo.png"
+        }
+      },
+      {
+        "id": "650e8400-e29b-41d4-a716-446655440002",
+        "client_id": "430eed87-632a-4ea6-90db-0aace67ec228",
+        "scopes": ["emails:send", "domains:read"],
+        "resource": "https://api.resend.com",
+        "created_at": "2026-04-07 00:11:13.110779+00",
+        "revoked_at": "2026-04-09 00:11:13.110779+00",
+        "revoked_reason": "revoked_from_api",
+        "client": {
+          "name": "Resend CLI",
+          "logo_uri": "https://example.com/logo.png"
+        }
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# Register Client
+Source: https://resend.com/docs/api-reference/oauth/register
+
+POST /oauth/register
+Dynamically register an OAuth client for the authorization code + PKCE flow (RFC 7591).
+
+Dynamic Client Registration (DCR) lets a client obtain a `client_id` at runtime instead of being pre-registered by Resend. This endpoint is unauthenticated (no API key), but only ever issues **public** clients: Resend does not support confidential clients or client secrets.
+
+<Note>
+  This endpoint is rate-limited to 20 registrations per hour per IP address.
+  Requests over the limit get a `429` with `{"error": "too_many_requests"}`.
+</Note>
+
+## Body Parameters
+
+<ParamField type="string">
+  A human-readable name for the client. Maximum 200 characters.
+</ParamField>
+
+<ParamField type="string[]">
+  URIs the authorization server may redirect to after the user approves the
+  request. At least one is required, up to 10, each up to 2048 characters. See
+  [Allowed redirect URIs](#allowed-redirect-uris) for the rules.
+</ParamField>
+
+<ParamField type="string[]">
+  Must include `authorization_code`. `refresh_token` is also supported.
+</ParamField>
+
+<ParamField type="string[]">
+  Only `code` is supported. The value is validated if present but not stored;
+  the response always echoes back `["code"]`.
+</ParamField>
+
+<ParamField type="string">
+  Space-delimited list of scopes to request, e.g. `"emails:send"`. Must be a
+  subset of the [supported scopes](/docs/api-reference/oauth/authorize#scopes). If
+  omitted, the client is registered with every supported scope.
+</ParamField>
+
+<ParamField type="string">
+  Only `none` is supported. Resend clients authenticate at the token endpoint
+  with PKCE, not a client secret.
+</ParamField>
+
+<ParamField type="string">
+  A URL for the client's homepage. Echoed back, not otherwise used.
+</ParamField>
+
+<ParamField type="string">
+  A URL for the client's logo. Shown on the consent screen.
+</ParamField>
+
+### Allowed redirect URIs
+
+* `https://` URIs are unrestricted.
+* `http://` is only allowed for loopback addresses (`127.0.0.1`, `localhost`,
+  `[::1]`), for native/CLI clients that run a local callback server.
+* Private-use URI schemes (e.g. `cursor://`, `vscode://`) are allowed, since the
+  OS routes them only to the registered native app.
+* `file`, `ftp`, `data`, `javascript`, `blob`, `about`, and `vbscript` schemes
+  are rejected, and none of the URIs may include a fragment.
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/register' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "client_name": "Example OAuth Client",
+    "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+    "grant_types": ["authorization_code", "refresh_token"],
+    "response_types": ["code"],
+    "token_endpoint_auth_method": "none",
+    "scope": "emails:send"
+  }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "client_id": "550e8400-e29b-41d4-a716-446655440000",
+    "client_id_issued_at": 1750000000,
+    "client_name": "Example OAuth Client",
+    "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+    "grant_types": ["authorization_code", "refresh_token"],
+    "response_types": ["code"],
+    "token_endpoint_auth_method": "none",
+    "scope": "emails:send"
+  }
+  ```
+</ResponseExample>
+
+## Errors
+
+Errors use the standard OAuth shape (`{"error": "...", "error_description": "..."}`) rather than Resend's usual [error format](/docs/api-reference/errors).
+
+| Status | `error`             | When                                                                     |
+| ------ | ------------------- | ------------------------------------------------------------------------ |
+| `400`  | `invalid_request`   | A required field is missing, malformed, or a redirect URI is disallowed. |
+| `400`  | `invalid_scope`     | `scope` includes a value outside the supported scope set.                |
+| `429`  | `too_many_requests` | More than 20 registrations from this IP in the last hour.                |
+
+
+# Revoke Token
+Source: https://resend.com/docs/api-reference/oauth/revoke
+
+POST /oauth/revoke
+Disconnect a client by revoking its refresh token.
+
+RFC 7009 token revocation. Revoking a refresh token revokes the entire grant: every access and refresh token issued under it stops working.
+
+Access tokens can't be revoked individually. Revoke the grant's refresh token instead. Per RFC 7009, this endpoint always returns `200` with an empty body.
+
+## Body Parameters
+
+<ParamField type="string">
+  The refresh token to revoke.
+</ParamField>
+
+<ParamField type="string" />
+
+<ParamField type="string">
+  Optional per RFC 7009. If set to `"access_token"`, the request fails: access
+  token revocation isn't supported. Any other value (including
+  `"refresh_token"`) is accepted and ignored. Unknown hints don't affect
+  behavior.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/revoke' \
+       -H 'Content-Type: application/x-www-form-urlencoded' \
+       -d 'client_id=550e8400-e29b-41d4-a716-446655440000&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```http Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  HTTP/1.1 200 OK
+  ```
+</ResponseExample>
+
+## Errors
+
+| Status | `error`           | When                                                                         |
+| ------ | ----------------- | ---------------------------------------------------------------------------- |
+| `400`  | `invalid_request` | `token` or `client_id` is missing, or `token_type_hint` is `"access_token"`. |
+| `401`  | `invalid_client`  | Unknown or disabled `client_id`.                                             |
+
+
+# Revoke Grant
+Source: https://resend.com/docs/api-reference/oauth/revoke-grant
+
+DELETE /oauth/grants/:oauth_grant_id
+Revoke an OAuth grant for the authenticated team.
+
+Revoking a grant invalidates every access and refresh token issued under it. Any
+team API key can revoke any of the team's grants. Returns `404` if the grant
+does not exist or was already revoked.
+
+## Path Parameters
+
+<ResendParamField type="string">
+  The OAuth grant ID.
+</ResendParamField>
+
+<RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.oauthGrants.revoke(
+    '650e8400-e29b-41d4-a716-446655440001',
+  );
+  ```
+
+  ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
+  use resend_rs::{Resend, Result};
+
+  #[tokio::main]
+  async fn main() -> Result<()> {
+    let resend = Resend::new("re_xxxxxxxxx");
+
+    let _data = resend
+      .oauth
+      .revoke("650e8400-e29b-41d4-a716-446655440001")
+      .await?;
+
+    Ok(())
+  }
+  ```
+
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X DELETE 'https://api.resend.com/oauth/grants/650e8400-e29b-41d4-a716-446655440001' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "oauth_grant",
+    "id": "650e8400-e29b-41d4-a716-446655440001",
+    "revoked_at": "2026-04-08T00:11:13.110Z",
+    "revoked_reason": "revoked_from_api"
+  }
+  ```
+</ResponseExample>
+
+
+# Token
+Source: https://resend.com/docs/api-reference/oauth/token
+
+POST /oauth/token
+Exchange an authorization code for tokens, or refresh an access token.
+
+Handles two grants, selected by the `grant_type` body field: `authorization_code` (with mandatory PKCE) and `refresh_token` (with rotation and reuse detection). Accepts both `application/json` and `application/x-www-form-urlencoded`. Prefer form encoding, since that's what most OAuth libraries send by default.
+
+Access tokens are JWTs signed with `ES256`, valid for 900 seconds. Refresh tokens are opaque strings, valid for 60 days from whenever they were last issued, and rotate on every use.
+
+## PKCE
+
+Before starting the [authorization request](/docs/api-reference/oauth/authorize), generate:
+
+* `code_verifier`: a high-entropy random string, 43–128 characters, from the
+  unreserved character set (`A-Z`, `a-z`, `0-9`, `-`, `.`, `_`, `~`). Keep it
+  client-side only.
+* `code_challenge`: the base64url-encoded SHA-256 hash of `code_verifier`,
+  sent during authorization.
+
+```javascript theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { createHash, randomBytes } from 'node:crypto';
+
+function base64url(input) {
+  return Buffer.from(input).toString('base64url');
+}
+
+const codeVerifier = base64url(randomBytes(64));
+const codeChallenge = base64url(
+  createHash('sha256').update(codeVerifier).digest(),
+);
+```
+
+## Authorization code grant
+
+### Body Parameters
+
+<ParamField type="string">
+  Must be `"authorization_code"`.
+</ParamField>
+
+<ParamField type="string" />
+
+<ParamField type="string">
+  The code from the `/oauth/authorize` callback. Single-use: redeeming it twice
+  fails with `invalid_grant`. Expires 10 minutes after it was issued.
+</ParamField>
+
+<ParamField type="string">
+  Must exactly match the `redirect_uri` used in the authorization request.
+</ParamField>
+
+<ParamField type="string">
+  The original value that
+  [code\_challenge](/docs/api-reference/oauth/authorize#param-code-challenge) was
+  derived from.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/token' \
+       -H 'Content-Type: application/x-www-form-urlencoded' \
+       -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&code=AUTHORIZATION_CODE&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "access_token": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im9hdXRoX2tleSIsInR5cCI6ImF0K2p3dCJ9...",
+    "token_type": "Bearer",
+    "expires_in": 900,
+    "refresh_token": "JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q",
+    "scope": "emails:send"
+  }
+  ```
+</ResponseExample>
+
+### Body Parameters
+
+<ParamField type="string">
+  Must be `"refresh_token"`.
+</ParamField>
+
+<ParamField type="string" />
+
+<ParamField type="string" />
+
+<ParamField type="string">
+  Optionally narrow the scope of the new access token. Must be a subset of what
+  the grant already has. You can't use this to escalate scope.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/oauth/token' \
+       -H 'Content-Type: application/x-www-form-urlencoded' \
+       -d 'grant_type=refresh_token&client_id=550e8400-e29b-41d4-a716-446655440000&refresh_token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "access_token": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im9hdXRoX2tleSIsInR5cCI6ImF0K2p3dCJ9...",
+    "token_type": "Bearer",
+    "expires_in": 900,
+    "refresh_token": "N3wRefreshTokenValue...",
+    "scope": "emails:send"
+  }
+  ```
+</ResponseExample>
+
+## Errors
+
+| Status | `error`               | When                                                                                                                                                                                           |
+| ------ | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `400`  | `invalid_request`     | A required field is missing or malformed.                                                                                                                                                      |
+| `400`  | `invalid_scope`       | Refresh requests a scope outside what the grant already has.                                                                                                                                   |
+| `400`  | `invalid_grant`       | The code/refresh token is invalid, expired, already used, or reused after rotation (which also revokes the grant). Also returned when PKCE verification fails or `redirect_uri` doesn't match. |
+| `401`  | `invalid_client`      | Unknown or disabled `client_id`.                                                                                                                                                               |
+| `400`  | `unauthorized_client` | The client isn't registered for the grant type it's using.                                                                                                                                     |
 
 
 # Pagination
@@ -9592,7 +10097,7 @@ The default maximum rate limit is **10 requests per second per team**. This limi
 
 After that, you'll hit the rate limit and receive a `429` response error code. You can find all 429 responses by filtering for 429 at the [Resend Logs page](https://resend.com/logs?status=429).
 
-To prevent this, we recommend reducing the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
+To prevent this, reduce the rate at which you request the API. This can be done by introducing a queue mechanism or reducing the number of concurrent requests per second. If you have specific requirements, [contact support](https://resend.com/contact) to request a rate increase.
 
 ## Email Quotas
 
@@ -21324,7 +21829,7 @@ Cloning reuses a Broadcast's design and content as a starting point for transact
 
 ## Sending a Broadcast from the Broadcast API
 
-We also offer the option to send your Broadcasts from our [Broadcast API](/docs/api-reference/broadcasts/create-broadcast).
+You can also send your Broadcasts from the [Broadcast API](/docs/api-reference/broadcasts/create-broadcast).
 
 The Broadcast API offers 6 endpoints for programmatically creating, updating, and sending broadcasts.
 
@@ -21703,7 +22208,7 @@ Source: https://resend.com/docs/dashboard/domains/introduction
 
 Visualize all the domains on the Resend Dashboard.
 
-Resend sends emails using a domain you own (i.e., not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send and receive emails with Resend.
+Resend sends emails using a domain you own (not a shared or public domain). You must [add and verify at least one domain](/docs/add-a-domain) to send and receive emails with Resend.
 
 <Warning>
   Domain not verifying? [Try
@@ -21986,7 +22491,7 @@ Especially for transactional emails like magic links, password resets, and welco
 Here are some of the other benefits of using our multi-region email sending feature:
 
 1. **Faster delivery:** By sending emails from the region closest to your user, you can reduce latency and ensure a faster time-to-inbox. This can be the difference between people using/buying your product or not.
-2. **Easier account management:** Instead of having to maintain different accounts for each region, we're providing multi-region within the same account. That way, you aren't juggling different login credentials.
+2. **Easier account management:** Instead of having to maintain different accounts for each region, you get multi-region support within the same account. That way, you aren't juggling different login credentials.
 3. **Increased resilience:** In case of disruption in one region, our multi-region feature enables you to send emails from a backup domain in a separate region, guaranteeing maximum uptime.
 
 ## Get Started
@@ -21997,7 +22502,7 @@ Finally, select the region you want to send your emails.
 
 ## How to set up multi-region for the same domain
 
-For advanced needs, you can set up multiple regions for the same domain. We recommend setting a unique subdomain for each region (e.g., us.domain.com, eu.domain.com). When sending transactional emails or marketing emails, choose the right domain for your users.
+For advanced needs, you can set up multiple regions for the same domain. We recommend setting a unique subdomain for each region (e.g., us.example.com, eu.example.com). When sending transactional emails or marketing emails, choose the right domain for your users.
 
 ## Changing Domain Region
 
@@ -22007,7 +22512,7 @@ If you'd like to switch the region your domain is set to:
 2. Add the same domain again, selecting the new region.
 3. Update your DNS records to point to the new domain.
 
-For more help, please reach out to [Support](https://resend.com/help), and we can help you out.
+For more help, please reach out to [Support](https://resend.com/help) for assistance.
 
 
 # Open and Click Tracking
@@ -22478,18 +22983,13 @@ When recipients clicks a link, the request is redirected to your tracking subdom
 
 ## Troubleshooting
 
-### Occasional Extra Verification Step
-
-If we detect CAA records on your domain, we will show an additional CAA record that needs to be created. This ensures
-that we can issue a TLS certificate for your tracking subdomain.
-
 ### Multiple tracking CNAME records
 
 When you change your tracking subdomain, you may see two CNAME records in the DNS Records table: one active and one inactive (shown dimmed). The inactive record is kept intentionally to avoid breaking links in emails that were already sent using the previous subdomain. You do not need to remove it.
 
 ### Changing the Tracking Subdomain
 
-Because tracking subdomains are used in email links, we handle them differently than other records.
+Because tracking subdomains are used in email links, they're handled differently than other records.
 
 * **Not removable**: After your tracking subdomain has been created, it can only be changed, never removed. This behavior preserves any
   email links that may already be sent with the current tracking subdomain. For this reason, do **not remove old tracking DNS records**. (All previously used records remain active and are included in the response.)
@@ -23255,7 +23755,7 @@ You can view and download attachments from sent emails from the dashboard or pro
 2. Navigate to any email you sent with an attachment.
 3. Click on the attachment to download it locally.
 
-Attachments include the filename and an icon to help you identify the type of attachment. We show unique icons for each attachment type:
+Attachments include the filename and an icon to help you identify the type of attachment. Each attachment type has a unique icon:
 
 * Image
 * PDF
@@ -23833,7 +24333,7 @@ When you view your email within Resend, there is a "Insights" option. When selec
 
 <img alt="Deliverability Insights" />
 
-If a check passes, you'll get a nice green check. Resend will provide advice if it fails. We break these into two categories: Attention and Improvements.
+If a check passes, you'll get a nice green check. If a check fails, you'll get advice broken into two categories: Attention and Improvements.
 
 ## Attention Insights
 
@@ -23851,7 +24351,7 @@ For example, if your sending domain is `@widgets.com`, ensure links within the m
 
 DMARC is a TXT record published in the DNS that specifies how email receivers should handle messages from your domain that don't pass SPF or DKIM validation. [A valid DMARC record](/docs/dashboard/domains/dmarc) can help improve email deliverability.
 
-Gmail and Yahoo have required bulk senders to have a DMARC record published since 2024. When [viewing your domain](https://resend.com/domains) in Resend, we provide a suggested DMARC record if you’re unsure what to publish.
+Gmail and Yahoo have required bulk senders to have a DMARC record published since 2024. When [viewing your domain](https://resend.com/domains) in Resend, you'll see a suggested DMARC record if you’re unsure what to publish.
 
 #### Include Plain Text Version
 
@@ -23963,7 +24463,7 @@ Understanding and resolving delivery issues.
 
 A suppression happens when you try sending an email to a recipient that previously [bounced](/docs/dashboard/emails/email-bounces) or marked your email as spam.
 
-To protect your sender reputation and our sending infrastructure, we proactively stop that delivery from happening.
+Resend will not attempt to deliver these emails in order to protect your sender reputation and our sending infrastructure.
 
 ## What causes a suppression
 
@@ -24497,7 +24997,7 @@ Before adding inline images, consider the following.
 * As these images are sent as attachments, you need to encode your image as Base64 when sending the raw content via the API. There is no need to do this when passing the path of a remote image (the API handles this for you).
 * Inline images increase the size of the email.
 * Inline images may be rejected by some clients (especially webmail).
-* As with all attachments, we recommend adding a `content_type` (e.g. `image/png`) or `filename` (e.g. `logo.png`) parameter to the attachment object, as this often helps email clients render the attachment correctly.
+* As with all attachments, add a `content_type` (e.g. `image/png`) or `filename` (e.g. `logo.png`) parameter to the attachment object. This helps email clients render the attachment correctly.
 
 <Note>
   All attachments (including inline images) do not currently display in the
@@ -24519,21 +25019,21 @@ Include an idempotency key in any email requests to ensure that the same email r
 
 ## How it works
 
-When you send an email with an idempotency key, we check if an email with the same idempotency key has already been sent in the last 24 hours. **This is an optional feature** that simplifies managing retries on your side.
+When you send an email with an idempotency key, Resend checks whether an email with the same idempotency key has already been sent in the last 24 hours. This is an optional feature that simplifies managing retries on your side.
 
-This makes it safe to retry requests that send an email. You don't have to worry about checking if the original request was sent -- you can make the same request and our API will give the same response, without actually sending the email again.
+This makes it safe to retry requests that send an email. You don't have to worry about checking if the original request was sent. Instead, you can make the same request and our API will give the same response, without actually sending the email again.
 
 ## How to use idempotency keys
 
-Idempotency keys can be **up to 256 characters** and must be unique per API request.
+Idempotency keys can be up to 256 characters and must be unique per API request.
 
-We **recommend using a UUID** or other string that uniquely identifies that specific email.
+We recommend that you use a UUID or other string that uniquely identifies that specific email.
 
 <Tip>If you have multiple events that trigger emails related to a single entity in your system, you can format your idempotency keys to take advantage of that entity's ID. One idea is to format idempotency keys like `<event-type>/<entity-id>`, for example `welcome-user/123456789`. The specific format you use is up to you.</Tip>
 
 Send the key in the `Idempotency-Key` HTTP header in your API requests. Our SDKs also provide a convenient way to set this header. If you're using SMTP, you can set the `Resend-Idempotency-Key` email header instead.
 
-We keep idempotency keys in our system for **24 hours**. This gives you an ample window to retry any failed processes on your end without having to keep track of the sent status.
+Idempotency keys are kept in the system for **24 hours**. This gives you an ample window to retry any failed processes on your end without having to keep track of the sent status.
 
 ### `POST /emails` endpoint example
 
@@ -25667,14 +26167,14 @@ Simulate different events by sending test emails.
 
 During development, it's important to test different deliverability scenarios.
 
-> **Example**: When an email hard bounces or is marked as spam, it's important to stop sending emails to the recipient, as continuing to send emails to those addresses will damage your domain reputation. We recommend [creating a webhook endpoint](/docs/webhooks/introduction) to capture these events and remove the addresses from your mailing lists.
+> **Example**: When an email hard bounces or is marked as spam, it's important to stop sending emails to the recipient, as continuing to send emails to those addresses will damage your domain reputation. Consider [creating a webhook endpoint](/docs/webhooks/introduction) to capture these events and remove the addresses from your mailing lists.
 
 When testing, avoid:
 
 * sending to fake email addresses
 * setting up a fake SMTP server
 
-We provide the following test email addresses to help you simulate different email events without damaging your domain reputation. These test emails enable the safe use of Resend's Dashboard, Webhooks, and API when developing your application.
+Use the provided `resend.dev` test email addresses to simulate different email events without damaging your domain reputation. These test emails enable the safe use of Resend's Dashboard, Webhooks, and API when developing your application.
 
 <Note>Test emails count against your account's sending quota.</Note>
 
@@ -26968,7 +27468,7 @@ Besides [using Resend-managed domains](/docs/dashboard/receiving/introduction), 
       ```
     </CodeGroup>
 
-    Once you receive the email event, you can process the email body and attachments. We also recommend implementing [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
+    Once you receive the email event, you can process the email body and attachments. You can also implement [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
@@ -27007,7 +27507,7 @@ If you already have a verified domain, you can enable receiving by using the tog
 
 After enabling receiving, you'll see a modal showing the MX record that you need to add to your DNS provider to start receiving emails.
 
-Once you add the MX record, confirm by clicking the "I've added the record" button and wait for the receiving record to show as "verified".
+Once you add the MX record, confirm by clicking the **I've added the record** button and wait for the receiving record to show as "verified".
 
 ## FAQ
 
@@ -27520,7 +28020,7 @@ Here's how to start receiving emails using a domain managed by Resend.
       ```
     </CodeGroup>
 
-    Once you receive the email event, you can process the email body and attachments. We also recommend implementing [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
+    Once you receive the email event, you can process the email body and attachments. You can also implement [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
@@ -27677,7 +28177,7 @@ Reply to Receiving emails in the same thread.
 
 Email clients thread emails by using the `message_id` metadata.
 
-If you want to reply to an email, add the `In-Reply-To` header set to the `message_id` of the received email. We also recommend setting the subject to start with `Re:` so that email clients can group the replies together.
+If you want to reply to an email, add the `In-Reply-To` header set to the `message_id` of the received email. To signal the threading, set the subject to start with `Re:` so that email clients can group the replies together.
 
 ## Get the message ID
 
@@ -28330,7 +28830,7 @@ Source: https://resend.com/docs/dashboard/segments/migrating-from-audiences-to-s
 
 Learn how to migrate from Audiences to Segments
 
-We've recently changed how Contacts are segmented. Before, each Contact was part of one Audience and if you created another contact with the same email address in a different Audience, it would be a completely separate object.
+Contact segmentation at Resend has changed to simplify managing your contacts. Before, each Contact was part of one Audience and if you created another contact with the same email address in a different Audience, it would be a completely separate object.
 
 In the new model, Contacts are now independent of Audiences, which are now called Segments. A Contact can be in zero, one or multiple Segments and still count as one when calculating your quota usage.
 
@@ -28338,7 +28838,7 @@ Contacts API endpoints that previously required an `audience_id` can now be used
 
 ## What's changing
 
-We're moving to a **Global Contacts** model.
+Resend now uses a **Global Contacts** model.
 
 * **Before**: If a Contact with the same email appeared in multiple Segments, it was counted as multiple Contacts.
 * **Now**: Each email address is treated as a single Contact across your team, even if it appears in multiple Segments.
@@ -28360,7 +28860,7 @@ From now on, contacts will see a preference page where they can:
 
 ## What to Do
 
-If you've been using Audiences for both segmentation and unsubscribes, we recommend switching your unsubscribe logic to **Topics**:
+If you've been using Audiences for both segmentation and unsubscribes, switch your unsubscribe logic to **Topics**:
 
 1. Create a Topic for each type of email you send.
 2. Assign the right users to each Topic.
@@ -28376,7 +28876,7 @@ For details on the new API endpoints view:
 
 ## Get more help
 
-If you have a use case not covered here, [please reach out](https://resend.com/help). We'll make sure your transition is smooth.
+If you have a use case not covered here, [please reach out](https://resend.com/help) for a smooth transition.
 
 
 # Managing Billing
@@ -29464,7 +29964,7 @@ To add a custom variable, select **Variable** in the commands palette or type `{
 
 Each variable is an object with the following properties:
 
-* `key`: The key of the variable. We recommend capitalizing the key. (e.g. `PRODUCT_NAME`).
+* `key`: The key of the variable, commonly uppercase (e.g., `PRODUCT_NAME`).
 * `type`: The type of the variable (`'string'` or `'number'`).
 * `fallback_value`: The fallback value of the variable. If no fallback value is provided, you must provide a value for the variable when sending an email using the template.
 
@@ -30173,7 +30673,7 @@ With webhook data in your database, you can build powerful automations:
 
 While you can always [build your own webhook handler](/docs/webhooks/introduction), it requires development resources.
 
-To help our customers get started quickly, we've built the [Resend Webhook Ingester](/docs/webhooks/ingester). It's an open-source, ready-to-deploy solution that handles all the complexity for you:
+You can get started quickly with the [Resend Webhook Ingester](/docs/webhooks/ingester). It's an open-source, ready-to-deploy solution that handles all the complexity for you:
 
 * **One-click deployment** to Vercel, Railway, or Render
 * **Signature verification** built-in using Svix
@@ -31544,16 +32044,16 @@ Source: https://resend.com/docs/explore-sending-features
 
 Resend has a wide range of features for sending both transactional and marketing emails.
 
-Resend provides an API, command-line interface (CLI), webhooks, automations, AI tooling, and a no-code Dashboard interface. These features support both types of emails you need to send:
+Resend provides an API, command-line interface (CLI), webhooks, and automations to support both types of emails you need to send:
 
 * **Transactional emails:** personalized, event-driven communication
 * **Marketing campaigns:** bulk email [Broadcasts](/docs/dashboard/broadcasts/introduction) distributed to a contact list
 
-All of these email features and activities are also available through a user-friendly Dashboard. This allows your entire team to create and send emails, update automations, manage contacts, track performance, and more.
+All of these email features and activities are also available through a user-friendly Dashboard and through AI tooling for agents. This allows your entire team to create and send emails, update automations, manage contacts, track performance, and more.
 
 Get started with Resend's free plan, then choose from multiple [pricing plans and tiers](https://resend.com/pricing) depending on the number and type of emails you need to send as you grow.
 
-## I need to send transactional emails
+## Send transactional emails
 
 A **Transactional email** is a message triggered by a user action or required for legal compliance. Common examples include:
 
@@ -31567,7 +32067,7 @@ With a Resend Transactional Plan, you can send transactional emails from your ap
 
 You can also trigger emails using [webhooks](/docs/webhooks/introduction), and even [create steps to automate emails](/docs/dashboard/automations/introduction) based on custom events from your application.
 
-## I need to send bulk marketing emails
+## Send bulk marketing emails
 
 Marketing emails are **promotional**, **informative**, or **general communication** messages.
 
@@ -31587,7 +32087,7 @@ When you use Broadcasts, you get tools for [managing your contacts](/docs/dashbo
 
 Marketing plans also allow you to create [Resend automations](/docs/dashboard/automations/introduction) for repeatable actions like welcoming new subscribers and updating your contact list. Resources such as the [Resend MCP server](/docs/mcp-server), [agent skills](/docs/react-email-skill), and more are all available to your preferred [AI builders and tooling](/docs/ai-onboarding) to help you send and manage your marketing emails.
 
-## I need to send a combination of emails
+## Send a combination of emails
 
 It is common to need to send both transactional and marketing emails to your users. Your customers need personalized emails about their orders, but may also wish to subscribe to a newsletter that is delivered to your entire contact list.
 
@@ -31627,6 +32127,318 @@ Resend allows you to choose both a Transactional and a Marketing plan, each at t
     or framework.
   </Card>
 </CardGroup>
+
+
+# Building an OAuth client for Resend
+Source: https://resend.com/docs/guides/building-a-resend-oauth-client
+
+Implement an OAuth 2.1 + PKCE client against the Resend API, from scratch or with a library.
+
+Resend implements OAuth 2.0 and 2.1, including Proof Key for Code Exchange (PKCE) for authorization code exchanges. Resend also supports Dynamic Client Registration (DCR), which lets a client register itself at runtime via POST /oauth/register. Use DCR when a client, such as a MCP host, can't know its deployment details in advance.
+
+Resend does not yet support confidential clients, so all clients are public, and PKCE is required on every authorization code exchange. Because Resend does not offer self-service verification or domain-ownership checks yet, pre-register remote third-party clients rather than registering them dynamically, but you can register them with the same register endpoint.
+
+The Resend dashboard hosts the login and consent screen. Your client only needs to open the authorization URL in a browser and handle the callback. You don't build any consent UI yourself.
+
+## Recommended implementation paths
+
+Before getting to the integration, decide between registering the client dynamically or registering it beforehand and reusing a fixed `client_id`.
+
+Dynamic registration is for clients that can't predict their own deployment details ahead of time, like an MCP server. The standard case is registering beforehand, and the rest of this guide assumes that path.
+
+If you're registering beforehand, ask us to mark the client `manual_verified`. That gets it a verified badge on the consent screen. It's the only effect it has today. It doesn't change scopes, rate limits, or anything else.
+
+## Scopes
+
+Use the smallest scope that works for your integration:
+
+* `emails:send` is enough for send-only routes, such as `POST /emails`, `POST /email`, `POST /emails/sending`, `POST /email/sending`, and `POST /broadcasts/:broadcastId/send`.
+* `full_access` is required for other API routes.
+
+If a dynamically registered client omits `scope`, Resend registers it with every supported scope. Pass `scope` explicitly during registration and authorization instead of relying on that default.
+
+## Request encoding and `resource`
+
+Dynamic client registration uses JSON. The token and revocation endpoints accept both JSON and `application/x-www-form-urlencoded`, but prefer form encoding for `/oauth/token` and `/oauth/revoke`, since that's what most OAuth libraries send by default.
+
+Resend does not support RFC 8707 resource indicators yet. Don't send or rely on `resource` in authorization or token requests. It's accepted but ignored.
+
+## Generating PKCE values and state
+
+Before starting the authorization request, generate three values:
+
+* `code_verifier`: a high-entropy random string kept only by the client.
+* `code_challenge`: the base64url-encoded SHA-256 hash of the `code_verifier`.
+* `state`: a high-entropy random string used to bind the callback to the request that started the flow.
+
+The `code_verifier` is sent only during the token exchange. The `code_challenge` is sent during authorization. The `state` is sent during authorization and must come back unchanged on the callback.
+
+```javascript theme={"theme":{"light":"github-light","dark":"vesper"}}
+import { createHash, randomBytes } from 'node:crypto';
+
+function base64url(input) {
+  return Buffer.from(input).toString('base64url');
+}
+
+const codeVerifier = base64url(randomBytes(64));
+const codeChallenge = base64url(
+  createHash('sha256').update(codeVerifier).digest(),
+);
+const state = base64url(randomBytes(24));
+```
+
+For a remote client, store `state` and `codeVerifier` server-side before redirecting the user to us. For a local client, keep them in memory while the temporary callback server is running.
+
+## Pre-registered remote client
+
+A remote client must use an HTTPS redirect URI owned by the app, for example `https://example.com/oauth/callback`.
+
+For remote apps, you can still use [POST /oauth/register](/docs/api-reference/oauth/register) manually while we don't have a central place in the app to create clients.
+
+```mermaid theme={"theme":{"light":"github-light","dark":"vesper"}}
+sequenceDiagram
+    autonumber
+    participant C as App backend
+    participant B as User browser
+    participant AS as Resend OAuth API
+    participant D as Resend dashboard
+
+    Note over C: Generate PKCE values and state<br>Store alongside the user's session
+
+    C->>B: 302 redirect to /oauth/authorize URL
+    B->>AS: GET /oauth/authorize<br>client_id, redirect_uri, scope,<br>state, code_challenge
+    AS-->>B: 302 redirect to dashboard consent URL
+    B->>D: User reviews and approves request
+    D-->>B: 302 redirect_uri with code + state
+    B->>C: Callback with code + state
+
+    Note over C: Verify state against the stored session value
+
+    C->>AS: POST /oauth/token<br>grant_type=authorization_code<br>code, redirect_uri, code_verifier
+    AS-->>C: access_token + refresh_token
+```
+
+<Steps>
+  <Step title="Load the pre-issued client_id" />
+
+  <Step title="Generate PKCE and state">
+    `code_verifier`, `code_challenge`, and `state`. See
+    [above](#generating-pkce-values-and-state).
+  </Step>
+
+  <Step title="Store state and code_verifier server-side">
+    Tie them to the user's session.
+  </Step>
+
+  <Step title="Redirect the user's browser to /oauth/authorize" />
+
+  <Step title="Handle the callback on the app's backend" />
+
+  <Step title="Reject invalid callbacks">
+    A missing `code`, mismatched or missing `state`, or an `error` query
+    parameter should all be treated as failures.
+  </Step>
+
+  <Step title="Exchange the code server-side">
+    Use the original `code_verifier`.
+  </Step>
+
+  <Step title="Store the refresh token securely" />
+
+  <Step title="Serialize refreshes">
+    Atomically replace the stored refresh token after every refresh.
+  </Step>
+</Steps>
+
+Example authorization URL:
+
+```
+GET /oauth/authorize?client_id=550e8400-e29b-41d4-a716-446655440000&response_type=code&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&scope=emails%3Asend&state=STATE_VALUE&code_challenge=CODE_CHALLENGE_VALUE&code_challenge_method=S256 HTTP/1.1
+Host: api.resend.com
+```
+
+Example code exchange:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/token' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&code=AUTHORIZATION_CODE&redirect_uri=https%3A%2F%2Fexample.com%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+```
+
+## Local client
+
+A local client must use a loopback redirect URI. Prefer `127.0.0.1` with a random local port, for example `http://127.0.0.1:49152/oauth/callback`.
+
+Registered loopback redirect URIs allow port variance. The host, path, and query string must still match. For example, a client can register `http://127.0.0.1/oauth/callback` and later authorize with `http://127.0.0.1:49152/oauth/callback`.
+
+```mermaid theme={"theme":{"light":"github-light","dark":"vesper"}}
+sequenceDiagram
+    autonumber
+    participant C as Local client
+    participant B as User browser
+    participant AS as Resend OAuth API
+    participant D as Resend dashboard
+
+    Note over C: Bind loopback callback server<br>Generate PKCE values and state
+
+    C->>AS: POST /oauth/register<br>loopback redirect_uri, minimum scope
+    AS-->>C: client_id
+
+    C->>B: Open /oauth/authorize URL
+    B->>AS: GET /oauth/authorize<br>client_id, redirect_uri, scope,<br>state, code_challenge
+    AS-->>B: 302 redirect to dashboard consent URL
+    B->>D: User reviews and approves request
+    D-->>B: 302 redirect_uri with code + state
+    B->>C: Callback with code + state
+
+    Note over C: Verify state, then close the server
+
+    C->>AS: POST /oauth/token<br>grant_type=authorization_code<br>code, redirect_uri, code_verifier
+    AS-->>C: access_token + refresh_token
+```
+
+<Steps>
+  <Step title="Bind a temporary callback server">
+    Pick a random high port and bind it to `127.0.0.1` or `[::1]`, never
+    `0.0.0.0`.
+  </Step>
+
+  <Step title="Generate PKCE and state">
+    `code_verifier`, `code_challenge`, and `state`. See
+    [above](#generating-pkce-values-and-state).
+  </Step>
+
+  <Step title="Register the client">
+    Dynamically register with a loopback redirect URI and the minimum required
+    scope. See [Register Client](/docs/api-reference/oauth/register).
+  </Step>
+
+  <Step title="Open the authorize URL in the user's browser">
+    Don't prefetch `/oauth/authorize` from your process and follow the redirect
+    yourself. The user needs to see the consent screen.
+  </Step>
+
+  <Step title="Let the browser follow the redirect to the dashboard consent screen" />
+
+  <Step title="Handle exactly one callback, then close the server" />
+
+  <Step title="Reject invalid callbacks">
+    A missing `code`, mismatched or missing `state`, or an `error` query
+    parameter should all be treated as failures.
+  </Step>
+
+  <Step title="Exchange the code">
+    Use the original `code_verifier`. See [Token](/docs/api-reference/oauth/token).
+  </Step>
+
+  <Step title="Store the newest refresh token after every token response" />
+</Steps>
+
+Close the loopback server after success or timeout.
+
+### Dynamic client registration
+
+Pass `scope` explicitly. If DCR omits `scope`, Resend registers the client with every supported scope by default.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/register' \
+     -H 'Content-Type: application/json' \
+     -d $'{
+  "client_name": "Example Local OAuth Client",
+  "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "scope": "emails:send"
+}'
+```
+
+The response returns a UUID `client_id`:
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "client_id": "550e8400-e29b-41d4-a716-446655440000",
+  "client_id_issued_at": 1750000000,
+  "client_name": "Example Local OAuth Client",
+  "redirect_uris": ["http://127.0.0.1/oauth/callback"],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "token_endpoint_auth_method": "none",
+  "scope": "emails:send"
+}
+```
+
+### Authorization request
+
+Do not have a backend or CLI process prefetch `/oauth/authorize` and then open the returned dashboard URL. Instead, open the authorization URL in the user's browser and let the browser follow the redirect to the dashboard.
+
+```javascript theme={"theme":{"light":"github-light","dark":"vesper"}}
+const authorizationUrl = new URL('https://api.resend.com/oauth/authorize');
+authorizationUrl.search = new URLSearchParams({
+  client_id: '550e8400-e29b-41d4-a716-446655440000',
+  response_type: 'code',
+  redirect_uri: 'http://127.0.0.1:49152/oauth/callback',
+  scope: 'emails:send',
+  state,
+  code_challenge: codeChallenge,
+  code_challenge_method: 'S256',
+}).toString();
+
+openBrowser(authorizationUrl.toString());
+```
+
+After approval, Resend redirects back to the exact `redirect_uri` used in the authorization request:
+
+```
+GET /oauth/callback?code=AUTHORIZATION_CODE&state=STATE_VALUE HTTP/1.1
+Host: 127.0.0.1:49152
+```
+
+Verify that the returned `state` matches the original `state` before exchanging the code.
+
+### Authorization code exchange
+
+The `redirect_uri` in the token request must match the `redirect_uri` from the authorization request.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/token' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'grant_type=authorization_code&client_id=550e8400-e29b-41d4-a716-446655440000&code=AUTHORIZATION_CODE&redirect_uri=http%3A%2F%2F127.0.0.1%3A49152%2Foauth%2Fcallback&code_verifier=CODE_VERIFIER_VALUE'
+```
+
+The response includes a JWT access token and an opaque refresh token:
+
+```json theme={"theme":{"light":"github-light","dark":"vesper"}}
+{
+  "access_token": "eyJhbGciOiJFUzI1NiIsImtpZCI6Im9hdXRoX2tleSIsInR5cCI6ImF0K2p3dCJ9...",
+  "token_type": "Bearer",
+  "expires_in": 900,
+  "refresh_token": "JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q",
+  "scope": "emails:send"
+}
+```
+
+### Refresh token exchange
+
+Refresh tokens rotate on every successful refresh. Serialize refresh operations for a grant, and store the new refresh token atomically with the rest of the response. If refresh succeeds but the new refresh token isn't persisted, you'll need to reauthorize. Retrying an old token from multiple workers can revoke the whole grant. See [Token](/docs/api-reference/oauth/token) for the reuse-detection details.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/token' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'grant_type=refresh_token&client_id=550e8400-e29b-41d4-a716-446655440000&refresh_token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q'
+```
+
+## Revoking access
+
+To disconnect a client, revoke the refresh token:
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+curl -X POST 'https://api.resend.com/oauth/revoke' \
+     -H 'Content-Type: application/x-www-form-urlencoded' \
+     -d 'client_id=550e8400-e29b-41d4-a716-446655440000&token=JcL7aYfE7S9h3L4qv0o2e1w8m6n5b3x9RkP2tD4uV6Q&token_type_hint=refresh_token'
+```
+
+Access tokens are JWTs and can't be revoked individually. Revoking the refresh token revokes the grant. See [Revoke Token](/docs/api-reference/oauth/revoke).
 
 
 # Send emails with Devin and Resend
@@ -32366,7 +33178,7 @@ You've verified a domain (or subdomain) in Resend, but your API request is using
 **Example scenario:**
 
 * You verified `sending.domain.com` in Resend
-* Your API request is using `domain.com` (i.e., without the `sending` subdomain)
+* Your API request is using `domain.com` (that is, without the `sending` subdomain)
 
 ## How to Identify This Issue
 
@@ -32496,7 +33308,7 @@ Free accounts have the following:
 
 ## Overage Limits
 
-Paid plans include pay-as-you-go overages, which allow you to continue sending emails after you've reached your monthly quota. To prevent extreme overages and unexpected costs, we impose a hard limit of 5x your monthly quota.
+Paid plans include pay-as-you-go overages, which allow you to continue sending emails after you've reached your monthly quota. To prevent extreme overages and unexpected costs, a hard limit of 5x your monthly quota applies.
 
 <Note>
   By default, overage usage is capped at **5x your plan's monthly quota**. Once you reach this limit, sending will be paused until the next billing cycle.
@@ -32644,7 +33456,7 @@ Regularly cleaning your list of disengaged recipients helps maintain a positive 
 
 Using our [Webhooks](/docs/webhooks/introduction), you can be notified when a delivery bounces or gets marked as spam by the recipient.
 
-This is an opportunity to proactively unsubscribe the recipient and prevent further sending. Indeed, while Resend will automatically suppress further deliveries to that email address, we don't automatically unsubscribe it.
+This allows you to proactively unsubscribe the recipient and prevent further sending. Resend will automatically suppress further deliveries to that email address but will not automatically unsubscribe it for you.
 
 ### Sunset unengaged recipients
 
@@ -32862,7 +33674,7 @@ If your domain is not successfully verified, these are some common troubleshooti
 </AccordionGroup>
 
 
-# Do I need 2048-bit DKIM?
+# Do You Need 2048-bit DKIM?
 Source: https://resend.com/docs/knowledge-base/do-i-need-2048-dkim
 
 Learn why 1024-bit DKIM is enough for transactional and marketing mail, and how it compares to 2048-bit keys.
@@ -32881,12 +33693,12 @@ The 2024 bulk sender requirements from Google, Yahoo, and Microsoft (which apply
 
 ## 1024-bit vs 2048-bit keys
 
-|                       | 1024-bit                                                  | 2048-bit                                                                                   |
-| --------------------- | --------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| **Security**          | Meets current RFC recommendations for email signing       | Stronger cryptographic margin, better future-proofing                                      |
-| **Performance**       | Faster signing and verification                           | More system resources required, can add latency                                            |
-| **DNS compatibility** | Fits comfortably in a single TXT record                   | Longer public key. Some DNS providers require splitting the record or hit character limits |
-| **Setup**             | Straightforward, works with every DNS provider we've seen | Requires careful setup. Misconfigured records can fail verification                        |
+|                       | 1024-bit                                                        | 2048-bit                                                                                   |
+| --------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Security**          | Meets current RFC recommendations for email signing             | Stronger cryptographic margin, better future-proofing                                      |
+| **Performance**       | Faster signing and verification                                 | More system resources required, can add latency                                            |
+| **DNS compatibility** | Fits comfortably in a single TXT record                         | Longer public key. Some DNS providers require splitting the record or hit character limits |
+| **Setup**             | Straightforward, works with every DNS provider you'll encounter | Requires careful setup. Misconfigured records can fail verification                        |
 
 ## Trade-offs of 2048-bit
 
@@ -32897,8 +33709,6 @@ The 2024 bulk sender requirements from Google, Yahoo, and Microsoft (which apply
 ## Our stance
 
 For transactional and marketing mail, **1024-bit DKIM is the right choice.** It meets the RFC, satisfies bulk sender requirements from every major inbox provider, and keeps DNS setup simple and reliable.
-
-We are keeping a close eye on customer interest and evolving industry best practices. If expectations shift, we will update this article and add support accordingly.
 
 <Note>
   If your security or compliance team has a specific requirement for 2048-bit
@@ -32959,14 +33769,14 @@ This means the domain is associated with a different Resend account. A domain ca
 Common reasons a domain may already be registered:
 
 * A team member or contractor added it to a separate account.
-* You are logged into a different account than the one where the domain was originally added.
+* You are logged in to a different account than the one where the domain was originally added.
 
 ## How to Resolve It
 
 ### Check your existing accounts first
 
 1. Check with your team to see if someone is already using Resend.
-2. Make sure you're logged into the right account.
+2. Make sure you're logged in to the right account.
 
 ### Claim the domain
 
@@ -32987,7 +33797,7 @@ If you cannot add DNS records or need further assistance, contact [Resend suppor
 * [DNS provider setup guides](/docs/knowledge-base/introduction)
 
 
-# Where can I find Resend documents like DPA or W-9?
+# Where to find Resend documents like DPA or W-9
 Source: https://resend.com/docs/knowledge-base/downloading-documents
 
 How to download compliance and tax documents from your Resend account.
@@ -34031,7 +34841,7 @@ Source: https://resend.com/docs/knowledge-base/getting-started-with-resend-and-s
 
 A quick jumpstart to using Resend with Supabase.
 
-In this guide, we'll help you get started with Resend by:
+This guide helps you get started with Resend by:
 
 * [Setting up Resend](#set-up-resend)
 * [Send Auth Emails with Resend](#send-auth-emails-with-resend)
@@ -34043,10 +34853,10 @@ To send emails with your Supabase project, you'll need to first verify it in Res
 
 Go to [the Domains page](https://resend.com/domains) and click on **Add Domain**.
 
-1. Add your domain name (we recommend [using a subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) like `updates.example.com`).
+1. Add your domain name. We recommend [using a subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) like `updates.example.com` instead of the root domain.
 2. Add the DNS records to your DNS provider ([learn more about these records](/docs/dashboard/domains/introduction)).
    <img alt="Resend Domains page" />
-3. Click on **I've added the records** to begin the verification process.
+3. Click on **Verify DNS Records** to begin the verification process.
 4. Wait for the verification to complete (usually takes 5–10 minutes)
 
 <Info>
@@ -34761,7 +35571,7 @@ If your domain is not successfully verified, these are some common troubleshooti
 </AccordionGroup>
 
 
-# How can I change my Resend email address?
+# How to change your Resend email address
 Source: https://resend.com/docs/knowledge-base/how-can-i-change-my-email-address
 
 How to change the email address associated with your Resend account.
@@ -34780,7 +35590,7 @@ After clicking **Update email**, you will be signed out and two confirmation ema
 Click the confirmation link in both emails to complete the email change. Once both confirmations are complete, you can log in with your new email address.
 
 
-# How can I delete my Resend account?
+# How to delete your Resend account
 Source: https://resend.com/docs/knowledge-base/how-can-i-delete-my-resend-account
 
 How to request your Resend account and data to be deleted.
@@ -34804,10 +35614,10 @@ A **Resend Account** is your login method (email address) used to access Resend.
 
 ## Deleting a Team
 
-If you want to delete a team (rather than leaving it), see [How can I delete my Resend team?](/docs/knowledge-base/how-can-i-delete-my-team).
+If you want to delete a team (rather than leaving it), see [How to delete your Resend team](/docs/knowledge-base/how-can-i-delete-my-team).
 
 
-# How can I delete my Resend team?
+# How to delete your Resend team
 Source: https://resend.com/docs/knowledge-base/how-can-i-delete-my-team
 
 How to request your Resend team and team data to be deleted.
@@ -34831,7 +35641,7 @@ Upon confirmation, Resend will delete your team and all your team data.
 </Warning>
 
 
-# Can I receive emails with Resend?
+# Can You Receive Emails with Resend?
 Source: https://resend.com/docs/knowledge-base/how-can-i-receive-emails-with-resend
 
 Receive emails with webhooks and process content, attachments, forwarding, and replies.
@@ -34852,7 +35662,7 @@ You can receive emails at:
 See the full guide: [Receiving Emails](/docs/dashboard/receiving/introduction).
 
 
-# How do I create an email address or sender in Resend?
+# Sender email addresses in Resend
 Source: https://resend.com/docs/knowledge-base/how-do-I-create-an-email-address-or-sender-in-resend
 
 Learn how sending from an email address works on Resend.
@@ -35068,8 +35878,8 @@ By default, all Resend users use our shared IPs, which are a collection of IPs s
 
 Resend goes one step further and exclusively provisions "Managed Dedicated IP Pools". These managed pools handle multiple delicate and time consuming aspects of dedicated IPs:
 
-* **Automatic warmup**: New IPs have no reputation and are therefore under scrutiny by inbox providers. We carefully migrate your sending over from the shared pool to your dedicated pool.
-* **Automatic scaling**: IPs can only send at a certain rate based on the specifications of each inbox provider. We scale your pool dynamically based on the inbox provider feedback, without you lifting a finger.
+* **Automatic warmup**: New IPs have no reputation and are therefore under scrutiny by inbox providers. Resend carefully migrates your sending over from the shared pool to your dedicated pool.
+* **Automatic scaling**: IPs can only send at a certain rate based on the specifications of each inbox provider. Resend scales your pool dynamically based on the inbox provider feedback, without you lifting a finger.
 * **Continuous monitoring**: Resend continuously monitors the reputation and performance of your dedicated IPs.
 * **Fully dedicated**: You can segregate your emails from sending on shared pools to reduce risk of "noisy neighbors".
 
@@ -35106,7 +35916,7 @@ With Resend's Managed Dedicated IP Pools, the warmup process is handled automati
 4. **Reputation monitoring**: Continuously monitor the reputation of your dedicated IPs.
 5. **Adaptive warmup**: Adapt the warmup process to your sending patterns.
 
-Often IP warmup is a highly manual process and requires great care if you don't want a deliverability degradation in the process. With this automatic warmup process, we handle that for you so you can focus on sending.
+Often IP warmup is a highly manual process and requires great care if you don't want a deliverability degradation in the process. With this automatic warmup process, that's handled for you so you can focus on sending.
 
 <Note>
   Because Managed Dedicated IP Pools are dynamically scaled, **we do not expose
@@ -35115,7 +35925,7 @@ Often IP warmup is a highly manual process and requires great care if you don't 
 
 ## Requirements for a Dedicated IP
 
-Before we can provision a Dedicated IP, **we require** that:
+You can request a Dedicated IP if you meet the following requirements:
 
 * Your domains are in the same region (Dedicated IPs are provisioned per region).
 * Your sending volume exceeds 3,000 emails sent per day.
@@ -35132,7 +35942,7 @@ If you're on a Scale plan or higher, you can request a Dedicated IP directly fro
 
 Alternatively, you can request a Dedicated IP by [chatting with support](https://resend.com/help).
 
-**We will request the following information**:
+You will need to provide the following information:
 
 * What types of emails are you sending?
 * How many emails are you sending per day and month on average?
@@ -35140,7 +35950,7 @@ Alternatively, you can request a Dedicated IP by [chatting with support](https:/
 * Which domains do you want included in your Dedicated IP?
 
 
-# How do I avoid conflicts with my MX records?
+# How to avoid conflicts with your MX records
 Source: https://resend.com/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records
 
 Learn how to avoid conflicts with your existing MX records when setting up a Resend domain.
@@ -35151,13 +35961,13 @@ MX (Mail Exchanger) records specify where incoming mail is delivered on behalf o
 
 Resend requires that you setup a MX record on two occasions:
 
-1. **[Enabling your domain to send emails](https://resend.com/docs/dashboard/emails/introduction)**: You need to setup an MX record on `send.example.com` to establish a return-path for bounce/complaint reports from Inbox Providers. We set this return path in the email headers of every email you send through Resend.
+1. **[Enabling your domain to send emails](https://resend.com/docs/dashboard/emails/introduction)**: You need to setup an MX record on `send.example.com` to establish a return-path for bounce/complaint reports from Inbox Providers. This return path is set in the email headers of every email you send through Resend.
 
 2. **[Enabling your domain to receive emails](https://resend.com/docs/dashboard/receiving/custom-domains)**: You can setup an MX record on your domain to route all received emails to Resend.
 
 ## Avoiding conflicts with MX record priorities
 
-Let's look at an example for each occasion Resend requires you to setup a MX record.
+Here's an example for each occasion Resend requires you to setup a MX record.
 
 Say you're using G Suite for your email. You'll have an MX record that looks something like this:
 
@@ -35167,7 +35977,7 @@ example.com     MX    10 alt3.aspmx.l.google.com.
 
 This record specifies that any incoming mail to `<anything>@example.com` is delivered to the Google servers.
 
-Now, let's say you want to use Resend to send emails from `@example.com`. You'll need to add an MX record for `send.example.com` that looks something like this:
+Now, say you want to use Resend to send emails from `@example.com`. You'll need to add an MX record for `send.example.com` that looks something like this:
 
 ```
 send.example.com     MX    10 feedback-smtp.us-east-1.amazonses.com
@@ -35214,7 +36024,7 @@ Now this MX record priority has a lower value (higher priority) so it will be pr
 </AccordionGroup>
 
 
-# How do I avoid Gmail's spam folder?
+# How to avoid Gmail's spam folder
 Source: https://resend.com/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder
 
 Learn how to improve inbox placement in Gmail.
@@ -35278,7 +36088,7 @@ It would seem like adding open and click tracking would be ideal to gather this 
 
 Affiliate marketing programs offer rewards to companies or individuals that send visitors to your website. However, spammers can take advantage of these programs. If your brand is associated with marketing spam, other messages sent by you might be marked as spam.
 
-We recommend you regularly monitor affiliates, and remove any affiliates that send spam.
+Regularly monitor affiliates, and remove any affiliates that send spam.
 
 **Action Items**
 
@@ -35310,9 +36120,9 @@ It can also be helpful to segment your sending by sending address to give Gmail 
 
 Some examples of helpful email addresses:
 
-* **Personal emails** come from an address with a name like [marissa@domain.com](mailto:marissa@domain.com)
-* **Transactional emails** come from an address like [notifications@domain.com](mailto:notifications@domain.com)
-* **Marketing emails** come from an address like [updates@domain.com](mailto:updates@domain.com).
+* **Personal emails** come from an address with a name like [marissa@example.com](mailto:marissa@example.com)
+* **Transactional emails** come from an address like [notifications@example.com](mailto:notifications@example.com)
+* **Marketing emails** come from an address like [updates@example.com](mailto:updates@example.com).
 
 **Action Items**
 
@@ -35331,7 +36141,7 @@ Gmail's goal is to only show emails that their users want to see and malicious e
 <Info>Anything we missed? [Let us know](https://resend.com/help).</Info>
 
 
-# How do I avoid iCloud's spam folder?
+# How to avoid iCloud's spam folder
 Source: https://resend.com/docs/knowledge-base/how-do-i-avoid-icloud-spam-folder
 
 Learn how to improve inbox placement in iCloud Mail.
@@ -35397,7 +36207,7 @@ Apple requires that you send only to recipients who explicitly subscribed to you
 
 ## Simplify the Unsubscribe Process
 
-Apple requires bulk senders to offer an unsubscribe link so recipients can opt out immediately. We recommend implementing [one-click unsubscribe](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails) for the best user experience.
+Apple requires bulk senders to offer an unsubscribe link so recipients can opt out immediately. You can [implement one-click unsubscribe](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails) for the best user experience.
 
 **Action Items**
 
@@ -35441,7 +36251,7 @@ iCloud's goal is to only show emails that their users want to see. Reverse engin
 <Info>Anything we missed? [Let us know](https://resend.com/help).</Info>
 
 
-# How do I avoid Outlook's spam folder?
+# How to avoid Outlook's spam folder
 Source: https://resend.com/docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder
 
 Learn how to improve inbox placement in Outlook.
@@ -35475,10 +36285,10 @@ Learn how to improve inbox placement in Outlook.
 * **Limit use of HTML**. Keep emails as close to plain text as possible.
 
 
-# How do I ensure sensitive data isn't stored on Resend?
+# How to ensure sensitive data isn't stored on Resend
 Source: https://resend.com/docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend
 
-Information on how we can help you protect your customer's information.
+Information on how you can protect your customer's information.
 
 Resend can turn off message content storage for teams with additional compliance requirements. This is available to customers who meet the following criteria:
 
@@ -35489,7 +36299,7 @@ Resend can turn off message content storage for teams with additional compliance
 This feature requires a \$50/mo add-on. If your account meets these requirements and you would like this turned on, contact our support team for help.
 
 
-# How do I fix CORS issues?
+# How to fix CORS issues
 Source: https://resend.com/docs/knowledge-base/how-do-i-fix-cors-issues
 
 Information on recommended options to avoid CORS errors when sending emails.
@@ -35509,10 +36319,10 @@ No 'Access-Control-Allow-Origin' header is present on the requested resource.
 
 Usually CORS errors happens when you're sending emails from the **client-side**.
 
-We recommend you to send the emails on the **server-side** to not expose your API keys and avoid CORS issues.
+Send the emails on the **server-side** to not expose your API keys and avoid CORS issues.
 
 
-# How do I maximize deliverability for Supabase Auth emails?
+# How to maximize deliverability for Supabase Auth emails
 Source: https://resend.com/docs/knowledge-base/how-do-i-maximize-deliverability-for-supabase-auth-emails
 
 Everything to do before you start sending authentication emails with Resend and Supabase.
@@ -35595,7 +36405,7 @@ Following security best practices like DMARC will show your validity and authent
 You can use our [DMARC setup guide to get started](/docs/dashboard/domains/dmarc).
 
 
-# How do I send with an avatar?
+# How to send with an avatar
 Source: https://resend.com/docs/knowledge-base/how-do-i-send-with-an-avatar
 
 Learn how to show your avatar in the inbox of your recipients.
@@ -35662,7 +36472,7 @@ The way around this is [BIMI (Brand Indicators for Message Identification)](/doc
 </Note>
 
 
-# How do I set up Apple Branded Mail?
+# How to set up Apple Branded Mail
 Source: https://resend.com/docs/knowledge-base/how-do-i-set-up-apple-branded-mail
 
 Learn how to implement Apple Branded Mail to display your logo in Apple Mail clients.
@@ -35690,7 +36500,7 @@ There are a few benefits of Apple Branded mail over BIMI:
 
 Since Apple Branded Mail works only with Apple Mail on new iOS, iPadOS, and macOS versions, your logo will not show in other mail clients or older versions of Apple Mail.
 
-For this reason, we recommend following all possible methods for adding your logo to your emails, including Apple Branded Mail, [our general guide](/docs/knowledge-base/how-do-i-send-with-an-avatar), and [BIMI](/docs/dashboard/domains/bimi) if it fits your needs.
+For this reason, follow all possible methods for adding your logo to your emails, including Apple Branded Mail, [our general guide](/docs/knowledge-base/how-do-i-send-with-an-avatar), and [BIMI](/docs/dashboard/domains/bimi) if it fits your needs.
 
 ## Implementing Apple Branded Mail
 
@@ -35815,7 +36625,7 @@ To rotate an API key:
   [delete](/docs/api-reference/api-keys/delete-api-key) API keys to rotate keys.
 </Warning>
 
-We recommend rotating keys at least every 90 days, or immediately if you suspect a key has been compromised. Resend flags keys unused for 30+ days in the dashboard to help you identify keys to review or delete.
+Rotate keys at least every 90 days, or immediately if you suspect a key has been compromised. Resend flags keys unused for 30+ days in the dashboard to help you identify keys to review or delete.
 
 
 # Introduction
@@ -37305,9 +38115,9 @@ If your needs change, you can migrate from one approach to the other.
   potential sending interruptions during the DNS propagation window.
 </Warning>
 
-## We want your feedback
+## Share your feedback
 
-Multi-tenant email is a complex space, and we're always looking to make it easier. If you're building a multi-tenant application and have feedback on your experience, we'd love to hear from you.
+Please share any feedback on your experience using Resend for your multi-tenant application to help us better serve this use case.
 
 <Info>
   We're tracking interest for improved multi-tenant capabilities. Share your use
@@ -37335,14 +38145,14 @@ Multi-tenant email is a complex space, and we're always looking to make it easie
 </CardGroup>
 
 
-# Do I need to add an unsubscribe link to all of my emails sent with Resend?
+# Do you need to add an unsubscribe link to all of your emails sent with Resend?
 Source: https://resend.com/docs/knowledge-base/should-i-add-an-unsubscribe-link
 
 Learn best practices about using unsubscribe links.
 
 Transactional emails are generally exempt from including an unsubscribe link. Unlike marketing emails, transactional emails serve a functional purpose, such as account confirmation, password resets, and order confirmations.
 
-As a best practice, we recommend telling recipients how to opt out of receiving future email from you if the content is more related to nurturing relationships with your customers, rather than pragmatic, action-oriented emails.
+As a best practice, tell recipients how to opt out of receiving future email from you if the content is more related to nurturing relationships with your customers, rather than pragmatic, action-oriented emails.
 
 Laws enforced by the FTC and GDPR prioritize giving recipients a clear way to give and withdraw their consent to receiving email marketing content. Additionally, not having an option for opting out of emails risks recipients complaining or marking the email as spam, which can hurt your reputation as a sender.
 
@@ -38193,15 +39003,15 @@ The guide is meant as a general plan, but always pay careful attention to your d
 
 In order for a Dedicated IP to be beneficial or useful, you first need to establish a certain sending volume and patterns. Once you've established this volume and these patterns, our [Support team](https://resend.com/help) can set it up for you.
 
-We provide an automatic warm-up process so that you can focus on sending.
+Resend provides an automatic warm-up process so that you can focus on sending.
 
 [Learn more about requesting a Dedicated IP](https://resend.com/docs/knowledge-base/how-do-dedicated-ips-work#how-to-request-a-dedicated-ip).
 
 # Third-party warm-up services
 
-We know email deliverability is important, and it can be tempting to use services promising quick fixes. However, using tools that artificially boost engagement can harm your long-term sender reputation. These services often rely on manipulating anti-spam filters, which can backfire as email providers like Gmail adjust their systems.
+Email deliverability is important, and it can be tempting to use services promising quick fixes. However, using tools that artificially boost engagement can harm your long-term sender reputation. These services often rely on manipulating anti-spam filters, which can backfire as email providers like Gmail adjust their systems.
 
-Instead, we recommend focusing on sustainable practices, such as sending relevant content, maintaining a clean list, and using proper authentication. These methods build trust with email providers and improve your deliverability over time.
+Instead, focus on sustainable practices, such as sending relevant content, maintaining a clean list, and using proper authentication. These methods build trust with email providers and improve your deliverability over time.
 
 
 # What attachment types are not supported?
@@ -38305,7 +39115,7 @@ The easiest way to get consent is to **ask for it clearly and separately**. Add 
 
 Following best practices helps everyone: your recipients, your deliverability, and the health of the email ecosystem. When you start with clear consent, your messages are the ones people are *glad* to receive.
 
-If you’re new to permission-based sending, please reach out to [Support](https://resend.com/help) and we’ll help you make sure everything’s on track.
+If you’re new to permission-based sending, Resend [Support](https://resend.com/help) can help you get started.
 
 
 # What email addresses to use for testing?
@@ -38394,7 +39204,7 @@ Debugging without direct contact with the user is challenging. However, there ar
 * Reduce the number of images in your email
 * Improve wording to be succinct, clear, and avoid spammy words
 
-We have an [extensive but practical deliverability guide](/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder) that covers these topics in more detail.
+Check out our [extensive but practical deliverability guide](/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder) that covers these topics in more detail.
 
 
 # What if my domain is not verifying?
@@ -38619,10 +39429,10 @@ Dedicated IPs are available for \$30/month on the Scale plan for customers sendi
 
 ## Annual plans
 
-We offer annual subscriptions for Enterprise plans. [Book time with our sales team to learn more.](https://resend.com/enterprise)
+Annual subscriptions are available for Enterprise plans. [Book time with our sales team to learn more.](https://resend.com/enterprise)
 
 
-# Which sending feature do I need?
+# Which sending feature do you need?
 Source: https://resend.com/docs/knowledge-base/what-sending-feature-to-use
 
 How to pick between our different sending features depending on your number of recipients and the nature of the message.
@@ -38827,7 +39637,7 @@ Here are some possible reasons an email address is placed on the Suppression Lis
 
 ## What happens when you send to an address on the Suppression List
 
-Whenever you send an email with Resend, we check if the recipient is on the suppression list. If they are, we'll [suppress](/docs/dashboard/emails/email-suppressions) the delivery to prevent damaging your sender reputation and our infrastructure.
+Whenever you send an email with Resend, the recipient is checked against the suppression list. If they're on it, the delivery is [suppressed](/docs/dashboard/emails/email-suppressions) to prevent damaging your sender reputation and our infrastructure.
 
 Suppressed emails will appear with a `suppressed` status in your [Emails](https://resend.com/emails) dashboard:
 
@@ -38883,7 +39693,7 @@ Because of this, open tracking is **not a statistically accurate way** of detect
 
 Though open tracking does not impact whether your email is delivered, it most likely will impact your inbox placement. Trackers are generally **used by marketers and even spammers**. Because of this, inbox providers will often use open tracking as a signal that your email is promotional, or even spam, and categorize accordingly.
 
-**We suggest disabling open rates for transactional email**, to maximize inbox placement.
+**We recommend disabling open rates for transactional email**, to maximize inbox placement.
 
 ## Alternatives to open tracking
 
@@ -38914,7 +39724,7 @@ When you send all your marketing emails to everyone on your list, a subsection o
 * **Higher spam complaints**: frustrated recipients mark emails as spam instead of unsubscribing
 * **Decreased sender reputation**: mailbox providers see low engagement and filter your emails to spam
 
-Topics give your recipients agency, and they give you signals. When a recipient says "I don't want promotional emails," the system honors that request while continuing to send them content they do want. Topics let them decline one without losing the other.
+Topics give your recipients agency, and they give you signals. When a recipient says "stop sending promotional emails," the system honors that request while continuing to send them content they do want. Topics let them decline one without losing the other.
 
 ## Without topics: global unsubscribe
 
@@ -39145,7 +39955,7 @@ Source: https://resend.com/docs/mcp-server
 
 Connect your AI agent to Resend using the hosted MCP server.
 
-MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. We offer both a [remote MCP server](#remote-mcp-server) and a [local MCP server](#local-mcp-server).
+MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. Resend offers both a [remote MCP server](#remote-mcp-server) and a [local MCP server](#local-mcp-server).
 
 <YouTube />
 
@@ -39555,7 +40365,7 @@ Giving your agent an inbox enables it to:
 
 ### Step 1: Install the skill
 
-We've prepared an Agent Skill to help your bot understand how to walk through the setup process. Ask your agent to install the skill:
+Ask your agent to install the skill:
 
 ```
 Let's get you set up with an email inbox! Install the resend-skills from https://github.com/resend/resend-skills and review them before continuing.
@@ -39601,7 +40411,7 @@ We recommend not pasting API keys into the chat. Instead, use one of these two m
 
 ### Step 3: Verify a domain
 
-Next, your agent needs to know the email address it will use to send and receive emails. We [strongly recommend](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) using a subdomain (`agent.example.com`) instead of the root domain (`example.com`), especially if you want to receive emails.
+Next, your agent needs to know the email address it will use to send and receive emails. [Strongly consider](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) using a subdomain (`agent.example.com`) instead of the root domain (`example.com`), especially if you want to receive emails.
 
 You can also use the [Resend CLI](/docs/cli) to verify a domain, although you will need to manually add the DNS records to your DNS provider.
 
@@ -39766,7 +40576,7 @@ One of the benefits of using Resend over other tools is that you don't need to c
 
 Giving your agent an inbox is incredibly powerful, but it also comes with some security concerns. The risk of prompt injection via email is a real concern.
 
-The Resend Skill [includes security guidelines](https://github.com/resend/resend-skills/blob/main/skills/agent-email-inbox/SKILL.md#security-levels). We've developed a leveled security approach to help you decide which security level is right for your use case.
+The Resend Skill [includes security guidelines](https://github.com/resend/resend-skills/blob/main/skills/agent-email-inbox/SKILL.md#security-levels). Use the leveled security approach below to decide which security level is right for your use case.
 
 1. **Strict Allowlist**: Only allow emails from specific senders. **Recommended for most use cases**.
 2. **Domain Allowlist**: Allow emails from any sender from a given domain (e.g. anyone from `example.com`).
@@ -50905,11 +51715,11 @@ docker pull ghcr.io/resend/resend-webhooks-ingester
 
 The ingester creates three tables to store webhook events:
 
-| Table                | Description                                                        |
-| -------------------- | ------------------------------------------------------------------ |
-| `resend_wh_emails`   | All email events (e.g., sent, delivered, bounced, opened, clicked) |
-| `resend_wh_contacts` | Contact events (created, updated, deleted)                         |
-| `resend_wh_domains`  | Domain events (created, updated, deleted)                          |
+| Table                | Description                                                  |
+| -------------------- | ------------------------------------------------------------ |
+| `resend_wh_emails`   | All email events (sent, delivered, bounced, opened, clicked) |
+| `resend_wh_contacts` | Contact events (created, updated, deleted)                   |
+| `resend_wh_domains`  | Domain events (created, updated, deleted)                    |
 
 Each table includes:
 
@@ -51357,7 +52167,7 @@ Learn how to use the retries and replays to handle webhook failures.
 
 ## Automatic Retries
 
-We attempt to deliver each webhook message based on a schedule with exponential backoff.
+Resend attempts to deliver each webhook message based on a schedule with exponential backoff.
 
 Each message is attempted based on the following schedule, where each period is started following the failure of the preceding attempt:
 

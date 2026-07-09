@@ -1,5 +1,5 @@
 ---
-title: "How do I avoid Outlook's spam folder?"
+title: "How to avoid Outlook's spam folder"
 source: https://resend.com/docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder
 path: docs/knowledge-base/how-do-i-avoid-outlooks-spam-folder
 ---

@@ -1,5 +1,5 @@
 ---
-title: "How do I avoid iCloud's spam folder?"
+title: "How to avoid iCloud's spam folder"
 source: https://resend.com/docs/knowledge-base/how-do-i-avoid-icloud-spam-folder
 path: docs/knowledge-base/how-do-i-avoid-icloud-spam-folder
 ---
@@ -67,7 +67,7 @@ Apple requires that you send only to recipients who explicitly subscribed to you
 
 ## Simplify the Unsubscribe Process
 
-Apple requires bulk senders to offer an unsubscribe link so recipients can opt out immediately. We recommend implementing [one-click unsubscribe](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails) for the best user experience.
+Apple requires bulk senders to offer an unsubscribe link so recipients can opt out immediately. You can [implement one-click unsubscribe](/docs/dashboard/emails/add-unsubscribe-to-transactional-emails) for the best user experience.
 
 **Action Items**
 

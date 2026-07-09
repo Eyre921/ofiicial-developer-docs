@@ -18,7 +18,7 @@ This page lists the features that you'll have access to when you opt-in as "Earl
 
 Limitations:
 
-* This list only includes new features controlled by the "Early Adopter" organiation setting. Alphas, closed betas, or limited availability features that require manual opt-in are not included.
+* This list only includes new features controlled by the "Early Adopter" organization setting. Alphas, closed betas, or limited availability features that require manual opt-in are not included.
 
 ## [Current Early Adopter Features](https://docs.sentry.io/organization/early-adopter-features.md#current-early-adopter-features)
 

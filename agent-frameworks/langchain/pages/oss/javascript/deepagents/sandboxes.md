@@ -61,33 +61,217 @@ Sandboxes are especially useful for:
 
 These examples assume you have already created a sandbox/devbox using the provider's SDK and have credentials set up. For signup, authentication, and provider-specific lifecycle details, see [Available providers](#available-providers).
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent, LangSmithSandbox } from "deepagents";
-import { ChatAnthropic } from "@langchain/anthropic";
-import { SandboxClient } from "langsmith/sandbox";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { ChatAnthropic } from "@langchain/anthropic";
+  import { SandboxClient } from "langsmith/sandbox";
 
-const client = new SandboxClient();
-const lsSandbox = await client.createSandbox();
 
-try {
-  const agent = createDeepAgent({
-    model: new ChatAnthropic({ model: "claude-opus-4-8" }),
-    systemPrompt: "You are a coding assistant with sandbox access.",
-    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-  });
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
 
-  const result = await agent.invoke({
-    messages: [
-      {
-        role: "user",
-        content: "Create a hello world Python script and run it",
-      },
-    ],
-  });
-} finally {
-  await client.deleteSandbox(lsSandbox.name);
-}
-```
+  try {
+    const agent = createDeepAgent({
+      model: new ChatAnthropic({ model: "google-genai:gemini-3.5-flash" }),
+      systemPrompt: "You are a coding assistant with sandbox access.",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content: "Create a hello world Python script and run it",
+        },
+      ],
+    });
+    void result;
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { ChatAnthropic } from "@langchain/anthropic";
+  import { SandboxClient } from "langsmith/sandbox";
+
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  try {
+    const agent = createDeepAgent({
+      model: new ChatAnthropic({ model: "openai:gpt-5.5" }),
+      systemPrompt: "You are a coding assistant with sandbox access.",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content: "Create a hello world Python script and run it",
+        },
+      ],
+    });
+    void result;
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { ChatAnthropic } from "@langchain/anthropic";
+  import { SandboxClient } from "langsmith/sandbox";
+
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  try {
+    const agent = createDeepAgent({
+      model: new ChatAnthropic({ model: "anthropic:claude-sonnet-4-6" }),
+      systemPrompt: "You are a coding assistant with sandbox access.",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content: "Create a hello world Python script and run it",
+        },
+      ],
+    });
+    void result;
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { ChatAnthropic } from "@langchain/anthropic";
+  import { SandboxClient } from "langsmith/sandbox";
+
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  try {
+    const agent = createDeepAgent({
+      model: new ChatAnthropic({ model: "openrouter:openrouter:z-ai/glm-5.2" }),
+      systemPrompt: "You are a coding assistant with sandbox access.",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content: "Create a hello world Python script and run it",
+        },
+      ],
+    });
+    void result;
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { ChatAnthropic } from "@langchain/anthropic";
+  import { SandboxClient } from "langsmith/sandbox";
+
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  try {
+    const agent = createDeepAgent({
+      model: new ChatAnthropic({ model: "fireworks:accounts/fireworks/models/glm-5p2" }),
+      systemPrompt: "You are a coding assistant with sandbox access.",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content: "Create a hello world Python script and run it",
+        },
+      ],
+    });
+    void result;
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { ChatAnthropic } from "@langchain/anthropic";
+  import { SandboxClient } from "langsmith/sandbox";
+
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  try {
+    const agent = createDeepAgent({
+      model: new ChatAnthropic({ model: "baseten:zai-org/GLM-5.2" }),
+      systemPrompt: "You are a coding assistant with sandbox access.",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content: "Create a hello world Python script and run it",
+        },
+      ],
+    });
+    void result;
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { ChatAnthropic } from "@langchain/anthropic";
+  import { SandboxClient } from "langsmith/sandbox";
+
+
+  const client = new SandboxClient();
+  const lsSandbox = await client.createSandbox();
+
+  try {
+    const agent = createDeepAgent({
+      model: new ChatAnthropic({ model: "ollama:north-mini-code-1.0" }),
+      systemPrompt: "You are a coding assistant with sandbox access.",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+
+    const result = await agent.invoke({
+      messages: [
+        {
+          role: "user",
+          content: "Create a hello world Python script and run it",
+        },
+      ],
+    });
+    void result;
+  } finally {
+    await client.deleteSandbox(lsSandbox.name);
+  }
+  ```
+</CodeGroup>
 
 <Tip>
   [LangSmith](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=oss-deepagents-sandboxes) traces show which shell commands ran inside a sandbox and how the agent used filesystem tools. Follow the [observability quickstart](/langsmith/observability-quickstart) to get set up. For managed sandbox hosting, see [LangSmith Sandboxes](/langsmith/sandboxes).
@@ -159,31 +343,189 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
   When users can return after idle time, configure a TTL on the sandbox so the provider deletes or archives idle environments automatically.
 </Tip>
 
-```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent, LangSmithSandbox } from "deepagents";
-import { SandboxClient } from "langsmith/sandbox";
-import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-const client = new SandboxClient();
+  const client = new SandboxClient();
 
-export async function agent(config: LangGraphRunnableConfig) {
-  const threadId = config.configurable?.thread_id as string;  // [!code highlight]
-  const sandboxName = `thread-${threadId}`;
-  const existing = (await client.listSandboxes()).filter(
-    (sb) => sb.name === sandboxName,
-  );
-  const lsSandbox =
-    existing[0] ??
-    (await client.createSandbox({
-      name: sandboxName,
-      idleTtlSeconds: 3600, // TTL: clean up when idle
-    }));
-  return createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
-    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-  });
-}
-```
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id as string; // [!code highlight]
+    const sandboxName = `thread-${threadId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+        idleTtlSeconds: 3600, // TTL: clean up when idle
+      }));
+    return createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id as string; // [!code highlight]
+    const sandboxName = `thread-${threadId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+        idleTtlSeconds: 3600, // TTL: clean up when idle
+      }));
+    return createDeepAgent({
+      model: "openai:gpt-5.5",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id as string; // [!code highlight]
+    const sandboxName = `thread-${threadId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+        idleTtlSeconds: 3600, // TTL: clean up when idle
+      }));
+    return createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id as string; // [!code highlight]
+    const sandboxName = `thread-${threadId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+        idleTtlSeconds: 3600, // TTL: clean up when idle
+      }));
+    return createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id as string; // [!code highlight]
+    const sandboxName = `thread-${threadId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+        idleTtlSeconds: 3600, // TTL: clean up when idle
+      }));
+    return createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id as string; // [!code highlight]
+    const sandboxName = `thread-${threadId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+        idleTtlSeconds: 3600, // TTL: clean up when idle
+      }));
+    return createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const threadId = config.configurable?.thread_id as string; // [!code highlight]
+    const sandboxName = `thread-${threadId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+        idleTtlSeconds: 3600, // TTL: clean up when idle
+      }));
+    return createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+</CodeGroup>
 
 ### Assistant-scoped
 
@@ -193,30 +535,182 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   Assistant-scoped sandboxes accumulate in-sandbox state over time. Configure a TTL with your sandbox provider, use snapshots to reset periodically, or implement cleanup logic so disk and memory do not grow without bound.
 </Warning>
 
-```typescript src/agent.ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent, LangSmithSandbox } from "deepagents";
-import { SandboxClient } from "langsmith/sandbox";
-import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
 
-const client = new SandboxClient();
+  const client = new SandboxClient();
 
-export async function agent(config: LangGraphRunnableConfig) {
-  const assistantId = config.configurable?.assistant_id as string;  // [!code highlight]
-  const sandboxName = `assistant-${assistantId}`;
-  const existing = (await client.listSandboxes()).filter(
-    (sb) => sb.name === sandboxName,
-  );
-  const lsSandbox =
-    existing[0] ??
-    (await client.createSandbox({
-      name: sandboxName,
-    }));
-  return createDeepAgent({
-    model: "google_genai:gemini-3.5-flash",
-    backend: new LangSmithSandbox({ sandbox: lsSandbox }),
-  });
-}
-```
+  export async function agent(config: LangGraphRunnableConfig) {
+    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+    const sandboxName = `assistant-${assistantId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+      }));
+    return createDeepAgent({
+      model: "google-genai:gemini-3.5-flash",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+    const sandboxName = `assistant-${assistantId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+      }));
+    return createDeepAgent({
+      model: "openai:gpt-5.5",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+    const sandboxName = `assistant-${assistantId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+      }));
+    return createDeepAgent({
+      model: "anthropic:claude-sonnet-4-6",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+    const sandboxName = `assistant-${assistantId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+      }));
+    return createDeepAgent({
+      model: "openrouter:openrouter:z-ai/glm-5.2",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+    const sandboxName = `assistant-${assistantId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+      }));
+    return createDeepAgent({
+      model: "fireworks:accounts/fireworks/models/glm-5p2",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+    const sandboxName = `assistant-${assistantId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+      }));
+    return createDeepAgent({
+      model: "baseten:zai-org/GLM-5.2",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent, LangSmithSandbox } from "deepagents";
+  import { SandboxClient } from "langsmith/sandbox";
+  import type { LangGraphRunnableConfig } from "@langchain/langgraph";
+
+  const client = new SandboxClient();
+
+  export async function agent(config: LangGraphRunnableConfig) {
+    const assistantId = config.configurable?.assistant_id as string; // [!code highlight]
+    const sandboxName = `assistant-${assistantId}`;
+    const existing = (await client.listSandboxes()).filter(
+      (sb) => sb.name === sandboxName,
+    );
+    const lsSandbox =
+      existing[0] ??
+      (await client.createSandbox({
+        name: sandboxName,
+      }));
+    return createDeepAgent({
+      model: "ollama:north-mini-code-1.0",
+      backend: new LangSmithSandbox({ sandbox: lsSandbox }),
+    });
+  }
+  ```
+</CodeGroup>
 
 For manual create, execute, and teardown outside a graph factory, see [Basic usage](#basic-usage) and [sandbox integrations](/oss/javascript/integrations/sandboxes) for provider-specific APIs.
 
@@ -266,7 +760,7 @@ Trade-offs:
 
 * 🔴 Network latency on each execution call.
 
-```typescript Example theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { createDeepAgent, LangSmithSandbox } from "deepagents";
 import { SandboxClient } from "langsmith/sandbox";
@@ -410,7 +904,7 @@ graph LR
 
 Use `uploadFiles()` to populate the sandbox before the agent runs. File contents are provided as `Uint8Array`:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const encoder = new TextEncoder();
 const responses = await sandbox.uploadFiles([
   ["src/index.js", encoder.encode("console.log('Hello')")],
@@ -429,7 +923,7 @@ for (const res of responses) {
 
 Use `downloadFiles()` to retrieve files from the sandbox after the agent finishes:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const results = await sandbox.downloadFiles(["src/index.js", "output.txt"]);
 
 const decoder = new TextDecoder();

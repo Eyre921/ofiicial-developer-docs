@@ -86,12 +86,12 @@ copilot --allow-tool='shell(git:*)' --deny-tool='shell(git push)'
 
 Use `/model` to choose from available models based on your task complexity:
 
-| Model                         | Best For                                                       | Tradeoffs                                                                           |
-| ----------------------------- | -------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| **Auto**                      | Reduced rate limiting and lower latency and errors             | See [About Copilot auto model selection](/en/copilot/concepts/auto-model-selection) |
-| **Claude Opus 4.5** (default) | Complex architecture, difficult debugging, nuanced refactoring | Most capable but more costly                                                        |
-| **Claude Sonnet 4.5**         | Day-to-day coding, most routine tasks                          | Fast, cost-effective, handles most work well                                        |
-| **GPT-5.2 Codex**             | Code generation, code review, straightforward implementations  | Excellent for reviewing code produced by other models                               |
+| Model                         | Best For                                                       | Tradeoffs                                                                                  |
+| ----------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Auto**                      | Reduced rate limiting and lower latency and errors             | See [About Copilot auto model selection](/en/copilot/concepts/models/auto-model-selection) |
+| **Claude Opus 4.5** (default) | Complex architecture, difficult debugging, nuanced refactoring | Most capable but more costly                                                               |
+| **Claude Sonnet 4.5**         | Day-to-day coding, most routine tasks                          | Fast, cost-effective, handles most work well                                               |
+| **GPT-5.2 Codex**             | Code generation, code review, straightforward implementations  | Excellent for reviewing code produced by other models                                      |
 
 **Recommendations:**
 
@@ -516,7 +516,7 @@ Here is what you will learn:
 
 ## Further reading
 
-* [About GitHub Copilot CLI](/en/copilot/concepts/agents/about-copilot-cli)
-* [Using GitHub Copilot CLI](/en/copilot/how-tos/use-copilot-agents/use-copilot-cli)
+* [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli)
+* [Using GitHub Copilot CLI](/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview)
 * [GitHub Copilot CLI command reference](/en/copilot/reference/copilot-cli-reference/cli-command-reference)
 * [Copilot plans and pricing](https://github.com/features/copilot/plans)

@@ -1,5 +1,5 @@
 ---
-title: "How do I avoid conflicts with my MX records?"
+title: "How to avoid conflicts with your MX records"
 source: https://resend.com/docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records
 path: docs/knowledge-base/how-do-i-avoid-conflicting-with-my-mx-records
 ---
@@ -12,13 +12,13 @@ MX (Mail Exchanger) records specify where incoming mail is delivered on behalf o
 
 Resend requires that you setup a MX record on two occasions:
 
-1. **[Enabling your domain to send emails](https://resend.com/docs/dashboard/emails/introduction)**: You need to setup an MX record on `send.example.com` to establish a return-path for bounce/complaint reports from Inbox Providers. We set this return path in the email headers of every email you send through Resend.
+1. **[Enabling your domain to send emails](https://resend.com/docs/dashboard/emails/introduction)**: You need to setup an MX record on `send.example.com` to establish a return-path for bounce/complaint reports from Inbox Providers. This return path is set in the email headers of every email you send through Resend.
 
 2. **[Enabling your domain to receive emails](https://resend.com/docs/dashboard/receiving/custom-domains)**: You can setup an MX record on your domain to route all received emails to Resend.
 
 ## Avoiding conflicts with MX record priorities
 
-Let's look at an example for each occasion Resend requires you to setup a MX record.
+Here's an example for each occasion Resend requires you to setup a MX record.
 
 Say you're using G Suite for your email. You'll have an MX record that looks something like this:
 
@@ -28,7 +28,7 @@ example.com     MX    10 alt3.aspmx.l.google.com.
 
 This record specifies that any incoming mail to `<anything>@example.com` is delivered to the Google servers.
 
-Now, let's say you want to use Resend to send emails from `@example.com`. You'll need to add an MX record for `send.example.com` that looks something like this:
+Now, say you want to use Resend to send emails from `@example.com`. You'll need to add an MX record for `send.example.com` that looks something like this:
 
 ```
 send.example.com     MX    10 feedback-smtp.us-east-1.amazonses.com

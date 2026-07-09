@@ -22,8 +22,8 @@ Create multiple-product subscriptions for a customer using the [items](https://d
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "items[0][price]=price_CBXbz9i7AIOTzr" \
-  -d "items[1][price]=price_IFuCu48Snc02bc" \
+  -d "items[0][price]={{PRICE_ID}}" \
+  -d "items[1][price]={{PRICE_ID}}" \
   -d "items[1][quantity]=2"
 ```
 
@@ -139,11 +139,11 @@ Provide these arguments when you [create](https://docs.stripe.com/api/subscripti
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "customer={{CUSTOMER_ID}}" \
-  -d "discounts[0][coupon]=free-period" \
+  -d "discounts[0][coupon]={{COUPON_ID}}" \
   -d "default_tax_rates[0]=txr_1EO66sClCIKljWvs98IiVfHW" \
   -d trial_end=1610403705 \
-  -d "items[0][price]=price_CBXbz9i7AIOTzr" \
-  -d "items[1][price]=price_IFuCu48Snc02bc" \
+  -d "items[0][price]={{PRICE_ID}}" \
+  -d "items[1][price]={{PRICE_ID}}" \
   -d "items[1][quantity]=2"
 ```
 
@@ -162,8 +162,8 @@ To set the quantity on a subscription, provide a `quantity` value when [creating
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d customer=cus_4fdAW5ftNQow1a \
-  -d "items[0][price]=price_CBb6IXqvTLXp3f" \
+  -d "customer={{CUSTOMER_ID}}" \
+  -d "items[0][price]={{PRICE_ID}}" \
   -d "items[0][quantity]=5"
 ```
 
@@ -240,15 +240,15 @@ Create multiple subscriptions for one customer by using the [create subscription
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d customer=cus_4fdAW5ftNQow1a \
-  -d "items[0][price]=price_CZB2krKbBDOkTS"
+  -d "customer={{CUSTOMER_ID}}" \
+  -d "items[0][price]={{PRICE_ID}}"
 ```
 
 ```curl
 curl https://api.stripe.com/v1/subscriptions \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d customer=cus_4fdAW5ftNQow1a \
-  -d "items[0][price]=price_CZB1AX3KOacNJw"
+  -d "customer={{CUSTOMER_ID}}" \
+  -d "items[0][price]={{PRICE_ID}}"
 ```
 
 A customer can subscribe to multiple products, or even to a single product, multiple times. Each subscription has a unique ID and its state is handled independently from the customer’s other subscriptions. Each subscription also has its own independent billing period, based on the [billing cycle anchor](https://docs.stripe.com/billing/subscriptions/billing-cycle.md) of the subscription.

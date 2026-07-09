@@ -12,11 +12,11 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Quickstart for GitHub Codespaces](/en/codespaces/quickstart)
 
-  Get started with GitHub Codespaces quickly.
+  <p>Get started with GitHub Codespaces quickly.</p>
 
 * [What are GitHub Codespaces?](/en/codespaces/about-codespaces/what-are-codespaces)
 
-  Learn about what GitHub Codespaces are.
+  <p>Learn about what GitHub Codespaces are.</p>
 
 * [Understanding the codespace lifecycle](/en/codespaces/about-codespaces/understanding-the-codespace-lifecycle)
 
@@ -28,7 +28,7 @@ Create a codespace to start developing in a secure, configurable, and dedicated 
 
 * [Creating a codespace from a template](/en/codespaces/developing-in-a-codespace/creating-a-codespace-from-a-template)
 
-  If you're starting a new project, you can create a codespace from a blank template or choose a template specially designed for the type of work you want to do.
+  <p>If you're starting a new project, you can create a codespace from a blank template or choose a template specially designed for the type of work you want to do.</p>
 
 * [Introduction to dev containers](/en/codespaces/setting-up-your-project-for-codespaces/adding-a-dev-container-configuration/introduction-to-dev-containers)
 

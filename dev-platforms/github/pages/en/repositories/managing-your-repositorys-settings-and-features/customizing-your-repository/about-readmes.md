@@ -71,4 +71,4 @@ A README should only contain information necessary for developers to get started
 
 * [Adding a file to a repository](/en/repositories/working-with-files/managing-files/adding-a-file-to-a-repository)
 * [5 tips for making your GitHub profile page accessible](https://github.blog/2023-10-26-5-tips-for-making-your-github-profile-page-accessible/) in the GitHub blog
-* [Facilitating quick creation and resumption of codespaces](/en/codespaces/setting-up-your-project-for-codespaces/setting-up-your-repository/adding-a-codespaces-badge)
+* [Facilitating quick creation and resumption of codespaces](/en/codespaces/setting-up-your-project-for-codespaces/setting-up-your-repository/facilitating-quick-creation-and-resumption-of-codespaces)

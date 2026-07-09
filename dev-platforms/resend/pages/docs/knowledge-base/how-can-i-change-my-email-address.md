@@ -1,5 +1,5 @@
 ---
-title: "How can I change my Resend email address?"
+title: "How to change your Resend email address"
 source: https://resend.com/docs/knowledge-base/how-can-i-change-my-email-address
 path: docs/knowledge-base/how-can-i-change-my-email-address
 ---

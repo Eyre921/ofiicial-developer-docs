@@ -155,7 +155,7 @@ Before adding a new SSH key to the ssh-agent to manage your keys, you should hav
 
 If you have [GitHub Desktop](https://desktop.github.com/) installed, you can use it to clone repositories and not deal with SSH keys.
 
-1. In a new *admin elevated* PowerShell window, ensure the ssh-agent is running. You can use the "Auto-launching the ssh-agent" instructions in [Working with SSH key passphrases](/en/articles/working-with-ssh-key-passphrases), or start it manually:
+1. In a new *admin elevated* PowerShell window, ensure the ssh-agent is running. You can use the "Auto-launching the ssh-agent" instructions in [Working with SSH key passphrases](/en/authentication/connecting-to-github-with-ssh/working-with-ssh-key-passphrases), or start it manually:
 
    ```powershell
    # start the ssh-agent in the background

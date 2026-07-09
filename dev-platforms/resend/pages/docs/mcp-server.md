@@ -6,7 +6,7 @@ path: docs/mcp-server
 
 Connect your AI agent to Resend using the hosted MCP server.
 
-MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. We offer both a [remote MCP server](#remote-mcp-server) and a [local MCP server](#local-mcp-server).
+MCP is an open protocol that standardizes how applications provide context to LLMs. Among other benefits, it provides LLMs tools to act on your behalf. Resend offers both a [remote MCP server](#remote-mcp-server) and a [local MCP server](#local-mcp-server).
 
 <YouTube />
 

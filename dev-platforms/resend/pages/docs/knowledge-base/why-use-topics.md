@@ -22,7 +22,7 @@ When you send all your marketing emails to everyone on your list, a subsection o
 * **Higher spam complaints**: frustrated recipients mark emails as spam instead of unsubscribing
 * **Decreased sender reputation**: mailbox providers see low engagement and filter your emails to spam
 
-Topics give your recipients agency, and they give you signals. When a recipient says "I don't want promotional emails," the system honors that request while continuing to send them content they do want. Topics let them decline one without losing the other.
+Topics give your recipients agency, and they give you signals. When a recipient says "stop sending promotional emails," the system honors that request while continuing to send them content they do want. Topics let them decline one without losing the other.
 
 ## Without topics: global unsubscribe
 

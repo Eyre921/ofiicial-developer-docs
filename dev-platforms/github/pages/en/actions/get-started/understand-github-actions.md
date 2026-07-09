@@ -83,10 +83,10 @@ For more information about self-hosted runners, see [Managing self-hosted runner
 
 GitHub Actions can help you automate nearly every aspect of your application development processes. Ready to get started? Here are some helpful resources for taking your next steps with GitHub Actions:
 
-* To create a GitHub Actions workflow, see [Using workflow templates](/en/actions/learn-github-actions/using-starter-workflows).
-* For continuous integration (CI) workflows, see [Building and testing your code](/en/actions/automating-builds-and-tests).
-* For building and publishing packages, see [Publishing packages](/en/actions/publishing-packages).
-* For deploying projects, see [Deploying to third-party platforms](/en/actions/deployment).
-* For automating tasks and processes on GitHub, see [Managing your work with GitHub Actions](/en/actions/managing-issues-and-pull-requests).
-* For examples that demonstrate more complex features of GitHub Actions, see [Managing your work with GitHub Actions](/en/actions/examples). These detailed examples explain how to test your code on a runner, access the GitHub CLI, and use advanced features such as concurrency and test matrices.
+* To create a GitHub Actions workflow, see [Using workflow templates](/en/actions/how-tos/write-workflows/use-workflow-templates).
+* For continuous integration (CI) workflows, see [Building and testing your code](/en/actions/tutorials/build-and-test-code).
+* For building and publishing packages, see [Publishing packages](/en/actions/tutorials/publish-packages).
+* For deploying projects, see [Deploying to third-party platforms](/en/actions/how-tos/deploy/deploy-to-third-party-platforms).
+* For automating tasks and processes on GitHub, see [Managing your work with GitHub Actions](/en/actions/tutorials/manage-your-work).
+* For examples that demonstrate more complex features of GitHub Actions, see [Choosing what your workflow does](/en/actions/how-tos/write-workflows/choose-what-workflows-do). These detailed examples explain how to test your code on a runner, access the GitHub CLI, and use advanced features such as concurrency and test matrices.
 * To certify your proficiency in automating workflows and accelerating development with GitHub Actions, earn a GitHub Actions certificate with GitHub Certifications. For more information, see [About GitHub Certifications](/en/get-started/showcase-your-expertise-with-github-certifications/about-github-certifications).

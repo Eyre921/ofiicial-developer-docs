@@ -777,6 +777,7 @@ The table below shows a list of events logged on the Activity page.
 | unlink-login-connection | Active | A login connection was unlinked. |
 | user-delete | Active | A user account was deleted. |
 | user-emu-account-archived | Active | A user archived their personal account during enterprise-managed user setup. |
+| user-emu-account-deleted | Active | A user deleted their personal account during enterprise-managed user setup. |
 | user-emu-account-recovered | Active | A user recovered their archived account using a recovery code. |
 | user-mfa-challenge-verified | Active | A two-factor challenge was verified |
 | user-mfa-configuration-updated | Active | Two-factor configuration was updated |
@@ -28784,6 +28785,8 @@ To learn more about how the ruleset works, review the [Challenge](/docs/vercel-f
 
 ### Enable the ruleset
 
+The ruleset is **inactive by default**. In the dashboard this is labeled **Off**. Matching traffic is not evaluated and reaches your application.
+
 You can apply the ruleset to your project in [log](/docs/vercel-firewall/firewall-concepts#log) or [challenge](/docs/vercel-firewall/firewall-concepts#challenge) mode. Learn how to [configure the bot protection managed ruleset](/docs/vercel-waf/managed-rulesets#configure-bot-protection-managed-ruleset).
 
 ### Bot protection ruleset with reverse proxies
@@ -31279,6 +31282,8 @@ Inside the Framework Preset settings, use the drop-down menu to select the frame
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/sveltekit-1) | [View Demo](https://sveltekit-1-template.vercel.app)
 - **TanStack Start**: Full-stack Framework powered by TanStack Router for React and Solid.
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/tanstack-start)
+- **TanStack Start**: Full-stack Framework powered by TanStack Router imported from Lovable
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/tanstack-start-lovable)
 - **UmiJS**: UmiJS is an extensible enterprise-level React application framework.
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/umijs) | [View Demo](https://umijs-template.vercel.app)
 - **Vite**: Vite is a new breed of frontend build tool that significantly improves the frontend development experience.
@@ -63038,7 +63043,7 @@ You can create Drains with native integrations for the following data types by u
 
 1. From the Vercel dashboard, go to **Team Settings** > [**Drains**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%7E%2Fsettings%2Fdrains\&title=Go+to+Drains+settings) and click **Add Drain**.
 2. Click the **External Integrations** link on the top right of the **Add Drain** side modal.
-3. From the **External Integration Log Drains** modal, select the installed or available external integration you would like to use and follow the steps to create the drain to that service.
+3. From the **External Integration Drains** modal, select the installed or available external integration you would like to use and follow the steps to create the drain to that service.
 
 Learn more about [native integrations](/docs/integrations#native-integrations) and [external (connectable accounts) integrations](/docs/integrations#connectable-accounts).
 
@@ -81594,6 +81599,8 @@ The following full-stack frameworks are supported with zero-configuration.
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/sveltekit-1) | [View Demo](https://sveltekit-1-template.vercel.app)
 - **TanStack Start**: Full-stack Framework powered by TanStack Router for React and Solid.
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/tanstack-start)
+- **TanStack Start**: Full-stack Framework powered by TanStack Router imported from Lovable
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/tanstack-start-lovable)
 
 
 ## Frameworks infrastructure support matrix
@@ -83572,6 +83579,8 @@ The frameworks listed below can be deployed to Vercel with minimal configuration
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/sveltekit-1) | [View Demo](https://sveltekit-1-template.vercel.app)
 - **TanStack Start**: Full-stack Framework powered by TanStack Router for React and Solid.
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/tanstack-start)
+- **TanStack Start**: Full-stack Framework powered by TanStack Router imported from Lovable
+  - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/tanstack-start-lovable)
 - **UmiJS**: UmiJS is an extensible enterprise-level React application framework.
   - [Deploy](https://vercel.com/new/clone?repository-url=https://github.com/vercel/vercel/tree/main/examples/umijs) | [View Demo](https://umijs-template.vercel.app)
 - **Vite**: Vite is a new breed of frontend build tool that significantly improves the frontend development experience.
@@ -139825,6 +139834,8 @@ To enable and configure [OWASP Core Ruleset](https://owasp.org/www-project-top-t
 
 > **🔒 Permissions Required**: Bot Protection Managed Ruleset
 
+The ruleset is **inactive by default**. In the dashboard this is labeled **Off**. Matching traffic is not evaluated and reaches your application.
+
 To enable and configure [bot protection](/docs/bot-management#bot-protection-managed-ruleset) for your project, follow these steps:
 
 1. From your project's dashboard, open [**Firewall**](https://vercel.com/d?to=%2F%5Bteam%5D%2F%5Bproject%5D%2Ffirewall\&title=Open+Firewall) in the sidebar.
@@ -139839,6 +139850,8 @@ To enable and configure [bot protection](/docs/bot-management#bot-protection-man
 ## Configure AI Bots Managed Ruleset
 
 > **🔒 Permissions Required**: AI Bots Managed Ruleset
+
+The ruleset is **inactive by default**. In the dashboard this is labeled **Allow**. Matching traffic is not evaluated and reaches your application.
 
 To manage AI bots for your project, follow these steps:
 

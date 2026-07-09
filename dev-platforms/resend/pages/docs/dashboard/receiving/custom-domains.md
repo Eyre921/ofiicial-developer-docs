@@ -130,7 +130,7 @@ Besides [using Resend-managed domains](/docs/dashboard/receiving/introduction), 
       ```
     </CodeGroup>
 
-    Once you receive the email event, you can process the email body and attachments. We also recommend implementing [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
+    Once you receive the email event, you can process the email body and attachments. You can also implement [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {
@@ -169,7 +169,7 @@ If you already have a verified domain, you can enable receiving by using the tog
 
 After enabling receiving, you'll see a modal showing the MX record that you need to add to your DNS provider to start receiving emails.
 
-Once you add the MX record, confirm by clicking the "I've added the record" button and wait for the receiving record to show as "verified".
+Once you add the MX record, confirm by clicking the **I've added the record** button and wait for the receiving record to show as "verified".
 
 ## FAQ
 

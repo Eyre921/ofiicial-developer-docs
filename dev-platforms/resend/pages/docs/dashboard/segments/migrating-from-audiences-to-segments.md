@@ -6,7 +6,7 @@ path: docs/dashboard/segments/migrating-from-audiences-to-segments
 
 Learn how to migrate from Audiences to Segments
 
-We've recently changed how Contacts are segmented. Before, each Contact was part of one Audience and if you created another contact with the same email address in a different Audience, it would be a completely separate object.
+Contact segmentation at Resend has changed to simplify managing your contacts. Before, each Contact was part of one Audience and if you created another contact with the same email address in a different Audience, it would be a completely separate object.
 
 In the new model, Contacts are now independent of Audiences, which are now called Segments. A Contact can be in zero, one or multiple Segments and still count as one when calculating your quota usage.
 
@@ -14,7 +14,7 @@ Contacts API endpoints that previously required an `audience_id` can now be used
 
 ## What's changing
 
-We're moving to a **Global Contacts** model.
+Resend now uses a **Global Contacts** model.
 
 * **Before**: If a Contact with the same email appeared in multiple Segments, it was counted as multiple Contacts.
 * **Now**: Each email address is treated as a single Contact across your team, even if it appears in multiple Segments.
@@ -36,7 +36,7 @@ From now on, contacts will see a preference page where they can:
 
 ## What to Do
 
-If you've been using Audiences for both segmentation and unsubscribes, we recommend switching your unsubscribe logic to **Topics**:
+If you've been using Audiences for both segmentation and unsubscribes, switch your unsubscribe logic to **Topics**:
 
 1. Create a Topic for each type of email you send.
 2. Assign the right users to each Topic.
@@ -52,4 +52,4 @@ For details on the new API endpoints view:
 
 ## Get more help
 
-If you have a use case not covered here, [please reach out](https://resend.com/help). We'll make sure your transition is smooth.
+If you have a use case not covered here, [please reach out](https://resend.com/help) for a smooth transition.

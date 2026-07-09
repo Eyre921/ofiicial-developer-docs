@@ -1,5 +1,5 @@
 ---
-title: "How do I create an email address or sender in Resend?"
+title: "Sender email addresses in Resend"
 source: https://resend.com/docs/knowledge-base/how-do-I-create-an-email-address-or-sender-in-resend
 path: docs/knowledge-base/how-do-i-create-an-email-address-or-sender-in-resend
 ---

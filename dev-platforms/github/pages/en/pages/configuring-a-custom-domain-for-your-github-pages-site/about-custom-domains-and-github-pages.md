@@ -70,7 +70,7 @@ Verifying your custom domain prevents other GitHub users from using your domain 
 
 There are a couple of reasons your site might be automatically disabled.
 
-* If you downgrade from GitHub Pro to GitHub Free, any GitHub Pages sites that are currently published from private repositories in your account will be unpublished. For more information, see [Downgrading your account's plan](/en/billing/managing-the-plan-for-your-github-account/downgrading-your-accounts-plan).
+* If you downgrade from GitHub Pro to GitHub Free, any GitHub Pages sites that are currently published from private repositories in your account will be unpublished. For more information, see [Downgrading your account's plan](/en/billing/how-tos/manage-plan-and-licenses/downgrade-plan).
 * If you transfer a private repository to a personal account that is using GitHub Free, the repository will lose access to the GitHub Pages feature, and the currently published GitHub Pages site will be unpublished. For more information, see [Transferring a repository](/en/repositories/creating-and-managing-repositories/transferring-a-repository).
 
 ## Further reading

@@ -6,7 +6,7 @@ path: oss/javascript/deepagents/quickstart
 
 Build your first deep agent in minutes
 
-This guide walks you through creating your first deep agent with planning, file system tools, and subagent capabilities. You'll build a research agent that can conduct research and write reports.
+This guide walks you through creating your first deep agent with planning, file system tools, and subagent capabilities. You will build a research agent that can conduct research and write reports.
 
 <Tip>
   **Using an AI coding assistant?**

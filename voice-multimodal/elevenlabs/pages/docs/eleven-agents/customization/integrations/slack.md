@@ -37,7 +37,7 @@ Go to [Slack API: Your Apps](https://api.slack.com/apps) and click **Create New 
 
 Open **OAuth & Permissions** and add the following Bot Token Scopes:
 
-`app_mentions:read`, `channels:history`, `channels:join`, `channels:manage`, `chat:write`, `groups:history`, `groups:write`, `im:history`, `reactions:write`.
+`app_mentions:read`, `channels:history`, `channels:join`, `channels:manage`, `chat:write`, `files:read`, `groups:history`, `groups:write`, `im:history`, `reactions:write`.
 
 Then click **Install to Workspace** and approve. Copy the **Bot User OAuth Token** (starts with `xoxb-`).
 
@@ -77,6 +77,7 @@ The ElevenLabs Slack app requests the following scopes:
 | `channels:join`     | Allow the bot to auto-join public channels when a trigger is created.                  |
 | `channels:manage`   | Perform channel management actions.                                                    |
 | `chat:write`        | Post messages in channels and threads.                                                 |
+| `files:read`        | Download files attached to messages so the agent can read images and PDFs.             |
 | `groups:history`    | Read messages in private channels the bot is in.                                       |
 | `groups:write`      | Operate in private channels.                                                           |
 | `im:history`        | Read messages in direct message channels with the bot.                                 |

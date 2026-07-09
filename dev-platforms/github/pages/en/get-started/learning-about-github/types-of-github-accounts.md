@@ -37,9 +37,9 @@ If you signed up for your own account on GitHub.com, you are using a personal ac
 
 Each personal account uses either GitHub Free or GitHub Pro. All personal accounts can own an unlimited number of public and private repositories, with an unlimited number of collaborators on those repositories. If you use GitHub Free, private repositories owned by your personal account have a limited feature set. You can upgrade to GitHub Pro to get a full feature set for private repositories. For more information, see [GitHub's plans](/en/get-started/learning-about-github/githubs-plans).
 
-Many people use one personal account for all their work on GitHub.com, including both open source projects and paid employment. If you're currently using more than one personal account that you created for yourself, we suggest combining the accounts. For more information, see [Merging multiple personal accounts](/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-personal-account/merging-multiple-personal-accounts).
+Many people use one personal account for all their work on GitHub.com, including both open source projects and paid employment. If you're currently using more than one personal account that you created for yourself, we suggest combining the accounts. For more information, see [Merging multiple personal accounts](/en/account-and-profile/how-tos/account-management/merging-multiple-personal-accounts).
 
-Even if you're a member of an organization that uses SAML single sign-on, you will still sign in to your own personal account on GitHub.com, and that personal account will be linked to your identity in your organization's identity provider (IdP). For more information, see [About authentication with single sign-on](/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/about-authentication-with-saml-single-sign-on)" in the GitHub Enterprise Cloud documentation.
+Even if you're a member of an organization that uses SAML single sign-on, you will still sign in to your own personal account on GitHub.com, and that personal account will be linked to your identity in your organization's identity provider (IdP). For more information, see [About authentication with single sign-on](/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/about-authentication-with-single-sign-on)" in the GitHub Enterprise Cloud documentation.
 
 ### Managed user accounts
 
@@ -71,7 +71,7 @@ For more information about all the features of organizations, see [About organiz
 
 ## Enterprise accounts
 
-GitHub Enterprise Cloud and GitHub Enterprise Server include enterprise accounts, which allow administrators to centrally manage policy and billing for multiple organizations and enable innersourcing between the organizations. For more information, see [Enterprise accounts](/en/enterprise-cloud@latest/admin/managing-your-enterprise-account/about-enterprise-accounts) in the GitHub Enterprise Cloud documentation.
+GitHub Enterprise Cloud and GitHub Enterprise Server include enterprise accounts, which allow administrators to centrally manage policy and billing for multiple organizations and enable innersourcing between the organizations. For more information, see [Enterprise accounts](/en/enterprise-cloud@latest/admin/concepts/enterprise-fundamentals/enterprise-accounts) in the GitHub Enterprise Cloud documentation.
 
 ## Further reading
 

@@ -1733,7 +1733,7 @@ Create autonomous agents that can manage and interact with your Neon databases p
 
 - [Neon for AI agent platforms](https://neon.com/use-cases/ai-agents): Read about Neon as a solution for agents that need backends.
 - [Database versioning](https://neon.com/docs/ai/ai-database-versioning): How AI agents and codegen platforms use Neon snapshot APIs for database versioning
-- [Neon API](https://neon.com/docs/reference/api-reference): Integrate using the Neon API
+- [Neon API](https://neon.com/docs/reference/api): Integrate using the Neon API
 
 ## Agent frameworks
 
@@ -49379,7 +49379,7 @@ As a project becomes a product, small teams need to ship quickly and support rea
 - [Autoscaling](https://neon.com/docs/introduction/autoscaling) adapts automatically to unpredictable workloads: you don't have to plan capacity in advance
 - [Branching](https://neon.com/branching) lets you spin up development, preview, and test environments instantly, matching the latest production state, without manual work
 - [Out-of-the-box integrations](https://neon.com/docs/guides/integrations) with platforms like Vercel further simplify previews and deployments
-- [API-first workflows](https://neon.com/docs/reference/api-reference) make it easy to automate almost all database operations
+- [API-first workflows](https://neon.com/docs/reference/api) make it easy to automate almost all database operations
 - AI-coding support via [MCP](https://neon.com/docs/ai/neon-mcp-server) and [Agent Skills](https://neon.com/docs/ai/agent-skills) allows tools like Cursor and Claude to fully interact with Neon
 - [Instant restores](https://neon.com/docs/guides/backup-restore) lower the stakes for mistakes and accidents
 - [Built-in connection pooling](https://neon.com/docs/connect/connection-pooling) takes care of growing connections in your serverless apps
@@ -49688,7 +49688,7 @@ Our developer experience is anchored by four core pillars:
 
 Traditional OLTP databases force you to provision compute upfront (i.e., choose an instance size), plan for peak traffic, and manually adjust capacity over time. This adds overhead and leads to either overpaying for idle resources or underprovisioning and risk performance degradation.
 
-You can build your database branching workflows using the [Neon CLI](https://neon.com/docs/cli), [Neon API](https://api-docs.neon.tech/reference/getting-started-with-neon-api), or [GitHub Actions](https://neon.com/docs/guides/branching-github-actions). For example, this example shows how to create a development branch from `main` with a simple CLI command:
+You can build your database branching workflows using the [Neon CLI](https://neon.com/docs/cli), [Neon API](https://neon.com/docs/reference/api), or [GitHub Actions](https://neon.com/docs/guides/branching-github-actions). For example, this example shows how to create a development branch from `main` with a simple CLI command:
 
 **How it works**
 
@@ -49789,7 +49789,7 @@ Neon is built with an API-first mindset. Every core operation is exposed program
 
 Neon powers [platforms](https://neon.com/platforms) where thousands of databases are provisioned, scaled, and deleted automatically every day. This includes developer platforms embedding Postgres into their product experience, as well as [AI agents](https://neon.com/use-cases/ai-agents) that provision databases dynamically while building and running applications on behalf of users.
 
-The [Neon API](https://api-docs.neon.tech/reference/getting-started-with-neon-api) has been shaped by real-world requirements, and it's able to
+The [Neon API](https://neon.com/docs/reference/api) has been shaped by real-world requirements, and it's able to
 
 - Manage hundreds of thousands of projects
 - Automate database lifecycles with minimal human intervention
@@ -50601,7 +50601,7 @@ As a project becomes a product, small teams need to ship quickly and support rea
 - [Autoscaling](https://neon.com/docs/introduction/autoscaling) adapts automatically to unpredictable workloads: you don't have to plan capacity in advance
 - [Branching](https://neon.com/branching) lets you spin up development, preview, and test environments instantly, matching the latest production state, without manual work
 - [Out-of-the-box integrations](https://neon.com/docs/guides/integrations) with platforms like Vercel further simplify previews and deployments
-- [API-first workflows](https://neon.com/docs/reference/api-reference) make it easy to automate almost all database operations
+- [API-first workflows](https://neon.com/docs/reference/api) make it easy to automate almost all database operations
 - AI-coding support via [MCP](https://neon.com/docs/ai/neon-mcp-server) and [Agent Skills](https://neon.com/docs/ai/agent-skills) allows tools like Cursor and Claude to fully interact with Neon
 - [Instant restores](https://neon.com/docs/guides/backup-restore) lower the stakes for mistakes and accidents
 - [Built-in connection pooling](https://neon.com/docs/connect/connection-pooling) takes care of growing connections in your serverless apps
@@ -51290,7 +51290,7 @@ Startups want to ship product fast and avoid cloud infrastructure complexity. Th
 - Its serverless architecture removes most management
 - Autoscaling handles unpredictable traffic without overprovisioning or planning compute sizes
 - Branching speeds up building - teams can ship safely and quickly
-- Neon's straightforward and feature-complete [API](https://neon.com/docs/reference/api-reference)
+- Neon's straightforward and feature-complete [API](https://neon.com/docs/reference/api)
 - Usage-based pricing means no upfront commitments
 - Neon delivers on reliability, performance, and compliance
 
@@ -65166,7 +65166,7 @@ If you're managing the same schema across many user databases, consider using to
 
 We're here to help you build your integration:
 
-- [Neon API Reference](https://neon.com/docs/reference/api-reference): Explore all available API endpoints
+- [Neon API Reference](https://neon.com/docs/reference/api): Explore all available API endpoints
 - [Talk to Sales](https://neon.com/contact-sales): Discuss your integration with our team
 
 **Info:** Integrators of Neon can contact their Neon representative directly for assistance with their integration.
@@ -79291,7 +79291,7 @@ The workflows in this section enable automatic synchronization between your prod
 
 With a Neon Twin created, [branches](https://neon.com/docs/introduction/branching) can be quickly spun up or torn down, enabling developers to build new features or debug issues, all within their own isolated environments with a dedicated compute resource.
 
-Branches can be created and managed through the [Neon console](https://console.neon.tech/) or programmatically via the [API](https://neon.com/docs/reference/api-reference).
+Branches can be created and managed through the [Neon console](https://console.neon.tech/) or programmatically via the [API](https://neon.com/docs/reference/api).
 
 ## Get started
 
@@ -81514,7 +81514,7 @@ Use the embedded Postgres approach when you want to provision and manage Postgre
 - Enterprise platforms requiring isolated databases per customer
 
 * [Embedded Postgres guide](https://neon.com/docs/guides/embedded-postgres): Learn how to embed Postgres in your platform
-* [Neon API reference](https://neon.com/docs/reference/api-reference): Explore the Neon API
+* [Neon API reference](https://neon.com/docs/reference/api): Explore the Neon API
 
 ---
 
@@ -97405,7 +97405,7 @@ To join the agent plan:
 
 - Your application requires approval from the Neon team
 
-Once your application is approved, the Neon team switches your Scale account to the Agent Plan and helps you set up a second Free Account for your Free Tier if needed. After setup, you manage all projects and configurations independently via the [Neon API](https://neon.com/docs/reference/api-reference).
+Once your application is approved, the Neon team switches your Scale account to the Agent Plan and helps you set up a second Free Account for your Free Tier if needed. After setup, you manage all projects and configurations independently via the [Neon API](https://neon.com/docs/reference/api).
 
 > **Neon agent plan**
 >
@@ -97433,7 +97433,7 @@ Compute is billed at $0.106 per compute unit hour (lower than standard Scale pri
 
 ## Managing projects
 
-After initial enrollment, you have full control over both organizations as admin. Each organization supports 30,000 projects by default. All project operations are performed through the [Neon API](https://neon.com/docs/reference/api-reference), enabling fleet management at scale with small engineering teams. You can:
+After initial enrollment, you have full control over both organizations as admin. Each organization supports 30,000 projects by default. All project operations are performed through the [Neon API](https://neon.com/docs/reference/api), enabling fleet management at scale with small engineering teams. You can:
 
 - Create and delete projects in either organization
 - Set per-project resource quotas and billing limits
@@ -99320,7 +99320,7 @@ Neon and Lakebase share the same Postgres engine and serverless storage architec
 | **Cross-cloud disaster recovery (DR)**               | Not available                                                                                                      | Private preview                                                                                                                            |
 | **Connection pooling**                               | Yes ([Connection pooling](https://neon.com/docs/connect/connection-pooling))                                       | Yes, built-in PgBouncer ([Connect](https://docs.databricks.com/aws/en/oltp/projects/connect))                                              |
 | **Data API (REST)**                                  | Yes ([Data API](https://neon.com/docs/data-api/overview))                                                          | Yes ([Lakebase Data API](https://docs.databricks.com/aws/en/oltp/projects/data-api))                                                       |
-| **Management API**                                   | Yes ([Neon API](https://neon.com/docs/reference/api-reference))                                                    | Yes ([Lakebase API guide](https://docs.databricks.com/aws/en/oltp/projects/api-usage))                                                     |
+| **Management API**                                   | Yes ([Neon API](https://neon.com/docs/reference/api))                                                              | Yes ([Lakebase API guide](https://docs.databricks.com/aws/en/oltp/projects/api-usage))                                                     |
 | **CLI**                                              | Yes ([Neon CLI](https://neon.com/docs/cli/install))                                                                | Yes ([Databricks CLI for Lakebase](https://docs.databricks.com/aws/en/oltp/projects/cli))                                                  |
 | **Terraform**                                        | Yes ([Terraform provider](https://neon.com/docs/reference/terraform))                                              | Yes ([Terraform for Lakebase](https://docs.databricks.com/aws/en/oltp/projects/automate-with-terraform))                                   |
 | **MCP server**                                       | Yes ([Neon MCP Server](https://neon.com/docs/ai/neon-mcp-server))                                                  | Yes, Databricks managed MCP ([MCP on Databricks](https://docs.databricks.com/aws/en/generative-ai/mcp/managed-mcp))                        |
@@ -109774,47 +109774,296 @@ Alternatively, you can check the **Data size** value on the **Branches** page in
 
 **Note:** Data size does not include the [history](https://neon.com/docs/reference/glossary#history) that is maintained in Neon to support features like instant restore.
 
---- [Document source](https://neon.com/docs/reference/api-reference.md) ---
+--- [Document source](https://neon.com/docs/reference/api.md) ---
 
-> Summary: The Neon API (REST, base URL https://console.neon.tech/api/v2/) lets developers create and manage projects, branches, databases, roles, and compute endpoints programmatically, mirroring every action available in the Neon Console. Use this page to get an API key, authenticate with Bearer tokens, and understand constraints like rate limits, async operation polling, and branch deletion rules before building automation or CI/CD pipelines. Neon supports multiple API key scopes (personal, organization, and project-scoped), TypeScript and Python SDKs, an OpenAPI 3.0 spec, and an index of API examples covering branching, read replicas, snapshots, schema diff, and data anonymization.
+# Neon API Reference
 
-# Neon API
+Base URL: https://console.neon.tech/api/v2
+Auth: `Authorization: Bearer $NEON_API_KEY`
+
+Interface-specific indexes:
+- [API endpoint index](https://neon.com/docs/reference/api.md): all endpoints grouped by resource, each with curl and SDK examples
+- [Neon CLI](https://neon.com/docs/cli.md): Neon CLI commands, options, and usage
+- [OpenAPI spec](https://neon.com/api_spec/release/v2.json): machine-readable schemas for request/response validation and codegen
+
+## Projects
+
+[All projects endpoints](https://neon.com/docs/reference/api/projects.md)
+
+- [List projects](https://neon.com/docs/reference/api/projects/list-projects.md) `GET /projects`
+- [Create project](https://neon.com/docs/reference/api/projects/create-project.md) `POST /projects`
+- [List shared projects](https://neon.com/docs/reference/api/projects/list-shared-projects.md) `GET /projects/shared`
+- [Retrieve project details](https://neon.com/docs/reference/api/projects/get-project.md) `GET /projects/{project_id}`
+- [Update project](https://neon.com/docs/reference/api/projects/update-project.md) `PATCH /projects/{project_id}`
+- [Delete project](https://neon.com/docs/reference/api/projects/delete-project.md) `DELETE /projects/{project_id}`
+- [Recover a deleted project](https://neon.com/docs/reference/api/projects/recover-project.md) `POST /projects/{project_id}/recover`
+- [List project access](https://neon.com/docs/reference/api/projects/list-project-permissions.md) `GET /projects/{project_id}/permissions`
+- [Grant project access](https://neon.com/docs/reference/api/projects/grant-permission-to-project.md) `POST /projects/{project_id}/permissions`
+- [Revoke project access](https://neon.com/docs/reference/api/projects/revoke-permission-from-project.md) `DELETE /projects/{project_id}/permissions/{permission_id}`
+- [List available shared preload libraries](https://neon.com/docs/reference/api/projects/get-available-preload-libraries.md) `GET /projects/{project_id}/available_preload_libraries`
+- [Create a project transfer request](https://neon.com/docs/reference/api/projects/create-project-transfer-request.md) `POST /projects/{project_id}/transfer_requests`
+- [Accept a project transfer request](https://neon.com/docs/reference/api/projects/accept-project-transfer-request.md) `PUT /projects/{project_id}/transfer_requests/{request_id}`
+- [List JWKS URLs](https://neon.com/docs/reference/api/projects/get-project-jwks.md) `GET /projects/{project_id}/jwks`
+- [Add JWKS URL](https://neon.com/docs/reference/api/projects/add-project-jwks.md) `POST /projects/{project_id}/jwks`
+- [Delete JWKS URL](https://neon.com/docs/reference/api/projects/delete-project-jwks.md) `DELETE /projects/{project_id}/jwks/{jwks_id}`
+- [Retrieve connection URI](https://neon.com/docs/reference/api/projects/get-connection-uri.md) `GET /projects/{project_id}/connection_uri`
+- [List VPC endpoint restrictions](https://neon.com/docs/reference/api/projects/list-project-vpc-endpoints.md) `GET /projects/{project_id}/vpc_endpoints`
+- [Set VPC endpoint restriction](https://neon.com/docs/reference/api/projects/assign-project-vpc-endpoint.md) `POST /projects/{project_id}/vpc_endpoints/{vpc_endpoint_id}`
+- [Delete VPC endpoint restriction](https://neon.com/docs/reference/api/projects/delete-project-vpc-endpoint.md) `DELETE /projects/{project_id}/vpc_endpoints/{vpc_endpoint_id}`
+
+## Branches
+
+[All branches endpoints](https://neon.com/docs/reference/api/branches.md)
+
+- [List branches](https://neon.com/docs/reference/api/branches/list-project-branches.md) `GET /projects/{project_id}/branches`
+- [Create branch](https://neon.com/docs/reference/api/branches/create-project-branch.md) `POST /projects/{project_id}/branches`
+- [Create anonymized branch](https://neon.com/docs/reference/api/branches/create-project-branch-anonymized.md) `POST /projects/{project_id}/branch_anonymized`
+- [Retrieve number of branches](https://neon.com/docs/reference/api/branches/count-project-branches.md) `GET /projects/{project_id}/branches/count`
+- [Retrieve branch details](https://neon.com/docs/reference/api/branches/get-project-branch.md) `GET /projects/{project_id}/branches/{branch_id}`
+- [Update branch](https://neon.com/docs/reference/api/branches/update-project-branch.md) `PATCH /projects/{project_id}/branches/{branch_id}`
+- [Delete branch](https://neon.com/docs/reference/api/branches/delete-project-branch.md) `DELETE /projects/{project_id}/branches/{branch_id}`
+- [Restore branch to a historical state](https://neon.com/docs/reference/api/branches/restore-project-branch.md) `POST /projects/{project_id}/branches/{branch_id}/restore`
+- [Retrieve database schema](https://neon.com/docs/reference/api/branches/get-project-branch-schema.md) `GET /projects/{project_id}/branches/{branch_id}/schema`
+- [Compare database schema](https://neon.com/docs/reference/api/branches/get-project-branch-schema-comparison.md) `GET /projects/{project_id}/branches/{branch_id}/compare_schema`
+- [Retrieve masking rules](https://neon.com/docs/reference/api/branches/get-masking-rules.md) `GET /projects/{project_id}/branches/{branch_id}/masking_rules`
+- [Update masking rules](https://neon.com/docs/reference/api/branches/update-masking-rules.md) `PATCH /projects/{project_id}/branches/{branch_id}/masking_rules`
+- [Retrieve anonymized branch status](https://neon.com/docs/reference/api/branches/get-anonymized-branch-status.md) `GET /projects/{project_id}/branches/{branch_id}/anonymized_status`
+- [Start anonymization](https://neon.com/docs/reference/api/branches/start-anonymization.md) `POST /projects/{project_id}/branches/{branch_id}/anonymize`
+- [Set branch as default](https://neon.com/docs/reference/api/branches/set-default-project-branch.md) `POST /projects/{project_id}/branches/{branch_id}/set_as_default`
+- [Recover a deleted branch](https://neon.com/docs/reference/api/branches/recover-project-branch.md) `POST /projects/{project_id}/branches/{branch_id}/recover`
+- [Finalize branch restore from snapshot](https://neon.com/docs/reference/api/branches/finalize-restore-branch.md) `POST /projects/{project_id}/branches/{branch_id}/finalize_restore`
+- [List branch endpoints](https://neon.com/docs/reference/api/branches/list-project-branch-endpoints.md) `GET /projects/{project_id}/branches/{branch_id}/endpoints`
+- [List databases](https://neon.com/docs/reference/api/branches/list-project-branch-databases.md) `GET /projects/{project_id}/branches/{branch_id}/databases`
+- [Create database](https://neon.com/docs/reference/api/branches/create-project-branch-database.md) `POST /projects/{project_id}/branches/{branch_id}/databases`
+- [Retrieve database details](https://neon.com/docs/reference/api/branches/get-project-branch-database.md) `GET /projects/{project_id}/branches/{branch_id}/databases/{database_name}`
+- [Update database](https://neon.com/docs/reference/api/branches/update-project-branch-database.md) `PATCH /projects/{project_id}/branches/{branch_id}/databases/{database_name}`
+- [Delete database](https://neon.com/docs/reference/api/branches/delete-project-branch-database.md) `DELETE /projects/{project_id}/branches/{branch_id}/databases/{database_name}`
+- [List roles](https://neon.com/docs/reference/api/branches/list-project-branch-roles.md) `GET /projects/{project_id}/branches/{branch_id}/roles`
+- [Create role](https://neon.com/docs/reference/api/branches/create-project-branch-role.md) `POST /projects/{project_id}/branches/{branch_id}/roles`
+- [Retrieve role details](https://neon.com/docs/reference/api/branches/get-project-branch-role.md) `GET /projects/{project_id}/branches/{branch_id}/roles/{role_name}`
+- [Delete role](https://neon.com/docs/reference/api/branches/delete-project-branch-role.md) `DELETE /projects/{project_id}/branches/{branch_id}/roles/{role_name}`
+- [Retrieve role password](https://neon.com/docs/reference/api/branches/get-project-branch-role-password.md) `GET /projects/{project_id}/branches/{branch_id}/roles/{role_name}/reveal_password`
+- [Reset role password](https://neon.com/docs/reference/api/branches/reset-project-branch-role-password.md) `POST /projects/{project_id}/branches/{branch_id}/roles/{role_name}/reset_password`
+
+## Endpoints
+
+[All endpoints endpoints](https://neon.com/docs/reference/api/endpoints.md)
+
+- [List compute endpoints](https://neon.com/docs/reference/api/endpoints/list-project-endpoints.md) `GET /projects/{project_id}/endpoints`
+- [Create compute endpoint](https://neon.com/docs/reference/api/endpoints/create-project-endpoint.md) `POST /projects/{project_id}/endpoints`
+- [Retrieve compute endpoint details](https://neon.com/docs/reference/api/endpoints/get-project-endpoint.md) `GET /projects/{project_id}/endpoints/{endpoint_id}`
+- [Update compute endpoint](https://neon.com/docs/reference/api/endpoints/update-project-endpoint.md) `PATCH /projects/{project_id}/endpoints/{endpoint_id}`
+- [Delete compute endpoint](https://neon.com/docs/reference/api/endpoints/delete-project-endpoint.md) `DELETE /projects/{project_id}/endpoints/{endpoint_id}`
+- [Start compute endpoint](https://neon.com/docs/reference/api/endpoints/start-project-endpoint.md) `POST /projects/{project_id}/endpoints/{endpoint_id}/start`
+- [Suspend compute endpoint](https://neon.com/docs/reference/api/endpoints/suspend-project-endpoint.md) `POST /projects/{project_id}/endpoints/{endpoint_id}/suspend`
+- [Restart compute endpoint](https://neon.com/docs/reference/api/endpoints/restart-project-endpoint.md) `POST /projects/{project_id}/endpoints/{endpoint_id}/restart`
+
+## Authentication
+
+[All auth endpoints](https://neon.com/docs/reference/api/auth.md)
+
+- [Retrieve Neon Auth details for the branch](https://neon.com/docs/reference/api/auth/get-neon-auth.md) `GET /projects/{project_id}/branches/{branch_id}/auth`
+- [Enable Neon Auth for the branch](https://neon.com/docs/reference/api/auth/create-neon-auth.md) `POST /projects/{project_id}/branches/{branch_id}/auth`
+- [Disable Neon Auth for the branch](https://neon.com/docs/reference/api/auth/disable-neon-auth.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth`
+- [List domains in redirect_uri whitelist](https://neon.com/docs/reference/api/auth/list-branch-neon-auth-trusted-domains.md) `GET /projects/{project_id}/branches/{branch_id}/auth/domains`
+- [Add domain to redirect_uri whitelist](https://neon.com/docs/reference/api/auth/add-branch-neon-auth-trusted-domain.md) `POST /projects/{project_id}/branches/{branch_id}/auth/domains`
+- [Delete domain from redirect_uri whitelist](https://neon.com/docs/reference/api/auth/delete-branch-neon-auth-trusted-domain.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth/domains`
+- [Create new auth user](https://neon.com/docs/reference/api/auth/create-branch-neon-auth-new-user.md) `POST /projects/{project_id}/branches/{branch_id}/auth/users`
+- [Delete auth user](https://neon.com/docs/reference/api/auth/delete-branch-neon-auth-user.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}`
+- [Update auth user role](https://neon.com/docs/reference/api/auth/update-neon-auth-user-role.md) `PUT /projects/{project_id}/branches/{branch_id}/auth/users/{auth_user_id}/role`
+- [List OAuth providers for the branch](https://neon.com/docs/reference/api/auth/list-branch-neon-auth-oauth-providers.md) `GET /projects/{project_id}/branches/{branch_id}/auth/oauth_providers`
+- [Add an OAuth provider](https://neon.com/docs/reference/api/auth/add-branch-neon-auth-oauth-provider.md) `POST /projects/{project_id}/branches/{branch_id}/auth/oauth_providers`
+- [Update OAuth provider](https://neon.com/docs/reference/api/auth/update-branch-neon-auth-oauth-provider.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}`
+- [Delete OAuth provider](https://neon.com/docs/reference/api/auth/delete-branch-neon-auth-oauth-provider.md) `DELETE /projects/{project_id}/branches/{branch_id}/auth/oauth_providers/{oauth_provider_id}`
+- [Send test email](https://neon.com/docs/reference/api/auth/send-neon-auth-test-email.md) `POST /projects/{project_id}/branches/{branch_id}/auth/send_test_email`
+- [Retrieve email and password configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-email-and-password-config.md) `GET /projects/{project_id}/branches/{branch_id}/auth/email_and_password`
+- [Update email and password configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-email-and-password-config.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/email_and_password`
+- [Retrieve email provider configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-email-provider.md) `GET /projects/{project_id}/branches/{branch_id}/auth/email_provider`
+- [Update email provider configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-email-provider.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/email_provider`
+- [Retrieve localhost allow setting](https://neon.com/docs/reference/api/auth/get-neon-auth-allow-localhost.md) `GET /projects/{project_id}/branches/{branch_id}/auth/allow_localhost`
+- [Update localhost allow setting](https://neon.com/docs/reference/api/auth/update-neon-auth-allow-localhost.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/allow_localhost`
+- [Retrieve Neon Auth plugin configurations](https://neon.com/docs/reference/api/auth/get-neon-auth-plugin-configs.md) `GET /projects/{project_id}/branches/{branch_id}/auth/plugins`
+- [Update organization plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-organization-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/organization`
+- [Update auth configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-config.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/config`
+- [Update magic link plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-magic-link-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/magic-link`
+- [Retrieve phone number plugin configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-phone-number-plugin.md) `GET /projects/{project_id}/branches/{branch_id}/auth/plugins/phone-number`
+- [Update phone number plugin configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-phone-number-plugin.md) `PATCH /projects/{project_id}/branches/{branch_id}/auth/plugins/phone-number`
+- [Retrieve Neon Auth webhook configuration](https://neon.com/docs/reference/api/auth/get-neon-auth-webhook-config.md) `GET /projects/{project_id}/branches/{branch_id}/auth/webhooks`
+- [Update Neon Auth webhook configuration](https://neon.com/docs/reference/api/auth/update-neon-auth-webhook-config.md) `PUT /projects/{project_id}/branches/{branch_id}/auth/webhooks`
+
+## Organizations
+
+[All organizations endpoints](https://neon.com/docs/reference/api/organizations.md)
+
+- [Retrieve organization details](https://neon.com/docs/reference/api/organizations/get-organization.md) `GET /organizations/{org_id}`
+- [List organization API keys](https://neon.com/docs/reference/api/organizations/list-org-api-keys.md) `GET /organizations/{org_id}/api_keys`
+- [Create organization API key](https://neon.com/docs/reference/api/organizations/create-org-api-key.md) `POST /organizations/{org_id}/api_keys`
+- [Revoke organization API key](https://neon.com/docs/reference/api/organizations/revoke-org-api-key.md) `DELETE /organizations/{org_id}/api_keys/{key_id}`
+- [Retrieve organization spending limit](https://neon.com/docs/reference/api/organizations/get-organization-spending-limit.md) `GET /organizations/{org_id}/billing/spending_limit`
+- [Set organization spending limit](https://neon.com/docs/reference/api/organizations/set-organization-spending-limit.md) `PUT /organizations/{org_id}/billing/spending_limit`
+- [Remove organization spending limit](https://neon.com/docs/reference/api/organizations/delete-organization-spending-limit.md) `DELETE /organizations/{org_id}/billing/spending_limit`
+- [List organization members](https://neon.com/docs/reference/api/organizations/get-organization-members.md) `GET /organizations/{org_id}/members`
+- [Retrieve organization member details](https://neon.com/docs/reference/api/organizations/get-organization-member.md) `GET /organizations/{org_id}/members/{member_id}`
+- [Update role for organization member](https://neon.com/docs/reference/api/organizations/update-organization-member.md) `PATCH /organizations/{org_id}/members/{member_id}`
+- [Remove organization member](https://neon.com/docs/reference/api/organizations/remove-organization-member.md) `DELETE /organizations/{org_id}/members/{member_id}`
+- [List organization invitations](https://neon.com/docs/reference/api/organizations/get-organization-invitations.md) `GET /organizations/{org_id}/invitations`
+- [Create organization invitations](https://neon.com/docs/reference/api/organizations/create-organization-invitations.md) `POST /organizations/{org_id}/invitations`
+- [Transfer projects between organizations](https://neon.com/docs/reference/api/organizations/transfer-projects-from-org-to-org.md) `POST /organizations/{source_org_id}/projects/transfer`
+- [List VPC endpoints across all regions](https://neon.com/docs/reference/api/organizations/list-organization-vpc-endpoints-all-regions.md) `GET /organizations/{org_id}/vpc/vpc_endpoints`
+- [List VPC endpoints](https://neon.com/docs/reference/api/organizations/list-organization-vpc-endpoints.md) `GET /organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints`
+- [Retrieve VPC endpoint details](https://neon.com/docs/reference/api/organizations/get-organization-vpc-endpoint-details.md) `GET /organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}`
+- [Assign or update VPC endpoint](https://neon.com/docs/reference/api/organizations/assign-organization-vpc-endpoint.md) `POST /organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}`
+- [Delete VPC endpoint](https://neon.com/docs/reference/api/organizations/delete-organization-vpc-endpoint.md) `DELETE /organizations/{org_id}/vpc/region/{region_id}/vpc_endpoints/{vpc_endpoint_id}`
+
+## API Keys
+
+[All api-keys endpoints](https://neon.com/docs/reference/api/api-keys.md)
+
+- [List API keys](https://neon.com/docs/reference/api/api-keys/list-api-keys.md) `GET /api_keys`
+- [Create API key](https://neon.com/docs/reference/api/api-keys/create-api-key.md) `POST /api_keys`
+- [Revoke API key](https://neon.com/docs/reference/api/api-keys/revoke-api-key.md) `DELETE /api_keys/{key_id}`
+
+## Users
+
+[All users endpoints](https://neon.com/docs/reference/api/users.md)
+
+- [Retrieve current user details](https://neon.com/docs/reference/api/users/get-current-user-info.md) `GET /users/me`
+- [List organizations for the current user](https://neon.com/docs/reference/api/users/get-current-user-organizations.md) `GET /users/me/organizations`
+- [Transfer projects from personal account to organization](https://neon.com/docs/reference/api/users/transfer-projects-from-user-to-org.md) `POST /users/me/projects/transfer`
+- [Retrieve request authentication details](https://neon.com/docs/reference/api/users/get-auth-details.md) `GET /auth`
+
+## Regions
+
+[All regions endpoints](https://neon.com/docs/reference/api/regions.md)
+
+- [List supported regions](https://neon.com/docs/reference/api/regions/get-active-regions.md) `GET /regions`
+
+## Consumption
+
+[All consumption endpoints](https://neon.com/docs/reference/api/consumption.md)
+
+- [Retrieve project consumption metrics (legacy plans)](https://neon.com/docs/reference/api/consumption/get-consumption-history-per-project.md) `GET /consumption_history/projects`
+- [Retrieve project consumption metrics](https://neon.com/docs/reference/api/consumption/get-consumption-history-per-project-v2.md) `GET /consumption_history/v2/projects`
+- [Retrieve branch consumption metrics](https://neon.com/docs/reference/api/consumption/get-consumption-history-per-branch-v2.md) `GET /consumption_history/v2/branches`
+
+## Operations
+
+[All operations endpoints](https://neon.com/docs/reference/api/operations.md)
+
+- [Retrieve operation details](https://neon.com/docs/reference/api/operations/get-project-operation.md) `GET /projects/{project_id}/operations/{operation_id}`
+- [List operations](https://neon.com/docs/reference/api/operations/list-project-operations.md) `GET /projects/{project_id}/operations`
+
+## Snapshots
+
+[All snapshots endpoints](https://neon.com/docs/reference/api/snapshots.md)
+
+- [Create snapshot](https://neon.com/docs/reference/api/snapshots/create-snapshot.md) `POST /projects/{project_id}/branches/{branch_id}/snapshot`
+- [List project snapshots](https://neon.com/docs/reference/api/snapshots/list-snapshots.md) `GET /projects/{project_id}/snapshots`
+- [Update snapshot](https://neon.com/docs/reference/api/snapshots/update-snapshot.md) `PATCH /projects/{project_id}/snapshots/{snapshot_id}`
+- [Delete snapshot](https://neon.com/docs/reference/api/snapshots/delete-snapshot.md) `DELETE /projects/{project_id}/snapshots/{snapshot_id}`
+- [Restore snapshot](https://neon.com/docs/reference/api/snapshots/restore-snapshot.md) `POST /projects/{project_id}/snapshots/{snapshot_id}/restore`
+- [Retrieve backup schedule](https://neon.com/docs/reference/api/snapshots/get-snapshot-schedule.md) `GET /projects/{project_id}/branches/{branch_id}/backup_schedule`
+- [Update backup schedule](https://neon.com/docs/reference/api/snapshots/set-snapshot-schedule.md) `PUT /projects/{project_id}/branches/{branch_id}/backup_schedule`
+
+## Data API
+
+[All dataapi endpoints](https://neon.com/docs/reference/api/dataapi.md)
+
+- [Get advisor issues](https://neon.com/docs/reference/api/dataapi/get-project-advisor-security-issues.md) `GET /projects/{project_id}/advisors`
+- [Retrieve Neon Data API configuration](https://neon.com/docs/reference/api/dataapi/get-project-branch-data-api.md) `GET /projects/{project_id}/branches/{branch_id}/data-api/{database_name}`
+- [Create Neon Data API](https://neon.com/docs/reference/api/dataapi/create-project-branch-data-api.md) `POST /projects/{project_id}/branches/{branch_id}/data-api/{database_name}`
+- [Update Neon Data API](https://neon.com/docs/reference/api/dataapi/update-project-branch-data-api.md) `PATCH /projects/{project_id}/branches/{branch_id}/data-api/{database_name}`
+- [Delete Neon Data API](https://neon.com/docs/reference/api/dataapi/delete-project-branch-data-api.md) `DELETE /projects/{project_id}/branches/{branch_id}/data-api/{database_name}`
+
+## Legacy Auth
+
+[All auth-legacy endpoints](https://neon.com/docs/reference/api/auth-legacy.md)
+
+- [Create Neon Auth integration](https://neon.com/docs/reference/api/auth-legacy/create-neon-auth-integration.md) `POST /projects/auth/create`
+- [List trusted redirect URI domains](https://neon.com/docs/reference/api/auth-legacy/list-neon-auth-redirect-uri-whitelist-domains.md) `GET /projects/{project_id}/auth/domains`
+- [Add trusted redirect URI domain](https://neon.com/docs/reference/api/auth-legacy/add-neon-auth-domain-to-redirect-uri-whitelist.md) `POST /projects/{project_id}/auth/domains`
+- [Delete trusted redirect URI domain](https://neon.com/docs/reference/api/auth-legacy/delete-neon-auth-domain-from-redirect-uri-whitelist.md) `DELETE /projects/{project_id}/auth/domains`
+- [Create Auth Provider SDK keys](https://neon.com/docs/reference/api/auth-legacy/create-neon-auth-provider-sdk-keys.md) `POST /projects/auth/keys`
+- [Create new auth user](https://neon.com/docs/reference/api/auth-legacy/create-neon-auth-new-user.md) `POST /projects/auth/user`
+- [Delete auth user](https://neon.com/docs/reference/api/auth-legacy/delete-neon-auth-user.md) `DELETE /projects/{project_id}/auth/users/{auth_user_id}`
+- [Transfer Neon-managed auth project to your own account](https://neon.com/docs/reference/api/auth-legacy/transfer-neon-auth-provider-project.md) `POST /projects/auth/transfer_ownership`
+- [List active integrations with auth providers](https://neon.com/docs/reference/api/auth-legacy/list-neon-auth-integrations.md) `GET /projects/{project_id}/auth/integrations`
+- [List OAuth providers](https://neon.com/docs/reference/api/auth-legacy/list-neon-auth-oauth-providers.md) `GET /projects/{project_id}/auth/oauth_providers`
+- [Add an OAuth provider](https://neon.com/docs/reference/api/auth-legacy/add-neon-auth-oauth-provider.md) `POST /projects/{project_id}/auth/oauth_providers`
+- [Update OAuth provider](https://neon.com/docs/reference/api/auth-legacy/update-neon-auth-oauth-provider.md) `PATCH /projects/{project_id}/auth/oauth_providers/{oauth_provider_id}`
+- [Delete OAuth provider](https://neon.com/docs/reference/api/auth-legacy/delete-neon-auth-oauth-provider.md) `DELETE /projects/{project_id}/auth/oauth_providers/{oauth_provider_id}`
+- [Retrieve email server configuration](https://neon.com/docs/reference/api/auth-legacy/get-neon-auth-email-server.md) `GET /projects/{project_id}/auth/email_server`
+- [Update email server configuration](https://neon.com/docs/reference/api/auth-legacy/update-neon-auth-email-server.md) `PATCH /projects/{project_id}/auth/email_server`
+- [Delete integration with auth provider](https://neon.com/docs/reference/api/auth-legacy/delete-neon-auth-integration.md) `DELETE /projects/{project_id}/auth/integration/{auth_provider}`
+
+## Buckets
+
+[All buckets endpoints](https://neon.com/docs/reference/api/buckets.md)
+
+- [List buckets on the branch](https://neon.com/docs/reference/api/buckets/list-project-branch-buckets.md) `GET /projects/{project_id}/branches/{branch_id}/buckets`
+- [Create a bucket on the branch](https://neon.com/docs/reference/api/buckets/create-project-branch-bucket.md) `POST /projects/{project_id}/branches/{branch_id}/buckets`
+- [Delete a bucket on the branch](https://neon.com/docs/reference/api/buckets/delete-project-branch-bucket.md) `DELETE /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}`
+- [List objects in a bucket](https://neon.com/docs/reference/api/buckets/list-project-branch-bucket-objects.md) `GET /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects`
+- [Delete an object in a bucket](https://neon.com/docs/reference/api/buckets/delete-project-branch-bucket-object.md) `DELETE /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}`
+- [Download an object's bytes](https://neon.com/docs/reference/api/buckets/get-project-branch-bucket-object.md) `GET /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}/download`
+- [Delete every object under a key prefix (folder) in a bucket](https://neon.com/docs/reference/api/buckets/delete-project-branch-bucket-objects-by-prefix.md) `DELETE /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects-by-prefix`
+- [Presign an upload or download for an object in a bucket](https://neon.com/docs/reference/api/buckets/presign-project-branch-bucket-object.md) `POST /projects/{project_id}/branches/{branch_id}/buckets/{bucket_name}/objects/{object_key}/presign`
+
+## Storage
+
+[All storage endpoints](https://neon.com/docs/reference/api/storage.md)
+
+- [Get branch storage state](https://neon.com/docs/reference/api/storage/get-project-branch-storage.md) `GET /projects/{project_id}/branches/{branch_id}/storage`
+
+## AI Gateway
+
+[All ai-gateway endpoints](https://neon.com/docs/reference/api/ai-gateway.md)
+
+- [Get branch AI Gateway endpoint](https://neon.com/docs/reference/api/ai-gateway/get-project-branch-ai-gateway.md) `GET /projects/{project_id}/branches/{branch_id}/ai_gateway`
+
+## Credentials
+
+[All credentials endpoints](https://neon.com/docs/reference/api/credentials.md)
+
+- [List credentials on the branch](https://neon.com/docs/reference/api/credentials/list-credentials.md) `GET /projects/{project_id}/branches/{branch_id}/credentials`
+- [Issue a scoped credential on the branch](https://neon.com/docs/reference/api/credentials/create-credential.md) `POST /projects/{project_id}/branches/{branch_id}/credentials`
+- [Revoke a credential](https://neon.com/docs/reference/api/credentials/revoke-credential.md) `DELETE /projects/{project_id}/branches/{branch_id}/credentials/{token_id}`
+
+## Functions
+
+[All functions endpoints](https://neon.com/docs/reference/api/functions.md)
+
+- [List functions on the branch](https://neon.com/docs/reference/api/functions/list-project-branch-functions.md) `GET /projects/{project_id}/branches/{branch_id}/functions`
+- [Get function details](https://neon.com/docs/reference/api/functions/get-project-branch-function.md) `GET /projects/{project_id}/branches/{branch_id}/functions/{slug}`
+- [Update a function](https://neon.com/docs/reference/api/functions/update-project-branch-function.md) `PATCH /projects/{project_id}/branches/{branch_id}/functions/{slug}`
+- [Delete a function on the branch](https://neon.com/docs/reference/api/functions/delete-project-branch-function.md) `DELETE /projects/{project_id}/branches/{branch_id}/functions/{slug}`
+- [Deploy code to a function](https://neon.com/docs/reference/api/functions/create-project-branch-function-deployment.md) `POST /projects/{project_id}/branches/{branch_id}/functions/{slug}/deployments`
+
+--- [Document source](https://neon.com/docs/reference/api/get-started.md) ---
+
+> Summary: Create a Neon API key, authenticate with the REST API, and make your first request to list projects using curl.
+
+# Get started with the Neon API
 
 Copy into your AI assistant to get an API key and make your first API call. [View prompt](https://neon.com/prompts/neon-api-prompt.md)
 
-The Neon API allows you to manage your Neon projects programmatically. You can create and manage projects, branches, databases, roles, compute endpoints, and more. Everything you can do in the Neon Console, you can do with the API.
+The Neon API uses API keys and Bearer authentication. This page shows the shortest REST API path: create a key, set it as an environment variable, and call the `/projects` endpoint.
 
-## Quick links
+## Get an API key
 
-- [Neon API Reference](https://api-docs.neon.tech/reference/getting-started-with-neon-api): Interactive API documentation with "Try It" feature
-- [OpenAPI Specification](https://neon.com/api_spec/release/v2.json): Machine-readable API spec (OpenAPI 3.0)
-- [Neon SDKs](https://neon.com/docs/reference/sdk): TypeScript and Python SDKs for the Neon API
+Create an API key in the Neon Console under **Account settings** > **API keys**. For detailed instructions and security best practices, see [Manage API keys](https://neon.com/docs/manage/api-keys).
 
-## Getting started
+Neon supports three API key types:
 
-### Prerequisites
+| Key type                   | Scope                                                | Best for                      |
+| -------------------------- | ---------------------------------------------------- | ----------------------------- |
+| **Personal API key**       | All organization projects where the user is a member | Personal development, scripts |
+| **Organization API key**   | All projects within an organization                  | Team automation, CI/CD        |
+| **Project-scoped API key** | Single project only                                  | Limited access integrations   |
 
-Before using the Neon API, you need:
+**Important:** API key tokens are shown only once at creation. Store them securely because you can't retrieve them later.
 
-1. **A Neon account**: [Sign up](https://console.neon.tech/signup) if you don't have one
-2. **An API key**: Create one in the Neon Console (see below)
-3. **curl or an HTTP client**: Or use our [TypeScript](https://neon.com/docs/reference/typescript-sdk) or [Python](https://neon.com/docs/reference/python-sdk) SDKs
-
-### API key types
-
-Neon supports three types of API keys, each with different scopes:
-
-| Key Type                   | Scope                                  | Best For                      |
-| -------------------------- | -------------------------------------- | ----------------------------- |
-| **Personal API Key**       | All projects you own or have access to | Personal development, scripts |
-| **Organization API Key**   | All projects within an organization    | Team automation, CI/CD        |
-| **Project-scoped API Key** | Single project only                    | Limited access integrations   |
-
-Create your first API key in the Neon Console under **Account settings** > **API keys**. For detailed instructions, see [Manage API keys](https://neon.com/docs/manage/api-keys).
-
-**Important:** API key tokens are shown only once at creation. Store them securely; you cannot retrieve them later.
-
-### Base URL
+## Base URL and authentication
 
 All API requests use this base URL:
 
@@ -109822,67 +110071,22 @@ All API requests use this base URL:
 https://console.neon.tech/api/v2/
 ```
 
-### Authentication
-
 Include your API key in the `Authorization` header using Bearer authentication:
 
 ```bash
-curl 'https://console.neon.tech/api/v2/projects' \
-  -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY"
+-H "Authorization: Bearer $NEON_API_KEY"
 ```
 
-## Make your first API call
+## Make your first request
 
 Set your API key as an environment variable, then list your projects:
 
-**curl**
-
 ```bash
-# Set your API key
 export NEON_API_KEY="your-api-key-here"
 
-# List all projects
 curl 'https://console.neon.tech/api/v2/projects' \
   -H 'Accept: application/json' \
   -H "Authorization: Bearer $NEON_API_KEY" | jq
-```
-
-**TypeScript SDK**
-
-```bash
-npm install @neondatabase/api-client
-```
-
-```typescript
-import { createApiClient } from '@neondatabase/api-client';
-
-const apiClient = createApiClient({
-  apiKey: process.env.NEON_API_KEY!,
-});
-
-async function listProjects() {
-  const response = await apiClient.listProjects({});
-  console.log(response.data.projects);
-}
-
-listProjects();
-```
-
-**Python SDK**
-
-```bash
-pip install neon-api
-```
-
-```python
-import os
-from neon_api import NeonAPI
-
-neon = NeonAPI(api_key=os.environ["NEON_API_KEY"])
-
-projects = neon.projects()
-print(projects)
 ```
 
 The response includes your projects with their IDs, regions, and other details:
@@ -109897,46 +110101,28 @@ The response includes your projects with their IDs, regions, and other details:
       "pg_version": 17,
       "created_at": "2024-01-15T10:30:00Z"
     }
-  ]
+  ],
+  "pagination": { "cursor": "eyJsaW1pdCI6MX0" }
 }
 ```
 
-Use the `project_id` from the response to make subsequent requests, such as creating a branch:
+## Next steps
 
-**curl**
+- Use the [endpoint index](https://neon.com/docs/reference/api/reference) to search all generated API operation pages.
+- Review [key concepts](https://neon.com/docs/reference/api/key-concepts) before building automation.
+- Download the [OpenAPI specification](https://neon.com/api_spec/release/v2.json) for code generation or API tooling.
 
-```bash
-curl -X POST 'https://console.neon.tech/api/v2/projects/spring-example-302709/branches' \
-  -H 'Accept: application/json' \
-  -H "Authorization: Bearer $NEON_API_KEY" \
-  -H 'Content-Type: application/json' \
-  -d '{"branch": {"name": "dev-branch"}}'
-```
+--- [Document source](https://neon.com/docs/reference/api/key-concepts.md) ---
 
-**TypeScript SDK**
+> Summary: Understand asynchronous operations, rate limits, pagination, and important constraints before building automation with the Neon API.
 
-```typescript
-const response = await apiClient.createProjectBranch('spring-example-302709', {
-  branch: { name: 'dev-branch' },
-});
-console.log(response.data.branch);
-```
+# Neon API key concepts
 
-**Python SDK**
+Review these API behavior notes before you build scripts, CI/CD workflows, or control-plane integrations on top of Neon.
 
-```python
-branch = neon.branch_create(
-    project_id="spring-example-302709",
-    branch={"name": "dev-branch"}
-)
-print(branch)
-```
+## Asynchronous operations
 
-## Key concepts
-
-### Asynchronous operations
-
-Many Neon API operations (creating branches, starting computes, etc.) are asynchronous. The API response includes an `operations` array with status information:
+Many Neon API operations, including creating branches and starting computes, are asynchronous. The API response includes an `operations` array with status information:
 
 ```json
 "operations": [
@@ -109948,7 +110134,7 @@ Many Neon API operations (creating branches, starting computes, etc.) are asynch
 ]
 ```
 
-**Status values:** `scheduling`, `running`, `finished`, `failed`, `cancelling`, `cancelled`, `skipped`
+Status values include `scheduling`, `running`, `finished`, `failed`, `cancelling`, `cancelled`, and `skipped`.
 
 When building automation, poll the operation status before proceeding with dependent requests:
 
@@ -109959,130 +110145,40 @@ curl 'https://console.neon.tech/api/v2/projects/{project_id}/operations/{operati
 
 For details, see [Poll operation status](https://neon.com/docs/manage/operations#poll-operation-status).
 
-### Rate limiting
+## Rate limiting
 
-- **700 requests per minute** (approximately 11 per second)
-- **40 requests per second** burst limit per route
-- **Organization API key creation** (`POST /organizations/{org_id}/api_keys`): 10 requests per second. Throttle requests or use retries with backoff when creating many keys. See [Manage organizations using the Neon API](https://neon.com/docs/manage/orgs-api) and [Manage API keys](https://neon.com/docs/manage/api-keys).
+The Neon API has these rate limits:
 
-Exceeding these limits returns `HTTP 429 Too Many Requests`. Implement retry logic with exponential backoff in your applications.
+- 700 requests per minute, or approximately 11 per second
+- 40 requests per second burst limit per route
+- 10 requests per second for organization API key creation (`POST /organizations/{org_id}/api_keys`)
 
-### Pagination
+Exceeding these limits returns `HTTP 429 Too Many Requests`. Use retry logic with exponential backoff in your applications.
 
-Some endpoints that return lists support cursor-based pagination. Include `limit` and `cursor` parameters:
+## Pagination
+
+Some list endpoints support cursor-based pagination. Include `limit` and `cursor` parameters:
 
 ```bash
 # First request with limit
-curl 'https://console.neon.tech/api/v2/projects?limit=10' ...
+curl 'https://console.neon.tech/api/v2/projects?limit=10' \
+  -H "Authorization: Bearer $NEON_API_KEY"
 
-# Subsequent request with cursor from previous response
-curl 'https://console.neon.tech/api/v2/projects?limit=10&cursor=...' ...
+# Subsequent request with cursor from the previous response
+curl 'https://console.neon.tech/api/v2/projects?limit=10&cursor=...' \
+  -H "Authorization: Bearer $NEON_API_KEY"
 ```
 
-### Important constraints
+## API constraints and limits
 
-Keep these constraints in mind when building automation with the Neon API:
+These constraints apply when building automation with the Neon API:
 
-- You **cannot delete** a project's root or default branch.
-- You **cannot delete** a branch that has child branches. Delete all children first.
-- Creating a new role **may drop existing connections** to the active compute endpoint.
+- You can't delete a project's root or default branch.
+- You can't delete a branch that has child branches. Delete all children first.
+- Creating a new role may drop existing connections to the active compute endpoint.
 - A branch can have only one `read_write` endpoint but multiple `read_only` endpoints.
-- Neon limits overlapping **operations** on a project. One response may still list several operations when they belong to the same request. Requests that try to schedule new work while conflicting operations are still running return `423 Locked`. Retry with exponential backoff, or poll for completion first. See [Handle concurrent operation errors](https://neon.com/docs/manage/operations#handle-concurrent-operation-errors).
+- Neon limits overlapping operations on a project. Requests that try to schedule new work while conflicting operations are still running return `423 Locked`. Retry with exponential backoff, or poll for completion first. See [Handle concurrent operation errors](https://neon.com/docs/manage/operations#handle-concurrent-operation-errors).
 - Operations older than 6 months may be removed from Neon's systems.
-
-## SDKs and tools
-
-Instead of using curl, you can use our official SDKs:
-
-- **[TypeScript SDK](https://neon.com/docs/reference/typescript-sdk)**: Full-featured SDK for Node.js and browser
-- **[Python SDK](https://neon.com/docs/reference/python-sdk)**: Pythonic wrapper for the Neon API
-- **[Neon CLI](https://neon.com/docs/cli)**: Command-line interface for Neon
-
-See [Neon SDKs](https://neon.com/docs/reference/sdk) for the full list, including community SDKs.
-
-## API reference documentation
-
-The interactive [Neon API reference](https://api-docs.neon.tech/reference/getting-started-with-neon-api) provides:
-
-- Complete endpoint documentation
-- Request/response examples
-- "Try It" feature to execute requests directly
-- Schema definitions for all objects
-
-You can also access the [OpenAPI specification](https://neon.com/api_spec/release/v2.json) directly for code generation or API tooling.
-
-## API examples index
-
-The following sections link to API examples and guides throughout the Neon documentation, organized by resource type and use case.
-
-### Core resources
-
-Manage the fundamental building blocks of your Neon account.
-
-- [Manage API keys](https://neon.com/docs/manage/api-keys#manage-api-keys-with-the-neon-api): Create, list, and revoke API keys for personal accounts and organizations
-- [Manage projects](https://neon.com/docs/manage/projects#manage-projects-with-the-neon-api): Create, list, update, delete, and recover projects
-- [Manage branches](https://neon.com/docs/manage/branches#branching-with-the-neon-api): Create, list, and delete branches
-- [Manage computes](https://neon.com/docs/manage/computes#manage-computes-with-the-neon-api): Create, configure, restart, and delete compute endpoints
-- [Manage roles](https://neon.com/docs/manage/roles#manage-roles-with-the-neon-api): Create roles, reset passwords, and manage database access
-- [Manage databases](https://neon.com/docs/manage/databases#manage-databases-with-the-neon-api): Create, list, update, and delete databases
-- [View operations](https://neon.com/docs/manage/operations#operations-and-the-neon-api): List operations, check status, and poll for completion
-- [Maintenance windows](https://neon.com/docs/manage/updates#updates-on-paid-plans): Configure maintenance windows for compute updates via API
-- [Organizations API](https://neon.com/docs/manage/orgs-api): Manage organization members and permissions
-- [Project transfer](https://neon.com/docs/manage/orgs-project-transfer#transfer-projects-with-the-api): Transfer projects between accounts and organizations
-
-### Usage and billing
-
-Monitor resource consumption and configure usage limits.
-
-- [Monitor billing and usage](https://neon.com/docs/introduction/monitor-usage): Where to see usage and costs in the Console; links to consumption API for programmatic access
-- [Query consumption metrics](https://neon.com/docs/guides/consumption-metrics): Query project consumption metrics for usage-based plans. For legacy account and project endpoints, see [Query consumption metrics (legacy)](https://neon.com/docs/guides/consumption-metrics-legacy).
-- [Organization consumption](https://neon.com/docs/manage/orgs-api-consumption#account-level-metrics): Query usage metrics for organizations
-- [Configure consumption limits](https://neon.com/docs/guides/consumption-limits#configuring-quotas): Set and update quotas on compute, storage, and data transfer
-
-### Branching workflows
-
-Work with branches programmatically for development, testing, and CI/CD.
-
-- [Branching with the Neon API](https://neon.com/docs/guides/branching-neon-api): Comprehensive guide to branch management via API
-- [Branch restore](https://neon.com/docs/introduction/branch-restore#how-to-use-instant-restore): Restore branches to a previous state using Time Travel
-- [Branch expiration](https://neon.com/docs/guides/branch-expiration#creating-a-branch-with-expiration): Automatically delete branches after a specified time
-- [Schema-only branches](https://neon.com/docs/guides/branching-schema-only#creating-schema-only-branches): Create branches with schema but no data
-- [Reset from parent](https://neon.com/docs/guides/reset-from-parent#how-to-reset-from-parent): Reset a branch to match its parent's current state
-- [Protected branches](https://neon.com/docs/guides/protected-branches#define-an-ip-allowlist-for-your-project): Configure IP allowlist restrictions for protected branches
-- [Branching for testing](https://neon.com/docs/guides/branching-test-queries#create-a-test-branch): Create isolated branches for running test queries
-- [Branch archiving](https://neon.com/docs/guides/branch-archiving#monitoring-branch-archiving): Monitor branch archive status via API
-
-### Snapshots and backup
-
-Create and manage point-in-time snapshots for backup and versioning.
-
-- [Backup and restore](https://neon.com/docs/guides/backup-restore#create-snapshots-manually): Create scheduled and on-demand snapshots
-- [Database versioning](https://neon.com/docs/ai/ai-database-versioning#creating-snapshots): Create and manage snapshots via API for version control
-
-### Data management
-
-Transform and compare data across branches.
-
-- [Data anonymization API](https://neon.com/docs/workflows/data-anonymization-api#create-anonymized-branch): Create anonymized copies of production data with masking rules
-- [Data anonymization workflow](https://neon.com/docs/workflows/data-anonymization#create-a-branch-with-anonymized-data): End-to-end guide for setting up data anonymization
-- [Schema comparison](https://neon.com/docs/guides/schema-diff#using-the-neon-api): Compare schemas between branches via API
-- [Schema diff tutorial](https://neon.com/docs/guides/schema-diff-tutorial#view-the-schema-differences): Step-by-step schema comparison guide with API example
-
-### Read replicas
-
-Scale read operations with dedicated read-only compute endpoints.
-
-- [Read replicas overview](https://neon.com/docs/introduction/read-replicas#manage-read-replicas-using-the-neon-api): List and manage read replica endpoints
-- [Create read replicas](https://neon.com/docs/guides/read-replica-guide#create-a-read-replica-using-the-api): Create, configure, and delete read replica computes
-- [Read replicas for data analysis](https://neon.com/docs/guides/read-replica-data-analysis#create-a-read-replica): Create read replicas for analytics workloads
-- [Read replicas for ad-hoc queries](https://neon.com/docs/guides/read-replica-adhoc-queries#setting-up-a-read-replica-for-ad-hoc-queries): Create read replicas for exploratory queries
-
-### Security and compliance
-
-Configure security features and compliance settings.
-
-- [HIPAA compliance](https://neon.com/docs/security/hipaa#step-2-enable-hipaa-for-your-projects): Create and configure HIPAA-compliant projects via API
-- [API key management](https://neon.com/docs/manage/api-keys): Secure API key handling for personal and organization accounts
 
 --- [Document source](https://neon.com/docs/reference/claimable-postgres.md) ---
 
@@ -112740,7 +112836,7 @@ Programmatically manage Neon projects, branches, databases, and other platform r
 
 **Related resources**
 
-- [Neon API Reference](https://neon.com/docs/reference/api-reference)
+- [Neon API Reference](https://neon.com/docs/reference/api)
 
 **Source code**
 
@@ -112749,7 +112845,7 @@ Programmatically manage Neon projects, branches, databases, and other platform r
 
 ## About the SDK
 
-Neon supports the [neon-api - Python client for the Neon API](https://pypi.org/project/neon-api/), a wrapper for the [Neon API](https://api-docs.neon.tech/reference/getting-started-with-neon-api). This SDK simplifies integration of Python applications with the Neon platform, providing methods to programmatically manage API keys, Neon projects, branches, databases, endpoints, roles, and operations.
+Neon supports the [neon-api - Python client for the Neon API](https://pypi.org/project/neon-api/), a wrapper for the [Neon API](https://neon.com/docs/reference/api). This SDK simplifies integration of Python applications with the Neon platform, providing methods to programmatically manage API keys, Neon projects, branches, databases, endpoints, roles, and operations.
 
 **Tip: AI assistant support**
 
@@ -112855,7 +112951,7 @@ projects = neon.projects(org_id=org_id)
 
 - `consumption()`: Returns a list of project consumption metrics.
 
-_View the [Neon API](https://api-docs.neon.tech/reference/getting-started-with-neon-api) documentation for more information on the available endpoints and their parameters._
+_View the [Neon API](https://neon.com/docs/reference/api) documentation for more information on the available endpoints and their parameters._
 
 --- [Document source](https://neon.com/docs/reference/sdk.md) ---
 
@@ -112866,7 +112962,7 @@ _View the [Neon API](https://api-docs.neon.tech/reference/getting-started-with-n
 Neon provides two categories of SDKs to support different use cases:
 
 - **Client SDKs**: For application developers building apps with the [Data API](https://neon.com/docs/data-api/overview) and optionally [Neon Auth](https://neon.com/docs/auth/overview). These SDKs handle database queries and user authentication from your application.
-- **Management SDKs**: For programmatically managing Neon platform resources like projects, branches, databases, endpoints, and roles. These are wrappers around the [Neon API](https://api-docs.neon.tech/reference/getting-started-with-neon-api).
+- **Management SDKs**: For programmatically managing Neon platform resources like projects, branches, databases, endpoints, and roles. These are wrappers around the [Neon API](https://neon.com/docs/reference/api).
 
 ## Client SDKs
 
@@ -112923,7 +113019,7 @@ Neon sponsors the following community-developed Terraform provider for managing 
   - Explicitly define all critical resource parameters in your Terraform configurations, even if they had defaults previously.
   - On Neon paid plans, you can enable branch protection to prevent unintended deletion of branches and projects. To learn more, see [Protected branches](https://neon.com/docs/guides/protected-branches).
 
-- **Provider maintenance**: As Neon enhances existing features and introduces new ones, the [Neon API](https://api-docs.neon.tech/reference/getting-started-with-neon-api) will continue to evolve. These changes may not immediately appear in community-maintained Terraform providers. If you notice that a provider requires an update, please reach out to the maintainer by opening an issue or contributing to the provider's GitHub repository.
+- **Provider maintenance**: As Neon enhances existing features and introduces new ones, the [Neon API](https://neon.com/docs/reference/api) will continue to evolve. These changes may not immediately appear in community-maintained Terraform providers. If you notice that a provider requires an update, please reach out to the maintainer by opening an issue or contributing to the provider's GitHub repository.
 
 ## Prerequisites
 
@@ -113750,7 +113846,7 @@ Programmatically manage Neon projects, branches, databases, and other platform r
 
 **Related resources**
 
-- [Neon API Reference](https://neon.com/docs/reference/api-reference)
+- [Neon API Reference](https://neon.com/docs/reference/api)
 
 **Source code**
 
@@ -113758,7 +113854,7 @@ Programmatically manage Neon projects, branches, databases, and other platform r
 
 ## About the SDK
 
-Neon supports the [@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client) library, which is a wrapper for the [Neon API](https://api-docs.neon.tech/reference/getting-started-with-neon-api). The SDK provides a convenient way to interact with the Neon API using TypeScript.
+Neon supports the [@neondatabase/api-client](https://www.npmjs.com/package/@neondatabase/api-client) library, which is a wrapper for the [Neon API](https://neon.com/docs/reference/api). The SDK provides a convenient way to interact with the Neon API using TypeScript.
 
 You can use the Neon TypeScript SDK to manage your Neon projects, branches, databases, compute endpoints, roles, and more programmatically. The SDK abstracts the underlying API requests, authentication, and error handling, allowing you to focus on building applications that interact with Neon resources.
 
@@ -114142,7 +114238,7 @@ By using TypeScript types, you ensure that your code interacts with the Neon API
 
 ## Key SDK Method Signatures
 
-To give you a better overview of the SDK, here are some of the key methods available, categorized by their resource. For complete details and parameters for each method, please refer to the full [Neon API Reference](https://api-docs.neon.tech/reference/getting-started-with-neon-api).
+To give you a better overview of the SDK, here are some of the key methods available, categorized by their resource. For complete details and parameters for each method, please refer to the full [Neon API Reference](https://neon.com/docs/reference/api).
 
 ### Manage API keys
 
@@ -114265,11 +114361,11 @@ When an error occurs during an API request, the SDK throws an `AxiosError` objec
 - **Invalid API Key (401 Unauthorized):** Ensure your `NEON_API_KEY` environment variable is correctly set with a valid API key from the Neon Console.
 - **Project or Branch Not Found (404 Not Found):** Verify that the `projectId` and `branchId` values you are using are correct and that the resources exist in your Neon account. Double-check IDs in the Neon Console.
 - **Rate Limiting (429 Too Many Requests):** If you are making requests too frequently, the API might rate-limit you. Implement retry mechanisms with exponential backoff or reduce the frequency of your API calls.
-- **Request Body Validation Errors (400 Bad Request):** If you receive 400 errors, carefully review the request body you are sending, ensuring it conforms to the expected schema for the API endpoint. Refer to the [Neon API Reference](https://api-docs.neon.tech/reference/getting-started-with-neon-api) for request body structures.
+- **Request Body Validation Errors (400 Bad Request):** If you receive 400 errors, carefully review the request body you are sending, ensuring it conforms to the expected schema for the API endpoint. Refer to the [Neon API Reference](https://neon.com/docs/reference/api) for request body structures.
 
 ## References
 
-- [Neon API Reference](https://api-docs.neon.tech/reference/getting-started-with-neon-api): Comprehensive documentation for the Neon API, including detailed descriptions of resources, endpoints, request/response structures, and error codes.
+- [Neon API Reference](https://neon.com/docs/reference/api): Comprehensive documentation for the Neon API, including detailed descriptions of resources, endpoints, request/response structures, and error codes.
 
 --- [Document source](https://neon.com/docs/security/acceptable-use-policy.md) ---
 
@@ -114854,7 +114950,7 @@ Resetting a password cuts over all consumers at once. To rotate gradually, creat
 
 ## Abuse of resources
 
-Users must not engage in activities that result in unintended or non-permitted use of Neon resources, or that disrupt or degrade the service for other users. Prohibited activities include, but are not limited to, intentional or unintentional denial-of-service attacks, exceeding [rate limits](https://neon.com/docs/reference/api-reference#rate-limiting), using Neon for distributed computing projects, using Neon as general-purpose file storage, or other usage that falls outside the intended resource usage and limits of the applicable [Neon plan](https://neon.com/docs/introduction/plans).
+Users must not engage in activities that result in unintended or non-permitted use of Neon resources, or that disrupt or degrade the service for other users. Prohibited activities include, but are not limited to, intentional or unintentional denial-of-service attacks, exceeding [rate limits](https://neon.com/docs/reference/api#rate-limiting), using Neon for distributed computing projects, using Neon as general-purpose file storage, or other usage that falls outside the intended resource usage and limits of the applicable [Neon plan](https://neon.com/docs/introduction/plans).
 
 ## Unauthorized modifications
 
@@ -117153,7 +117249,7 @@ For a working implementation of claimable databases, try [Claimable Postgres by 
 - [Create project API reference](https://api-docs.neon.tech/reference/createproject)
 - [Create project transfer request API reference](https://api-docs.neon.tech/reference/createprojecttransferrequest)
 - [Accept project transfer request API reference](https://api-docs.neon.tech/reference/acceptprojecttransferrequest)
-- [Neon API documentation](https://neon.com/docs/reference/api-reference)
+- [Neon API documentation](https://neon.com/docs/reference/api)
 - [Managing projects](https://neon.com/docs/manage/projects)
 - [Managing API keys](https://neon.com/docs/manage/api-keys)
 - [Managing organizations](https://neon.com/docs/manage/organizations)

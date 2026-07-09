@@ -15,21 +15,21 @@ Include an idempotency key in any email requests to ensure that the same email r
 
 ## How it works
 
-When you send an email with an idempotency key, we check if an email with the same idempotency key has already been sent in the last 24 hours. **This is an optional feature** that simplifies managing retries on your side.
+When you send an email with an idempotency key, Resend checks whether an email with the same idempotency key has already been sent in the last 24 hours. This is an optional feature that simplifies managing retries on your side.
 
-This makes it safe to retry requests that send an email. You don't have to worry about checking if the original request was sent -- you can make the same request and our API will give the same response, without actually sending the email again.
+This makes it safe to retry requests that send an email. You don't have to worry about checking if the original request was sent. Instead, you can make the same request and our API will give the same response, without actually sending the email again.
 
 ## How to use idempotency keys
 
-Idempotency keys can be **up to 256 characters** and must be unique per API request.
+Idempotency keys can be up to 256 characters and must be unique per API request.
 
-We **recommend using a UUID** or other string that uniquely identifies that specific email.
+We recommend that you use a UUID or other string that uniquely identifies that specific email.
 
 <Tip>If you have multiple events that trigger emails related to a single entity in your system, you can format your idempotency keys to take advantage of that entity's ID. One idea is to format idempotency keys like `<event-type>/<entity-id>`, for example `welcome-user/123456789`. The specific format you use is up to you.</Tip>
 
 Send the key in the `Idempotency-Key` HTTP header in your API requests. Our SDKs also provide a convenient way to set this header. If you're using SMTP, you can set the `Resend-Idempotency-Key` email header instead.
 
-We keep idempotency keys in our system for **24 hours**. This gives you an ample window to retry any failed processes on your end without having to keep track of the sent status.
+Idempotency keys are kept in the system for **24 hours**. This gives you an ample window to retry any failed processes on your end without having to keep track of the sent status.
 
 ### `POST /emails` endpoint example
 

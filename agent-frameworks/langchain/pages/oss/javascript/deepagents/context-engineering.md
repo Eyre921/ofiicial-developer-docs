@@ -54,15 +54,77 @@ Input context is information provided to your deep agent at startup that becomes
 
 Your custom system prompt is prepended to the built-in system prompt, which includes guidance for planning, filesystem tools, and subagents. Use it to define the agent's role, behavior, and knowledge:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
 
-const agent = await createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
-  systemPrompt: `You are a research assistant specializing in scientific literature.
-  Always cite sources. Use subagents for parallel research on different topics.`,
-});
-```
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    systemPrompt: `You are a research assistant specializing in scientific literature.
+    Always cite sources. Use subagents for parallel research on different topics.`,
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    systemPrompt: `You are a research assistant specializing in scientific literature.
+    Always cite sources. Use subagents for parallel research on different topics.`,
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    systemPrompt: `You are a research assistant specializing in scientific literature.
+    Always cite sources. Use subagents for parallel research on different topics.`,
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    systemPrompt: `You are a research assistant specializing in scientific literature.
+    Always cite sources. Use subagents for parallel research on different topics.`,
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    systemPrompt: `You are a research assistant specializing in scientific literature.
+    Always cite sources. Use subagents for parallel research on different topics.`,
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    systemPrompt: `You are a research assistant specializing in scientific literature.
+    Always cite sources. Use subagents for parallel research on different topics.`,
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    systemPrompt: `You are a research assistant specializing in scientific literature.
+    Always cite sources. Use subagents for parallel research on different topics.`,
+  });
+  ```
+</CodeGroup>
 
 The `systemPrompt` parameter is static which means it does not change per invocation.
 For some use cases you may want a dynamic prompt: for example, to tell the model "You have admin access" vs "You have read-only access," or to inject user preferences like "User prefers concise responses" from [long-term memory](#long-term-memory).
@@ -80,12 +142,70 @@ You do **not** need middleware when tools alone use context or `runtime.store`; 
 
 Memory files ([`AGENTS.md`](https://agents.md/)) provide persistent context that is **always loaded** into the system prompt. Use memory for project conventions, user preferences, and critical guidelines that should apply to every conversation:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const agent = await createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
-  memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
-});
-```
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    memory: ["/project/AGENTS.md", "~/.deepagents/preferences.md"],
+  });
+  ```
+</CodeGroup>
 
 Unlike skills, memory is always injected—there is no progressive disclosure. Keep memory minimal to avoid context overload; use [skills](/oss/javascript/deepagents/skills) for detailed workflows and domain-specific content. See [Memory](/oss/javascript/deepagents/customization#memory) for configuration details.
 
@@ -93,12 +213,70 @@ Unlike skills, memory is always injected—there is no progressive disclosure. K
 
 Skills provide **on-demand** capabilities. The agent reads frontmatter from each `SKILL.md` at startup, then loads full skill content only when it determines the skill is relevant. This reduces token usage while still providing specialized workflows:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-const agent = await createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
-  skills: ["/skills/research/", "/skills/web-search/"],
-});
-```
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    skills: ["/skills/research/", "/skills/web-search/"],
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    skills: ["/skills/research/", "/skills/web-search/"],
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    skills: ["/skills/research/", "/skills/web-search/"],
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    skills: ["/skills/research/", "/skills/web-search/"],
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    skills: ["/skills/research/", "/skills/web-search/"],
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    skills: ["/skills/research/", "/skills/web-search/"],
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    skills: ["/skills/research/", "/skills/web-search/"],
+  });
+  ```
+</CodeGroup>
 
 Keep each skill focused on a single workflow or domain; broad or overlapping skills dilute relevance and bloat context when loaded. Within a skill, keep the main content concise and move detailed reference material to separate files that are referenced in the skill file. Put always-relevant conventions in [memory](#memory). See [Skills](/oss/javascript/deepagents/skills) for authoring and configuration.
 
@@ -106,7 +284,7 @@ Keep each skill focused on a single workflow or domain; broad or overlapping ski
 
 [Tool](/oss/javascript/langchain/tools) prompts are instructions that shape how the model uses tools. All tools expose metadata the model sees in its prompt—typically a schema and a description. Tools you pass via the `tools` parameter surface that tool metadata (schema and descriptions) to the model. A deep agent's built-in tools are packaged in the [default middleware stack](/oss/javascript/deepagents/customization#default-stack-main-agent) and typically also update the system prompt with more guidance for those tools.
 
-**Built-in tools** – Middleware that adds harness capabilities (planning, filesystem, subagents) automatically appends tool-specific instructions to the system prompt, creating tool prompts that explain how to use those tools effectively. See [Customization](/oss/javascript/deepagents/customization#middleware) for the full list:
+**Built-in tools**: Middleware that adds harness capabilities (planning, filesystem, subagents) automatically appends tool-specific instructions to the system prompt, creating tool prompts that explain how to use those tools effectively. See [Customization](/oss/javascript/deepagents/customization#middleware) for the full list:
 
 * Planning prompt – Instructions for `write_todos` to maintain a structured task list
 
@@ -118,13 +296,17 @@ Keep each skill focused on a single workflow or domain; broad or overlapping ski
 
 * Local context prompt – Current directory and project info (CLI only)
 
-**Tools you provide** – Tools passed via the `tools` parameter get their descriptions (from the tool schema) sent to the model. You can also add [custom middleware](/oss/javascript/langchain/middleware) that adds tools and appends its own system prompt instructions.
+**Tools you provide**: Tools passed via the `tools` parameter get their descriptions (from the tool schema) sent to the model. You can also add [custom middleware](/oss/javascript/langchain/middleware) that adds tools and appends its own system prompt instructions.
 
 For tools you provide, make sure to provide a clear name, description, and argument descriptions. These guide the model's reasoning about when and how to use the tool. Include *when* to use the tool in the description and describe what each argument does.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+import { tool } from "langchain";
+import * as z from "zod";
+
 const searchOrders = tool(
-  async ({ userId, status, limit }) => { /* ... */ },
+  async ({ userId, status, limit }) =>
+    `orders for ${userId} with status ${status} (limit ${limit})`,
   {
     name: "search_orders",
     description: `Search for user orders by status.
@@ -133,10 +315,15 @@ Use this when the user asks about order history or wants to check
 order status. Always filter by the provided status.`,
     schema: z.object({
       userId: z.string().describe("Unique identifier for the user"),
-      status: z.enum(["pending", "shipped", "delivered"]).describe("Order status to filter by"),
-      limit: z.number().default(10).describe("Maximum number of results to return"),
+      status: z
+        .enum(["pending", "shipped", "delivered"])
+        .describe("Order status to filter by"),
+      limit: z
+        .number()
+        .default(10)
+        .describe("Maximum number of results to return"),
     }),
-  }
+  },
 );
 ```
 
@@ -168,40 +355,252 @@ Define the shape of that data with `contextSchema`, typically a Zod object schem
 
 Inside tools, read `runtime.context` from the `ToolRuntime` instance supplied as the tool handler's `runtime` argument:
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent } from "deepagents";
-import { tool } from "langchain";
-import type { ToolRuntime } from "@langchain/core/tools";
-import { z } from "zod";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool } from "langchain";
+  import type { ToolRuntime } from "@langchain/core/tools";
+  import * as z from "zod";
 
-const contextSchema = z.object({
-  userId: z.string(),
-  apiKey: z.string(),
-});
+  const contextSchema = z.object({
+    userId: z.string(),
+    apiKey: z.string(),
+  });
 
-const fetchUserData = tool(
-  async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
-    const userId = runtime.context?.userId;
-    return `Data for user ${userId}: ${input.query}`;
-  },
-  {
-    name: "fetch_user_data",
-    description: "Fetch data for the current user",
-    schema: z.object({ query: z.string() }),
-  }
-);
+  const fetchUserData = tool(
+    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+      const userId = runtime.context?.userId;
+      return `Data for user ${userId}: ${input.query}`;
+    },
+    {
+      name: "fetch_user_data",
+      description: "Fetch data for the current user",
+      schema: z.object({ query: z.string() }),
+    },
+  );
 
-const agent = await createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
-  tools: [fetchUserData],
-  contextSchema,
-});
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    tools: [fetchUserData],
+    contextSchema,
+  });
 
-const result = await agent.invoke(
-  { messages: [{ role: "user", content: "Get my recent activity" }] },
-  { context: { userId: "user-123", apiKey: "sk-..." } },
-);
-```
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: "Get my recent activity" }] },
+    { context: { userId: "user-123", apiKey: "sk-..." } },
+  );
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool } from "langchain";
+  import type { ToolRuntime } from "@langchain/core/tools";
+  import * as z from "zod";
+
+  const contextSchema = z.object({
+    userId: z.string(),
+    apiKey: z.string(),
+  });
+
+  const fetchUserData = tool(
+    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+      const userId = runtime.context?.userId;
+      return `Data for user ${userId}: ${input.query}`;
+    },
+    {
+      name: "fetch_user_data",
+      description: "Fetch data for the current user",
+      schema: z.object({ query: z.string() }),
+    },
+  );
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    tools: [fetchUserData],
+    contextSchema,
+  });
+
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: "Get my recent activity" }] },
+    { context: { userId: "user-123", apiKey: "sk-..." } },
+  );
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool } from "langchain";
+  import type { ToolRuntime } from "@langchain/core/tools";
+  import * as z from "zod";
+
+  const contextSchema = z.object({
+    userId: z.string(),
+    apiKey: z.string(),
+  });
+
+  const fetchUserData = tool(
+    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+      const userId = runtime.context?.userId;
+      return `Data for user ${userId}: ${input.query}`;
+    },
+    {
+      name: "fetch_user_data",
+      description: "Fetch data for the current user",
+      schema: z.object({ query: z.string() }),
+    },
+  );
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    tools: [fetchUserData],
+    contextSchema,
+  });
+
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: "Get my recent activity" }] },
+    { context: { userId: "user-123", apiKey: "sk-..." } },
+  );
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool } from "langchain";
+  import type { ToolRuntime } from "@langchain/core/tools";
+  import * as z from "zod";
+
+  const contextSchema = z.object({
+    userId: z.string(),
+    apiKey: z.string(),
+  });
+
+  const fetchUserData = tool(
+    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+      const userId = runtime.context?.userId;
+      return `Data for user ${userId}: ${input.query}`;
+    },
+    {
+      name: "fetch_user_data",
+      description: "Fetch data for the current user",
+      schema: z.object({ query: z.string() }),
+    },
+  );
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    tools: [fetchUserData],
+    contextSchema,
+  });
+
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: "Get my recent activity" }] },
+    { context: { userId: "user-123", apiKey: "sk-..." } },
+  );
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool } from "langchain";
+  import type { ToolRuntime } from "@langchain/core/tools";
+  import * as z from "zod";
+
+  const contextSchema = z.object({
+    userId: z.string(),
+    apiKey: z.string(),
+  });
+
+  const fetchUserData = tool(
+    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+      const userId = runtime.context?.userId;
+      return `Data for user ${userId}: ${input.query}`;
+    },
+    {
+      name: "fetch_user_data",
+      description: "Fetch data for the current user",
+      schema: z.object({ query: z.string() }),
+    },
+  );
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    tools: [fetchUserData],
+    contextSchema,
+  });
+
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: "Get my recent activity" }] },
+    { context: { userId: "user-123", apiKey: "sk-..." } },
+  );
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool } from "langchain";
+  import type { ToolRuntime } from "@langchain/core/tools";
+  import * as z from "zod";
+
+  const contextSchema = z.object({
+    userId: z.string(),
+    apiKey: z.string(),
+  });
+
+  const fetchUserData = tool(
+    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+      const userId = runtime.context?.userId;
+      return `Data for user ${userId}: ${input.query}`;
+    },
+    {
+      name: "fetch_user_data",
+      description: "Fetch data for the current user",
+      schema: z.object({ query: z.string() }),
+    },
+  );
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    tools: [fetchUserData],
+    contextSchema,
+  });
+
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: "Get my recent activity" }] },
+    { context: { userId: "user-123", apiKey: "sk-..." } },
+  );
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import { createDeepAgent } from "deepagents";
+  import { tool } from "langchain";
+  import type { ToolRuntime } from "@langchain/core/tools";
+  import * as z from "zod";
+
+  const contextSchema = z.object({
+    userId: z.string(),
+    apiKey: z.string(),
+  });
+
+  const fetchUserData = tool(
+    async (input, runtime: ToolRuntime<unknown, typeof contextSchema>) => {
+      const userId = runtime.context?.userId;
+      return `Data for user ${userId}: ${input.query}`;
+    },
+    {
+      name: "fetch_user_data",
+      description: "Fetch data for the current user",
+      schema: z.object({ query: z.string() }),
+    },
+  );
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    tools: [fetchUserData],
+    contextSchema,
+  });
+
+  const result = await agent.invoke(
+    { messages: [{ role: "user", content: "Get my recent activity" }] },
+    { context: { userId: "user-123", apiKey: "sk-..." } },
+  );
+  ```
+</CodeGroup>
 
 Runtime context **propagates to all subagents**. When a subagent runs, it receives the same runtime context as the parent. See [Subagents](/oss/javascript/deepagents/subagents#context-management) for per-subagent context (namespaced keys).
 
@@ -303,14 +702,14 @@ Subagents solve the **context bloat problem**. When the main agent uses tools wi
 
 2. **Keep subagent responses concise**: Instruct subagents to return summaries, not raw data:
 
-   ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+   ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    const researchSubagent = {
-   name: "researcher",
-   description: "Conducts research on a topic",
-   systemPrompt: `You are a research assistant.
-   IMPORTANT: Return only the essential summary (under 500 words).
-   Do NOT include raw search results or detailed tool outputs.`,
-   tools: [webSearch],
+     name: "researcher",
+     description: "Conducts research on a topic",
+     systemPrompt: `You are a research assistant.
+       IMPORTANT: Return only the essential summary (under 500 words).
+       Do NOT include raw search results or detailed tool outputs.`,
+     tools: [webSearch],
    };
    ```
 
@@ -327,20 +726,140 @@ Deep agents can use long-term memory for storing user preferences, accumulated k
 To use long-term memory, you must use a `CompositeBackend` that routes specific paths (typically `/memories/`) to a LangGraph Store, which provides durable cross-thread persistence.
 The `CompositeBackend` is a hybrid storage system where some files persist indefinitely while others remain scoped to a single thread.
 
-```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-import { createDeepAgent, CompositeBackend, StateBackend, StoreBackend } from "deepagents";
-import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+<CodeGroup>
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    CompositeBackend,
+    createDeepAgent,
+    StateBackend,
+    StoreBackend,
+  } from "deepagents";
+  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
 
-const agent = await createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
-  store: new InMemoryStore(),
-  backend: new CompositeBackend(
-    new StateBackend(),
-    { "/memories/": new StoreBackend() },
-  ),
-  systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
-});
-```
+  const agent = await createDeepAgent({
+    model: "google-genai:gemini-3.5-flash",
+    store: new InMemoryStore(),
+    backend: new CompositeBackend(new StateBackend(), {
+      "/memories/": new StoreBackend(),
+    }),
+    systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
+  });
+  ```
+
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    CompositeBackend,
+    createDeepAgent,
+    StateBackend,
+    StoreBackend,
+  } from "deepagents";
+  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+
+  const agent = await createDeepAgent({
+    model: "openai:gpt-5.5",
+    store: new InMemoryStore(),
+    backend: new CompositeBackend(new StateBackend(), {
+      "/memories/": new StoreBackend(),
+    }),
+    systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
+  });
+  ```
+
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    CompositeBackend,
+    createDeepAgent,
+    StateBackend,
+    StoreBackend,
+  } from "deepagents";
+  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+
+  const agent = await createDeepAgent({
+    model: "anthropic:claude-sonnet-4-6",
+    store: new InMemoryStore(),
+    backend: new CompositeBackend(new StateBackend(), {
+      "/memories/": new StoreBackend(),
+    }),
+    systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
+  });
+  ```
+
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    CompositeBackend,
+    createDeepAgent,
+    StateBackend,
+    StoreBackend,
+  } from "deepagents";
+  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+
+  const agent = await createDeepAgent({
+    model: "openrouter:openrouter:z-ai/glm-5.2",
+    store: new InMemoryStore(),
+    backend: new CompositeBackend(new StateBackend(), {
+      "/memories/": new StoreBackend(),
+    }),
+    systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
+  });
+  ```
+
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    CompositeBackend,
+    createDeepAgent,
+    StateBackend,
+    StoreBackend,
+  } from "deepagents";
+  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+
+  const agent = await createDeepAgent({
+    model: "fireworks:accounts/fireworks/models/glm-5p2",
+    store: new InMemoryStore(),
+    backend: new CompositeBackend(new StateBackend(), {
+      "/memories/": new StoreBackend(),
+    }),
+    systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
+  });
+  ```
+
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    CompositeBackend,
+    createDeepAgent,
+    StateBackend,
+    StoreBackend,
+  } from "deepagents";
+  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+
+  const agent = await createDeepAgent({
+    model: "baseten:zai-org/GLM-5.2",
+    store: new InMemoryStore(),
+    backend: new CompositeBackend(new StateBackend(), {
+      "/memories/": new StoreBackend(),
+    }),
+    systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
+  });
+  ```
+
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import {
+    CompositeBackend,
+    createDeepAgent,
+    StateBackend,
+    StoreBackend,
+  } from "deepagents";
+  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+
+  const agent = await createDeepAgent({
+    model: "ollama:north-mini-code-1.0",
+    store: new InMemoryStore(),
+    backend: new CompositeBackend(new StateBackend(), {
+      "/memories/": new StoreBackend(),
+    }),
+    systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
+  });
+  ```
+</CodeGroup>
 
 You do not need to pre-populate `/memories/` with files.
 You provide the backend config, store, and system prompt instructions that tell the agent *what* to save and *where*.

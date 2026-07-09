@@ -1,10 +1,10 @@
 ---
-title: "How do I ensure sensitive data isn't stored on Resend?"
+title: "How to ensure sensitive data isn't stored on Resend"
 source: https://resend.com/docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend
 path: docs/knowledge-base/how-do-i-ensure-sensitive-data-isnt-stored-on-resend
 ---
 
-Information on how we can help you protect your customer's information.
+Information on how you can protect your customer's information.
 
 Resend can turn off message content storage for teams with additional compliance requirements. This is available to customers who meet the following criteria:
 

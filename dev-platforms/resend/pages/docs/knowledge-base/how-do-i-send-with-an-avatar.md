@@ -1,5 +1,5 @@
 ---
-title: "How do I send with an avatar?"
+title: "How to send with an avatar"
 source: https://resend.com/docs/knowledge-base/how-do-i-send-with-an-avatar
 path: docs/knowledge-base/how-do-i-send-with-an-avatar
 ---

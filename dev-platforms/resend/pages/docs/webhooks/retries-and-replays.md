@@ -8,7 +8,7 @@ Learn how to use the retries and replays to handle webhook failures.
 
 ## Automatic Retries
 
-We attempt to deliver each webhook message based on a schedule with exponential backoff.
+Resend attempts to deliver each webhook message based on a schedule with exponential backoff.
 
 Each message is attempted based on the following schedule, where each period is started following the failure of the preceding attempt:
 

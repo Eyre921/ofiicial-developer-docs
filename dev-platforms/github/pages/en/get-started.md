@@ -12,15 +12,15 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Start your journey](/en/get-started/start-your-journey)
 
-  Brand new to GitHub? Learn the basics here.
+  <p>Brand new to GitHub? Learn the basics here.</p>
 
 * [Learn to code with GitHub Copilot](/en/get-started/learning-to-code)
 
-  <p>Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.</p>
+  Learn how GitHub and Copilot can help you build programming skills, write better code, and ship secure projects.
 
 * [Creating an account on GitHub](/en/get-started/start-your-journey/creating-an-account-on-github)
 
-  Create a personal account to get started with GitHub.
+  <p>Create a personal account to get started with GitHub.</p>
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
@@ -32,11 +32,11 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
-  With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.
+  <p>With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.</p>
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  <p>An overview of GitHub's pricing plans.</p>
+  An overview of GitHub's pricing plans.
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 
@@ -54,15 +54,15 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
   Follow this Hello World exercise to learn GitHub's pull request workflow.
 
-* [About GitHub and Git](/en/get-started/start-your-journey/about-github-and-git)
+* [What is GitHub?](/en/get-started/start-your-journey/what-is-github)
 
-  You can use GitHub and Git to collaborate on work.
+  GitHub is a platform that supports your entire software development process, from planning work to deploying and operating software.
 
 ## Articles
 
-* [About GitHub and Git](/en/get-started/start-your-journey/about-github-and-git)
+* [What is GitHub?](/en/get-started/start-your-journey/what-is-github)
 
-  You can use GitHub and Git to collaborate on work.
+  GitHub is a platform that supports your entire software development process, from planning work to deploying and operating software.
 
 * [Creating an account on GitHub](/en/get-started/start-your-journey/creating-an-account-on-github)
 

@@ -49,7 +49,7 @@ If you don't want to use SSH keys, you can use HTTPS with OAuth tokens.
 
 ### Set up HTTPS cloning with OAuth tokens
 
-See [our guide on creating a personal access token](/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+See [our guide on creating a personal access token](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 ## Deploy keys
 
@@ -124,7 +124,7 @@ git clone git@github.com-repo-1:OWNER/repo-1.git
 
 If your server needs to access repositories across one or more organizations, you can use a GitHub App to define the access you need, and then generate *tightly-scoped*, installation access tokens from that GitHub App. The installation access tokens can be scoped to single or multiple repositories, and can have fine-grained permissions. For example, you can generate a token with read-only access to a repository's contents.
 
-Since GitHub Apps are a first class actor on GitHub, the installation access tokens are decoupled from any GitHub user, which makes them comparable to "service tokens". Additionally, installation access tokens have dedicated rate limits that scale with the size of the organizations that they act upon. For more information, see [Rate limits for GitHub Apps](/en/apps/creating-github-apps/setting-up-a-github-app/rate-limits-for-github-apps).
+Since GitHub Apps are a first class actor on GitHub, the installation access tokens are decoupled from any GitHub user, which makes them comparable to "service tokens". Additionally, installation access tokens have dedicated rate limits that scale with the size of the organizations that they act upon. For more information, see [Rate limits for GitHub Apps](/en/apps/creating-github-apps/registering-a-github-app/rate-limits-for-github-apps).
 
 ### Pros of installation access tokens
 
@@ -142,7 +142,7 @@ Since GitHub Apps are a first class actor on GitHub, the installation access tok
 
 1. Determine if your GitHub App should be public or private. If your GitHub App will only act on repositories within your organization, you likely want it private.
 2. Determine the permissions your GitHub App requires, such as read-only access to repository contents.
-3. Create your GitHub App via your organization's settings page. For more information, see [Creating a GitHub App](/en/apps/creating-github-apps/setting-up-a-github-app/creating-a-github-app).
+3. Create your GitHub App via your organization's settings page. For more information, see [Creating a GitHub App](/en/apps/creating-github-apps/registering-a-github-app/registering-a-github-app).
 4. Note your GitHub App `id`.
 5. Generate and download your GitHub App's private key, and store this safely. For more information, see [Generating a private key](/en/apps/creating-github-apps/authenticating-with-a-github-app/managing-private-keys-for-github-apps).
 6. Install your GitHub App on the repositories it needs to act upon, optionally you may install the GitHub App on all repositories in your organization.
@@ -154,7 +154,7 @@ For more information, see [Generating an installation access token for a GitHub 
 
 ## Machine users
 
-If your server needs to access multiple repositories, you can create a new account on GitHub.com and attach an SSH key that will be used exclusively for automation. Since this account on GitHub.com won't be used by a human, it's called a *machine user*. You can add the machine user as a [collaborator](/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository) on a personal repository (granting read and write access), as an [outside collaborator](/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/adding-outside-collaborators-to-repositories-in-your-organization) on an organization repository (granting read, write, or admin access), or to a [team](/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team) with access to the repositories it needs to automate (granting the permissions of the team).
+If your server needs to access multiple repositories, you can create a new account on GitHub.com and attach an SSH key that will be used exclusively for automation. Since this account on GitHub.com won't be used by a human, it's called a *machine user*. You can add the machine user as a [collaborator](/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository) on a personal repository (granting read and write access), as an [outside collaborator](/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/adding-outside-collaborators-to-repositories-in-your-organization) on an organization repository (granting read, write, or admin access), or to a [team](/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team) with access to the repositories it needs to automate (granting the permissions of the team).
 
 > \[!TIP]
 > Our [terms of service](/en/site-policy/github-terms/github-terms-of-service) state:
@@ -177,7 +177,7 @@ If your server needs to access multiple repositories, you can create a new accou
 ### Set up machine users
 
 1. [Run the `ssh-keygen` procedure](/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key) on your server and attach the public key to the machine user account.
-2. Give the machine user account access to the repositories you want to automate. You can do this by adding the account as a [collaborator](/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository), as an [outside collaborator](/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/adding-outside-collaborators-to-repositories-in-your-organization), or to a [team](/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team) in an organization.
+2. Give the machine user account access to the repositories you want to automate. You can do this by adding the account as a [collaborator](/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository), as an [outside collaborator](/en/organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/adding-outside-collaborators-to-repositories-in-your-organization), or to a [team](/en/organizations/organizing-members-into-teams/adding-organization-members-to-a-team) in an organization.
 
 [ssh-agent-forwarding]: /authentication/connecting-to-github-with-ssh/using-ssh-agent-forwarding
 
@@ -185,7 +185,7 @@ If your server needs to access multiple repositories, you can create a new accou
 
 [tos]: /free-pro-team@latest/site-policy/github-terms/github-terms-of-service
 
-[collaborator]: /account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-access-to-your-personal-repositories/inviting-collaborators-to-a-personal-repository
+[collaborator]: /repositories/managing-your-repositorys-settings-and-features/repository-access-and-collaboration/inviting-collaborators-to-a-personal-repository
 
 [outside-collaborator]: /organizations/managing-user-access-to-your-organizations-repositories/managing-outside-collaborators/adding-outside-collaborators-to-repositories-in-your-organization
 
@@ -194,4 +194,4 @@ If your server needs to access multiple repositories, you can create a new accou
 ## Further reading
 
 * [GitHub credential types reference](/en/organizations/managing-programmatic-access-to-your-organization/github-credential-types)
-* [Configuring notifications](/en/account-and-profile/managing-subscriptions-and-notifications-on-github/setting-up-notifications/configuring-notifications#organization-alerts-notification-options)
+* [Configuring notifications](/en/subscriptions-and-notifications/get-started/configuring-notifications#organization-alerts-notification-options)

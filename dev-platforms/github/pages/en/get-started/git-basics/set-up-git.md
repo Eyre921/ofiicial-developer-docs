@@ -34,7 +34,7 @@ If you do not need to work with files locally, GitHub lets you complete many Git
 
 2. [Set your username in Git](/en/get-started/git-basics/setting-your-username-in-git).
 
-3. [Set your commit email address in Git](/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-email-preferences/setting-your-commit-email-address).
+3. [Set your commit email address in Git](/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address).
 
 ## Authenticating with GitHub from Git
 

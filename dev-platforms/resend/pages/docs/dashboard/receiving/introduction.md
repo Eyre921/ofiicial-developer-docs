@@ -153,7 +153,7 @@ Here's how to start receiving emails using a domain managed by Resend.
       ```
     </CodeGroup>
 
-    Once you receive the email event, you can process the email body and attachments. We also recommend implementing [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
+    Once you receive the email event, you can process the email body and attachments. You can also implement [webhook request verification](/docs/webhooks/verify-webhooks-requests) to secure your webhook endpoint.
 
     ```json theme={"theme":{"light":"github-light","dark":"vesper"}}
     {

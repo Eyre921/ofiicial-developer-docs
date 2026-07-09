@@ -276,7 +276,7 @@ To create a [promotion code](https://docs.stripe.com/api/promotion_codes.md), sp
 ```curl
 curl https://api.stripe.com/v1/promotion_codes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d coupon=ZQO00CcH \
+  -d "coupon={{COUPON_ID}}" \
   -d code=ALICE20 \
   -d "customer_account={{CUSTOMERACCOUNT_ID}}"
 ```
@@ -286,7 +286,7 @@ curl https://api.stripe.com/v1/promotion_codes \
 ```curl
 curl https://api.stripe.com/v1/promotion_codes \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d coupon=ZQO00CcH \
+  -d "coupon={{COUPON_ID}}" \
   -d code=ALICE20 \
   -d "customer={{CUSTOMER_ID}}"
 ```

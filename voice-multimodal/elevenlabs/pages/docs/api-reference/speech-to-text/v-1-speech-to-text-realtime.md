@@ -115,6 +115,9 @@ channels:
             min_silence_duration_ms:
               type: integer
               default: 100
+            filter_background_audio:
+              type: boolean
+              default: false
             enable_logging:
               type: boolean
               default: true

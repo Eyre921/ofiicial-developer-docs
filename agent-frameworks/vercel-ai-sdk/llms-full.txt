@@ -44007,6 +44007,10 @@ The following optional provider options are available for OpenAI completion mode
 
 | Model                 | Image Input         | Audio Input         | Object Generation   | Tool Usage          |
 | --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gpt-5.6`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-5.6-luna`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-5.6-sol`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-5.6-terra`       | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.4-pro`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.4`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.4-mini`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -70511,7 +70515,7 @@ const uint8Array = video.uint8Array; // Uint8Array video data
 The aspect ratio is specified as a string in the format `{width}:{height}`.
 Models only support a few aspect ratios, and the supported aspect ratios are different for each model and provider.
 
-```tsx highlight={"7"}
+```tsx highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70527,7 +70531,7 @@ const { video } = await generateVideo({
 The resolution is specified as a string in the format `{width}x{height}`.
 Models only support specific resolutions, and the supported resolutions are different for each model and provider.
 
-```tsx highlight={"7"}
+```tsx highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70542,7 +70546,7 @@ const { video } = await generateVideo({
 
 Some video models support specifying the duration of the generated video in seconds.
 
-```tsx highlight={"7"}
+```tsx highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70557,7 +70561,7 @@ const { video } = await generateVideo({
 
 Some video models allow you to specify the frames per second for the generated video.
 
-```tsx highlight={"7"}
+```tsx highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70572,7 +70576,7 @@ const { video } = await generateVideo({
 
 Some video models can generate audio alongside the video. Use the `generateAudio` option to control this:
 
-```tsx highlight={"7"}
+```tsx highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70587,7 +70591,7 @@ const { video } = await generateVideo({
 
 `experimental_generateVideo` supports generating multiple videos at once:
 
-```tsx highlight={"7"}
+```tsx highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70620,7 +70624,7 @@ const { videos } = await generateVideo({
 
 Some video models support generating videos from an input image. You can provide an image using the prompt object:
 
-```tsx highlight={"7-10"}
+```tsx highlight={"5-7"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70651,7 +70655,7 @@ Some video models support first-last-frame generation, where you provide the
 starting and/or ending frames of the video. Use the `frameImages` option to pass
 role-tagged images in a provider-agnostic way:
 
-```tsx highlight={"5-16"}
+```tsx highlight={"4-13"}
 const { video } = await generateVideo({
   model: __VIDEO_MODEL__,
   prompt: 'The cat walks across the scene and transforms into a dog by the end',
@@ -70668,13 +70672,13 @@ const { video } = await generateVideo({
 });
 ```
 
-### Reference Images
+### Reference Inputs
 
 Some video models support reference-to-video generation, where you provide one or
-more reference images that the model incorporates into the generated video. Use the `inputReferences` option to pass
-these images in a provider-agnostic way:
+more reference images or videos that the model incorporates into the generated video. Use the `inputReferences` option to pass
+these inputs in a provider-agnostic way:
 
-```tsx highlight={"5-8"}
+```tsx highlight={"4-7"}
 const { video } = await generateVideo({
   model: __VIDEO_MODEL__,
   prompt: 'The two characters meet in a bustling market',
@@ -70685,12 +70689,31 @@ const { video } = await generateVideo({
 });
 ```
 
+For URL-based video references, use the object form with an explicit `mediaType`:
+
+```tsx highlight={"4-9"}
+const { video } = await generateVideo({
+  model: __VIDEO_MODEL__,
+  prompt: 'Match the motion in the reference clip',
+  inputReferences: [
+    {
+      data: 'https://example.com/reference.mp4',
+      mediaType: 'video/mp4',
+    },
+  ],
+});
+```
+
+Providers route each reference by its media type (image vs. video) and emit a
+warning when a reference kind is unsupported (for example, providers that accept
+only image references warn and ignore a video reference).
+
 ### Providing a Seed
 
 You can provide a seed to the `experimental_generateVideo` function to control the output of the video generation process.
 If supported by the model, the same seed will always produce the same video.
 
-```tsx highlight={"7"}
+```tsx highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70728,7 +70751,7 @@ const { video } = await generateVideo({
 type [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal)
 that you can use to abort the video generation process or set a timeout.
 
-```ts highlight={"7"}
+```ts highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -70750,7 +70773,7 @@ Video generation is an asynchronous process that can take several minutes to com
 
 You can configure the polling timeout using provider-specific options. Each provider exports a type for its options that you can use with `satisfies` for type safety:
 
-```tsx highlight={"10-12"}
+```tsx highlight={"9-11"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 import { fal, type FalVideoModelOptions } from '@ai-sdk/fal';
 
@@ -70777,7 +70800,7 @@ const { video } = await generateVideo({
 `experimental_generateVideo` accepts an optional `headers` parameter of type `Record<string, string>`
 that you can use to add custom headers to the video generation request.
 
-```ts highlight={"7"}
+```ts highlight={"6"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -84317,6 +84340,10 @@ The following optional provider options are available for OpenAI completion mode
 
 | Model                 | Image Input         | Audio Input         | Object Generation   | Tool Usage          |
 | --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
+| `gpt-5.6`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-5.6-luna`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-5.6-sol`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| `gpt-5.6-terra`       | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.5`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.4-pro`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
 | `gpt-5.4`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
@@ -104313,24 +104340,7 @@ Install `ai` and `@ai-sdk/react`, the AI SDK package and the AI SDK's React pack
   [building custom providers](/providers/community-providers/custom-providers)
   in the [providers](/providers) section.
 </Note>
-<div className="my-4">
-  <Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-    <Tab>
-      <Snippet text="pnpm add ai @ai-sdk/react" dark />
-    </Tab>
-    <Tab>
-      <Snippet text="npm install ai @ai-sdk/react" dark />
-    </Tab>
-    <Tab>
-      <Snippet text="yarn add ai @ai-sdk/react" dark />
-    </Tab>
-
-    <Tab>
-      <Snippet text="bun add ai @ai-sdk/react" dark />
-    </Tab>
-
-  </Tabs>
-</div>
+<InstallPackages packages="ai @ai-sdk/react" />
 
 ### Configure your Vercel AI Gateway API key
 
@@ -108989,9 +108999,9 @@ The main reasoning model available in the API is:
 
 1. [**o1**](https://platform.openai.com/docs/models#o1): Designed to reason about hard problems using broad general knowledge about the world.
 
-| Model | Streaming           | Tools               | Object Generation   | Reasoning Effort    |
-| ----- | ------------------- | ------------------- | ------------------- | ------------------- |
-| o1    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model | Streaming | Tools     | Object Generation | Reasoning Effort |
+| ----- | --------- | --------- | ----------------- | ---------------- |
+| o1    | <Cross /> | <Check /> | <Check />         | <Check />        |
 
 ### Benchmarks
 
@@ -109238,9 +109248,9 @@ o3-mini offers three reasoning effort levels:
 2. [**Medium**]: Balanced approach matching o1's performance levels
 3. [**High**]: Enhanced reasoning power exceeding o1 in many STEM domains
 
-| Model   | Streaming           | Tool Calling        | Structured Output   | Reasoning Effort    | Image Input         |
-| ------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| o3-mini | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
+| Model   | Streaming | Tool Calling | Structured Output | Reasoning Effort | Image Input |
+| ------- | --------- | ------------ | ----------------- | ---------------- | ----------- |
+| o3-mini | <Check /> | <Check />    | <Check />         | <Check />        | <Cross />   |
 
 ### Benchmarks
 
@@ -109565,7 +109575,7 @@ You can use DeepSeek R1 with the AI SDK through various providers. Here's a comp
 
 | Provider                                                | Model ID                                                                                                          | Reasoning Tokens    |
 | ------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------- | ------------------- |
-| [DeepSeek](/providers/ai-sdk-providers/deepseek)        | [`deepseek-reasoner`](https://api-docs.deepseek.com/guides/reasoning_model)                                       | <Check size={18} /> |
+| [DeepSeek](/providers/ai-sdk-providers/deepseek)        | [`deepseek-reasoner`](https://api-docs.deepseek.com/guides/reasoning_model)                                       | <Check />           |
 | [Fireworks](/providers/ai-sdk-providers/fireworks)      | [`accounts/fireworks/models/deepseek-r1`](https://fireworks.ai/models/fireworks/deepseek-r1)                      | Requires Middleware |
 | [Groq](/providers/ai-sdk-providers/groq)                | [`deepseek-r1-distill-llama-70b`](https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Llama-70B)               | Requires Middleware |
 | [Azure](/providers/ai-sdk-providers/azure)              | [`DeepSeek-R1`](https://ai.azure.com/explore/models/DeepSeek-R1/version/1/registry/azureml-deepseek#code-samples) | Requires Middleware |
@@ -118318,6 +118328,50 @@ Your handler must return an object with an `action` field that can be one of:
 - `'decline'`: User chose not to provide the information.
 - `'cancel'`: User cancelled the operation entirely.
 
+## Detecting tool-definition drift ("rug pull")
+
+An MCP server sends tool definitions (name, description, input schema) when your
+app first connects, and you typically review and approve them at that point.
+Nothing in the protocol prevents the server from later serving a _different_
+definition for the same tool name — for example a description carrying injected
+instructions, or an input schema widened with an extra field. Because the SDK
+uses whatever tools you pass on each call, a mutated definition returned by a
+later `mcpClient.tools()` fetch would be used without any comparison to what was
+approved. This is the MCP ["rug pull"](https://invariantlabs.ai/blog/mcp-security-notification-tool-poisoning-attacks)
+class of attack.
+
+The AI SDK provides two functions to pin the approved definitions and detect
+changes. `fingerprintTools` digests the server-controlled, security-relevant
+fields of each tool (string `description`, resolved input schema, and `title`)
+into a stable map of tool name to digest. `detectToolDrift` diffs two such maps.
+Your app owns baseline storage and the response to drift (block, force
+re-approval, or alert):
+
+```typescript
+import { fingerprintTools, detectToolDrift } from 'ai';
+
+// Trust time (first connect, human-reviewed): capture and persist the baseline.
+const baseline = await fingerprintTools(await mcpClient.tools());
+
+// Every later fetch, before handing tools to generateText:
+const tools = await mcpClient.tools();
+const drift = detectToolDrift(await fingerprintTools(tools), baseline);
+
+if (drift.changed.length || drift.added.length) {
+  // A pinned definition changed, or a new tool appeared. Block, re-approve,
+  // or alert per your policy — do not silently pass `tools` to the model.
+}
+```
+
+<Note>
+  This detects mutation of a tool's description, input schema, or title — the
+  prompt-injection and schema-widening vectors. It cannot detect a
+  behavior/endpoint swap where the name, description, and schema are all
+  unchanged, because the tool runs remotely on the MCP server and that change is
+  invisible to the client. Core stays unopinionated: it does not persist
+  baselines or block calls — those are your app's responsibility.
+</Note>
+
 ## Examples
 
 You can see MCP in action in the following examples:
@@ -119670,24 +119724,24 @@ const embeddingModelWithDefaults = wrapEmbeddingModel({
 
 Several providers offer embedding models:
 
-| Provider                                                                      | Model                           | Embedding Dimensions | Multimodal          |
-| ----------------------------------------------------------------------------- | ------------------------------- | -------------------- | ------------------- |
-| [OpenAI](/providers/ai-sdk-providers/openai#embedding-models)                 | `text-embedding-3-large`        | 3072                 | <Cross size={18} /> |
-| [OpenAI](/providers/ai-sdk-providers/openai#embedding-models)                 | `text-embedding-3-small`        | 1536                 | <Cross size={18} /> |
-| [OpenAI](/providers/ai-sdk-providers/openai#embedding-models)                 | `text-embedding-ada-002`        | 1536                 | <Cross size={18} /> |
-| [Google](/providers/ai-sdk-providers/google#embedding-models)                 | `gemini-embedding-001`          | 3072                 | <Cross size={18} /> |
-| [Google](/providers/ai-sdk-providers/google#embedding-models)                 | `gemini-embedding-2`            | 3072                 | <Check size={18} /> |
-| [Google](/providers/ai-sdk-providers/google#embedding-models)                 | `gemini-embedding-2-preview`    | 3072                 | <Check size={18} /> |
-| [Mistral](/providers/ai-sdk-providers/mistral#embedding-models)               | `mistral-embed`                 | 1024                 | <Cross size={18} /> |
-| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-english-v3.0`            | 1024                 | <Cross size={18} /> |
-| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-multilingual-v3.0`       | 1024                 | <Cross size={18} /> |
-| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-english-light-v3.0`      | 384                  | <Cross size={18} /> |
-| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-multilingual-light-v3.0` | 384                  | <Cross size={18} /> |
-| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-english-v2.0`            | 4096                 | <Cross size={18} /> |
-| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-english-light-v2.0`      | 1024                 | <Cross size={18} /> |
-| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-multilingual-v2.0`       | 768                  | <Cross size={18} /> |
-| [Amazon Bedrock](/providers/ai-sdk-providers/amazon-bedrock#embedding-models) | `amazon.titan-embed-text-v1`    | 1536                 | <Cross size={18} /> |
-| [Amazon Bedrock](/providers/ai-sdk-providers/amazon-bedrock#embedding-models) | `amazon.titan-embed-text-v2:0`  | 1024                 | <Cross size={18} /> |
+| Provider                                                                      | Model                           | Embedding Dimensions | Multimodal |
+| ----------------------------------------------------------------------------- | ------------------------------- | -------------------- | ---------- |
+| [OpenAI](/providers/ai-sdk-providers/openai#embedding-models)                 | `text-embedding-3-large`        | 3072                 | <Cross />  |
+| [OpenAI](/providers/ai-sdk-providers/openai#embedding-models)                 | `text-embedding-3-small`        | 1536                 | <Cross />  |
+| [OpenAI](/providers/ai-sdk-providers/openai#embedding-models)                 | `text-embedding-ada-002`        | 1536                 | <Cross />  |
+| [Google](/providers/ai-sdk-providers/google#embedding-models)                 | `gemini-embedding-001`          | 3072                 | <Cross />  |
+| [Google](/providers/ai-sdk-providers/google#embedding-models)                 | `gemini-embedding-2`            | 3072                 | <Check />  |
+| [Google](/providers/ai-sdk-providers/google#embedding-models)                 | `gemini-embedding-2-preview`    | 3072                 | <Check />  |
+| [Mistral](/providers/ai-sdk-providers/mistral#embedding-models)               | `mistral-embed`                 | 1024                 | <Cross />  |
+| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-english-v3.0`            | 1024                 | <Cross />  |
+| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-multilingual-v3.0`       | 1024                 | <Cross />  |
+| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-english-light-v3.0`      | 384                  | <Cross />  |
+| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-multilingual-light-v3.0` | 384                  | <Cross />  |
+| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-english-v2.0`            | 4096                 | <Cross />  |
+| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-english-light-v2.0`      | 1024                 | <Cross />  |
+| [Cohere](/providers/ai-sdk-providers/cohere#embedding-models)                 | `embed-multilingual-v2.0`       | 768                  | <Cross />  |
+| [Amazon Bedrock](/providers/ai-sdk-providers/amazon-bedrock#embedding-models) | `amazon.titan-embed-text-v1`    | 1536                 | <Cross />  |
+| [Amazon Bedrock](/providers/ai-sdk-providers/amazon-bedrock#embedding-models) | `amazon.titan-embed-text-v2:0`  | 1024                 | <Cross />  |
 
 ---
 title: Reranking
@@ -125374,34 +125428,7 @@ results while a preconfigured harness powers these results.
 
 Install the core harness package, a harness adapter, and a sandbox provider:
 
-<div className="my-4">
-  <Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-    <Tab>
-      <Snippet
-        text="pnpm add @ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel"
-        dark
-      />
-    </Tab>
-    <Tab>
-      <Snippet
-        text="npm install @ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel"
-        dark
-      />
-    </Tab>
-    <Tab>
-      <Snippet
-        text="yarn add @ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel"
-        dark
-      />
-    </Tab>
-    <Tab>
-      <Snippet
-        text="bun add @ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel"
-        dark
-      />
-    </Tab>
-  </Tabs>
-</div>
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel" />
 
 Bridge-backed harnesses such as Claude Code and Codex require using real network sandbox
 like `@ai-sdk/sandbox-vercel`. Host-runtime harnesses such as Pi can also run with
@@ -126056,13 +126083,13 @@ The AI SDK includes the following harness adapters:
 
 ## Adapter Capabilities
 
-| Adapter                                                | Runtime location | Custom tools        | Custom skills       | Built-in tool approval | Built-in tool filtering                |
-| ------------------------------------------------------ | ---------------- | ------------------- | ------------------- | ---------------------- | -------------------------------------- |
-| [Claude Code](/providers/ai-sdk-harnesses/claude-code) | Sandbox bridge   | <Check size={18} /> | <Check size={18} /> | <Check size={18} />    | <Check size={18} />                    |
-| [Codex](/providers/ai-sdk-harnesses/codex)             | Sandbox bridge   | <Check size={18} /> | <Check size={18} /> | <Cross size={18} />    | <Cross size={18} />                    |
-| [Deep Agents](/providers/ai-sdk-harnesses/deepagents)  | Sandbox bridge   | <Check size={18} /> | <Check size={18} /> | <Check size={18} />    | <Check size={18} /> via auto-rejection |
-| [OpenCode](/providers/ai-sdk-harnesses/opencode)       | Sandbox bridge   | <Check size={18} /> | <Check size={18} /> | <Check size={18} />    | <Check size={18} /> via auto-rejection |
-| [Pi](/providers/ai-sdk-harnesses/pi)                   | Host process     | <Check size={18} /> | <Check size={18} /> | <Check size={18} />    | <Check size={18} />                    |
+| Adapter                                                | Runtime location | Custom tools | Custom skills | Built-in tool approval | Built-in tool filtering      |
+| ------------------------------------------------------ | ---------------- | ------------ | ------------- | ---------------------- | ---------------------------- |
+| [Claude Code](/providers/ai-sdk-harnesses/claude-code) | Sandbox bridge   | <Check />    | <Check />     | <Check />              | <Check />                    |
+| [Codex](/providers/ai-sdk-harnesses/codex)             | Sandbox bridge   | <Check />    | <Check />     | <Cross />              | <Cross />                    |
+| [Deep Agents](/providers/ai-sdk-harnesses/deepagents)  | Sandbox bridge   | <Check />    | <Check />     | <Check />              | <Check /> via auto-rejection |
+| [OpenCode](/providers/ai-sdk-harnesses/opencode)       | Sandbox bridge   | <Check />    | <Check />     | <Check />              | <Check /> via auto-rejection |
+| [Pi](/providers/ai-sdk-harnesses/pi)                   | Host process     | <Check />    | <Check />     | <Check />              | <Check />                    |
 
 ---
 title: Workflow Utilities
@@ -126084,22 +126111,7 @@ integration.
 
 ## Installation
 
-<div className="my-4">
-  <Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-    <Tab>
-      <Snippet text="pnpm add @ai-sdk/workflow-harness workflow" dark />
-    </Tab>
-    <Tab>
-      <Snippet text="npm install @ai-sdk/workflow-harness workflow" dark />
-    </Tab>
-    <Tab>
-      <Snippet text="yarn add @ai-sdk/workflow-harness workflow" dark />
-    </Tab>
-    <Tab>
-      <Snippet text="bun add @ai-sdk/workflow-harness workflow" dark />
-    </Tab>
-  </Tabs>
-</div>
+<InstallPackages packages="@ai-sdk/workflow-harness workflow" />
 
 Install the core harness package, a harness adapter, and a sandbox provider as
 shown in [HarnessAgent](/docs/ai-sdk-harnesses/harness-agent).
@@ -126654,34 +126666,7 @@ session for the lifetime of the terminal UI.
 
 ## Installation
 
-<div className="my-4">
-  <Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-    <Tab>
-      <Snippet
-        text="pnpm add @ai-sdk/tui @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel"
-        dark
-      />
-    </Tab>
-    <Tab>
-      <Snippet
-        text="npm install @ai-sdk/tui @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel"
-        dark
-      />
-    </Tab>
-    <Tab>
-      <Snippet
-        text="yarn add @ai-sdk/tui @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel"
-        dark
-      />
-    </Tab>
-    <Tab>
-      <Snippet
-        text="bun add @ai-sdk/tui @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel"
-        dark
-      />
-    </Tab>
-  </Tabs>
-</div>
+<InstallPackages packages="@ai-sdk/tui @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel" />
 
 ## Example
 
@@ -126837,11 +126822,11 @@ Here is a comparison of the supported functions across these frameworks:
 
 |                                                                 | [useChat](/docs/reference/ai-sdk-ui/use-chat) | [useCompletion](/docs/reference/ai-sdk-ui/use-completion) | [useObject](/docs/reference/ai-sdk-ui/use-object) | [MCP Apps](/docs/ai-sdk-core/mcp-apps) |
 | --------------------------------------------------------------- | --------------------------------------------- | --------------------------------------------------------- | ------------------------------------------------- | -------------------------------------- |
-| React `@ai-sdk/react`                                           | <Check size={18} />                           | <Check size={18} />                                       | <Check size={18} />                               | <Check size={18} />                    |
-| Vue.js `@ai-sdk/vue`                                            | <Check size={18} />                           | <Check size={18} />                                       | <Check size={18} />                               | <Cross size={18} />                    |
-| Svelte `@ai-sdk/svelte`                                         | <Check size={18} /> Chat                      | <Check size={18} /> Completion                            | <Check size={18} /> StructuredObject              | <Cross size={18} />                    |
-| Angular `@ai-sdk/angular`                                       | <Check size={18} /> Chat                      | <Check size={18} /> Completion                            | <Check size={18} /> StructuredObject              | <Cross size={18} />                    |
-| [SolidJS](https://github.com/kodehort/ai-sdk-solid) (community) | <Check size={18} />                           | <Check size={18} />                                       | <Check size={18} />                               | <Cross size={18} />                    |
+| React `@ai-sdk/react`                                           | <Check />                                     | <Check />                                                 | <Check />                                         | <Check />                              |
+| Vue.js `@ai-sdk/vue`                                            | <Check />                                     | <Check />                                                 | <Check />                                         | <Cross />                              |
+| Svelte `@ai-sdk/svelte`                                         | <Check /> Chat                                | <Check /> Completion                                      | <Check /> StructuredObject                        | <Cross />                              |
+| Angular `@ai-sdk/angular`                                       | <Check /> Chat                                | <Check /> Completion                                      | <Check /> StructuredObject                        | <Cross />                              |
+| [SolidJS](https://github.com/kodehort/ai-sdk-solid) (community) | <Check />                                     | <Check />                                                 | <Check />                                         | <Cross />                              |
 
 ## Framework Examples
 
@@ -135831,21 +135816,7 @@ The [xAI Grok](https://x.ai) provider contains language model support for the [x
 The xAI Grok provider is available via the `@ai-sdk/xai` module. You can
 install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/xai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/xai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/xai" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/xai" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/xai" />
 
 ## Provider Instance
 
@@ -135892,10 +135863,10 @@ You can use the following optional settings to customize the xAI provider instan
 ## Language Models
 
 You can create [xAI models](https://console.x.ai) using a provider instance. The
-first argument is the model id, e.g. `grok-4.5`.
+first argument is the model id, e.g. `grok-4.20-non-reasoning`.
 
 ```ts
-const model = xai('grok-4.5');
+const model = xai('grok-4.20-non-reasoning');
 ```
 
 <Note>
@@ -135914,7 +135885,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.5'),
+  model: xai('grok-4.20-non-reasoning'),
   prompt: 'Write a vegetarian lasagna recipe for 4 people.',
 });
 ```
@@ -135935,7 +135906,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.5'),
+  model: xai('grok-4.3'),
   prompt: 'Explain quantum entanglement.',
   providerOptions: {
     xai: { reasoningEffort: 'medium' },
@@ -135992,7 +135963,7 @@ calling pattern.
 The xAI Responses API is the default when using `xai(modelId)` (since AI SDK 7). You can also use `xai.responses(modelId)` explicitly. This enables the model to autonomously orchestrate tool calls and research on xAI's servers.
 
 ```ts
-const model = xai.responses('grok-4.5');
+const model = xai.responses('grok-4.20-non-reasoning');
 ```
 
 The Responses API provides server-side tools that the model can autonomously execute during its reasoning process:
@@ -136014,7 +135985,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai.responses('grok-4.5'),
+  model: xai.responses('grok-3'),
   messages: [
     {
       role: 'user',
@@ -136039,7 +136010,7 @@ import { xai } from '@ai-sdk/xai';
 import { generateText } from 'ai';
 
 const { text } = await generateText({
-  model: xai('grok-4.5'),
+  model: xai('grok-4.3'),
   messages: [
     {
       role: 'user',
@@ -136375,19 +136346,19 @@ The following provider options are available:
 
 ## Model Capabilities
 
-| Model                         | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Reasoning           |
-| ----------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `grok-4.5`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `grok-4.20-reasoning`         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `grok-4.20-non-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `grok-4-1-fast-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `grok-4-1-fast-non-reasoning` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `grok-4-1`                    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `grok-4-fast-reasoning`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `grok-4-fast-non-reasoning`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `grok-code-fast-1`            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `grok-3`                      | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `grok-3-mini`                 | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                         | Image Input | Object Generation | Tool Usage | Tool Streaming | Reasoning |
+| ----------------------------- | ----------- | ----------------- | ---------- | -------------- | --------- |
+| `grok-4.5`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `grok-4.20-reasoning`         | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `grok-4.20-non-reasoning`     | <Check />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `grok-4-1-fast-reasoning`     | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `grok-4-1-fast-non-reasoning` | <Check />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `grok-4-1`                    | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `grok-4-fast-reasoning`       | <Check />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `grok-4-fast-non-reasoning`   | <Check />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `grok-code-fast-1`            | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `grok-3`                      | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `grok-3-mini`                 | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
 
 <Note>
   The table above lists popular models. Please see the [xAI
@@ -136495,9 +136466,9 @@ const result = await generateSpeech({
 
 ### Model Capabilities
 
-| Model     | Language            | Speed               | Output Formats             |
-| --------- | ------------------- | ------------------- | -------------------------- |
-| `default` | <Check size={18} /> | <Check size={18} /> | mp3, wav, pcm, mulaw, alaw |
+| Model     | Language  | Speed     | Output Formats             |
+| --------- | --------- | --------- | -------------------------- |
+| `default` | <Check /> | <Check /> | mp3, wav, pcm, mulaw, alaw |
 
 ## Transcription Models
 
@@ -136602,9 +136573,9 @@ const result = await transcribe({
 
 ### Model Capabilities
 
-| Model     | Request/Response    | Streaming           | Word Timestamps     | Diarization         | Multichannel        |
-| --------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `default` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model     | Request/Response | Streaming | Word Timestamps | Diarization | Multichannel |
+| --------- | ---------------- | --------- | --------------- | ----------- | ------------ |
+| `default` | <Check />        | <Check /> | <Check />       | <Check />   | <Check />    |
 
 <Note>
   Word timestamps, diarization results, and segments are only returned on the
@@ -136739,10 +136710,10 @@ const { images } = await generateImage({
 
 ### Image Model Capabilities
 
-| Model                    | Resolution | Aspect Ratios                                                                                               | Image Editing       |
-| ------------------------ | ---------- | ----------------------------------------------------------------------------------------------------------- | ------------------- |
-| `grok-imagine-image-pro` | `1k`, `2k` | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3`, `2:1`, `1:2`, `19.5:9`, `9:19.5`, `20:9`, `9:20`, `auto` | <Check size={18} /> |
-| `grok-imagine-image`     | `1k`       | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3`, `2:1`, `1:2`, `19.5:9`, `9:19.5`, `20:9`, `9:20`, `auto` | <Check size={18} /> |
+| Model                    | Resolution | Aspect Ratios                                                                                               | Image Editing |
+| ------------------------ | ---------- | ----------------------------------------------------------------------------------------------------------- | ------------- |
+| `grok-imagine-image-pro` | `1k`, `2k` | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3`, `2:1`, `1:2`, `19.5:9`, `9:19.5`, `20:9`, `9:20`, `auto` | <Check />     |
+| `grok-imagine-image`     | `1k`       | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3`, `2:1`, `1:2`, `19.5:9`, `9:19.5`, `20:9`, `9:20`, `auto` | <Check />     |
 
 ## Video Models
 
@@ -137088,9 +137059,9 @@ and `resolution` just like text-to-video.
 
 ### Video Model Capabilities
 
-| Model                | Duration | Aspect Ratios                                     | Resolution     | Image-to-Video      | Editing             | Extension           | R2V                 |
-| -------------------- | -------- | ------------------------------------------------- | -------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `grok-imagine-video` | 1–15s    | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3` | `480p`, `720p` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                | Duration | Aspect Ratios                                     | Resolution     | Image-to-Video | Editing   | Extension | R2V       |
+| -------------------- | -------- | ------------------------------------------------- | -------------- | -------------- | --------- | --------- | --------- |
+| `grok-imagine-video` | 1–15s    | `1:1`, `16:9`, `9:16`, `4:3`, `3:4`, `3:2`, `2:3` | `480p`, `720p` | <Check />      | <Check /> | <Check /> | <Check /> |
 
 <Note>
   You can also pass any available provider model ID as a string if needed.
@@ -137125,21 +137096,7 @@ You can create your Vercel API key at [v0.dev](https://v0.dev/chat/settings/keys
 
 The Vercel provider is available via the `@ai-sdk/vercel` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/vercel" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/vercel" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/vercel" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/vercel" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/vercel" />
 
 ## Provider Instance
 
@@ -137220,11 +137177,11 @@ All v0 models have the following capabilities:
 
 ## Model Capabilities
 
-| Model       | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ----------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `v0-1.5-md` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `v0-1.5-lg` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `v0-1.0-md` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model       | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ----------- | ----------- | ----------------- | ---------- | -------------- |
+| `v0-1.5-md` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `v0-1.5-lg` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `v0-1.0-md` | <Check />   | <Check />         | <Check />  | <Check />      |
 
 ---
 title: OpenAI
@@ -137239,21 +137196,7 @@ The [OpenAI](https://openai.com/) provider contains language model support for t
 
 The OpenAI provider is available in the `@ai-sdk/openai` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/openai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/openai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/openai" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/openai" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/openai" />
 
 ## Provider Instance
 
@@ -137591,20 +137534,7 @@ The [`ai-sdk-openai-websocket-fetch`](https://www.npmjs.com/package/ai-sdk-opena
 package provides a drop-in `fetch` replacement that routes streaming requests
 through a persistent WebSocket connection.
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add ai-sdk-openai-websocket-fetch" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install ai-sdk-openai-websocket-fetch" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add ai-sdk-openai-websocket-fetch" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="bun add ai-sdk-openai-websocket-fetch" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="ai-sdk-openai-websocket-fetch" />
 
 Pass the WebSocket fetch to `createOpenAI` via the `fetch` option:
 
@@ -139602,32 +139532,36 @@ The following optional provider options are available for OpenAI completion mode
 
 ### Model Capabilities
 
-| Model                 | Image Input         | Audio Input         | Object Generation   | Tool Usage          |
-| --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `gpt-5.5`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.4-pro`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.4`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.4-mini`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.4-nano`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.3-chat-latest` | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.2-pro`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.2-chat-latest` | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.2`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.1-codex-mini`  | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.1-codex`       | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.1-chat-latest` | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5.1`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5-pro`           | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5`               | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5-mini`          | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5-nano`          | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5-codex`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-5-chat-latest`   | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `gpt-4.1`             | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-4.1-mini`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-4.1-nano`        | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-4o`              | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-4o-mini`         | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                 | Image Input | Audio Input | Object Generation | Tool Usage |
+| --------------------- | ----------- | ----------- | ----------------- | ---------- |
+| `gpt-5.6`             | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.6-luna`        | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.6-sol`         | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.6-terra`       | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.5`             | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.4-pro`         | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.4`             | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.4-mini`        | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.4-nano`        | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.3-chat-latest` | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.2-pro`         | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.2-chat-latest` | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.2`             | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.1-codex-mini`  | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.1-codex`       | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.1-chat-latest` | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5.1`             | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5-pro`           | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5`               | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5-mini`          | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5-nano`          | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5-codex`         | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-5-chat-latest`   | <Check />   | <Cross />   | <Cross />         | <Cross />  |
+| `gpt-4.1`             | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-4.1-mini`        | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-4.1-nano`        | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-4o`              | <Check />   | <Cross />   | <Check />         | <Check />  |
+| `gpt-4o-mini`         | <Check />   | <Cross />   | <Check />         | <Check />  |
 
 <Note>
   The table above lists popular models. Please see the [OpenAI
@@ -139703,11 +139637,11 @@ The following optional provider options are available for OpenAI embedding model
 
 ### Model Capabilities
 
-| Model                    | Default Dimensions | Custom Dimensions   |
-| ------------------------ | ------------------ | ------------------- |
-| `text-embedding-3-large` | 3072               | <Check size={18} /> |
-| `text-embedding-3-small` | 1536               | <Check size={18} /> |
-| `text-embedding-ada-002` | 1536               | <Cross size={18} /> |
+| Model                    | Default Dimensions | Custom Dimensions |
+| ------------------------ | ------------------ | ----------------- |
+| `text-embedding-3-large` | 3072               | <Check />         |
+| `text-embedding-3-small` | 1536               | <Check />         |
+| `text-embedding-ada-002` | 1536               | <Cross />         |
 
 ## Image Models
 
@@ -139937,12 +139871,12 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model                    | Transcription       | Streaming           | Duration            | Segments            | Language            |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `whisper-1`              | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-4o-mini-transcribe` | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `gpt-4o-transcribe`      | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `gpt-realtime-whisper`   | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model                    | Transcription | Streaming | Duration  | Segments  | Language  |
+| ------------------------ | ------------- | --------- | --------- | --------- | --------- |
+| `whisper-1`              | <Check />     | <Cross /> | <Check /> | <Check /> | <Check /> |
+| `gpt-4o-mini-transcribe` | <Check />     | <Cross /> | <Cross /> | <Cross /> | <Cross /> |
+| `gpt-4o-transcribe`      | <Check />     | <Cross /> | <Cross /> | <Cross /> | <Cross /> |
+| `gpt-realtime-whisper`   | <Cross />     | <Check /> | <Cross /> | <Cross /> | <Cross /> |
 
 ## Speech Models
 
@@ -139999,11 +139933,11 @@ const result = await generateSpeech({
 
 ### Model Capabilities
 
-| Model             | Instructions        |
-| ----------------- | ------------------- |
-| `tts-1`           | <Check size={18} /> |
-| `tts-1-hd`        | <Check size={18} /> |
-| `gpt-4o-mini-tts` | <Check size={18} /> |
+| Model             | Instructions |
+| ----------------- | ------------ |
+| `tts-1`           | <Check />    |
+| `tts-1-hd`        | <Check />    |
+| `gpt-4o-mini-tts` | <Check />    |
 
 ---
 title: Azure OpenAI
@@ -140018,21 +139952,7 @@ The [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai
 
 The Azure OpenAI provider is available in the `@ai-sdk/azure` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/azure" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/azure" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/azure" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/azure" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/azure" />
 
 ## Provider Instance
 
@@ -141106,11 +141026,11 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model                    | Transcription       | Duration            | Segments            | Language            |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
-| `whisper-1`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gpt-4o-mini-transcribe` | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `gpt-4o-transcribe`      | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model                    | Transcription | Duration  | Segments  | Language  |
+| ------------------------ | ------------- | --------- | --------- | --------- |
+| `whisper-1`              | <Check />     | <Check /> | <Check /> | <Check /> |
+| `gpt-4o-mini-transcribe` | <Check />     | <Cross /> | <Cross /> | <Cross /> |
+| `gpt-4o-transcribe`      | <Check />     | <Cross /> | <Cross /> | <Cross /> |
 
 ## Speech Models
 
@@ -141170,11 +141090,11 @@ The following provider options are available:
 
 Azure OpenAI supports TTS models through deployments. The capabilities depend on which model version your deployment is using:
 
-| Model Version     | Instructions        |
-| ----------------- | ------------------- |
-| `tts-1`           | <Cross size={18} /> |
-| `tts-1-hd`        | <Cross size={18} /> |
-| `gpt-4o-mini-tts` | <Check size={18} /> |
+| Model Version     | Instructions |
+| ----------------- | ------------ |
+| `tts-1`           | <Cross />    |
+| `tts-1-hd`        | <Cross />    |
+| `gpt-4o-mini-tts` | <Check />    |
 
 ---
 title: Anthropic
@@ -141189,21 +141109,7 @@ The [Anthropic](https://www.anthropic.com/) provider contains language model sup
 
 The Anthropic provider is available in the `@ai-sdk/anthropic` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/anthropic" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/anthropic" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/anthropic" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/anthropic" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/anthropic" />
 
 ## Provider Instance
 
@@ -142801,20 +142707,20 @@ and the `mediaType` should be set to `'application/pdf'`.
 
 ### Model Capabilities
 
-| Model               | Image Input         | Object Generation   | Tool Usage          | Computer Use        | Web Search          | Tool Search         | Compaction          |
-| ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `claude-sonnet-5`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `claude-fable-5`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `claude-opus-4-8`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `claude-opus-4-7`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `claude-opus-4-6`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `claude-sonnet-4-6` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |                     |
-| `claude-opus-4-5`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |                     |
-| `claude-haiku-4-5`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |                     |                     |
-| `claude-sonnet-4-5` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |                     |
-| `claude-opus-4-1`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |                     |                     |
-| `claude-opus-4-0`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |                     |                     |
-| `claude-sonnet-4-0` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |                     |                     |
+| Model               | Image Input | Object Generation | Tool Usage | Computer Use | Web Search | Tool Search | Compaction |
+| ------------------- | ----------- | ----------------- | ---------- | ------------ | ---------- | ----------- | ---------- |
+| `claude-sonnet-5`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
+| `claude-fable-5`    | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
+| `claude-opus-4-8`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
+| `claude-opus-4-7`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
+| `claude-opus-4-6`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   | <Check />  |
+| `claude-sonnet-4-6` | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   |            |
+| `claude-opus-4-5`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   |            |
+| `claude-haiku-4-5`  | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  |             |            |
+| `claude-sonnet-4-5` | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  | <Check />   |            |
+| `claude-opus-4-1`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  |             |            |
+| `claude-opus-4-0`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  |             |            |
+| `claude-sonnet-4-0` | <Check />   | <Check />         | <Check />  | <Check />    | <Check />  |             |            |
 
 <Note>
   The table above lists popular models. Please see the [Anthropic
@@ -142836,20 +142742,7 @@ The [Open Responses](https://www.openresponses.org/) provider contains language 
 
 The Open Responses provider is available in the `@ai-sdk/open-responses` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/open-responses" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/open-responses" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/open-responses" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="bun add @ai-sdk/open-responses" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/open-responses" />
 
 ## Provider Instance
 
@@ -142938,20 +142831,7 @@ This differs from [Amazon Bedrock](/providers/ai-sdk-providers/amazon-bedrock) i
 
 The Claude Platform on AWS provider is available in the `@ai-sdk/anthropic-aws` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/anthropic-aws" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/anthropic-aws" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/anthropic-aws" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="bun add @ai-sdk/anthropic-aws" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/anthropic-aws" />
 
 ### Prerequisites
 
@@ -143088,21 +142968,7 @@ The Amazon Bedrock provider for the [AI SDK](/docs) contains language model supp
 
 The Bedrock provider is available in the `@ai-sdk/amazon-bedrock` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/amazon-bedrock" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/amazon-bedrock" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/amazon-bedrock" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/amazon-bedrock" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/amazon-bedrock" />
 
 ### Prerequisites
 
@@ -143187,21 +143053,7 @@ _Usage:_
 
 `@aws-sdk/credential-providers` package provides a set of credential providers that can be used to create a credential provider chain.
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @aws-sdk/credential-providers" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @aws-sdk/credential-providers" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @aws-sdk/credential-providers" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @aws-sdk/credential-providers" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@aws-sdk/credential-providers" />
 
 ```ts
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
@@ -143837,67 +143689,67 @@ These tools can be used in conjunction with the `anthropic.claude-3-5-sonnet-202
 
 ### Model Capabilities
 
-| Model                                          | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ---------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `amazon.titan-tg1-large`                       | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `amazon.titan-text-express-v1`                 | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `amazon.titan-text-lite-v1`                    | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `us.amazon.nova-premier-v1:0`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.amazon.nova-pro-v1:0`                      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.amazon.nova-lite-v1:0`                     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.amazon.nova-micro-v1:0`                    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-haiku-4-5-20251001-v1:0`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-sonnet-4-20250514-v1:0`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-sonnet-4-5-20250929-v1:0`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-opus-4-20250514-v1:0`        | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-opus-4-1-20250805-v1:0`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-3-5-sonnet-20241022-v2:0`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-3-5-sonnet-20240620-v1:0`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-3-opus-20240229-v1:0`        | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-3-sonnet-20240229-v1:0`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-3-haiku-20240307-v1:0`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-sonnet-4-20250514-v1:0`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-sonnet-4-5-20250929-v1:0` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-opus-4-20250514-v1:0`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-opus-4-1-20250805-v1:0`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-3-5-sonnet-20241022-v2:0` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-3-5-sonnet-20240620-v1:0` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-3-sonnet-20240229-v1:0`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-3-opus-20240229-v1:0`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-3-haiku-20240307-v1:0`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `anthropic.claude-v2`                          | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `anthropic.claude-v2:1`                        | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `anthropic.claude-instant-v1`                  | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `cohere.command-text-v14`                      | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `cohere.command-light-text-v14`                | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `cohere.command-r-v1:0`                        | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `cohere.command-r-plus-v1:0`                   | <Cross size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `us.deepseek.r1-v1:0`                          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta.llama3-8b-instruct-v1:0`                 | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta.llama3-70b-instruct-v1:0`                | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta.llama3-1-8b-instruct-v1:0`               | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta.llama3-1-70b-instruct-v1:0`              | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta.llama3-1-405b-instruct-v1:0`             | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta.llama3-2-1b-instruct-v1:0`               | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta.llama3-2-3b-instruct-v1:0`               | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta.llama3-2-11b-instruct-v1:0`              | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta.llama3-2-90b-instruct-v1:0`              | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `us.meta.llama3-2-1b-instruct-v1:0`            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.meta.llama3-2-3b-instruct-v1:0`            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.meta.llama3-2-11b-instruct-v1:0`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.meta.llama3-2-90b-instruct-v1:0`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.meta.llama3-1-8b-instruct-v1:0`            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.meta.llama3-1-70b-instruct-v1:0`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.meta.llama3-3-70b-instruct-v1:0`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.meta.llama4-scout-17b-instruct-v1:0`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.meta.llama4-maverick-17b-instruct-v1:0`    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mistral.mistral-7b-instruct-v0:2`             | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `mistral.mixtral-8x7b-instruct-v0:1`           | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `mistral.mistral-large-2402-v1:0`              | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `mistral.mistral-small-2402-v1:0`              | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `us.mistral.pixtral-large-2502-v1:0`           | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `openai.gpt-oss-120b-1:0`                      | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `openai.gpt-oss-20b-1:0`                       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                                          | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ---------------------------------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `amazon.titan-tg1-large`                       | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `amazon.titan-text-express-v1`                 | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `amazon.titan-text-lite-v1`                    | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `us.amazon.nova-premier-v1:0`                  | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.amazon.nova-pro-v1:0`                      | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.amazon.nova-lite-v1:0`                     | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.amazon.nova-micro-v1:0`                    | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-haiku-4-5-20251001-v1:0`     | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-sonnet-4-20250514-v1:0`      | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-sonnet-4-5-20250929-v1:0`    | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-opus-4-20250514-v1:0`        | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-opus-4-1-20250805-v1:0`      | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-3-5-sonnet-20241022-v2:0`    | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-3-5-sonnet-20240620-v1:0`    | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-3-opus-20240229-v1:0`        | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-3-sonnet-20240229-v1:0`      | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-3-haiku-20240307-v1:0`       | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-sonnet-4-20250514-v1:0`   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-sonnet-4-5-20250929-v1:0` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-opus-4-20250514-v1:0`     | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-opus-4-1-20250805-v1:0`   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-3-5-sonnet-20241022-v2:0` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-3-5-sonnet-20240620-v1:0` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-3-sonnet-20240229-v1:0`   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-3-opus-20240229-v1:0`     | <Check />   | <Check />         | <Check />  | <Check />      |
+| `us.anthropic.claude-3-haiku-20240307-v1:0`    | <Check />   | <Check />         | <Check />  | <Check />      |
+| `anthropic.claude-v2`                          | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `anthropic.claude-v2:1`                        | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `anthropic.claude-instant-v1`                  | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `cohere.command-text-v14`                      | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `cohere.command-light-text-v14`                | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `cohere.command-r-v1:0`                        | <Cross />   | <Cross />         | <Check />  | <Cross />      |
+| `cohere.command-r-plus-v1:0`                   | <Cross />   | <Cross />         | <Check />  | <Cross />      |
+| `us.deepseek.r1-v1:0`                          | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta.llama3-8b-instruct-v1:0`                 | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta.llama3-70b-instruct-v1:0`                | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta.llama3-1-8b-instruct-v1:0`               | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta.llama3-1-70b-instruct-v1:0`              | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta.llama3-1-405b-instruct-v1:0`             | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta.llama3-2-1b-instruct-v1:0`               | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta.llama3-2-3b-instruct-v1:0`               | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta.llama3-2-11b-instruct-v1:0`              | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta.llama3-2-90b-instruct-v1:0`              | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `us.meta.llama3-2-1b-instruct-v1:0`            | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `us.meta.llama3-2-3b-instruct-v1:0`            | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `us.meta.llama3-2-11b-instruct-v1:0`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `us.meta.llama3-2-90b-instruct-v1:0`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `us.meta.llama3-1-8b-instruct-v1:0`            | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `us.meta.llama3-1-70b-instruct-v1:0`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `us.meta.llama3-3-70b-instruct-v1:0`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `us.meta.llama4-scout-17b-instruct-v1:0`       | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `us.meta.llama4-maverick-17b-instruct-v1:0`    | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `mistral.mistral-7b-instruct-v0:2`             | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `mistral.mixtral-8x7b-instruct-v0:1`           | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `mistral.mistral-large-2402-v1:0`              | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `mistral.mistral-small-2402-v1:0`              | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `us.mistral.pixtral-large-2502-v1:0`           | <Check />   | <Check />         | <Check />  | <Check />      |
+| `openai.gpt-oss-120b-1:0`                      | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `openai.gpt-oss-20b-1:0`                       | <Cross />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   The table above lists popular models. Please see the [Amazon Bedrock
@@ -144016,13 +143868,13 @@ The following provider options are available for Cohere embedding models:
 
 ### Model Capabilities
 
-| Model                          | Default Dimensions | Custom Dimensions   |
-| ------------------------------ | ------------------ | ------------------- |
-| `amazon.titan-embed-text-v1`   | 1536               | <Cross size={18} /> |
-| `amazon.titan-embed-text-v2:0` | 1024               | <Check size={18} /> |
-| `amazon.nova-embed-text-v2:0`  | 1024               | <Check size={18} /> |
-| `cohere.embed-english-v3`      | 1024               | <Cross size={18} /> |
-| `cohere.embed-multilingual-v3` | 1024               | <Cross size={18} /> |
+| Model                          | Default Dimensions | Custom Dimensions |
+| ------------------------------ | ------------------ | ----------------- |
+| `amazon.titan-embed-text-v1`   | 1536               | <Cross />         |
+| `amazon.titan-embed-text-v2:0` | 1024               | <Check />         |
+| `amazon.nova-embed-text-v2:0`  | 1024               | <Check />         |
+| `cohere.embed-english-v3`      | 1024               | <Cross />         |
+| `cohere.embed-multilingual-v3` | 1024               | <Cross />         |
 
 ## Reranking Models
 
@@ -144703,20 +144555,20 @@ on how to integrate reasoning into your chatbot.
 
 ### Model Capabilities
 
-| Model                                          | Image Input         | Object Generation   | Tool Usage          | Computer Use        | Reasoning           |
-| ---------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `us.anthropic.claude-sonnet-5`                 | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-fable-5`                  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-opus-4-8`                 | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-opus-4-7`                 | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-opus-4-6-v1`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-opus-4-5-20251101-v1:0`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-sonnet-4-5-20250929-v1:0` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-opus-4-20250514-v1:0`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-sonnet-4-20250514-v1:0`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-opus-4-1-20250805-v1:0`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-haiku-4-5-20251001-v1:0`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `us.anthropic.claude-3-5-sonnet-20241022-v2:0` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model                                          | Image Input | Object Generation | Tool Usage | Computer Use | Reasoning |
+| ---------------------------------------------- | ----------- | ----------------- | ---------- | ------------ | --------- |
+| `us.anthropic.claude-sonnet-5`                 | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-fable-5`                  | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-opus-4-8`                 | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-opus-4-7`                 | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-opus-4-6-v1`              | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-opus-4-5-20251101-v1:0`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-sonnet-4-5-20250929-v1:0` | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-opus-4-20250514-v1:0`     | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-sonnet-4-20250514-v1:0`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-opus-4-1-20250805-v1:0`   | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-haiku-4-5-20251001-v1:0`  | <Check />   | <Check />         | <Check />  | <Check />    | <Check /> |
+| `us.anthropic.claude-3-5-sonnet-20241022-v2:0` | <Check />   | <Check />         | <Check />  | <Cross />    | <Cross /> |
 
 <Note>
   The Bedrock Anthropic provider uses the native InvokeModel API and supports
@@ -144867,12 +144719,12 @@ const { text } = await generateText({
 
 ### Model Capabilities
 
-| Model                           | Chat Completions    | Responses API       |
-| ------------------------------- | ------------------- | ------------------- |
-| `openai.gpt-oss-20b`            | <Check size={18} /> | <Check size={18} /> |
-| `openai.gpt-oss-120b`           | <Check size={18} /> | <Check size={18} /> |
-| `openai.gpt-oss-safeguard-20b`  | <Check size={18} /> | <Cross size={18} /> |
-| `openai.gpt-oss-safeguard-120b` | <Check size={18} /> | <Cross size={18} /> |
+| Model                           | Chat Completions | Responses API |
+| ------------------------------- | ---------------- | ------------- |
+| `openai.gpt-oss-20b`            | <Check />        | <Check />     |
+| `openai.gpt-oss-120b`           | <Check />        | <Check />     |
+| `openai.gpt-oss-safeguard-20b`  | <Check />        | <Cross />     |
+| `openai.gpt-oss-safeguard-120b` | <Check />        | <Cross />     |
 
 <Note>
   The Bedrock Mantle provider uses the OpenAI-compatible API format. Models
@@ -144906,21 +144758,7 @@ The [Groq](https://groq.com/) provider contains language model support for the G
 The Groq provider is available via the `@ai-sdk/groq` module.
 You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/groq" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/groq" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/groq" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/groq" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/groq" />
 
 ## Provider Instance
 
@@ -145190,28 +145028,28 @@ const { text } = await generateText({
 
 ## Model Capabilities
 
-| Model                                           | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ----------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `gemma2-9b-it`                                  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `llama-3.1-8b-instant`                          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `llama-3.3-70b-versatile`                       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/llama-guard-4-12b`                  | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `deepseek-r1-distill-llama-70b`                 | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/llama-4-maverick-17b-128e-instruct` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/llama-4-scout-17b-16e-instruct`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/llama-prompt-guard-2-22m`           | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta-llama/llama-prompt-guard-2-86m`           | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `moonshotai/kimi-k2-instruct-0905`              | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `qwen/qwen3-32b`                                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `llama-guard-3-8b`                              | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `llama3-70b-8192`                               | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `llama3-8b-8192`                                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mixtral-8x7b-32768`                            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `qwen-qwq-32b`                                  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `qwen-2.5-32b`                                  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-r1-distill-qwen-32b`                  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `openai/gpt-oss-20b`                            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `openai/gpt-oss-120b`                           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                                           | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ----------------------------------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `gemma2-9b-it`                                  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `llama-3.1-8b-instant`                          | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `llama-3.3-70b-versatile`                       | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/llama-guard-4-12b`                  | <Check />   | <Check />         | <Cross />  | <Cross />      |
+| `deepseek-r1-distill-llama-70b`                 | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/llama-4-maverick-17b-128e-instruct` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/llama-4-scout-17b-16e-instruct`     | <Check />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/llama-prompt-guard-2-22m`           | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `meta-llama/llama-prompt-guard-2-86m`           | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `moonshotai/kimi-k2-instruct-0905`              | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `qwen/qwen3-32b`                                | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `llama-guard-3-8b`                              | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `llama3-70b-8192`                               | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `llama3-8b-8192`                                | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `mixtral-8x7b-32768`                            | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `qwen-qwq-32b`                                  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `qwen-2.5-32b`                                  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `deepseek-r1-distill-qwen-32b`                  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `openai/gpt-oss-20b`                            | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `openai/gpt-oss-120b`                           | <Cross />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   The tables above list the most commonly used models. Please see the [Groq
@@ -145373,10 +145211,10 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model                    | Transcription       | Duration            | Segments            | Language            |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
-| `whisper-large-v3`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `whisper-large-v3-turbo` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                    | Transcription | Duration  | Segments  | Language  |
+| ------------------------ | ------------- | --------- | --------- | --------- |
+| `whisper-large-v3`       | <Check />     | <Check /> | <Check /> | <Check /> |
+| `whisper-large-v3-turbo` | <Check />     | <Check /> | <Check /> | <Check /> |
 
 ---
 title: Fal
@@ -145391,21 +145229,7 @@ description: Learn how to use Fal AI models with the AI SDK.
 
 The Fal provider is available via the `@ai-sdk/fal` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/fal" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/fal" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/fal" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/fal" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/fal" />
 
 ## Provider Instance
 
@@ -145645,10 +145469,10 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model     | Transcription       | Duration            | Segments            | Language            |
-| --------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `whisper` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `wizper`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model     | Transcription | Duration  | Segments  | Language  |
+| --------- | ------------- | --------- | --------- | --------- |
+| `whisper` | <Check />     | <Check /> | <Check /> | <Check /> |
+| `wizper`  | <Check />     | <Check /> | <Check /> | <Check /> |
 
 ## Speech Models
 
@@ -145714,21 +145538,7 @@ The [AssemblyAI](https://assemblyai.com/) provider contains transcription model 
 
 The AssemblyAI provider is available in the `@ai-sdk/assemblyai` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/assemblyai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/assemblyai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/assemblyai" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/assemblyai" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/assemblyai" />
 
 ## Provider Instance
 
@@ -146102,12 +145912,12 @@ AssemblyAI's documentation for per-language availability.
 
 ### Model Capabilities
 
-| Model               | Transcription       | Duration            | Segments            | Language            |
-| ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `universal-3-5-pro` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `universal-3-pro`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `universal-2`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `best`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model               | Transcription | Duration  | Segments  | Language  |
+| ------------------- | ------------- | --------- | --------- | --------- |
+| `universal-3-5-pro` | <Check />     | <Check /> | <Check /> | <Check /> |
+| `universal-3-pro`   | <Check />     | <Check /> | <Check /> | <Check /> |
+| `universal-2`       | <Check />     | <Check /> | <Check /> | <Check /> |
+| `best`              | <Check />     | <Check /> | <Check /> | <Check /> |
 
 ---
 title: DeepInfra
@@ -146122,21 +145932,7 @@ The [DeepInfra](https://deepinfra.com) provider contains support for state-of-th
 
 The DeepInfra provider is available via the `@ai-sdk/deepinfra` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/deepinfra" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/deepinfra" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/deepinfra" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/deepinfra" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/deepinfra" />
 
 ## Provider Instance
 
@@ -146200,32 +145996,32 @@ DeepInfra language models can also be used in the `streamText` function (see [AI
 
 ## Model Capabilities
 
-| Model                                               | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| --------------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8` | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta-llama/Llama-4-Scout-17B-16E-Instruct`         | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta-llama/Llama-3.3-70B-Instruct-Turbo`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Llama-3.3-70B-Instruct`                 | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Meta-Llama-3.1-405B-Instruct`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo`      | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Meta-Llama-3.1-70B-Instruct`            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `meta-llama/Meta-Llama-3.1-8B-Instruct`             | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Llama-3.2-11B-Vision-Instruct`          | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `meta-llama/Llama-3.2-90B-Vision-Instruct`          | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `mistralai/Mixtral-8x7B-Instruct-v0.1`              | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `deepseek-ai/DeepSeek-V3`                           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-ai/DeepSeek-R1`                           | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`         | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `deepseek-ai/DeepSeek-R1-Turbo`                     | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `nvidia/Llama-3.1-Nemotron-70B-Instruct`            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `Qwen/Qwen2-7B-Instruct`                            | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `Qwen/Qwen2.5-72B-Instruct`                         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `Qwen/Qwen2.5-Coder-32B-Instruct`                   | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `Qwen/QwQ-32B-Preview`                              | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `google/codegemma-7b-it`                            | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `google/gemma-2-9b-it`                              | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `microsoft/WizardLM-2-8x22B`                        | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model                                               | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| --------------------------------------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8` | <Check />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta-llama/Llama-4-Scout-17B-16E-Instruct`         | <Check />   | <Cross />         | <Cross />  | <Cross />      |
+| `meta-llama/Llama-3.3-70B-Instruct-Turbo`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Llama-3.3-70B-Instruct`                 | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Meta-Llama-3.1-405B-Instruct`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo`      | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Meta-Llama-3.1-70B-Instruct`            | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo`       | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `meta-llama/Meta-Llama-3.1-8B-Instruct`             | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Llama-3.2-11B-Vision-Instruct`          | <Check />   | <Check />         | <Cross />  | <Cross />      |
+| `meta-llama/Llama-3.2-90B-Vision-Instruct`          | <Check />   | <Check />         | <Cross />  | <Cross />      |
+| `mistralai/Mixtral-8x7B-Instruct-v0.1`              | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `deepseek-ai/DeepSeek-V3`                           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `deepseek-ai/DeepSeek-R1`                           | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`         | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `deepseek-ai/DeepSeek-R1-Turbo`                     | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `nvidia/Llama-3.1-Nemotron-70B-Instruct`            | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `Qwen/Qwen2-7B-Instruct`                            | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `Qwen/Qwen2.5-72B-Instruct`                         | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `Qwen/Qwen2.5-Coder-32B-Instruct`                   | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `Qwen/QwQ-32B-Preview`                              | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `google/codegemma-7b-it`                            | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `google/gemma-2-9b-it`                              | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `microsoft/WizardLM-2-8x22B`                        | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
 
 <Note>
   The table above lists popular models. Please see the [DeepInfra
@@ -146459,21 +146255,7 @@ The [Deepgram](https://deepgram.com/) provider contains language model support f
 
 The Deepgram provider is available in the `@ai-sdk/deepgram` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/deepgram" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/deepgram" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/deepgram" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/deepgram" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/deepgram" />
 
 ## Provider Instance
 
@@ -146721,13 +146503,13 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model                                                                                              | Transcription       | Duration            | Segments            | Language            |
-| -------------------------------------------------------------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `nova-3` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#nova-3))     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `nova-2` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#nova-2))     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `nova` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#nova))         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `enhanced` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#enhanced)) | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `base` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#base))         | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
+| Model                                                                                              | Transcription | Duration  | Segments  | Language  |
+| -------------------------------------------------------------------------------------------------- | ------------- | --------- | --------- | --------- |
+| `nova-3` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#nova-3))     | <Check />     | <Check /> | <Check /> | <Cross /> |
+| `nova-2` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#nova-2))     | <Check />     | <Check /> | <Check /> | <Cross /> |
+| `nova` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#nova))         | <Check />     | <Check /> | <Check /> | <Cross /> |
+| `enhanced` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#enhanced)) | <Check />     | <Check /> | <Check /> | <Cross /> |
+| `base` (+ [variants](https://developers.deepgram.com/docs/models-languages-overview#base))         | <Check />     | <Check /> | <Check /> | <Cross /> |
 
 ---
 title: Black Forest Labs
@@ -146742,21 +146524,7 @@ description: Learn how to use Black Forest Labs models with the AI SDK.
 
 The Black Forest Labs provider is available via the `@ai-sdk/black-forest-labs` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/black-forest-labs" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/black-forest-labs" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/black-forest-labs" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/black-forest-labs" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/black-forest-labs" />
 
 ## Provider Instance
 
@@ -147002,21 +146770,7 @@ The [Gladia](https://gladia.io/) provider contains language model support for th
 
 The Gladia provider is available in the `@ai-sdk/gladia` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/gladia" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/gladia" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/gladia" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/gladia" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/gladia" />
 
 ## Provider Instance
 
@@ -147274,9 +147028,9 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model     | Transcription       | Duration            | Segments            | Language            |
-| --------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `Default` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model     | Transcription | Duration  | Segments  | Language  |
+| --------- | ------------- | --------- | --------- | --------- |
+| `Default` | <Check />     | <Check /> | <Check /> | <Check /> |
 
 ---
 title: LMNT
@@ -147291,21 +147045,7 @@ The [LMNT](https://lmnt.com/) provider contains speech model support for the LMN
 
 The LMNT provider is available in the `@ai-sdk/lmnt` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/lmnt" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/lmnt" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/lmnt" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/lmnt" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/lmnt" />
 
 ## Provider Instance
 
@@ -147428,10 +147168,10 @@ The LMNT provider accepts the following options via `providerOptions.lmnt`:
 
 ### Model Capabilities
 
-| Model      | Instructions        |
-| ---------- | ------------------- |
-| `aurora`   | <Cross size={18} /> |
-| `blizzard` | <Cross size={18} /> |
+| Model      | Instructions |
+| ---------- | ------------ |
+| `aurora`   | <Cross />    |
+| `blizzard` | <Cross />    |
 
 ---
 title: Google
@@ -147447,21 +147187,7 @@ the [Google](https://ai.google.dev/api/rest) APIs.
 
 The Google provider is available in the `@ai-sdk/google` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/google" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/google" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/google" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/google" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/google" />
 
 ## Provider Instance
 
@@ -148478,20 +148204,20 @@ The following Zod features are known to not work with Google:
 
 ### Model Capabilities
 
-| Model                                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Google Search       | URL Context         |
-| ------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `gemini-3.5-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-3.1-pro-preview`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-3.1-flash-image-preview`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-3.1-flash-lite-preview`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-3-pro-preview`                | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-3-pro-image-preview`          | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-3-flash-preview`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.5-pro`                      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.5-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.5-flash-lite`               | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.5-flash-lite-preview-06-17` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.0-flash`                    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                                 | Image Input | Object Generation | Tool Usage | Tool Streaming | Google Search | URL Context |
+| ------------------------------------- | ----------- | ----------------- | ---------- | -------------- | ------------- | ----------- |
+| `gemini-3.5-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-3.1-pro-preview`              | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-3.1-flash-image-preview`      | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-3.1-flash-lite-preview`       | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-3-pro-preview`                | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-3-pro-image-preview`          | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-3-flash-preview`              | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-2.5-pro`                      | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-2.5-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-2.5-flash-lite`               | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-2.5-flash-lite-preview-06-17` | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
+| `gemini-2.0-flash`                    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />     | <Check />   |
 
 <Note>
   The table above lists popular models. Please see the [Google Generative AI
@@ -149271,11 +148997,11 @@ The following optional provider options are available for Google embedding model
 
 ### Model Capabilities
 
-| Model                        | Default Dimensions | Custom Dimensions   | Multimodal          |
-| ---------------------------- | ------------------ | ------------------- | ------------------- |
-| `gemini-embedding-001`       | 3072               | <Check size={18} /> | <Cross size={18} /> |
-| `gemini-embedding-2`         | 3072               | <Check size={18} /> | <Check size={18} /> |
-| `gemini-embedding-2-preview` | 3072               | <Check size={18} /> | <Check size={18} /> |
+| Model                        | Default Dimensions | Custom Dimensions | Multimodal |
+| ---------------------------- | ------------------ | ----------------- | ---------- |
+| `gemini-embedding-001`       | 3072               | <Check />         | <Cross />  |
+| `gemini-embedding-2`         | 3072               | <Check />         | <Check />  |
+| `gemini-embedding-2-preview` | 3072               | <Check />         | <Check />  |
 
 ## Image Models
 
@@ -149423,11 +149149,11 @@ console.log(result.providerMetadata?.google?.groundingMetadata);
 
 #### Gemini Image Model Capabilities
 
-| Model                            | Image Generation    | Image Editing       | Aspect Ratios                                       |
-| -------------------------------- | ------------------- | ------------------- | --------------------------------------------------- |
-| `gemini-2.5-flash-image`         | <Check size={18} /> | <Check size={18} /> | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
-| `gemini-3-pro-image-preview`     | <Check size={18} /> | <Check size={18} /> | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
-| `gemini-3.1-flash-image-preview` | <Check size={18} /> | <Check size={18} /> | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
+| Model                            | Image Generation | Image Editing | Aspect Ratios                                       |
+| -------------------------------- | ---------------- | ------------- | --------------------------------------------------- |
+| `gemini-2.5-flash-image`         | <Check />        | <Check />     | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
+| `gemini-3-pro-image-preview`     | <Check />        | <Check />     | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
+| `gemini-3.1-flash-image-preview` | <Check />        | <Check />     | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
 
 <Note>
   `gemini-3-pro-image-preview` supports additional features including up to 14
@@ -149507,11 +149233,11 @@ const result = await generateSpeech({
 
 ### Model Capabilities
 
-| Model                          | Multi-speaker       | Style via instructions |
-| ------------------------------ | ------------------- | ---------------------- |
-| `gemini-2.5-flash-preview-tts` | <Check size={18} /> | <Check size={18} />    |
-| `gemini-2.5-pro-preview-tts`   | <Check size={18} /> | <Check size={18} />    |
-| `gemini-3.1-flash-tts-preview` | <Check size={18} /> | <Check size={18} />    |
+| Model                          | Multi-speaker | Style via instructions |
+| ------------------------------ | ------------- | ---------------------- |
+| `gemini-2.5-flash-preview-tts` | <Check />     | <Check />              |
+| `gemini-2.5-pro-preview-tts`   | <Check />     | <Check />              |
+| `gemini-3.1-flash-tts-preview` | <Check />     | <Check />              |
 
 ---
 title: Hume
@@ -149526,21 +149252,7 @@ The [Hume](https://hume.ai/) provider contains support for the Hume text-to-spee
 
 The Hume provider is available in the `@ai-sdk/hume` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/hume" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/hume" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/hume" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/hume" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/hume" />
 
 ## Provider Instance
 
@@ -149670,9 +149382,9 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model     | Instructions        | Speed               | Output Formats |
-| --------- | ------------------- | ------------------- | -------------- |
-| `default` | <Check size={18} /> | <Check size={18} /> | mp3, pcm, wav  |
+| Model     | Instructions | Speed     | Output Formats |
+| --------- | ------------ | --------- | -------------- |
+| `default` | <Check />    | <Check /> | mp3, pcm, wav  |
 
 ---
 title: Google Vertex AI
@@ -149696,24 +149408,7 @@ The Google Vertex provider for the [AI SDK](/docs) contains language model suppo
 
 The Google Vertex, Google Vertex Anthropic, Google Vertex xAI, and Google Vertex MaaS providers are available in the `@ai-sdk/google-vertex` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/google-vertex" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/google-vertex" dark />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="yarn add @ai-sdk/google-vertex @google-cloud/vertexai"
-      dark
-    />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/google-vertex" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/google-vertex" />
 
 ## Google Vertex Provider Usage
 
@@ -150546,13 +150241,13 @@ The following Zod features are known to not work with Google Vertex:
 
 ### Model Capabilities
 
-| Model                  | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ---------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `gemini-3.5-flash`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-3-pro-preview` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.5-pro`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.5-flash`     | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `gemini-2.0-flash-001` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                  | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ---------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `gemini-3.5-flash`     | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-3-pro-preview` | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-2.5-pro`       | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-2.5-flash`     | <Check />   | <Check />         | <Check />  | <Check />      |
+| `gemini-2.0-flash-001` | <Check />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   The table above lists popular models. Please see the [Google Vertex AI
@@ -150621,11 +150316,11 @@ The following optional provider options are available for Google Vertex AI embed
 
 #### Model Capabilities
 
-| Model                        | Max Values Per Call | Parallel Calls      | Multimodal          |
-| ---------------------------- | ------------------- | ------------------- | ------------------- |
-| `text-embedding-005`         | 2048                | <Check size={18} /> | <Cross size={18} /> |
-| `gemini-embedding-2`         | 2048                | <Check size={18} /> | <Check size={18} /> |
-| `gemini-embedding-2-preview` | 2048                | <Check size={18} /> | <Check size={18} /> |
+| Model                        | Max Values Per Call | Parallel Calls | Multimodal |
+| ---------------------------- | ------------------- | -------------- | ---------- |
+| `text-embedding-005`         | 2048                | <Check />      | <Cross />  |
+| `gemini-embedding-2`         | 2048                | <Check />      | <Check />  |
+| `gemini-embedding-2-preview` | 2048                | <Check />      | <Check />  |
 
 <Note>
   The table above lists popular models. You can also pass any available provider
@@ -150889,11 +150584,11 @@ const { image } = await generateImage({
 
 ##### Gemini Image Model Capabilities
 
-| Model                            | Image Generation    | Image Editing       | Aspect Ratios                                       |
-| -------------------------------- | ------------------- | ------------------- | --------------------------------------------------- |
-| `gemini-3.1-flash-image-preview` | <Check size={18} /> | <Check size={18} /> | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
-| `gemini-3-pro-image-preview`     | <Check size={18} /> | <Check size={18} /> | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
-| `gemini-2.5-flash-image`         | <Check size={18} /> | <Check size={18} /> | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
+| Model                            | Image Generation | Image Editing | Aspect Ratios                                       |
+| -------------------------------- | ---------------- | ------------- | --------------------------------------------------- |
+| `gemini-3.1-flash-image-preview` | <Check />        | <Check />     | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
+| `gemini-3-pro-image-preview`     | <Check />        | <Check />     | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
+| `gemini-2.5-flash-image`         | <Check />        | <Check />     | 1:1, 2:3, 3:2, 3:4, 4:3, 4:5, 5:4, 9:16, 16:9, 21:9 |
 
 <Note>
   `gemini-3-pro-image-preview` supports additional features including up to 14
@@ -151081,12 +150776,12 @@ rate is reported in `result.providerMetadata.google.sampleRate`.
 
 #### Speech Model Capabilities
 
-| Model                               | Multi-speaker       | Style via instructions |
-| ----------------------------------- | ------------------- | ---------------------- |
-| `gemini-2.5-flash-tts`              | <Check size={18} /> | <Check size={18} />    |
-| `gemini-2.5-pro-tts`                | <Check size={18} /> | <Check size={18} />    |
-| `gemini-2.5-flash-lite-preview-tts` | <Check size={18} /> | <Check size={18} />    |
-| `gemini-3.1-flash-tts-preview`      | <Check size={18} /> | <Check size={18} />    |
+| Model                               | Multi-speaker | Style via instructions |
+| ----------------------------------- | ------------- | ---------------------- |
+| `gemini-2.5-flash-tts`              | <Check />     | <Check />              |
+| `gemini-2.5-pro-tts`                | <Check />     | <Check />              |
+| `gemini-2.5-flash-lite-preview-tts` | <Check />     | <Check />              |
+| `gemini-3.1-flash-tts-preview`      | <Check />     | <Check />              |
 
 ### Transcription Models
 
@@ -151658,15 +151353,15 @@ These tools can be used in conjunction with supported Claude models to enable mo
 The latest Anthropic model list on Vertex AI is available [here](https://cloud.google.com/vertex-ai/generative-ai/docs/partner-models/use-claude#model-list).
 See also [Anthropic Model Comparison](https://docs.anthropic.com/en/docs/about-claude/models#model-comparison).
 
-| Model                           | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Computer Use        |
-| ------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `claude-3-7-sonnet@20250219`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `claude-3-5-sonnet-v2@20241022` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `claude-3-5-sonnet@20240620`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `claude-3-5-haiku@20241022`     | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `claude-3-sonnet@20240229`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `claude-3-haiku@20240307`       | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `claude-3-opus@20240229`        | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
+| Model                           | Image Input | Object Generation | Tool Usage | Tool Streaming | Computer Use |
+| ------------------------------- | ----------- | ----------------- | ---------- | -------------- | ------------ |
+| `claude-3-7-sonnet@20250219`    | <Check />   | <Check />         | <Check />  | <Check />      | <Check />    |
+| `claude-3-5-sonnet-v2@20241022` | <Check />   | <Check />         | <Check />  | <Check />      | <Check />    |
+| `claude-3-5-sonnet@20240620`    | <Check />   | <Check />         | <Check />  | <Check />      | <Cross />    |
+| `claude-3-5-haiku@20241022`     | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross />    |
+| `claude-3-sonnet@20240229`      | <Check />   | <Check />         | <Check />  | <Check />      | <Cross />    |
+| `claude-3-haiku@20240307`       | <Check />   | <Check />         | <Check />  | <Check />      | <Cross />    |
+| `claude-3-opus@20240229`        | <Check />   | <Check />         | <Check />  | <Check />      | <Cross />    |
 
 <Note>
   The table above lists popular models. You can also pass any available provider
@@ -152010,21 +151705,7 @@ The [Rev.ai](https://www.rev.ai/) provider contains language model support for t
 
 The Rev.ai provider is available in the `@ai-sdk/revai` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/revai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/revai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/revai" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/revai" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/revai" />
 
 ## Provider Instance
 
@@ -152213,11 +151894,11 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model      | Transcription       | Duration            | Segments            | Language            |
-| ---------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `machine`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `low_cost` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `fusion`   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model      | Transcription | Duration  | Segments  | Language  |
+| ---------- | ------------- | --------- | --------- | --------- |
+| `machine`  | <Check />     | <Check /> | <Check /> | <Check /> |
+| `low_cost` | <Check />     | <Check /> | <Check /> | <Check /> |
+| `fusion`   | <Check />     | <Check /> | <Check /> | <Check /> |
 
 ---
 title: Baseten
@@ -152232,17 +151913,7 @@ description: Learn how to use Baseten models with the AI SDK.
 
 The Baseten provider is available via the `@ai-sdk/baseten` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/baseten" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/baseten" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/baseten" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/baseten" />
 
 ## Provider Instance
 
@@ -152483,21 +152154,7 @@ API keys can be obtained from [Hugging Face Settings](https://huggingface.co/set
 
 The Hugging Face provider is available via the `@ai-sdk/huggingface` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/huggingface" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/huggingface" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/huggingface" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/huggingface" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/huggingface" />
 
 ## Provider Instance
 
@@ -152689,21 +152346,21 @@ You can also pass image URLs:
 
 ## Model Capabilities
 
-| Model                                           | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ----------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `meta-llama/Llama-3.1-8B-Instruct`              | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Llama-3.1-70B-Instruct`             | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Llama-3.3-70B-Instruct`             | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Llama-4-Maverick-17B-128E-Instruct` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-ai/DeepSeek-V3.1`                     | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-ai/DeepSeek-V3-0324`                  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-ai/DeepSeek-R1`                       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`     | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `Qwen/Qwen3-32B`                                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `Qwen/Qwen3-Coder-480B-A35B-Instruct`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `Qwen/Qwen2.5-VL-7B-Instruct`                   | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `google/gemma-3-27b-it`                         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshotai/Kimi-K2-Instruct`                   | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                                           | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ----------------------------------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `meta-llama/Llama-3.1-8B-Instruct`              | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Llama-3.1-70B-Instruct`             | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Llama-3.3-70B-Instruct`             | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Llama-4-Maverick-17B-128E-Instruct` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `deepseek-ai/DeepSeek-V3.1`                     | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `deepseek-ai/DeepSeek-V3-0324`                  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `deepseek-ai/DeepSeek-R1`                       | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`     | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `Qwen/Qwen3-32B`                                | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `Qwen/Qwen3-Coder-480B-A35B-Instruct`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `Qwen/Qwen2.5-VL-7B-Instruct`                   | <Check />   | <Check />         | <Check />  | <Check />      |
+| `google/gemma-3-27b-it`                         | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshotai/Kimi-K2-Instruct`                   | <Cross />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   The table above lists popular models. You can explore all available models on
@@ -152726,21 +152383,7 @@ description: Learn how to use QuiverAI models with the AI SDK.
 
 The QuiverAI provider is available via the `@ai-sdk/quiverai` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/quiverai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/quiverai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/quiverai" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/quiverai" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/quiverai" />
 
 ## Provider Instance
 
@@ -152931,21 +152574,7 @@ The [Mistral AI](https://mistral.ai/) provider contains language model support f
 
 The Mistral provider is available in the `@ai-sdk/mistral` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/mistral" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/mistral" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/mistral" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/mistral" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/mistral" />
 
 ## Provider Instance
 
@@ -153218,26 +152847,26 @@ const result = await generateText({
 
 ### Model Capabilities
 
-| Model                   | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ----------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `pixtral-large-latest`  | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mistral-large-latest`  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mistral-medium-latest` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mistral-medium-3`      | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mistral-medium-2508`   | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mistral-medium-2505`   | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mistral-medium-3.5`    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `mistral-small-latest`  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `magistral-small-2507`  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `magistral-medium-2507` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `magistral-small-2506`  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `magistral-medium-2506` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `ministral-3b-latest`   | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `ministral-8b-latest`   | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `pixtral-12b-2409`      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `open-mistral-7b`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `open-mixtral-8x7b`     | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `open-mixtral-8x22b`    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                   | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ----------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `pixtral-large-latest`  | <Check />   | <Check />         | <Check />  | <Check />      |
+| `mistral-large-latest`  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `mistral-medium-latest` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `mistral-medium-3`      | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `mistral-medium-2508`   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `mistral-medium-2505`   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `mistral-medium-3.5`    | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `mistral-small-latest`  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `magistral-small-2507`  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `magistral-medium-2507` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `magistral-small-2506`  | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `magistral-medium-2506` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `ministral-3b-latest`   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `ministral-8b-latest`   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `pixtral-12b-2409`      | <Check />   | <Check />         | <Check />  | <Check />      |
+| `open-mistral-7b`       | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `open-mixtral-8x7b`     | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `open-mixtral-8x22b`    | <Cross />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   The table above lists popular models. Please see the [Mistral
@@ -153324,21 +152953,7 @@ The [Together.ai](https://together.ai) provider contains support for 200+ open-s
 The Together.ai provider is available via the `@ai-sdk/togetherai` module. You can
 install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/togetherai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/togetherai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/togetherai" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/togetherai" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/togetherai" />
 
 ## Provider Instance
 
@@ -153428,16 +153043,16 @@ The Together.ai provider also supports [completion models](https://docs.together
 
 ## Model Capabilities
 
-| Model                                               | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| --------------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `moonshotai/Kimi-K2.5`                              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `Qwen/Qwen3.5-397B-A17B`                            | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `MiniMaxAI/MiniMax-M2.5`                            | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `zai-org/GLM-5`                                     | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-ai/DeepSeek-V3.1`                         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `openai/gpt-oss-120b`                               | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `openai/gpt-oss-20b`                                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                                               | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| --------------------------------------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `moonshotai/Kimi-K2.5`                              | <Check />   | <Check />         | <Check />  | <Check />      |
+| `Qwen/Qwen3.5-397B-A17B`                            | <Check />   | <Check />         | <Check />  | <Check />      |
+| `MiniMaxAI/MiniMax-M2.5`                            | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `zai-org/GLM-5`                                     | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `deepseek-ai/DeepSeek-V3.1`                         | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `openai/gpt-oss-120b`                               | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `openai/gpt-oss-20b`                                | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8` | <Check />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   The table above lists popular models. Please see the [Together.ai
@@ -153710,21 +153325,7 @@ The [Cohere](https://cohere.com/) provider contains language and embedding model
 
 The Cohere provider is available in the `@ai-sdk/cohere` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/cohere" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/cohere" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/cohere" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/cohere" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/cohere" />
 
 ## Provider Instance
 
@@ -153803,21 +153404,21 @@ and support structured data generation with [`Output`](/docs/reference/ai-sdk-co
 
 ### Model Capabilities
 
-| Model                         | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ----------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `command-a-03-2025`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command-a-reasoning-08-2025` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command-a-vision-07-2025`    | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command-r7b-12-2024`         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command-r-plus-04-2024`      | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command-r-plus`              | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command-r-08-2024`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command-r-03-2024`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command-r`                   | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `command`                     | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `command-nightly`             | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `command-light`               | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `command-light-nightly`       | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model                         | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ----------------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `command-a-03-2025`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `command-a-reasoning-08-2025` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `command-a-vision-07-2025`    | <Check />   | <Check />         | <Check />  | <Check />      |
+| `command-r7b-12-2024`         | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `command-r-plus-04-2024`      | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `command-r-plus`              | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `command-r-08-2024`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `command-r-03-2024`           | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `command-r`                   | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `command`                     | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `command-nightly`             | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `command-light`               | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
+| `command-light-nightly`       | <Cross />   | <Cross />         | <Cross />  | <Cross />      |
 
 <Note>
   The table above lists popular models. Please see the [Cohere
@@ -154072,21 +153673,7 @@ description: Learn how to use Fireworks models with the AI SDK.
 
 The Fireworks provider is available via the `@ai-sdk/fireworks` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/fireworks" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/fireworks" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/fireworks" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/fireworks" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/fireworks" />
 
 ## Provider Instance
 
@@ -154346,29 +153933,29 @@ const model = fireworks.completionModel(
 
 ### Model Capabilities
 
-| Model                                                      | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ---------------------------------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `accounts/fireworks/models/firefunction-v1`                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `accounts/fireworks/models/deepseek-r1`                    | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/deepseek-v3`                    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/llama-v3p1-405b-instruct`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `accounts/fireworks/models/llama-v3p1-8b-instruct`         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/llama-v3p2-3b-instruct`         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/llama-v3p3-70b-instruct`        | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/mixtral-8x7b-instruct`          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/mixtral-8x7b-instruct-hf`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/mixtral-8x22b-instruct`         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/qwen2p5-coder-32b-instruct`     | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/qwen2p5-72b-instruct`           | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/qwen-qwq-32b-preview`           | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/qwen2-vl-72b-instruct`          | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/llama-v3p2-11b-vision-instruct` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/qwq-32b`                        | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/yi-large`                       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/kimi-k2-instruct`               | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/kimi-k2-thinking`               | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/kimi-k2p6`                      | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `accounts/fireworks/models/minimax-m2`                     | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
+| Model                                                      | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ---------------------------------------------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `accounts/fireworks/models/firefunction-v1`                | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `accounts/fireworks/models/deepseek-r1`                    | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `accounts/fireworks/models/deepseek-v3`                    | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/llama-v3p1-405b-instruct`       | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `accounts/fireworks/models/llama-v3p1-8b-instruct`         | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/llama-v3p2-3b-instruct`         | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/llama-v3p3-70b-instruct`        | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/mixtral-8x7b-instruct`          | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/mixtral-8x7b-instruct-hf`       | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/mixtral-8x22b-instruct`         | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/qwen2p5-coder-32b-instruct`     | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/qwen2p5-72b-instruct`           | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/qwen-qwq-32b-preview`           | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `accounts/fireworks/models/qwen2-vl-72b-instruct`          | <Check />   | <Check />         | <Cross />  | <Cross />      |
+| `accounts/fireworks/models/llama-v3p2-11b-vision-instruct` | <Check />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/qwq-32b`                        | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `accounts/fireworks/models/yi-large`                       | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/kimi-k2-instruct`               | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/kimi-k2-thinking`               | <Cross />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/kimi-k2p6`                      | <Check />   | <Check />         | <Check />  | <Cross />      |
+| `accounts/fireworks/models/minimax-m2`                     | <Cross />   | <Check />         | <Check />  | <Cross />      |
 
 <Note>
   The table above lists popular models. Please see the [Fireworks models
@@ -154541,17 +154128,17 @@ For all models supporting size, the following sizes are supported:
 
 `640 x 1536, 768 x 1344, 832 x 1216, 896 x 1152, 1024x1024 (default), 1152 x 896, 1216 x 832, 1344 x 768, 1536 x 640`
 
-| Model                                                        | Dimensions Specification | Image Editing       |
-| ------------------------------------------------------------ | ------------------------ | ------------------- |
-| `accounts/fireworks/models/flux-kontext-pro`                 | Aspect Ratio             | <Check size={18} /> |
-| `accounts/fireworks/models/flux-kontext-max`                 | Aspect Ratio             | <Check size={18} /> |
-| `accounts/fireworks/models/flux-1-dev-fp8`                   | Aspect Ratio             | <Cross size={18} /> |
-| `accounts/fireworks/models/flux-1-schnell-fp8`               | Aspect Ratio             | <Cross size={18} /> |
-| `accounts/fireworks/models/playground-v2-5-1024px-aesthetic` | Size                     | <Cross size={18} /> |
-| `accounts/fireworks/models/japanese-stable-diffusion-xl`     | Size                     | <Cross size={18} /> |
-| `accounts/fireworks/models/playground-v2-1024px-aesthetic`   | Size                     | <Cross size={18} /> |
-| `accounts/fireworks/models/SSD-1B`                           | Size                     | <Cross size={18} /> |
-| `accounts/fireworks/models/stable-diffusion-xl-1024-v1-0`    | Size                     | <Cross size={18} /> |
+| Model                                                        | Dimensions Specification | Image Editing |
+| ------------------------------------------------------------ | ------------------------ | ------------- |
+| `accounts/fireworks/models/flux-kontext-pro`                 | Aspect Ratio             | <Check />     |
+| `accounts/fireworks/models/flux-kontext-max`                 | Aspect Ratio             | <Check />     |
+| `accounts/fireworks/models/flux-1-dev-fp8`                   | Aspect Ratio             | <Cross />     |
+| `accounts/fireworks/models/flux-1-schnell-fp8`               | Aspect Ratio             | <Cross />     |
+| `accounts/fireworks/models/playground-v2-5-1024px-aesthetic` | Size                     | <Cross />     |
+| `accounts/fireworks/models/japanese-stable-diffusion-xl`     | Size                     | <Cross />     |
+| `accounts/fireworks/models/playground-v2-1024px-aesthetic`   | Size                     | <Cross />     |
+| `accounts/fireworks/models/SSD-1B`                           | Size                     | <Cross />     |
+| `accounts/fireworks/models/stable-diffusion-xl-1024-v1-0`    | Size                     | <Cross />     |
 
 For more details, see the [Fireworks models page](https://fireworks.ai/models).
 
@@ -154580,20 +154167,7 @@ The [Voyage AI](https://www.voyageai.com/) provider contains embedding and reran
 
 The Voyage AI provider is available in the `@ai-sdk/voyage` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/voyage" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/voyage" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/voyage" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="bun add @ai-sdk/voyage" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/voyage" />
 
 ## Provider Instance
 
@@ -154815,20 +154389,7 @@ API keys can be obtained from the [DeepSeek Platform](https://platform.deepseek.
 
 The DeepSeek provider is available via the `@ai-sdk/deepseek` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/deepseek" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/deepseek" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/deepseek" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="bun add @ai-sdk/deepseek" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/deepseek" />
 
 ## Provider Instance
 
@@ -154984,10 +154545,10 @@ The metrics include:
 
 ## Model Capabilities
 
-| Model               | Text Generation     | Object Generation   | Image Input         | Tool Usage          | Tool Streaming      |
-| ------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `deepseek-chat`     | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `deepseek-reasoner` | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model               | Text Generation | Object Generation | Image Input | Tool Usage | Tool Streaming |
+| ------------------- | --------------- | ----------------- | ----------- | ---------- | -------------- |
+| `deepseek-chat`     | <Check />       | <Check />         | <Cross />   | <Check />  | <Check />      |
+| `deepseek-reasoner` | <Check />       | <Check />         | <Cross />   | <Check />  | <Check />      |
 
 <Note>
   Please see the [DeepSeek
@@ -155011,20 +154572,7 @@ API keys can be obtained from the [Moonshot Platform](https://platform.moonshot.
 
 The Moonshot AI provider is available via the `@ai-sdk/moonshotai` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/moonshotai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/moonshotai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/moonshotai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="bun add @ai-sdk/moonshotai" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/moonshotai" />
 
 ## Provider Instance
 
@@ -155149,16 +154697,16 @@ The following optional provider options are available for Moonshot AI language m
 
 ## Model Capabilities
 
-| Model                    | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
-| `moonshot-v1-8k`         | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshot-v1-32k`        | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `moonshot-v1-128k`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2`                | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2.5`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-thinking`       | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-thinking-turbo` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `kimi-k2-turbo`          | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                    | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| ------------------------ | ----------- | ----------------- | ---------- | -------------- |
+| `moonshot-v1-8k`         | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-32k`        | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `moonshot-v1-128k`       | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2`                | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2.5`              | <Check />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2-thinking`       | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2-thinking-turbo` | <Cross />   | <Check />         | <Check />  | <Check />      |
+| `kimi-k2-turbo`          | <Cross />   | <Check />         | <Check />  | <Check />      |
 
 <Note>
   Please see the [Moonshot AI docs](https://platform.moonshot.ai/docs/intro) for
@@ -155181,20 +154729,7 @@ API keys can be obtained from the [Console](https://modelstudio.console.alibabac
 
 The Alibaba provider is available via the `@ai-sdk/alibaba` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/alibaba" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/alibaba" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/alibaba" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="bun add @ai-sdk/alibaba" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/alibaba" />
 
 ## Provider Instance
 
@@ -155773,21 +155308,7 @@ API keys can be obtained from the [Cerebras Platform](https://cloud.cerebras.ai)
 
 The Cerebras provider is available via the `@ai-sdk/cerebras` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/cerebras" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/cerebras" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/cerebras" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/cerebras" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/cerebras" />
 
 ## Provider Instance
 
@@ -155906,16 +155427,16 @@ The following optional provider options are available for Cerebras language mode
 
 ## Model Capabilities
 
-| Model                            | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      | Reasoning           |
-| -------------------------------- | ------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `llama3.1-8b`                    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `llama-3.3-70b`                  | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `gpt-oss-120b`                   | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `qwen-3-32b`                     | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `qwen-3-235b-a22b-instruct-2507` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `qwen-3-235b-a22b-thinking-2507` | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `zai-glm-4.6`                    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> |
-| `zai-glm-4.7`                    | <Cross size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                            | Image Input | Object Generation | Tool Usage | Tool Streaming | Reasoning |
+| -------------------------------- | ----------- | ----------------- | ---------- | -------------- | --------- |
+| `llama3.1-8b`                    | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `llama-3.3-70b`                  | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `gpt-oss-120b`                   | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `qwen-3-32b`                     | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
+| `qwen-3-235b-a22b-instruct-2507` | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `qwen-3-235b-a22b-thinking-2507` | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `zai-glm-4.6`                    | <Cross />   | <Check />         | <Check />  | <Check />      | <Cross /> |
+| `zai-glm-4.7`                    | <Cross />   | <Check />         | <Check />  | <Check />      | <Check /> |
 
 <Note>
   The models `qwen-3-32b` and `llama-3.3-70b` are scheduled for deprecation on
@@ -155939,21 +155460,7 @@ It is a popular choice for running image generation models.
 
 The Replicate provider is available via the `@ai-sdk/replicate` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/replicate" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/replicate" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/replicate" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/replicate" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/replicate" />
 
 ## Provider Instance
 
@@ -156220,21 +155727,7 @@ description: Learn how to use Prodia models with the AI SDK.
 
 The Prodia provider is available via the `@ai-sdk/prodia` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/prodia" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/prodia" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/prodia" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/prodia" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/prodia" />
 
 ## Provider Instance
 
@@ -156420,21 +155913,7 @@ API keys can be obtained from the [Perplexity Platform](https://docs.perplexity.
 
 The Perplexity provider is available via the `@ai-sdk/perplexity` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/perplexity" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/perplexity" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/perplexity" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/perplexity" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/perplexity" />
 
 ## Provider Instance
 
@@ -156614,13 +156093,13 @@ respond to questions about it.
 
 ## Model Capabilities
 
-| Model                 | Image Input         | Object Generation   | Tool Usage          | Tool Streaming      |
-| --------------------- | ------------------- | ------------------- | ------------------- | ------------------- |
-| `sonar-deep-research` | <Cross size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-reasoning-pro` | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-reasoning`     | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar-pro`           | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
-| `sonar`               | <Check size={18} /> | <Check size={18} /> | <Cross size={18} /> | <Cross size={18} /> |
+| Model                 | Image Input | Object Generation | Tool Usage | Tool Streaming |
+| --------------------- | ----------- | ----------------- | ---------- | -------------- |
+| `sonar-deep-research` | <Cross />   | <Check />         | <Cross />  | <Cross />      |
+| `sonar-reasoning-pro` | <Check />   | <Check />         | <Cross />  | <Cross />      |
+| `sonar-reasoning`     | <Check />   | <Check />         | <Cross />  | <Cross />      |
+| `sonar-pro`           | <Check />   | <Check />         | <Cross />  | <Cross />      |
+| `sonar`               | <Check />   | <Check />         | <Cross />  | <Cross />      |
 
 <Note>
   Please see the [Perplexity docs](https://docs.perplexity.ai) for detailed API
@@ -156640,21 +156119,7 @@ description: Learn how to use Luma AI models with the AI SDK.
 
 The Luma provider is available via the `@ai-sdk/luma` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/luma" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/luma" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/luma" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/luma" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/luma" />
 
 ## Provider Instance
 
@@ -156907,21 +156372,7 @@ The [ByteDance](https://www.bytedance.com/) provider contains support for the Se
 
 The ByteDance provider is available via the `@ai-sdk/bytedance` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/bytedance" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/bytedance" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/bytedance" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/bytedance" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/bytedance" />
 
 ## Provider Instance
 
@@ -157249,21 +156700,7 @@ The [Kling AI](https://klingai.com/) provider contains support for Kling AI's vi
 
 The Kling AI provider is available in the `@ai-sdk/klingai` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/klingai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/klingai" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/klingai" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/klingai" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/klingai" />
 
 ## Provider Instance
 
@@ -157616,21 +157053,7 @@ The [ElevenLabs](https://elevenlabs.io/) provider contains language model suppor
 
 The ElevenLabs provider is available in the `@ai-sdk/elevenlabs` module. You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/elevenlabs" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/elevenlabs" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/elevenlabs" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/elevenlabs" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/elevenlabs" />
 
 ## Provider Instance
 
@@ -157771,16 +157194,16 @@ const result = await generateSpeech({
 
 ### Model Capabilities
 
-| Model                    | Instructions        |
-| ------------------------ | ------------------- |
-| `eleven_v3`              | <Check size={18} /> |
-| `eleven_multilingual_v2` | <Check size={18} /> |
-| `eleven_flash_v2_5`      | <Check size={18} /> |
-| `eleven_flash_v2`        | <Check size={18} /> |
-| `eleven_turbo_v2_5`      | <Check size={18} /> |
-| `eleven_turbo_v2`        | <Check size={18} /> |
-| `eleven_monolingual_v1`  | <Check size={18} /> |
-| `eleven_multilingual_v1` | <Check size={18} /> |
+| Model                    | Instructions |
+| ------------------------ | ------------ |
+| `eleven_v3`              | <Check />    |
+| `eleven_multilingual_v2` | <Check />    |
+| `eleven_flash_v2_5`      | <Check />    |
+| `eleven_flash_v2`        | <Check />    |
+| `eleven_turbo_v2_5`      | <Check />    |
+| `eleven_turbo_v2`        | <Check />    |
+| `eleven_monolingual_v1`  | <Check />    |
+| `eleven_multilingual_v1` | <Check />    |
 
 ## Transcription Models
 
@@ -157854,10 +157277,10 @@ The following provider options are available:
 
 ### Model Capabilities
 
-| Model                    | Transcription       | Duration            | Segments            | Language            |
-| ------------------------ | ------------------- | ------------------- | ------------------- | ------------------- |
-| `scribe_v1`              | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
-| `scribe_v1_experimental` | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> | <Check size={18} /> |
+| Model                    | Transcription | Duration  | Segments  | Language  |
+| ------------------------ | ------------- | --------- | --------- | --------- |
+| `scribe_v1`              | <Check />     | <Check /> | <Check /> | <Check /> |
+| `scribe_v1_experimental` | <Check />     | <Check /> | <Check /> | <Check /> |
 
 ---
 title: Claude Code
@@ -157878,32 +157301,7 @@ WebSocket.
 
 ## Setup
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet
-      text="pnpm add @ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="npm install @ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="yarn add @ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="bun add @ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-claude-code @ai-sdk/sandbox-vercel" />
 
 The adapter bootstraps the Claude Code bridge dependencies inside the sandbox
 when the first session starts.
@@ -158059,32 +157457,7 @@ Codex thread events back to the host over a sandbox-exposed WebSocket.
 
 ## Setup
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet
-      text="pnpm add @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="npm install @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="yarn add @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="bun add @ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-codex @ai-sdk/sandbox-vercel" />
 
 The adapter bootstraps the Codex bridge dependencies inside the sandbox when
 the first session starts.
@@ -158250,32 +157623,7 @@ inside the sandbox.
 
 ## Setup
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet
-      text="pnpm add @ai-sdk/harness @ai-sdk/harness-pi @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="npm install @ai-sdk/harness @ai-sdk/harness-pi @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="yarn add @ai-sdk/harness @ai-sdk/harness-pi @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="bun add @ai-sdk/harness @ai-sdk/harness-pi @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-pi @ai-sdk/sandbox-vercel" />
 
 ## Import
 
@@ -158418,32 +157766,7 @@ the host over a sandbox-exposed WebSocket.
 
 ## Setup
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet
-      text="pnpm add @ai-sdk/harness @ai-sdk/harness-opencode @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="npm install @ai-sdk/harness @ai-sdk/harness-opencode @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="yarn add @ai-sdk/harness @ai-sdk/harness-opencode @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="bun add @ai-sdk/harness @ai-sdk/harness-opencode @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-opencode @ai-sdk/sandbox-vercel" />
 
 The adapter bootstraps the OpenCode bridge dependencies inside the sandbox when
 the first session starts. The bridge package depends on `@opencode-ai/sdk` and
@@ -158616,32 +157939,7 @@ sandbox-exposed WebSocket.
 
 ## Setup
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet
-      text="pnpm add @ai-sdk/harness @ai-sdk/harness-deepagents @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="npm install @ai-sdk/harness @ai-sdk/harness-deepagents @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="yarn add @ai-sdk/harness @ai-sdk/harness-deepagents @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-  <Tab>
-    <Snippet
-      text="bun add @ai-sdk/harness @ai-sdk/harness-deepagents @ai-sdk/sandbox-vercel"
-      dark
-    />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/harness @ai-sdk/harness-deepagents @ai-sdk/sandbox-vercel" />
 
 The adapter bootstraps the bridge's Node dependencies (the `deepagents` package
 and LangChain) inside the sandbox via `pnpm` when the first session starts.
@@ -158872,21 +158170,7 @@ You can start the local server under the [Local Server tab](https://lmstudio.ai/
 The LM Studio provider is available via the `@ai-sdk/openai-compatible` module as it is compatible with the OpenAI API.
 You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/openai-compatible" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/openai-compatible" />
 
 ## Provider Instance
 
@@ -159010,21 +158294,7 @@ description: Use NVIDIA NIM OpenAI compatible API with the AI SDK.
 The NVIDIA NIM provider is available via the `@ai-sdk/openai-compatible` module as it is compatible with the OpenAI API.
 You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/openai-compatible" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/openai-compatible" />
 
 ## Provider Instance
 
@@ -159134,17 +158404,7 @@ description: Use Clarifai OpenAI compatible API with the AI SDK.
 
 The Clarifai provider is available via the `@ai-sdk/openai-compatible` module as it is compatible with the OpenAI API. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/openai-compatible" />
 
 ## Provider Instance
 
@@ -159250,17 +158510,7 @@ You can deploy models that are OpenAI API compatible and use them with the AI SD
 The Heroku provider is available via the `@ai-sdk/openai-compatible` module as it is compatible with the OpenAI API.
 You can install it with
 
-<Tabs items={['pnpm', 'npm', 'yarn']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/openai-compatible" />
 
 ### Heroku Setup
 
@@ -159368,20 +158618,7 @@ description: Use the NEAR AI Cloud OpenAI compatible API with the AI SDK.
 
 The NEAR AI Cloud provider is available via the `@ai-sdk/openai-compatible` module as it is compatible with the OpenAI API. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="bun add @ai-sdk/openai-compatible" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/openai-compatible" />
 
 ## Provider Instance
 
@@ -159493,21 +158730,7 @@ The general setup and provider instance creation is the same for all of these pr
 
 The OpenAI Compatible provider is available via the `@ai-sdk/openai-compatible` module. You can install it with:
 
-<Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
-  <Tab>
-    <Snippet text="pnpm add @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="npm install @ai-sdk/openai-compatible" dark />
-  </Tab>
-  <Tab>
-    <Snippet text="yarn add @ai-sdk/openai-compatible" dark />
-  </Tab>
-
-  <Tab>
-    <Snippet text="bun add @ai-sdk/openai-compatible" dark />
-  </Tab>
-</Tabs>
+<InstallPackages packages="@ai-sdk/openai-compatible" />
 
 ## Provider Instance
 

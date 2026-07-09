@@ -10,7 +10,7 @@ When you view your email within Resend, there is a "Insights" option. When selec
 
 <img alt="Deliverability Insights" />
 
-If a check passes, you'll get a nice green check. Resend will provide advice if it fails. We break these into two categories: Attention and Improvements.
+If a check passes, you'll get a nice green check. If a check fails, you'll get advice broken into two categories: Attention and Improvements.
 
 ## Attention Insights
 
@@ -28,7 +28,7 @@ For example, if your sending domain is `@widgets.com`, ensure links within the m
 
 DMARC is a TXT record published in the DNS that specifies how email receivers should handle messages from your domain that don't pass SPF or DKIM validation. [A valid DMARC record](/docs/dashboard/domains/dmarc) can help improve email deliverability.
 
-Gmail and Yahoo have required bulk senders to have a DMARC record published since 2024. When [viewing your domain](https://resend.com/domains) in Resend, we provide a suggested DMARC record if you’re unsure what to publish.
+Gmail and Yahoo have required bulk senders to have a DMARC record published since 2024. When [viewing your domain](https://resend.com/domains) in Resend, you'll see a suggested DMARC record if you’re unsure what to publish.
 
 #### Include Plain Text Version
 

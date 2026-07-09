@@ -469,18 +469,13 @@ When recipients clicks a link, the request is redirected to your tracking subdom
 
 ## Troubleshooting
 
-### Occasional Extra Verification Step
-
-If we detect CAA records on your domain, we will show an additional CAA record that needs to be created. This ensures
-that we can issue a TLS certificate for your tracking subdomain.
-
 ### Multiple tracking CNAME records
 
 When you change your tracking subdomain, you may see two CNAME records in the DNS Records table: one active and one inactive (shown dimmed). The inactive record is kept intentionally to avoid breaking links in emails that were already sent using the previous subdomain. You do not need to remove it.
 
 ### Changing the Tracking Subdomain
 
-Because tracking subdomains are used in email links, we handle them differently than other records.
+Because tracking subdomains are used in email links, they're handled differently than other records.
 
 * **Not removable**: After your tracking subdomain has been created, it can only be changed, never removed. This behavior preserves any
   email links that may already be sent with the current tracking subdomain. For this reason, do **not remove old tracking DNS records**. (All previously used records remain active and are included in the response.)

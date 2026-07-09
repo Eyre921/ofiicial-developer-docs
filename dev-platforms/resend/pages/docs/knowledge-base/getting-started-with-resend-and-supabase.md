@@ -6,7 +6,7 @@ path: docs/knowledge-base/getting-started-with-resend-and-supabase
 
 A quick jumpstart to using Resend with Supabase.
 
-In this guide, we'll help you get started with Resend by:
+This guide helps you get started with Resend by:
 
 * [Setting up Resend](#set-up-resend)
 * [Send Auth Emails with Resend](#send-auth-emails-with-resend)
@@ -18,10 +18,10 @@ To send emails with your Supabase project, you'll need to first verify it in Res
 
 Go to [the Domains page](https://resend.com/domains) and click on **Add Domain**.
 
-1. Add your domain name (we recommend [using a subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) like `updates.example.com`).
+1. Add your domain name. We recommend [using a subdomain](/docs/knowledge-base/is-it-better-to-send-emails-from-a-subdomain-or-the-root-domain) like `updates.example.com` instead of the root domain.
 2. Add the DNS records to your DNS provider ([learn more about these records](/docs/dashboard/domains/introduction)).
    <img alt="Resend Domains page" />
-3. Click on **I've added the records** to begin the verification process.
+3. Click on **Verify DNS Records** to begin the verification process.
 4. Wait for the verification to complete (usually takes 5–10 minutes)
 
 <Info>

@@ -8,7 +8,7 @@ Understand general concepts, response codes, and authentication strategies.
 
 ## Base URL
 
-The Resend API is built on **REST** principles. We enforce **HTTPS** in every request to improve data security, integrity, and privacy. The API does not support **HTTP**.
+The Resend API is built on **REST** principles. **HTTPS** is enforced in every request to improve data security, integrity, and privacy. The API does not support **HTTP**.
 
 All requests contain the following base URL:
 

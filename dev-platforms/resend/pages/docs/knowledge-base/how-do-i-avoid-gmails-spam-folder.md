@@ -1,5 +1,5 @@
 ---
-title: "How do I avoid Gmail's spam folder?"
+title: "How to avoid Gmail's spam folder"
 source: https://resend.com/docs/knowledge-base/how-do-i-avoid-gmails-spam-folder
 path: docs/knowledge-base/how-do-i-avoid-gmails-spam-folder
 ---
@@ -65,7 +65,7 @@ It would seem like adding open and click tracking would be ideal to gather this 
 
 Affiliate marketing programs offer rewards to companies or individuals that send visitors to your website. However, spammers can take advantage of these programs. If your brand is associated with marketing spam, other messages sent by you might be marked as spam.
 
-We recommend you regularly monitor affiliates, and remove any affiliates that send spam.
+Regularly monitor affiliates, and remove any affiliates that send spam.
 
 **Action Items**
 
@@ -97,9 +97,9 @@ It can also be helpful to segment your sending by sending address to give Gmail 
 
 Some examples of helpful email addresses:
 
-* **Personal emails** come from an address with a name like [marissa@domain.com](mailto:marissa@domain.com)
-* **Transactional emails** come from an address like [notifications@domain.com](mailto:notifications@domain.com)
-* **Marketing emails** come from an address like [updates@domain.com](mailto:updates@domain.com).
+* **Personal emails** come from an address with a name like [marissa@example.com](mailto:marissa@example.com)
+* **Transactional emails** come from an address like [notifications@example.com](mailto:notifications@example.com)
+* **Marketing emails** come from an address like [updates@example.com](mailto:updates@example.com).
 
 **Action Items**
 

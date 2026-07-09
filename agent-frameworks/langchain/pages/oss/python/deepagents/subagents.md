@@ -153,33 +153,273 @@ You can create a custom subagent using LangChain's [`create_agent`](https://refe
 
 If you're creating a custom LangGraph graph, make sure that the graph has a [state key called `"messages"`](/oss/python/langgraph/quickstart#2-define-state):
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent, CompiledSubAgent
-from langchain.agents import create_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import CompiledSubAgent, create_deep_agent
+  from langchain.agents import create_agent
 
-# Create a custom agent graph
-custom_graph = create_agent(
-    model=your_model,
-    tools=specialized_tools,
-    prompt="You are a specialized agent for data analysis..."
-)
 
-# Use it as a custom subagent
-custom_subagent = CompiledSubAgent(
-    name="data-analyzer",
-    description="Specialized agent for complex data analysis tasks",
-    runnable=custom_graph
-)
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
 
-subagents = [custom_subagent]
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    tools=[internet_search],
-    system_prompt=research_instructions,
-    subagents=subagents
-)
-```
+  research_instructions = "You are a research coordinator."
+  your_model = "openai:gpt-5.5"
+  specialized_tools: list = []
+
+  # Create a custom agent graph
+  custom_graph = create_agent(
+      model=your_model,
+      tools=specialized_tools,
+      system_prompt="You are a specialized agent for data analysis...",
+  )
+
+  # Use it as a custom subagent
+  custom_subagent = CompiledSubAgent(
+      name="data-analyzer",
+      description="Specialized agent for complex data analysis tasks",
+      runnable=custom_graph,
+  )
+
+  subagents = [custom_subagent]
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      tools=[internet_search],
+      system_prompt=research_instructions,
+      subagents=subagents,
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import CompiledSubAgent, create_deep_agent
+  from langchain.agents import create_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  research_instructions = "You are a research coordinator."
+  your_model = "openai:gpt-5.5"
+  specialized_tools: list = []
+
+  # Create a custom agent graph
+  custom_graph = create_agent(
+      model=your_model,
+      tools=specialized_tools,
+      system_prompt="You are a specialized agent for data analysis...",
+  )
+
+  # Use it as a custom subagent
+  custom_subagent = CompiledSubAgent(
+      name="data-analyzer",
+      description="Specialized agent for complex data analysis tasks",
+      runnable=custom_graph,
+  )
+
+  subagents = [custom_subagent]
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      tools=[internet_search],
+      system_prompt=research_instructions,
+      subagents=subagents,
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import CompiledSubAgent, create_deep_agent
+  from langchain.agents import create_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  research_instructions = "You are a research coordinator."
+  your_model = "openai:gpt-5.5"
+  specialized_tools: list = []
+
+  # Create a custom agent graph
+  custom_graph = create_agent(
+      model=your_model,
+      tools=specialized_tools,
+      system_prompt="You are a specialized agent for data analysis...",
+  )
+
+  # Use it as a custom subagent
+  custom_subagent = CompiledSubAgent(
+      name="data-analyzer",
+      description="Specialized agent for complex data analysis tasks",
+      runnable=custom_graph,
+  )
+
+  subagents = [custom_subagent]
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      tools=[internet_search],
+      system_prompt=research_instructions,
+      subagents=subagents,
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import CompiledSubAgent, create_deep_agent
+  from langchain.agents import create_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  research_instructions = "You are a research coordinator."
+  your_model = "openai:gpt-5.5"
+  specialized_tools: list = []
+
+  # Create a custom agent graph
+  custom_graph = create_agent(
+      model=your_model,
+      tools=specialized_tools,
+      system_prompt="You are a specialized agent for data analysis...",
+  )
+
+  # Use it as a custom subagent
+  custom_subagent = CompiledSubAgent(
+      name="data-analyzer",
+      description="Specialized agent for complex data analysis tasks",
+      runnable=custom_graph,
+  )
+
+  subagents = [custom_subagent]
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      tools=[internet_search],
+      system_prompt=research_instructions,
+      subagents=subagents,
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import CompiledSubAgent, create_deep_agent
+  from langchain.agents import create_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  research_instructions = "You are a research coordinator."
+  your_model = "openai:gpt-5.5"
+  specialized_tools: list = []
+
+  # Create a custom agent graph
+  custom_graph = create_agent(
+      model=your_model,
+      tools=specialized_tools,
+      system_prompt="You are a specialized agent for data analysis...",
+  )
+
+  # Use it as a custom subagent
+  custom_subagent = CompiledSubAgent(
+      name="data-analyzer",
+      description="Specialized agent for complex data analysis tasks",
+      runnable=custom_graph,
+  )
+
+  subagents = [custom_subagent]
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      tools=[internet_search],
+      system_prompt=research_instructions,
+      subagents=subagents,
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import CompiledSubAgent, create_deep_agent
+  from langchain.agents import create_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  research_instructions = "You are a research coordinator."
+  your_model = "openai:gpt-5.5"
+  specialized_tools: list = []
+
+  # Create a custom agent graph
+  custom_graph = create_agent(
+      model=your_model,
+      tools=specialized_tools,
+      system_prompt="You are a specialized agent for data analysis...",
+  )
+
+  # Use it as a custom subagent
+  custom_subagent = CompiledSubAgent(
+      name="data-analyzer",
+      description="Specialized agent for complex data analysis tasks",
+      runnable=custom_graph,
+  )
+
+  subagents = [custom_subagent]
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      tools=[internet_search],
+      system_prompt=research_instructions,
+      subagents=subagents,
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import CompiledSubAgent, create_deep_agent
+  from langchain.agents import create_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  research_instructions = "You are a research coordinator."
+  your_model = "openai:gpt-5.5"
+  specialized_tools: list = []
+
+  # Create a custom agent graph
+  custom_graph = create_agent(
+      model=your_model,
+      tools=specialized_tools,
+      system_prompt="You are a specialized agent for data analysis...",
+  )
+
+  # Use it as a custom subagent
+  custom_subagent = CompiledSubAgent(
+      name="data-analyzer",
+      description="Specialized agent for complex data analysis tasks",
+      runnable=custom_graph,
+  )
+
+  subagents = [custom_subagent]
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      tools=[internet_search],
+      system_prompt=research_instructions,
+      subagents=subagents,
+  )
+  ```
+</CodeGroup>
 
 ## Dynamic subagents
 
@@ -205,20 +445,112 @@ Dynamic subagents become available as soon as the agent has both subagents and t
   ```
 </CodeGroup>
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
-from langchain_quickjs import CodeInterpreterMiddleware
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain_quickjs import CodeInterpreterMiddleware
 
-agent = create_deep_agent(
-    model="openai:gpt-5.5",
-    subagents=[{
-        "name": "reviewer",
-        "description": "Reviews code for security issues, citing lines and severity",
-        "system_prompt": "You are a security-focused code reviewer. Report issues with line numbers and severity.",
-    }],
-    middleware=[CodeInterpreterMiddleware()],
-)
-```
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      subagents=[{
+          "name": "reviewer",
+          "description": "Reviews code for security issues, citing lines and severity",
+          "system_prompt": "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+      }],
+      middleware=[CodeInterpreterMiddleware()],
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain_quickjs import CodeInterpreterMiddleware
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      subagents=[{
+          "name": "reviewer",
+          "description": "Reviews code for security issues, citing lines and severity",
+          "system_prompt": "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+      }],
+      middleware=[CodeInterpreterMiddleware()],
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain_quickjs import CodeInterpreterMiddleware
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      subagents=[{
+          "name": "reviewer",
+          "description": "Reviews code for security issues, citing lines and severity",
+          "system_prompt": "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+      }],
+      middleware=[CodeInterpreterMiddleware()],
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain_quickjs import CodeInterpreterMiddleware
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      subagents=[{
+          "name": "reviewer",
+          "description": "Reviews code for security issues, citing lines and severity",
+          "system_prompt": "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+      }],
+      middleware=[CodeInterpreterMiddleware()],
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain_quickjs import CodeInterpreterMiddleware
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      subagents=[{
+          "name": "reviewer",
+          "description": "Reviews code for security issues, citing lines and severity",
+          "system_prompt": "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+      }],
+      middleware=[CodeInterpreterMiddleware()],
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain_quickjs import CodeInterpreterMiddleware
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      subagents=[{
+          "name": "reviewer",
+          "description": "Reviews code for security issues, citing lines and severity",
+          "system_prompt": "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+      }],
+      middleware=[CodeInterpreterMiddleware()],
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+  from langchain_quickjs import CodeInterpreterMiddleware
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      subagents=[{
+          "name": "reviewer",
+          "description": "Reviews code for security issues, citing lines and severity",
+          "system_prompt": "You are a security-focused code reviewer. Report issues with line numbers and severity.",
+      }],
+      middleware=[CodeInterpreterMiddleware()],
+  )
+  ```
+</CodeGroup>
 
 <Note>
   Dynamic subagent dispatch is on by default whenever the agent has subagents and the interpreter middleware. Pass `CodeInterpreterMiddleware(subagents=False)` to require dispatch through the normal `task` tool path. Interpreters require `langchain-quickjs>=0.2.0` and Python `>=3.11`.
@@ -235,7 +567,7 @@ Dynamic dispatch is implicit: the agent decides to fan work out from code based 
 For example, phrasing the request as a "workflow" opts into fan-out from code:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-result = await agent.ainvoke({
+result = agent.invoke({
     "messages": [{"role": "user", "content": "Run a workflow that reviews every file in src/routes/ and summarizes the top risks."}]
 })
 ```
@@ -729,38 +1061,329 @@ Subagents support [structured output](/oss/python/langchain/structured-output), 
 
 Pass `response_format` on the subagent config. When the subagent finishes, its structured response is JSON-serialized and returned as the `ToolMessage` content to the parent agent. The schema accepts anything supported by [`create_agent`](https://reference.langchain.com/python/langchain/agents/factory/create_agent): Pydantic models, `ToolStrategy(...)`, `ProviderStrategy(...)`, or a raw schema type.
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from pydantic import BaseModel, Field
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
 
-from deepagents import create_deep_agent
+  from pydantic import BaseModel, Field
+
+  from deepagents import create_deep_agent
 
 
-class ResearchFindings(BaseModel):
-    """Structured findings from a research task."""
-    summary: str = Field(description="Summary of findings")
-    confidence: float = Field(description="Confidence score from 0 to 1")
-    sources: list[str] = Field(description="List of source URLs")
+  def web_search(query: str) -> str:
+      """Search the web."""
+      return f"web results for {query}"
 
-research_subagent = {
-    "name": "researcher",
-    "description": "Researches topics and returns structured findings",
-    "system_prompt": "Research the given topic thoroughly. Return your findings.",
-    "tools": [web_search],
-    "response_format": ResearchFindings,
-}
 
-agent = create_deep_agent(
-    model="claude-sonnet-4-6",
-    subagents=[research_subagent],
-)
+  class ResearchFindings(BaseModel):
+      """Structured findings from a research task."""
 
-result = await agent.ainvoke(
-    {"messages": [{"role": "user", "content": "Research recent advances in quantum computing"}]}
-)
+      summary: str = Field(description="Summary of findings")
+      confidence: float = Field(description="Confidence score from 0 to 1")
+      sources: list[str] = Field(description="List of source URLs")
 
-# The parent's ToolMessage contains JSON-serialized structured data:
-# '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
-```
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Researches topics and returns structured findings",
+      "system_prompt": "Research the given topic thoroughly. Return your findings.",
+      "tools": [web_search],
+      "response_format": ResearchFindings,
+  }
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      subagents=[research_subagent],
+  )
+
+  async def main():
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Research recent advances in quantum computing"}]}
+      )
+      return result
+
+  result = asyncio.run(main())
+
+  # The parent's ToolMessage contains JSON-serialized structured data:
+  # '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+
+  from pydantic import BaseModel, Field
+
+  from deepagents import create_deep_agent
+
+
+  def web_search(query: str) -> str:
+      """Search the web."""
+      return f"web results for {query}"
+
+
+  class ResearchFindings(BaseModel):
+      """Structured findings from a research task."""
+
+      summary: str = Field(description="Summary of findings")
+      confidence: float = Field(description="Confidence score from 0 to 1")
+      sources: list[str] = Field(description="List of source URLs")
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Researches topics and returns structured findings",
+      "system_prompt": "Research the given topic thoroughly. Return your findings.",
+      "tools": [web_search],
+      "response_format": ResearchFindings,
+  }
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      subagents=[research_subagent],
+  )
+
+  async def main():
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Research recent advances in quantum computing"}]}
+      )
+      return result
+
+  result = asyncio.run(main())
+
+  # The parent's ToolMessage contains JSON-serialized structured data:
+  # '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+
+  from pydantic import BaseModel, Field
+
+  from deepagents import create_deep_agent
+
+
+  def web_search(query: str) -> str:
+      """Search the web."""
+      return f"web results for {query}"
+
+
+  class ResearchFindings(BaseModel):
+      """Structured findings from a research task."""
+
+      summary: str = Field(description="Summary of findings")
+      confidence: float = Field(description="Confidence score from 0 to 1")
+      sources: list[str] = Field(description="List of source URLs")
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Researches topics and returns structured findings",
+      "system_prompt": "Research the given topic thoroughly. Return your findings.",
+      "tools": [web_search],
+      "response_format": ResearchFindings,
+  }
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      subagents=[research_subagent],
+  )
+
+  async def main():
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Research recent advances in quantum computing"}]}
+      )
+      return result
+
+  result = asyncio.run(main())
+
+  # The parent's ToolMessage contains JSON-serialized structured data:
+  # '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+
+  from pydantic import BaseModel, Field
+
+  from deepagents import create_deep_agent
+
+
+  def web_search(query: str) -> str:
+      """Search the web."""
+      return f"web results for {query}"
+
+
+  class ResearchFindings(BaseModel):
+      """Structured findings from a research task."""
+
+      summary: str = Field(description="Summary of findings")
+      confidence: float = Field(description="Confidence score from 0 to 1")
+      sources: list[str] = Field(description="List of source URLs")
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Researches topics and returns structured findings",
+      "system_prompt": "Research the given topic thoroughly. Return your findings.",
+      "tools": [web_search],
+      "response_format": ResearchFindings,
+  }
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      subagents=[research_subagent],
+  )
+
+  async def main():
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Research recent advances in quantum computing"}]}
+      )
+      return result
+
+  result = asyncio.run(main())
+
+  # The parent's ToolMessage contains JSON-serialized structured data:
+  # '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+
+  from pydantic import BaseModel, Field
+
+  from deepagents import create_deep_agent
+
+
+  def web_search(query: str) -> str:
+      """Search the web."""
+      return f"web results for {query}"
+
+
+  class ResearchFindings(BaseModel):
+      """Structured findings from a research task."""
+
+      summary: str = Field(description="Summary of findings")
+      confidence: float = Field(description="Confidence score from 0 to 1")
+      sources: list[str] = Field(description="List of source URLs")
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Researches topics and returns structured findings",
+      "system_prompt": "Research the given topic thoroughly. Return your findings.",
+      "tools": [web_search],
+      "response_format": ResearchFindings,
+  }
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      subagents=[research_subagent],
+  )
+
+  async def main():
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Research recent advances in quantum computing"}]}
+      )
+      return result
+
+  result = asyncio.run(main())
+
+  # The parent's ToolMessage contains JSON-serialized structured data:
+  # '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+
+  from pydantic import BaseModel, Field
+
+  from deepagents import create_deep_agent
+
+
+  def web_search(query: str) -> str:
+      """Search the web."""
+      return f"web results for {query}"
+
+
+  class ResearchFindings(BaseModel):
+      """Structured findings from a research task."""
+
+      summary: str = Field(description="Summary of findings")
+      confidence: float = Field(description="Confidence score from 0 to 1")
+      sources: list[str] = Field(description="List of source URLs")
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Researches topics and returns structured findings",
+      "system_prompt": "Research the given topic thoroughly. Return your findings.",
+      "tools": [web_search],
+      "response_format": ResearchFindings,
+  }
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      subagents=[research_subagent],
+  )
+
+  async def main():
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Research recent advances in quantum computing"}]}
+      )
+      return result
+
+  result = asyncio.run(main())
+
+  # The parent's ToolMessage contains JSON-serialized structured data:
+  # '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import asyncio
+
+  from pydantic import BaseModel, Field
+
+  from deepagents import create_deep_agent
+
+
+  def web_search(query: str) -> str:
+      """Search the web."""
+      return f"web results for {query}"
+
+
+  class ResearchFindings(BaseModel):
+      """Structured findings from a research task."""
+
+      summary: str = Field(description="Summary of findings")
+      confidence: float = Field(description="Confidence score from 0 to 1")
+      sources: list[str] = Field(description="List of source URLs")
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Researches topics and returns structured findings",
+      "system_prompt": "Research the given topic thoroughly. Return your findings.",
+      "tools": [web_search],
+      "response_format": ResearchFindings,
+  }
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      subagents=[research_subagent],
+  )
+
+  async def main():
+      result = await agent.ainvoke(
+          {"messages": [{"role": "user", "content": "Research recent advances in quantum computing"}]}
+      )
+      return result
+
+  result = asyncio.run(main())
+
+  # The parent's ToolMessage contains JSON-serialized structured data:
+  # '{"summary": "...", "confidence": 0.87, "sources": ["https://..."]}'
+  ```
+</CodeGroup>
 
 Without `response_format`, the parent receives the subagent's last message text as-is. With it, the parent always gets valid JSON matching the schema, which is useful when the parent needs to process the result programmatically or pass it to downstream tools.
 
@@ -779,24 +1402,182 @@ In addition to any user-defined subagents, every deep agent has access to a `gen
 
 Include a subagent with `name="general-purpose"` in your `subagents` list to replace the default. Use this to configure a different model, tools, or system prompt for the general-purpose subagent:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-# Main agent uses Gemini; general-purpose subagent uses GPT
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    tools=[internet_search],
-    subagents=[
-        {
-            "name": "general-purpose",
-            "description": "General-purpose agent for research and multi-step tasks",
-            "system_prompt": "You are a general-purpose assistant.",
-            "tools": [internet_search],
-            "model": "openai:gpt-5.5",  # Different model for delegated tasks
-        },
-    ],
-)
-```
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  # Main agent uses Gemini; general-purpose subagent uses GPT
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      tools=[internet_search],
+      subagents=[
+          {
+              "name": "general-purpose",
+              "description": "General-purpose agent for research and multi-step tasks",
+              "system_prompt": "You are a general-purpose assistant.",
+              "tools": [internet_search],
+              "model": "openai:gpt-5.5",  # Different model for delegated tasks
+          },
+      ],
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  # Main agent uses Gemini; general-purpose subagent uses GPT
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      tools=[internet_search],
+      subagents=[
+          {
+              "name": "general-purpose",
+              "description": "General-purpose agent for research and multi-step tasks",
+              "system_prompt": "You are a general-purpose assistant.",
+              "tools": [internet_search],
+              "model": "openai:gpt-5.5",  # Different model for delegated tasks
+          },
+      ],
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  # Main agent uses Gemini; general-purpose subagent uses GPT
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      tools=[internet_search],
+      subagents=[
+          {
+              "name": "general-purpose",
+              "description": "General-purpose agent for research and multi-step tasks",
+              "system_prompt": "You are a general-purpose assistant.",
+              "tools": [internet_search],
+              "model": "openai:gpt-5.5",  # Different model for delegated tasks
+          },
+      ],
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  # Main agent uses Gemini; general-purpose subagent uses GPT
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      tools=[internet_search],
+      subagents=[
+          {
+              "name": "general-purpose",
+              "description": "General-purpose agent for research and multi-step tasks",
+              "system_prompt": "You are a general-purpose assistant.",
+              "tools": [internet_search],
+              "model": "openai:gpt-5.5",  # Different model for delegated tasks
+          },
+      ],
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  # Main agent uses Gemini; general-purpose subagent uses GPT
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      tools=[internet_search],
+      subagents=[
+          {
+              "name": "general-purpose",
+              "description": "General-purpose agent for research and multi-step tasks",
+              "system_prompt": "You are a general-purpose assistant.",
+              "tools": [internet_search],
+              "model": "openai:gpt-5.5",  # Different model for delegated tasks
+          },
+      ],
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  # Main agent uses Gemini; general-purpose subagent uses GPT
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      tools=[internet_search],
+      subagents=[
+          {
+              "name": "general-purpose",
+              "description": "General-purpose agent for research and multi-step tasks",
+              "system_prompt": "You are a general-purpose assistant.",
+              "tools": [internet_search],
+              "model": "openai:gpt-5.5",  # Different model for delegated tasks
+          },
+      ],
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+
+  def internet_search(query: str) -> str:
+      """Run a web search."""
+      return f"search results for {query}"
+
+
+  # Main agent uses Gemini; general-purpose subagent uses GPT
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      tools=[internet_search],
+      subagents=[
+          {
+              "name": "general-purpose",
+              "description": "General-purpose agent for research and multi-step tasks",
+              "system_prompt": "You are a general-purpose assistant.",
+              "tools": [internet_search],
+              "model": "openai:gpt-5.5",  # Different model for delegated tasks
+          },
+      ],
+  )
+  ```
+</CodeGroup>
 
 When you provide a subagent with the general-purpose name, the default general-purpose subagent is not added. Your spec fully replaces it.
 
@@ -824,7 +1605,6 @@ When configuring [skills](/oss/python/deepagents/skills) with `create_deep_agent
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 from deepagents import create_deep_agent
 
-# Research subagent with its own skills
 research_subagent = {
     "name": "researcher",
     "description": "Research assistant with specialized skills",
@@ -836,7 +1616,7 @@ research_subagent = {
 agent = create_deep_agent(
     model="google_genai:gemini-3.5-flash",
     skills=["/skills/main/"],  # Main agent and GP subagent get these
-    subagents=[research_subagent],  # Gets only /skills/research/ and /skills/web-search/
+    subagents=[research_subagent],  # Researcher gets only its own skills
 )
 ```
 
@@ -885,11 +1665,13 @@ email_agent = {
     "name": "email-sender",
     "tools": [send_email, validate_email],  # Only email-related
 }
+```
 
+```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 # ❌ Bad: Too many tools
 email_agent = {
     "name": "email-sender",
-    "tools": [send_email, web_search, database_query, file_upload],  # Unfocused
+    "tools": [send_email, web_search_tool, database_query, format_document],  # Unfocused
 }
 ```
 
@@ -942,36 +1724,224 @@ data_analyst = {
 
 Create specialized subagents for different domains:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from deepagents import create_deep_agent
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
 
-subagents = [
-    {
-        "name": "data-collector",
-        "description": "Gathers raw data from various sources",
-        "system_prompt": "Collect comprehensive data on the topic",
-        "tools": [web_search, api_call, database_query],
-    },
-    {
-        "name": "data-analyzer",
-        "description": "Analyzes collected data for insights",
-        "system_prompt": "Analyze data and extract key insights",
-        "tools": [statistical_analysis],
-    },
-    {
-        "name": "report-writer",
-        "description": "Writes polished reports from analysis",
-        "system_prompt": "Create professional reports from insights",
-        "tools": [format_document],
-    },
-]
+  subagents = [
+      {
+          "name": "data-collector",
+          "description": "Gathers raw data from various sources",
+          "system_prompt": "Collect comprehensive data on the topic",
+          "tools": [web_search_tool, api_call, database_query],
+      },
+      {
+          "name": "data-analyzer",
+          "description": "Analyzes collected data for insights",
+          "system_prompt": "Analyze data and extract key insights",
+          "tools": [statistical_analysis],
+      },
+      {
+          "name": "report-writer",
+          "description": "Writes polished reports from analysis",
+          "system_prompt": "Create professional reports from insights",
+          "tools": [format_document],
+      },
+  ]
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
-    subagents=subagents
-)
-```
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+      subagents=subagents,
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  subagents = [
+      {
+          "name": "data-collector",
+          "description": "Gathers raw data from various sources",
+          "system_prompt": "Collect comprehensive data on the topic",
+          "tools": [web_search_tool, api_call, database_query],
+      },
+      {
+          "name": "data-analyzer",
+          "description": "Analyzes collected data for insights",
+          "system_prompt": "Analyze data and extract key insights",
+          "tools": [statistical_analysis],
+      },
+      {
+          "name": "report-writer",
+          "description": "Writes polished reports from analysis",
+          "system_prompt": "Create professional reports from insights",
+          "tools": [format_document],
+      },
+  ]
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+      subagents=subagents,
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  subagents = [
+      {
+          "name": "data-collector",
+          "description": "Gathers raw data from various sources",
+          "system_prompt": "Collect comprehensive data on the topic",
+          "tools": [web_search_tool, api_call, database_query],
+      },
+      {
+          "name": "data-analyzer",
+          "description": "Analyzes collected data for insights",
+          "system_prompt": "Analyze data and extract key insights",
+          "tools": [statistical_analysis],
+      },
+      {
+          "name": "report-writer",
+          "description": "Writes polished reports from analysis",
+          "system_prompt": "Create professional reports from insights",
+          "tools": [format_document],
+      },
+  ]
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+      subagents=subagents,
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  subagents = [
+      {
+          "name": "data-collector",
+          "description": "Gathers raw data from various sources",
+          "system_prompt": "Collect comprehensive data on the topic",
+          "tools": [web_search_tool, api_call, database_query],
+      },
+      {
+          "name": "data-analyzer",
+          "description": "Analyzes collected data for insights",
+          "system_prompt": "Analyze data and extract key insights",
+          "tools": [statistical_analysis],
+      },
+      {
+          "name": "report-writer",
+          "description": "Writes polished reports from analysis",
+          "system_prompt": "Create professional reports from insights",
+          "tools": [format_document],
+      },
+  ]
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+      subagents=subagents,
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  subagents = [
+      {
+          "name": "data-collector",
+          "description": "Gathers raw data from various sources",
+          "system_prompt": "Collect comprehensive data on the topic",
+          "tools": [web_search_tool, api_call, database_query],
+      },
+      {
+          "name": "data-analyzer",
+          "description": "Analyzes collected data for insights",
+          "system_prompt": "Analyze data and extract key insights",
+          "tools": [statistical_analysis],
+      },
+      {
+          "name": "report-writer",
+          "description": "Writes polished reports from analysis",
+          "system_prompt": "Create professional reports from insights",
+          "tools": [format_document],
+      },
+  ]
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+      subagents=subagents,
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  subagents = [
+      {
+          "name": "data-collector",
+          "description": "Gathers raw data from various sources",
+          "system_prompt": "Collect comprehensive data on the topic",
+          "tools": [web_search_tool, api_call, database_query],
+      },
+      {
+          "name": "data-analyzer",
+          "description": "Analyzes collected data for insights",
+          "system_prompt": "Analyze data and extract key insights",
+          "tools": [statistical_analysis],
+      },
+      {
+          "name": "report-writer",
+          "description": "Writes polished reports from analysis",
+          "system_prompt": "Create professional reports from insights",
+          "tools": [format_document],
+      },
+  ]
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+      subagents=subagents,
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from deepagents import create_deep_agent
+
+  subagents = [
+      {
+          "name": "data-collector",
+          "description": "Gathers raw data from various sources",
+          "system_prompt": "Collect comprehensive data on the topic",
+          "tools": [web_search_tool, api_call, database_query],
+      },
+      {
+          "name": "data-analyzer",
+          "description": "Analyzes collected data for insights",
+          "system_prompt": "Analyze data and extract key insights",
+          "tools": [statistical_analysis],
+      },
+      {
+          "name": "report-writer",
+          "description": "Writes polished reports from analysis",
+          "system_prompt": "Create professional reports from insights",
+          "tools": [format_document],
+      },
+  ]
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      system_prompt="You coordinate data analysis and reporting. Use subagents for specialized tasks.",
+      subagents=subagents,
+  )
+  ```
+</CodeGroup>
 
 **Workflow:**
 
@@ -989,43 +1959,322 @@ When you invoke a parent agent with [runtime context](/oss/python/langchain/runt
 
 This means tools running inside any subagent can access the same context values you provided to the parent:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from dataclasses import dataclass
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
 
-from deepagents import create_deep_agent
-from langchain.messages import HumanMessage
-from langchain.tools import tool, ToolRuntime
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
 
-@dataclass
-class Context:
-    user_id: str
-    session_id: str
 
-@tool
-def get_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
-    """Fetch data for the current user."""
-    user_id = runtime.context.user_id
-    return f"Data for user {user_id}: {query}"
+  @dataclass
+  class Context:
+      user_id: str
+      session_id: str
 
-research_subagent = {
-    "name": "researcher",
-    "description": "Conducts research for the current user",
-    "system_prompt": "You are a research assistant.",
-    "tools": [get_user_data],
-}
 
-agent = create_deep_agent(
-    model="google_genai:gemini-3.5-flash",
-    subagents=[research_subagent],
-    context_schema=Context,
-)
+  @tool
+  def get_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
 
-# Context flows to the researcher subagent and its tools automatically
-result = await agent.invoke(
-    {"messages": [HumanMessage("Look up my recent activity")]},
-    context=Context(user_id="user-123", session_id="abc"),
-)
-```
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Conducts research for the current user",
+      "system_prompt": "You are a research assistant.",
+      "tools": [get_user_data],
+  }
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      subagents=[research_subagent],
+      context_schema=Context,
+  )
+
+  # Context flows to the researcher subagent and its tools automatically
+  async def main():
+      result = await agent.invoke(
+          {"messages": [HumanMessage("Look up my recent activity")]},
+          context=Context(user_id="user-123", session_id="abc"),
+      )
+      return result
+
+  result = asyncio.run(main())
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      session_id: str
+
+
+  @tool
+  def get_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Conducts research for the current user",
+      "system_prompt": "You are a research assistant.",
+      "tools": [get_user_data],
+  }
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      subagents=[research_subagent],
+      context_schema=Context,
+  )
+
+  # Context flows to the researcher subagent and its tools automatically
+  async def main():
+      result = await agent.invoke(
+          {"messages": [HumanMessage("Look up my recent activity")]},
+          context=Context(user_id="user-123", session_id="abc"),
+      )
+      return result
+
+  result = asyncio.run(main())
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      session_id: str
+
+
+  @tool
+  def get_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Conducts research for the current user",
+      "system_prompt": "You are a research assistant.",
+      "tools": [get_user_data],
+  }
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      subagents=[research_subagent],
+      context_schema=Context,
+  )
+
+  # Context flows to the researcher subagent and its tools automatically
+  async def main():
+      result = await agent.invoke(
+          {"messages": [HumanMessage("Look up my recent activity")]},
+          context=Context(user_id="user-123", session_id="abc"),
+      )
+      return result
+
+  result = asyncio.run(main())
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      session_id: str
+
+
+  @tool
+  def get_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Conducts research for the current user",
+      "system_prompt": "You are a research assistant.",
+      "tools": [get_user_data],
+  }
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      subagents=[research_subagent],
+      context_schema=Context,
+  )
+
+  # Context flows to the researcher subagent and its tools automatically
+  async def main():
+      result = await agent.invoke(
+          {"messages": [HumanMessage("Look up my recent activity")]},
+          context=Context(user_id="user-123", session_id="abc"),
+      )
+      return result
+
+  result = asyncio.run(main())
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      session_id: str
+
+
+  @tool
+  def get_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Conducts research for the current user",
+      "system_prompt": "You are a research assistant.",
+      "tools": [get_user_data],
+  }
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      subagents=[research_subagent],
+      context_schema=Context,
+  )
+
+  # Context flows to the researcher subagent and its tools automatically
+  async def main():
+      result = await agent.invoke(
+          {"messages": [HumanMessage("Look up my recent activity")]},
+          context=Context(user_id="user-123", session_id="abc"),
+      )
+      return result
+
+  result = asyncio.run(main())
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      session_id: str
+
+
+  @tool
+  def get_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Conducts research for the current user",
+      "system_prompt": "You are a research assistant.",
+      "tools": [get_user_data],
+  }
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      subagents=[research_subagent],
+      context_schema=Context,
+  )
+
+  # Context flows to the researcher subagent and its tools automatically
+  async def main():
+      result = await agent.invoke(
+          {"messages": [HumanMessage("Look up my recent activity")]},
+          context=Context(user_id="user-123", session_id="abc"),
+      )
+      return result
+
+  result = asyncio.run(main())
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      session_id: str
+
+
+  @tool
+  def get_user_data(query: str, runtime: ToolRuntime[Context]) -> str:
+      """Fetch data for the current user."""
+      user_id = runtime.context.user_id
+      return f"Data for user {user_id}: {query}"
+
+
+  research_subagent = {
+      "name": "researcher",
+      "description": "Conducts research for the current user",
+      "system_prompt": "You are a research assistant.",
+      "tools": [get_user_data],
+  }
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      subagents=[research_subagent],
+      context_schema=Context,
+  )
+
+  # Context flows to the researcher subagent and its tools automatically
+  async def main():
+      result = await agent.invoke(
+          {"messages": [HumanMessage("Look up my recent activity")]},
+          context=Context(user_id="user-123", session_id="abc"),
+      )
+      return result
+
+  result = asyncio.run(main())
+  ```
+</CodeGroup>
 
 ### Per-subagent context
 
@@ -1035,7 +2284,8 @@ All subagents receive the same parent context. To pass configuration that is spe
 from dataclasses import dataclass
 
 from langchain.messages import HumanMessage
-from langchain.tools import tool, ToolRuntime
+from langchain.tools import ToolRuntime, tool
+
 
 @dataclass
 class Context:
@@ -1043,14 +2293,6 @@ class Context:
     researcher_max_depth: int | None = None
     fact_checker_strict_mode: bool | None = None
 
-result = await agent.invoke(
-    {"messages": [HumanMessage("Research this and verify the claims")]},
-    context=Context(
-        user_id="user-123",
-        researcher_max_depth=3,
-        fact_checker_strict_mode=True,
-    ),
-)
 
 @tool
 def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
@@ -1059,6 +2301,20 @@ def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
     if strict_mode:
         return strict_verification(claim)
     return basic_verification(claim)
+
+
+async def main():
+    result = await agent.invoke(
+        {"messages": [HumanMessage("Research this and verify the claims")]},
+        context=Context(
+            user_id="user-123",
+            researcher_max_depth=3,
+            fact_checker_strict_mode=True,
+        ),
+    )
+    return result
+
+result = asyncio.run(main())
 ```
 
 ### Identifying which subagent called a tool
@@ -1066,7 +2322,10 @@ def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
 When the same tool is shared between the parent and multiple subagents, you can use the `lc_agent_name` metadata (the same value used in [streaming](#streaming)) to determine which agent initiated the call:
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.tools import tool, ToolRuntime
+
+# :snippet-start: subagents-shared-lookup-py
+from langchain.tools import ToolRuntime, tool
+
 
 @tool
 def shared_lookup(query: str, runtime: ToolRuntime) -> str:
@@ -1080,7 +2339,17 @@ def shared_lookup(query: str, runtime: ToolRuntime) -> str:
 You can combine both patterns—read agent-specific settings from `runtime.context` and read `lc_agent_name` from `runtime.config` metadata when branching tool behavior.
 
 ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from langchain.tools import tool, ToolRuntime
+from dataclasses import dataclass
+
+from langchain.tools import ToolRuntime, tool
+
+
+@dataclass
+class Context:
+    user_id: str
+    researcher_max_depth: int | None = None
+    fact_checker_strict_mode: bool | None = None
+
 
 @tool
 def flexible_search(query: str, runtime: ToolRuntime[Context]) -> str:
@@ -1108,24 +2377,156 @@ def flexible_search(query: str, runtime: ToolRuntime[Context]) -> str:
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    # ✅ Good
-   {"name": "research-specialist", "description": "Conducts in-depth research on specific topics using web search. Use when you need detailed information that requires multiple searches."}
+   good_subagent = {
+       "name": "research-specialist",
+       "description": "Conducts in-depth research on specific topics using web search. Use when you need detailed information that requires multiple searches.",
+   }
+   ```
 
+   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    # ❌ Bad
-   {"name": "helper", "description": "helps with stuff"}
+   bad_subagent = {
+       "name": "helper",
+       "description": "helps with stuff",
+   }
    ```
 
 2. **Instruct main agent to delegate:**
 
-   ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   agent = create_deep_agent(
-       model="google_genai:gemini-3.5-flash",
-       system_prompt="""...your instructions...
+   <CodeGroup>
+     ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     from deepagents import create_deep_agent
 
-       IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
-       This keeps your context clean and improves results.""",
-       subagents=[...]
-   )
-   ```
+     agent = create_deep_agent(
+         model="google_genai:gemini-3.5-flash",
+         system_prompt="""...your instructions...
+
+         IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
+         This keeps your context clean and improves results.""",
+         subagents=[
+             {
+                 "name": "research-agent",
+                 "description": "Conducts research",
+                 "system_prompt": "You are a researcher.",
+             },
+         ],
+     )
+     ```
+
+     ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     from deepagents import create_deep_agent
+
+     agent = create_deep_agent(
+         model="openai:gpt-5.5",
+         system_prompt="""...your instructions...
+
+         IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
+         This keeps your context clean and improves results.""",
+         subagents=[
+             {
+                 "name": "research-agent",
+                 "description": "Conducts research",
+                 "system_prompt": "You are a researcher.",
+             },
+         ],
+     )
+     ```
+
+     ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     from deepagents import create_deep_agent
+
+     agent = create_deep_agent(
+         model="anthropic:claude-sonnet-4-6",
+         system_prompt="""...your instructions...
+
+         IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
+         This keeps your context clean and improves results.""",
+         subagents=[
+             {
+                 "name": "research-agent",
+                 "description": "Conducts research",
+                 "system_prompt": "You are a researcher.",
+             },
+         ],
+     )
+     ```
+
+     ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     from deepagents import create_deep_agent
+
+     agent = create_deep_agent(
+         model="openrouter:z-ai/glm-5.2",
+         system_prompt="""...your instructions...
+
+         IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
+         This keeps your context clean and improves results.""",
+         subagents=[
+             {
+                 "name": "research-agent",
+                 "description": "Conducts research",
+                 "system_prompt": "You are a researcher.",
+             },
+         ],
+     )
+     ```
+
+     ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     from deepagents import create_deep_agent
+
+     agent = create_deep_agent(
+         model="fireworks:accounts/fireworks/models/glm-5p2",
+         system_prompt="""...your instructions...
+
+         IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
+         This keeps your context clean and improves results.""",
+         subagents=[
+             {
+                 "name": "research-agent",
+                 "description": "Conducts research",
+                 "system_prompt": "You are a researcher.",
+             },
+         ],
+     )
+     ```
+
+     ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     from deepagents import create_deep_agent
+
+     agent = create_deep_agent(
+         model="baseten:zai-org/GLM-5.2",
+         system_prompt="""...your instructions...
+
+         IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
+         This keeps your context clean and improves results.""",
+         subagents=[
+             {
+                 "name": "research-agent",
+                 "description": "Conducts research",
+                 "system_prompt": "You are a researcher.",
+             },
+         ],
+     )
+     ```
+
+     ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+     from deepagents import create_deep_agent
+
+     agent = create_deep_agent(
+         model="ollama:north-mini-code-1.0",
+         system_prompt="""...your instructions...
+
+         IMPORTANT: For complex tasks, delegate to your subagents using the task() tool.
+         This keeps your context clean and improves results.""",
+         subagents=[
+             {
+                 "name": "research-agent",
+                 "description": "Conducts research",
+                 "system_prompt": "You are a researcher.",
+             },
+         ],
+     )
+     ```
+   </CodeGroup>
 
 ### Context still getting bloated
 
@@ -1136,7 +2537,7 @@ def flexible_search(query: str, runtime: ToolRuntime[Context]) -> str:
 1. **Instruct subagent to return concise results:**
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   system_prompt="""...
+   system_prompt = """...
 
    IMPORTANT: Return only the essential summary.
    Do NOT include raw data, intermediate search results, or detailed tool outputs.
@@ -1146,7 +2547,7 @@ def flexible_search(query: str, runtime: ToolRuntime[Context]) -> str:
 2. **Use filesystem for large data:**
 
    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-   system_prompt="""When you gather large amounts of data:
+   system_prompt = """When you gather large amounts of data:
    1. Save raw data to /data/raw_results.txt
    2. Process and analyze the data
    3. Return only the analysis summary
@@ -1165,11 +2566,13 @@ subagents = [
     {
         "name": "quick-researcher",
         "description": "For simple, quick research questions that need 1-2 searches. Use when you need basic facts or definitions.",
+        "system_prompt": "You are the quick-researcher subagent.",
     },
     {
         "name": "deep-researcher",
         "description": "For complex, in-depth research requiring multiple searches, synthesis, and analysis. Use for comprehensive reports.",
-    }
+        "system_prompt": "You are the deep-researcher subagent.",
+    },
 ]
 ```
 

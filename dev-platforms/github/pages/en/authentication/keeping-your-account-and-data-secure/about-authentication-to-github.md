@@ -20,7 +20,7 @@ You can access your resources in GitHub in a variety of ways: in the browser, vi
 
 ## Authenticating in your browser
 
-If you're a member of an enterprise with managed users, you will authenticate to GitHub in your browser using your IdP. For more information, see [About Enterprise Managed Users](/en/enterprise-cloud@latest/admin/identity-and-access-management/using-enterprise-managed-users-for-iam/about-enterprise-managed-users#authenticating-as-a-managed-user) in the GitHub Enterprise Cloud documentation.
+If you're a member of an enterprise with managed users, you will authenticate to GitHub in your browser using your IdP. For more information, see [About Enterprise Managed Users](/en/enterprise-cloud@latest/admin/concepts/identity-and-access-management/enterprise-managed-users#authenticating-as-a-managed-user) in the GitHub Enterprise Cloud documentation.
 
 If you're not a member of an enterprise with managed users, you will authenticate using your GitHub username and password, or a passkey. You may also use two-factor authentication and SAML single sign-on, which can be required by organization and enterprise owners.
 
@@ -38,7 +38,7 @@ If you need to use multiple accounts on GitHub.com, such as a personal account a
 * **Social login**
   * You'll authenticate with Google or Apple, which are the supported social login providers when you create your account on GitHub. We recommend that you also configure 2FA and add a passkey or a password as an additional account recovery mechanism.
   * If you have an existing account created with a password, you can add your social login email to the account. This allows you to use your social login identity as a first-factor (password) replacement when you sign in to GitHub.
-  * You can unlink your social login identities from your GitHub email settings page. For more information, see [Unlinking your email address from a locked account](/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-personal-account/unlinking-your-email-address-from-a-locked-account)
+  * You can unlink your social login identities from your GitHub email settings page. For more information, see [Unlinking your email address from a locked account](/en/account-and-profile/how-tos/account-management/unlinking-your-email-address-from-a-locked-account)
 
 * **Two-factor authentication (2FA)** (recommended)
   * If you enable two-factor authentication (2FA), after you sign in with social login or your username and password, you'll be prompted to enter a code from a time-based one-time password (TOTP) application on your mobile device or sent as a text message (SMS).
@@ -56,7 +56,7 @@ If you need to use multiple accounts on GitHub.com, such as a personal account a
   * You can add a passkey to your account to enable a secure, passwordless login. Passkeys satisfy both password and 2FA requirements, so you can complete your sign in with a single step. See [About passkeys](/en/authentication/authenticating-with-a-passkey/about-passkeys).
 
 * **SAML single sign-on**
-  * Before you can access resources owned by an organization or enterprise account that uses SAML single sign-on, you may need to also authenticate through an IdP. For more information, see [About authentication with single sign-on](/en/authentication/authenticating-with-saml-single-sign-on/about-authentication-with-saml-single-sign-on) in the GitHub Enterprise Cloud documentation.
+  * Before you can access resources owned by an organization or enterprise account that uses SAML single sign-on, you may need to also authenticate through an IdP. For more information, see [About authentication with single sign-on](/en/authentication/authenticating-with-single-sign-on/about-authentication-with-single-sign-on) in the GitHub Enterprise Cloud documentation.
 
 ### Session cookies
 
@@ -72,11 +72,11 @@ You can authenticate with GitHub Desktop using your browser. For more informatio
 
 ## Authenticating with the API
 
-You can authenticate with the API in different ways. For more information, see [Authenticating to the REST API](/en/rest/overview/other-authentication-methods).
+You can authenticate with the API in different ways. For more information, see [Authenticating to the REST API](/en/rest/authentication/authenticating-to-the-rest-api).
 
 ### Authenticating to the API with a personal access token
 
-If you want to use the GitHub REST API for personal use, you can create a personal access token. If possible, GitHub recommends that you use a fine-grained personal access token instead of a personal access token (classic). For more information about creating a personal access token, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+If you want to use the GitHub REST API for personal use, you can create a personal access token. If possible, GitHub recommends that you use a fine-grained personal access token instead of a personal access token (classic). For more information about creating a personal access token, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 ### Authenticating to the API with an app
 
@@ -90,7 +90,7 @@ If you want to use the API in a GitHub Actions workflow, GitHub recommends that 
 
 Note that `GITHUB_TOKEN` can only access resources within the repository that contains the workflow. If you need to make changes to resources outside of the workflow repository, you will need to use a personal access token or GitHub App.
 
-For more information, see [Use GITHUB\_TOKEN for authentication in workflows](/en/actions/security-guides/automatic-token-authentication).
+For more information, see [Use GITHUB\_TOKEN for authentication in workflows](/en/actions/tutorials/authenticate-with-github_token).
 
 ## Authenticating with the command line
 
@@ -114,7 +114,7 @@ If you authenticate without GitHub CLI, you will need to generate an SSH public/
 
 ### Authorizing for SAML single sign-on
 
-To use a personal access token or SSH key to access resources owned by an organization that uses SAML single sign-on, you must also authorize the personal token or SSH key. For more information, see [Authorizing a personal access token for use with single sign-on](/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/authorizing-a-personal-access-token-for-use-with-saml-single-sign-on) or [Authorizing an SSH key for use with single sign-on](/en/enterprise-cloud@latest/authentication/authenticating-with-saml-single-sign-on/authorizing-an-ssh-key-for-use-with-saml-single-sign-on) in the GitHub Enterprise Cloud documentation.
+To use a personal access token or SSH key to access resources owned by an organization that uses SAML single sign-on, you must also authorize the personal token or SSH key. For more information, see [Authorizing a personal access token for use with single sign-on](/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-a-personal-access-token-for-use-with-single-sign-on) or [Authorizing an SSH key for use with single sign-on](/en/enterprise-cloud@latest/authentication/authenticating-with-single-sign-on/authorizing-an-ssh-key-for-use-with-single-sign-on) in the GitHub Enterprise Cloud documentation.
 
 ## GitHub's token formats
 
@@ -123,13 +123,13 @@ GitHub issues tokens that begin with a prefix to indicate the token's type.
 > \[!NOTE]
 > Starting April 27, 2026, GitHub began a staged rollout of a stateless format (`ghs_APPID_JWT`) to all newly minted GitHub App installation tokens, making them more performant and improving the reliability of our API surface. If your application expects or relies on installation tokens being exactly 40 characters long, it may not handle this new token format correctly. You can now validate your apps and workflows using a temporary request header that lets you enable the token format on demand. For more information about the temporary header, see [the GitHub blog](https://github.blog/changelog/2026-05-15-github-app-installation-tokens-per-request-override-header).
 
-| Token type                                 | Prefix        | More information                                                                                                                                                               |
-| :----------------------------------------- | :------------ | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Personal access token (classic)            | `ghp_`        | [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic)      |
-| Fine-grained personal access token         | `github_pat_` | [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-fine-grained-personal-access-token) |
-| OAuth access token                         | `gho_`        | [Authorizing OAuth apps](/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)                                                                                       |
-| User access token for a GitHub App         | `ghu_`        | [Authenticating with a GitHub App on behalf of a user](/en/apps/creating-github-apps/authenticating-with-a-github-app/identifying-and-authorizing-users-for-github-apps)       |
-| Installation access token for a GitHub App | `ghs_`        | [Authenticating as a GitHub App installation](/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation)                      |
-| Refresh token for a GitHub App             | `ghr_`        | [Refreshing user access tokens](/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens)                                                  |
+| Token type                                 | Prefix        | More information                                                                                                                                                                   |
+| :----------------------------------------- | :------------ | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Personal access token (classic)            | `ghp_`        | [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)      |
+| Fine-grained personal access token         | `github_pat_` | [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-fine-grained-personal-access-token) |
+| OAuth access token                         | `gho_`        | [Authorizing OAuth apps](/en/apps/oauth-apps/building-oauth-apps/authorizing-oauth-apps)                                                                                           |
+| User access token for a GitHub App         | `ghu_`        | [Authenticating with a GitHub App on behalf of a user](/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-with-a-github-app-on-behalf-of-a-user)        |
+| Installation access token for a GitHub App | `ghs_`        | [Authenticating as a GitHub App installation](/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation)                          |
+| Refresh token for a GitHub App             | `ghr_`        | [Refreshing user access tokens](/en/apps/creating-github-apps/authenticating-with-a-github-app/refreshing-user-access-tokens)                                                      |
 
 For more information GitHub's token types and their management, see [GitHub credential types reference](/en/organizations/managing-programmatic-access-to-your-organization/github-credential-types).

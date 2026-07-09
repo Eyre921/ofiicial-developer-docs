@@ -1,5 +1,5 @@
 ---
-title: "How do I set up Apple Branded Mail?"
+title: "How to set up Apple Branded Mail"
 source: https://resend.com/docs/knowledge-base/how-do-i-set-up-apple-branded-mail
 path: docs/knowledge-base/how-do-i-set-up-apple-branded-mail
 ---
@@ -29,7 +29,7 @@ There are a few benefits of Apple Branded mail over BIMI:
 
 Since Apple Branded Mail works only with Apple Mail on new iOS, iPadOS, and macOS versions, your logo will not show in other mail clients or older versions of Apple Mail.
 
-For this reason, we recommend following all possible methods for adding your logo to your emails, including Apple Branded Mail, [our general guide](/docs/knowledge-base/how-do-i-send-with-an-avatar), and [BIMI](/docs/dashboard/domains/bimi) if it fits your needs.
+For this reason, follow all possible methods for adding your logo to your emails, including Apple Branded Mail, [our general guide](/docs/knowledge-base/how-do-i-send-with-an-avatar), and [BIMI](/docs/dashboard/domains/bimi) if it fits your needs.
 
 ## Implementing Apple Branded Mail
 
