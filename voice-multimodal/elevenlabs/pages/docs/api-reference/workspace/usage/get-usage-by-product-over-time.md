@@ -194,6 +194,7 @@ components:
         - Bool
         - JSON
         - Map
+        - Array
       title: WorkspaceAnalyticsQueryResponseModelColumnTypesItems
     WorkspaceAnalyticsQueryResponseModelRowsItemsItems:
       oneOf:
@@ -321,12 +322,12 @@ components:
     [
       "2024-04-01T01:00:00Z",
       "voice_cloning",
-      "75.0"
+      "75.25"
     ],
     [
       "2024-04-01T02:00:00Z",
       "text_to_speech",
-      "130.2"
+      "98.75"
     ]
   ],
   "column_units": [

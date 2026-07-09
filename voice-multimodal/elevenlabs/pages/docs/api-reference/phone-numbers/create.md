@@ -151,6 +151,12 @@ components:
             - $ref: '#/components/schemas/RegionConfigRequest'
             - type: 'null'
           description: Twilio Additional Region Configuration
+        enable_sms:
+          type: boolean
+          default: true
+          description: >-
+            Route inbound SMS to ElevenLabs. On by default; set to false to skip
+            SMS configuration for numbers that don't support it.
       required:
         - phone_number
         - label

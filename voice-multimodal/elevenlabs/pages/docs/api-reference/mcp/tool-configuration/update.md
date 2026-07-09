@@ -43,6 +43,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: environment
+          in: query
+          description: >-
+            Environment whose values are used when the MCP server URL, headers,
+            or auth connection reference environment variables. Mirrors the
+            environment a conversation would run in; defaults to production.
+          required: false
+          schema:
+            type: string
+            default: production
         - name: xi-api-key
           in: header
           required: false
@@ -109,8 +119,19 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
+    McpToolConfigOverrideUpdateRequestModelToolCallSound:
+      oneOf:
+        - $ref: '#/components/schemas/ToolCallSoundType'
+        - type: string
+          enum:
+            - 'off'
+      description: >-
+        Overrides the server's tool_call_sound setting for this tool. A sound
+        name plays that sound; 'off' overrides to no sound (silence); null means
+        do not override (inherit the server default).
+      title: McpToolConfigOverrideUpdateRequestModelToolCallSound
     ToolCallSoundBehavior:
       type: string
       enum:
@@ -372,9 +393,13 @@ components:
             tool.
         tool_call_sound:
           oneOf:
-            - $ref: '#/components/schemas/ToolCallSoundType'
+            - $ref: >-
+                #/components/schemas/McpToolConfigOverrideUpdateRequestModelToolCallSound
             - type: 'null'
-          description: If set, overrides the server's tool_call_sound setting for this tool
+          description: >-
+            Overrides the server's tool_call_sound setting for this tool. A
+            sound name plays that sound; 'off' overrides to no sound (silence);
+            null means do not override (inherit the server default).
         tool_call_sound_behavior:
           oneOf:
             - $ref: '#/components/schemas/ToolCallSoundBehavior'
@@ -559,6 +584,17 @@ components:
         - $ref: '#/components/schemas/EnvironmentAuthConnectionLocator'
       description: Optional auth connection to use for authentication with this MCP server
       title: McpServerConfigOutputAuthConnection
+    McpToolConfigOverrideOutputToolCallSound:
+      oneOf:
+        - $ref: '#/components/schemas/ToolCallSoundType'
+        - type: string
+          enum:
+            - 'off'
+      description: >-
+        Overrides the server's tool_call_sound setting for this tool. A sound
+        name plays that sound; 'off' overrides to no sound (silence); null means
+        do not override (inherit the server default).
+      title: McpToolConfigOverrideOutputToolCallSound
     McpToolConfigOverrideOutputInputOverrides:
       oneOf:
         - type: object
@@ -670,9 +706,12 @@ components:
             tool.
         tool_call_sound:
           oneOf:
-            - $ref: '#/components/schemas/ToolCallSoundType'
+            - $ref: '#/components/schemas/McpToolConfigOverrideOutputToolCallSound'
             - type: 'null'
-          description: If set, overrides the server's tool_call_sound setting for this tool
+          description: >-
+            Overrides the server's tool_call_sound setting for this tool. A
+            sound name plays that sound; 'off' overrides to no sound (silence);
+            null means do not override (inherit the server default).
         tool_call_sound_behavior:
           oneOf:
             - $ref: '#/components/schemas/ToolCallSoundBehavior'

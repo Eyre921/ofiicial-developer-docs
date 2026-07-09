@@ -81,6 +81,70 @@ servers:
     description: Production Singapore
 components:
   schemas:
+    type_:NumericDistributionAggregate:
+      type: object
+      properties:
+        count:
+          type: integer
+          default: 0
+        sum:
+          type: number
+          format: double
+          default: 0
+        min:
+          type: number
+          format: double
+        max:
+          type: number
+          format: double
+      title: NumericDistributionAggregate
+    type_:TopicSentimentAggregate:
+      type: object
+      properties:
+        sentiment:
+          $ref: '#/components/schemas/type_:NumericDistributionAggregate'
+        frustration:
+          $ref: '#/components/schemas/type_:NumericDistributionAggregate'
+        positive_count:
+          type: integer
+          default: 0
+        neutral_count:
+          type: integer
+          default: 0
+        negative_count:
+          type: integer
+          default: 0
+      title: TopicSentimentAggregate
+    type_:TopicEvaluationCriteriaAggregate:
+      type: object
+      properties:
+        criteria_id:
+          type: string
+        success_count:
+          type: integer
+          default: 0
+        failure_count:
+          type: integer
+          default: 0
+        unknown_count:
+          type: integer
+          default: 0
+      required:
+        - criteria_id
+      title: TopicEvaluationCriteriaAggregate
+    type_:TopicMetricsAggregate:
+      type: object
+      properties:
+        conversation_count:
+          type: integer
+          default: 0
+        sentiment:
+          $ref: '#/components/schemas/type_:TopicSentimentAggregate'
+        evaluation_criteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/type_:TopicEvaluationCriteriaAggregate'
+      title: TopicMetricsAggregate
     type_:AgentTopicResponseModel:
       type: object
       properties:
@@ -100,6 +164,8 @@ components:
         y_2d:
           type: number
           format: double
+        metrics:
+          $ref: '#/components/schemas/type_:TopicMetricsAggregate'
       required:
         - topic_id
         - label
@@ -168,17 +234,17 @@ components:
 {
   "topics": [
     {
-      "topic_id": "a7f3c9d2-4b1e-4f8a-9c3d-2e5b7f6a8d9e",
-      "label": "Customer Support",
-      "description": "Conversations related to customer support inquiries and troubleshooting.",
+      "topic_id": "b7f3a9d2-4c8e-4f1a-9d3e-2a5f7b6c9e12",
+      "label": "Customer Support Issues",
+      "description": "Conversations related to troubleshooting and support requests.",
       "conversation_count": 124,
       "parent_topic_id": null,
       "x_2d": 0.45,
       "y_2d": -0.32
     }
   ],
-  "window_start_unix_secs": 1685577600,
-  "window_end_unix_secs": 1685663999
+  "window_start_unix_secs": 1685606400,
+  "window_end_unix_secs": 1685692799
 }
 ```
 

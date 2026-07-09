@@ -132,7 +132,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     ToolCallSoundBehavior:
       type: string
@@ -541,7 +541,7 @@ components:
         - agent_id
         - description
       title: SubAgent-Input
-    AgentTransfer:
+    AgentTransfer-Input:
       type: object
       properties:
         agent_id:
@@ -575,7 +575,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransfer-Input
     PhoneNumberTransferCustomSipHeadersItems:
       oneOf:
         - type: object
@@ -978,7 +978,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/AgentTransfer'
+                $ref: '#/components/schemas/AgentTransfer-Input'
           required:
             - system_tool_type
             - transfers
@@ -1826,6 +1826,41 @@ components:
         - agent_id
         - description
       title: SubAgent-Output
+    AgentTransfer-Output:
+      type: object
+      properties:
+        agent_id:
+          type:
+            - string
+            - 'null'
+        node_id:
+          type:
+            - string
+            - 'null'
+        condition:
+          type: string
+        delay_ms:
+          type: integer
+          default: 0
+        transfer_message:
+          type:
+            - string
+            - 'null'
+        enable_transferred_agent_first_message:
+          type: boolean
+          default: false
+        is_workflow_node_transfer:
+          type: boolean
+          default: false
+        preserve_client_tts_overrides:
+          type: boolean
+          default: false
+          description: >-
+            Defines whether TTS client overrides should be carried over to the
+            transferred agent.
+      required:
+        - condition
+      title: AgentTransfer-Output
     ToolResponseModelToolConfigDiscriminatorMappingSystemParams:
       oneOf:
         - type: object
@@ -1974,7 +2009,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/AgentTransfer'
+                $ref: '#/components/schemas/AgentTransfer-Output'
           required:
             - system_tool_type
             - transfers

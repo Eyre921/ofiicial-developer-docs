@@ -81,6 +81,12 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/type_:UsersSortBy'
+        - name: sort_direction
+          in: query
+          description: The direction to sort the results
+          required: false
+          schema:
+            $ref: '#/components/schemas/type_:SortDirection'
         - name: cursor
           in: query
           description: Used for fetching next page. Cursor is returned in the response.
@@ -124,7 +130,14 @@ components:
       enum:
         - last_contact_unix_secs
         - conversation_count
+        - average_sentiment_score
       title: UsersSortBy
+    type_:SortDirection:
+      type: string
+      enum:
+        - asc
+        - desc
+      title: SortDirection
     type_:SentimentAggregate:
       type: object
       properties:
@@ -142,11 +155,29 @@ components:
         average_frustration_score:
           type: number
           format: double
+        recent_scored_conversation_count:
+          type: integer
+        recent_positive_count:
+          type: integer
+        recent_neutral_count:
+          type: integer
+        recent_negative_count:
+          type: integer
+        recent_average_sentiment_score:
+          type: number
+          format: double
+        recent_average_frustration_score:
+          type: number
+          format: double
       required:
         - scored_conversation_count
         - positive_count
         - neutral_count
         - negative_count
+        - recent_scored_conversation_count
+        - recent_positive_count
+        - recent_neutral_count
+        - recent_negative_count
       title: SentimentAggregate
     type_:FrustratedConversationRefOverallLabel:
       type: string
@@ -273,25 +304,31 @@ components:
   "users": [
     {
       "user_id": "user_9f8b7c6d5e4a3b2c1d0e",
-      "last_contact_unix_secs": 1685606400,
-      "first_contact_unix_secs": 1672531200,
+      "last_contact_unix_secs": 1685404800,
+      "first_contact_unix_secs": 1677628800,
       "conversation_count": 42,
-      "last_contact_conversation_id": "conv_5a3f9d8e7b6c4d2f1e0a",
+      "last_contact_conversation_id": "conv_5a3f9b8c7d6e4f2a1b0c",
       "sentiment": {
         "scored_conversation_count": 40,
         "positive_count": 25,
         "neutral_count": 10,
         "negative_count": 5,
+        "recent_scored_conversation_count": 10,
+        "recent_positive_count": 6,
+        "recent_neutral_count": 3,
+        "recent_negative_count": 1,
         "average_sentiment_score": 0.75,
-        "average_frustration_score": 0.2
+        "average_frustration_score": 0.2,
+        "recent_average_sentiment_score": 0.8,
+        "recent_average_frustration_score": 0.15
       },
       "last_contact_agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
       "last_contact_agent_name": "SupportBot Alpha",
       "most_frustrated_conversations": [
         {
-          "conversation_id": "conv_1a2b3c4d5e6f7g8h9i0j",
+          "conversation_id": "conv_7e4d3c2b1a0f9e8d7c6b",
           "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
-          "start_time_unix_secs": 1683024000,
+          "start_time_unix_secs": 1685318400,
           "overall_label": "negative",
           "overall_sentiment_score": -0.6,
           "overall_frustration_score": 0.9
@@ -320,6 +357,7 @@ async function main() {
         pageSize: 1,
         search: "search",
         sortBy: "last_contact_unix_secs",
+        sortDirection: "asc",
     });
 }
 main();
@@ -340,6 +378,7 @@ client.conversational_ai.users.list(
     page_size=1,
     search="search",
     sort_by="last_contact_unix_secs",
+    sort_direction="asc",
 )
 
 ```
@@ -356,7 +395,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs"
+	url := "https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs&sort_direction=asc"
 
 	payload := strings.NewReader("{}")
 
@@ -379,7 +418,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs")
+url = URI("https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs&sort_direction=asc")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -396,7 +435,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs&sort_direction=asc")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -408,7 +447,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs', [
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs&sort_direction=asc', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -421,7 +460,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs&sort_direction=asc");
 var request = new RestRequest(Method.GET);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -436,7 +475,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/users?agent_id=agent_id&branch_id=branch_id&call_start_after_unix=1&call_start_before_unix=1&cursor=cursor&page_size=1&search=search&sort_by=last_contact_unix_secs&sort_direction=asc")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

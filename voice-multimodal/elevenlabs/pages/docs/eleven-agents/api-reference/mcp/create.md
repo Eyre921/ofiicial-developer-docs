@@ -238,7 +238,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     type_:ToolCallSoundBehavior:
       type: string
@@ -256,6 +256,17 @@ components:
         - async
       default: immediate
       title: ToolExecutionMode
+    type_:McpToolConfigOverrideInputToolCallSound:
+      oneOf:
+        - $ref: '#/components/schemas/type_:ToolCallSoundType'
+        - type: string
+          enum:
+            - 'off'
+      description: >-
+        Overrides the server's tool_call_sound setting for this tool. A sound
+        name plays that sound; 'off' overrides to no sound (silence); null means
+        do not override (inherit the server default).
+      title: McpToolConfigOverrideInputToolCallSound
     type_:DynamicVariableAssignment:
       type: object
       properties:
@@ -476,8 +487,11 @@ components:
             If set, overrides the server's interruption_mode setting for this
             tool.
         tool_call_sound:
-          $ref: '#/components/schemas/type_:ToolCallSoundType'
-          description: If set, overrides the server's tool_call_sound setting for this tool
+          $ref: '#/components/schemas/type_:McpToolConfigOverrideInputToolCallSound'
+          description: >-
+            Overrides the server's tool_call_sound setting for this tool. A
+            sound name plays that sound; 'off' overrides to no sound (silence);
+            null means do not override (inherit the server default).
         tool_call_sound_behavior:
           $ref: '#/components/schemas/type_:ToolCallSoundBehavior'
           description: >-
@@ -654,6 +668,17 @@ components:
         - $ref: '#/components/schemas/type_:EnvironmentAuthConnectionLocator'
       description: Optional auth connection to use for authentication with this MCP server
       title: McpServerConfigOutputAuthConnection
+    type_:McpToolConfigOverrideOutputToolCallSound:
+      oneOf:
+        - $ref: '#/components/schemas/type_:ToolCallSoundType'
+        - type: string
+          enum:
+            - 'off'
+      description: >-
+        Overrides the server's tool_call_sound setting for this tool. A sound
+        name plays that sound; 'off' overrides to no sound (silence); null means
+        do not override (inherit the server default).
+      title: McpToolConfigOverrideOutputToolCallSound
     type_:McpToolConfigOverrideOutputInputOverridesValue:
       oneOf:
         - type: object
@@ -749,8 +774,11 @@ components:
             If set, overrides the server's interruption_mode setting for this
             tool.
         tool_call_sound:
-          $ref: '#/components/schemas/type_:ToolCallSoundType'
-          description: If set, overrides the server's tool_call_sound setting for this tool
+          $ref: '#/components/schemas/type_:McpToolConfigOverrideOutputToolCallSound'
+          description: >-
+            Overrides the server's tool_call_sound setting for this tool. A
+            sound name plays that sound; 'off' overrides to no sound (silence);
+            null means do not override (inherit the server default).
         tool_call_sound_behavior:
           $ref: '#/components/schemas/type_:ToolCallSoundBehavior'
           description: >-

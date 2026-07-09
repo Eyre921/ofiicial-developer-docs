@@ -91,6 +91,12 @@ paths:
           required: false
           schema:
             $ref: '#/components/schemas/UsersSortBy'
+        - name: sort_direction
+          in: query
+          description: The direction to sort the results
+          required: false
+          schema:
+            $ref: '#/components/schemas/SortDirection'
         - name: cursor
           in: query
           description: Used for fetching next page. Cursor is returned in the response.
@@ -135,7 +141,14 @@ components:
       enum:
         - last_contact_unix_secs
         - conversation_count
+        - average_sentiment_score
       title: UsersSortBy
+    SortDirection:
+      type: string
+      enum:
+        - asc
+        - desc
+      title: SortDirection
     SentimentAggregate:
       type: object
       properties:
@@ -157,6 +170,24 @@ components:
             - number
             - 'null'
           format: double
+        recent_scored_conversation_count:
+          type: integer
+        recent_positive_count:
+          type: integer
+        recent_neutral_count:
+          type: integer
+        recent_negative_count:
+          type: integer
+        recent_average_sentiment_score:
+          type:
+            - number
+            - 'null'
+          format: double
+        recent_average_frustration_score:
+          type:
+            - number
+            - 'null'
+          format: double
       required:
         - scored_conversation_count
         - positive_count
@@ -164,6 +195,12 @@ components:
         - negative_count
         - average_sentiment_score
         - average_frustration_score
+        - recent_scored_conversation_count
+        - recent_positive_count
+        - recent_neutral_count
+        - recent_negative_count
+        - recent_average_sentiment_score
+        - recent_average_frustration_score
       title: SentimentAggregate
     FrustratedConversationRefOverallLabel:
       type: string
@@ -302,7 +339,13 @@ components:
         "neutral_count": 1,
         "negative_count": 1,
         "average_sentiment_score": 1.1,
-        "average_frustration_score": 1.1
+        "average_frustration_score": 1.1,
+        "recent_scored_conversation_count": 1,
+        "recent_positive_count": 1,
+        "recent_neutral_count": 1,
+        "recent_negative_count": 1,
+        "recent_average_sentiment_score": 1.1,
+        "recent_average_frustration_score": 1.1
       },
       "last_contact_agent_id": "string",
       "last_contact_agent_name": "string",

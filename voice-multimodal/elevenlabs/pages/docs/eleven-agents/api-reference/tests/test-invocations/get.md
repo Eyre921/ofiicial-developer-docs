@@ -412,7 +412,7 @@ components:
         - no_results
       default: success
       title: KnowledgeBaseRagToolStatus
-    type_:TransferToAgentToolResultSuccessModelBranchInfo:
+    type_:TransferToAgentToolResultSuccessModelOutputBranchInfo:
       oneOf:
         - type: object
           properties:
@@ -444,7 +444,7 @@ components:
             - traffic_percentage
       discriminator:
         propertyName: branch_reason
-      title: TransferToAgentToolResultSuccessModelBranchInfo
+      title: TransferToAgentToolResultSuccessModelOutputBranchInfo
     type_:ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult:
       oneOf:
         - type: object
@@ -650,7 +650,7 @@ components:
               default: false
             branch_info:
               $ref: >-
-                #/components/schemas/type_:TransferToAgentToolResultSuccessModelBranchInfo
+                #/components/schemas/type_:TransferToAgentToolResultSuccessModelOutputBranchInfo
             preserve_client_tts_overrides:
               type: boolean
               default: false
@@ -1190,6 +1190,9 @@ components:
         llm_usage:
           $ref: '#/components/schemas/type_:LlmUsageOutput'
         interrupted:
+          type: boolean
+          default: false
+        ignored_as_backchannel:
           type: boolean
           default: false
         original_message:

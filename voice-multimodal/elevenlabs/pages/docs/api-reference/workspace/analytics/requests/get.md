@@ -168,6 +168,7 @@ components:
         - Bool
         - JSON
         - Map
+        - Array
       title: WorkspaceAnalyticsQueryResponseModelColumnTypesItems
     WorkspaceAnalyticsQueryResponseModelRowsItemsItems:
       oneOf:
@@ -290,25 +291,25 @@ components:
   "rows": [
     [
       "req_1234567890abcdef",
-      "2024-06-01T12:00:00Z",
+      "2024-06-01T12:34:56Z",
       "/v1/text-to-speech",
-      "250",
+      "120",
       "true"
     ],
     [
       "req_abcdef1234567890",
-      "2024-06-01T12:05:00Z",
+      "2024-06-01T12:35:10Z",
       "/v1/voice/list",
-      "180",
+      "85",
       "true"
     ]
   ],
   "column_units": [
-    "",
+    "null",
+    "null",
+    "null",
     "ms",
-    "",
-    "ms",
-    ""
+    "null"
   ]
 }
 ```

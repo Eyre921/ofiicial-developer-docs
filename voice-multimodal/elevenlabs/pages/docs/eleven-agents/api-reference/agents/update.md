@@ -460,7 +460,7 @@ components:
           description: The audio format to use for TTS
         optimize_streaming_latency:
           $ref: '#/components/schemas/type_:TtsOptimizeStreamingLatency'
-          description: The optimization for streaming latency
+          description: 'Deprecated: this field is a no-op and is ignored.'
         stability:
           type: number
           format: double
@@ -1022,7 +1022,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     type_:ToolCallSoundBehavior:
       type: string
@@ -1391,7 +1391,7 @@ components:
         - agent_id
         - description
       title: SubAgentOutput
-    type_:AgentTransfer:
+    type_:AgentTransferOutput:
       type: object
       properties:
         agent_id:
@@ -1419,7 +1419,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransferOutput
     type_:PhoneNumberTransferCustomSipHeadersItem:
       oneOf:
         - type: object
@@ -1755,7 +1755,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/type_:AgentTransfer'
+                $ref: '#/components/schemas/type_:AgentTransferOutput'
           required:
             - system_tool_type
             - transfers
@@ -4245,6 +4245,10 @@ components:
         Per-agent topic-discovery configuration. Cadence and analysis window are
         managed internally; this only exposes the customer-facing on/off toggle.
       title: TopicDiscoverySettings
+    type_:SentimentAnalysisSettings:
+      type: object
+      properties: {}
+      title: SentimentAnalysisSettings
     type_:AgentPlatformSettingsRequestModel:
       type: object
       properties:
@@ -4290,6 +4294,13 @@ components:
             evaluation rationales, data collection rationales). If not set, the
             language will be inferred from the conversation. Must be one of the
             supported conversation languages.
+        auto_translate_transcript_to_app_language:
+          type: boolean
+          description: >-
+            When enabled, a conversation transcript is automatically translated
+            to the viewer's application language when they open the transcript
+            page. If not set or false, transcripts are shown in their original
+            language unless the viewer manually selects a translation.
         auth:
           $ref: '#/components/schemas/type_:AuthSettings'
           description: Settings for authentication
@@ -4310,6 +4321,9 @@ components:
         topic_discovery:
           $ref: '#/components/schemas/type_:TopicDiscoverySettings'
           description: Per-agent topic discovery configuration
+        sentiment_analysis:
+          $ref: '#/components/schemas/type_:SentimentAnalysisSettings'
+          description: Per-agent post-call sentiment analysis configuration
       title: AgentPlatformSettingsRequestModel
     type_:LlmLiteralJsonSchemaPropertyType:
       oneOf:
@@ -5039,7 +5053,7 @@ components:
           description: The audio format to use for TTS
         optimize_streaming_latency:
           $ref: '#/components/schemas/type_:TtsOptimizeStreamingLatency'
-          description: The optimization for streaming latency
+          description: 'Deprecated: this field is a no-op and is ignored.'
         stability:
           type: number
           format: double
@@ -5364,6 +5378,35 @@ components:
         - agent_id
         - description
       title: SubAgentInput
+    type_:AgentTransferInput:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        node_id:
+          type: string
+        condition:
+          type: string
+        delay_ms:
+          type: integer
+          default: 0
+        transfer_message:
+          type: string
+        enable_transferred_agent_first_message:
+          type: boolean
+          default: false
+        is_workflow_node_transfer:
+          type: boolean
+          default: false
+        preserve_client_tts_overrides:
+          type: boolean
+          default: false
+          description: >-
+            Defines whether TTS client overrides should be carried over to the
+            transferred agent.
+      required:
+        - condition
+      title: AgentTransferInput
     type_:SystemToolConfigInputParams:
       oneOf:
         - type: object
@@ -5474,7 +5517,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/type_:AgentTransfer'
+                $ref: '#/components/schemas/type_:AgentTransferInput'
           required:
             - system_tool_type
             - transfers
@@ -6993,6 +7036,13 @@ components:
             evaluation rationales, data collection rationales). If not set, the
             language will be inferred from the conversation. Must be one of the
             supported conversation languages.
+        auto_translate_transcript_to_app_language:
+          type: boolean
+          description: >-
+            When enabled, a conversation transcript is automatically translated
+            to the viewer's application language when they open the transcript
+            page. If not set or false, transcripts are shown in their original
+            language unless the viewer manually selects a translation.
         auth:
           $ref: '#/components/schemas/type_:AuthSettings'
           description: Settings for authentication
@@ -7013,6 +7063,9 @@ components:
         topic_discovery:
           $ref: '#/components/schemas/type_:TopicDiscoverySettings'
           description: Per-agent topic discovery configuration
+        sentiment_analysis:
+          $ref: '#/components/schemas/type_:SentimentAnalysisSettings'
+          description: Per-agent post-call sentiment analysis configuration
         safety:
           $ref: '#/components/schemas/type_:SafetyResponseModel'
       title: AgentPlatformSettingsResponseModel
@@ -7849,7 +7902,7 @@ components:
           description: The audio format to use for TTS
         optimize_streaming_latency:
           $ref: '#/components/schemas/type_:TtsOptimizeStreamingLatency'
-          description: The optimization for streaming latency
+          description: 'Deprecated: this field is a no-op and is ignored.'
         stability:
           type: number
           format: double
@@ -9473,6 +9526,7 @@ components:
       "version": "1"
     },
     "summary_language": "summary_language",
+    "auto_translate_transcript_to_app_language": true,
     "auth": {
       "enable_auth": true,
       "allowlist": [

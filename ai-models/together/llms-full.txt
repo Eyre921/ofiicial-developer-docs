@@ -9032,7 +9032,7 @@ Call DeepSeek V4 Pro on Together for hybrid reasoning, long-context, and tool-us
 
 DeepSeek V4 Pro is DeepSeek's frontier 1.6T-parameter Mixture-of-Experts model (49B active per token), with a hybrid attention architecture built for long-context, low-cost reasoning. On Together AI, it runs in FP4 with a 512K-token context window and supports streaming, function calling, structured outputs, and adjustable reasoning effort.
 
-The model ID is `deepseek-ai/DeepSeek-V4-Pro`. Pricing is \$2.10 per 1M input tokens, \$4.40 per 1M output tokens, and \$0.20 per 1M cached input tokens.
+The model ID is `deepseek-ai/DeepSeek-V4-Pro`. Pricing is \$1.74 per 1M input tokens, \$3.48 per 1M output tokens, and \$0.20 per 1M cached input tokens.
 
 ## Quickstart
 
@@ -11801,24 +11801,85 @@ This page covers the function-calling data shape, supported models, and launch p
 
 ## Supported models
 
-The following bases support function-calling fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
+The following models support function-calling fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
 
-| Organization | Model                                                                            | API ID                                                                            |
-| ------------ | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
-| Qwen         | Qwen 2.5 (1.5B–72B)                                                              | `Qwen/Qwen2.5-*`                                                                  |
-| Qwen         | Qwen 3 (0.6B–32B, 30B-A3B, 235B-A22B)                                            | `Qwen/Qwen3-*`                                                                    |
-| Qwen         | Qwen 3 Coder (30B-A3B, 480B-A35B)                                                | `Qwen/Qwen3-Coder-*`                                                              |
-| Qwen         | Qwen 3 Next (80B-A3B Instruct, Thinking)                                         | `Qwen/Qwen3-Next-80B-A3B-*`                                                       |
-| Qwen         | Qwen 3 VL (8B, 30B-A3B, 32B, 235B-A22B)                                          | `Qwen/Qwen3-VL-*`                                                                 |
-| Qwen         | Qwen 3.5 (0.8B–397B)                                                             | `Qwen/Qwen3.5-*`                                                                  |
-| Qwen         | Qwen 3.6 35B A3B                                                                 | `Qwen/Qwen3.6-35B-A3B`                                                            |
-| Moonshot AI  | Kimi K2 family (Base, Instruct, Thinking, 0905), Kimi K2.5                       | `moonshotai/Kimi-K2*`                                                             |
-| Z.ai         | GLM 4.6, GLM 4.7, GLM 5, GLM 5.1                                                 | `zai-org/GLM-*`                                                                   |
-| Google       | Gemma 4 31B IT, Gemma 4 26B A4B IT                                               | `google/gemma-4-*`                                                                |
-| NVIDIA       | Nemotron Nano 9B v2, Nemotron 3 Super 120B A12B BF16                             | `nvidia/NVIDIA-Nemotron-*`                                                        |
-| Meta         | Llama 3.1 (8B, 70B, 405B), Llama 3.2 (1B, 3B), Llama 3.3 70B                     | `meta-llama/Meta-Llama-3.1-*`, `meta-llama/Llama-3.2-*`, `meta-llama/Llama-3.3-*` |
-| Meta         | Llama 4 Scout 17B 16E (Instruct, VLM), Llama 4 Maverick 17B 128E (Instruct, VLM) | `meta-llama/Llama-4-*`                                                            |
-| OpenAI       | GPT-OSS 20B, GPT-OSS 120B                                                        | `openai/gpt-oss-*`                                                                |
+<Accordion title="Supported models">
+  | Organization | Model                                              | API ID                                                  |
+  | ------------ | -------------------------------------------------- | ------------------------------------------------------- |
+  | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16`    |
+  | NVIDIA       | NVIDIA Nemotron Nano 9B v2                         | `nvidia/NVIDIA-Nemotron-Nano-9B-v2`                     |
+  | NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`         |
+  | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                                |
+  | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                                |
+  | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                                  |
+  | Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                             |
+  | Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                      |
+  | Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                       |
+  | Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                       |
+  | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                       |
+  | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                     |
+  | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                                  |
+  | Qwen         | Qwen3 Next 80B A3B Instruct                        | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      |
+  | Qwen         | Qwen3 Next 80B A3B Thinking                        | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      |
+  | Qwen         | Qwen3 0.6B                                         | `Qwen/Qwen3-0.6B`                                       |
+  | Qwen         | Qwen3 1.7B                                         | `Qwen/Qwen3-1.7B`                                       |
+  | Qwen         | Qwen3 4B                                           | `Qwen/Qwen3-4B`                                         |
+  | Qwen         | Qwen3 8B                                           | `Qwen/Qwen3-8B`                                         |
+  | Qwen         | Qwen3 14B                                          | `Qwen/Qwen3-14B`                                        |
+  | Qwen         | Qwen3 32B                                          | `Qwen/Qwen3-32B`                                        |
+  | Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                    |
+  | Qwen         | Qwen3 30B A3B Instruct 2507                        | `Qwen/Qwen3-30B-A3B-Instruct-2507`                      |
+  | Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                                  |
+  | Qwen         | Qwen3 235B A22B Instruct 2507                      | `Qwen/Qwen3-235B-A22B-Instruct-2507`                    |
+  | Qwen         | Qwen3 Coder 30B A3B Instruct                       | `Qwen/Qwen3-Coder-30B-A3B-Instruct`                     |
+  | Qwen         | Qwen3 Coder 480B A35B Instruct                     | `Qwen/Qwen3-Coder-480B-A35B-Instruct`                   |
+  | Qwen         | Qwen3 VL 8B Instruct                               | `Qwen/Qwen3-VL-8B-Instruct`                             |
+  | Qwen         | Qwen3 VL 32B Instruct                              | `Qwen/Qwen3-VL-32B-Instruct`                            |
+  | Qwen         | Qwen3 VL 30B A3B Instruct                          | `Qwen/Qwen3-VL-30B-A3B-Instruct`                        |
+  | Qwen         | Qwen3 VL 235B A22B Instruct                        | `Qwen/Qwen3-VL-235B-A22B-Instruct`                      |
+  | Qwen         | Qwen2.5 72B Instruct                               | `Qwen/Qwen2.5-72B-Instruct`                             |
+  | Qwen         | Qwen2.5 72B                                        | `Qwen/Qwen2.5-72B`                                      |
+  | Qwen         | Qwen2.5 32B Instruct                               | `Qwen/Qwen2.5-32B-Instruct`                             |
+  | Qwen         | Qwen2.5 32B                                        | `Qwen/Qwen2.5-32B`                                      |
+  | Qwen         | Qwen2.5 14B Instruct                               | `Qwen/Qwen2.5-14B-Instruct`                             |
+  | Qwen         | Qwen2.5 14B                                        | `Qwen/Qwen2.5-14B`                                      |
+  | Qwen         | Qwen2.5 7B Instruct                                | `Qwen/Qwen2.5-7B-Instruct`                              |
+  | Qwen         | Qwen2.5 7B                                         | `Qwen/Qwen2.5-7B`                                       |
+  | Qwen         | Qwen2.5 3B Instruct                                | `Qwen/Qwen2.5-3B-Instruct`                              |
+  | Qwen         | Qwen2.5 3B                                         | `Qwen/Qwen2.5-3B`                                       |
+  | Qwen         | Qwen2.5 1.5B Instruct                              | `Qwen/Qwen2.5-1.5B-Instruct`                            |
+  | Qwen         | Qwen2.5 1.5B                                       | `Qwen/Qwen2.5-1.5B`                                     |
+  | Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                             |
+  | Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                                  |
+  | Moonshot AI  | Kimi K2.5                                          | `moonshotai/Kimi-K2.5`                                  |
+  | Moonshot AI  | Kimi K2 Thinking                                   | `moonshotai/Kimi-K2-Thinking`                           |
+  | Moonshot AI  | Kimi K2 Instruct 0905                              | `moonshotai/Kimi-K2-Instruct-0905`                      |
+  | Moonshot AI  | Kimi K2 Instruct                                   | `moonshotai/Kimi-K2-Instruct`                           |
+  | Moonshot AI  | Kimi K2 Base                                       | `moonshotai/Kimi-K2-Base`                               |
+  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                       |
+  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                         |
+  | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                       |
+  | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                       |
+  | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                    |
+  | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                   |
+  | Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`             |
+  | Meta         | Llama 4 Scout 17B 16E Instruct VLM                 | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`         |
+  | Meta         | Llama 4 Maverick 17B 128E Instruct                 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`         |
+  | Meta         | Llama 4 Maverick 17B 128E Instruct VLM             | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM`     |
+  | Meta         | Llama 3.3 70B Instruct Reference                   | `meta-llama/Llama-3.3-70B-Instruct-Reference`           |
+  | Meta         | Llama 3.3 70B 32k Instruct Reference               | `meta-llama/Llama-3.3-70B-32k-Instruct-Reference`       |
+  | Meta         | Llama 3.3 70B 131k Instruct Reference              | `meta-llama/Llama-3.3-70B-131k-Instruct-Reference`      |
+  | Meta         | Llama 3.2 3B Instruct                              | `meta-llama/Llama-3.2-3B-Instruct`                      |
+  | Meta         | Llama 3.2 1B Instruct                              | `meta-llama/Llama-3.2-1B-Instruct`                      |
+  | Meta         | Meta Llama 3.1 8B Instruct Reference               | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`       |
+  | Meta         | Meta Llama 3.1 8B 131k Instruct Reference          | `meta-llama/Meta-Llama-3.1-8B-131k-Instruct-Reference`  |
+  | Meta         | Meta Llama 3.1 70B Instruct Reference              | `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference`      |
+  | Meta         | Meta Llama 3.1 70B 32k Instruct Reference          | `meta-llama/Meta-Llama-3.1-70B-32k-Instruct-Reference`  |
+  | Meta         | Meta Llama 3.1 70B 131k Instruct Reference         | `meta-llama/Meta-Llama-3.1-70B-131k-Instruct-Reference` |
+  | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                                 |
+  | Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                             |
+  | Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                             |
+</Accordion>
 
 ## Prepare your data
 
@@ -13305,15 +13366,47 @@ This page covers the reasoning data shape, supported models, and launch paramete
 
 ## Supported models
 
-| Organization | Model                                                                       | API ID                             |
-| ------------ | --------------------------------------------------------------------------- | ---------------------------------- |
-| Qwen         | Qwen 3 (0.6B, 1.7B, 4B, 8B, 14B, 32B, 30B-A3B, 235B-A22B) and Base variants | `Qwen/Qwen3-*`                     |
-| Qwen         | Qwen 3 Next 80B A3B Thinking                                                | `Qwen/Qwen3-Next-80B-A3B-Thinking` |
-| Qwen         | Qwen 3.5 (0.8B, 2B, 4B, 9B, 27B, 35B-A3B, 122B-A10B, 397B-A17B)             | `Qwen/Qwen3.5-*`                   |
-| Qwen         | Qwen 3.6 35B A3B                                                            | `Qwen/Qwen3.6-35B-A3B`             |
-| Z.ai         | GLM 4.6, GLM 4.7, GLM 5, GLM 5.1                                            | `zai-org/GLM-*`                    |
-| Google       | Gemma 4 31B IT, Gemma 4 26B A4B IT                                          | `google/gemma-4-*`                 |
-| OpenAI       | GPT-OSS 20B, GPT-OSS 120B                                                   | `openai/gpt-oss-*`                 |
+The following models support reasoning fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
+
+<Accordion title="Supported models">
+  | Organization | Model                                              | API ID                                               |
+  | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
+  | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
+  | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
+  | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
+  | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               |
+  | Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                          |
+  | Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                   |
+  | Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                    |
+  | Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                    |
+  | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                    |
+  | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  |
+  | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
+  | Qwen         | Qwen3 Next 80B A3B Thinking                        | `Qwen/Qwen3-Next-80B-A3B-Thinking`                   |
+  | Qwen         | Qwen3 0.6B                                         | `Qwen/Qwen3-0.6B`                                    |
+  | Qwen         | Qwen3 0.6B Base                                    | `Qwen/Qwen3-0.6B-Base`                               |
+  | Qwen         | Qwen3 1.7B                                         | `Qwen/Qwen3-1.7B`                                    |
+  | Qwen         | Qwen3 1.7B Base                                    | `Qwen/Qwen3-1.7B-Base`                               |
+  | Qwen         | Qwen3 4B                                           | `Qwen/Qwen3-4B`                                      |
+  | Qwen         | Qwen3 4B Base                                      | `Qwen/Qwen3-4B-Base`                                 |
+  | Qwen         | Qwen3 8B                                           | `Qwen/Qwen3-8B`                                      |
+  | Qwen         | Qwen3 8B Base                                      | `Qwen/Qwen3-8B-Base`                                 |
+  | Qwen         | Qwen3 14B                                          | `Qwen/Qwen3-14B`                                     |
+  | Qwen         | Qwen3 14B Base                                     | `Qwen/Qwen3-14B-Base`                                |
+  | Qwen         | Qwen3 32B                                          | `Qwen/Qwen3-32B`                                     |
+  | Qwen         | Qwen3 30B A3B Base                                 | `Qwen/Qwen3-30B-A3B-Base`                            |
+  | Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                 |
+  | Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                               |
+  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                      |
+  | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                    |
+  | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                    |
+  | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
+  | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
+  | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
+  | Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                          |
+  | Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                          |
+</Accordion>
 
 ## Prepare your data
 
@@ -13565,151 +13658,183 @@ The tables below list every model available through the fine-tuning API. Context
 
 ## LoRA fine-tuning
 
-| Organization | Model                                      | API ID                                                  | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch | Grad accum | Max LoRA rank |
-| ------------ | ------------------------------------------ | ------------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- | ---------- | ------------- |
-| Qwen         | Qwen3.5 397B A17B                          | `Qwen/Qwen3.5-397B-A17B`                                | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3.5 122B A10B                          | `Qwen/Qwen3.5-122B-A10B`                                | 65536         | 32768         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3.5 35B A3B                            | `Qwen/Qwen3.5-35B-A3B`                                  | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.6 35B A3B                            | `Qwen/Qwen3.6-35B-A3B`                                  | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 35B A3B Base                       | `Qwen/Qwen3.5-35B-A3B-Base`                             | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 27B                                | `Qwen/Qwen3.5-27B`                                      | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3.5 9B                                 | `Qwen/Qwen3.5-9B`                                       | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 4B                                 | `Qwen/Qwen3.5-4B`                                       | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 2B                                 | `Qwen/Qwen3.5-2B`                                       | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3.5 0.8B                               | `Qwen/Qwen3.5-0.8B`                                     | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Moonshot AI  | Kimi K2.7 Code                             | `moonshotai/Kimi-K2.7-Code`                             | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Moonshot AI  | Kimi K2.6                                  | `moonshotai/Kimi-K2.6`                                  | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Moonshot AI  | Kimi K2.5                                  | `moonshotai/Kimi-K2.5`                                  | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Moonshot AI  | Kimi K2 Thinking                           | `moonshotai/Kimi-K2-Thinking`                           | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Moonshot AI  | Kimi K2 Instruct 0905                      | `moonshotai/Kimi-K2-Instruct-0905`                      | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Moonshot AI  | Kimi K2 Instruct                           | `moonshotai/Kimi-K2-Instruct`                           | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Moonshot AI  | Kimi K2 Base                               | `moonshotai/Kimi-K2-Base`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
-| Z.ai         | GLM 5.1                                    | `zai-org/GLM-5.1`                                       | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
-| Z.ai         | GLM 5                                      | `zai-org/GLM-5`                                         | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
-| Z.ai         | GLM 4.7                                    | `zai-org/GLM-4.7`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
-| Z.ai         | GLM 4.6                                    | `zai-org/GLM-4.6`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
-| OpenAI       | GPT-OSS 20B                                | `openai/gpt-oss-20b`                                    | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| OpenAI       | GPT-OSS 120B                               | `openai/gpt-oss-120b`                                   | 65536         | 32768         | 16              | 16              | 16        | 1          | 64            |
-| DeepSeek     | DeepSeek R1 0528                           | `deepseek-ai/DeepSeek-R1-0528`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
-| DeepSeek     | DeepSeek R1                                | `deepseek-ai/DeepSeek-R1`                               | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
-| DeepSeek     | DeepSeek V3.1                              | `deepseek-ai/DeepSeek-V3.1`                             | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
-| DeepSeek     | DeepSeek V3 0324                           | `deepseek-ai/DeepSeek-V3-0324`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
-| DeepSeek     | DeepSeek V3                                | `deepseek-ai/DeepSeek-V3`                               | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
-| DeepSeek     | DeepSeek V3.1 Base                         | `deepseek-ai/DeepSeek-V3.1-Base`                        | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
-| DeepSeek     | DeepSeek V3 Base                           | `deepseek-ai/DeepSeek-V3-Base`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
-| DeepSeek     | DeepSeek R1 Distill Llama 70B              | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`             | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| DeepSeek     | DeepSeek R1 Distill Llama 70B 32k          | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-32k`         | 32768         | 32768         | 1               | 1               | 1         | 8          | 64            |
-| DeepSeek     | DeepSeek R1 Distill Llama 70B 131k         | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-131k`        | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
-| DeepSeek     | DeepSeek R1 Distill Qwen 14B               | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`              | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| DeepSeek     | DeepSeek R1 Distill Qwen 1.5B              | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`             | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 4 Scout 17B 16E                      | `meta-llama/Llama-4-Scout-17B-16E`                      | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 4 Scout 17B 16E Instruct             | `meta-llama/Llama-4-Scout-17B-16E-Instruct`             | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 4 Scout 17B 16E Instruct VLM         | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`         | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 4 Maverick 17B 128E                  | `meta-llama/Llama-4-Maverick-17B-128E`                  | 16384         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Meta         | Llama 4 Maverick 17B 128E Instruct         | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`         | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
-| Meta         | Llama 4 Maverick 17B 128E Instruct VLM     | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM`     | 16384         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Google       | Gemma 3 270M                               | `google/gemma-3-270m`                                   | 32768         | 32768         | 128             | 128             | 8         | 1          | 64            |
-| Google       | Gemma 3 270M IT                            | `google/gemma-3-270m-it`                                | 32768         | 32768         | 128             | 128             | 8         | 1          | 64            |
-| Google       | Gemma 3 1B IT                              | `google/gemma-3-1b-it`                                  | 32768         | 32768         | 32              | 32              | 8         | 1          | 64            |
-| Google       | Gemma 3 1B PT                              | `google/gemma-3-1b-pt`                                  | 32768         | 32768         | 32              | 32              | 8         | 1          | 64            |
-| Google       | Gemma 3 4B IT                              | `google/gemma-3-4b-it`                                  | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 3 4B IT VLM                          | `google/gemma-3-4b-it-VLM`                              | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 3 4B PT                              | `google/gemma-3-4b-pt`                                  | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 3 12B IT                             | `google/gemma-3-12b-it`                                 | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 3 12B IT VLM                         | `google/gemma-3-12b-it-VLM`                             | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 3 12B PT                             | `google/gemma-3-12b-pt`                                 | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 3 27B IT                             | `google/gemma-3-27b-it`                                 | 49152         | 24576         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 3 27B IT VLM                         | `google/gemma-3-27b-it-VLM`                             | 32768         | 24576         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 3 27B PT                             | `google/gemma-3-27b-pt`                                 | 49152         | 24576         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 4 31B IT                             | `google/gemma-4-31B-it`                                 | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
-| Google       | Gemma 4 31B IT VLM                         | `google/gemma-4-31B-it-VLM`                             | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Google       | Gemma 4 26B A4B IT                         | `google/gemma-4-26B-A4B-it`                             | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
-| Qwen         | Qwen3 Next 80B A3B Instruct                | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3 Next 80B A3B Thinking                | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen3 0.6B                                 | `Qwen/Qwen3-0.6B`                                       | 40960         | 40960         | 64              | 64              | 8         | 1          | 64            |
-| Qwen         | Qwen3 0.6B Base                            | `Qwen/Qwen3-0.6B-Base`                                  | 32768         | 32768         | 64              | 64              | 8         | 1          | 64            |
-| Qwen         | Qwen3 1.7B                                 | `Qwen/Qwen3-1.7B`                                       | 40960         | 40960         | 32              | 32              | 8         | 1          | 64            |
-| Qwen         | Qwen3 1.7B Base                            | `Qwen/Qwen3-1.7B-Base`                                  | 32768         | 32768         | 32              | 32              | 8         | 1          | 64            |
-| Qwen         | Qwen3 4B                                   | `Qwen/Qwen3-4B`                                         | 40960         | 40960         | 16              | 16              | 8         | 1          | 64            |
-| Qwen         | Qwen3 4B Base                              | `Qwen/Qwen3-4B-Base`                                    | 32768         | 32768         | 16              | 16              | 8         | 1          | 64            |
-| Qwen         | Qwen3 8B                                   | `Qwen/Qwen3-8B`                                         | 40960         | 40960         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3 8B Base                              | `Qwen/Qwen3-8B-Base`                                    | 32768         | 32768         | 16              | 16              | 8         | 1          | 64            |
-| Qwen         | Qwen3 14B                                  | `Qwen/Qwen3-14B`                                        | 40960         | 40960         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3 14B Base                             | `Qwen/Qwen3-14B-Base`                                   | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3 32B                                  | `Qwen/Qwen3-32B`                                        | 40960         | 24576         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3 30B A3B Base                         | `Qwen/Qwen3-30B-A3B-Base`                               | 49152         | 32768         | 16              | 16              | 8         | 1          | 64            |
-| Qwen         | Qwen3 30B A3B                              | `Qwen/Qwen3-30B-A3B`                                    | 49152         | 32768         | 16              | 16              | 8         | 1          | 64            |
-| Qwen         | Qwen3 30B A3B Instruct 2507                | `Qwen/Qwen3-30B-A3B-Instruct-2507`                      | 49152         | 32768         | 16              | 16              | 8         | 1          | 64            |
-| Qwen         | Qwen3 235B A22B                            | `Qwen/Qwen3-235B-A22B`                                  | 40960         | 32768         | 8               | 8               | 8         | 2          | 64            |
-| Qwen         | Qwen3 235B A22B Instruct 2507              | `Qwen/Qwen3-235B-A22B-Instruct-2507`                    | 49152         | 32768         | 8               | 8               | 8         | 2          | 64            |
-| Qwen         | Qwen3 Coder 30B A3B Instruct               | `Qwen/Qwen3-Coder-30B-A3B-Instruct`                     | 262144        | 262144        | 2               | 2               | 2         | 4          | 64            |
-| Qwen         | Qwen3 Coder 480B A35B Instruct             | `Qwen/Qwen3-Coder-480B-A35B-Instruct`                   | 262144        | 65536         | 2               | 2               | 2         | 8          | 64            |
-| Qwen         | Qwen3 VL 8B Instruct                       | `Qwen/Qwen3-VL-8B-Instruct`                             | 24576         | 16384         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3 VL 32B Instruct                      | `Qwen/Qwen3-VL-32B-Instruct`                            | 16384         | 16384         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3 VL 30B A3B Instruct                  | `Qwen/Qwen3-VL-30B-A3B-Instruct`                        | 12288         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen3 VL 235B A22B Instruct                | `Qwen/Qwen3-VL-235B-A22B-Instruct`                      | 12288         | 12288         | 16              | 16              | 16        | 1          | 64            |
-| NVIDIA       | NVIDIA Nemotron Nano 9B v2                 | `nvidia/NVIDIA-Nemotron-Nano-9B-v2`                     | 32768         | 16384         | 8               | 8               | 8         | 1          | 64            |
-| NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16     | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`         | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
-| Meta         | Llama 3.3 70B Instruct Reference           | `meta-llama/Llama-3.3-70B-Instruct-Reference`           | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 3.3 70B 32k Instruct Reference       | `meta-llama/Llama-3.3-70B-32k-Instruct-Reference`       | 32768         | 32768         | 1               | 1               | 1         | 8          | 64            |
-| Meta         | Llama 3.3 70B 131k Instruct Reference      | `meta-llama/Llama-3.3-70B-131k-Instruct-Reference`      | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
-| Meta         | Llama 3.2 3B Instruct                      | `meta-llama/Llama-3.2-3B-Instruct`                      | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 3.2 3B                               | `meta-llama/Llama-3.2-3B`                               | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 3.2 1B Instruct                      | `meta-llama/Llama-3.2-1B-Instruct`                      | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Llama 3.2 1B                               | `meta-llama/Llama-3.2-1B`                               | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Meta Llama 3.1 8B Instruct Reference       | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`       | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Meta Llama 3.1 8B 131k Instruct Reference  | `meta-llama/Meta-Llama-3.1-8B-131k-Instruct-Reference`  | 131072        | 131072        | 4               | 4               | 1         | 1          | 64            |
-| Meta         | Meta Llama 3.1 8B Reference                | `meta-llama/Meta-Llama-3.1-8B-Reference`                | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Meta Llama 3.1 8B 131k Reference           | `meta-llama/Meta-Llama-3.1-8B-131k-Reference`           | 131072        | 131072        | 4               | 4               | 1         | 1          | 64            |
-| Meta         | Meta Llama 3.1 70B Instruct Reference      | `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference`      | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Meta Llama 3.1 70B 32k Instruct Reference  | `meta-llama/Meta-Llama-3.1-70B-32k-Instruct-Reference`  | 32768         | 32768         | 1               | 1               | 1         | 8          | 64            |
-| Meta         | Meta Llama 3.1 70B 131k Instruct Reference | `meta-llama/Meta-Llama-3.1-70B-131k-Instruct-Reference` | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
-| Meta         | Meta Llama 3.1 70B Reference               | `meta-llama/Meta-Llama-3.1-70B-Reference`               | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Meta         | Meta Llama 3.1 70B 32k Reference           | `meta-llama/Meta-Llama-3.1-70B-32k-Reference`           | 32768         | 32768         | 1               | 1               | 1         | 8          | 64            |
-| Meta         | Meta Llama 3.1 70B 131k Reference          | `meta-llama/Meta-Llama-3.1-70B-131k-Reference`          | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
-| Meta         | Meta Llama 3 8B Instruct                   | `meta-llama/Meta-Llama-3-8B-Instruct`                   | 8192          | 8192          | 64              | 64              | 8         | 1          | 64            |
-| Meta         | Meta Llama 3 8B                            | `meta-llama/Meta-Llama-3-8B`                            | 8192          | 8192          | 64              | 64              | 8         | 1          | 64            |
-| Meta         | Meta Llama 3 70B Instruct                  | `meta-llama/Meta-Llama-3-70B-Instruct`                  | 8192          | 8192          | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 72B Instruct                       | `Qwen/Qwen2.5-72B-Instruct`                             | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 72B                                | `Qwen/Qwen2.5-72B`                                      | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 32B Instruct                       | `Qwen/Qwen2.5-32B-Instruct`                             | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 32B                                | `Qwen/Qwen2.5-32B`                                      | 49152         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 14B Instruct                       | `Qwen/Qwen2.5-14B-Instruct`                             | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 14B                                | `Qwen/Qwen2.5-14B`                                      | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 7B Instruct                        | `Qwen/Qwen2.5-7B-Instruct`                              | 32768         | 32768         | 16              | 16              | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 7B                                 | `Qwen/Qwen2.5-7B`                                       | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 3B Instruct                        | `Qwen/Qwen2.5-3B-Instruct`                              | 32768         | 32768         | 32              | 32              | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 3B                                 | `Qwen/Qwen2.5-3B`                                       | 32768         | 32768         | 32              | 32              | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 1.5B Instruct                      | `Qwen/Qwen2.5-1.5B-Instruct`                            | 32768         | 32768         | 32              | 32              | 8         | 1          | 64            |
-| Qwen         | Qwen2.5 1.5B                               | `Qwen/Qwen2.5-1.5B`                                     | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2 72B Instruct                         | `Qwen/Qwen2-72B-Instruct`                               | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen2 72B                                  | `Qwen/Qwen2-72B`                                        | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
-| Qwen         | Qwen2 7B Instruct                          | `Qwen/Qwen2-7B-Instruct`                                | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2 7B                                   | `Qwen/Qwen2-7B`                                         | 131072        | 24576         | 8               | 8               | 8         | 1          | 64            |
-| Qwen         | Qwen2 1.5B Instruct                        | `Qwen/Qwen2-1.5B-Instruct`                              | 32768         | 32768         | 32              | 32              | 8         | 1          | 64            |
-| Qwen         | Qwen2 1.5B                                 | `Qwen/Qwen2-1.5B`                                       | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
-| Mistral      | Mixtral 8x7B Instruct v0.1                 | `mistralai/Mixtral-8x7B-Instruct-v0.1`                  | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Mistral      | Mixtral 8x7B v0.1                          | `mistralai/Mixtral-8x7B-v0.1`                           | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
-| Mistral      | Mistral 7B Instruct v0.2                   | `mistralai/Mistral-7B-Instruct-v0.2`                    | 32768         | 32768         | 16              | 16              | 8         | 1          | 64            |
-| Mistral      | Mistral 7B v0.1                            | `mistralai/Mistral-7B-v0.1`                             | 32768         | 32768         | 16              | 16              | 8         | 1          | 64            |
-| Together     | Llama 2 7B Chat                            | `togethercomputer/llama-2-7b-chat`                      | 4096          | 4096          | 128             | 128             | 8         | 1          | 64            |
+| Organization | Model                                              | API ID                                                  | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch | Grad accum | Max LoRA rank |
+| ------------ | -------------------------------------------------- | ------------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- | ---------- | ------------- |
+| NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16`    | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| NVIDIA       | NVIDIA Nemotron Nano 9B v2                         | `nvidia/NVIDIA-Nemotron-Nano-9B-v2`                     | 32768         | 16384         | 8               | 8               | 8         | 1          | 64            |
+| NVIDIA       | NVIDIA Nemotron 3 Super 120B A12B BF16             | `nvidia/NVIDIA-Nemotron-3-Super-120B-A12B-BF16`         | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                                | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                                | 65536         | 32768         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                                  | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                             | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                      | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                       | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                       | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                       | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                     | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                                  | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 Next 80B A3B Instruct                        | `Qwen/Qwen3-Next-80B-A3B-Instruct`                      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3 Next 80B A3B Thinking                        | `Qwen/Qwen3-Next-80B-A3B-Thinking`                      | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen3 0.6B                                         | `Qwen/Qwen3-0.6B`                                       | 40960         | 40960         | 64              | 32              | 8         | 1          | 64            |
+| Qwen         | Qwen3 0.6B Base                                    | `Qwen/Qwen3-0.6B-Base`                                  | 32768         | 32768         | 64              | 32              | 8         | 1          | 64            |
+| Qwen         | Qwen3 1.7B                                         | `Qwen/Qwen3-1.7B`                                       | 40960         | 40960         | 32              | 16              | 8         | 1          | 64            |
+| Qwen         | Qwen3 1.7B Base                                    | `Qwen/Qwen3-1.7B-Base`                                  | 32768         | 32768         | 32              | 16              | 8         | 1          | 64            |
+| Qwen         | Qwen3 4B                                           | `Qwen/Qwen3-4B`                                         | 40960         | 40960         | 16              | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 4B Base                                      | `Qwen/Qwen3-4B-Base`                                    | 32768         | 32768         | 16              | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 8B                                           | `Qwen/Qwen3-8B`                                         | 40960         | 40960         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 8B Base                                      | `Qwen/Qwen3-8B-Base`                                    | 32768         | 32768         | 16              | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 14B                                          | `Qwen/Qwen3-14B`                                        | 40960         | 40960         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 14B Base                                     | `Qwen/Qwen3-14B-Base`                                   | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 32B                                          | `Qwen/Qwen3-32B`                                        | 40960         | 24576         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 30B A3B Base                                 | `Qwen/Qwen3-30B-A3B-Base`                               | 49152         | 32768         | 16              | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                    | 49152         | 32768         | 16              | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 30B A3B Instruct 2507                        | `Qwen/Qwen3-30B-A3B-Instruct-2507`                      | 49152         | 32768         | 16              | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                                  | 40960         | 32768         | 8               | 8               | 8         | 2          | 64            |
+| Qwen         | Qwen3 235B A22B Instruct 2507                      | `Qwen/Qwen3-235B-A22B-Instruct-2507`                    | 49152         | 32768         | 8               | 8               | 8         | 2          | 64            |
+| Qwen         | Qwen3 Coder 30B A3B Instruct                       | `Qwen/Qwen3-Coder-30B-A3B-Instruct`                     | 262144        | 262144        | 2               | 2               | 2         | 4          | 64            |
+| Qwen         | Qwen3 Coder 480B A35B Instruct                     | `Qwen/Qwen3-Coder-480B-A35B-Instruct`                   | 262144        | 65536         | 2               | 2               | 2         | 8          | 64            |
+| Qwen         | Qwen3 VL 8B Instruct                               | `Qwen/Qwen3-VL-8B-Instruct`                             | 24576         | 16384         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 VL 32B Instruct                              | `Qwen/Qwen3-VL-32B-Instruct`                            | 16384         | 16384         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 VL 30B A3B Instruct                          | `Qwen/Qwen3-VL-30B-A3B-Instruct`                        | 12288         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen3 VL 235B A22B Instruct                        | `Qwen/Qwen3-VL-235B-A22B-Instruct`                      | 12288         | 12288         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen2.5 72B Instruct                               | `Qwen/Qwen2.5-72B-Instruct`                             | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 72B                                        | `Qwen/Qwen2.5-72B`                                      | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 32B Instruct                               | `Qwen/Qwen2.5-32B-Instruct`                             | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 32B                                        | `Qwen/Qwen2.5-32B`                                      | 49152         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 14B Instruct                               | `Qwen/Qwen2.5-14B-Instruct`                             | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 14B                                        | `Qwen/Qwen2.5-14B`                                      | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 7B Instruct                                | `Qwen/Qwen2.5-7B-Instruct`                              | 32768         | 32768         | 16              | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 7B                                         | `Qwen/Qwen2.5-7B`                                       | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 3B Instruct                                | `Qwen/Qwen2.5-3B-Instruct`                              | 32768         | 32768         | 32              | 16              | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 3B                                         | `Qwen/Qwen2.5-3B`                                       | 32768         | 32768         | 32              | 16              | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 1.5B Instruct                              | `Qwen/Qwen2.5-1.5B-Instruct`                            | 32768         | 32768         | 32              | 16              | 8         | 1          | 64            |
+| Qwen         | Qwen2.5 1.5B                                       | `Qwen/Qwen2.5-1.5B`                                     | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2 72B Instruct                                 | `Qwen/Qwen2-72B-Instruct`                               | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen2 72B                                          | `Qwen/Qwen2-72B`                                        | 32768         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Qwen         | Qwen2 7B Instruct                                  | `Qwen/Qwen2-7B-Instruct`                                | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2 7B                                           | `Qwen/Qwen2-7B`                                         | 131072        | 24576         | 8               | 8               | 8         | 1          | 64            |
+| Qwen         | Qwen2 1.5B Instruct                                | `Qwen/Qwen2-1.5B-Instruct`                              | 32768         | 32768         | 32              | 16              | 8         | 1          | 64            |
+| Qwen         | Qwen2 1.5B                                         | `Qwen/Qwen2-1.5B`                                       | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Moonshot AI  | Kimi K2.7 Code                                     | `moonshotai/Kimi-K2.7-Code`                             | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Moonshot AI  | Kimi K2.6                                          | `moonshotai/Kimi-K2.6`                                  | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Moonshot AI  | Kimi K2.5                                          | `moonshotai/Kimi-K2.5`                                  | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Moonshot AI  | Kimi K2 Thinking                                   | `moonshotai/Kimi-K2-Thinking`                           | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Moonshot AI  | Kimi K2 Instruct 0905                              | `moonshotai/Kimi-K2-Instruct-0905`                      | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Moonshot AI  | Kimi K2 Instruct                                   | `moonshotai/Kimi-K2-Instruct`                           | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Moonshot AI  | Kimi K2 Base                                       | `moonshotai/Kimi-K2-Base`                               | 32768         | 16384         | 4               | 4               | 4         | 8          | 16            |
+| Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                       | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                         | 50688         | 25344         | 1               | 1               | 1         | 1          | 16            |
+| Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
+| Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                       | 128000        | 64000         | 1               | 1               | 1         | 8          | 64            |
+| OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                    | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
+| OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                   | 65536         | 32768         | 2               | 2               | 2         | 8          | 64            |
+| DeepSeek     | DeepSeek R1 0528                                   | `deepseek-ai/DeepSeek-R1-0528`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
+| DeepSeek     | DeepSeek R1                                        | `deepseek-ai/DeepSeek-R1`                               | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
+| DeepSeek     | DeepSeek V3.1                                      | `deepseek-ai/DeepSeek-V3.1`                             | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
+| DeepSeek     | DeepSeek V3 0324                                   | `deepseek-ai/DeepSeek-V3-0324`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
+| DeepSeek     | DeepSeek V3                                        | `deepseek-ai/DeepSeek-V3`                               | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
+| DeepSeek     | DeepSeek V3.1 Base                                 | `deepseek-ai/DeepSeek-V3.1-Base`                        | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
+| DeepSeek     | DeepSeek V3 Base                                   | `deepseek-ai/DeepSeek-V3-Base`                          | 65536         | 32768         | 2               | 2               | 2         | 8          | 16            |
+| DeepSeek     | DeepSeek R1 Distill Llama 70B                      | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`             | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| DeepSeek     | DeepSeek R1 Distill Llama 70B 32k                  | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-32k`         | 32768         | 32768         | 1               | 1               | 1         | 8          | 64            |
+| DeepSeek     | DeepSeek R1 Distill Llama 70B 131k                 | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B-131k`        | 131072        | 32768         | 1               | 1               | 1         | 8          | 64            |
+| DeepSeek     | DeepSeek R1 Distill Qwen 14B                       | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`              | 65536         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| DeepSeek     | DeepSeek R1 Distill Qwen 1.5B                      | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`             | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 4 Scout 17B 16E                              | `meta-llama/Llama-4-Scout-17B-16E`                      | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 4 Scout 17B 16E Instruct                     | `meta-llama/Llama-4-Scout-17B-16E-Instruct`             | 65536         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 4 Scout 17B 16E Instruct VLM                 | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`         | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 4 Maverick 17B 128E                          | `meta-llama/Llama-4-Maverick-17B-128E`                  | 16384         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Meta         | Llama 4 Maverick 17B 128E Instruct                 | `meta-llama/Llama-4-Maverick-17B-128E-Instruct`         | 16384         | 24576         | 16              | 16              | 16        | 1          | 64            |
+| Meta         | Llama 4 Maverick 17B 128E Instruct VLM             | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM`     | 16384         | 16384         | 16              | 16              | 16        | 1          | 64            |
+| Meta         | Llama 3.3 70B Instruct Reference                   | `meta-llama/Llama-3.3-70B-Instruct-Reference`           | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 3.3 70B 32k Instruct Reference               | `meta-llama/Llama-3.3-70B-32k-Instruct-Reference`       | 32768         | 32768         | 1               | 1               | 1         | 8          | 64            |
+| Meta         | Llama 3.3 70B 131k Instruct Reference              | `meta-llama/Llama-3.3-70B-131k-Instruct-Reference`      | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
+| Meta         | Llama 3.2 3B Instruct                              | `meta-llama/Llama-3.2-3B-Instruct`                      | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 3.2 3B                                       | `meta-llama/Llama-3.2-3B`                               | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 3.2 1B Instruct                              | `meta-llama/Llama-3.2-1B-Instruct`                      | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Llama 3.2 1B                                       | `meta-llama/Llama-3.2-1B`                               | 131072        | 131072        | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Meta Llama 3.1 8B Instruct Reference               | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`       | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Meta Llama 3.1 8B 131k Instruct Reference          | `meta-llama/Meta-Llama-3.1-8B-131k-Instruct-Reference`  | 131072        | 131072        | 4               | 1               | 1         | 1          | 64            |
+| Meta         | Meta Llama 3.1 8B Reference                        | `meta-llama/Meta-Llama-3.1-8B-Reference`                | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Meta Llama 3.1 8B 131k Reference                   | `meta-llama/Meta-Llama-3.1-8B-131k-Reference`           | 131072        | 131072        | 4               | 1               | 1         | 1          | 64            |
+| Meta         | Meta Llama 3.1 70B Instruct Reference              | `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference`      | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Meta Llama 3.1 70B 32k Instruct Reference          | `meta-llama/Meta-Llama-3.1-70B-32k-Instruct-Reference`  | 32768         | 32768         | 1               | 1               | 1         | 8          | 64            |
+| Meta         | Meta Llama 3.1 70B 131k Instruct Reference         | `meta-llama/Meta-Llama-3.1-70B-131k-Instruct-Reference` | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
+| Meta         | Meta Llama 3.1 70B Reference                       | `meta-llama/Meta-Llama-3.1-70B-Reference`               | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Meta         | Meta Llama 3.1 70B 32k Reference                   | `meta-llama/Meta-Llama-3.1-70B-32k-Reference`           | 32768         | 32768         | 1               | 1               | 1         | 8          | 64            |
+| Meta         | Meta Llama 3.1 70B 131k Reference                  | `meta-llama/Meta-Llama-3.1-70B-131k-Reference`          | 131072        | 65536         | 1               | 1               | 1         | 8          | 64            |
+| Meta         | Meta Llama 3 8B Instruct                           | `meta-llama/Meta-Llama-3-8B-Instruct`                   | 8192          | 8192          | 64              | 32              | 8         | 1          | 64            |
+| Meta         | Meta Llama 3 8B                                    | `meta-llama/Meta-Llama-3-8B`                            | 8192          | 8192          | 64              | 32              | 8         | 1          | 64            |
+| Meta         | Meta Llama 3 70B Instruct                          | `meta-llama/Meta-Llama-3-70B-Instruct`                  | 8192          | 8192          | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 270M                                       | `google/gemma-3-270m`                                   | 32768         | 32768         | 128             | 64              | 8         | 1          | 64            |
+| Google       | Gemma 3 270M IT                                    | `google/gemma-3-270m-it`                                | 32768         | 32768         | 128             | 64              | 8         | 1          | 64            |
+| Google       | Gemma 3 1B IT                                      | `google/gemma-3-1b-it`                                  | 32768         | 32768         | 32              | 16              | 8         | 1          | 64            |
+| Google       | Gemma 3 1B PT                                      | `google/gemma-3-1b-pt`                                  | 32768         | 32768         | 32              | 16              | 8         | 1          | 64            |
+| Google       | Gemma 3 4B IT                                      | `google/gemma-3-4b-it`                                  | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 4B IT VLM                                  | `google/gemma-3-4b-it-VLM`                              | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 4B PT                                      | `google/gemma-3-4b-pt`                                  | 131072        | 65536         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 12B IT                                     | `google/gemma-3-12b-it`                                 | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 12B IT VLM                                 | `google/gemma-3-12b-it-VLM`                             | 32768         | 32768         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 12B PT                                     | `google/gemma-3-12b-pt`                                 | 65536         | 49152         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 27B IT                                     | `google/gemma-3-27b-it`                                 | 49152         | 24576         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 27B IT VLM                                 | `google/gemma-3-27b-it-VLM`                             | 32768         | 24576         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 3 27B PT                                     | `google/gemma-3-27b-pt`                                 | 49152         | 24576         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                                 | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                             | 24576         | 12288         | 8               | 8               | 8         | 1          | 64            |
+| Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                             | 49152         | 24576         | 4               | 4               | 4         | 2          | 64            |
+| Mistral      | Mixtral 8x7B Instruct v0.1                         | `mistralai/Mixtral-8x7B-Instruct-v0.1`                  | 32768         | 16384         | 8               | 8               | 8         | 1          | 64            |
+| Mistral      | Mixtral 8x7B v0.1                                  | `mistralai/Mixtral-8x7B-v0.1`                           | 32768         | 16384         | 8               | 8               | 8         | 1          | 64            |
+| Mistral      | Mistral 7B Instruct v0.2                           | `mistralai/Mistral-7B-Instruct-v0.2`                    | 32768         | 32768         | 16              | 8               | 8         | 1          | 64            |
+| Mistral      | Mistral 7B v0.1                                    | `mistralai/Mistral-7B-v0.1`                             | 32768         | 32768         | 16              | 8               | 8         | 1          | 64            |
+| Together     | Llama 2 7B Chat                                    | `togethercomputer/llama-2-7b-chat`                      | 4096          | 4096          | 128             | 64              | 8         | 1          | 64            |
 
 ## Full fine-tuning
 
 | Organization | Model                                 | API ID                                             | Context (SFT) | Context (DPO) | Max batch (SFT) | Max batch (DPO) | Min batch |
 | ------------ | ------------------------------------- | -------------------------------------------------- | ------------- | ------------- | --------------- | --------------- | --------- |
+| NVIDIA       | NVIDIA Nemotron Nano 9B v2            | `nvidia/NVIDIA-Nemotron-Nano-9B-v2`                | 32768         | 16384         | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 27B                           | `Qwen/Qwen3.5-27B`                                 | 32768         | 16384         | 16              | 16              | 16        |
 | Qwen         | Qwen3.5 9B                            | `Qwen/Qwen3.5-9B`                                  | 65536         | 49152         | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 4B                            | `Qwen/Qwen3.5-4B`                                  | 131072        | 65536         | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 2B                            | `Qwen/Qwen3.5-2B`                                  | 131072        | 131072        | 8               | 8               | 8         |
 | Qwen         | Qwen3.5 0.8B                          | `Qwen/Qwen3.5-0.8B`                                | 131072        | 131072        | 8               | 8               | 8         |
+| Qwen         | Qwen3 0.6B                            | `Qwen/Qwen3-0.6B`                                  | 40960         | 40960         | 64              | 32              | 8         |
+| Qwen         | Qwen3 0.6B Base                       | `Qwen/Qwen3-0.6B-Base`                             | 32768         | 32768         | 64              | 32              | 8         |
+| Qwen         | Qwen3 1.7B                            | `Qwen/Qwen3-1.7B`                                  | 40960         | 40960         | 32              | 16              | 8         |
+| Qwen         | Qwen3 1.7B Base                       | `Qwen/Qwen3-1.7B-Base`                             | 32768         | 32768         | 32              | 16              | 8         |
+| Qwen         | Qwen3 4B                              | `Qwen/Qwen3-4B`                                    | 40960         | 40960         | 16              | 8               | 8         |
+| Qwen         | Qwen3 4B Base                         | `Qwen/Qwen3-4B-Base`                               | 32768         | 32768         | 16              | 8               | 8         |
+| Qwen         | Qwen3 8B                              | `Qwen/Qwen3-8B`                                    | 40960         | 40960         | 8               | 8               | 8         |
+| Qwen         | Qwen3 8B Base                         | `Qwen/Qwen3-8B-Base`                               | 32768         | 32768         | 16              | 8               | 8         |
+| Qwen         | Qwen3 14B                             | `Qwen/Qwen3-14B`                                   | 40960         | 40960         | 8               | 8               | 8         |
+| Qwen         | Qwen3 14B Base                        | `Qwen/Qwen3-14B-Base`                              | 32768         | 32768         | 8               | 8               | 8         |
+| Qwen         | Qwen3 32B                             | `Qwen/Qwen3-32B`                                   | 40960         | 24576         | 16              | 16              | 16        |
+| Qwen         | Qwen3 VL 8B Instruct                  | `Qwen/Qwen3-VL-8B-Instruct`                        | 24576         | 16384         | 8               | 8               | 8         |
+| Qwen         | Qwen3 VL 32B Instruct                 | `Qwen/Qwen3-VL-32B-Instruct`                       | 16384         | 16384         | 16              | 16              | 16        |
+| Qwen         | Qwen3 VL 30B A3B Instruct             | `Qwen/Qwen3-VL-30B-A3B-Instruct`                   | 12288         | 12288         | 8               | 8               | 8         |
+| Qwen         | Qwen2 7B Instruct                     | `Qwen/Qwen2-7B-Instruct`                           | 32768         | 32768         | 8               | 8               | 8         |
+| Qwen         | Qwen2 7B                              | `Qwen/Qwen2-7B`                                    | 131072        | 24576         | 8               | 8               | 8         |
+| Qwen         | Qwen2 1.5B Instruct                   | `Qwen/Qwen2-1.5B-Instruct`                         | 32768         | 32768         | 32              | 16              | 8         |
+| Qwen         | Qwen2 1.5B                            | `Qwen/Qwen2-1.5B`                                  | 131072        | 131072        | 8               | 8               | 8         |
 | DeepSeek     | DeepSeek R1 Distill Llama 70B         | `deepseek-ai/DeepSeek-R1-Distill-Llama-70B`        | 24576         | 12288         | 32              | 32              | 32        |
 | DeepSeek     | DeepSeek R1 Distill Qwen 14B          | `deepseek-ai/DeepSeek-R1-Distill-Qwen-14B`         | 65536         | 32768         | 8               | 8               | 8         |
 | DeepSeek     | DeepSeek R1 Distill Qwen 1.5B         | `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`        | 131072        | 131072        | 8               | 8               | 8         |
-| Google       | Gemma 3 270M                          | `google/gemma-3-270m`                              | 32768         | 32768         | 128             | 128             | 8         |
-| Google       | Gemma 3 270M IT                       | `google/gemma-3-270m-it`                           | 32768         | 32768         | 128             | 128             | 8         |
-| Google       | Gemma 3 1B IT                         | `google/gemma-3-1b-it`                             | 32768         | 32768         | 64              | 64              | 8         |
-| Google       | Gemma 3 1B PT                         | `google/gemma-3-1b-pt`                             | 32768         | 32768         | 64              | 64              | 8         |
+| Meta         | Llama 3.3 70B Instruct Reference      | `meta-llama/Llama-3.3-70B-Instruct-Reference`      | 24576         | 12288         | 32              | 32              | 32        |
+| Meta         | Llama 3.2 3B Instruct                 | `meta-llama/Llama-3.2-3B-Instruct`                 | 131072        | 65536         | 8               | 8               | 8         |
+| Meta         | Llama 3.2 3B                          | `meta-llama/Llama-3.2-3B`                          | 131072        | 65536         | 8               | 8               | 8         |
+| Meta         | Llama 3.2 1B Instruct                 | `meta-llama/Llama-3.2-1B-Instruct`                 | 131072        | 131072        | 8               | 8               | 8         |
+| Meta         | Llama 3.2 1B                          | `meta-llama/Llama-3.2-1B`                          | 131072        | 131072        | 8               | 8               | 8         |
+| Meta         | Meta Llama 3.1 8B Instruct Reference  | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`  | 131072        | 65536         | 8               | 8               | 8         |
+| Meta         | Meta Llama 3.1 8B Reference           | `meta-llama/Meta-Llama-3.1-8B-Reference`           | 131072        | 65536         | 8               | 8               | 8         |
+| Meta         | Meta Llama 3.1 70B Instruct Reference | `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference` | 24576         | 12288         | 32              | 32              | 32        |
+| Meta         | Meta Llama 3.1 70B Reference          | `meta-llama/Meta-Llama-3.1-70B-Reference`          | 24576         | 12288         | 32              | 32              | 32        |
+| Meta         | Meta Llama 3 8B Instruct              | `meta-llama/Meta-Llama-3-8B-Instruct`              | 8192          | 8192          | 64              | 32              | 8         |
+| Meta         | Meta Llama 3 8B                       | `meta-llama/Meta-Llama-3-8B`                       | 8192          | 8192          | 64              | 32              | 8         |
+| Meta         | Meta Llama 3 70B Instruct             | `meta-llama/Meta-Llama-3-70B-Instruct`             | 8192          | 8192          | 32              | 32              | 32        |
+| Google       | Gemma 3 270M                          | `google/gemma-3-270m`                              | 32768         | 32768         | 128             | 64              | 8         |
+| Google       | Gemma 3 270M IT                       | `google/gemma-3-270m-it`                           | 32768         | 32768         | 128             | 64              | 8         |
+| Google       | Gemma 3 1B IT                         | `google/gemma-3-1b-it`                             | 32768         | 32768         | 64              | 32              | 8         |
+| Google       | Gemma 3 1B PT                         | `google/gemma-3-1b-pt`                             | 32768         | 32768         | 64              | 32              | 8         |
 | Google       | Gemma 3 4B IT                         | `google/gemma-3-4b-it`                             | 131072        | 65536         | 8               | 8               | 8         |
 | Google       | Gemma 3 4B IT VLM                     | `google/gemma-3-4b-it-VLM`                         | 32768         | 32768         | 8               | 8               | 8         |
 | Google       | Gemma 3 4B PT                         | `google/gemma-3-4b-pt`                             | 131072        | 65536         | 8               | 8               | 8         |
@@ -13721,59 +13846,15 @@ The tables below list every model available through the fine-tuning API. Context
 | Google       | Gemma 3 27B PT                        | `google/gemma-3-27b-pt`                            | 49152         | 24576         | 16              | 16              | 16        |
 | Google       | Gemma 4 31B IT                        | `google/gemma-4-31B-it`                            | 49152         | 24576         | 8               | 8               | 8         |
 | Google       | Gemma 4 31B IT VLM                    | `google/gemma-4-31B-it-VLM`                        | 24576         | 12288         | 16              | 16              | 16        |
-| Google       | Gemma 4 26B A4B IT                    | `google/gemma-4-26B-A4B-it`                        | 49152         | 24576         | 8               | 8               | 8         |
-| Qwen         | Qwen3 0.6B                            | `Qwen/Qwen3-0.6B`                                  | 40960         | 40960         | 64              | 64              | 8         |
-| Qwen         | Qwen3 0.6B Base                       | `Qwen/Qwen3-0.6B-Base`                             | 32768         | 32768         | 64              | 64              | 8         |
-| Qwen         | Qwen3 1.7B                            | `Qwen/Qwen3-1.7B`                                  | 40960         | 40960         | 32              | 32              | 8         |
-| Qwen         | Qwen3 1.7B Base                       | `Qwen/Qwen3-1.7B-Base`                             | 32768         | 32768         | 32              | 32              | 8         |
-| Qwen         | Qwen3 4B                              | `Qwen/Qwen3-4B`                                    | 40960         | 40960         | 16              | 16              | 8         |
-| Qwen         | Qwen3 4B Base                         | `Qwen/Qwen3-4B-Base`                               | 32768         | 32768         | 16              | 16              | 8         |
-| Qwen         | Qwen3 8B                              | `Qwen/Qwen3-8B`                                    | 40960         | 40960         | 8               | 8               | 8         |
-| Qwen         | Qwen3 8B Base                         | `Qwen/Qwen3-8B-Base`                               | 32768         | 32768         | 16              | 16              | 8         |
-| Qwen         | Qwen3 14B                             | `Qwen/Qwen3-14B`                                   | 40960         | 40960         | 8               | 8               | 8         |
-| Qwen         | Qwen3 14B Base                        | `Qwen/Qwen3-14B-Base`                              | 32768         | 32768         | 8               | 8               | 8         |
-| Qwen         | Qwen3 32B                             | `Qwen/Qwen3-32B`                                   | 40960         | 24576         | 16              | 16              | 16        |
-| Qwen         | Qwen3 VL 8B Instruct                  | `Qwen/Qwen3-VL-8B-Instruct`                        | 24576         | 16384         | 8               | 8               | 8         |
-| Qwen         | Qwen3 VL 32B Instruct                 | `Qwen/Qwen3-VL-32B-Instruct`                       | 16384         | 16384         | 16              | 16              | 16        |
-| Qwen         | Qwen3 VL 30B A3B Instruct             | `Qwen/Qwen3-VL-30B-A3B-Instruct`                   | 12288         | 12288         | 8               | 8               | 8         |
-| NVIDIA       | NVIDIA Nemotron Nano 9B v2            | `nvidia/NVIDIA-Nemotron-Nano-9B-v2`                | 32768         | 16384         | 8               | 8               | 8         |
-| Meta         | Llama 3.3 70B Instruct Reference      | `meta-llama/Llama-3.3-70B-Instruct-Reference`      | 24576         | 12288         | 32              | 32              | 32        |
-| Meta         | Llama 3.2 3B Instruct                 | `meta-llama/Llama-3.2-3B-Instruct`                 | 131072        | 65536         | 8               | 8               | 8         |
-| Meta         | Llama 3.2 3B                          | `meta-llama/Llama-3.2-3B`                          | 131072        | 65536         | 8               | 8               | 8         |
-| Meta         | Llama 3.2 1B Instruct                 | `meta-llama/Llama-3.2-1B-Instruct`                 | 131072        | 131072        | 8               | 8               | 8         |
-| Meta         | Llama 3.2 1B                          | `meta-llama/Llama-3.2-1B`                          | 131072        | 131072        | 8               | 8               | 8         |
-| Meta         | Meta Llama 3.1 8B Instruct Reference  | `meta-llama/Meta-Llama-3.1-8B-Instruct-Reference`  | 131072        | 65536         | 8               | 8               | 8         |
-| Meta         | Meta Llama 3.1 8B Reference           | `meta-llama/Meta-Llama-3.1-8B-Reference`           | 131072        | 65536         | 8               | 8               | 8         |
-| Meta         | Meta Llama 3.1 70B Instruct Reference | `meta-llama/Meta-Llama-3.1-70B-Instruct-Reference` | 24576         | 12288         | 32              | 32              | 32        |
-| Meta         | Meta Llama 3.1 70B Reference          | `meta-llama/Meta-Llama-3.1-70B-Reference`          | 24576         | 12288         | 32              | 32              | 32        |
-| Meta         | Meta Llama 3 8B Instruct              | `meta-llama/Meta-Llama-3-8B-Instruct`              | 8192          | 8192          | 64              | 64              | 8         |
-| Meta         | Meta Llama 3 8B                       | `meta-llama/Meta-Llama-3-8B`                       | 8192          | 8192          | 64              | 64              | 8         |
-| Meta         | Meta Llama 3 70B Instruct             | `meta-llama/Meta-Llama-3-70B-Instruct`             | 8192          | 8192          | 32              | 32              | 32        |
-| Qwen         | Qwen2 7B Instruct                     | `Qwen/Qwen2-7B-Instruct`                           | 32768         | 32768         | 8               | 8               | 8         |
-| Qwen         | Qwen2 7B                              | `Qwen/Qwen2-7B`                                    | 131072        | 24576         | 8               | 8               | 8         |
-| Qwen         | Qwen2 1.5B Instruct                   | `Qwen/Qwen2-1.5B-Instruct`                         | 32768         | 32768         | 32              | 32              | 8         |
-| Qwen         | Qwen2 1.5B                            | `Qwen/Qwen2-1.5B`                                  | 131072        | 131072        | 8               | 8               | 8         |
-| Mistral      | Mixtral 8x7B Instruct v0.1            | `mistralai/Mixtral-8x7B-Instruct-v0.1`             | 32768         | 32768         | 16              | 16              | 16        |
-| Mistral      | Mixtral 8x7B v0.1                     | `mistralai/Mixtral-8x7B-v0.1`                      | 32768         | 32768         | 16              | 16              | 16        |
-| Mistral      | Mistral 7B Instruct v0.2              | `mistralai/Mistral-7B-Instruct-v0.2`               | 32768         | 32768         | 16              | 16              | 8         |
-| Mistral      | Mistral 7B v0.1                       | `mistralai/Mistral-7B-v0.1`                        | 32768         | 32768         | 16              | 16              | 8         |
-| Together     | Llama 2 7B Chat                       | `togethercomputer/llama-2-7b-chat`                 | 4096          | 4096          | 128             | 128             | 8         |
+| Mistral      | Mixtral 8x7B Instruct v0.1            | `mistralai/Mixtral-8x7B-Instruct-v0.1`             | 32768         | 16384         | 16              | 16              | 16        |
+| Mistral      | Mixtral 8x7B v0.1                     | `mistralai/Mixtral-8x7B-v0.1`                      | 32768         | 16384         | 16              | 16              | 16        |
+| Mistral      | Mistral 7B Instruct v0.2              | `mistralai/Mistral-7B-Instruct-v0.2`               | 32768         | 32768         | 16              | 8               | 8         |
+| Mistral      | Mistral 7B v0.1                       | `mistralai/Mistral-7B-v0.1`                        | 32768         | 32768         | 16              | 8               | 8         |
+| Together     | Llama 2 7B Chat                       | `togethercomputer/llama-2-7b-chat`                 | 4096          | 4096          | 128             | 64              | 8         |
 
 ## Vision-language models
 
-The following models support vision-language fine-tuning on image and text data. See [vision fine-tuning](/docs/fine-tuning/vision) for the dataset schema and the `train_vision` parameter.
-
-| Model                                               | Full fine-tuning | LoRA fine-tuning |
-| --------------------------------------------------- | :--------------: | :--------------: |
-| `Qwen/Qwen3-VL-8B-Instruct`                         |         ✅        |         ✅        |
-| `Qwen/Qwen3-VL-30B-A3B-Instruct`                    |         ✅        |         ✅        |
-| `Qwen/Qwen3-VL-235B-A22B-Instruct`                  |         ❌        |         ✅        |
-| `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |         ❌        |         ✅        |
-| `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |         ❌        |         ✅        |
-| `google/gemma-3-4b-it-VLM`                          |         ✅        |         ✅        |
-| `google/gemma-3-12b-it-VLM`                         |         ✅        |         ✅        |
-| `google/gemma-3-27b-it-VLM`                         |         ✅        |         ✅        |
-| `google/gemma-4-31B-it-VLM`                         |         ✅        |         ✅        |
+For the list of models that support vision-language fine-tuning on image and text data, along with the dataset schema and the `train_vision` parameter, see [vision fine-tuning](/docs/fine-tuning/vision).
 
 ## LoRA target modules
 
@@ -13837,17 +13918,27 @@ This page covers the VLM-specific data shape, supported models, and launch param
 
 ## Supported models
 
-| Model                                               | Full fine-tuning | LoRA fine-tuning |
-| --------------------------------------------------- | :--------------: | :--------------: |
-| `Qwen/Qwen3-VL-8B-Instruct`                         |         ✅        |         ✅        |
-| `Qwen/Qwen3-VL-30B-A3B-Instruct`                    |         ✅        |         ✅        |
-| `Qwen/Qwen3-VL-235B-A22B-Instruct`                  |         ❌        |         ✅        |
-| `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |         ❌        |         ✅        |
-| `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |         ❌        |         ✅        |
-| `google/gemma-3-4b-it-VLM`                          |         ✅        |         ✅        |
-| `google/gemma-3-12b-it-VLM`                         |         ✅        |         ✅        |
-| `google/gemma-3-27b-it-VLM`                         |         ✅        |         ✅        |
-| `google/gemma-4-31B-it-VLM`                         |         ✅        |         ✅        |
+The following models support vision-language fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
+
+<Accordion title="Supported models">
+  | Organization | Model                                  | API ID                                              |
+  | ------------ | -------------------------------------- | --------------------------------------------------- |
+  | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
+  | Qwen         | Qwen3.5 9B                             | `Qwen/Qwen3.5-9B`                                   |
+  | Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   |
+  | Qwen         | Qwen3.5 2B                             | `Qwen/Qwen3.5-2B`                                   |
+  | Qwen         | Qwen3.5 0.8B                           | `Qwen/Qwen3.5-0.8B`                                 |
+  | Qwen         | Qwen3 VL 8B Instruct                   | `Qwen/Qwen3-VL-8B-Instruct`                         |
+  | Qwen         | Qwen3 VL 32B Instruct                  | `Qwen/Qwen3-VL-32B-Instruct`                        |
+  | Qwen         | Qwen3 VL 30B A3B Instruct              | `Qwen/Qwen3-VL-30B-A3B-Instruct`                    |
+  | Qwen         | Qwen3 VL 235B A22B Instruct            | `Qwen/Qwen3-VL-235B-A22B-Instruct`                  |
+  | Meta         | Llama 4 Scout 17B 16E Instruct VLM     | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |
+  | Meta         | Llama 4 Maverick 17B 128E Instruct VLM | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |
+  | Google       | Gemma 3 4B IT VLM                      | `google/gemma-3-4b-it-VLM`                          |
+  | Google       | Gemma 3 12B IT VLM                     | `google/gemma-3-12b-it-VLM`                         |
+  | Google       | Gemma 3 27B IT VLM                     | `google/gemma-3-27b-it-VLM`                         |
+  | Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         |
+</Accordion>
 
 ## Prepare your data
 
@@ -15454,7 +15545,7 @@ kubectl -n kubernetes-dashboard get secret \
 
 ### SSH to GPU Worker Nodes (in Kubernetes) and Slurm Compute Nodes (Slurm)
 
-You can SSH directly into any GPU worker node/ Slurm compute nodes from the cluster UI.
+You can SSH directly into any GPU worker node / Slurm compute node from the cluster UI.
 
 **From the UI:**
 
@@ -15478,7 +15569,7 @@ ssh 9cvq-68pzlt-99e6e06b-ec17-4198-96c2-6a7a9c2236b2.s1.us-central-4b.cloud.toge
 * Debug node-level networking or storage issues
 * Check Kubernetes kubelet status and logs
 * View all processes running on the node
-* In case of Slurm clusters you can directly run GPU workloads on the compute nodes via ssh
+* In case of Slurm clusters you can directly run GPU workloads on the compute nodes via SSH
 
 <Warning>
   **Important: SSH access matrix (Kubernetes vs Slurm)**
@@ -22715,14 +22806,14 @@ response = client.chat.completions.create(
 )
 ```
 
-When using preserved thinking, include the unmodified `reasoning_content` from previous turns back in the conversation:
+When using preserved thinking, include the unmodified `reasoning` from previous turns back in the conversation:
 
 ```python theme={null}
 messages.append(
     {
         "role": "assistant",
         "content": content,
-        "reasoning_content": reasoning,  # Return reasoning content faithfully
+        "reasoning": reasoning,  # Return reasoning content faithfully
         "tool_calls": tool_calls,
     }
 )
@@ -22764,6 +22855,10 @@ response = client.chat.completions.create(
 print("Reasoning:", response.choices[0].message.reasoning)
 print("Answer:", response.choices[0].message.content)
 ```
+
+<Note>
+  Use the `reasoning` field for both input and output. The model returns its chain of thought in `reasoning` (or `delta.reasoning` when streaming), and you pass it back under the same `reasoning` key when you send a prior assistant turn to the API for [preserved thinking](#preserved-thinking) or multi-turn tool calling. The older `reasoning_content` key is still accepted on input for backward compatibility.
+</Note>
 
 ### `<think>` tags in content
 
@@ -22890,6 +22985,7 @@ For these use cases, consider faster non-reasoning models like [Llama 3.3 70B](/
 
 Reasoning tokens can vary from a few hundred for simple problems to tens of thousands for complex challenges. Strategies to keep costs and latency in check:
 
+* **Count reasoning tokens**: Reasoning output is billed as completion tokens and reported under `usage.completion_tokens_details.reasoning_tokens`. See [OpenAI compatibility](/docs/inference/openai-compatibility#response-shape-differences) for the full usage-object shape, which varies by model.
 * **Use `max_tokens`**: Set a token limit to cap total output. This reduces costs but may truncate reasoning on complex problems, find the right balance for your use case.
 * **Toggle reasoning on hybrid models**: Use `reasoning={"enabled": False}` for simple queries and only enable it when the task benefits from deeper analysis.
 * **Use reasoning effort levels**: On GPT-OSS, use `reasoning_effort="low"` for routine tasks and `"high"` for critical decisions.
@@ -26930,8 +27026,13 @@ Together model IDs are namespaced (`openai/gpt-oss-20b`, `meta-llama/Llama-4-Mav
 
 ### Response shape differences
 
-* `usage` includes `prompt_tokens`, `completion_tokens`, and `total_tokens`. Some Together-only fields (for example `cached_tokens`, `reasoning_tokens`) appear on models that support them and may not match OpenAI's `prompt_tokens_details` / `completion_tokens_details` nesting exactly.
-* Reasoning models return reasoning traces in a `reasoning` field on the assistant message rather than OpenAI's `reasoning` object structure. See [Reasoning](/docs/inference/chat/reasoning).
+* `usage` always includes `prompt_tokens`, `completion_tokens`, and `total_tokens`. Extra token counts vary in **location** by model, so read both shapes defensively:
+
+  * Reasoning models (for example `zai-org/GLM-5.2`, `deepseek-ai/DeepSeek-V4-Pro`, `Qwen/Qwen3.6-Plus`) nest them OpenAI-style: cached prompt tokens under `usage.prompt_tokens_details.cached_tokens` and reasoning tokens under `usage.completion_tokens_details.reasoning_tokens`.
+  * Some non-reasoning models (for example `meta-llama/Llama-3.3-70B-Instruct-Turbo`) return `cached_tokens` flat at the top level of `usage`, with no `*_details` objects.
+
+  A client configured for only one shape will return `0` for all others (with no error message). Fall back across both locations, for example `(usage.prompt_tokens_details or {}).get("cached_tokens") or usage.get("cached_tokens", 0)`.
+* Reasoning models return the chain of thought in a `reasoning` field on the assistant message (not OpenAI's nested `reasoning` object). Pass it back under the same `reasoning` key when you send a prior turn to the API for preserved thinking or multi-turn tool calling; the older `reasoning_content` key is still accepted on input for backward compatibility. See [Reasoning](/docs/inference/chat/reasoning#handle-reasoning-tokens) for details.
 * `id` and `system_fingerprint` are present but use Together's formats. Don't parse them as OpenAI IDs.
 * `images.generate` returns `url` or `b64_json` per the `response_format` param, matching OpenAI. Some image models also return Together-specific metadata fields (for example `seed`).
 
@@ -26977,7 +27078,7 @@ Together AI offers three ways to run inference:
 
 ## Shared inference API
 
-Serverless, provisioned throughput, and dedicated endpoint workloads all use the same inference APIs for generating and retrieving model outputs. Apps work on either deployment mode without code changes; just swap the `model` parameter:
+Serverless, provisioned throughput, and dedicated endpoint workloads all use the same inference APIs for generating and retrieving model outputs. Apps work on any deployment mode without code changes; just swap the `model` parameter:
 
 <CodeGroup>
   ```python Python highlight={7,13} theme={null}
@@ -27128,7 +27229,7 @@ Select serverless chat models bill cached input tokens at a steep discount. Cach
 
 You commit to a fixed number of PTUs for a selected model or model family over a reserved term, with a one-month minimum. Each PTU is priced at a flat \$0.05 per minute; how many PTUs you need depends on the model, your traffic shape, and your committed capacity. Input tokens, output tokens, and cached reads consume PTUs at model-specific conversion ratios defined in your contract.
 
-Estimate your requirements with the [pricing calculator](https://www.together.ai/provisioned-throughput), and see [Provisioned throughput](/docs/inference/provisioned-throughput) for details on PTUs and the SLA.
+Estimate your requirements with the [pricing calculator](https://www.together.ai/pricing#provisioned-throughput), and see [Provisioned throughput](/docs/inference/provisioned-throughput) for details on PTUs and the SLA.
 
 ## Dedicated endpoints
 
@@ -27193,7 +27294,7 @@ Input tokens, output tokens, and cached reads consume PTUs at different rates. O
 
 You don't need to forecast a precise traffic mix. Whatever shape your traffic takes, it converts into a single normalized rate that draws down your PTU capacity: output-heavy or cache-light traffic consumes PTUs faster, while cache-heavy traffic consumes them more slowly. Traffic shape changes how quickly you consume PTUs, not the SLA.
 
-To estimate how many PTUs your workload needs, use the [pricing calculator](https://www.together.ai/provisioned-throughput).
+To estimate how many PTUs your workload needs, use the [pricing calculator](https://www.together.ai/pricing#provisioned-throughput).
 
 ## SLA
 
@@ -39202,45 +39303,46 @@ If you're not sure which vision model to use, we currently recommend **Qwen3.5 9
 
 ## Video models
 
-| Organization | Model name             | Model string for API        | Price per video | Resolution / duration |
-| :----------- | :--------------------- | :-------------------------- | :-------------- | :-------------------- |
-| MiniMax      | MiniMax 01 Director    | minimax/video-01-director   | \$0.28          | 720p / 5s             |
-| MiniMax      | MiniMax Hailuo 02      | minimax/hailuo-02           | \$0.49          | 768p / 10s            |
-| Google       | Veo 2.0                | google/veo-2.0              | \$2.50          | 720p / 5s             |
-| Google       | Veo 3.0                | google/veo-3.0              | \$1.60          | 720p / 8s             |
-| Google       | Veo 3.0 + Audio        | google/veo-3.0-audio        | \$3.20          | 720p / 8s             |
-| Google       | Veo 3.0 Fast           | google/veo-3.0-fast         | \$0.80          | 1080p / 8s            |
-| Google       | Veo 3.0 Fast + Audio   | google/veo-3.0-fast-audio   | \$1.20          | 1080p / 8s            |
-| ByteDance    | Seedance 1.0 Lite      | ByteDance/Seedance-1.0-lite | \$0.14          | 720p / 5s             |
-| ByteDance    | Seedance 1.0 Pro       | ByteDance/Seedance-1.0-pro  | \$0.57          | 1080p / 5s            |
-| PixVerse     | PixVerse v5            | pixverse/pixverse-v5        | \$0.30          | 1080p / 5s            |
-| Kuaishou     | Kling 2.1 Master       | kwaivgI/kling-2.1-master    | \$0.92          | 1080p / 5s            |
-| Kuaishou     | Kling 2.1 Standard     | kwaivgI/kling-2.1-standard  | \$0.18          | 720p / 5s             |
-| Kuaishou     | Kling 2.1 Pro          | kwaivgI/kling-2.1-pro       | \$0.32          | 1080p / 5s            |
-| Kuaishou     | Kling 1.6 Standard     | kwaivgI/kling-1.6-standard  | \$0.19          | 720p / 5s             |
-| Wan-AI       | Wan 2.2 I2V            | Wan-AI/Wan2.2-I2V-A14B      | \$0.31          | -                     |
-| Wan-AI       | Wan 2.2 T2V            | Wan-AI/Wan2.2-T2V-A14B      | \$0.66          | -                     |
-| Vidu         | Vidu 2.0               | vidu/vidu-2.0               | \$0.80          | 720p / 8s             |
-| Vidu         | Vidu Q1                | vidu/vidu-q1                | \$0.22          | 1080p / 5s            |
-| OpenAI       | Sora 2                 | openai/sora-2               | \$0.80          | 720p / 8s             |
-| OpenAI       | Sora 2 Pro             | openai/sora-2-pro           | \$2.40          | 1080p / 8s            |
-| PixVerse     | PixVerse v5.6          | pixverse/pixverse-v5.6      | \$0.1326        | -                     |
-| Wan-AI       | Wan 2.7 T2V            | Wan-AI/wan2.7-t2v           | \$0.10          | -                     |
-| Google       | Veo 3.1 Debug Test     | google/veo-3.1-test-debug   | \$0.08          | -                     |
-| Vidu         | Vidu Q3                | vidu/vidu-q3                | \$0.0975        | -                     |
-| Vidu         | Vidu Q3 Turbo          | vidu/vidu-q3-turbo          | \$0.195         | -                     |
-| Wan-AI       | Wan 2.7 I2V            | Wan-AI/wan2.7-i2v           | \$0.10          | -                     |
-| Wan-AI       | Wan 2.7 R2V            | Wan-AI/wan2.7-r2v           | \$0.10          | -                     |
-| PixVerse     | PixVerse v6            | pixverse/pixverse-v6        | \$0.09          | -                     |
-| Alibaba      | HappyHorse 1.0 T2V     | alibaba/happyhorse-1.0-t2v  | \$0.24          | -                     |
-| ByteDance    | ByteDance Seedance 2.0 | ByteDance/Seedance-2.0      | \$0.16          | -                     |
-| Alibaba      | HappyHorse 1.0 I2V     | alibaba/happyhorse-1.0-i2v  | -               | -                     |
-| Alibaba      | HappyHorse 1.0 R2V     | alibaba/happyhorse-1.0-r2v  | -               | -                     |
-| Google       | Veo 3.1                | google/veo-3.1              | -               | -                     |
-| Google       | Veo 3.1 Lite           | google/veo-3.1-lite         | -               | -                     |
-| Alibaba      | HappyHorse 1.1 I2V     | alibaba/happyhorse-1.1-i2v  | -               | -                     |
-| Alibaba      | HappyHorse 1.1 R2V     | alibaba/happyhorse-1.1-r2v  | -               | -                     |
-| Alibaba      | HappyHorse 1.1 T2V     | alibaba/happyhorse-1.1-t2v  | -               | -                     |
+| Organization | Model name             | Model string for API          | Price per video | Resolution / duration |
+| :----------- | :--------------------- | :---------------------------- | :-------------- | :-------------------- |
+| MiniMax      | MiniMax 01 Director    | minimax/video-01-director     | \$0.28          | 720p / 5s             |
+| MiniMax      | MiniMax Hailuo 02      | minimax/hailuo-02             | \$0.49          | 768p / 10s            |
+| Google       | Veo 2.0                | google/veo-2.0                | \$2.50          | 720p / 5s             |
+| Google       | Veo 3.0                | google/veo-3.0                | \$1.60          | 720p / 8s             |
+| Google       | Veo 3.0 + Audio        | google/veo-3.0-audio          | \$3.20          | 720p / 8s             |
+| Google       | Veo 3.0 Fast           | google/veo-3.0-fast           | \$0.80          | 1080p / 8s            |
+| Google       | Veo 3.0 Fast + Audio   | google/veo-3.0-fast-audio     | \$1.20          | 1080p / 8s            |
+| ByteDance    | Seedance 1.0 Lite      | ByteDance/Seedance-1.0-lite   | \$0.14          | 720p / 5s             |
+| ByteDance    | Seedance 1.0 Pro       | ByteDance/Seedance-1.0-pro    | \$0.57          | 1080p / 5s            |
+| PixVerse     | PixVerse v5            | pixverse/pixverse-v5          | \$0.30          | 1080p / 5s            |
+| Kuaishou     | Kling 2.1 Master       | kwaivgI/kling-2.1-master      | \$0.92          | 1080p / 5s            |
+| Kuaishou     | Kling 2.1 Standard     | kwaivgI/kling-2.1-standard    | \$0.18          | 720p / 5s             |
+| Kuaishou     | Kling 2.1 Pro          | kwaivgI/kling-2.1-pro         | \$0.32          | 1080p / 5s            |
+| Kuaishou     | Kling 1.6 Standard     | kwaivgI/kling-1.6-standard    | \$0.19          | 720p / 5s             |
+| Wan-AI       | Wan 2.2 I2V            | Wan-AI/Wan2.2-I2V-A14B        | \$0.31          | -                     |
+| Wan-AI       | Wan 2.2 T2V            | Wan-AI/Wan2.2-T2V-A14B        | \$0.66          | -                     |
+| Vidu         | Vidu 2.0               | vidu/vidu-2.0                 | \$0.80          | 720p / 8s             |
+| Vidu         | Vidu Q1                | vidu/vidu-q1                  | \$0.22          | 1080p / 5s            |
+| OpenAI       | Sora 2                 | openai/sora-2                 | \$0.80          | 720p / 8s             |
+| OpenAI       | Sora 2 Pro             | openai/sora-2-pro             | \$2.40          | 1080p / 8s            |
+| PixVerse     | PixVerse v5.6          | pixverse/pixverse-v5.6        | \$0.1326        | -                     |
+| Wan-AI       | Wan 2.7 T2V            | Wan-AI/wan2.7-t2v             | \$0.10          | -                     |
+| Google       | Veo 3.1 Debug Test     | google/veo-3.1-test-debug     | \$0.08          | -                     |
+| Vidu         | Vidu Q3                | vidu/vidu-q3                  | \$0.0975        | -                     |
+| Vidu         | Vidu Q3 Turbo          | vidu/vidu-q3-turbo            | \$0.195         | -                     |
+| Wan-AI       | Wan 2.7 I2V            | Wan-AI/wan2.7-i2v             | \$0.10          | -                     |
+| Wan-AI       | Wan 2.7 R2V            | Wan-AI/wan2.7-r2v             | \$0.10          | -                     |
+| PixVerse     | PixVerse v6            | pixverse/pixverse-v6          | \$0.09          | -                     |
+| Alibaba      | HappyHorse 1.0 T2V     | alibaba/happyhorse-1.0-t2v    | \$0.24          | -                     |
+| ByteDance    | ByteDance Seedance 2.0 | ByteDance/Seedance-2.0        | \$0.16          | -                     |
+| Alibaba      | HappyHorse 1.0 I2V     | alibaba/happyhorse-1.0-i2v    | -               | -                     |
+| Alibaba      | HappyHorse 1.0 R2V     | alibaba/happyhorse-1.0-r2v    | -               | -                     |
+| Google       | Veo 3.1                | google/veo-3.1                | -               | -                     |
+| Google       | Veo 3.1 Lite           | google/veo-3.1-lite           | -               | -                     |
+| Alibaba      | HappyHorse 1.1 I2V     | alibaba/happyhorse-1.1-i2v    | -               | -                     |
+| Alibaba      | HappyHorse 1.1 R2V     | alibaba/happyhorse-1.1-r2v    | -               | -                     |
+| Alibaba      | HappyHorse 1.1 T2V     | alibaba/happyhorse-1.1-t2v    | -               | -                     |
+| HappyHorse   |                        | HappyHorse/HappyHorse-1.0-T2V | -               | -                     |
 
 ## Audio models
 

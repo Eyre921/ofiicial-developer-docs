@@ -36,6 +36,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: environment
+          in: query
+          description: >-
+            Environment whose values are used when the MCP server URL, headers,
+            or auth connection reference environment variables. Mirrors the
+            environment a conversation would run in; defaults to production.
+          required: false
+          schema:
+            type: string
+            default: production
         - name: xi-api-key
           in: header
           required: false
@@ -131,7 +141,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     type_:ToolCallSoundBehavior:
       type: string
@@ -517,7 +527,7 @@ components:
         - agent_id
         - description
       title: SubAgentOutput
-    type_:AgentTransfer:
+    type_:AgentTransferOutput:
       type: object
       properties:
         agent_id:
@@ -545,7 +555,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransferOutput
     type_:PhoneNumberTransferCustomSipHeadersItem:
       oneOf:
         - type: object
@@ -881,7 +891,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/type_:AgentTransfer'
+                $ref: '#/components/schemas/type_:AgentTransferOutput'
           required:
             - system_tool_type
             - transfers
@@ -1720,7 +1730,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.tools.get("tool_id");
+    await client.conversationalAi.tools.get("tool_id", {
+        environment: "environment",
+    });
 }
 main();
 
@@ -1733,6 +1745,7 @@ client = ElevenLabs()
 
 client.conversational_ai.tools.get(
     tool_id="tool_id",
+    environment="environment",
 )
 
 ```
@@ -1748,7 +1761,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/tools/tool_id"
+	url := "https://api.elevenlabs.io/v1/convai/tools/tool_id?environment=environment"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -1767,7 +1780,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/tools/tool_id")
+url = URI("https://api.elevenlabs.io/v1/convai/tools/tool_id?environment=environment")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -1782,7 +1795,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/tools/tool_id")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/tools/tool_id?environment=environment")
   .asString();
 ```
 
@@ -1792,7 +1805,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/tools/tool_id');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/tools/tool_id?environment=environment');
 
 echo $response->getBody();
 ```
@@ -1800,7 +1813,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/tools/tool_id");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/tools/tool_id?environment=environment");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -1808,7 +1821,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/tools/tool_id")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/tools/tool_id?environment=environment")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

@@ -307,7 +307,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     type_:ToolCallSoundBehavior:
       type: string
@@ -676,7 +676,7 @@ components:
         - agent_id
         - description
       title: SubAgentOutput
-    type_:AgentTransfer:
+    type_:AgentTransferOutput:
       type: object
       properties:
         agent_id:
@@ -704,7 +704,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransferOutput
     type_:PhoneNumberTransferCustomSipHeadersItem:
       oneOf:
         - type: object
@@ -1040,7 +1040,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/type_:AgentTransfer'
+                $ref: '#/components/schemas/type_:AgentTransferOutput'
           required:
             - system_tool_type
             - transfers
@@ -2565,7 +2565,7 @@ components:
         - no_results
       default: success
       title: KnowledgeBaseRagToolStatus
-    type_:TransferToAgentToolResultSuccessModelBranchInfo:
+    type_:TransferToAgentToolResultSuccessModelInputBranchInfo:
       oneOf:
         - type: object
           properties:
@@ -2597,7 +2597,7 @@ components:
             - traffic_percentage
       discriminator:
         propertyName: branch_reason
-      title: TransferToAgentToolResultSuccessModelBranchInfo
+      title: TransferToAgentToolResultSuccessModelInputBranchInfo
     type_:ConversationHistoryTranscriptSystemToolResultCommonModelInputResult:
       oneOf:
         - type: object
@@ -2803,7 +2803,7 @@ components:
               default: false
             branch_info:
               $ref: >-
-                #/components/schemas/type_:TransferToAgentToolResultSuccessModelBranchInfo
+                #/components/schemas/type_:TransferToAgentToolResultSuccessModelInputBranchInfo
             preserve_client_tts_overrides:
               type: boolean
               default: false
@@ -3329,6 +3329,9 @@ components:
         interrupted:
           type: boolean
           default: false
+        ignored_as_backchannel:
+          type: boolean
+          default: false
         original_message:
           type: string
         reasoning:
@@ -3581,6 +3584,39 @@ components:
         - params_as_json
         - tool_has_been_called
       title: ConversationHistoryTranscriptToolCallCommonModelOutput
+    type_:TransferToAgentToolResultSuccessModelOutputBranchInfo:
+      oneOf:
+        - type: object
+          properties:
+            branch_reason:
+              type: string
+              enum:
+                - defaulting_to_main
+              description: 'Discriminator value: defaulting_to_main'
+            branch_id:
+              type: string
+          required:
+            - branch_reason
+            - branch_id
+        - type: object
+          properties:
+            branch_reason:
+              type: string
+              enum:
+                - traffic_split
+              description: 'Discriminator value: traffic_split'
+            branch_id:
+              type: string
+            traffic_percentage:
+              type: number
+              format: double
+          required:
+            - branch_reason
+            - branch_id
+            - traffic_percentage
+      discriminator:
+        propertyName: branch_reason
+      title: TransferToAgentToolResultSuccessModelOutputBranchInfo
     type_:ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult:
       oneOf:
         - type: object
@@ -3786,7 +3822,7 @@ components:
               default: false
             branch_info:
               $ref: >-
-                #/components/schemas/type_:TransferToAgentToolResultSuccessModelBranchInfo
+                #/components/schemas/type_:TransferToAgentToolResultSuccessModelOutputBranchInfo
             preserve_client_tts_overrides:
               type: boolean
               default: false
@@ -4234,6 +4270,9 @@ components:
         interrupted:
           type: boolean
           default: false
+        ignored_as_backchannel:
+          type: boolean
+          default: false
         original_message:
           type: string
         reasoning:
@@ -4494,6 +4533,7 @@ components:
         "rag_latency_secs": 1.1
       },
       "interrupted": true,
+      "ignored_as_backchannel": true,
       "original_message": "original_message",
       "reasoning": [
         {}

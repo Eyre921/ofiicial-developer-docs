@@ -138,7 +138,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     type_:ToolCallSoundBehavior:
       type: string
@@ -524,7 +524,7 @@ components:
         - agent_id
         - description
       title: SubAgentInput
-    type_:AgentTransfer:
+    type_:AgentTransferInput:
       type: object
       properties:
         agent_id:
@@ -552,7 +552,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransferInput
     type_:PhoneNumberTransferCustomSipHeadersItem:
       oneOf:
         - type: object
@@ -888,7 +888,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/type_:AgentTransfer'
+                $ref: '#/components/schemas/type_:AgentTransferInput'
           required:
             - system_tool_type
             - transfers
@@ -1653,6 +1653,35 @@ components:
         - agent_id
         - description
       title: SubAgentOutput
+    type_:AgentTransferOutput:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        node_id:
+          type: string
+        condition:
+          type: string
+        delay_ms:
+          type: integer
+          default: 0
+        transfer_message:
+          type: string
+        enable_transferred_agent_first_message:
+          type: boolean
+          default: false
+        is_workflow_node_transfer:
+          type: boolean
+          default: false
+        preserve_client_tts_overrides:
+          type: boolean
+          default: false
+          description: >-
+            Defines whether TTS client overrides should be carried over to the
+            transferred agent.
+      required:
+        - condition
+      title: AgentTransferOutput
     type_:SystemToolConfigOutputParams:
       oneOf:
         - type: object
@@ -1763,7 +1792,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/type_:AgentTransfer'
+                $ref: '#/components/schemas/type_:AgentTransferOutput'
           required:
             - system_tool_type
             - transfers

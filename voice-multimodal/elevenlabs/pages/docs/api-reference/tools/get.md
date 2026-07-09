@@ -36,6 +36,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: environment
+          in: query
+          description: >-
+            Environment whose values are used when the MCP server URL, headers,
+            or auth connection reference environment variables. Mirrors the
+            environment a conversation would run in; defaults to production.
+          required: false
+          schema:
+            type: string
+            default: production
         - name: xi-api-key
           in: header
           required: false
@@ -132,7 +142,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     ToolCallSoundBehavior:
       type: string
@@ -541,7 +551,7 @@ components:
         - agent_id
         - description
       title: SubAgent-Output
-    AgentTransfer:
+    AgentTransfer-Output:
       type: object
       properties:
         agent_id:
@@ -575,7 +585,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransfer-Output
     PhoneNumberTransferCustomSipHeadersItems:
       oneOf:
         - type: object
@@ -978,7 +988,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/AgentTransfer'
+                $ref: '#/components/schemas/AgentTransfer-Output'
           required:
             - system_tool_type
             - transfers
@@ -1868,7 +1878,7 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.tools.get("tool_id");
+    await client.conversationalAi.tools.get("tool_id", {});
 }
 main();
 

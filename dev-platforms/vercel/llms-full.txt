@@ -731,6 +731,7 @@ The table below shows a list of events logged on the Activity page.
 | storage-upgrade-project-connection-to-oidc | Active | A storage project connection was upgraded to OIDC. |
 | storage-view-secret | Active | Viewed a secret for a store |
 | strict-deployment-protection-settings | Active | Strict deployment protection settings were updated. |
+| strict-password-protection-settings | Active | Strict password protection settings were updated. |
 | strict-shareable-links | Active | Strict shareable links settings were updated. |
 | subscription-product-added | Active | A self-serve product was added to a subscription. |
 | subscription-product-removed | Active | A self-serve product was removed from a subscription. |
@@ -10772,14 +10773,92 @@ source: "https://vercel.com/docs/ai-gateway/models-and-providers/automatic-cachi
 
 Some providers like Anthropic and MiniMax require explicit cache control markers to enable prompt caching, while others like OpenAI, Google, and DeepSeek cache automatically (sometimes called "implicit caching"). Use `caching: 'auto'` to let AI Gateway handle this for you. It applies the appropriate caching strategy based on the provider.
 
+> **💡 Note:** **Supported providers:** Automatic caching works with Anthropic (direct,
+> Vertex, and Bedrock) and MiniMax.
+
 ## How it works
 
-When you set `caching: 'auto'` and the request routes to a provider that requires explicit cache markers (Anthropic or MiniMax), AI Gateway adds a `cache_control` breakpoint at the end of your static content. For providers with implicit caching (OpenAI, Google, DeepSeek), no modification is needed and caching works automatically.
+When you set `caching: 'auto'` and the request routes to a provider that requires explicit cache markers, AI Gateway adds `cache_control` breakpoints to your messages. This covers Anthropic and MiniMax, which serves an Anthropic-compatible API and uses the same `cache_control` format. For providers with implicit caching (OpenAI, Google, DeepSeek), no modification is needed and caching works automatically.
+
+For explicit-caching providers, AI Gateway places markers at two positions:
+
+- **On the last message.** Each request writes a cache entry covering the full prompt, and the next request in the conversation reads that entry as a prefix, paying full price only for what it appends. Multi-turn and agentic traffic caches well because of this marker: tool-use loops and agent conversations extend the previous request instead of repeating a static prefix.
+- **On the message before the last user message** (falling back to the system message). A request whose tail changed still reads the cache up to this stable prefix.
+
+You can add a third marker with a cache anchor (see below).
 
 **Default behavior**: When `caching` is not set, AI Gateway passes your request through without modification. Providers with implicit caching still cache automatically. For Anthropic, you'll need to set `caching: 'auto'` or manually add cache markers to your messages.
 
-> **💡 Note:** **Supported providers:** Automatic caching works with Anthropic (direct,
-> Vertex, and Bedrock) and MiniMax.
+### Cache lifetime
+
+Anthropic cache entries expire after five minutes by default. If your agentic workflow pauses for longer than five minutes, you can request a one-hour lifetime with the `cache_ttl` field on the [Responses API](/docs/ai-gateway/sdks-and-apis/responses):
+
+```typescript
+body: JSON.stringify({
+  model: 'anthropic/claude-sonnet-4.6',
+  caching: 'auto',
+  cache_ttl: '1h',
+  input: 'Review this codebase and suggest improvements.',
+}),
+```
+
+The field accepts `5m` (five minutes) or `1h` (one hour). AI Gateway applies the selected lifetime to every automatic breakpoint, including a breakpoint created by `cache_anchor_items`. The field has no effect unless you also set `caching: 'auto'`.
+
+Anthropic charges different cache-write rates for each lifetime:
+
+| `cache_ttl` value | Lifetime     | Cache write price | Cache read price |
+| ----------------- | ------------ | ----------------- | ---------------- |
+| Omitted or `5m`   | Five minutes | 1.25× base input  | 0.1× base input  |
+| `1h`              | One hour     | 2× base input     | 0.1× base input  |
+
+A one-hour entry costs an additional 0.75× base input to write. One read after the five-minute entry would have expired saves 0.9× base input and repays that premium. Use one hour for long-running agents and conversations that commonly pause for more than five minutes. Keep the five-minute default when requests normally continue within five minutes.
+
+`cache_ttl` is advisory. AI Gateway uses the default lifetime for unsupported values and never rejects the request because of the hint. The response includes an `unsupported` warning in `provider_metadata.gateway.warnings`:
+
+```json
+{
+  "provider_metadata": {
+    "gateway": {
+      "warnings": [
+        {
+          "type": "unsupported",
+          "feature": "cache_ttl",
+          "details": "Unsupported cache_ttl; the default cache lifetime was used."
+        }
+      ]
+    }
+  }
+}
+```
+
+For streaming requests, the warning appears on the terminal `response.completed` or `response.incomplete` event.
+
+### Cache anchor
+
+The two default markers assume the conversation only grows at the tail. Agentic clients often rewrite the middle of the prompt instead: summarizing older turns, pruning tool output, or compacting history. When that happens, both default markers land after the mutation point and the cache read misses everything.
+
+If your client knows how much of the prompt is stable, it can say so with the `cache_anchor_items` field on the [Responses API](/docs/ai-gateway/sdks-and-apis/responses):
+
+```typescript
+body: JSON.stringify({
+  model: 'anthropic/claude-sonnet-4.6',
+  caching: 'auto',
+  cache_anchor_items: 12,
+  input: [
+    /* the first 12 input items are byte-stable across future requests */
+  ],
+}),
+```
+
+`cache_anchor_items: N` declares that the first `N` items of `input` will be sent byte-for-byte identically on future requests. AI Gateway places an additional cache marker at that position, so a request that later mutates the prompt *after* the anchor still reads the cache up to it.
+
+The anchor is advisory. Values that can't be used (not a positive integer, past the end of the prompt, or colliding with a marker that's already placed) are ignored, and caching degrades to the two-marker behavior above. An unusable anchor never causes a request to fail.
+
+The anchor only applies when `caching: 'auto'` is set, and like the other markers it only modifies requests to explicit-caching providers.
+
+## Cost tradeoff
+
+On Anthropic, cache writes cost 1.25× the base input rate and cache reads cost 0.1×. The break-even is a single read: one follow-up request that reuses the cached prompt saves 0.9× per token read, more than offsetting the 0.25× write premium. Multi-turn conversations, agents, and tool-use loops re-read everything the previous turn wrote on every turn, so they come out well ahead. For true one-shot requests, where no follow-up ever reads the cache entry, the write premium is a small net cost. If your traffic is strictly one-shot, prefer manual cache markers (or no caching) over `caching: 'auto'`.
 
 > **💡 Note:** To restrict routing to only models that cache automatically (implicit
 > caching), use `has: ['implicit-caching']`. See [Model
@@ -10987,10 +11066,10 @@ For fine-grained control over what gets cached, you can manually add cache marke
 | OpenAI                  | Implicit     | No change needed. Caching happens automatically.  |
 | Google                  | Implicit     | No change needed. Caching happens automatically.  |
 | DeepSeek                | Implicit     | No change needed. Caching happens automatically.  |
-| Anthropic               | Explicit     | Adds `cache_control` breakpoint to static content |
-| Anthropic (via Vertex)  | Explicit     | Adds `cache_control` breakpoint to static content |
-| Anthropic (via Bedrock) | Explicit     | Adds `cache_control` breakpoint to static content |
-| MiniMax                 | Explicit     | Adds cache markers to static content              |
+| Anthropic               | Explicit     | Adds [`cache_control` breakpoints](#how-it-works)  |
+| Anthropic (via Vertex)  | Explicit     | Adds [`cache_control` breakpoints](#how-it-works)  |
+| Anthropic (via Bedrock) | Explicit     | Adds [`cache_control` breakpoints](#how-it-works)  |
+| MiniMax                 | Explicit     | Adds [`cache_control` breakpoints](#how-it-works)  |
 
 
 --------------------------------------------------------------------------------
@@ -12056,6 +12135,13 @@ providerOptions: {
 ```
 
 For full details, supported providers, and examples across all APIs, see [Automatic Caching](/docs/ai-gateway/models-and-providers/automatic-caching).
+
+Clients on the [Responses API](/docs/ai-gateway/sdks-and-apis/responses) can also set these top-level request fields:
+
+- `cache_anchor_items` pins a cache marker at a known-stable prefix position. See [Cache anchor](/docs/ai-gateway/models-and-providers/automatic-caching#cache-anchor).
+- `cache_ttl` selects a five-minute or one-hour cache lifetime. See [Cache lifetime](/docs/ai-gateway/models-and-providers/automatic-caching#cache-lifetime).
+
+These fields belong at the top level of the Responses API request, not inside `providerOptions.gateway`.
 
 ## Provider timeouts
 
@@ -13856,7 +13942,7 @@ AI Gateway provides built-in web search capabilities that allow AI models to acc
 AI Gateway supports two types of web search:
 
 - **Search for all providers**: Use [Perplexity Search](#using-perplexity-search), [Exa Search](#using-exa-search), or [Parallel Search](#using-parallel-search) with any model regardless of provider. This gives you consistent web search behavior across different models.
-- **Provider-specific search**: Use native web search tools from [Anthropic](#anthropic-web-search), [OpenAI](#openai-web-search), or [Google](#google-web-search). These tools are optimized for their respective providers and may offer [additional features](#provider-specific-search).
+- **Provider-specific search**: Use native web search tools from [Anthropic](#anthropic-web-search), [OpenAI](#openai-web-search), [Google](#google-web-search), or [xAI](#xai-web-search). These tools are optimized for their respective providers and may offer [additional features](#provider-specific-search).
 
 ## Using Perplexity Search
 
@@ -13870,7 +13956,7 @@ To use Perplexity Search, import `gateway` from `ai` and pass `gateway.tools.per
 
 #### streamText
 
-```typescript filename="perplexity-web-search.ts" {10-12}
+```typescript filename="perplexity-web-search.ts" {9-11}
 import { gateway, streamText } from 'ai';
 
 export async function POST(request: Request) {
@@ -13894,13 +13980,13 @@ export async function POST(request: Request) {
     }
   }
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
 #### generateText
 
-```typescript filename="perplexity-web-search.ts" {10-12}
+```typescript filename="perplexity-web-search.ts" {9-11}
 import { gateway, generateText } from 'ai';
 
 export async function POST(request: Request) {
@@ -13932,7 +14018,7 @@ You can configure the `perplexitySearch` tool with these parameters:
 
 #### streamText
 
-```typescript filename="perplexity-web-search-params.ts" {10-20}
+```typescript filename="perplexity-web-search-params.ts" {9-19}
 import { gateway, streamText } from 'ai';
 
 export async function POST(request: Request) {
@@ -13954,13 +14040,13 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
 #### generateText
 
-```typescript filename="perplexity-web-search-params.ts" {10-20}
+```typescript filename="perplexity-web-search-params.ts" {9-19}
 import { gateway, generateText } from 'ai';
 
 export async function POST(request: Request) {
@@ -13998,7 +14084,7 @@ To use Exa Search, import `gateway` from `ai` and pass `gateway.tools.exaSearch(
 
 #### streamText
 
-```typescript filename="exa-web-search.ts" {10-12}
+```typescript filename="exa-web-search.ts" {9-11}
 import { gateway, streamText } from 'ai';
 
 export async function POST(request: Request) {
@@ -14022,13 +14108,13 @@ export async function POST(request: Request) {
     }
   }
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
 #### generateText
 
-```typescript filename="exa-web-search.ts" {10-12}
+```typescript filename="exa-web-search.ts" {9-11}
 import { gateway, generateText } from 'ai';
 
 export async function POST(request: Request) {
@@ -14069,7 +14155,7 @@ You can configure the `exaSearch` tool with these parameters:
 
 #### streamText
 
-```typescript filename="exa-web-search-params.ts" {10-21}
+```typescript filename="exa-web-search-params.ts" {9-20}
 import { gateway, streamText } from 'ai';
 
 export async function POST(request: Request) {
@@ -14092,13 +14178,13 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
 #### generateText
 
-```typescript filename="exa-web-search-params.ts" {10-21}
+```typescript filename="exa-web-search-params.ts" {9-20}
 import { gateway, generateText } from 'ai';
 
 export async function POST(request: Request) {
@@ -14141,7 +14227,7 @@ To use Parallel Search, import `gateway` from `ai` and pass `gateway.tools.paral
 
 #### streamText
 
-```typescript filename="parallel-web-search.ts" {10-12}
+```typescript filename="parallel-web-search.ts" {9-11}
 import { gateway, streamText } from 'ai';
 
 export async function POST(request: Request) {
@@ -14165,13 +14251,13 @@ export async function POST(request: Request) {
     }
   }
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
 #### generateText
 
-```typescript filename="parallel-web-search.ts" {10-12}
+```typescript filename="parallel-web-search.ts" {9-11}
 import { gateway, generateText } from 'ai';
 
 export async function POST(request: Request) {
@@ -14208,7 +14294,7 @@ You can configure the `parallelSearch` tool with these parameters:
 
 #### streamText
 
-```typescript filename="parallel-web-search-params.ts" {10-22}
+```typescript filename="parallel-web-search-params.ts" {9-21}
 import { gateway, streamText } from 'ai';
 
 export async function POST(request: Request) {
@@ -14232,13 +14318,13 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
 #### generateText
 
-```typescript filename="parallel-web-search-params.ts" {10-22}
+```typescript filename="parallel-web-search-params.ts" {9-21}
 import { gateway, generateText } from 'ai';
 
 export async function POST(request: Request) {
@@ -14270,7 +14356,7 @@ For more details on search parameters and API options, see the [Parallel AI Sear
 
 ## Provider-specific search
 
-Use native web search tools from Anthropic, OpenAI, or Google. These tools are optimized for their respective providers and may offer additional features.
+Use native web search tools from Anthropic, OpenAI, Google, or xAI. These tools are optimized for their respective providers and may offer additional features.
 
 > **💡 Note:** Pricing for provider-specific web search tools depends on the model you use.
 > See the Web Search price column on the [model detail
@@ -14297,7 +14383,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
@@ -14359,7 +14445,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
@@ -14418,7 +14504,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
@@ -14468,7 +14554,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
@@ -14517,7 +14603,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
@@ -14563,7 +14649,7 @@ export async function POST(request: Request) {
     },
   });
 
-  return result.toDataStreamResponse();
+  return result.toUIMessageStreamResponse();
 }
 ```
 
@@ -14581,6 +14667,109 @@ export async function POST(request: Request) {
     prompt,
     tools: {
       google_search: google.tools.googleSearch({}),
+    },
+  });
+
+  return Response.json({ text });
+}
+```
+
+### xAI web search
+
+For xAI Grok models, you can use the native web search tool provided by the `@ai-sdk/xai` package. Import `xai` from `@ai-sdk/xai` and pass `xai.tools.webSearch({})` to the `tools` parameter. The tool returns source information including titles and URLs, which you can access through the `source` event type in the stream.
+
+#### streamText
+
+```typescript filename="xai-web-search.ts" {10-12}
+import { streamText } from 'ai';
+import { xai } from '@ai-sdk/xai';
+
+export async function POST(request: Request) {
+  const { prompt } = await request.json();
+
+  const result = streamText({
+    model: 'xai/grok-4.20-non-reasoning',
+    prompt,
+    tools: {
+      web_search: xai.tools.webSearch({}),
+    },
+  });
+
+  return result.toUIMessageStreamResponse();
+}
+```
+
+#### generateText
+
+```typescript filename="xai-web-search.ts" {10-12}
+import { generateText } from 'ai';
+import { xai } from '@ai-sdk/xai';
+
+export async function POST(request: Request) {
+  const { prompt } = await request.json();
+
+  const { text } = await generateText({
+    model: 'xai/grok-4.20-non-reasoning',
+    prompt,
+    tools: {
+      web_search: xai.tools.webSearch({}),
+    },
+  });
+
+  return Response.json({ text });
+}
+```
+
+#### xAI parameters
+
+The following parameters are supported:
+
+- `allowedDomains`: Optional list of domains to restrict searches to (max 5). Cannot be combined with `excludedDomains`.
+- `excludedDomains`: Optional list of domains to exclude from searches (max 5). Cannot be combined with `allowedDomains`.
+- `enableImageSearch`: Let the model use image search as a separate mode.
+- `enableImageUnderstanding`: Let the model analyze images found during the search.
+
+#### streamText
+
+```typescript filename="xai-web-search-params.ts" {10-15}
+import { streamText } from 'ai';
+import { xai } from '@ai-sdk/xai';
+
+export async function POST(request: Request) {
+  const { prompt } = await request.json();
+
+  const result = streamText({
+    model: 'xai/grok-4.20-non-reasoning',
+    prompt,
+    tools: {
+      web_search: xai.tools.webSearch({
+        allowedDomains: ['arxiv.org', 'openai.com'],
+        enableImageUnderstanding: true,
+      }),
+    },
+  });
+
+  return result.toUIMessageStreamResponse();
+}
+```
+
+#### generateText
+
+```typescript filename="xai-web-search-params.ts" {10-15}
+import { generateText } from 'ai';
+import { xai } from '@ai-sdk/xai';
+
+export async function POST(request: Request) {
+  const { prompt } = await request.json();
+
+  const { text } = await generateText({
+    model: 'xai/grok-4.20-non-reasoning',
+    prompt,
+    tools: {
+      web_search: xai.tools.webSearch({
+        allowedDomains: ['arxiv.org', 'openai.com'],
+        enableImageUnderstanding: true,
+      }),
     },
   });
 
@@ -22487,7 +22676,9 @@ The `effort` parameter accepts `none`, `minimal`, `low`, `medium`, `high`, or `x
 | `previous_response_id` | string           | ID of a previous response for multi-turn conversations                                                                                                                                                        |
 | `store`                | boolean          | Stores the response for later retrieval                                                                                                                                                                       |
 | `metadata`             | object           | Up to 16 key-value pairs for tracking (keys max 64 chars, values max 512 chars)                                                                                                                               |
-| `caching`              | string           | Enables prompt caching. Only `auto` is supported                                                                                                                                                              |
+| `caching`              | string           | Enables [automatic prompt caching](/docs/ai-gateway/models-and-providers/automatic-caching). Only `auto` is supported                                                                                          |
+| `cache_anchor_items`   | integer          | Declares how many leading input items stay unchanged so automatic caching can add a stable-prefix [cache anchor](/docs/ai-gateway/models-and-providers/automatic-caching#cache-anchor)                           |
+| `cache_ttl`            | string           | Sets the automatic [cache lifetime](/docs/ai-gateway/models-and-providers/automatic-caching#cache-lifetime). Accepts `5m` (five minutes) or `1h` (one hour) and requires `caching: 'auto'`                        |
 | `prompt_cache_key`     | string           | Key to identify cached prompts (max 64 characters)                                                                                                                                                            |
 
 ## Error handling
@@ -44601,6 +44792,24 @@ vercel redirects restore version-id [options]
 # Restore a redirects version
 vercel redirects restore <version-id>
 ```
+
+
+--------------------------------------------------------------------------------
+title: "Vercel CLI Release Notes"
+description: "Browse release notes for Vercel CLI versions, including major, minor, and patch changes."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/cli/release-notes"
+--------------------------------------------------------------------------------
+
+# Vercel CLI Release Notes
+
+Release notes for [Vercel CLI](/docs/cli) and its related packages. Each release lists its changes grouped by [semantic versioning](https://semver.org) impact:
+
+- **Major changes**: Breaking changes that may require you to update your usage.
+- **Minor changes**: New features and improvements that are backwards compatible.
+- **Patch changes**: Bug fixes and small improvements.
+
+To update to the latest version, see [updating Vercel CLI](/docs/cli#updating-vercel-cli) or run [`vercel upgrade`](/docs/cli/upgrade).
 
 
 --------------------------------------------------------------------------------

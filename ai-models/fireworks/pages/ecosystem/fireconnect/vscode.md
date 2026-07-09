@@ -20,7 +20,7 @@ Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 * The FireConnect CLI (see [Install](/ecosystem/fireconnect/overview#install))
 
 <Note>
-  VS Code supports **direct Fireworks routing only**. [Fireworks on Microsoft Foundry](/ecosystem/integrations/azure-foundry) is not available for Copilot custom endpoints.
+  **Azure routing not implemented yet for VS Code.** `fireconnect vscode on` always configures direct Fireworks, even when global config has `--provider azure` or you pass `--azure`. See [Microsoft Foundry in FireConnect](/ecosystem/fireconnect/microsoft-foundry#supported-harnesses).
 </Note>
 
 ## Enable Fireworks routing
@@ -28,7 +28,7 @@ Use Fireworks AI models in GitHub Copilot Chat with the FireConnect CLI
 VS Code stores custom-endpoint API keys (encrypted) in `state.vscdb`. **Quit VS Code** before running `on` or `off` — FireConnect hard-errors if VS Code is still running unless you pass `--force`.
 
 ```bash theme={null}
-export FIREWORKS_API_KEY=fw_...
+fireconnect login
 fireconnect vscode on
 ```
 
@@ -51,7 +51,7 @@ fireconnect vscode status   # read-only — works while VS Code is running
 ```bash theme={null}
 fireconnect vscode model list              # browse serverless endpoints
 fireconnect vscode model list --search glm
-fireconnect vscode model add glm-latest
+fireconnect vscode model add glm-fast-latest
 fireconnect vscode model add deepseek-v4-pro
 fireconnect vscode model select            # pick a model to add interactively
 ```
@@ -77,7 +77,25 @@ Platform paths:
 | macOS    | `~/Library/Application Support/Code/User/chatLanguageModels.json` | `~/Library/Application Support/Code/User/globalStorage/state.vscdb` |
 | Windows  | `%APPDATA%\Code\User\chatLanguageModels.json`                     | `%APPDATA%\Code\User\globalStorage\state.vscdb`                     |
 
-The endpoint uses model URL `https://api.fireworks.ai/inference` (VS Code appends `/v1/chat/completions`). FireConnect snapshots the original `chatLanguageModels.json` under `~/.fireconnect/vscode/` before the first change. Running `fireconnect vscode off` restores it and removes the encrypted key from `state.vscdb`.
+The endpoint uses model URL `https://api.fireworks.ai/inference` (VS Code appends `/v1/chat/completions`). The API key is **not** stored in the JSON — VS Code resolves the `${input:chat.lm.secret.<id>}` reference through its secret storage.
+
+On macOS, `safeStorage` encrypts with a master key VS Code stores in the login Keychain. On Linux, `safeStorage` needs `libsecret` (`secret-tool`) for real encryption — without it, Chromium falls back to a hardcoded password (obfuscated, not encrypted), which FireConnect still writes but warns about.
+
+FireConnect snapshots the original `chatLanguageModels.json` under `~/.fireconnect/vscode/` before the first change. Running `fireconnect vscode off` restores it byte-for-byte and deletes the `chat.lm.secret.fw-*` secret row from `state.vscdb`.
+
+## FireRouter mode
+
+`fireconnect vscode on --router` retargets VS Code Chat at FireRouter so it speaks the **Anthropic Messages** wire format (`https://router.fireworks.ai/v1/messages`) and routes Anthropic models server-side. This requires both a Fireworks key and an Anthropic key:
+
+```bash theme={null}
+fireconnect vscode on --router --api-key fw_... --anthropic-api-key sk-ant-...
+fireconnect vscode status
+fireconnect vscode off
+```
+
+VS Code's custom endpoint resolves exactly **one** credential from secret storage (the provider `apiKey`), so FireRouter's two-header auth can't both be encrypted. FireConnect stores the **Anthropic key** encrypted in `state.vscdb` and writes the **Fireworks key** as a plaintext literal in each model's `requestHeaders["X-FireRouter-Fireworks-Key"]`.
+
+`on --router` registers the Claude models FireRouter advertises — **pick one in the VS Code Chat picker**. `--main` and the model commands (`list`/`select`/`add`/`reset`) are disabled in router mode; model choice lives entirely in the Chat picker. Fire Pass keys are rejected (router mode is Anthropic-only).
 
 ## CLI reference
 
@@ -92,7 +110,7 @@ fireconnect vscode model reset     # Reset fireconnect-managed models to default
 fireconnect vscode help            # Show harness-specific help
 ```
 
-Run `fireconnect vscode help` for all options, including `--vscode-path` (explicit `chatLanguageModels.json` path) and `--force`.
+Run `fireconnect vscode help` for all options, including `--vscode-path` (explicit `chatLanguageModels.json` path), `--router` (FireRouter mode), and `--force`.
 
 ### Turn off Fireworks routing
 

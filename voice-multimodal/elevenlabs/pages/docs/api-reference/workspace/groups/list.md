@@ -87,6 +87,8 @@ components:
         - publish_studio_project
         - music
         - image_video_generation
+        - flows
+        - templates
         - share_voice_externally
         - publish_voice_to_voice_library
         - view_fiat_balance
@@ -244,13 +246,35 @@ components:
 
 ```json
 {
-  "engineering_team": {
-    "name": "Engineering Team",
+  "engineering_group": {
+    "name": "Engineering Group",
+    "id": "grp-4b7e9f2a",
+    "members": [
+      "user_11223",
+      "user_44556"
+    ],
+    "permissions": [
+      "speech_to_text",
+      "voice_isolator",
+      "ai_speech_classifier",
+      "workspace_analytics_full_read",
+      "webhooks_manage"
+    ],
+    "group_usage_limit": "unlimited",
+    "group_pvc_limit": 1000,
+    "character_count": 1200000,
+    "scim_external_id": null,
+    "is_scim_synced": false,
+    "scim_group": null,
+    "scim_frozen": false
+  },
+  "marketing_team": {
+    "name": "Marketing Team",
     "id": "grp-8f3a2c1d",
     "members": [
-      "user-1234abcd",
-      "user-5678efgh",
-      "user-9012ijkl"
+      "user_12345",
+      "user_67890",
+      "user_54321"
     ],
     "permissions": [
       "text_to_speech",
@@ -266,32 +290,11 @@ components:
     "is_scim_synced": true,
     "scim_group": {
       "scim_external_id": "scim-ext-001",
-      "display_name": "Engineering Team SCIM",
+      "display_name": "Marketing Team SCIM",
       "created_at_unix": 1672531200,
       "updated_at_unix": 1688208000,
       "seat_type": "workspace_member"
     },
-    "scim_frozen": false
-  },
-  "marketing_group": {
-    "name": "Marketing Group",
-    "id": "grp-4b7d9e2f",
-    "members": [
-      "user-2345bcde",
-      "user-6789fghi"
-    ],
-    "permissions": [
-      "voiceover_studio",
-      "audio_native",
-      "share_voice_externally",
-      "view_fiat_balance"
-    ],
-    "group_usage_limit": "unlimited",
-    "group_pvc_limit": 10000,
-    "character_count": 120000,
-    "scim_external_id": null,
-    "is_scim_synced": false,
-    "scim_group": null,
     "scim_frozen": false
   }
 }

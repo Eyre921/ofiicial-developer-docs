@@ -31,7 +31,14 @@ Currently supported:
 * GLM 5.2
 * GLM 5.2 (Fast)
 * GPT OSS 120B
+* Kimi K2.6 Fast
+* Kimi K2.7 Fast
+* DeepSeek V4 Flash
 * MiniMax M2.7
+
+Coming soon:
+
+* DeepSeek V4 Pro
 
 ## Who can do what
 

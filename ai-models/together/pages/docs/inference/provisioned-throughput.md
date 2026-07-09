@@ -53,7 +53,7 @@ Input tokens, output tokens, and cached reads consume PTUs at different rates. O
 
 You don't need to forecast a precise traffic mix. Whatever shape your traffic takes, it converts into a single normalized rate that draws down your PTU capacity: output-heavy or cache-light traffic consumes PTUs faster, while cache-heavy traffic consumes them more slowly. Traffic shape changes how quickly you consume PTUs, not the SLA.
 
-To estimate how many PTUs your workload needs, use the [pricing calculator](https://www.together.ai/provisioned-throughput).
+To estimate how many PTUs your workload needs, use the [pricing calculator](https://www.together.ai/pricing#provisioned-throughput).
 
 ## SLA
 

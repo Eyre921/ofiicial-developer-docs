@@ -38,7 +38,7 @@ Select serverless chat models bill cached input tokens at a steep discount. Cach
 
 You commit to a fixed number of PTUs for a selected model or model family over a reserved term, with a one-month minimum. Each PTU is priced at a flat \$0.05 per minute; how many PTUs you need depends on the model, your traffic shape, and your committed capacity. Input tokens, output tokens, and cached reads consume PTUs at model-specific conversion ratios defined in your contract.
 
-Estimate your requirements with the [pricing calculator](https://www.together.ai/provisioned-throughput), and see [Provisioned throughput](/docs/inference/provisioned-throughput) for details on PTUs and the SLA.
+Estimate your requirements with the [pricing calculator](https://www.together.ai/pricing#provisioned-throughput), and see [Provisioned throughput](/docs/inference/provisioned-throughput) for details on PTUs and the SLA.
 
 ## Dedicated endpoints
 

@@ -12,17 +12,27 @@ This page covers the VLM-specific data shape, supported models, and launch param
 
 ## Supported models
 
-| Model                                               | Full fine-tuning | LoRA fine-tuning |
-| --------------------------------------------------- | :--------------: | :--------------: |
-| `Qwen/Qwen3-VL-8B-Instruct`                         |         ✅        |         ✅        |
-| `Qwen/Qwen3-VL-30B-A3B-Instruct`                    |         ✅        |         ✅        |
-| `Qwen/Qwen3-VL-235B-A22B-Instruct`                  |         ❌        |         ✅        |
-| `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |         ❌        |         ✅        |
-| `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |         ❌        |         ✅        |
-| `google/gemma-3-4b-it-VLM`                          |         ✅        |         ✅        |
-| `google/gemma-3-12b-it-VLM`                         |         ✅        |         ✅        |
-| `google/gemma-3-27b-it-VLM`                         |         ✅        |         ✅        |
-| `google/gemma-4-31B-it-VLM`                         |         ✅        |         ✅        |
+The following models support vision-language fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
+
+<Accordion title="Supported models">
+  | Organization | Model                                  | API ID                                              |
+  | ------------ | -------------------------------------- | --------------------------------------------------- |
+  | Qwen         | Qwen3.5 27B                            | `Qwen/Qwen3.5-27B`                                  |
+  | Qwen         | Qwen3.5 9B                             | `Qwen/Qwen3.5-9B`                                   |
+  | Qwen         | Qwen3.5 4B                             | `Qwen/Qwen3.5-4B`                                   |
+  | Qwen         | Qwen3.5 2B                             | `Qwen/Qwen3.5-2B`                                   |
+  | Qwen         | Qwen3.5 0.8B                           | `Qwen/Qwen3.5-0.8B`                                 |
+  | Qwen         | Qwen3 VL 8B Instruct                   | `Qwen/Qwen3-VL-8B-Instruct`                         |
+  | Qwen         | Qwen3 VL 32B Instruct                  | `Qwen/Qwen3-VL-32B-Instruct`                        |
+  | Qwen         | Qwen3 VL 30B A3B Instruct              | `Qwen/Qwen3-VL-30B-A3B-Instruct`                    |
+  | Qwen         | Qwen3 VL 235B A22B Instruct            | `Qwen/Qwen3-VL-235B-A22B-Instruct`                  |
+  | Meta         | Llama 4 Scout 17B 16E Instruct VLM     | `meta-llama/Llama-4-Scout-17B-16E-Instruct-VLM`     |
+  | Meta         | Llama 4 Maverick 17B 128E Instruct VLM | `meta-llama/Llama-4-Maverick-17B-128E-Instruct-VLM` |
+  | Google       | Gemma 3 4B IT VLM                      | `google/gemma-3-4b-it-VLM`                          |
+  | Google       | Gemma 3 12B IT VLM                     | `google/gemma-3-12b-it-VLM`                         |
+  | Google       | Gemma 3 27B IT VLM                     | `google/gemma-3-27b-it-VLM`                         |
+  | Google       | Gemma 4 31B IT VLM                     | `google/gemma-4-31B-it-VLM`                         |
+</Accordion>
 
 ## Prepare your data
 

@@ -427,14 +427,14 @@ response = client.chat.completions.create(
 )
 ```
 
-When using preserved thinking, include the unmodified `reasoning_content` from previous turns back in the conversation:
+When using preserved thinking, include the unmodified `reasoning` from previous turns back in the conversation:
 
 ```python theme={null}
 messages.append(
     {
         "role": "assistant",
         "content": content,
-        "reasoning_content": reasoning,  # Return reasoning content faithfully
+        "reasoning": reasoning,  # Return reasoning content faithfully
         "tool_calls": tool_calls,
     }
 )
@@ -476,6 +476,10 @@ response = client.chat.completions.create(
 print("Reasoning:", response.choices[0].message.reasoning)
 print("Answer:", response.choices[0].message.content)
 ```
+
+<Note>
+  Use the `reasoning` field for both input and output. The model returns its chain of thought in `reasoning` (or `delta.reasoning` when streaming), and you pass it back under the same `reasoning` key when you send a prior assistant turn to the API for [preserved thinking](#preserved-thinking) or multi-turn tool calling. The older `reasoning_content` key is still accepted on input for backward compatibility.
+</Note>
 
 ### `<think>` tags in content
 
@@ -602,6 +606,7 @@ For these use cases, consider faster non-reasoning models like [Llama 3.3 70B](/
 
 Reasoning tokens can vary from a few hundred for simple problems to tens of thousands for complex challenges. Strategies to keep costs and latency in check:
 
+* **Count reasoning tokens**: Reasoning output is billed as completion tokens and reported under `usage.completion_tokens_details.reasoning_tokens`. See [OpenAI compatibility](/docs/inference/openai-compatibility#response-shape-differences) for the full usage-object shape, which varies by model.
 * **Use `max_tokens`**: Set a token limit to cap total output. This reduces costs but may truncate reasoning on complex problems, find the right balance for your use case.
 * **Toggle reasoning on hybrid models**: Use `reasoning={"enabled": False}` for simple queries and only enable it when the task benefits from deeper analysis.
 * **Use reasoning effort levels**: On GPT-OSS, use `reasoning_effort="low"` for routine tasks and `"high"` for critical decisions.

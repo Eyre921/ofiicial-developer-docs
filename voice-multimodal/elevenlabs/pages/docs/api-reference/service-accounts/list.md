@@ -93,6 +93,8 @@ components:
         - convai_write
         - music_generation
         - image_video_generation
+        - flows
+        - templates
         - add_voice_from_voice_library
         - create_instant_voice_clone
         - create_professional_voice_clone
@@ -201,6 +203,8 @@ components:
         - publish_studio_project
         - music
         - image_video_generation
+        - flows
+        - templates
         - share_voice_externally
         - publish_voice_to_voice_library
         - view_fiat_balance
@@ -425,7 +429,7 @@ components:
           "key_id": "key_123abc456def789ghi",
           "service_account_user_id": "svcacc_9f8b7c6d5e4a3b2c1d0e",
           "hashed_xi_api_key": "a1b2c3d4e5f67890",
-          "created_at_unix": 1685003600,
+          "created_at_unix": 1688006400,
           "is_disabled": false,
           "permissions": [
             "text_to_speech",
@@ -442,7 +446,7 @@ components:
           "third_party_disable_allowed": true
         }
       ],
-      "created_at_unix": 1685000000,
+      "created_at_unix": 1688006400,
       "default_sharing_groups": [
         {
           "group": {
@@ -461,13 +465,13 @@ components:
             "group_usage_limit": 5000000,
             "group_pvc_limit": 1000,
             "character_count": 1200000,
-            "scim_external_id": "scim_grp_789xyz456abc123",
+            "scim_external_id": "scim_group_789xyz",
             "is_scim_synced": true,
             "scim_group": {
-              "scim_external_id": "scim_grp_789xyz456abc123",
+              "scim_external_id": "scim_group_789xyz",
               "display_name": "Audio Engineers SCIM",
-              "created_at_unix": 1670000000,
-              "updated_at_unix": 1680000000,
+              "created_at_unix": 1672531200,
+              "updated_at_unix": 1680393600,
               "seat_type": "workspace_member"
             },
             "scim_frozen": false

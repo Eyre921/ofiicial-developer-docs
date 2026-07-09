@@ -85,6 +85,76 @@ servers:
     description: Production Singapore
 components:
   schemas:
+    NumericDistributionAggregate:
+      type: object
+      properties:
+        count:
+          type: integer
+          default: 0
+        sum:
+          type: number
+          format: double
+          default: 0
+        min:
+          type:
+            - number
+            - 'null'
+          format: double
+        max:
+          type:
+            - number
+            - 'null'
+          format: double
+      title: NumericDistributionAggregate
+    TopicSentimentAggregate:
+      type: object
+      properties:
+        sentiment:
+          $ref: '#/components/schemas/NumericDistributionAggregate'
+        frustration:
+          $ref: '#/components/schemas/NumericDistributionAggregate'
+        positive_count:
+          type: integer
+          default: 0
+        neutral_count:
+          type: integer
+          default: 0
+        negative_count:
+          type: integer
+          default: 0
+      title: TopicSentimentAggregate
+    TopicEvaluationCriteriaAggregate:
+      type: object
+      properties:
+        criteria_id:
+          type: string
+        success_count:
+          type: integer
+          default: 0
+        failure_count:
+          type: integer
+          default: 0
+        unknown_count:
+          type: integer
+          default: 0
+      required:
+        - criteria_id
+      title: TopicEvaluationCriteriaAggregate
+    TopicMetricsAggregate:
+      type: object
+      properties:
+        conversation_count:
+          type: integer
+          default: 0
+        sentiment:
+          oneOf:
+            - $ref: '#/components/schemas/TopicSentimentAggregate'
+            - type: 'null'
+        evaluation_criteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/TopicEvaluationCriteriaAggregate'
+      title: TopicMetricsAggregate
     AgentTopicResponseModel:
       type: object
       properties:
@@ -110,6 +180,10 @@ components:
             - number
             - 'null'
           format: double
+        metrics:
+          oneOf:
+            - $ref: '#/components/schemas/TopicMetricsAggregate'
+            - type: 'null'
       required:
         - topic_id
         - label
@@ -180,7 +254,35 @@ components:
       "conversation_count": 1,
       "parent_topic_id": "string",
       "x_2d": 1.1,
-      "y_2d": 1.1
+      "y_2d": 1.1,
+      "metrics": {
+        "conversation_count": 0,
+        "sentiment": {
+          "sentiment": {
+            "count": 0,
+            "sum": 0,
+            "min": 1.1,
+            "max": 1.1
+          },
+          "frustration": {
+            "count": 0,
+            "sum": 0,
+            "min": 1.1,
+            "max": 1.1
+          },
+          "positive_count": 0,
+          "neutral_count": 0,
+          "negative_count": 0
+        },
+        "evaluation_criteria": [
+          {
+            "criteria_id": "string",
+            "success_count": 0,
+            "failure_count": 0,
+            "unknown_count": 0
+          }
+        ]
+      }
     }
   ],
   "window_start_unix_secs": 1,

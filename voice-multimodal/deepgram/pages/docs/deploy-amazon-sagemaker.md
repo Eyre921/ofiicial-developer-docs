@@ -48,10 +48,12 @@ When using Deepgram services in Amazon SageMaker, please be aware of the followi
   * [**IAM Policy**](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSMarketplaceManageSubscriptions.html): AWSMarketplaceManageSubscriptions
   * [**IAM Policy**](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonSageMakerFullAccess.html): AmazonSageMakerFullAccess
 
-## Subscribe to Deepgram Products
+## Subscribe to Deepgram Products via AWS Marketplace Console
 
 Before you can deploy Deepgram on Amazon SageMaker AI, you'll need to subscribe to the product in the AWS Marketplace.
 Keep in mind that you are not billed for the product until you deploy an [Amazon SageMaker AI Endpoint resource](https://docs.aws.amazon.com/sagemaker/latest/dg/manage-endpoints-console.html).
+
+Prefer infrastructure as code? You can complete this subscription entirely through the AWS Marketplace API instead of the console. See [Subscribe to a Deepgram product via the Marketplace API](/docs/terraform-deploy-sagemaker#subscribe-to-a-deepgram-product-via-the-marketplace-api).
 
 Login to the [AWS Management Console](https://console.aws.amazon.com/) for the account you'd like to deploy in
 
@@ -70,11 +72,13 @@ Scroll down and click the **Subscribe** button
 Follow [the AWS documentation](https://docs.aws.amazon.com/sagemaker/latest/dg/sagemaker-roles.html) to create an AWS Identity & Access Management (IAM) role that will be used to run SageMaker Model Endpoints.
 You only need to create a single SageMaker execution role, and can reuse this IAM Role to deploy multiple SageMaker Endpoints.
 
-## Deploy Deepgram Model Package for SageMaker AI
+## Deploy Deepgram Model Package for SageMaker AI using the SageMaker AI Console
 
 Once you've subscribed to the Deepgram product on AWS Marketplace, you can deploy a [SageMaker AI Endpoint](https://docs.aws.amazon.com/sagemaker/latest/dg/deploy-model.html).
 The SageMaker "Endpoint" resource represents the compute instance that runs the Deepgram Voice AI services.
 It will take several minutes to deploy a SageMaker Endpoint, once you initiate the resource creation.
+
+**Prefer infrastructure-as-code (IaC)?** To provision the model, endpoint configuration, and endpoint programmatically, see [Deploy with Terraform](/docs/terraform-deploy-sagemaker), which also covers how to [find the Model Package ARN](/docs/terraform-deploy-sagemaker#find-the-model-package-arn).
 
 **Which endpoint type should you deploy?** Deploy a **real-time** endpoint for live streaming and synchronous (single-file) transcription, or an **asynchronous** endpoint for large pre-recorded files (up to 1 GB) and scale-to-zero. See [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker) for a full comparison.
 
@@ -303,4 +307,4 @@ If you experience any issues using Deepgram services running on the Amazon SageM
 * Ensure your application is targeting the correct AWS account and region, where your SageMaker Endpoint exists.
 * Ensure the Deepgram product you've deployed (eg. streaming Speech-to-Text), from the AWS Marketplace, corresponds to the Deepgram API you're calling.
 * There is a known compatibility issue using pre-Blackwell NVIDIA GPUs with the latest [SageMaker-provided AMI](https://docs.aws.amazon.com/sagemaker/latest/APIReference/API_ProductionVariant.html) named `al2023-ami-sagemaker-inference-gpu-4-1` which includes the NVIDIA 580 driver version. When creating your SageMaker Endpoint Configuration resource, using a g4dn, g5, g6, or g6e instance family, please be sure that you are using one of the AMIs before this version. You can also reference [this AWS supported configurations table](https://docs.aws.amazon.com/sagemaker/latest/dg/inference-gpu-drivers.html#inference-gpu-drivers-versions).
-* If you have received a SageMaker private offer for a management account of an AWS organization, you may use [AWS License Manager](https://aws.amazon.com/blogs/awsmarketplace/manage-your-aws-marketplace-license-entitlements-in-aws-license-manager/) to grant usage of the SageMaker private offer to member accounts within your AWS organization as a Marketplace license entitlement.
+* If you have received a SageMaker private offer for a management account of an AWS organization, you may use [AWS License Manager](https://aws.amazon.com/blogs/awsmarketplace/manage-your-aws-marketplace-license-entitlements-in-aws-license-manager/) to grant usage of the SageMaker private offer to member accounts within your AWS organization as a Marketplace license entitlement after accepting the offer in the payer account. If you choose not to centrally manage license entitlements with AWS License Manager, you will need to accept the private offer in each linked account individually after you have accepted the offer in the payer account to be able to launch a SageMaker Endpoint with private pricing in the linked account.

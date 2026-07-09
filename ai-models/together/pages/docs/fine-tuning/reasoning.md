@@ -16,15 +16,47 @@ This page covers the reasoning data shape, supported models, and launch paramete
 
 ## Supported models
 
-| Organization | Model                                                                       | API ID                             |
-| ------------ | --------------------------------------------------------------------------- | ---------------------------------- |
-| Qwen         | Qwen 3 (0.6B, 1.7B, 4B, 8B, 14B, 32B, 30B-A3B, 235B-A22B) and Base variants | `Qwen/Qwen3-*`                     |
-| Qwen         | Qwen 3 Next 80B A3B Thinking                                                | `Qwen/Qwen3-Next-80B-A3B-Thinking` |
-| Qwen         | Qwen 3.5 (0.8B, 2B, 4B, 9B, 27B, 35B-A3B, 122B-A10B, 397B-A17B)             | `Qwen/Qwen3.5-*`                   |
-| Qwen         | Qwen 3.6 35B A3B                                                            | `Qwen/Qwen3.6-35B-A3B`             |
-| Z.ai         | GLM 4.6, GLM 4.7, GLM 5, GLM 5.1                                            | `zai-org/GLM-*`                    |
-| Google       | Gemma 4 31B IT, Gemma 4 26B A4B IT                                          | `google/gemma-4-*`                 |
-| OpenAI       | GPT-OSS 20B, GPT-OSS 120B                                                   | `openai/gpt-oss-*`                 |
+The following models support reasoning fine-tuning. See [supported models](/docs/fine-tuning/supported-models) for context lengths and batch limits.
+
+<Accordion title="Supported models">
+  | Organization | Model                                              | API ID                                               |
+  | ------------ | -------------------------------------------------- | ---------------------------------------------------- |
+  | NVIDIA       | NVIDIA Nemotron 3 Nano Omni 30B A3B Reasoning BF16 | `nvidia/Nemotron-3-Nano-Omni-30B-A3B-Reasoning-BF16` |
+  | Qwen         | Qwen3.5 397B A17B                                  | `Qwen/Qwen3.5-397B-A17B`                             |
+  | Qwen         | Qwen3.5 122B A10B                                  | `Qwen/Qwen3.5-122B-A10B`                             |
+  | Qwen         | Qwen3.5 35B A3B                                    | `Qwen/Qwen3.5-35B-A3B`                               |
+  | Qwen         | Qwen3.5 35B A3B Base                               | `Qwen/Qwen3.5-35B-A3B-Base`                          |
+  | Qwen         | Qwen3.5 27B                                        | `Qwen/Qwen3.5-27B`                                   |
+  | Qwen         | Qwen3.5 9B                                         | `Qwen/Qwen3.5-9B`                                    |
+  | Qwen         | Qwen3.5 4B                                         | `Qwen/Qwen3.5-4B`                                    |
+  | Qwen         | Qwen3.5 2B                                         | `Qwen/Qwen3.5-2B`                                    |
+  | Qwen         | Qwen3.5 0.8B                                       | `Qwen/Qwen3.5-0.8B`                                  |
+  | Qwen         | Qwen3.6 35B A3B                                    | `Qwen/Qwen3.6-35B-A3B`                               |
+  | Qwen         | Qwen3 Next 80B A3B Thinking                        | `Qwen/Qwen3-Next-80B-A3B-Thinking`                   |
+  | Qwen         | Qwen3 0.6B                                         | `Qwen/Qwen3-0.6B`                                    |
+  | Qwen         | Qwen3 0.6B Base                                    | `Qwen/Qwen3-0.6B-Base`                               |
+  | Qwen         | Qwen3 1.7B                                         | `Qwen/Qwen3-1.7B`                                    |
+  | Qwen         | Qwen3 1.7B Base                                    | `Qwen/Qwen3-1.7B-Base`                               |
+  | Qwen         | Qwen3 4B                                           | `Qwen/Qwen3-4B`                                      |
+  | Qwen         | Qwen3 4B Base                                      | `Qwen/Qwen3-4B-Base`                                 |
+  | Qwen         | Qwen3 8B                                           | `Qwen/Qwen3-8B`                                      |
+  | Qwen         | Qwen3 8B Base                                      | `Qwen/Qwen3-8B-Base`                                 |
+  | Qwen         | Qwen3 14B                                          | `Qwen/Qwen3-14B`                                     |
+  | Qwen         | Qwen3 14B Base                                     | `Qwen/Qwen3-14B-Base`                                |
+  | Qwen         | Qwen3 32B                                          | `Qwen/Qwen3-32B`                                     |
+  | Qwen         | Qwen3 30B A3B Base                                 | `Qwen/Qwen3-30B-A3B-Base`                            |
+  | Qwen         | Qwen3 30B A3B                                      | `Qwen/Qwen3-30B-A3B`                                 |
+  | Qwen         | Qwen3 235B A22B                                    | `Qwen/Qwen3-235B-A22B`                               |
+  | Z.ai         | GLM 5.1                                            | `zai-org/GLM-5.1`                                    |
+  | Z.ai         | GLM 5                                              | `zai-org/GLM-5`                                      |
+  | Z.ai         | GLM 4.7                                            | `zai-org/GLM-4.7`                                    |
+  | Z.ai         | GLM 4.6                                            | `zai-org/GLM-4.6`                                    |
+  | OpenAI       | GPT-OSS 20B                                        | `openai/gpt-oss-20b`                                 |
+  | OpenAI       | GPT-OSS 120B                                       | `openai/gpt-oss-120b`                                |
+  | Google       | Gemma 4 31B IT                                     | `google/gemma-4-31B-it`                              |
+  | Google       | Gemma 4 31B IT VLM                                 | `google/gemma-4-31B-it-VLM`                          |
+  | Google       | Gemma 4 26B A4B IT                                 | `google/gemma-4-26B-A4B-it`                          |
+</Accordion>
 
 ## Prepare your data
 

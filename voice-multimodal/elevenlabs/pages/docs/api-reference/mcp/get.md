@@ -233,7 +233,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     ToolCallSoundBehavior:
       type: string
@@ -251,6 +251,17 @@ components:
         - async
       default: immediate
       title: ToolExecutionMode
+    McpToolConfigOverrideOutputToolCallSound:
+      oneOf:
+        - $ref: '#/components/schemas/ToolCallSoundType'
+        - type: string
+          enum:
+            - 'off'
+      description: >-
+        Overrides the server's tool_call_sound setting for this tool. A sound
+        name plays that sound; 'off' overrides to no sound (silence); null means
+        do not override (inherit the server default).
+      title: McpToolConfigOverrideOutputToolCallSound
     DynamicVariableAssignment:
       type: object
       properties:
@@ -499,9 +510,12 @@ components:
             tool.
         tool_call_sound:
           oneOf:
-            - $ref: '#/components/schemas/ToolCallSoundType'
+            - $ref: '#/components/schemas/McpToolConfigOverrideOutputToolCallSound'
             - type: 'null'
-          description: If set, overrides the server's tool_call_sound setting for this tool
+          description: >-
+            Overrides the server's tool_call_sound setting for this tool. A
+            sound name plays that sound; 'off' overrides to no sound (silence);
+            null means do not override (inherit the server default).
         tool_call_sound_behavior:
           oneOf:
             - $ref: '#/components/schemas/ToolCallSoundBehavior'

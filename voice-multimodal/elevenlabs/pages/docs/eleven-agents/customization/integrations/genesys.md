@@ -28,8 +28,8 @@ After creating the OAuth client, copy the **Client ID** and **Client Secret** im
 
 Identify your Genesys Cloud region (e.g., `mypurecloud.com` for US, `mypurecloud.de` for Europe, etc.).
 
-In the ElevenLabs dashboard, go to Agents > Integrations, click **Add Integeration** and select **Genesys**.
-Under the configure tab, enter your **region**, **Client ID**, and **Client Secret**.
+In the ElevenLabs dashboard, go to **Agents > Integrations**, click **Add Integration** and select **Genesys**.
+Under the **Configure** tab, enter your **region**, **Client ID**, and **Client Secret**.
 
 ## Triggers
 
@@ -37,22 +37,28 @@ Under the configure tab, enter your **region**, **Client ID**, and **Client Secr
 
 For voice-based agents, configure the Genesys Audio Connector to connect phone numbers to your ElevenLabs conversational AI agents.
 
-Follow our comprehensive documentation for step-by-step setup instructions including authentication, phone number configuration, and call routing:
-
-[Genesys Audio Connector Documentation](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys)
+For step-by-step setup instructions including authentication, phone number configuration, and call routing, see the [Genesys Audio Connector documentation](https://elevenlabs.io/docs/eleven-agents/phone-numbers/c-caa-s-integrations/genesys).
 
 ### Bot Connector
 
-The Genesys Bot Connector is currently in limited availability and not yet available in all
-workspaces.
-
 For text-based agents, use the Genesys Bot Connector trigger to enable chat and messaging interactions. The Bot Connector automatically creates and configures the integration in your Genesys Cloud environment.
+
+#### Configure trigger
+
+On the Integrations page in the ElevenAgents dashboard, open the Genesys integration, and navigate to the **Triggers** tab. Select **Genesys Bot Connector**.
+
+Fill in the required fields:
+
+* **Agent**: the ElevenLabs agent that will handle incoming conversations.
+* **Integration Name**: name for the Bot Connector integration to be created in Genesys Cloud (e.g., "ElevenLabs Support Bot"). This name is used to derive the bot integration and bot name referenced in Architect flows.
+
+Save and activate the trigger. ElevenLabs automatically creates a Bot Connector integration in your Genesys Cloud environment with the intents `success` and `escalate`. Deactivating the trigger removes the integration from Genesys Cloud.
 
 #### Configure inbound message flow
 
 In Architect, open the Inbound Message Flow you want to use.
 
-1. Add a **Call Bot Connector** node and point it at your bot integration and bot name (both derived from the trigger name you set in ElevenLabs)
+1. Add a **Call Bot Connector** node and point it at your bot integration and bot name (both derived from the **Integration Name** you set in the trigger configuration).
 2. Handle the returned intents:
    * **success** → send the agent's response back to the user
    * **escalate** → transfer to a support queue
@@ -64,8 +70,7 @@ In Architect, open the Inbound Message Flow you want to use.
 
 To enable your agent to escalate conversations to human support, configure the following in ElevenLabs:
 
-In your agent configuration, add the **Update state** system tool. This allows the agent to set dynamic variables that control the conversation flow.
-The **Update state** tool needs to be configured to set the `genesys_should_escalate` Dynamic Variable to true.
+In your agent configuration, add the **Update state** system tool. Configure it to set the `genesys_should_escalate` dynamic variable to `true`.
 
 Add escalation instructions to your agent's system prompt:
 
@@ -86,13 +91,23 @@ When the agent sets `genesys_should_escalate` to `true`, the Bot Connector will 
 
 ## FAQ
 
-### Why did my Bot Connector activation fail?
+### Why did my Bot Connector trigger setup fail?
 
-Bot Connector activation can fail when information doesn't propagate through Genesys internal systems fast enough. Retrying after a couple of minutes usually succeeds. If the problem persists, reach out to ElevenLabs support.
+Setting up a Bot Connector involves multiple steps that need to propagate through Genesys internal systems. If propagation is slow, the setup can fail. Retrying after a couple of minutes usually succeeds. If the problem persists, reach out to ElevenLabs support.
 
 ### Will agents see conversation history after escalation?
 
 Yes, past messages will appear as bot messages in the Genesys interface, so the agent can see the full conversation history.
+
+### My Bot Connector is failing, how do I debug it?
+
+In ElevenLabs, check for past conversations on your agent that originate from Genesys. These will have conversation IDs with a suffix `gn_xxxxxx` where the last six characters are the first characters of the connected Genesys conversation.
+If there are errors in the transcript, for example failed tool calls, address these.
+
+Also check if the agent takes longer than 10 seconds to reply, as Genesys only gives it a 10 second timeout.
+
+If there are no past conversations, the error might be on the Genesys side.
+In the Genesys Architect, check the execution history of your flow. Find it in the drop-down menu of the save button.
 
 ## Useful links
 

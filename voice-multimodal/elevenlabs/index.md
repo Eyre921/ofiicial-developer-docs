@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 764 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 761 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -21,7 +21,6 @@
 - `docs/api-reference/agents/drafts/delete` — [Delete draft](pages/docs/api-reference/agents/drafts/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/drafts/delete.md)
 - `docs/api-reference/agents/duplicate` — [Duplicate agent](pages/docs/api-reference/agents/duplicate.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/duplicate.md)
 - `docs/api-reference/agents/get` — [Get agent](pages/docs/api-reference/agents/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get.md)
-- `docs/api-reference/agents/get-default-interruption-ignore-terms` — [Get default interruption ignore terms](pages/docs/api-reference/agents/get-default-interruption-ignore-terms.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get-default-interruption-ignore-terms.md)
 - `docs/api-reference/agents/get-link` — [Get link](pages/docs/api-reference/agents/get-link.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get-link.md)
 - `docs/api-reference/agents/get-summaries` — [Get agent summaries](pages/docs/api-reference/agents/get-summaries.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/get-summaries.md)
 - `docs/api-reference/agents/list` — [List agents](pages/docs/api-reference/agents/list.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/list.md)
@@ -338,7 +337,6 @@
 - `docs/eleven-agents/api-reference/agents/drafts/delete` — [Delete draft](pages/docs/eleven-agents/api-reference/agents/drafts/delete.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/drafts/delete.md)
 - `docs/eleven-agents/api-reference/agents/duplicate` — [Duplicate agent](pages/docs/eleven-agents/api-reference/agents/duplicate.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/duplicate.md)
 - `docs/eleven-agents/api-reference/agents/get` — [Get agent](pages/docs/eleven-agents/api-reference/agents/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get.md)
-- `docs/eleven-agents/api-reference/agents/get-default-interruption-ignore-terms` — [Get default interruption ignore terms](pages/docs/eleven-agents/api-reference/agents/get-default-interruption-ignore-terms.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-default-interruption-ignore-terms.md)
 - `docs/eleven-agents/api-reference/agents/get-link` — [Get link](pages/docs/eleven-agents/api-reference/agents/get-link.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-link.md)
 - `docs/eleven-agents/api-reference/agents/get-summaries` — [Get agent summaries](pages/docs/eleven-agents/api-reference/agents/get-summaries.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/get-summaries.md)
 - `docs/eleven-agents/api-reference/agents/list` — [List agents](pages/docs/eleven-agents/api-reference/agents/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/list.md)
@@ -558,7 +556,6 @@
 - `docs/eleven-agents/dashboard/spotlight/topic-discovery` — [Topic discovery](pages/docs/eleven-agents/dashboard/spotlight/topic-discovery.md) · [原文](https://elevenlabs.io/docs/eleven-agents/dashboard/spotlight/topic-discovery.md)
 - `docs/eleven-agents/guides/burst-pricing` — [Burst pricing](pages/docs/eleven-agents/guides/burst-pricing.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/burst-pricing.md)
 - `docs/eleven-agents/guides/chat-mode` — [Chat Mode](pages/docs/eleven-agents/guides/chat-mode.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/chat-mode.md)
-- `docs/eleven-agents/guides/elevenlabs-docs-agent` — [Building the ElevenLabs documentation agent](pages/docs/eleven-agents/guides/elevenlabs-docs-agent.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/elevenlabs-docs-agent.md)
 - `docs/eleven-agents/guides/integrations/expo-react-native` — [Cross-platform Voice Agents with Expo React Native](pages/docs/eleven-agents/guides/integrations/expo-react-native.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/expo-react-native.md)
 - `docs/eleven-agents/guides/integrations/live-avatar` — [LiveAvatar](pages/docs/eleven-agents/guides/integrations/live-avatar.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/live-avatar.md)
 - `docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant` — [Build a Voice Assistant with Agents Platform on a Raspberry Pi](pages/docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant.md) · [原文](https://elevenlabs.io/docs/eleven-agents/guides/integrations/raspberry-pi-voice-assistant.md)

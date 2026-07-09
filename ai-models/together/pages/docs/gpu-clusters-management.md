@@ -270,7 +270,7 @@ kubectl -n kubernetes-dashboard get secret \
 
 ### SSH to GPU Worker Nodes (in Kubernetes) and Slurm Compute Nodes (Slurm)
 
-You can SSH directly into any GPU worker node/ Slurm compute nodes from the cluster UI.
+You can SSH directly into any GPU worker node / Slurm compute node from the cluster UI.
 
 **From the UI:**
 
@@ -294,7 +294,7 @@ ssh 9cvq-68pzlt-99e6e06b-ec17-4198-96c2-6a7a9c2236b2.s1.us-central-4b.cloud.toge
 * Debug node-level networking or storage issues
 * Check Kubernetes kubelet status and logs
 * View all processes running on the node
-* In case of Slurm clusters you can directly run GPU workloads on the compute nodes via ssh
+* In case of Slurm clusters you can directly run GPU workloads on the compute nodes via SSH
 
 <Warning>
   **Important: SSH access matrix (Kubernetes vs Slurm)**

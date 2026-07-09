@@ -636,6 +636,7 @@ components:
       enum:
         - none
         - fade
+        - typewriter
       title: CaptionStyleCharacterAnimationModelEnterType
     CaptionStyleCharacterAnimationModelExitType:
       type: string
@@ -802,6 +803,10 @@ components:
           oneOf:
             - $ref: '#/components/schemas/CaptionStyleCharacterAnimationModel'
             - type: 'null'
+        cursor_enabled:
+          type:
+            - boolean
+            - 'null'
         width_pct:
           type:
             - number

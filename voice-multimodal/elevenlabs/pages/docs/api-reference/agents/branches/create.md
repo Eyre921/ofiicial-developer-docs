@@ -1091,7 +1091,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
             - type: 'null'
-          description: The optimization for streaming latency
+          description: 'Deprecated: this field is a no-op and is ignored.'
         stability:
           type:
             - number
@@ -1747,7 +1747,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     ToolCallSoundBehavior:
       type: string
@@ -2139,7 +2139,7 @@ components:
         - agent_id
         - description
       title: SubAgent-Input
-    AgentTransfer:
+    AgentTransfer-Input:
       type: object
       properties:
         agent_id:
@@ -2173,7 +2173,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransfer-Input
     PhoneNumberTransferCustomSipHeadersItems:
       oneOf:
         - type: object
@@ -2576,7 +2576,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/AgentTransfer'
+                $ref: '#/components/schemas/AgentTransfer-Input'
           required:
             - system_tool_type
             - transfers

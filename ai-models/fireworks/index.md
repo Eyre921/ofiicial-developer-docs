@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 382 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 384 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -144,6 +144,8 @@
 - `ecosystem/fireconnect/claude-code` — [Claude Code](pages/ecosystem/fireconnect/claude-code.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/claude-code)
 - `ecosystem/fireconnect/codex` — [Codex](pages/ecosystem/fireconnect/codex.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/codex)
 - `ecosystem/fireconnect/cursor` — [Cursor](pages/ecosystem/fireconnect/cursor.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/cursor)
+- `ecosystem/fireconnect/deepagents` — [Deep Agents](pages/ecosystem/fireconnect/deepagents.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/deepagents)
+- `ecosystem/fireconnect/microsoft-foundry` — [Microsoft Foundry](pages/ecosystem/fireconnect/microsoft-foundry.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/microsoft-foundry)
 - `ecosystem/fireconnect/opencode` — [OpenCode](pages/ecosystem/fireconnect/opencode.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/opencode)
 - `ecosystem/fireconnect/overview` — [Overview](pages/ecosystem/fireconnect/overview.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/overview)
 - `ecosystem/fireconnect/pi` — [Pi](pages/ecosystem/fireconnect/pi.md) · [原文](https://docs.fireworks.ai/ecosystem/fireconnect/pi)

@@ -650,6 +650,7 @@ To simulate a [disputed transaction](https://docs.stripe.com/disputes.md), use t
 | Visa Compelling Evidence 3.0 | 4000000404000038 | With default account settings, charge succeeds, only to be disputed as a [Visa Compelling Evidence 3.0 eligible dispute](https://docs.stripe.com/disputes/api/visa-ce3.md#testing). |
 | Visa compliance | 4000008400000779 | With default account settings, charge succeeds, only to be disputed as a [Visa compliance dispute](https://docs.stripe.com/disputes/api/visa-compliance.md#testing). |
 | Mastercard compliance | 5105008400000002 | With default account settings, charge succeeds, only to be disputed as a [Mastercard compliance dispute](https://docs.stripe.com/disputes/api/mastercard-compliance.md#testing). |
+| Smart disputes | 4000000001000043 | With default account settings, charge succeeds, only to be disputed as a [Smart Disputes](https://docs.stripe.com/disputes/smart-disputes.md) eligible dispute. |
 
 #### PaymentMethods
 
@@ -663,6 +664,7 @@ To simulate a [disputed transaction](https://docs.stripe.com/disputes.md), use t
 | Visa Compelling Evidence 3.0 | `pm_card_createCe3EligibleDispute` | With default account settings, charge succeeds, only to be disputed as a [Visa Compelling Evidence 3.0 eligible dispute](https://docs.stripe.com/disputes/api/visa-ce3.md#testing). |
 | Visa compliance | `pm_card_createComplianceDispute` | With default account settings, charge succeeds, only to be disputed as a [Visa compliance dispute](https://docs.stripe.com/disputes/api/visa-compliance.md#testing). |
 | Mastercard compliance | `pm_card_createMastercardComplianceDispute` | With default account settings, the charge succeeds, only to be disputed as a [Mastercard compliance dispute](https://docs.stripe.com/disputes/api/mastercard-compliance.md#testing). |
+| Smart disputes | `pm_card_createAutoRepresentmentEligibleDispute` | With default account settings, charge succeeds, only to be disputed as a [Smart Disputes](https://docs.stripe.com/disputes/smart-disputes.md) eligible dispute. |
 
 #### Tokens
 
@@ -678,6 +680,7 @@ Most integrations don’t use tokens anymore, but we make test tokens such as [t
 | Visa Compelling Evidence 3.0 | `tok_createCe3EligibleDispute` | With default account settings, charge succeeds, only to be disputed as a [Visa Compelling Evidence 3.0 eligible dispute](https://docs.stripe.com/disputes/api/visa-ce3.md#testing). |
 | Visa compliance | `tok_createComplianceDispute` | With default account settings, charge succeeds, only to be disputed as a [Visa compliance dispute](https://docs.stripe.com/disputes/api/visa-compliance.md#testing). |
 | Mastercard compliance | `tok_createMastercardComplianceDispute` | With default account settings, the charge succeeds, only to be disputed as a [Mastercard compliance dispute](https://docs.stripe.com/disputes/api/mastercard-compliance.md#testing). |
+| Smart disputes | `tok_createAutoRepresentmentEligibleDispute` | With default account settings, charge succeeds, only to be disputed as a [Smart Disputes](https://docs.stripe.com/disputes/smart-disputes.md) eligible dispute. |
 
 ### Evidence 
 

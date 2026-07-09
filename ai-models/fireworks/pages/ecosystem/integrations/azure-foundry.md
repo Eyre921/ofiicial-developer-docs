@@ -116,11 +116,11 @@ All Fireworks on Foundry usage is billed through Azure. You do not need a separa
 
 Use FireConnect to route local coding harnesses through your Foundry deployments without hand-editing config files.
 
-<Card title="FireConnect overview" icon="terminal" href="/ecosystem/fireconnect/overview#fireworks-on-microsoft-foundry">
+<Card title="FireConnect + Microsoft Foundry" icon="terminal" href="/ecosystem/fireconnect/microsoft-foundry">
   Configure `--provider azure`, then run `fireconnect opencode on`, `fireconnect codex on`, or `fireconnect pi on --main <deployment-name>`
 </Card>
 
-Supported harnesses for Foundry: **OpenCode**, **Codex**, and **Pi**. Claude Code, Cursor, and VS Code require direct Fireworks routing.
+FireConnect implements Azure routing for **OpenCode**, **Codex**, and **Pi** today. Claude Code, Cursor, VS Code, and Deep Agents do not — running `on` on those harnesses always wires direct Fireworks for now, regardless of global `--provider azure`.
 
 ```bash theme={null}
 export AZURE_API_KEY=<your-azure-api-key>
@@ -128,13 +128,12 @@ export AZURE_API_KEY=<your-azure-api-key>
 fireconnect configure \
   --provider azure \
   --base-url https://<resource>.services.ai.azure.com \
-  --api-key $AZURE_API_KEY \
-  --harnesses opencode,codex,pi
+  --api-key $AZURE_API_KEY
 
 fireconnect opencode on --main FW-GLM-5.1
 ```
 
-See [Fireworks on Microsoft Foundry in FireConnect](/ecosystem/fireconnect/overview#fireworks-on-microsoft-foundry) for deployment names, one-off `--azure` routing, and switching back to direct Fireworks.
+See [FireConnect + Microsoft Foundry](/ecosystem/fireconnect/microsoft-foundry) for deployment names, per-harness config details, one-off `--azure` routing, [turning Foundry off](/ecosystem/fireconnect/microsoft-foundry#turn-off-foundry-routing), and switching back to direct Fireworks.
 
 ## Additional resources
 

@@ -991,7 +991,7 @@ components:
           description: The audio format to use for TTS
         optimize_streaming_latency:
           $ref: '#/components/schemas/type_:TtsOptimizeStreamingLatency'
-          description: The optimization for streaming latency
+          description: 'Deprecated: this field is a no-op and is ignored.'
         stability:
           type: number
           format: double
@@ -1550,7 +1550,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     type_:ToolCallSoundBehavior:
       type: string
@@ -1919,7 +1919,7 @@ components:
         - agent_id
         - description
       title: SubAgentInput
-    type_:AgentTransfer:
+    type_:AgentTransferInput:
       type: object
       properties:
         agent_id:
@@ -1947,7 +1947,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransferInput
     type_:PhoneNumberTransferCustomSipHeadersItem:
       oneOf:
         - type: object
@@ -2283,7 +2283,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/type_:AgentTransfer'
+                $ref: '#/components/schemas/type_:AgentTransferInput'
           required:
             - system_tool_type
             - transfers

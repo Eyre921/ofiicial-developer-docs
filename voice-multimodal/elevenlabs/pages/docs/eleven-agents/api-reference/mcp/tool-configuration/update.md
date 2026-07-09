@@ -43,6 +43,16 @@ paths:
           required: true
           schema:
             type: string
+        - name: environment
+          in: query
+          description: >-
+            Environment whose values are used when the MCP server URL, headers,
+            or auth connection reference environment variables. Mirrors the
+            environment a conversation would run in; defaults to production.
+          required: false
+          schema:
+            type: string
+            default: production
         - name: xi-api-key
           in: header
           required: false
@@ -95,10 +105,13 @@ paths:
                     If set, overrides the server's interruption_mode setting for
                     this tool.
                 tool_call_sound:
-                  $ref: '#/components/schemas/type_:ToolCallSoundType'
+                  $ref: >-
+                    #/components/schemas/type_conversationalAi/mcpServers/toolConfigs:McpToolConfigOverrideUpdateRequestModelToolCallSound
                   description: >-
-                    If set, overrides the server's tool_call_sound setting for
-                    this tool
+                    Overrides the server's tool_call_sound setting for this
+                    tool. A sound name plays that sound; 'off' overrides to no
+                    sound (silence); null means do not override (inherit the
+                    server default).
                 tool_call_sound_behavior:
                   $ref: '#/components/schemas/type_:ToolCallSoundBehavior'
                   description: >-
@@ -169,8 +182,19 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
+    type_conversationalAi/mcpServers/toolConfigs:McpToolConfigOverrideUpdateRequestModelToolCallSound:
+      oneOf:
+        - $ref: '#/components/schemas/type_:ToolCallSoundType'
+        - type: string
+          enum:
+            - 'off'
+      description: >-
+        Overrides the server's tool_call_sound setting for this tool. A sound
+        name plays that sound; 'off' overrides to no sound (silence); null means
+        do not override (inherit the server default).
+      title: McpToolConfigOverrideUpdateRequestModelToolCallSound
     type_:ToolCallSoundBehavior:
       type: string
       enum:
@@ -521,6 +545,17 @@ components:
         - $ref: '#/components/schemas/type_:EnvironmentAuthConnectionLocator'
       description: Optional auth connection to use for authentication with this MCP server
       title: McpServerConfigOutputAuthConnection
+    type_:McpToolConfigOverrideOutputToolCallSound:
+      oneOf:
+        - $ref: '#/components/schemas/type_:ToolCallSoundType'
+        - type: string
+          enum:
+            - 'off'
+      description: >-
+        Overrides the server's tool_call_sound setting for this tool. A sound
+        name plays that sound; 'off' overrides to no sound (silence); null means
+        do not override (inherit the server default).
+      title: McpToolConfigOverrideOutputToolCallSound
     type_:McpToolConfigOverrideOutputInputOverridesValue:
       oneOf:
         - type: object
@@ -616,8 +651,11 @@ components:
             If set, overrides the server's interruption_mode setting for this
             tool.
         tool_call_sound:
-          $ref: '#/components/schemas/type_:ToolCallSoundType'
-          description: If set, overrides the server's tool_call_sound setting for this tool
+          $ref: '#/components/schemas/type_:McpToolConfigOverrideOutputToolCallSound'
+          description: >-
+            Overrides the server's tool_call_sound setting for this tool. A
+            sound name plays that sound; 'off' overrides to no sound (silence);
+            null means do not override (inherit the server default).
         tool_call_sound_behavior:
           $ref: '#/components/schemas/type_:ToolCallSoundBehavior'
           description: >-
@@ -1049,7 +1087,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.mcpServers.toolConfigs.update("mcp_server_id", "tool_name", {});
+    await client.conversationalAi.mcpServers.toolConfigs.update("mcp_server_id", "tool_name", {
+        environment: "environment",
+    });
 }
 main();
 
@@ -1063,6 +1103,7 @@ client = ElevenLabs()
 client.conversational_ai.mcp_servers.tool_configs.update(
     mcp_server_id="mcp_server_id",
     tool_name="tool_name",
+    environment="environment",
 )
 
 ```
@@ -1079,7 +1120,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name"
+	url := "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name?environment=environment"
 
 	payload := strings.NewReader("{}")
 
@@ -1102,7 +1143,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name")
+url = URI("https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name?environment=environment")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -1119,7 +1160,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name")
+HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name?environment=environment")
   .header("Content-Type", "application/json")
   .body("{}")
   .asString();
@@ -1131,7 +1172,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name', [
+$response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name?environment=environment', [
   'body' => '{}',
   'headers' => [
     'Content-Type' => 'application/json',
@@ -1144,7 +1185,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name?environment=environment");
 var request = new RestRequest(Method.PATCH);
 request.AddHeader("Content-Type", "application/json");
 request.AddParameter("application/json", "{}", ParameterType.RequestBody);
@@ -1159,7 +1200,7 @@ let parameters = [] as [String : Any]
 
 let postData = JSONSerialization.data(withJSONObject: parameters, options: [])
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/mcp-servers/mcp_server_id/tool-configs/tool_name?environment=environment")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "PATCH"

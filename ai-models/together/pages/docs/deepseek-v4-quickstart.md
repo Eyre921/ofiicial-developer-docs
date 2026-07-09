@@ -8,7 +8,7 @@ Call DeepSeek V4 Pro on Together for hybrid reasoning, long-context, and tool-us
 
 DeepSeek V4 Pro is DeepSeek's frontier 1.6T-parameter Mixture-of-Experts model (49B active per token), with a hybrid attention architecture built for long-context, low-cost reasoning. On Together AI, it runs in FP4 with a 512K-token context window and supports streaming, function calling, structured outputs, and adjustable reasoning effort.
 
-The model ID is `deepseek-ai/DeepSeek-V4-Pro`. Pricing is \$2.10 per 1M input tokens, \$4.40 per 1M output tokens, and \$0.20 per 1M cached input tokens.
+The model ID is `deepseek-ai/DeepSeek-V4-Pro`. Pricing is \$1.74 per 1M input tokens, \$3.48 per 1M output tokens, and \$0.20 per 1M cached input tokens.
 
 ## Quickstart
 

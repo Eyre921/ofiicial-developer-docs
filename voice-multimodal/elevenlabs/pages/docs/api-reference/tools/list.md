@@ -219,7 +219,7 @@ components:
         - elevator2
         - elevator3
         - elevator4
-      description: Predefined tool call sound types.
+      description: Predefined tool call sounds; ``None`` means no sound.
       title: ToolCallSoundType
     ToolCallSoundBehavior:
       type: string
@@ -628,7 +628,7 @@ components:
         - agent_id
         - description
       title: SubAgent-Output
-    AgentTransfer:
+    AgentTransfer-Output:
       type: object
       properties:
         agent_id:
@@ -662,7 +662,7 @@ components:
             transferred agent.
       required:
         - condition
-      title: AgentTransfer
+      title: AgentTransfer-Output
     PhoneNumberTransferCustomSipHeadersItems:
       oneOf:
         - type: object
@@ -1065,7 +1065,7 @@ components:
             transfers:
               type: array
               items:
-                $ref: '#/components/schemas/AgentTransfer'
+                $ref: '#/components/schemas/AgentTransfer-Output'
           required:
             - system_tool_type
             - transfers

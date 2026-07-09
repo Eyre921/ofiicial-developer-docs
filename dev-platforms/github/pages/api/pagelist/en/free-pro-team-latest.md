@@ -8,7 +8,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/search
 /en/get-started
 /en/get-started/start-your-journey
-/en/get-started/start-your-journey/about-github-and-git
+/en/get-started/start-your-journey/what-is-github
 /en/get-started/start-your-journey/creating-an-account-on-github
 /en/get-started/start-your-journey/hello-world
 /en/get-started/start-your-journey/setting-up-your-profile

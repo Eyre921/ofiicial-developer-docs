@@ -365,7 +365,7 @@ components:
         - no_results
       default: success
       title: KnowledgeBaseRagToolStatus
-    type_:TransferToAgentToolResultSuccessModelBranchInfo:
+    type_:TransferToAgentToolResultSuccessModelInputBranchInfo:
       oneOf:
         - type: object
           properties:
@@ -397,7 +397,7 @@ components:
             - traffic_percentage
       discriminator:
         propertyName: branch_reason
-      title: TransferToAgentToolResultSuccessModelBranchInfo
+      title: TransferToAgentToolResultSuccessModelInputBranchInfo
     type_:ConversationHistoryTranscriptSystemToolResultCommonModelInputResult:
       oneOf:
         - type: object
@@ -603,7 +603,7 @@ components:
               default: false
             branch_info:
               $ref: >-
-                #/components/schemas/type_:TransferToAgentToolResultSuccessModelBranchInfo
+                #/components/schemas/type_:TransferToAgentToolResultSuccessModelInputBranchInfo
             preserve_client_tts_overrides:
               type: boolean
               default: false
@@ -1134,6 +1134,9 @@ components:
         llm_usage:
           $ref: '#/components/schemas/type_:LlmUsageInput'
         interrupted:
+          type: boolean
+          default: false
+        ignored_as_backchannel:
           type: boolean
           default: false
         original_message:
@@ -1819,6 +1822,39 @@ components:
         - params_as_json
         - tool_has_been_called
       title: ConversationHistoryTranscriptToolCallCommonModelOutput
+    type_:TransferToAgentToolResultSuccessModelOutputBranchInfo:
+      oneOf:
+        - type: object
+          properties:
+            branch_reason:
+              type: string
+              enum:
+                - defaulting_to_main
+              description: 'Discriminator value: defaulting_to_main'
+            branch_id:
+              type: string
+          required:
+            - branch_reason
+            - branch_id
+        - type: object
+          properties:
+            branch_reason:
+              type: string
+              enum:
+                - traffic_split
+              description: 'Discriminator value: traffic_split'
+            branch_id:
+              type: string
+            traffic_percentage:
+              type: number
+              format: double
+          required:
+            - branch_reason
+            - branch_id
+            - traffic_percentage
+      discriminator:
+        propertyName: branch_reason
+      title: TransferToAgentToolResultSuccessModelOutputBranchInfo
     type_:ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult:
       oneOf:
         - type: object
@@ -2024,7 +2060,7 @@ components:
               default: false
             branch_info:
               $ref: >-
-                #/components/schemas/type_:TransferToAgentToolResultSuccessModelBranchInfo
+                #/components/schemas/type_:TransferToAgentToolResultSuccessModelOutputBranchInfo
             preserve_client_tts_overrides:
               type: boolean
               default: false
@@ -2440,6 +2476,9 @@ components:
         interrupted:
           type: boolean
           default: false
+        ignored_as_backchannel:
+          type: boolean
+          default: false
         original_message:
           type: string
         reasoning:
@@ -2790,6 +2829,7 @@ components:
         "rag_latency_secs": 1.1
       },
       "interrupted": true,
+      "ignored_as_backchannel": true,
       "original_message": "original_message",
       "reasoning": [
         {}

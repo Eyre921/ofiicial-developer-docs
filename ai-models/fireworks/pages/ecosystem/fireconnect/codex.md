@@ -21,11 +21,12 @@ Use Fireworks AI models in OpenAI Codex CLI with the FireConnect CLI
 ## Enable Fireworks routing
 
 ```bash theme={null}
-export FIREWORKS_API_KEY=fw_...
+fireconnect login
 fireconnect codex on
+source ~/.zshrc   # keychain mode: load FIREWORKS_API_KEY for Codex
 ```
 
-Or pass the key once so later model commands reuse it:
+Or pass the key once:
 
 ```bash theme={null}
 fireconnect codex on --api-key fw_...
@@ -35,7 +36,7 @@ After `fireconnect codex on`, `off`, `model select`, or `model reset`, `config.t
 
 ## Default model
 
-Codex routes a single default model. The default is `glm-latest`.
+Codex routes a single default model. The default is `glm-fast-latest`.
 
 ```bash theme={null}
 fireconnect codex status
@@ -46,11 +47,12 @@ fireconnect codex status
 FireConnect edits `~/.codex/config.toml`:
 
 * Sets root `model_provider` / `model` for Codex 0.134+
-* Adds a `[model_providers.fireworks-ai]` block with `wire_api = "responses"`
-* With `--api-key` or a key from `~/.fireconnect/config.json`, writes `experimental_bearer_token` so later `model list`, `select`, and `reset` work without passing the key again
-* With only `FIREWORKS_API_KEY` in the environment, writes `env_key = "FIREWORKS_API_KEY"` instead
+* Adds a `[model_providers.fireworks-ai]` block with `wire_api = "responses"` and `env_key = "FIREWORKS_API_KEY"`
+* Harness configs never contain literal keys
 
-FireConnect snapshots your original `~/.codex/config.toml` before the first change. The snapshot lives in `~/.fireconnect/codex/`. Running `fireconnect codex off` restores it byte-for-byte. Unrelated Codex settings (for example `[[mcp_servers]]`) are preserved via surgical TOML edits.
+In keychain mode, FireConnect installs a marked block in `~/.zshrc` (or bash profile) that exports `FIREWORKS_API_KEY="$(fireconnect key export)"`. Open a new terminal or `source` your profile after enabling.
+
+FireConnect snapshots your original `~/.codex/config.toml` before the first change. The snapshot lives in `~/.fireconnect/codex/`. Running `fireconnect codex off` restores it byte-for-byte and removes the shell hook when no env-based harnesses remain. Unrelated Codex settings (for example `[[mcp_servers]]`) are preserved via surgical TOML edits.
 
 ## Codex model catalog
 
@@ -60,7 +62,7 @@ When you run `fireconnect codex on`, FireConnect fetches your account's serverle
 fireconnect codex status   # shows whether the catalog is linked and on disk
 ```
 
-The catalog includes serverless models that support tool calling with a non-zero context window, plus curated aliases such as `glm-latest`. Deprecated models are excluded. If catalog generation fails (for example, due to an invalid API key), routing still works but Codex may show limited model metadata until you re-run `fireconnect codex on`.
+The catalog includes serverless models that support tool calling with a non-zero context window, plus curated aliases such as `glm-fast-latest`. Deprecated models are excluded. If catalog generation fails (for example, due to an invalid API key), routing still works but Codex may show limited model metadata until you re-run `fireconnect codex on`.
 
 `fireconnect codex model list` and `model select` filter the picker to models present in the catalog. JSON output from `model list` includes Fireworks IN / OUT pricing where known.
 
@@ -112,7 +114,7 @@ fireconnect codex on --config-path /path/to/config.toml
 
 ## Fireworks on Microsoft Foundry
 
-Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/overview#fireworks-on-microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
+Codex supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
 
 <Warning>
   Foundry routing requires a standard Azure API key. Fire Pass keys (`fpk_...`) are not supported. FireConnect does not write a Fireworks model catalog on the Foundry path — set your deployment with `--main`.
@@ -126,8 +128,7 @@ export AZURE_API_KEY=<your-azure-api-key>
 fireconnect configure \
   --provider azure \
   --base-url https://<resource>.services.ai.azure.com \
-  --api-key $AZURE_API_KEY \
-  --harnesses codex
+  --api-key $AZURE_API_KEY
 
 fireconnect codex on --main FW-GLM-5.1
 ```
@@ -143,6 +144,24 @@ fireconnect codex on --azure --base-url https://<resource>.services.ai.azure.com
 FireConnect sets `model_provider = "fireworks-azure"` in `config.toml` with a **Fireworks on Microsoft Foundry** provider block pointed at your Foundry endpoint. The Azure API key is stored as `env_key = "AZURE_API_KEY"` when resolved from the environment, or written literally when passed with `--api-key`.
 
 Pass your Foundry **deployment name** with `--main`. `model list` and `model select` browse the Fireworks serverless catalog only.
+
+### Turn off Foundry routing
+
+To switch back to the Fireworks gateway:
+
+```bash theme={null}
+fireconnect configure --provider fireworks
+fireconnect codex on
+source ~/.zshrc   # reload FIREWORKS_API_KEY if using keychain mode
+```
+
+To remove FireConnect entirely and restore your original `config.toml`:
+
+```bash theme={null}
+fireconnect codex off
+```
+
+See [Turn off Foundry routing](/ecosystem/fireconnect/microsoft-foundry#turn-off-foundry-routing) for details on global config behavior and `uninstall`.
 
 ## Source
 

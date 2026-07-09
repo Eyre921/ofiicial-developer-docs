@@ -322,7 +322,7 @@ components:
           description: The audio format to use for TTS
         optimize_streaming_latency:
           $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
-          description: The optimization for streaming latency
+          description: 'Deprecated: this field is a no-op and is ignored.'
         stability:
           type: number
           format: double
@@ -838,7 +838,7 @@ components:
           description: The audio format to use for TTS
         optimize_streaming_latency:
           $ref: '#/components/schemas/TTSOptimizeStreamingLatency'
-          description: The optimization for streaming latency
+          description: 'Deprecated: this field is a no-op and is ignored.'
         stability:
           type: number
           format: double

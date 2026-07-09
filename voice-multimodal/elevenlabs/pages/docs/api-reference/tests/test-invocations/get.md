@@ -441,7 +441,7 @@ components:
         - no_results
       default: success
       title: KnowledgeBaseRagToolStatus
-    TransferToAgentToolResultSuccessModelBranchInfo:
+    TransferToAgentToolResultSuccessModelOutputBranchInfo:
       oneOf:
         - type: object
           properties:
@@ -475,7 +475,7 @@ components:
           description: TransferBranchInfoTrafficSplit variant
       discriminator:
         propertyName: branch_reason
-      title: TransferToAgentToolResultSuccessModelBranchInfo
+      title: TransferToAgentToolResultSuccessModelOutputBranchInfo
     ConversationHistoryTranscriptSystemToolResultCommonModelOutputResult:
       oneOf:
         - type: object
@@ -721,7 +721,7 @@ components:
             branch_info:
               oneOf:
                 - $ref: >-
-                    #/components/schemas/TransferToAgentToolResultSuccessModelBranchInfo
+                    #/components/schemas/TransferToAgentToolResultSuccessModelOutputBranchInfo
                 - type: 'null'
             preserve_client_tts_overrides:
               type: boolean
@@ -1328,6 +1328,9 @@ components:
             - $ref: '#/components/schemas/LLMUsage-Output'
             - type: 'null'
         interrupted:
+          type: boolean
+          default: false
+        ignored_as_backchannel:
           type: boolean
           default: false
         original_message:
@@ -2213,6 +2216,7 @@ components:
               "model_usage": {}
             },
             "interrupted": false,
+            "ignored_as_backchannel": false,
             "original_message": "string",
             "reasoning": [
               {
@@ -2339,6 +2343,7 @@ components:
                 "model_usage": {}
               },
               "interrupted": false,
+              "ignored_as_backchannel": false,
               "original_message": "string",
               "reasoning": [
                 {
@@ -2457,6 +2462,7 @@ components:
             "model_usage": {}
           },
           "interrupted": false,
+          "ignored_as_backchannel": false,
           "original_message": "string",
           "reasoning": [
             {

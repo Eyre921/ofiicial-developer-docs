@@ -98,6 +98,8 @@ components:
         - convai_write
         - music_generation
         - image_video_generation
+        - flows
+        - templates
         - add_voice_from_voice_library
         - create_instant_voice_clone
         - create_professional_voice_clone

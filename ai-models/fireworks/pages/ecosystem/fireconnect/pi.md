@@ -17,7 +17,7 @@ Use Fireworks AI models in Pi with the FireConnect CLI
 ## Enable Fireworks routing
 
 ```bash theme={null}
-export FIREWORKS_API_KEY=fw_...
+fireconnect login
 fireconnect pi on
 ```
 
@@ -29,33 +29,33 @@ fireconnect pi status
 
 ## Using Fire Pass
 
-Use your `fpk_...` key instead of a standard `fw_...` key:
+Use your `fpk_...` key during `login` or with `--api-key`:
 
 ```bash theme={null}
-export FIREWORKS_API_KEY=fpk_...
 fireconnect pi on --api-key fpk_...
 ```
 
-FireConnect detects Fire Pass keys and defaults Pi to `glm-latest`.
+FireConnect detects Fire Pass keys and defaults Pi to `glm-fast-latest`.
 
 ## Default model
 
-Pi routes a single default model. The default is `glm-latest`.
+Pi routes a single default model. The default is `glm-fast-latest`.
 
 ## What gets written
 
 FireConnect:
 
 * Sets `defaultProvider` / `defaultModel` in `~/.pi/agent/settings.json`
-* Stores the API key in `~/.pi/agent/auth.json` (`$FIREWORKS_API_KEY` when from env, literal with `--api-key`)
+* Stores the API key in `~/.pi/agent/auth.json` (`$FIREWORKS_API_KEY` when from env, literal with `--api-key`; never a literal in keychain mode)
 * Writes `auth.json` at mode `0600`
 
 FireConnect snapshots both files under `~/.fireconnect/pi/` before the first change. Running `fireconnect pi off` restores them byte-for-byte.
 
 ### API key handling
 
-* If the key comes from `FIREWORKS_API_KEY`, it is written as `$FIREWORKS_API_KEY` so the secret stays out of settings.
-* Passing `--api-key` writes the literal key to `auth.json` instead.
+* If the key comes from the OS keychain, it is written as `$FIREWORKS_API_KEY` so the secret stays out of settings
+* Keychain mode installs a shell profile hook so Pi can read `FIREWORKS_API_KEY` at launch
+* Passing `--api-key` writes the literal key to `auth.json` instead
 
 ## Browsing and picking models
 
@@ -65,7 +65,23 @@ fireconnect pi model select            # pick Pi's default model
 fireconnect pi model select --search glm
 ```
 
-Fire Pass keys (`fpk_...`) show Fire Pass-supported models only.
+Fire Pass keys (`fpk_...`) show Fire Pass-supported routers only.
+
+## FireRouter mode
+
+`fireconnect pi on --router` overrides Pi's built-in Anthropic provider so its existing Claude model catalog is sent through `https://router.fireworks.ai/v1`. The Fireworks key is supplied through `X-FireRouter-Fireworks-Key`; an Anthropic API key is also required:
+
+```bash theme={null}
+fireconnect pi on --router --anthropic-api-key sk-ant-...
+fireconnect pi on --router
+# Then choose an Anthropic model inside Pi with /model.
+```
+
+You can switch among Anthropic models inside Pi without re-running FireConnect. FireConnect backs up `settings.json`, `auth.json`, and `models.json`, and `fireconnect pi off` restores all three byte-for-byte. `model select` and `model reset` do not apply in router mode.
+
+<Note>
+  In router mode, Pi's `/model` picker still shows Anthropic's built-in model names (for example, Claude Sonnet 4.5). The selected name is passed through FireRouter, but the display label is Pi's own — it does **not** reflect the Fireworks model actually serving the request behind the router. Use `fireconnect pi status` to see the underlying routing.
+</Note>
 
 ## CLI reference
 
@@ -85,6 +101,7 @@ Run `fireconnect pi help` for all options.
 
 ```bash theme={null}
 fireconnect pi on --main glm-5p1
+fireconnect pi on --router     # route Anthropic models through FireRouter
 ```
 
 ### Turn off Fireworks routing
@@ -103,7 +120,7 @@ fireconnect pi on --settings-path /path/to/settings.json
 
 ## Fireworks on Microsoft Foundry
 
-Pi supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/overview#fireworks-on-microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
+Pi supports **Fireworks on Microsoft Foundry** (CLI: `--provider azure` or `on --azure`). See the [FireConnect overview](/ecosystem/fireconnect/microsoft-foundry) and [Microsoft Foundry integration guide](/ecosystem/integrations/azure-foundry) for portal setup.
 
 ### Configure and enable
 
@@ -113,8 +130,7 @@ export AZURE_API_KEY=<your-azure-api-key>
 fireconnect configure \
   --provider azure \
   --base-url https://<resource>.services.ai.azure.com \
-  --api-key $AZURE_API_KEY \
-  --harnesses pi
+  --api-key $AZURE_API_KEY
 
 fireconnect pi on --main FW-GLM-5.1
 ```
@@ -130,6 +146,23 @@ fireconnect pi on --azure --base-url https://<resource>.services.ai.azure.com --
 FireConnect registers a `fireworks-azure` **openai-completions** provider in Pi's `models.json` (labeled **Fireworks on Microsoft Foundry**) and sets `defaultProvider` / `defaultModel` in `settings.json`. The Azure API key is stored in `auth.json` as `$AZURE_API_KEY` when from the environment, or literally with `--api-key`.
 
 Pass your Foundry **deployment name** with `--main`. `model list` and `model select` browse the Fireworks serverless catalog only.
+
+### Turn off Foundry routing
+
+To switch back to the Fireworks gateway:
+
+```bash theme={null}
+fireconnect configure --provider fireworks
+fireconnect pi on
+```
+
+To remove FireConnect entirely and restore your original `settings.json`, `auth.json`, and `models.json`:
+
+```bash theme={null}
+fireconnect pi off
+```
+
+Restart Pi after switching or running `off`. See [Turn off Foundry routing](/ecosystem/fireconnect/microsoft-foundry#turn-off-foundry-routing) for details on global config behavior and `uninstall`.
 
 ## Source
 
