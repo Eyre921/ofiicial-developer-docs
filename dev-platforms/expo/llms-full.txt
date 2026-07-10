@@ -11757,7 +11757,7 @@ In the next chapter, we'll learn how to take a screenshot of the image and the s
 ---
 
 ---
-modificationDate: July 08, 2026
+modificationDate: July 10, 2026
 title: Take a screenshot
 description: In this tutorial, learn how to capture a screenshot using a third-party library and Expo Media Library.
 ---
@@ -12005,8 +12005,6 @@ We've successfully used `react-native-view-shot` and `expo-media-library` to cap
 In the next chapter, let's learn how to handle the differences between mobile and web platforms to implement the same functionality on web.
 
 [Next: Chapter 8: Handle platform differences](/tutorial/platform-differences.md)
-
-} nextChapterDescription="In the next chapter, let's learn how to handle the differences between mobile and web platforms to implement the same functionality on web." nextChapterTitle="Handle platform differences" nextChapterLink="/tutorial/platform-differences" />
 
 ---
 
@@ -13499,7 +13497,7 @@ In the next chapter, let's create a development build for iOS, install it on a d
 ---
 
 ---
-modificationDate: July 08, 2026
+modificationDate: July 09, 2026
 title: Create and run a cloud build for iOS device
 description: Learn how to configure a development build for iOS devices using EAS Build.
 ---
@@ -13579,6 +13577,8 @@ This command prompts us with the following questions when we create the build fo
 -   **What would you like your iOS bundle identifier to be?** Press Return to select the default value provided for this prompt. This will add [`ios.bundleIdentifier`](/versions/latest/config/app.md#package) in **app.json** if it isn't already defined.
 -   **Do you want to log in to your Apple account?**. Since we are creating a development build for the first time, it will ask us to **Generate a new Apple Distribution Certificate**. Press Y both times.
 -   **Select a device for ad hoc build**. This is the key part, which is why we had to register a provisioning profile before. We can select one or all of our registered devices here and then press return to install that build on those devices later.
+
+> **On a new or recently renewed Apple Developer Program membership, a newly registered device may not be immediately installable.** Registering a device with Expo does not register it with Apple. The device is added to Apple only when it's first included in a build. For such a membership, Apple can then take [up to 24–72 hours](https://developer.apple.com/help/account/reference/device-registration-updates/) to finish processing the device before it can be added to a provisioning profile, so a build may fail the first time you include a newly registered device. If that happens, wait for Apple to finish processing and then run the build again.
 
 > **Only if you have skipped [iOS Simulator chapter](/tutorial/eas/ios-development-build-for-simulators.md):** You'll be prompted **iOS app only uses standard/exempt encryption?** Press Y to select the default value provided for this prompt. Since our app doesn't use encryption, it sets `ITSAppUsesNonExemptEncryption` in the **Info.plist** file to `NO` and manages the compliance check for the same when you are releasing your app to TestFlight/Apple App Store. When you are releasing your own app, and it uses encryption, you can select `N` to skip this prompt next time.
 
@@ -13836,7 +13836,7 @@ In the next chapter, learn about what are internal distribution builds, why we n
 ---
 
 ---
-modificationDate: July 08, 2026
+modificationDate: July 09, 2026
 title: Create and share internal distribution build
 description: Learn about internal distribution builds, why we need them, and how to create them.
 ---
@@ -13921,6 +13921,8 @@ eas device:create
 -   This command registers an iOS device for app installation, generating a shareable URL (or QR code) for device registration.
     
     > **Tip**: This command enables device registration at any time. However, only builds created post-registration will work on the newly added device.
+    
+    > **On a new or recently renewed Apple Developer Program membership, a newly registered device may not be immediately installable.** Registering a device with Expo does not register it with Apple. The device is added to Apple only when it's first included in a build or re-sign. For such a membership, Apple can then take [up to 24–72 hours](https://developer.apple.com/help/account/reference/device-registration-updates/) to finish processing the device before it can be added to a provisioning profile. If a build fails right after you register a new device, wait for Apple to finish processing and then run the build again. Learn more about [managing devices](/build/internal-distribution.md#managing-devices).
     
 -   To create the preview build, we need to use the `preview` profile with the `eas build` command:
     

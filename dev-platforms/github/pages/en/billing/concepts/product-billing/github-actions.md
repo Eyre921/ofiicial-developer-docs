@@ -10,7 +10,7 @@ Learn how usage of GitHub Actions is measured against your free allowance and ho
 
 ## How use of GitHub Actions is measured
 
-GitHub Actions usage is **free** for **self-hosted runners** and for **public repositories** that use standard GitHub-hosted runners. See [Choosing the runner for a job](/en/actions/writing-workflows/choosing-where-your-workflow-runs/choosing-the-runner-for-a-job#standard-github-hosted-runners-for-public-repositories).
+GitHub Actions usage is **free** for **self-hosted runners** and for **public repositories** that use standard GitHub-hosted runners. See [Choosing the runner for a job](/en/actions/how-tos/write-workflows/choose-where-workflows-run/choose-the-runner-for-a-job#standard-github-hosted-runners-for-public-repositories).
 
 For **private repositories**, each GitHub account receives a quota of free minutes, artifact storage, and cache storage for use with GitHub-hosted runners, depending on the account's plan. Any usage beyond the included amounts is billed to your account.
 
@@ -140,7 +140,7 @@ You pay for any additional use above your quota using the payment method set up 
 For GitHub-hosted runners, storage is billed based on hourly usage of artifacts and caches throughout the month. Minutes are calculated based on the total processing time used by each runner type during the month.
 
 * To estimate costs for paid usage, use the GitHub [pricing calculator](https://github.com/pricing/calculator?feature=actions).
-* To view your current costs, see [Viewing your usage of metered products and licenses](/en/billing/managing-billing-for-your-products/viewing-your-product-usage).
+* To view your current costs, see [Viewing your usage of metered products and licenses](/en/billing/how-tos/products/view-productlicense-use).
 
 > \[!NOTE]
 > The billing dashboard may show your Actions usage as a dollar amount ("spend") rather than raw minutes. This amount already reflects any applicable minute costs.
@@ -209,7 +209,7 @@ For cached storage, billing charts and reports show only the cost of usage beyon
 
 If your account does not have a valid payment method on file, usage is blocked once you use up your quota.
 
-If you have a valid payment method on file, spending may be limited by one or more budgets. Check the budgets set for your account to ensure they are appropriate for your usage needs. See [Setting up budgets to control spending on metered products](/en/billing/managing-your-billing/using-budgets-control-spending).
+If you have a valid payment method on file, spending may be limited by one or more budgets. Check the budgets set for your account to ensure they are appropriate for your usage needs. See [Setting up budgets to control spending on metered products](/en/billing/how-tos/set-up-budgets).
 
 You can also receive email notifications when your included GitHub Actions usage reaches 90% and 100% during a billing period. For more information, see [Budgets and alerts](/en/billing/concepts/budgets-and-alerts#included-usage-alerts).
 

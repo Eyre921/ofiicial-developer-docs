@@ -30,7 +30,7 @@ If you’re creating an invoice through the Dashboard, assign tax rates to indiv
 When you modify or create invoice line items through the API, set the invoice item’s [tax_rates](https://docs.stripe.com/api/invoiceitems/update.md#update_invoiceitem-tax_rates):
 
 ```curl
-curl https://api.stripe.com/v1/invoiceitems/ii_CWYWo9Ham19N4a \
+curl https://api.stripe.com/v1/invoiceitems/{{INVOICEITEM_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "tax_rates[]=txr_1EO66sClCIKljWvs98IiVfHW" \
   -d "tax_rates[]=txr_1EEOvcClCIKljWvsqYb9U0MB"
@@ -53,7 +53,7 @@ If you’re creating an invoice through the Dashboard, you can assign a default 
 To set the invoice’s [default_tax_rates](https://docs.stripe.com/api/invoices/update.md#update_invoice-default_tax_rates) through the API:
 
 ```curl
-curl https://api.stripe.com/v1/invoices/in_18jwqyLlRB0eXbMtrUQ97YBw \
+curl https://api.stripe.com/v1/invoices/{{INVOICE_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d "default_tax_rates[]=txr_1EO66sClCIKljWvs98IiVfHW" \
   -d "default_tax_rates[]=txr_1EEOvcClCIKljWvsqYb9U0MB"

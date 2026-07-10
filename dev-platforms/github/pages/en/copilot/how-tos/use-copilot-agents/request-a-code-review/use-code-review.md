@@ -12,7 +12,7 @@ Learn how to request a code review from GitHub Copilot.
 
 GitHub Copilot can review your code and provide feedback. Where possible, Copilot's feedback includes suggested changes which you can apply with a couple of clicks.
 
-For a full introduction to GitHub Copilot code review, see [About GitHub Copilot code review](/en/copilot/concepts/code-review).
+For a full introduction to GitHub Copilot code review, see [About GitHub Copilot code review](/en/copilot/concepts/agents/code-review).
 
 <div class="ghd-tool webui">
 
@@ -44,7 +44,7 @@ You can also request a review from Copilot through the GitHub REST API by reques
 
 ## Enabling automatic reviews
 
-By default, you manually request a review from Copilot on each pull request, in the same way you would request a review from a human. However, you can set up Copilot to automatically review all pull requests. See [Configuring automatic code review by GitHub Copilot](/en/copilot/how-tos/agents/copilot-code-review/automatic-code-review).
+By default, you manually request a review from Copilot on each pull request, in the same way you would request a review from a human. However, you can set up Copilot to automatically review all pull requests. See [Configuring automatic code review by GitHub Copilot](/en/copilot/how-tos/copilot-on-github/set-up-copilot/configure-automatic-review).
 
 ## Working with suggested changes provided by Copilot
 

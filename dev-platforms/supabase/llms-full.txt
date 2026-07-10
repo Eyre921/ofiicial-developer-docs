@@ -65019,9 +65019,9 @@ tags:
 categories:
   - product
 ---
-The [CipherStash integration](https://supabase.com/partners/integrations/cipherstash) for Supabase is now available.
+The [CipherStash integration](https://supabase.com/partners/integrations/cipherstash?utm_source=supabase_announcement_post\&utm_medium=blog\&utm_campaign=launch) for Supabase is now available.
 
-[CipherStash](https://cipherstash.com) is a Data Level Access Control (DLAC) platform for applications built on Postgres. DLAC extends traditional access control, which typically operates at the row or table level, down to individual encrypted values, so policies are enforced at decryption rather than at the query layer.
+[CipherStash](https://cipherstash.com/?utm_source=supabase_announcement_post\&utm_medium=blog\&utm_campaign=launch) is a Data Level Access Control (DLAC) platform for applications built on Postgres. DLAC extends traditional access control, which typically operates at the row or table level, down to individual encrypted values, so policies are enforced at decryption rather than at the query layer.
 
 With CipherStash, teams can encrypt sensitive fields at the application layer with a unique key per value, run searches and joins against encrypted data without decrypting it, and keep keys under their own control through ZeroKMS, CipherStash's zero-knowledge key management service. Because keys never leave your control, neither CipherStash nor Supabase can access your plaintext data.
 
@@ -65052,7 +65052,7 @@ For cases where the SDK isn't a fit, such as analytics jobs, admin tooling, back
 
 ## Get started
 
-→ [Add CipherStash to your Supabase project](https://supabase.com/partners/integrations/cipherstash)
+→ [Add CipherStash to your Supabase project](https://supabase.com/partners/integrations/cipherstash?utm_source=supabase_announcement_post\&utm_medium=blog\&utm_campaign=launch)
 
 
 ---
@@ -79265,7 +79265,7 @@ Magic Links are a form of passwordless login where users click on a link sent to
 
 Email authentication methods, including Magic Links, are enabled by default.
 
-Configure the Site URL and any additional redirect URLs. These are the only URLs that are allowed as redirect destinations after the user clicks a Magic Link. You can change the URLs on the [URL Configuration page](https://supabase.com/dashboard/project/_/auth/url-configuration) for hosted projects, or in the [configuration file](https://supabase.com/docs/guides/cli/config#auth.additional_redirect_urls) for self-hosted projects.
+Configure the Site URL and any additional redirect URLs. These are the only URLs that are allowed as redirect destinations after the user clicks a Magic Link. You can change the URLs on the [URL Configuration page](https://supabase.com/dashboard/project/_/auth/url-configuration) for hosted projects, in the `config.toml` [file](https://supabase.com/docs/guides/local-development/cli/config#auth.additional_redirect_urls) for local development, or in the `.env` configuration file for [self-hosted Supabase](https://supabase.com/docs/guides/self-hosting/docker).
 
 By default, a user can only request a magic link once every 60 seconds and they expire after 1 hour.
 
@@ -79389,7 +79389,7 @@ Email one-time passwords (OTP) are a form of passwordless login where users key 
 
 Email authentication methods, including Email OTPs, are enabled by default.
 
-Email OTPs share an implementation with Magic Links. To send an OTP instead of a Magic Link, alter the **Magic Link** email template. For a hosted Supabase project, go to [Email Templates](https://supabase.com/dashboard/project/_/auth/templates) in the Dashboard. For a self-hosted project or local development, see the [Email Templates guide](https://supabase.com/docs/guides/auth/auth-email-templates).
+Email OTPs share an implementation with Magic Links. To send an OTP instead of a Magic Link, alter the **Magic Link** [email template](https://supabase.com/dashboard/project/_/auth/templates/magic-link-or-otp). Refer to the [Email Templates guide](https://supabase.com/docs/guides/auth/auth-email-templates) for more information.
 
 Modify the template to include the `{{ .Token }}` variable, for example:
 
@@ -79399,7 +79399,9 @@ Modify the template to include the `{{ .Token }}` variable, for example:
 <p>Please enter this code: {{ .Token }}</p>
 ```
 
-By default, a user can only request an OTP once every 60 seconds and they expire after 1 hour. This is configurable via `Auth > Providers > Email > Email OTP Expiration`. An expiry duration of more than 86400 seconds (one day) is disallowed to guard against brute force attacks. The longer an OTP remains valid, the more time an attacker has to attempt brute force attacks. If the OTP is valid for several days, an attacker might have more opportunities to guess the correct OTP through repeated attempts.
+By default, a user can only request an OTP once every 60 seconds, and they expire after 1 hour. This is configurable via **Authentication > Sign In / Providers > Auth Providers > Email > Email OTP expiration**. An expiry duration of more than 86,400 seconds (one day) is strongly discouraged and can only be set via the [Management API](https://supabase.com/docs/reference/api/v1-update-auth-service-config). Make sure to read the [security recommendations](https://supabase.com/docs/guides/deployment/going-into-prod#security) before going into production.
+
+Caution: The **Email OTP Expiration** setting also governs the validity of Magic Links and other email links, including confirmation, password recovery, email change, and [invitation](https://supabase.com/docs/guides/auth/users#inviting-users) links.
 
 ### Signing in with email OTP
 
@@ -79600,7 +79602,7 @@ Edit templates on the [Email Templates](https://supabase.com/dashboard/project/_
 
 ### Local development and self-hosted
 
-The dashboard template builder does not apply when running Supabase locally or self-hosted. Customize templates in `supabase/config.toml` and HTML files instead.
+The dashboard template builder **does not apply** when running [local development with CLI](https://supabase.com/docs/guides/local-development) or [self-hosted Supabase](https://supabase.com/docs/guides/self-hosting). Customize templates in `supabase/config.toml` and local HTML files instead.
 
 Note: See [Customizing email templates](https://supabase.com/docs/guides/local-development/customizing-email-templates) for:
 
@@ -79608,7 +79610,7 @@ Note: See [Customizing email templates](https://supabase.com/docs/guides/local-d
 - [Template variables](https://supabase.com/docs/guides/local-development/customizing-email-templates#template-variables) — the same placeholders as the [terminology](#terminology) table above
 - Default subjects and behavior for each [authentication](https://supabase.com/docs/guides/local-development/customizing-email-templates#available-authentication-email-templates) and [security notification](https://supabase.com/docs/guides/local-development/customizing-email-templates#available-security-notification-email-templates) template
 
-For production self-hosted deployments, see [Custom email templates](https://supabase.com/docs/guides/self-hosting/custom-email-templates).
+For self-hosted deployments, refer to [Custom email templates](https://supabase.com/docs/guides/self-hosting/custom-email-templates).
 
 You can also manage email templates using the Management API:
 
@@ -103476,6 +103478,48 @@ The user object contains the following attributes:
 | created\_at          | `string`         | The timestamp that the user was created.                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 | updated\_at          | `string`         | The timestamp that the user was last updated.                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | is\_anonymous        | `boolean`        | Is true if the user is an anonymous user.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+
+## Inviting users
+
+You can invite someone to create an account by sending them an invitation email. The invited user receives an email containing a link that, when clicked, confirms their email address and lets them finish setting up their account (for example, by setting a password).
+
+Inviting a user is an admin action, so it must be performed from a trusted server environment using your secret key, or from the Dashboard. When you invite an email that doesn't yet belong to a user, a new unconfirmed user is created. Inviting an email that already belongs to a confirmed user returns an error.
+
+### Using the Dashboard
+
+1. Go to **Authentication > Users** in the Dashboard.
+2. Click **Add user** and select **Send invitation**.
+3. Enter the user's email address and click **Invite user**.
+
+### Using the Auth Admin API
+
+Call [`inviteUserByEmail()`](https://supabase.com/docs/reference/javascript/auth-admin-inviteuserbyemail) from the SDK's Auth Admin API in a server-side environment. This is part of Supabase Auth (accessed via `supabase.auth.admin` with your project's [secret key](https://supabase.com/docs/guides/getting-started/api-keys)), and is distinct from the [Management API](https://supabase.com/docs/reference/api/introduction) used to configure your project. You can optionally attach custom `user_metadata` and a redirect URL for the invite link.
+
+```js
+import { createClient } from '@supabase/supabase-js'
+
+// Use your project's secret key (sb_secret_...), and only ever on a trusted server.
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SECRET_KEY, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+    detectSessionInUrl: false,
+  },
+})
+
+const { data, error } = await supabase.auth.admin.inviteUserByEmail('someone@example.com', {
+  data: { name: 'Jane' }, // optional, stored in user_metadata
+  redirectTo: 'https://example.com/welcome', // optional, where the invite link sends the user
+})
+```
+
+Caution: The secret key (`sb_secret_...`, which replaces the legacy `service_role` key) bypasses Row Level Security and must only be used in a secure server environment. Never expose it in a browser or any publicly accessible client.
+
+Note: The `redirectTo` URL must be in your project's [allowed redirect URLs](https://supabase.com/docs/guides/auth/redirect-urls) configuration. If it isn't, the `redirectTo` value is ignored and the invite link redirects to your Site URL instead (no error is raised).
+
+The invitation email uses the **Invite user** email template, which you can customize. Refer to [Email Templates](https://supabase.com/docs/guides/auth/auth-email-templates) to learn more.
+
+Caution: Invitation links expire after the duration configured in [Email OTP Expiration](https://supabase.com/dashboard/project/_/auth/providers?provider=Email), which defaults to 1 hour. This is the same value used for [email OTPs](https://supabase.com/docs/guides/auth/auth-email-passwordless#enabling-email-otp), magic links, and other email confirmation links. If an invitation expires before it's accepted, send the user a new invite.
 
 ## Resources
 
@@ -186909,6 +186953,14 @@ Perform a DELETE on the table or view.
 By default, deleted rows are not returned. To return it, chain the call
 with `.select()` after filters.
 
+- `delete()` should always be combined with [filters](https://supabase.com/docs/reference/javascript/using-filters) to target the item(s) you wish to delete.
+- If you use `delete()` with filters and you have
+  [RLS](https://supabase.com/docs/learn/auth-deep-dive/auth-row-level-security) enabled, only
+  rows visible through `SELECT` policies are deleted. Note that by default
+  no rows are visible, so you need at least one `SELECT`/`ALL` policy that
+  makes the rows visible.
+- When using `delete().in()`, specify an array of values to target multiple rows with a single query. This is particularly useful for batch deleting entries that share common criteria, such as deleting users by their IDs. Ensure that the array you provide accurately represents all records you intend to delete to avoid unintended data removal.
+
 ### Examples
 
 #### Delete a single record
@@ -187052,6 +187104,14 @@ The schema needs to be on the list of exposed schemas inside Supabase.
 ## select
 
 Perform a SELECT query on the table or view.
+
+When using `count` with `.range()` or `.limit()`, the returned `count` is the total number of rows
+that match your filters, not the number of rows in the current page. Use this to build pagination UI.
+
+- By default, Supabase projects return a maximum of 1,000 rows. This setting can be changed in your project's [API settings](https://supabase.com/dashboard/project/_/settings/api). It's recommended that you keep it low to limit the payload size of accidental or malicious requests. You can use `range()` queries to paginate through your data.
+- `select()` can be combined with [Filters](https://supabase.com/docs/reference/javascript/using-filters)
+- `select()` can be combined with [Modifiers](https://supabase.com/docs/reference/javascript/using-modifiers)
+- `apikey` is a reserved keyword if you're using the [Supabase Platform](https://supabase.com/docs/guides/platform) and [should be avoided as a column name](https://github.com/supabase/supabase/issues/5465). \*
 
 ### Examples
 
@@ -187206,6 +187266,8 @@ Perform an UPDATE on the table or view.
 By default, updated rows are not returned. To return it, chain the call
 with `.select()` after filters.
 
+- `update()` should always be combined with [Filters](https://supabase.com/docs/reference/javascript/using-filters) to target the item(s) you wish to update.
+
 ### Examples
 
 #### Updating your data
@@ -187259,6 +187321,8 @@ exist, or if it does exist, perform an alternative action depending on
 
 By default, upserted rows are not returned. To return it, chain the call
 with `.select()`.
+
+- Primary keys must be included in `values` to use upsert.
 
 ### Examples
 
@@ -187593,6 +187657,13 @@ follow [PostgREST
 syntax](https://postgrest.org/en/stable/api.html#operators). You also need
 to make sure they are properly sanitized.
 
+filter() expects you to use the raw PostgREST syntax for the filter values.
+
+```ts
+.filter('id', 'in', '(5,6,7)')  // Use `()` for `in` filter
+.filter('arraycol', 'cs', '{"a","b"}')  // Use `cs` for `contains()`, `{}` for array values
+```
+
 ### Examples
 
 #### With `select()`
@@ -187803,6 +187874,13 @@ follow [PostgREST
 syntax](https://postgrest.org/en/stable/api.html#operators). You also need
 to make sure they are properly sanitized.
 
+not() expects you to use the raw PostgREST syntax for the filter values.
+
+```ts
+.not('id', 'in', '(5,6,7)')  // Use `()` for `in` filter
+.not('arraycol', 'cs', '{"a","b"}')  // Use `cs` for `contains()`, `{}` for array values
+```
+
 ### Examples
 
 #### With `select()`
@@ -187823,6 +187901,13 @@ syntax](https://postgrest.org/en/stable/api.html#operators). You also need
 to make sure it's properly sanitized.
 
 It's currently not possible to do an `.or()` filter across multiple tables.
+
+or() expects you to use the raw PostgREST syntax for the filter names and values.
+
+```ts
+.or('id.in.(5,6,7), arraycol.cs.{"a","b"}')  // Use `()` for `in` filter, `{}` for array values and `cs` for `contains()`.
+.or('id.in.(5,6,7), arraycol.cd.{"a","b"}')  // Use `cd` for `containedBy()`
+```
 
 ### Examples
 
@@ -187971,6 +188056,8 @@ const { data, error } = await supabase
 Only relevant for text and tsvector columns. Match only rows where
 `column` matches the query string in `query`.
 
+- For more information, see [Postgres full text search](https://supabase.com/docs/guides/database/full-text-search).
+
 ### Examples
 
 #### Text search
@@ -188035,6 +188122,8 @@ Modifiers must be specified after filters. Some modifiers only apply for queries
 ## abortSignal
 
 Set the AbortSignal for the fetch request.
+
+You can use this to set a timeout for the request.
 
 ### Examples
 
@@ -188324,6 +188413,8 @@ const { data, error } = await supabase
 
 Override the type of the returned `data`.
 
+**Deprecated.** Use overrideTypes\<yourType, { merge: false }>() method at the end of your call chain instead
+
 ## rollback
 
 Dry-run this request: execute the query but discard the changes.
@@ -188503,6 +188594,8 @@ useEffect(() => {
 
 Log in an existing user by exchanging an Auth Code issued during the PKCE flow.
 
+- Used when `flowType` is set to `pkce` in client options.
+
 ### Examples
 
 #### Exchange Auth Code
@@ -188522,6 +188615,13 @@ sends a request to the Auth server for each JWT.
 If the project is not using an asymmetric JWT signing key (like ECC or
 RSA) it always sends a request to the Auth server (similar to
 GoTrueClient.getUser) to verify the JWT.
+
+- Parses the user's [access token](https://supabase.com/docs/guides/auth/sessions#access-token-jwt-claims) as a [JSON Web Token (JWT)](https://supabase.com/docs/guides/auth/jwts) and returns its components if valid and not expired.
+- If your project is using asymmetric JWT signing keys, then the verification is done locally usually without a network request using the [WebCrypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API).
+- A network request is sent to your project's JWT signing key discovery endpoint `https://project-id.supabase.co/auth/v1/.well-known/jwks.json`, which is cached locally. If your environment is ephemeral, such as a Lambda function that is destroyed after every request, a network request will be sent for each new invocation. Supabase provides a network-edge cache providing fast responses for these situations.
+- If the user's access token is about to expire when calling this function, the user's session will first be refreshed before validating the JWT.
+- If your project is using a symmetric secret to sign the JWT, it always sends a request similar to `getUser()` to validate the JWT at the server before returning the decoded token. This is also used if the WebCrypto API is not available in the environment. Make sure you polyfill it in such situations.
+- The returned claims can be customized per project using the [Custom Access Token Hook](https://supabase.com/docs/guides/auth/auth-hooks/custom-access-token-hook).
 
 ### Examples
 
@@ -188543,6 +188643,14 @@ the values in it may not be authentic and therefore it's strongly advised
 against using this method and its results in such circumstances. A warning
 will be emitted if this is detected. Use GoTrueClient.getUser instead.
 
+- Since the introduction of [asymmetric JWT signing keys](https://supabase.com/docs/guides/auth/signing-keys), this method is considered low-level and we encourage you to use `getClaims()` or `getUser()` instead.
+- Retrieves the current [user session](https://supabase.com/docs/guides/auth/sessions) from the storage medium (local storage, cookies).
+- The session contains an access token (signed JWT), a refresh token and the user object.
+- If the session's access token is expired or is about to expire, this method will use the refresh token to refresh the session.
+- When using in a browser, or you've called `startAutoRefresh()` in your environment (React Native, etc.) this function always returns a valid access token without refreshing the session itself, as this is done in the background. This function returns very fast.
+- **IMPORTANT SECURITY NOTICE:** If using an insecure storage medium, such as cookies or request headers, the user object returned by this function **must not be trusted**. Always verify the JWT using `getClaims()` or your own JWT verification library to securely establish the user's identity and access. You can also use `getUser()` to fetch the user object directly from the Auth server for this purpose.
+- Cross-tab refresh races are handled by the GoTrue server (the rotated token from the first tab is returned to subsequent tabs via the parent-of-active mechanism), so no client-side serialization is needed.
+
 ### Examples
 
 #### Get the session data
@@ -188556,6 +188664,10 @@ const { data, error } = await supabase.auth.getSession()
 Gets the current user details if there is an existing session. This method
 performs a network request to the Supabase Auth server, so the returned
 value is authentic and can be used to base authorization rules on.
+
+- This method fetches the user object from the database instead of local session.
+- This method is useful for checking if the user is authorized because it validates the user's access token JWT on the server.
+- Should always be used when checking for user authorization on the server. On the client, you can instead use `getSession().session.user` for faster results. `getSession` is insecure on the server.
 
 ### Examples
 
@@ -188574,6 +188686,8 @@ const { data: { user } } = await supabase.auth.getUser(jwt)
 ## getUserIdentities
 
 Gets all the identities linked to a user.
+
+- The user needs to be signed in to call `getUserIdentities()`.
 
 ### Examples
 
@@ -188605,6 +188719,11 @@ while detecting it from the URL).
 Links an oauth identity to an existing user.
 This method supports the PKCE flow.
 
+- The **Enable Manual Linking** option must be enabled from your [project's authentication settings](https://supabase.com/dashboard/project/_/auth/providers).
+- The user needs to be signed in to call `linkIdentity()`.
+- If the candidate identity is already linked to the existing user or another user, `linkIdentity()` will fail.
+- If `linkIdentity` is run in the browser, the user is automatically redirected to the returned URL. On the server, you should handle the redirect.
+
 ### Examples
 
 #### Link an identity to a user
@@ -188619,6 +188738,39 @@ const { data, error } = await supabase.auth.linkIdentity({
 
 Receive a notification every time an auth event happens.
 Safe to use without an async function as callback.
+
+- Subscribes to important events occurring on the user's session.
+- Use on the frontend/client. It is less useful on the server.
+- Events are emitted across tabs to keep your application's UI up-to-date. Some events can fire very frequently, based on the number of tabs open. Use a quick and efficient callback function, and defer or debounce as many operations as you can to be performed outside of the callback.
+- Callbacks can be `async` and can safely call other Supabase auth methods (`getUser`, `setSession`, etc.) from inside the callback.
+- Keep callbacks quick. Events are awaited in order, so a slow callback delays subsequent events to subscribers in this tab.
+- Emitted events:
+  - `INITIAL_SESSION`
+    - Emitted right after the Supabase client is constructed and the initial session from storage is loaded.
+  - `SIGNED_IN`
+    - Emitted each time a user session is confirmed or re-established, including on user sign in and when refocusing a tab.
+    - Avoid making assumptions as to when this event is fired, this may occur even when the user is already signed in. Instead, check the user object attached to the event to see if a new user has signed in and update your application's UI.
+    - This event can fire very frequently depending on the number of tabs open in your application.
+  - `SIGNED_OUT`
+    - Emitted when the user signs out. This can be after:
+      - A call to `supabase.auth.signOut()`.
+      - After the user's session has expired for any reason:
+        - User has signed out on another device.
+        - The session has reached its timebox limit or inactivity timeout.
+        - User has signed in on another device with single session per user enabled.
+        - Check the [User Sessions](https://supabase.com/docs/guides/auth/sessions) docs for more information.
+    - Use this to clean up any local storage your application has associated with the user.
+  - `TOKEN_REFRESHED`
+    - Emitted each time a new access and refresh token are fetched for the signed in user.
+    - It's best practice and highly recommended to extract the access token (JWT) and store it in memory for further use in your application.
+      - Avoid frequent calls to `supabase.auth.getSession()` for the same purpose.
+    - There is a background process that keeps track of when the session should be refreshed so you will always receive valid tokens by listening to this event.
+    - The frequency of this event is related to the JWT expiry limit configured on your project.
+  - `USER_UPDATED`
+    - Emitted each time the `supabase.auth.updateUser()` method finishes successfully. Listen to it to update your application's UI based on new profile information.
+  - `PASSWORD_RECOVERY`
+    - Emitted instead of the `SIGNED_IN` event when the user lands on a page that includes a password recovery link in the URL.
+    - Use it to show a UI to the user where they can [reset their password](https://supabase.com/docs/guides/auth/passwords#resetting-a-users-password-forgot-password).
 
 ### Examples
 
@@ -188762,6 +188914,12 @@ supabase.auth.onAuthStateChange((event, session) => {
 Sends a reauthentication OTP to the user's email or phone number.
 Requires the user to be signed-in.
 
+- This method is used together with `updateUser()` when a user's password needs to be updated.
+- If you require your user to reauthenticate before updating their password, you need to enable the **Secure password change** option in your [project's email provider settings](https://supabase.com/dashboard/project/_/auth/providers).
+- A user is only require to reauthenticate before updating their password if **Secure password change** is enabled and the user **hasn't recently signed in**. A user is deemed recently signed in if the session was created in the last 24 hours.
+- This method will send a nonce to the user's email. If the user doesn't have a confirmed email address, the method will send the nonce to the user's confirmed phone number instead.
+- After receiving the OTP, include it as the `nonce` in your `updateUser()` call to finalize the password change.
+
 ### Examples
 
 #### Send reauthentication nonce
@@ -188775,6 +188933,8 @@ const { error } = await supabase.auth.reauthenticate()
 Returns a new session, regardless of expiry status.
 Takes in an optional current session. If not passed in, then refreshSession() will attempt to retrieve it from getSession().
 If the current session's refresh token is invalid, an error will be thrown.
+
+- This method will refresh and return a new session whether the current one is expired or not.
 
 ### Examples
 
@@ -188805,6 +188965,12 @@ Requires an active session. Requires `auth.experimental.passkey: true`.
 ## resend
 
 Resends an existing signup confirmation email, email change email, SMS OTP or phone change OTP.
+
+- Resends a signup confirmation, email change or phone change email to the user.
+- Passwordless sign-ins can be resent by calling the `signInWithOtp()` method again.
+- Password recovery emails can be resent by calling the `resetPasswordForEmail()` method again.
+- This method will only resend an email or phone OTP to the user if there was an initial signup, email change or phone change request being made(note: For existing users signing in with OTP, you should use `signInWithOtp()` again to resend the OTP).
+- You can specify a redirect url when you resend an email link using the `emailRedirectTo` option.
 
 ### Examples
 
@@ -188851,6 +189017,22 @@ const { error } = await supabase.auth.resend({
 
 Sends a password reset request to an email address. This method supports the PKCE flow.
 
+- The password reset flow consist of 2 broad steps: (i) Allow the user to login via the password reset link; (ii) Update the user's password.
+- The `resetPasswordForEmail()` only sends a password reset link to the user's email.
+  To update the user's password, see [`updateUser()`](https://supabase.com/docs/reference/javascript/auth-updateuser).
+- A `PASSWORD_RECOVERY` event will be emitted when the password recovery link is clicked.
+  You can use [`onAuthStateChange()`](https://supabase.com/docs/reference/javascript/auth-onauthstatechange) to listen and invoke a callback function on these events.
+- When the user clicks the reset link in the email they are redirected back to your application.
+  You can configure the URL that the user is redirected to with the `redirectTo` parameter.
+  See [redirect URLs and wildcards](https://supabase.com/docs/guides/auth/redirect-urls#use-wildcards-in-redirect-urls) to add additional redirect URLs to your project.
+- After the user has been redirected successfully, prompt them for a new password and call `updateUser()`:
+
+```js
+const { data, error } = await supabase.auth.updateUser({
+  password: new_password
+})
+```
+
 ### Examples
 
 #### Reset password
@@ -188894,6 +189076,9 @@ const { data, error } = await supabase.auth
 Sets the session data from the current session. If the current session is expired, setSession will take care of refreshing it to obtain a new session.
 If the refresh token or access token in the current session is invalid, an error will be thrown.
 
+- This method sets the session using an `access_token` and `refresh_token`.
+- If successful, a `SIGNED_IN` event is emitted.
+
 ### Examples
 
 #### Set the session
@@ -188908,6 +189093,9 @@ If the refresh token or access token in the current session is invalid, an error
 ## signInAnonymously
 
 Creates a new anonymous user.
+
+- Returns an anonymous user
+- It is recommended to set up captcha for anonymous sign-ins to prevent abuse. You can pass in the captcha token in the `options` param.
 
 ### Examples
 
@@ -188936,6 +189124,10 @@ const { data, error } = await supabase.auth.signInAnonymously({
 Allows signing in with an OIDC ID token. The authentication provider used
 should be enabled and configured.
 
+- Use an ID token to sign in.
+- Especially useful when implementing sign in using native platform dialogs in mobile or desktop apps using Sign in with Apple or Sign in with Google on iOS and Android.
+- You can also use Google's [One Tap](https://developers.google.com/identity/gsi/web/guides/display-google-one-tap) and [Automatic sign-in](https://developers.google.com/identity/gsi/web/guides/automatic-sign-in-sign-out) via this API.
+
 ### Examples
 
 #### Sign In using ID Token
@@ -188951,6 +189143,9 @@ const { data, error } = await supabase.auth.signInWithIdToken({
 
 Log in an existing user via a third-party provider.
 This method supports the PKCE flow.
+
+- This method is used for signing in using [Social Login (OAuth) providers](https://supabase.com/docs/guides/auth#configure-third-party-providers).
+- It works by redirecting your application to the provider's authorization screen, before bringing back the user to your app.
 
 ### Examples
 
@@ -189022,6 +189217,16 @@ channel is not supported on other providers
 at this time.
 This method supports PKCE when an email is passed.
 
+- Requires either an email or phone number.
+- This method is used for passwordless sign-ins where a OTP is sent to the user's email or phone number.
+- If the user doesn't exist, `signInWithOtp()` will signup the user instead. To restrict this behavior, you can set `shouldCreateUser` in `SignInWithPasswordlessCredentials.options` to `false`.
+- If you're using an email, you can configure whether you want the user to receive a magiclink or a OTP.
+- If you're using phone, you can configure whether you want the user to receive a OTP.
+- The magic link's destination URL is determined by the [`SITE_URL`](https://supabase.com/docs/guides/auth/redirect-urls#use-wildcards-in-redirect-urls).
+- See [redirect URLs and wildcards](https://supabase.com/docs/guides/auth/redirect-urls#use-wildcards-in-redirect-urls) to add additional redirect URLs to your project.
+- Magic links and OTPs share the same implementation. To send users a one-time code instead of a magic link, [modify the magic link email template](https://supabase.com/dashboard/project/_/auth/templates) to include `{{ .Token }}` instead of `{{ .ConfirmationURL }}`.
+- See our [Twilio Phone Auth Guide](https://supabase.com/docs/guides/auth/phone-login?showSMSProvider=Twilio) for details about configuring WhatsApp sign in.
+
 ### Examples
 
 #### Sign in with email
@@ -189073,6 +189278,8 @@ between the cases where the account does not exist or that the
 email/phone and password combination is wrong or that the account can only
 be accessed via social login.
 
+- Requires either an email and password or a phone number and password.
+
 ### Examples
 
 #### Sign in with email and password
@@ -189121,6 +189328,12 @@ currently active SSO Identity Provider for the login.
 If you have built an organization-specific login page, you can use the
 organization's SSO Identity Provider UUID directly instead.
 
+- Before you can call this method you need to [establish a connection](https://supabase.com/docs/guides/auth/sso/auth-sso-saml#managing-saml-20-connections) to an identity provider. Use the [CLI commands](https://supabase.com/docs/reference/cli/supabase-sso) to do this.
+- If you've associated an email domain to the identity provider, you can use the `domain` property to start a sign-in flow.
+- In case you need to use a different way to start the authentication flow with an identity provider, you can use the `providerId` property. For example:
+  - Mapping specific user email addresses with an identity provider.
+  - Using different hints to identity the identity provider to be used by the user, like a company-specific page, IP address or other tracking information.
+
 ### Examples
 
 #### Sign in with email domain
@@ -189161,6 +189374,9 @@ Signs in a user by verifying a message signed by the user's private key.
 Supports Ethereum (via Sign-In-With-Ethereum) & Solana (Sign-In-With-Solana) standards,
 both of which derive from the EIP-4361 standard
 With slight variation on Solana's side.
+
+- Uses a Web3 (Ethereum, Solana) wallet to sign a user in.
+- Read up on the [potential for abuse](https://supabase.com/docs/guides/auth/auth-web3#potential-for-abuse) before using it.
 
 ### Examples
 
@@ -189258,6 +189474,15 @@ tab/session. If you only want to sign the user out of the current session
 (the behavior most other auth libraries default to), pass
 `{ scope: 'local' }` explicitly.
 
+- In order to use the `signOut()` method, the user needs to be signed in first.
+- By default, `signOut()` uses the **global** scope, which signs out the user
+  on every device they are signed in on (not just the current one). Pass
+  `{ scope: 'local' }` to only sign out the current session. This is
+  usually what apps want on a "Sign out" button, especially when users
+  sign in from multiple devices and do not expect signing out of one to
+  terminate the others.
+- Since Supabase Auth uses JWTs for authentication, the access token JWT will be valid until it's expired. When the user signs out, Supabase revokes the refresh token and deletes the JWT from the client-side. This does not revoke the JWT and it will still be valid until it expires.
+
 ### Examples
 
 #### Sign out of every device (global – default)
@@ -189285,6 +189510,16 @@ Creates a new user.
 Be aware that if a user account exists in the system you may get back an
 error message that attempts to hide this information from the user.
 This method has support for PKCE via email signups. The PKCE flow cannot be used when autoconfirm is enabled.
+
+- By default, the user needs to verify their email address before logging in. To turn this off, disable **Confirm email** in [your project](https://supabase.com/dashboard/project/_/auth/providers).
+- **Confirm email** determines if users need to confirm their email address after signing up.
+  - If **Confirm email** is enabled, a `user` is returned but `session` is null.
+  - If **Confirm email** is disabled, both a `user` and a `session` are returned.
+- When the user confirms their email address, they are redirected to the [`SITE_URL`](https://supabase.com/docs/guides/auth/redirect-urls#use-wildcards-in-redirect-urls) by default. You can modify your `SITE_URL` or add additional redirect URLs in [your project](https://supabase.com/dashboard/project/_/auth/url-configuration).
+- If signUp() is called for an existing confirmed user:
+  - When both **Confirm email** and **Confirm phone** (even when phone provider is disabled) are enabled in [your project](https://supabase.com/dashboard/project/_/auth/providers), an obfuscated/fake user object is returned.
+  - When either **Confirm email** or **Confirm phone** (even when phone provider is disabled) is disabled, the error message, `User already registered` is returned.
+- To fetch the currently logged-in user, refer to [`getUser()`](https://supabase.com/docs/reference/javascript/auth-getuser).
 
 ### Examples
 
@@ -189375,6 +189610,11 @@ appropriately to conserve resources.
 
 GoTrueClient.stopAutoRefresh
 
+- Only useful in non-browser environments such as React Native or Electron.
+- The Supabase Auth library automatically starts and stops proactively refreshing the session when a tab is focused or not.
+- On non-browser platforms, such as mobile or desktop apps built with web technologies, the library is not able to effectively determine whether the application is *focused* or not.
+- To give this hint to the application, you should be calling this method when the app is in focus and calling `supabase.auth.stopAutoRefresh()` when it's out of focus.
+
 ### Examples
 
 #### Start and stop auto refresh in React Native
@@ -189401,6 +189641,11 @@ removed and you must manage visibility changes on your own.
 
 See GoTrueClient.startAutoRefresh for more details.
 
+- Only useful in non-browser environments such as React Native or Electron.
+- The Supabase Auth library automatically starts and stops proactively refreshing the session when a tab is focused or not.
+- On non-browser platforms, such as mobile or desktop apps built with web technologies, the library is not able to effectively determine whether the application is *focused* or not.
+- When your application goes in the background or out of focus, call this method to stop the proactive refreshing of the session.
+
 ### Examples
 
 #### Start and stop auto refresh in React Native
@@ -189422,6 +189667,11 @@ AppState.addEventListener('change', (state) => {
 
 Unlinks an identity from a user by deleting it. The user will no longer be able to sign in with that identity once it's unlinked.
 
+- The **Enable Manual Linking** option must be enabled from your [project's authentication settings](https://supabase.com/dashboard/project/_/auth/providers).
+- The user needs to be signed in to call `unlinkIdentity()`.
+- The user must have at least 2 identities in order to unlink an identity.
+- The identity to be unlinked must belong to the user.
+
 ### Examples
 
 #### Unlink an identity
@@ -189442,6 +189692,10 @@ const { error } = await supabase.auth.unlinkIdentity(googleIdentity)
 ## updateUser
 
 Updates user data for a logged in user.
+
+- In order to use the `updateUser()` method, the user needs to be signed in first.
+- By default, email updates sends a confirmation link to both the user's current and new email.
+  To only send a confirmation link to the user's new email, disable **Secure email change** in your project's [email auth provider settings](https://supabase.com/dashboard/project/_/auth/providers).
 
 ### Examples
 
@@ -189489,6 +189743,18 @@ const { data, error } = await supabase.auth.updateUser({
 ## verifyOtp
 
 Log in a user given a User supplied OTP or TokenHash received through mobile or email.
+
+- The `verifyOtp` method takes in different verification types.
+- If a phone number is used, the type can either be:
+  1. `sms` – Used when verifying a one-time password (OTP) sent via SMS during sign-up or sign-in.
+  2. `phone_change` – Used when verifying an OTP sent to a new phone number during a phone number update process.
+- If an email address is used, the type can be one of the following (note: `signup` and `magiclink` types are deprecated):
+  1. `email` – Used when verifying an OTP sent to the user's email during sign-up or sign-in.
+  2. `recovery` – Used when verifying an OTP sent for account recovery, typically after a password reset request.
+  3. `invite` – Used when verifying an OTP sent as part of an invitation to join a project or organization.
+  4. `email_change` – Used when verifying an OTP sent to a new email address during an email update process.
+- The verification type used should be determined based on the corresponding auth method called before `verifyOtp` to sign up / sign-in a user.
+- The `TokenHash` is contained in the [email templates](https://supabase.com/docs/guides/auth/auth-email-templates) and can be used to sign in.  You may wish to use the hash for the PKCE flow for Server Side Auth. Read [the Password-based Auth guide](https://supabase.com/docs/guides/auth/passwords) for more details.
 
 ### Examples
 
@@ -189573,6 +189839,10 @@ This function should only be called on a server. Never expose your `service_role
 Creates a new user.
 This function should only be called on a server. Never expose your `service_role` key in the browser.
 
+- To confirm the user's email address or phone number, set `email_confirm` or `phone_confirm` to true. Both arguments default to false.
+- `createUser()` will not send a confirmation email to the user. You can use [`inviteUserByEmail()`](https://supabase.com/docs/reference/javascript/auth-admin-inviteuserbyemail) if you want to send them an email invite instead.
+- If you are sure that the created user's email or phone number is legitimate and verified, you can set the `email_confirm` or `phone_confirm` param to `true`.
+
 ### Examples
 
 #### With custom user metadata
@@ -189629,6 +189899,8 @@ This function should only be called on a server. Never expose your `service_role
 
 Delete a user. Requires a `service_role` key.
 
+- The `deleteUser()` method requires the user's ID, which maps to the `auth.users.id` column.
+
 ### Examples
 
 #### Removes a user
@@ -189642,6 +189914,10 @@ const { data, error } = await supabase.auth.admin.deleteUser(
 ## generateLink
 
 Generates email links and OTPs to be sent via a custom email provider.
+
+- The following types can be passed into `generateLink()`: `signup`, `magiclink`, `invite`, `recovery`, `email_change_current`, `email_change_new`, `phone_change`.
+- `generateLink()` only generates the email link for `email_change_email` if the **Secure email change** is enabled in your project's [email auth provider settings](https://supabase.com/dashboard/project/_/auth/providers).
+- `generateLink()` handles the creation of the user for `signup`, `invite` and `magiclink`.
 
 ### Examples
 
@@ -189710,6 +189986,9 @@ This function should only be called on a server. Never expose your `service_role
 
 Get user by id.
 
+- Fetches the user object from the database based on the user's id.
+- The `getUserById()` method requires the user's id which maps to the `auth.users.id` column.
+
 ### Examples
 
 #### Fetch the user object using the access\_token jwt
@@ -189721,6 +190000,10 @@ const { data, error } = await supabase.auth.admin.getUserById(1)
 ## inviteUserByEmail
 
 Sends an invite link to an email address.
+
+- Sends an invite link to the user's email address.
+- The `inviteUserByEmail()` method is typically used by administrators to invite users to join the application.
+- Note that PKCE is not supported when using `inviteUserByEmail`. This is because the browser initiating the invite is often different from the browser accepting the invite which makes it difficult to provide the security guarantees required of the PKCE flow.
 
 ### Examples
 
@@ -189753,6 +190036,8 @@ This function should only be called on a server. Never expose your `service_role
 Get a list of users.
 
 This function should only be called on a server. Never expose your `service_role` key in the browser.
+
+- Defaults to return 50 users per page.
 
 ### Examples
 
@@ -189789,6 +190074,14 @@ This function should only be called on a server. Never expose your `service_role
 ## updateUserById
 
 Updates the user data. Changes are applied directly without confirmation flows.
+
+**Important:** This is a server-side operation and does **not** trigger client-side
+`onAuthStateChange` listeners. The admin API has no connection to client state.
+
+To sync changes to the client after calling this method:
+
+1. On the client, call `supabase.auth.refreshSession()` to fetch the updated user data
+2. This will trigger the `TOKEN_REFRESHED` event and notify all listeners
 
 ### Examples
 
@@ -189894,6 +190187,10 @@ Learn more about implementing MFA in your application [in the MFA guide](https:/
 Prepares a challenge used to verify that a user has access to a MFA
 factor.
 
+- An [enrolled factor](https://supabase.com/docs/reference/javascript/auth-mfa-enroll) is required before creating a challenge.
+- To verify a challenge, see [`mfa.verify()`](https://supabase.com/docs/reference/javascript/auth-mfa-verify).
+- A phone factor sends a code to the user upon challenge. The channel defaults to `sms` unless otherwise specified.
+
 ### Examples
 
 #### Create a challenge for a factor
@@ -189926,6 +190223,10 @@ const { data, error } = await supabase.auth.mfa.challenge({
 Helper method which creates a challenge and immediately uses the given code to verify against it thereafter. The verification code is
 provided by the user by entering a code seen in their authenticator app.
 
+- Intended for use with only TOTP factors.
+- An [enrolled factor](https://supabase.com/docs/reference/javascript/auth-mfa-enroll) is required before invoking `challengeAndVerify()`.
+- Executes [`mfa.challenge()`](https://supabase.com/docs/reference/javascript/auth-mfa-challenge) and [`mfa.verify()`](https://supabase.com/docs/reference/javascript/auth-mfa-verify) in a single step.
+
 ### Examples
 
 #### Create and verify a challenge for a factor
@@ -189946,6 +190247,18 @@ authenticator app.
 The user has to enter the code from their authenticator app to verify it.
 
 Upon verifying a factor, all other sessions are logged out and the current session's authenticator level is promoted to `aal2`.
+
+- Use `totp` or `phone` as the `factorType` and use the returned `id` to create a challenge.
+- To create a challenge, see [`mfa.challenge()`](https://supabase.com/docs/reference/javascript/auth-mfa-challenge).
+- To verify a challenge, see [`mfa.verify()`](https://supabase.com/docs/reference/javascript/auth-mfa-verify).
+- To create and verify a TOTP challenge in a single step, see [`mfa.challengeAndVerify()`](https://supabase.com/docs/reference/javascript/auth-mfa-challengeandverify).
+- To generate a QR code for the `totp` secret in Next.js, you can do the following:
+
+```html
+<Image src={data.totp.qr_code} alt={data.totp.uri} layout="fill"></Image>
+```
+
+- The `challenge` and `verify` steps are separated when using Phone factors as the user will need time to receive and input the code obtained from the SMS in challenge.
 
 ### Examples
 
@@ -189993,6 +190306,11 @@ and rarely uses the network. When a JWT is provided (useful in server-side
 environments like Edge Functions where no session is stored), this method
 will make a network request to validate the user and fetch their MFA factors.
 
+- Authenticator Assurance Level (AAL) is the measure of the strength of an authentication mechanism.
+- In Supabase, having an AAL of `aal1` refers to having the 1st factor of authentication such as an email and password or OAuth sign-in while `aal2` refers to the 2nd factor of authentication such as a time-based, one-time-password (TOTP) or Phone factor.
+- If the user has a verified factor, the `nextLevel` field will return `aal2`, else, it will return `aal1`.
+- An optional `jwt` parameter can be passed to check the AAL level of a specific JWT instead of the current session.
+
 ### Examples
 
 #### Get the AAL details of a session
@@ -190031,6 +190349,8 @@ const { data, error } = await supabase.auth.mfa.unenroll({
 
 Verifies a code against a challenge. The verification code is
 provided by the user by entering a code seen in their authenticator app.
+
+- To verify a challenge, please [create a challenge](https://supabase.com/docs/reference/javascript/auth-mfa-challenge) first.
 
 ### Examples
 
@@ -190224,9 +190544,38 @@ This function should only be called on a server. Never expose your `service_role
 
 ## corsHeaders
 
+Default CORS headers for Supabase Edge Functions.
+
+Includes all headers sent by Supabase client libraries and allows all standard HTTP methods.
+Use this for simple CORS configurations with wildcard origin.
+
+### Examples
+
+#### Basic usage
+
+```typescript
+import { corsHeaders } from '@supabase/supabase-js/cors'
+
+Deno.serve(async (req) => {
+  if (req.method === 'OPTIONS') {
+    return new Response('ok', { headers: corsHeaders })
+  }
+
+  return new Response(
+    JSON.stringify({ data: 'Hello' }),
+    { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+  )
+})
+```
+
 ## invoke
 
 Invokes a function
+
+- Requires an Authorization header.
+- Invoke params generally match the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) spec.
+- When you pass in a body to your function, we automatically attach the Content-Type header for `Blob`, `ArrayBuffer`, `File`, `FormData` and `String`. If it doesn't match any of these types we assume the payload is `json`, serialize it and attach the `Content-Type` header as `application/json`. You can override this behavior by passing in a `Content-Type` header of your own.
+- Responses are automatically parsed as `json`, `blob` and `form-data` depending on the `Content-Type` header sent by your function. Responses are parsed as `text` by default.
 
 ### Examples
 
@@ -190428,6 +190777,11 @@ For customized logging, `this.logger` can be overridden in Client constructor.
 Listen for presence events on this channel — when peers join, leave, or
 sync presence state.
 
+- By default, Broadcast and Presence are enabled for all projects.
+- By default, listening to database changes is disabled for new projects due to database performance and security concerns. You can turn it on by managing Realtime's [replication](https://supabase.com/docs/guides/api#realtime-api-overview).
+- You can receive the "previous" data for updates and deletes by setting the table's `REPLICA IDENTITY` to `FULL` (e.g., `ALTER TABLE your_table REPLICA IDENTITY FULL;`).
+- Row level security is not applied to delete statements. When RLS is enabled and replica identity is set to full, only the primary key is sent to clients.
+
 ### Examples
 
 #### Listen to broadcast messages
@@ -190598,6 +190952,11 @@ Unsubscribes, removes and tears down a single channel
 
 Sends a message into the channel.
 
+- When using REST you don't need to subscribe to the channel
+- REST calls are only available from 2.37.0 onwards
+- If you create a channel only to send a REST broadcast, remove it from
+  the client when the send completes
+
 ### Examples
 
 #### Send a message via websocket
@@ -190723,6 +191082,9 @@ Analytics buckets are optimized for analytical queries and data processing
 
 **Public alpha:** This API is part of a public alpha release and may not be available to your account type.
 
+- Creates a new analytics bucket using Iceberg tables
+- Analytics buckets are optimized for analytical queries and data processing
+
 ### Examples
 
 #### Create analytics bucket
@@ -190741,6 +191103,8 @@ A bucket can't be deleted with existing objects inside it
 You must first empty the bucket before deletion
 
 **Public alpha:** This API is part of a public alpha release and may not be available to your account type.
+
+- Deletes an analytics bucket
 
 ### Examples
 
@@ -190761,6 +191125,22 @@ The returned client provides full access to the Apache Iceberg REST Catalog API
 with the Supabase `{ data, error }` pattern for consistent error handling on all operations.
 
 **Public alpha:** This API is part of a public alpha release and may not be available to your account type.
+
+This method provides a bridge between Supabase's bucket management and the standard
+Apache Iceberg REST Catalog API. The bucket name maps to the Iceberg warehouse parameter.
+All authentication and configuration is handled automatically using your Supabase credentials.
+
+**Error Handling**: Invalid bucket names throw immediately. All catalog
+operations return `{ data, error }` where errors are `IcebergError` instances from iceberg-js.
+Use helper methods like `error.isNotFound()` or check `error.status` for specific error handling.
+Use `.throwOnError()` on the analytics client if you prefer exceptions for catalog operations.
+
+**Cleanup Operations**: When using `dropTable`, the `purge: true` option permanently
+deletes all table data. Without it, the table is marked as deleted but data remains.
+
+**Library Dependency**: The returned catalog wraps `IcebergRestCatalog` from iceberg-js.
+For complete API documentation and advanced usage, refer to the
+[iceberg-js documentation](https://supabase.github.io/iceberg-js/).
 
 ### Examples
 
@@ -190866,6 +191246,9 @@ Only returns buckets of type 'ANALYTICS'
 
 **Public alpha:** This API is part of a public alpha release and may not be available to your account type.
 
+- Retrieves the details of all Analytics Storage buckets within an existing project
+- Only returns buckets of type 'ANALYTICS'
+
 ### Examples
 
 #### List analytics buckets
@@ -190894,6 +191277,11 @@ This section contains methods for working with File Buckets.
 
 Copies an existing file to a new path in the same bucket.
 
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `insert` and `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### Copy file
@@ -190908,6 +191296,11 @@ const { data, error } = await supabase
 ## createBucket
 
 Creates a new Storage bucket
+
+- RLS policy permissions required:
+  - `buckets` table permissions: `insert`
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
 
 ### Examples
 
@@ -190929,6 +191322,11 @@ Creates a signed upload URL.
 Signed upload URLs can be used to upload files to the bucket without further authentication.
 They are valid for 2 hours.
 
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `insert`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### Create Signed Upload URL
@@ -190943,6 +191341,11 @@ const { data, error } = await supabase
 ## createSignedUrl
 
 Creates a signed URL. Use a signed URL to share a file for a fixed amount of time.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
 
 ### Examples
 
@@ -190984,6 +191387,11 @@ const { data } = await supabase
 
 Creates multiple signed URLs. Use a signed URL to share a file for a fixed amount of time.
 
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### Create Signed URLs
@@ -191000,6 +191408,11 @@ const { data, error } = await supabase
 Deletes an existing bucket. A bucket can't be deleted with existing objects inside it.
 You must first `empty()` the bucket.
 
+- RLS policy permissions required:
+  - `buckets` table permissions: `select` and `delete`
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### Delete bucket
@@ -191013,6 +191426,11 @@ const { data, error } = await supabase
 ## download
 
 Downloads a file from a private bucket. For public buckets, make a request to the URL returned from `getPublicUrl` instead.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
 
 ### Examples
 
@@ -191065,6 +191483,11 @@ const { data, error } = await supabase
 
 Removes all objects inside a single bucket.
 
+- RLS policy permissions required:
+  - `buckets` table permissions: `select`
+  - `objects` table permissions: `select` and `delete`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### Empty bucket
@@ -191106,6 +191529,11 @@ const avatars = supabase.storage.from('avatars')
 
 Retrieves the details of an existing Storage bucket.
 
+- RLS policy permissions required:
+  - `buckets` table permissions: `select`
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### Get bucket
@@ -191120,6 +191548,12 @@ const { data, error } = await supabase
 
 A simple convenience function to get the URL for an asset in a public bucket. If you do not want to use this function, you can construct the public URL by concatenating the bucket URL with the path to the asset.
 This function does not verify if the bucket is public. If a public URL is created for a bucket which is not public, you will not be able to download the asset.
+
+- The bucket needs to be set to public, either via [updateBucket()](https://supabase.com/docs/reference/javascript/storage-updatebucket) or by going to Storage on [supabase.com/dashboard](https://supabase.com/dashboard), clicking the overflow menu on a bucket and choosing "Make public"
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
 
 ### Examples
 
@@ -191189,6 +191623,11 @@ Lists all the files and folders within a path of the bucket.
 Additionally, deprecated fields like `bucket_id`, `owner`, and `buckets` are NOT returned
 by this method.
 
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### List files in a bucket
@@ -191232,6 +191671,11 @@ const { data, error } = await supabase
 ## listBuckets
 
 Retrieves the details of all Storage buckets within an existing project.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: `select`
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
 
 ### Examples
 
@@ -191305,6 +191749,11 @@ data?.folders.forEach(folder => {
 ## move
 
 Moves an existing file to a new path in the same bucket.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `update` and `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
 
 ### Examples
 
@@ -191395,6 +191844,11 @@ Deletes files within the same bucket
 Returns an array of FileObject entries for the deleted files. Note that deprecated
 fields like `bucket_id` may or may not be present in the response - do not rely on them.
 
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `delete` and `select`
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### Delete file
@@ -191409,6 +191863,13 @@ const { data, error } = await supabase
 ## update
 
 Replaces an existing file at the specified path with a new one.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: `update` and `select`
+- `update()` always replaces the file at the given path regardless of the `upsert` option.
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+- For React Native, using either `Blob`, `File` or `FormData` does not work as intended. Update file using `ArrayBuffer` from base64 file data instead, see example below.
 
 ### Examples
 
@@ -191441,6 +191902,11 @@ const { data, error } = await supabase
 
 Updates a Storage bucket
 
+- RLS policy permissions required:
+  - `buckets` table permissions: `select` and `update`
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+
 ### Examples
 
 #### Update bucket
@@ -191458,6 +191924,12 @@ const { data, error } = await supabase
 ## upload
 
 Uploads a file to an existing bucket.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: only `insert` when you are uploading new files and `select`, `insert` and `update` when you are upserting files
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
+- For React Native, using either `Blob`, `File` or `FormData` does not work as intended. Upload file using `ArrayBuffer` from base64 file data instead, see example below.
 
 ### Examples
 
@@ -191506,6 +191978,11 @@ if (error) {
 ## uploadToSignedUrl
 
 Upload a file with a token generated from `createSignedUploadUrl`.
+
+- RLS policy permissions required:
+  - `buckets` table permissions: none
+  - `objects` table permissions: none
+- Refer to the [Storage guide](https://supabase.com/docs/guides/storage/security/access-control) on how access control works
 
 ### Examples
 
@@ -207016,6 +207493,522 @@ var objects = await supabase.Storage.From("avatars").List();
   name `supabase-core`
   to `Supabase.Core`
 - Adds comments to the remaining undocumented code.
+
+
+---
+
+# Supabase Server SDK Reference
+
+# Supabase Server SDK Reference
+
+## Introduction
+
+`@supabase/server` is a framework-agnostic library for authenticating requests in server-side JavaScript environments. It verifies JWTs, resolves Supabase API keys, and creates pre-configured Supabase clients — exposing everything through a single `SupabaseContext` that is identical regardless of which adapter or primitive produced it.
+
+Adapters for Hono, H3, Elysia, and NestJS are included. You can also compose the lower-level primitives directly for custom frameworks or edge runtimes.
+
+## Installing
+
+### Install as a package
+
+Install `@supabase/server` via your package manager.
+
+```sh Terminal
+npm install @supabase/server
+```
+
+```sh Terminal
+yarn add @supabase/server
+```
+
+```sh Terminal
+pnpm add @supabase/server
+```
+
+### Use via JSR (Deno / Bun)
+
+`@supabase/server` is also published to [JSR](https://jsr.io/@supabase/server) for Deno and Bun environments.
+
+```sh Terminal
+deno add jsr:@supabase/server
+```
+
+```sh Terminal
+bunx jsr add @supabase/server
+```
+
+## Middleware
+
+## createSupabaseContext
+
+Creates a SupabaseContext directly from a request.
+
+Use this when you need the context without the full withSupabase wrapper —
+e.g., inside framework route handlers or custom middleware. Returns a result tuple
+instead of producing a `Response`.
+
+### Examples
+
+#### User auth
+
+```ts
+const { data: ctx, error } = await createSupabaseContext(request, { auth: 'user' })
+if (error) {
+  return Response.json({ message: error.message }, { status: error.status })
+}
+const { data } = await ctx.supabase.rpc('get_my_items')
+```
+
+## withSupabase
+
+Wraps a request handler with Supabase auth, client creation, and CORS handling.
+
+Built for the Web API `Request`/`Response` standard that all modern runtimes
+implement natively. Handles CORS preflight, credential verification,
+context creation, and error responses. Your handler only runs on successful auth.
+
+### Examples
+
+#### Basic usage
+
+```ts
+import { withSupabase } from '@supabase/server'
+
+export default {
+  fetch: withSupabase({ auth: 'user' }, async (req, ctx) => {
+    const { data } = await ctx.supabase.rpc('get_my_profile')
+    return Response.json(data)
+  }),
+}
+```
+
+## Primitives
+
+## createAdminClient
+
+Creates an admin Supabase client that bypasses Row-Level Security.
+
+Uses a secret key for authentication, giving full access to all data.
+Stateless — one client per request.
+
+### Examples
+
+#### Basic usage
+
+```ts
+const supabaseAdmin = createAdminClient()
+const { data } = await supabaseAdmin.from('audit_log').insert({ action: 'user_login' })
+```
+
+## createContextClient
+
+Creates a Supabase client scoped to the caller's context.
+
+Configured with a publishable key and (optionally) the caller's JWT,
+so Row-Level Security policies apply. Stateless — one client per request.
+
+### Examples
+
+#### With verified auth
+
+```ts
+const { data: auth } = await verifyAuth(request, { auth: 'user' })
+const supabase = createContextClient({
+  auth: { token: auth.token, keyName: auth.keyName },
+})
+const { data } = await supabase.rpc('get_my_items')
+```
+
+## extractCredentials
+
+Extracts authentication credentials from an incoming HTTP request.
+
+Reads two headers:
+
+- `Authorization: Bearer <token>` → extracted as `token`
+- `apikey: <key>` → extracted as `apikey`
+
+This is a pure extraction step — no validation or verification is performed.
+Pass the result to verifyCredentials to validate against allowed auth modes.
+
+### Examples
+
+#### Basic usage
+
+```ts
+import { extractCredentials } from '@supabase/server/core'
+
+const creds = extractCredentials(request)
+console.log(creds.token)  // "eyJhbGci..." or null
+console.log(creds.apikey) // "sb-abc123-publishable-..." or null
+```
+
+## resolveEnv
+
+Resolves Supabase environment configuration from runtime environment variables.
+
+Reads `SUPABASE_URL`, keys (`SUPABASE_PUBLISHABLE_KEYS` / `SUPABASE_SECRET_KEYS`),
+and the JWKS source (`SUPABASE_JWKS` for inline keys, or `SUPABASE_JWKS_URL`
+for a remote endpoint). Works across Deno, Node.js, and Bun. For Cloudflare
+Workers, use `overrides` or enable node-compat.
+
+### Examples
+
+#### Reading and overriding env vars
+
+```ts
+const { data: env, error } = resolveEnv()
+if (error) throw error
+
+// Override for tests
+const { data: env } = resolveEnv({ url: 'http://localhost:54321' })
+```
+
+## verifyAuth
+
+Extracts credentials from a request and verifies them in a single step.
+
+This is a convenience function that combines extractCredentials and
+verifyCredentials. Use it when you want the full auth flow without
+needing to inspect the raw credentials.
+
+### Examples
+
+#### User auth
+
+```ts
+import { verifyAuth } from '@supabase/server/core'
+
+const { data: auth, error } = await verifyAuth(request, {
+  auth: 'user',
+})
+
+if (error) {
+  return Response.json({ message: error.message }, { status: error.status })
+}
+
+console.log(auth.userClaims!.id) // "d0f1a2b3-..."
+```
+
+## VerifyAuthOptions
+
+Options for verifyAuth.
+
+## verifyCredentials
+
+Verifies pre-extracted credentials against one or more allowed auth modes.
+
+Tries each mode in order — first match wins. A mode is only tried when its
+credential is present; a JWT that is present but fails verification
+short-circuits the chain with `InvalidCredentialsError` instead of falling
+through to the next mode. Use verifyAuth to extract and verify in a
+single call.
+
+### Examples
+
+#### Multiple auth modes
+
+```ts
+const credentials = extractCredentials(request)
+const { data: auth, error } = await verifyCredentials(credentials, {
+  auth: ['user', 'publishable'],
+})
+if (error) {
+  return Response.json({ message: error.message }, { status: error.status })
+}
+```
+
+## VerifyCredentialsOptions
+
+Options for verifyCredentials.
+
+## Adapters
+
+## SupabaseError
+
+Wraps an AuthError as an Elysia-compatible error.
+
+Discriminate in `onError` via `code === 'SupabaseError'`. The original
+`AuthError` is available as the typed `.cause`.
+
+## withSupabase
+
+Elysia plugin that creates a SupabaseContext and makes it available in route handlers.
+
+Skips if a previous plugin already set the context, enabling route-level overrides.
+Throws a `SupabaseError` on auth failure. `.status` is on the error directly; the original
+`AuthError` is available as the typed `.cause`. Discriminate in `onError` via `code === 'SupabaseError'`.
+
+### Examples
+
+#### App-wide auth via .use()
+
+```ts
+import { Elysia } from 'elysia'
+import { withSupabase } from '@supabase/server/adapters/elysia'
+
+const app = new Elysia()
+  .use(withSupabase({ auth: 'user' }))
+  .get('/games', async ({ supabaseContext }) => {
+    const { data } = await supabaseContext.supabase.from('favorite_games').select()
+    return data
+  })
+
+app.listen(3000)
+```
+
+#### Per-route auth via scoped .use()
+
+```ts
+import { Elysia } from 'elysia'
+import { withSupabase } from '@supabase/server/adapters/elysia'
+
+const app = new Elysia()
+  .get('/health', () => ({ status: 'ok' }))
+  .group('/api', (app) =>
+    app
+      .use(withSupabase({ auth: 'user' }))
+      .get('/profile', async ({ supabaseContext }) => {
+        return supabaseContext.userClaims
+      })
+  )
+
+app.listen(3000)
+```
+
+## Errors
+
+## AuthError
+
+Thrown when authentication or authorization fails.
+
+Carries an HTTP `status` code suitable for returning directly in a response
+(typically `401` for invalid credentials, `500` for server-side auth failures).
+
+### Examples
+
+#### Catching an AuthError
+
+```ts
+import { AuthError, createSupabaseContext } from '@supabase/server'
+
+const { data: ctx, error } = await createSupabaseContext(request, { auth: 'user' })
+if (error) {
+  // error is an AuthError
+  return Response.json(
+    { message: error.message, code: error.code },
+    { status: error.status },
+  )
+}
+```
+
+## AuthGenericError
+
+Generic authentication error code.
+
+## CreateSupabaseClientError
+
+Failed to create a Supabase client after auth succeeded.
+
+## EnvError
+
+Thrown when a required environment variable is missing or malformed.
+
+Always has `status: 500` — environment errors are server-side configuration issues.
+
+### Examples
+
+#### Catching an EnvError
+
+```ts
+import { EnvError } from '@supabase/server'
+
+try {
+  const client = createAdminClient()
+} catch (e) {
+  if (e instanceof EnvError) {
+    console.error(`Config issue [${e.code}]: ${e.message}`)
+    // → "Config issue [MISSING_SUPABASE_URL]: SUPABASE_URL is required but not set"
+  }
+}
+```
+
+## EnvGenericError
+
+Generic environment error code.
+
+## Errors
+
+Factory map for all error types. Keyed by error code constant, each entry
+returns a pre-configured EnvError or AuthError.
+
+### Examples
+
+#### Throwing typed errors
+
+```ts
+throw Errors[MissingSupabaseURLError]()
+throw Errors[MissingPublishableKeyError]('mobile')
+```
+
+## InvalidCredentialsError
+
+No credential matched any allowed auth mode.
+
+## MissingDefaultPublishableKeyError
+
+No default publishable key found.
+
+## MissingDefaultSecretKeyError
+
+No default secret key found.
+
+## MissingPublishableKeyError
+
+Named publishable key not found in `SUPABASE_PUBLISHABLE_KEYS`.
+
+## MissingSecretKeyError
+
+Named secret key not found in `SUPABASE_SECRET_KEYS`.
+
+## MissingSupabaseURLError
+
+`SUPABASE_URL` is not set.
+
+## Types
+
+## Allow
+
+**Deprecated.** Use AuthMode instead. Will be removed in a future major release.
+
+## AllowWithKey
+
+**Deprecated.** Use AuthModeWithKey instead. Will be removed in a future major release.
+
+## AuthMode
+
+Authentication mode that determines what credentials a request must provide.
+
+- `"none"` — No credentials required. Every request is accepted.
+- `"publishable"` — Requires a valid publishable key in the `apikey` header.
+- `"secret"` — Requires a valid secret key in the `apikey` header (timing-safe comparison).
+- `"user"` — Requires a valid JWT in the `Authorization: Bearer <token>` header.
+
+### Examples
+
+#### Single mode
+
+```ts
+// Single mode
+withSupabase({ auth: 'user' }, handler)
+
+// Multiple modes — the first match wins.
+// A mode is tried only when its credential is present; a JWT that is
+// present but fails verification rejects immediately rather than falling
+// through to the next mode.
+withSupabase({ auth: ['user', 'publishable'] }, handler)
+```
+
+## AuthModeWithKey
+
+Extended auth mode that supports targeting a specific named key.
+
+Use the colon syntax (`"publishable:web_app"`) to require a specific named key
+from the `SUPABASE_PUBLISHABLE_KEYS` or `SUPABASE_SECRET_KEYS` JSON object.
+Use `"publishable:*"` or `"secret:*"` to accept any key in the set.
+
+### Examples
+
+#### Named key
+
+```ts
+// Accept only the "mobile" publishable key
+withSupabase({ auth: 'publishable:mobile' }, handler)
+
+// Accept any secret key
+withSupabase({ auth: 'secret:*' }, handler)
+
+// Mix named keys with other modes
+withSupabase({ auth: ['user', 'publishable:web_app'] }, handler)
+```
+
+## AuthResult
+
+Result of credential verification.
+
+Contains the resolved auth mode, the verified token (for `"user"` mode),
+decoded JWT claims, and the matched key name (for `"publishable"` / `"secret"` modes).
+
+## ClientAuth
+
+Auth identity for client creation functions.
+
+## CreateAdminClientOptions
+
+Options for core.createAdminClient.
+
+## CreateContextClientOptions
+
+Options for core.createContextClient.
+
+## Credentials
+
+Raw credentials extracted from an incoming HTTP request.
+
+Produced by core.extractCredentials from the `Authorization` and `apikey` headers.
+
+## JWTClaims
+
+Standard JWT claims as defined by RFC 7519, extended with Supabase-specific fields.
+
+This is the raw JWT payload — use UserClaims for a normalized, camelCase view.
+
+## SupabaseContext
+
+The Supabase context created for each authenticated request.
+
+Contains pre-configured Supabase clients and the caller's identity.
+Identical regardless of which layer or adapter produced it.
+
+## SupabaseEnv
+
+Resolved Supabase environment configuration.
+
+Holds the project URL, API keys, and JWKS needed by every other primitive.
+Typically resolved automatically from environment variables by core.resolveEnv,
+but can be passed explicitly via the `env` option.
+
+## UserClaims
+
+Normalized, camelCase view of the authenticated user's identity.
+
+Derived from JWTClaims. For the full Supabase `User` object
+(including email confirmation status, providers, etc.), call
+`supabase.auth.getUser()` using the context client.
+
+## WithSupabaseConfig
+
+Configuration for withSupabase and createSupabaseContext.
+
+Controls which auth modes are accepted, environment overrides, and CORS behavior.
+
+### Examples
+
+#### Basic usage
+
+```ts
+// Require authenticated users, auto-CORS enabled (default)
+const config: WithSupabaseConfig = { auth: 'user' }
+
+// Accept users or service-to-service calls, custom CORS headers
+const config: WithSupabaseConfig = {
+  auth: ['user', 'secret'],
+  cors: { 'Access-Control-Allow-Origin': 'https://myapp.com' },
+}
+
+// No auth required, CORS disabled
+const config: WithSupabaseConfig = { auth: 'none', cors: false }
+```
 
 
 ---

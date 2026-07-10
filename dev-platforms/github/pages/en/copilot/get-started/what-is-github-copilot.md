@@ -33,7 +33,7 @@ Use Copilot in the following places:
 * The command line, through the GitHub CLI
 * The GitHub website
 
-See [GitHub Copilot features](/en/copilot/about-github-copilot/github-copilot-features).
+See [GitHub Copilot features](/en/copilot/get-started/features).
 
 ## Get access
 
@@ -46,7 +46,7 @@ You can start using Copilot in several ways, depending on your role and needs.
 * **Get free access if you're eligible.** Students, teachers, and open source maintainers may qualify for access to premium features at no cost. See [Access GitHub Copilot for free as a student](/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-students) and [Access Copilot Pro for free as a teacher or open source maintainer](/en/copilot/how-tos/copilot-on-github/set-up-copilot/enable-copilot/set-up-for-teachers-and-os-maintainers).
 * **Request access from your organization.** If your organization or enterprise has a GitHub Copilot plan, you can request access by going to <https://github.com/settings/copilot> and request access under "Get Copilot from an organization."
 
-See [Getting started with a GitHub Copilot plan](/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/getting-started-with-copilot-on-your-personal-account/getting-started-with-a-copilot-plan) for more information.
+See [Getting started with a GitHub Copilot plan](/en/copilot/how-tos/manage-your-account/get-started-with-a-copilot-plan) for more information.
 
 ### Organizations and enterprises
 
@@ -61,8 +61,8 @@ If your organization is owned by an enterprise that has a Copilot subscription, 
 
 ## Next steps
 
-* Learn more about Copilot features. See [GitHub Copilot features](/en/copilot/about-github-copilot/github-copilot-features).
-* Start using Copilot. See [Setting up GitHub Copilot](/en/copilot/setting-up-github-copilot).
+* Learn more about Copilot features. See [GitHub Copilot features](/en/copilot/get-started/features).
+* Start using Copilot. See [Setting up GitHub Copilot](/en/copilot/how-tos/set-up).
 
 ## Further reading
 

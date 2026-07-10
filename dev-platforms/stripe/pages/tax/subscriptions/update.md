@@ -275,11 +275,11 @@ To update the subscription schedule after you obtain it, remove the `automatic_t
 ```curl
 curl https://api.stripe.com/v1/subscription_schedules/{{SUBSCRIPTIONSCHEDULE_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "phases[0][items][0][price]=price_1GqNdGAJVYItwOKqEHb" \
+  -d "phases[0][items][0][price]={{PRICE_ID}}" \
   -d "phases[0][items][0][quantity]=1" \
   -d "phases[0][start_date]=1577865600" \
   -d "phases[0][end_date]=1578038400" \
-  -d "phases[1][items][0][price]=price_1GqNdGAJVYItwOKqEHb" \
+  -d "phases[1][items][0][price]={{PRICE_ID}}" \
   -d "phases[1][items][0][quantity]=2" \
   -d "phases[1][start_date]=1578038400" \
   -d "phases[1][end_date]=1580544000" \

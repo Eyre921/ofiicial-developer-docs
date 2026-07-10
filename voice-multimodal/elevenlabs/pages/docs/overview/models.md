@@ -114,20 +114,16 @@ The ElevenLabs API offers a range of audio models optimized for different use ca
 
 ### Deprecated models
 
-The `scribe_v1`, `eleven_monolingual_v1` and `eleven_multilingual_v1` models are deprecated and will be removed on July 9th 2026. Please migrate to newer models for continued service.
-
 The `eleven_turbo_v2_5` and `eleven_turbo_v2` models are functionally equivalent to the
 `eleven_flash_v2_5` and `eleven_flash_v2` models respectively, except the latency on the Flash
 models is lower on average. We recommend using the Flash models over Turbo models in all use
 cases.
 
-| Model ID                 | Description                                                     | Languages                                                                                                                                                                                       | Replacement model suggestion |
-| ------------------------ | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
-| `eleven_monolingual_v1`  | First generation TTS model (outclassed by v2 models)            | `en`                                                                                                                                                                                            | `eleven_multilingual_v2`     |
-| `eleven_multilingual_v1` | First multilingual model (outclassed by v2 models)              | `en`, `fr`, `de`, `hi`, `it`, `pl`, `pt`, `es`                                                                                                                                                  | `eleven_multilingual_v2`     |
-| `eleven_turbo_v2_5`      | First generation low-latency model (outclassed by Flash models) | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru`, `hu`, `no`, `vi` | `eleven_flash_v2_5`          |
-| `eleven_turbo_v2`        | First generation low-latency model (outclassed by Flash models) | `en`                                                                                                                                                                                            | `eleven_flash_v2`            |
-| `scribe_v1`              | First generation speech recognition (outclassed by v2 models)   | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                                                 | `scribe_v2`                  |
+| Model ID            | Description                                                     | Languages                                                                                                                                                                                       | Replacement model suggestion |
+| ------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------- |
+| `eleven_turbo_v2_5` | First generation low-latency model (outclassed by Flash models) | `en`, `ja`, `zh`, `de`, `hi`, `fr`, `ko`, `pt`, `it`, `es`, `id`, `nl`, `tr`, `fil`, `pl`, `sv`, `bg`, `ro`, `ar`, `cs`, `el`, `fi`, `hr`, `ms`, `sk`, `da`, `ta`, `uk`, `ru`, `hu`, `no`, `vi` | `eleven_flash_v2_5`          |
+| `eleven_turbo_v2`   | First generation low-latency model (outclassed by Flash models) | `en`                                                                                                                                                                                            | `eleven_flash_v2`            |
+| `scribe_v1`         | First generation speech recognition (outclassed by v2 models)   | [90+ languages](/docs/overview/capabilities/speech-to-text#supported-languages)                                                                                                                 | `scribe_v2`                  |
 
 ## Eleven v3
 

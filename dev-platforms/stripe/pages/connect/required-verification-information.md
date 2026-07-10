@@ -336,7 +336,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_
             "documents": {
                 "proof_of_registration": {
                     "files": [
-                        "file_5dtoJkOhAxrMWb"
+                        "{{FILE_ID}}"
                     ]
                 }
             }
@@ -617,7 +617,7 @@ curl -X POST https://api.stripe.com/v2/core/accounts/{{CONNECTED_STRIPE_ACCOUNT_
             "documents": {
                 "proof_of_registration": {
                     "files": [
-                        "file_5dtoJkOhAxrMWb"
+                        "{{FILE_ID}}"
                     ]
                 }
             }
@@ -1197,7 +1197,7 @@ You can then use the token’s `id` value to attach the file to a connected acco
 ```curl
 curl https://api.stripe.com/v1/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "documents[proof_of_registration][files][]=file_5dtoJkOhAxrMWb"
+  -d "documents[proof_of_registration][files][]={{FILE_ID}}"
 ```
 
 #### Additional information on registration statuses
@@ -1433,7 +1433,7 @@ You can then use the token’s `id` value to attach the file to a connected acco
 ```curl
 curl https://api.stripe.com/v1/accounts/{{CONNECTED_STRIPE_ACCOUNT_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "documents[proof_of_registration][files][]=file_5dtoJkOhAxrMWb"
+  -d "documents[proof_of_registration][files][]={{FILE_ID}}"
 ```
 
 ### Ultimate Beneficial Ownership Verification

@@ -5928,6 +5928,52 @@ baseURL: ({ endpoint }) =>
 
 For per-request control beyond URL routing (header injection, custom retries, tracing), pass a `fetch` override. See [Trusted edge signals](/docs/ai-chat/patterns/trusted-edge-signals) for a full proxy walkthrough.
 
+## Monitoring message delivery
+
+`sendMessage` from `useChat` gives no feedback about whether the message actually reached the backend. The transport's `onEvent` callback closes that gap with typed lifecycle events (see the [event catalog](/docs/ai-chat/reference#transport-events)) so you can record real metrics:
+
+```ts theme={"theme":"css-variables"}
+const transport = useTriggerChatTransport({
+  task: "my-chat",
+  accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+  onEvent: (event) => {
+    switch (event.type) {
+      case "message-sent":
+        metrics.increment("chat.message_sent");
+        metrics.timing("chat.send_duration_ms", event.durationMs);
+        break;
+      case "message-send-failed":
+        metrics.increment("chat.message_send_failed", { status: event.status });
+        break;
+    }
+  },
+});
+```
+
+A `message-sent` event means the message is durably written to the session's input stream (the stream the agent consumes from), so it's a true "sent successfully" signal. Because send and response events share the same callback, "sent but never answered" becomes a small client-side watchdog:
+
+```ts theme={"theme":"css-variables"}
+// Module scope (or a ref) so re-renders don't recreate it. Keyed by chatId
+// on purpose: a new send on the same chat supersedes the in-flight turn.
+const pending = new Map<string, ReturnType<typeof setTimeout>>();
+
+onEvent: (event) => {
+  if (event.type === "message-sent" && event.source === "submit-message") {
+    pending.set(event.chatId, setTimeout(() => {
+      // Log the chatId; don't tag the metric with it (unbounded cardinality).
+      metrics.increment("chat.sent_but_unanswered");
+      console.warn("sent but unanswered", event.chatId);
+    }, 30_000));
+  }
+  if (event.type === "first-chunk" || event.type === "turn-completed" || event.type === "stream-error") {
+    clearTimeout(pending.get(event.chatId));
+    pending.delete(event.chatId);
+  }
+};
+```
+
+Time to first token is `first-chunk`'s `sinceSendMs` (the transport tracks the last turn-producing send per chat, so no bookkeeping is needed), and `turn-completed`'s `sinceSendMs` is the full turn latency. Exceptions thrown inside `onEvent` are swallowed, so a failing metrics pipeline can never break the chat.
+
 
 # How it works
 Source: https://trigger.dev/docs/ai-chat/how-it-works
@@ -9962,7 +10008,9 @@ Inject user messages mid-execution to steer agents between tool-call steps.
 
 When an AI agent is executing tool calls, users may want to send a message that **steers the agent mid-execution** — adding context, correcting course, or refining the request without waiting for the response to finish.
 
-The `pendingMessages` option enables this by injecting user messages between tool-call steps via the AI SDK's `prepareStep`. Messages that arrive during streaming are queued and injected at the next step boundary. If there are no more step boundaries (single-step response or final text generation), the message becomes the next turn automatically.
+By default (without `pendingMessages`), a message sent while the agent is responding never interrupts the in-flight response: it's buffered and processed as its own turn once the current turn completes, with multiple messages running sequentially in arrival order.
+
+The `pendingMessages` option enables steering instead, injecting user messages between tool-call steps via the AI SDK's `prepareStep`. Messages that arrive during streaming are queued and injected at the next step boundary. If there are no more step boundaries (single-step response or final text generation), the message becomes the next turn automatically.
 
 ## How it works
 
@@ -11291,9 +11339,29 @@ Options for the frontend transport constructor and `useTriggerChatTransport` hoo
 | `clientData`           | Typed by `clientDataSchema`                                                                               | —                           | Default client data merged into per-turn `metadata` and threaded through `startSession`'s params (so the first run's `payload.metadata` matches per-turn `metadata`). Live-updated when the option value changes.                                               |
 | `sessions`             | `Record<string, ChatSession>`                                                                             | —                           | Restore sessions from storage. See [ChatSession](#chatsession).                                                                                                                                                                                                 |
 | `onSessionChange`      | `(chatId, session \| null) => void`                                                                       | —                           | Fires when session state changes. `session` is the full `ChatSession` or `null` when the run ends.                                                                                                                                                              |
+| `onEvent`              | `(event: ChatTransportEvent) => void`                                                                     | —                           | Observability callback for transport lifecycle events (send outcomes, stream connects, first chunk, turn completion). See [Transport events](#transport-events). Exceptions thrown by the callback are swallowed.                                               |
 | `multiTab`             | `boolean`                                                                                                 | `false`                     | Enable multi-tab claim coordination via `BroadcastChannel`. See [Frontend → multi-tab](/docs/ai-chat/frontend#multi-tab-coordination).                                                                                                                               |
 | `watch`                | `boolean`                                                                                                 | `false`                     | Read-only watcher mode — keep the SSE subscription open across `trigger:turn-complete` so a viewer sees turns 2, 3, … through one long-lived stream.                                                                                                            |
 | `headStart`            | `string`                                                                                                  | —                           | URL of a [`chat.headStart`](/docs/ai-chat/fast-starts#head-start) route handler. When set, the FIRST message of a brand-new chat POSTs to this URL so step 1's LLM call runs in your warm process while the agent run boots in parallel. Subsequent turns bypass it. |
+
+### Transport events
+
+The `onEvent` callback receives a `ChatTransportEvent` (exported from `@trigger.dev/sdk/chat` and `@trigger.dev/sdk/chat/react`) for each lifecycle moment the transport observes. All events carry `chatId` and `timestamp`.
+
+| Event                 | Extra fields                                                                      | Fires when                                                                                                                                                                                                                                                                                                                                         |
+| --------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `message-sent`        | `messageId?`, `source`, `durationMs`, `partId?`, `bodyBytes?`                     | A send was durably acknowledged — a 2xx from the session input stream append (or the `headStart` POST), after any internal token-refresh retries. This means the message is durably written to the stream the agent consumes from, not merely "request accepted". `partId` is the append's idempotency key, also stored on the server-side record. |
+| `message-send-failed` | `messageId?`, `source`, `error`, `status?`, `durationMs`, `partId?`, `bodyBytes?` | A send definitively failed after internal retries. Fires in addition to `useChat`'s `onError`.                                                                                                                                                                                                                                                     |
+| `stream-connected`    | `resumed`, `lastEventId?`, `messageId?`                                           | The SSE subscription to the session's output stream started delivering. `resumed: true` when reconnecting from a stored cursor (page reload) rather than following a fresh send. `lastEventId` is the cursor it connected from.                                                                                                                    |
+| `first-chunk`         | `chunkType?`, `lastEventId?`, `messageId?`, `sinceSendMs?`                        | The first response chunk of a turn arrived. `sinceSendMs` is the delta from the last turn-producing send — time to first token without any bookkeeping.                                                                                                                                                                                            |
+| `turn-completed`      | `lastEventId?`, `sessionInEventId?`, `messageId?`, `sinceSendMs?`                 | The agent's turn-complete control record arrived — the "finished answering" signal. `sinceSendMs` is the full turn latency; `sessionInEventId` is the agent's committed input-stream cursor.                                                                                                                                                       |
+| `stream-error`        | `error`, `status?`                                                                | The output stream failed unrecoverably.                                                                                                                                                                                                                                                                                                            |
+
+`source` identifies the send path: `"submit-message"`, `"regenerate-message"`, `"steer"` (`sendPendingMessage`), `"action"` (`sendAction`), `"stop"` (`stopGeneration`), or `"head-start"`.
+
+`messageId` on the response-side events is client-side attribution: the id from the most recent turn-producing send (`submit-message`, `regenerate-message`, or `head-start`) on that chat.
+
+See [Monitoring message delivery](/docs/ai-chat/frontend#monitoring-message-delivery) for the metrics and watchdog patterns these enable.
 
 ### `accessToken` callback
 
@@ -14254,6 +14322,82 @@ async function triggerTask() {
   await myTask.trigger({ userId: "1234" }); // This will use the secret key and base URL you configured
 }
 ```
+
+
+# Billing limits and alerts
+Source: https://trigger.dev/docs/billing-limits
+
+Set a monthly compute spend cap for your organization and get email alerts before you reach it.
+
+Billing limits let you cap your organization's monthly compute spend so a runaway task or unexpected traffic spike can't blow your budget. Billing alerts notify you by email as you approach thresholds you choose.
+
+<Note>Billing limits and alerts are available to all [Trigger.dev Cloud](https://trigger.dev) organizations. They don't apply to self-hosted instances.</Note>
+
+You can find the settings in the dashboard: open the **Organization** menu in the top left, then **Settings** → **Billing limits**.
+
+<picture>
+  <source type="image/webp" />
+
+  <img alt="Billing limit settings" />
+</picture>
+
+## Setting a billing limit
+
+Choose one of three options:
+
+* **Plan limit**: Use your plan's maximum as the spending cap.
+* **Custom limit**: Set your own monthly spend threshold.
+* **No limit**: No cap is enforced. This is the default.
+
+A billing limit applies to your whole organization and covers billable environments: `production`, `staging`, and `preview`. Your `dev` environment is not affected.
+
+Optionally, enable **Cancel in-progress runs when this limit is reached** to immediately cancel executing runs when the limit is hit, instead of letting them finish naturally.
+
+## Billing alerts
+
+Billing alerts are email notifications sent when your monthly spend crosses a threshold. You can add multiple thresholds:
+
+* **With a billing limit set**: thresholds are percentages of your limit (e.g. 50%, 80%).
+* **Without a billing limit**: thresholds are dollar amounts.
+
+<picture>
+  <source type="image/webp" />
+
+  <img alt="Billing alerts settings" />
+</picture>
+
+Alerts only notify you — they never pause environments or reject runs. Use them on their own for visibility, or alongside a limit to get advance warning before enforcement kicks in.
+
+## What happens when you reach your limit
+
+When your organization's spend reaches the billing limit, billable environments enter a **grace period**:
+
+1. Queues pause across `production`, `staging`, and `preview`. In-progress runs finish naturally (unless you enabled **Cancel in-progress runs**).
+2. New runs can still be triggered and are queued, but they won't start executing. Queued runs incur no compute cost until they start.
+3. You have **24 hours** to review and decide what to do.
+
+If you don't act before the grace period ends, queued runs are canceled and new triggers are rejected for the rest of the billing cycle.
+
+<Note>
+  Billing limits are **soft limits**, not instantaneous hard caps. Usage is evaluated on a short
+  delay, so spend can briefly exceed your limit before enforcement applies. See our
+  [terms](https://trigger.dev/terms) for refund policy details.
+</Note>
+
+## Resuming after hitting a limit
+
+To resume execution, increase or remove the billing limit from the **Billing limits** page. You'll be asked what to do with the runs that queued up during the pause:
+
+* **Resume queued runs**: everything that built up during the pause runs in order.
+* **Cancel queued runs**: the backlog is discarded and only new triggers run going forward.
+
+Execution resumes automatically once you've resolved the limit. Limits also reset at the start of each billing cycle.
+
+## Tracking spend against your limit
+
+On the **Usage** page (Organization menu → **Usage**), a **Billing limit** marker appears on the usage bar alongside your current spend and plan included usage, so you can see how close you are at a glance.
+
+For tips on lowering your spend in the first place, see [How to reduce your spend](/docs/how-to-reduce-your-spend).
 
 
 # Building with AI: overview
@@ -22308,6 +22452,145 @@ To learn more, take a look at the following resources:
 * [Realtime streaming](/docs/realtime/react-hooks/streams) - learn more about streaming data from your tasks
 * [Batch Triggering](/docs/triggering#tasks-batchtrigger) - learn more about how to trigger tasks in batches
 * [React hooks](/docs/realtime/react-hooks) - learn more about using React hooks to interact with the Trigger.dev API
+
+
+# ClickHouse chat agent
+Source: https://trigger.dev/docs/guides/example-projects/clickhouse-chat-agent
+
+Build a chat agent that answers questions about your data by writing and running SQL against ClickHouse Cloud, using chat.agent() and the ClickHouse Node.js client.
+
+## Overview
+
+This example is a [chat agent](/docs/ai-chat/overview) that answers natural-language questions about the data in a [ClickHouse Cloud](https://clickhouse.com/cloud) database. The agent discovers the schema, writes ClickHouse SQL, runs it through the official [ClickHouse Node.js client](https://clickhouse.com/docs/integrations/javascript), and streams back answers with markdown tables. Trigger.dev handles the chat session, turn loop, streaming, and resumability — the whole agent is one `chat.agent()` call and three tools.
+
+**Tech stack:**
+
+* **[Trigger.dev AI chat](/docs/ai-chat/overview)** for the agent session, turn loop, and streaming
+* **[ClickHouse Node.js client](https://clickhouse.com/docs/integrations/javascript)** (`@clickhouse/client`) for queries over HTTPS
+* **[AI SDK](https://ai-sdk.dev/)** with Anthropic Claude for the model and tool calling
+
+**Features:**
+
+* **Schema discovery tools**: `listTables` reads table names, engines, and row counts from `system.tables`; `describeTable` returns column names and types using a bound `Identifier` query param, so table names are never interpolated into SQL strings
+* **Read-only query tool**: `runQuery` accepts SELECT-style statements only, enforced in code and backed by ClickHouse settings — `readonly=2`, a 1,000-row result cap, and a 30 second execution timeout
+* **Self-correcting SQL**: query errors are returned to the model as tool output, so the agent reads the ClickHouse error, fixes its SQL, and retries
+* **Single environment variable**: the ClickHouse connection is one `CLICKHOUSE_URL` with the credentials embedded, set in the Trigger.dev dashboard
+
+## GitHub repo
+
+<Card title="View the ClickHouse chat agent repo" icon="GitHub" href="https://github.com/triggerdotdev/examples/tree/main/clickhouse-chat-agent">
+  Click here to view the full code for this project in our examples repository on GitHub. You can
+  fork it and use it as a starting point for your own project.
+</Card>
+
+## How it works
+
+### The agent
+
+The agent is defined with [`chat.agent()`](/docs/ai-chat/overview). Tools are declared on the config so tool results survive history re-conversion across turns, and the `run` function returns a `streamText()` call:
+
+```ts trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
+import { chat } from "@trigger.dev/sdk/ai";
+import { anthropic } from "@ai-sdk/anthropic";
+import { stepCountIs, streamText } from "ai";
+
+export const clickhouseAgent = chat.agent({
+  id: "clickhouse-agent",
+  idleTimeoutInSeconds: 300,
+  tools: { listTables, describeTable, runQuery },
+  run: async ({ messages, tools, signal }) => {
+    return streamText({
+      // Spread chat.toStreamTextOptions() FIRST — it wires up
+      // prepareStep (compaction, steering, background injection),
+      // the system prompt set via chat.prompt(), and telemetry.
+      ...chat.toStreamTextOptions(),
+      model: anthropic("claude-opus-4-8"),
+      system: SYSTEM_PROMPT,
+      messages,
+      tools,
+      stopWhen: stepCountIs(15),
+      abortSignal: signal,
+    });
+  },
+});
+```
+
+The system prompt tells the agent to explore the schema before querying, write ClickHouse SQL (not Postgres dialect), prefer aggregations, and present results as markdown tables.
+
+### The query tool
+
+`runQuery` guards against writes twice: a statement allowlist in code, and ClickHouse settings on the request itself. Errors are returned to the model instead of thrown, which is what makes the agent self-correct:
+
+```ts trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
+const READ_ONLY_STATEMENTS = /^\s*(select|with|show|describe|desc|explain|exists)\b/i;
+
+const runQuery = tool({
+  description:
+    "Run a read-only SQL query against ClickHouse and get the results as JSON rows.",
+  inputSchema: z.object({
+    query: z.string().describe("The ClickHouse SQL query to run"),
+  }),
+  execute: async ({ query }) => {
+    if (!READ_ONLY_STATEMENTS.test(query)) {
+      return { error: "Only read-only statements are allowed." };
+    }
+    try {
+      const result = await getClickHouse().query({
+        query,
+        format: "JSONEachRow",
+        clickhouse_settings: {
+          // readonly=2: reads only (no writes/DDL), but per-query settings
+          // like the limits below are still allowed.
+          readonly: "2",
+          max_result_rows: "1000",
+          result_overflow_mode: "break",
+          max_execution_time: 30,
+        },
+      });
+      const rows = await result.json();
+      return { rowCount: rows.length, rows };
+    } catch (error) {
+      // Return ClickHouse errors to the model so it can fix the query and retry.
+      return { error: error instanceof Error ? error.message : String(error) };
+    }
+  },
+});
+```
+
+### Connecting to ClickHouse
+
+The client reads a single `CLICKHOUSE_URL` environment variable — the HTTPS endpoint with credentials embedded — set in the Trigger.dev dashboard on the [Environment Variables page](/docs/deploy-environment-variables):
+
+```bash theme={"theme":"css-variables"}
+CLICKHOUSE_URL=https://default:YOUR_PASSWORD@YOUR_SERVICE.clickhouse.cloud:8443
+```
+
+```ts trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
+import { createClient } from "@clickhouse/client";
+
+const clickhouse = createClient({ url: process.env.CLICKHOUSE_URL });
+```
+
+### Chatting with the agent
+
+Run `npx trigger.dev@latest dev`, then open the **AI agents** page in the dashboard and chat with `clickhouse-agent` in the playground. With a dataset like [NYC Taxi](https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi) loaded, asking "What were the top 5 busiest pickup days?" produces a `listTables` call, a `describeTable` call, a SQL aggregation, and a streamed markdown table of results.
+
+## Relevant code
+
+* **Agent + tools**: [trigger/clickhouse-agent.ts](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/trigger/clickhouse-agent.ts): the `chat.agent()` definition, the three tools, the read-only guards, and the ClickHouse client
+* **Trigger config**: [trigger.config.ts](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/trigger.config.ts): project config pointing at the `trigger/` directory
+
+## Learn more
+
+<CardGroup>
+  <Card title="AI chat overview" icon="message-bot" href="/ai-chat/overview">
+    How chat agents, sessions, and the turn loop work.
+  </Card>
+
+  <Card title="Tools" icon="wrench" href="/ai-chat/tools">
+    Declaring tools on your agent and how they persist across turns.
+  </Card>
+</CardGroup>
 
 
 # Background Cursor agent using the Cursor CLI
@@ -33236,20 +33519,7 @@ Configure billing limits and alerts in your dashboard to protect against unexpec
 * Catch unexpected cost increases early
 * Identify runaway tasks before they become expensive
 
-The **Billing limits** settings page has two sections:
-
-* **Billing limit**: Choose your plan limit, a custom amount, or no limit. When a limit is reached, billable environments (`production`, `staging`, and `preview`) enter a **grace period** — queues pause and new runs queue without starting. After grace expires, new triggers are rejected until you increase or remove the limit.
-* **Billing alerts**: Add email alerts at specific spend thresholds (% of your limit when a limit is set, or dollar amounts when no limit is configured). Alerts notify you only; they do **not** pause environments or reject triggers.
-
-**Limits vs alerts:** A billing limit enforces spend (grace → reject). Billing alerts are optional notifications at thresholds you choose.
-
-**Soft limits:** Billing limits are not instantaneous hard caps. Usage is evaluated on a short delay, so spend can briefly exceed your limit before enforcement applies. Queued runs during grace incur no compute cost until they start. See our [terms](https://trigger.dev/terms) for refund policy details.
-
-On the **Usage** page, when you have a custom billing limit (or a plan limit that differs from included usage), a **Billing limit** marker appears on the usage bar alongside your current spend and plan included usage.
-
-<img alt="Billing limits and alerts settings" />
-
-You can open the page from the **Organization** menu in the top left of the dashboard, then **Settings** → **Billing limits**.
+You can open the settings from the **Organization** menu in the top left of the dashboard, then **Settings** → **Billing limits**. [Read the full billing limits and alerts docs](/docs/billing-limits) for how limits are enforced, the grace period, and resuming after hitting a limit.
 
 ## Reduce your machine sizes
 
@@ -34115,6 +34385,11 @@ Source: https://trigger.dev/docs/limits
 There are some hard and soft limits that you might hit.
 
 You can view your current limits, quotas, and rate limit usage in real-time by visiting the **Limits** page in the dashboard (accessible from the left sidebar). This page shows current rate limit token availability, quota usage, and plan features for your organization.
+
+<Note>
+  Looking to cap your monthly spend? That's a setting you control, not a platform limit — see
+  [Billing limits and alerts](/docs/billing-limits).
+</Note>
 
 ## Concurrency limits
 
@@ -36252,6 +36527,183 @@ Source: https://trigger.dev/docs/management/runs/add-tags
 v3-openapi POST /api/v1/runs/{runId}/tags
 Adds one or more tags to a run. Runs can have a maximum of 10 tags. Duplicate tags are ignored.
 
+
+
+# Bulk actions
+Source: https://trigger.dev/docs/management/runs/bulk-actions
+
+Cancel or replay many runs from the SDK using run IDs or the same filters as runs.list().
+
+**Bulk actions let you cancel or replay many runs asynchronously from the SDK by selecting runs with run IDs or `runs.list()` filters.**
+
+A bulk action returns a handle immediately. Use the handle to retrieve progress, poll until completion, list previous actions, or abort pending work.
+
+## Create a bulk replay
+
+Use `runs.bulk.replay()` to replay every run that matches a filter.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const action = await runs.bulk.replay({
+  filter: {
+    status: "FAILED",
+    taskIdentifier: "sync-customer",
+    period: "24h",
+  },
+  name: "Replay failed customer syncs",
+  targetRegion: "eu-central-1",
+});
+
+const completed = await runs.bulk.poll(action.id);
+console.log(completed.status, completed.counts);
+```
+
+`filter` accepts the same filters as [`runs.list()`](/docs/management/runs/list), excluding pagination fields. Provide at least one filter field; use `runIds` when you want to target specific runs. Relative time filters such as `period` are resolved when the bulk action is created, so later batches process the same fixed time range.
+
+<Warning>
+  Filters inherit the same time semantics as `runs.list()`: when you don't pass `from`, `to`, or `period`, the action defaults to the **last 7 days** and won't target older matching runs. To cover a wider range, pass an explicit `period` (such as `"30d"`), a `from` timestamp, or a `from`/`to` pair. This default only applies to `filter` selections; `runIds` selections are never time-bounded.
+</Warning>
+
+<Note>
+  Each environment can only run a limited number of bulk replays at the same time. If you start a replay while too many are still in progress, the call fails and returns an error. Wait for an in-progress replay to finish (or [abort](#abort-a-bulk-action) one) before starting another. Bulk cancels are not subject to this limit.
+</Note>
+
+<ParamField type="BulkActionFilter">
+  Selects runs using the same filter shape as `runs.list()`, excluding `limit`, `after`, and `before`.
+</ParamField>
+
+<ParamField type="string[]">
+  Selects specific run IDs. Provide either `filter` or `runIds`, not both.
+</ParamField>
+
+<ParamField type="string">
+  A name for the bulk action.
+</ParamField>
+
+<ParamField type="string">
+  Replays matching runs in a specific region. When omitted, each replay keeps the original run's region. This option is only available for `runs.bulk.replay()`.
+</ParamField>
+
+## Create a bulk cancel
+
+Use `runs.bulk.cancel()` to cancel every run that matches a filter, or specific run IDs.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const action = await runs.bulk.cancel({
+  runIds: ["run_1234", "run_5678"],
+  name: "Cancel selected runs",
+});
+
+console.log(action.id);
+```
+
+Only runs that are still cancelable when the action reaches them are canceled. Runs that have already reached a final state count as failures in the bulk action summary.
+
+## Retrieve progress
+
+Use `runs.bulk.retrieve()` to read the current status and aggregate counts.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const action = await runs.bulk.retrieve("bulk_1234");
+
+console.log(action.status);
+console.log(action.counts.total, action.counts.success, action.counts.failure);
+```
+
+The returned bulk action object has these fields:
+
+<ResponseField name="id" type="string">
+  The bulk action ID, starting with `bulk_`.
+</ResponseField>
+
+<ResponseField name="type" type="'CANCEL' | 'REPLAY'">
+  The action being performed.
+</ResponseField>
+
+<ResponseField name="status" type="'PENDING' | 'COMPLETED' | 'ABORTED'">
+  The current bulk action status.
+</ResponseField>
+
+<ResponseField name="counts" type="object">
+  Aggregate processing counts.
+
+  <Expandable title="properties">
+    <ResponseField name="total" type="number">
+      The number of runs selected when the bulk action was created.
+    </ResponseField>
+
+    <ResponseField name="success" type="number">
+      The number of runs processed successfully.
+    </ResponseField>
+
+    <ResponseField name="failure" type="number">
+      The number of runs that could not be processed.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="createdAt" type="Date">
+  The date and time the bulk action was created.
+</ResponseField>
+
+<ResponseField name="completedAt" type="Date">
+  The date and time the bulk action completed.
+</ResponseField>
+
+## Poll for completion
+
+Use `runs.bulk.poll()` to wait until the bulk action leaves the `PENDING` state.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const completed = await runs.bulk.poll("bulk_1234", {
+  pollIntervalMs: 2_000,
+});
+
+console.log(completed.status);
+```
+
+## Abort a bulk action
+
+Use `runs.bulk.abort()` to stop future batches from being processed.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+await runs.bulk.abort("bulk_1234");
+```
+
+Abort is best effort. Runs already being processed in the current batch may still finish.
+
+## List bulk actions
+
+Use `runs.bulk.list()` to page through previous bulk actions in the current environment.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const page = await runs.bulk.list({ limit: 25 });
+
+for (const action of page.data) {
+  console.log(action.id, action.status);
+}
+```
+
+List results support the same auto-pagination helpers as other management API list methods:
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+for await (const action of runs.bulk.list({ limit: 25 })) {
+  console.log(action.id, action.status);
+}
+```
 
 
 # Cancel run
@@ -46033,6 +46485,8 @@ By default, the images will point at the latest versioned release via the `lates
 TRIGGER_IMAGE_TAG=v4.5.0
 ```
 
+We patch the latest released version line only, so keep an eye on new releases to receive security fixes. See [Security & vulnerability reporting](/docs/self-hosting/security).
+
 ## Task events
 
 By default, task events (timeline, logs, spans) are stored in PostgreSQL. For production deployments we recommend storing them in ClickHouse instead, it scales to much higher volumes and avoids unbounded growth of the `TaskEvent` table.
@@ -46044,6 +46498,27 @@ EVENT_REPOSITORY_DEFAULT_STORE=clickhouse_v2
 ```
 
 This only affects new runs; existing runs continue to read from wherever their events were originally stored.
+
+## Realtime streams
+
+Realtime streams power AI-agent token streaming and run streams. They default to **v2**, backed by the bundled `s2` service — [s2-lite](https://s2.dev), the open-source, self-hostable S2 server. It stores stream data in a persistent volume and is preconfigured in the webapp compose file, so no setup is required.
+
+To fall back to the Redis-backed **v1** streams, set on the webapp in your `.env`:
+
+```bash theme={"theme":"css-variables"}
+REALTIME_STREAMS_DEFAULT_VERSION=v1
+```
+
+To use a hosted S2 at [s2.dev](https://s2.dev) instead of the bundled s2-lite, point the endpoint at your basin and supply an access token:
+
+```bash theme={"theme":"css-variables"}
+REALTIME_STREAMS_S2_BASIN=your-basin
+REALTIME_STREAMS_S2_ENDPOINT=https://your-basin.b.aws.s2.dev/v1
+REALTIME_STREAMS_S2_SKIP_ACCESS_TOKENS=false
+REALTIME_STREAMS_S2_ACCESS_TOKEN=your-access-token
+```
+
+See the [webapp environment variables](/docs/self-hosting/env/webapp) for the full list of realtime stream settings.
 
 ## Troubleshooting
 
@@ -46362,9 +46837,14 @@ Environment variables for the webapp container.
 | **Task events**                                  |          |                                                |                                                                                                                                                                                                               |
 | `EVENT_REPOSITORY_DEFAULT_STORE`                 | No       | postgres                                       | Where to store task events. Set to `clickhouse_v2` to store in ClickHouse (recommended for production).                                                                                                       |
 | **Realtime**                                     |          |                                                |                                                                                                                                                                                                               |
-| `REALTIME_STREAM_VERSION`                        | No       | v1                                             | Realtime stream protocol version. One of `v1`, `v2`.                                                                                                                                                          |
+| `REALTIME_STREAM_VERSION`                        | No       | v1                                             | Stream version exposed to tasks via the `TRIGGER_REALTIME_STREAM_VERSION` variable. Distinct from `REALTIME_STREAMS_DEFAULT_VERSION`. One of `v1`, `v2`.                                                      |
 | `REALTIME_STREAM_MAX_LENGTH`                     | No       | 1000                                           | Realtime stream max length.                                                                                                                                                                                   |
 | `REALTIME_STREAM_TTL`                            | No       | 86400 (1d)                                     | Realtime stream TTL (s).                                                                                                                                                                                      |
+| `REALTIME_STREAMS_DEFAULT_VERSION`               | No       | v1                                             | Server-side default the webapp uses when a stream request doesn't pin a version (modern SDKs request `v2`). The Docker and Helm self-hosting defaults set this to `v2`. One of `v1`, `v2`.                    |
+| `REALTIME_STREAMS_S2_BASIN`                      | No       | —                                              | S2 basin that holds v2 realtime streams. Required for `v2`. Must be at least 8 characters.                                                                                                                    |
+| `REALTIME_STREAMS_S2_ENDPOINT`                   | No       | —                                              | Custom S2 API endpoint, including the `/v1` suffix (e.g. `http://s2/v1` for the bundled s2-lite). Omit to use hosted S2 at s2.dev.                                                                            |
+| `REALTIME_STREAMS_S2_SKIP_ACCESS_TOKENS`         | No       | false                                          | Skip minting per-stream access tokens. Set to `true` for s2-lite, which needs no authentication.                                                                                                              |
+| `REALTIME_STREAMS_S2_ACCESS_TOKEN`               | No       | —                                              | S2 access token. Required for hosted S2 unless `REALTIME_STREAMS_S2_SKIP_ACCESS_TOKENS` is `true`.                                                                                                            |
 | **Bootstrap**                                    |          |                                                |                                                                                                                                                                                                               |
 | `TRIGGER_BOOTSTRAP_ENABLED`                      | No       | 0                                              | Trigger bootstrap enabled.                                                                                                                                                                                    |
 | `TRIGGER_BOOTSTRAP_WORKER_GROUP_NAME`            | No       | —                                              | Trigger bootstrap worker group name.                                                                                                                                                                          |
@@ -46873,6 +47353,32 @@ webapp:
 
 This only affects new runs; existing runs continue to read from wherever their events were originally stored.
 
+## Realtime streams
+
+Realtime streams power AI-agent token streaming and run streams. They default to **v2**, backed by the bundled `s2` deployment — [s2-lite](https://s2.dev), the open-source, self-hostable S2 server. The chart deploys it with a persistent volume, so no extra services are required.
+
+To fall back to the Redis-backed **v1** streams, set the default version to `v1`:
+
+```yaml theme={"theme":"css-variables"}
+s2:
+  defaultStreamVersion: "v1"
+```
+
+To use a hosted S2 at [s2.dev](https://s2.dev) instead of the bundled s2-lite, disable the bundled deployment and point at your basin. Supply the access token via an existing secret:
+
+```yaml theme={"theme":"css-variables"}
+s2:
+  deploy: false
+  skipAccessTokens: false
+  external:
+    endpoint: "https://your-basin.b.aws.s2.dev/v1"
+    existingSecret: "s2-credentials"
+    existingSecretAccessTokenKey: "access-token"
+  basin: "your-basin"
+```
+
+To disable realtime streams v2 entirely and use v1, set `s2.deploy: false` with no external endpoint. See `helm show values` for all `s2` options.
+
 ## Worker token
 
 When using the default bootstrap configuration, worker creation and authentication is handled automatically. The webapp generates a worker token and makes it available to the supervisor via a shared volume.
@@ -47106,7 +47612,7 @@ You can self-host Trigger.dev on your own infrastructure.
 
 Self-hosting Trigger.dev means you run and manage the platform on your own infrastructure, giving you full control over your environment, deployment process, and the URLs you expose the service on.
 
-You are responsible for provisioning resources, handling updates, and managing any security, scaling or reliability challenges that arise.
+You are responsible for provisioning resources, handling updates, and managing any security, scaling or reliability challenges that arise. See [Security & vulnerability reporting](/docs/self-hosting/security) for how to report issues and stay informed about security releases.
 
 We provide version-tagged releases for self-hosted deployments. It's highly advised to use these tags exclusively and keep them locked with your CLI version.
 
@@ -47206,7 +47712,64 @@ It's dangerous to go alone! Join the self-hosting channel on our [Discord server
   <Card title="Kubernetes" icon="dharmachakra" href="/self-hosting/kubernetes">
     Learn how to self-host Trigger.dev with Kubernetes.
   </Card>
+
+  <Card title="Security" icon="shield-halved" href="/self-hosting/security">
+    Report vulnerabilities and stay informed about security releases.
+  </Card>
 </CardGroup>
+
+
+# Security & vulnerability reporting
+Source: https://trigger.dev/docs/self-hosting/security
+
+How to report security issues in Trigger.dev, our response targets, and how self-hosters receive security notices.
+
+We take the security of Trigger.dev seriously, for both Cloud and self-hosted deployments. This page covers how to report a vulnerability, what to expect, and how to stay informed about security releases.
+
+<Warning>
+  Do not report security vulnerabilities through public GitHub issues, pull requests, or Discord. Use one of the private channels below.
+</Warning>
+
+## Reporting a vulnerability
+
+<Steps>
+  <Step title="Choose a private channel">
+    * **GitHub (preferred):** open a private report from the repository's **Security** tab using **"Report a vulnerability"** ([direct link](https://github.com/triggerdotdev/trigger.dev/security/advisories/new)).
+    * **Email:** `security-advisories@trigger.dev`
+  </Step>
+
+  <Step title="Include the details">
+    A description and impact, steps to reproduce (a proof of concept helps), affected versions/components, and any suggested fix.
+  </Step>
+
+  <Step title="We track it privately">
+    Every report is tracked in a private GitHub Security Advisory. If you email us, we open the advisory on your behalf.
+  </Step>
+</Steps>
+
+## What to expect
+
+| Stage                                     | Target                 |
+| ----------------------------------------- | ---------------------- |
+| Acknowledgement                           | within 3 business days |
+| Validation + CVSS 3.1 severity assessment | within 1 week          |
+
+We score issues with CVSS 3.1 and prioritise remediation by severity:
+
+| Severity (CVSS 3.1) | Target time to resolve |
+| ------------------- | ---------------------- |
+| Critical (9.0–10.0) | 7 days                 |
+| High (7.0–8.9)      | 30 days                |
+| Medium (4.0–6.9)    | 90 days                |
+| Low (0.1–3.9)       | As needed              |
+
+<Note>
+  These are best-effort targets measured from when we validate and accept a report, not guarantees. We follow coordinated disclosure with a default 90-day window, and publish a GitHub Security Advisory (requesting a CVE where applicable) once a fix ships.
+</Note>
+
+## Supported versions
+
+We patch the **latest released version line** only. Run the latest version-tagged release to receive security fixes — see [Self-hosting overview](/docs/self-hosting/overview).
 
 
 # Skills
@@ -51350,6 +51913,10 @@ If runs are staying in the `QUEUED` state for extended periods, check your concu
 * **Increase concurrency limits** - If you're on a paid plan, increase your environment concurrency limit via the dashboard
 * **Review queue concurrency limits** - Check if individual queues have restrictive `concurrencyLimit` settings
 * **Check for stuck runs** - See if stalled runs are blocking new executions
+
+### Runs queued because a billing limit was reached
+
+If your organization reaches a billing limit, billable environments (`production`, `staging`, and `preview`) pause: new runs still queue, but they won't start executing until you raise or remove the limit and choose whether to resume or cancel the queued runs. See [Billing limits and alerts](/docs/billing-limits) for the full flow.
 
 ### `Crypto is not defined`
 

@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 290 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 294 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -170,6 +170,7 @@
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6` — [Claude 4.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7` — [Claude 4.7 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/claude-4-7.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4` — [GPT-5.4 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-4.md)
+- `docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6` — [GPT-5.6 Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/gpt-5-6.md)
 - `docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5` — [Claude 5 Sonnet Migration Guide](pages/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/model-migrations/sonnet-5.md)
 - `docs/cookbook/evaluate-and-optimize/rag` — [RAG with Embeddings & Rerank](pages/docs/cookbook/evaluate-and-optimize/rag.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/rag.md)
 - `docs/cookbook/evaluate-and-optimize/red-teaming` — [Red Teaming](pages/docs/cookbook/evaluate-and-optimize/red-teaming.md) · [原文](https://openrouter.ai/docs/cookbook/evaluate-and-optimize/red-teaming.md)
@@ -245,8 +246,11 @@
 - `docs/guides/features/server-tools/apply-patch` — [Apply Patch](pages/docs/guides/features/server-tools/apply-patch.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/apply-patch.md)
 - `docs/guides/features/server-tools/bash` — [Bash](pages/docs/guides/features/server-tools/bash.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/bash.md)
 - `docs/guides/features/server-tools/datetime` — [Datetime](pages/docs/guides/features/server-tools/datetime.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/datetime.md)
+- `docs/guides/features/server-tools/files` — [Files](pages/docs/guides/features/server-tools/files.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/files.md)
 - `docs/guides/features/server-tools/fusion` — [Fusion](pages/docs/guides/features/server-tools/fusion.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/fusion.md)
 - `docs/guides/features/server-tools/image-generation` — [Image Generation](pages/docs/guides/features/server-tools/image-generation.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/image-generation.md)
+- `docs/guides/features/server-tools/search-models` — [Search Models](pages/docs/guides/features/server-tools/search-models.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/search-models.md)
+- `docs/guides/features/server-tools/shell` — [Shell](pages/docs/guides/features/server-tools/shell.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/shell.md)
 - `docs/guides/features/server-tools/subagent` — [Subagent](pages/docs/guides/features/server-tools/subagent.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/subagent.md)
 - `docs/guides/features/server-tools/web-fetch` — [Web Fetch](pages/docs/guides/features/server-tools/web-fetch.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/web-fetch.md)
 - `docs/guides/features/server-tools/web-search` — [Web Search](pages/docs/guides/features/server-tools/web-search.md) · [原文](https://openrouter.ai/docs/guides/features/server-tools/web-search.md)

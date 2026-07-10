@@ -2403,6 +2403,8 @@ components:
           type: boolean
         has_response_audio:
           type: boolean
+        has_auxiliary_audio:
+          type: boolean
         transcript:
           type: array
           items:
@@ -2428,6 +2430,7 @@ components:
         - has_audio
         - has_user_audio
         - has_response_audio
+        - has_auxiliary_audio
         - transcript
       title: GetConversationResponseModel
     type_:ValidationErrorLocItem:
@@ -2478,6 +2481,7 @@ components:
   "has_audio": true,
   "has_user_audio": true,
   "has_response_audio": true,
+  "has_auxiliary_audio": true,
   "transcript": [
     {
       "role": "user",

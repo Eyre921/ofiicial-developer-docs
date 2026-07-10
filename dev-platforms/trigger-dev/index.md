@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 303 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 307 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -46,6 +46,7 @@
 - `docs/ai-chat/upgrade-guide` — [Upgrade Guide: prerelease → Sessions-as-run-manager](pages/docs/ai-chat/upgrade-guide.md) · [原文](https://trigger.dev/docs/ai-chat/upgrade-guide)
 - `docs/ai/prompts` — [Prompts](pages/docs/ai/prompts.md) · [原文](https://trigger.dev/docs/ai/prompts)
 - `docs/apikeys` — [API keys](pages/docs/apikeys.md) · [原文](https://trigger.dev/docs/apikeys)
+- `docs/billing-limits` — [Billing limits and alerts](pages/docs/billing-limits.md) · [原文](https://trigger.dev/docs/billing-limits)
 - `docs/building-with-ai` — [Building with AI: overview](pages/docs/building-with-ai.md) · [原文](https://trigger.dev/docs/building-with-ai)
 - `docs/bulk-actions` — [Bulk actions](pages/docs/bulk-actions.md) · [原文](https://trigger.dev/docs/bulk-actions)
 - `docs/changelog` — [Changelog](pages/docs/changelog.md) · [原文](https://trigger.dev/docs/changelog)
@@ -105,6 +106,7 @@
 - `docs/guides/example-projects/claude-changelog-generator` — [Changelog generator using Claude Agent SDK](pages/docs/guides/example-projects/claude-changelog-generator.md) · [原文](https://trigger.dev/docs/guides/example-projects/claude-changelog-generator)
 - `docs/guides/example-projects/claude-github-wiki` — [Claude GitHub wiki](pages/docs/guides/example-projects/claude-github-wiki.md) · [原文](https://trigger.dev/docs/guides/example-projects/claude-github-wiki)
 - `docs/guides/example-projects/claude-thinking-chatbot` — [Claude 3.7 thinking chatbot](pages/docs/guides/example-projects/claude-thinking-chatbot.md) · [原文](https://trigger.dev/docs/guides/example-projects/claude-thinking-chatbot)
+- `docs/guides/example-projects/clickhouse-chat-agent` — [ClickHouse chat agent](pages/docs/guides/example-projects/clickhouse-chat-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/clickhouse-chat-agent)
 - `docs/guides/example-projects/cursor-background-agent` — [Background Cursor agent using the Cursor CLI](pages/docs/guides/example-projects/cursor-background-agent.md) · [原文](https://trigger.dev/docs/guides/example-projects/cursor-background-agent)
 - `docs/guides/example-projects/human-in-the-loop-workflow` — [Human-in-the-loop workflow with ReactFlow and Trigger.dev waitpoint tokens](pages/docs/guides/example-projects/human-in-the-loop-workflow.md) · [原文](https://trigger.dev/docs/guides/example-projects/human-in-the-loop-workflow)
 - `docs/guides/example-projects/mastra-agents-with-memory` — [Mastra agents with memory sharing + Trigger.dev task orchestration](pages/docs/guides/example-projects/mastra-agents-with-memory.md) · [原文](https://trigger.dev/docs/guides/example-projects/mastra-agents-with-memory)
@@ -212,6 +214,7 @@
 - `docs/management/queues/pause` — [Pause or Resume Queue](pages/docs/management/queues/pause.md) · [原文](https://trigger.dev/docs/management/queues/pause)
 - `docs/management/queues/retrieve` — [Retrieve Queue](pages/docs/management/queues/retrieve.md) · [原文](https://trigger.dev/docs/management/queues/retrieve)
 - `docs/management/runs/add-tags` — [Add tags to a run](pages/docs/management/runs/add-tags.md) · [原文](https://trigger.dev/docs/management/runs/add-tags)
+- `docs/management/runs/bulk-actions` — [Bulk actions](pages/docs/management/runs/bulk-actions.md) · [原文](https://trigger.dev/docs/management/runs/bulk-actions)
 - `docs/management/runs/cancel` — [Cancel run](pages/docs/management/runs/cancel.md) · [原文](https://trigger.dev/docs/management/runs/cancel)
 - `docs/management/runs/list` — [List runs](pages/docs/management/runs/list.md) · [原文](https://trigger.dev/docs/management/runs/list)
 - `docs/management/runs/replay` — [Replay run](pages/docs/management/runs/replay.md) · [原文](https://trigger.dev/docs/management/runs/replay)
@@ -287,6 +290,7 @@
 - `docs/self-hosting/env/webapp` — [Webapp](pages/docs/self-hosting/env/webapp.md) · [原文](https://trigger.dev/docs/self-hosting/env/webapp)
 - `docs/self-hosting/kubernetes` — [Kubernetes](pages/docs/self-hosting/kubernetes.md) · [原文](https://trigger.dev/docs/self-hosting/kubernetes)
 - `docs/self-hosting/overview` — [Self-hosting overview](pages/docs/self-hosting/overview.md) · [原文](https://trigger.dev/docs/self-hosting/overview)
+- `docs/self-hosting/security` — [Security & vulnerability reporting](pages/docs/self-hosting/security.md) · [原文](https://trigger.dev/docs/self-hosting/security)
 - `docs/skills` — [Skills](pages/docs/skills.md) · [原文](https://trigger.dev/docs/skills)
 - `docs/tags` — [Tags](pages/docs/tags.md) · [原文](https://trigger.dev/docs/tags)
 - `docs/tasks/overview` — [Tasks: Overview](pages/docs/tasks/overview.md) · [原文](https://trigger.dev/docs/tasks/overview)

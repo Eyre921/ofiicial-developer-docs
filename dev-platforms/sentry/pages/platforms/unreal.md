@@ -66,6 +66,8 @@ To access the plugin API from within C++, add `Sentry` support to the build scri
 PublicDependencyModuleNames.AddRange(new string[] { ..., "Sentry" });
 ```
 
+On arm64 architecture, Linux is supported with UE 5.0+ and Windows with UE 5.2+.
+
 ## [Configure](https://docs.sentry.io/platforms/unreal.md#configure)
 
 The minimum configuration required is the [DSN](https://docs.sentry.io/concepts/key-terms/dsn-explainer.md) of your project:

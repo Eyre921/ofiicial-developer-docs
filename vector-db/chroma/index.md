@@ -1,6 +1,6 @@
 # vector-db/chroma 文档索引
 
-> 共 145 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 146 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## api-reference
@@ -51,6 +51,7 @@
 - `docs/cli/update` — [Update](pages/docs/cli/update.md) · [原文](https://docs.trychroma.com/docs/cli/update)
 - `docs/cli/vacuum` — [Vacuum](pages/docs/cli/vacuum.md) · [原文](https://docs.trychroma.com/docs/cli/vacuum)
 - `docs/collections/add-data` — [Adding Data to Chroma Collections](pages/docs/collections/add-data.md) · [原文](https://docs.trychroma.com/docs/collections/add-data)
+- `docs/collections/conditional-transactions` — [Conditional Transactions](pages/docs/collections/conditional-transactions.md) · [原文](https://docs.trychroma.com/docs/collections/conditional-transactions)
 - `docs/collections/configure` — [Configure Collections](pages/docs/collections/configure.md) · [原文](https://docs.trychroma.com/docs/collections/configure)
 - `docs/collections/delete-data` — [Delete Data](pages/docs/collections/delete-data.md) · [原文](https://docs.trychroma.com/docs/collections/delete-data)
 - `docs/collections/manage-collections` — [Manage Collections](pages/docs/collections/manage-collections.md) · [原文](https://docs.trychroma.com/docs/collections/manage-collections)

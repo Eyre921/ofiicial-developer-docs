@@ -84,7 +84,7 @@ Stripe returns a `Card` object on creation, and sends the `issuing_card.created`
 You need to activate the card before a user can use it. While you can activate virtual cards in the same API call you used to create it, you must activate physical cards separately. When ready, activate the card by marking the `status` as `active`:
 
 ```curl
-curl https://api.stripe.com/v1/issuing/cards/ic_1NvPjF2SSJdH5vn2OVbE7r0b \
+curl https://api.stripe.com/v1/issuing/cards/{{ISSUINGCARD_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d status=active
 ```

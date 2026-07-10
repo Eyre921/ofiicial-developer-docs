@@ -8206,6 +8206,10 @@ The extended thinking page covers several topics in more detail with mode-specif
 
 **URL:** https://platform.claude.com/docs/en/build-with-claude/batch-processing
 
+Process large volumes of Messages requests asynchronously with the Message Batches API, cutting costs by 50% and increasing throughput.
+
+---
+
 Batch processing is a powerful approach for handling large volumes of requests efficiently. Instead of processing requests one at a time with immediate responses, batch processing allows you to submit multiple requests together for asynchronous processing. This pattern is particularly useful when:
 
 * You need to process large volumes of data
@@ -38178,6 +38182,10 @@ For ZDR and HIPAA eligibility across all features, see [API and data retention](
 
 **URL:** https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool
 
+Give Claude the Anthropic-defined text editor tool to view, create, and edit files, and handle its view, str_replace, create, and insert commands.
+
+---
+
 <Note>
   This feature is eligible for [Zero Data Retention (ZDR)](/docs/en/build-with-claude/api-and-data-retention). When your organization has a ZDR arrangement, data sent through this feature is not stored after the API response is returned.
 </Note>
@@ -41233,7 +41241,7 @@ Within the loop, you can read each response message and modify the runner's stat
 
 4. When your loop body returns, the runner checks whether you modified its message history.
 
-   * **If you did not modify message history:** The runner appends the assistant message to its state. If the message contains tool calls, the runner runs them and appends the results. If there are no tool calls, the loop exits.
+   * **If you did not modify message history:** If the message contains tool calls, the runner appends the assistant message and the tool results, then continues. If there are no tool calls, the loop exits.
    * **If you modified message history:** The runner skips its automatic append and uses your state unchanged. See [Taking over message history](#taking-over-message-history).
 
 ```mermaid
@@ -41249,7 +41257,7 @@ sequenceDiagram
     note over U: Your loop body runs
     U->>TR: Resume
     alt Message history unchanged
-      TR->>TR: Append assistant message,<br/>run tools, append results<br/>(exit if no tool calls)
+      TR->>TR: If tool calls, append assistant<br/>message + tool results and continue.<br/>If none, exit the loop
     else Message history changed
       TR->>TR: Use your state unchanged
     end
@@ -41258,7 +41266,7 @@ sequenceDiagram
 
 ### Taking over message history
 
-By default, the runner manages conversation state for you: after each turn, it appends the assistant message and any tool results to its own message history. You take over message history when you want to retry a turn (discard the response and resend), inject a follow-up message, or build the tool result yourself.
+By default, the runner manages conversation state for you: after each tool-call turn, it appends the assistant message and any tool results to its own message history. You take over message history when you want to retry a turn (discard the response and resend), inject a follow-up message, or build the tool result yourself.
 
 You take over by modifying the runner's messages from inside the loop body. The exact method depends on the SDK. See the per-language tabs that follow.
 
@@ -42178,7 +42186,7 @@ Enable streaming to process each turn's response incrementally. Each iteration y
   </Card>
 
   <Card title="Parallel tool use" icon="grid" href="/docs/en/agents-and-tools/tool-use/parallel-tool-use">
-    Enable and format parallel tool calls, with message-history guidance and troubleshooting.
+    Enable, format, and disable parallel tool calls, with message-history guidance and troubleshooting.
   </Card>
 
   <Card title="Define tools" icon="hammer" href="/docs/en/agents-and-tools/tool-use/define-tools">
@@ -64715,6 +64723,10 @@ Avoid editing or removing a mid-conversation system message that has already bee
 
 **URL:** https://platform.claude.com/docs/en/build-with-claude/prompt-caching
 
+Cache prompt prefixes with `cache_control` to cut costs and latency, using automatic caching or explicit breakpoints with 5-minute or 1-hour TTLs.
+
+---
+
 Prompt caching optimizes your API usage by allowing resuming from specific prefixes in your prompts. This significantly reduces processing time and costs for repetitive tasks or prompts with consistent elements.
 
 <Note>
@@ -82124,6 +82136,10 @@ For ZDR eligibility across all features, see [API and data retention](/docs/en/m
 
 **URL:** https://platform.claude.com/docs/en/agents-and-tools/mcp-connector
 
+Connect to remote MCP servers directly from the Messages API without an MCP client, and allowlist, denylist, or configure individual tools.
+
+---
+
 Claude's Model Context Protocol (MCP) connector feature enables you to connect to remote MCP servers directly from the Messages API without a separate MCP client.
 
 <Note>
@@ -82989,6 +83005,10 @@ The previous version of the MCP connector included tool configuration directly i
 # Remote MCP servers
 
 **URL:** https://platform.claude.com/docs/en/agents-and-tools/remote-mcp-servers
+
+Connect Claude to third-party remote MCP servers through the MCP connector API. Browse example servers and review the steps to connect.
+
+---
 
 Several companies have deployed remote MCP servers that developers can connect to via the Anthropic MCP connector API. These servers expand the capabilities available to developers and end users by providing remote access to various services and tools through the MCP protocol.
 
@@ -86416,6 +86436,14 @@ Go to the [AWS Console > Bedrock > Model Access](https://console.aws.amazon.com/
 
 Lifecycle terms (Deprecated, Retired) are defined in [Model deprecations](/docs/en/about-claude/model-deprecations). Lifecycle dates on partner-operated platforms are set by the partner and can differ from the Claude API schedule. For the current retirement date of any model on Amazon Bedrock, see [Amazon Bedrock's model lifecycle page](https://docs.aws.amazon.com/bedrock/latest/userguide/model-lifecycle.html).
 
+AWS offers newer Claude models through [cross-region inference](https://docs.aws.amazon.com/bedrock/latest/userguide/cross-region-inference.html) rather than on-demand throughput. For these models, a request that passes the base model ID fails with an HTTP 400 error like the following:
+
+```text wrap
+Invocation of model ID anthropic.claude-sonnet-4-5-20250929-v1:0 with on-demand throughput isn't supported. Retry your request with the ID or ARN of an inference profile that contains this model.
+```
+
+To invoke these models, pass an inference profile instead of the base model ID. The inference profile ID is the base model ID with a prefix from a column marked "Yes" in the following table, for example us.anthropic.claude-sonnet-4-5-20250929-v1:0. You can also pass the full inference profile ARN, in the form `arn:aws:bedrock:{region}:{account-id}:inference-profile/{inference-profile-id}`. For AWS's authoritative list of available inference profiles, see [Supported Regions and models for inference profiles](https://docs.aws.amazon.com/bedrock/latest/userguide/inference-profiles-support.html). For how the prefixes affect routing and pricing, see the [Global vs regional endpoints](#global-vs-regional-endpoints) section.
+
 | Model                        | Base Bedrock model ID                     | `global` | `us` | `eu` | `jp` | `apac` |
 | ---------------------------- | ----------------------------------------- | -------- | ---- | ---- | ---- | ------ |
 | Claude Opus 4.6              | anthropic.claude-opus-4-6-v1              | Yes      | Yes  | Yes  | Yes  | Yes    |
@@ -86428,8 +86456,6 @@ Lifecycle terms (Deprecated, Retired) are defined in [Model deprecations](/docs/
 | Claude Opus 4 Retired.       | anthropic.claude-opus-4-20250514-v1:0     | No       | No   | No   | No   | No     |
 | Claude Haiku 4.5             | anthropic.claude-haiku-4-5-20251001-v1:0  | Yes      | Yes  | Yes  | No   | No     |
 | Claude Haiku 3.5 Deprecated. | anthropic.claude-3-5-haiku-20241022-v1:0  | No       | Yes  | No   | No   | No     |
-
-For more information about regional vs global model IDs, see the [Global vs regional endpoints](#global-vs-regional-endpoints) section.
 
 ### List available models
 
@@ -89160,7 +89186,7 @@ The migration delta depends on which Bedrock integration you're coming from. The
 | ----------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | **Base URL**            | `bedrock-mantle.{region}.api.aws`                                                                       | `bedrock-runtime.{region}.amazonaws.com`                                                                | `aws-external-anthropic.{region}.api.aws`                                                     |
 | **API format**          | Messages API at `/anthropic/v1/messages`                                                                | Bedrock Converse / InvokeModel                                                                          | Claude API (`/v1/{endpoint}`)                                                                 |
-| **Model IDs**           | `anthropic.claude-haiku-4-5`                                                                            | `anthropic.claude-haiku-4-5-20251001-v1:0` (with optional `us.`/`global.` prefix)                       | `claude-haiku-4-5`                                                                            |
+| **Model IDs**           | `anthropic.claude-haiku-4-5`                                                                            | `anthropic.claude-haiku-4-5-20251001-v1:0` (with a `us.` or `global.` inference profile prefix)         | `claude-haiku-4-5`                                                                            |
 | **SDK client**          | `AnthropicBedrockMantle`                                                                                | `AnthropicBedrock` / Bedrock SDK                                                                        | Platform-specific client (see [Install an SDK](#install-an-sdk)), in beta                     |
 | **SDK package**         | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, and others                                           | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, or AWS SDK                                           | `anthropic[aws]`, `@anthropic-ai/aws-sdk`, and others (see [Install an SDK](#install-an-sdk)) |
 | **SigV4 service name**  | `bedrock-mantle`                                                                                        | `bedrock`                                                                                               | `aws-external-anthropic`                                                                      |
@@ -89543,7 +89569,7 @@ export ANTHROPIC_API_KEY="your-api-key-here"
 ## Create your first session
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 <Steps>
@@ -90325,7 +90351,7 @@ Create and test agents visually in Console without writing API calls.
 [Console](https://platform.claude.com/workspaces/default/agent-quickstart/) provides a visual interface for creating and configuring agents. It lets you iterate on configuration interactively before writing code.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## How to build an agent
@@ -90456,7 +90482,7 @@ An agent is a reusable, versioned configuration that defines persona and capabil
 Create the agent once as a reusable resource and reference it by ID each time you [start a session](/docs/en/managed-agents/sessions). Agents are versioned and easier to manage across many sessions.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Agent configuration fields
@@ -90935,7 +90961,7 @@ MCP configuration is split across two steps:
 This separation keeps secrets out of reusable agent definitions while letting each session authenticate with its own credentials.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Declare MCP servers on the agent
@@ -91331,7 +91357,7 @@ Control when agent and MCP tools execute.
 Permission policies control whether server-executed tools (the pre-built agent toolset and MCP toolset) run automatically or wait for your approval. Custom tools are executed by your application and controlled by you, so they are not governed by permission policies.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Permission policy types
@@ -92245,7 +92271,7 @@ You can attach two types of skill. Both work the same way: your agent invokes th
 To learn how to author custom skills, see [Agent Skills](/docs/en/agents-and-tools/agent-skills/overview) and [Skill authoring best practices](/docs/en/agents-and-tools/agent-skills/best-practices). To upload a custom skill to your workspace, see [Create a custom skill](#create-a-custom-skill).
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Create a custom skill
@@ -92631,7 +92657,7 @@ Claude Managed Agents provides a set of built-in tools that Claude can use auton
 Claude Managed Agents also supports custom, user-defined tools. Your application executes these tools separately and returns the results to Claude, which uses them to continue the task. To give the agent tools from an MCP server, use the [MCP connector](/docs/en/managed-agents/mcp-connector) instead.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Available tools
@@ -92843,6 +92869,8 @@ The `default_config` object sets the baseline for every tool in the set, and per
 In addition to built-in tools, you can define custom tools. Custom tools are analogous to [user-defined client tools](/docs/en/agents-and-tools/tool-use/how-tool-use-works#user-defined-tools-client-executed) in the Messages API.
 
 Each custom tool defines a contract: you specify what operations are available and what they return, and Claude determines when and how to call them. The model never executes anything on its own. It emits a structured request, your code runs the operation, and the result flows back into the conversation. See [Session event stream](/docs/en/managed-agents/events-and-streaming#handling-custom-tool-calls) for how to receive custom tool calls and return results during a session.
+
+If your sessions run in a self-hosted sandbox, the environment worker can [serve custom tools from your sandbox](/docs/en/managed-agents/self-hosted-sandboxes#serve-custom-tools-from-your-sandbox), including tools that wrap an MCP server inside your network.
 
 <CodeGroup defaultLanguage="CLI">
   ```bash curl
@@ -93119,7 +93147,7 @@ Environments define the sandbox configuration where your agent runs. You create 
 This page covers `type: cloud` environments. To run sandboxes on your own infrastructure, see [Self-hosted sandboxes](/docs/en/managed-agents/self-hosted-sandboxes).
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Create an environment
@@ -93832,7 +93860,7 @@ Cloud sandboxes run as isolated Linux containers on Anthropic-managed infrastruc
 These specifications apply to `cloud` environments. Self-hosted sandboxes run on your infrastructure with whatever your worker provides.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Programming languages
@@ -93964,7 +93992,7 @@ For Zero Data Retention and HIPAA BAA eligibility, see [API and data retention](
 
 ## When to combine with MCP tunnels
 
-Self-hosting controls *where the agent's code executes*. [MCP tunnels](/docs/en/agents-and-tools/mcp-tunnels/overview) control *how Anthropic reaches MCP servers in your network*. They are independent: a session running in Anthropic's cloud sandboxes can still reach private MCP servers through a tunnel, and a self-hosted session can use either tunneled or public MCP servers. Use both when you want execution and tool access to stay inside your boundary.
+Self-hosting controls *where the agent's code executes*. [MCP tunnels](/docs/en/agents-and-tools/mcp-tunnels/overview) control *how Anthropic reaches MCP servers in your network*. They are independent: a session running in Anthropic's cloud sandboxes can still reach private MCP servers through a tunnel, and a self-hosted session can use either tunneled or public MCP servers. Use both when you want execution and tool access to stay inside your boundary. To give the agent tools from an MCP server inside your network without running a tunnel, you can also [wrap the server as custom tools](#wrap-an-mcp-server-as-custom-tools) served by your worker.
 
 ## Environment worker
 
@@ -94844,6 +94872,594 @@ Anthropic doesn't mount files or GitHub repositories into self-hosted sandboxes.
 
 See [Self-hosted worker](/docs/en/managed-agents/reference#self-hosted-worker) in the reference for the full list of CLI flags, and [SDK helpers](#sdk-helpers) for the SDK helper options.
 
+## Serve custom tools from your sandbox
+
+[Custom tools](/docs/en/managed-agents/tools#custom-tools) are tools your own code executes: the agent emits an `agent.custom_tool_use` event and waits for a matching `user.custom_tool_result`. The worker can be that code, and because it runs inside your sandbox, the tool reaches the internal services, credentials, and network egress you configured for the sandbox, and nothing more. The environment key authorizes posting custom tool results, so your Claude API key stays off the worker host.
+
+<Note>
+  Serving custom tools requires the SDK worker: the `ant` CLI worker has no way to register a custom tool implementation. In the sandbox-per-session pattern, run `EnvironmentWorker` inside the sandbox with `handle_item()` (`handleItem` in TypeScript, `HandleItem` in Go) in place of `ant beta:worker run`.
+</Note>
+
+<Steps>
+  <Step title="Declare the tool on the agent">
+    Add a `custom` entry to the agent's `tools` whose `name` matches the tool your worker registers. See [Custom tools](/docs/en/managed-agents/tools#custom-tools) for the full declaration shape.
+
+    ```json
+    {
+      "type": "custom",
+      "name": "get_order_status",
+      "description": "Look up an order in the internal fulfillment system by order ID.",
+      "input_schema": {
+        "type": "object",
+        "properties": {
+          "order_id": { "type": "string", "description": "The order ID" }
+        },
+        "required": ["order_id"]
+      }
+    }
+    ```
+  </Step>
+
+  <Step title="Register the implementation with the worker">
+    Pass the tool through the worker's `tools` factory (see [SDK helpers](#sdk-helpers)), alongside the built-in toolset:
+
+    <CodeGroup>
+      ```python Python
+      import asyncio
+      import os
+      from anthropic import AsyncAnthropic, beta_async_tool
+      from anthropic.lib.environments import EnvironmentWorker
+      from anthropic.lib.tools.agent_toolset import beta_agent_toolset_20260401
+
+
+      @beta_async_tool
+      async def get_order_status(order_id: str) -> str:
+          """Look up an order in the internal fulfillment system by order ID."""
+          # Runs on the worker host: call anything the sandbox can reach.
+          return f"Order {order_id}: shipped"
+
+
+      async def main() -> None:
+          environment_key = os.environ["ANTHROPIC_ENVIRONMENT_KEY"]
+          environment_id = os.environ["ANTHROPIC_ENVIRONMENT_ID"]
+          async with AsyncAnthropic(auth_token=environment_key) as client:
+              await EnvironmentWorker(
+                  client,
+                  environment_id=environment_id,
+                  environment_key=environment_key,
+                  workdir="/workspace",
+                  tools=lambda env: [*beta_agent_toolset_20260401(env), get_order_status],
+              ).run()
+
+
+      asyncio.run(main())
+      ```
+
+      ```typescript TypeScript
+      import Anthropic from "@anthropic-ai/sdk";
+      import { EnvironmentWorker } from "@anthropic-ai/sdk/helpers/beta/environments";
+      import { betaTool } from "@anthropic-ai/sdk/helpers/beta/json-schema";
+      import { betaAgentToolset20260401 } from "@anthropic-ai/sdk/tools/agent-toolset/node";
+
+      const getOrderStatus = betaTool({
+        name: "get_order_status",
+        description: "Look up an order in the internal fulfillment system by order ID.",
+        inputSchema: {
+          type: "object",
+          properties: { order_id: { type: "string", description: "The order ID" } },
+          required: ["order_id"]
+        },
+        // Runs on the worker host: call anything the sandbox can reach.
+        run: async ({ order_id }) => `Order ${order_id}: shipped`
+      });
+
+      const environmentKey = process.env.ANTHROPIC_ENVIRONMENT_KEY!;
+      const environmentId = process.env.ANTHROPIC_ENVIRONMENT_ID!;
+      const client = new Anthropic({ authToken: environmentKey });
+      const controller = new AbortController();
+      process.once("SIGTERM", () => controller.abort());
+
+      await new EnvironmentWorker({
+        client,
+        environmentId,
+        environmentKey,
+        workdir: "/workspace",
+        signal: controller.signal,
+        tools: (ctx) => [...betaAgentToolset20260401(ctx), getOrderStatus]
+      }).run();
+      ```
+
+      ```csharp C#
+      // EnvironmentWorker is not currently available in the C# SDK.
+      // To answer custom tool calls directly, see the session event stream.
+      ```
+
+      ```go Go
+      package main
+
+      import (
+      	"context"
+      	"log"
+      	"os"
+      	"os/signal"
+      	"syscall"
+
+      	"github.com/anthropics/anthropic-sdk-go"
+      	"github.com/anthropics/anthropic-sdk-go/lib/environments"
+      	"github.com/anthropics/anthropic-sdk-go/option"
+      	"github.com/anthropics/anthropic-sdk-go/toolrunner"
+      	"github.com/anthropics/anthropic-sdk-go/tools/agenttoolset"
+      )
+
+      type orderStatusInput struct {
+      	OrderID string `json:"order_id"`
+      }
+
+      func main() {
+      	environmentKey := os.Getenv("ANTHROPIC_ENVIRONMENT_KEY")
+      	environmentID := os.Getenv("ANTHROPIC_ENVIRONMENT_ID")
+
+      	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+      	defer stop()
+
+      	getOrderStatus := toolrunner.NewBetaTool(
+      		"get_order_status",
+      		"Look up an order in the internal fulfillment system by order ID.",
+      		anthropic.BetaToolInputSchemaParam{
+      			Properties: map[string]any{
+      				"order_id": map[string]any{"type": "string", "description": "The order ID"},
+      			},
+      			Required: []string{"order_id"},
+      		},
+      		// Runs on the worker host: call anything the sandbox can reach.
+      		func(ctx context.Context, input orderStatusInput) (anthropic.BetaToolResultBlockParamContentUnion, error) {
+      			return anthropic.BetaToolResultBlockParamContentUnion{
+      				OfText: &anthropic.BetaTextBlockParam{Text: "Order " + input.OrderID + ": shipped"},
+      			}, nil
+      		},
+      	)
+
+      	client := anthropic.NewClient(option.WithAuthToken(environmentKey))
+
+      	worker := environments.NewEnvironmentWorker(client, environments.EnvironmentWorkerOptions{
+      		EnvironmentID:  environmentID,
+      		EnvironmentKey: environmentKey,
+      		Workdir:        "/workspace",
+      		ToolsFunc: func(env *agenttoolset.AgentToolContext) []anthropic.BetaTool {
+      			return append(agenttoolset.BetaAgentToolset20260401(env), getOrderStatus)
+      		},
+      	})
+      	if err := worker.Run(ctx); err != nil {
+      		log.Fatalf("worker: %v", err)
+      	}
+      }
+
+      ```
+
+      ```java Java
+      // EnvironmentWorker is not currently available in the Java SDK.
+      // To answer custom tool calls directly, see the session event stream.
+      ```
+
+      ```php PHP
+      // EnvironmentWorker is not currently available in the PHP SDK.
+      // To answer custom tool calls directly, see the session event stream.
+      ```
+
+      ```ruby Ruby
+      # EnvironmentWorker is not currently available in the Ruby SDK.
+      # To answer custom tool calls directly, see the session event stream.
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
+
+The worker answers only the tools registered with it. A custom tool that is declared on the agent but registered with no worker or client leaves the session paused with a `requires_action` stop reason until something posts its result; see [Handling custom tool calls](/docs/en/managed-agents/events-and-streaming#handling-custom-tool-calls) for the event flow.
+
+### Wrap an MCP server as custom tools
+
+The [MCP connector](/docs/en/managed-agents/mcp-connector) connects to MCP servers from Anthropic's side, so a server must expose an HTTP endpoint that Anthropic can reach, directly or through an [MCP tunnel](/docs/en/agents-and-tools/mcp-tunnels/overview). To use a server that only your network can reach, make the worker the MCP client instead and declare the server's tools as custom tools. The MCP server needs no inbound connectivity from outside your network; Anthropic receives the tool definitions you declare on the agent, each call's input, and the result your worker posts back. At runtime the model calls a wrapped tool like any other custom tool:
+
+1. The agent emits an `agent.custom_tool_use` event.
+2. The worker, inside your sandbox, forwards the call over its open MCP session to the server on your network.
+3. The worker posts the server's response as the `user.custom_tool_result`.
+
+The SDKs' [Client-side MCP helpers](/docs/en/agents-and-tools/mcp-connector#client-side-mcp-helpers) convert the server's tools into the runnable tools the worker accepts; install an MCP SDK alongside the Anthropic SDK (`pip install "anthropic[mcp]" "mcp>=1.24"`, `npm install @modelcontextprotocol/sdk`, `go get github.com/modelcontextprotocol/go-sdk`). The examples connect without authentication; to send credentials, configure the HTTP client or request options you hand to the MCP transport (`http_client` in Python, `requestInit` in TypeScript, `HTTPClient` in Go).
+
+<Steps>
+  <Step title="Declare the server's tools on the agent">
+    List the MCP server's tools and declare each one as a `custom` tool; the MCP `name`, `description`, and `inputSchema` map one to one onto the custom tool's fields. If the server paginates its tool list, declare every page; the worker must list the same pages.
+
+    <CodeGroup>
+      ```python Python
+      import asyncio
+      from typing import Any, cast
+      from anthropic import AsyncAnthropic
+      from anthropic.types.beta import BetaManagedAgentsCustomToolParams
+      from mcp import ClientSession, types
+      # Requires mcp >= 1.24, which renamed streamablehttp_client to streamable_http_client.
+      from mcp.client.streamable_http import streamable_http_client
+
+      MCP_SERVER_URL = "http://mcp.internal.example.com:8000/mcp"
+
+
+      def to_custom_tool(tool: types.Tool) -> BetaManagedAgentsCustomToolParams:
+          # The MCP fields map one to one onto a custom tool declaration. The cast
+          # hands the schema dictionary to the SDK's typed parameter unchanged.
+          return {
+              "type": "custom",
+              "name": tool.name,
+              "description": tool.description or tool.name,
+              "input_schema": cast(Any, tool.inputSchema),
+          }
+
+
+      async def main() -> None:
+          # Run this wherever you create agents, not on the worker host: it
+          # authenticates with your Claude API key (ANTHROPIC_API_KEY).
+          async with (
+              streamable_http_client(MCP_SERVER_URL) as (read, write, _),
+              ClientSession(read, write) as mcp_session,
+              AsyncAnthropic() as client,
+          ):
+              await mcp_session.initialize()
+              listed = await mcp_session.list_tools()
+              agent = await client.beta.agents.create(
+                  name="Internal tools agent",
+                  model="claude-opus-4-8",
+                  tools=[
+                      {"type": "agent_toolset_20260401"},
+                      *[to_custom_tool(tool) for tool in listed.tools],
+                  ],
+              )
+              print(agent.id)
+
+
+      asyncio.run(main())
+      ```
+
+      ```typescript TypeScript
+      import Anthropic from "@anthropic-ai/sdk";
+      import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+      import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+
+      const MCP_SERVER_URL = "http://mcp.internal.example.com:8000/mcp";
+
+      // Run this wherever you create agents, not on the worker host: it
+      // authenticates with your Claude API key (ANTHROPIC_API_KEY).
+      const client = new Anthropic();
+
+      const mcpClient = new Client({ name: "declare-agent-tools", version: "1.0.0" });
+      await mcpClient.connect(new StreamableHTTPClientTransport(new URL(MCP_SERVER_URL)));
+      const { tools } = await mcpClient.listTools();
+
+      const agent = await client.beta.agents.create({
+        name: "Internal tools agent",
+        model: "claude-opus-4-8",
+        tools: [
+          { type: "agent_toolset_20260401" },
+          // The MCP fields map one to one onto a custom tool declaration.
+          ...tools.map((tool) => ({
+            type: "custom" as const,
+            name: tool.name,
+            description: tool.description || tool.name,
+            input_schema: tool.inputSchema
+          }))
+        ]
+      });
+      console.log(agent.id);
+
+      await mcpClient.close();
+      ```
+
+      ```csharp C#
+      // See the Python, TypeScript, and Go tabs. Declaring custom tools from
+      // C# works the same way once you list the server's tools with an MCP client.
+      ```
+
+      ```go Go
+      package main
+
+      import (
+      	"context"
+      	"encoding/json"
+      	"fmt"
+      	"log"
+
+      	"github.com/anthropics/anthropic-sdk-go"
+      	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
+      )
+
+      const mcpServerURL = "http://mcp.internal.example.com:8000/mcp"
+
+      // toCustomTool maps one MCP tool definition onto a custom tool declaration.
+      // The fields map one to one: the typed parameter carries `properties` and
+      // `required`, and every other JSON Schema keyword the server emits travels in
+      // ExtraFields so the declared schema matches the server's schema.
+      func toCustomTool(tool *mcpsdk.Tool) (anthropic.BetaAgentNewParamsToolUnion, error) {
+      	raw, err := json.Marshal(tool.InputSchema)
+      	if err != nil {
+      		return anthropic.BetaAgentNewParamsToolUnion{}, err
+      	}
+      	var schema map[string]any
+      	if err := json.Unmarshal(raw, &schema); err != nil {
+      		return anthropic.BetaAgentNewParamsToolUnion{}, err
+      	}
+
+      	inputSchema := anthropic.BetaManagedAgentsCustomToolInputSchemaParam{ExtraFields: map[string]any{}}
+      	for keyword, value := range schema {
+      		switch keyword {
+      		case "type":
+      			// The parameter type always marshals "type": "object".
+      		case "properties":
+      			properties, _ := value.(map[string]any)
+      			inputSchema.Properties = properties
+      		case "required":
+      			entries, _ := value.([]any)
+      			for _, entry := range entries {
+      				if name, isString := entry.(string); isString {
+      					inputSchema.Required = append(inputSchema.Required, name)
+      				}
+      			}
+      		default:
+      			inputSchema.ExtraFields[keyword] = value
+      		}
+      	}
+
+      	description := tool.Description
+      	if description == "" {
+      		description = tool.Name
+      	}
+      	return anthropic.BetaAgentNewParamsToolUnion{
+      		OfCustom: &anthropic.BetaManagedAgentsCustomToolParams{
+      			Type:        anthropic.BetaManagedAgentsCustomToolParamsTypeCustom,
+      			Name:        tool.Name,
+      			Description: description,
+      			InputSchema: inputSchema,
+      		},
+      	}, nil
+      }
+
+      func main() {
+      	ctx := context.Background()
+
+      	// Run this wherever you create agents, not on the worker host: it
+      	// authenticates with your Claude API key (ANTHROPIC_API_KEY).
+      	client := anthropic.NewClient()
+
+      	mcpClient := mcpsdk.NewClient(&mcpsdk.Implementation{Name: "declare-agent-tools", Version: "1.0.0"}, nil)
+      	session, err := mcpClient.Connect(ctx, &mcpsdk.StreamableClientTransport{Endpoint: mcpServerURL}, nil)
+      	if err != nil {
+      		log.Fatalf("connect to MCP server: %v", err)
+      	}
+      	defer session.Close()
+
+      	listed, err := session.ListTools(ctx, nil)
+      	if err != nil {
+      		log.Fatalf("list MCP tools: %v", err)
+      	}
+
+      	tools := []anthropic.BetaAgentNewParamsToolUnion{
+      		{OfAgentToolset20260401: &anthropic.BetaManagedAgentsAgentToolset20260401Params{
+      			Type: anthropic.BetaManagedAgentsAgentToolset20260401ParamsTypeAgentToolset20260401,
+      		}},
+      	}
+      	for _, tool := range listed.Tools {
+      		custom, err := toCustomTool(tool)
+      		if err != nil {
+      			log.Fatalf("convert MCP tool %s: %v", tool.Name, err)
+      		}
+      		tools = append(tools, custom)
+      	}
+
+      	agent, err := client.Beta.Agents.New(ctx, anthropic.BetaAgentNewParams{
+      		Name:  "Internal tools agent",
+      		Model: anthropic.BetaManagedAgentsModelConfigParams{ID: "claude-opus-4-8"},
+      		Tools: tools,
+      	})
+      	if err != nil {
+      		log.Fatalf("create agent: %v", err)
+      	}
+      	fmt.Println(agent.ID)
+      }
+
+      ```
+
+      ```java Java
+      // See the Python, TypeScript, and Go tabs. Declaring custom tools from
+      // Java works the same way once you list the server's tools with an MCP client.
+      ```
+
+      ```php PHP
+      // See the Python, TypeScript, and Go tabs. Declaring custom tools from
+      // PHP works the same way once you list the server's tools with an MCP client.
+      ```
+
+      ```ruby Ruby
+      # See the Python, TypeScript, and Go tabs. Declaring custom tools from
+      # Ruby works the same way once you list the server's tools with an MCP client.
+      ```
+    </CodeGroup>
+  </Step>
+
+  <Step title="Serve the tools from the worker">
+    Connect to the same MCP server at startup, convert its tools with the MCP helpers, and register them alongside the built-in toolset. Keep one MCP session open for the life of the worker.
+
+    <CodeGroup>
+      ```python Python
+      import asyncio
+      import os
+      from datetime import timedelta
+      from anthropic import AsyncAnthropic
+      from anthropic.lib.environments import EnvironmentWorker
+      from anthropic.lib.tools.agent_toolset import beta_agent_toolset_20260401
+      from anthropic.lib.tools.mcp import async_mcp_tool
+      from mcp import ClientSession
+      # Requires mcp >= 1.24, which renamed streamablehttp_client to streamable_http_client.
+      from mcp.client.streamable_http import streamable_http_client
+
+      MCP_SERVER_URL = "http://mcp.internal.example.com:8000/mcp"
+
+
+      async def main() -> None:
+          environment_key = os.environ["ANTHROPIC_ENVIRONMENT_KEY"]
+          environment_id = os.environ["ANTHROPIC_ENVIRONMENT_ID"]
+          # Connect to the MCP server once at startup and keep the session open for
+          # the life of the worker. The timeout turns a hung tool call into an error
+          # result instead of a stalled call.
+          async with (
+              streamable_http_client(MCP_SERVER_URL) as (read, write, _),
+              ClientSession(read, write, read_timeout_seconds=timedelta(seconds=60)) as mcp_session,
+              AsyncAnthropic(auth_token=environment_key) as client,
+          ):
+              await mcp_session.initialize()
+              listed = await mcp_session.list_tools()
+              mcp_tools = [async_mcp_tool(tool, mcp_session) for tool in listed.tools]
+              await EnvironmentWorker(
+                  client,
+                  environment_id=environment_id,
+                  environment_key=environment_key,
+                  workdir="/workspace",
+                  tools=lambda env: [*beta_agent_toolset_20260401(env), *mcp_tools],
+              ).run()
+
+
+      asyncio.run(main())
+      ```
+
+      ```typescript TypeScript
+      import Anthropic from "@anthropic-ai/sdk";
+      import { EnvironmentWorker } from "@anthropic-ai/sdk/helpers/beta/environments";
+      import {
+        mcpTools,
+        type MCPCallToolResultLike,
+        type MCPClientLike
+      } from "@anthropic-ai/sdk/helpers/beta/mcp";
+      import { betaAgentToolset20260401 } from "@anthropic-ai/sdk/tools/agent-toolset/node";
+      import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+      import { StreamableHTTPClientTransport } from "@modelcontextprotocol/sdk/client/streamableHttp.js";
+
+      const MCP_SERVER_URL = "http://mcp.internal.example.com:8000/mcp";
+
+      const environmentKey = process.env.ANTHROPIC_ENVIRONMENT_KEY!;
+      const environmentId = process.env.ANTHROPIC_ENVIRONMENT_ID!;
+      const client = new Anthropic({ authToken: environmentKey });
+      const controller = new AbortController();
+      process.once("SIGTERM", () => controller.abort());
+
+      // Connect to the MCP server once at startup and keep the connection open for
+      // the life of the worker.
+      const mcpClient = new Client({ name: "sandbox-worker", version: "1.0.0" });
+      await mcpClient.connect(new StreamableHTTPClientTransport(new URL(MCP_SERVER_URL)));
+      const { tools } = await mcpClient.listTools();
+
+      // The MCP SDK's callTool return type still includes a legacy result shape that
+      // mcpTools does not accept; narrow it. Drop this once MCPClientLike widens.
+      const mcpClientForTools: MCPClientLike = {
+        callTool: (params) => mcpClient.callTool(params) as Promise<MCPCallToolResultLike>
+      };
+
+      await new EnvironmentWorker({
+        client,
+        environmentId,
+        environmentKey,
+        workdir: "/workspace",
+        signal: controller.signal,
+        tools: (ctx) => [...betaAgentToolset20260401(ctx), ...mcpTools(tools, mcpClientForTools)]
+      }).run();
+      ```
+
+      ```csharp C#
+      // EnvironmentWorker and the client-side MCP helpers are not currently
+      // available in the C# SDK.
+      ```
+
+      ```go Go
+      package main
+
+      import (
+      	"context"
+      	"log"
+      	"os"
+      	"os/signal"
+      	"syscall"
+
+      	"github.com/anthropics/anthropic-sdk-go"
+      	"github.com/anthropics/anthropic-sdk-go/lib/environments"
+      	"github.com/anthropics/anthropic-sdk-go/mcp"
+      	"github.com/anthropics/anthropic-sdk-go/option"
+      	"github.com/anthropics/anthropic-sdk-go/tools/agenttoolset"
+      	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
+      )
+
+      const mcpServerURL = "http://mcp.internal.example.com:8000/mcp"
+
+      func main() {
+      	environmentKey := os.Getenv("ANTHROPIC_ENVIRONMENT_KEY")
+      	environmentID := os.Getenv("ANTHROPIC_ENVIRONMENT_ID")
+
+      	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
+      	defer stop()
+
+      	client := anthropic.NewClient(option.WithAuthToken(environmentKey))
+
+      	// Connect to the MCP server once at startup and keep the session open for
+      	// the life of the worker.
+      	mcpClient := mcpsdk.NewClient(&mcpsdk.Implementation{Name: "sandbox-worker", Version: "1.0.0"}, nil)
+      	session, err := mcpClient.Connect(ctx, &mcpsdk.StreamableClientTransport{Endpoint: mcpServerURL}, nil)
+      	if err != nil {
+      		log.Fatalf("connect to MCP server: %v", err)
+      	}
+      	defer session.Close()
+
+      	listed, err := session.ListTools(ctx, nil)
+      	if err != nil {
+      		log.Fatalf("list MCP tools: %v", err)
+      	}
+      	mcpTools, err := mcp.NewBetaTools(listed.Tools, session)
+      	if err != nil {
+      		log.Fatalf("convert MCP tools: %v", err)
+      	}
+
+      	worker := environments.NewEnvironmentWorker(client, environments.EnvironmentWorkerOptions{
+      		EnvironmentID:  environmentID,
+      		EnvironmentKey: environmentKey,
+      		Workdir:        "/workspace",
+      		ToolsFunc: func(env *agenttoolset.AgentToolContext) []anthropic.BetaTool {
+      			return append(agenttoolset.BetaAgentToolset20260401(env), mcpTools...)
+      		},
+      	})
+      	if err := worker.Run(ctx); err != nil {
+      		log.Fatalf("worker: %v", err)
+      	}
+      }
+
+      ```
+
+      ```java Java
+      // EnvironmentWorker is not currently available in the Java SDK.
+      ```
+
+      ```php PHP
+      // EnvironmentWorker is not currently available in the PHP SDK.
+      ```
+
+      ```ruby Ruby
+      # EnvironmentWorker is not currently available in the Ruby SDK.
+      ```
+    </CodeGroup>
+  </Step>
+</Steps>
+
+Keep the following in mind when you wrap an MCP server:
+
+* **Tools are declared, not discovered at runtime.** The worker lists the MCP server's tools once at startup and cannot add tools to a running session. When the server's tools change, declare them again, on the agent or on an idle session through [Updating the agent configuration](/docs/en/managed-agents/session-operations#updating-the-agent-configuration), and restart the worker.
+* **Names and descriptions must fit the Managed Agents API.** Custom tool names are unique per agent and use letters, digits, underscores, and hyphens (1–128 characters); a description is required (1–1,024 characters); and an agent's `tools` array takes at most 128 entries (each wrapped tool is one entry, and the built-in toolset is one more). The API rejects a declaration that reuses a tool name, names a custom tool after a built-in agent tool such as `bash` or `read`, or uses the reserved `mcp__` prefix. The MCP helpers keep the server's names and descriptions, so rename or trim where needed. When two servers expose the same tool name, define the wrapper yourself under a prefixed name and have it call the server's original tool name.
+* **Most schemas pass through unchanged.** The API accepts the JSON Schema keywords MCP servers commonly emit, such as `additionalProperties` and `title`. It rejects reference keywords such as `$ref` anywhere in a custom tool's `input_schema`, so inline the schemas that generators such as pydantic factor into `$defs`. It also rejects top-level `oneOf`, `anyOf`, and `allOf`, and property names outside letters, digits, underscores, dots, and hyphens (1–64 characters).
+* **Tool failures surface as error tool results.** When the MCP server reports a tool error, the worker posts an error tool result the model can react to. MCP content with no tool result equivalent, such as audio blocks and resource links, also surfaces as an error. Set a timeout on the MCP client for a faster and clearer failure, as the Python worker example does with `read_timeout_seconds`. Without one, a hung call becomes an error result only when the TypeScript MCP SDK's default request timeout fires (about a minute) or, in Python, when the worker's own backstop does (about two and a half minutes). In Go neither the MCP client nor the worker applies a default: a hung call waits until the session's context ends, so bound the per-call context with a deadline.
+* **Wrap servers you operate or trust.** A wrapped tool's name, description, and results enter the model's context like any other tool's: untrusted input that can influence what the agent does with its other tools, including `bash` on the worker host. Declare only the tools you intend the agent to use.
+* **Permission policies do not apply to custom tools.** [Permission policies](/docs/en/managed-agents/permission-policies#custom-tools) govern the built-in and MCP toolsets; the worker executes every wrapped tool call the model makes, so put any approval step in your own tool code.
+
 ## Monitoring and operations
 
 These calls run from your monitoring or operations tooling, authenticated with your Claude API key, to observe and manage the worker fleet. The claim and keep-alive loop is handled inside the worker helpers, so you don't call those endpoints directly.
@@ -95163,7 +95779,7 @@ Vaults and credentials are authentication primitives that let you register crede
 The vault reference is a per-session parameter, so you can manage your product at the `agent` resource granularity and your users at the `session` resource granularity.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Create a vault
@@ -96277,14 +96893,14 @@ Tell the agent what 'done' looks like, and let it iterate until it gets there.
 
 ---
 
-The `outcome` elevates a session from *conversation* to *work*. You define what the end result should look like and how to measure quality. The agent works toward that target, self-evaluating and iterating until the outcome is met.
+An outcome tells the session what the end result should look like and how to measure its quality. The agent works toward that target, self-evaluating and iterating until the outcome is met.
 
 When you define an outcome, the harness automatically provisions a *grader* to evaluate the artifact against a rubric. The grader uses a separate context window to avoid being influenced by the main agent's implementation choices.
 
 The grader returns an explanation summarizing which criteria passed or failed, or confirming that the artifact satisfies the rubric. That feedback is handed back to the agent for the next iteration.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Create a rubric
@@ -96325,10 +96941,10 @@ Example rubric:
 - Sensitivity analysis on WACC and terminal growth rate is included
 ```
 
-Pass the rubric as inline text on `user.define_outcome` (see the next section), or upload it through the Files API for reuse across sessions.
+Pass the rubric as inline text on `user.define_outcome` (see [Create a session with an outcome](#create-a-session-with-an-outcome)), or upload it through the Files API for reuse across sessions.
 
 <Note>
-  Uploading through the Files API requires both the `managed-agents-2026-04-01` and `files-api-2025-04-14` beta headers.
+  Uploading through the Files API requires the `files-api-2025-04-14` beta header, which the SDKs send automatically. The curl example passes its headers explicitly.
 </Note>
 
 <CodeGroup>
@@ -96349,11 +96965,47 @@ Pass the rubric as inline text on `user.define_outcome` (see the next section), 
   ```
 
   ```python Python
+  import time
+  from pathlib import Path
+
+  from anthropic import Anthropic
+
+  client = Anthropic()
+
+  RUBRIC = """# DCF Model Rubric
+
+  ## Revenue Projections
+  - Uses historical revenue data from the last 5 fiscal years
+  - Projects revenue for at least 5 years forward
+
+  ## Output Quality
+  - All figures are in a single .xlsx file with clearly labeled sheets
+  """
+  Path("/tmp/rubric.md").write_text(RUBRIC)
+
   rubric = client.beta.files.upload(file=Path("/tmp/rubric.md"))
   print(f"Uploaded rubric: {rubric.id}")
   ```
 
   ```typescript TypeScript
+  import { writeFile, readFile } from "node:fs/promises";
+
+  import Anthropic from "@anthropic-ai/sdk";
+  import { toFile } from "@anthropic-ai/sdk";
+
+  const client = new Anthropic();
+
+  const RUBRIC = `# DCF Model Rubric
+
+  ## Revenue Projections
+  - Uses historical revenue data from the last 5 fiscal years
+  - Projects revenue for at least 5 years forward
+
+  ## Output Quality
+  - All figures are in a single .xlsx file with clearly labeled sheets
+  `;
+  await writeFile("/tmp/rubric.md", RUBRIC);
+
   const rubric = await client.beta.files.upload({
     file: await toFile(readFile("/tmp/rubric.md"), "/tmp/rubric.md"),
   });
@@ -96361,6 +97013,27 @@ Pass the rubric as inline text on `user.define_outcome` (see the next section), 
   ```
 
   ```csharp C#
+  using Anthropic;
+  using Anthropic.Models.Beta.Agents;
+  using Anthropic.Models.Beta.Environments;
+  using Anthropic.Models.Beta.Files;
+  using Anthropic.Models.Beta.Sessions;
+  using Anthropic.Models.Beta.Sessions.Events;
+
+  var client = new AnthropicClient();
+
+  const string Rubric = """
+      # DCF Model Rubric
+
+      ## Revenue Projections
+      - Uses historical revenue data from the last 5 fiscal years
+      - Projects revenue for at least 5 years forward
+
+      ## Output Quality
+      - All figures are in a single .xlsx file with clearly labeled sheets
+      """;
+  await File.WriteAllTextAsync("/tmp/rubric.md", Rubric);
+
   var rubric = await client.Beta.Files.Upload(new()
   {
       File = File.OpenRead("/tmp/rubric.md"),
@@ -96369,36 +97042,136 @@ Pass the rubric as inline text on `user.define_outcome` (see the next section), 
   ```
 
   ```go Go
-  f, err := os.Open("/tmp/rubric.md")
-  if err != nil {
-  	panic(err)
-  }
+  package main
 
-  uploaded, err := client.Beta.Files.Upload(ctx, anthropic.BetaFileUploadParams{
-  	File: anthropic.File(f, "/tmp/rubric.md", "text/markdown"),
-  })
-  if err != nil {
-  	panic(err)
-  }
-  fmt.Printf("Uploaded rubric: %s\n", uploaded.ID)
+  import (
+  	"context"
+  	"fmt"
+  	"io"
+  	"os"
+  	"time"
+
+  	"github.com/anthropics/anthropic-sdk-go"
+  )
+
+  const rubric = `# DCF Model Rubric
+
+  ## Revenue Projections
+  - Uses historical revenue data from the last 5 fiscal years
+  - Projects revenue for at least 5 years forward
+
+  ## Output Quality
+  - All figures are in a single .xlsx file with clearly labeled sheets
+  `
+
+  func main() {
+  	ctx := context.Background()
+  	client := anthropic.NewClient()
+
+  	if err := os.WriteFile("/tmp/rubric.md", []byte(rubric), 0o644); err != nil {
+  		panic(err)
+  	}
+
+  	f, err := os.Open("/tmp/rubric.md")
+  	if err != nil {
+  		panic(err)
+  	}
+
+  	uploaded, err := client.Beta.Files.Upload(ctx, anthropic.BetaFileUploadParams{
+  		File: anthropic.File(f, "rubric.md", "text/markdown"),
+  	})
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Printf("Uploaded rubric: %s\n", uploaded.ID)
   ```
 
   ```java Java
-  var rubric = client.beta().files().upload(
-      FileUploadParams.builder()
-          .file(Path.of("/tmp/rubric.md"))
-          .build());
-  IO.println("Uploaded rubric: " + rubric.id());
+  import com.anthropic.client.okhttp.AnthropicOkHttpClient;
+  import com.anthropic.core.http.HttpResponse;
+  import com.anthropic.models.beta.AnthropicBeta;
+  import com.anthropic.models.beta.agents.AgentCreateParams;
+  import com.anthropic.models.beta.agents.BetaManagedAgentsAgentToolset20260401Params;
+  import com.anthropic.models.beta.agents.BetaManagedAgentsModel;
+  import com.anthropic.models.beta.environments.BetaCloudConfigParams;
+  import com.anthropic.models.beta.environments.EnvironmentCreateParams;
+  import com.anthropic.models.beta.files.FileListParams;
+  import com.anthropic.models.beta.files.FileUploadParams;
+  import com.anthropic.models.beta.sessions.SessionCreateParams;
+  import com.anthropic.models.beta.sessions.events.BetaManagedAgentsTextRubricParams;
+  import com.anthropic.models.beta.sessions.events.BetaManagedAgentsUserDefineOutcomeEventParams;
+  import com.anthropic.models.beta.sessions.events.BetaManagedAgentsUserInterruptEventParams;
+  import com.anthropic.models.beta.sessions.events.EventSendParams;
+
+  import java.io.InputStream;
+  import java.nio.file.Files;
+  import java.nio.file.Path;
+  import java.nio.file.StandardCopyOption;
+
+  void main() throws Exception {
+      var client = AnthropicOkHttpClient.fromEnv();
+
+      var RUBRIC = """
+          # DCF Model Rubric
+
+          ## Revenue Projections
+          - Uses historical revenue data from the last 5 fiscal years
+          - Projects revenue for at least 5 years forward
+
+          ## Output Quality
+          - All figures are in a single .xlsx file with clearly labeled sheets
+          """;
+      Files.writeString(Path.of("/tmp/rubric.md"), RUBRIC);
+
+      var rubric = client.beta().files().upload(
+          FileUploadParams.builder()
+              .file(Path.of("/tmp/rubric.md"))
+              .build());
+      IO.println("Uploaded rubric: " + rubric.id());
   ```
 
   ```php PHP
+  use Anthropic\Client;
+  use Anthropic\Core\FileParam;
+
+  $client = new Client();
+
+  $rubricText = <<<'MD'
+  # DCF Model Rubric
+
+  ## Revenue Projections
+  - Uses historical revenue data from the last 5 fiscal years
+  - Projects revenue for at least 5 years forward
+
+  ## Output Quality
+  - All figures are in a single .xlsx file with clearly labeled sheets
+  MD;
+  file_put_contents('/tmp/rubric.md', $rubricText);
+
   $rubric = $client->beta->files->upload(
-      file: fopen('/tmp/rubric.md', 'r'),
+      file: FileParam::fromResource(fopen('/tmp/rubric.md', 'r'), contentType: 'text/markdown'),
   );
   echo "Uploaded rubric: {$rubric->id}\n";
   ```
 
   ```ruby Ruby
+  require "anthropic"
+  require "pathname"
+
+  client = Anthropic::Client.new
+
+  RUBRIC = <<~MD
+    # DCF Model Rubric
+
+    ## Revenue Projections
+    - Uses historical revenue data from the last 5 fiscal years
+    - Projects revenue for at least 5 years forward
+
+    ## Output Quality
+    - All figures are in a single .xlsx file with clearly labeled sheets
+  MD
+  File.write("/tmp/rubric.md", RUBRIC)
+
   rubric = client.beta.files.upload(file: Pathname.new("/tmp/rubric.md"))
   puts "Uploaded rubric: #{rubric.id}"
   ```
@@ -96406,7 +97179,7 @@ Pass the rubric as inline text on `user.define_outcome` (see the next section), 
 
 ## Create a session with an outcome
 
-After creating a session, send a `user.define_outcome` event. The agent begins work immediately; no additional user message event is required.
+The following examples create a [session](/docs/en/managed-agents/sessions) for an existing [agent](/docs/en/managed-agents/agent-setup) and [environment](/docs/en/managed-agents/environments) (both created separately), then send a `user.define_outcome` event. The agent begins work immediately. No additional user message event is required.
 
 <CodeGroup>
   ```bash curl
@@ -96527,10 +97300,15 @@ After creating a session, send a `user.define_outcome` event. The agent begins w
       [
           new BetaManagedAgentsUserDefineOutcomeEventParams
           {
-              Type = "user.define_outcome",
+              Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
               Description = "Build a DCF model for Costco in .xlsx",
-              Rubric = new BetaManagedAgentsTextRubricParams { Type = "text", Content = Rubric },
-              // or: Rubric = new BetaManagedAgentsFileRubricParams { Type = "file", FileID = rubric.ID },
+              Rubric = new BetaManagedAgentsTextRubricParams
+              {
+                  Type = BetaManagedAgentsTextRubricParamsType.Text,
+                  Content = Rubric,
+              },
+              // or: Rubric = new BetaManagedAgentsFileRubricParams
+              //     { Type = BetaManagedAgentsFileRubricParamsType.File, FileID = rubric.ID },
               MaxIterations = 5, // optional; default 3, max 20
           },
       ],
@@ -96554,11 +97332,16 @@ After creating a session, send a `user.define_outcome` event. The agent begins w
   _, err = client.Beta.Sessions.Events.Send(ctx, session.ID, anthropic.BetaSessionEventSendParams{
   	Events: []anthropic.BetaManagedAgentsEventParamsUnion{{
   		OfUserDefineOutcome: &anthropic.BetaManagedAgentsUserDefineOutcomeEventParams{
+  			Type:        anthropic.BetaManagedAgentsUserDefineOutcomeEventParamsTypeUserDefineOutcome,
   			Description: "Build a DCF model for Costco in .xlsx",
   			Rubric: anthropic.BetaManagedAgentsUserDefineOutcomeEventParamsRubricUnion{
-  				OfText: &anthropic.BetaManagedAgentsTextRubricParams{Content: rubric},
+  				OfText: &anthropic.BetaManagedAgentsTextRubricParams{
+  					Type:    anthropic.BetaManagedAgentsTextRubricParamsTypeText,
+  					Content: rubric,
+  				},
   			},
-  			// or: OfFile: &anthropic.BetaManagedAgentsFileRubricParams{FileID: uploaded.ID},
+  			// or: OfFile: &anthropic.BetaManagedAgentsFileRubricParams{
+  			//     Type: anthropic.BetaManagedAgentsFileRubricParamsTypeFile, FileID: uploaded.ID},
   			MaxIterations: anthropic.Int(5), // optional; default 3, max 20
   		},
   	}},
@@ -96582,9 +97365,14 @@ After creating a session, send a `user.define_outcome` event. The agent begins w
       session.id(),
       EventSendParams.builder()
           .addEvent(BetaManagedAgentsUserDefineOutcomeEventParams.builder()
+              .type(BetaManagedAgentsUserDefineOutcomeEventParams.Type.USER_DEFINE_OUTCOME)
               .description("Build a DCF model for Costco in .xlsx")
-              .rubric(BetaManagedAgentsTextRubricParams.builder().content(RUBRIC).build())
-              // or: .rubric(BetaManagedAgentsFileRubricParams.builder().fileId(rubric.id()).build())
+              .rubric(BetaManagedAgentsTextRubricParams.builder()
+                  .type(BetaManagedAgentsTextRubricParams.Type.TEXT)
+                  .content(RUBRIC)
+                  .build())
+              // or: .rubric(BetaManagedAgentsFileRubricParams.builder()
+              //     .type(BetaManagedAgentsFileRubricParams.Type.FILE).fileId(rubric.id()).build())
               .maxIterations(5) // optional; default 3, max 20
               .build())
           .build());
@@ -96645,12 +97433,12 @@ Progress on an outcome-oriented session is surfaced on the events [stream](/docs
 * `span.outcome_evaluation_*` events are only emitted for outcome-oriented sessions and show the number of iteration loops and the grader's feedback process.
 * You can also send `user.message` [events](/docs/en/managed-agents/reference#event-types) to an outcome-oriented session to direct the agent's work as it progresses, but it isn't required: the agent works toward the outcome on its own, iterating until it succeeds or runs out of iterations.
 * A `user.interrupt` event pauses work on the current outcome and marks the `span.outcome_evaluation_end.result` as `interrupted`, allowing you to kick off a new outcome.
-* After the final outcome evaluation, the session can be continued as a conversational session, or a new outcome can be kicked off. The session retains history of the prior outcome.
+* After the final outcome evaluation, the session can be continued as a conversational session, or a new outcome can be started. The session retains history of the prior outcome.
 
 ### Define outcome user event
 
 <Note>
-  Only one outcome is supported at a time, but you may chain outcomes in sequence. To do this, send a new `user.define_outcome` event after the terminal event of the previous outcome.
+  Only one outcome is supported at a time, but you may chain outcomes in sequence. To do this, send a new `user.define_outcome` event after the terminal `span.outcome_evaluation_end` event of the previous outcome.
 </Note>
 
 This is the event you send to initiate an outcome. It is echoed back on receipt, including a `processed_at` timestamp and `outcome_id`.
@@ -96687,6 +97475,7 @@ Heartbeat emitted while the grader runs. The grader's internal reasoning is opaq
   "type": "span.outcome_evaluation_ongoing",
   "id": "sevt_01ghi...",
   "outcome_id": "outc_01a...",
+  "iteration": 0,
   "processed_at": "2026-03-25T14:02:10Z"
 }
 ```
@@ -96695,13 +97484,13 @@ Heartbeat emitted while the grader runs. The grader's internal reasoning is opaq
 
 Emitted after the grader finishes evaluating one iteration. The `result` field indicates what happens next.
 
-| Result                   | Next                                                                                                                                                            |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `satisfied`              | Session transitions to `idle`.                                                                                                                                  |
-| `needs_revision`         | Agent starts a new iteration cycle.                                                                                                                             |
-| `max_iterations_reached` | No further evaluation cycles. The agent may run one final revision before the session transitions to `idle`.                                                    |
-| `failed`                 | Session transitions to `idle`. Returned when the rubric fundamentally does not match the task, for example if the description and rubric contradict each other. |
-| `interrupted`            | Only emitted if `outcome_evaluation_start` already fired before the interrupt.                                                                                  |
+| Result                   | Next                                                                                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `satisfied`              | Session transitions to `idle`.                                                                                                                               |
+| `needs_revision`         | Agent starts a new iteration cycle.                                                                                                                          |
+| `max_iterations_reached` | One final acknowledgment turn follows before the session transitions to `idle`. No further evaluation runs.                                                  |
+| `failed`                 | Session transitions to `idle`. Returned when the rubric does not apply to the deliverables, for example if the description and rubric contradict each other. |
+| `interrupted`            | Only emitted if `outcome_evaluation_start` already fired before the interrupt.                                                                               |
 
 ```json
 {
@@ -96722,9 +97511,9 @@ Emitted after the grader finishes evaluating one iteration. The `result` field i
 }
 ```
 
-## Checking on outcome status
+## Check outcome status
 
-You can either listen on the [event stream](/docs/en/managed-agents/events-and-streaming) for `span.outcome_evaluation_end`, or poll `GET /v1/sessions/:id` and read `outcome_evaluations[].result`:
+You can either listen on the [event stream](/docs/en/managed-agents/events-and-streaming) for `span.outcome_evaluation_end`, or poll `GET /v1/sessions/:id` and read `outcome_evaluations[].result`. Until an evaluation completes, `result` reports `pending`, `running`, or `evaluating`:
 
 <CodeGroup>
   ```bash curl
@@ -96809,17 +97598,22 @@ You can either listen on the [event stream](/docs/en/managed-agents/events-and-s
   ```
 </CodeGroup>
 
-## Retrieving deliverables
+## Retrieve deliverables
 
-The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Once the session is idle, fetch them through the [Files API](/docs/en/build-with-claude/files) scoped to the session:
+The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Once the session is idle, fetch them through the [Files API](/docs/en/build-with-claude/files) scoped to the session.
+
+<Note>
+  Filtering by `scope_id` requires the `managed-agents-2026-04-01` beta header on the files request. The SDK files methods send only the files beta automatically, so the examples pass it explicitly.
+</Note>
 
 <CodeGroup>
   ```bash curl
   # List files produced by this session
+  # scope_id filtering requires the managed-agents beta alongside the files beta
   files=$(curl -fsSL "https://api.anthropic.com/v1/files?scope_id=$session_id" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01")
+    -H "anthropic-beta: managed-agents-2026-04-01,files-api-2025-04-14")
   jq -r '.data[] | "\(.id) \(.filename)"' <<<"$files"
 
   # Download a file
@@ -96828,17 +97622,20 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
     curl -fsSL "https://api.anthropic.com/v1/files/$file_id/content" \
       -H "x-api-key: $ANTHROPIC_API_KEY" \
       -H "anthropic-version: 2023-06-01" \
-      -H "anthropic-beta: managed-agents-2026-04-01" \
+      -H "anthropic-beta: managed-agents-2026-04-01,files-api-2025-04-14" \
       -o /tmp/output.txt
   fi
   ```
 
   ```bash CLI
   # List files produced by this session
-  ant beta:files list --scope-id "$SESSION_ID"
+  # scope_id filtering requires the managed-agents beta on the files request
+  ant beta:files list --scope-id "$SESSION_ID" \
+    --beta managed-agents-2026-04-01
 
   # Download a file
   FILE_ID=$(ant beta:files list --scope-id "$SESSION_ID" \
+    --beta managed-agents-2026-04-01 \
     --transform 'data[0].id' --raw-output)
   if [[ -n $FILE_ID ]]; then
     ant beta:files download --file-id "$FILE_ID" --output /tmp/output.txt
@@ -96847,9 +97644,10 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
 
   ```python Python
   # List files produced by this session
-  files = client.beta.files.list(scope_id=session.id)
-  for f in files:
-      print(f.id, f.filename)
+  # scope_id filtering requires the managed-agents beta on the files request
+  files = client.beta.files.list(scope_id=session.id, betas=["managed-agents-2026-04-01"])
+  for file in files:
+      print(file.id, file.filename)
 
   # Download a file
   if files.data:
@@ -96859,9 +97657,13 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
 
   ```typescript TypeScript
   // List files produced by this session
-  const files = await client.beta.files.list({ scope_id: session.id });
-  for (const f of files.data) {
-    console.log(f.id, f.filename);
+  // scope_id filtering requires the managed-agents beta on the files request
+  const files = await client.beta.files.list({
+    scope_id: session.id,
+    betas: ["managed-agents-2026-04-01"],
+  });
+  for (const file of files.data) {
+    console.log(file.id, file.filename);
   }
 
   // Download a file
@@ -96873,24 +97675,32 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
 
   ```csharp C#
   // List files produced by this session
-  var files = await client.Beta.Files.List(new() { ScopeID = session.ID });
-  foreach (var file in files.Data)
+  // (scope_id filtering requires the managed-agents beta on the files request)
+  var files = await client.Beta.Files.List(new()
+  {
+      ScopeID = session.ID,
+      Betas = ["managed-agents-2026-04-01"],
+  });
+  foreach (var file in files.Items)
   {
       Console.WriteLine($"{file.ID} {file.Filename}");
   }
 
   // Download a file
-  if (files.Data.Count > 0)
+  if (files.Items.Count > 0)
   {
-      var content = await client.Beta.Files.Download(files.Data[0].ID);
-      await File.WriteAllBytesAsync("/tmp/output.txt", content);
+      using var download = await client.Beta.Files.Download(files.Items[0].ID);
+      await using var output = File.Create("/tmp/output.txt");
+      await (await download.ReadAsStream()).CopyToAsync(output);
   }
   ```
 
   ```go Go
   // List files produced by this session
+  // (scope_id filtering requires the managed-agents beta on the files request)
   files, err := client.Beta.Files.List(ctx, anthropic.BetaFileListParams{
-  	// pass ScopeID: anthropic.String(session.ID) to filter
+  	ScopeID: anthropic.String(session.ID),
+  	Betas:   []anthropic.AnthropicBeta{anthropic.AnthropicBetaManagedAgents2026_04_01},
   })
   if err != nil {
   	panic(err)
@@ -96906,11 +97716,12 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
   		panic(err)
   	}
   	defer resp.Body.Close()
-  	fileContent, err := io.ReadAll(resp.Body)
+  	out, err := os.Create("/tmp/output.txt")
   	if err != nil {
   		panic(err)
   	}
-  	if err := os.WriteFile("/tmp/output.txt", fileContent, 0o644); err != nil {
+  	defer out.Close()
+  	if _, err := io.Copy(out, resp.Body); err != nil {
   		panic(err)
   	}
   }
@@ -96918,8 +97729,12 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
 
   ```java Java
   // List files produced by this session
+  // (scope_id filtering requires the managed-agents beta on the files request)
   var files = client.beta().files().list(
-      FileListParams.builder()/* pass .scopeId(session.id()) to filter */.build());
+      FileListParams.builder()
+          .scopeId(session.id())
+          .addBeta(AnthropicBeta.MANAGED_AGENTS_2026_04_01)
+          .build());
   for (var file : files.data()) {
       IO.println(file.id() + " " + file.filename());
   }
@@ -96936,7 +97751,8 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
 
   ```php PHP
   // List files produced by this session
-  $files = $client->beta->files->list(/* pass scopeID: $session->id to filter */);
+  // scope_id filtering requires the managed-agents beta on the files request
+  $files = $client->beta->files->list(scopeID: $session->id, betas: ['managed-agents-2026-04-01']);
   foreach ($files->data as $file) {
       echo "{$file->id} {$file->filename}\n";
   }
@@ -96950,8 +97766,9 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
 
   ```ruby Ruby
   # List files produced by this session
-  files = client.beta.files.list(scope_id: session.id)
-  files.data.each { puts "#{it.id} #{it.filename}" }
+  # scope_id filtering requires the managed-agents beta on the files request
+  files = client.beta.files.list(scope_id: session.id, betas: ["managed-agents-2026-04-01"])
+  files.data.each { |file| puts "#{file.id} #{file.filename}" }
 
   # Download a file
   if (first = files.data.first)
@@ -96960,6 +97777,22 @@ The agent writes output files to `/mnt/session/outputs/` inside the sandbox. Onc
   end
   ```
 </CodeGroup>
+
+## Next steps
+
+<CardGroup cols={3}>
+  <Card title="Authenticate with vaults" icon="fingerprint" href="/docs/en/managed-agents/vaults">
+    Register per-user credentials when creating sessions.
+  </Card>
+
+  <Card title="Session event stream" icon="lightning" href="/docs/en/managed-agents/events-and-streaming">
+    Send events, stream responses, and interrupt or redirect your session mid-execution.
+  </Card>
+
+  <Card title="Adding files" icon="file" href="/docs/en/managed-agents/files">
+    Upload files and mount them in your sandbox for reading and processing.
+  </Card>
+</CardGroup>
 
 
 ---
@@ -96977,7 +97810,7 @@ Send events, stream responses, and interrupt or redirect your session mid-execut
 Communication with Claude Managed Agents is event-based. You send user events to the agent, and receive agent and session events back to track status.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Event types
@@ -99441,7 +100274,7 @@ Retrieve, list, update, archive, and delete Claude Managed Agents sessions.
 Once a session exists, use these operations to read, update, archive, or delete it. See [Start a session](/docs/en/managed-agents/sessions) for creating a session and sending it work.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Session statuses
@@ -100076,7 +100909,7 @@ Create a session to run your agent and begin executing tasks.
 A session is an agent instance within an environment. Each session references an [agent](/docs/en/managed-agents/agent-setup) and an [environment](/docs/en/managed-agents/environments) (both created separately), and maintains conversation history across multiple interactions. Sessions follow a two-step lifecycle: first [create the session](#creating-a-session) to provision its sandbox, then [send a user event](#starting-the-session) to start work.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Creating a session
@@ -101126,7 +101959,7 @@ You can mount a GitHub repository to your session sandbox and connect to the Git
 GitHub repositories are cached, so future sessions that use the same repository start faster.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## GitHub MCP and session resources
@@ -102009,7 +102842,7 @@ Upload files and mount them in your sandbox for reading and processing.
 You can provide files to your agent by uploading them through the Files API and mounting them in the session's sandbox.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Uploading files
@@ -103375,7 +104208,13 @@ Give your agents persistent memory that survives across sessions using memory st
 Each Managed Agents session starts with a fresh context by default. When a session ends, any state the agent built up is gone. Memory stores let the agent carry information across sessions: user preferences, project conventions, prior mistakes, and domain context.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
+</Note>
+
+<Note>
+  Don't combine `agent-memory-2026-07-22` with `managed-agents-2026-04-01` on a memory store request: sending both returns a `400` error. If your code sets beta headers explicitly, replace `managed-agents-2026-04-01` with `agent-memory-2026-07-22` on memory store calls rather than adding a second value. Session endpoints, including attaching a memory store to a session, still use `managed-agents-2026-04-01`.
+
+  On July 22, 2026, the `managed-agents-2026-04-01` header adopts the same list behavior on `GET /v1/memory_stores/{memory_store_id}/memories`; sending `agent-memory-2026-07-22` opts you into that behavior now. Page cursors from requests made without the header aren't valid with it, so restart from the first page.
 </Note>
 
 ## Overview
@@ -103395,7 +104234,7 @@ Give the store a `name` and a `description`. The description is passed to the ag
   store=$(curl -s https://api.anthropic.com/v1/memory_stores \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" \
+    -H "anthropic-beta: agent-memory-2026-07-22" \
     -H "content-type: application/json" \
     -d '{"name": "User Preferences", "description": "Per-user preferences and project context."}')
   store_id=$(jq -r '.id' <<< "$store")
@@ -103491,7 +104330,7 @@ Pre-load a store with reference material before any agent runs:
   curl -s "https://api.anthropic.com/v1/memory_stores/$store_id/memories" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" \
+    -H "anthropic-beta: agent-memory-2026-07-22" \
     -H "content-type: application/json" \
     -d '{"path": "/formatting_standards.md", "content": "All reports use GAAP formatting. Dates are ISO-8601..."}' > /dev/null
   ```
@@ -103751,28 +104590,29 @@ Memory stores can be managed directly through the API. Use this for building rev
 
 ### List memories
 
-List the memories in a store, optionally filtered by `path_prefix` to browse a path like a directory:
+List the memories in a store. Results are returned in a stable, server-defined order.
+
+* `path_prefix` scopes the list to one directory. It must end with `/` and matches whole path segments, so `path_prefix=/notes/` returns `/notes/todo.md` but not `/notes-archive/todo.md`.
+* `depth` controls how deep the listing goes below `path_prefix`: omit it (or pass `0`) to list the whole subtree, or pass `1` to list only the immediate children. Other values return a `400` error.
 
 <CodeGroup defaultLanguage="CLI">
   ```bash curl
-  curl -s "https://api.anthropic.com/v1/memory_stores/$store_id/memories?path_prefix=/&order_by=path&depth=2" \
+  curl -s "https://api.anthropic.com/v1/memory_stores/$store_id/memories?path_prefix=/" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" | jq -r '.data[] | "\(.type)  \(.path)"'
+    -H "anthropic-beta: agent-memory-2026-07-22" | jq -r '.data[] | "\(.type)  \(.path)"'
   ```
 
   ```bash CLI
   ant beta:memory-stores:memories list \
     --memory-store-id "$store_id" \
-    --path-prefix "/" --order-by path --depth 2
+    --path-prefix "/"
   ```
 
   ```python Python
   page = client.beta.memory_stores.memories.list(
       store.id,
       path_prefix="/",
-      order_by="path",
-      depth=2,
   )
   for item in page.data:
       print(item.type, item.path)
@@ -103780,9 +104620,7 @@ List the memories in a store, optionally filtered by `path_prefix` to browse a p
 
   ```typescript TypeScript
   const page = await client.beta.memoryStores.memories.list(store.id, {
-    path_prefix: "/",
-    order_by: "path",
-    depth: 2
+    path_prefix: "/"
   });
   for (const item of page.data) {
     console.log(item.type, item.path);
@@ -103793,8 +104631,6 @@ List the memories in a store, optionally filtered by `path_prefix` to browse a p
   var page = await client.Beta.MemoryStores.Memories.List(store.ID, new()
   {
       PathPrefix = "/",
-      OrderBy = "path",
-      Depth = 2,
   });
   await foreach (var item in page.Paginate())
   {
@@ -103806,8 +104642,6 @@ List the memories in a store, optionally filtered by `path_prefix` to browse a p
   ```go Go
   page, err := client.Beta.MemoryStores.Memories.List(ctx, store.ID, anthropic.BetaMemoryStoreMemoryListParams{
   	PathPrefix: anthropic.String("/"),
-  	OrderBy:    anthropic.String("path"),
-  	Depth:      anthropic.Int(2),
   })
   if err != nil {
   	panic(err)
@@ -103822,8 +104656,6 @@ List the memories in a store, optionally filtered by `path_prefix` to browse a p
       store.id(),
       MemoryListParams.builder()
           .pathPrefix("/")
-          .orderBy("path")
-          .depth(2)
           .build()
   );
   for (var item : page.data()) {
@@ -103836,8 +104668,6 @@ List the memories in a store, optionally filtered by `path_prefix` to browse a p
   $page = $client->beta->memoryStores->memories->list(
       $store->id,
       pathPrefix: '/',
-      orderBy: 'path',
-      depth: 2,
   );
   foreach ($page->data as $item) {
       echo "{$item->type}  {$item->path}\n";
@@ -103847,9 +104677,7 @@ List the memories in a store, optionally filtered by `path_prefix` to browse a p
   ```ruby Ruby
   page = client.beta.memory_stores.memories.list(
     store.id,
-    path_prefix: "/",
-    order_by: "path",
-    depth: 2
+    path_prefix: "/"
   )
   page.data.each do |entry|
     puts "#{entry.type}  #{entry.path}"
@@ -103868,7 +104696,7 @@ Fetching an individual memory returns the full content.
   curl -s "https://api.anthropic.com/v1/memory_stores/$store_id/memories/$mem_id" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" | jq -r '.content'
+    -H "anthropic-beta: agent-memory-2026-07-22" | jq -r '.content'
   ```
 
   ```bash CLI
@@ -103943,7 +104771,7 @@ See the [Retrieve a memory reference](/docs/en/api/beta/memory_stores/memories/r
   mem=$(curl -s "https://api.anthropic.com/v1/memory_stores/$store_id/memories" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" \
+    -H "anthropic-beta: agent-memory-2026-07-22" \
     -H "content-type: application/json" \
     -d '{"path": "/preferences/formatting.md", "content": "Always use tabs, not spaces."}')
   mem_id=$(jq -r '.id' <<< "$mem")
@@ -104031,7 +104859,7 @@ See the [Create a memory reference](/docs/en/api/beta/memory_stores/memories/cre
   curl -s -X POST "https://api.anthropic.com/v1/memory_stores/$store_id/memories/$mem_id" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" \
+    -H "anthropic-beta: agent-memory-2026-07-22" \
     -H "content-type: application/json" \
     -d '{"path": "/archive/2026_q1_formatting.md"}' > /dev/null
   ```
@@ -104115,7 +104943,7 @@ To avoid clobbering a concurrent write, pass a `content_sha256` precondition. Th
   curl -s -X POST "https://api.anthropic.com/v1/memory_stores/$store_id/memories/$mem_id" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" \
+    -H "anthropic-beta: agent-memory-2026-07-22" \
     -H "content-type: application/json" \
     --data @- > /dev/null <<EOF
   {
@@ -104220,7 +105048,7 @@ To avoid clobbering a concurrent write, pass a `content_sha256` precondition. Th
   curl -s -X DELETE "https://api.anthropic.com/v1/memory_stores/$store_id/memories/$mem_id" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" > /dev/null
+    -H "anthropic-beta: agent-memory-2026-07-22" > /dev/null
   ```
 
   ```bash CLI
@@ -104299,7 +105127,7 @@ List version history for a store, newest first. The example filters to a single 
   versions=$(curl -s "https://api.anthropic.com/v1/memory_stores/$store_id/memory_versions?memory_id=$mem_id" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01")
+    -H "anthropic-beta: agent-memory-2026-07-22")
   jq -r '.data[] | "\(.id): \(.operation)"' <<< "$versions"
   version_id=$(jq -r '.data[1].id' <<< "$versions")
   ```
@@ -104419,7 +105247,7 @@ Fetching an individual version returns the same fields as the list response plus
   curl -s "https://api.anthropic.com/v1/memory_stores/$store_id/memory_versions/$version_id" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01"
+    -H "anthropic-beta: agent-memory-2026-07-22"
   ```
 
   ```bash CLI
@@ -104499,7 +105327,7 @@ A version that is the current head of a live memory cannot be redacted. Write a 
   curl -s -X POST "https://api.anthropic.com/v1/memory_stores/$store_id/memory_versions/$version_id/redact" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" \
+    -H "anthropic-beta: agent-memory-2026-07-22" \
     -H "content-type: application/json" \
     -d '{}'
   ```
@@ -104576,7 +105404,7 @@ List stores in the workspace. Archived stores are excluded by default; pass `inc
   curl -s "https://api.anthropic.com/v1/memory_stores?include_archived=true" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" | jq '.data[] | {id, name, archived_at}'
+    -H "anthropic-beta: agent-memory-2026-07-22" | jq '.data[] | {id, name, archived_at}'
   ```
 
   ```bash CLI
@@ -104647,7 +105475,7 @@ Archiving makes a store read-only and prevents it from being attached to new ses
   curl -s -X POST "https://api.anthropic.com/v1/memory_stores/$store_id/archive" \
     -H "x-api-key: $ANTHROPIC_API_KEY" \
     -H "anthropic-version: 2023-06-01" \
-    -H "anthropic-beta: managed-agents-2026-04-01" > /dev/null
+    -H "anthropic-beta: agent-memory-2026-07-22" > /dev/null
   ```
 
   ```bash CLI
@@ -104720,7 +105548,7 @@ Coordinate multiple agents within a single session.
 Multi-agent orchestration lets one agent coordinate with others to complete complex work. Agents can act in parallel with their own isolated context, which helps improve output quality and can also improve time to completion.
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## How it works
@@ -106828,7 +107656,7 @@ Event types, self-hosted worker CLI flags, supported MCP server types, rate limi
 This page collects reference material for Claude Managed Agents. For task-oriented guides, follow the links in each section. For the operations on the session resource, see [Session operations](/docs/en/managed-agents/session-operations).
 
 <Note>
-  All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
+  Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
 </Note>
 
 ## Event types
@@ -106968,6 +107796,10 @@ Your product should maintain its own branding and not appear to be Claude Code, 
 # Admin
 
 **URL:** https://platform.claude.com/docs/en/manage-claude/admin-api
+
+Manage organization members, workspaces, invites, and API keys programmatically with the Admin API, using an Admin API key or an `org:admin` OAuth token.
+
+---
 
 <Tip>
   **The Admin API is unavailable for individual accounts.** To collaborate with teammates and add members, set up your organization in **Console → Settings → Organization**.
@@ -107139,7 +107971,7 @@ Manage [user access to specific workspaces](/docs/en/api/admin-api/workspace_mem
 
 ### API keys
 
-Monitor and manage [API keys](/docs/en/api/admin-api/apikeys/get-api-key):
+Monitor and manage [API keys](/docs/en/api/admin/api_keys/list). Each key in the response includes its `expires_at` timestamp (`null` for keys without an [expiration](/docs/en/manage-claude/authentication#key-expiration)):
 
 <CodeGroup>
   ```bash cURL
@@ -107220,7 +108052,7 @@ To effectively use the Admin API:
 * Implement proper error handling for failed operations
 * Regularly audit member roles and permissions
 * Clean up unused workspaces and expired invites
-* Monitor API key usage and rotate keys periodically
+* Monitor API key usage, audit each key's [`expires_at`](/docs/en/manage-claude/authentication#key-expiration), and rotate keys periodically
 
 ## FAQ
 
@@ -107614,7 +108446,7 @@ The Claude API supports two ways to authenticate requests:
 
 | Method                                                        | Credential                                                                      | Best for                                                                                                                                        |
 | ------------------------------------------------------------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
-| [API key](#api-keys)                                          | Long-lived `sk-ant-api...` secret in the `x-api-key` header                     | Local development, prototyping, scripts, and single-tenant servers where you control secret storage                                             |
+| [API key](#api-keys)                                          | Static `sk-ant-api...` secret in the `x-api-key` header                         | Local development, prototyping, scripts, and single-tenant servers where you control secret storage                                             |
 | [Workload Identity Federation](#workload-identity-federation) | Short-lived bearer token exchanged from your identity provider's identity token | Production workloads on cloud platforms (AWS, Google Cloud, Azure), CI/CD pipelines, and Kubernetes, where you want to eliminate static secrets |
 
 Both methods grant the same access to Claude API endpoints. Choose API keys to get started quickly, and move to Workload Identity Federation when your workload already has a platform-issued identity you can federate.
@@ -107623,7 +108455,7 @@ Both methods grant the same access to Claude API endpoints. Choose API keys to g
 
 API keys are static secrets that you generate in the Claude Console and pass on every request.
 
-* **Create a key:** Go to [Settings → API keys](https://platform.claude.com/settings/keys) in the Claude Console. Use [workspaces](https://platform.claude.com/settings/workspaces) to scope keys by project or environment.
+* **Create a key:** Go to [Settings → API keys](https://platform.claude.com/settings/keys) in the Claude Console. You choose an [expiration](#key-expiration) as part of creation. Use [workspaces](https://platform.claude.com/settings/workspaces) to scope keys by project or environment.
 * **Send the key:** Set the `x-api-key` header on direct HTTP requests, or set the `ANTHROPIC_API_KEY` environment variable and the [client SDKs](/docs/en/cli-sdks-libraries/overview) pick it up automatically.
 
 ```http
@@ -107633,7 +108465,7 @@ anthropic-version: 2023-06-01
 content-type: application/json
 ```
 
-API keys have no expiry. Store them in a secrets manager, rotate them periodically, and revoke any key you suspect has leaked.
+Store API keys in a secrets manager, rotate them periodically, and revoke any key you suspect has leaked. You can also set an [expiration](#key-expiration) when you create a key to limit how long a leaked credential stays usable.
 
 <CodeGroup>
   ```bash cURL
@@ -107706,6 +108538,18 @@ API keys have no expiry. Store them in a secrets manager, rotate them periodical
   ```
 </CodeGroup>
 
+### Key expiration
+
+When you create an API key from the [API keys page](https://platform.claude.com/settings/keys) in the Claude Console, you choose an expiration: a preset (3 hours, 1 day, 7 days, or 30 days), a custom duration, or **Never** for keys you store in a secrets manager and rotate yourself. If your organization has a maximum expiration policy, the Console limits presets and custom durations to the policy maximum, and **Never** is unavailable. Existing keys keep their current behavior; expiration is set at creation time and cannot be changed afterward. The same expiration choice applies when you [create an Admin API key](/docs/en/manage-claude/admin-api-keys) in the Claude Console.
+
+Anthropic emails the key's creator as the expiration approaches: 7 days before expiration for keys created with a lifetime of at least 14 days, and 1 day before for keys with a lifetime of at least 7 days. Keys with shorter lifetimes expire without a warning email.
+
+After a key expires, requests made with it return a `401 authentication_error`. Create a new key to restore access; expired keys cannot be reactivated.
+
+The Console API keys table shows each key's expiration, and the Admin API reports each key's `expires_at` timestamp on the [List API Keys](/docs/en/api/admin/api_keys/list) and [Get API Key](/docs/en/api/admin/api_keys/retrieve) endpoints, so you can audit and rotate keys before they expire. The field is `null` for keys without an expiration.
+
+Expiration limits the lifetime of a leaked credential, but it is not a substitute for secret hygiene. Regardless of expiration, store keys in a secrets manager and revoke any key you suspect has leaked.
+
 ## Workload Identity Federation
 
 Workload Identity Federation (WIF) lets a workload authenticate with a short-lived identity token issued by an identity provider (IdP) you already trust, such as AWS IAM, Google Cloud, or any standards-compliant OIDC issuer (such as GitHub Actions, Kubernetes service accounts, SPIFFE, Microsoft Entra ID, or Okta). The workload exchanges its IdP-issued JWT at `POST /v1/oauth/token` for a short-lived Claude API access token, and the SDK refreshes that token automatically before it expires. There is no `sk-ant-api...` string to mint, distribute, or rotate.
@@ -107772,7 +108616,7 @@ A key created in one organization cannot be used to manage a different organizat
   </Step>
 
   <Step title="Create the key">
-    Click **Create key**, give it a name, and click **Create**. Claude Console keys do not have selectable scopes; every key carries full Admin API access.
+    Click **Create key**, give it a name, choose an [expiration](/docs/en/manage-claude/authentication#key-expiration), and click **Create**. Claude Console keys do not have selectable scopes; every key carries full Admin API access.
   </Step>
 
   <Step title="Copy and store the secret">
@@ -114363,71 +115207,92 @@ Learn about how Anthropic's APIs and associated features retain data, including 
 
 ---
 
-<Note>
-  Information about Anthropic's standard retention policies is set out in [Anthropic's commercial data retention policy](https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data) and [consumer data retention policy](https://privacy.claude.com/en/articles/10023548-how-long-do-you-store-my-data).
+This page covers the Claude API (`api.anthropic.com`) and Claude Platform on AWS, where Anthropic is the data processor. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, the cloud provider is the data processor; refer to those platforms' data retention and compliance documentation for their equivalent controls.
 
-  Anthropic offers two data handling arrangements for the Claude API:
+Anthropic offers two data handling arrangements for the Claude API: [zero data retention (ZDR)](#zero-data-retention-zdr-scope) and [HIPAA readiness](#hipaa-readiness). The [feature eligibility table](#feature-eligibility) lists which API features each arrangement covers. For Anthropic's standard retention policies outside these arrangements, see the [commercial data retention policy](https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data) and the [consumer data retention policy](https://privacy.claude.com/en/articles/10023548-how-long-do-you-store-my-data).
 
-  * **Zero data retention (ZDR):** Customer data is not stored at rest after the API response is returned, except where needed to comply with law or combat misuse.
-  * **HIPAA readiness:** For organizations handling protected health information (PHI), Anthropic offers HIPAA-ready API access with a signed Business Associate Agreement (BAA). See [HIPAA readiness](#hipaa-readiness).
-</Note>
+## How Anthropic approaches data retention
 
-## Anthropic's approach to data retention
-
-Different APIs and features have different storage and retention needs. Where an API or feature doesn't require storage of customer prompts or responses, it may be eligible for ZDR. Where an API or feature necessarily requires storage of customer prompts or responses, Anthropic designs for the smallest possible retention footprint. For these features:
+Different APIs and features have different storage needs. Where a feature does not require storage of customer prompts or responses, it may be eligible for ZDR. Where a feature necessarily requires storage, Anthropic designs for the smallest possible retention footprint under the following commitments:
 
 * Retained data is never used for model training without your express permission.
-* Only what is technically necessary for the API and feature to work is retained. Conversation content (your prompts and Claude's outputs) is not retained by default. Certain models require 30-day data retention; see [Model-specific data retention requirements](#model-specific-data-retention-requirements).
-* Data is purged on the shortest practical TTL, and Anthropic aims to give customers control over how long data is retained. What is held, and the retention duration where a specific TTL applies, is documented on each feature's page.
+* Only what is technically necessary for the feature to work is retained. Conversation content (your prompts and Claude's outputs) is not retained by default; the exception is [Covered Models](#model-specific-data-retention-requirements), which require 30-day retention.
+* Retained data is purged on the shortest practical time to live (TTL), and Anthropic aims to give customers control over how long data is retained. What is held, and the retention duration where a specific TTL applies, is documented on each feature's page.
 
-Data accessible through the [Compliance API](/docs/en/manage-claude/compliance-api) follows its own retention model. The [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) retains data for 6 years. Chat, file, and project content from claude.ai follows your organization's retention policy, set in [claude.ai > Organization settings > Data and privacy](https://claude.ai/admin-settings/data-privacy-controls).
+Several retention models sit outside the ZDR and HIPAA arrangements described on this page. Data accessible through the [Compliance API](/docs/en/manage-claude/compliance-api) follows its own retention model, the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) retains data for 6 years, and chat, file, and project content from claude.ai follows your organization's retention policy set in [claude.ai > Organization settings > Data and privacy](https://claude.ai/admin-settings/data-privacy-controls).
 
-In the [feature eligibility table](#feature-eligibility), some features are marked "Yes (qualified)" in the ZDR eligible column. If your organization has a ZDR arrangement, you can use these features with confidence that what Anthropic retains is narrow and is required for optimal performance.
+## Zero data retention (ZDR)
 
-## Zero data retention (ZDR) scope
+Under a ZDR arrangement, Anthropic does not store customer prompts or responses at rest after the API response is returned. To request ZDR for your organization, contact the [Anthropic sales team](https://claude.com/contact-sales). ZDR is enabled per organization; each new organization requires ZDR to be enabled separately by your account team, and enablement does not automatically extend to other organizations under the same account.
 
-<Warning>
-  Claude Fable 5 and Claude Mythos 5 are not available under ZDR; see [Model-specific data retention requirements](#model-specific-data-retention-requirements).
-</Warning>
+### What ZDR covers
 
-**What ZDR covers**
+* **Claude Messages and Token Counting APIs:** ZDR applies to these endpoints for eligible features listed in the [feature eligibility table](#feature-eligibility). Features that ride on `/v1/messages` but are marked "No" in the table (such as code execution) are not covered.
+* **Claude Code:** ZDR applies when Claude Code is used with API keys from a Commercial organization (an organization under Anthropic's Commercial Terms of Service, as distinct from a consumer Claude account) or through Claude Enterprise with ZDR enabled. If metrics logging is enabled in Claude Code, productivity data such as usage statistics is exempted from ZDR and may be retained. See the [Claude Code ZDR documentation](https://code.claude.com/docs/en/zero-data-retention) for full details.
+* **Claude Platform on AWS:** [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws) follows the same data retention policy as the first-party Claude API. ZDR is available on request; contact your Anthropic account representative to enable it.
 
-* **Certain Claude APIs:** ZDR applies to the Claude Messages and Token Counting APIs.
-* **Claude Code:** ZDR applies when used with Commercial organization API keys or through Claude Enterprise (see [Claude Code ZDR docs](https://code.claude.com/docs/en/zero-data-retention))
+### What ZDR does not cover
 
-**What ZDR does NOT cover**
-
-* **Console and Workbench:** Any usage on Console or Workbench
-* **Claude Managed Agents:** Claude Managed Agents is a stateful resource. You can delete session transcripts, but there is no automatic deletion.
-* **Claude consumer products:** Claude Free, Pro, or Max plans, including when customers on those plans use Claude's web, desktop, or mobile apps or Claude Code
-* **Claude Teams and Claude Enterprise:** Claude Teams and Claude Enterprise product interfaces are **not ZDR-eligible**, except for Claude Code when used through Claude Enterprise with ZDR enabled for the organization. For other product interfaces, only Commercial organization API keys are eligible for ZDR.
-* **Third-party integrations:** Data processed by third-party websites, tools, or other integrations is **not ZDR-eligible**, though some may have similar offerings. When using external services in conjunction with the Claude API, make sure to review those services' data handling practices.
+* **Console and Workbench:** Any usage on Claude Console or the Workbench prompt-testing interface.
+* **Claude Managed Agents:** Claude Managed Agents is a stateful resource; session transcripts persist until you delete them.
+* **Claude consumer products:** Claude Free, Pro, and Max plans, including when customers on those plans use Claude's web, desktop, or mobile apps or Claude Code.
+* **Claude Teams and Claude Enterprise product interfaces:** These interfaces are not ZDR-eligible. The exception is Claude Code used through Claude Enterprise with ZDR enabled; see [What ZDR covers](#what-zdr-covers).
+* **Claude for Excel:** Not currently ZDR-eligible.
+* **Claude Fable 5 and Claude Mythos 5:** These models require 30-day data retention and are not available under ZDR. See [Model-specific data retention requirements](#model-specific-data-retention-requirements).
+* **Third-party integrations:** Data processed by third-party websites, tools, or other integrations is not covered, though some may have similar offerings. Review each service's data handling practices.
+* **Cross-Origin Resource Sharing (CORS):** CORS is not supported for organizations with ZDR arrangements. To make API calls from browser-based applications, route requests through a backend proxy server. See the [API security guidance](/docs/en/api/overview) for proxy patterns and API-key handling.
+* **Flagged content and legal holds:** See [Retention regardless of arrangement](#retention-regardless-of-arrangement).
 
 <Note>
-  For the most up-to-date information on what products and features are ZDR-eligible, refer to your contract terms or contact your Anthropic account representative.
+  For the most up-to-date information on which products and features are ZDR-eligible, refer to your contract terms or contact your Anthropic account representative.
 </Note>
-
-## Model-specific data retention requirements
-
-Claude Fable 5 and Claude Mythos 5 are designated [Covered Models](https://support.claude.com/en/articles/15425695) and require 30-day data retention. Zero data retention is not available for Claude Fable 5 or Claude Mythos 5. On the Claude API, requests to either model from an organization whose data retention configuration does not meet this requirement return a `400 invalid_request_error`.
-
-The 30-day data retention requirement applies wherever Covered Models are offered. On the Claude API (including Claude Platform on AWS), Anthropic handles retained data. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, retained data stays within your cloud provider's environment; review each platform's documentation for enablement steps.
-
-Organizations with a ZDR arrangement can configure data retention at the workspace level in [Claude Console > Settings > Workspaces](https://platform.claude.com/settings/workspaces): open a workspace's **Privacy controls** tab and turn on 30-day data retention for that workspace. This makes Claude Fable 5 and Claude Mythos 5 available in the designated workspace while the organization's other workspaces keep zero data retention. Workspaces without an override follow the organization default.
 
 ## HIPAA readiness
 
-The Claude API supports HIPAA-ready integrations for organizations that handle protected health information (PHI). With a signed BAA and a HIPAA-enabled organization, you can use supported API features to process PHI while supporting your organization's HIPAA compliance.
-
-Previously, organizations that required HIPAA readiness for the Claude API needed to enable ZDR. HIPAA-ready API access removes this requirement and provides a foundation for Anthropic to progressively enable additional features as they are audited for HIPAA readiness.
+The Claude API supports HIPAA-ready integrations for organizations that handle protected health information (PHI). With a signed BAA and a HIPAA-enabled organization, you can use supported API features to process PHI while supporting your organization's HIPAA compliance. HIPAA readiness applies a broader set of privacy and security safeguards than ZDR (encryption, access controls, and audit logging that protect PHI throughout its lifecycle) rather than requiring immediate deletion. If your organization handles PHI, HIPAA readiness is the arrangement to use; you do not also need ZDR. See the [feature eligibility table](#feature-eligibility) for which features each arrangement covers.
 
 <Note>
   This page covers HIPAA readiness for the Claude API. For the full HIPAA Implementation Guide covering Claude Enterprise and configuration requirements, see the [Anthropic Trust Center](https://trust.anthropic.com/resources).
 </Note>
 
-### Getting started
+### What HIPAA readiness covers
 
-To set up HIPAA-ready API access:
+* **Claude API:** HIPAA readiness applies to the Claude API (`api.anthropic.com`) for eligible features listed in the [feature eligibility table](#feature-eligibility).
+
+### What HIPAA readiness does not cover
+
+* **Claude consumer products:** Claude Free, Pro, and Max plans.
+* **Console and Workbench:** Usage through the Claude Console interface.
+* **Partner-operated platforms:** Amazon Bedrock and Google Cloud's Agent Platform. Refer to those platforms' compliance documentation.
+* **Claude Platform on AWS and Microsoft Foundry:** HIPAA readiness is not available on these platforms.
+* **Third-party integrations:** Data processed by external tools or services connected to your application.
+* **Claude Code:** Claude Code is not covered under HIPAA readiness.
+* **Beta features:** Features in beta are generally not covered under the BAA unless explicitly listed as eligible in the [feature eligibility table](#feature-eligibility).
+* **Flagged content and legal holds:** See [Retention regardless of arrangement](#retention-regardless-of-arrangement).
+
+### PHI handling guidelines
+
+Protected health information (PHI) includes any individually identifiable health information. In the context of the Claude API, PHI typically appears in message content (prompts and Claude's responses), attached files (images, PDFs), and file names or metadata associated with message content. The following fields are not expected to contain PHI under the BAA: workspace names, user information (name, email, phone number), billing data, and support tickets.
+
+When using [structured outputs](/docs/en/build-with-claude/structured-outputs) or tools with `strict: true`, the API compiles JSON schemas into grammars that are cached separately from message content. These cached schemas do not receive the same PHI protections as prompts and responses. **Do not include PHI in JSON schema definitions.** This restriction applies to schema property names, `enum` values, `const` values, and `pattern` regular expressions. Patient-specific information should appear only in message content, where it is protected under HIPAA safeguards.
+
+### HIPAA error handling
+
+Your signed BAA is the official source of truth for which features are covered. The API also enforces these restrictions automatically. When a HIPAA-enabled organization sends a request that includes a non-eligible feature, the API returns a `400` error to prevent accidental use of features not covered by your BAA:
+
+```json
+{
+  "type": "error",
+  "error": {
+    "type": "invalid_request_error",
+    "message": "The requested features are not available for HIPAA-regulated organizations without Zero Data Retention: code_execution."
+  }
+}
+```
+
+The error message lists the non-eligible features detected in the request; remove them and retry. The phrase "without Zero Data Retention" is the API's own wording and does not change the resolution.
+
+### Getting started with HIPAA readiness
 
 <Steps>
   <Step title="Sign a Business Associate Agreement">
@@ -114447,118 +115312,87 @@ To set up HIPAA-ready API access:
   HIPAA readiness is enforced at the organization level. If you need both HIPAA-ready and general-purpose API access, use separate organizations for each.
 </Warning>
 
-### HIPAA readiness scope
+## Model-specific data retention requirements
 
-**What HIPAA readiness covers**
-
-* **Claude API:** HIPAA readiness applies to the Claude API (`api.anthropic.com`) for eligible features listed in the [feature eligibility table](#feature-eligibility).
-
-**What HIPAA readiness does NOT cover**
-
-* **Claude consumer products:** Claude Free, Pro, or Max plans
-* **Console and Workbench:** Usage through the Claude Console interface
-* **Partner-operated platforms:** Amazon Bedrock or Google Cloud (refer to those platforms' compliance documentation)
-* **Claude Platform on AWS and Microsoft Foundry:** HIPAA readiness is not available
-* **Third-party integrations:** Data processed by external tools or services connected to your application
-* **Claude Code:** Claude Code is not covered under HIPAA readiness
-* **Beta features:** Features in beta are generally not covered under the BAA unless explicitly listed as eligible in the [feature eligibility table](#feature-eligibility)
-
-### PHI handling guidelines
-
-Protected health information (PHI) includes any individually identifiable health information. In the context of the Claude API, PHI typically appears in:
-
-* Message content (prompts and responses from Claude)
-* Attached files (images, PDFs)
-* File names and metadata associated with message content
-
-The following fields are not expected to contain PHI under the BAA: workspace names, user information (name, email, phone number), billing data, and support tickets.
-
-#### Schema and tool definition restrictions
-
-When using [structured outputs](/docs/en/build-with-claude/structured-outputs) or tools with `strict: true`, the API compiles JSON schemas into grammars that are cached separately from message content. These cached schemas do not receive the same PHI protections as prompts and responses.
-
-**Do not include PHI in JSON schema definitions.** This restriction applies to:
-
-* Schema property names
-* `enum` values
-* `const` values
-* `pattern` regular expressions
-
-Patient-specific information should only appear in message content, where it is protected under HIPAA safeguards.
-
-### HIPAA error handling
-
-Your signed BAA is the official source of truth for which features are covered. The API also enforces these restrictions automatically: when a HIPAA-enabled organization sends a request that includes a non-eligible feature, the API returns a `400` error to prevent accidental use of features not covered by your BAA:
+Claude Fable 5 and Claude Mythos 5 are designated [Covered Models](https://support.claude.com/en/articles/15425695) and require 30-day data retention; ZDR is therefore not available for either model. On the Claude API, requests to Claude Fable 5 from an organization whose data retention configuration does not meet this requirement return a `400 invalid_request_error`:
 
 ```json
 {
   "type": "error",
   "error": {
     "type": "invalid_request_error",
-    "message": "The requested features are not available for HIPAA-regulated organizations without Zero Data Retention: code_execution."
+    "message": "In order to access this model, your organization or workspace must have data retention enabled."
   }
 }
 ```
 
-The error message lists the non-eligible features detected in the request. Remove these features from your request and retry.
+The 30-day data retention requirement applies wherever Covered Models are offered. On the Claude API (including Claude Platform on AWS), Anthropic handles retained data. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, retained data stays within your cloud provider's environment; review each platform's documentation for enablement steps.
+
+### Enable 30-day retention for a workspace
+
+Organizations with a ZDR arrangement can make Claude Fable 5 and Claude Mythos 5 available in a specific workspace by enabling 30-day retention for that workspace only. Other workspaces in the organization keep zero data retention.
+
+<Steps>
+  <Step title="Open the workspace's privacy controls">
+    In [Claude Console > Settings > Workspaces](https://platform.claude.com/settings/workspaces), select the workspace and open its **Privacy controls** tab.
+  </Step>
+
+  <Step title="Turn on 30-day data retention">
+    Enable the 30-day data retention setting for the workspace.
+  </Step>
+
+  <Step title="Verify">
+    Requests to Claude Fable 5 and Claude Mythos 5 from this workspace now succeed. Workspaces without an override continue to follow the organization default.
+  </Step>
+</Steps>
 
 ## Feature eligibility
 
-The following table lists which Claude API features are eligible for ZDR and HIPAA readiness arrangements. For HIPAA-enabled organizations, features marked "No" in the HIPAA column are automatically blocked, and requests that include them return a `400` error.
+The following table lists which Claude API features are eligible for ZDR and HIPAA readiness arrangements.
 
-| Feature                                                                                       | Endpoint                                         | ZDR eligible                                            | HIPAA eligible                      | Details                                                                                                                                                                                                                                                                                                                                                              |
-| --------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Messages API](/docs/en/build-with-claude/working-with-messages)                              | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Standard API calls for generating Claude responses.                                                                                                                                                                                                                                                                                                                  |
-| [Token counting](/docs/en/build-with-claude/token-counting)                                   | `/v1/messages/count_tokens`                      | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Count tokens before sending requests.                                                                                                                                                                                                                                                                                                                                |
-| [Web search](/docs/en/agents-and-tools/tool-use/web-search-tool)                              | `/v1/messages` (with `web_search` tool)          | <Eligible>Yes</Eligible>1                               | <Eligible>Yes</Eligible>1           | Real-time web search results returned in the API response.                                                                                                                                                                                                                                                                                                           |
-| [Web fetch](/docs/en/agents-and-tools/tool-use/web-fetch-tool)                                | `/v1/messages` (with `web_fetch` tool)           | <Eligible>Yes</Eligible>1 2                             | <Eligible status="no">No</Eligible> | Fetched web content returned in the API response.                                                                                                                                                                                                                                                                                                                    |
-| [Advisor tool](/docs/en/agents-and-tools/tool-use/advisor-tool)                               | `/v1/messages` (with `advisor` tool)             | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Advisor model output is returned in the API response; nothing is stored server-side after the response.                                                                                                                                                                                                                                                              |
-| [Memory tool](/docs/en/agents-and-tools/tool-use/memory-tool)                                 | `/v1/messages` (with `memory` tool)              | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Client-side memory storage where you control data retention.                                                                                                                                                                                                                                                                                                         |
-| [Context management (compaction)](/docs/en/build-with-claude/compaction)                      | `/v1/messages` (with `context_management`)       | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Server-side compaction results are returned/round-tripped statelessly through the API response.                                                                                                                                                                                                                                                                      |
-| [Context editing](/docs/en/build-with-claude/context-editing)                                 | `/v1/messages` (with `context_management`)       | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Context edits (tool use clearing + thinking clearing) are applied in real time.                                                                                                                                                                                                                                                                                      |
-| [Fast mode](/docs/en/build-with-claude/fast-mode)                                             | `/v1/messages` (with `speed: "fast"`)            | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Same Messages API endpoint with faster inference. ZDR applies regardless of speed setting.                                                                                                                                                                                                                                                                           |
-| [1M token context window](/docs/en/build-with-claude/context-windows)                         | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Extended context processing uses the standard Messages API.                                                                                                                                                                                                                                                                                                          |
-| [Adaptive thinking](/docs/en/build-with-claude/adaptive-thinking)                             | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Dynamic thinking depth uses the standard Messages API.                                                                                                                                                                                                                                                                                                               |
-| [Citations](/docs/en/build-with-claude/citations)                                             | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Source attribution uses the standard Messages API.                                                                                                                                                                                                                                                                                                                   |
-| [Data residency](/docs/en/manage-claude/data-residency)                                       | `/v1/messages` (with `inference_geo`)            | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Geographic routing uses the standard Messages API.                                                                                                                                                                                                                                                                                                                   |
-| [Effort](/docs/en/build-with-claude/effort)                                                   | `/v1/messages` (with `effort`)                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Token efficiency control uses the standard Messages API.                                                                                                                                                                                                                                                                                                             |
-| [Extended thinking](/docs/en/build-with-claude/extended-thinking)                             | `/v1/messages` (with `thinking`)                 | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Step-by-step reasoning uses the standard Messages API.                                                                                                                                                                                                                                                                                                               |
-| [PDF support](/docs/en/build-with-claude/pdf-support)                                         | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | PDF document processing uses the standard Messages API. HIPAA eligibility applies to PDFs sent inline through the Messages API, not through the Files API.                                                                                                                                                                                                           |
-| [Search results](/docs/en/build-with-claude/search-results)                                   | `/v1/messages` (with `search_results` source)    | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | RAG citation support uses the standard Messages API.                                                                                                                                                                                                                                                                                                                 |
-| [Bash tool](/docs/en/agents-and-tools/tool-use/bash-tool)                                     | `/v1/messages` (with `bash` tool)                | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Client-side tool executed in your environment.                                                                                                                                                                                                                                                                                                                       |
-| [Text editor tool](/docs/en/agents-and-tools/tool-use/text-editor-tool)                       | `/v1/messages` (with `text_editor` tool)         | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Client-side tool executed in your environment.                                                                                                                                                                                                                                                                                                                       |
-| [Computer use](/docs/en/agents-and-tools/tool-use/computer-use-tool)                          | `/v1/messages` (with `computer` tool)            | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Client-side tool where screenshots and files are captured and stored in your environment, not by Anthropic. See [Computer use](/docs/en/agents-and-tools/tool-use/computer-use-tool#data-retention).                                                                                                                                                                 |
-| [Fine-grained tool streaming](/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming) | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Streaming tool parameters uses the standard Messages API.                                                                                                                                                                                                                                                                                                            |
-| [Prompt caching](/docs/en/build-with-claude/prompt-caching)                                   | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Your prompts and Claude's outputs are not stored. KV cache representations and cryptographic hashes are held in memory for the cache TTL and promptly deleted after expiry. See [Prompt caching](/docs/en/build-with-claude/prompt-caching#data-retention).                                                                                                          |
-| [Structured outputs](/docs/en/build-with-claude/structured-outputs)                           | `/v1/messages`                                   | <Eligible status="qualified">Yes (qualified)</Eligible> | <Eligible>Yes</Eligible>3           | Your prompts and Claude's outputs are not stored. Only the JSON schema is cached, for up to 24 hours since last use. This also covers [strict tool use](/docs/en/agents-and-tools/tool-use/strict-tool-use) (`strict: true` on tools), which uses the same grammar pipeline. See [Structured outputs](/docs/en/build-with-claude/structured-outputs#data-retention). |
-| [Cache diagnostics](/docs/en/build-with-claude/cache-diagnostics)                             | `/v1/messages` (with `diagnostics`)              | <Eligible status="qualified">Yes (qualified)</Eligible> | <Eligible status="no">No</Eligible> | Your prompts and Claude's outputs are not stored. A fingerprint of cryptographic hashes and token-count estimates is retained briefly to enable comparison against the next request. See [Cache diagnostics](/docs/en/build-with-claude/cache-diagnostics#data-retention).                                                                                           |
-| [Tool search](/docs/en/agents-and-tools/tool-use/tool-search-tool)                            | `/v1/messages` (with `tool_search` tool)         | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Tool search uses the standard Messages API.                                                                                                                                                                                                                                                                                                                          |
-| [Batch processing](/docs/en/build-with-claude/batch-processing)                               | `/v1/messages/batches`                           | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | 29-day retention; async storage required. See [Batch processing](/docs/en/build-with-claude/batch-processing#data-retention).                                                                                                                                                                                                                                        |
-| [Code execution](/docs/en/agents-and-tools/tool-use/code-execution-tool)                      | `/v1/messages` (with `code_execution` tool)      | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Container data retained up to 30 days. See [Code execution](/docs/en/agents-and-tools/tool-use/code-execution-tool#data-retention).                                                                                                                                                                                                                                  |
-| [Programmatic tool calling](/docs/en/agents-and-tools/tool-use/programmatic-tool-calling)     | `/v1/messages` (with `code_execution` tool)      | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Built on code execution containers; data retained up to 30 days. See [Programmatic tool calling](/docs/en/agents-and-tools/tool-use/programmatic-tool-calling#data-retention).                                                                                                                                                                                       |
-| [Files API](/docs/en/build-with-claude/files)                                                 | `/v1/files`                                      | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Files retained until explicitly deleted. See [Files API](/docs/en/build-with-claude/files#data-retention).                                                                                                                                                                                                                                                           |
-| [Agent skills](/docs/en/agents-and-tools/agent-skills/overview)                               | `/v1/messages` (with `skills`) / `/v1/skills`    | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Skill data retained per standard policy. See [Agent skills](/docs/en/agents-and-tools/agent-skills/overview#data-retention).                                                                                                                                                                                                                                         |
-| [MCP connector](/docs/en/agents-and-tools/mcp-connector)                                      | `/v1/messages` (with `mcp_servers`)              | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Data retained per standard policy. See [MCP connector](/docs/en/agents-and-tools/mcp-connector#data-retention).                                                                                                                                                                                                                                                      |
-| [Claude Managed Agents](/docs/en/managed-agents/overview)                                     | `/v1/agents`, `/v1/sessions`, `/v1/environments` | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Sessions are stateful resources; transcripts persist until you delete them. Applies to all Managed Agents sub-features, including [Self-hosted sandboxes](/docs/en/managed-agents/self-hosted-sandboxes).                                                                                                                                                            |
-| [MCP tunnels](/docs/en/agents-and-tools/mcp-tunnels/overview)                                 | `/v1/tunnels`                                    | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Research preview. See [MCP tunnels security](/docs/en/agents-and-tools/mcp-tunnels/security) for the data-flow boundary and subprocessor details.                                                                                                                                                                                                                    |
+Each eligibility column uses three values:
 
-1 [Dynamic filtering](/docs/en/agents-and-tools/tool-use/web-search-tool#dynamic-filtering) is not eligible for ZDR or HIPAA.
+* **Yes:** The feature is fully eligible under the arrangement. For ZDR, "Yes" also assumes you are using a model that does not require 30-day data retention; [Covered Models](#model-specific-data-retention-requirements) are not available under ZDR regardless of feature eligibility.
+* **Yes (qualified):** Your prompts and Claude's outputs are not stored, but a bounded technical artifact (named in the Details column) is retained briefly for the feature to function. See [How Anthropic approaches data retention](#how-anthropic-approaches-data-retention) for the commitments that govern these features.
+* **No:** The feature is not eligible. Under HIPAA readiness, the API blocks requests that include a "No" feature and returns a `400` error. Under ZDR, the API does **not** block these features; using one is a choice to step outside your ZDR arrangement for that specific data, and the feature's own documented retention policy applies. Features marked "No" for ZDR are typically stateful (they store jobs, files, or container state), which is why they cannot be zero-retention.
 
-2 Although web fetch is ZDR-eligible, website publishers may retain request data (such as fetched URLs and request metadata) according to their own policies.
+| Feature                                                                                       | Endpoint                                         | ZDR eligible                                            | HIPAA eligible                      | Details                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------- | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [1M token context window](/docs/en/build-with-claude/context-windows)                         | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [Adaptive thinking](/docs/en/build-with-claude/adaptive-thinking)                             | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [Advisor tool](/docs/en/agents-and-tools/tool-use/advisor-tool)                               | `/v1/messages` (with `advisor` tool)             | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Advisor model output is returned in the API response; nothing is stored server-side after the response.                                                                                                                                                                                                                                                                                                                                                                            |
+| [Agent skills](/docs/en/agents-and-tools/agent-skills/overview)                               | `/v1/messages` (with `skills`) / `/v1/skills`    | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Skill data retained per standard policy. See [Agent skills](/docs/en/agents-and-tools/agent-skills/overview#data-retention).                                                                                                                                                                                                                                                                                                                                                       |
+| [Bash tool](/docs/en/agents-and-tools/tool-use/bash-tool)                                     | `/v1/messages` (with `bash` tool)                | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Client-side tool executed in your environment.                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [Batch processing](/docs/en/build-with-claude/batch-processing)                               | `/v1/messages/batches`                           | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | 29-day retention; async storage required. See [Batch processing](/docs/en/build-with-claude/batch-processing#data-retention).                                                                                                                                                                                                                                                                                                                                                      |
+| [Cache diagnostics](/docs/en/build-with-claude/cache-diagnostics)                             | `/v1/messages` (with `diagnostics`)              | <Eligible status="qualified">Yes (qualified)</Eligible> | <Eligible status="no">No</Eligible> | Your prompts and Claude's outputs are not stored. A fingerprint of cryptographic hashes and token-count estimates is retained briefly to enable comparison against the next request. See [Cache diagnostics](/docs/en/build-with-claude/cache-diagnostics#data-retention).                                                                                                                                                                                                         |
+| [Citations](/docs/en/build-with-claude/citations)                                             | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [Claude Managed Agents](/docs/en/managed-agents/overview)                                     | `/v1/agents`, `/v1/sessions`, `/v1/environments` | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Sessions are stateful resources; transcripts persist until you delete them. Applies to all Managed Agents sub-features, including [Self-hosted sandboxes](/docs/en/managed-agents/self-hosted-sandboxes).                                                                                                                                                                                                                                                                          |
+| [Code execution](/docs/en/agents-and-tools/tool-use/code-execution-tool)                      | `/v1/messages` (with `code_execution` tool)      | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Container data retained up to 30 days. See [Code execution](/docs/en/agents-and-tools/tool-use/code-execution-tool#data-retention).                                                                                                                                                                                                                                                                                                                                                |
+| [Computer use](/docs/en/agents-and-tools/tool-use/computer-use-tool)                          | `/v1/messages` (with `computer` tool)            | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Client-side tool where screenshots and files are captured and stored in your environment, not by Anthropic. See [Computer use](/docs/en/agents-and-tools/tool-use/computer-use-tool#data-retention).                                                                                                                                                                                                                                                                               |
+| [Context editing](/docs/en/build-with-claude/context-editing)                                 | `/v1/messages` (with `context_management`)       | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Context edits (tool use clearing and thinking clearing) are applied in real time.                                                                                                                                                                                                                                                                                                                                                                                                  |
+| [Context management (compaction)](/docs/en/build-with-claude/compaction)                      | `/v1/messages` (with `context_management`)       | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Server-side compaction results are returned and round-tripped statelessly through the API response.                                                                                                                                                                                                                                                                                                                                                                                |
+| [Data residency](/docs/en/manage-claude/data-residency)                                       | `/v1/messages` (with `inference_geo`)            | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [Effort](/docs/en/build-with-claude/effort)                                                   | `/v1/messages` (with `effort`)                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [Extended thinking](/docs/en/build-with-claude/extended-thinking)                             | `/v1/messages` (with `thinking`)                 | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [Fast mode](/docs/en/build-with-claude/fast-mode)                                             | `/v1/messages` (with `speed: "fast"`)            | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Same Messages API endpoint with faster inference. ZDR applies regardless of speed setting.                                                                                                                                                                                                                                                                                                                                                                                         |
+| [Files API](/docs/en/build-with-claude/files)                                                 | `/v1/files`                                      | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Files retained until explicitly deleted. See [Files API](/docs/en/build-with-claude/files#data-retention).                                                                                                                                                                                                                                                                                                                                                                         |
+| [Fine-grained tool streaming](/docs/en/agents-and-tools/tool-use/fine-grained-tool-streaming) | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [MCP connector](/docs/en/agents-and-tools/mcp-connector)                                      | `/v1/messages` (with `mcp_servers`)              | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Data retained per standard policy. See [MCP connector](/docs/en/agents-and-tools/mcp-connector#data-retention).                                                                                                                                                                                                                                                                                                                                                                    |
+| [MCP tunnels](/docs/en/agents-and-tools/mcp-tunnels/overview)                                 | `/v1/tunnels`                                    | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Research preview. See [MCP tunnels security](/docs/en/agents-and-tools/mcp-tunnels/security) for the data-flow boundary and subprocessor details.                                                                                                                                                                                                                                                                                                                                  |
+| [Memory tool](/docs/en/agents-and-tools/tool-use/memory-tool)                                 | `/v1/messages` (with `memory` tool)              | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Client-side memory storage where you control data retention.                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| [Messages API](/docs/en/build-with-claude/working-with-messages)                              | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Standard API calls for generating Claude responses.                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| [PDF support](/docs/en/build-with-claude/pdf-support)                                         | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | HIPAA eligibility applies to PDFs sent inline through the Messages API, not through the Files API.                                                                                                                                                                                                                                                                                                                                                                                 |
+| [Programmatic tool calling](/docs/en/agents-and-tools/tool-use/programmatic-tool-calling)     | `/v1/messages` (with `code_execution` tool)      | <Eligible status="no">No</Eligible>                     | <Eligible status="no">No</Eligible> | Built on code execution containers; data retained up to 30 days. See [Programmatic tool calling](/docs/en/agents-and-tools/tool-use/programmatic-tool-calling#data-retention).                                                                                                                                                                                                                                                                                                     |
+| [Prompt caching](/docs/en/build-with-claude/prompt-caching)                                   | `/v1/messages`                                   | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Your prompts and Claude's outputs are not stored. KV cache representations and cryptographic hashes are held in memory for the cache TTL and promptly deleted after expiry. See [Prompt caching](/docs/en/build-with-claude/prompt-caching#data-retention).                                                                                                                                                                                                                        |
+| [Search results](/docs/en/build-with-claude/search-results)                                   | `/v1/messages` (with `search_results` source)    | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            |                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| [Structured outputs](/docs/en/build-with-claude/structured-outputs)                           | `/v1/messages`                                   | <Eligible status="qualified">Yes (qualified)</Eligible> | <Eligible>Yes</Eligible>            | Your prompts and Claude's outputs are not stored. Only the JSON schema is cached, for up to 24 hours since last use. This also covers [strict tool use](/docs/en/agents-and-tools/tool-use/strict-tool-use) (`strict: true` on tools), which uses the same grammar pipeline. PHI must not be included in JSON schema definitions; see [PHI handling guidelines](#phi-handling-guidelines). See [Structured outputs](/docs/en/build-with-claude/structured-outputs#data-retention). |
+| [Text editor tool](/docs/en/agents-and-tools/tool-use/text-editor-tool)                       | `/v1/messages` (with `text_editor` tool)         | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Client-side tool executed in your environment.                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| [Token counting](/docs/en/build-with-claude/token-counting)                                   | `/v1/messages/count_tokens`                      | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Count tokens before sending requests.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| [Tool search](/docs/en/agents-and-tools/tool-use/tool-search-tool)                            | `/v1/messages` (with `tool_search` tool)         | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Server-side tool executed by Anthropic; the tool definitions in the request are searched in memory per call and nothing is stored after the response.                                                                                                                                                                                                                                                                                                                              |
+| [Web fetch](/docs/en/agents-and-tools/tool-use/web-fetch-tool)                                | `/v1/messages` (with `web_fetch` tool)           | <Eligible>Yes</Eligible>                                | <Eligible status="no">No</Eligible> | Fetched web content returned in the API response. [Dynamic filtering](/docs/en/agents-and-tools/tool-use/web-search-tool#dynamic-filtering) is not eligible for ZDR or HIPAA. Website publishers may retain request data (such as fetched URLs and request metadata) according to their own policies.                                                                                                                                                                              |
+| [Web search](/docs/en/agents-and-tools/tool-use/web-search-tool)                              | `/v1/messages` (with `web_search` tool)          | <Eligible>Yes</Eligible>                                | <Eligible>Yes</Eligible>            | Real-time web search results returned in the API response. [Dynamic filtering](/docs/en/agents-and-tools/tool-use/web-search-tool#dynamic-filtering) is not eligible for ZDR or HIPAA.                                                                                                                                                                                                                                                                                             |
 
-3 PHI must not be included in JSON schema definitions. See [PHI handling guidelines](#phi-handling-guidelines).
-
-## Limitations and exclusions
-
-### CORS not supported for ZDR
-
-**Cross-Origin Resource Sharing (CORS)** is not supported for organizations with ZDR arrangements. If you need to make API calls from browser-based applications, you must:
-
-* Use a backend proxy server to make API calls on behalf of your front end
-* Implement your own CORS handling on the proxy server
-* Never expose API keys directly in browser JavaScript
-
-### Data retention for policy violations and where required by law
+## Retention regardless of arrangement
 
 Even with ZDR or HIPAA arrangements in place, Anthropic may retain data where required by law or where it has been flagged by Anthropic's automated trust and safety systems. As a result, if a chat or session is flagged, Anthropic may retain inputs and outputs for up to 2 years.
 
@@ -114566,15 +115400,15 @@ Even with ZDR or HIPAA arrangements in place, Anthropic may retain data where re
 
 <AccordionGroup>
   <Accordion title="How do I know if my organization has ZDR arrangements?">
-    Check your contract terms or contact your Anthropic account representative to confirm if your organization has ZDR arrangements in place.
+    Check your contract terms or contact your Anthropic account representative to confirm whether your organization has ZDR arrangements in place.
   </Accordion>
 
   <Accordion title="Can I use ZDR-eligible (qualified) features under my ZDR arrangement?">
-    Yes. These features retain a minimal, documented set of technical data, not your prompts or Claude's outputs. See [Anthropic's approach to data retention](#anthropics-approach-to-data-retention) for the commitments that govern these features.
+    Yes. These features retain a minimal, documented set of technical data, not your prompts or Claude's outputs. See the [feature eligibility table](#feature-eligibility) legend for what "Yes (qualified)" means and [How Anthropic approaches data retention](#how-anthropic-approaches-data-retention) for the commitments that govern these features.
   </Accordion>
 
   <Accordion title="What happens if I use a feature marked &#x22;No&#x22; under ZDR?">
-    Features marked "No" for ZDR are fundamentally stateful: the Batch API stores your jobs, the Files API stores your files, and code execution runs in persistent containers. Data for these features is retained per the feature's documented policy. Using them is a choice to step outside your ZDR arrangement for that specific data.
+    Nothing blocks the request. Features marked "No" for ZDR are fundamentally stateful: the Batch API stores your jobs, the Files API stores your files, and code execution runs in persistent containers. Data for these features is retained per the feature's documented policy. Using them is a choice to step outside your ZDR arrangement for that specific data.
   </Accordion>
 
   <Accordion title="Can I request deletion of data from features that are not ZDR-eligible?">
@@ -114582,7 +115416,7 @@ Even with ZDR or HIPAA arrangements in place, Anthropic may retain data where re
   </Accordion>
 
   <Accordion title="How does HIPAA readiness differ from ZDR?">
-    ZDR prevents customer data from being stored at rest after the API response is returned. HIPAA readiness involves a broader set of privacy and security safeguards that protect PHI throughout its lifecycle, including encryption, access controls, and audit logging. HIPAA-ready API access provides a foundation for progressively enabling more features because data can be retained with proper safeguards rather than requiring immediate deletion.
+    ZDR prevents customer data from being stored at rest after the API response is returned. HIPAA readiness involves a broader set of privacy and security safeguards that protect PHI throughout its lifecycle, including encryption, access controls, and audit logging. Under HIPAA readiness, data can be retained with these safeguards in place rather than requiring immediate deletion. The two arrangements cover different feature sets; see the [feature eligibility table](#feature-eligibility).
   </Accordion>
 
   <Accordion title="Do I still need ZDR if I have HIPAA readiness?">
@@ -114590,7 +115424,7 @@ Even with ZDR or HIPAA arrangements in place, Anthropic may retain data where re
   </Accordion>
 
   <Accordion title="What happens if I use a non-eligible feature under HIPAA?">
-    The API returns a `400` error with an `invalid_request_error` type. The error message identifies which features are not available. Remove the non-eligible features from your request and retry.
+    The API returns a `400` error with an `invalid_request_error` type. The error message identifies which features are not available. Remove the non-eligible features from your request and retry. See [HIPAA error handling](#hipaa-error-handling).
   </Accordion>
 
   <Accordion title="Can I use the same organization for HIPAA and non-HIPAA workloads?">
@@ -115565,13 +116399,8 @@ Anthropic calls your key management service from its standard public IP range. I
 ## Prerequisites
 
 * Cloud Admin access in the account, project, or subscription that will host the encryption key.
-
 * An admin role in your Anthropic organization: an Organization Admin role in the Claude Console on Claude Platform, or an Owner or Primary Owner role on Claude Enterprise.
-
-* The data retention configuration required for your product:
-
-  * **Claude Platform:** [Zero data retention (ZDR)](/docs/en/manage-claude/api-and-data-retention) turned off for your organization. Organizations with a ZDR arrangement can instead turn on 30-day data retention for at least one workspace; see [Model-specific data retention requirements](/docs/en/manage-claude/api-and-data-retention#model-specific-data-retention-requirements). You can attach a key only to a workspace with data retention enabled.
-  * **Claude Enterprise:** ZDR turned off for your organization.
+* Data retention configuration: CMEK is allowed with [Zero data retention (ZDR)](/docs/en/manage-claude/api-and-data-retention) for both Claude Platform and Claude Enterprise.
 
 ## Availability and regions
 

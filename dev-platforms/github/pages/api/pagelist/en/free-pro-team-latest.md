@@ -823,11 +823,11 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/how-tos/secure-your-secrets
 /en/code-security/how-tos/secure-your-secrets/detect-secret-leaks
 /en/code-security/how-tos/secure-your-secrets/detect-secret-leaks/enable-secret-scanning
-/en/code-security/how-tos/secure-your-secrets/detect-secret-leaks/enabling-secret-scanning-for-non-provider-patterns
-/en/code-security/how-tos/secure-your-secrets/detect-secret-leaks/enabling-ai-powered-generic-secret-detection
+/en/code-security/how-tos/secure-your-secrets/detect-secret-leaks/enabling-secret-scanning-for-generic-patterns
+/en/code-security/how-tos/secure-your-secrets/detect-secret-leaks/enabling-secret-scanning-for-ai-detected-secrets
 /en/code-security/how-tos/secure-your-secrets/customize-leak-detection
 /en/code-security/how-tos/secure-your-secrets/customize-leak-detection/define-custom-patterns
-/en/code-security/how-tos/secure-your-secrets/customize-leak-detection/generating-regular-expressions-for-custom-patterns-with-copilot-secret-scanning
+/en/code-security/how-tos/secure-your-secrets/customize-leak-detection/generating-regular-expressions-for-custom-patterns-with-ai
 /en/code-security/how-tos/secure-your-secrets/customize-leak-detection/manage-custom-patterns
 /en/code-security/how-tos/secure-your-secrets/customize-leak-detection/exclude-folders-and-files
 /en/code-security/how-tos/secure-your-secrets/customize-leak-detection/enable-validity-checks

@@ -54365,16 +54365,16 @@ Single-platform image manifests must include `os` and `architecture` in the imag
 
 --------------------------------------------------------------------------------
 title: "Vercel Container Registry"
-description: "Vercel Container Registry stores project-scoped OCI images that you can push and pull with Docker-compatible tooling."
+description: "Store and manage Docker container images on Vercel. Push images built from a Dockerfile, then run them on Vercel Functions or in Vercel Sandbox."
 last_updated: "2018-10-20T01:46:40.000Z"
 source: "https://vercel.com/docs/container-registry"
 --------------------------------------------------------------------------------
 
 # Vercel Container Registry
 
-Vercel Container Registry (VCR) is a project-scoped registry for OCI container images. Use VCR to store, push, and pull Docker images on Vercel.
+Vercel Container Registry (VCR) is a Docker-compatible container registry built into Vercel. Use VCR to store, push, and pull the Docker images you build from a Dockerfile or Containerfile, then run them on [Vercel Functions](/docs/functions/container-images) or use them as custom [Vercel Sandbox](/docs/sandbox/concepts/images) images.
 
-VCR supports the Docker Registry HTTP API v2. You can use Docker-compatible tooling to authenticate, push images, and pull images from `vcr.vercel.com`.
+VCR uses the Docker Registry HTTP API v2 using the OCI format. You can use Docker-compatible tooling to authenticate, push images, and pull images from `vcr.vercel.com`.
 
 ## How VCR repositories work
 
@@ -82636,6 +82636,17 @@ export default defineConfig({
 
 TanStack Start apps on Vercel benefit from the advantages of [Vercel Functions](/docs/functions) and use [Fluid Compute](/docs/fluid-compute) by default. This means your TanStack Start app will automatically scale up and down based on traffic.
 
+## Lovable
+
+[Lovable](https://lovable.dev) projects use TanStack Start as their underlying framework, so they deploy to Vercel with zero configuration. Lovable uses [Nitro](https://v3.nitro.build/), the same universal server toolkit that powers TanStack Start on Vercel, so no manual build configuration is required.
+
+To deploy a Lovable project to Vercel:
+
+1. Sync your Lovable project to GitHub. See the [Lovable GitHub integration docs](https://docs.lovable.dev/integrations/github) for setup.
+2. Import the repository from [vercel.com/new](https://vercel.com/new). Vercel detects the framework and deploys the project automatically.
+
+Once connected, every change you make in Lovable syncs to GitHub and triggers a new deployment on Vercel.
+
 ## More resources
 
 Learn more about deploying TanStack Start projects on Vercel with the following resources:
@@ -99496,6 +99507,49 @@ After the transfer, reconnect each project to the integration on the target team
 - [Transfer a resource to another team](/docs/integrations/install-an-integration/product-integration#transfer-a-resource-to-another-team)
 - [Transferring projects](/docs/projects/transferring-projects)
 - [Permissions and Access](/docs/integrations/install-an-integration/manage-integrations-reference)
+
+
+--------------------------------------------------------------------------------
+title: "Deploy a Lovable app on Vercel"
+description: "Deploy your Lovable project to Vercel using GitHub sync and zero-configuration TanStack Start detection."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/integrations/lovable"
+--------------------------------------------------------------------------------
+
+# Deploy a Lovable app on Vercel
+
+## Overview
+
+[Lovable](https://lovable.dev) is an AI-powered app builder. Lovable projects use [TanStack Start](/docs/frameworks/full-stack/tanstack-start) as their underlying framework, so they deploy to Vercel with zero configuration. Lovable uses [Nitro](https://v3.nitro.build/), the same universal server toolkit that powers TanStack Start on Vercel, so no manual build configuration is required.
+
+This guide walks through connecting a Lovable project to Vercel through GitHub, so that every change you make in Lovable triggers a new deployment.
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- A [Vercel account](https://vercel.com/signup).
+- A Lovable project you want to deploy.
+- A GitHub account you can connect to both Lovable and Vercel.
+
+## Deploy your Lovable project
+
+To deploy a Lovable project to Vercel:
+
+1. Sync your Lovable project to GitHub. See the [Lovable GitHub integration docs](https://docs.lovable.dev/integrations/github) for setup.
+2. Import the repository from [vercel.com/new](https://vercel.com/new). Vercel detects the framework and deploys the project automatically.
+
+Once connected, every change you make in Lovable syncs to GitHub and triggers a new deployment on Vercel.
+
+> **💡 Note:** For a one-off deploy without a repository, you can download your project as a `.zip` from GitHub and drag it into [Vercel Drop](/docs/drop). GitHub sync remains the recommended path so that future Lovable changes deploy automatically.
+
+## Related
+
+- [TanStack Start on Vercel](/docs/frameworks/full-stack/tanstack-start)
+- [More frameworks](/docs/frameworks/more-frameworks)
+- [Deploying Git repositories](/docs/git)
+- [Vercel Drop](/docs/drop)
+- [Deployments overview](/docs/deployments)
 
 
 --------------------------------------------------------------------------------

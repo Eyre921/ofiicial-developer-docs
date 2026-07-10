@@ -25,11 +25,11 @@ Copilot cloud agent can:
 
 When you delegate tasks to Copilot cloud agent, you can:
 
-* Use the agents panel or other agents entry points on GitHub.com to have Copilot research, plan, and make code changes on a branch, then iterate before creating a pull request. You can also specify in your prompt that you want a pull request created right away. See [Research, plan, and iterate on code changes with Copilot cloud agent](/en/copilot/how-tos/use-copilot-agents/cloud-agent/research-plan-iterate).
+* Use the agents panel or other agents entry points on GitHub.com to have Copilot research, plan, and make code changes on a branch, then iterate before creating a pull request. You can also specify in your prompt that you want a pull request created right away. See [Research, plan, and iterate on code changes with Copilot cloud agent](/en/copilot/how-tos/copilot-on-github/use-copilot-agents/research-plan-iterate).
 * Ask Copilot to open a new pull request from other entry points, including GitHub Issues and Visual Studio Code. See [Starting GitHub Copilot sessions](/en/copilot/how-tos/use-copilot-agents/cloud-agent/start-copilot-sessions).
-* Mention `@copilot` in a comment on an existing pull request to ask it to make changes. See [Using Copilot cloud agent on GitHub](/en/copilot/how-tos/use-copilot-agents/cloud-agent/make-changes-to-an-existing-pr).
+* Mention `@copilot` in a comment on an existing pull request to ask it to make changes. See [Using Copilot cloud agent on GitHub](/en/copilot/how-tos/use-copilot-agents/cloud-agent/use-cloud-agent-on-github).
 * Set up an automation to run Copilot automatically, on a schedule or in response to events such as an issue being opened. See [About Copilot automations](/en/copilot/concepts/agents/cloud-agent/about-automations).
-* Assign security alerts to Copilot from security campaigns. See [Fixing alerts in a security campaign](/en/code-security/code-scanning/managing-code-scanning-alerts/fixing-alerts-in-security-campaign#assigning-alerts-to-copilot-cloud-agent).
+* Assign security alerts to Copilot from security campaigns. See [Fixing alerts in a security campaign](/en/code-security/how-tos/manage-security-alerts/remediate-alerts-at-scale/fixing-alerts-in-security-campaign#assigning-alerts-to-copilot-cloud-agent).
 
 Copilot cloud agent will evaluate the task it has been assigned based on the prompt you give it.
 
@@ -51,7 +51,7 @@ When you start a Copilot cloud agent session from Copilot Chat on GitHub, the se
 
 ## Copilot cloud agent versus agent mode
 
-Copilot cloud agent is distinct from the "agent mode" feature available in your IDE. Copilot cloud agent works autonomously in a GitHub Actions-powered environment to complete development tasks assigned through GitHub issues or GitHub Copilot Chat prompts. It can research a repository, create a plan, make code changes on a branch, and optionally open a pull request. In contrast, agent mode in your IDE makes autonomous edits directly in your local development environment. For more information about agent mode, see [Asking GitHub Copilot questions in your IDE](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-your-ide).
+Copilot cloud agent is distinct from the "agent mode" feature available in your IDE. Copilot cloud agent works autonomously in a GitHub Actions-powered environment to complete development tasks assigned through GitHub issues or GitHub Copilot Chat prompts. It can research a repository, create a plan, make code changes on a branch, and optionally open a pull request. In contrast, agent mode in your IDE makes autonomous edits directly in your local development environment. For more information about agent mode, see [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
 
 ## Streamlining software development with Copilot cloud agent
 
@@ -61,7 +61,7 @@ For example, you can assign Copilot cloud agent to straightforward issues on you
 
 Having Copilot cloud agent as an additional coding resource also allows you to start tasks that you might not have otherwise started due to lack of resources. For example, you might create issues to refactor code or add more logging, and then immediately assign these to Copilot.
 
-You can also use Copilot cloud agent to research a repository and create a plan before any code is written, helping you understand how a codebase works or agree on an approach before committing to changes. See [Research, plan, and iterate on code changes with Copilot cloud agent](/en/copilot/how-tos/use-copilot-agents/cloud-agent/research-plan-iterate).
+You can also use Copilot cloud agent to research a repository and create a plan before any code is written, helping you understand how a codebase works or agree on an approach before committing to changes. See [Research, plan, and iterate on code changes with Copilot cloud agent](/en/copilot/how-tos/copilot-on-github/use-copilot-agents/research-plan-iterate).
 
 Copilot cloud agent can start a task, which you then pick up and continue working on yourself. By assigning the initial work to Copilot, you free up time that you would otherwise have spent doing repetitive tasks, such as setting up the scaffolding for a new project.
 
@@ -123,7 +123,7 @@ Copilot code review also consumes GitHub Actions minutes on private repositories
 
 You can customize Copilot cloud agent in a number of ways:
 
-* **Custom instructions**: Custom instructions allow you to give Copilot additional context on your project and how to build, test and validate its changes. See [Adding repository custom instructions for GitHub Copilot](/en/copilot/how-tos/configure-custom-instructions/add-repository-instructions).
+* **Custom instructions**: Custom instructions allow you to give Copilot additional context on your project and how to build, test and validate its changes. See [Adding repository custom instructions for GitHub Copilot](/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions).
 * **Model Context Protocol (MCP) servers**: MCP servers allow you to give Copilot access to different data sources and tools. Repository MCP settings on GitHub apply to both Copilot cloud agent and Copilot code review. The GitHub MCP server and Playwright MCP server are enabled by default for both features. See [Configure MCP servers for your repository](/en/copilot/how-tos/copilot-on-github/customize-copilot/configure-mcp-servers).
 * **Custom agents**: Custom agents allow you to create different specialized versions of Copilot for different tasks. For example, you could customize Copilot to be an expert frontend engineer following your team's guidelines. See [About custom agents](/en/copilot/concepts/agents/cloud-agent/about-custom-agents).
 * **Hooks**: Hooks allow you to execute custom shell commands at key points during agent execution, enabling you to add validation, logging, security scanning, or workflow automation. See [About hooks for GitHub Copilot](/en/copilot/concepts/agents/hooks).
@@ -138,12 +138,12 @@ Copilot cloud agent has certain limitations in its software development workflow
 * **Copilot can only make changes in the repository specified when you start a task**. Copilot cannot make changes across multiple repositories in one run.
 * **By default, Copilot can only access context in the repository specified when you start a task**. The Copilot MCP server is configured by default to allow Copilot to access context (for example issues and historic pull requests) in the repository where it is working. You can, however, configure broader access through repository MCP settings. See [Configure MCP servers for your repository](/en/copilot/how-tos/copilot-on-github/customize-copilot/configure-mcp-servers).
 * **Copilot can only work on one branch at a time** and can open exactly one pull request to address each task it is assigned.
-* **Each Copilot cloud agent session has a maximum execution time of 59 minutes**. This is a hard limit that cannot be extended or bypassed. If a task exceeds this limit, the session will time out and stop. For complex tasks that may require more time, consider breaking the work into smaller, more focused tasks. You can configure a shorter timeout using the `timeout-minutes` setting in your `copilot-setup-steps.yml` file. See [Configure the development environment](/en/copilot/how-tos/use-copilot-agents/cloud-agent/customize-the-agent-environment).
+* **Each Copilot cloud agent session has a maximum execution time of 59 minutes**. This is a hard limit that cannot be extended or bypassed. If a task exceeds this limit, the session will time out and stop. For complex tasks that may require more time, consider breaking the work into smaller, more focused tasks. You can configure a shorter timeout using the `timeout-minutes` setting in your `copilot-setup-steps.yml` file. See [Configure the development environment](/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-environment).
 
 ### Limitations in Copilot cloud agent's compatibility with other features
 
 * **Copilot isn't able to comply with certain rules that may be configured for your repository**. If you have configured a ruleset or branch protection rule that isn't compatible with Copilot cloud agent, access to the agent will be blocked. For example, a rule that only allows specific commit authors can prevent Copilot cloud agent from creating or updating pull requests. If the rule is configured using rulesets, you can add Copilot as a bypass actor to enable access. See [Creating rulesets for a repository](/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/creating-rulesets-for-a-repository#granting-bypass-permissions-for-your-branch-or-tag-ruleset).
-* **Copilot cloud agent doesn't account for content exclusions**. Content exclusions allow administrators to configure Copilot to ignore certain files. When using Copilot cloud agent, Copilot will not ignore these files, and will be able to see and update them. See [Excluding content from GitHub Copilot](/en/copilot/managing-copilot/configuring-and-auditing-content-exclusion/excluding-content-from-github-copilot).
+* **Copilot cloud agent doesn't account for content exclusions**. Content exclusions allow administrators to configure Copilot to ignore certain files. When using Copilot cloud agent, Copilot will not ignore these files, and will be able to see and update them. See [Excluding content from GitHub Copilot](/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot).
 * **Copilot cloud agent only works with repositories hosted on GitHub**. If your repository is stored using a different code hosting platform, Copilot won't be able to work on it.
 
 ## Hands-on practice
@@ -154,4 +154,4 @@ Try the [Expand your team with Copilot cloud agent](https://github.com/skills/ex
 
 * [GitHub Copilot cloud agent](/en/copilot/how-tos/use-copilot-agents/cloud-agent) how-to articles
 * [About custom agents](/en/copilot/concepts/agents/cloud-agent/about-custom-agents)
-* [Application card: GitHub Copilot Agents](/en/copilot/responsible-use/copilot-cloud-agent)
+* [Application card: GitHub Copilot Agents](/en/copilot/responsible-use/agents)

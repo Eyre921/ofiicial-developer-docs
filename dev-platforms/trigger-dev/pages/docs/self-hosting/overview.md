@@ -8,7 +8,7 @@ You can self-host Trigger.dev on your own infrastructure.
 
 Self-hosting Trigger.dev means you run and manage the platform on your own infrastructure, giving you full control over your environment, deployment process, and the URLs you expose the service on.
 
-You are responsible for provisioning resources, handling updates, and managing any security, scaling or reliability challenges that arise.
+You are responsible for provisioning resources, handling updates, and managing any security, scaling or reliability challenges that arise. See [Security & vulnerability reporting](/docs/self-hosting/security) for how to report issues and stay informed about security releases.
 
 We provide version-tagged releases for self-hosted deployments. It's highly advised to use these tags exclusively and keep them locked with your CLI version.
 
@@ -107,5 +107,9 @@ It's dangerous to go alone! Join the self-hosting channel on our [Discord server
 
   <Card title="Kubernetes" icon="dharmachakra" href="/self-hosting/kubernetes">
     Learn how to self-host Trigger.dev with Kubernetes.
+  </Card>
+
+  <Card title="Security" icon="shield-halved" href="/self-hosting/security">
+    Report vulnerabilities and stay informed about security releases.
   </Card>
 </CardGroup>

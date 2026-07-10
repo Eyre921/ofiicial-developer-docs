@@ -8,6 +8,11 @@ There are some hard and soft limits that you might hit.
 
 You can view your current limits, quotas, and rate limit usage in real-time by visiting the **Limits** page in the dashboard (accessible from the left sidebar). This page shows current rate limit token availability, quota usage, and plan features for your organization.
 
+<Note>
+  Looking to cap your monthly spend? That's a setting you control, not a platform limit — see
+  [Billing limits and alerts](/docs/billing-limits).
+</Note>
+
 ## Concurrency limits
 
 | Pricing tier | Limit                |

@@ -4,6 +4,10 @@ source: https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-edito
 path: agents-and-tools/tool-use/text-editor-tool
 ---
 
+Give Claude the Anthropic-defined text editor tool to view, create, and edit files, and handle its view, str_replace, create, and insert commands.
+
+---
+
 <Note>
   This feature is eligible for [Zero Data Retention (ZDR)](/docs/en/build-with-claude/api-and-data-retention). When your organization has a ZDR arrangement, data sent through this feature is not stored after the API response is returned.
 </Note>
