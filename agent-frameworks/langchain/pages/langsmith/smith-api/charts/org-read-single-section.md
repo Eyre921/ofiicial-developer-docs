@@ -5,4 +5,4 @@ path: langsmith/smith-api/charts/org-read-single-section
 ---
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/org-charts/section/{section_id}
-Get a single section by ID.
+Deprecated: organization usage charts have been retired (HTTP 410).

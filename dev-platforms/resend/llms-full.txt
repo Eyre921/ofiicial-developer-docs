@@ -8748,6 +8748,13 @@ Source: https://resend.com/docs/api-reference/introduction
 
 Understand general concepts, response codes, and authentication strategies.
 
+<Info>
+  For most use cases, we recommend using an [official Resend SDK](/docs/sdks) instead
+  of calling the API directly. The SDKs handle authentication, required headers,
+  and error handling for you. See [Resend API vs SDK](/docs/api-vs-sdk) to decide
+  which fits your project.
+</Info>
+
 ## Base URL
 
 The Resend API is built on **REST** principles. **HTTPS** is enforced in every request to improve data security, integrity, and privacy. The API does not support **HTTP**.
@@ -13366,6 +13373,67 @@ Update an existing webhook configuration.
   }
   ```
 </ResponseExample>
+
+
+# Resend API vs SDK
+Source: https://resend.com/docs/api-vs-sdk
+
+For most use cases, the Resend SDK offers a better developer experience.
+
+For most use cases, **the Resend SDK offers a better developer experience** than
+calling the raw HTTP API directly. Resend maintains official, open source SDKs
+for Node.js, PHP, Python, Ruby, Go, Rust, Java, and .NET.
+
+<Info>
+  **Recommendation:** Use a [Resend SDK](/docs/sdks) for your language. Call the [raw
+  API](/docs/api-reference/introduction) directly only when no SDK exists for your
+  stack.
+</Info>
+
+## Choosing between the SDK and API
+
+Reach for the SDK unless you have a specific reason not to. It handles
+authentication, the required `User-Agent` header, request serialization, typed
+responses, and error handling for you. That leaves less boilerplate to get
+wrong.
+
+|                      | Resend SDK (recommended) | Raw HTTP API                                  |
+| -------------------- | ------------------------ | --------------------------------------------- |
+| Auth & headers       | Handled automatically    | Set `Authorization` and `User-Agent` manually |
+| Types & autocomplete | Built in                 | None                                          |
+| Errors               | Structured error objects | Parse status codes and JSON yourself          |
+| Maintained by        | Resend                   | You                                           |
+
+## When to use the raw API directly
+
+Calling the API directly is a good fit when:
+
+* There's **no official SDK** for your language or runtime.
+* You're making a one-off request and don't want to add a dependency.
+* You're building your own integration or wrapper.
+
+If you do call the API directly, remember to set the required
+[`User-Agent` header](/docs/api-reference/introduction#user-agent).
+
+## Next steps
+
+<CardGroup>
+  <Card title="Official SDKs" icon="cube" href="/sdks">
+    Install the SDK for your language.
+  </Card>
+
+  <Card title="Quickstart" icon="rocket" href="/introduction">
+    Send your first email in minutes.
+  </Card>
+
+  <Card title="API Reference" icon="code" href="/api-reference/introduction">
+    Full HTTP API documentation.
+  </Card>
+
+  <Card title="MCP Server" icon="robot" href="/mcp-server">
+    Give your AI agent access to Resend.
+  </Card>
+</CardGroup>
 
 
 # Send emails with Base44 and Resend

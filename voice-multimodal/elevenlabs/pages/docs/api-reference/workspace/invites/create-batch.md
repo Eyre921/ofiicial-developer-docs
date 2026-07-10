@@ -103,6 +103,13 @@ components:
           items:
             type: string
           description: The group ids of the user
+        usage_limit:
+          type:
+            - integer
+            - 'null'
+          description: >-
+            Monthly credit usage limit for the invitee. Omit or set to null for
+            no custom cap.
       required:
         - emails
       title: Body_Invite_multiple_users_v1_workspace_invites_add_bulk_post

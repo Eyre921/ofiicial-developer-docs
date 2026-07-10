@@ -60,15 +60,18 @@ Managed inference makes that possible. Because Engine always runs the model Lang
 
 ## What this means for your data
 
-* **Zero data retention (ZDR):** the inference service does not store customer data, and LangChain uses only models that support ZDR.
-* **No training:** LangChain does not train on your data.
+In a self-hosted deployment, Engine adds two data-locality guarantees on top of the controls common to every deployment:
+
 * **Private networks only:** all data transit happens over private link, never the public internet.
 * **In-CSP:** models run inside your CSP, so data never leaves it.
+
+Engine's deployment-independent data handling, including zero data retention with every model provider and no use of customer data to train or fine-tune models, is described in [Engine security](/langsmith/engine-security).
 
 ## See also
 
 * [Engine](/langsmith/engine-overview)
 * [Configure Engine](/langsmith/engine)
+* [Engine security](/langsmith/engine-security)
 * [Engine webhooks](/langsmith/engine-webhooks)
 
 ***

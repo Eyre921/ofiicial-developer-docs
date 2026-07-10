@@ -24,7 +24,7 @@ Stripe Revenue Recognition requires specific configuration of your Stripe accoun
 
 ## Dashboard 
 
-The [Revenue Recognition overview](https://dashboard.stripe.com/revenue-recognition) in your Dashboard provides a high-level view of your business’s financial health. It includes charts for recognized revenue, deferred revenue, and booked revenue. You can also customize the overview to track the metrics you use most.
+The [Revenue Recognition overview](https://dashboard.stripe.com/revenue-recognition) in your Dashboard provides high-level information about the operations and financial health of your business. It includes graphs for recognized revenue, deferred revenue, booked revenue and a recognized revenue breakdown chart.
 
 The Revenue Recognition section is also where you can manage your integration, including [uploading your revenue data](https://dashboard.stripe.com/revenue-recognition/data-import), [defining custom rules](https://dashboard.stripe.com/revenue-recognition/rules) on how to treat your revenue, and [mapping to the chart of accounts](https://docs.stripe.com/revenue-recognition/chart-of-accounts.md) that you use in your general ledger.
 
@@ -32,35 +32,17 @@ The Revenue Recognition section is also where you can manage your integration, i
 
 ### Revenue graphs 
 
-The revenue overview displays charts that give you a high-level view of your business over time. By default, the overview shows the following charts:
+The revenue graphs in the Dashboard provide a high-level view of your business by displaying revenue activity over time:
 
-- **Recognized revenue** — Your net recognized revenue.
-- **Deferred revenue** — Your ending balance of deferred revenue per month.
-- **Booked revenue** — Revenue recorded when an invoice is finalized, including monthly totals for revenue that’s been booked but not necessarily recognized.
+- **Recognized revenue** — Shows your net recognized revenue
+- **Deferred revenue** — Shows your ending balance of deferred revenue per month
+- **Booked revenue** — Shows revenue recorded when an invoice is finalized, giving you month-by-month totals of revenue that’s been booked (but not necessarily recognized)
 
-You can add any of the following additional charts to your overview:
+The value shown under each chart title reflects the most recent month in the selected period.
 
-- **Top products by net recognized revenue** — The products that contributed most to your net recognized revenue.
-- **Top customers by net recognized revenue** — The customers that contributed most to your net recognized revenue.
-- **Top products by booked revenue** — The products that contributed most to your booked revenue.
-- **Top customers by booked revenue** — The customers that contributed most to your booked revenue.
-- **AR aging trend** — Outstanding invoice amounts over time, grouped by how long they’ve been unpaid.
+The monthly and daily charts differentiate between open and closed accounting periods using colors. The figures continue to change until the accounting period closes. Toggling to the daily view provides a day-by-day snapshot of revenue for the selected month.
 
-The value shown under each chart title reflects the most recent period in the selected range.
-
-Monthly and daily charts use color to differentiate between open and closed accounting periods. Figures in open periods continue to change until the period closes. Daily view shows a day-by-day breakdown of revenue for the selected month. Additional charts listed above don’t support daily data.
-
-> Revenue from usage-based billing is recognized in full when invoices finalize or when the accounting period closes.
-
-### Customize your overview 
-
-You can customize which charts appear in your overview and in what order:
-
-- Select **Add** to open the chart catalog and choose additional charts to display.
-- Select **Edit** to enter edit mode, where you can drag charts to reorder them or remove individual charts, including the defaults. Select **Done** when finished.
-- Select **Reset** in edit mode to restore the default chart order of recognized revenue, deferred revenue, and booked revenue.
-
-Your chart selections and order persist across sessions. If you belong to multiple accounts, you can save separate chart configurations for each account.
+> Revenue from usage-based billing is recognized in full when invoices finalize, or when the accounting period closes.
 
 ### Recognized revenue breakdown 
 

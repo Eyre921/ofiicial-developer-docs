@@ -89,13 +89,13 @@ You can activate US card payments on Stripe for your Atlas company before receiv
 
 You can use payouts to transfer your Stripe balance to your bank account before you receive your EIN (up to 100,000 USD, after the [first payout waiting period](https://support.stripe.com/embedded-connect/questions/waiting-period-for-first-payout). You can access additional payment methods beyond US card payments only after your EIN is available.
 
-The IRS typically processes EIN applications in 1–5 business days if you provide a US company address, a US company phone number, and a US Social Security number. If you don’t submit any of these three pieces of information, the IRS could take 10–25 business days. Atlas emails you when your EIN is available.
+The IRS typically processes EIN applications in 1–3 business days if you provide a US company address, a US company phone number, and a US Social Security number. If you don’t submit any of these three pieces of information, the IRS could take 10–25 business days. Atlas emails you when your EIN is available.
 
 ## Getting your company tax ID from the IRS 
 
 Atlas automatically gets your EIN by filing [Form SS-4](https://www.irs.gov/pub/irs-pdf/fss4.pdf) with the IRS. You also complete [Form 8821](https://www.irs.gov/pub/irs-pdf/f8821.pdf), which allows Atlas to call the IRS on your behalf to get your company’s EIN as fast as possible.
 
-If the founder filling out the Atlas application has a US Social Security Number (SSN), a US address, and a US phone number, Atlas will automatically get their company’s EIN in 1–5 business days after incorporation. If the founder doesn’t have an SSN, Atlas will get their company’s EIN in 10–25 business days after incorporation.
+If the founder filling out the Atlas application has a US Social Security Number (SSN), a US address, and a US phone number, Atlas will automatically get their company’s EIN in 1–3 business days after incorporation. If the founder doesn’t have an SSN, Atlas will get their company’s EIN in 10–25 business days after incorporation.
 
 We make a few assumptions when we submit your company’s EIN application to the IRS. We assume your company **doesn’t**:
 

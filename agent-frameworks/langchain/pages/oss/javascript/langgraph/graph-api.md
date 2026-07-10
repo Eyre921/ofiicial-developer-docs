@@ -601,7 +601,6 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
 <Tabs>
   <Tab title="Original">
     ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { v7 as uuid7 } from "uuid";
     import * as z from "zod";
 
     import {
@@ -619,7 +618,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
     });
 
     const callApi: GraphNode<typeof State> = async (state) => {
-      const response = await fetch(state.url);  // [!code highlight]
+      const response = await fetch(state.url); // [!code highlight]
       const text = await response.text();
       const result = text.slice(0, 100);
       return { result };
@@ -633,7 +632,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
     const checkpointer = new MemorySaver();
     const graph = builder.compile({ checkpointer });
 
-    const threadId = uuid7();
+    const threadId = crypto.randomUUID();
     const config = { configurable: { thread_id: threadId } };
 
     await graph.invoke({ url: "https://www.example.com" }, config);
@@ -642,7 +641,6 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
 
   <Tab title="With task">
     ```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-    import { v7 as uuid7 } from "uuid";
     import * as z from "zod";
 
     import {
@@ -661,13 +659,13 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
     });
 
     const makeRequest = task("makeRequest", async (url: string) => {
-      const response = await fetch(url);  // [!code highlight]
+      const response = await fetch(url); // [!code highlight]
       const text = await response.text();
       return text.slice(0, 100);
     });
 
     const callApi: GraphNode<typeof State> = async (state) => {
-      const pending = state.urls.map((url) => makeRequest(url));  // [!code highlight]
+      const pending = state.urls.map((url) => makeRequest(url)); // [!code highlight]
       const results = await Promise.all(pending);
       return { results };
     };
@@ -680,7 +678,7 @@ If a [node](#nodes) contains multiple operations, you may find it easier to impl
     const checkpointer = new MemorySaver();
     const graph = builder.compile({ checkpointer });
 
-    const threadId = uuid7();
+    const threadId = crypto.randomUUID();
     const config = { configurable: { thread_id: threadId } };
 
     await graph.invoke({ urls: ["https://www.example.com"] }, config);

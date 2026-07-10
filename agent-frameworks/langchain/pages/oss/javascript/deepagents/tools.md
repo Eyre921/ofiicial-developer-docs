@@ -603,7 +603,7 @@ npm install @langchain/mcp-adapters
   ```
 </CodeGroup>
 
-For detailed configuration options — including stdio servers, OAuth authentication, tool filtering, and stateful sessions — see the full [MCP guide](/oss/javascript/langchain/mcp).
+For detailed configuration options—including stdio servers, OAuth authentication, tool filtering, and stateful sessions—see the full [MCP guide](/oss/javascript/langchain/mcp).
 
 ## Built-in harness tools
 

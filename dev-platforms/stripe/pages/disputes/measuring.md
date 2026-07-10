@@ -29,8 +29,8 @@ Dispute activity and dispute rate serve different purposes. The *card networksâ€
 
 The dispute *rate* is a more accurate representation of fraud and disputes for your business, because it shows which actual payments were disputed. For example, you could use the dispute rate to see a particular sale that resulted in more disputes than usual, or to pick out fraud attack patterns.
 
-Because cardholders can dispute a charge up to 120 days after a payment was made ([and sometimes even later](https://docs.stripe.com/disputes/how-disputes-work.md#timing)), the dispute rate might change for dates more recent than 120 days old. We show this calculation on the [Radar for Fraud Teams](https://dashboard.stripe.com/radar) page in the Dashboard.
-![](https://b.stripecdn.com/docs-statics-srv/assets/dispute-rate.66d11e172aa7ab72dc50ad8fbb1d939d.png)
+Because cardholders can dispute a charge up to 120 days after a payment was made ([and sometimes even later](https://docs.stripe.com/disputes/how-disputes-work.md#timing)), the dispute rate might change for dates more recent than 120 days old. We show this calculation on the [Radar](https://dashboard.stripe.com/radar) page in the Dashboard.
+![](https://b.stripecdn.com/docs-statics-srv/assets/dispute-rate-2.ac4e7f9c3da2283c3471f1ff80fc9c29.png)
 
 ## Excessive dispute activity 
 

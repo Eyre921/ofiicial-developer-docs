@@ -5,4 +5,4 @@ path: langsmith/smith-api/tracer-sessions/delete-tracer-session
 ---
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/sessions/{session_id}
-Delete a specific session.
+Delete a specific project.

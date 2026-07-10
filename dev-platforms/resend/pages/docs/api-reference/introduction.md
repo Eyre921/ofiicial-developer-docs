@@ -6,6 +6,13 @@ path: docs/api-reference/introduction
 
 Understand general concepts, response codes, and authentication strategies.
 
+<Info>
+  For most use cases, we recommend using an [official Resend SDK](/docs/sdks) instead
+  of calling the API directly. The SDKs handle authentication, required headers,
+  and error handling for you. See [Resend API vs SDK](/docs/api-vs-sdk) to decide
+  which fits your project.
+</Info>
+
 ## Base URL
 
 The Resend API is built on **REST** principles. **HTTPS** is enforced in every request to improve data security, integrity, and privacy. The API does not support **HTTP**.

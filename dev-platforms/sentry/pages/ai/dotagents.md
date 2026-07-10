@@ -172,6 +172,6 @@ To gitignore managed skills instead (collaborators must run `install`), set `git
 ## [Learn More](https://docs.sentry.io/ai/dotagents.md#learn-more)
 
 * [dotagents on GitHub](https://github.com/getsentry/dotagents)
-* [Agent Skills](https://docs.sentry.io/ai/agent-skills.md)
+* [Agent Plugin](https://docs.sentry.io/ai/agent-plugin.md)
 * [Sentry MCP Server](https://mcp.sentry.dev)
 

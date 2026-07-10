@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 300 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 301 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -88,6 +88,7 @@
 - `docs/api-reference/webhooks/get-webhook` — [Retrieve Webhook](pages/docs/api-reference/webhooks/get-webhook.md) · [原文](https://resend.com/docs/api-reference/webhooks/get-webhook)
 - `docs/api-reference/webhooks/list-webhooks` — [List Webhooks](pages/docs/api-reference/webhooks/list-webhooks.md) · [原文](https://resend.com/docs/api-reference/webhooks/list-webhooks)
 - `docs/api-reference/webhooks/update-webhook` — [Update Webhook](pages/docs/api-reference/webhooks/update-webhook.md) · [原文](https://resend.com/docs/api-reference/webhooks/update-webhook)
+- `docs/api-vs-sdk` — [Resend API vs SDK](pages/docs/api-vs-sdk.md) · [原文](https://resend.com/docs/api-vs-sdk)
 - `docs/base44-integration` — [Send emails with Base44 and Resend](pages/docs/base44-integration.md) · [原文](https://resend.com/docs/base44-integration)
 - `docs/bolt-new-integration` — [Send emails with Bolt.new and Resend](pages/docs/bolt-new-integration.md) · [原文](https://resend.com/docs/bolt-new-integration)
 - `docs/chat-sdk` — [Chat SDK](pages/docs/chat-sdk.md) · [原文](https://resend.com/docs/chat-sdk)

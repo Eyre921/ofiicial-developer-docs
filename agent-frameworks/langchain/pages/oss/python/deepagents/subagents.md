@@ -1995,14 +1995,10 @@ This means tools running inside any subagent can access the same context values 
   )
 
   # Context flows to the researcher subagent and its tools automatically
-  async def main():
-      result = await agent.invoke(
-          {"messages": [HumanMessage("Look up my recent activity")]},
-          context=Context(user_id="user-123", session_id="abc"),
-      )
-      return result
-
-  result = asyncio.run(main())
+  result = agent.invoke(
+      {"messages": [HumanMessage("Look up my recent activity")]},
+      context=Context(user_id="user-123", session_id="abc"),
+  )
   ```
 
   ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2040,14 +2036,10 @@ This means tools running inside any subagent can access the same context values 
   )
 
   # Context flows to the researcher subagent and its tools automatically
-  async def main():
-      result = await agent.invoke(
-          {"messages": [HumanMessage("Look up my recent activity")]},
-          context=Context(user_id="user-123", session_id="abc"),
-      )
-      return result
-
-  result = asyncio.run(main())
+  result = agent.invoke(
+      {"messages": [HumanMessage("Look up my recent activity")]},
+      context=Context(user_id="user-123", session_id="abc"),
+  )
   ```
 
   ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2085,14 +2077,10 @@ This means tools running inside any subagent can access the same context values 
   )
 
   # Context flows to the researcher subagent and its tools automatically
-  async def main():
-      result = await agent.invoke(
-          {"messages": [HumanMessage("Look up my recent activity")]},
-          context=Context(user_id="user-123", session_id="abc"),
-      )
-      return result
-
-  result = asyncio.run(main())
+  result = agent.invoke(
+      {"messages": [HumanMessage("Look up my recent activity")]},
+      context=Context(user_id="user-123", session_id="abc"),
+  )
   ```
 
   ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2130,14 +2118,10 @@ This means tools running inside any subagent can access the same context values 
   )
 
   # Context flows to the researcher subagent and its tools automatically
-  async def main():
-      result = await agent.invoke(
-          {"messages": [HumanMessage("Look up my recent activity")]},
-          context=Context(user_id="user-123", session_id="abc"),
-      )
-      return result
-
-  result = asyncio.run(main())
+  result = agent.invoke(
+      {"messages": [HumanMessage("Look up my recent activity")]},
+      context=Context(user_id="user-123", session_id="abc"),
+  )
   ```
 
   ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2175,14 +2159,10 @@ This means tools running inside any subagent can access the same context values 
   )
 
   # Context flows to the researcher subagent and its tools automatically
-  async def main():
-      result = await agent.invoke(
-          {"messages": [HumanMessage("Look up my recent activity")]},
-          context=Context(user_id="user-123", session_id="abc"),
-      )
-      return result
-
-  result = asyncio.run(main())
+  result = agent.invoke(
+      {"messages": [HumanMessage("Look up my recent activity")]},
+      context=Context(user_id="user-123", session_id="abc"),
+  )
   ```
 
   ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2220,14 +2200,10 @@ This means tools running inside any subagent can access the same context values 
   )
 
   # Context flows to the researcher subagent and its tools automatically
-  async def main():
-      result = await agent.invoke(
-          {"messages": [HumanMessage("Look up my recent activity")]},
-          context=Context(user_id="user-123", session_id="abc"),
-      )
-      return result
-
-  result = asyncio.run(main())
+  result = agent.invoke(
+      {"messages": [HumanMessage("Look up my recent activity")]},
+      context=Context(user_id="user-123", session_id="abc"),
+  )
   ```
 
   ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -2265,14 +2241,10 @@ This means tools running inside any subagent can access the same context values 
   )
 
   # Context flows to the researcher subagent and its tools automatically
-  async def main():
-      result = await agent.invoke(
-          {"messages": [HumanMessage("Look up my recent activity")]},
-          context=Context(user_id="user-123", session_id="abc"),
-      )
-      return result
-
-  result = asyncio.run(main())
+  result = agent.invoke(
+      {"messages": [HumanMessage("Look up my recent activity")]},
+      context=Context(user_id="user-123", session_id="abc"),
+  )
   ```
 </CodeGroup>
 
@@ -2280,42 +2252,336 @@ This means tools running inside any subagent can access the same context values 
 
 All subagents receive the same parent context. To pass configuration that is specific to a particular subagent, use **namespaced keys** (prefix keys with the subagent name, for example `researcher:max_depth`) in a flat `context` mapping, **or** model those settings as separate fields on your context type:
 
-```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-from dataclasses import dataclass
+<CodeGroup>
+  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
 
-from langchain.messages import HumanMessage
-from langchain.tools import ToolRuntime, tool
-
-
-@dataclass
-class Context:
-    user_id: str
-    researcher_max_depth: int | None = None
-    fact_checker_strict_mode: bool | None = None
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
 
 
-@tool
-def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
-    """Verify a factual claim."""
-    strict_mode = runtime.context.fact_checker_strict_mode or False
-    if strict_mode:
-        return strict_verification(claim)
-    return basic_verification(claim)
+  @dataclass
+  class Context:
+      user_id: str
+      researcher_max_depth: int | None = None
+      fact_checker_strict_mode: bool | None = None
 
 
-async def main():
-    result = await agent.invoke(
-        {"messages": [HumanMessage("Research this and verify the claims")]},
-        context=Context(
-            user_id="user-123",
-            researcher_max_depth=3,
-            fact_checker_strict_mode=True,
-        ),
-    )
-    return result
+  @tool
+  def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
+      """Verify a factual claim."""
+      strict_mode = runtime.context.fact_checker_strict_mode or False
+      if strict_mode:
+          return strict_verification(claim)
+      return basic_verification(claim)
 
-result = asyncio.run(main())
-```
+
+  agent = create_deep_agent(
+      model="google_genai:gemini-3.5-flash",
+      subagents=[
+          {
+              "name": "fact-checker",
+              "description": "Verifies factual claims",
+              "system_prompt": "You verify claims carefully.",
+              "tools": [verify_claim],
+          },
+      ],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [HumanMessage("Research this and verify the claims")]},
+      context=Context(
+          user_id="user-123",
+          researcher_max_depth=3,
+          fact_checker_strict_mode=True,
+      ),
+  )
+  ```
+
+  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      researcher_max_depth: int | None = None
+      fact_checker_strict_mode: bool | None = None
+
+
+  @tool
+  def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
+      """Verify a factual claim."""
+      strict_mode = runtime.context.fact_checker_strict_mode or False
+      if strict_mode:
+          return strict_verification(claim)
+      return basic_verification(claim)
+
+
+  agent = create_deep_agent(
+      model="openai:gpt-5.5",
+      subagents=[
+          {
+              "name": "fact-checker",
+              "description": "Verifies factual claims",
+              "system_prompt": "You verify claims carefully.",
+              "tools": [verify_claim],
+          },
+      ],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [HumanMessage("Research this and verify the claims")]},
+      context=Context(
+          user_id="user-123",
+          researcher_max_depth=3,
+          fact_checker_strict_mode=True,
+      ),
+  )
+  ```
+
+  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      researcher_max_depth: int | None = None
+      fact_checker_strict_mode: bool | None = None
+
+
+  @tool
+  def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
+      """Verify a factual claim."""
+      strict_mode = runtime.context.fact_checker_strict_mode or False
+      if strict_mode:
+          return strict_verification(claim)
+      return basic_verification(claim)
+
+
+  agent = create_deep_agent(
+      model="anthropic:claude-sonnet-4-6",
+      subagents=[
+          {
+              "name": "fact-checker",
+              "description": "Verifies factual claims",
+              "system_prompt": "You verify claims carefully.",
+              "tools": [verify_claim],
+          },
+      ],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [HumanMessage("Research this and verify the claims")]},
+      context=Context(
+          user_id="user-123",
+          researcher_max_depth=3,
+          fact_checker_strict_mode=True,
+      ),
+  )
+  ```
+
+  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      researcher_max_depth: int | None = None
+      fact_checker_strict_mode: bool | None = None
+
+
+  @tool
+  def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
+      """Verify a factual claim."""
+      strict_mode = runtime.context.fact_checker_strict_mode or False
+      if strict_mode:
+          return strict_verification(claim)
+      return basic_verification(claim)
+
+
+  agent = create_deep_agent(
+      model="openrouter:z-ai/glm-5.2",
+      subagents=[
+          {
+              "name": "fact-checker",
+              "description": "Verifies factual claims",
+              "system_prompt": "You verify claims carefully.",
+              "tools": [verify_claim],
+          },
+      ],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [HumanMessage("Research this and verify the claims")]},
+      context=Context(
+          user_id="user-123",
+          researcher_max_depth=3,
+          fact_checker_strict_mode=True,
+      ),
+  )
+  ```
+
+  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      researcher_max_depth: int | None = None
+      fact_checker_strict_mode: bool | None = None
+
+
+  @tool
+  def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
+      """Verify a factual claim."""
+      strict_mode = runtime.context.fact_checker_strict_mode or False
+      if strict_mode:
+          return strict_verification(claim)
+      return basic_verification(claim)
+
+
+  agent = create_deep_agent(
+      model="fireworks:accounts/fireworks/models/glm-5p2",
+      subagents=[
+          {
+              "name": "fact-checker",
+              "description": "Verifies factual claims",
+              "system_prompt": "You verify claims carefully.",
+              "tools": [verify_claim],
+          },
+      ],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [HumanMessage("Research this and verify the claims")]},
+      context=Context(
+          user_id="user-123",
+          researcher_max_depth=3,
+          fact_checker_strict_mode=True,
+      ),
+  )
+  ```
+
+  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      researcher_max_depth: int | None = None
+      fact_checker_strict_mode: bool | None = None
+
+
+  @tool
+  def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
+      """Verify a factual claim."""
+      strict_mode = runtime.context.fact_checker_strict_mode or False
+      if strict_mode:
+          return strict_verification(claim)
+      return basic_verification(claim)
+
+
+  agent = create_deep_agent(
+      model="baseten:zai-org/GLM-5.2",
+      subagents=[
+          {
+              "name": "fact-checker",
+              "description": "Verifies factual claims",
+              "system_prompt": "You verify claims carefully.",
+              "tools": [verify_claim],
+          },
+      ],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [HumanMessage("Research this and verify the claims")]},
+      context=Context(
+          user_id="user-123",
+          researcher_max_depth=3,
+          fact_checker_strict_mode=True,
+      ),
+  )
+  ```
+
+  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  from dataclasses import dataclass
+
+  from deepagents import create_deep_agent
+  from langchain.messages import HumanMessage
+  from langchain.tools import ToolRuntime, tool
+
+
+  @dataclass
+  class Context:
+      user_id: str
+      researcher_max_depth: int | None = None
+      fact_checker_strict_mode: bool | None = None
+
+
+  @tool
+  def verify_claim(claim: str, runtime: ToolRuntime[Context]) -> str:
+      """Verify a factual claim."""
+      strict_mode = runtime.context.fact_checker_strict_mode or False
+      if strict_mode:
+          return strict_verification(claim)
+      return basic_verification(claim)
+
+
+  agent = create_deep_agent(
+      model="ollama:north-mini-code-1.0",
+      subagents=[
+          {
+              "name": "fact-checker",
+              "description": "Verifies factual claims",
+              "system_prompt": "You verify claims carefully.",
+              "tools": [verify_claim],
+          },
+      ],
+      context_schema=Context,
+  )
+
+  result = agent.invoke(
+      {"messages": [HumanMessage("Research this and verify the claims")]},
+      context=Context(
+          user_id="user-123",
+          researcher_max_depth=3,
+          fact_checker_strict_mode=True,
+      ),
+  )
+  ```
+</CodeGroup>
 
 ### Identifying which subagent called a tool
 

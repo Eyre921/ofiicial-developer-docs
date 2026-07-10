@@ -559,6 +559,7 @@ The table below shows a list of events logged on the Activity page.
 | passkey-created | Active | A new passkey was created. |
 | passkey-deleted | Active | An existing passkey was deleted. |
 | passkey-updated | Active | The name of the existing passkey was updated. |
+| passport-access-granted | Active | A visitor authenticated to a Passport-protected project. |
 | password-protection-disabled | Active | Advanced Deployment Protection was disabled for the team. |
 | password-protection-enabled | Active | Advanced Deployment Protection was enabled for the team. |
 | payment-method-added | Active | A payment method was added to the account. |
@@ -35955,7 +35956,7 @@ The `vercel blob` command supports the following operations:
 - [`list-stores`](#list-stores-ls-stores) - List all Blob stores
 - [`empty-store`](#empty-store) - Delete all blobs in a Blob store
 
-For authentication, the CLI reads the `BLOB_READ_WRITE_TOKEN` value from your env file or you can use the [`--rw-token` option](#rw-token).
+In a linked project with a connected Blob store, the CLI authenticates using OIDC by default: Vercel auto-populates `VERCEL_OIDC_TOKEN` and pairs it with `BLOB_STORE_ID`. If OIDC is not available, the CLI falls back to reading `BLOB_READ_WRITE_TOKEN` from your env file, or you can supply it directly with the [`--rw-token` option](#rw-token). For example, this can happen for an unlinked project, outside of Vercel, or during local development.
 
 ### list (ls)
 
@@ -36064,7 +36065,7 @@ These are options that only apply to the `vercel blob` command.
 
 ### Rw token
 
-You can use the `--rw-token` option to specify your Blob read-write token.
+You can use the `--rw-token` option to specify your Blob read-write token. This is a fallback authentication method for cases where OIDC is not available such as unlinked projects, environments outside of Vercel, or local development.
 
 ```bash filename="terminal"
 vercel blob put image.jpg --rw-token [rw-token]
@@ -82647,6 +82648,8 @@ To deploy a Lovable project to Vercel:
 
 Once connected, every change you make in Lovable syncs to GitHub and triggers a new deployment on Vercel.
 
+> **💡 Note:** Zero-configuration detection requires `@lovable.dev/vite-tanstack-config` version `^2.6.2` or higher in your project. If your project uses an older version, update it before deploying.
+
 ## More resources
 
 Learn more about deploying TanStack Start projects on Vercel with the following resources:
@@ -96605,6 +96608,47 @@ https://vercel.com/sso/integrations/aws-marketplace-integration-demo/icfg_PSFtkF
 3. After successfully validating the request, Vercel redirects the user back to the provider using the same flow described in the [Vercel Initiated SSO](#vercel-initiated-sso)
 4. The user gains authenticated access to the requested resource
 
+### Deep links
+
+Deep links let your integration send a user straight to the relevant page for an installation in the Vercel dashboard. Use them in your own UI, emails, or notifications to bring users back to Vercel with a single URL.
+
+You don't need to know the user's team to build a deep link. Vercel resolves the team from the installation, confirms the signed-in user has access, and then redirects to the destination. If the user isn't signed in, Vercel prompts them to sign in first.
+
+All deep links share the same base:
+
+```
+https://vercel.com/d/dashboard/integrations/{URLSlug}/{installationId}{path}
+```
+
+- [`URLSlug`](/docs/integrations/create-integration/submit-integration#url-slug): The unique identifier for your integration in the Vercel Integrations Marketplace
+- [`installationId`](/docs/integrations/create-integration/marketplace-api#installations): The ID of the specific installation for the user
+- `path`: The optional path segment that selects the destination, as described below
+
+#### Supported deep links
+
+Vercel supports the following deep links:
+
+| Destination           | URL                                                                             | Description                                                                                                                                       |
+| --------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Installation overview | `https://vercel.com/d/dashboard/integrations/{URLSlug}/{installationId}`         | The installation's page in the user's team, where they manage settings, usage, and invoices.                                                      |
+| Installation projects | `https://vercel.com/d/dashboard/integrations/{URLSlug}/{installationId}/projects` | The projects connected to the installation.                                                                                                       |
+| Resource              | `https://vercel.com/d/dashboard/integrations/{URLSlug}/{installationId}/resources/{resourceId}` | A specific resource that belongs to the installation. `resourceId` accepts either Vercel's resource ID or the external ID you assigned to it. |
+
+#### Example
+
+Say you have an AWS integration with the following details:
+
+- `URLSlug`: `aws-marketplace-integration-demo`
+- `installationId`: `icfg_PSFtkFqr5djKRtOkNtOHIfSd`
+
+To send the user to the installation's projects page, construct this URL:
+
+```
+https://vercel.com/d/dashboard/integrations/aws-marketplace-integration-demo/icfg_PSFtkFqr5djKRtOkNtOHIfSd/projects
+```
+
+Vercel resolves the team, verifies access, and redirects the user to the projects page for that installation.
+
 ## Working with member information
 
 Get details about team members who have access to an installation. Use this endpoint to retrieve member information for access control, audit logs, or displaying member details in your integration.
@@ -99540,6 +99584,8 @@ To deploy a Lovable project to Vercel:
 2. Import the repository from [vercel.com/new](https://vercel.com/new). Vercel detects the framework and deploys the project automatically.
 
 Once connected, every change you make in Lovable syncs to GitHub and triggers a new deployment on Vercel.
+
+> **💡 Note:** Zero-configuration detection requires `@lovable.dev/vite-tanstack-config` version `^2.6.2` or higher in your project. If your project uses an older version, update it before deploying.
 
 > **💡 Note:** For a one-off deploy without a repository, you can download your project as a `.zip` from GitHub and drag it into [Vercel Drop](/docs/drop). GitHub sync remains the recommended path so that future Lovable changes deploy automatically.
 
@@ -106656,13 +106702,13 @@ You manage organizations through the [Vercel REST API](/docs/rest-api). Authenti
 
 ### Creating an organization
 
-Create an organization from an existing Enterprise team. That team becomes the organization's billing team, and you become its owner.
+Create an organization from an existing Enterprise team by passing that team's ID in the `teamId` query parameter. The team becomes the organization's billing team, and you become the organization's owner.
 
 ```bash
-curl -X POST "https://api.vercel.com/v1/organizations" \
+curl -X POST "https://api.vercel.com/v1/organizations?teamId=team_aBcD1234EfGh5678" \
   -H "Authorization: Bearer $VERCEL_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{ "teamId": "team_aBcD1234EfGh5678", "slug": "acme", "name": "Acme" }'
+  -d '{ "slug": "acme", "name": "Acme" }'
 ```
 
 The response is the new organization, including the `organizationId` you use in the calls below:
@@ -106702,18 +106748,18 @@ The response includes the new team's `id`:
 
 ### Adding an existing team to an organization
 
-To bring an existing team under the organization, call the organization's teams endpoint with the team's `teamId`. You must also set `billingPlan` to control the team's access level and billing model:
+To bring an existing team under the organization, call the organization's teams endpoint with `mode` set to `link` and the team's `teamId`. You must be an owner of the team you're adding. Set `billingPlan` to control the team's access level and billing model:
 
 - `platform`: For high-scale accounts that run hundreds or thousands of limited-access Pro teams. Each team's usage is emitted at the end of its own billing cycle to the organization under a consolidated `Platform Customer Usage` SKU.
 - `enterprise`: For teams that need full Enterprise permissions, including the ability to buy add-ons. Each team draws down directly from the organization's Flex commit. An organization can have up to 100 enterprise teams.
 
-If you omit `billingPlan`, the request returns a `400` error.
+If you omit `billingPlan`, non-Enterprise teams join as `platform`. To add an `enterprise` team, set `billingPlan` explicitly on a team that isn't already on the Enterprise plan; converting an existing Enterprise team isn't supported.
 
 ```bash
 curl -X POST "https://api.vercel.com/v1/organizations/org_aBcD1234EfGh5678IjKl9012/teams" \
   -H "Authorization: Bearer $VERCEL_TOKEN" \
   -H "Content-Type: application/json" \
-  -d '{ "teamId": "team_UvWx9012YzAb3456", "billingPlan": "platform" }'
+  -d '{ "mode": "link", "teamId": "team_UvWx9012YzAb3456", "billingPlan": "platform" }'
 ```
 
 The response is the organization-team link:
@@ -106722,6 +106768,7 @@ The response is the organization-team link:
 {
   "organizationId": "org_aBcD1234EfGh5678IjKl9012",
   "teamId": "team_UvWx9012YzAb3456",
+  "billingPlan": "platform",
   "createdAt": "2026-06-01T12:00:00.000Z",
   "updatedAt": "2026-06-01T12:00:00.000Z"
 }
@@ -106729,7 +106776,7 @@ The response is the organization-team link:
 
 ### Removing a team from an organization
 
-Remove a team from the organization. You can't remove the billing team.
+Removing a team from an organization deletes the team itself, not just its link to the organization. The team must pass the same billing checks as any team deletion. You can't remove the billing team.
 
 ```bash
 curl -X DELETE "https://api.vercel.com/v1/organizations/$ORGANIZATION_ID/teams/$TEAM_ID" \
@@ -135108,9 +135155,14 @@ Vercel Blob works with any frontend framework. First, install the package:
   Once created, you are taken to the Vercel Blob store page.
 
 - ### Prepare your local project
-  Since you created the Blob store in a project, we automatically created and added the following Environment Variable to the project for you.
-  - `BLOB_READ_WRITE_TOKEN`
-  To use this Environment Variable locally, we recommend pulling it with the Vercel CLI:
+  Since you created the Blob store in a project, we automatically created and added the following Environment Variables to the project for you.
+
+  The default setup uses OIDC authentication with short-lived, auto-rotated credentials:
+  - `BLOB_STORE_ID` — identifies your Blob store
+  - `VERCEL_OIDC_TOKEN` — a short-lived token automatically rotated by Vercel; used with `BLOB_STORE_ID` for server-side access
+  A long-lived static token is also added as a fallback and is required for generating client upload tokens:
+  - `BLOB_READ_WRITE_TOKEN` — a long-lived static read-write token; required by `handleUpload` and `handleUploadPresigned` to generate client tokens for browser uploads, and for code that runs outside Vercel
+  To use these Environment Variables locally, we recommend pulling them with the Vercel CLI:
   ```bash
   vercel env pull
   ```
@@ -137338,9 +137390,14 @@ Vercel Blob works with any frontend framework. First, install the package:
   Once created, you are taken to the Vercel Blob store page.
 
 - ### Prepare your local project
-  Since you created the Blob store in a project, we automatically created and added the following Environment Variable to the project for you.
-  - `BLOB_READ_WRITE_TOKEN`
-  To use this Environment Variable locally, we recommend pulling it with the Vercel CLI:
+  Since you created the Blob store in a project, we automatically created and added the following Environment Variables to the project for you.
+
+  By default, connected stores use OIDC-based authentication with short-lived, automatically rotated credentials:
+  - `BLOB_STORE_ID` — identifies your Blob store
+  - `VERCEL_OIDC_TOKEN` — a short-lived token issued at runtime; rotated automatically
+  The following variable is also added as a fallback for code running outside Vercel or to generate client tokens for browser uploads:
+  - `BLOB_READ_WRITE_TOKEN` — a long-lived static read-write token
+  To use these Environment Variables locally, we recommend pulling them with the Vercel CLI:
   ```bash
   vercel env pull
   ```

@@ -42,6 +42,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [\U0001F99C️\U0001F517 LangChain Integration with AssemblyAI](#u0001f99c-u0001f517-langchain-integration-with-assemblyai-docs-integrations-langchain-mdx)
 - [\U0001F99C️\U0001F517 LangChain Python Integration with AssemblyAI](#u0001f99c-u0001f517-langchain-python-integration-with-assemblyai-docs-integrations-langchain-python-mdx)
 - [\U0001F99C️\U0001F517 LangChain JavaScript Integration with AssemblyAI](#u0001f99c-u0001f517-langchain-javascript-integration-with-assemblyai-docs-integrations-langchain-js-mdx)
+- [▲ Vercel AI SDK Integration with AssemblyAI](#vercel-ai-sdk-integration-with-assemblyai-docs-integrations-vercel-ai-sdk-mdx)
 - [Integrate Power Automate with AssemblyAI](#integrate-power-automate-with-assemblyai-docs-integrations-power-automate-mdx)
 - [Semantic Kernel Integration for AssemblyAI](#semantic-kernel-integration-for-assemblyai-docs-integrations-semantic-kernel-mdx)
 - [Integrate Activepieces with AssemblyAI](#integrate-activepieces-with-assemblyai-docs-integrations-activepieces-mdx)
@@ -195,6 +196,7 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-sync-stt-prompting-and-keyterms-mdx)
 - [Conversation context](#conversation-context-docs-sync-stt-conversation-context-mdx)
 - [Language selection](#language-selection-docs-sync-stt-language-selection-mdx)
+- [Word timestamps](#word-timestamps-docs-sync-stt-word-timestamps-mdx)
 - [Transcribe a short audio file](#transcribe-a-short-audio-file-docs-api-reference-sync-api-transcribe-mdx)
 - [Audio requirements](#audio-requirements-docs-sync-stt-audio-requirements-mdx)
 - [Error handling](#error-handling-docs-sync-stt-error-handling-mdx)
@@ -7458,6 +7460,15 @@ AssemblyAI seamlessly integrates with a variety of tools and platforms to enhanc
     applications.
   
   
+        <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor" />
+      </svg>
+    }
+    href="/integrations/vercel-ai-sdk"
+  >
+    Transcribe audio with the AI SDK's unified API using the @ai-sdk/assemblyai
+    provider.
+  
+  
     Create automated workflows with Microsoft Power Automate to process audio
     and extract insights.
   
@@ -7672,6 +7683,11 @@ These are the key parameters to tune for LiveKit when using **Universal 3.5 Pro 
   `0`–`100`; `0` disables carryover. Leave unset for the server default (3).
   Connect-time only — cannot be changed with `update_options`. Universal-3.5 Pro
   only.
+
+  When `true`, the plugin automatically forwards your agent's replies to the STT
+  model as `agent_context` after each turn — no `conversation_item_added` event
+  wiring required. Requires `livekit-agents` **1.6.5+**. Universal-3.5 Pro only.
+  See [Conversation context](#conversation-context).
 
   Milliseconds of silence before a speculative end-of-turn check. When the check
   fires, the model looks for terminal punctuation to decide whether the turn has
@@ -8051,14 +8067,35 @@ With the agent's question in context, the model can anticipate the answer, sharp
 
 | Parameter                  | Type    | Description                                                                                                                                                                                                          |
 | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `agent_context_carryover`  | boolean | When `true`, the plugin automatically forwards your agent's replies to the STT model as `agent_context` after each turn — no event wiring required. Requires `livekit-agents` **1.6.5+**. Defaults to `false`.       |
 | `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to ~1500 characters. Set it at construction time to seed an opening greeting, and update it after each agent reply via `update_options()`.       |
 | `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (3).                                          |
 
-  `agent_context` and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
+  `agent_context_carryover`, `agent_context`, and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
 
-#### Wiring agent context with `conversation_item_added`
+#### Wiring agent context with `agent_context_carryover` (recommended)
 
-Push your agent's reply into the session whenever the agent finishes a turn. LiveKit emits a `conversation_item_added` event for every conversation item; filter for the assistant's messages and forward the (trimmed) text to the STT plugin via `update_options(agent_context=...)`. No reconnect is required.
+On `livekit-agents` **1.6.5+**, set `agent_context_carryover=True` on `assemblyai.STT(...)` and the plugin forwards your agent's replies to the STT model as `agent_context` automatically after each turn. No `conversation_item_added` handler required.
+
+```python
+from livekit.agents import AgentSession
+from livekit.plugins import assemblyai
+
+session = AgentSession(
+    stt=assemblyai.STT(
+        model="universal-3-5-pro",
+        agent_context_carryover=True,  # Requires livekit-agents 1.6.5+
+    ),
+    # llm=your_llm_plugin(),
+    # tts=your_tts_plugin(),
+)
+```
+
+  To seed the model with your agent's opening greeting, also pass `agent_context` directly on `assemblyai.STT(...)` at construction time. `agent_context_carryover` will keep it current after each subsequent reply.
+
+#### Wiring agent context with `conversation_item_added` (pre-1.6.5)
+
+If you're on a version of `livekit-agents` that predates **1.6.5**, wire agent context yourself. LiveKit emits a `conversation_item_added` event for every conversation item; filter for the assistant's messages and forward the (trimmed) text to the STT plugin via `update_options(agent_context=...)`. No reconnect is required.
 
 A complete runnable example is on GitHub: [including-agent-context](https://github.com/dlange-aai/assemblyai-livekit-examples/tree/main/including-agent-context).
 
@@ -8071,8 +8108,6 @@ AGENT_CONTEXT_MAX_CHARS = 1500
 session = AgentSession(
     stt=assemblyai.STT(
         model="universal-3-5-pro",
-        # Carry the last 3 turns forward automatically (server default). Set 0 to disable.
-        previous_context_n_turns=3,
     ),
     # llm=your_llm_plugin(),
     # tts=your_tts_plugin(),
@@ -8095,8 +8130,6 @@ def _on_conversation_item_added(ev: ConversationItemAddedEvent) -> None:
     # Push the latest reply; earlier turns are carried forward automatically.
     agent_stt.update_options(agent_context=spoken[-AGENT_CONTEXT_MAX_CHARS:])
 ```
-
-  To seed the model with your agent's opening greeting, pass `agent_context` directly on `assemblyai.STT(...)` at construction time, then keep it current with `update_options()` after each reply.
 
 ### Voice focus
 
@@ -8371,7 +8404,7 @@ stt.update_options(
 | ------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Caller identification (names, account IDs)  | Boost terms with `update_options(keyterms_prompt=[...])`                                 |
 | Entity dictation (email, phone, address)    | Raise `max_turn_silence` to ~`2000`–`4000` ms, then lower it again afterward            |
-| After each agent reply                      | Push `agent_context` (see [Conversation context](#conversation-context))                |
+| After each agent reply                      | Set `agent_context_carryover=True` (1.6.5+) or push `agent_context` manually (see [Conversation context](#conversation-context)) |
 | Faster barge-in                             | Lower `interruption_delay` (see [Latency](#latency))                                     |
 
 For more information, see [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream).
@@ -12135,6 +12168,246 @@ You can learn more about using LangChain with AssemblyAI in these resources:
 - [How to integrate spoken audio into LangChain.js using AssemblyAI](https://www.assemblyai.com/blog/integrate-audio-langchainjs/)
 - [Integrate Audio into LangChain.js apps in 5 Minutes](https://www.youtube.com/watch?v=hNpUSaYZIzs)
 - [AssemblyAI JavaScript SDK](https://github.com/AssemblyAI/assemblyai-node-sdk)
+
+---
+
+<a id="vercel-ai-sdk-integration-with-assemblyai-docs-integrations-vercel-ai-sdk-mdx"></a>
+
+# ▲ Vercel AI SDK Integration with AssemblyAI
+
+URL: https://www.assemblyai.com/docs/integrations/vercel-ai-sdk
+Source: docs/integrations/vercel-ai-sdk.mdx
+Navigation: Overview > Use cases & integrations > Integrations > Community-maintained tools
+Description: Transcribe audio with the Vercel AI SDK using the official @ai-sdk/assemblyai provider.
+
+The [AI SDK](https://ai-sdk.dev) gives you a single, unified `transcribe()` API that works across speech-to-text providers. The [`@ai-sdk/assemblyai`](https://ai-sdk.dev/providers/ai-sdk-providers/assemblyai) provider — maintained by Vercel in the [`vercel/ai`](https://github.com/vercel/ai) repo — plugs AssemblyAI's speech models into that API, so you can transcribe audio in any TypeScript or JavaScript project without calling the AssemblyAI API directly.
+
+## Quickstart
+
+Install the AI SDK core package along with the AssemblyAI provider:
+
+  
+
+```bash
+npm install ai @ai-sdk/assemblyai
+```
+
+  
+  
+
+```bash
+yarn add ai @ai-sdk/assemblyai
+```
+
+  
+  
+
+```bash
+pnpm add ai @ai-sdk/assemblyai
+```
+
+  
+  
+
+```bash
+bun add ai @ai-sdk/assemblyai
+```
+
+  
+
+You'll need an [AssemblyAI account](https://www.assemblyai.com/dashboard/signup) and an API key from your [dashboard](https://www.assemblyai.com/dashboard/home). The provider reads it from the `ASSEMBLYAI_API_KEY` environment variable:
+
+```bash
+export ASSEMBLYAI_API_KEY="<YOUR_API_KEY>"
+```
+
+Then transcribe a local file with `transcribe()`:
+
+```typescript
+import { transcribe } from 'ai';
+import { assemblyai } from '@ai-sdk/assemblyai';
+import { readFile } from 'node:fs/promises';
+
+const result = await transcribe({
+  model: assemblyai.transcription('universal-3-5-pro'),
+  audio: await readFile('audio.mp3'),
+});
+
+console.log(result.text);
+```
+
+  `transcribe` is a stable export as of AI SDK v7, which is what `npm install ai`
+  installs today. The examples on this page target v7.
+
+  **Using AI SDK v6?** The examples on this page require v7. AI SDK v6 (and v5) export
+  only `experimental_transcribe` — `import { transcribe } from 'ai'` throws on those
+  versions — and the latest provider (`@ai-sdk/assemblyai` 3.x) is built for v7, so it
+  won't work against v6. If your project is on v6 (for example, an existing project or
+  a registry policy that hasn't picked up v7 yet), install the v6-compatible packages
+  and alias the experimental export:
+
+  ```bash
+  npm install ai@ai-v6 @ai-sdk/assemblyai@ai-v6
+  ```
+
+  ```typescript
+  import { experimental_transcribe as transcribe } from 'ai';
+  ```
+
+  Everything else on this page — the `providerOptions`, model IDs, and result shape —
+  is the same.
+
+## Configuring the provider
+
+The default `assemblyai` instance reads your key from `ASSEMBLYAI_API_KEY`. To pass the key explicitly — for example, from a secret manager or in a multi-tenant setup — or to add custom headers or a custom `fetch` implementation, create your own provider instance with `createAssemblyAI`:
+
+```typescript
+import { createAssemblyAI } from '@ai-sdk/assemblyai';
+
+const assemblyai = createAssemblyAI({
+  apiKey: process.env.ASSEMBLYAI_API_KEY,
+});
+
+const result = await transcribe({
+  model: assemblyai.transcription('universal-3-5-pro'),
+  audio: await readFile('audio.mp3'),
+});
+```
+
+## Choosing a speech model
+
+`universal-3-5-pro` is the recommended default. `universal-2` is also supported. Pass the model ID to `assemblyai.transcription()`:
+
+```typescript
+const model = assemblyai.transcription('universal-3-5-pro');
+```
+
+For a breakdown of each model's accuracy, latency, and language support, see [Select the speech model](/pre-recorded-audio/select-the-speech-model).
+
+## Using AssemblyAI features
+
+AssemblyAI's diarization and audio-intelligence features are enabled through `providerOptions.assemblyai`. Option keys are the **camelCase** equivalents of the API's snake_case parameters (for example, `speaker_labels` → `speakerLabels`, `redact_pii` → `redactPii`):
+
+```typescript
+import { transcribe } from 'ai';
+import {
+  assemblyai,
+  type AssemblyAITranscriptionModelOptions,
+} from '@ai-sdk/assemblyai';
+import { readFile } from 'node:fs/promises';
+
+const result = await transcribe({
+  model: assemblyai.transcription('universal-3-5-pro'),
+  audio: await readFile('meeting.mp3'),
+  providerOptions: {
+    assemblyai: {
+      speakerLabels: true,
+      keytermsPrompt: ['AssemblyAI', 'Universal'],
+      redactPii: true,
+      redactPiiPolicies: ['person_name', 'email_address'],
+    } satisfies AssemblyAITranscriptionModelOptions,
+  },
+});
+```
+
+Annotating the options object with `satisfies AssemblyAITranscriptionModelOptions` gives you editor autocomplete and type-checking for the full option set, so you don't have to memorize parameter names or hunt through docs.
+
+  The table below reflects `@ai-sdk/assemblyai` 3.0.5. For the always-current list —
+  including any options added in newer releases — see the
+  [`@ai-sdk/assemblyai` provider reference](https://ai-sdk.dev/providers/ai-sdk-providers/assemblyai),
+  which lives alongside the provider code and is the canonical source.
+
+### Transcription options
+
+Every option below is optional and passed under `providerOptions.assemblyai`. Types and behavior follow the AssemblyAI transcription API.
+
+| Option | Type | Description |
+| --- | --- | --- |
+| `audioEndAt` | number | End time of the audio, in milliseconds. |
+| `audioStartFrom` | number | Start time of the audio, in milliseconds. |
+| `autoChapters` | boolean | Automatically generate chapters for the transcript. |
+| `autoHighlights` | boolean | Automatically generate highlights for the transcript. |
+| `boostParam` | enum | Boost level for `wordBoost`. Allowed values: `low`, `default`, `high`. **Deprecated** — applies only to the deprecated `wordBoost`; use `keytermsPrompt` instead. |
+| `contentSafety` | boolean | Enable content safety filtering. |
+| `contentSafetyConfidence` | number | Confidence threshold for content safety filtering (25-100). |
+| `customSpelling` | array of objects | Custom spelling rules. Each object has `from` (array of strings) and `to` (string). |
+| `disfluencies` | boolean | Include disfluencies (um, uh, etc.) in the transcript. |
+| `domain` | string | Enable a domain-specific model for specialized terminology. Currently supports `medical-v1` (Medical Mode). |
+| `entityDetection` | boolean | Detect entities in the transcript. |
+| `filterProfanity` | boolean | Filter profanity in the transcript. |
+| `formatText` | boolean | Apply text formatting to the transcript. |
+| `iabCategories` | boolean | Include IAB categories in the transcript. |
+| `keytermsPrompt` | array of strings | Domain-specific keyterms to boost recognition for (max 6 words per phrase). Replaces `wordBoost` for newer models — supported by `universal-3-pro`, `universal-3-5-pro`, and `slam-1` (and `universal-2` when enabled). |
+| `languageCode` | string | Language code for the audio. Supports numerous ISO-639-1 and ISO-639-3 codes. |
+| `languageConfidenceThreshold` | number | Confidence threshold for language detection. |
+| `languageDetection` | boolean | Enable automatic language detection. |
+| `languageDetectionOptions` | object | Options for language detection: `expectedLanguages` (array of strings), `fallbackLanguage` (string), `codeSwitching` (boolean), `codeSwitchingConfidenceThreshold` (number, 0-1). |
+| `multichannel` | boolean | Process multiple audio channels separately. |
+| `prompt` | string | Natural-language context (up to 1,500 words) to steer the model. Only supported by `universal-3-pro`, `universal-3-5-pro`, and `slam-1`. |
+| `punctuate` | boolean | Add punctuation to the transcript. |
+| `redactPii` | boolean | Redact personally identifiable information (PII). |
+| `redactPiiAudio` | boolean | Redact PII in the audio file. |
+| `redactPiiAudioOptions` | object | Options for PII-redacted audio: `returnRedactedNoSpeechAudio` (boolean), `overrideAudioRedactionMethod` (`silence`). Requires `redactPiiAudio`. |
+| `redactPiiAudioQuality` | enum | Quality of the redacted audio file. Allowed values: `mp3`, `wav`. |
+| `redactPiiPolicies` | array of enums | Which types of information to redact (e.g. `person_name`, `phone_number`). |
+| `redactPiiReturnUnredacted` | boolean | Return the original unredacted transcript alongside the redacted one. Requires `redactPii`. |
+| `redactPiiSub` | enum | Substitution method for redacted PII. Allowed values: `entity_name`, `hash`. |
+| `redactStaticEntities` | object | Map of user-defined labels to exact terms to redact, e.g. `{ INTERNAL_TOOL: ['Bearclaw'] }`. Applied on top of standard PII redaction. Requires `redactPii`. |
+| `removeAudioTags` | enum | Remove inline annotations from rich transcripts. Allowed values: `all`, `speaker`. Universal-3 Pro models. |
+| `sentimentAnalysis` | boolean | Perform sentiment analysis on the transcript. |
+| `speakerLabels` | boolean | Label different speakers in the transcript (diarization). |
+| `speakerOptions` | object | Diarization options: `minSpeakersExpected` (number), `maxSpeakersExpected` (number). |
+| `speakersExpected` | number | Expected number of speakers in the audio. |
+| `speechThreshold` | number | Threshold for speech detection (0-1). |
+| `summarization` | boolean | Generate a summary of the transcript. |
+| `summaryModel` | enum | Summarization model. Allowed values: `informative`, `conversational`, `catchy`. |
+| `summaryType` | enum | Type of summary. Allowed values: `bullets`, `bullets_verbose`, `gist`, `headline`, `paragraph`. |
+| `temperature` | number | Sampling temperature (0-1) controlling randomness. Universal-3 Pro models. |
+| `webhookAuthHeaderName` | string | Name of the authentication header for webhook requests. |
+| `webhookAuthHeaderValue` | string | Value of the authentication header for webhook requests. |
+| `webhookUrl` | string | URL to send webhook notifications to. |
+| `wordBoost` | array of strings | Words to boost in the transcript. **Deprecated** — rejected by `universal-3-pro`, `universal-3-5-pro`, and `slam-1` (works only on `universal-2`/`best`); use `keytermsPrompt` instead. |
+
+## Getting the full results back
+
+`transcribe()` returns a provider-agnostic result, but AssemblyAI's richer output — utterances, entities, sentiment, and more — is preserved, so you don't lose anything by going through the AI SDK:
+
+- **Top-level fields** like `result.text`, `result.segments`, and `result.durationInSeconds` are normalized across providers.
+- **`result.providerMetadata.assemblyai`** holds AssemblyAI-specific results such as `utterances`, `entities`, and `sentimentAnalysisResults`.
+- **`result.response.body`** is the complete, raw AssemblyAI transcript object.
+
+```typescript
+const result = await transcribe({
+  model: assemblyai.transcription('universal-3-5-pro'),
+  audio: await readFile('meeting.mp3'),
+  providerOptions: {
+    assemblyai: { speakerLabels: true, sentimentAnalysis: true },
+  },
+});
+
+// Normalized, provider-agnostic fields
+console.log(result.text);
+console.log(result.segments);
+
+// AssemblyAI-specific results
+const { utterances, sentimentAnalysisResults } =
+  result.providerMetadata.assemblyai;
+
+// The complete, raw AssemblyAI transcript
+const rawTranscript = result.response.body;
+```
+
+  Timestamps use **different units depending on where you read them.** The top-level
+  `result.segments` are in **seconds** (the AI SDK's normalized format), while every
+  timing inside `result.providerMetadata.assemblyai` and `result.response.body` is in
+  **milliseconds** (AssemblyAI's native format). Convert accordingly when you combine
+  the two.
+
+## Additional resources
+
+- [AssemblyAI provider reference on ai-sdk.dev](https://ai-sdk.dev/providers/ai-sdk-providers/assemblyai) — the canonical, complete list of provider options
+- [`vercel/ai` on GitHub](https://github.com/vercel/ai) — the AI SDK source and where the provider is maintained
+- [AssemblyAI API reference](/api-reference/overview) — the underlying transcription API and every parameter it accepts
 
 ---
 
@@ -35947,6 +36220,11 @@ These are the key parameters to tune for LiveKit when using **Universal 3.5 Pro 
   Connect-time only — cannot be changed with `update_options`. Universal-3.5 Pro
   only.
 
+  When `true`, the plugin automatically forwards your agent's replies to the STT
+  model as `agent_context` after each turn — no `conversation_item_added` event
+  wiring required. Requires `livekit-agents` **1.6.5+**. Universal-3.5 Pro only.
+  See [Conversation context](#conversation-context).
+
   Milliseconds of silence before a speculative end-of-turn check. When the check
   fires, the model looks for terminal punctuation to decide whether the turn has
   ended.
@@ -36325,14 +36603,35 @@ With the agent's question in context, the model can anticipate the answer, sharp
 
 | Parameter                  | Type    | Description                                                                                                                                                                                                          |
 | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `agent_context_carryover`  | boolean | When `true`, the plugin automatically forwards your agent's replies to the STT model as `agent_context` after each turn — no event wiring required. Requires `livekit-agents` **1.6.5+**. Defaults to `false`.       |
 | `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to ~1500 characters. Set it at construction time to seed an opening greeting, and update it after each agent reply via `update_options()`.       |
 | `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (3).                                          |
 
-  `agent_context` and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
+  `agent_context_carryover`, `agent_context`, and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
 
-#### Wiring agent context with `conversation_item_added`
+#### Wiring agent context with `agent_context_carryover` (recommended)
 
-Push your agent's reply into the session whenever the agent finishes a turn. LiveKit emits a `conversation_item_added` event for every conversation item; filter for the assistant's messages and forward the (trimmed) text to the STT plugin via `update_options(agent_context=...)`. No reconnect is required.
+On `livekit-agents` **1.6.5+**, set `agent_context_carryover=True` on `assemblyai.STT(...)` and the plugin forwards your agent's replies to the STT model as `agent_context` automatically after each turn. No `conversation_item_added` handler required.
+
+```python
+from livekit.agents import AgentSession
+from livekit.plugins import assemblyai
+
+session = AgentSession(
+    stt=assemblyai.STT(
+        model="universal-3-5-pro",
+        agent_context_carryover=True,  # Requires livekit-agents 1.6.5+
+    ),
+    # llm=your_llm_plugin(),
+    # tts=your_tts_plugin(),
+)
+```
+
+  To seed the model with your agent's opening greeting, also pass `agent_context` directly on `assemblyai.STT(...)` at construction time. `agent_context_carryover` will keep it current after each subsequent reply.
+
+#### Wiring agent context with `conversation_item_added` (pre-1.6.5)
+
+If you're on a version of `livekit-agents` that predates **1.6.5**, wire agent context yourself. LiveKit emits a `conversation_item_added` event for every conversation item; filter for the assistant's messages and forward the (trimmed) text to the STT plugin via `update_options(agent_context=...)`. No reconnect is required.
 
 A complete runnable example is on GitHub: [including-agent-context](https://github.com/dlange-aai/assemblyai-livekit-examples/tree/main/including-agent-context).
 
@@ -36345,8 +36644,6 @@ AGENT_CONTEXT_MAX_CHARS = 1500
 session = AgentSession(
     stt=assemblyai.STT(
         model="universal-3-5-pro",
-        # Carry the last 3 turns forward automatically (server default). Set 0 to disable.
-        previous_context_n_turns=3,
     ),
     # llm=your_llm_plugin(),
     # tts=your_tts_plugin(),
@@ -36369,8 +36666,6 @@ def _on_conversation_item_added(ev: ConversationItemAddedEvent) -> None:
     # Push the latest reply; earlier turns are carried forward automatically.
     agent_stt.update_options(agent_context=spoken[-AGENT_CONTEXT_MAX_CHARS:])
 ```
-
-  To seed the model with your agent's opening greeting, pass `agent_context` directly on `assemblyai.STT(...)` at construction time, then keep it current with `update_options()` after each reply.
 
 ### Voice focus
 
@@ -36645,7 +36940,7 @@ stt.update_options(
 | ------------------------------------------- | --------------------------------------------------------------------------------------- |
 | Caller identification (names, account IDs)  | Boost terms with `update_options(keyterms_prompt=[...])`                                 |
 | Entity dictation (email, phone, address)    | Raise `max_turn_silence` to ~`2000`–`4000` ms, then lower it again afterward            |
-| After each agent reply                      | Push `agent_context` (see [Conversation context](#conversation-context))                |
+| After each agent reply                      | Set `agent_context_carryover=True` (1.6.5+) or push `agent_context` manually (see [Conversation context](#conversation-context)) |
 | Faster barge-in                             | Lower `interruption_delay` (see [Latency](#latency))                                     |
 
 For more information, see [Updating configuration mid-stream](/streaming/updating-configuration-mid-stream).
@@ -51401,8 +51696,8 @@ A successful request returns a JSON object with the transcript and word-level de
 {
   "text": "Hi, I'm calling about my Best Buy order...",
   "words": [
-    { "text": "Hi",  "start": 0,   "end": 200, "confidence": 0.91 },
-    { "text": "I'm", "start": 220, "end": 320, "confidence": 0.88 }
+    { "text": "Hi",  "confidence": 0.91 },
+    { "text": "I'm", "confidence": 0.88 }
   ],
   "confidence": 0.87,
   "audio_duration_ms": 101567,
@@ -51413,7 +51708,7 @@ A successful request returns a JSON object with the transcript and word-level de
 | Field | Description |
 |-------|-------------|
 | `text` | Full transcript of the audio. |
-| `words` | Word-level timestamps (`start`, `end`, in milliseconds) and per-word `confidence`. |
+| `words` | Per-word `confidence`, plus `start`/`end` timestamps (in milliseconds) when the request enables [word timestamps](/sync-stt/word-timestamps). |
 | `confidence` | Overall transcript confidence score (0–1). |
 | `audio_duration_ms` | Duration of the submitted audio in milliseconds. |
 | `session_id` | Server-generated UUID. Include this when contacting support. |
@@ -52001,6 +52296,106 @@ For multilingual or code-switching audio, pass `language_code` as an array listi
 | `nl` | Dutch | `ur` | Urdu |
 | `sv` | Swedish | `zh` | Mandarin |
 | `no` | Norwegian | | |
+
+---
+
+<a id="word-timestamps-docs-sync-stt-word-timestamps-mdx"></a>
+
+# Word timestamps
+
+URL: https://www.assemblyai.com/docs/sync-stt/word-timestamps
+Source: docs/sync-stt/word-timestamps.mdx
+Navigation: Sync STT > Features
+Description: Get exact per-word start and end times with your synchronous transcript.
+
+The `timestamps` field controls whether each word in the response carries `start` and `end` times (in milliseconds, relative to the start of the audio).
+
+- Value: a boolean, default `false`
+- `false` (default): no timestamps are computed, and `start`/`end` are omitted from the `words` objects — there is no extra processing cost
+- `true`: exact timings are computed for each word, at an additional latency cost
+
+Timings are exact or absent, never approximate: any word that can't be aligned has `start`/`end` omitted rather than estimated. Timestamp accuracy is best for English audio.
+
+```python
+import json
+import requests
+
+with open("sample.wav", "rb") as f:
+    audio = f.read()
+
+config = {"timestamps": True}
+
+response = requests.post(
+    "https://sync.assemblyai.com/transcribe",
+    headers={
+        "Authorization": "<YOUR_API_KEY>",
+        "X-AAI-Model": "universal-3-5-pro",
+    },
+    files={
+        "audio": ("sample.wav", audio, "audio/wav"),
+        "config": (None, json.dumps(config), "application/json"),
+    },
+    timeout=60,
+)
+response.raise_for_status()
+for word in response.json()["words"]:
+    print(f'{word["start"]:>6} - {word["end"]:>6}  {word["text"]}')
+```
+
+```javascript
+import { readFileSync } from "fs";
+
+const audio = readFileSync("sample.wav");
+const config = { timestamps: true };
+
+const form = new FormData();
+form.append("audio", new Blob([audio], { type: "audio/wav" }), "sample.wav");
+form.append(
+  "config",
+  new Blob([JSON.stringify(config)], { type: "application/json" })
+);
+
+const response = await fetch("https://sync.assemblyai.com/transcribe", {
+  method: "POST",
+  headers: {
+    Authorization: "<YOUR_API_KEY>",
+    "X-AAI-Model": "universal-3-5-pro",
+  },
+  body: form,
+});
+
+const result = await response.json();
+for (const word of result.words) {
+  console.log(`${word.start} - ${word.end}  ${word.text}`);
+}
+```
+
+```bash
+curl -X POST https://sync.assemblyai.com/transcribe \
+  -H 'Authorization: <YOUR_API_KEY>' \
+  -H 'X-AAI-Model: universal-3-5-pro' \
+  -F 'audio=@sample.wav;type=audio/wav' \
+  -F 'config={"timestamps":true};type=application/json'
+```
+
+With `timestamps` enabled, each entry in `words` includes its timing:
+
+```json
+{
+  "text": "Hi, I'm calling about my Best Buy order...",
+  "words": [
+    { "text": "Hi",  "start": 0,   "end": 200, "confidence": 0.91 },
+    { "text": "I'm", "start": 220, "end": 320, "confidence": 0.88 }
+  ],
+  "confidence": 0.87,
+  "audio_duration_ms": 101567,
+  "session_id": "eb92c4ff-4bbb-429f-9b99-7279d7fe738f"
+}
+```
+
+## Combining with other features
+
+`timestamps` composes with the other `config` fields — [prompting and keyterms](/sync-stt/prompting-and-keyterms), [conversation context](/sync-stt/conversation-context), and [language selection](/sync-stt/language-selection) — in the same request.
 
 ---
 

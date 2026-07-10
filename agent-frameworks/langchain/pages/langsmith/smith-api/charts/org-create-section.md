@@ -5,4 +5,4 @@ path: langsmith/smith-api/charts/org-create-section
 ---
 
 /langsmith/langsmith-platform-openapi.json post /api/v1/org-charts/section
-Create a new section.
+Deprecated: organization usage charts have been retired (HTTP 410).

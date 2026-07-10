@@ -15,7 +15,7 @@
 
 ## ai
 
-- `ai/agent-skills` — [Agent Skills](pages/ai/agent-skills.md) · [原文](https://docs.sentry.io/ai/agent-skills.md)
+- `ai/agent-plugin` — [Agent Plugin](pages/ai/agent-plugin.md) · [原文](https://docs.sentry.io/ai/agent-plugin.md)
 - `ai/dotagents` — [dotagents](pages/ai/dotagents.md) · [原文](https://docs.sentry.io/ai/dotagents.md)
 - `ai/monitoring` — [AI Monitoring](pages/ai/monitoring.md) · [原文](https://docs.sentry.io/ai/monitoring.md)
 

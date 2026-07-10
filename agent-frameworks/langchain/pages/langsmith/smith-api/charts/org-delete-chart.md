@@ -5,4 +5,4 @@ path: langsmith/smith-api/charts/org-delete-chart
 ---
 
 /langsmith/langsmith-platform-openapi.json delete /api/v1/org-charts/{chart_id}
-Delete a chart.
+Deprecated: organization usage charts have been retired (HTTP 410).

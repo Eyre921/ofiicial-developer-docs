@@ -5,4 +5,4 @@ path: langsmith/smith-api/charts/org-update-section
 ---
 
 /langsmith/langsmith-platform-openapi.json patch /api/v1/org-charts/section/{section_id}
-Update a section.
+Deprecated: organization usage charts have been retired (HTTP 410).

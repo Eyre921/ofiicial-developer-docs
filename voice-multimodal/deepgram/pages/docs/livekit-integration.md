@@ -14,10 +14,10 @@ This guide walks you through building a voice AI agent that uses [LiveKit Agents
 
 Deepgram is available in LiveKit Agents through two paths:
 
-| Path              | Description                                                                                                                  |
-| ----------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| LiveKit Inference | Deepgram models hosted and billed through LiveKit Cloud. Supports Nova-3, Flux, and Aura-2. No Deepgram API key required.    |
-| Deepgram Plugin   | Connects directly to Deepgram's API with your own API key. Includes diarization, keyterm prompting, and advanced parameters. |
+| Path              | Description                                                                                                                                                                                 |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LiveKit Inference | Deepgram models hosted and billed through LiveKit Cloud. Supports Nova-3, Nova-2 variants (`nova-2`, `nova-2-medical`, `nova-2-phonecall`), Flux, and Aura-2. No Deepgram API key required. |
+| Deepgram Plugin   | Connects directly to Deepgram's API with your own API key. Includes diarization, keyterm prompting, and advanced parameters.                                                                |
 
 This guide starts with LiveKit Inference for the fastest setup, then shows how to switch to the Deepgram Plugin for direct API access and advanced features.
 
@@ -28,8 +28,8 @@ Before you can use Deepgram, you need to [create a Deepgram account](https://con
 You need:
 
 * A [LiveKit Cloud](https://cloud.livekit.io) account (or a self-hosted LiveKit server)
-* An LLM API key. This guide uses [OpenAI](https://platform.openai.com/api-keys), but LiveKit Agents supports [other providers](https://docs.livekit.io/agents/models/)
-* Python 3.10+ or Node.js 18+
+* An LLM. The starter uses LiveKit Inference (`inference.LLM(model="openai/chat-latest")`), which runs through LiveKit Cloud and requires no separate provider key. A dedicated LLM API key is only needed if you bring your own provider, such as [OpenAI](https://platform.openai.com/api-keys); LiveKit Agents supports [other providers](https://docs.livekit.io/agents/models/) too.
+* Python 3.10+ or Node.js 20+
 
 ## Step 1: Create the project
 
@@ -38,16 +38,16 @@ The fastest way to scaffold a new agent project is with the [LiveKit CLI](https:
 ```bash title="Python"
 lk agent init my-agent --template agent-starter-python
 cd my-agent
-pip install -r requirements.txt
+uv sync
 ```
 
 ```bash title="Node.js"
 lk agent init my-agent --template agent-starter-node
 cd my-agent
-npm install
+pnpm install
 ```
 
-When the CLI finishes, it prints a sandbox URL (for example, `https://my-agent-xxxxx.sandbox.livekit.io`). Note this URL. You will use it to test your agent later.
+When the CLI finishes, your agent is registered with LiveKit Cloud. You'll test it later from the [Agent Console](https://cloud.livekit.io).
 
 ## Step 2: Configure your environment
 
@@ -57,14 +57,15 @@ The CLI creates a `.env.local` file during setup. Open it and confirm your API k
 LIVEKIT_URL=YOUR_LIVEKIT_CLOUD_URL
 LIVEKIT_API_KEY=YOUR_LIVEKIT_API_KEY
 LIVEKIT_API_SECRET=YOUR_LIVEKIT_API_SECRET
+# Only required if you switch the LLM to OpenAI directly instead of using LiveKit Inference:
 OPENAI_API_KEY=YOUR_OPENAI_API_KEY
 ```
 
-If you used the CLI's guided setup, these values are already populated. If not, add them from your [LiveKit Cloud dashboard](https://cloud.livekit.io) and [OpenAI dashboard](https://platform.openai.com/api-keys).
+If you used the CLI's guided setup, these values are already populated. If not, add them from your [LiveKit Cloud dashboard](https://cloud.livekit.io). The `OPENAI_API_KEY` is optional — the starter uses LiveKit Inference by default, so you only need it if you bring your own OpenAI key from the [OpenAI dashboard](https://platform.openai.com/api-keys).
 
 ## Step 3: Use Deepgram for TTS
 
-The starter template uses Deepgram for STT but Cartesia for TTS. To use Deepgram for both, find the `tts` argument in the `AgentSession` constructor in `src/agent.py` (Python) or `src/main.ts` (Node.js) and replace it:
+At the time of writing, the starter template uses Deepgram for STT but Cartesia for TTS. These defaults change frequently and aren't guaranteed, so check the generated code. To use Deepgram for both, find the `tts` argument in the `AgentSession` constructor in `src/agent.py` (Python) or `src/main.ts` (Node.js) and replace it:
 
 ```python
 # Replace the existing tts line with:
@@ -85,19 +86,17 @@ Browse available voices in the [Deepgram voice library](/docs/tts-models).
 
 ## Step 4: Run the agent
 
-Download the required model files ([VAD](/docs/understanding-end-of-speech-detection), turn detection), then start the agent in development mode:
+Start the agent in development mode. The required model files ([VAD](/docs/understanding-end-of-speech-detection), turn detection) are now downloaded automatically:
 
 ```bash title="Python"
-python src/agent.py download-files
-python src/agent.py dev
+uv run src/agent.py dev
 ```
 
 ```bash title="Node.js"
-npm run download-files
-npm run dev
+pnpm run dev
 ```
 
-The `dev` command connects your agent to LiveKit Cloud's sandbox environment. Open your sandbox URL in your browser to talk to your agent.
+The `dev` command connects your agent to LiveKit Cloud. Open the [Agent Console](https://cloud.livekit.io) in your browser to talk to your agent.
 
 ## Step 5: Test the conversation
 
@@ -116,11 +115,11 @@ The steps above use LiveKit Inference, which hosts Deepgram models through LiveK
 ### Install the plugin
 
 ```bash title="Python"
-pip install "livekit-agents[deepgram]~=1.4"
+uv add "livekit-agents[deepgram]~=1.4"
 ```
 
 ```bash title="Node.js"
-npm install @livekit/agents-plugin-deepgram@1.x
+pnpm add @livekit/agents-plugin-deepgram@1.x
 ```
 
 ### Set your Deepgram API key
@@ -170,9 +169,11 @@ tts: new deepgram.TTS({ model: "aura-2-thalia-en" }),
 To use Flux, replace the `stt` configuration with `STTv2` and set turn detection to `"stt"`:
 
 ```python
-# Replace the stt line and add turn_detection:
+# Replace the stt line and add turn_handling:
 stt=deepgram.STTv2(model="flux-general-en"),
-turn_detection="stt",
+turn_handling=TurnHandlingOptions(
+  turn_detection="stt",
+),
 ```
 
 ```typescript
@@ -181,7 +182,7 @@ stt: new deepgram.STTv2({ model: "flux-general-en" }),
 turnHandling: { turnDetection: "stt" },
 ```
 
-Even when using Flux for turn detection, include a [VAD (Voice Activity Detection)](/docs/understanding-end-of-speech-detection) plugin like Silero. Flux handles turn detection, but VAD is required for interruption handling — without it, the agent cannot detect when a user speaks over the agent's response.
+Even when using Flux for turn detection, a [VAD (Voice Activity Detection)](/docs/understanding-end-of-speech-detection) is required for interruption handling — without it, the agent cannot detect when a user speaks over the agent's response. If you don't specify a VAD, LiveKit auto-provisions one for you. Note that this is not the Silero plugin itself, but a bundled inference VAD that is still based on Silero. You can also add the Silero plugin explicitly if you prefer to manage it yourself.
 
 ### Choose a different voice
 

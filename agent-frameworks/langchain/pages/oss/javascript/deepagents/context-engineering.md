@@ -734,13 +734,15 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
     StateBackend,
     StoreBackend,
   } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+  import { InMemoryStore } from "@langchain/langgraph";
 
   const agent = await createDeepAgent({
     model: "google-genai:gemini-3.5-flash",
     store: new InMemoryStore(),
     backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend(),
+      "/memories/": new StoreBackend({
+        namespace: () => ["memories"],
+      }),
     }),
     systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
   });
@@ -753,13 +755,15 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
     StateBackend,
     StoreBackend,
   } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+  import { InMemoryStore } from "@langchain/langgraph";
 
   const agent = await createDeepAgent({
     model: "openai:gpt-5.5",
     store: new InMemoryStore(),
     backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend(),
+      "/memories/": new StoreBackend({
+        namespace: () => ["memories"],
+      }),
     }),
     systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
   });
@@ -772,13 +776,15 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
     StateBackend,
     StoreBackend,
   } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+  import { InMemoryStore } from "@langchain/langgraph";
 
   const agent = await createDeepAgent({
     model: "anthropic:claude-sonnet-4-6",
     store: new InMemoryStore(),
     backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend(),
+      "/memories/": new StoreBackend({
+        namespace: () => ["memories"],
+      }),
     }),
     systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
   });
@@ -791,13 +797,15 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
     StateBackend,
     StoreBackend,
   } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+  import { InMemoryStore } from "@langchain/langgraph";
 
   const agent = await createDeepAgent({
     model: "openrouter:openrouter:z-ai/glm-5.2",
     store: new InMemoryStore(),
     backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend(),
+      "/memories/": new StoreBackend({
+        namespace: () => ["memories"],
+      }),
     }),
     systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
   });
@@ -810,13 +818,15 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
     StateBackend,
     StoreBackend,
   } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+  import { InMemoryStore } from "@langchain/langgraph";
 
   const agent = await createDeepAgent({
     model: "fireworks:accounts/fireworks/models/glm-5p2",
     store: new InMemoryStore(),
     backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend(),
+      "/memories/": new StoreBackend({
+        namespace: () => ["memories"],
+      }),
     }),
     systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
   });
@@ -829,13 +839,15 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
     StateBackend,
     StoreBackend,
   } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+  import { InMemoryStore } from "@langchain/langgraph";
 
   const agent = await createDeepAgent({
     model: "baseten:zai-org/GLM-5.2",
     store: new InMemoryStore(),
     backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend(),
+      "/memories/": new StoreBackend({
+        namespace: () => ["memories"],
+      }),
     }),
     systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
   });
@@ -848,13 +860,15 @@ The `CompositeBackend` is a hybrid storage system where some files persist indef
     StateBackend,
     StoreBackend,
   } from "deepagents";
-  import { InMemoryStore } from "@langchain/langgraph-checkpoint";
+  import { InMemoryStore } from "@langchain/langgraph";
 
   const agent = await createDeepAgent({
     model: "ollama:north-mini-code-1.0",
     store: new InMemoryStore(),
     backend: new CompositeBackend(new StateBackend(), {
-      "/memories/": new StoreBackend(),
+      "/memories/": new StoreBackend({
+        namespace: () => ["memories"],
+      }),
     }),
     systemPrompt: `When users tell you their preferences, save them to /memories/user_preferences.txt so you remember them in future conversations.`,
   });

@@ -380,6 +380,72 @@ components:
             $ref: '#/components/schemas/AdvisorNestedTool'
           type: array
       type: object
+    AgentMessageItem:
+      additionalProperties:
+        nullable: true
+      description: A message routed between agents in a multi-agent session
+      example:
+        author: /root/worker
+        content:
+          - text: Task complete.
+            type: input_text
+        recipient: /root
+        type: agent_message
+      properties:
+        agent:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          properties:
+            agent_name:
+              type: string
+          required:
+            - agent_name
+          type: object
+        author:
+          type: string
+        content:
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/InputText'
+              - allOf:
+                  - $ref: '#/components/schemas/InputImage'
+                  - properties: {}
+                    type: object
+                description: Image input content item
+                example:
+                  detail: auto
+                  image_url: https://example.com/image.jpg
+                  type: input_image
+              - additionalProperties:
+                  nullable: true
+                properties:
+                  encrypted_content:
+                    type: string
+                  type:
+                    enum:
+                      - encrypted_content
+                    type: string
+                required:
+                  - type
+                  - encrypted_content
+                type: object
+          type: array
+        id:
+          nullable: true
+          type: string
+        recipient:
+          type: string
+        type:
+          enum:
+            - agent_message
+          type: string
+      required:
+        - type
+        - author
+        - recipient
+        - content
+      type: object
     AnnotationAddedEvent:
       allOf:
         - $ref: '#/components/schemas/BaseAnnotationAddedEvent'
@@ -4161,6 +4227,7 @@ components:
         - crusoe
         - darkbloom
         - decart
+        - deepgram
         - deepinfra
         - deepseek
         - dekallm
@@ -5979,6 +6046,8 @@ components:
         - type
       type: object
     CompactionItem:
+      additionalProperties:
+        nullable: true
       description: A context compaction marker with encrypted summary
       example:
         encrypted_content: enc_abc123...
@@ -6427,6 +6496,27 @@ components:
       required:
         - type
         - video_url
+      type: object
+    ContextCompactionItem:
+      additionalProperties:
+        nullable: true
+      description: A context compaction marker with an optional encrypted summary
+      example:
+        encrypted_content: enc_abc123...
+        type: context_compaction
+      properties:
+        encrypted_content:
+          nullable: true
+          type: string
+        id:
+          nullable: true
+          type: string
+        type:
+          enum:
+            - context_compaction
+          type: string
+      required:
+        - type
       type: object
     ContextCompressionEngine:
       description: The compression engine to use. Defaults to "middle-out".
@@ -10754,8 +10844,10 @@ components:
               - $ref: '#/components/schemas/CustomToolCallItem'
               - $ref: '#/components/schemas/CustomToolCallOutputItem'
               - $ref: '#/components/schemas/CompactionItem'
+              - $ref: '#/components/schemas/ContextCompactionItem'
               - $ref: '#/components/schemas/ItemReferenceItem'
               - $ref: '#/components/schemas/AdditionalToolsItem'
+              - $ref: '#/components/schemas/AgentMessageItem'
           type: array
       description: Input for a response request - can be a string or array of items
       example:
@@ -12973,6 +13065,7 @@ components:
                 - Crusoe
                 - Darkbloom
                 - Decart
+                - Deepgram
                 - DeepInfra
                 - DeepSeek
                 - DekaLLM
@@ -18667,6 +18760,7 @@ components:
         - Crusoe
         - Darkbloom
         - Decart
+        - Deepgram
         - DeepInfra
         - DeepSeek
         - DekaLLM
@@ -18864,6 +18958,10 @@ components:
             nullable: true
           type: object
         decart:
+          additionalProperties:
+            nullable: true
+          type: object
+        deepgram:
           additionalProperties:
             nullable: true
           type: object
@@ -19497,6 +19595,7 @@ components:
             - Crusoe
             - Darkbloom
             - Decart
+            - Deepgram
             - DeepInfra
             - DeepSeek
             - DekaLLM
@@ -24709,6 +24808,97 @@ paths:
                 start: '2025-01-01T00:00:00Z'
             schema:
               properties:
+                classifier_dimensions:
+                  description: >-
+                    Group results by custom classifier tags, breaking down
+                    metrics by the specified dimension values. Requires an
+                    active classifier on the workspace.
+                  properties:
+                    classifier_id:
+                      description: UUID of the classifier whose tags to group by.
+                      example: 550e8400-e29b-41d4-a716-446655440000
+                      format: uuid
+                      type: string
+                    dimension_names:
+                      items:
+                        description: >-
+                          Classifier dimension name (snake_case identifier).
+                          When exactly one name is provided, the response uses
+                          it as the column key; with multiple names or none, the
+                          response uses
+                          `clf_dimension_name`/`clf_dimension_value` columns.
+                        example: department
+                        type: string
+                      maxItems: 10
+                      type: array
+                    include_nulls:
+                      description: >-
+                        When true, also include generations that have no tag
+                        from this classifier. Defaults to false, which returns
+                        only classified generations.
+                      type: boolean
+                  required:
+                    - classifier_id
+                  type: object
+                classifier_filters:
+                  description: >-
+                    Filter results to generations with specific classifier tag
+                    values. Can be combined with classifier_dimensions (must use
+                    the same classifier_id) or used independently with standard
+                    dimensions.
+                  properties:
+                    classifier_id:
+                      description: >-
+                        UUID of the classifier whose tags to filter by. Must
+                        match classifier_dimensions.classifier_id when both are
+                        specified.
+                      example: 550e8400-e29b-41d4-a716-446655440000
+                      format: uuid
+                      type: string
+                    filters:
+                      items:
+                        properties:
+                          field:
+                            description: >-
+                              Classifier dimension name to filter on (snake_case
+                              identifier, e.g. "department", "work_type").
+                            example: department
+                            type: string
+                          operator:
+                            description: >-
+                              Filter operator. Only equality/set operators are
+                              supported (eq, neq, in, not_in) — ordered
+                              comparisons are not available because
+                              classification values are strings.
+                            example: eq
+                            type: string
+                          value:
+                            anyOf:
+                              - type: string
+                              - format: double
+                                type: number
+                              - items:
+                                  anyOf:
+                                    - type: string
+                                    - format: double
+                                      type: number
+                                type: array
+                            description: >-
+                              Filter value. Use a scalar (string or number) for
+                              eq/neq, or an array for in/not_in.
+                            example: Engineering
+                        required:
+                          - field
+                          - operator
+                          - value
+                        type: object
+                      maxItems: 10
+                      minItems: 1
+                      type: array
+                  required:
+                    - classifier_id
+                    - filters
+                  type: object
                 dimensions:
                   items:
                     description: >-
@@ -25788,6 +25978,7 @@ paths:
               - crusoe
               - darkbloom
               - decart
+              - deepgram
               - deepinfra
               - deepseek
               - dekallm

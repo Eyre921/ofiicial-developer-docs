@@ -62,7 +62,7 @@ To configure model-specific parameters, use [`init_chat_model`](https://referenc
   import { initChatModel } from "langchain/chat_models/universal";
   import { createDeepAgent } from "deepagents";
 
-  const model = await initChatModel("google_genai:gemini-3.5-flash", {
+  const model = await initChatModel("google-genai:gemini-3.5-flash", {
     reasoningEffort: "medium", // [!code highlight]
   });
   const agent = createDeepAgent({ model });
@@ -122,7 +122,7 @@ const configurableModel = createMiddleware({
 });
 
 const agent = await createDeepAgent({
-  model: "google_genai:gemini-3.5-flash",
+  model: "google-genai:gemini-3.5-flash",
   middleware: [configurableModel],
   contextSchema,
 });

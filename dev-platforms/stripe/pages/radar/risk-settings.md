@@ -104,7 +104,7 @@ Stripe Radar assigns payments made on [Stripe Checkout](https://stripe.com/payme
 
 You can write custom rules on `:bot_score:` to block payments that exceed a threshold you define. For early access, see [Bot abuse prevention](https://docs.stripe.com/radar/bot-abuse.md).
 
-### Risk score (Fraudulent payment) 
+### Risk score (Classic risk) 
 
 Stripe Radar gives each payment a numerical [risk score](https://docs.stripe.com/radar/risk-evaluation.md#risk-outcomes) between 0 and 99, where 0 is the lowest risk and 99 is the highest. This risk score is the probability that a payment results in a fraudulent dispute or early fraud warning.
 

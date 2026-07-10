@@ -14,17 +14,17 @@ These tools are used synchronously, providing advice or suggestions as people wo
 
 ### Copilot Chat
 
-A chat interface that lets you ask coding-related questions. GitHub Copilot Chat is available on the GitHub website, in GitHub Mobile, in supported IDEs, and in Windows Terminal. Users can also use skills with Copilot Chat. See [Asking GitHub Copilot questions in GitHub](/en/copilot/using-github-copilot/asking-github-copilot-questions-in-github) and [Asking GitHub Copilot questions in your IDE](/en/copilot/using-github-copilot/asking-github-copilot-questions-in-your-ide).
+A chat interface that lets you ask coding-related questions. GitHub Copilot Chat is available on the GitHub website, in GitHub Mobile, in supported IDEs, and in Windows Terminal. Users can also use skills with Copilot Chat. See [Asking GitHub Copilot questions in GitHub](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-github) and [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
 
 ### Inline suggestions
 
-Autocomplete-style suggestions from Copilot in supported IDEs. See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot).
+Autocomplete-style suggestions from Copilot in supported IDEs. See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions).
 
 If you use VS Code, Xcode, or Eclipse, you can also use next edit suggestions, which will predict the location of the next edit you are likely to make and suggest a completion for it.
 
 ### Copilot pull request summaries
 
-AI-generated summaries of the changes that were made in a pull request, which files they impact, and what a reviewer should focus on when they conduct their review. See [Creating a pull request summary with GitHub Copilot](/en/copilot/using-github-copilot/creating-a-pull-request-summary-with-github-copilot).
+AI-generated summaries of the changes that were made in a pull request, which files they impact, and what a reviewer should focus on when they conduct their review. See [Creating a pull request summary with GitHub Copilot](/en/copilot/how-tos/copilot-on-github/copilot-for-github-tasks/create-a-pr-summary).
 
 ### Copilot in GitHub Desktop
 
@@ -36,7 +36,7 @@ These features can work autonomously without direct human supervision. However, 
 
 ### Copilot CLI
 
-A command line interface that lets you use Copilot in your terminal. Use the CLI to add features or fix bugs, then create a pull request. Start Copilot working on a task in your terminal, then continue working in the same session on GitHub.com, or on your mobile. See [About GitHub Copilot CLI](/en/copilot/concepts/agents/about-copilot-cli).
+A command line interface that lets you use Copilot in your terminal. Use the CLI to add features or fix bugs, then create a pull request. Start Copilot working on a task in your terminal, then continue working in the same session on GitHub.com, or on your mobile. See [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli).
 
 ### Copilot cloud agent
 
@@ -48,7 +48,7 @@ You can use third-party coding agents alongside Copilot cloud agent. Third-party
 
 ### Copilot code review
 
-AI-generated code review suggestions to help you write better code. See [Using GitHub Copilot code review](/en/copilot/using-github-copilot/code-review/using-copilot-code-review).
+AI-generated code review suggestions to help you write better code. See [Using GitHub Copilot code review](/en/copilot/how-tos/use-copilot-agents/request-a-code-review/use-code-review).
 
 Several tools in Copilot code review are in public preview and subject to change. See [About GitHub Copilot code review](/en/copilot/concepts/agents/code-review).
 
@@ -66,7 +66,7 @@ These features can be used to add context to Copilot and improve its performance
 
 ### Copilot Spaces
 
-Organize and centralize relevant content—like code, docs, specs, and more—into Spaces that ground Copilot’s responses in the right context for a specific task. See [About GitHub Copilot Spaces](/en/copilot/using-github-copilot/copilot-spaces/about-organizing-and-sharing-context-with-copilot-spaces).
+Organize and centralize relevant content—like code, docs, specs, and more—into Spaces that ground Copilot’s responses in the right context for a specific task. See [About GitHub Copilot Spaces](/en/copilot/concepts/context/spaces).
 
 ### Custom instructions
 
@@ -98,25 +98,25 @@ The following features are available to organization and enterprise owners with 
 
 ### Policy management
 
-Manage policies for Copilot in your organization or enterprise. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/setting-policies-for-copilot-in-your-organization/managing-policies-for-copilot-in-your-organization) and [Managing policies and features for GitHub Copilot in your enterprise](/en/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-policies-and-features-for-copilot-in-your-enterprise).
+Manage policies for Copilot in your organization or enterprise. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies) and [Managing policies and features for GitHub Copilot in your enterprise](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-enterprise-policies).
 
 ### Access management
 
-Enterprise owners can specify which organizations in the enterprise can use Copilot, and organization owners can specify which organization members can use Copilot. See [Managing access to GitHub Copilot in your organization](/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-access-to-github-copilot-in-your-organization) and [Managing access to Copilot in your enterprise](/en/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-access-to-copilot-in-your-enterprise).
+Enterprise owners can specify which organizations in the enterprise can use Copilot, and organization owners can specify which organization members can use Copilot. See [Managing access to GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-access) and [Managing access to Copilot in your enterprise](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-access).
 
 ### Usage data
 
-Review Copilot usage data within your organization or enterprise to inform how to manage access and drive adoption of Copilot. See [Reviewing user activity data for GitHub Copilot in your organization](/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/reviewing-activity-related-to-github-copilot-in-your-organization/reviewing-user-activity-data-for-copilot-in-your-organization) and [Viewing Copilot license usage in your enterprise](/en/copilot/managing-copilot/managing-copilot-for-your-enterprise/managing-access-to-copilot-in-your-enterprise/viewing-copilot-license-usage-in-your-enterprise).
+Review Copilot usage data within your organization or enterprise to inform how to manage access and drive adoption of Copilot. See [Reviewing user activity data for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/review-activity/review-user-activity-data) and [Viewing Copilot license usage in your enterprise](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-access/view-license-usage).
 
 ### Audit logs
 
-Review audit logs for Copilot in your organization to understand what actions have been taken and by which users. See [Reviewing audit logs for GitHub Copilot](/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/reviewing-activity-related-to-github-copilot-in-your-organization/reviewing-audit-logs-for-copilot-business).
+Review audit logs for Copilot in your enterprise to understand what actions have been taken and by which users. See [Reviewing audit logs for GitHub Copilot](/en/copilot/how-tos/administer-copilot/manage-for-enterprise/review-audit-logs).
 
 ### File exclusions
 
-Configure Copilot to ignore certain files. This can be useful if you have files that you don't want to be available to Copilot. See [Excluding content from GitHub Copilot](/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/setting-policies-for-copilot-in-your-organization/excluding-content-from-github-copilot).
+Configure Copilot to ignore certain files. This can be useful if you have files that you don't want to be available to Copilot. See [Excluding content from GitHub Copilot](/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot).
 
 ## Next steps
 
-* To learn more about the plans available for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
-* To start using Copilot, see [Setting up GitHub Copilot](/en/copilot/setting-up-github-copilot).
+* To learn more about the plans available for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
+* To start using Copilot, see [Setting up GitHub Copilot](/en/copilot/how-tos/set-up).

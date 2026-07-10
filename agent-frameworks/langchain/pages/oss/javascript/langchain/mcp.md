@@ -333,16 +333,18 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MultiServerMCPClient } from "@langchain/mcp-adapters";
   import { createAgent } from "langchain";
 
   async function accessMultimodalToolContent(): Promise<void> {
+    const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
     const agent = createAgent({ model: "google-genai:gemini-3.5-flash", tools });
 
     const result = await agent.invoke({
-      messages: [{ role: "user", content: "Take a screenshot of the current page" }],
+      messages: [
+        { role: "user", content: "Take a screenshot of the current page" },
+      ],
     });
 
     // Access multimodal content from tool messages
@@ -352,12 +354,15 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
         console.log(`Raw content: ${message.content}`);
 
         // Standardized content blocks  // [!code highlight]
-        for (const block of message.contentBlocks) {  // [!code highlight]
-          if (block.type === "text") {  // [!code highlight]
-            console.log(`Text: ${block.text}`);  // [!code highlight]
-          } else if (block.type === "image") {  // [!code highlight]
-            console.log(`Image URL: ${block.url}`);  // [!code highlight]
-            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`);  // [!code highlight]
+        for (const block of message.contentBlocks) {
+          // [!code highlight]
+          if (block.type === "text") {
+            // [!code highlight]
+            console.log(`Text: ${block.text}`); // [!code highlight]
+          } else if (block.type === "image") {
+            // [!code highlight]
+            console.log(`Image URL: ${block.url}`); // [!code highlight]
+            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`); // [!code highlight]
           }
         }
       }
@@ -366,16 +371,18 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
   ```
 
   ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MultiServerMCPClient } from "@langchain/mcp-adapters";
   import { createAgent } from "langchain";
 
   async function accessMultimodalToolContent(): Promise<void> {
+    const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
     const agent = createAgent({ model: "openai:gpt-5.5", tools });
 
     const result = await agent.invoke({
-      messages: [{ role: "user", content: "Take a screenshot of the current page" }],
+      messages: [
+        { role: "user", content: "Take a screenshot of the current page" },
+      ],
     });
 
     // Access multimodal content from tool messages
@@ -385,12 +392,15 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
         console.log(`Raw content: ${message.content}`);
 
         // Standardized content blocks  // [!code highlight]
-        for (const block of message.contentBlocks) {  // [!code highlight]
-          if (block.type === "text") {  // [!code highlight]
-            console.log(`Text: ${block.text}`);  // [!code highlight]
-          } else if (block.type === "image") {  // [!code highlight]
-            console.log(`Image URL: ${block.url}`);  // [!code highlight]
-            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`);  // [!code highlight]
+        for (const block of message.contentBlocks) {
+          // [!code highlight]
+          if (block.type === "text") {
+            // [!code highlight]
+            console.log(`Text: ${block.text}`); // [!code highlight]
+          } else if (block.type === "image") {
+            // [!code highlight]
+            console.log(`Image URL: ${block.url}`); // [!code highlight]
+            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`); // [!code highlight]
           }
         }
       }
@@ -399,16 +409,18 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
   ```
 
   ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MultiServerMCPClient } from "@langchain/mcp-adapters";
   import { createAgent } from "langchain";
 
   async function accessMultimodalToolContent(): Promise<void> {
+    const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
     const agent = createAgent({ model: "anthropic:claude-sonnet-4-6", tools });
 
     const result = await agent.invoke({
-      messages: [{ role: "user", content: "Take a screenshot of the current page" }],
+      messages: [
+        { role: "user", content: "Take a screenshot of the current page" },
+      ],
     });
 
     // Access multimodal content from tool messages
@@ -418,12 +430,15 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
         console.log(`Raw content: ${message.content}`);
 
         // Standardized content blocks  // [!code highlight]
-        for (const block of message.contentBlocks) {  // [!code highlight]
-          if (block.type === "text") {  // [!code highlight]
-            console.log(`Text: ${block.text}`);  // [!code highlight]
-          } else if (block.type === "image") {  // [!code highlight]
-            console.log(`Image URL: ${block.url}`);  // [!code highlight]
-            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`);  // [!code highlight]
+        for (const block of message.contentBlocks) {
+          // [!code highlight]
+          if (block.type === "text") {
+            // [!code highlight]
+            console.log(`Text: ${block.text}`); // [!code highlight]
+          } else if (block.type === "image") {
+            // [!code highlight]
+            console.log(`Image URL: ${block.url}`); // [!code highlight]
+            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`); // [!code highlight]
           }
         }
       }
@@ -432,16 +447,18 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
   ```
 
   ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MultiServerMCPClient } from "@langchain/mcp-adapters";
   import { createAgent } from "langchain";
 
   async function accessMultimodalToolContent(): Promise<void> {
+    const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
     const agent = createAgent({ model: "openrouter:openrouter:z-ai/glm-5.2", tools });
 
     const result = await agent.invoke({
-      messages: [{ role: "user", content: "Take a screenshot of the current page" }],
+      messages: [
+        { role: "user", content: "Take a screenshot of the current page" },
+      ],
     });
 
     // Access multimodal content from tool messages
@@ -451,12 +468,15 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
         console.log(`Raw content: ${message.content}`);
 
         // Standardized content blocks  // [!code highlight]
-        for (const block of message.contentBlocks) {  // [!code highlight]
-          if (block.type === "text") {  // [!code highlight]
-            console.log(`Text: ${block.text}`);  // [!code highlight]
-          } else if (block.type === "image") {  // [!code highlight]
-            console.log(`Image URL: ${block.url}`);  // [!code highlight]
-            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`);  // [!code highlight]
+        for (const block of message.contentBlocks) {
+          // [!code highlight]
+          if (block.type === "text") {
+            // [!code highlight]
+            console.log(`Text: ${block.text}`); // [!code highlight]
+          } else if (block.type === "image") {
+            // [!code highlight]
+            console.log(`Image URL: ${block.url}`); // [!code highlight]
+            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`); // [!code highlight]
           }
         }
       }
@@ -465,16 +485,18 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
   ```
 
   ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MultiServerMCPClient } from "@langchain/mcp-adapters";
   import { createAgent } from "langchain";
 
   async function accessMultimodalToolContent(): Promise<void> {
+    const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
     const agent = createAgent({ model: "fireworks:accounts/fireworks/models/glm-5p2", tools });
 
     const result = await agent.invoke({
-      messages: [{ role: "user", content: "Take a screenshot of the current page" }],
+      messages: [
+        { role: "user", content: "Take a screenshot of the current page" },
+      ],
     });
 
     // Access multimodal content from tool messages
@@ -484,12 +506,15 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
         console.log(`Raw content: ${message.content}`);
 
         // Standardized content blocks  // [!code highlight]
-        for (const block of message.contentBlocks) {  // [!code highlight]
-          if (block.type === "text") {  // [!code highlight]
-            console.log(`Text: ${block.text}`);  // [!code highlight]
-          } else if (block.type === "image") {  // [!code highlight]
-            console.log(`Image URL: ${block.url}`);  // [!code highlight]
-            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`);  // [!code highlight]
+        for (const block of message.contentBlocks) {
+          // [!code highlight]
+          if (block.type === "text") {
+            // [!code highlight]
+            console.log(`Text: ${block.text}`); // [!code highlight]
+          } else if (block.type === "image") {
+            // [!code highlight]
+            console.log(`Image URL: ${block.url}`); // [!code highlight]
+            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`); // [!code highlight]
           }
         }
       }
@@ -498,16 +523,18 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
   ```
 
   ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MultiServerMCPClient } from "@langchain/mcp-adapters";
   import { createAgent } from "langchain";
 
   async function accessMultimodalToolContent(): Promise<void> {
+    const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
     const agent = createAgent({ model: "baseten:zai-org/GLM-5.2", tools });
 
     const result = await agent.invoke({
-      messages: [{ role: "user", content: "Take a screenshot of the current page" }],
+      messages: [
+        { role: "user", content: "Take a screenshot of the current page" },
+      ],
     });
 
     // Access multimodal content from tool messages
@@ -517,12 +544,15 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
         console.log(`Raw content: ${message.content}`);
 
         // Standardized content blocks  // [!code highlight]
-        for (const block of message.contentBlocks) {  // [!code highlight]
-          if (block.type === "text") {  // [!code highlight]
-            console.log(`Text: ${block.text}`);  // [!code highlight]
-          } else if (block.type === "image") {  // [!code highlight]
-            console.log(`Image URL: ${block.url}`);  // [!code highlight]
-            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`);  // [!code highlight]
+        for (const block of message.contentBlocks) {
+          // [!code highlight]
+          if (block.type === "text") {
+            // [!code highlight]
+            console.log(`Text: ${block.text}`); // [!code highlight]
+          } else if (block.type === "image") {
+            // [!code highlight]
+            console.log(`Image URL: ${block.url}`); // [!code highlight]
+            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`); // [!code highlight]
           }
         }
       }
@@ -531,16 +561,18 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
   ```
 
   ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  import { MultiServerMCPClient } from "@langchain/mcp-adapters";
   import { createAgent } from "langchain";
 
   async function accessMultimodalToolContent(): Promise<void> {
+    const { MultiServerMCPClient } = await import("@langchain/mcp-adapters");
     const client = new MultiServerMCPClient({});
     const tools = await client.getTools();
     const agent = createAgent({ model: "ollama:north-mini-code-1.0", tools });
 
     const result = await agent.invoke({
-      messages: [{ role: "user", content: "Take a screenshot of the current page" }],
+      messages: [
+        { role: "user", content: "Take a screenshot of the current page" },
+      ],
     });
 
     // Access multimodal content from tool messages
@@ -550,12 +582,15 @@ MCP tools can return [multimodal content](https://modelcontextprotocol.io/specif
         console.log(`Raw content: ${message.content}`);
 
         // Standardized content blocks  // [!code highlight]
-        for (const block of message.contentBlocks) {  // [!code highlight]
-          if (block.type === "text") {  // [!code highlight]
-            console.log(`Text: ${block.text}`);  // [!code highlight]
-          } else if (block.type === "image") {  // [!code highlight]
-            console.log(`Image URL: ${block.url}`);  // [!code highlight]
-            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`);  // [!code highlight]
+        for (const block of message.contentBlocks) {
+          // [!code highlight]
+          if (block.type === "text") {
+            // [!code highlight]
+            console.log(`Text: ${block.text}`); // [!code highlight]
+          } else if (block.type === "image") {
+            // [!code highlight]
+            console.log(`Image URL: ${block.url}`); // [!code highlight]
+            console.log(`Image base64: ${block.base64?.slice(0, 50)}...`); // [!code highlight]
           }
         }
       }

@@ -96,7 +96,7 @@ To set up a budget for GitHub AI Credits, see [Setting up budgets to control spe
 
 If you have an active Copilot Pro, Copilot Pro+, or Copilot Max plan, and are then assigned a seat as part of a Copilot Business or Copilot Enterprise plan, your personal Copilot plan will be automatically canceled. You will receive a prorated refund for any remaining portion of your personal plan's current billing cycle. You will then be able to continue using Copilot according to the policies set by your company.
 
-You can cancel your Copilot plan at any time. The cancellation will take effect at the end of your current billing cycle. See [Viewing and changing your GitHub Copilot plan](/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/managing-your-copilot-subscription/canceling-copilot-as-an-individual-user).
+You can cancel your Copilot plan at any time. The cancellation will take effect at the end of your current billing cycle. See [Viewing and changing your GitHub Copilot plan](/en/copilot/how-tos/manage-your-account/view-and-change-your-copilot-plan).
 
 ## Determining your billing date
 
@@ -131,6 +131,6 @@ We recommend keeping your IDE, client, and Copilot extensions on the latest avai
 
 ## Further reading
 
-* [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot)
-* [Manage your GitHub Copilot account](/en/copilot/managing-copilot/managing-copilot-as-an-individual-subscriber/managing-your-copilot-subscription)
-* [Managing your payment and billing information](/en/billing/managing-your-billing/managing-your-payment-and-billing-information)
+* [Plans for GitHub Copilot](/en/copilot/get-started/plans)
+* [Manage your GitHub Copilot account](/en/copilot/how-tos/manage-your-account)
+* [Managing your payment and billing information](/en/billing/how-tos/set-up-payment/manage-payment-info)

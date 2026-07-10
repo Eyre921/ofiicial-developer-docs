@@ -533,7 +533,7 @@ pip install langchain-mcp-adapters
   ```
 </CodeGroup>
 
-For detailed configuration options — including stdio servers, OAuth authentication, tool filtering, and stateful sessions — see the full [MCP guide](/oss/python/langchain/mcp).
+For detailed configuration options—including stdio servers, OAuth authentication, tool filtering, and stateful sessions—see the full [MCP guide](/oss/python/langchain/mcp).
 
 ## Built-in harness tools
 

@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 762 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 763 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -231,6 +231,7 @@
 - `docs/api-reference/text-to-dialogue/stream-with-timestamps` — [Stream dialogue with timestamps](pages/docs/api-reference/text-to-dialogue/stream-with-timestamps.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-dialogue/stream-with-timestamps.md)
 - `docs/api-reference/text-to-sound-effects/convert` — [Create sound effect](pages/docs/api-reference/text-to-sound-effects/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-sound-effects/convert.md)
 - `docs/api-reference/text-to-speech/convert` — [Create speech](pages/docs/api-reference/text-to-speech/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-speech/convert.md)
+- `docs/api-reference/text-to-speech/convert-with-timestamps` — [Create speech with timing](pages/docs/api-reference/text-to-speech/convert-with-timestamps.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-speech/convert-with-timestamps.md)
 - `docs/api-reference/text-to-speech/stream` — [Stream speech](pages/docs/api-reference/text-to-speech/stream.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-speech/stream.md)
 - `docs/api-reference/text-to-speech/stream-with-timestamps` — [Stream speech with timing](pages/docs/api-reference/text-to-speech/stream-with-timestamps.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-speech/stream-with-timestamps.md)
 - `docs/api-reference/text-to-speech/v-1-text-to-speech-voice-id-multi-stream-input` — [Multi-Context WebSocket](pages/docs/api-reference/text-to-speech/v-1-text-to-speech-voice-id-multi-stream-input.md) · [原文](https://elevenlabs.io/docs/api-reference/text-to-speech/v-1-text-to-speech-voice-id-multi-stream-input.md)

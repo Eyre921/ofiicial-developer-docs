@@ -5,4 +5,4 @@ path: langsmith/smith-api/tracer-sessions/read-tracer-sessions
 ---
 
 /langsmith/langsmith-platform-openapi.json get /api/v1/sessions
-Get all sessions.
+List all projects.

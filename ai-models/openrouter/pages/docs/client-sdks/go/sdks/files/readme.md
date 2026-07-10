@@ -123,7 +123,7 @@ func main() {
     }
 
     res, err := s.Files.Upload(ctx, operations.UploadFileRequestBody{
-        File: operations.File{
+        File: operations.UploadFileFile{
             FileName: "example.file",
             Content: example,
         },
