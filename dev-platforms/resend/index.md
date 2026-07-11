@@ -1,6 +1,6 @@
 # dev-platforms/resend 文档索引
 
-> 共 301 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 307 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -71,6 +71,12 @@
 - `docs/api-reference/segments/get-segment` — [Retrieve Segment](pages/docs/api-reference/segments/get-segment.md) · [原文](https://resend.com/docs/api-reference/segments/get-segment)
 - `docs/api-reference/segments/list-segment-contacts` — [List Segment Contacts](pages/docs/api-reference/segments/list-segment-contacts.md) · [原文](https://resend.com/docs/api-reference/segments/list-segment-contacts)
 - `docs/api-reference/segments/list-segments` — [List Segments](pages/docs/api-reference/segments/list-segments.md) · [原文](https://resend.com/docs/api-reference/segments/list-segments)
+- `docs/api-reference/suppressions/add-suppressions` — [Add Suppressions](pages/docs/api-reference/suppressions/add-suppressions.md) · [原文](https://resend.com/docs/api-reference/suppressions/add-suppressions)
+- `docs/api-reference/suppressions/create-suppression` — [Create Suppression](pages/docs/api-reference/suppressions/create-suppression.md) · [原文](https://resend.com/docs/api-reference/suppressions/create-suppression)
+- `docs/api-reference/suppressions/get-suppression` — [Retrieve Suppression](pages/docs/api-reference/suppressions/get-suppression.md) · [原文](https://resend.com/docs/api-reference/suppressions/get-suppression)
+- `docs/api-reference/suppressions/list-suppressions` — [List Suppressions](pages/docs/api-reference/suppressions/list-suppressions.md) · [原文](https://resend.com/docs/api-reference/suppressions/list-suppressions)
+- `docs/api-reference/suppressions/remove-suppression` — [Remove Suppression](pages/docs/api-reference/suppressions/remove-suppression.md) · [原文](https://resend.com/docs/api-reference/suppressions/remove-suppression)
+- `docs/api-reference/suppressions/remove-suppressions` — [Remove Suppressions](pages/docs/api-reference/suppressions/remove-suppressions.md) · [原文](https://resend.com/docs/api-reference/suppressions/remove-suppressions)
 - `docs/api-reference/templates/create-template` — [Create Template](pages/docs/api-reference/templates/create-template.md) · [原文](https://resend.com/docs/api-reference/templates/create-template)
 - `docs/api-reference/templates/delete-template` — [Delete Template](pages/docs/api-reference/templates/delete-template.md) · [原文](https://resend.com/docs/api-reference/templates/delete-template)
 - `docs/api-reference/templates/duplicate-template` — [Duplicate Template](pages/docs/api-reference/templates/duplicate-template.md) · [原文](https://resend.com/docs/api-reference/templates/duplicate-template)

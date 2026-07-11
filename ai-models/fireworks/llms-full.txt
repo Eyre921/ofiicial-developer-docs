@@ -18355,15 +18355,14 @@ Per-user metering currently applies to a subset of serverless models. Usage on m
 
 Currently supported:
 
-* GLM 5.2
-* GLM 5.2 (Fast)
-* GPT OSS 120B
-* Kimi K2.6 Fast
 * DeepSeek V4 Flash
-
-Coming soon:
-
 * DeepSeek V4 Pro
+* GLM 5.2
+* GLM 5.2 Fast
+* Kimi K2.6
+* Kimi K2.6 Fast
+* Kimi K2.7 Code
+* Kimi K2.7 Code Fast
 
 ## Who can do what
 

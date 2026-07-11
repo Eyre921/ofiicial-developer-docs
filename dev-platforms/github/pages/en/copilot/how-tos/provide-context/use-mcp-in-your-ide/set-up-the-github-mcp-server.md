@@ -18,7 +18,7 @@ For the latest information and updates, see the [GitHub MCP server repository](h
 
 The GitHub MCP server is a Model Context Protocol (MCP) server provided and maintained by GitHub. MCP allows you to integrate AI capabilities with other tools and services, enhancing your development experience by providing context-aware AI assistance.
 
-For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/about-mcp).
+For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/context/mcp).
 
 ## Prerequisites
 
@@ -49,11 +49,11 @@ For information on manually configuring the remote or local GitHub MCP server, s
 
 The GitHub MCP server is a Model Context Protocol (MCP) server provided and maintained by GitHub. MCP allows you to integrate AI capabilities with other tools and services, enhancing your development experience by providing context-aware AI assistance.
 
-For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/about-mcp).
+For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/context/mcp).
 
 ## Prerequisites
 
-* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **Visual Studio version 17.14 or later**. For more information on installing Visual Studio, see the [Visual Studio downloads page](https://visualstudio.microsoft.com/downloads/).
 * **Sign in to GitHub from Visual Studio**.
 * If you are a member of an organization or enterprise with a Copilot Business or Copilot Enterprise plan, the "MCP servers in Copilot" policy must be enabled in order to use MCP with Copilot.
@@ -137,11 +137,11 @@ For more information on configuring MCP servers in Visual Studio, see [Use MCP s
 
 The GitHub MCP server is a Model Context Protocol (MCP) server provided and maintained by GitHub. MCP allows you to integrate AI capabilities with other tools and services, enhancing your development experience by providing context-aware AI assistance.
 
-For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/about-mcp).
+For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/context/mcp).
 
 ## Prerequisites
 
-* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **A compatible JetBrains IDE**. GitHub Copilot is compatible with the following IDEs:
 
   * IntelliJ IDEA (Ultimate, Community, Educational)
@@ -235,11 +235,11 @@ To configure the remote GitHub MCP server with a PAT, ensure you have created a 
 
 The GitHub MCP server is a Model Context Protocol (MCP) server provided and maintained by GitHub. MCP allows you to integrate AI capabilities with other tools and services, enhancing your development experience by providing context-aware AI assistance.
 
-For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/about-mcp).
+For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/context/mcp).
 
 ## Prerequisites
 
-* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **GitHub Copilot for Xcode extension**. See [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension).
 * If you are a member of an organization or enterprise with a Copilot Business or Copilot Enterprise plan, the "MCP servers in Copilot" policy must be enabled in order to use MCP with Copilot.
 
@@ -312,11 +312,11 @@ To configure the remote GitHub MCP server with a PAT, ensure you have created a 
 
 The GitHub MCP server is a Model Context Protocol (MCP) server provided and maintained by GitHub. MCP allows you to integrate AI capabilities with other tools and services, enhancing your development experience by providing context-aware AI assistance.
 
-For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/about-mcp).
+For a full introduction to the GitHub MCP server and an overview of MCP, see [About Model Context Protocol (MCP)](/en/copilot/concepts/context/mcp).
 
 ## Prerequisites
 
-* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Access to Copilot**. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **Compatible version of Eclipse**. To use the GitHub Copilot extension, you must have Eclipse version 2024-09 or above. See the [Eclipse download page](https://www.eclipse.org/downloads/packages/).
 * If you are a member of an organization or enterprise with a Copilot Business or Copilot Enterprise plan, the "MCP servers in Copilot" policy must be enabled in order to use MCP with Copilot.
 * **Latest version of the GitHub Copilot extension**. Download this from the [Eclipse Marketplace](https://aka.ms/copiloteclipse?ref_product=copilot\&ref_type=engagement\&ref_style=text). For more information, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=eclipse).

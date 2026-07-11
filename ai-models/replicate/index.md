@@ -1,6 +1,6 @@
 # ai-models/replicate 文档索引
 
-> 共 66 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 67 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -35,6 +35,7 @@
 - `docs/reference/error-codes` — [Error codes](pages/docs/reference/error-codes.md) · [原文](https://replicate.com/docs/reference/error-codes.md)
 - `docs/reference/how-does-replicate-work` — [How does Replicate work?](pages/docs/reference/how-does-replicate-work.md) · [原文](https://replicate.com/docs/reference/how-does-replicate-work.md)
 - `docs/reference/http` — [HTTP API](pages/docs/reference/http.md) · [原文](https://replicate.com/docs/reference/http.md)
+- `docs/reference/llms-txt` — [llms.txt](pages/docs/reference/llms-txt.md) · [原文](https://replicate.com/docs/reference/llms-txt.md)
 - `docs/reference/mcp` — [Replicate's MCP server](pages/docs/reference/mcp.md) · [原文](https://replicate.com/docs/reference/mcp.md)
 - `docs/reference/open-source` — [Open source at Replicate](pages/docs/reference/open-source.md) · [原文](https://replicate.com/docs/reference/open-source.md)
 - `docs/reference/openapi` — [OpenAPI schema](pages/docs/reference/openapi.md) · [原文](https://replicate.com/docs/reference/openapi.md)

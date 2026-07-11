@@ -102,23 +102,19 @@ On Enterprise, selected groups are managed from the PAT creators settings page. 
 
 <Steps>
   <Step>
-    Open the <a href={developerPortalUrl}>Developer portal</a>.
+    Open <a href={personalAccessTokensUrl}>Personal access tokens</a> in the Developer portal.
   </Step>
 
   <Step>
-    Go to <a href={personalAccessTokensUrl}>Personal access tokens</a>.
+    Click **New token**.
   </Step>
 
   <Step>
-    Click **New personal access token**.
+    Name the token, then choose its capabilities and expiration. If a workspace picker appears, select the workspace the token belongs to.
   </Step>
 
   <Step>
-    Enter a name, choose a workspace, select an expiration, and select the capabilities the token should have.
-  </Step>
-
-  <Step>
-    Click **Create token**, then copy the token value and store it securely.
+    Click **Create token**, then copy the token value and store it securely. You can't view it again after this.
   </Step>
 </Steps>
 

@@ -162,7 +162,7 @@ Once you've created a custom agent, you can use it wherever Copilot cloud agent 
 
 * When prompting Copilot cloud agent with a task on GitHub.com, use the dropdown menu in the agents panel or agents tab to select your custom agent instead of the default cloud agent.
 * When assigning Copilot cloud agent to an issue, you can select your custom agent from the dropdown menu to handle the issue with your specialized configuration.
-* When using the GitHub Copilot CLI, you can choose to use a particular custom agent by using the `/agent` slash command or referencing the agent in a prompt or via a command-line argument. For more information, see [Using GitHub Copilot CLI](/en/copilot/how-tos/use-copilot-agents/use-copilot-cli#use-custom-agents).
+* When using the GitHub Copilot CLI, you can choose to use a particular custom agent by using the `/agent` slash command or referencing the agent in a prompt or via a command-line argument. For more information, see [Using GitHub Copilot CLI](/en/copilot/how-tos/copilot-cli/use-copilot-cli/overview#use-custom-agents).
 
 When Copilot opens pull requests, it will note which custom agent was used to complete the work in the pull request description.
 

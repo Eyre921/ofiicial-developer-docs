@@ -14,15 +14,15 @@ A personal access token (PAT) lets you authenticate API requests as yourself. No
 
 <Steps>
   <Step>
-    Go to <a href={personalAccessTokensUrl}>**Developer portal → Personal access tokens**</a>.
+    Open <a href={personalAccessTokensUrl}>Personal access tokens</a> in the Developer portal.
   </Step>
 
   <Step>
-    Click **+ New token**.
+    Click **New token**.
   </Step>
 
   <Step>
-    Enter a name (e.g., "Quickstart"), select a workspace, and click **Create token**.
+    Enter a name (e.g. "Quickstart"), then click **Create token**. If a workspace picker appears, select a workspace first.
   </Step>
 
   <Step>

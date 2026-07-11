@@ -10732,6 +10732,312 @@ Retrieve a list of segments.
 </ResponseExample>
 
 
+# Add Suppressions
+Source: https://resend.com/docs/api-reference/suppressions/add-suppressions
+
+POST /suppressions/batch/add
+Add up to 100 email addresses to the suppression list at once.
+
+<Warning>
+  The Suppressions API is currently in private beta and only available to a
+  limited number of users. APIs might change before GA.
+
+  <span />
+
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+</Warning>
+
+## Body Parameters
+
+<ParamField type="array">
+  The email addresses to suppress. Must contain between 1 and 100 email
+  addresses.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/suppressions/batch/add' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "emails": ["steve.wozniak@gmail.com", "bill.gates@microsoft.com"]
+  }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "data": [
+      {
+        "object": "suppression",
+        "id": "e169aa45-1ecf-4183-9955-b1499d5701d3"
+      },
+      {
+        "object": "suppression",
+        "id": "520784e2-887d-4c25-b53c-4ad46ad38100"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# Create Suppression
+Source: https://resend.com/docs/api-reference/suppressions/create-suppression
+
+POST /suppressions
+Add an email address to the suppression list.
+
+<Warning>
+  The Suppressions API is currently in private beta and only available to a
+  limited number of users. APIs might change before GA.
+
+  <span />
+
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+</Warning>
+
+## Body Parameters
+
+<ParamField type="string">
+  The email address to suppress.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X POST 'https://api.resend.com/suppressions' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "email": "steve.wozniak@gmail.com"
+  }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "suppression",
+    "id": "e169aa45-1ecf-4183-9955-b1499d5701d3"
+  }
+  ```
+</ResponseExample>
+
+
+# Retrieve Suppression
+Source: https://resend.com/docs/api-reference/suppressions/get-suppression
+
+GET /suppressions/:suppression
+Retrieve a single suppression by ID or email.
+
+<Warning>
+  The Suppressions API is currently in private beta and only available to a
+  limited number of users. APIs might change before GA.
+
+  <span />
+
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+</Warning>
+
+## Path Parameters
+
+<ParamField type="email | id">
+  The Suppression ID or email address.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Retrieve by suppression id
+  curl -X GET 'https://api.resend.com/suppressions/e169aa45-1ecf-4183-9955-b1499d5701d3' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+
+  # Retrieve by email
+  curl -X GET 'https://api.resend.com/suppressions/steve.wozniak@gmail.com' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "suppression",
+    "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+    "email": "steve.wozniak@gmail.com",
+    "origin": "manual",
+    "source_id": null,
+    "created_at": "2026-10-06T23:47:56.678Z"
+  }
+  ```
+</ResponseExample>
+
+
+# List Suppressions
+Source: https://resend.com/docs/api-reference/suppressions/list-suppressions
+
+GET /suppressions
+Show all suppressions.
+
+<Warning>
+  The Suppressions API is currently in private beta and only available to a
+  limited number of users. APIs might change before GA.
+
+  <span />
+
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+</Warning>
+
+<QueryParams type="suppressions" />
+
+<ParamField type="bounce | complaint | manual">
+  Filter suppressions by origin.
+
+  Possible values:
+  `bounce`: emails suppressed automatically after a bounce
+  `complaint`: emails suppressed due to a user complaint
+  `manual`: emails suppressed by your team manually
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  curl -X GET 'https://api.resend.com/suppressions' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "list",
+    "has_more": false,
+    "data": [
+      {
+        "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+        "email": "steve.wozniak@gmail.com",
+        "origin": "manual",
+        "source_id": null,
+        "created_at": "2026-10-06T23:47:56.678Z"
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
+# Remove Suppression
+Source: https://resend.com/docs/api-reference/suppressions/remove-suppression
+
+DELETE /suppressions/:suppression
+Remove a single suppression by ID or email.
+
+<Warning>
+  The Suppressions API is currently in private beta and only available to a
+  limited number of users. APIs might change before GA.
+
+  <span />
+
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+</Warning>
+
+## Path Parameters
+
+<ParamField type="email | id">
+  The Suppression ID or email address.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Remove by suppression id
+  curl -X DELETE 'https://api.resend.com/suppressions/e169aa45-1ecf-4183-9955-b1499d5701d3' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+
+  # Remove by email
+  curl -X DELETE 'https://api.resend.com/suppressions/steve.wozniak@gmail.com' \
+       -H 'Authorization: Bearer re_xxxxxxxxx'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "object": "suppression",
+    "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+    "deleted": true
+  }
+  ```
+</ResponseExample>
+
+
+# Remove Suppressions
+Source: https://resend.com/docs/api-reference/suppressions/remove-suppressions
+
+POST /suppressions/batch/remove
+Remove up to 100 suppressions from the suppression list at once.
+
+<Warning>
+  The Suppressions API is currently in private beta and only available to a
+  limited number of users. APIs might change before GA.
+
+  <span />
+
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
+</Warning>
+
+## Body Parameters
+
+Provide either `emails` or `ids`, but not both.
+
+<ParamField type="array">
+  The email addresses to remove from the suppression list. Must contain between
+  1 and 100 email addresses.
+</ParamField>
+
+<ParamField type="array">
+  The suppression IDs to remove from the suppression list. Must contain between
+  1 and 100 IDs.
+</ParamField>
+
+<RequestExample>
+  ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
+  # Remove by email
+  curl -X POST 'https://api.resend.com/suppressions/batch/remove' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "emails": ["steve.wozniak@gmail.com", "bill.gates@microsoft.com"]
+  }'
+
+  # Remove by id
+  curl -X POST 'https://api.resend.com/suppressions/batch/remove' \
+       -H 'Authorization: Bearer re_xxxxxxxxx' \
+       -H 'Content-Type: application/json' \
+       -d $'{
+    "ids": ["e169aa45-1ecf-4183-9955-b1499d5701d3"]
+  }'
+  ```
+</RequestExample>
+
+<ResponseExample>
+  ```json Response theme={"theme":{"light":"github-light","dark":"vesper"}}
+  {
+    "data": [
+      {
+        "object": "suppression",
+        "id": "e169aa45-1ecf-4183-9955-b1499d5701d3",
+        "deleted": true
+      }
+    ]
+  }
+  ```
+</ResponseExample>
+
+
 # Create Template
 Source: https://resend.com/docs/api-reference/templates/create-template
 

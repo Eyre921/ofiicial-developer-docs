@@ -12,11 +12,11 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Quickstart for GitHub Actions](/en/actions/get-started/quickstart)
 
-  <p>Try out the core features of GitHub Actions in minutes.</p>
+  Try out the core features of GitHub Actions in minutes.
 
 * [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions)
 
-  Learn the basics of core concepts and essential terminology in GitHub Actions.
+  <p>Learn the basics of core concepts and essential terminology in GitHub Actions.</p>
 
 * [Using GitHub-hosted runners](/en/actions/how-tos/manage-runners/github-hosted-runners/use-github-hosted-runners)
 
@@ -36,7 +36,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Migrating to GitHub Actions](/en/actions/tutorials/migrate-to-github-actions)
 
-  Learn how to migrate your existing CI/CD workflows to GitHub Actions.
+  <p>Learn how to migrate your existing CI/CD workflows to GitHub Actions.</p>
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
@@ -44,7 +44,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 
-  You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.
+  <p>You can view metrics to monitor where your organization or repositories use GitHub Actions and how they are performing.</p>
 
 ## Links
 
