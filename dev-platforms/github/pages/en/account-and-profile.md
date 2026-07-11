@@ -28,15 +28,15 @@ Make GitHub work best for you by customizing your personal account settings and 
 
 * [Using your GitHub profile to enhance your resume](/en/account-and-profile/tutorials/using-your-github-profile-to-enhance-your-resume)
 
-  Demonstrate your skills to hiring managers with your GitHub profile.
+  <p>Demonstrate your skills to hiring managers with your GitHub profile.</p>
 
 * [Setting your commit email address](/en/account-and-profile/how-tos/email-preferences/setting-your-commit-email-address)
 
-  You can set the email address that is used to author commits on GitHub and on your computer.
+  <p>You can set the email address that is used to author commits on GitHub and on your computer.</p>
 
 * [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme)
 
-  <p>You can add a README to your GitHub profile to tell other people about yourself.</p>
+  You can add a README to your GitHub profile to tell other people about yourself.
 
 * [Managing multiple accounts](/en/account-and-profile/how-tos/account-management/managing-multiple-accounts)
 

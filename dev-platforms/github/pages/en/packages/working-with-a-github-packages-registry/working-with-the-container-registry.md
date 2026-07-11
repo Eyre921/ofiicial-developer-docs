@@ -24,7 +24,7 @@ When installing or publishing a Docker image, the Container registry supports fo
 ## Authenticating to the Container registry
 
 > \[!NOTE]
-> GitHub Packages only supports authentication using a personal access token (classic). For more information, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+> GitHub Packages only supports authentication using a personal access token (classic). For more information, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 You need an access token to publish, install, and delete private, internal, and public packages.
 
@@ -44,25 +44,25 @@ This registry supports granular permissions. For registries that support granula
 
 You can use a `GITHUB_TOKEN` in a GitHub Actions workflow to delete or restore a package using the REST API, if the token has `admin` permission to the package. Repositories that publish packages using a workflow, and repositories that you have explicitly connected to packages, are automatically granted `admin` permission to packages in the repository.
 
-For more information about the `GITHUB_TOKEN`, see [Use GITHUB\_TOKEN for authentication in workflows](/en/actions/security-guides/automatic-token-authentication#using-the-github_token-in-a-workflow). For more information about the best practices when using a registry in actions, see [Secure use reference](/en/actions/security-guides/security-hardening-for-github-actions#considering-cross-repository-access).
+For more information about the `GITHUB_TOKEN`, see [Use GITHUB\_TOKEN for authentication in workflows](/en/actions/tutorials/authenticate-with-github_token#using-the-github_token-in-a-workflow). For more information about the best practices when using a registry in actions, see [Compromised runners](/en/actions/concepts/security/compromised-runners#cross-repository-access).
 
 You can also choose to give access permissions to packages independently for GitHub Codespaces and GitHub Actions. For more information, see [Configuring a package's access control and visibility](/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-codespaces-access-to-your-package) and [Configuring a package's access control and visibility](/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility#ensuring-workflow-access-to-your-package).
 
 ### Authenticating with a personal access token (classic)
 
 > \[!NOTE]
-> GitHub Packages only supports authentication using a personal access token (classic). For more information, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+> GitHub Packages only supports authentication using a personal access token (classic). For more information, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 1. Create a new personal access token (classic) with the appropriate scopes for the tasks you want to accomplish. If your organization requires SSO, you must enable SSO for your new token.
 
    > \[!NOTE]
-   > By default, when you select the `write:packages` scope for your personal access token (classic) in the user interface, the `repo` scope will also be selected. The `repo` scope offers unnecessary and broad access, which we recommend you avoid using for GitHub Actions workflows in particular. For more information, see [Secure use reference](/en/actions/security-guides/security-hardening-for-github-actions#considering-cross-repository-access). As a workaround, you can select just the `write:packages` scope for your personal access token (classic) in the user interface with this url: `https://github.com/settings/tokens/new?scopes=write:packages`.
+   > By default, when you select the `write:packages` scope for your personal access token (classic) in the user interface, the `repo` scope will also be selected. The `repo` scope offers unnecessary and broad access, which we recommend you avoid using for GitHub Actions workflows in particular. For more information, see [Compromised runners](/en/actions/concepts/security/compromised-runners#cross-repository-access). As a workaround, you can select just the `write:packages` scope for your personal access token (classic) in the user interface with this url: `https://github.com/settings/tokens/new?scopes=write:packages`.
 
    * Select the `read:packages` scope to download container images and read their metadata.
    * Select the `write:packages` scope to download and upload container images and read and write their metadata.
    * Select the `delete:packages` scope to delete container images.
 
-   For more information, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+   For more information, see [Managing your personal access tokens](/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 2. Save your personal access token (classic). We recommend saving your token as an environment variable.
 

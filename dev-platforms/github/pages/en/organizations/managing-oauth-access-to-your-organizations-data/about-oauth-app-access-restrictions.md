@@ -12,7 +12,7 @@ Organizations can choose which OAuth apps have access to their repositories and 
 
 When OAuth app access restrictions are enabled, organization members and outside collaborators cannot authorize OAuth app access to organization resources. Users can request owner approval for OAuth apps they'd like to use, and organization owners receive a notification of pending requests.
 
-Organization owners can choose whether to allow outside collaborators to request access for unapproved OAuth apps and GitHub Apps. For more information, see [Limiting OAuth app and GitHub App access requests and installations](/en/organizations/managing-programmatic-access-to-your-organization/limiting-oauth-app-and-github-app-access-requests).
+Organization owners can choose whether to allow outside collaborators to request access for unapproved OAuth apps and GitHub Apps. For more information, see [Limiting OAuth app and GitHub App access requests and installations](/en/organizations/managing-programmatic-access-to-your-organization/limiting-oauth-app-and-github-app-access-requests-and-installations).
 
 Even if you restrict OAuth apps access in your organization, users can still authorize privileged OAuth apps and use them to access data from the organization. For more information, see [Privileged OAuth apps](/en/apps/oauth-apps/using-oauth-apps/privileged-oauth-apps).
 

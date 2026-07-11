@@ -1518,7 +1518,7 @@ When enabling Amazon Bedrock for Claude Code, keep the following in mind:
 
 Set these environment variables to specific Amazon Bedrock model IDs.
 
-Without `ANTHROPIC_DEFAULT_OPUS_MODEL`, the `opus` alias on Amazon Bedrock resolves to Opus 4.6. Set it to the Opus 4.8 ID to use the latest model:
+Without these variables, the `opus` alias on Amazon Bedrock resolves to Opus 4.8 and the `sonnet` alias resolves to Sonnet 4.5. Set each variable to pin its alias to a specific version:
 
 ```bash theme={null}
 export ANTHROPIC_DEFAULT_OPUS_MODEL='us.anthropic.claude-opus-4-8'
@@ -1530,10 +1530,10 @@ These variables use cross-region inference profile IDs (with the `us.` prefix). 
 
 Claude Code uses these default models when no pinning variables are set:
 
-| Model type       | Default value                                  |
-| :--------------- | :--------------------------------------------- |
-| Primary model    | `us.anthropic.claude-sonnet-4-5-20250929-v1:0` |
-| Small/fast model | Same as primary model                          |
+| Model type       | Default value                  |
+| :--------------- | :----------------------------- |
+| Primary model    | `us.anthropic.claude-opus-4-8` |
+| Small/fast model | Same as primary model          |
 
 Background tasks such as session title generation use the small/fast model, normally a Haiku-class model. On Amazon Bedrock, Claude Code defaults this to the primary model because Haiku may not be enabled in every account or region. To use Haiku for background tasks, set `ANTHROPIC_DEFAULT_HAIKU_MODEL` to a model ID that is available in your account.
 
@@ -3455,6 +3455,33 @@ Release notes for Claude Code, including new features, improvements, and bug fix
 This page is generated from the [CHANGELOG.md on GitHub](https://github.com/anthropics/claude-code/blob/main/CHANGELOG.md).
 
 Run `claude --version` to check your installed version.
+
+<Update label="2.1.207" description="July 11, 2026">
+  * Auto mode is now available without `CLAUDE_CODE_ENABLE_AUTO_MODE` opt-in on Bedrock, Vertex AI, and Foundry; disable via `disableAutoMode` in settings
+  * Fixed the terminal freezing and keystrokes lagging while streaming responses containing very long lists, tables, paragraphs, or code blocks
+  * Fixed remote managed settings from a non-interactive run (`claude -p`, the SDK) being permanently recorded as consented without ever showing the security consent dialog
+  * Fixed spurious prompt-injection warnings triggered by benign system-generated conversation updates
+  * Fixed the auto-updater overwriting a custom launcher script or symlink at `~/.local/bin/claude` on every release; `/doctor` now reports an externally managed launcher
+  * Fixed compound commands with `cd` prompting for permission when the only output redirect was to `/dev/null`
+  * Fixed the transcript jumping above the start of the answer when a response finishes streaming
+  * Fixed `extensions.worktreeConfig` being left in the repo's `.git/config` (breaking go-git tools like `tea`) after the last `worktree.sparsePaths` worktree was removed
+  * Fixed malformed bracket patterns in rules globs, skill paths, `.ignore`, and `.worktreeinclude` breaking file reads, file suggestions, and worktree creation
+  * Fixed a crash loop in agent teams where a malformed teammate mailbox message caused repeated errors every second until the mailbox file was manually deleted
+  * Fixed background sessions auto-named by accepting a plan not showing that name on their agent-view row
+  * Fixed background sessions that entered a git worktree resuming blank after a cold reopen from the agent list
+  * Fixed Remote Control task status updates being lost when the connection recovered from a network interruption or credential refresh
+  * Fixed Remote Control sessions hosted by the desktop app not showing background agent and workflow progress on mobile and web
+  * Fixed Deep research runs labeling every Fetch-phase agent "unknown" — chips now show the source hostname
+  * Fixed Bedrock repeatedly requesting fresh AWS SSO credentials from IAM Identity Center on every API request
+  * Improved agent view: pasting the same text again now expands the collapsed `[Pasted text #N]` placeholder instead of adding a second one
+  * Improved agent view: blocked session peeks now lead with the question and show a worded staleness clock (`waiting 3m`) instead of the same timestamp twice
+  * Changed Bedrock, Vertex, and Claude Platform on AWS to default to Claude Opus 4.8
+  * Changed auto mode to no longer read `autoMode` from `.claude/settings.local.json` (repo-resident); use `~/.claude/settings.json` instead
+  * Fixed an indefinite hang on Windows when AWS credential resolution stalls (e.g. a stuck `credential_process`): the 60-second stall guard now fires instead of waiting forever.
+  * Plugin hooks/monitors/MCP headersHelper: `${user_config.*}` in shell-form commands is now rejected (shell-injection fix). Hooks: use exec form (`args` array) or `$CLAUDE_PLUGIN_OPTION_<KEY>`; monitors and headersHelper: read the value inside the script (config file or the server's `env` block).
+  * Plugin option values (`pluginConfigs`) are no longer read from project-level `.claude/settings.json`; only user, `--settings`, and managed settings are honored
+  * Fixed `/usage-credits` amount inputs silently stripping malformed values (e.g. a pasted timestamp) to digits; malformed amounts are now rejected with an error, and amounts over \$1,000 require a typed confirmation
+</Update>
 
 <Update label="2.1.206" description="July 9, 2026">
   * Added directory path suggestions to `/cd`, matching `/add-dir` behavior
@@ -11801,13 +11828,13 @@ Claude Platform on AWS is opt-in even when AWS credentials are present in your e
 
 ### 3. Pin model versions
 
-Claude Platform on AWS uses the same model IDs as the direct Claude API. The default aliases `fable`, `opus`, `sonnet`, and `haiku` resolve to Claude Code's built-in defaults for Claude Platform on AWS, which can lag the newest release. Without `ANTHROPIC_DEFAULT_OPUS_MODEL`, the `opus` alias resolves to Opus 4.7.
+Claude Platform on AWS uses the same model IDs as the direct Claude API. The default aliases `fable`, `opus`, `sonnet`, and `haiku` resolve to Claude Code's built-in defaults for Claude Platform on AWS, which can lag the newest release. Without `ANTHROPIC_DEFAULT_OPUS_MODEL`, the `opus` alias resolves to Opus 4.8.
 
 If you deploy Claude Code to a team, pin the model IDs explicitly so a new release doesn't move everyone at once:
 
 ```bash theme={null}
 export ANTHROPIC_DEFAULT_FABLE_MODEL=claude-fable-5
-export ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-4-7
+export ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-4-8
 export ANTHROPIC_DEFAULT_SONNET_MODEL=claude-sonnet-5
 export ANTHROPIC_DEFAULT_HAIKU_MODEL=claude-haiku-4-5
 ```
@@ -13003,7 +13030,7 @@ Sometimes you want Claude to ask before every edit. Sometimes you just want
 it to ship. You shouldn't have to pick one forever.
 
 *Shift+Tab* cycles through how much Claude can do without asking: *Manual* (the
-`default` setting value) asks before each action, *acceptEdits* lets file
+`default` setting value) asks before file edits and most shell commands, *acceptEdits* lets file
 edits and common filesystem commands
 flow through while still checking before other shell commands, and *plan*
 proposes changes for your approval before anything is touched. Plan mode is
@@ -13201,14 +13228,14 @@ missing and do it on your next task. Post what changed in #claude-code.
 
 One-line replies for the questions you will be asked most.
 
-| Question                                 | Response                                                                                                                                                                                                                      |
-| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| "Does it work in VS Code?"               | Yes. There is a VS Code extension and a JetBrains plugin with the same features, embedded in your editor. [VS Code →](/docs/en/vs-code)                                                                                            |
-| "Do I have to configure anything first?" | No. Install, then run `claude` in any repo. Run `/init` once and you're set. [Quickstart →](/docs/en/quickstart)                                                                                                                   |
-| "Where does my code go?"                 | The CLI runs in your terminal and sends context to Anthropic's API for inference, with no third-party servers. Under your Enterprise plan, your code and prompts are not used to train models. [Data usage →](/docs/en/data-usage) |
-| "Can it see my whole repo?"              | It reads what you give it access to. File reads inside your working directory don't prompt; permission prompts gate edits, shell commands, and anything outside that directory. [Permissions →](/docs/en/permissions)              |
-| "How is this different from Copilot?"    | Copilot autocompletes lines. Claude Code is an agent that reads files, runs commands, and makes multi-file edits. [Overview →](/docs/en/overview)                                                                                  |
-| "What should I try first?"               | A bug you've been putting off because it's tedious. "The test in \[file] is flaky, figure out why." [Quickstart →](/docs/en/quickstart)                                                                                            |
+| Question                                 | Response                                                                                                                                                                                                                                                                                                                                                                                                          |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| "Does it work in VS Code?"               | Yes. There is a VS Code extension and a JetBrains plugin with the same features, embedded in your editor. [VS Code →](/docs/en/vs-code)                                                                                                                                                                                                                                                                                |
+| "Do I have to configure anything first?" | No. Install, then run `claude` in any repo. Run `/init` once and you're set. [Quickstart →](/docs/en/quickstart)                                                                                                                                                                                                                                                                                                       |
+| "Where does my code go?"                 | The CLI runs in your terminal and sends context to Anthropic's API for inference, with no third-party servers. Under your Enterprise plan, your code and prompts are not used to train models. [Data usage →](/docs/en/data-usage)                                                                                                                                                                                     |
+| "Can it see my whole repo?"              | It reads what you give it access to. File reads inside your working directory don't prompt; permission prompts gate edits, non-read-only shell commands, and file-tool reads outside that directory. A built-in set of read-only shell commands such as `ls` and `cat` runs without prompting; restrict it with [sandbox `denyRead` rules](/docs/en/sandboxing#filesystem-isolation). [Permissions →](/docs/en/permissions) |
+| "How is this different from Copilot?"    | Copilot autocompletes lines. Claude Code is an agent that reads files, runs commands, and makes multi-file edits. [Overview →](/docs/en/overview)                                                                                                                                                                                                                                                                      |
+| "What should I try first?"               | A bug you've been putting off because it's tedious. "The test in \[file] is flaky, figure out why." [Quickstart →](/docs/en/quickstart)                                                                                                                                                                                                                                                                                |
 
 ### Prompt templates
 
@@ -14236,7 +14263,7 @@ The `dontAsk` permission mode is available only in the [CLI](/docs/en/permission
 
 <span />
 
-Auto mode is a research preview available to all users on the Anthropic API and requires Claude Opus 4.6 or later, or Sonnet 4.6 or later. In Enterprise deployments that route Desktop to Google Cloud's Agent Platform, auto mode is off until you [set `CLAUDE_CODE_ENABLE_AUTO_MODE`](/docs/en/permission-modes#enable-auto-mode-on-bedrock-agent-platform-or-foundry), and only Claude Sonnet 5, Opus 4.7, and Opus 4.8 are supported there.
+Auto mode is available to all users on the Anthropic API and requires Claude Opus 4.6 or later, or Sonnet 4.6 or later. In Enterprise deployments that route Desktop to Google Cloud's Agent Platform, auto mode is off until you [set `CLAUDE_CODE_ENABLE_AUTO_MODE`](/docs/en/permission-modes#enable-auto-mode-on-bedrock-agent-platform-or-foundry), and only Claude Sonnet 5, Opus 4.7, and Opus 4.8 are supported there.
 
 <Tip title="Best practice">
   Start complex tasks in Plan so Claude maps out an approach before making changes. Once you approve the plan, switch to Accept edits or Manual to execute it. See [explore first, then plan, then code](/docs/en/best-practices#explore-first-then-plan-then-code) for more on this workflow.
@@ -14994,7 +15021,7 @@ Other Debian-based distributions that meet these requirements may work but aren'
 
 ## Install
 
-Install from Anthropic's apt repository so that updates arrive through your system's regular package updates.
+Install from Anthropic's apt repository so that updates arrive through your system's regular package updates. Open a terminal and run the commands in each step.
 
 <Steps>
   <Step title="Add Anthropic's apt repository">
@@ -15073,6 +15100,18 @@ This removes the signing key along with the app, so if you added the repository 
 ```bash theme={null}
 sudo rm /etc/apt/sources.list.d/claude-desktop.list
 ```
+
+## Troubleshoot
+
+### Unable to locate package claude-desktop
+
+If `sudo apt install claude-desktop` fails with `E: Unable to locate package claude-desktop`, apt didn't find the repository you added. Check the following:
+
+* Confirm the repository entry was written. `cat /etc/apt/sources.list.d/claude-desktop.list` should show the `deb` line from the [Add Anthropic's apt repository](#install) step. If the file is empty or missing, run that step again.
+* Confirm your architecture is supported. `dpkg --print-architecture` should print `amd64` or `arm64`. The repository doesn't publish packages for other architectures.
+* Run `sudo apt update` again and check its output for errors related to `downloads.claude.ai`. A network or key error there means the repository was added but couldn't be reached or verified.
+
+If the repository is in place and reachable and the package is still not found, [install from a downloaded file](#install-from-a-downloaded-file) instead.
 
 ## What's not in the Linux beta yet
 
@@ -16034,7 +16073,7 @@ Match the message you see in your terminal to a section below.
 | `Auto mode could not evaluate this action and is blocking it for safety`                      | [Server errors](#auto-mode-cannot-determine-the-safety-of-an-action)                                                          |
 | `Auto mode classifier transcript exceeded context window`                                     | [Server errors](#auto-mode-cannot-determine-the-safety-of-an-action)                                                          |
 | `Agent terminated early due to an API error`                                                  | [Server errors](#agent-terminated-early-due-to-an-api-error)                                                                  |
-| `You've hit your session limit` / `You've hit your weekly limit`                              | [Usage limits](#you%E2%80%99ve-hit-your-session-limit)                                                                        |
+| `You've hit your session limit` / `You've hit your weekly limit`                              | [Usage limits](#youve-hit-your-session-limit)                                                                                 |
 | `Usage credits required for 1M context`                                                       | [Usage limits](#usage-credits-required-for-1m-context)                                                                        |
 | `Server is temporarily limiting requests`                                                     | [Usage limits](#server-is-temporarily-limiting-requests)                                                                      |
 | `Request rejected (429)`                                                                      | [Usage limits](#request-rejected-429)                                                                                         |
@@ -16045,7 +16084,7 @@ Match the message you see in your terminal to a section below.
 | `This organization has been disabled`                                                         | [Authentication](#this-organization-has-been-disabled)                                                                        |
 | `Your organization has disabled API key authentication`                                       | [Authentication](#your-organization-has-disabled-api-key-authentication)                                                      |
 | `Your organization has disabled Claude subscription access`                                   | [Authentication](#your-organization-has-disabled-claude-subscription-access)                                                  |
-| `Routines are disabled by your organization's policy`                                         | [Authentication](#routines-are-disabled-by-your-organization%E2%80%99s-policy)                                                |
+| `Routines are disabled by your organization's policy`                                         | [Authentication](#routines-are-disabled-by-your-organizations-policy)                                                         |
 | `Remote Control is only available when using Claude via api.anthropic.com`                    | [Authentication](#remote-control-requires-the-anthropic-api)                                                                  |
 | `OAuth token revoked` / `OAuth token has expired`                                             | [Authentication](#oauth-token-revoked-or-expired)                                                                             |
 | `does not meet scope requirement user:profile`                                                | [Authentication](#oauth-scope-requirement)                                                                                    |
@@ -16056,7 +16095,7 @@ Match the message you see in your terminal to a section below.
 | `SSL certificate verification failed`                                                         | [Network](#ssl-certificate-errors)                                                                                            |
 | `SSL certificate error (...)` during login or startup                                         | [Network](#ssl-certificate-errors)                                                                                            |
 | `403` with `x-deny-reason: host_not_allowed` in a cloud or routine session                    | [Network](#host-not-allowed-in-a-cloud-session)                                                                               |
-| `Couldn't reconnect to your Remote Control session`                                           | [Network](#couldn%E2%80%99t-reconnect-to-your-remote-control-session)                                                         |
+| `Couldn't reconnect to your Remote Control session`                                           | [Network](#couldnt-reconnect-to-your-remote-control-session)                                                                  |
 | `Prompt is too long`                                                                          | [Request errors](#prompt-is-too-long)                                                                                         |
 | `Error during compaction: Conversation too long`                                              | [Request errors](#error-during-compaction-conversation-too-long)                                                              |
 | `Request too large`                                                                           | [Request errors](#request-too-large)                                                                                          |
@@ -16064,10 +16103,10 @@ Match the message you see in your terminal to a section below.
 | `Unable to resize image`                                                                      | [Request errors](#unable-to-resize-image)                                                                                     |
 | `PDF too large` / `PDF is password protected`                                                 | [Request errors](#pdf-errors)                                                                                                 |
 | `Extra inputs are not permitted`                                                              | [Request errors](#extra-inputs-are-not-permitted)                                                                             |
-| `There's an issue with the selected model`                                                    | [Request errors](#there%E2%80%99s-an-issue-with-the-selected-model)                                                           |
+| `There's an issue with the selected model`                                                    | [Request errors](#theres-an-issue-with-the-selected-model)                                                                    |
 | `Model ... is not a recognized model id`                                                      | [Request errors](#model-is-not-a-recognized-model-id)                                                                         |
 | `Claude Opus is not available with the Claude Pro plan`                                       | [Request errors](#claude-opus-is-not-available-with-the-claude-pro-plan)                                                      |
-| `Model ... is restricted by your organization's settings`                                     | [Request errors](#model-is-restricted-by-your-organization%E2%80%99s-settings)                                                |
+| `Model ... is restricted by your organization's settings`                                     | [Request errors](#model-is-restricted-by-your-organizations-settings)                                                         |
 | `thinking.type.enabled is not supported for this model`                                       | [Request errors](#thinking-type-enabled-is-not-supported-for-this-model)                                                      |
 | `max_tokens must be greater than thinking.budget_tokens`                                      | [Request errors](#thinking-budget-exceeds-output-limit)                                                                       |
 | `API Error: 400 due to tool use concurrency issues`                                           | [Request errors](#tool-use-or-thinking-block-mismatch)                                                                        |
@@ -16256,7 +16295,9 @@ When a rate limit, overload, or server error interrupts a foreground subagent th
 
 These errors mean a quota tied to your account or plan has been reached. They are distinct from [server errors](#server-errors), which affect everyone.
 
-### You've hit your session limit
+<h3>
+  You've hit your session limit
+</h3>
 
 Subscription plans include a rolling usage allowance. When it runs out you see one of these messages:
 
@@ -16293,7 +16334,7 @@ When this error appears mid-conversation because the context grew past 200K toke
 
 * Run `/model` and select the variant without the `[1m]` suffix to fall back to the standard context window
 * Run `/usage-credits` to turn on metered billing for the 1M variant on Pro and Max, or to request it from your admin on Team and Enterprise
-* If the error persists after `/model`, a 1M model ID may be set elsewhere. See [There's an issue with the selected model](#there%E2%80%99s-an-issue-with-the-selected-model) for the configuration locations to check in priority order.
+* If the error persists after `/model`, a 1M model ID may be set elsewhere. See [There's an issue with the selected model](#theres-an-issue-with-the-selected-model) for the configuration locations to check in priority order.
 * To remove 1M variants from the model picker entirely, set [`CLAUDE_CODE_DISABLE_1M_CONTEXT=1`](/docs/en/env-vars)
 
 ### Server is temporarily limiting requests
@@ -16452,7 +16493,9 @@ The Agent SDK and `-p` non-interactive mode surface this as the `oauth_org_not_a
 * Authenticate with a Console API key instead of your subscription. See [Claude Console authentication](/docs/en/authentication#claude-console-authentication) for setup.
 * If you are the admin and do not see an option to enable access, contact [Anthropic support](https://support.claude.com)
 
-### Routines are disabled by your organization's policy
+<h3>
+  Routines are disabled by your organization's policy
+</h3>
 
 An Owner in your Team or Enterprise organization has turned off routines at the organization level. The error appears when you try to create or run a routine, including from `/schedule` and the [Routines](/docs/en/routines) UI on claude.ai/code.
 
@@ -16628,7 +16671,9 @@ This is not a client-side network problem. Cloud sessions and [routines](/docs/e
 
 See [Network access](/docs/en/claude-code-on-the-web#network-access) for access levels and the default allowlist. Local CLI sessions are not affected by this policy.
 
-### Couldn't reconnect to your Remote Control session
+<h3>
+  Couldn't reconnect to your Remote Control session
+</h3>
 
 ```text theme={null}
 Couldn't reconnect to your Remote Control session. Retry, or start a fresh session without --resume.
@@ -16764,7 +16809,9 @@ Claude Code sends beta-only fields such as `context_management`, `effort`, and t
 * Configure your gateway to forward the `anthropic-beta` header. See [feature pass-through](/docs/en/llm-gateway-protocol#feature-pass-through) for what gateways must forward.
 * As a fallback, set [`CLAUDE_CODE_DISABLE_EXPERIMENTAL_BETAS=1`](/docs/en/env-vars) before launching. This disables features that require the beta header so requests succeed through a gateway that cannot forward it.
 
-### There's an issue with the selected model
+<h3>
+  There's an issue with the selected model
+</h3>
 
 The configured model name was not recognized or your account lacks access to it. As of v2.1.160 the trailing hint, shown here in its interactive form, varies by surface.
 
@@ -16783,7 +16830,7 @@ There's an issue with the selected model (claude-...). It may not exist or you m
 
 ### Model is not a recognized model id
 
-The model string you passed to a model switch isn't a model alias, a model ID this Claude Code version knows, or an ID that starts with `claude-`. The usual causes are a typo in the ID, a display name such as `Sonnet 5` where the ID `claude-sonnet-5` is expected, or an alias that only newer Claude Code versions recognize. Claude Code rejects the switch immediately. Before v2.1.200, Claude Code saved the string and failed on the next request with [There's an issue with the selected model](#there%E2%80%99s-an-issue-with-the-selected-model).
+The model string you passed to a model switch isn't a model alias, a model ID this Claude Code version knows, or an ID that starts with `claude-`. The usual causes are a typo in the ID, a display name such as `Sonnet 5` where the ID `claude-sonnet-5` is expected, or an alias that only newer Claude Code versions recognize. Claude Code rejects the switch immediately. Before v2.1.200, Claude Code saved the string and failed on the next request with [There's an issue with the selected model](#theres-an-issue-with-the-selected-model).
 
 ```text theme={null}
 Model "claud-sonnet-5" is not a recognized model id. Did you mean 'claude-sonnet-5'?
@@ -16797,7 +16844,7 @@ Claude Code produces this error locally at the moment the switch is requested, b
 
 * Run `/model` with no argument to open the picker and choose from the models available to your account, then pass the alias or ID shown there
 * If you used an alias that a newer Claude Code version supports, run `claude update`. A full ID that starts with `claude-` passes this check even when the model is newer than your Claude Code version, so upgrading isn't needed for those.
-* A model saved before v2.1.200 isn't repaired by this check. If a stale value keeps coming back, remove it from the locations listed under [There's an issue with the selected model](#there%E2%80%99s-an-issue-with-the-selected-model).
+* A model saved before v2.1.200 isn't repaired by this check. If a stale value keeps coming back, remove it from the locations listed under [There's an issue with the selected model](#theres-an-issue-with-the-selected-model).
 * The check runs only on the Anthropic API. On Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, [Claude Platform on AWS](/docs/en/claude-platform-on-aws), and behind an [LLM gateway](/docs/en/llm-gateway) or a custom `ANTHROPIC_BASE_URL`, your provider or gateway defines the model names, so Claude Code accepts any string and passes it through.
 
 ### Claude Opus is not available with the Claude Pro plan
@@ -16814,7 +16861,9 @@ Claude Opus is not available with the Claude Pro plan · Select a different mode
 * If you upgraded your plan recently and still see this, run `/logout` then `/login`. The stored token reflects your plan at the time you signed in, so upgrading on the web does not take effect in an existing session until you re-authenticate.
 * See [claude.com/pricing](https://claude.com/pricing) for which models each plan includes
 
-### Model is restricted by your organization's settings
+<h3>
+  Model is restricted by your organization's settings
+</h3>
 
 Your organization admin has disabled this model in the claude.ai admin console, or it is excluded by an [`availableModels`](/docs/en/model-config#restrict-model-selection) allowlist in managed settings. When the restricted model was set with `--model`, `ANTHROPIC_MODEL`, or the `model` setting, Claude Code substitutes an allowed model and continues. Typing `/model <name>` for a restricted model is rejected with `Run /model to choose a different model.` and the session keeps its current model.
 
@@ -19584,7 +19633,7 @@ Claude Code disables [MCP tool search](/docs/en/mcp#scale-with-mcp-tool-search) 
 
 Set these environment variables to specific Google Cloud's Agent Platform model IDs.
 
-Without `ANTHROPIC_DEFAULT_OPUS_MODEL`, the `opus` alias on Google Cloud's Agent Platform resolves to Opus 4.6. Set it to the Opus 4.8 ID to use the latest model:
+Without these variables, the `opus` alias on Google Cloud's Agent Platform resolves to Opus 4.8 and the `sonnet` alias resolves to Sonnet 4.5. Set each variable to pin its alias to a specific version:
 
 ```bash theme={null}
 export ANTHROPIC_DEFAULT_OPUS_MODEL='claude-opus-4-8'
@@ -19596,10 +19645,10 @@ For current and legacy model IDs, see [Models overview](https://platform.claude.
 
 Claude Code uses these default models when no pinning variables are set:
 
-| Model type       | Default value                |
-| :--------------- | :--------------------------- |
-| Primary model    | `claude-sonnet-4-5@20250929` |
-| Small/fast model | Same as primary model        |
+| Model type       | Default value         |
+| :--------------- | :-------------------- |
+| Primary model    | `claude-opus-4-8`     |
+| Small/fast model | Same as primary model |
 
 Background tasks such as session title generation use the small/fast model, normally a Haiku-class model. On Google Cloud's Agent Platform, Claude Code defaults this to the primary model because Haiku may not be enabled in every project or region. To use Haiku for background tasks, set `ANTHROPIC_DEFAULT_HAIKU_MODEL` to a model ID that is available in your project.
 
@@ -21072,7 +21121,7 @@ Press `Shift+Tab` to cycle through permission modes:
 * **Manual**: Claude asks before file edits and shell commands
 * **Accept edits**: Claude edits files and runs common filesystem commands like `mkdir` and `mv` without asking, still asks for other commands
 * **Plan**: Claude explores and proposes a plan without editing your source files; permission prompts still apply as in Manual mode
-* **Auto**: Claude evaluates all actions with background safety checks. Currently a research preview
+* **Auto**: Claude evaluates all actions with background safety checks
 
 You can also allow specific commands in `.claude/settings.json` so Claude doesn't ask each time. This is useful for trusted commands like `npm test` or `git status`. Settings can be scoped from organization-wide policies down to personal preferences. See [Permissions](/docs/en/permissions) for details.
 
@@ -25403,7 +25452,14 @@ remembering exact version numbers:
 | **`opus[1m]`**   | Uses Opus with a [1 million token context window](https://platform.claude.com/docs/en/build-with-claude/context-windows#1m-token-context-window) for long sessions                                                                                                                                                                 |
 | **`opusplan`**   | Special mode that uses `opus` during plan mode, then switches to `sonnet` for execution                                                                                                                                                                                                                                            |
 
-On the Anthropic API, `opus` resolves to Opus 4.8 and `sonnet` resolves to Sonnet 5. On [Claude Platform on AWS](/docs/en/claude-platform-on-aws), `opus` resolves to Opus 4.7 and `sonnet` resolves to Sonnet 4.6. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, `opus` resolves to Opus 4.6 and `sonnet` resolves to Sonnet 4.5; newer models are available on those providers by selecting the full model name explicitly or setting `ANTHROPIC_DEFAULT_OPUS_MODEL` or `ANTHROPIC_DEFAULT_SONNET_MODEL`.
+What each alias resolves to depends on the provider:
+
+* **Anthropic API**: `opus` resolves to Opus 4.8 and `sonnet` resolves to Sonnet 5.
+* **[Claude Platform on AWS](/docs/en/claude-platform-on-aws)**: `opus` resolves to Opus 4.8 and `sonnet` resolves to Sonnet 4.6.
+* **Amazon Bedrock and Google Cloud's Agent Platform**: `opus` resolves to Opus 4.8 and `sonnet` resolves to Sonnet 4.5.
+* **Microsoft Foundry**: `opus` resolves to Opus 4.6 and `sonnet` resolves to Sonnet 4.5.
+
+Where an alias resolves to an older model, newer models are available by selecting the full model name explicitly or setting `ANTHROPIC_DEFAULT_OPUS_MODEL` or `ANTHROPIC_DEFAULT_SONNET_MODEL`.
 
 Aliases point to the recommended version for your provider and update over time. To pin to a specific version, use the full model name, for example `claude-opus-4-8`, or set the corresponding environment variable like `ANTHROPIC_DEFAULT_OPUS_MODEL`.
 
@@ -25463,7 +25519,7 @@ When a model switch is requested through the [Agent SDK](/docs/en/agent-sdk/over
 
 Claude Code rejects an unrecognized string with `Model "<name>" is not a recognized model id.` and the session keeps its current model, instead of saving the string and failing on the next request. See [the error reference](/docs/en/errors#model-is-not-a-recognized-model-id) for recovery steps.
 
-The check runs only on the Anthropic API. On Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, [Claude Platform on AWS](/docs/en/claude-platform-on-aws), and behind an [LLM gateway](/docs/en/llm-gateway) or a custom `ANTHROPIC_BASE_URL`, your provider or gateway defines the model names, so Claude Code passes any string through without checking it. The check also doesn't cover the `--model` flag, the `ANTHROPIC_MODEL` environment variable, or the `model` setting; a mistyped value there produces [There's an issue with the selected model](/docs/en/errors#there%E2%80%99s-an-issue-with-the-selected-model) on the first request instead.
+The check runs only on the Anthropic API. On Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, [Claude Platform on AWS](/docs/en/claude-platform-on-aws), and behind an [LLM gateway](/docs/en/llm-gateway) or a custom `ANTHROPIC_BASE_URL`, your provider or gateway defines the model names, so Claude Code passes any string through without checking it. The check also doesn't cover the `--model` flag, the `ANTHROPIC_MODEL` environment variable, or the `model` setting; a mistyped value there produces [There's an issue with the selected model](/docs/en/errors#theres-an-issue-with-the-selected-model) on the first request instead.
 
 When the requested model has a scheduled retirement date or is automatically remapped to a newer version, Claude Code shows a warning that names the requested model. Interactive sessions show it as a startup notice. From v2.1.182, the same warning is written to stderr in [non-interactive mode](/docs/en/headless) when using the default text output format. The check also covers a `model` set in [subagent frontmatter](/docs/en/sub-agents). The stderr warning is suppressed for `--output-format json` and `stream-json`; read the actual model from the `modelUsage` field of the [result message](/docs/en/headless#get-structured-output) instead.
 
@@ -25668,9 +25724,10 @@ Effort limits are delivered together with [organization model restrictions](#org
 The behavior of `default` depends on your account type:
 
 * **Max, Team Premium, Enterprise pay-as-you-go, and Anthropic API**: defaults to Opus 4.8
-* **Claude Platform on AWS**: defaults to Opus 4.7
+* **Claude Platform on AWS**: defaults to Opus 4.8
 * **Pro, Team Standard, and Enterprise subscription seats**: defaults to Sonnet 5
-* **Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry**: defaults to Sonnet 4.5
+* **Amazon Bedrock and Google Cloud's Agent Platform**: defaults to Opus 4.8
+* **Microsoft Foundry**: defaults to Sonnet 4.5
 
 Enterprise pay-as-you-go means an Enterprise organization billed by usage rather than by subscription seat.
 
@@ -25728,7 +25785,7 @@ Two cases cause an element to be skipped:
 
 This section covers content-based fallback from Fable 5. For availability-based fallback when a model is overloaded or unavailable, see [Fallback model chains](#fallback-model-chains).
 
-Fable 5 runs with safety classifiers for cybersecurity and biology content. When a classifier flags a request, Claude Code re-runs that request on the default Opus model and shows a notice in the transcript: Opus 4.8 on the Anthropic API and [LLM gateway](/docs/en/llm-gateway) deployments, or Opus 4.7 on [Claude Platform on AWS](/docs/en/claude-platform-on-aws).
+Fable 5 runs with safety classifiers for cybersecurity and biology content. When a classifier flags a request, Claude Code re-runs that request on Opus 4.8 and shows a notice in the transcript.
 
 The session then continues on that Opus model. To return to Fable 5, run `/model fable`.
 
@@ -27407,7 +27464,7 @@ Claude Code is an AI-powered coding assistant that helps you build features, fix
 
 ## Get started
 
-Choose your environment to get started. Most surfaces require a [Claude subscription](https://claude.com/pricing?utm_source=claude_code\&utm_medium=docs\&utm_content=overview_pricing) or [Anthropic Console](https://console.anthropic.com/) account. The Terminal CLI and VS Code also support [third-party providers](/docs/en/third-party-integrations).
+Claude Code runs on several surfaces: the terminal, IDE extensions, a desktop app, and the web. Choose one from the tabs below to get started. Most surfaces require a [Claude subscription](https://claude.com/pricing?utm_source=claude_code\&utm_medium=docs\&utm_content=overview_pricing) or [Anthropic Console](https://console.anthropic.com/) account. The Terminal CLI and VS Code also support [third-party providers](/docs/en/third-party-integrations).
 
 <Tabs>
   <Tab title="Terminal">
@@ -27600,7 +27657,7 @@ Here are some of the ways you can use Claude Code:
   </Accordion>
 
   <Accordion title="Work from anywhere" icon="globe">
-    Sessions aren't tied to a single surface. Move work between environments as your context changes:
+    Sessions aren't tied to a single surface. Move work between them as your context changes:
 
     * Step away from your desk and keep working from your phone or any browser with [Remote Control](/docs/en/remote-control)
     * Message [Dispatch](/docs/en/desktop#sessions-from-dispatch) a task from your phone and open the Desktop session it creates
@@ -27612,9 +27669,9 @@ Here are some of the ways you can use Claude Code:
 
 ## Use Claude Code everywhere
 
-Each surface connects to the same underlying Claude Code engine, so your CLAUDE.md files, settings, and MCP servers work across all of them.
+Each [surface](/docs/en/glossary#surface) connects to the same underlying Claude Code engine, so your CLAUDE.md files, settings, and MCP servers work across all of them.
 
-Beyond the [Terminal](/docs/en/quickstart), [VS Code](/docs/en/vs-code), [JetBrains](/docs/en/jetbrains), [Desktop](/docs/en/desktop), and [Web](/docs/en/claude-code-on-the-web) environments above, Claude Code integrates with CI/CD, chat, and browser workflows:
+Beyond the [Terminal](/docs/en/quickstart), [VS Code](/docs/en/vs-code), [JetBrains](/docs/en/jetbrains), [Desktop](/docs/en/desktop), and [Web](/docs/en/claude-code-on-the-web) surfaces above, Claude Code integrates with CI/CD, chat, and browser workflows:
 
 | I want to...                                                                    | Best option                                                                                                        |
 | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
@@ -27816,7 +27873,7 @@ Auto mode lets Claude execute without routine permission prompts. A separate cla
 Auto mode also nudges Claude to keep working without stopping for clarifying questions, though Claude still asks when your prompt or a skill explicitly relies on it. For stronger autonomous behavior while keeping permission prompts, set the [Proactive output style](/docs/en/output-styles) instead.
 
 <Warning>
-  Auto mode is a research preview. It reduces permission prompts but does not guarantee safety. Use it for tasks where you trust the general direction, not as a replacement for review on sensitive operations.
+  Auto mode reduces permission prompts but does not guarantee safety. Use it for tasks where you trust the general direction, not as a replacement for review on sensitive operations.
 </Warning>
 
 Auto mode is available only when your account meets all of these requirements:
@@ -28087,11 +28144,11 @@ Claude Code supports fine-grained permissions so that you can specify exactly wh
 
 Claude Code uses a tiered permission system to balance power and safety:
 
-| Tool type         | Example          | Approval required | "Yes, don't ask again" behavior               |
-| :---------------- | :--------------- | :---------------- | :-------------------------------------------- |
-| Read-only         | File reads, Grep | No                | N/A                                           |
-| Bash commands     | Shell execution  | Yes               | Permanently per project directory and command |
-| File modification | Edit/write files | Yes               | Until session end                             |
+| Tool type         | Example          | Approval required                                                                   | "Yes, don't ask again" behavior               |
+| :---------------- | :--------------- | :---------------------------------------------------------------------------------- | :-------------------------------------------- |
+| Read-only         | File reads, Grep | No, within the [working directory and additional directories](#working-directories) | N/A                                           |
+| Bash commands     | Shell execution  | Yes, except a built-in set of [read-only commands](#read-only-commands)             | Permanently per project directory and command |
+| File modification | Edit/write files | Yes                                                                                 | Until session end                             |
 
 ## Manage permissions
 
@@ -28120,7 +28177,7 @@ Claude Code supports several permission modes that control how it approves tool 
 | `default`           | Standard behavior: prompts for permission on first use of each tool. Labeled Manual in the CLI and the VS Code and JetBrains extensions, and Claude Code accepts `manual` as an alias. The label and alias require Claude Code v2.1.200 or later |
 | `acceptEdits`       | Automatically accepts file edits and common filesystem commands such as `mkdir`, `touch`, `mv`, and `cp` for paths in the working directory or `additionalDirectories`                                                                           |
 | `plan`              | Claude reads files and runs read-only shell commands to explore but doesn't edit your source files. Labeled Plan in the CLI and the VS Code extension                                                                                            |
-| `auto`              | Auto-approves tool calls with background safety checks that verify actions align with your request. Currently a research preview                                                                                                                 |
+| `auto`              | Auto-approves tool calls with background safety checks that verify actions align with your request                                                                                                                                               |
 | `dontAsk`           | Auto-denies tools unless pre-approved via `/permissions` or `permissions.allow` rules                                                                                                                                                            |
 | `bypassPermissions` | Skips permission prompts, except those forced by explicit `ask` rules. Root and home directory removals such as `rm -rf /` also still prompt as a circuit breaker                                                                                |
 
@@ -33024,7 +33081,7 @@ Your code's security is paramount. Claude Code is built with security at its cor
 
 Claude Code uses strict read-only permissions by default. When additional actions are needed (editing files, running tests, executing commands), Claude Code requests explicit permission. Users control whether to approve actions once or allow them automatically.
 
-Claude Code requires approval before running Bash commands that can modify your system. A built-in set of read-only commands such as `ls`, `cat`, and `git status` runs without a prompt. This approach lets users and organizations configure permissions directly.
+Claude Code requires approval before running Bash commands that can modify your system. A built-in set of [read-only commands](/docs/en/permissions#read-only-commands) such as `ls`, `cat`, and `git status` runs without a prompt. This approach lets users and organizations configure permissions directly.
 
 For detailed permission configuration, see [Permissions](/docs/en/permissions).
 
@@ -33033,7 +33090,7 @@ For detailed permission configuration, see [Permissions](/docs/en/permissions).
 To mitigate risks in agentic systems:
 
 * **Sandboxed bash tool**: [Sandbox](/docs/en/sandboxing) bash commands with filesystem and network isolation, reducing permission prompts while maintaining security. Enable with `/sandbox` to define boundaries where Claude Code can work autonomously
-* **Write access restriction**: Claude Code can only write to the folder where it was started and its subfolders—it cannot modify files in parent directories without explicit permission. While Claude Code can read files outside the working directory (useful for accessing system libraries and dependencies), write operations are strictly confined to the project scope, creating a clear security boundary
+* **Working directory boundary**: Claude Code can only write to the folder where it was started and its subfolders, and cannot modify files in parent directories without explicit permission. Reading paths outside this boundary with the Read, Grep, and Glob tools is possible after an approval prompt. Extend the boundary with [additional directories](/docs/en/permissions#working-directories) to skip the prompt, or restrict the broader read access available to read-only Bash commands with [sandbox `denyRead` rules](/docs/en/sandboxing#filesystem-isolation), which apply only when sandboxing is enabled
 * **Prompt fatigue mitigation**: Support for allowlisting frequently used safe commands per-user, per-codebase, or per-organization
 * **Accept Edits mode**: Auto-approves file edits and a fixed set of filesystem Bash commands like `mkdir`, `touch`, `rm`, `mv`, `cp`, and `sed` for paths in the working directory. Other Bash commands and out-of-scope paths still prompt
 
@@ -39010,7 +39067,7 @@ This page covers performance, stability, and search problems once Claude Code is
 | Login loops, OAuth errors, `403 Forbidden`, "organization disabled", Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry credentials | [Troubleshoot installation and login](/docs/en/troubleshoot-install#login-and-authentication) |
 | Settings not applying, hooks not firing, MCP servers not loading                                                                                     | [Debug your configuration](/docs/en/debug-your-config)                                        |
 | `API Error: 5xx`, `529 Overloaded`, `429`, request validation errors                                                                                 | [Error reference](/docs/en/errors)                                                            |
-| `model not found` or `you may not have access to it`                                                                                                 | [Error reference](/docs/en/errors#there%E2%80%99s-an-issue-with-the-selected-model)           |
+| `model not found` or `you may not have access to it`                                                                                                 | [Error reference](/docs/en/errors#theres-an-issue-with-the-selected-model)                    |
 | VS Code extension not connecting or detecting Claude                                                                                                 | [VS Code integration](/docs/en/vs-code#fix-common-issues)                                     |
 | JetBrains plugin or IDE not detected                                                                                                                 | [JetBrains integration](/docs/en/jetbrains#troubleshooting)                                   |
 | High CPU or memory, slow responses, hangs, search not finding files                                                                                  | [Performance and stability](#performance-and-stability) below                            |
@@ -39409,7 +39466,7 @@ For more ideas on what you can do with Claude Code, see [Common workflows](/docs
 The prompt box supports several features:
 
 * **Permission modes**: click the mode indicator at the bottom of the prompt box to switch modes, or set the default in VS Code settings under `claudeCode.initialPermissionMode`. See [permission modes](/docs/en/permission-modes#switch-permission-modes) for every mode the indicator offers.
-  * **Manual**: Claude asks permission before each action.
+  * **Manual**: Claude asks permission before file edits and most shell commands.
   * **Plan**: Claude describes what it will do and waits for approval before making changes. VS Code automatically opens the plan as a full Markdown document where you can add inline comments to give feedback before Claude begins.
   * **Edit automatically**: Claude makes edits without asking.
 * **Command menu**: click `/` or type `/` to open the command menu. Options include attaching files, switching models, toggling extended thinking, viewing plan usage (`/usage`), and starting a [Remote Control](/docs/en/remote-control) session (`/remote-control`). The Customize section provides access to MCP servers, hooks, memory, permissions, and plugins. Items with a terminal icon open in the integrated terminal.
@@ -48437,7 +48494,7 @@ Configuration dataclass for Claude Code queries.
 class ClaudeAgentOptions:
     tools: list[str] | ToolsPreset | None = None
     allowed_tools: list[str] = field(default_factory=list)
-    system_prompt: str | SystemPromptPreset | None = None
+    system_prompt: str | SystemPromptPreset | SystemPromptFile | None = None
     mcp_servers: dict[str, McpServerConfig] | str | Path = field(default_factory=dict)
     strict_mcp_config: bool = False
     permission_mode: PermissionMode | None = None
@@ -48483,7 +48540,7 @@ class ClaudeAgentOptions:
 | :---------------------------- | :------------------------------------------------------------------------------------ | :--------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `tools`                       | `list[str] \| ToolsPreset \| None`                                                    | `None`                             | Tools configuration. Use `{"type": "preset", "preset": "claude_code"}` for Claude Code's default tools                                                                                                                                                                                                                                                                                                                                     |
 | `allowed_tools`               | `list[str]`                                                                           | `[]`                               | Tools to auto-approve without prompting. This does not restrict Claude to only these tools; unlisted tools fall through to `permission_mode` and `can_use_tool`. Use `disallowed_tools` to block tools. See [Permissions](/docs/en/agent-sdk/permissions#allow-and-deny-rules)                                                                                                                                                                  |
-| `system_prompt`               | `str \| SystemPromptPreset \| None`                                                   | `None`                             | System prompt configuration. Pass a string for custom prompt, or use `{"type": "preset", "preset": "claude_code"}` for Claude Code's system prompt. Add `"append"` to extend the preset                                                                                                                                                                                                                                                    |
+| `system_prompt`               | `str \| SystemPromptPreset \| SystemPromptFile \| None`                               | `None`                             | System prompt configuration. Pass a string for a custom prompt, `{"type": "preset", "preset": "claude_code"}` for Claude Code's system prompt with optional `"append"`, or `{"type": "file", "path": "..."}` to load a large prompt from disk. See [`SystemPromptPreset`](#systempromptpreset) and [`SystemPromptFile`](#systempromptfile)                                                                                                 |
 | `mcp_servers`                 | `dict[str, McpServerConfig] \| str \| Path`                                           | `{}`                               | MCP server configurations or path to config file                                                                                                                                                                                                                                                                                                                                                                                           |
 | `strict_mcp_config`           | `bool`                                                                                | `False`                            | When `True`, use only the servers passed in `mcp_servers` and ignore project `.mcp.json`, user settings, plugin-provided MCP servers, and [claude.ai connectors](/docs/en/mcp#use-mcp-servers-from-claude-ai). Maps to the CLI `--strict-mcp-config` flag                                                                                                                                                                                       |
 | `permission_mode`             | `PermissionMode \| None`                                                              | `None`                             | Permission mode for tool usage                                                                                                                                                                                                                                                                                                                                                                                                             |
@@ -48578,6 +48635,21 @@ class SystemPromptPreset(TypedDict):
 | `preset`                   | Yes      | Must be `"claude_code"` to use Claude Code's system prompt                                                                                                                                                                                                                                                                   |
 | `append`                   | No       | Additional instructions to append to the preset system prompt                                                                                                                                                                                                                                                                |
 | `exclude_dynamic_sections` | No       | Move per-session context such as working directory, the git-repo flag, and auto-memory paths from the system prompt into the first user message. Improves prompt-cache reuse across users and machines. See [Modify system prompts](/docs/en/agent-sdk/modifying-system-prompts#improve-prompt-caching-across-users-and-machines) |
+
+### `SystemPromptFile`
+
+Configuration for loading a custom system prompt from a file instead of passing it as a string. The SDK maps this to the CLI [`--system-prompt-file`](/docs/en/cli-reference#system-prompt-flags) flag. Use the file form when the prompt is large: the SDK passes a string `system_prompt` on the CLI subprocess argv, which is subject to OS command-line length limits before the SDK sends any API request. On Linux a single argument longer than roughly 128 KB fails at process spawn with `Argument list too long`. On Windows the whole command line is capped at roughly 32 KB, so the string form fails at a lower threshold.
+
+```python theme={null}
+class SystemPromptFile(TypedDict):
+    type: Literal["file"]
+    path: str
+```
+
+| Field  | Required | Description                                   |
+| :----- | :------- | :-------------------------------------------- |
+| `type` | Yes      | Must be `"file"` to load the prompt from disk |
+| `path` | Yes      | Path to a file containing the system prompt   |
 
 ### `SettingSource`
 
@@ -62261,7 +62333,7 @@ Learn more: [Auto memory](/docs/en/memory#auto-memory)
 
 ### Auto mode
 
-A [permission mode](#permission-mode) where a separate classifier model reviews actions in the background, so most run without approval prompts; explicit ask rules still prompt. The classifier blocks scope escalation, untrusted infrastructure, and [prompt injection](#prompt-injection). It never sees tool results, so injected instructions cannot influence its decisions. Auto mode is a research preview.
+A [permission mode](#permission-mode) where a separate classifier model reviews actions in the background, so most run without approval prompts; explicit ask rules still prompt. The classifier blocks scope escalation, untrusted infrastructure, and [prompt injection](#prompt-injection). It never sees tool results, so injected instructions cannot influence its decisions.
 
 Learn more: [Eliminate prompts with auto mode](/docs/en/permission-modes#eliminate-prompts-with-auto-mode)
 
@@ -69342,6 +69414,8 @@ Claude Code has access to a set of built-in tools that help it understand and mo
 
 To add custom tools, connect an [MCP server](/docs/en/mcp). To extend Claude with reusable prompt-based workflows, write a [skill](/docs/en/skills), which runs through the existing `Skill` tool rather than adding a new tool entry.
 
+The Permission required column shows whether the tool prompts in the default permission mode for paths inside the working directory. File-access tools marked No, including `Read`, `Grep`, and `Glob`, still prompt for paths outside the [working directory and additional directories](/docs/en/permissions#working-directories). `Bash` is marked Yes but runs a built-in set of [read-only commands](/docs/en/permissions#read-only-commands) without prompting.
+
 | Tool                   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | Permission required |
 | :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------ |
 | `Agent`                | Spawns a [subagent](/docs/en/sub-agents) with its own context window to handle a task. See [Agent tool behavior](#agent-tool-behavior)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | No                  |
@@ -71342,12 +71416,192 @@ Authenticate MCP servers from your shell with claude mcp login, get a response t
 [Full changelog for v2.1.185–v2.1.193 →](/docs/en/changelog#2-1-185)
 
 
+# Week 27 · June 29 – July 3, 2026
+Source: https://code.claude.com/docs/en/whats-new/2026-w27
+
+Claude Sonnet 5 becomes the default model, Claude in Chrome reaches general availability, subagents run in the background by default, Claude Desktop arrives on Linux in beta, and /radio tunes into Claude FM.
+
+<div>
+  <span>Releases <a href="/docs/en/changelog#2-1-195">v2.1.195 → v2.1.201</a></span>
+  <span>5 features · June 29 – July 3</span>
+</div>
+
+<div>
+  <div>
+    <span>Claude Sonnet 5</span>
+    <span>new model</span>
+  </div>
+
+  <p>Sonnet 5 is the new default model for Pro, Team Standard, and Enterprise subscription seats: top-tier coding and tool use at Sonnet pricing, with a native 1M-token context window and adaptive thinking on by default. API pricing is promotional at \$2/\$10 per MTok through August 31. Requires v2.1.197 or later.</p>
+
+  <p>Switch to Sonnet 5 by name, or pick it from the model picker:</p>
+
+  ```text Claude Code theme={null}
+  > /model claude-sonnet-5
+  ```
+
+  <a href="/docs/en/model-config#available-models">Model configuration</a>
+</div>
+
+<div>
+  <div>
+    <span>Claude in Chrome is generally available</span>
+    <span>v2.1.198</span>
+  </div>
+
+  <p>The Chrome integration is out of preview for everyone on a direct Anthropic plan. Claude Code drives your browser through the Claude in Chrome extension: it opens tabs, clicks through pages, fills forms, reads console logs, and shares your login state, so it can test the app it builds without you switching contexts.</p>
+
+  <a href="/docs/en/chrome">Use Claude Code with Chrome</a>
+</div>
+
+<div>
+  <div>
+    <span>Subagents run in the background by default</span>
+    <span>v2.1.198</span>
+  </div>
+
+  <p>Claude now keeps working while subagents run and picks up their results when they finish, instead of pausing the conversation to wait. Claude still runs a subagent in the foreground when it needs the result before continuing, and background subagents surface every permission prompt in your main session. Pin a subagent's behavior with the <code>background</code> frontmatter field.</p>
+
+  <a href="/docs/en/sub-agents#run-subagents-in-foreground-or-background">Run subagents in foreground or background</a>
+</div>
+
+<div>
+  <div>
+    <span>Claude Desktop on Linux</span>
+    <span>Desktop</span>
+  </div>
+
+  <p>The Claude desktop app is now available on Ubuntu 22.04+ and Debian 12+ in beta, on x86\_64 and arm64. You get the same Chat, Cowork, and Claude Code experience as macOS and Windows: parallel sessions, visual diff review, an integrated terminal and editor, and live app preview. Installs from Anthropic's apt repository, so updates arrive through regular package updates.</p>
+
+  <a href="/docs/en/desktop-linux">Claude Desktop on Linux</a>
+</div>
+
+<div>
+  <div>
+    <span>/radio</span>
+    <span>CLI</span>
+  </div>
+
+  <p>Claude FM is on the air. <code>/radio</code> opens the lo-fi radio stream in your browser for something to code to, and prints the stream URL when no browser is available. Not available on Amazon Bedrock, Google Cloud's Agent Platform, or Microsoft Foundry.</p>
+
+  <Frame>
+    <video />
+  </Frame>
+
+  <p>Tune in from any session:</p>
+
+  ```text Claude Code theme={null}
+  > /radio
+  ```
+
+  <a href="/docs/en/commands#all-commands">All commands</a>
+</div>
+
+<div>
+  <p>Other wins</p>
+
+  <div>
+    <div><a href="/docs/en/artifacts">Artifacts</a> are now generally available and included on Pro and Max plans, joining Team and Enterprise</div>
+    <div>Admins can set an <a href="/docs/en/model-config#organization-default-model">organization default model</a> in the org console; it shows as "Org default" in <code>/model</code> when you haven't picked a model yourself</div>
+    <div>Stacked skill invocations like <code>/skill-a /skill-b do XYZ</code> now load all leading skills (up to 5), not only the first</div>
+    <div><code>AskUserQuestion</code> dialogs no longer auto-continue by default; opt into an idle timeout via <code>/config</code></div>
+    <div>The "default" permission mode is now named "Manual" across the CLI, `--help`, VS Code, and JetBrains; `--permission-mode manual` is accepted alongside `default`</div>
+    <div>New <code>/dataviz</code> skill gives chart and dashboard design guidance, with a runnable color-palette validator</div>
+    <div>The built-in Explore agent now inherits the main session's model (capped at Opus) instead of running on Haiku</div>
+    <div>Background agents launched from <code>claude agents</code> now commit, push, and open a draft PR when they finish code work in a worktree, instead of stopping to ask</div>
+    <div>Hook matchers with hyphenated identifiers like <code>code-reviewer</code> now exact-match instead of substring-matching; use <code>mcp\_\_brave-search\_\_.\*</code> to match all tools from a hyphenated MCP server</div>
+    <div>Transient server rate-limit errors unrelated to your usage limit are now retried automatically with backoff for subscribers instead of failing the turn</div>
+    <div>The streaming idle watchdog is now on by default for all providers: it aborts and retries when a response stream produces no events for 5 minutes (<code>CLAUDE\_ENABLE\_STREAM\_WATCHDOG=0</code> to disable)</div>
+  </div>
+</div>
+
+[Full changelog for v2.1.195–v2.1.201 →](/docs/en/changelog#2-1-195)
+
+
+# Week 28 · July 6–10, 2026
+Source: https://code.claude.com/docs/en/whats-new/2026-w28
+
+Browse external sites from the Desktop app's built-in browser, run a full setup checkup with /doctor, and pick up auto mode transcript protections and agent view upgrades.
+
+<div>
+  <span>Releases <a href="/docs/en/changelog#2-1-202">v2.1.202 → v2.1.206</a></span>
+  <span>2 features · July 6–10</span>
+</div>
+
+<div>
+  <div>
+    <span>In-app browser on Desktop</span>
+    <span>Desktop</span>
+  </div>
+
+  <p>Claude Code on desktop now has a built-in browser. Claude can pull up docs, designs, or any other site, and read, click through, and interact with pages the same way it does with your local dev server previews. The browser is sandboxed and configurable: you choose whether browsing sessions persist, and safety classifiers review actions on external sites.</p>
+
+  <Frame>
+    <video />
+  </Frame>
+
+  <a href="/docs/en/desktop#browse-external-sites">Browse external sites</a>
+</div>
+
+<div>
+  <div>
+    <span>/doctor is a full setup checkup</span>
+    <span>v2.1.205</span>
+  </div>
+
+  <p><code>/doctor</code> now diagnoses issues and can fix them, instead of printing a read-only report. It checks installation health, finds unused skills, MCP servers, and plugins versus their context cost, deduplicates local <code>CLAUDE.md</code> files against checked-in ones, proposes trimming <code>CLAUDE.md</code> content Claude could derive from the codebase, and flags slow hooks. It reports findings first and asks for confirmation before changing anything. <code>/checkup</code> is its alias.</p>
+
+  <p>Run a checkup from any session:</p>
+
+  ```text Claude Code theme={null}
+  > /doctor
+  ```
+
+  <a href="/docs/en/commands#all-commands">All commands</a>
+</div>
+
+<div>
+  <p>Other wins</p>
+
+  <div>
+    <div>Auto mode now blocks tampering with session transcript files, and asks before running <code>rm -rf</code> on a variable it can't resolve from context</div>
+    <div><code>/cd</code> now suggests directory paths as you type, matching <code>/add-dir</code></div>
+    <div><code>/commit-push-pr</code> auto-allows <code>git push</code> to the repo's configured push remote in addition to <code>origin</code></div>
+    <div>Gateway: <code>/login</code> now supports Anthropic-operated public gateway endpoints</div>
+    <div><code>EnterWorktree</code> asks for confirmation before entering a git worktree outside the project's <code>.claude/worktrees/</code> directory</div>
+    <div>Background agents upgrade to a new version in the background right after a Claude Code update, instead of paying a slow stale-session upgrade when you attach</div>
+    <div>Agent view rows now show a colored state word and a classifier-written headline instead of raw tool call text, and sessions that edit, merge, comment on, or push to an existing PR link it in <code>claude agents</code></div>
+    <div>Auto-update binary downloads now stream to disk instead of buffering in memory, cutting the updater's peak memory usage by roughly 400 MB</div>
+    <div>Background task notifications now explicitly state that no human input has occurred, preventing fabricated in-transcript approvals from being acted on</div>
+    <div>Improved <code>/code-review</code> findings quality on Opus 4.8 across all effort levels</div>
+  </div>
+</div>
+
+[Full changelog for v2.1.202–v2.1.206 →](/docs/en/changelog#2-1-202)
+
+
 # What's new
 Source: https://code.claude.com/docs/en/whats-new/index
 
 A weekly digest of notable Claude Code features, with code snippets, demos, and context on why they matter.
 
 The weekly dev digest highlights the features most likely to change how you work. Each entry includes runnable code, a short demo, and a link to the full docs. For every bug fix and minor improvement, see the [changelog](/docs/en/changelog).
+
+<Update label="Week 28" description="July 6–10, 2026">
+  **In-app browser on Desktop**: Claude Code on desktop gets a built-in browser, so Claude can pull up docs, designs, or any other site and interact with pages the same way it does with your local dev server previews.
+
+  Also this week: **`/doctor`** is a full setup checkup that diagnoses issues and can fix them, with `/checkup` as its alias; **auto mode** blocks transcript tampering and asks before `rm -rf` on unresolved variables; and **agent view rows** show a colored state word and a classifier-written headline.
+
+  [Read the Week 28 digest →](/docs/en/whats-new/2026-w28)
+</Update>
+
+<Update label="Week 27" description="June 29 – July 3, 2026">
+  **Claude Sonnet 5**: the new default model for Pro, Team Standard, and Enterprise subscription seats, with top-tier coding and tool use at Sonnet pricing, a native 1M-token context window, and adaptive thinking on by default.
+
+  Also this week: **Claude in Chrome** is generally available on all direct Anthropic plans; **subagents run in the background by default** so Claude keeps working while they run; **Claude Desktop on Linux** lands in beta on Ubuntu and Debian; and **`/radio`** tunes into Claude FM lo-fi radio.
+
+  [Read the Week 27 digest →](/docs/en/whats-new/2026-w27)
+</Update>
 
 <Update label="Week 26" description="June 22–26, 2026">
   **`claude mcp login`**: authenticate a configured MCP server from your shell instead of the interactive `/mcp` menu, and clear its stored credentials later with `claude mcp logout`.

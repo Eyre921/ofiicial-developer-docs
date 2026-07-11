@@ -377,13 +377,17 @@
 
 - [Convex Deployment API](/deployment-api/convex-deployment-api.md): Admin API for interacting with deployments.
 - [Create log stream](/deployment-api/create-log-stream.md): Create a new log stream for the deployment. Errors if a log stream of the
+- [Create usage limit](/deployment-api/create-usage-limit.md): Create a new usage limit config for a deployment.
+- [Data sync](/deployment-api/data-sync-post.md): **Early access:** this API is not yet stable and may change in
 - [Delete log stream](/deployment-api/delete-log-stream.md): Delete the deployment's log stream with the given id.
+- [Delete usage limit](/deployment-api/delete-usage-limit.md): Delete an existing usage limit config for a deployment.
 - [Get canonical URLs](/deployment-api/get-canonical-urls.md): Get the canonical URLs for a deployment.
 - [Get deployment info](/deployment-api/get-deployment-info.md): Returns identity information about this deployment.
 - [Get log stream](/deployment-api/get-log-stream.md): Get the config for a specific log stream by id.
 - [List audit log events](/deployment-api/list-audit-log-events.md): List a deployment's audit log events on or after a timestamp, from least to
 - [List environment variables](/deployment-api/list-environment-variables.md): Get all environment variables in a deployment.
 - [List log streams](/deployment-api/list-log-streams.md): List configs for all existing log streams in a deployment.
+- [List usage limits](/deployment-api/list-usage-limits.md): Get all usage limit configs for a deployment.
 - [Deployment API](/deployment-api/overview.md): Deployment API
 - [Pause deployment](/deployment-api/pause-deployment.md): Disables a deployment without deleting any data. The deployment will not
 - [Rotate webhook log stream secret](/deployment-api/rotate-webhook-secret.md): Rotate the secret for the webhook log stream.
@@ -391,6 +395,7 @@
 - [Update canonical URL](/deployment-api/update-canonical-url.md): Set or unset the canonical URL for a deployment's convex.cloud or
 - [Update environment variables](/deployment-api/update-environment-variables.md): Update one or many environment variables in a deployment.
 - [Update log stream](/deployment-api/update-log-stream.md): Update an existing log stream for the deployment. Omit a field to keep the
+- [Update usage limit](/deployment-api/update-usage-limit.md): Replace an existing usage limit config for a deployment.
 
 ## deployment-platform-api
 
@@ -445,6 +450,7 @@
 - [Update a custom role](/management-api/update-custom-role.md): Updates an existing custom role's name, description, and permission
 - [Update default environment variables](/management-api/update-default-environment-variables.md): Creates, updates, or deletes default environment variables for the specified
 - [Update deployment](/management-api/update-deployment.md): Updates properties of an existing deployment. Only the fields provided in
+- [Update project](/management-api/update-project.md): Update a project's name and/or slug. Returns the updated project.
 - [Update a team member's role](/management-api/update-team-member-role.md): Sets either the member's built-in `role` (admin/developer) or their
 
 ## platform-apis
@@ -10796,7 +10802,7 @@ Extra context available in Convex action functions.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:145](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L145)
+[server/meta.ts:155](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L155)
 
 ***
 
@@ -10810,7 +10816,7 @@ Extra context available in Convex action functions.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:146](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L146)
+[server/meta.ts:156](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L156)
 
 ***
 
@@ -10824,7 +10830,7 @@ Extra context available in Convex action functions.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:147](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L147)
+[server/meta.ts:157](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L157)
 
 
 ---
@@ -13439,7 +13445,7 @@ Extra context available in Convex mutation functions.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:125](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L125)
+[server/meta.ts:135](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L135)
 
 ***
 
@@ -13457,7 +13463,7 @@ Extra context available in Convex mutation functions.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:126](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L126)
+[server/meta.ts:136](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L136)
 
 ***
 
@@ -13475,7 +13481,7 @@ Extra context available in Convex mutation functions.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:127](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L127)
+[server/meta.ts:137](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L137)
 
 ***
 
@@ -13489,7 +13495,7 @@ Extra context available in Convex mutation functions.
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[server/meta.ts:136](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L136)
+[server/meta.ts:146](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L146)
 
 
 ---
@@ -14531,7 +14537,7 @@ Extra context available in Convex query functions.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[server/meta.ts:125](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L125)
+[server/meta.ts:135](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L135)
 
 ***
 
@@ -14545,7 +14551,7 @@ Extra context available in Convex query functions.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[server/meta.ts:126](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L126)
+[server/meta.ts:136](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L136)
 
 ***
 
@@ -14559,7 +14565,7 @@ Extra context available in Convex query functions.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[server/meta.ts:127](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L127)
+[server/meta.ts:137](https://github.com/get-convex/convex-js/blob/main/src/server/meta.ts#L137)
 
 
 ---
@@ -18504,7 +18510,7 @@ See [Convex Clerk](https://docs.convex.dev/auth/clerk) on how to set up Convex w
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react-clerk/ConvexProviderWithClerk.tsx:42](https://github.com/get-convex/convex-js/blob/main/src/react-clerk/ConvexProviderWithClerk.tsx#L42)
+[react-clerk/ConvexProviderWithClerk.tsx:43](https://github.com/get-convex/convex-js/blob/main/src/react-clerk/ConvexProviderWithClerk.tsx#L43)
 
 
 ---
@@ -23615,6 +23621,8 @@ Setting up the Managed WorkOS team and inviting members to it require **team adm
    ```
    {
 
+     "$schema": "./node_modules/convex/schemas/convex.schema.json",
+
      "authKit": {
 
        "dev": {
@@ -23680,6 +23688,8 @@ Setting up the Managed WorkOS team and inviting members to it require **team adm
 
    ```
    {
+
+     "$schema": "./node_modules/convex/schemas/convex.schema.json",
 
      "authKit": {
 
@@ -23750,6 +23760,8 @@ Setting up the Managed WorkOS team and inviting members to it require **team adm
 
    ```
    {
+
+     "$schema": "./node_modules/convex/schemas/convex.schema.json",
 
      "authKit": {
 
@@ -40247,6 +40259,52 @@ Create a new log stream for the deployment. Errors if a log stream of the given 
 
 ---
 
+# Create usage limit
+
+```
+POST 
+/create_usage_limit
+```
+
+Create a new usage limit config for a deployment.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+# Data sync
+
+```
+POST 
+/data/sync
+```
+
+**Early access:** this API is not yet stable and may change in backwards-incompatible ways without notice. Contact the Convex team before depending on it.
+
+Streams a consistent, resumable export of a deployment's data — either the whole deployment or a subset of components, tables, and columns (see the request body). Streaming export must be enabled on the deployment.
+
+Call this endpoint repeatedly, passing the `cursor` from each response back in the next request; omit `cursor` on the first call. The cursor is opaque — store and send it back verbatim. Each response contains:
+
+* `values`: document revisions in the order they should be applied. A value with `_deleted: true` is a tombstone marking that document as deleted.
+* `truncates`: tables whose contents were replaced wholesale (for example by an `npx convex import`). Drop everything you have stored for each listed table; the `values` in this and later responses re-populate it.
+* `status`: `inProgress` while the export is still being assembled — the data returned so far is not yet a consistent view, so keep calling. Once it becomes `synced`, the values applied so far form a consistent snapshot of the deployment as of the returned `snapshot` timestamp. You can keep calling to continue streaming later changes; `hasMore` tells you whether more data is already available (`true`) or you've caught up to the latest commit (`false`).
+
+Persist the cursor and keep calling within the deployment's data retention window so the export can resume where it left off. If the cursor falls outside that window, start over with no cursor.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
 # Delete log stream
 
 ```
@@ -40255,6 +40313,24 @@ POST
 ```
 
 Delete the deployment's log stream with the given id.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+# Delete usage limit
+
+```
+POST 
+/delete_usage_limit/:id
+```
+
+Delete an existing usage limit config for a deployment.
 
 ## Request[​](#request "Direct link to request")
 
@@ -40357,6 +40433,22 @@ GET
 ```
 
 List configs for all existing log streams in a deployment.
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+# List usage limits
+
+```
+GET 
+/list_usage_limits
+```
+
+Get all usage limit configs for a deployment.
 
 ## Responses[​](#responses "Direct link to Responses")
 
@@ -40472,6 +40564,24 @@ POST
 ```
 
 Update an existing log stream for the deployment. Omit a field to keep the existing value, and use `null` to unset a field.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+# Update usage limit
+
+```
+POST 
+/update_usage_limit/:id
+```
+
+Replace an existing usage limit config for a deployment.
 
 ## Request[​](#request "Direct link to request")
 
@@ -45656,6 +45766,10 @@ POST
 
 Create a preview deploy key like "preview:team-slug<!-- -->:project-slug<!-- -->|ey..." which can be used with the Convex CLI to create and manage preview deployments within the project.
 
+When access to the project is granted through an OAuth token this preview deploy key will use the same OAuth-granted token.
+
+When access to the project is granted any other way a new token scoped to preview deployments in this project will be created.
+
 ## Request[​](#request "Direct link to request")
 
 ## Responses[​](#responses "Direct link to Responses")
@@ -46406,6 +46520,24 @@ PATCH
 ```
 
 Updates properties of an existing deployment. Only the fields provided in the request body are modified; omitted fields are left unchanged.
+
+## Request[​](#request "Direct link to request")
+
+## Responses[​](#responses "Direct link to Responses")
+
+* 200
+
+
+---
+
+# Update project
+
+```
+PATCH 
+/projects/:project_id
+```
+
+Update a project's name and/or slug. Returns the updated project.
 
 ## Request[​](#request "Direct link to request")
 

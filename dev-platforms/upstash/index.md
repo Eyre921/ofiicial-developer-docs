@@ -281,7 +281,7 @@
 - `docs/redis/integrations/bullmq` — [BullMQ with Upstash Redis](pages/docs/redis/integrations/bullmq.md) · [原文](https://upstash.com/docs/redis/integrations/bullmq)
 - `docs/redis/integrations/celery` — [Celery with Upstash Redis](pages/docs/redis/integrations/celery.md) · [原文](https://upstash.com/docs/redis/integrations/celery)
 - `docs/redis/integrations/drizzle` — [DrizzleORM with Upstash Redis](pages/docs/redis/integrations/drizzle.md) · [原文](https://upstash.com/docs/redis/integrations/drizzle)
-- `docs/redis/integrations/mcp` — [Upstash MCP](pages/docs/redis/integrations/mcp.md) · [原文](https://upstash.com/docs/redis/integrations/mcp)
+- `docs/redis/integrations/mcp` — [Upstash Redis MCP](pages/docs/redis/integrations/mcp.md) · [原文](https://upstash.com/docs/redis/integrations/mcp)
 - `docs/redis/integrations/n8n` — [n8n with Upstash Redis](pages/docs/redis/integrations/n8n.md) · [原文](https://upstash.com/docs/redis/integrations/n8n)
 - `docs/redis/integrations/prometheus` — [Prometheus - Upstash Redis Integration](pages/docs/redis/integrations/prometheus.md) · [原文](https://upstash.com/docs/redis/integrations/prometheus)
 - `docs/redis/integrations/ratelimit/strapi/configurations` — [Configure Upstash Ratelimit Strapi Plugin](pages/docs/redis/integrations/ratelimit/strapi/configurations.md) · [原文](https://upstash.com/docs/redis/integrations/ratelimit/strapi/configurations)

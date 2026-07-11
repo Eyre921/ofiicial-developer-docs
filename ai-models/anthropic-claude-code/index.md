@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 163 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 165 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -173,4 +173,6 @@
 - `whats-new/2026-w24` — [Week 24 · June 8–12, 2026](pages/whats-new/2026-w24.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w24)
 - `whats-new/2026-w25` — [Week 25 · June 15–19, 2026](pages/whats-new/2026-w25.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w25)
 - `whats-new/2026-w26` — [Week 26 · June 22–26, 2026](pages/whats-new/2026-w26.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w26)
+- `whats-new/2026-w27` — [Week 27 · June 29 – July 3, 2026](pages/whats-new/2026-w27.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w27)
+- `whats-new/2026-w28` — [Week 28 · July 6–10, 2026](pages/whats-new/2026-w28.md) · [原文](https://code.claude.com/docs/en/whats-new/2026-w28)
 - `whats-new/index` — [What's new](pages/whats-new/index.md) · [原文](https://code.claude.com/docs/en/whats-new/index)

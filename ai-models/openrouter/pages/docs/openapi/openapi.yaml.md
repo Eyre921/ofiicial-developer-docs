@@ -4251,6 +4251,7 @@ components:
         - liquid
         - mancer
         - mara
+        - meta
         - minimax
         - mistral
         - modelrun
@@ -18734,6 +18735,7 @@ components:
       type: string
     ProviderName:
       enum:
+        - Meta
         - AkashML
         - AI21
         - AionLabs
@@ -26002,6 +26004,7 @@ paths:
               - liquid
               - mancer
               - mara
+              - meta
               - minimax
               - mistral
               - modelrun

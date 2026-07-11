@@ -70,7 +70,7 @@ Congratulations! You have created an ultra-fast Upstash Redis database! 🎉
 <Check>
 **New: Manage Upstash Redis with your agent**
 
-Manage Upstash Redis databases from Claude and other AI tools by using our [MCP server](/docs/agent-resources/mcp).
+Manage Upstash Redis databases from Claude and other AI tools by using our [MCP server](/docs/agent-resources/mcp). To let an agent run commands directly against a single database, use the dedicated [Redis MCP](/docs/redis/integrations/mcp).
 </Check>
 
 ## Next steps

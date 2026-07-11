@@ -54,10 +54,10 @@ Before you can create your site, you must have a repository for your site on Git
 
 4. Configure your publishing source. See [Configuring a publishing source for your GitHub Pages site](/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site).
 
-5. Your GitHub Pages site is built and deployed with a GitHub Actions workflow. For more information, see [Viewing workflow run history](/en/actions/monitoring-and-troubleshooting-workflows/viewing-workflow-run-history).
+5. Your GitHub Pages site is built and deployed with a GitHub Actions workflow. For more information, see [Viewing workflow run history](/en/actions/how-tos/monitor-workflows/view-workflow-run-history).
 
    > \[!NOTE]
-   > GitHub Actions is free for public repositories. Usage charges apply for private and internal repositories that go beyond the monthly allotment of free minutes. For more information, see [Billing and usage](/en/actions/learn-github-actions/usage-limits-billing-and-administration).
+   > GitHub Actions is free for public repositories. Usage charges apply for private and internal repositories that go beyond the monthly allotment of free minutes. For more information, see [Billing and usage](/en/actions/concepts/billing-and-usage).
 
 ## Viewing your published site
 

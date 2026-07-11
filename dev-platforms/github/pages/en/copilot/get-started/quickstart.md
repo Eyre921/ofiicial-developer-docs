@@ -33,7 +33,7 @@ To use Copilot, you’ll need a personal GitHub account with access to a Copilot
 
   > \[!IMPORTANT] **Starting April 22, 2026**, new self-serve sign-ups for Copilot Business for organizations on GitHub Free and GitHub Team plans are temporarily paused.
 
-For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
+For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
 
 ## Asking your first question
 
@@ -84,7 +84,7 @@ For more information, see [Asking GitHub Copilot questions in GitHub](/en/copilo
 
 <div class="ghd-tool windowsterminal">
 
-GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot).
+GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot).
 
 Instructions for using Copilot differ depending on where you are using it. This version of the quickstart is for Windows Terminal. Click the tabs above for instructions on using Copilot in other environments.
 
@@ -99,11 +99,11 @@ To use Copilot, you’ll need a personal GitHub account with access to a Copilot
 
   > \[!IMPORTANT] **Starting April 22, 2026**, new self-serve sign-ups for Copilot Business for organizations on GitHub Free and GitHub Team plans are temporarily paused.
 
-For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
+For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in Windows Terminal, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in Windows Terminal, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **Windows Terminal Canary**. Terminal Chat is only available in [Windows Terminal Canary](https://github.com/microsoft/terminal?tab=readme-ov-file#installing-windows-terminal-canary).
 
 ## Use Copilot in Terminal Chat
@@ -122,7 +122,7 @@ After you've installed Windows Terminal Canary, you can use Copilot in [Terminal
 
 ## Chat with GitHub Copilot
 
-> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot in Windows Terminal if your organization owner has disabled GitHub Copilot CLI. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization).
+> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot in Windows Terminal if your organization owner has disabled GitHub Copilot CLI. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies).
 
 1. Open **Terminal Chat (Experimental)** in the dropdown menu.
 
@@ -134,12 +134,12 @@ After you've installed Windows Terminal Canary, you can use Copilot in [Terminal
 
 ## Next steps
 
-* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot).
-* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-your-ide).
-* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/using-github-copilot/copilot-chat/prompt-engineering-for-copilot-chat).
-* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-github-mobile).
-* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/about-copilot-cli).
-* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-your-environment).
+* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions).
+* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
+* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering).
+* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-mobile).
+* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli).
+* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/configure-personal-settings/configure-in-ide).
 
 </div>
 
@@ -151,7 +151,7 @@ After you've installed Windows Terminal Canary, you can use Copilot in [Terminal
 
 <div class="ghd-tool vscode">
 
-GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot).
+GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot).
 
 Instructions for using Copilot differ depending on where you are using it. This version of the quickstart is for Visual Studio Code. Click the tabs above for instructions on using Copilot in other environments.
 
@@ -166,19 +166,19 @@ To use Copilot, you’ll need a personal GitHub account with access to a Copilot
 
   > \[!IMPORTANT] **Starting April 22, 2026**, new self-serve sign-ups for Copilot Business for organizations on GitHub Free and GitHub Team plans are temporarily paused.
 
-For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
+For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
 
 ## Prerequisites
 
-* **Copilot subscription** - To use GitHub Copilot in VS Code, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Copilot subscription** - To use GitHub Copilot in VS Code, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **Latest version of Visual Studio Code**. See the [Visual Studio Code download page](https://code.visualstudio.com/Download?ref_product=copilot\&ref_type=engagement\&ref_style=text).
-* **Sign in to GitHub in Visual Studio Code**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/troubleshooting-github-copilot/troubleshooting-issues-with-github-copilot-chat#troubleshooting-authentication-issues-in-your-editor).
+* **Sign in to GitHub in Visual Studio Code**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues#troubleshooting-authentication-issues-in-your-editor).
 
 ## Chat with GitHub Copilot
 
 After you've installed the GitHub Copilot Chat extension, you can ask Copilot coding-related questions.
 
-> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization).
+> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies).
 
 1. Create a new folder for your project and open it in VS Code.
 2. Open the Chat view by pressing <kbd>Control</kbd>+<kbd>Command</kbd>+<kbd>i</kbd> (Mac) / <kbd>Ctrl</kbd>+<kbd>Alt</kbd>+<kbd>i</kbd> (Windows/Linux) or by selecting the chat icon in the VS Code title bar.
@@ -203,14 +203,14 @@ The following example uses JavaScript, however other languages will work similar
 
 ## Next steps
 
-* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot).
-* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-your-ide).
-* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/using-github-copilot/copilot-chat/prompt-engineering-for-copilot-chat).
+* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions).
+* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
+* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering).
 * **Use Copilot like a pro** - Learn how to write effective prompts for GitHub Copilot. For more information, see [Best practices for using GitHub Copilot in VS Code](https://code.visualstudio.com/docs/copilot/prompt-crafting) in the Visual Studio Code documentation.
 * **Get familiar with next edit suggestions** - See [Navigating and accepting next edit suggestions](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions#navigating-and-accepting-next-edit-suggestions-1).
-* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-github-mobile).
-* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/about-copilot-cli).
-* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-your-environment).
+* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-mobile).
+* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli).
+* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/configure-personal-settings/configure-in-ide).
 
 </div>
 
@@ -222,7 +222,7 @@ The following example uses JavaScript, however other languages will work similar
 
 <div class="ghd-tool visualstudio">
 
-GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot).
+GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot).
 
 Instructions for using Copilot differ depending on where you are using it. This version of the quickstart is for Visual Studio. Click the tabs above for instructions on using Copilot in other environments.
 
@@ -237,11 +237,11 @@ To use Copilot, you’ll need a personal GitHub account with access to a Copilot
 
   > \[!IMPORTANT] **Starting April 22, 2026**, new self-serve sign-ups for Copilot Business for organizations on GitHub Free and GitHub Team plans are temporarily paused.
 
-For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
+For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in Visual Studio, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in Visual Studio, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **Compatible version of Visual Studio**. To use GitHub Copilot in Visual Studio, you must have version 2022 17.8 or later of Visual Studio for Windows installed. For more information, see [Install Visual Studio](https://learn.microsoft.com/en-us/visualstudio/install/install-visual-studio?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the Microsoft documentation.
 * **GitHub Copilot extension for Visual Studio**. For instructions on how to install the Copilot extension, see [Install GitHub Copilot in Visual Studio](https://learn.microsoft.com/visualstudio/ide/visual-studio-github-copilot-install-and-states?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the Microsoft documentation.
 * **Add your GitHub account to Visual Studio**. See [Add your GitHub accounts to your Visual Studio keychain](https://learn.microsoft.com/en-us/visualstudio/ide/work-with-github-accounts?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the Microsoft documentation.
@@ -250,7 +250,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 After you've installed the GitHub Copilot extension, you can ask Copilot coding-related questions.
 
-> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization).
+> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies).
 
 1. Open an existing code file.
 
@@ -281,13 +281,13 @@ The following example uses JavaScript, however other languages will work similar
 
 ## Next steps
 
-* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot).
-* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-your-ide).
-* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/using-github-copilot/copilot-chat/prompt-engineering-for-copilot-chat).
+* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions).
+* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
+* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering).
 * **Prompt like a pro** - Watch [Visual Studio Prompt Engineering with GitHub Copilot](https://www.youtube.com/watch?v=9hZsOeIINg8\&list=PLReL099Y5nRckZDdcQ21UigO9pKa14yxC) on YouTube.
-* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-github-mobile).
-* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/about-copilot-cli).
-* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-your-environment).
+* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-mobile).
+* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli).
+* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/configure-personal-settings/configure-in-ide).
 
 </div>
 
@@ -299,7 +299,7 @@ The following example uses JavaScript, however other languages will work similar
 
 <div class="ghd-tool jetbrains">
 
-GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot).
+GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot).
 
 Instructions for using Copilot differ depending on where you are using it. This version of the quickstart is for JetBrains IDEs. Click the tabs above for instructions on using Copilot in other environments.
 
@@ -314,11 +314,11 @@ To use Copilot, you’ll need a personal GitHub account with access to a Copilot
 
   > \[!IMPORTANT] **Starting April 22, 2026**, new self-serve sign-ups for Copilot Business for organizations on GitHub Free and GitHub Team plans are temporarily paused.
 
-For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
+For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in a JetBrains IDE, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in a JetBrains IDE, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **A compatible JetBrains IDE**. Copilot is supported in a large number of JetBrains IDEs. For a full list, see [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide?tool=jetbrains).
 * **Latest version of the GitHub Copilot extension**. See the [GitHub Copilot plugin](https://plugins.jetbrains.com/plugin/17718-github-copilot?ref_product=copilot\&ref_type=engagement\&ref_style=text) in the JetBrains Marketplace. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=jetbrains).
 * **Sign in to GitHub in your JetBrains IDE**. For authentication instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=jetbrains#installing-the-github-copilot-plugin-in-your-jetbrains-ide).
@@ -327,7 +327,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 After you've installed the GitHub Copilot plugin, you can ask Copilot coding-related questions.
 
-> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization).
+> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies).
 
 1. Open an existing code file.
 
@@ -359,12 +359,12 @@ The following example uses JavaScript, however other languages will work similar
 
 ## Next steps
 
-* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot).
-* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-your-ide).
-* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/using-github-copilot/copilot-chat/prompt-engineering-for-copilot-chat).
-* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-github-mobile).
-* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/about-copilot-cli).
-* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-your-environment).
+* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions).
+* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
+* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering).
+* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-mobile).
+* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli).
+* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/configure-personal-settings/configure-in-ide).
 
 </div>
 
@@ -376,7 +376,7 @@ The following example uses JavaScript, however other languages will work similar
 
 <div class="ghd-tool xcode">
 
-GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot).
+GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot).
 
 Instructions for using Copilot differ depending on where you are using it. This version of the quickstart is for XCode in MacOS. Click the tabs above for instructions on using Copilot in other environments.
 
@@ -391,11 +391,11 @@ To use Copilot, you’ll need a personal GitHub account with access to a Copilot
 
   > \[!IMPORTANT] **Starting April 22, 2026**, new self-serve sign-ups for Copilot Business for organizations on GitHub Free and GitHub Team plans are temporarily paused.
 
-For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
+For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in Xcode, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in Xcode, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **Latest version of the GitHub Copilot extension**. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=xcode).
 * **Sign in to GitHub in Xcode**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues).
 
@@ -403,7 +403,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 After you've installed the GitHub Copilot plugin, you can ask Copilot coding-related questions.
 
-> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization).
+> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies).
 
 1. Open an existing code file.
 
@@ -442,13 +442,13 @@ The following example uses Swift, however other languages will work similarly.
 
 ## Next steps
 
-* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot).
-* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-your-ide).
-* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/using-github-copilot/copilot-chat/prompt-engineering-for-copilot-chat).
+* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions).
+* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
+* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering).
 * **Get familiar with next edit suggestions** - See [Navigating and accepting next edit suggestions](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions?tool=xcode#navigating-and-accepting-next-edit-suggestions-2).
-* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-github-mobile).
-* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/about-copilot-cli).
-* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-your-environment).
+* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-mobile).
+* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli).
+* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/configure-personal-settings/configure-in-ide).
 
 </div>
 
@@ -460,7 +460,7 @@ The following example uses Swift, however other languages will work similarly.
 
 <div class="ghd-tool eclipse">
 
-GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot).
+GitHub Copilot provides coding suggestions as you type in your editor. You can also ask Copilot coding-related questions, such as how best to code something, how to fix a bug, or how someone else's code works. For full details of what Copilot can do, see [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot).
 
 Instructions for using Copilot differ depending on where you are using it. This version of the quickstart is for Eclipse. Click the tabs above for instructions on using Copilot in other environments.
 
@@ -475,11 +475,11 @@ To use Copilot, you’ll need a personal GitHub account with access to a Copilot
 
   > \[!IMPORTANT] **Starting April 22, 2026**, new self-serve sign-ups for Copilot Business for organizations on GitHub Free and GitHub Team plans are temporarily paused.
 
-For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/about-github-copilot/subscription-plans-for-github-copilot).
+For more information about the different plans for GitHub Copilot, see [Plans for GitHub Copilot](/en/copilot/get-started/plans).
 
 ## Prerequisites
 
-* **Subscription to Copilot**. To use GitHub Copilot in Eclipse, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/about-github-copilot/what-is-github-copilot#getting-access-to-copilot).
+* **Subscription to Copilot**. To use GitHub Copilot in Eclipse, you must have an active GitHub Copilot subscription. See [What is GitHub Copilot?](/en/copilot/get-started/what-is-github-copilot#getting-access-to-copilot).
 * **Latest version of the GitHub Copilot extension**. For installation instructions, see [Installing the GitHub Copilot extension in your environment](/en/copilot/how-tos/set-up/install-copilot-extension?tool=eclipse).
 * **Sign in to GitHub in Eclipse**. If you experience authentication issues, see [Troubleshooting common issues with GitHub Copilot](/en/copilot/how-tos/troubleshoot-copilot/troubleshoot-common-issues).
 
@@ -487,7 +487,7 @@ For more information about the different plans for GitHub Copilot, see [Plans fo
 
 After you've installed the GitHub Copilot plugin, you can ask Copilot coding-related questions.
 
-> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/managing-github-copilot-in-your-organization/managing-policies-and-features-for-copilot-in-your-organization).
+> \[!NOTE] If you have access to GitHub Copilot via your organization, you won't be able to use GitHub Copilot Chat if your organization owner has disabled chat. See [Managing policies and features for GitHub Copilot in your organization](/en/copilot/how-tos/administer-copilot/manage-for-organization/manage-policies).
 
 1. Open an existing code file.
 
@@ -517,12 +517,12 @@ The following example uses Java, however other languages will work similarly.
 
 ## Next steps
 
-* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/using-github-copilot/getting-code-suggestions-in-your-ide-with-github-copilot).
-* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-your-ide).
-* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/using-github-copilot/copilot-chat/prompt-engineering-for-copilot-chat).
+* **Find out more about Copilot inline suggestions** - See [Getting code suggestions in your IDE with GitHub Copilot](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions).
+* **Find out more about GitHub Copilot Chat** - See [Asking GitHub Copilot questions in your IDE](/en/copilot/how-tos/chat-with-copilot/chat-in-ide).
+* **Learn how to write effective prompts** - See [Prompt engineering for GitHub Copilot Chat](/en/copilot/concepts/prompting/prompt-engineering).
 * **Get familiar with next edit suggestions** - See [Navigating and accepting next edit suggestions](/en/copilot/how-tos/get-code-suggestions/get-ide-code-suggestions?tool=eclipse#navigating-and-accepting-next-edit-suggestions-3).
-* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/using-github-copilot/copilot-chat/asking-github-copilot-questions-in-github-mobile).
-* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/about-copilot-cli).
-* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/managing-copilot/configure-personal-settings/configuring-github-copilot-in-your-environment).
+* **Use Copilot on your mobile device** - See [Asking GitHub Copilot questions in GitHub Mobile](/en/copilot/how-tos/copilot-on-github/chat-with-copilot/chat-in-mobile).
+* **Use Copilot on the command line** - See [About GitHub Copilot CLI](/en/copilot/concepts/agents/copilot-cli/about-copilot-cli).
+* **Configure Copilot in your editor** - You can enable or disable GitHub Copilot from within your editor, and create your own preferred keyboard shortcuts for Copilot. See [Configuring GitHub Copilot in your environment](/en/copilot/how-tos/configure-personal-settings/configure-in-ide).
 
 </div>

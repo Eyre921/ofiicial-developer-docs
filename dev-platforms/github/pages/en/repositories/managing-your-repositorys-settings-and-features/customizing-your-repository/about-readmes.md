@@ -28,7 +28,7 @@ If a repository contains more than one README file, then the file shown is chose
 
 When your README is viewed on GitHub, any content beyond 500 KiB will be truncated.
 
-If you add a README file to the root of a public repository with the same name as your username, that README will automatically appear on your profile page. You can edit your profile README with GitHub Flavored Markdown to create a personalized section on your profile. For more information, see [Managing your profile README](/en/account-and-profile/setting-up-and-managing-your-github-profile/customizing-your-profile/managing-your-profile-readme).
+If you add a README file to the root of a public repository with the same name as your username, that README will automatically appear on your profile page. You can edit your profile README with GitHub Flavored Markdown to create a personalized section on your profile. For more information, see [Managing your profile README](/en/account-and-profile/how-tos/profile-customization/managing-your-profile-readme).
 
 ## Auto-generated table of contents for markdown files
 

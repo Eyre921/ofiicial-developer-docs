@@ -26,4 +26,5 @@ It is the only connectionless (HTTP based) Redis client and designed for:
 
 See
 [the list of APIs](/docs/redis/features/restapi#rest-redis-api-compatibility)
-supported.
+supported by the Upstash REST API. For typed `@upstash/redis` command helpers,
+see the [TypeScript SDK command reference](/docs/redis/sdks/ts/commands/overview).

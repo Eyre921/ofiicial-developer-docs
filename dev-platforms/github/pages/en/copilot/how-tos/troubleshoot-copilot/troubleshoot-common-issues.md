@@ -32,7 +32,7 @@ If a file has been configured as excluded content for GitHub Copilot, the icon i
 
 ![Screenshot of the Copilot icon in VS Code with a tooltip for a content exclusion.](/assets/images/help/copilot/copilot-disabled-for-repo.png)
 
-For more information, see [Excluding content from GitHub Copilot](/en/copilot/managing-copilot/managing-github-copilot-in-your-organization/managing-github-copilot-features-in-your-organization/about-content-exclusions-for-github-copilot).
+For more information, see [Excluding content from GitHub Copilot](/en/copilot/how-tos/configure-content-exclusion/exclude-content-from-copilot).
 
 ## GitHub Copilot content exclusions are not being applied
 

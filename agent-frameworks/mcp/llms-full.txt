@@ -6052,19 +6052,19 @@ The process involves configuring Claude Desktop to automatically start the Files
   <Step title="Restart Claude Desktop">
     After saving the configuration file, completely quit Claude Desktop and restart it. The application needs to restart to load the new configuration and start the MCP server.
 
-    Upon successful restart, you'll see an MCP server indicator <img /> in the bottom-right corner of the conversation input box:
+    Upon successful restart, click the "Add files, connectors and more" indicator <img /> in the bottom-left corner of the conversation input box:
 
     <Frame>
       <img alt="Claude Desktop interface showing MCP server indicator" />
     </Frame>
 
-    Click on this indicator to view the available tools provided by the Filesystem Server:
+    Click on this indicator, then scroll over "Connectors" and click "Manage connectors". Select "filesystem" from the connector list to view the the Filesystem Server's available tools:
 
     <Frame>
       <img alt="Available filesystem tools in Claude Desktop" />
     </Frame>
 
-    If the server indicator doesn't appear, refer to the [Troubleshooting](#troubleshooting) section for debugging steps.
+    If the Filesystem Server doesn't connect, refer to the [Troubleshooting](#troubleshooting) section for debugging steps.
   </Step>
 </Steps>
 
