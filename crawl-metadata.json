@@ -165,8 +165,7 @@
     "status": "ok"
   },
   "libraries/svelte": {
-    "pages": 0,
-    "status": "ok"
+    "status": "error: curl failed (56) for https://svelte.dev/llms-full.txt: curl: (56) Recv failure: Connection reset by peer\n"
   },
   "libraries/bun": {
     "pages": 315,
@@ -188,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 104,
+    "pages": 95,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -207,5 +206,5 @@
     "pages": 763,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-11T23:30:40Z"
+  "_last_crawl": "2026-07-12T11:30:47Z"
 }
