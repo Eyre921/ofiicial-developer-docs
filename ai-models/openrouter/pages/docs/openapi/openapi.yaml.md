@@ -21209,10 +21209,10 @@ components:
       description: Text-to-speech request input
       example:
         input: Hello world
-        model: elevenlabs/eleven-turbo-v2
+        model: mistralai/voxtral-mini-tts-2603
         response_format: pcm
         speed: 1
-        voice: alloy
+        voice: en_paul_neutral
       properties:
         input:
           description: Text to synthesize
@@ -21220,7 +21220,7 @@ components:
           type: string
         model:
           description: TTS model identifier
-          example: elevenlabs/eleven-turbo-v2
+          example: mistralai/voxtral-mini-tts-2603
           type: string
         provider:
           description: Provider-specific passthrough configuration
@@ -21245,7 +21245,7 @@ components:
           type: number
         voice:
           description: Voice identifier (provider-specific).
-          example: alloy
+          example: en_paul_neutral
           type: string
       required:
         - model
@@ -25135,10 +25135,10 @@ paths:
           application/json:
             example:
               input: Hello world
-              model: elevenlabs/eleven-turbo-v2
+              model: mistralai/voxtral-mini-tts-2603
               response_format: pcm
               speed: 1
-              voice: alloy
+              voice: en_paul_neutral
             schema:
               $ref: '#/components/schemas/SpeechRequest'
         required: true

@@ -103,7 +103,7 @@
     "status": "ok"
   },
   "ai-models/google-gemini": {
-    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
+    "status": "error: curl failed (28) for https://ai.google.dev/gemini-api/docs/llms.txt: curl: (28) Connection timed out after 15001 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\ncurl: (28) Connection timed out after 15002 milliseconds\n"
   },
   "dev-platforms/convex": {
     "pages": 0,
@@ -153,8 +153,7 @@
     "status": "ok"
   },
   "dev-platforms/notion": {
-    "pages": 194,
-    "status": "ok"
+    "status": "error: curl failed (56) for https://developers.notion.com/llms-full.txt: curl: (56) Recv failure: Connection reset by peer\n"
   },
   "dev-platforms/twilio": {
     "pages": 0,
@@ -165,7 +164,8 @@
     "status": "ok"
   },
   "libraries/svelte": {
-    "status": "error: curl failed (56) for https://svelte.dev/llms-full.txt: curl: (56) Recv failure: Connection reset by peer\n"
+    "pages": 0,
+    "status": "ok"
   },
   "libraries/bun": {
     "pages": 315,
@@ -187,7 +187,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 95,
+    "pages": 103,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -206,5 +206,5 @@
     "pages": 763,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-12T11:30:47Z"
+  "_last_crawl": "2026-07-12T23:30:29Z"
 }
