@@ -19,6 +19,8 @@ Stripe calculates tax on a transaction taking into account some or all of the fo
 - Whether the transaction involves a [reverse charge](https://docs.stripe.com/tax/zero-tax.md#reverse-charges)
 - The status of the customer (for example, whether they’re a VAT-registered business, private person or an exempt organization)
 
+Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
+
 ## Payment methods
 
 Stripe calculates tax for all supported payment methods, including Apple Pay and Google Pay wallet transactions.

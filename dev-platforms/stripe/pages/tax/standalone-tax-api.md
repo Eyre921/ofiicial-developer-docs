@@ -10,6 +10,8 @@ Use the Tax Calculations and Transactions APIs directly for shipping, tax-inclus
 
 The standalone Tax API lets you calculate tax, record transactions, and handle reversals directly. Use it with [PaymentIntents](https://docs.stripe.com/tax/payment-intent.md) or when processing payments [off-Stripe](https://docs.stripe.com/tax/off-stripe.md). The following features are available when using the Tax Calculations and Transactions APIs.
 
+Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
+
 ## Optional: Calculate tax on shipping costs [Server-side]
 
 To calculate tax on shipping costs, use the `shipping_cost` parameter:

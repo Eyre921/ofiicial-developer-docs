@@ -32,7 +32,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Keeping your API credentials secure](/en/rest/authentication/keeping-your-api-credentials-secure)
 
-  Follow these best practices to keep your API credentials and tokens secure.
+  <p>Follow these best practices to keep your API credentials and tokens secure.</p>
 
 * [Scripting with the REST API and JavaScript](/en/rest/guides/scripting-with-the-rest-api-and-javascript)
 

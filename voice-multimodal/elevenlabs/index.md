@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 763 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 765 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -29,6 +29,8 @@
 - `docs/api-reference/agents/update` — [Update agent](pages/docs/api-reference/agents/update.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/update.md)
 - `docs/api-reference/agents/versions/get` — [Get agent version metadata](pages/docs/api-reference/agents/versions/get.md) · [原文](https://elevenlabs.io/docs/api-reference/agents/versions/get.md)
 - `docs/api-reference/analytics/get` — [Get live count](pages/docs/api-reference/analytics/get.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/get.md)
+- `docs/api-reference/analytics/workspace/requests` — [List API requests](pages/docs/api-reference/analytics/workspace/requests.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/requests.md)
+- `docs/api-reference/analytics/workspace/usage` — [Get workspace usage](pages/docs/api-reference/analytics/workspace/usage.md) · [原文](https://elevenlabs.io/docs/api-reference/analytics/workspace/usage.md)
 - `docs/api-reference/api-keys/disable` — [Disable API key](pages/docs/api-reference/api-keys/disable.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/disable.md)
 - `docs/api-reference/api-keys/set-third-party-disabling-policy` — [Set workspace third-party disabling policy](pages/docs/api-reference/api-keys/set-third-party-disabling-policy.md) · [原文](https://elevenlabs.io/docs/api-reference/api-keys/set-third-party-disabling-policy.md)
 - `docs/api-reference/audio-isolation/convert` — [Audio isolation](pages/docs/api-reference/audio-isolation/convert.md) · [原文](https://elevenlabs.io/docs/api-reference/audio-isolation/convert.md)
@@ -126,6 +128,7 @@
 - `docs/api-reference/legacy/dubbing/resources/update-segment` — [Update a segment](pages/docs/api-reference/legacy/dubbing/resources/update-segment.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/resources/update-segment.md)
 - `docs/api-reference/legacy/dubbing/resources/update-speaker` — [Update speaker](pages/docs/api-reference/legacy/dubbing/resources/update-speaker.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/dubbing/resources/update-speaker.md)
 - `docs/api-reference/legacy/knowledge-base/add-to-knowledge-base` — [Add To Knowledge Base](pages/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/knowledge-base/add-to-knowledge-base.md)
+- `docs/api-reference/legacy/usage/get` — [Get character metrics usage](pages/docs/api-reference/legacy/usage/get.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/usage/get.md)
 - `docs/api-reference/legacy/voices/create-previews` — [Voice design](pages/docs/api-reference/legacy/voices/create-previews.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/create-previews.md)
 - `docs/api-reference/legacy/voices/get-all` — [List voices](pages/docs/api-reference/legacy/voices/get-all.md) · [原文](https://elevenlabs.io/docs/api-reference/legacy/voices/get-all.md)
 - `docs/api-reference/llm/calculate` — [Calculate expected LLM usage](pages/docs/api-reference/llm/calculate.md) · [原文](https://elevenlabs.io/docs/api-reference/llm/calculate.md)
@@ -171,6 +174,7 @@
 - `docs/api-reference/service-accounts/api-keys/delete` — [Delete API key](pages/docs/api-reference/service-accounts/api-keys/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/delete.md)
 - `docs/api-reference/service-accounts/api-keys/list` — [Get API keys](pages/docs/api-reference/service-accounts/api-keys/list.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/list.md)
 - `docs/api-reference/service-accounts/api-keys/update` — [Update API key](pages/docs/api-reference/service-accounts/api-keys/update.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/api-keys/update.md)
+- `docs/api-reference/service-accounts/create` — [Create Service Account](pages/docs/api-reference/service-accounts/create.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/create.md)
 - `docs/api-reference/service-accounts/list` — [Get service accounts](pages/docs/api-reference/service-accounts/list.md) · [原文](https://elevenlabs.io/docs/api-reference/service-accounts/list.md)
 - `docs/api-reference/sip-trunk/outbound-call` — [Outbound call via SIP trunk](pages/docs/api-reference/sip-trunk/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/sip-trunk/outbound-call.md)
 - `docs/api-reference/speech-engine/create` — [Create Speech Engine](pages/docs/api-reference/speech-engine/create.md) · [原文](https://elevenlabs.io/docs/api-reference/speech-engine/create.md)
@@ -250,7 +254,6 @@
 - `docs/api-reference/tools/update` — [Update tool](pages/docs/api-reference/tools/update.md) · [原文](https://elevenlabs.io/docs/api-reference/tools/update.md)
 - `docs/api-reference/twilio/outbound-call` — [Outbound call via twilio](pages/docs/api-reference/twilio/outbound-call.md) · [原文](https://elevenlabs.io/docs/api-reference/twilio/outbound-call.md)
 - `docs/api-reference/twilio/register-call` — [Register call](pages/docs/api-reference/twilio/register-call.md) · [原文](https://elevenlabs.io/docs/api-reference/twilio/register-call.md)
-- `docs/api-reference/usage/get` — [Get character usage metrics](pages/docs/api-reference/usage/get.md) · [原文](https://elevenlabs.io/docs/api-reference/usage/get.md)
 - `docs/api-reference/user/get` — [Get user](pages/docs/api-reference/user/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/get.md)
 - `docs/api-reference/user/subscription/get` — [Get user subscription](pages/docs/api-reference/user/subscription/get.md) · [原文](https://elevenlabs.io/docs/api-reference/user/subscription/get.md)
 - `docs/api-reference/users/list` — [List users](pages/docs/api-reference/users/list.md) · [原文](https://elevenlabs.io/docs/api-reference/users/list.md)
@@ -293,7 +296,6 @@
 - `docs/api-reference/whats-app/outbound-message` — [Outbound message via WhatsApp](pages/docs/api-reference/whats-app/outbound-message.md) · [原文](https://elevenlabs.io/docs/api-reference/whats-app/outbound-message.md)
 - `docs/api-reference/widget/create` — [Create widget avatar](pages/docs/api-reference/widget/create.md) · [原文](https://elevenlabs.io/docs/api-reference/widget/create.md)
 - `docs/api-reference/widget/get` — [Get widget](pages/docs/api-reference/widget/get.md) · [原文](https://elevenlabs.io/docs/api-reference/widget/get.md)
-- `docs/api-reference/workspace/analytics/requests/get` — [List Api Requests](pages/docs/api-reference/workspace/analytics/requests/get.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/analytics/requests/get.md)
 - `docs/api-reference/workspace/audit-logs/list` — [List audit logs](pages/docs/api-reference/workspace/audit-logs/list.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/audit-logs/list.md)
 - `docs/api-reference/workspace/auth-connections/create` — [Create Workspace Auth Connection](pages/docs/api-reference/workspace/auth-connections/create.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/create.md)
 - `docs/api-reference/workspace/auth-connections/delete` — [Delete Workspace Auth Connection](pages/docs/api-reference/workspace/auth-connections/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/auth-connections/delete.md)
@@ -309,10 +311,10 @@
 - `docs/api-reference/workspace/invites/create` — [Invite user](pages/docs/api-reference/workspace/invites/create.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/invites/create.md)
 - `docs/api-reference/workspace/invites/create-batch` — [Invite Multiple Users](pages/docs/api-reference/workspace/invites/create-batch.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/invites/create-batch.md)
 - `docs/api-reference/workspace/invites/delete` — [Delete invite](pages/docs/api-reference/workspace/invites/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/invites/delete.md)
+- `docs/api-reference/workspace/members/list` — [Get Workspace Members](pages/docs/api-reference/workspace/members/list.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/members/list.md)
 - `docs/api-reference/workspace/members/update` — [Update member](pages/docs/api-reference/workspace/members/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/members/update.md)
 - `docs/api-reference/workspace/resources/get` — [Get Resource](pages/docs/api-reference/workspace/resources/get.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/resources/get.md)
 - `docs/api-reference/workspace/resources/share` — [Share Workspace Resource](pages/docs/api-reference/workspace/resources/share.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/resources/share.md)
-- `docs/api-reference/workspace/resources/transfer` — [Transfer Workspace Resource Ownership](pages/docs/api-reference/workspace/resources/transfer.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/resources/transfer.md)
 - `docs/api-reference/workspace/resources/unshare` — [Unshare Workspace Resource](pages/docs/api-reference/workspace/resources/unshare.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/resources/unshare.md)
 - `docs/api-reference/workspace/secrets/create` — [Create secret](pages/docs/api-reference/workspace/secrets/create.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/create.md)
 - `docs/api-reference/workspace/secrets/delete` — [Delete secret](pages/docs/api-reference/workspace/secrets/delete.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/delete.md)
@@ -321,7 +323,6 @@
 - `docs/api-reference/workspace/secrets/list` — [Get secrets](pages/docs/api-reference/workspace/secrets/list.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/list.md)
 - `docs/api-reference/workspace/secrets/update` — [Update secret](pages/docs/api-reference/workspace/secrets/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/secrets/update.md)
 - `docs/api-reference/workspace/update` — [Update settings](pages/docs/api-reference/workspace/update.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/update.md)
-- `docs/api-reference/workspace/usage/get-usage-by-product-over-time` — [Get Workspace Usage](pages/docs/api-reference/workspace/usage/get-usage-by-product-over-time.md) · [原文](https://elevenlabs.io/docs/api-reference/workspace/usage/get-usage-by-product-over-time.md)
 - `docs/eleven-agents/api-reference/agents/branches/create` — [Create agent branch](pages/docs/eleven-agents/api-reference/agents/branches/create.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/create.md)
 - `docs/eleven-agents/api-reference/agents/branches/get` — [Get agent branch](pages/docs/eleven-agents/api-reference/agents/branches/get.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/get.md)
 - `docs/eleven-agents/api-reference/agents/branches/list` — [List agent branches](pages/docs/eleven-agents/api-reference/agents/branches/list.md) · [原文](https://elevenlabs.io/docs/eleven-agents/api-reference/agents/branches/list.md)
@@ -482,6 +483,7 @@
 - `docs/eleven-agents/customization/agent-testing` — [Agent Testing](pages/docs/eleven-agents/customization/agent-testing.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-testing.md)
 - `docs/eleven-agents/customization/agent-workflows` — [Workflows](pages/docs/eleven-agents/customization/agent-workflows.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/agent-workflows.md)
 - `docs/eleven-agents/customization/authentication` — [Agent authentication](pages/docs/eleven-agents/customization/authentication.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/authentication.md)
+- `docs/eleven-agents/customization/channel-behavior` — [Channel behavior](pages/docs/eleven-agents/customization/channel-behavior.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/channel-behavior.md)
 - `docs/eleven-agents/customization/conversation-flow` — [Conversation flow](pages/docs/eleven-agents/customization/conversation-flow.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/conversation-flow.md)
 - `docs/eleven-agents/customization/events` — [Events](pages/docs/eleven-agents/customization/events.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/events.md)
 - `docs/eleven-agents/customization/events/client-events` — [Client events](pages/docs/eleven-agents/customization/events/client-events.md) · [原文](https://elevenlabs.io/docs/eleven-agents/customization/events/client-events.md)

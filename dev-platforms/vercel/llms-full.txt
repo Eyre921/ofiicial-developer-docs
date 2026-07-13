@@ -155230,7 +155230,7 @@ source: "https://vercel.com/docs/rest-api/sandboxes/list-sandboxes"
 
 **Authentication**: Bearer token
 
-Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix.
+Retrieves a paginated list of named sandboxes belonging to a specific project. Results can be sorted by creation time or name, and optionally filtered by name prefix or status.
 
 Full reference: https://vercel.com/docs/md/rest-api/sandboxes/list-sandboxes
 

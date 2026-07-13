@@ -13,7 +13,7 @@ Bank redirects let customers pay online using their bank account. They drive mor
 - Retailers that want to improve conversion and reduce fraud with consumers in Europe and Asia Pacific.
 - Software or service businesses collecting one-time payments from other businesses.
 
-Bank redirects might not be a good fit for your business if you sell *subscriptions* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis). Some bank redirects don’t support recurring payments.
+Some bank redirects support *subscriptions* (A Subscription represents the product details associated with the plan that your customer subscribes to. Allows you to charge the customer on a recurring basis) and recurring payments. See the product support table below for details on which payment methods support subscriptions.
 
 ## Payment flow
 
@@ -32,7 +32,7 @@ We’ve created a single integration for all bank redirects that works across St
 | [FPX](https://docs.stripe.com/payments/fpx.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 7 | ✓ Supported | - Unsupported |
 | [iDEAL | Wero](https://docs.stripe.com/payments/ideal.md) | ✓ Supported | ✓ Supported | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 5,6,7 | ✓ Supported 6 | - Unsupported |
 | [P24](https://docs.stripe.com/payments/p24.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported 7 | Invite only | - Unsupported |
-| [TWINT](https://docs.stripe.com/payments/twint.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | - Unsupported | - Unsupported | - Unsupported |
+| [TWINT](https://docs.stripe.com/payments/twint.md) | ✓ Supported | ✓ Supported 1,2 | ✓ Supported | ✓ Supported | - Unsupported | ✓ Supported | ✓ Supported | - Unsupported | - Unsupported |
 
 1 Not supported when using Checkout in subscription mode.2 Not supported when using Checkout in setup mode.3 Not supported when [collecting payment details before creating a PaymentIntent](https://docs.stripe.com/payments/accept-a-payment-deferred.md).4 Not supported when using [Elements with the Checkout Sessions API](https://docs.stripe.com/payments/quickstart-checkout-sessions.md).5 Only supported when using [Checkout in subscription mode](https://docs.stripe.com/billing/subscriptions/ideal.md).6 Not supported when using `charge_automatically` for subscriptions or invoices. iDEAL | Wero is a [single use](https://docs.stripe.com/payments/payment-methods.md#usage) payment method where customers are required to [authenticate](https://docs.stripe.com/payments/payment-methods.md#customer-actions) each payment.7 Invoices and Subscriptions only support the [send_invoice](https://docs.stripe.com/api/invoices/object.md#invoice_object-collection_method) collection method.
 

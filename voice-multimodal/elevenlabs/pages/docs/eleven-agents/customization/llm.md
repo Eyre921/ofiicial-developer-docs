@@ -126,6 +126,23 @@ Keep reasoning effort set to **None** to avoid the agent thinking too long, whic
 
 Reasoning effort is perfect for workflow steps that require complex thought or decision-making where response time is less critical.
 
+### Reasoning summary
+
+Reasoning summary stores a summary of the model's reasoning on the conversation transcript, so you can review why the agent responded or called a tool the way it did. Messages that involved reasoning show a **Reasoning** badge in the conversation history; select it to expand the summary.
+
+Reasoning summary is in alpha. Behavior and availability may change.
+
+Enable the **Reasoning summary** toggle (off by default) in the agent's LLM settings, or set `enable_reasoning_summary` via the API.
+
+**Limitations:**
+
+* Summaries only appear for turns where the model actually reasoned (see [Reasoning effort](#reasoning-effort)). The setting stores the summary; it does not change how the model reasons.
+* Some providers respond faster when no summary is requested, so test the latency impact before enabling it on latency-sensitive voice agents.
+* Providers decide whether to return a summary, so some reasoned turns will have none. ElevenLabs-hosted models return the full reasoning trace.
+* Summaries are part of the stored transcript: they are not streamed during the conversation, follow retention and PII redaction settings, and are unavailable with [Zero Retention Mode](/docs/eleven-agents/customization/privacy/zrm).
+
+Summaries are also returned in the `reasoning` field of each transcript item in the [Get conversation](/docs/api-reference/conversations/get) response.
+
 ## Understanding pricing
 
 * **Tokens**: LLM usage is typically billed based on the number of tokens processed. As a general guideline for English text, 100 tokens is approximately equivalent to 75 words

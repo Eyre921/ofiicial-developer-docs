@@ -10,6 +10,8 @@ Stripe Tax uses product tax codes to determine a product's tax rate.
 
 > [Log in](https://dashboard.stripe.com/settings/tax) or [sign up](https://dashboard.stripe.com/register) for Stripe to enable Stripe Tax.
 
+Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
+
 Stripe Tax uses product tax codes (PTCs) to associate products with tax rates. For example, a jurisdiction can charge one tax rate for products in the **Clothing & Footwear** category and a different tax rate for products in the **School Uniforms** category.
 
 You can either:

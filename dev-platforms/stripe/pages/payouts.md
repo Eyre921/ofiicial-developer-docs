@@ -1159,7 +1159,7 @@ Use the following collapsed table to determine your country’s settlement timin
 - 5 business days for international charges | — |
 | Ireland | 7 calendar days | 3 business days |
 | Italy | 7 calendar days | 3 business days |
-| Japan | Payouts are made once per week (on a day of your choosing) and include payments processed up to 4 business days prior. | — |
+| Japan | 7 calendar days | 4 business days |
 | Latvia | 7 calendar days | 3 business days |
 | Liechtenstein | 7 calendar days | 3 business days |
 | Lithuania | 7 calendar days | 3 business days |

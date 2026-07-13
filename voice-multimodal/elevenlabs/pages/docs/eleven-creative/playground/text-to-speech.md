@@ -113,6 +113,8 @@ It's important to note that the AI is non-deterministic; setting the sliders to 
 
 The speed setting allows you to either speed up or slow down the speed of the generated speech. The default value is 1.0, which means that the speed is not adjusted. Values below 1.0 will slow the voice down, to a minimum of 0.7. Values above 1.0 will speed up the voice, to a maximum of 1.2. Extreme values may affect the quality of the generated speech.
 
+Speed is not available for the Eleven v3 model.
+
 #### Stability
 
 The stability slider determines how stable the voice is and the randomness between each generation. Lowering this slider introduces a broader emotional range for the voice. As mentioned before, this is also influenced heavily by the original voice. Setting the slider too low may result in odd performances that are overly random and cause the character to speak too quickly. On the other hand, setting it too high can lead to a monotonous voice with limited emotion.
@@ -124,6 +126,8 @@ On the other hand, if you want a more serious performance, even bordering on mon
 #### Similarity
 
 The similarity slider dictates how closely the AI should adhere to the original voice when attempting to replicate it. If the original audio is of poor quality and the similarity slider is set too high, the AI may reproduce artifacts or background noise when trying to mimic the voice if those were present in the original recording.
+
+Similarity is not available for the Eleven v3 model.
 
 #### Style exaggeration
 

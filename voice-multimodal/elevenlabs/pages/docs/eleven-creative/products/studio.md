@@ -401,8 +401,7 @@ This setting boosts the similarity to the original speaker. However, using this 
 
 Sometimes you may want to specify the pronunciation of certain words, such as character or brand names, or specify how acronyms should be read. Pronunciation dictionaries allow this functionality by enabling you to upload a lexicon or dictionary file that includes rules about how specified words should be pronounced, either using a phonetic alphabet (phoneme tags) or word substitutions (alias tags).
 
-Phoneme tags are only compatible with "Eleven Flash v2" and "Eleven English v1"
-[models](/docs/overview/models).
+Phoneme tags are only compatible with "Eleven Flash v2" [model](/docs/overview/models).
 
 Whenever one of these words is encountered in a project, the AI will pronounce the word using the specified replacement. When checking for a replacement word in a pronunciation dictionary, the dictionary is checked from start to end and only the first replacement is used.
 

@@ -49,7 +49,7 @@ Corrupt speech is a rare issue where the model generates muffled or distorted au
 unpredictably, and we have not identified a cause. If encountered, regenerate the section to
 resolve the issue.
 
-Audio quality may degrade during extended text-to-speech conversions, especially with the Multilingual v1 model. To mitigate this, break text into sections under 800 characters.
+Audio quality may degrade during extended text-to-speech conversions. To mitigate this, break text into sections under 800 characters.
 
 * **Voice Selection**: Some voices are more susceptible to degradation. Use high-quality samples for cloned voices to minimize artifacts.
 * **Stability and Similarity**: Adjust these settings to influence voice behavior and artifact prominence. Hover over each setting for more details.
