@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1480 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1484 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -325,7 +325,11 @@
 - `langsmith/llm-as-judge-sdk` — [How to define an LLM-as-a-judge evaluator](pages/langsmith/llm-as-judge-sdk.md) · [原文](https://docs.langchain.com/langsmith/llm-as-judge-sdk)
 - `langsmith/llm-auth-proxy-self-hosted` — [Set up the LLM auth proxy](pages/langsmith/llm-auth-proxy-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/llm-auth-proxy-self-hosted)
 - `langsmith/llm-gateway` — [LLM Gateway](pages/langsmith/llm-gateway.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway)
+- `langsmith/llm-gateway-access` — [Traces, Engine, and access control](pages/langsmith/llm-gateway-access.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-access)
+- `langsmith/llm-gateway-admin-setup` — [Admin setup](pages/langsmith/llm-gateway-admin-setup.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-admin-setup)
+- `langsmith/llm-gateway-coding-agents` — [Set up coding agents](pages/langsmith/llm-gateway-coding-agents.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-coding-agents)
 - `langsmith/llm-gateway-custom-providers` — [Custom model providers](pages/langsmith/llm-gateway-custom-providers.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-custom-providers)
+- `langsmith/llm-gateway-quickstart` — [Quickstart](pages/langsmith/llm-gateway-quickstart.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-quickstart)
 - `langsmith/llm-gateway-redaction` — [PII and secrets redaction](pages/langsmith/llm-gateway-redaction.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-redaction)
 - `langsmith/llm-gateway-spend-policies` — [Spend policies](pages/langsmith/llm-gateway-spend-policies.md) · [原文](https://docs.langchain.com/langsmith/llm-gateway-spend-policies)
 - `langsmith/local` — [How to run an evaluation locally (Python only)](pages/langsmith/local.md) · [原文](https://docs.langchain.com/langsmith/local)

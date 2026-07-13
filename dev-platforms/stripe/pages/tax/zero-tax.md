@@ -109,7 +109,11 @@ Stripe Tax doesn’t validate required documentation for supporting an exemption
 
 Some countries exclude administrative subdivisions or territories from the scope of their general tax system. In some territories, no tax is levied, while others might have their own tax regulations and rates.
 
-Stripe Tax doesn’t calculate tax in the territories listed below, even if you’re registered in the country to which the territory belongs. Stripe Tax automatically determines if your customer is based in an excluded or unsupported territory using the postal code and jurisdiction name. For details on territories where Stripe Tax applies the parent country tax treatment instead of the territory-specific one, see the [country-specific documentation](https://docs.stripe.com/tax/supported-countries.md).
+Stripe Tax doesn’t calculate tax in the following territories, even if you’re registered in the parent country. Stripe Tax identifies whether your customer is in an excluded or unsupported territory using the country code, postal code, or the state or province code from the address you provide.
+
+If the address is ambiguous between an excluded territory and its parent country, Stripe Tax defaults to the excluded territory. If the address is ambiguous between multiple excluded territories, the tax calculation returns an error because Stripe Tax can’t resolve the location.
+
+For details on territories where Stripe Tax applies the parent country tax treatment instead of the territory-specific one, see the [country-specific documentation](https://docs.stripe.com/tax/supported-countries.md).
 
 | Country | Excluded Territories |
 | --- | --- |

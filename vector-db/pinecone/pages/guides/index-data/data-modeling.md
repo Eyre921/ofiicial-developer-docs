@@ -744,6 +744,10 @@ index.delete(
 
 ### Update an entire document
 
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
+
 When the amount of chunks or ordering of chunks for a document changes, the recommended approach is to first [delete all chunks using a metadata filter](/guides/manage-data/delete-data#delete-records-by-metadata), and then [upsert](/guides/index-data/upsert-data) the new chunks:
 
 ```python Python theme={null}

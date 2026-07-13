@@ -158,7 +158,7 @@ Source: https://docs.langchain.com/index
         Trace, debug, and observe agents in production.
       </Card>
 
-      <Card title="Govern" icon="shield-check" href="/langsmith/admin">
+      <Card title="Govern" icon="shield-check" href="/langsmith/govern-overview">
         Administer access, settings, and LLM Gateway.
       </Card>
 

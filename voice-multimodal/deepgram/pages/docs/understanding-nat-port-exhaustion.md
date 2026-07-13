@@ -16,7 +16,7 @@ This document explains:
 
 * What NAT port exhaustion is
 * Why it tends to surface with real-time speech workloads
-* How to identify and troubleshoot the issue (including GCP and Azure specifics)
+* How to identify and troubleshoot the issue (including AWS, GCP, and Azure specifics)
 * What changes to consider in your environment to eliminate these failures
 
 ***
@@ -208,6 +208,34 @@ On Azure, we recommend:
      * Verifying:
        * Balanced distribution across IPs
        * Healthy port utilization without rapid reuse for the same destination
+
+***
+
+### Amazon Web Services (AWS)
+
+On AWS, workloads on ECS/Fargate or EC2 usually reach Deepgram through a NAT Gateway, commonly deployed as one gateway per Availability Zone and shared across many tasks. Because a single NAT Gateway's source ports are shared across every resource routed through it, a high-concurrency streaming workload can exhaust ports and produce the intermittent `/listen` WebSocket handshake timeouts described above.
+
+#### Diagnosing NAT port exhaustion on AWS
+
+Two AWS-native data sources let you self-diagnose this quickly: use CloudWatch NAT Gateway metrics to confirm exhaustion, and VPC Flow Logs to trace the failing connections.
+
+##### CloudWatch NAT Gateway metrics
+
+Pull the following metrics from the `AWS/NATGateway` namespace, filtered to the affected `NatGatewayId` dimension, at 1-minute granularity around the failure timestamps:
+
+* **`ErrorPortAllocation`** — the number of times the NAT Gateway could not allocate a source port. Any non-zero value is a direct signal of port exhaustion at that moment.
+* **`PacketsDropCount`** — the total packets the NAT Gateway dropped. This is a broader drop count that corroborates `ErrorPortAllocation`.
+* **`ActiveConnectionCount`** — the number of concurrent active connections. Each NAT Gateway supports up to 55,000 concurrent connections per unique destination — that is, per unique combination of protocol, destination IP, and destination port — and this quota is shared across every resource routed through that gateway. Many tasks connecting to the same Deepgram endpoint on port 443 draw from the same 55,000-connection budget.
+* **`ConnectionAttemptCount`** vs **`ConnectionEstablishedCount`** — compare these two. A gap, where attempts exceed established connections, indicates attempts that never completed the handshake, which is consistent with port allocation failure.
+
+##### VPC Flow Logs
+
+VPC Flow Logs record the actual packet flows and let you confirm that failing connections never complete a handshake:
+
+* **Enable flow logs on the NAT Gateway resource directly**, not only on the subnet or VPC. A flow log attached to the NAT Gateway captures both the pre-translation and post-translation addresses, so you can correlate a task's private source address with the public source port the gateway assigned.
+* **Use the custom flow log format with all fields** — including `tcp-flags`, `flow-direction`, `pkt-srcaddr`, `pkt-dstaddr`, and `log-status` — and set the maximum aggregation interval to 1 minute instead of the 10-minute default. The finer interval and richer fields make short exhaustion spikes visible.
+* **Filter on the affected source IPs and destination port 443** around known failure timestamps. Look for SYN packets with no corresponding response, which is consistent with port allocation failure.
+* **Treat a missing flow log entry at a failure timestamp as corroborating, not contradictory.** A port allocation failure can drop the connection before it is ever logged, so the absence of a record at the exact moment of a reported failure is itself expected and consistent with exhaustion.
 
 ***
 

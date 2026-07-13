@@ -134,7 +134,9 @@ const openRouter = new OpenRouter({
 async function run() {
   const result = await openRouter.embeddings.listModels();
 
-  console.log(result);
+  for await (const page of result) {
+    console.log(page);
+  }
 }
 
 run();
@@ -161,7 +163,9 @@ async function run() {
   const res = await embeddingsListModels(openRouter);
   if (res.ok) {
     const { value: result } = res;
-    console.log(result);
+    for await (const page of result) {
+    console.log(page);
+  }
   } else {
     console.log("embeddingsListModels failed:", res.error);
   }
@@ -181,7 +185,7 @@ run();
 
 ### Response
 
-**Promise\<[models.ModelsListResponse](../../models/modelslistresponse.mdx)>**
+**Promise\<[operations.ListEmbeddingsModelsResponse](../../models/operations/listembeddingsmodelsresponse.mdx)>**
 
 ### Errors
 

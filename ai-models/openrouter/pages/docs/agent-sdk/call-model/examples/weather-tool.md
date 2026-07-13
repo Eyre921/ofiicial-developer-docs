@@ -14,9 +14,27 @@ path: docs/agent-sdk/call-model/examples/weather-tool
 
 ## Prerequisites
 
-```bash lines theme={null}
-pnpm add @openrouter/sdk zod
-```
+<CodeGroup>
+  ```bash title="npm" lines theme={null}
+  npm install @openrouter/agent zod
+  ```
+
+  ```bash title="pnpm" lines theme={null}
+  pnpm add @openrouter/agent zod
+  ```
+
+  ```bash title="yarn" lines theme={null}
+  yarn add @openrouter/agent zod
+  ```
+
+  ```bash title="bun" lines theme={null}
+  bun add @openrouter/agent zod
+  ```
+
+  ```bash title="deno" lines theme={null}
+  deno add npm:@openrouter/agent npm:zod
+  ```
+</CodeGroup>
 
 You'll need a weather API key. This example uses [WeatherAPI](https://www.weatherapi.com/) (free tier available).
 

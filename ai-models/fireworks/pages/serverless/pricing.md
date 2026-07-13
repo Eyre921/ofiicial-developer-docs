@@ -34,7 +34,7 @@ Per-model pricing for headline models. Fast variants appear as adjacent rows. In
 | [Kimi K2.6](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                      | \$0.95 / \$0.16 / \$4.00  | \$1.50 / \$0.22 / \$6.00   |
 | [Kimi K2.6 Fast](https://app.fireworks.ai/models/fireworks/kimi-k2p6)                                 | \$2.00 / \$0.30 / \$8.00  | —                          |
 | [DeepSeek V4 Pro](https://app.fireworks.ai/models/fireworks/deepseek-v4-pro)                          | \$1.74 / \$0.145 / \$3.48 | \$2.61 / \$0.218 / \$5.22  |
-| [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)                      | \$0.14 / \$0.028 / \$0.28 | —                          |
+| [DeepSeek V4 Flash](https://app.fireworks.ai/models/fireworks/deepseek-v4-flash)                      | \$0.14 / \$0.028 / \$0.28 | \$0.21 / \$0.042 / \$0.42  |
 | [GLM 5.2](https://app.fireworks.ai/models/fireworks/glm-5p2)                                          | \$1.40 / \$0.14 / \$4.40  | \$1.75 / \$0.18 / \$5.50   |
 | [GLM 5.2 Fast](https://app.fireworks.ai/models/fireworks/glm-5p2)                                     | \$2.10 / \$0.21 / \$6.60  | —                          |
 | [GLM 5.1](https://app.fireworks.ai/models/fireworks/glm-5p1)                                          | \$1.40 / \$0.26 / \$4.40  | \$2.10 / \$0.39 / \$6.60   |

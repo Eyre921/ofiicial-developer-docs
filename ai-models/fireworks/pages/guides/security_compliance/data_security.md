@@ -24,7 +24,11 @@ Fireworks does not log or store prompt or generation data for open models, witho
 
 * Datasets: [GCS Bucket Integration](/fine-tuning/secure-fine-tuning#gcs-bucket-integration) (AWS S3 coming soon)
 * Models: [External AWS S3 Bucket Integration](/models/uploading-custom-models#uploading-your-model)
-* (Coming soon) Encryption Keys: Customers may choose to use their own encryption keys and policies for end-to-end control.
+
+**Bring Your Own Key:** Customers may integrate their own AWS KMS key to retain governance and apply their own encryption policies.
+
+* Datasets and checkpoints: [Customer-Managed Encryption Keys for Fine-Tuning](/fine-tuning/cmek) (SFT supported; DPO and RFT coming soon)
+* Final model weights: Coming soon
 
 **Access Logging:** All customer data access is logged, monitored, and protected against tampering. See [Audit & Access Logs](https://docs.fireworks.ai/guides/security_compliance/audit_logs).
 

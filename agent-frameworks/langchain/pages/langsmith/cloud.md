@@ -11,8 +11,8 @@ path: langsmith/cloud
 The **Cloud** option is a fully managed model where LangChain hosts and operates all LangSmith infrastructure and services:
 
 * **Fully managed infrastructure**: LangChain handles all infrastructure, updates, scaling, and maintenance.
-* **Deploy from GitHub**: Connect your repositories and deploy with a few clicks.
-* **Automated CI/CD**: Build process is handled automatically by the platform.
+* **Deploy Agent Servers from GitHub**: Connect your repositories and deploy [Agent Servers](/langsmith/deployment) to the cloud with a few clicks.
+* **Automated CI/CD for Agent Servers**: The build and deployment process for your [Agent Servers](/langsmith/deployment) is handled automatically by the platform.
 * **LangSmith UI**: Full access to [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), [deployment management](/langsmith/deployment), and [Studio](/langsmith/studio).
 
 |                                               | **Who manages it** | **Where it runs**               |

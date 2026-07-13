@@ -45,13 +45,25 @@ Choose the Agent SDK when you need **agentic behavior** — multi-step reasoning
   ```bash title="yarn" lines theme={null}
   yarn add @openrouter/agent
   ```
+
+  ```bash title="bun" lines theme={null}
+  bun add @openrouter/agent
+  ```
+
+  ```bash title="deno" lines theme={null}
+  deno add npm:@openrouter/agent
+  ```
 </CodeGroup>
 
 ## Quick example
 
 ```typescript expandable lines theme={null}
-import { callModel, tool } from '@openrouter/agent';
+import { OpenRouter, tool } from '@openrouter/agent';
 import { z } from 'zod';
+
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
 
 const weatherTool = tool({
   name: 'get_weather',
@@ -64,7 +76,7 @@ const weatherTool = tool({
   },
 });
 
-const result = await callModel({
+const result = openrouter.callModel({
   model: 'anthropic/claude-sonnet-4',
   messages: [
     { role: 'user', content: 'What is the weather in San Francisco?' },
@@ -115,9 +127,13 @@ const searchTool = tool({
 Control when the agent loop terminates:
 
 ```typescript lines theme={null}
-import { callModel, stepCountIs, maxCost } from '@openrouter/agent';
+import { OpenRouter, stepCountIs, maxCost } from '@openrouter/agent';
 
-const result = await callModel({
+const openrouter = new OpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
+
+const result = openrouter.callModel({
   model: 'anthropic/claude-sonnet-4',
   messages: [{ role: 'user', content: 'Research this topic thoroughly' }],
   tools: [searchTool],

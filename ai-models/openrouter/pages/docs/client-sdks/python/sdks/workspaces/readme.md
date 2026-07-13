@@ -48,7 +48,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.workspaces.list()
+    res = open_router.workspaces.list(offset=0, limit=50)
 
     while res is not None:
         # Handle items
@@ -464,7 +464,7 @@ with OpenRouter(
     api_key=os.getenv("OPENROUTER_API_KEY", ""),
 ) as open_router:
 
-    res = open_router.workspaces.list_members(id="production")
+    res = open_router.workspaces.list_members(id="production", offset=0, limit=50)
 
     while res is not None:
         # Handle items

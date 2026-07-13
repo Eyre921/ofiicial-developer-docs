@@ -541,7 +541,7 @@ Source: https://docs.langchain.com/index
         Trace, debug, and observe agents in production.
       </Card>
 
-      <Card title="Govern" icon="shield-check" href="/langsmith/admin">
+      <Card title="Govern" icon="shield-check" href="/langsmith/govern-overview">
         Administer access, settings, and LLM Gateway.
       </Card>
 
@@ -10601,7 +10601,7 @@ We recommend leveraging AWS's managed services to provide a scalable, secure, an
 
 * <Icon icon="globe" /> **Ingress & networking**: Requests enter via [Amazon Application Load Balancer (ALB)](https://aws.amazon.com/elasticloadbalancing/application-load-balancer/) within your [VPC](https://aws.amazon.com/vpc/), secured using [AWS WAF](https://aws.amazon.com/waf/) and [IAM](https://aws.amazon.com/iam/)-based authentication.
 
-* <Icon icon="cube" /> **Frontend & backend services:** Containers run on [Amazon EKS](https://aws.amazon.com/eks/), orchestrated behind the ALB. routes requests to other services within the cluster as necessary.
+* <Icon icon="cube" /> **Frontend & backend services:** Containers run on [Amazon EKS](https://aws.amazon.com/eks/), orchestrated behind the ALB, and route requests to other services within the cluster as necessary.
 
 * <Icon icon="database" /> **Storage & databases:**
   * [Amazon RDS for PostgreSQL](https://aws.amazon.com/rds/postgresql/) or [Aurora](https://aws.amazon.com/rds/aurora/): metadata, projects, users, and short-term and long-term memory for deployed agents. LangSmith supports PostgreSQL version 14 or higher.
@@ -15039,8 +15039,8 @@ Source: https://docs.langchain.com/langsmith/cloud
 The **Cloud** option is a fully managed model where LangChain hosts and operates all LangSmith infrastructure and services:
 
 * **Fully managed infrastructure**: LangChain handles all infrastructure, updates, scaling, and maintenance.
-* **Deploy from GitHub**: Connect your repositories and deploy with a few clicks.
-* **Automated CI/CD**: Build process is handled automatically by the platform.
+* **Deploy Agent Servers from GitHub**: Connect your repositories and deploy [Agent Servers](/langsmith/deployment) to the cloud with a few clicks.
+* **Automated CI/CD for Agent Servers**: The build and deployment process for your [Agent Servers](/langsmith/deployment) is handled automatically by the platform.
 * **LangSmith UI**: Full access to [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), [deployment management](/langsmith/deployment), and [Studio](/langsmith/studio).
 
 |                                               | **Who manages it** | **Where it runs**               |
@@ -48330,7 +48330,7 @@ You will also need to specify connection details for any external databases you 
      If you are using a namespace other than the default namespace, you will need to specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace>` flag.
    </Note>
 
-2. Ensure you have the LangChain Helm repo added. (skip this step if you are using local charts)
+2. Ensure you have the LangChain Helm repo added (skip this step if you are using local charts).
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    helm repo add langchain https://langchain-ai.github.io/helm
@@ -51055,6 +51055,380 @@ For further questions on LLM Gateway, contact [support.langchain.com](https://su
 </div>
 
 
+# Traces, Engine, and access control
+Source: https://docs.langchain.com/langsmith/llm-gateway-access
+
+Understand where gateway traces land, how policy violations surface in LangSmith Engine, and who can see and configure what.
+
+<Note>
+  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+</Note>
+
+Every call through the LLM Gateway is traced to LangSmith, and policy violations surface in [LangSmith Engine](/langsmith/engine) for triage.
+
+## Where gateway traces appear
+
+By default, all gateway-proxied calls are traced to a project named `gateway` in the [workspace](/langsmith/administration-overview#workspaces) associated with the caller's API key, as well as a API-key specific project with the scheme `gateway-<short_api_key>-<api_key_id>`.
+
+Control access to these tracing projects with [RBAC](/langsmith/rbac) and [ABAC](/langsmith/abac)
+
+### Trace metadata
+
+Gateway-proxied calls are distinguishable from direct LLM calls by the project they land in and the metadata attached to their spans:
+
+* **Gateway project:** all gateway traffic is written to a central gateway project in each workspace, as well as a fixed LangSmith project named `gateway` with a per-API-key copy at `gateway-<short_api_key>-<api_key_id>` for UI isolation. Filter by project (or by the presence of `langsmith.metadata.gateway.*` span attributes) to find gateway-proxied calls.
+* **Policy evaluation results:** every gateway span records which policies were evaluated and their outcome via `langsmith.metadata.gateway.policy.matched_ids/_names`, `passed_ids/_names`, and `violated_ids/_names`, so both passes and blocks are captured.
+* **Guard rule matches:** when redaction policies apply, the guard pipeline emits a `rule_id → count` map stamped onto the span as `policy.matched_rules`, `passed_rules`, and `violated_rules`. These are rule IDs, not PII or secret category labels.
+* **Cost data:** token counts and cost are computed inline and feed the same spend accumulator that spend-cap policies enforce against.
+
+## LangSmith Engine integration
+
+When a governance policy fires (such as when a spend limit is hit, PII is detected and redacted, or a secret is caught), the event is recorded as metadata on the trace. These policy violations surface as issues in LangSmith Engine.
+
+From an Engine issue, you can:
+
+1. **See the violation:** which policy fired, what was blocked or redacted.
+2. **Click through to the trace:** see exactly what the agent was doing when the policy triggered.
+3. **Diagnose the root cause:** was it a retry loop burning budget, a user pasting credentials into a prompt, or a legitimate workload that outgrew its cap, etc.
+4. **Take action:** update the agent's configuration, adjust the policy, or escalate.
+
+## Audit logging
+
+The gateway logs two categories of events:
+
+| Category                   | What's logged                                                                                       |
+| -------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Administrative changes** | Policy creation, modification, and deletion. Role and permission changes related to gateway access. |
+| **Gateway invocations**    | Each proxied call, including the caller identity and matched policy IDs.                            |
+
+[Audit logs](/langsmith/audit-logs) are available to organization admins on the [Enterprise plan](/langsmith/pricing-plans).
+
+## Permissions
+
+### Required permissions
+
+| Action                           | Permission needed                    | Who has it by default                                   |
+| -------------------------------- | ------------------------------------ | ------------------------------------------------------- |
+| Make calls through the gateway   | `gateway:invoke` + `workspaces:read` | `WORKSPACE_ADMIN` only                                  |
+| Create, edit, or delete policies | `organization:manage`                | Org admins                                              |
+| View gateway traces              | `projects:read` + `runs:read`        | `WORKSPACE_ADMIN`, `WORKSPACE_USER`, `WORKSPACE_VIEWER` |
+| View audit logs                  | `organization:manage`                | Org admins                                              |
+
+The built-in `WORKSPACE_USER` and `WORKSPACE_VIEWER` roles do **not** include `gateway:invoke` and cannot be edited. To grant gateway access without full workspace-admin privileges, create a custom workspace role with `gateway:invoke` and `workspaces:read` (requires an RBAC-enabled plan). For instructions, refer to [Admin setup](/langsmith/llm-gateway-admin-setup).
+
+### API key scoping
+
+Always use workspace-scoped API keys for the gateway. Organization-scoped keys are not supported for invoking the gateway.
+
+### Centralizing provider credentials
+
+The gateway centralizes provider API keys in LangSmith workspace secrets. Individual developers and agents authenticate with their [LangSmith API key](/langsmith/create-account-api-key) and never need direct access to provider keys.
+
+This means:
+
+* **Credential control:** provider keys live in one place, managed by admins. Revoking access means revoking the LangSmith API key, not finding distributed copies of provider keys.
+* **Policy enforcement:** because all calls flow through the gateway, policies are enforced consistently. There's no way to bypass cost limits by calling the provider directly (as long as developers don't have access to the provider key separately).
+
+For this to work as intended, don't distribute provider API keys to developers alongside gateway access. The gateway centralizes provider credentials by default. A pass-through mode also exists for OAuth-based flows like Claude Code Max—contact us if your organization wants to allow or restrict it.
+
+### Restricting trace visibility
+
+Gateway traces are written as runs into a workspace project and follow LangSmith's standard workspace membership model. Anyone with `runs:read` (and `projects:read` to see the project itself) on the workspace can view traces in that workspace's gateway project. The built-in roles `WORKSPACE_ADMIN`, `WORKSPACE_USER`, and `WORKSPACE_VIEWER` all include both permissions by default.
+
+If you need to limit who can see gateway traces, you have two options:
+
+* **Separate workspaces** (works on any [plan](/langsmith/pricing-plans)): create one workspace with restricted membership and another for developer coding agents with broader membership. Each workspace has its own provider secrets and trace projects.
+* **Project-level access policies** (requires an [Enterprise plan](/langsmith/pricing-plans)): write an ABAC policy restricting `projects:read` and `runs:read` on the gateway project to specific users or roles.
+
+## Next steps
+
+* [Admin setup](/langsmith/llm-gateway-admin-setup): the step-by-step guide for configuring all of this.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): attach cost limits to API keys and users.
+* [PII and secrets redaction](/langsmith/llm-gateway-redaction): configure data protection policies.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-access.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Admin setup
+Source: https://docs.langchain.com/langsmith/llm-gateway-admin-setup
+
+One-time organization setup to enable the LLM Gateway and grant user access.
+
+<Note>
+  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+</Note>
+
+One-time setup to enable the LLM Gateway for your LangSmith [organization](/langsmith/administration-overview#organizations). [Organization admins](/langsmith/rbac#organization-admin) should complete this before individual users can route calls through the gateway.
+
+## Prerequisites
+
+You need [`organization:manage` permission](/langsmith/organization-workspace-operations) in LangSmith. [Step 3 Option A](/langsmith/llm-gateway-admin-setup#option-a-create-a-custom-workspace-role-recommended) also requires a plan that includes [RBAC](/langsmith/rbac) (custom roles).
+
+## 1. Enable the LLM Gateway
+
+During private beta, the gateway must be enabled for your organization by LangChain. Once you've been accepted into the beta, the `llm_gateway_enabled` feature flag will be turned on for your organization.
+
+At General Availability, this will be a self-service setting.
+
+## 2. Add Provider Secrets
+
+The gateway resolves provider API keys from your workspace's Provider Secrets—this is how it proxies calls to upstream providers without individual users needing local copies of provider keys.
+
+Go to **Settings → Integrations → Provider Secrets** and add the keys for the providers you want to proxy through the gateway:
+
+| Secret name                   | Provider         |
+| ----------------------------- | ---------------- |
+| `ANTHROPIC_API_KEY`           | Anthropic        |
+| `AWS_BEARER_TOKEN_BEDROCK`    | AWS Bedrock      |
+| `BASETEN_API_KEY`             | Baseten          |
+| `FIREWORKS_API_KEY`           | Fireworks        |
+| `GOOGLE_API_KEY`              | Google Gemini    |
+| `OPENAI_API_KEY`              | OpenAI           |
+| `VERTEX_SERVICE_ACCOUNT_JSON` | Google Vertex AI |
+
+Add only the providers your organization uses. The gateway will return an error if a user tries to call a provider whose key hasn't been added.
+
+## 3. Configure gateway access for users
+
+The built-in roles `WORKSPACE_USER` and `WORKSPACE_VIEWER` do not include the `gateway:invoke` permission and cannot be edited. You have two options for granting gateway access:
+
+### Option A: Create a custom workspace role (recommended)
+
+Requires an RBAC-enabled plan.
+
+1. Go to **Settings → Members/Roles**.
+2. Create a new workspace role.
+3. Grant it at minimum `gateway:invoke` and `workspaces:read`.
+4. Assign users who need gateway access to this role.
+
+Use this when you want to grant gateway access to specific users without giving them full workspace-admin privileges. This gives you the most control over who can use the gateway.
+
+### Option B: Use the workspace admin role
+
+No plan requirement.
+
+The `WORKSPACE_ADMIN` role already includes both `gateway:invoke` and `workspaces:read` by default. Assign users who need gateway access to this role.
+
+Use this if you don't need fine-grained access control, or if you don't have RBAC enabled.
+
+## 4. Configure policies (optional)
+
+Gateway policy management requires `organization:manage` permission.
+
+Go to **Settings → Gateway → LLM Gateway** to create governance policies. You can configure:
+
+* **Spend limits:** hard caps at the organization, workspace, API key, or user level. Refer to [Spend policies](/langsmith/llm-gateway-spend-policies).
+* **PII and secrets redaction:** detect and redact sensitive data before it reaches the model. Refer to [PII and secrets redaction](/langsmith/llm-gateway-redaction).
+
+Policies are optional during initial setup. The gateway will freely allow invocations until you have configured policies.
+
+## 5. Distribute API keys to users
+
+Create workspace-scoped [Service Keys](/langsmith/administration-overview#service-keys) for users who need gateway access. Each key should be attached to a role that includes `gateway:invoke` and `workspaces:read`.
+
+Use workspace-scoped keys, not organization-scoped keys. See [API key scoping](/langsmith/llm-gateway-access#api-key-scoping) for details.
+
+Share the key and the gateway endpoint with each user, or distribute them via MDM (mobile device management) for company-wide coding agent rollouts. For per-agent configuration instructions, refer to [Set up coding agents](/langsmith/llm-gateway-coding-agents).
+
+## Verification
+
+Ask a user to run the [verification curl from the Quickstart](/langsmith/llm-gateway-quickstart#2-make-a-call). A `200` response confirms the gateway, the API key, provider secrets, and role permissions are all configured correctly. The call will appear as a trace in the **gateway** tracing project in the workspace.
+
+## Next steps
+
+* [Quickstart](/langsmith/llm-gateway-quickstart): share with your users as the getting-started guide.
+* [Set up coding agents](/langsmith/llm-gateway-coding-agents): configure Claude Code, Codex, and other agents org-wide.
+* [Traces, Engine, and access control](/langsmith/llm-gateway-access): deep dive on roles, scoped keys, trace routing, and who can see what.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-admin-setup.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Set up coding agents
+Source: https://docs.langchain.com/langsmith/llm-gateway-coding-agents
+
+Configure Claude Code, Codex, Gemini CLI, and Deep Agents to route LLM calls through the LLM Gateway.
+
+<Note>
+  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). [Sign up for the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+</Note>
+
+Configure coding agents to route LLM calls through the LLM Gateway, giving your organization cost controls, observability, and audit trails on developer LLM usage without changing agent code.
+
+Most coding agents let you override the LLM provider endpoint via environment variables or configuration files. By pointing them at the LLM Gateway instead of the provider directly, all LLM calls flow through the gateway. The gateway authenticates the caller, resolves the actual provider key from workspace secrets, enforces policies, and traces the call. No agent code changes required.
+
+The gateway supports Anthropic, AWS Bedrock, Baseten, Fireworks, Google Gemini, Google Vertex AI, and OpenAI. For the full list and required secrets, see [Supported providers](/langsmith/llm-gateway#supported-providers).
+
+## Prerequisites
+
+* Your [Organization admin](/langsmith/rbac#organization-admin) has completed [Admin setup](/langsmith/llm-gateway-admin-setup).
+* You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations).
+* You have set the [gateway environment variables](/langsmith/llm-gateway-quickstart#1-set-environment-variables) in your terminal.
+
+## Supported clients
+
+* Claude Code CLI
+* Codex CLI
+* Gemini CLI
+* Deep Agents
+
+## Claude Code CLI
+
+No extra configuration beyond the [environment variables](/langsmith/llm-gateway-quickstart#1-set-environment-variables). Run:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+claude
+```
+
+Claude Code will use `ANTHROPIC_BASE_URL` and `ANTHROPIC_API_KEY` from your environment automatically.
+
+<Warning>
+  Claude Desktop desktop plugins break when the gateway is configured. Claude users on a paid plan (Plus, Max) are not yet supported.
+</Warning>
+
+## Codex CLI
+
+Codex requires a TOML configuration file in addition to environment variables.
+
+Add this to `~/.codex/config.toml`:
+
+```toml theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+model_provider = "langsmith-gateway"
+
+[model_providers.langsmith-gateway]
+name = "LangSmith Gateway"
+base_url = "https://gateway.smith.langchain.com/openai/v1"
+env_key = "LANGSMITH_API_KEY"
+supports_websockets = false
+```
+
+Make sure the `LANGSMITH_API_KEY` environment variable is [set](/langsmith/llm-gateway-quickstart#1-set-environment-variables), then run:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+codex
+```
+
+<Warning>
+  Codex Desktop plugins break when the gateway is configured. The TOML configuration forces authentication through the gateway, so OpenAI no longer handles plugin auth directly.
+</Warning>
+
+## Gemini CLI
+
+No extra configuration beyond the [environment variables](/langsmith/llm-gateway-quickstart#1-set-environment-variables). Run:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+gemini
+```
+
+Gemini CLI will use `GOOGLE_GEMINI_BASE_URL` and `GEMINI_API_KEY` from your environment automatically.
+
+## Deep Agents
+
+No extra configuration beyond the [environment variables](/langsmith/llm-gateway-quickstart#1-set-environment-variables). For details, refer to the [provider selection docs](/oss/python/deepagents/code/providers#provider-reference). Run:
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+deepagents
+```
+
+## Python SDK usage
+
+If you call LLM providers from Python scripts rather than through a coding agent, swap the `base_url`:
+
+<Tabs>
+  <Tab title="OpenAI SDK">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import os
+
+    from openai import OpenAI
+
+    client = OpenAI(
+        base_url="https://gateway.smith.langchain.com/openai/v1",
+        api_key=os.environ["LANGSMITH_API_KEY"],
+    )
+    response = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": "Say hello!"}],
+    )
+    print(response.choices[0].message.content)
+    ```
+  </Tab>
+
+  <Tab title="Anthropic SDK">
+    ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import os
+
+    import anthropic
+
+    client = anthropic.Anthropic(
+        base_url="https://gateway.smith.langchain.com/anthropic",
+        api_key=os.environ["LANGSMITH_API_KEY"],
+    )
+    message = client.messages.create(
+        model="claude-sonnet-4-6",
+        max_tokens=1024,
+        messages=[{"role": "user", "content": "Say hello!"}],
+    )
+    print(message.content[0].text)
+    ```
+  </Tab>
+</Tabs>
+
+## Company-wide deployment
+
+For organizations rolling the gateway out to all developers, distribute the configuration through MDM (mobile device management) or a shared shell profile. The key pieces to distribute are:
+
+1. The gateway base URL (`https://gateway.smith.langchain.com`).
+2. A workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) per user (or per team, depending on your policy granularity).
+3. The Codex `config.toml` if your organization uses Codex.
+
+Provider API keys stay centralized in LangSmith workspace secrets.
+
+## Verify the setup
+
+After configuring a coding agent, make a test call and confirm that:
+
+1. The call succeeds (the agent gets a response).
+2. A trace appears in the `gateway` and `gateway-<short_api_key>-<api_key_id>` tracing projects in your LangSmith workspace.
+
+If the call fails with a `403`, check that your API key's role includes `gateway:invoke` and `workspaces:read`. If it fails with a `400` mentioning a missing provider key, ask your org admin to add the provider's key to workspace secrets.
+
+## Next steps
+
+* [Spend policies](/langsmith/llm-gateway-spend-policies): set cost limits on developer LLM usage.
+* [Traces, Engine, and access control](/langsmith/llm-gateway-access): understand where gateway traces appear.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-coding-agents.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
 # Custom model providers
 Source: https://docs.langchain.com/langsmith/llm-gateway-custom-providers
 
@@ -51123,6 +51497,152 @@ Custom providers use the same allowlist as the built-in OpenAI provider: `POST /
 
   <Callout icon="edit">
     [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-custom-providers.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>
+
+
+# Quickstart
+Source: https://docs.langchain.com/langsmith/llm-gateway-quickstart
+
+Make your first gateway-proxied LLM call.
+
+<Note>
+  **Private beta:** The LLM Gateway is in private [beta](/langsmith/release-stages). Sign up for [the waitlist](https://www.langchain.com/langsmith-llm-gateway-waitlist) to get access.
+</Note>
+
+## Prerequisites
+
+Before you start, confirm that:
+
+* Your [Organization admin](/langsmith/rbac#organization-admin) has enabled the LLM Gateway and added provider API keys to workspace secrets. To set this up, refer to [Admin setup](/langsmith/llm-gateway-admin-setup).
+* You have a workspace-scoped [LangSmith API key](/langsmith/create-account-api-key) attached to a role with `gateway:invoke` and `workspaces:read` [permissions](/langsmith/organization-workspace-operations). Ask your org admin if you're unsure.
+
+## 1. Set environment variables
+
+Set the following in your terminal (or add them to your `~/.zshrc` to persist across sessions):
+
+```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+export BASE_URL="https://gateway.smith.langchain.com"
+
+export ANTHROPIC_BASE_URL="$BASE_URL/anthropic"
+export OPENAI_BASE_URL="$BASE_URL/openai/v1"
+export GOOGLE_GEMINI_BASE_URL="$BASE_URL/gemini"
+
+export LANGSMITH_API_KEY="lsv2_..._....cbed3e"
+
+export ANTHROPIC_API_KEY="$LANGSMITH_API_KEY"
+export OPENAI_API_KEY="$LANGSMITH_API_KEY"
+export GEMINI_API_KEY="$LANGSMITH_API_KEY"
+export GOOGLE_API_KEY="$LANGSMITH_API_KEY"
+```
+
+This points all provider SDKs at the LangSmith Gateway and uses your LangSmith API key for authentication. The gateway resolves actual provider keys from your workspace's Provider Secrets—you never need local copies of provider API keys.
+
+## 2. Make a call
+
+<CodeGroup>
+  ```bash curl theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  curl https://gateway.smith.langchain.com/openai/v1/chat/completions \
+      -H "Authorization: Bearer $LANGSMITH_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{"model":"gpt-4o-mini","messages":[{"role":"user","content":"ping"}]}'
+  ```
+
+  ```python OpenAI SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  from openai import OpenAI
+
+  client = OpenAI(
+      base_url=os.environ["OPENAI_BASE_URL"],
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  response = client.chat.completions.create(
+      model="gpt-4o-mini",
+      messages=[{"role": "user", "content": "ping"}],
+  )
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Anthropic SDK theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  import anthropic
+
+  client = anthropic.Anthropic(
+      base_url=os.environ["ANTHROPIC_BASE_URL"],
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  message = client.messages.create(
+      model="claude-sonnet-4-6",
+      max_tokens=1024,
+      messages=[{"role": "user", "content": "ping"}],
+  )
+  print(message.content[0].text)
+  ```
+
+  ```python LangChain theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  import os
+
+  from langchain.agents import create_agent
+  from langchain.chat_models import init_chat_model
+
+  # Anthropic shown here; OpenAI and Gemini are also supported by swapping base_url and model_provider.
+  model = init_chat_model(
+      model="claude-sonnet-4-6",
+      model_provider="anthropic",
+      base_url=os.environ["ANTHROPIC_BASE_URL"],
+      api_key=os.environ["LANGSMITH_API_KEY"],
+  )
+  agent = create_agent(model=model, system_prompt="You are a helpful assistant.")
+  result = agent.invoke({"messages": [{"role": "user", "content": "ping"}]})
+  print(result["messages"][-1].content)
+  ```
+</CodeGroup>
+
+A `200` response with a chat completion confirms the gateway, your API key, and your role permissions are all working.
+
+## 3. View your trace
+
+Open the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-llm-gateway-quickstart) and navigate to the tracing project named `gateway` or `gateway-<short_api_key>-<api_key_id>` in the workspace associated with your API key. You should see a new trace for the call you just made.
+
+<Note>
+  If your application also emits its own LangSmith traces (for example, via [LangChain or LangGraph tracing](/langsmith/observability)), the gateway-side trace and your application trace appear as separate runs. Linking gateway traces to the parent application run is not yet supported.
+</Note>
+
+## 4. Set a spend policy (optional)
+
+Go to **Settings → Gateway → LLM Gateway** in LangSmith to create a spend policy. For example, you can set a daily \$10 cap on your API key. When the cap is reached, the gateway returns a `402` response with the message: `"Request blocked by gateway policies: R&D Spend Cap"`.
+
+See [Spend policies](/langsmith/llm-gateway-spend-policies) for the full guide on policy dimensions, time windows, and conflict resolution.
+
+## How the gateway handles requests
+
+Here's what the gateway did when you made a call:
+
+1. **Authenticated** your request using the LangSmith API key.
+2. **Resolved** the actual provider API key (for example, `OPENAI_API_KEY`) from your workspace's Provider Secrets.
+3. **Evaluated** any active policies (spend limits, PII redaction, secrets redaction).
+4. **Proxied** the request to the upstream provider.
+5. **Traced** the call to LangSmith, including token counts, cost, and any policy events.
+
+Routing through the gateway requires no application code changes.
+
+## Next steps
+
+* [Set up coding agents](/langsmith/llm-gateway-coding-agents): route Claude Code, Codex, or Gemini CLI through the gateway.
+* [Spend policies](/langsmith/llm-gateway-spend-policies): configure cost limits across your organization.
+* [PII and secrets redaction](/langsmith/llm-gateway-redaction): prevent sensitive data from reaching providers.
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/llm-gateway-quickstart.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>
 
@@ -89295,6 +89815,429 @@ Source: https://docs.langchain.com/langsmith/self-hosted-changelog
 </Callout>
 
 [Self-hosted LangSmith](/langsmith/self-hosted) is an add-on to the Enterprise plan designed for our largest, most security-conscious customers. For more details, refer to [Pricing](https://www.langchain.com/pricing). [Contact our sales team](https://www.langchain.com/contact-sales) if you want to get a license key to trial LangSmith in your environment.
+
+<Update label="2026-07-09">
+  ## langsmith-0.16.0-rc.12
+
+  * Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete".
+
+  * Include extended stats was made available to all organizations for code evaluators.
+
+  * Added two dedicated permissions `bulk-exports:read` and `bulk-exports:manage` for fetching and creating/updating bulk exports.
+
+  * Fixed the Engine "Connect GitHub" flow when the GitHub App was already installed via another workspace in the same organization.
+
+  * Bumped `@langchain/langgraph-sdk` to 1.9.4 in `smith-frontend`.
+
+  * Added an opt-in Smith-ACE v2 sandbox implementation behind `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2`.
+
+  * Threads table showed the actual last output in the *Last Output* column and surfaced thread-level errors in a new *Last Error* column.
+
+  * Hid the \$0.00 cost badge for tool calls in the trace tree view.
+
+  * Users could now create multiple cron schedules with the same expression on the same agent.
+
+  * Agent Builder "View agent traces" and "View trace" links always opened in the fleet tracing project.
+
+  * Added LangSmith model pricing entry for `gemini-3.1-flash-lite`.
+
+  * LLM-as-judge evaluators could now opt into including extended stats and mapping prompt variables from `run.*` fields.
+
+  * Default sandbox rootfs images included Docker Compose and automatically started the Docker daemon.
+
+  * Added cost tracking for `gemini-3.5-flash`.
+
+  * Gateway spend cap policies could now be configured with a weekly period.
+
+  * Added Centralize as an MCP marketplace integration.
+
+  * Sandbox-enabled agents saw configured proxy profiles (hosts, injected header keys, network rules, OAuth providers) in their system prompt, replacing the older hosts-only auth-proxy section.
+
+  * Hid the Sandboxes nav entry and `/sandboxes` page in regions where `SANDBOX_FEATURE_ENABLED` was off.
+
+  * Self-hosted DockerHub images included Cosign signatures and signed SPDX SBOM attestations.
+
+  * Fixed a bug where special characters in thread ids caused the UI to be unable to query these threads.
+
+  * Fixed "Query timeout exceeded" errors when opening large traces.
+
+  * Self-hosted OIDC fixed SSO Groups Sync silently no-op'ing during login.
+
+  * Managed Deep Agents private preview supported MCP server registration with header-based auth.
+
+  * Emitted Prometheus metrics from `queue` workers.
+
+  * Clarified the stats unavailable message when text filters were applied.
+
+  * Context repos supported metadata updates and deletion from the Hub overflow menu.
+
+  * Typed responses and standard error envelope for Fleet `/v1/fleet/agents/{agent_id}/connections` (List / Create / Delete).
+
+  * Sandbox snapshots could now export a Docker image built inside a sandbox.
+
+  * Fixed ACE subprocess handling so early child-process exits returned request failures instead of crashing the service.
+
+  * Fixed large integer preservation in native run ingest payloads.
+
+  * Waterfall turn view now took full height if available.
+
+  * Organization admins could now disable Engine even when their plan auto-enabled it; their explicit choice persisted across the UI and backend gates.
+
+  * Workspace admins could now override the workspace-default weekly spend cap on a per-evaluator-rule basis from the evaluator side panel; non-admins saw the resolved cap as read-only text.
+
+  * Fixed incorrect metadata facet suggestions and improved group stats latency for projects with rich run metadata.
+
+  * Alert rules for Run Count, Errors, Latency, and Cost now supported `<`, `<=`, `>`, and `>=` comparison operators (previously the UI only allowed `>=`).
+
+  * Fleet `/v1/fleet/auth-agents/{agent_id}/connections` endpoints moved to `/v1/fleet/agents/{agent_id}/connections` with typed responses, request validation, and the standard Fleet error envelope. The old URL returned 404.
+
+  * Fixed Fleet redirect after deleting the active agent.
+
+  * Removed the Type column from the LangSmith datasets table.
+
+  * Encrypted/redacted "reasoning" content blocks no longer appeared as empty or garbled cards in the trace messages view. Meaningful extended-thinking content continued to render normally.
+
+  * Fleet agent APIs required `thread_scoped_sandbox` or `agent_scoped_sandbox` for sandbox-backed agents.
+
+  * Allowed exporting all experiments in a workspace via the new `all_experiments` parameter for bulk exports. Limited to 250 experiments per export, could be increased at request.
+
+  * No user-facing changes — internal OpenAPI spec update only.
+
+  * Fleet used langchain-fireworks 1.4.2 for Fireworks model calls.
+
+  * This enabled a redesign of the run details panel with improved readability and more robust message parsing.
+
+  * Fleet/Agent Builder included Gemini 3.5 Flash as a selectable built-in model.
+
+  * Computer use had an in-chat callout for eligible general chat users.
+
+  * Fixed a bug where the blob storage banner incorrectly flashed on page load.
+
+  * This enabled a new way to leave feedback on a run, directly within the run details panel.
+
+  * Added token pricing support for Claude Opus 4.8.
+
+  * Agent Builder offered Claude Opus 4.8 as a built-in Anthropic model.
+
+  * Organization admins could now update an existing API key's role via the service-keys API without rotating the key.
+
+  * Managed Deep Agents MCP server setup supported OAuth under the `/v1/deepagents` API namespace.
+
+  * Extra Parameters entered for Bedrock Nova 2 (and any other provider requiring camelCase API fields) now preserved their original key casing when the model configuration was saved and reloaded in the Playground.
+
+  * Self-hosted OIDC users now got a display name resolved from the `name` / `given_name`+`family_name` id\_token claims.
+
+  * Fixed an LLM gateway data-protection bug that could corrupt Anthropic images or documents when PII redaction was enabled.
+
+  * Hid sandbox file explorer controls while allowing explicit sandbox summary downloads.
+
+  * Engine supported an optional monthly LCU spend limit (set by finance, plan, or org admins) that paused new Engine runs once reached.
+
+  * Chat-input file uploads in agent builder/fleet reached the sandbox filesystem at `/tmp/uploads/` when sandboxes were enabled.
+
+  * Fleet Default appeared first in the model picker for eligible plans.
+
+  * Fixed the project stats sidebar trace count label and header layout.
+
+  * Run rules webhook payloads now included a `trace_url` deep link for each run.
+
+  * Experiment loading progress bars displayed the number of runs completed and evaluated within the experiments table.
+
+  * Sandboxes allowed password-based SSH for non-root users while keeping root SSH login key-only.
+
+  * Workspace switcher on the data-plane no-access screen only listed current organization workspaces.
+
+  * Restored cron execution for enterprise Fleet agents that had silently failed to fire since early March 2026.
+
+  * Run rules webhook payloads now included a `trace_url` deep link for each run.
+
+  * Fixed security vulnerabilities. See CVE-2026-45736, CVE-2026-44664, CVE-2025-71176 for details.
+
+  **Download the Helm chart:** [`langsmith-0.16.0-rc.12.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.12/langsmith-0.16.0-rc.12.tgz)
+</Update>
+
+<Update label="2026-07-09">
+  ## langsmith-0.16.0-rc.11
+
+  * Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
+
+  * Included extended stats became available to all organizations for code evaluators.
+
+  * Added two dedicated permissions, `bulk-exports:read` and `bulk-exports:manage`, for fetching and creating/updating bulk exports.
+
+  * Fixed the Engine "Connect GitHub" flow when the GitHub App was already installed via another workspace in the same organization.
+
+  * Bumped `@langchain/langgraph-sdk` to 1.9.4 in `smith-frontend`.
+
+  * Added an opt-in Smith-ACE v2 sandbox implementation behind `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2`.
+
+  * The Threads table now showed the actual last output in the *Last Output* column and surfaced thread-level errors in a new *Last Error* column.
+
+  * Hid the \$0.00 cost badge for tool calls in the trace tree view.
+
+  * Users could now create multiple cron schedules with the same expression on the same agent.
+
+  * Agent Builder "View agent traces" and "View trace" links always opened in the fleet tracing project.
+
+  * Added LangSmith model pricing entry for `gemini-3.1-flash-lite`.
+
+  * LLM-as-judge evaluators could now opt into Include extended stats and map prompt variables from `run.*` fields.
+
+  * Default sandbox rootfs images now included Docker Compose and started the Docker daemon automatically.
+
+  * Added cost tracking for `gemini-3.5-flash`.
+
+  * Gateway spend cap policies could now be configured with a weekly period.
+
+  * Added Centralize as an MCP marketplace integration.
+
+  * Sandbox-enabled agents now saw configured proxy profiles (hosts, injected header keys, network rule, OAuth providers) in their system prompt, replacing the older hosts-only auth-proxy section.
+
+  * Hid the Sandboxes nav entry and `/sandboxes` page in regions where `SANDBOX_FEATURE_ENABLED` was off.
+
+  * Self-hosted DockerHub images now included Cosign signatures and signed SPDX SBOM attestations.
+
+  * Fixed a bug where special characters in thread IDs were not encoded, causing UI to fail to query these threads.
+
+  * Fixed "Query timeout exceeded" errors when opening large traces.
+
+  * Self-hosted OIDC fixed SSO Groups Sync silently no-op'ing during login.
+
+  * Managed Deep Agents private preview now supported MCP server registration with header-based auth.
+
+  * Emitted Prometheus metrics from `queue` workers.
+
+  * Clarified the stats unavailable message when text filters were applied.
+
+  * Context repos now supported metadata updates and deletion from the Hub overflow menu.
+
+  * Typed responses and standard error envelope for Fleet `/v1/fleet/agents/{agent_id}/connections` (List / Create / Delete).
+
+  * Sandbox snapshots could now export a Docker image built inside a sandbox.
+
+  * Fixed ACE subprocess handling so early child-process exits returned request failures instead of crashing the service.
+
+  * Fixed large integer preservation in native run ingest payloads.
+
+  * Waterfall turn view now took full height if available.
+
+  * Organization admins could now disable Engine even when their plan auto-enabled it; their explicit choice persisted across the UI and the backend gates.
+
+  * Workspace admins could now override the workspace-default weekly spend cap on a per-evaluator-rule basis from the evaluator side panel; non-admins saw the resolved cap as read-only text.
+
+  * Fixed incorrect metadata facet suggestions and improved group stats latency for projects with rich run metadata.
+
+  * Alert rules for Run Count, Errors, Latency, and Cost now supported `<`, `<=`, `>`, and `>=` comparison operators (previously the UI only allowed `>=`).
+
+  * Fleet `/v1/fleet/auth-agents/{agent_id}/connections` endpoints moved to `/v1/fleet/agents/{agent_id}/connections` with typed responses, request validation, and the standard Fleet error envelope. The old URL returned 404.
+
+  * Fixed Fleet redirect after deleting the active agent.
+
+  * Removed the Type column from the LangSmith datasets table.
+
+  * Encrypted/redacted "reasoning" content blocks no longer appeared as empty or garbled cards in the trace messages view. Meaningful extended-thinking content continued to render normally.
+
+  * Fleet agent APIs now required `thread_scoped_sandbox` or `agent_scoped_sandbox` for sandbox-backed agents.
+
+  * Allowed exporting all experiments in a workspace via the new `all_experiments` parameter for bulk exports, limited to 250 experiments per export, which could be increased upon request.
+
+  * Fleet used langchain-fireworks 1.4.2 for Fireworks model calls.
+
+  * This enabled a redesign of the run details panel with improved readability and more robust message parsing.
+
+  * Fleet/Agent Builder now included Gemini 3.5 Flash as a selectable built-in model.
+
+  * Computer use now had an in-chat callout for eligible general chat users.
+
+  * Fixed a bug where the blob storage banner incorrectly flashed on page load.
+
+  * Enabled a new way to leave feedback on a run, directly within the run details panel.
+
+  * Added token pricing support for Claude Opus 4.8.
+
+  * Agent Builder now offered Claude Opus 4.8 as a built-in Anthropic model.
+
+  * Org admins could now update an existing API key's role via the service-keys API without rotating the key.
+
+  * Managed Deep Agents MCP server setup now supported OAuth under the `/v1/deepagents` API namespace.
+
+  * Extra Parameters entered for Bedrock Nova 2 (and any other provider requiring camelCase API fields) now preserved their original key casing when the model configuration was saved and reloaded in the Playground.
+
+  * Self-hosted OIDC users now got a display name resolved from the `name` / `given_name` + `family_name` id\_token claims.
+
+  * Fixed SSRF policy for the `playground` service such that it respected `SSRF_ALLOW_K8S_INTERNAL`.
+
+  * Fixed an LLM gateway data-protection bug that could corrupt Anthropic images or documents when PII redaction was enabled.
+
+  * Hid sandbox file explorer controls while allowing explicit sandbox summary downloads.
+
+  * Engine now supported an optional monthly LCU spend limit (set by finance, plan, or org admins) that paused new Engine runs once reached.
+
+  * Chat-input file uploads in agent builder/fleet now reached the sandbox filesystem at `/tmp/uploads/` when sandboxes were enabled.
+
+  * Fleet Default now appeared first in the model picker for eligible plans.
+
+  * Fixes the project stats sidebar trace count label and header layout.
+
+  * Restored cron execution for enterprise Fleet agents that had been silently failing to fire.
+
+  * Run rules webhook payloads now included a `trace_url` deep link for each run.
+
+  * Experiment loading progress bars displayed the number of runs completed and evaluated within the experiments table.
+
+  * Sandboxes now allowed password-based SSH for non-root users while keeping root SSH login key-only.
+
+  * Fixed security vulnerabilities. See CVE-2026-45736, CVE-2026-44664, CVE-2025-71176 for details.
+
+  **Download the Helm chart:** [`langsmith-0.16.0-rc.11.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.11/langsmith-0.16.0-rc.11.tgz)
+</Update>
+
+<Update label="2026-07-09">
+  ## langsmith-0.15.13
+
+  * Added support for new model integrations to enhance AI deployments in self-hosted environments.
+  * Improved the UI experience with streamlined features for the tracing tool, offering better insight into model performance.
+  * Fixed several bugs affecting user experience and UI responsiveness, leading to smoother operation.
+  * Enhanced performance with optimizations for faster loading speeds across various interfaces.
+  * Implemented new API capabilities to support extended functionality and integration options for developers.
+  * Incorporated security improvements with updated authentication and authorization features to better protect self-hosted instances.
+
+  **Download the Helm chart:** [`langsmith-0.15.13.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.15.13/langsmith-0.15.13.tgz)
+</Update>
+
+<Update label="2026-07-08">
+  ## langsmith-0.16.0-rc.10
+
+  * Evaluator detach confirmation dialog showed a "Detach" button instead of "Delete."
+
+  * Included extended stats were made available to all organizations for code evaluators.
+
+  * Added two dedicated permissions `bulk-exports:read` and `bulk-exports:manage` for fetching and creating/updating bulk exports.
+
+  * Fixed the Engine "Connect GitHub" flow when the GitHub App was already installed via another workspace in the same organization.
+
+  * Bumped `@langchain/langgraph-sdk` to 1.9.4 in `smith-frontend`.
+
+  * Added an opt-in Smith-ACE v2 sandbox implementation behind `SMITH_ACE_SANDBOX_IMPLEMENTATION=v2`.
+
+  * Threads table now showed the actual last output in the *Last Output* column and surfaced thread-level errors in a new *Last Error* column.
+
+  * Hid the \$0.00 cost badge for tool calls in the trace tree view.
+
+  * Users could create multiple cron schedules with the same expression on the same agent.
+
+  * Agent Builder "View agent traces" and "View trace" links always opened in the fleet tracing project.
+
+  * Added LangSmith model pricing entry for `gemini-3.1-flash-lite`.
+
+  * LLM-as-judge evaluators could opt into Include extended stats and map prompt variables from `run.*` fields.
+
+  * Default sandbox rootfs images included Docker Compose and started the Docker daemon automatically.
+
+  * Added cost tracking for `gemini-3.5-flash`.
+
+  * Gateway spend cap policies could be configured with a weekly period.
+
+  * Added Centralize as an MCP marketplace integration.
+
+  * Sandbox-enabled agents now saw configured proxy profiles (hosts, injected header keys, network rule, OAuth providers) in their system prompt, replacing the older hosts-only auth-proxy section.
+
+  * Hid the Sandboxes nav entry and `/sandboxes` page in regions where `SANDBOX_FEATURE_ENABLED` was off.
+
+  * Self-hosted DockerHub images included Cosign signatures and signed SPDX SBOM attestations.
+
+  * Fixed a bug where special characters in thread IDs were not encoding, causing the UI to be unable to query these threads.
+
+  * Fixed "Query timeout exceeded" errors when opening large traces.
+
+  * Self-hosted OIDC fixed SSO Groups Sync silently no-op'ing during login.
+
+  * Managed Deep Agents private preview supported MCP server registration with header-based auth.
+
+  * Emitted Prometheus metrics from `queue` workers.
+
+  * Clarified the stats unavailable message when text filters were applied.
+
+  * Context repos supported metadata updates and deletion from the Hub overflow menu.
+
+  * Typed responses and standard error envelope were added for Fleet `/v1/fleet/agents/{agent_id}/connections` (List / Create / Delete).
+
+  * Sandbox snapshots now could export a Docker image built inside a sandbox.
+
+  * Fixed ACE subprocess handling so early child-process exits returned request failures instead of crashing the service.
+
+  * Fixed large integer preservation in native run ingest payloads.
+
+  * Waterfall turn view took full height if available.
+
+  * Organization admins could disable Engine even when their plan auto-enabled it; their explicit choice persisted across the UI and the backend gates.
+
+  * Workspace admins could override the workspace-default weekly spend cap on a per-evaluator-rule basis from the evaluator side panel; non-admins saw the resolved cap as read-only text.
+
+  * Fixed incorrect metadata facet suggestions and improved group stats latency for projects with rich run metadata.
+
+  * Alert rules for Run Count, Errors, Latency, and Cost supported `<`, `<=`, `>`, and `>=` comparison operators (previously the UI only allowed `>=`).
+
+  * Fleet `/v1/fleet/auth-agents/{agent_id}/connections` endpoints moved to `/v1/fleet/agents/{agent_id}/connections` with typed responses, request validation, and the standard Fleet error envelope. The old URL returned 404.
+
+  * Fixed Fleet redirect after deleting the active agent.
+
+  * Removed the Type column from the LangSmith datasets table.
+
+  * Encrypted/redacted "reasoning" content blocks no longer appeared as empty or garbled cards in the trace messages view. Meaningful extended-thinking content continued to render normally.
+
+  * Fleet agent APIs required `thread_scoped_sandbox` or `agent_scoped_sandbox` for sandbox-backed agents.
+
+  * Allowed exporting all experiments in a workspace via the new `all_experiments` parameter for bulk exports. Limited to 250 experiments per export, could be increased at request.
+
+  * Fleet used langchain-fireworks 1.4.2 for Fireworks model calls.
+
+  * This enabled a redesign of the run details panel with improved readability and more robust message parsing.
+
+  * Fleet/Agent Builder included Gemini 3.5 Flash as a selectable built-in model.
+
+  * Computer use had an in-chat callout for eligible general chat users.
+
+  * Fixed a bug where the blob storage banner incorrectly flashed on page load.
+
+  * Enabled a new way to leave feedback on a run, directly within the run details panel.
+
+  * Added token pricing support for Claude Opus 4.8.
+
+  * Agent Builder offered Claude Opus 4.8 as a built-in Anthropic model.
+
+  * Org admins could update an existing API key's role via the service-keys API without rotating the key.
+
+  * Managed Deep Agents MCP server setup supported OAuth under the `/v1/deepagents` API namespace.
+
+  * Extra Parameters entered for Bedrock Nova 2 (and any other provider requiring camelCase API fields) preserved their original key casing when the model configuration was saved and reloaded in the Playground.
+
+  * Self-hosted OIDC users got a display name resolved from the `name` / `given_name`+`family_name` id\_token claims.
+
+  * Fixed SSRF policy for `playground` service such that it respected `SSRF_ALLOW_K8S_INTERNAL`.
+
+  * Fixed an LLM gateway data-protection bug that could corrupt Anthropic images or documents when PII redaction was enabled.
+
+  * Hid sandbox file explorer controls while allowing explicit sandbox summary downloads.
+
+  * Engine supported an optional monthly LCU spend limit (set by finance, plan, or org admins) that paused new Engine runs once reached.
+
+  * Chat-input file uploads in agent builder/fleet reached the sandbox filesystem at `/tmp/uploads/` when sandboxes were enabled.
+
+  * Fleet Default appeared first in the model picker for eligible plans.
+
+  * Fixed the project stats sidebar trace count label and header layout.
+
+  * Run rules webhook payloads included a `trace_url` deep link for each run.
+
+  * Experiment loading progress bars displayed the number of runs completed and evaluated within the experiments table.
+
+  * Sandboxes allowed password-based SSH for non-root users while keeping root SSH login key-only.
+
+  * Fixed security vulnerabilities. See CVE-2026-45736, CVE-2026-44664, CVE-2025-71176 for details.
+
+  **Download the Helm chart:** [`langsmith-0.16.0-rc.10.tgz`](https://github.com/langchain-ai/helm/releases/download/langsmith-0.16.0-rc.10/langsmith-0.16.0-rc.10.tgz)
+</Update>
 
 <Update label="2026-07-07">
   ## langsmith-0.16.0-rc.9

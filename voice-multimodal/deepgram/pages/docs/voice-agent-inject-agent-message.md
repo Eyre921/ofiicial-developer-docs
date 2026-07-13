@@ -16,20 +16,23 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 
 ## Purpose
 
-`InjectAgentMessage` lets your server put words in the agent's mouth mid-conversation. The optional `behavior` field controls how the message interacts with any ongoing user or agent turn: wait for silence, or queue within the current turn.
+`InjectAgentMessage` lets your server put words in the agent's mouth mid-conversation. The optional `behavior` field controls how the message interacts with any ongoing user or agent turn: wait for silence, queue within the current turn, or interrupt the current turn.
 
 ## Fields
 
-| Field      | Type   | Required | Description                                                                                               |
-| ---------- | ------ | -------- | --------------------------------------------------------------------------------------------------------- |
-| `type`     | string | Yes      | Must be `"InjectAgentMessage"`.                                                                           |
-| `message`  | string | Yes      | The statement the agent should say.                                                                       |
-| `behavior` | string | No       | How the injection interacts with the current turn: `"default"` or `"queue"`. Uses `"default"` if omitted. |
+| Field      | Type   | Required | Description                                                                                                               |
+| ---------- | ------ | -------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `type`     | string | Yes      | Must be `"InjectAgentMessage"`.                                                                                           |
+| `message`  | string | Yes      | The statement the agent should say.                                                                                       |
+| `behavior` | string | No       | How the injection interacts with the current turn: `"default"`, `"queue"`, or `"interrupt"`. Uses `"default"` if omitted. |
 
 ### `behavior` values
 
 * **`default`**: the agent speaks only if neither the user nor the agent is mid-turn. If a turn is in progress, the server rejects the request and replies with [`InjectionRefused`](#injectionrefused). This matches the original `InjectAgentMessage` behavior.
 * **`queue`**: the server appends the message after any `ConversationText` that is already queued, without interrupting the current agent turn or the in-flight think response. If nothing is queued, the agent speaks the message immediately.
+* **`interrupt`**: the agent immediately speaks.
+  * If the agent was already speaking, it interrupts any current speech and replaces it with the new message.
+  * If the user is speaking, the agent interrupts with the new message. However, the user's continued speech triggers [`UserStartedSpeaking`](/docs/voice-agent-user-started-speaking), which quickly interrupts the agent, ensuring the conversation continues forward.
 
 ## Example Payloads
 
@@ -53,6 +56,16 @@ The `InjectAgentMessage` message is a JSON message you can send to immediately t
 }
 ```
 
+### `interrupt`: replace the current agent speech
+
+```json JSON
+{
+  "type": "InjectAgentMessage",
+  "behavior": "interrupt",
+  "message": "Sorry to cut in — let me correct that."
+}
+```
+
 ## Responses
 
 The server sends an [`AgentAudioDone`](/docs/voice-agent-agent-audio-done) message after the last `InjectAgentMessage` is spoken.
@@ -65,7 +78,7 @@ The server sends an [`AgentAudioDone`](/docs/voice-agent-agent-audio-done) messa
 
 ### `InjectionRefused`
 
-When `behavior` is `default` or `queue` and the request arrives while the *user* is mid-turn, the server ignores the request and replies with `InjectionRefused`. If the *agent* is mid-turn, the server returns `InjectionRefused` only when `behavior` is `default`.
+When `behavior` is `default` or `queue` and the request arrives while the *user* is mid-turn, the server ignores the request and replies with `InjectionRefused`. If the *agent* is mid-turn, the server returns `InjectionRefused` only when `behavior` is `default`. The `interrupt` behavior is never refused: the agent speaks even while the user or agent is mid-turn.
 
 ```json JSON
 {
@@ -91,3 +104,11 @@ Use `queue` when you want the agent to say something *after* whatever it is curr
 * Filling silence during a long-running function call ("One moment while I pull that up") without cutting off the model's current response.
 * Chaining a follow-up sentence after the agent finishes its current turn ("...and I've also emailed you a copy.").
 * Streaming progress updates from a backend job so the caller hears them in order.
+
+### When to use `interrupt`
+
+Use `interrupt` when the new message must take over immediately, even if it means cutting off the agent's current speech. Because the agent speaks regardless of whether the user is talking, reserve this for time-sensitive corrections and overrides.
+
+* Correcting the agent mid-sentence when it is saying something wrong or outdated.
+* Delivering an urgent update that should replace whatever the agent is currently saying.
+* Overriding the current turn from a supervisor or backend system that has higher-priority information.

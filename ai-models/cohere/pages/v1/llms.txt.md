@@ -10,6 +10,8 @@ path: v1/llms.txt
 
 # v1 API
 
+> Cohere's API documentation helps developers easily integrate natural language processing and generation into their products.
+
 ## Docs
 
 - [An Overview of The Cohere Platform](https://docs.cohere.com/docs/the-cohere-platform.md): Cohere offers world-class Large Language Models (LLMs) like Command, Rerank, and Embed. These help developers and enterprises build LLM-powered applications.

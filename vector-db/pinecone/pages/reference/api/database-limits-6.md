@@ -253,6 +253,10 @@ When you reach the per second [update](/guides/manage-data/update-data) request 
 
 To handle this limit, [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). If you need a higher limit for your use case, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
+
 ### Update by metadata requests per second per namespace
 
 | Starter plan | Builder plan | Standard plan | Enterprise plan |

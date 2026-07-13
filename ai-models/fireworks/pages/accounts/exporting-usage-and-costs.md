@@ -13,7 +13,7 @@ Fireworks exposes the same usage-and-cost data through two equivalent surfaces:
 * **CLI** — [`firectl billing get-usage`](/tools-sdks/firectl/commands/billing-get-usage), best for ad-hoc queries, shell scripting, and one-off cost reviews.
 * **HTTP API** — [`GET /v1/accounts/{account_id}/billingUsage`](/api-reference/get-billing-usage), best for cron jobs, dashboards, and downstream cost-attribution pipelines.
 
-Both return the same response shape and accept the same dimensions. Every example below shows the CLI form and the equivalent cURL side-by-side. Pick whichever fits your workflow.
+Both return the same response shape and accept the same dimensions. Most examples below show the CLI form and the equivalent cURL side-by-side; filter examples are CLI-only because HTTP query-param filtering is not yet supported.
 
 The output has two parts:
 
@@ -142,31 +142,19 @@ Sample row from the API response:
 
 ### Filter to a specific API key
 
-Repeat `--filter` (CLI) or `filter[<dim>][values]=` (API) to OR multiple values for the same dimension.
+Repeat `--filter` to OR multiple values for the same dimension.
 
-<Tabs>
-  <Tab title="firectl">
-    ```bash theme={null}
-    firectl billing get-usage \
-      --start-time 2026-05-01 --end-time 2026-06-01 \
-      --usage-type serverless \
-      --group-by model_name \
-      --filter api_key_name=prod-eng
-    ```
-  </Tab>
+<Note>
+  HTTP query-param filtering is not currently supported; filter via `firectl` or the gRPC client. Over HTTP you can still use `groupBy` to break usage down by dimension.
+</Note>
 
-  <Tab title="cURL">
-    ```bash theme={null}
-    curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
-      -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-      --data-urlencode "startTime=2026-05-01T00:00:00Z" \
-      --data-urlencode "endTime=2026-06-01T00:00:00Z" \
-      --data-urlencode "usageType=SERVERLESS" \
-      --data-urlencode "groupBy=model_name" \
-      --data-urlencode 'filter[api_key_name][values]=prod-eng'
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+firectl billing get-usage \
+  --start-time 2026-05-01 --end-time 2026-06-01 \
+  --usage-type serverless \
+  --group-by model_name \
+  --filter api_key_name=prod-eng
+```
 
 ### Dedicated deployment usage by deployment and GPU type
 
@@ -196,25 +184,11 @@ Repeat `--filter` (CLI) or `filter[<dim>][values]=` (API) to OR multiple values 
 
 ### Filter to a single deployment
 
-<Tabs>
-  <Tab title="firectl">
-    ```bash theme={null}
-    firectl billing get-usage \
-      --start-time 2026-05-01 --end-time 2026-06-01 \
-      --filter deployment_name=accounts/my-account/deployments/my-deployment
-    ```
-  </Tab>
-
-  <Tab title="cURL">
-    ```bash theme={null}
-    curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billingUsage" \
-      -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
-      --data-urlencode "startTime=2026-05-01T00:00:00Z" \
-      --data-urlencode "endTime=2026-06-01T00:00:00Z" \
-      --data-urlencode 'filter[deployment_name][values]=accounts/my-account/deployments/my-deployment'
-    ```
-  </Tab>
-</Tabs>
+```bash theme={null}
+firectl billing get-usage \
+  --start-time 2026-05-01 --end-time 2026-06-01 \
+  --filter deployment_name=accounts/my-account/deployments/my-deployment
+```
 
 ### Account-level cost totals only
 
@@ -251,11 +225,13 @@ Run `firectl billing get-usage --help` for the full list.
 
 ### API parameters
 
-The same dimensions are passed as `groupBy=<dim>` (repeat for multiple) and `filter[<dim>][values]=<value>` (repeat for OR). `usageType` takes `SERVERLESS`, `DEDICATED_DEPLOYMENT`, or omitted for all. `timezone` and `startTime`/`endTime` mirror the CLI flags. See [the full API reference](/api-reference/get-billing-usage) for parameter schemas and response types.
+Over HTTP, pass dimensions as `groupBy=<dim>` (repeat for multiple). `usageType` takes `SERVERLESS`, `DEDICATED_DEPLOYMENT`, or omitted for all. `timezone` and `startTime`/`endTime` mirror the CLI flags. See [the full API reference](/api-reference/get-billing-usage) for parameter schemas and response types.
+
+The documented `filter[<dim>][values]=<value>` query syntax is not yet applied by the HTTP gateway — use `firectl` or the gRPC client to filter. Over HTTP you can still use `groupBy` to break usage down by dimension.
 
 ### Grouping dimensions
 
-Valid `--group-by` / `groupBy` and `--filter` / `filter` dimensions depend on the usage type:
+Valid `--group-by` / `groupBy` dimensions (HTTP and CLI) and `--filter` dimensions (CLI and gRPC only) depend on the usage type:
 
 * **Serverless**: `model_name`, `api_key_id`, `api_key_name`, `annotations.team`, `annotations.project`, `annotations.environment`
 * **Dedicated deployment**: `deployment_name`, `accelerator_type`, `annotations.team`, `annotations.project`, `annotations.environment`

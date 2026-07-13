@@ -165,7 +165,7 @@ You will also need to specify connection details for any external databases you 
      If you are using a namespace other than the default namespace, you will need to specify the namespace in the `helm` and `kubectl` commands by using the `-n <namespace>` flag.
    </Note>
 
-2. Ensure you have the LangChain Helm repo added. (skip this step if you are using local charts)
+2. Ensure you have the LangChain Helm repo added (skip this step if you are using local charts).
 
    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
    helm repo add langchain https://langchain-ai.github.io/helm

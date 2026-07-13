@@ -736,7 +736,7 @@ The table below shows a list of events logged on the Activity page.
 | strict-shareable-links | Active | Strict shareable links settings were updated. |
 | subscription-product-added | Active | A self-serve product was added to a subscription. |
 | subscription-product-removed | Active | A self-serve product was removed from a subscription. |
-| team | Active | A team was created in a personal account. |
+| team | Active | A team was created. |
 | team-avatar-update | Active | The avatar of a specific team was updated. |
 | team-default-build-machine-updated | Active | The default build machine for a team was updated. |
 | team-default-passport-updated | Active | The default Passport configuration was updated for a team. |
@@ -136282,7 +136282,7 @@ Overwriting blobs can be appropriate for certain use cases:
 1. **Regularly updated files**: For files that need to maintain the same URL but contain updated content (like JSON data files or configuration files)
 2. **Content with predictable update patterns**: For data that changes on a schedule and where consumers expect updates at the same URL
 
-When overwriting blobs, be aware that due to [caching](#caching), changes won't be immediately visible. The minimum time for changes to propagate is 60 seconds, and browser caches may need to be explicitly refreshed. For private blobs, you can read the latest version immediately by passing [`useCache: false`](/docs/vercel-blob/private-storage#consistent-reads) to `get()`.
+When overwriting blobs, be aware that due to [caching](#caching), changes won't be immediately visible. Changes may take up to 60 seconds to propagate, and browser caches may need to be explicitly refreshed. For private blobs, you can read the latest version immediately by passing [`useCache: false`](/docs/vercel-blob/private-storage#consistent-reads) to `get()`.
 
 ### Alternatives to overwriting
 
@@ -151340,6 +151340,74 @@ source: "https://vercel.com/docs/rest-api/access-groups/delete-an-access-group-p
 Allows deletion of an access group project
 
 Full reference: https://vercel.com/docs/md/rest-api/access-groups/delete-an-access-group-project
+
+--------------------------------------------------------------------------------
+title: "Create rule"
+description: "POST /v1/ai-gateway/rules — Create a routing rule"
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/api-ai-gateway/create-rule"
+--------------------------------------------------------------------------------
+
+# Create rule
+
+`POST /v1/ai-gateway/rules`
+
+**Authentication**: Bearer token
+
+Create a routing rule
+
+Full reference: https://vercel.com/docs/md/rest-api/api-ai-gateway/create-rule
+
+--------------------------------------------------------------------------------
+title: "List rules"
+description: "GET /v1/ai-gateway/rules — List the authenticated team's routing rules"
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/api-ai-gateway/list-rules"
+--------------------------------------------------------------------------------
+
+# List rules
+
+`GET /v1/ai-gateway/rules`
+
+**Authentication**: Bearer token
+
+List the authenticated team's routing rules
+
+Full reference: https://vercel.com/docs/md/rest-api/api-ai-gateway/list-rules
+
+--------------------------------------------------------------------------------
+title: "Update rule"
+description: "PATCH /v1/ai-gateway/rules — Update a routing rule (enabled, action, or description)"
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/api-ai-gateway/update-rule"
+--------------------------------------------------------------------------------
+
+# Update rule
+
+`PATCH /v1/ai-gateway/rules`
+
+**Authentication**: Bearer token
+
+Update a routing rule (enabled, action, or description)
+
+Full reference: https://vercel.com/docs/md/rest-api/api-ai-gateway/update-rule
+
+--------------------------------------------------------------------------------
+title: "Delete rule"
+description: "DELETE /v1/ai-gateway/rules — Delete a routing rule (soft delete)"
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/rest-api/api-ai-gateway/delete-rule"
+--------------------------------------------------------------------------------
+
+# Delete rule
+
+`DELETE /v1/ai-gateway/rules`
+
+**Authentication**: Bearer token
+
+Delete a routing rule (soft delete)
+
+Full reference: https://vercel.com/docs/md/rest-api/api-ai-gateway/delete-rule
 
 --------------------------------------------------------------------------------
 title: "Record an artifacts cache usage event"

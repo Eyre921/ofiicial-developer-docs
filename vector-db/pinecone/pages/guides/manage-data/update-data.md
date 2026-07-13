@@ -417,6 +417,10 @@ The following code updates all matching records with the new `author` metadata f
 
 ### Handling large updates
 
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
+
 Each request updates a maximum of 100,000 records. For larger datasets, use `dry_run` to check the count and repeat the request as needed:
 
 1. To check how many records match the filter expression, send a request with `dry_run` set to `true`:

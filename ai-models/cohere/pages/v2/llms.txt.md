@@ -10,4 +10,6 @@ path: v2/llms.txt
 
 > Cohere's API documentation helps developers easily integrate natural language processing and generation into their products.
 
+> Cohere's API documentation helps developers easily integrate natural language processing and generation into their products.
+
 

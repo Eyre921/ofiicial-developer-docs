@@ -3924,6 +3924,10 @@ index.delete(
 
 ### Update an entire document
 
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
+
 When the amount of chunks or ordering of chunks for a document changes, the recommended approach is to first [delete all chunks using a metadata filter](/guides/manage-data/delete-data#delete-records-by-metadata), and then [upsert](/guides/index-data/upsert-data) the new chunks:
 
 ```python Python theme={null}
@@ -20477,6 +20481,10 @@ The following code updates all matching records with the new `author` metadata f
 
 ### Handling large updates
 
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
+
 Each request updates a maximum of 100,000 records. For larger datasets, use `dry_run` to check the count and repeat the request as needed:
 
 1. To check how many records match the filter expression, send a request with `dry_run` set to `true`:
@@ -35123,6 +35131,10 @@ When you reach the per second [update](/guides/manage-data/update-data) request 
 
 To handle this limit, [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). If you need a higher limit for your use case, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
+
 ### Update by metadata requests per second per namespace
 
 | Starter plan | Builder plan | Standard plan | Enterprise plan |
@@ -39348,6 +39360,10 @@ When you reach the per second [update](/guides/manage-data/update-data) request 
 </Accordion>
 
 To handle this limit, [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). If you need a higher limit for your use case, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
 
 ### Update by metadata requests per second per namespace
 
@@ -46547,6 +46563,10 @@ When you reach the per second [update](/guides/manage-data/update-data) request 
 
 To handle this limit, [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). If you need a higher limit for your use case, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
+
 ### Update by metadata requests per second per namespace
 
 | Starter plan | Builder plan | Standard plan | Enterprise plan |
@@ -52681,6 +52701,10 @@ When you reach the per second [update](/guides/manage-data/update-data) request 
 
 To handle this limit, [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). If you need a higher limit for your use case, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
 
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
+
 ### Update by metadata requests per second per namespace
 
 | Starter plan | Builder plan | Standard plan | Enterprise plan |
@@ -58814,6 +58838,10 @@ When you reach the per second [update](/guides/manage-data/update-data) request 
 </Accordion>
 
 To handle this limit, [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). If you need a higher limit for your use case, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
 
 ### Update by metadata requests per second per namespace
 
@@ -69750,6 +69778,10 @@ When you reach the per second [update](/guides/manage-data/update-data) request 
 </Accordion>
 
 To handle this limit, [implement retry logic with exponential backoff](/guides/production/error-handling#implement-retry-logic). If you need a higher limit for your use case, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket).
+
+<Tip>
+  If you need to update most of the records in a large namespace, [contact Support](https://app.pinecone.io/organizations/-/settings/support/ticket) for help creating an export to enable a faster and more cost-effective approach.
+</Tip>
 
 ### Update by metadata requests per second per namespace
 

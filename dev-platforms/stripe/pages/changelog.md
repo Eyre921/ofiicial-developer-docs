@@ -2207,7 +2207,7 @@ Keep track of changes and upgrades to the Stripe API.
 
 | Title | Affected Products | Breaking change? | Category |
 | --- | --- | --- | --- |
-| [Invoice line items now include subscription plans and quantities](https://docs.stripe.com/changelog/2014-07-22/invoice-line-items-include-subscription-plans-quantities.md) | Invoicing, Billing | Breaking | api |
+| [Invoice line items now include subscription plans and quantities](https://docs.stripe.com/changelog/2014-07-22/invoice-line-items-include-subscription-plans-quantities.md) | Invoicing, Billing | Non-breaking | api |
 
 ## 2014-06-17
 

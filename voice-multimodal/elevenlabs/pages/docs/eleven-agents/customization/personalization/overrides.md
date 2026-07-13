@@ -27,6 +27,8 @@ Overrides can be enabled for the following fields in the agent's security settin
 * Language
 * Voice ID
 * LLM (Large Language Model)
+* Tools
+* Knowledge base
 * Text-only mode
 * Stability
 * Speed
@@ -51,11 +53,11 @@ sensitive user data that shouldn't be stored in the agent's base configuration.
 * An [ElevenLabs account](https://elevenlabs.io)
 * A configured ElevenLabs Conversational Agent ([create one here](/docs/eleven-agents/quickstart))
 
-This guide will show you how to override the default agent **System prompt**, **First message**, **LLM**, and **TTS settings**.
+This guide shows you how to override the default agent **System prompt**, **First message**, **LLM**, **Tools**, **Knowledge base**, and **TTS settings**.
 
-For security reasons, overrides are disabled by default. Enable the fields you want to allow overriding (e.g. `first_message`, `prompt`, `language`).
+For security reasons, overrides are disabled by default. Enable the fields you want to allow overriding, such as `first_message`, `prompt.prompt`, `prompt.tool_ids`, `prompt.knowledge_base`, or `language`.
 
-Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, and any other overrides you need (such as `LLM`).
+Navigate to your agent's settings and select the **Security** tab. Enable the `First message`, `System prompt`, `Tools`, `Knowledge base`, and any other overrides you need, such as `LLM`.
 
 ![Enable overrides](https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/496f20380ffe29fc46275bbfe5c6eaabdb5e211c780188243a018b38715ea779/assets/images/conversational-ai/enable-overrides.jpg)
 
@@ -73,7 +75,11 @@ Set fields under `platform_settings.overrides.conversation_config_override` to `
         "agent": {
           "first_message": true,
           "language": true,
-          "prompt": { "prompt": true }
+          "prompt": {
+            "prompt": true,
+            "tool_ids": true,
+            "knowledge_base": true
+          }
         },
         "tts": { "voice_id": true }
       }
@@ -99,7 +105,11 @@ elevenlabs.conversational_ai.agents.update(
                 "agent": {
                     "first_message": True,
                     "language": True,
-                    "prompt": {"prompt": True},
+                    "prompt": {
+                        "prompt": True,
+                        "tool_ids": True,
+                        "knowledge_base": True,
+                    },
                 },
                 "tts": {"voice_id": True},
             },
@@ -120,7 +130,11 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
         agent: {
           firstMessage: true,
           language: true,
-          prompt: { prompt: true },
+          prompt: {
+            prompt: true,
+            toolIds: true,
+            knowledgeBase: true,
+          },
         },
         tts: { voiceId: true },
       },
@@ -129,18 +143,49 @@ await elevenlabs.conversationalAi.agents.update("agent_7101k5zvyjhmfg983brhmhkd9
 });
 ```
 
-In your code, where the conversation is started, pass the overrides as a parameter.
+In your code, where the conversation is started, pass the overrides as a parameter. Tool and knowledge base overrides replace the default arrays for that conversation.
+
+```json title="Conversation initiation payload" focus={4-15}
+{
+  "conversation_config_override": {
+    "agent": {
+      "prompt": {
+        "tool_ids": ["tool_7101k5zvyjhmfg983brhmhkd98n6"],
+        "knowledge_base": [
+          {
+            "type": "file",
+            "name": "Unladen Swallow Facts",
+            "id": "5xM3yVvZQKV0EfqQpLrJ",
+            "usage_mode": "auto"
+          }
+        ]
+      }
+    }
+  }
+}
+```
 
 Ensure you have the latest [SDK](/docs/eleven-agents/libraries/python) installed.
 
-```python title="Python" focus={3-16} maxLines=16
+```python title="Python" focus={3-28} maxLines=28
 from elevenlabs.conversational_ai.conversation import Conversation, ConversationInitiationData
 ...
 conversation_override = {
     "agent": {
         "prompt": {
             "prompt": f"The customer's bank account balance is {customer_balance}. They are based in {customer_location}.", # Optional: override the system prompt.
-            "llm": "gpt-4o" # Optional: override the LLM model.
+            "llm": "gpt-4o", # Optional: override the LLM model.
+            "tool_ids": [
+                "tool_7101k5zvyjhmfg983brhmhkd98n6"
+            ], # Optional: replace the tools available to the agent.
+            "knowledge_base": [
+                {
+                    "type": "file",
+                    "name": "Unladen Swallow Facts",
+                    "id": "5xM3yVvZQKV0EfqQpLrJ",
+                    "usage_mode": "auto",
+                }
+            ], # Optional: replace the knowledge base available to the agent.
         },
         "first_message": f"Hi {customer_name}, how can I help you today?", # Optional: override the first_message.
         "language": "en" # Optional: override the language.
@@ -167,7 +212,7 @@ conversation = Conversation(
 conversation.start_session()
 ```
 
-```javascript title="JavaScript" focus={4-17} maxLines=17
+```javascript title="JavaScript" focus={4-29} maxLines=29
 ...
 const conversation = await Conversation.startSession({
   ...
@@ -175,7 +220,18 @@ const conversation = await Conversation.startSession({
       agent: {
           prompt: {
               prompt: `The customer's bank account balance is ${customer_balance}. They are based in ${customer_location}.`, // Optional: override the system prompt.
-              llm: "gpt-4o" // Optional: override the LLM model.
+              llm: "gpt-4o", // Optional: override the LLM model.
+              toolIds: [
+                  "tool_7101k5zvyjhmfg983brhmhkd98n6"
+              ], // Optional: replace the tools available to the agent.
+              knowledgeBase: [
+                  {
+                      type: "file",
+                      name: "Unladen Swallow Facts",
+                      id: "5xM3yVvZQKV0EfqQpLrJ",
+                      usageMode: "auto",
+                  }
+              ], // Optional: replace the knowledge base available to the agent.
           },
           firstMessage: `Hi ${customer_name}, how can I help you today?`, // Optional: override the first message.
           language: "en" // Optional: override the language.

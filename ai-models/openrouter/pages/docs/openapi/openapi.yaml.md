@@ -205,7 +205,7 @@ components:
               - $ref: '#/components/schemas/FilesServerTool'
               - $ref: '#/components/schemas/FusionServerTool_OpenRouter'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
-              - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+              - $ref: '#/components/schemas/SearchModelsServerTool_OpenRouter'
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
               - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
@@ -987,7 +987,71 @@ components:
         - start_block_index
         - end_block_index
       type: object
+    AnthropicCitationSearchResultLocationParam:
+      example:
+        cited_text: Example cited text
+        end_block_index: 1
+        search_result_index: 0
+        source: example_source
+        start_block_index: 0
+        title: Example Result
+        type: search_result_location
+      properties:
+        cited_text:
+          type: string
+        end_block_index:
+          type: integer
+        search_result_index:
+          type: integer
+        source:
+          type: string
+        start_block_index:
+          type: integer
+        title:
+          nullable: true
+          type: string
+        type:
+          enum:
+            - search_result_location
+          type: string
+      required:
+        - type
+        - cited_text
+        - search_result_index
+        - source
+        - title
+        - start_block_index
+        - end_block_index
+      type: object
     AnthropicCitationWebSearchResultLocation:
+      example:
+        cited_text: Example cited text
+        encrypted_index: enc_idx_0
+        title: Example Page
+        type: web_search_result_location
+        url: https://example.com
+      properties:
+        cited_text:
+          type: string
+        encrypted_index:
+          type: string
+        title:
+          nullable: true
+          type: string
+        type:
+          enum:
+            - web_search_result_location
+          type: string
+        url:
+          type: string
+      required:
+        - type
+        - cited_text
+        - encrypted_index
+        - title
+        - url
+      type: object
+    AnthropicCitationWebSearchResultLocationParam:
       example:
         cited_text: Example cited text
         encrypted_index: enc_idx_0
@@ -1630,16 +1694,20 @@ components:
                 content_block_location: >-
                   #/components/schemas/AnthropicCitationContentBlockLocationParam
                 page_location: '#/components/schemas/AnthropicCitationPageLocationParam'
-                search_result_location: '#/components/schemas/AnthropicCitationSearchResultLocation'
-                web_search_result_location: '#/components/schemas/AnthropicCitationWebSearchResultLocation'
+                search_result_location: >-
+                  #/components/schemas/AnthropicCitationSearchResultLocationParam
+                web_search_result_location: >-
+                  #/components/schemas/AnthropicCitationWebSearchResultLocationParam
               propertyName: type
             oneOf:
               - $ref: '#/components/schemas/AnthropicCitationCharLocationParam'
               - $ref: '#/components/schemas/AnthropicCitationPageLocationParam'
               - $ref: >-
                   #/components/schemas/AnthropicCitationContentBlockLocationParam
-              - $ref: '#/components/schemas/AnthropicCitationWebSearchResultLocation'
-              - $ref: '#/components/schemas/AnthropicCitationSearchResultLocation'
+              - $ref: >-
+                  #/components/schemas/AnthropicCitationWebSearchResultLocationParam
+              - $ref: >-
+                  #/components/schemas/AnthropicCitationSearchResultLocationParam
           nullable: true
           type: array
         text:
@@ -4657,6 +4725,18 @@ components:
         - type
         - grammar
       type: object
+    ChatFormatJsonObjectConfig:
+      description: JSON object response format
+      example:
+        type: json_object
+      properties:
+        type:
+          enum:
+            - json_object
+          type: string
+      required:
+        - type
+      type: object
     ChatFormatJsonSchemaConfig:
       description: JSON Schema response format for structured outputs
       example:
@@ -5104,7 +5184,7 @@ components:
           discriminator:
             mapping:
               grammar: '#/components/schemas/ChatFormatGrammarConfig'
-              json_object: '#/components/schemas/FormatJsonObjectConfig'
+              json_object: '#/components/schemas/ChatFormatJsonObjectConfig'
               json_schema: '#/components/schemas/ChatFormatJsonSchemaConfig'
               python: '#/components/schemas/ChatFormatPythonConfig'
               text: '#/components/schemas/ChatFormatTextConfig'
@@ -5113,7 +5193,7 @@ components:
             type: json_object
           oneOf:
             - $ref: '#/components/schemas/ChatFormatTextConfig'
-            - $ref: '#/components/schemas/FormatJsonObjectConfig'
+            - $ref: '#/components/schemas/ChatFormatJsonObjectConfig'
             - $ref: '#/components/schemas/ChatFormatJsonSchemaConfig'
             - $ref: '#/components/schemas/ChatFormatGrammarConfig'
             - $ref: '#/components/schemas/ChatFormatPythonConfig'
@@ -6917,7 +6997,7 @@ components:
           example: true
           type: boolean
         filter_rules:
-          $ref: '#/components/schemas/ObservabilityFilterRulesConfig'
+          $ref: '#/components/schemas/ObservabilityFilterRulesConfigNullable'
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
@@ -9797,6 +9877,85 @@ components:
         - b64_json
         - created
       type: object
+    ImageGenerationProviderPreferences:
+      description: >-
+        Provider routing preferences and provider-specific passthrough
+        configuration.
+      example:
+        allow_fallbacks: false
+        only:
+          - google-ai-studio
+      properties:
+        allow_fallbacks:
+          description: >
+            Whether to allow backup providers to serve requests
+
+            - true: (default) when the primary provider (or your custom
+            providers in "order") is unavailable, use the next best provider.
+
+            - false: use only the primary/custom provider, and return the
+            upstream error if it's unavailable.
+          nullable: true
+          type: boolean
+        ignore:
+          description: >-
+            List of provider slugs to ignore. If provided, this list is merged
+            with your account-wide ignored provider settings for this request.
+          example:
+            - openai
+            - anthropic
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          nullable: true
+          type: array
+        only:
+          description: >-
+            List of provider slugs to allow. If provided, this list is merged
+            with your account-wide allowed provider settings for this request.
+          example:
+            - openai
+            - anthropic
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          nullable: true
+          type: array
+        options:
+          allOf:
+            - $ref: '#/components/schemas/ProviderOptions'
+            - example:
+                black-forest-labs:
+                  guidance: 3
+                  steps: 40
+        order:
+          description: >-
+            An ordered list of provider slugs. The router will attempt to use
+            the first provider in the subset of this list that supports your
+            requested model, and fall back to the next if it is unavailable. If
+            no providers are available, the request will fail with an error
+            message.
+          example:
+            - openai
+            - anthropic
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ProviderName'
+              - type: string
+          nullable: true
+          type: array
+        sort:
+          anyOf:
+            - $ref: '#/components/schemas/ProviderSort'
+            - $ref: '#/components/schemas/ProviderSortConfig'
+            - nullable: true
+          description: >-
+            The sorting strategy to use for this request, if "order" is not
+            specified. When set, no load balancing is performed.
+          example: price
+      type: object
     ImageGenerationRequest:
       description: Image generation request input
       example:
@@ -9885,16 +10044,7 @@ components:
           minLength: 1
           type: string
         provider:
-          description: Provider-specific passthrough configuration
-          properties:
-            options:
-              allOf:
-                - $ref: '#/components/schemas/ProviderOptions'
-                - example:
-                    black-forest-labs:
-                      guidance: 3
-                      steps: 40
-          type: object
+          $ref: '#/components/schemas/ImageGenerationProviderPreferences'
         quality:
           description: Rendering quality. Providers without a quality knob ignore this.
           enum:
@@ -10306,6 +10456,15 @@ components:
         - text
         - phase
       type: object
+    ImageInputModality:
+      enum:
+        - text
+        - image
+        - file
+        - audio
+        - video
+      example: text
+      type: string
     ImageModelArchitecture:
       example:
         input_modalities:
@@ -10317,7 +10476,7 @@ components:
         input_modalities:
           description: Supported input modalities
           items:
-            $ref: '#/components/schemas/InputModality'
+            $ref: '#/components/schemas/ImageInputModality'
           type: array
         output_modalities:
           description: Supported output modalities
@@ -11036,10 +11195,21 @@ components:
             - input_video
           type: string
         video_url:
-          $ref: '#/components/schemas/ChatContentVideoInput'
+          $ref: '#/components/schemas/Legacy_ChatContentVideoInput'
       required:
         - type
         - video_url
+      type: object
+    Legacy_ChatContentVideoInput:
+      description: Video input object
+      example:
+        url: https://example.com/video.mp4
+      properties:
+        url:
+          description: 'URL of the video (data: URLs supported)'
+          type: string
+      required:
+        - url
       type: object
     Legacy_WebSearchServerTool:
       description: Web search tool configuration
@@ -12866,7 +13036,7 @@ components:
               - $ref: '#/components/schemas/BashServerTool'
               - $ref: '#/components/schemas/DatetimeServerTool'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
-              - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+              - $ref: '#/components/schemas/MessagesSearchModelsServerTool'
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
               - additionalProperties:
@@ -12980,6 +13150,24 @@ components:
           output_tokens: 15
           server_tool_use: null
           service_tier: standard
+    MessagesSearchModelsServerTool:
+      description: >-
+        OpenRouter built-in server tool: searches and filters AI models
+        available on OpenRouter
+      example:
+        parameters:
+          max_results: 5
+        type: openrouter:experimental__search_models
+      properties:
+        parameters:
+          $ref: '#/components/schemas/SearchModelsServerToolConfig'
+        type:
+          enum:
+            - openrouter:experimental__search_models
+          type: string
+      required:
+        - type
+      type: object
     MessagesStartEvent:
       description: Event sent at the start of a streaming message
       example:
@@ -13413,34 +13601,7 @@ components:
             $ref: '#/components/schemas/InputModality'
           type: array
         instruct_type:
-          description: Instruction format type
-          enum:
-            - none
-            - airoboros
-            - alpaca
-            - alpaca-modif
-            - chatml
-            - claude
-            - code-llama
-            - gemma
-            - llama2
-            - llama3
-            - mistral
-            - nemotron
-            - neural
-            - openchat
-            - phi3
-            - rwkv
-            - vicuna
-            - zephyr
-            - deepseek-r1
-            - deepseek-v3.1
-            - qwq
-            - qwen3
-            - null
-          example: chatml
-          nullable: true
-          type: string
+          $ref: '#/components/schemas/InstructType'
         modality:
           description: Primary modality of the model
           example: text->text
@@ -13664,7 +13825,7 @@ components:
             id: openai/gpt-4
             knowledge_cutoff: null
             links:
-              details: /api/v1/models/openai/gpt-5.4/endpoints
+              details: /api/v1/models/openai/gpt-4/endpoints
             name: GPT-4
             per_request_limits: null
             pricing:
@@ -13683,11 +13844,33 @@ components:
               context_length: 8192
               is_moderated: true
               max_completion_tokens: 4096
+        links:
+          next: /api/v1/models?offset=500&limit=500
+        total_count: 150
       properties:
         data:
           $ref: '#/components/schemas/ModelsListResponseData'
+        links:
+          description: Pagination links
+          properties:
+            next:
+              description: >-
+                URL for the next page of results, or null if this is the last
+                page
+              example: /api/v1/models?offset=500&limit=500
+              nullable: true
+              type: string
+          required:
+            - next
+          type: object
+        total_count:
+          description: Total number of models matching the query
+          example: 150
+          type: integer
       required:
         - data
+        - total_count
+        - links
       type: object
     ModelsListResponseData:
       description: List of available models
@@ -13711,7 +13894,7 @@ components:
           id: openai/gpt-4
           knowledge_cutoff: null
           links:
-            details: /api/v1/models/openai/gpt-5.4/endpoints
+            details: /api/v1/models/openai/gpt-4/endpoints
           name: GPT-4
           per_request_limits: null
           pricing:
@@ -14307,6 +14490,66 @@ components:
         - $ref: '#/components/schemas/ObservabilitySnowflakeDestination'
         - $ref: '#/components/schemas/ObservabilityWeaveDestination'
         - $ref: '#/components/schemas/ObservabilityWebhookDestination'
+    ObservabilityFilterRuleGroup:
+      example:
+        logic: and
+        rules:
+          - field: model
+            operator: equals
+            value: openai/gpt-4o
+      properties:
+        logic:
+          default: and
+          enum:
+            - and
+            - or
+          type: string
+        rules:
+          items:
+            properties:
+              field:
+                enum:
+                  - model
+                  - provider
+                  - session_id
+                  - user_id
+                  - api_key_name
+                  - finish_reason
+                  - input
+                  - output
+                  - total_cost
+                  - total_tokens
+                  - prompt_tokens
+                  - completion_tokens
+                type: string
+              operator:
+                enum:
+                  - equals
+                  - not_equals
+                  - contains
+                  - not_contains
+                  - regex
+                  - starts_with
+                  - ends_with
+                  - gt
+                  - lt
+                  - gte
+                  - lte
+                  - exists
+                  - not_exists
+                type: string
+              value:
+                anyOf:
+                  - type: string
+                  - type: number
+            required:
+              - field
+              - operator
+            type: object
+          type: array
+      required:
+        - rules
+      type: object
     ObservabilityFilterRulesConfig:
       description: Optional structured filter rules controlling which events are forwarded.
       example: null
@@ -14317,59 +14560,22 @@ components:
           type: boolean
         groups:
           items:
-            properties:
-              logic:
-                default: and
-                enum:
-                  - and
-                  - or
-                type: string
-              rules:
-                items:
-                  properties:
-                    field:
-                      enum:
-                        - model
-                        - provider
-                        - session_id
-                        - user_id
-                        - api_key_name
-                        - finish_reason
-                        - input
-                        - output
-                        - total_cost
-                        - total_tokens
-                        - prompt_tokens
-                        - completion_tokens
-                      type: string
-                    operator:
-                      enum:
-                        - equals
-                        - not_equals
-                        - contains
-                        - not_contains
-                        - regex
-                        - starts_with
-                        - ends_with
-                        - gt
-                        - lt
-                        - gte
-                        - lte
-                        - exists
-                        - not_exists
-                      type: string
-                    value:
-                      anyOf:
-                        - type: string
-                        - type: number
-                  required:
-                    - field
-                    - operator
-                  type: object
-                type: array
-            required:
-              - rules
-            type: object
+            $ref: '#/components/schemas/ObservabilityFilterRuleGroup'
+          type: array
+      required:
+        - groups
+      type: object
+    ObservabilityFilterRulesConfigNullable:
+      description: Optional structured filter rules controlling which events are forwarded.
+      example: null
+      nullable: true
+      properties:
+        enabled:
+          default: true
+          type: boolean
+        groups:
+          items:
+            $ref: '#/components/schemas/ObservabilityFilterRuleGroup'
           type: array
       required:
         - groups
@@ -18687,6 +18893,45 @@ components:
       required:
         - type
       type: object
+    PricingOverride:
+      description: >-
+        A conditional override of the base pricing. An entry applies only when
+        all of its condition fields (e.g. min_prompt_tokens) match the request;
+        among applicable entries, later entries win per price key; price keys
+        absent from an entry inherit the base price.
+      example:
+        completion: '0.00002'
+        min_prompt_tokens: 200000
+        prompt: '0.000005'
+      properties:
+        audio:
+          description: Overridden price in USD per audio input token
+          type: string
+        completion:
+          description: Overridden price in USD per token for completion (output) generation
+          type: string
+        input_audio_cache:
+          description: Overridden price in USD per cached audio input token
+          type: string
+        input_cache_read:
+          description: Overridden price in USD per cached input token (read)
+          type: string
+        input_cache_write:
+          description: Overridden price in USD per cache-write token
+          type: string
+        input_cache_write_1h:
+          description: Overridden price in USD per 1-hour cache-write token
+          type: string
+        min_prompt_tokens:
+          description: >-
+            Condition: the entry applies when the total prompt tokens of a
+            request are strictly greater than this threshold
+          format: double
+          type: number
+        prompt:
+          description: Overridden price in USD per token for prompt (input) processing
+          type: string
+      type: object
     PromptCacheBreakpoint:
       description: >-
         Marks an explicit prompt-cache boundary on this content block.
@@ -19825,6 +20070,17 @@ components:
             internal_reasoning:
               description: Price in USD per internal reasoning token
               type: string
+            overrides:
+              description: >-
+                Conditional overrides of the base pricing (e.g. long-context
+                pricing). An entry applies when all of its condition fields
+                (e.g. min_prompt_tokens) match the request; among applicable
+                entries, later entries win per key; price keys absent from an
+                entry inherit the base price. The top-level pricing keys always
+                reflect the price that applies under default conditions.
+              items:
+                $ref: '#/components/schemas/PricingOverride'
+              type: array
             prompt:
               description: Price in USD per token for prompt (input) processing
               type: string
@@ -19954,6 +20210,17 @@ components:
         internal_reasoning:
           description: Price in USD per internal reasoning token
           type: string
+        overrides:
+          description: >-
+            Conditional overrides of the base pricing (e.g. long-context
+            pricing). An entry applies when all of its condition fields (e.g.
+            min_prompt_tokens) match the request; among applicable entries,
+            later entries win per key; price keys absent from an entry inherit
+            the base price. The top-level pricing keys always reflect the price
+            that applies under default conditions.
+          items:
+            $ref: '#/components/schemas/PricingOverride'
+          type: array
         prompt:
           description: Price in USD per token for prompt (input) processing
           type: string
@@ -20850,7 +21117,7 @@ components:
               - $ref: '#/components/schemas/FilesServerTool'
               - $ref: '#/components/schemas/FusionServerTool_OpenRouter'
               - $ref: '#/components/schemas/ImageGenerationServerTool_OpenRouter'
-              - $ref: '#/components/schemas/ChatSearchModelsServerTool'
+              - $ref: '#/components/schemas/SearchModelsServerTool_OpenRouter'
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/WebSearchServerTool_OpenRouter'
               - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
@@ -20952,6 +21219,24 @@ components:
         - high
       example: medium
       type: string
+    SearchModelsServerTool_OpenRouter:
+      description: >-
+        OpenRouter built-in server tool: searches and filters AI models
+        available on OpenRouter
+      example:
+        parameters:
+          max_results: 5
+        type: openrouter:experimental__search_models
+      properties:
+        parameters:
+          $ref: '#/components/schemas/SearchModelsServerToolConfig'
+        type:
+          enum:
+            - openrouter:experimental__search_models
+          type: string
+      required:
+        - type
+      type: object
     SearchModelsServerToolConfig:
       description: Configuration for the openrouter:experimental__search_models server tool
       example:
@@ -23157,7 +23442,7 @@ components:
           type: boolean
         filter_rules:
           allOf:
-            - $ref: '#/components/schemas/ObservabilityFilterRulesConfig'
+            - $ref: '#/components/schemas/ObservabilityFilterRulesConfigNullable'
             - description: >-
                 Optional structured filter rules. `null` clears the rules.
                 Omitting keeps the current value.
@@ -25916,6 +26201,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -25926,6 +26212,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -27678,27 +27965,7 @@ paths:
                         format: double
                         type: number
                       cost_details:
-                        description: Breakdown of upstream inference costs
-                        example:
-                          upstream_inference_completions_cost: 0.0004
-                          upstream_inference_cost: null
-                          upstream_inference_prompt_cost: 0.0008
-                        nullable: true
-                        properties:
-                          upstream_inference_completions_cost:
-                            format: double
-                            type: number
-                          upstream_inference_cost:
-                            format: double
-                            nullable: true
-                            type: number
-                          upstream_inference_prompt_cost:
-                            format: double
-                            type: number
-                        required:
-                          - upstream_inference_prompt_cost
-                          - upstream_inference_completions_cost
-                        type: object
+                        $ref: '#/components/schemas/CostDetails'
                       is_byok:
                         description: >-
                           Whether a request was made using a Bring Your Own Key
@@ -27863,6 +28130,37 @@ paths:
     get:
       description: Returns a list of all available embeddings models and their properties
       operationId: listEmbeddingsModels
+      parameters:
+        - description: >-
+            Number of records to skip for pagination. When both offset and limit
+            are omitted, the full list is returned
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            description: >-
+              Number of records to skip for pagination. When both offset and
+              limit are omitted, the full list is returned
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: >-
+            Maximum number of records to return (max 1000). When both offset and
+            limit are omitted, the full list is returned
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 500
+            description: >-
+              Maximum number of records to return (max 1000). When both offset
+              and limit are omitted, the full list is returned
+            example: 500
+            maximum: 1000
+            minimum: 1
+            type: integer
       responses:
         '200':
           content:
@@ -27927,6 +28225,17 @@ paths:
       tags:
         - Embeddings
       x-speakeasy-name-override: listModels
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
   /endpoints/zdr:
     get:
       operationId: listEndpointsZdr
@@ -28851,6 +29160,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -28861,6 +29171,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -29292,6 +29603,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -29302,6 +29614,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -29550,6 +29863,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -29560,6 +29874,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -29798,6 +30113,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -29808,6 +30124,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -29879,6 +30196,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -29889,6 +30207,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -32157,6 +32476,36 @@ paths:
     get:
       operationId: getModels
       parameters:
+        - description: >-
+            Number of records to skip for pagination. When both offset and limit
+            are omitted, the full list is returned
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            description: >-
+              Number of records to skip for pagination. When both offset and
+              limit are omitted, the full list is returned
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: >-
+            Maximum number of records to return (max 1000). When both offset and
+            limit are omitted, the full list is returned
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 500
+            description: >-
+              Maximum number of records to return (max 1000). When both offset
+              and limit are omitted, the full list is returned
+            example: 500
+            maximum: 1000
+            minimum: 1
+            type: integer
         - description: Filter models by use case category
           in: query
           name: category
@@ -32291,8 +32640,7 @@ paths:
               Minimum context length (tokens). Models with smaller context are
               excluded.
             example: 128000
-            exclusiveMinimum: true
-            minimum: 0
+            minimum: 1
             type: integer
         - description: Minimum prompt price in $/M tokens.
           in: query
@@ -32595,6 +32943,17 @@ paths:
       tags:
         - Models
       x-speakeasy-name-override: list
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
   /models/{author}/{slug}/endpoints:
     get:
       operationId: listEndpoints
@@ -32778,6 +33137,37 @@ paths:
         filtered to models that satisfy [EU in-region
         routing](https://openrouter.ai/docs/guides/privacy/provider-logging#enterprise-eu-in-region-routing).
       operationId: listModelsUser
+      parameters:
+        - description: >-
+            Number of records to skip for pagination. When both offset and limit
+            are omitted, the full list is returned
+          in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            description: >-
+              Number of records to skip for pagination. When both offset and
+              limit are omitted, the full list is returned
+            example: 0
+            minimum: 0
+            nullable: true
+            type: integer
+        - description: >-
+            Maximum number of records to return (max 1000). When both offset and
+            limit are omitted, the full list is returned
+          in: query
+          name: limit
+          required: false
+          schema:
+            default: 500
+            description: >-
+              Maximum number of records to return (max 1000). When both offset
+              and limit are omitted, the full list is returned
+            example: 500
+            maximum: 1000
+            minimum: 1
+            type: integer
       responses:
         '200':
           content:
@@ -32803,7 +33193,7 @@ paths:
                     id: openai/gpt-4
                     knowledge_cutoff: null
                     links:
-                      details: /api/v1/models/openai/gpt-5.4/endpoints
+                      details: /api/v1/models/openai/gpt-4/endpoints
                     name: GPT-4
                     per_request_limits: null
                     pricing:
@@ -32861,6 +33251,17 @@ paths:
       tags:
         - Models
       x-speakeasy-name-override: listForUser
+      x-speakeasy-pagination:
+        inputs:
+          - in: parameters
+            name: offset
+            type: offset
+          - in: parameters
+            name: limit
+            type: limit
+        outputs:
+          results: $.data
+        type: offsetLimit
   /observability/destinations:
     get:
       description: >-
@@ -32877,6 +33278,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -32887,6 +33289,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -33313,6 +33716,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -33323,6 +33727,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -33445,6 +33850,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -33455,6 +33861,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -34026,6 +34433,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -34036,6 +34444,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -35673,6 +36082,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -35683,6 +36093,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100
@@ -36339,6 +36750,7 @@ paths:
           name: offset
           required: false
           schema:
+            default: 0
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
@@ -36349,6 +36761,7 @@ paths:
           name: limit
           required: false
           schema:
+            default: 50
             description: Maximum number of records to return (max 100)
             example: 50
             maximum: 100

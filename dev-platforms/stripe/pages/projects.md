@@ -118,6 +118,32 @@ To avoid browser pop-ups during provisioning and credential exchange:
 3. Add a payment method with `stripe projects billing add`.
 4. Start the agent session.
 
+## Build from a template 
+
+Use `stripe projects build` to create a complete starter app from the template registry. The CLI copies the app files, installs dependencies, and provisions all required services in one step.
+
+Run the command interactively. The CLI guides you through picking an app category, framework, and traffic tier, then provisions the recommended stack:
+
+```bash
+stripe projects build my-app
+```
+
+If you already know which template you want, skip the guided flow with `--template`:
+
+```bash
+stripe projects build my-app --template stripe/nextjs-saas/amber-fox
+```
+
+Pass only the template ID without a variant to use the default variant:
+
+```bash
+stripe projects build my-app --template stripe/nextjs-saas
+```
+
+To see a full list of all available templates, check out the [template registry](https://github.com/stripe/projects-template-registry).
+
+To create your own template, see [Create a build template](https://docs.stripe.com/projects/templates.md).
+
 ## Check project status 
 
 After you’ve added services or connected providers, run `status` to review your project:

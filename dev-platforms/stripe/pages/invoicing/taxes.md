@@ -183,6 +183,8 @@ curl https://api.stripe.com/v1/prices \
 
 ## Enable automatic tax
 
+Stripe only calculates tax in jurisdictions where you have an active [tax registration](https://docs.stripe.com/tax/registering.md). Without a registration in the customer’s location, the calculation returns zero tax. To learn more, see [Understand zero tax amounts](https://docs.stripe.com/tax/zero-tax.md).
+
 #### Dashboard
 
 Enable the **Use automatic tax collection** toggle on the [tax settings](https://dashboard.stripe.com/settings/tax/integrations) page to automatically enable tax calculation on *new* invoices you create in the Dashboard.

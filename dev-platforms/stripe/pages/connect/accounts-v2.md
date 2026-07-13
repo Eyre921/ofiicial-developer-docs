@@ -91,8 +91,9 @@ Any API request with a `customer` parameter that accepts a `Customer` ID also ha
 curl https://api.stripe.com/v1/setup_intents \
   -u "<<YOUR_SECRET_KEY>>:" \
   -d customer_account=acct_123 \
-  -d "payment_method_types[]=card" \
+  -d "automatic_payment_methods[enabled]=true" \
   -d confirm=true \
+  --data-urlencode "return_url=https://example.com/return" \
   -d usage=off_session
 ```
 

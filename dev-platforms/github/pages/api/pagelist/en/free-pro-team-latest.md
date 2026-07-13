@@ -1693,6 +1693,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/concepts/tools/ai-tools
 /en/copilot/concepts/tools/about-copilot-integrations
 /en/copilot/concepts/models
+/en/copilot/concepts/models/bring-your-own-key
 /en/copilot/concepts/models/utility-models
 /en/copilot/concepts/models/auto-model-selection
 /en/copilot/concepts/models/fedramp-models
@@ -1942,7 +1943,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/manage-for-organization/manage-default-models
 /en/copilot/how-tos/administer-copilot/manage-for-organization/review-activity
 /en/copilot/how-tos/administer-copilot/manage-for-organization/review-activity/review-user-activity-data
-/en/copilot/how-tos/administer-copilot/manage-for-organization/use-your-own-api-keys
+/en/copilot/how-tos/administer-copilot/manage-for-organization/enable-custom-models
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-plan
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-plan/subscribe
@@ -1965,7 +1966,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-agents/enable-copilot-code-review
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-spark
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/manage-availability-of-default-models
-/en/copilot/how-tos/administer-copilot/manage-for-enterprise/use-your-own-api-keys
+/en/copilot/how-tos/administer-copilot/manage-for-enterprise/enable-custom-models
 /en/copilot/how-tos/administer-copilot/manage-for-enterprise/review-audit-logs
 /en/copilot/how-tos/administer-copilot/manage-mcp-usage
 /en/copilot/how-tos/administer-copilot/manage-mcp-usage/configure-mcp-registry
@@ -2109,6 +2110,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/tutorials/spark/build-apps-with-spark
 /en/copilot/tutorials/spark/deploy-from-cli
 /en/copilot/tutorials/customize-code-review
+/en/copilot/tutorials/use-copilot-code-review-across-the-pull-request-lifecycle
 /en/copilot/tutorials/enhance-agent-mode-with-mcp
 /en/copilot/tutorials/compare-ai-models
 /en/copilot/tutorials/speed-up-development-work

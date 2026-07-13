@@ -27,7 +27,7 @@
     "status": "ok"
   },
   "ai-models/fireworks": {
-    "pages": 384,
+    "pages": 385,
     "status": "ok"
   },
   "agent-frameworks/vercel-ai-sdk": {
@@ -47,7 +47,7 @@
     "status": "ok"
   },
   "agent-frameworks/langchain": {
-    "pages": 1480,
+    "pages": 1484,
     "status": "ok"
   },
   "voice-multimodal/assemblyai": {
@@ -130,7 +130,7 @@
     "status": "ok"
   },
   "dev-platforms/langfuse": {
-    "pages": 1,
+    "pages": 2,
     "status": "ok"
   },
   "ai-models/replicate": {
@@ -188,7 +188,7 @@
     "status": "error: curl failed (22) for https://shopify.dev/llms.txt: curl: (22) The requested URL returned error: 404\n"
   },
   "dev-platforms/github": {
-    "pages": 92,
+    "pages": 100,
     "status": "ok"
   },
   "dev-platforms/stripe": {
@@ -200,12 +200,12 @@
     "status": "ok"
   },
   "voice-multimodal/deepgram": {
-    "pages": 356,
+    "pages": 357,
     "status": "ok"
   },
   "voice-multimodal/elevenlabs": {
     "pages": 765,
     "status": "ok"
   },
-  "_last_crawl": "2026-07-13T11:30:40Z"
+  "_last_crawl": "2026-07-13T23:30:35Z"
 }

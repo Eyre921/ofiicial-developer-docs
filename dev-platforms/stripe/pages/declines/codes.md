@@ -96,4 +96,8 @@ The following Stripe decline codes can be used for Local Payment Method (LPM) pa
 | `expired_payment_information` | `expired_payment_information` | The underlying payment instrument is expired. | The payment has expired information. Retries may succeed after the customer updates their payment information. |
 | `duplicate_transaction` | `partner_duplicate_transaction` | A recent transaction with identical details was submitted recently. | A recent transaction with identical details was submitted recently to the partner. |
 | `recurring_not_supported_by_bank` | `recurring_not_supported_by_bank` | The customer’s bank doesn’t support recurring payments for this payment method. | The customer’s bank doesn’t support recurring payments for this payment method. Prompt the customer to select a bank that supports recurring payments. |
+| `partner_action_not_supported` | `partner_action_not_supported` | The payment provider doesn’t support this action. | The payment provider doesn’t support this action. Retries won’t succeed. |
+| `lost_or_stolen_card` | `lost_or_stolen_card` | The payment was declined because the card is reported lost or stolen. | The specific reason for the decline shouldn’t be reported to the customer. Instead, present it as a `partner_generic_decline`. |
+| `card_already_activated` | `card_already_activated` | The card has already been activated. | The card has already been activated. Retries won’t succeed. |
+| `invalid_track_data` | `invalid_track_data` | The card data is incorrect. | The card data is incorrect. The customer needs to contact their card issuer to check that the card is working correctly. |
 

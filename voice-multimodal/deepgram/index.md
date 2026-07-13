@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 356 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 357 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -273,6 +273,7 @@
 - `docs/voice-agent-inject-agent-message` — [Inject Agent](pages/docs/voice-agent-inject-agent-message.md) · [原文](https://developers.deepgram.com/docs/voice-agent-inject-agent-message.md)
 - `docs/voice-agent-inject-user-message` — [Inject User](pages/docs/voice-agent-inject-user-message.md) · [原文](https://developers.deepgram.com/docs/voice-agent-inject-user-message.md)
 - `docs/voice-agent-inputs` — [Inputs: Client Messages](pages/docs/voice-agent-inputs.md) · [原文](https://developers.deepgram.com/docs/voice-agent-inputs.md)
+- `docs/voice-agent-latency-report` — [Latency Report](pages/docs/voice-agent-latency-report.md) · [原文](https://developers.deepgram.com/docs/voice-agent-latency-report.md)
 - `docs/voice-agent-llm-models` — [LLM Models](pages/docs/voice-agent-llm-models.md) · [原文](https://developers.deepgram.com/docs/voice-agent-llm-models.md)
 - `docs/voice-agent-media-inputs-outputs` — [Media Inputs & Outputs](pages/docs/voice-agent-media-inputs-outputs.md) · [原文](https://developers.deepgram.com/docs/voice-agent-media-inputs-outputs.md)
 - `docs/voice-agent-message-flow` — [Voice Agent Message Flow](pages/docs/voice-agent-message-flow.md) · [原文](https://developers.deepgram.com/docs/voice-agent-message-flow.md)

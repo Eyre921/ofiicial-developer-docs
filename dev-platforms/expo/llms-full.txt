@@ -57051,7 +57051,7 @@ Here are some ideas for what to build next:
 ---
 
 ---
-modificationDate: May 21, 2026
+modificationDate: July 13, 2026
 title: Troubleshooting overview
 description: An overview of troubleshooting guides for app development with Expo and EAS.
 ---
@@ -57111,6 +57111,8 @@ This page lists a collection of various troubleshooting guides for Expo and EAS.
 [EAS Update: Error recovery](/eas-update/error-recovery.md) — Learn how to take advantage of using built-in error recovery when using expo-updates library. — expo-updates
 
 [EAS Observe: Troubleshooting](/eas/observe/reference/troubleshooting.md) — Solutions for common issues when setting up and using EAS Observe.
+
+[EAS Workflows: Troubleshooting](/eas/workflows/troubleshooting.md) — Diagnose and fix common issues when running EAS Workflows.
 
 ---
 

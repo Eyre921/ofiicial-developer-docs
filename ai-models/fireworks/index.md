@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 384 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 385 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -207,6 +207,7 @@
 - `fine-tuning/agent/sft` — [Fireworks Agent: Supervised Fine-Tuning](pages/fine-tuning/agent/sft.md) · [原文](https://docs.fireworks.ai/fine-tuning/agent/sft)
 - `fine-tuning/agent/use-with-coding-agents` — [Use Fireworks Agent with Claude Code, Cursor, Codex, and other coding agents](pages/fine-tuning/agent/use-with-coding-agents.md) · [原文](https://docs.fireworks.ai/fine-tuning/agent/use-with-coding-agents)
 - `fine-tuning/cli-reference` — [Training Overview](pages/fine-tuning/cli-reference.md) · [原文](https://docs.fireworks.ai/fine-tuning/cli-reference)
+- `fine-tuning/cmek` — [Customer-Managed Encryption Keys (CMEK)](pages/fine-tuning/cmek.md) · [原文](https://docs.fireworks.ai/fine-tuning/cmek)
 - `fine-tuning/connect-environments` — [Remote Environment Setup](pages/fine-tuning/connect-environments.md) · [原文](https://docs.fireworks.ai/fine-tuning/connect-environments)
 - `fine-tuning/debug-sft-tokenization` — [Debug SFT tokenization](pages/fine-tuning/debug-sft-tokenization.md) · [原文](https://docs.fireworks.ai/fine-tuning/debug-sft-tokenization)
 - `fine-tuning/deploying-loras` — [Deploying Fine Tuned Models](pages/fine-tuning/deploying-loras.md) · [原文](https://docs.fireworks.ai/fine-tuning/deploying-loras)

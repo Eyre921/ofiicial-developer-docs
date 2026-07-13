@@ -33,7 +33,7 @@ That gives you a complete, replayable record of each session that you can join b
 | [`ConversationText`](/docs/voice-agent-conversation-text) (`role`, `content`)                                               | The transcript of every user and agent turn. The core record. Includes `languages` / `languages_hinted` when using `flux-general-multi`.                                                  |
 | [`AgentThinking`](/docs/voice-agent-agent-thinking) (`content`)                                                             | What the agent was processing before it responded.                                                                                                                                        |
 | [`FunctionCallRequest`](/docs/voice-agent-function-call-request)                                                            | Tool-call requests with `id`, `name`, `arguments`, and the `client_side` flag. See [Function Calling](/docs/voice-agents-function-calling) for details.                                   |
-| `LatencyReport`                                                                                                             | Detailed STT / LLM / TTS latency breakdown. Requires `experimental: true`. See [section below](#latencyreport-detailed-latency-telemetry).                                                |
+| [`LatencyReport`](/docs/voice-agent-latency-report)                                                                         | Detailed STT / LLM / TTS latency breakdown. See [section below](#latencyreport-detailed-latency-telemetry).                                                                               |
 | [`UserStartedSpeaking`](/docs/voice-agent-user-started-speaking) / [`AgentAudioDone`](/docs/voice-agent-agent-audio-done)   | Turn boundaries and barge-in timing.                                                                                                                                                      |
 | [`Error` / `Warning`](/docs/voice-agent-errors-warnings) (`code`, `description`)                                            | Failure and degradation tracking.                                                                                                                                                         |
 | [`Acknowledgements`](/docs/voice-agent-acknowledgements) (`ListenUpdated`, `ThinkUpdated`, `SpeakUpdated`, `PromptUpdated`) | Confirms the exact moment an `Update*` message was applied. If an acknowledgement is missing, the update may not have landed — useful for troubleshooting mid-call configuration changes. |
@@ -54,23 +54,23 @@ Skip the raw binary audio frames unless you specifically need call recordings. I
 
 ## LatencyReport: Detailed Latency Telemetry
 
-Set `experimental: true` at the top level of your [`Settings`](/docs/voice-agent-settings) message and the server will emit a `LatencyReport` event. This is the richest latency signal available. Capture it the same way as every other frame.
+The server emits a [`LatencyReport`](/docs/voice-agent-latency-report) event after each turn. This is the richest latency signal available. Capture it the same way as every other frame.
 
 It breaks latency down across the full STT → LLM → TTS pipeline. All fields are floats in seconds, and each is optional (omitted when not applicable to that turn):
 
-| Field                   | What It Measures                                               |
-| ----------------------- | -------------------------------------------------------------- |
-| `stt_latency`           | Speech-to-text: audio received to transcript produced          |
-| `ttt_token_latency`     | Time to first token of any type (text, tool call, or thinking) |
-| `ttt_text_latency`      | Time to first text token from the LLM                          |
-| `ttt_tool_call_latency` | Time to first tool-call token from the LLM                     |
-| `ttt_thinking_latency`  | Time to first thinking token from the LLM                      |
-| `tts_latency`           | Text-to-speech: first text token to first audio byte           |
-| `total_latency`         | End-to-end: user utterance end to first audio byte             |
+| Field                  | What It Measures                                               |
+| ---------------------- | -------------------------------------------------------------- |
+| `stt_latency`          | Speech-to-text: audio received to transcript produced          |
+| `ttt_token_latency`    | Time to first token of any type (text, tool call, or thinking) |
+| `ttt_text_latency`     | Time to first text token from the LLM                          |
+| `ttt_tool_latency`     | Time to first tool-call token from the LLM                     |
+| `ttt_thinking_latency` | Time to first thinking token from the LLM                      |
+| `tts_latency`          | Text-to-speech: first text token to first audio byte           |
+| `total_latency`        | End-to-end: user utterance end to first audio byte             |
 
 This lets you attribute latency to the right stage — for example, separating LLM time-to-first-token from TTS time, and isolating tool-call and thinking overhead.
 
-`LatencyReport` is gated behind `experimental: true`, so treat the schema as subject to change. Because the fields are optional, log defensively rather than assuming every field is present on every report.
+Because the fields are optional, log defensively rather than assuming every field is present on every report.
 
 ## Recommended Logging Shape
 
@@ -104,7 +104,6 @@ Write these append-only, one record per frame (JSONL per session, or a table key
 
 * **Timestamps are yours to add.** The protocol does not stamp messages, so record wall-clock time on send and receive, and assign a monotonic sequence number for ordering.
 * **Keep `flags.history` enabled** if you want [`History`](/docs/voice-agent-history) events. It is on by default.
-* **Set `experimental: true`** to receive `LatencyReport`, and treat that schema as subject to change.
 * **Set `mip_opt_out`** in [`Settings`](/docs/voice-agent-settings) if the data should not be used for model improvement.
 
 ## Related Resources
