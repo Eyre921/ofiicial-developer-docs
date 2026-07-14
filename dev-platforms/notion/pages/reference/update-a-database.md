@@ -51,6 +51,8 @@ Database schema updates that are too large will be blocked by the REST API to he
 
 ### Errors
 
+Returns a 404 HTTP response if the database doesn't exist or if the connection doesn't have access to it.
+
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
 <Warning>

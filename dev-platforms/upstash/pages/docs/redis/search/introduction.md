@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/search/introduction
 path: docs/redis/search/introduction
 ---
 
+import { Catalog } from "/snippets/catalog.jsx";
+
 Upstash Redis Search is our first extension beyond the official Redis spec. Using the Rust-based Tantivy under the hood, we provide an extremely fast way to search through Redis data.
 
 <img />
@@ -46,3 +48,7 @@ Upstash Redis Search is our first extension beyond the official Redis spec. Usin
     Complete, real-world examples you can adapt to your own use cases
   </Card>
 </CardGroup>
+
+## Demos
+
+<Catalog product="redis" type="demo" search cols={3} />

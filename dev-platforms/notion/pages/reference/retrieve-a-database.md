@@ -21,7 +21,7 @@ Retrieves a [database object](/reference/database) — information that describe
 
 To fetch database rows rather than columns, use the [Query a database](/reference/post-database-query) endpoint.
 
-To find a database ID, navigate to the database URL in your Notion workspace. The ID is the string of characters in the URL that is between the slash following the workspace name (if applicable) and the question mark. The ID is a 32 characters alphanumeric string.
+To find a database ID, navigate to the database URL in your Notion workspace. The ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
 <Frame>
   <img alt="1340" />
@@ -31,7 +31,9 @@ Refer to the [Working with databases](/guides/data-apis/working-with-databases) 
 
 ### Errors
 
-ErrorsEach Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
+Returns a 404 HTTP response if the database doesn't exist or if the connection doesn't have access to it.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
 ### Additional resources
 

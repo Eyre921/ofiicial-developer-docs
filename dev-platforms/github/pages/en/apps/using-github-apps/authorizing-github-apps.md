@@ -18,7 +18,7 @@ When authorizing the GitHub App, you should ensure you trust the application own
 * Know which resources you can access: When authorized, the GitHub App will be able to determine which resources you can access that the app can also access. The app may use this, for example, so that it can show you an appropriate list of repositories.
 * Act on your behalf: When authorized, the application may perform tasks on GitHub on your behalf. This might include creating an issue or commenting on a pull request. For more information, see [About GitHub Apps acting on your behalf](#about-github-apps-acting-on-your-behalf).
 
-You can review and revoke your authorization at any time. For more information, see [Reviewing and revoking authorization of GitHub Apps](/en/apps/using-github-apps/reviewing-your-authorized-integrations).
+You can review and revoke your authorization at any time. For more information, see [Reviewing and revoking authorization of GitHub Apps](/en/apps/using-github-apps/reviewing-and-revoking-authorization-of-github-apps).
 
 ## About GitHub Apps acting on your behalf
 
@@ -48,4 +48,4 @@ For example, you might grant the GitHub App permission to read your email addres
 
 You can install a GitHub App without authorizing the app. Similarly, you can authorize the app without installing the app.
 
-For more information about installation, see [Installing a GitHub App from a third party](/en/apps/using-github-apps/installing-a-github-app-from-a-third-party), [Installing a GitHub App from GitHub Marketplace for your personal account](/en/apps/using-github-apps/installing-an-app-in-your-personal-account) and [Installing a GitHub App from GitHub Marketplace for your organizations](/en/apps/using-github-apps/installing-an-app-in-your-organization).
+For more information about installation, see [Installing a GitHub App from a third party](/en/apps/using-github-apps/installing-a-github-app-from-a-third-party), [Installing a GitHub App from GitHub Marketplace for your personal account](/en/apps/using-github-apps/installing-a-github-app-from-github-marketplace-for-your-personal-account) and [Installing a GitHub App from GitHub Marketplace for your organizations](/en/apps/using-github-apps/installing-a-github-app-from-github-marketplace-for-your-organizations).

@@ -65,7 +65,7 @@ Some examples of automations you could create with a GitHub App, where the app a
 
 ### GitHub Apps that respond to webhooks
 
-If you want your app to respond to events on GitHub, your app should subscribe to webhooks. For example, you may want your app to leave a comment when a pull request is opened. For more information, see [Using webhooks with GitHub Apps](/en/apps/creating-github-apps/setting-up-a-github-app/using-webhooks-with-github-apps).
+If you want your app to respond to events on GitHub, your app should subscribe to webhooks. For example, you may want your app to leave a comment when a pull request is opened. For more information, see [Using webhooks with GitHub Apps](/en/apps/creating-github-apps/registering-a-github-app/using-webhooks-with-github-apps).
 
 ### GitHub Apps that can take certain actions
 

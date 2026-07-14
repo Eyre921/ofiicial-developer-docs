@@ -4,6 +4,8 @@ source: https://upstash.com/docs/redis/overall/getstarted
 path: docs/redis/overall/getstarted
 ---
 
+import { Catalog } from "/snippets/catalog.jsx";
+
 Upstash Redis is a **highly available, infinitely scalable** Redis-compatible database:
 
 * 99.99% uptime guarantee with auto-scaling ([Prod Pack](/docs/redis/overall/enterprise#prod-pack-features))
@@ -70,7 +72,7 @@ Congratulations! You have created an ultra-fast Upstash Redis database! 🎉
 <Check>
 **New: Manage Upstash Redis with your agent**
 
-Manage Upstash Redis databases from Claude and other AI tools by using our [MCP server](/docs/agent-resources/mcp). To let an agent run commands directly against a single database, use the dedicated [Redis MCP](/docs/redis/integrations/mcp).
+Manage Upstash Redis databases from Claude and other AI tools by using our [MCP server](/docs/agent-resources/mcp). To let an agent run commands directly against a single database, use the dedicated [Redis MCP](/docs/redis/sdks/mcp).
 </Check>
 
 ## Next steps
@@ -80,3 +82,7 @@ Manage Upstash Redis databases from Claude and other AI tools by using our [MCP 
 * [Upstash Redis Search](/docs/redis/search/introduction): full-text search built into Upstash Redis.
 * [REST API](/docs/redis/features/restapi): connect from edge and serverless runtimes where TCP is restricted.
 * [Pricing & Billing](/docs/redis/overall/billing): free tier, Pay-As-You-Go, and Fixed plan limits, plus how billing works.
+
+## SDKs
+
+<Catalog product="redis" type="sdk" cols={3} />

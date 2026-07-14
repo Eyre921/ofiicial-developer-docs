@@ -4,6 +4,8 @@ source: https://upstash.com/docs/vector/overall/getstarted
 path: docs/vector/overall/getstarted
 ---
 
+import { Catalog } from "/snippets/catalog.jsx";
+
 <Check >
 **Prerequisite**
 
@@ -219,3 +221,7 @@ In Upstash console, you can see the charts of your index:
 You can also query your index with a simple UI:
 
   <img />
+
+## SDKs
+
+<Catalog product="vector" type="sdk" cols={3} />

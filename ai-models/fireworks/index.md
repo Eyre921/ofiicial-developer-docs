@@ -230,7 +230,7 @@
 - `fine-tuning/rl-rollout-debugging` — [Ledger & Debugging for RL Rollouts](pages/fine-tuning/rl-rollout-debugging.md) · [原文](https://docs.fireworks.ai/fine-tuning/rl-rollout-debugging)
 - `fine-tuning/rl-rollout-delta-checkpoints` — [Incremental Snapshots (ARC2)](pages/fine-tuning/rl-rollout-delta-checkpoints.md) · [原文](https://docs.fireworks.ai/fine-tuning/rl-rollout-delta-checkpoints)
 - `fine-tuning/rl-rollout-integration` — [RL Rollouts with Your Own Trainer](pages/fine-tuning/rl-rollout-integration.md) · [原文](https://docs.fireworks.ai/fine-tuning/rl-rollout-integration)
-- `fine-tuning/secure-fine-tuning` — [Secure Training (BYOB)](pages/fine-tuning/secure-fine-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/secure-fine-tuning)
+- `fine-tuning/secure-fine-tuning` — [Secure Training Overview](pages/fine-tuning/secure-fine-tuning.md) · [原文](https://docs.fireworks.ai/fine-tuning/secure-fine-tuning)
 - `fine-tuning/training-api/cookbook/checkpoints` — [Checkpoints and Resume](pages/fine-tuning/training-api/cookbook/checkpoints.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/checkpoints)
 - `fine-tuning/training-api/cookbook/distillation` — [Cookbook: Distillation](pages/fine-tuning/training-api/cookbook/distillation.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/distillation)
 - `fine-tuning/training-api/cookbook/dpo` — [Cookbook: DPO](pages/fine-tuning/training-api/cookbook/dpo.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/cookbook/dpo)

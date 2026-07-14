@@ -24,6 +24,34 @@ The target endpoint must be a private dedicated endpoint with LoRA enabled, runn
 
 If you don't have a LoRA-enabled endpoint for the base model yet, [create one](/docs/dedicated-endpoints/adapter#deploy-the-adapter) first.
 
+## Supported models
+
+LoRA-enabled endpoints are available for the models below. Each adapter you attach must target the same model as the endpoint and train only from that model's supported target modules. **Max loaded adapters** is the maximum number of adapters you can keep attached to a single endpoint for that model.
+
+| Model                                                | Supported target modules                                                                                                                                                                          | Max loaded adapters |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `google/gemma-3-270m-it-lora`                        | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       | 16                  |
+| `google/gemma-3-27b-it-lora`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       | 16                  |
+| `google/gemma-4-31B-it-lora`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       | 16                  |
+| `mistralai/Mixtral-8x7B-Instruct-v0.1-FP8-Lora`      | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            | 16                  |
+| `meta-llama/Llama-3.3-70B-Instruct-FP8-Lora`         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       | 16                  |
+| `meta-llama/Llama-4-Scout-17B-16E-Instruct-FP8-Lora` | `k_proj`, `o_proj`, `q_proj`, `v_proj`, `shared_expert.gate_proj`, `shared_expert.up_proj`, `shared_expert.down_proj`, `feed_forward.gate_proj`, `feed_forward.up_proj`, `feed_forward.down_proj` | 16                  |
+| `Qwen/Qwen3.5-0.8B-Lora`                             | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-2B-Lora`                               | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-4B-Lora`                               | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-9B-Lora`                               | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-27B-Lora`                              | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-35B-A3B-Base-Lora`                     | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-35B-A3B-Lora`                          | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-122B-A10B-Lora`                        | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-397B-A17B-Lora`                        | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.6-27B-Lora`                              | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.6-35B-A3B-Lora`                          | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+
+<Note>
+  <sup>†</sup> For the Qwen3.5 and Qwen3.6 models, adapters target the standard attention (`q_proj`, `k_proj`, `v_proj`, `o_proj`) and MLP (`gate_proj`, `up_proj`, `down_proj`) projections. Adapters that target other layers, such as the vision encoder, may not load for serving.
+</Note>
+
 ## Attach an adapter from the dashboard
 
 <Steps>

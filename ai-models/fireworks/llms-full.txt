@@ -13068,16 +13068,89 @@ For best training–inference alignment:
 </CardGroup>
 
 
-# Secure Training (BYOB)
+# Secure Training Overview
 Source: https://docs.fireworks.ai/fine-tuning/secure-fine-tuning
 
-Fine-tune models while keeping sensitive data and components under your control
+Choose the right training surface for your data-privacy needs, and understand what Fireworks retains and how to delete it
 
-Fireworks enables secure model fine-tuning while maintaining customer control over sensitive components and data. Use your own cloud storage, keep reward functions proprietary, and ensure training data never persists on our platform beyond active workflows.
+Fireworks lets you fine-tune models while keeping your data and sensitive components under your control. Across every training surface, one principle holds: **your training data is never used to train Fireworks-owned or shared models**.
+
+This page covers training. Inference follows [Zero Data Retention](/guides/security_compliance/data_handling) by default — prompts and generations are never written to persistent storage — so we focus here on the training lifecycle: where your data lives while you train, what Fireworks retains afterward (checkpoints and traces), and the controls you have to delete it.
+
+Use it to:
+
+* Understand how each training surface handles your data.
+* Choose the surface that fits your data-privacy requirements.
+* Know exactly what is retained, what is not, and how to delete it.
+
+## Choosing a training surface
+
+Fireworks offers three ways to train, differing mainly in **where your training data lives**:
+
+| Surface                     | Where your training data lives                                                                                                             | What Fireworks retains           | Your deletion controls                                                      |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------- | --------------------------------------------------------------------------- |
+| **Managed Training**        | Uploaded to Fireworks-managed storage (GCS); only a reference link is kept in our database                                                 | Dataset, checkpoints, and traces | Delete the dataset anytime after the job; request checkpoint/trace deletion |
+| **Managed Training + BYOB** | Stays in your own cloud bucket; Fireworks reads it in-place during training, with no copy persisted                                        | Checkpoints and traces only      | Revoke bucket access after the job; request checkpoint/trace deletion       |
+| **Training API**            | No dataset upload — you load and tokenize data locally; the trainer receives only transient tokenized batches, never a stored dataset file | Checkpoints and traces only      | Request checkpoint/trace deletion                                           |
+
+<Tip>
+  For the strictest data governance, use [BYOB](#dataset-storage-byob) (keep the dataset in your own bucket) or the [Training API](#training-api) (no dataset is ever uploaded to or stored on Fireworks).
+</Tip>
+
+## Data retention by surface
+
+When training runs on Fireworks-managed storage, training data is stored in Google Cloud Storage (GCS) with only a reference link retained in our database. Customers control deletion of their own datasets.
+
+### Managed Training
+
+Retention behavior depends on the job type:
+
+| Job Type               | Data Generated                                       | Retention / Deletion                                                                                                                                             |
+| ---------------------- | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| SFT — Managed Training | Uploaded dataset only                                | Customer-controlled; deletable immediately after the job completes                                                                                               |
+| DPO — Managed Training | Uploaded dataset only                                | Customer-controlled; deletable immediately after the job completes                                                                                               |
+| RFT — Managed Training | Input prompts + rollout datasets (generated outputs) | Input prompts: customer-controlled, deletable after the job completes (same policy as SFT and DPO). Rollout datasets (generated outputs): deletable upon request |
+| Job chunks / artifacts | Intermediate checkpoints                             | Retained for 30 days, then deleted; deletable earlier on request. Kept so jobs can be retrieved or restarted                                                     |
+| Traces / logs          | Request/response metadata                            | Retained for 30 days, then deleted; deletable earlier on request                                                                                                 |
+
+### Training API
+
+The [Training API](/fine-tuning/training-api/introduction) works differently: you write the training loop in your own environment, load and tokenize data locally, and send tokenized `Datum` batches to Fireworks GPUs on each `forward_backward` call. What this means for your data:
+
+* **No dataset upload step and no dataset file stored on Fireworks' side.** Fireworks never receives your raw JSONL, and for RL or distillation the trainer never sees raw prompt text.
+* **The trainer does receive the training content** — as tokenized `Datum` batches on every `forward_backward` call. Those tokens are your data; they are processed transiently for the gradient step and are not retained as a dataset.
+
+What Fireworks does retain is minimal and deletable on request:
+
+* **Checkpoints** — retained for 30 days (deletable earlier on request) so you can restart jobs without losing work.
+* **Traces / logs** — retained for 30 days (deletable earlier on request) so you can evaluate job performance and improve your training.
+
+This barebones retention is by design: it keeps the product easy to use — retrieve checkpoints to restart jobs, and inspect traces to understand and improve training — while your training data is never uploaded or stored as a dataset on Fireworks.
+
+## Encryption at rest (CMEK)
+
+If you use Managed Training but want to control encryption of the data Fireworks stores, Customer-Managed Encryption Keys (CMEK) let you bring an encryption key from your own cloud KMS. Fireworks uses your key to encrypt the artifacts your jobs read and write, and every use of the key is recorded in your own cloud's audit log. Because Fireworks can only decrypt your data while your KMS answers an unwrap request, you stay in control: disable or revoke the key and Fireworks can no longer read your datasets or checkpoints.
+
+CMEK covers the durable artifacts a Managed Training job reads and writes:
+
+* Training and evaluation datasets you upload
+* Intermediate checkpoints and distributed-checkpoint shards
+
+<Note>
+  CMEK currently supports **AWS KMS** and **Supervised Fine-Tuning (SFT)**. Support for Azure Key Vault, Google Cloud KMS, DPO, and RFT is coming soon. CMEK protects data **at rest** — during an active job, training compute processes your data in plaintext in memory.
+</Note>
+
+CMEK and BYOB address different needs and can be used independently: [BYOB](#dataset-storage-byob) keeps your dataset in your own bucket with no copy persisted on Fireworks, while CMEK controls the encryption key for data that *is* stored on Fireworks-managed storage. For setup, key rotation, and revocation, see the [CMEK guide](/fine-tuning/cmek).
 
 ## Dataset Storage (BYOB)
 
-Point Fireworks to your own cloud storage for training datasets. This applies to both Supervised Fine-Tuning (SFT) and Reinforcement Fine-Tuning (RFT) jobs.
+Bring Your Own Bucket (BYOB) is the recommended configuration for Managed Training under strict data-governance requirements. Your dataset stays in your own cloud storage: Fireworks reads it in-place during active training only, with no copy persisted on Fireworks-managed storage, and you retain full ownership and deletion authority. This applies to both Supervised Fine-Tuning (SFT) and Reinforcement Fine-Tuning (RFT) jobs.
+
+BYOB works with all three major cloud providers — bring a bucket from whichever you already use:
+
+* [Google Cloud Storage (GCS)](#gcs-bucket-integration)
+* [AWS S3](#aws-s3-bucket-integration)
+* [Azure Blob Storage](#azure-blob-storage-integration)
 
 <Tip>
   Grant least-privilege IAM to only the bucket/path prefixes needed for training. Use server-side encryption and your KMS policies where required.
@@ -13127,6 +13200,10 @@ gcloud storage buckets add-iam-policy-binding <YOUR_BUCKET> \
   --member=serviceAccount:<YOUR_COMPANY_FW_ACCOUNT_EMAIL> \
   --role=roles/storage.objectViewer
 ```
+
+<Tip>
+  After the job completes, revoke or rotate these IAM bindings to remove Fireworks' access to your bucket.
+</Tip>
 
 #### Usage
 
@@ -13361,15 +13438,46 @@ Use reinforcement fine-tuning while keeping sensitive components and data under 
   You now have an end-to-end secure RFT workflow with BYOB datasets, proprietary reward pipelines, and isolated training jobs that generate new checkpoints.
 </Check>
 
+## Inference
+
+Inference at Fireworks follows Zero Data Retention by default: prompts and generations exist only in volatile memory for the duration of the request and are never written to persistent storage or used to train any model. For full details, including the Response API storage exception and how to opt out, see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
+
+## Customer controls
+
+The following controls are available for training workloads:
+
+| Control                                                          | How to exercise it                                                                                                                        |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Delete a fine-tuning dataset                                     | Delete via the Fireworks console or API after the job completes.                                                                          |
+| Request deletion of checkpoints, traces, or RFT rollout datasets | Contact your Fireworks account team to delete these retained artifacts.                                                                   |
+| Keep data in your own bucket                                     | Use [BYOB integration](#dataset-storage-byob) to register an external dataset URL.                                                        |
+| Control encryption of managed data with your own key             | Register a [CMEK](/fine-tuning/cmek) key from your cloud KMS (AWS KMS today); revoke it anytime to cut off Fireworks' ability to decrypt. |
+| Avoid storing a dataset on Fireworks                             | Use the [Training API](#training-api): no dataset is uploaded or stored; the trainer only receives transient tokenized batches.           |
+| Revoke Fireworks access post-training                            | Remove the IAM bindings from your bucket after the job completes.                                                                         |
+
+For inference-side controls — disabling Response API storage (`store=False`) or deleting a specific response — see the [Zero Data Retention policy](/guides/security_compliance/data_handling).
+
 ## Related Resources
 
 <CardGroup>
+  <Card title="Zero Data Retention" href="/guides/security_compliance/data_handling" icon="lock">
+    How Fireworks handles inference data by default
+  </Card>
+
+  <Card title="Customer-Managed Encryption Keys (CMEK)" href="/fine-tuning/cmek" icon="key">
+    Encrypt managed fine-tuning data with your own KMS key
+  </Card>
+
   <Card title="Data Security Overview" href="/guides/security_compliance/data_security" icon="shield-check">
     Learn about our comprehensive security measures
   </Card>
 
   <Card title="Reinforcement Fine Tuning" href="/fine-tuning/reinforcement-fine-tuning-models" icon="brain">
     Full guide to reinforcement fine-tuning
+  </Card>
+
+  <Card title="Training API" href="/fine-tuning/training-api/introduction" icon="code">
+    Custom training loops that keep your data on your side
   </Card>
 </CardGroup>
 

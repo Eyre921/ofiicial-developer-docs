@@ -4,6 +4,18 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 10, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`. Available as an on-demand dedicated endpoint.
+  * `meta-llama/Meta-Llama-3-8B-Instruct-Lite`. Available as an on-demand dedicated endpoint.
+  * `zai-org/GLM-5.1`. Available as an on-demand dedicated endpoint.
+
+  See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
 <Update label="July 9, 2026">
   ## Storage performance health check
 

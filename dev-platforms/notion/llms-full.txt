@@ -17907,13 +17907,13 @@ Meeting notes block objects represent [AI meeting notes](https://www.notion.com/
 
 Meeting notes block objects contain the following information within the `meeting_notes` (or `transcription` in older API versions) property:
 
-| Field            | Type                                                 | Description                                                                                                                                                                                       |
-| :--------------- | :--------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `title`          | `array` of [rich text objects](/reference/rich-text) | The display name of the meeting notes session.                                                                                                                                                    |
-| `status`         | `string` (enum)                                      | The lifecycle status of the transcription. Possible values are: `"transcription_not_started"`, `"transcription_paused"`, `"transcription_in_progress"`, `"summary_in_progress"`, `"notes_ready"`. |
-| `children`       | `object`                                             | Pointers to the related content blocks. Contains `summary_block_id`, `notes_block_id`, and `transcript_block_id` (each an optional UUID string).                                                  |
-| `calendar_event` | `object`                                             | Calendar metadata for the meeting. Contains `start_time` and `end_time` (ISO 8601 timestamps) and `attendees` (an optional array of user IDs).                                                    |
-| `recording`      | `object`                                             | The recording time window. Contains `start_time` and `end_time` (ISO 8601 timestamps).                                                                                                            |
+| Field            | Type                                                 | Description                                                                                                                                                                                                                 |
+| :--------------- | :--------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`          | `array` of [rich text objects](/reference/rich-text) | The display name of the meeting notes session.                                                                                                                                                                              |
+| `status`         | `string` (enum)                                      | The lifecycle status of the transcription. Possible values are: `"transcription_not_started"`, `"transcription_paused"`, `"transcription_in_progress"`, `"transcription_failed"`, `"summary_in_progress"`, `"notes_ready"`. |
+| `children`       | `object`                                             | Pointers to the related content blocks. Contains `summary_block_id`, `notes_block_id`, and `transcript_block_id` (each an optional UUID string).                                                                            |
+| `calendar_event` | `object`                                             | Calendar metadata for the meeting. Contains `start_time` and `end_time` (ISO 8601 timestamps) and `attendees` (an optional array of user IDs).                                                                              |
+| `recording`      | `object`                                             | The recording time window. Contains `start_time` and `end_time` (ISO 8601 timestamps).                                                                                                                                      |
 
 All top-level fields are optional and only present when the corresponding data is available.
 
@@ -20916,19 +20916,29 @@ Source: https://developers.notion.com/reference/list-data-source-templates
 get /v1/data_sources/{data_source_id}/templates
 Use this API to retrieve details of all page templates available for a data source.
 
-The response object contains an array `page_size` results (up to 100) under the `templates` key. Each element of the array is a JSON object with the following attributes:
+The response contains a `templates` array with up to 100 results per page. Each template has the following fields:
 
-| Key          | Data Type                | Meaning                                             |
-| :----------- | :----------------------- | :-------------------------------------------------- |
-| `id`         | `String` (UUIDv4 format) | The ID of the template.                             |
-| `name`       | `String`                 | The display name of the template.                   |
-| `is_default` | `Boolean`                | Whether that template is the data source's default. |
+| Field        | Type              | Description                                        |
+| :----------- | :---------------- | :------------------------------------------------- |
+| `id`         | `string` (UUIDv4) | The template ID.                                   |
+| `name`       | `string`          | The template's display name.                       |
+| `is_default` | `boolean`         | Whether the template is the data source's default. |
 
-**Pagination**: When there are more templates than the current API response contains, the `has_more` boolean field is set to `true`, and the `next_cursor` is set to the ID of the next template to use as the `start_cursor` of your next API request.
+### Pagination
 
-Only templates under the data source identified by the `data_source_id` in the URL are returned. Also, the bot must have access to the template for it to appear in this API. However, in most cases, as long as the bot is connected to the data source's parent database (check the "Connections" list under the 3-dot menu), this access also extends to all of the child templates.
+If more templates are available, `has_more` is `true` and `next_cursor` contains the cursor for the next page. Pass that value as `start_cursor` in the next request.
 
-Templates are also valid Notion pages, so you can retrieve a template's full properties and content using the [Retrieve a page](/reference/retrieve-a-page) API. This also means that opening a template in the Notion app and copying its URL is an alternative way to get its ID.
+### Permissions
+
+This endpoint returns only templates under the specified data source that the connection can access. Sharing the parent database with the connection generally grants access to its child templates.
+
+Templates are also Notion pages. Use [Retrieve a page](/reference/retrieve-a-page) to get a template's properties and content. You can also open a template in Notion and copy its URL to find its ID.
+
+### Errors
+
+Returns a 404 HTTP response if the data source doesn't exist or if the connection doesn't have access to it.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
 
 # List file uploads
@@ -25839,13 +25849,13 @@ To fetch data source *rows* (i.e. the child pages of a data source) rather than 
 
 ### Finding a data source ID
 
-Navigate to the database URL in your Notion workspace. The ID is the string of characters in the URL that is between the slash following the workspace name (if applicable) and the question mark. The ID is a 32 characters alphanumeric string.
+First, find the containing database's ID in its Notion URL. The database ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
 <Frame>
   <img />
 </Frame>
 
-Then, use the [Retrieve a database](/reference/retrieve-a-database) API to get a list of `data_sources` for that database. There is often only one data source, but when there are multiple, you may have the ID or name of the one you want to retrieve in mind (or you can retrieve each of them). Use that data source ID with this endpoint to get its `properties`.
+Use [Retrieve a database](/reference/retrieve-database) with that database ID. Its `data_sources` array lists each data source's ID and name. Use the desired data source ID with this endpoint to retrieve its `properties`.
 
 To get a data source ID from the Notion app directly, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
@@ -25857,7 +25867,9 @@ Refer to the [Working with databases](/guides/data-apis/working-with-databases) 
 
 ### Errors
 
-ErrorsEach Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
+Returns a 404 HTTP response if the data source doesn't exist or if the connection doesn't have access to it.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
 ### Additional resources
 
@@ -25897,7 +25909,7 @@ Retrieves a [database object](/reference/database) — information that describe
 
 To fetch database rows rather than columns, use the [Query a database](/reference/post-database-query) endpoint.
 
-To find a database ID, navigate to the database URL in your Notion workspace. The ID is the string of characters in the URL that is between the slash following the workspace name (if applicable) and the question mark. The ID is a 32 characters alphanumeric string.
+To find a database ID, navigate to the database URL in your Notion workspace. The ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
 <Frame>
   <img alt="1340" />
@@ -25907,7 +25919,9 @@ Refer to the [Working with databases](/guides/data-apis/working-with-databases) 
 
 ### Errors
 
-ErrorsEach Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
+Returns a 404 HTTP response if the database doesn't exist or if the connection doesn't have access to it.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
 ### Additional resources
 
@@ -26227,7 +26241,7 @@ The most important fields in the database object response to highlight:
   * These data source IDs can be used with the [Retrieve a data source](/reference/retrieve-a-data-source), [Update a data source](/reference/update-a-data-source), and [Query a data source](/reference/query-a-data-source) APIs
 * `parent`: The direct parent of the database; generally a `page_id` or `workspace: true`
 
-To find a database ID, navigate to the database URL in your Notion workspace. The ID is the string of characters in the URL that is between the slash following the workspace name (if applicable) and the question mark. The ID is a 32 characters alphanumeric string.
+To find a database ID, navigate to the database URL in your Notion workspace. The ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
 <Frame>
   <img alt="Notion database ID" />
@@ -26236,6 +26250,8 @@ To find a database ID, navigate to the database URL in your Notion workspace. Th
 Refer to the [Working with databases](/guides/data-apis/working-with-databases) guide for more details.
 
 ### Errors
+
+Returns a 404 HTTP response if the database doesn't exist or if the connection doesn't have access to it.
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
@@ -27371,7 +27387,7 @@ Source: https://developers.notion.com/reference/update-a-data-source
 
 patch /v1/data_sources/{data_source_id}
 
-Updates the [data source](/reference/data-source) object — the properties, title, description, or whether it's in the trash — of a specified data source under a database.
+Updates a [data source](/reference/data-source)'s title, icon, properties, parent, or trash status.
 
 Returns the updated data source object.
 
@@ -27404,6 +27420,8 @@ Developers are encouraged to keep their data source schema size to a maximum of 
 Data source schema updates that are too large will be blocked by the REST API to help developers keep their data source queries performant. When a schema update is blocked, the error response includes a `validation_error` code with a message identifying the largest property by name, ID, and byte size to help you reduce your schema size.
 
 ### Errors
+
+Returns a 404 HTTP response if the data source doesn't exist or if the connection doesn't have access to it.
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
@@ -27471,6 +27489,8 @@ Developers are encouraged to keep their database schema size to a maximum of **5
 Database schema updates that are too large will be blocked by the REST API to help developers keep their database queries performant. When a schema update is blocked, the error response includes a `validation_error` code with a message identifying the largest property by name, ID, and byte size to help you reduce your schema size.
 
 ### Errors
+
+Returns a 404 HTTP response if the database doesn't exist or if the connection doesn't have access to it.
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 

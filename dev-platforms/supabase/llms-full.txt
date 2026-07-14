@@ -116680,6 +116680,20 @@ Caution: Supabase Pipelines is currently in private alpha. Private alpha feature
 
 Pipelines is a managed CDC feature for creating replication pipelines from Supabase Postgres to destination systems. It uses **Postgres logical replication** with the open-source [Supabase ETL engine](https://github.com/supabase/etl). You choose a destination in the Dashboard, and Supabase runs the pipeline that streams database changes to that destination.
 
+## Pricing
+
+$0.053 per hour (\~$39 per month) for each pipeline. $0.60 per Gigabyte backfill
+data. $3.00 per Gigabyte replicated data.
+
+| Plan       | Pipeline  | Backfill/Initial Copy Data | Replicated Data |
+| ---------- | --------- | -------------------------- | --------------- |
+| Free       | -         | -                          | -               |
+| Pro        | $0.053/hr | $0.60 per GB               | $3.00 per GB    |
+| Team       | $0.053/hr | $0.60 per GB               | $3.00 per GB    |
+| Enterprise | Custom    | Custom                     | Custom          |
+
+For a detailed breakdown of how charges are calculated, refer to [Manage Pipeline usage](https://supabase.com/docs/guides/platform/manage-your-usage/pipelines).
+
 ## Setup overview
 
 Pipelines requires two main components: a **Postgres publication** (defines what to replicate) and a **destination** (where data is sent). Supabase runs the managed pipeline that reads from the publication and writes to the destination. Follow these steps to set up your replication pipeline.
@@ -143081,6 +143095,7 @@ While your subscription plan applies to your entire organization and is charged 
 - [PITR](https://supabase.com/docs/guides/platform/backups#point-in-time-recovery) to roll back to any specific point in time, down to the minute
 - [IPv4](https://supabase.com/docs/guides/platform/ipv4-address) for a dedicated IPv4 address
 - [Advanced MFA](https://supabase.com/docs/guides/auth/auth-mfa/phone) to provide other options than TOTP
+- [Pipelines](https://supabase.com/docs/guides/database/replication/pipelines) to replicate data from Supabase Postgres to destination systems
 
 
 ---
@@ -144255,6 +144270,7 @@ Each subpage breaks down a specific usage item and details what you're charged f
 - [IPv4](https://supabase.com/docs/guides/platform/manage-your-usage/ipv4)
 - [MFA Phone](https://supabase.com/docs/guides/platform/manage-your-usage/advanced-mfa-phone)
 - [Log Drains](https://supabase.com/docs/guides/platform/manage-your-usage/log-drains)
+- [Pipelines](https://supabase.com/docs/guides/platform/manage-your-usage/pipelines)
 
 
 ---
@@ -145895,6 +145911,94 @@ In the Monthly Active Users section, you can see the usage for the selected time
 If you are on a paid plan and have [Spend Cap](https://supabase.com/docs/guides/platform/cost-control#spend-cap) disabled or your organization is on Team Plan or above, you will pay for any overages.
 
 When you are exceeding your quotas while being on a Free Plan or having [Spend Cap](https://supabase.com/docs/guides/platform/cost-control#spend-cap) enabled, you will get a notification to your billing email address and put under a grace period. For more details, refer to our [Fair Use Policy](https://supabase.com/docs/guides/platform/billing-faq#fair-use-policy).
+
+
+---
+
+# Manage Pipelines usage
+
+## What you are charged for
+
+You are charged for all pipelines configured, initial/backfill data and replicated data. Pipelines are charged by the hour for as long as they are configured.
+
+### Usage on your invoice
+
+Usage is shown as "ETL Pipeline Hours", "ETL Copy Backfill Data GB" and "ETL Replicated Data GB" on your invoice.
+
+## Pricing
+
+$0.053 per hour (\~$39 per month) for each pipeline. $0.60 per Gigabyte backfill
+data. $3.00 per Gigabyte replicated data.
+
+| Plan       | Pipeline  | Backfill/Initial Copy Data | Replicated Data |
+| ---------- | --------- | -------------------------- | --------------- |
+| Free       | -         | -                          | -               |
+| Pro        | $0.053/hr | $0.60 per GB               | $3.00 per GB    |
+| Team       | $0.053/hr | $0.60 per GB               | $3.00 per GB    |
+| Enterprise | Custom    | Custom                     | Custom          |
+
+For a detailed breakdown of how charges are calculated, refer to [Manage Pipeline usage](https://supabase.com/docs/guides/platform/manage-your-usage/pipelines).
+
+## Billing examples
+
+### Single project with no backfill
+
+The project has an active pipeline for the entire month.
+
+| Line Item                     | Units     | Costs       |
+| ----------------------------- | --------- | ----------- |
+| Pro Plan                      | -         | $25         |
+| Compute Hours Small Project 1 | 730 Hours | $15.04      |
+| ETL Pipeline Hours            | 730 Hours | $38.69      |
+| ETL Replicated Data GB        | 150 GB    | $450        |
+| **Subtotal**                  |           | **$528.73** |
+| Compute Credits               |           | -$10        |
+| **Total**                     |           | **$518.73** |
+
+### Multiple projects with backfills
+
+Multiple projects had an active pipeline for the entire month and had initial backfills and replicated data.
+
+| Line Item                           | Units     | Costs        |
+| ----------------------------------- | --------- | ------------ |
+| Pro Plan                            | -         | $25          |
+|                                     |           |              |
+| Compute Hours Small Project 1       | 730 Hours | $15.04       |
+| ETL Pipeline Hours Project 1        | 730 Hours | $38.69       |
+| ETL Replicated Data GB Project 1    | 15 GB     | $45          |
+| ETL Copy Backfill Data GB Project 1 | 150 GB    | $90          |
+|                                     |           |              |
+| Compute Hours Small Project 2       | 730 Hours | $15.04       |
+| ETL Pipeline Hours Project 2        | 730 Hours | $38.69       |
+| ETL Replicated Data GB Project 2    | 70 GB     | $210         |
+| ETL Copy Backfill Data GB Project 2 | 1,500 GB  | $900         |
+|                                     |           |              |
+| **Subtotal**                        |           | **$1377.46** |
+| Compute Credits                     |           | -$10         |
+| **Total**                           |           | **$1367.46** |
+
+### After disabling an add-on for a day
+
+Project add-ons are billed in arrears based on how many hours you used them.
+If you remove the add-on, you are no longer billed from the time of removal onward.
+
+| Line Item                     | Hours | Costs      |
+| ----------------------------- | ----- | ---------- |
+| Pro Plan                      | -     | $25        |
+|                               |       |            |
+| Compute Hours Small Project 1 | 730   | $15.04     |
+| ETL Pipeline Hours Project 1  | 24    | $1.27      |
+|                               |       |            |
+| **Subtotal**                  |       | **$41.31** |
+| Compute Credits               |       | -$10       |
+| **Total**                     |       | **$31.31** |
+
+## Optimize usage
+
+- Only replicate tables you need to replicate
+- If you no longer require replication, remove the pipeline through your [project's replication settings](https://supabase.com/dashboard/project/_/database/replication)
+- Reduce the number of writes to your table
+- Exclude columns you do not need from replication - Pipelines let you configure which columns to replicate
 
 
 ---
@@ -162102,26 +162206,6 @@ Install and run your own Supabase on your computer, server, or cloud infrastruct
 
 Host Supabase on your own infrastructure.
 
-## Get started
-
-The fastest and recommended way to self-host Supabase is to use Docker.
-
-[<span className="flex items-center gap-2">
-              Docker
-              <Badge variant="success">Official</Badge>
-            </span>
-          : Deploy Supabase within your own infrastructure using Docker Compose.](/docs/guides/self-hosting/docker)
-
-## Community-driven projects
-
-There are several other options to deploy Supabase. If you're interested in helping these projects, visit our [Community](https://supabase.com/contribute) page.
-
-[<span className="flex items-center gap-2">Kubernetes</span>: Helm charts to deploy a Supabase on Kubernetes.](https://github.com/supabase-community/supabase-kubernetes)
-
-[<span className="flex items-center gap-2">Traefik</span>: A self-hosted Supabase setup with Traefik as a reverse proxy.](https://github.com/supabase-community/supabase-traefik)
-
-## About self-hosting
-
 Self-hosting is a good fit if you need full control over your data, have compliance requirements that prevent you from using managed services, or want to run Supabase in an isolated environment.
 
 ### How self-hosted Supabase differs
@@ -162151,23 +162235,36 @@ Self-hosted Supabase (run via Docker Compose) **does not phone home or collect a
 
 The **Supabase CLI** is a [separate tool](https://supabase.com/docs/guides/local-development/cli/getting-started) and collects usage telemetry to help improve the developer experience. See [CLI telemetry](https://supabase.com/docs/guides/local-development/cli/getting-started#telemetry) for opt-out methods.
 
+## Get started
+
+The fastest and recommended way to self-host Supabase is to use Docker.
+
+- **[Docker](https://supabase.com/docs/guides/self-hosting/docker):** Deploy Supabase within your own infrastructure using Docker Compose.
+
+## Community-driven projects
+
+There are several other options to deploy Supabase. If you're interested in helping these projects, visit our Community page.
+
+- **[Kubernetes](https://github.com/supabase-community/supabase-kubernetes):** Helm charts to deploy a Supabase on Kubernetes.
+- **[Traefik](https://github.com/supabase-community/supabase-traefik):** A self-hosted Supabase setup with Traefik as a reverse proxy.
+
 ## Support and community
 
 Self-hosted Supabase is community-supported.
 
 For resolving common issues:
 
-- [GitHub Discussions](https://github.com/orgs/supabase/discussions?discussions_q=is%3Aopen+label%3Aself-hosted) - Questions, feature requests, and workarounds
-- [GitHub Issues](https://github.com/supabase/supabase/issues?q=is%3Aissue%20state%3Aopen%20label%3Aself-hosted) - Known issues
+- **[GitHub Discussions](https://github.com/orgs/supabase/discussions?discussions_q=is%3Aopen+label%3Aself-hosted):** Questions, feature requests, and workarounds
+- **[GitHub Issues](https://github.com/supabase/supabase/issues?q=is%3Aissue%20state%3Aopen%20label%3Aself-hosted):** Known issues
 
 Get help and connect with other users:
 
-- [Discord](https://discord.supabase.com) - Real-time chat and community support
-- [Reddit](https://www.reddit.com/r/Supabase/) - Official Supabase subreddit
+- **[Discord](https://discord.supabase.com):** Real-time chat and community support
+- **[Reddit](https://www.reddit.com/r/Supabase/):** Official Supabase subreddit
 
 Share your self-hosting experience:
 
-- [GitHub Discussions](https://github.com/orgs/supabase/discussions/39820) - "Self-hosting: What's working (and what's not)?"
+- **[GitHub Discussions](https://github.com/orgs/supabase/discussions/39820):** Self-hosting: What's working (and what's not)?
 
 ### Enterprise self-hosting
 
@@ -190857,7 +190954,9 @@ Deno.serve(async (req) => {
 
 Invokes a function
 
-- Requires an Authorization header.
+- The API key is sent in the `apikey` header. The `Authorization` header is reserved
+  for the signed-in user's JWT (or a custom auth token) — when there is no session, a
+  new-format API key (`sb_publishable_…` / `sb_secret_…`) is not sent as a Bearer token.
 - Invoke params generally match the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) spec.
 - When you pass in a body to your function, we automatically attach the Content-Type header for `Blob`, `ArrayBuffer`, `File`, `FormData` and `String`. If it doesn't match any of these types we assume the payload is `json`, serialize it and attach the `Content-Type` header as `application/json`. You can override this behavior by passing in a `Content-Type` header of your own.
 - Responses are automatically parsed as `json`, `blob` and `form-data` depending on the `Content-Type` header sent by your function. Responses are parsed as `text` by default.

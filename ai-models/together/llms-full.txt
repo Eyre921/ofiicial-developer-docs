@@ -3757,6 +3757,18 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
+<Update label="July 10, 2026">
+  ## Model deprecations
+
+  The following models have been deprecated and are no longer available on serverless:
+
+  * `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`. Available as an on-demand dedicated endpoint.
+  * `meta-llama/Meta-Llama-3-8B-Instruct-Lite`. Available as an on-demand dedicated endpoint.
+  * `zai-org/GLM-5.1`. Available as an on-demand dedicated endpoint.
+
+  See [Deprecations](/docs/deprecations) for migration options.
+</Update>
+
 <Update label="July 9, 2026">
   ## Storage performance health check
 
@@ -7068,6 +7080,34 @@ The target endpoint must be a private dedicated endpoint with LoRA enabled, runn
 
 If you don't have a LoRA-enabled endpoint for the base model yet, [create one](/docs/dedicated-endpoints/adapter#deploy-the-adapter) first.
 
+## Supported models
+
+LoRA-enabled endpoints are available for the models below. Each adapter you attach must target the same model as the endpoint and train only from that model's supported target modules. **Max loaded adapters** is the maximum number of adapters you can keep attached to a single endpoint for that model.
+
+| Model                                                | Supported target modules                                                                                                                                                                          | Max loaded adapters |
+| ---------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------- |
+| `google/gemma-3-270m-it-lora`                        | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       | 16                  |
+| `google/gemma-3-27b-it-lora`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       | 16                  |
+| `google/gemma-4-31B-it-lora`                         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       | 16                  |
+| `mistralai/Mixtral-8x7B-Instruct-v0.1-FP8-Lora`      | `k_proj`, `o_proj`, `q_proj`, `v_proj`                                                                                                                                                            | 16                  |
+| `meta-llama/Llama-3.3-70B-Instruct-FP8-Lora`         | `k_proj`, `up_proj`, `o_proj`, `q_proj`, `down_proj`, `v_proj`, `gate_proj`                                                                                                                       | 16                  |
+| `meta-llama/Llama-4-Scout-17B-16E-Instruct-FP8-Lora` | `k_proj`, `o_proj`, `q_proj`, `v_proj`, `shared_expert.gate_proj`, `shared_expert.up_proj`, `shared_expert.down_proj`, `feed_forward.gate_proj`, `feed_forward.up_proj`, `feed_forward.down_proj` | 16                  |
+| `Qwen/Qwen3.5-0.8B-Lora`                             | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-2B-Lora`                               | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-4B-Lora`                               | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-9B-Lora`                               | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-27B-Lora`                              | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-35B-A3B-Base-Lora`                     | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-35B-A3B-Lora`                          | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-122B-A10B-Lora`                        | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.5-397B-A17B-Lora`                        | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.6-27B-Lora`                              | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+| `Qwen/Qwen3.6-35B-A3B-Lora`                          | `q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj` <sup>†</sup>                                                                                                          | 5                   |
+
+<Note>
+  <sup>†</sup> For the Qwen3.5 and Qwen3.6 models, adapters target the standard attention (`q_proj`, `k_proj`, `v_proj`, `o_proj`) and MLP (`gate_proj`, `up_proj`, `down_proj`) projections. Adapters that target other layers, such as the vision encoder, may not load for serving.
+</Note>
+
 ## Attach an adapter from the dashboard
 
 <Steps>
@@ -10254,11 +10294,11 @@ The table below lists all deprecations, most recent first.
 
 | Removal date | Model                                               | Supported by on-demand dedicated endpoints                                                             |
 | :----------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
-| 2026-06-26   | `zai-org/GLM-5.1`                                   | Yes                                                                                                    |
-| 2026-06-26   | `meta-llama/Llama-Guard-4-12B`                      | No                                                                                                     |
-| 2026-06-26   | `meta-llama/Meta-Llama-3-8B-Instruct-Lite`          | Yes                                                                                                    |
-| 2026-06-26   | `google/gemma-3n-E4B-it`                            | Yes                                                                                                    |
-| 2026-06-26   | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`           | Yes                                                                                                    |
+| 2026-08-04   | `meta-llama/Llama-Guard-4-12B`                      | No                                                                                                     |
+| 2026-08-04   | `google/gemma-3n-E4B-it`                            | Yes                                                                                                    |
+| 2026-07-10   | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`           | Yes                                                                                                    |
+| 2026-07-10   | `meta-llama/Meta-Llama-3-8B-Instruct-Lite`          | Yes                                                                                                    |
+| 2026-07-10   | `zai-org/GLM-5.1`                                   | Yes                                                                                                    |
 | 2026-06-29   | `Qwen/Qwen3.5-397B-A17B`                            | Yes                                                                                                    |
 | 2026-06-22   | `zai-org/GLM-5`                                     | Yes                                                                                                    |
 | 2026-06-11   | `mistralai/Voxtral-Mini-3B-2507`                    | Yes                                                                                                    |
@@ -16400,23 +16440,15 @@ Each health check validates different aspects of your GPU infrastructure:
 
 **Storage Performance**
 
-* Runs storage benchmarks against the shared and local storage volumes available to the cluster.
+* Runs storage benchmarks against shared and local storage tiers available to the cluster.
 * Validates data integrity with a checksummed write and read-back, and measures sequential read and write throughput.
 * **Use for:** Detecting slow or degraded storage before it bottlenecks data loading or checkpointing.
-
-<Warning>
-  **Important: shared storage checks on Kubernetes clusters**
-
-  The shared storage performance check reports a **Skipped** result with the message **"Shared volume PVC not created"** when your cluster is not yet set up to use shared storage.
-
-  To use shared storage, follow the steps in [Shared Storage PVC](/docs/gpu-clusters-management#step-1-create-a-persistentvolumeclaim).
-</Warning>
 
 ### Understanding test results
 
 Health check results are displayed in the Health Checks table:
 
-* **Status:** Passed (green), Failed (red), or Skipped (gray) indicator.
+* **Status:** Passed (green) or Failed (red) indicator.
 * **Last Run:** Timestamp of test execution.
 * **Node Tested:** Which nodes were included in the test.
 * **Details:** Select **View details** to see:
@@ -16429,16 +16461,18 @@ Health check results are displayed in the Health Checks table:
 
 Performance-based health checks compare the measured result against a reference value. For bandwidth tests, a test **passes** when the measured value is greater than or equal to the threshold. For latency tests, lower is better, so a test passes when the measured value is less than or equal to the threshold. The following thresholds are the defaults applied during health checks and automatic acceptance testing.
 
-| Test                              | Metric                           | Pass threshold | Test configuration                                                                     |
-| --------------------------------- | -------------------------------- | -------------- | -------------------------------------------------------------------------------------- |
-| Single-Node NCCL                  | Average bus bandwidth            | ≥ 300 GB/s     | `all_reduce_perf` across 8 GPUs, 32 GiB message size.                                  |
-| Multi-Node NCCL                   | Average bus bandwidth            | ≥ 330 GB/s     | `all_reduce_perf` across all GPUs on the selected nodes.                               |
-| InfiniBand Write Bandwidth        | Reported write bandwidth         | ≥ 320 Gb/s     | `ib_write_bw` per device, 8 MiB message size, 2-second duration.                       |
-| NVBandwidth: CPU to GPU Bandwidth | Per-GPU host-to-device bandwidth | ≥ 30 GB/s      | `host_to_device_memcpy_ce`, averaged across 8 GPUs.                                    |
-| NVBandwidth: GPU to CPU Bandwidth | Per-GPU device-to-host bandwidth | ≥ 30 GB/s      | `device_to_host_memcpy_ce`, averaged across 8 GPUs.                                    |
-| NVBandwidth: GPU-CPU Latency      | Per-GPU host-device latency      | ≤ 2000 ns      | `host_device_latency_sm`, averaged across 8 GPUs.                                      |
-| Storage: Sequential Read          | Bandwidth                        | ≥ 10 GiB/s     | `fio` sequential read, 1 MiB blocks across 8 jobs at iodepth 64, 30-second timed run.  |
-| Storage: Sequential Write         | Bandwidth                        | ≥ 5 GiB/s      | `fio` sequential write, 1 MiB blocks across 8 jobs at iodepth 64, 30-second timed run. |
+| Test                               | Metric                           | Pass threshold | Test configuration                                                 |
+| ---------------------------------- | -------------------------------- | -------------- | ------------------------------------------------------------------ |
+| Single-Node NCCL                   | Average bus bandwidth            | ≥ 300 GB/s     | `all_reduce_perf` across 8 GPUs, 32 GiB message size.              |
+| Multi-Node NCCL                    | Average bus bandwidth            | ≥ 330 GB/s     | `all_reduce_perf` across all GPUs on the selected nodes.           |
+| InfiniBand Write Bandwidth         | Reported write bandwidth         | ≥ 320 Gb/s     | `ib_write_bw` per device, 8 MiB message size, 2-second duration.   |
+| NVBandwidth: CPU to GPU Bandwidth  | Per-GPU host-to-device bandwidth | ≥ 30 GB/s      | `host_to_device_memcpy_ce`, averaged across 8 GPUs.                |
+| NVBandwidth: GPU to CPU Bandwidth  | Per-GPU device-to-host bandwidth | ≥ 30 GB/s      | `device_to_host_memcpy_ce`, averaged across 8 GPUs.                |
+| NVBandwidth: GPU-CPU Latency       | Per-GPU host-device latency      | ≤ 2000 ns      | `host_device_latency_sm`, averaged across 8 GPUs.                  |
+| Storage (shared): Sequential Read  | Bandwidth                        | ≥ 10 GiB/s     | `fio` sequential read, 1 MiB blocks across 64 jobs at iodepth 32.  |
+| Storage (shared): Sequential Write | Bandwidth                        | ≥ 5 GiB/s      | `fio` sequential write, 1 MiB blocks across 64 jobs at iodepth 32. |
+| Storage (local): Sequential Read   | Bandwidth                        | ≥ 2 GiB/s      | `fio` sequential read, 1 MiB blocks across 16 jobs at iodepth 16.  |
+| Storage (local): Sequential Write  | Bandwidth                        | ≥ 1 GiB/s      | `fio` sequential write, 1 MiB blocks across 16 jobs at iodepth 16. |
 
 <Note>
   **Units differ by test:** NCCL and NVBandwidth bandwidth thresholds are reported in gigabytes per second (GB/s), while InfiniBand write bandwidth is reported in gigabits per second (Gb/s). The two are not directly comparable (320 Gb/s is roughly 40 GB/s). Latency is reported in nanoseconds (ns).
@@ -21401,7 +21435,6 @@ The following serverless models are not currently available for batch processing
 | `MiniMaxAI/MiniMax-M2.7`      |
 | `moonshotai/Kimi-K2.5`        |
 | `moonshotai/Kimi-K2.6`        |
-| `zai-org/GLM-5.1`             |
 
 ## Run your first batch job
 
@@ -22428,7 +22461,6 @@ The following models support reasoning on [serverless inference](/docs/serverles
 | :------------------------- | :---------------------------------- | :--------------------- | :------------- |
 | MiniMax M2.7               | `MiniMaxAI/MiniMax-M2.7`            | Reasoning only         | 202K           |
 | DeepSeek-V4-Pro            | `deepseek-ai/DeepSeek-V4-Pro`       | Hybrid (on by default) | 512K           |
-| GLM-5.1                    | `zai-org/GLM-5.1`                   | Hybrid (on by default) | 200K           |
 | GLM-5                      | `zai-org/GLM-5`                     | Hybrid (on by default) | 200K           |
 | Kimi K2.6                  | `moonshotai/Kimi-K2.6`              | Hybrid (on by default) | 262K           |
 | Qwen3.6 Plus               | `Qwen/Qwen3.6-Plus`                 | Hybrid (on by default) | 1M             |
@@ -24850,7 +24882,7 @@ Source: https://docs.together.ai/docs/inference/function-calling/best-practices
 
 Design tools, write descriptions, and control tool selection so Together models call functions reliably.
 
-The quality of your tool definitions, system prompt, and selection controls determines how reliably a model calls functions. These practices apply to every function-calling model on Together AI. Examples use GLM-5.1 (`zai-org/GLM-5.1`), the recommended function-calling model, but the same patterns work across the [serverless](/docs/serverless/models) and [dedicated endpoint](/docs/dedicated-endpoints/models) catalogs.
+The quality of your tool definitions, system prompt, and selection controls determines how reliably a model calls functions. These practices apply to every function-calling model on Together AI. Examples use GLM-5.2 (`zai-org/GLM-5.2`), the recommended function-calling model, but the same patterns work across the [serverless](/docs/serverless/models) and [dedicated endpoint](/docs/dedicated-endpoints/models) catalogs.
 
 ## Write clear descriptions
 
@@ -27363,7 +27395,7 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 | Use case                     | Recommended model          | Model string                | Alternatives                                                        | Learn more                                                    |
 | :--------------------------- | :------------------------- | :-------------------------- | :------------------------------------------------------------------ | :------------------------------------------------------------ |
 | **Chat**                     | Kimi K2.6 (instant mode)   | `moonshotai/Kimi-K2.6`      | `MiniMaxAI/MiniMax-M3`                                              | [Chat completions](/docs/inference/chat/overview)             |
-| **Reasoning**                | Kimi K2.6 (reasoning mode) | `moonshotai/Kimi-K2.6`      | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`                           | [Reasoning](/docs/inference/chat/reasoning)                   |
+| **Reasoning**                | Kimi K2.6 (reasoning mode) | `moonshotai/Kimi-K2.6`      | `zai-org/GLM-5.2`                                                   | [Reasoning](/docs/inference/chat/reasoning)                   |
 | **Coding agents**            | Kimi K2.7 Code             | `moonshotai/Kimi-K2.7-Code` | `zai-org/GLM-5.2`                                                   | [Build coding agents](/docs/how-to-build-coding-agents)       |
 | **Small and fast**           | Gemma 4 31B IT             | `google/gemma-4-31B-it`     | `openai/gpt-oss-20b`, `Qwen/Qwen3.5-9B`                             | -                                                             |
 | **Mid-size general purpose** | MiniMax M3                 | `MiniMaxAI/MiniMax-M3`      | `MiniMaxAI/MiniMax-M2.7`, `meta-llama/Llama-3.3-70B-Instruct-Turbo` | -                                                             |
@@ -39199,31 +39231,28 @@ If you don't need real-time responses, some models are discounted up to 50% when
 
 ## Chat models
 
-| Organization | Model name                                   | API model string                         | Context length | Input pricing (per 1M tokens) | Cached input pricing (per 1M tokens) | Output pricing (per 1M tokens) | Quantization | Function calling | Structured outputs |
-| :----------- | :------------------------------------------- | :--------------------------------------- | :------------- | :---------------------------- | :----------------------------------- | :----------------------------- | :----------- | :--------------- | :----------------- |
-| Minimax      | Minimax M3                                   | MiniMaxAI/MiniMax-M3                     | 524288         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
-| Minimax      | Minimax M2.7                                 | MiniMaxAI/MiniMax-M2.7                   | 202752         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
-| Qwen         | Qwen3.7 Max                                  | Qwen/Qwen3.7-Max                         | -              | \$1.25                        | -                                    | \$3.75                         | -            | -                | -                  |
-| Qwen         | Qwen3.6 Plus                                 | Qwen/Qwen3.6-Plus                        | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
-| Qwen         | Qwen3.5 9B                                   | Qwen/Qwen3.5-9B                          | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
-| Moonshot     | Kimi K2.7 Code                               | moonshotai/Kimi-K2.7-Code                | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
-| Moonshot     | Kimi K2.6                                    | moonshotai/Kimi-K2.6                     | 262144         | \$1.20                        | \$0.20                               | \$4.50                         | FP4          | Yes              | Yes                |
-| Z.ai         | GLM-5.2                                      | zai-org/GLM-5.2                          | 262144         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
-| OpenAI       | GPT-OSS 120B                                 | openai/gpt-oss-120b                      | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
-| OpenAI       | GPT-OSS 20B                                  | openai/gpt-oss-20b                       | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
-| DeepSeek     | DeepSeek-V4-Pro                              | deepseek-ai/DeepSeek-V4-Pro              | 512000         | \$1.74                        | \$0.20                               | \$3.48                         | FP4          | Yes              | Yes                |
-| NVIDIA       | Nemotron 3 Ultra 550B A55B                   | nvidia/nemotron-3-ultra-550b-a55b        | 512300         | \$0.60                        | \$0.20                               | \$3.60                         | NVFP4        | Yes              | Yes                |
-| Meta         | Llama 3.3 70B Instruct Turbo                 | meta-llama/Llama-3.3-70B-Instruct-Turbo  | 131072         | \$1.04                        | -                                    | \$1.04                         | FP8          | Yes              | Yes                |
-| Qwen         | Qwen 2.5 7B Instruct Turbo                   | Qwen/Qwen2.5-7B-Instruct-Turbo           | 32768          | \$0.30                        | -                                    | \$0.30                         | FP8          | Yes              | Yes                |
-| Google       | Gemma 4 31B Instruct                         | google/gemma-4-31B-it                    | 262144         | \$0.39                        | -                                    | \$0.97                         | FP8          | Yes              | Yes                |
-| Pearl AI     | Gemma 4 31B Instruct                         | pearl-ai/gemma-4-31b-it                  | 32000          | \$0.28                        | -                                    | \$0.86                         | INT8         | -                | -                  |
-| Deepcogito   | Cogito v2.1 671B                             | deepcogito/cogito-v2-1-671b              | 163840         | \$1.25                        | -                                    | \$1.25                         | -            | -                | -                  |
-| Qwen         | Qwen3.7 Plus                                 | Qwen/Qwen3.7-Plus                        | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
-| Google       | Gemma 3N E4B Instruct                        | google/gemma-3n-E4B-it                   | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
-| Meta         | Meta Llama 3 8B Instruct Lite                | meta-llama/Meta-Llama-3-8B-Instruct-Lite | 8192           | \$0.14                        | -                                    | \$0.14                         | -            | -                | -                  |
-| Qwen         | Qwen3 235B A22B Instruct 2507 FP8 Throughput | Qwen/Qwen3-235B-A22B-Instruct-2507-tput  | 262144         | \$0.20                        | -                                    | \$0.60                         | -            | -                | -                  |
-| Zai Org      | GLM 5.1 FP4                                  | zai-org/GLM-5.1                          | 202752         | \$1.40                        | -                                    | \$4.40                         | -            | -                | -                  |
-| LiquidAI     | LFM2.5-8B-A1B                                | LiquidAI/LFM2.5-8B-A1B                   | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
+| Organization | Model name                   | API model string                        | Context length | Input pricing (per 1M tokens) | Cached input pricing (per 1M tokens) | Output pricing (per 1M tokens) | Quantization | Function calling | Structured outputs |
+| :----------- | :--------------------------- | :-------------------------------------- | :------------- | :---------------------------- | :----------------------------------- | :----------------------------- | :----------- | :--------------- | :----------------- |
+| Minimax      | Minimax M3                   | MiniMaxAI/MiniMax-M3                    | 524288         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
+| Minimax      | Minimax M2.7                 | MiniMaxAI/MiniMax-M2.7                  | 202752         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
+| Qwen         | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$1.25                        | -                                    | \$3.75                         | -            | -                | -                  |
+| Qwen         | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
+| Qwen         | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
+| Moonshot     | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
+| Moonshot     | Kimi K2.6                    | moonshotai/Kimi-K2.6                    | 262144         | \$1.20                        | \$0.20                               | \$4.50                         | FP4          | Yes              | Yes                |
+| Z.ai         | GLM-5.2                      | zai-org/GLM-5.2                         | 262144         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
+| OpenAI       | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
+| OpenAI       | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
+| DeepSeek     | DeepSeek-V4-Pro              | deepseek-ai/DeepSeek-V4-Pro             | 512000         | \$1.74                        | \$0.20                               | \$3.48                         | FP4          | Yes              | Yes                |
+| NVIDIA       | Nemotron 3 Ultra 550B A55B   | nvidia/nemotron-3-ultra-550b-a55b       | 512300         | \$0.60                        | \$0.20                               | \$3.60                         | NVFP4        | Yes              | Yes                |
+| Meta         | Llama 3.3 70B Instruct Turbo | meta-llama/Llama-3.3-70B-Instruct-Turbo | 131072         | \$1.04                        | -                                    | \$1.04                         | FP8          | Yes              | Yes                |
+| Qwen         | Qwen 2.5 7B Instruct Turbo   | Qwen/Qwen2.5-7B-Instruct-Turbo          | 32768          | \$0.30                        | -                                    | \$0.30                         | FP8          | Yes              | Yes                |
+| Google       | Gemma 4 31B Instruct         | google/gemma-4-31B-it                   | 262144         | \$0.39                        | -                                    | \$0.97                         | FP8          | Yes              | Yes                |
+| Pearl AI     | Gemma 4 31B Instruct         | pearl-ai/gemma-4-31b-it                 | 32000          | \$0.28                        | -                                    | \$0.86                         | INT8         | -                | -                  |
+| Deepcogito   | Cogito v2.1 671B             | deepcogito/cogito-v2-1-671b             | 163840         | \$1.25                        | -                                    | \$1.25                         | -            | -                | -                  |
+| Qwen         | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
+| Google       | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
+| LiquidAI     | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
 
 **Chat model examples**
 

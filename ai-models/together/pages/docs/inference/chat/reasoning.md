@@ -22,7 +22,6 @@ The following models support reasoning on [serverless inference](/docs/serverles
 | :------------------------- | :---------------------------------- | :--------------------- | :------------- |
 | MiniMax M2.7               | `MiniMaxAI/MiniMax-M2.7`            | Reasoning only         | 202K           |
 | DeepSeek-V4-Pro            | `deepseek-ai/DeepSeek-V4-Pro`       | Hybrid (on by default) | 512K           |
-| GLM-5.1                    | `zai-org/GLM-5.1`                   | Hybrid (on by default) | 200K           |
 | GLM-5                      | `zai-org/GLM-5`                     | Hybrid (on by default) | 200K           |
 | Kimi K2.6                  | `moonshotai/Kimi-K2.6`              | Hybrid (on by default) | 262K           |
 | Qwen3.6 Plus               | `Qwen/Qwen3.6-Plus`                 | Hybrid (on by default) | 1M             |

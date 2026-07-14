@@ -60,7 +60,6 @@ The following serverless models are not currently available for batch processing
 | `MiniMaxAI/MiniMax-M2.7`      |
 | `moonshotai/Kimi-K2.5`        |
 | `moonshotai/Kimi-K2.6`        |
-| `zai-org/GLM-5.1`             |
 
 ## Run your first batch job
 

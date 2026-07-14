@@ -28,7 +28,7 @@ If the new owner of your old username creates a repository with the same name as
 
 ## Links to your previous profile page
 
-After changing your username, links to your previous profile page, such as `https://github.com/previoususername`, will return a 404 error. We recommend updating any links to your profile from elsewhere, such as your LinkedIn or Twitter profile.
+After changing your username, links to your previous profile page, such as `https://github.com/previoususername`, will return a 404 error. We recommend updating any links to your profile from elsewhere, such as your LinkedIn or X (formerly Twitter) profile.
 
 ## Accounts logged in on GitHub Mobile
 

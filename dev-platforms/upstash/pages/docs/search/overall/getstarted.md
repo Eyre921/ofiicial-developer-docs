@@ -4,6 +4,8 @@ source: https://upstash.com/docs/search/overall/getstarted
 path: docs/search/overall/getstarted
 ---
 
+import { Catalog } from "/snippets/catalog.jsx";
+
 ***
 
 <iframe
@@ -196,3 +198,7 @@ But this is just the beginning. Upstash Search also supports:
 * Metadata-based filtering
 
 We'll get into those features in the next sections of this documentation. For now, you've already mastered the basics!
+
+## SDKs
+
+<Catalog product="search" type="sdk" cols={3} />

@@ -62,6 +62,17 @@ Whichever mechanism you choose, managed values take precedence over user and pro
 
 See [Server-managed settings](/docs/en/server-managed-settings) and [Settings files and precedence](/docs/en/settings#settings-files).
 
+### WSL sessions in Claude Code Desktop
+
+On Windows, [Claude Code Desktop can run Code sessions inside a WSL 2 distribution](/docs/en/desktop-wsl). The session's Claude Code process runs inside the distribution, so it resolves managed settings through the WSL discovery path above: Windows-only sources don't reach it unless `wslInheritsWindowsSettings: true` is deployed.
+
+On devices where managed settings are present, Desktop WSL sessions are unavailable by default. If your organization wants to enable them, contact your Anthropic account team. When they're enabled:
+
+* Deploy `wslInheritsWindowsSettings: true` through the HKLM registry or the `C:\Program Files\ClaudeCode` file so WSL sessions inherit the same policy as host sessions.
+* Verify by running `/status` inside a WSL session: the `Setting sources` line should show `Enterprise managed settings` with the Windows source you deployed, `(HKLM)` or `(file)`.
+
+Processes inside the WSL 2 utility VM aren't visible to Windows-side endpoint detection sensors. If you use CrowdStrike Falcon, enable the Falcon sensor for Linux on WSL 2 with the two exclusions CrowdStrike's WSL documentation requires, for the WSL virtual machine process and the VM disk image, so in-distro process and file activity is observable. Claude Code's [OpenTelemetry tool-execution telemetry](/docs/en/monitoring-usage) is emitted identically for WSL and native sessions.
+
 ## Decide what to enforce
 
 Managed settings can lock down tools, sandbox execution, restrict MCP servers and plugin sources, and control which hooks run. Each row is a control surface with the setting keys that drive it.
@@ -14221,7 +14232,7 @@ For [scheduled recurring work](/docs/en/desktop-scheduled-tasks), [keyboard shor
 
 Before you send your first message, configure four things in the prompt area:
 
-* **Environment**: choose where Claude runs. Select **Local** for your machine, **Remote** for Anthropic-hosted cloud sessions, or an [**SSH connection**](#ssh-sessions) for a remote machine you manage. See [environment configuration](#environment-configuration).
+* **Environment**: choose where Claude runs. Select **Local** for your machine, **Remote** for Anthropic-hosted cloud sessions, an [**SSH connection**](#ssh-sessions) for a remote machine you manage, or on Windows a [**WSL distribution**](/docs/en/desktop-wsl). See [environment configuration](#environment-configuration).
 * **Project folder**: select the folder or repository Claude works in. For cloud sessions, you can add [multiple repositories](#run-long-running-tasks-remotely).
 * **Model**: pick a [model](/docs/en/model-config#available-models) from the dropdown next to the send button. You can change this during the session.
 * **Permission mode**: choose how much autonomy Claude has from the [mode selector](#choose-a-permission-mode). You can change this during the session.
@@ -14242,7 +14253,7 @@ The **+** button next to the prompt box gives you access to file attachments, [s
 
 The prompt box supports two ways to bring in external context:
 
-* **@mention files**: type `@` followed by a filename to add a file to the conversation context. Claude can then read and reference that file. @mention is not available in cloud sessions.
+* **@mention files**: type `@` followed by a filename to add a file to the conversation context. Claude can then read and reference that file. @mention is not available in cloud or WSL sessions.
 * **Attach files**: attach images, PDFs, and other files to your prompt using the attachment button, or drag and drop files directly into the prompt. This is useful for sharing screenshots of bugs, design mockups, or reference documents.
 
 ### Choose a permission mode
@@ -14510,7 +14521,7 @@ The desktop app sends an OS notification when a Code session finishes a task and
 
 A side chat lets you ask Claude a question that uses your session's context but doesn't add anything back to the main conversation. Use it when you want to understand a piece of code, check an assumption, or explore an idea without steering the session off course.
 
-Press **Cmd+;** on macOS or **Ctrl+;** on Windows to open a side chat, or type `/btw` in the prompt box. The side chat can read everything in the main thread up to that point. When you're done, close the side chat and continue the main session where you left off. Side chats are available in local and SSH sessions.
+Press **Cmd+;** on macOS or **Ctrl+;** on Windows to open a side chat, or type `/btw` in the prompt box. The side chat can read everything in the main thread up to that point. When you're done, close the side chat and continue the main session where you left off. Side chats are available in local, SSH, and WSL sessions.
 
 ### Watch background tasks
 
@@ -14553,7 +14564,7 @@ Connect external services, add reusable workflows, customize Claude's behavior, 
 
 ### Connect external tools
 
-For local and [SSH](#ssh-sessions) sessions, click the **+** button next to the prompt box and select **Connectors** to add integrations like Google Calendar, Slack, GitHub, Linear, Notion, and more. You can add connectors before or during a session. The **+** button is not available in cloud sessions, but [routines](/docs/en/routines) configure connectors at routine creation time.
+For local and [SSH](#ssh-sessions) sessions, click the **+** button next to the prompt box and select **Connectors** to add integrations like Google Calendar, Slack, GitHub, Linear, Notion, and more. You can add connectors before or during a session. The **+** button is not available in cloud or WSL sessions, but [routines](/docs/en/routines) configure connectors at routine creation time.
 
 To manage or disconnect connectors, go to Settings → Connectors in the desktop app, or select **Manage connectors** from the Connectors menu in the prompt box.
 
@@ -14571,7 +14582,7 @@ Connectors are [MCP servers](/docs/en/mcp) with a graphical setup flow. Use them
 
 For local and [SSH](#ssh-sessions) sessions, click the **+** button next to the prompt box and select **Plugins** to see your installed plugins and their skills. To add a plugin, select **Add plugin** from the submenu to open the plugin browser, which shows available plugins from your configured [marketplaces](/docs/en/plugin-marketplaces) including the official Anthropic marketplace. Select **Manage plugins** to enable, disable, or uninstall plugins.
 
-Plugins can be scoped to your user account, a specific project, or local-only. If your organization manages plugins centrally, those plugins are available in desktop sessions the same way they are in the CLI. Plugins are not available for cloud sessions. For the full plugin reference including creating your own plugins, see [plugins](/docs/en/plugins).
+Plugins can be scoped to your user account, a specific project, or local-only. If your organization manages plugins centrally, those plugins are available in desktop sessions the same way they are in the CLI. Plugins are not available for cloud or WSL sessions. For the full plugin reference including creating your own plugins, see [plugins](/docs/en/plugins).
 
 ### Configure preview servers
 
@@ -14723,6 +14734,7 @@ The environment you pick when [starting a session](#start-a-session) determines 
 * **Local**: runs on your machine with direct access to your files
 * **Remote**: runs on Anthropic's cloud infrastructure. Sessions continue even if you close the app.
 * **SSH**: runs on a remote machine you connect to over SSH, such as your own servers, cloud VMs, or dev containers
+* **WSL** (Windows): runs inside a [WSL 2 distribution](/docs/en/desktop-wsl) on your machine, using its Linux toolchain and native paths
 
 ### Local sessions
 
@@ -15198,6 +15210,7 @@ With the Code tab open, choose a project and give Claude something to do.
 
     * **Remote**: Run sessions on Anthropic's cloud infrastructure that continue even if you close the app. Cloud sessions use the same infrastructure as [Claude Code on the web](/docs/en/claude-code-on-the-web).
     * **SSH**: Connect to a remote machine over SSH, such as your own servers, cloud VMs, or dev containers. Desktop installs Claude Code on the remote machine automatically the first time you connect.
+    * **WSL** (Windows): Run the session inside a [WSL 2 distribution](/docs/en/desktop-wsl); Claude Code, tools, and git execute on the Linux side with native paths.
   </Step>
 
   <Step title="Choose a model">
@@ -15370,6 +15383,52 @@ To edit a task's prompt on disk, open `~/.claude/scheduled-tasks/<task-name>/SKI
 * [Run prompts on a schedule](/docs/en/scheduled-tasks): session-scoped scheduling with `/loop` in the CLI
 * [Claude Code GitHub Actions](/docs/en/github-actions): run Claude on a schedule in CI instead of on your machine
 * [Use Claude Code Desktop](/docs/en/desktop): the full Desktop app guide
+
+
+# Claude Code Desktop in WSL
+Source: https://code.claude.com/docs/en/desktop-wsl
+
+Run Code sessions inside a WSL 2 distribution on Windows
+
+On Windows, the Code tab can run a session inside a WSL 2 distribution instead of on Windows itself. The session's Claude Code process, its tools, and git all execute inside the distribution, using its Linux toolchain and native Linux paths, the same environment your project targets.
+
+Use a WSL session when your repository lives inside the distribution's filesystem. Working on those files from Windows goes through a network filesystem, which is slow and breaks file watching; running the session inside the distribution avoids both.
+
+## Requirements
+
+* Windows 10 or 11 with [WSL 2](https://learn.microsoft.com/windows/wsl/install). WSL 1 isn't supported.
+* At least one installed distribution (for example, Ubuntu).
+* `git` installed inside the distribution.
+
+## Start a WSL session
+
+<Steps>
+  <Step title="Pick a distribution">
+    Start a new session in the Code tab and open the environment picker. Your installed WSL 2 distributions appear in a **WSL** section. Pick one.
+  </Step>
+
+  <Step title="Choose a folder">
+    The session starts in the distribution's home directory. Use the folder picker to choose a project folder. Browsing happens inside the distribution, with Linux paths like `/home/you/project`.
+  </Step>
+
+  <Step title="Trust the folder">
+    The first session in a folder shows the workspace trust dialog. Trust is granted per distribution and folder; trusting a folder in one distribution doesn't apply to another distribution or to the same path on Windows.
+  </Step>
+</Steps>
+
+The first session in a distribution takes a little longer while Claude sets up inside it. You can also open a `\\wsl.localhost\...` folder from the normal folder picker, and it reopens inside that distribution.
+
+Folders you've used recently appear in the picker per distribution, so reconnecting to a project is one click.
+
+## What works in a WSL session
+
+Parallel sessions, side chats, visual diff review, branch and pull request status, and worktrees all work, backed by the git and toolchain inside the distribution. "Open in editor" opens VS Code connected to the distribution through [Remote - WSL](https://code.visualstudio.com/docs/remote/wsl).
+
+A few features aren't available in WSL sessions yet: the integrated terminal, connectors and plugins, session forking, the file browser pane, and file suggestions when you type `@` in the composer.
+
+## Managed devices
+
+On devices managed by an organization, WSL sessions may be unavailable. If session start fails with a message that the device is managed, that's controlled by your administrator. Administrators: see [how settings reach devices](/docs/en/admin-setup#decide-how-settings-reach-devices) in the deployment guide.
 
 
 # Development containers
@@ -17138,160 +17197,6 @@ If an error is not listed here or the suggested fix does not help:
 * Run `claude doctor` from your shell for a read-only diagnostic of your installation, or run the `/doctor` checkup inside Claude Code to find and fix setup problems
 * Check [status.claude.com](https://status.claude.com) for active incidents
 * Search [existing issues](https://github.com/anthropics/claude-code/issues) on GitHub
-
-
-# Speed up responses with fast mode
-Source: https://code.claude.com/docs/en/fast-mode
-
-Get faster Opus responses in Claude Code by toggling fast mode.
-
-<Note>
-  Fast mode is in [research preview](#research-preview). The feature, pricing, and availability may change based on feedback.
-</Note>
-
-Fast mode is a high-speed configuration for Claude Opus, making the model up to 2.5x faster at a higher cost per token. Toggle it on with `/fast` when you need speed for interactive work like rapid iteration or live debugging, and toggle it off when cost matters more than latency.
-
-Fast mode is not a different model. It uses Claude Opus with a different API configuration that prioritizes speed over cost efficiency. You get identical quality and capabilities with faster responses. Fast mode is supported on Opus 4.8 and Opus 4.7. It is not available on Sonnet, Haiku, or other models.
-
-<Warning>
-  Fast mode for Opus 4.7 is deprecated as of June 25, 2026, and will be removed on July 24, 2026. After removal, fast mode requests on Opus 4.7 return an error and do not fall back to standard Opus 4.7. Migrate to Opus 4.8 to keep the speedup.
-</Warning>
-
-<Note>
-  Fast mode requires Claude Code v2.1.36 or later. Check your version with `claude --version`.
-</Note>
-
-What to know:
-
-* Use `/fast` to toggle on fast mode in the Claude Code CLI. Fast mode is not supported in the VS Code extension.
-* Fast mode pricing per MTok input/output is \$10/\$50 on Opus 4.8 and \$30/\$150 on Opus 4.7.
-* Available to all Claude Code users on subscription plans (Pro/Max/Team/Enterprise) and Claude Console.
-* For Claude Code users on subscription plans (Pro/Max/Team/Enterprise), fast mode is available via usage credits only and not included in the subscription rate limits.
-
-## Toggle fast mode
-
-Toggle fast mode in either of these ways:
-
-* Type `/fast` and press Tab to toggle on or off
-* Set `"fastMode": true` in your [user settings file](/docs/en/settings)
-
-By default, fast mode you turn on in an interactive session persists across sessions. In [non-interactive mode](/docs/en/headless), with the `-p` flag, `/fast` works only in a session launched with fast mode in its [`--settings`](/docs/en/cli-reference#cli-flags) value, for example `claude -p --settings '{"fastMode": true}'`; the toggle then applies to that session only and isn't saved as your default, and in any other non-interactive session the command reports that fast mode isn't available. Administrators can configure fast mode to reset each session. See [require per-session opt-in](#require-per-session-opt-in) for details.
-
-For the best cost efficiency, enable fast mode at the start of a session rather than switching mid-conversation. See [understand the cost tradeoff](#understand-the-cost-tradeoff) for details.
-
-When you enable fast mode:
-
-* If you're on a different model, Claude Code automatically switches to Opus
-* You'll see a confirmation message: "Fast mode ON"
-* A small `↯` icon appears next to the prompt while fast mode is active
-* Run `/fast` again at any time to check whether fast mode is on or off
-
-When you disable fast mode with `/fast` again, you remain on Opus. The model does not revert to your previous model. To switch to a different model, use `/model`.
-
-Opus 4.8 is the fast mode default in Claude Code v2.1.154 and later. On v2.1.142 through v2.1.153, fast mode defaults to Opus 4.7.
-
-## Understand the cost tradeoff
-
-Fast mode has higher per-token pricing than standard Opus, with the multiplier varying by model:
-
-| Model    | Input (MTok) | Output (MTok) |
-| -------- | ------------ | ------------- |
-| Opus 4.8 | \$10         | \$50          |
-| Opus 4.7 | \$30         | \$150         |
-
-Fast mode pricing is flat across the full 1M token context window. For the standard Opus rate to compare against, see the [Claude pricing reference](https://platform.claude.com/docs/en/about-claude/pricing).
-
-The first time you enable fast mode in a conversation, you pay the full fast mode uncached input token price for the entire conversation context. The deeper into a conversation you are, the more this costs, so enabling fast mode from the start is cheaper. The cost applies once per conversation, so toggling fast mode off and on again later does not repeat it. For the mechanism, see [how fast mode interacts with the prompt cache](/docs/en/prompt-caching#turning-on-fast-mode).
-
-## Decide when to use fast mode
-
-Fast mode is best for interactive work where response latency matters more than cost:
-
-* Rapid iteration on code changes
-* Live debugging sessions
-* Time-sensitive work with tight deadlines
-
-Standard mode is better for:
-
-* Long autonomous tasks where speed matters less
-* Batch processing or CI/CD pipelines
-* Cost-sensitive workloads
-
-### Fast mode vs effort level
-
-Fast mode and effort level both affect response speed, but differently:
-
-| Setting                | Effect                                                                           |
-| ---------------------- | -------------------------------------------------------------------------------- |
-| **Fast mode**          | Same model quality, lower latency, higher cost                                   |
-| **Lower effort level** | Less thinking time, faster responses, potentially lower quality on complex tasks |
-
-You can combine both: use fast mode with a lower [effort level](/docs/en/model-config#adjust-effort-level) for maximum speed on straightforward tasks.
-
-## Requirements
-
-Fast mode requires all of the following:
-
-* **Anthropic API or subscription only**: fast mode is available through the Anthropic Console API and for Claude subscription plans using usage credits. It is not available on Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, or Claude Platform on AWS.
-* **Usage credits turned on**: your account must have usage credits turned on, which allows billing beyond your plan's included usage. For individual accounts, turn this on in your [Console billing settings](https://platform.claude.com/settings/organization/billing). For Team and Enterprise, an admin must turn on usage credits for the organization.
-
-<Note>
-  Fast mode usage draws directly from usage credits, even if you have remaining usage on your plan. This means fast mode tokens do not count against your plan's included usage and are charged at the fast mode rate from the first token.
-</Note>
-
-* **Owner enablement for Team and Enterprise**: fast mode is disabled by default for Team and Enterprise organizations. An Owner must explicitly [enable fast mode](#enable-fast-mode-for-your-organization) before users can access it.
-
-<Note>
-  If fast mode has not been enabled for your organization, the `/fast` command will show "Fast mode has been disabled by your organization." If your organization's [`availableModels`](/docs/en/model-config#restrict-model-selection) allowlist excludes the fast-mode Opus model, `/fast` is refused with "is not in your organization's allowed models". The exception is a session already running on an allowed Opus model that supports fast mode: `/fast` enables fast mode on your current model instead of switching models.
-</Note>
-
-### Enable fast mode for your organization
-
-Where you enable fast mode depends on which product your organization uses:
-
-* **Console** (API customers): an admin enables it in [Claude Code preferences](https://platform.claude.com/claude-code/preferences)
-* **Claude AI** (Team and Enterprise): an Owner enables it at [Admin Settings > Claude Code](https://claude.ai/admin-settings/claude-code)
-
-Another option to disable fast mode entirely is to set `CLAUDE_CODE_DISABLE_FAST_MODE=1`. See [Environment variables](/docs/en/env-vars).
-
-### Require per-session opt-in
-
-By default, fast mode a user turns on in an interactive session persists across sessions: it stays on in future sessions. Administrators on [Team](https://claude.com/pricing?utm_source=claude_code\&utm_medium=docs\&utm_content=fast_mode_teams#team-&-enterprise) or [Enterprise](https://anthropic.com/contact-sales?utm_source=claude_code\&utm_medium=docs\&utm_content=fast_mode_enterprise) plans can prevent this by setting `fastModePerSessionOptIn` to `true` in [managed settings](/docs/en/settings#settings-files) or [server-managed settings](/docs/en/server-managed-settings). This causes each session to start with fast mode off, requiring users to explicitly enable it with `/fast`.
-
-```json theme={null}
-{
-  "fastModePerSessionOptIn": true
-}
-```
-
-This is useful for controlling costs in organizations where users run multiple concurrent sessions. Users can still enable fast mode with `/fast` when they need speed, but it resets at the start of each new session. The user's fast mode preference is still saved, so removing this setting restores the default persistent behavior.
-
-## Handle rate limits
-
-Fast mode has separate rate limits from standard Opus. Fast mode on Opus 4.8 and Opus 4.7 shares the same rate limit pool: usage on either of them draws from the same limits. When you hit the fast mode rate limit or run out of usage credits:
-
-1. Fast mode automatically falls back to standard speed
-2. The `↯` icon turns gray to indicate cooldown
-3. You continue working at standard speed and pricing
-4. When the cooldown expires, fast mode automatically re-enables
-
-To disable fast mode manually instead of waiting for cooldown, run `/fast` again.
-
-## Research preview
-
-Fast mode is a research preview feature. This means:
-
-* The feature may change based on feedback
-* Availability and pricing are subject to change
-* The underlying API configuration may evolve
-
-Report issues or feedback through your usual Anthropic support channels.
-
-## See also
-
-* [Model configuration](/docs/en/model-config): switch models and adjust effort levels
-* [Manage costs effectively](/docs/en/costs): track token usage and reduce costs
-* [Status line configuration](/docs/en/statusline): display model and context information
 
 
 # Feature availability
@@ -62090,6 +61995,160 @@ Standard OpenTelemetry exporter variables (`OTEL_METRICS_EXPORTER`, `OTEL_LOGS_E
 * [CLI reference](/docs/en/cli-reference): launch-time flags
 * [Network configuration](/docs/en/network-config): proxy and TLS setup
 * [Monitoring](/docs/en/monitoring-usage): OpenTelemetry configuration
+
+
+# Speed up responses with fast mode
+Source: https://code.claude.com/docs/en/fast-mode
+
+Get faster Opus responses in Claude Code by toggling fast mode.
+
+<Note>
+  Fast mode is in [research preview](#research-preview). The feature, pricing, and availability may change based on feedback.
+</Note>
+
+Fast mode is a high-speed configuration for Claude Opus, making the model up to 2.5x faster at a higher cost per token. Toggle it on with `/fast` when you need speed for interactive work like rapid iteration or live debugging, and toggle it off when cost matters more than latency.
+
+Fast mode is not a different model. It uses Claude Opus with a different API configuration that prioritizes speed over cost efficiency. You get identical quality and capabilities with faster responses. Fast mode is supported on Opus 4.8 and Opus 4.7. It is not available on Sonnet, Haiku, or other models.
+
+<Warning>
+  Fast mode for Opus 4.7 is deprecated as of June 25, 2026, and will be removed on July 24, 2026. After removal, fast mode requests on Opus 4.7 return an error and do not fall back to standard Opus 4.7. Migrate to Opus 4.8 to keep the speedup.
+</Warning>
+
+<Note>
+  Fast mode requires Claude Code v2.1.36 or later. Check your version with `claude --version`.
+</Note>
+
+What to know:
+
+* Use `/fast` to toggle on fast mode in the Claude Code CLI. Fast mode is not supported in the VS Code extension.
+* Fast mode pricing per MTok input/output is \$10/\$50 on Opus 4.8 and \$30/\$150 on Opus 4.7.
+* Available to all Claude Code users on subscription plans (Pro/Max/Team/Enterprise) and Claude Console.
+* For Claude Code users on subscription plans (Pro/Max/Team/Enterprise), fast mode is available via usage credits only and not included in the subscription rate limits.
+
+## Toggle fast mode
+
+Toggle fast mode in either of these ways:
+
+* Type `/fast` and press Tab to toggle on or off
+* Set `"fastMode": true` in your [user settings file](/docs/en/settings)
+
+By default, fast mode you turn on in an interactive session persists across sessions. In [non-interactive mode](/docs/en/headless), with the `-p` flag, `/fast` works only in a session launched with fast mode in its [`--settings`](/docs/en/cli-reference#cli-flags) value, for example `claude -p --settings '{"fastMode": true}'`; the toggle then applies to that session only and isn't saved as your default, and in any other non-interactive session the command reports that fast mode isn't available. Administrators can configure fast mode to reset each session. See [require per-session opt-in](#require-per-session-opt-in) for details.
+
+For the best cost efficiency, enable fast mode at the start of a session rather than switching mid-conversation. See [understand the cost tradeoff](#understand-the-cost-tradeoff) for details.
+
+When you enable fast mode:
+
+* If you're on a different model, Claude Code automatically switches to Opus
+* You'll see a confirmation message: "Fast mode ON"
+* A small `↯` icon appears next to the prompt while fast mode is active
+* Run `/fast` again at any time to check whether fast mode is on or off
+
+When you disable fast mode with `/fast` again, you remain on Opus. The model does not revert to your previous model. To switch to a different model, use `/model`.
+
+Opus 4.8 is the fast mode default in Claude Code v2.1.154 and later. On v2.1.142 through v2.1.153, fast mode defaults to Opus 4.7.
+
+## Understand the cost tradeoff
+
+Fast mode has higher per-token pricing than standard Opus, with the multiplier varying by model:
+
+| Model    | Input (MTok) | Output (MTok) |
+| -------- | ------------ | ------------- |
+| Opus 4.8 | \$10         | \$50          |
+| Opus 4.7 | \$30         | \$150         |
+
+Fast mode pricing is flat across the full 1M token context window. For the standard Opus rate to compare against, see the [Claude pricing reference](https://platform.claude.com/docs/en/about-claude/pricing).
+
+The first time you enable fast mode in a conversation, you pay the full fast mode uncached input token price for the entire conversation context. The deeper into a conversation you are, the more this costs, so enabling fast mode from the start is cheaper. The cost applies once per conversation, so toggling fast mode off and on again later does not repeat it. For the mechanism, see [how fast mode interacts with the prompt cache](/docs/en/prompt-caching#turning-on-fast-mode).
+
+## Decide when to use fast mode
+
+Fast mode is best for interactive work where response latency matters more than cost:
+
+* Rapid iteration on code changes
+* Live debugging sessions
+* Time-sensitive work with tight deadlines
+
+Standard mode is better for:
+
+* Long autonomous tasks where speed matters less
+* Batch processing or CI/CD pipelines
+* Cost-sensitive workloads
+
+### Fast mode vs effort level
+
+Fast mode and effort level both affect response speed, but differently:
+
+| Setting                | Effect                                                                           |
+| ---------------------- | -------------------------------------------------------------------------------- |
+| **Fast mode**          | Same model quality, lower latency, higher cost                                   |
+| **Lower effort level** | Less thinking time, faster responses, potentially lower quality on complex tasks |
+
+You can combine both: use fast mode with a lower [effort level](/docs/en/model-config#adjust-effort-level) for maximum speed on straightforward tasks.
+
+## Requirements
+
+Fast mode requires all of the following:
+
+* **Anthropic API or subscription only**: fast mode is available through the Anthropic Console API and for Claude subscription plans using usage credits. It is not available on Amazon Bedrock, Google Cloud's Agent Platform, Microsoft Foundry, or Claude Platform on AWS.
+* **Usage credits turned on**: your account must have usage credits turned on, which allows billing beyond your plan's included usage. For individual accounts, turn this on in your [Console billing settings](https://platform.claude.com/settings/organization/billing). For Team and Enterprise, an admin must turn on usage credits for the organization.
+
+<Note>
+  Fast mode usage draws directly from usage credits, even if you have remaining usage on your plan. This means fast mode tokens do not count against your plan's included usage and are charged at the fast mode rate from the first token.
+</Note>
+
+* **Owner enablement for Team and Enterprise**: fast mode is disabled by default for Team and Enterprise organizations. An Owner must explicitly [enable fast mode](#enable-fast-mode-for-your-organization) before users can access it.
+
+<Note>
+  If fast mode has not been enabled for your organization, the `/fast` command will show "Fast mode has been disabled by your organization." If your organization's [`availableModels`](/docs/en/model-config#restrict-model-selection) allowlist excludes the fast-mode Opus model, `/fast` is refused with "is not in your organization's allowed models". The exception is a session already running on an allowed Opus model that supports fast mode: `/fast` enables fast mode on your current model instead of switching models.
+</Note>
+
+### Enable fast mode for your organization
+
+Where you enable fast mode depends on which product your organization uses:
+
+* **Console** (API customers): an admin enables it in [Claude Code preferences](https://platform.claude.com/claude-code/preferences)
+* **Claude AI** (Team and Enterprise): an Owner enables it at [Admin Settings > Claude Code](https://claude.ai/admin-settings/claude-code)
+
+Another option to disable fast mode entirely is to set `CLAUDE_CODE_DISABLE_FAST_MODE=1`. See [Environment variables](/docs/en/env-vars).
+
+### Require per-session opt-in
+
+By default, fast mode a user turns on in an interactive session persists across sessions: it stays on in future sessions. Administrators on [Team](https://claude.com/pricing?utm_source=claude_code\&utm_medium=docs\&utm_content=fast_mode_teams#team-&-enterprise) or [Enterprise](https://anthropic.com/contact-sales?utm_source=claude_code\&utm_medium=docs\&utm_content=fast_mode_enterprise) plans can prevent this by setting `fastModePerSessionOptIn` to `true` in [managed settings](/docs/en/settings#settings-files) or [server-managed settings](/docs/en/server-managed-settings). This causes each session to start with fast mode off, requiring users to explicitly enable it with `/fast`.
+
+```json theme={null}
+{
+  "fastModePerSessionOptIn": true
+}
+```
+
+This is useful for controlling costs in organizations where users run multiple concurrent sessions. Users can still enable fast mode with `/fast` when they need speed, but it resets at the start of each new session. The user's fast mode preference is still saved, so removing this setting restores the default persistent behavior.
+
+## Handle rate limits
+
+Fast mode has separate rate limits from standard Opus. Fast mode on Opus 4.8 and Opus 4.7 shares the same rate limit pool: usage on either of them draws from the same limits. When you hit the fast mode rate limit or run out of usage credits:
+
+1. Fast mode automatically falls back to standard speed
+2. The `↯` icon turns gray to indicate cooldown
+3. You continue working at standard speed and pricing
+4. When the cooldown expires, fast mode automatically re-enables
+
+To disable fast mode manually instead of waiting for cooldown, run `/fast` again.
+
+## Research preview
+
+Fast mode is a research preview feature. This means:
+
+* The feature may change based on feedback
+* Availability and pricing are subject to change
+* The underlying API configuration may evolve
+
+Report issues or feedback through your usual Anthropic support channels.
+
+## See also
+
+* [Model configuration](/docs/en/model-config): switch models and adjust effort levels
+* [Manage costs effectively](/docs/en/costs): track token usage and reduce costs
+* [Status line configuration](/docs/en/statusline): display model and context information
 
 
 # Fullscreen rendering

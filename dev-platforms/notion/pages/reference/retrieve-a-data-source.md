@@ -12,13 +12,13 @@ To fetch data source *rows* (i.e. the child pages of a data source) rather than 
 
 ### Finding a data source ID
 
-Navigate to the database URL in your Notion workspace. The ID is the string of characters in the URL that is between the slash following the workspace name (if applicable) and the question mark. The ID is a 32 characters alphanumeric string.
+First, find the containing database's ID in its Notion URL. The database ID is the 32-character alphanumeric string between the slash following the workspace name (if applicable) and the question mark.
 
 <Frame>
   <img />
 </Frame>
 
-Then, use the [Retrieve a database](/reference/retrieve-a-database) API to get a list of `data_sources` for that database. There is often only one data source, but when there are multiple, you may have the ID or name of the one you want to retrieve in mind (or you can retrieve each of them). Use that data source ID with this endpoint to get its `properties`.
+Use [Retrieve a database](/reference/retrieve-database) with that database ID. Its `data_sources` array lists each data source's ID and name. Use the desired data source ID with this endpoint to retrieve its `properties`.
 
 To get a data source ID from the Notion app directly, the settings menu for a database includes a "Copy data source ID" button under "Manage data sources":
 
@@ -30,7 +30,9 @@ Refer to the [Working with databases](/guides/data-apis/working-with-databases) 
 
 ### Errors
 
-ErrorsEach Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
+Returns a 404 HTTP response if the data source doesn't exist or if the connection doesn't have access to it.
+
+Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 
 ### Additional resources
 

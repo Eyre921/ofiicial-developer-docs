@@ -65,34 +65,7 @@ If you want a fully hosted solution where ElevenLabs provides the LLM, knowledge
 
 ## IP allowlisting
 
-If your server is behind a firewall or uses IP-based access controls, you can allowlist the static egress IPs from which ElevenLabs WebSocket connections originate.
-
-For additional security, you can add the following static egress IPs to your allowlist — ElevenLabs requests originate from these:
-
-| Region       | IP Address     |
-| ------------ | -------------- |
-| US (Default) | 34.67.146.145  |
-| US (Default) | 34.59.11.47    |
-| EU           | 35.204.38.71   |
-| EU           | 34.147.113.54  |
-| Asia         | 35.185.187.110 |
-| Asia         | 35.247.157.189 |
-
-If you are using a [data residency region](/docs/overview/administration/data-residency) then the following IPs will be used:
-
-| Region              | IP Address     |
-| ------------------- | -------------- |
-| EU Residency        | 34.77.234.246  |
-| EU Residency        | 34.140.184.144 |
-| India Residency     | 34.93.26.174   |
-| India Residency     | 34.93.252.69   |
-| Singapore Residency | 34.87.23.17    |
-| Singapore Residency | 34.126.179.103 |
-
-If your infrastructure requires strict IP-based access controls, adding these IPs to your firewall allowlist will ensure you only receive requests from ElevenLabs' systems.
-
-These static IPs are used across all ElevenLabs services including webhooks and MCP server
-requests, and will remain consistent.
+If your server is behind a firewall or uses IP-based access controls, you can allowlist the static egress IPs from which ElevenLabs WebSocket connections originate. See [IP allowlisting](/docs/eleven-api/resources/ip-allowlisting) for the complete list of IP addresses.
 
 Using IP allowlisting ensures your server only accepts WebSocket connections from ElevenLabs'
 systems.

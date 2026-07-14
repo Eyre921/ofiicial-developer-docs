@@ -39,5 +39,6 @@ When enabled:
 ## What If You Lose Your Credentials
 
 **Reset Credentials**: This function remains available and, when credential protection is enabled, will generate new protected credentials.
+Navigate to the settings tab of your database and click **Reset Credentials**. You will be prompted to save the new credentials.
 
   <img />

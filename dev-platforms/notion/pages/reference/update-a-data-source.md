@@ -6,7 +6,7 @@ path: reference/update-a-data-source
 
 patch /v1/data_sources/{data_source_id}
 
-Updates the [data source](/reference/data-source) object — the properties, title, description, or whether it's in the trash — of a specified data source under a database.
+Updates a [data source](/reference/data-source)'s title, icon, properties, parent, or trash status.
 
 Returns the updated data source object.
 
@@ -39,6 +39,8 @@ Developers are encouraged to keep their data source schema size to a maximum of 
 Data source schema updates that are too large will be blocked by the REST API to help developers keep their data source queries performant. When a schema update is blocked, the error response includes a `validation_error` code with a message identifying the largest property by name, ID, and byte size to help you reduce your schema size.
 
 ### Errors
+
+Returns a 404 HTTP response if the data source doesn't exist or if the connection doesn't have access to it.
 
 Each Public API endpoint can return several possible error codes. See the [Error codes section](/reference/status-codes#error-codes) of the Status codes documentation for more information.
 

@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 165 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 166 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -45,6 +45,7 @@
 - `desktop-linux` — [Claude Desktop on Linux (beta)](pages/desktop-linux.md) · [原文](https://code.claude.com/docs/en/desktop-linux)
 - `desktop-quickstart` — [Get started with the desktop app](pages/desktop-quickstart.md) · [原文](https://code.claude.com/docs/en/desktop-quickstart)
 - `desktop-scheduled-tasks` — [Schedule recurring tasks in Claude Code Desktop](pages/desktop-scheduled-tasks.md) · [原文](https://code.claude.com/docs/en/desktop-scheduled-tasks)
+- `desktop-wsl` — [Claude Code Desktop in WSL](pages/desktop-wsl.md) · [原文](https://code.claude.com/docs/en/desktop-wsl)
 - `devcontainer` — [Development containers](pages/devcontainer.md) · [原文](https://code.claude.com/docs/en/devcontainer)
 - `discover-plugins` — [Discover and install prebuilt plugins through marketplaces](pages/discover-plugins.md) · [原文](https://code.claude.com/docs/en/discover-plugins)
 - `env-vars` — [Environment variables](pages/env-vars.md) · [原文](https://code.claude.com/docs/en/env-vars)

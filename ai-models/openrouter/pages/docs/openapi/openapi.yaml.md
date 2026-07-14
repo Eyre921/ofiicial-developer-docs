@@ -10253,6 +10253,8 @@ components:
         prompt_tokens: 0
         total_tokens: 4175
       properties:
+        cache_creation:
+          $ref: '#/components/schemas/AnthropicCacheCreation'
         completion_tokens:
           description: The tokens generated
           type: integer
@@ -12228,6 +12230,8 @@ components:
           type: string
         usage:
           properties:
+            cache_creation:
+              $ref: '#/components/schemas/AnthropicCacheCreation'
             cache_creation_input_tokens:
               nullable: true
               type: integer

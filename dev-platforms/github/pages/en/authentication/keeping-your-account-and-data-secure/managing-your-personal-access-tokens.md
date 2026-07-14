@@ -62,7 +62,7 @@ Personal access tokens (classic) are less secure. However, some features current
 
 * Only personal access tokens (classic) have write access for public repositories that are not owned by you or an organization that you are not a member of.
 * Outside collaborators can only use personal access tokens (classic) to access organization repositories that they are a collaborator on.
-* A few REST API endpoints are only available with a personal access tokens (classic). To check whether an endpoint also supports fine-grained personal access tokens, see the documentation for that endpoint, or see [Endpoints available for fine-grained personal access tokens](/en/rest/overview/endpoints-available-for-fine-grained-personal-access-tokens).
+* A few REST API endpoints are only available with a personal access tokens (classic). To check whether an endpoint also supports fine-grained personal access tokens, see the documentation for that endpoint, or see [Endpoints available for fine-grained personal access tokens](/en/rest/authentication/endpoints-available-for-fine-grained-personal-access-tokens).
 
 If you choose to use a personal access token (classic), keep in mind that it will grant access to all repositories within the organizations that you have access to, as well as all personal repositories in your personal account.
 

@@ -7,7 +7,7 @@ path: docs/agent-resources/mcp
 The Upstash MCP server lets your agent manage and debug your Upstash resources directly, across Redis, QStash, Workflow, and [Upstash Box](/docs/box/overall/quickstart).
 
 <Tip>
-  Only running commands against a single Redis database? Use the dedicated [Redis MCP](/docs/redis/integrations/mcp) with only your REST/TCP credentials.
+  Only running commands against a single Redis database? Use the dedicated [Redis MCP](/docs/redis/sdks/mcp) with only your REST/TCP credentials.
 </Tip>
 
 Find the GitHub repository [here](https://github.com/upstash/mcp-server).

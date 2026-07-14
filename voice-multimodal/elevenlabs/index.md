@@ -1,6 +1,6 @@
 # voice-multimodal/elevenlabs 文档索引
 
-> 共 765 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 766 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -658,6 +658,7 @@
 - `docs/eleven-api/resources/agent-tooling` — [Agent Tooling](pages/docs/eleven-api/resources/agent-tooling.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/agent-tooling.md)
 - `docs/eleven-api/resources/breaking-changes-policy` — [Breaking changes policy](pages/docs/eleven-api/resources/breaking-changes-policy.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/breaking-changes-policy.md)
 - `docs/eleven-api/resources/errors` — [Errors](pages/docs/eleven-api/resources/errors.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/errors.md)
+- `docs/eleven-api/resources/ip-allowlisting` — [IP allowlisting](pages/docs/eleven-api/resources/ip-allowlisting.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/ip-allowlisting.md)
 - `docs/eleven-api/resources/libraries` — [Libraries & SDKs](pages/docs/eleven-api/resources/libraries.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/libraries.md)
 - `docs/eleven-api/resources/libraries/scribe-stt/javascript-scribe` — [JavaScript SDK](pages/docs/eleven-api/resources/libraries/scribe-stt/javascript-scribe.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/libraries/scribe-stt/javascript-scribe.md)
 - `docs/eleven-api/resources/libraries/scribe-stt/react-scribe` — [React SDK](pages/docs/eleven-api/resources/libraries/scribe-stt/react-scribe.md) · [原文](https://elevenlabs.io/docs/eleven-api/resources/libraries/scribe-stt/react-scribe.md)

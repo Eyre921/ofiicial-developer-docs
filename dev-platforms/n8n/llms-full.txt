@@ -840,6 +840,8 @@ You have **90 days** to download your workflows after your free trial ends. Afte
 
 Access n8n hosting documentation and guides. Find comprehensive resources to help you set up and manage your self-hosted n8n instances.
 
+You can self-host n8n on your own infrastructure, on-premises or in a private cloud, using Docker, Kubernetes, or npm.
+
 All self-hosted installations use the same core product. Without a license key, n8n runs as the free [Community edition](/deploy/host-n8n/community-edition-features). Adding a Business or Enterprise license key enables those editions.
 
 ## Choose your installation method <a href="#choose-your-installation-method" id="choose-your-installation-method"></a>
@@ -8157,6 +8159,8 @@ n8n uses Cloudflare to host the license server. As the specific IP addresses can
 
 # Security
 
+You can secure a self-hosted n8n instance to protect credentials and workflow data: run a security audit, set up SSL and SSO, restrict nodes and the public API, and redact execution data.
+
 Securing your n8n instance can take several forms.
 
 At a high level, you can:
@@ -8345,7 +8349,7 @@ Run a security audit on your n8n instance.
 
 You can run a security audit on your n8n instance, to detect common security issues.
 
-## Run an audit <a href="#run-an-audit" id="run-an-audit"></a>
+## How do I run a security audit in n8n? <a href="#run-an-audit" id="run-an-audit"></a>
 
 You can run an audit using the CLI, the public API, or the n8n node.
 
@@ -8361,7 +8365,7 @@ Make a `POST` call to the `/audit` endpoint. You must authenticate as the instan
 
 Add the [n8n node](/integrations/builtin/core-nodes/n8n-nodes-base.n8n) to your workflow. Select **Resource** > **Audit** and **Operation** > **Generate**.
 
-## Report contents <a href="#report-contents" id="report-contents"></a>
+## What's in the security audit report? <a href="#report-contents" id="report-contents"></a>
 
 The audit generates five risk reports:
 

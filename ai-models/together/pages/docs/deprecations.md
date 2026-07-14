@@ -102,11 +102,11 @@ The table below lists all deprecations, most recent first.
 
 | Removal date | Model                                               | Supported by on-demand dedicated endpoints                                                             |
 | :----------- | :-------------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
-| 2026-06-26   | `zai-org/GLM-5.1`                                   | Yes                                                                                                    |
-| 2026-06-26   | `meta-llama/Llama-Guard-4-12B`                      | No                                                                                                     |
-| 2026-06-26   | `meta-llama/Meta-Llama-3-8B-Instruct-Lite`          | Yes                                                                                                    |
-| 2026-06-26   | `google/gemma-3n-E4B-it`                            | Yes                                                                                                    |
-| 2026-06-26   | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`           | Yes                                                                                                    |
+| 2026-08-04   | `meta-llama/Llama-Guard-4-12B`                      | No                                                                                                     |
+| 2026-08-04   | `google/gemma-3n-E4B-it`                            | Yes                                                                                                    |
+| 2026-07-10   | `Qwen/Qwen3-235B-A22B-Instruct-2507-tput`           | Yes                                                                                                    |
+| 2026-07-10   | `meta-llama/Meta-Llama-3-8B-Instruct-Lite`          | Yes                                                                                                    |
+| 2026-07-10   | `zai-org/GLM-5.1`                                   | Yes                                                                                                    |
 | 2026-06-29   | `Qwen/Qwen3.5-397B-A17B`                            | Yes                                                                                                    |
 | 2026-06-22   | `zai-org/GLM-5`                                     | Yes                                                                                                    |
 | 2026-06-11   | `mistralai/Voxtral-Mini-3B-2507`                    | Yes                                                                                                    |

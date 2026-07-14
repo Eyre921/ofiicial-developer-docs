@@ -12,7 +12,7 @@ If you lose access to your two-factor authentication credentials, you can use yo
 > For security reasons, GitHub Support [will not be able to restore access to accounts](/en/site-policy/other-site-policies/github-account-recovery-policy) with two-factor authentication enabled if you lose your two-factor authentication credentials or lose access to your account recovery methods.
 
 > \[!NOTE]
-> If you cannot use any recovery methods, you have permanently lost access to your account. However, you can unlink an email address tied to the locked account. The unlinked email address can then be linked to a new or existing account. For more information, see [Unlinking your email address from a locked account](/en/account-and-profile/setting-up-and-managing-your-personal-account-on-github/managing-your-personal-account/unlinking-your-email-address-from-a-locked-account).
+> If you cannot use any recovery methods, you have permanently lost access to your account. However, you can unlink an email address tied to the locked account. The unlinked email address can then be linked to a new or existing account. For more information, see [Unlinking your email address from a locked account](/en/account-and-profile/how-tos/account-management/unlinking-your-email-address-from-a-locked-account).
 
 ## Using a two-factor authentication recovery code
 

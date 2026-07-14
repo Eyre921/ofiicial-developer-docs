@@ -24,7 +24,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
-  <p>A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.</p>
+  A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
@@ -40,7 +40,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
-  <p>Learn how to avoid duplication when creating a workflow by reusing existing workflows.</p>
+  Learn how to avoid duplication when creating a workflow by reusing existing workflows.
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 
