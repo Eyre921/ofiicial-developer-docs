@@ -54,6 +54,8 @@ Learn more about triaging issues and their different states in [Issue States and
 
 Change how issues are sorted in the issues stream by selecting from the sort dropdown:
 
+* **Recommended**: The issues most relevant to you are shown first. Sentry combines a variety of signals to determine which issues are most likely to need your attention.
+
 * **Last Seen**: The most recent events are shown first.
 
 * **First Seen**: The newest issues are shown first.

@@ -133,9 +133,11 @@ Accounts can view their VAMP metrics in their [VAMP dashboard](https://dashboard
 
 | Section | Description |
 | --- | --- |
-| History | View which months Visa identified your account as exceeding `Excessive` thresholds over the previous 12 program months. Identifications in a month are based on data from the previous month. |
-| Historical and current program status | View the breakdown of the VAMP metrics from Visa whenever your account has exceeded the Visa `Excessive` thresholds. |
-| Projected program status | Stripe estimates your VAMP metrics so that you can track your VAMP metrics throughout the date and take action to prevent identification in VAMP. These estimates might differ from Visa’s final VAMP numbers. |
+| Program standing | Displays your current VAMP status based on Visa’s latest monthly report and Stripe’s daily estimates. Shows a warning when Stripe’s data indicates your VAMP metrics are above Visa’s excessive threshold for the current month. |
+| VAMP trend chart | Shows your daily VAMP ratio over the past three months, with counts broken down into disputes and early fraud warnings. The chart header shows month-to-date values for VAMP ratio, EFW count, and dispute count. |
+| Visa data | Displays VAMP data broken down by statement descriptor, sourced directly from Visa. Includes VAMP ratio, dispute count, and EFW count per descriptor. Visa’s data is used to determine your compliance status each month and is reported with a one-month delay. |
+| Stripe data | Stripe’s own computation of VAMP data by statement descriptor. Use this to cross-check Visa’s reported numbers and monitor your metrics in real time. These estimates might differ from Visa’s final VAMP numbers. |
+| Resources | Links to documentation for understanding the VAMP program, preventing disputes, and reducing fraud. |
 
 ### Visa Secure Excessive Fraud Program (US-only) 
 

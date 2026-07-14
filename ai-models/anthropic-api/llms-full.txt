@@ -8070,13 +8070,13 @@ Adaptive thinking's triggering behavior is promptable. If Claude is thinking mor
 ```text wrap
 Extended thinking adds latency and should only be used when it
 will meaningfully improve answer quality, typically for problems
-that require multi-step reasoning. When in doubt, respond directly.
+that require multistep reasoning. When in doubt, respond directly.
 ```
 
 To encourage thinking instead, use a phrase like:
 
 ```text wrap
-This task involves multi-step reasoning. Think carefully before responding.
+This task involves multistep reasoning. Think carefully before responding.
 ```
 
 Steering effectiveness can be sensitive to exact wording. If one phrasing doesn't produce the behavior you want, try a more direct variant.
@@ -10178,7 +10178,7 @@ Ground Claude's responses in your source documents. Citations return the exact p
 
 Claude can provide detailed citations when answering questions about documents, helping you track and verify the sources behind each response.
 
-All [active models](/docs/en/about-claude/models/overview) support citations, with the exception of Claude Haiku 3.
+All [active models](/docs/en/about-claude/models/overview) support citations.
 
 <Tip>
   Share your feedback and suggestions about the citations feature using the [citations feedback form](https://forms.gle/9n9hSrKnKe3rpowH9).
@@ -12543,7 +12543,7 @@ The API default is `high`. To use `xhigh`, set `effort` explicitly; the value yo
 | `xhigh`  | The recommended starting point for coding and agentic work, and for exploratory tasks like repeated tool calling, detailed web search, and knowledge-base search. Expect meaningfully higher token usage than `high`.      |
 | `max`    | Reserve for genuinely frontier problems. On most workloads `max` adds significant cost for relatively small quality gains, and on some structured-output or less intelligence-sensitive tasks it can lead to overthinking. |
 
-Claude Opus 4.7 also respects effort levels more strictly than Claude Opus 4.6, especially at `low` and `medium`. At lower effort levels, the model scopes its work to what was asked rather than going above and beyond. If you observe shallow reasoning on complex problems with Claude Opus 4.7, raise effort rather than prompting around it. If you must keep effort low for latency, add targeted guidance like "This task involves multi-step reasoning. Think carefully before responding."
+Claude Opus 4.7 also respects effort levels more strictly than Claude Opus 4.6, especially at `low` and `medium`. At lower effort levels, the model scopes its work to what was asked rather than going above and beyond. If you observe shallow reasoning on complex problems with Claude Opus 4.7, raise effort rather than prompting around it. If you must keep effort low for latency, add targeted guidance like "This task involves multistep reasoning. Think carefully before responding."
 
 When running Claude Opus 4.7 at `xhigh` or `max` effort, set a large `max_tokens` so the model has room to think and act across subagents and tool calls. Starting at 64k tokens and tuning from there is a reasonable default.
 
@@ -12747,7 +12747,7 @@ Reduce effort if a task completes but takes longer than necessary, or if you wan
 * Use **low effort** when you're optimizing for speed (because Claude answers with fewer tokens) or cost. For example, simple classification tasks, quick lookups, or high-volume use cases where marginal quality improvements don't justify additional latency or spend.
 
 <Note>
-  **Claude Code's ultracode mode:** ultracode appears in Claude Code's effort menu, but it is not an additional API effort level. The values documented on this page are the complete set the API accepts. Ultracode pairs the `xhigh` effort level with standing permission for Claude Code to launch multi-agent workflows, granted through [Mid-conversation system messages](/docs/en/build-with-claude/mid-conversation-system-messages). To build similar behavior with the API, see [Build an orchestration mode](/docs/en/build-with-claude/mid-conversation-effort-example).
+  **Claude Code's ultracode mode:** ultracode appears in Claude Code's effort menu, but it is not an additional API effort level. The values documented on this page are the complete set the API accepts. Ultracode pairs the `xhigh` effort level with standing permission for Claude Code to launch multiagent workflows, granted through [Mid-conversation system messages](/docs/en/build-with-claude/mid-conversation-system-messages). To build similar behavior with the API, see [Build an orchestration mode](/docs/en/build-with-claude/mid-conversation-effort-example).
 </Note>
 
 ## Effort with tool use
@@ -15137,7 +15137,7 @@ Here are some important considerations for interleaved thinking:
 [Prompt caching](/docs/en/build-with-claude/prompt-caching) with thinking has several important considerations:
 
 <Tip>
-  Extended thinking tasks often take longer than 5 minutes to complete. Consider using the [1-hour cache duration](/docs/en/build-with-claude/prompt-caching#1-hour-cache-duration) to maintain cache hits across longer thinking sessions and multi-step workflows.
+  Extended thinking tasks often take longer than 5 minutes to complete. Consider using the [1-hour cache duration](/docs/en/build-with-claude/prompt-caching#1-hour-cache-duration) to maintain cache hits across longer thinking sessions and multistep workflows.
 </Tip>
 
 **Thinking block context removal**
@@ -15305,7 +15305,7 @@ User: [Text response, cache=True]
 
           # Break into lines and remove leading and trailing space on each
           lines = (line.strip() for line in text.splitlines())
-          # Break multi-headlines into a line each
+          # Split double-space-separated phrases onto their own lines
           chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
           # Drop blank lines
           text = "\n".join(chunk for chunk in chunks if chunk)
@@ -15850,7 +15850,7 @@ User: [Text response, cache=True]
 
           # Break into lines and remove leading and trailing space on each
           lines = (line.strip() for line in text.splitlines())
-          # Break multi-headlines into a line each
+          # Split double-space-separated phrases onto their own lines
           chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
           # Drop blank lines
           text = "\n".join(chunk for chunk in chunks if chunk)
@@ -16689,7 +16689,7 @@ Whether thinking blocks from previous assistant turns are preserved in context b
 
 **Benefits of thinking block preservation:**
 
-* **Cache optimization**: When using tool use, preserved thinking blocks enable cache hits as they are passed back with tool results and cached incrementally across the assistant turn, resulting in token savings in multi-step workflows
+* **Cache optimization**: When using tool use, preserved thinking blocks enable cache hits as they are passed back with tool results and cached incrementally across the assistant turn, resulting in token savings in multistep workflows
 * **No intelligence impact**: Preserving thinking blocks has no negative effect on model performance
 
 **Important considerations:**
@@ -24526,7 +24526,7 @@ For a hard cap on cost or latency, combine task budgets with a reasonable `max_t
 Because `task_budget` spans the full agentic loop (potentially many requests) while `max_tokens` caps each individual request, the two values are independent; one is not required to be at or below the other.
 
 <Warning>
-  **A budget that is too small for the task can cause refusal-like behavior.** When Claude sees a budget that is clearly insufficient for the work being asked (for example, a 20,000-token budget for a multi-hour agentic coding task), it may decline to attempt the task at all, scope it down aggressively, or stop early with a partial result rather than start work it cannot finish. If you observe unexpected refusals or premature stops after setting a budget, raise the budget before debugging other parameters. Size budgets against your actual task-length distribution rather than a fixed default; see [Choosing a budget](#choosing-a-budget).
+  **A budget that is too small for the task can cause refusal-like behavior.** When Claude sees a budget that is clearly insufficient for the work being asked (for example, a 20,000-token budget for a multihour agentic coding task), it may decline to attempt the task at all, scope it down aggressively, or stop early with a partial result rather than start work it cannot finish. If you observe unexpected refusals or premature stops after setting a budget, raise the budget before debugging other parameters. Size budgets against your actual task-length distribution rather than a fixed default; see [Choosing a budget](#choosing-a-budget).
 </Warning>
 
 ## Choosing a budget
@@ -25630,7 +25630,7 @@ Pair a faster executor model with a higher-intelligence advisor model that provi
 
 The advisor tool lets a faster, lower-cost **executor model** consult a higher-intelligence **advisor model** mid-generation for strategic guidance. The advisor reads the full conversation, produces a plan or course correction, and the executor continues with the task.
 
-This pattern fits long-horizon agentic workloads (coding agents, computer use, multi-step research pipelines) where most turns are mechanical but having an excellent plan is crucial. You get close to advisor-solo quality while the bulk of token generation happens at executor-model rates.
+This pattern fits long-horizon agentic workloads (coding agents, computer use, multistep research pipelines) where most turns are mechanical but having an excellent plan is crucial. You get close to advisor-solo quality while the bulk of token generation happens at executor-model rates.
 
 ```mermaid
 sequenceDiagram
@@ -25822,10 +25822,10 @@ The advisor is a weaker fit for single-turn Q\&A (nothing to plan), pure pass-th
       AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
       MessageCreateParams params = MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_SONNET_5)
           .maxTokens(4096L)
           .addTool(BetaAdvisorTool20260301.builder()
-              .model(Model.CLAUDE_OPUS_4_8)
+              .model(Model.CLAUDE_FABLE_5)
               .build())
           .addUserMessage("Build a concurrent worker pool in Go with graceful shutdown.")
           .addBeta("advisor-tool-2026-03-01")
@@ -26155,7 +26155,7 @@ Pass the full assistant content, including `advisor_tool_result` blocks, back to
           .build());
 
       BetaMessage response = client.beta().messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_SONNET_5)
           .maxTokens(4096L)
           .tools(tools)
           .messages(messages)
@@ -26176,7 +26176,7 @@ Pass the full assistant content, including `advisor_tool_result` blocks, back to
           .build());
 
       BetaMessage followUp = client.beta().messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_SONNET_5)
           .maxTokens(4096L)
           .tools(tools)
           .messages(messages)
@@ -26529,7 +26529,7 @@ With the default `NUDGE_TURN` of 2, the reminder typically arrives after the mod
 
       List<BetaToolUnion> tools = List.of(
           BetaToolUnion.ofAdvisorTool20260301(
-              BetaAdvisorTool20260301.builder().model(Model.CLAUDE_OPUS_4_8).build())
+              BetaAdvisorTool20260301.builder().model(Model.CLAUDE_FABLE_5).build())
           // ... your other tools
       );
       String task = "Build a concurrent worker pool in Go with graceful shutdown.";
@@ -27297,9 +27297,9 @@ To handle `restart: true`, kill the shell process, start a new one, and return a
 
 The original `bash_20241022` version is part of the computer use beta, and the October 2024 Claude Sonnet 3.5 release ([retired](/docs/en/about-claude/model-deprecations)) is the only model that accepts it. Requests that use it need the `anthropic-beta: computer-use-2024-10-22` header, and the SDKs expose it only in their beta namespaces. New integrations should use `bash_20250124`.
 
-## Example: Multi-step automation
+## Example: Multistep automation
 
-Claude can chain commands across tool calls to complete a multi-step task:
+Claude can chain commands across tool calls to complete a multistep task:
 
 ```text
 User request:
@@ -30467,7 +30467,7 @@ Containers expire 30 days after creation. After about five minutes of inactivity
 
 ## Using code execution with other execution tools
 
-When you provide code execution alongside client-provided tools that also run code (such as a [Bash tool](/docs/en/agents-and-tools/tool-use/bash-tool) or custom REPL), Claude is operating in a multi-computer environment. The code execution tool runs in Anthropic's sandboxed container, while your client-provided tools run in a separate environment that you control. Claude can sometimes confuse these environments, attempting to use the wrong tool or assuming state is shared between them.
+When you provide code execution alongside client-provided tools that also run code (such as a [Bash tool](/docs/en/agents-and-tools/tool-use/bash-tool) or custom REPL), Claude is operating in a multicomputer environment. The code execution tool runs in Anthropic's sandboxed container, while your client-provided tools run in a separate environment that you control. Claude can sometimes confuse these environments, attempting to use the wrong tool or assuming state is shared between them.
 
 To avoid this, add instructions to your system prompt that clarify the distinction:
 
@@ -35098,7 +35098,7 @@ The memory tool can also be paired with [compaction](/docs/en/build-with-claude/
 
 For long-running agents, consider using both: compaction keeps the active context small without client-side bookkeeping, and memory preserves the information that must survive summarization.
 
-## Multi-session software development pattern
+## Multisession software development pattern
 
 For software projects that span multiple agent sessions, set up memory files deliberately instead of writing them ad hoc as work progresses. The following pattern turns memory into a recovery mechanism: each new session resumes from the state the last one recorded.
 
@@ -38517,7 +38517,7 @@ For example, suppose a booking system needs `passengers: int`. Without strict mo
   </Accordion>
 
   <Accordion title="Agentic workflow with multiple validated tools">
-    Build reliable multi-step agents with guaranteed tool parameters:
+    Build reliable multistep agents with guaranteed tool parameters:
 
     <CodeGroup>
       ```bash CLI
@@ -42966,7 +42966,7 @@ The tool search tool lets Claude work with hundreds or thousands of tools by dis
 
 Loading every tool definition up front causes two problems as a tool library grows:
 
-* **Context bloat:** A typical multi-server setup (GitHub, Slack, Sentry, Grafana, and Splunk) can consume \~55k tokens in definitions before Claude does any work. Tool search typically reduces this by over 85 percent, loading only the 3–5 tools Claude needs for a given request.
+* **Context bloat:** A typical multiserver setup (GitHub, Slack, Sentry, Grafana, and Splunk) can consume \~55k tokens in definitions before Claude does any work. Tool search typically reduces this by over 85 percent, loading only the 3–5 tools Claude needs for a given request.
 * **Tool selection accuracy:** Claude's ability to pick the right tool degrades once you exceed 30–50 available tools. Because tool search loads only a focused set of relevant tools on demand, selection accuracy stays high even across thousands of tools.
 
 Tool search is generally available on the Claude API. For supported models, see [Model compatibility](#model-compatibility).
@@ -50017,7 +50017,7 @@ All web search tool versions accept `allowed_callers`, which controls whether Cl
 
 The `max_uses` parameter limits the number of searches performed. If Claude attempts more searches than allowed, the `web_search_tool_result` is an error with the `max_uses_exceeded` error code.
 
-Simple factual queries typically use 1–3 searches; comparative or multi-entity research can use 10 or more. For latency-sensitive lookups, `max_uses: 3` bounds cost while rarely truncating. For research agents, set `max_uses` to 15–20 or omit it entirely.
+Simple factual queries typically use 1–3 searches; comparative or multientity research can use 10 or more. For latency-sensitive lookups, `max_uses: 3` bounds cost while rarely truncating. For research agents, set `max_uses` to 15–20 or omit it entirely.
 
 ### Domain filtering
 
@@ -51285,7 +51285,7 @@ Let Claude call your tools from code in the code execution container, cutting mo
 
 ---
 
-Programmatic tool calling allows Claude to write code that calls your tools programmatically within a [code execution](/docs/en/agents-and-tools/tool-use/code-execution-tool) container, rather than requiring round trips through the model for each tool invocation. This reduces latency for multi-tool workflows and decreases token consumption by allowing Claude to filter or process data before it reaches the model's context window. On agentic search benchmarks like [BrowseComp](https://arxiv.org/abs/2504.12516) and [DeepSearchQA](https://github.com/google-deepmind/deepsearchqa), which test multi-step web research and complex information retrieval, adding programmatic tool calling on top of basic search tools improved performance by an average of 11% while using 24% fewer input tokens (see [Improved web search with dynamic filtering](https://claude.com/blog/improved-web-search-with-dynamic-filtering)).
+Programmatic tool calling allows Claude to write code that calls your tools programmatically within a [code execution](/docs/en/agents-and-tools/tool-use/code-execution-tool) container, rather than requiring round trips through the model for each tool invocation. This reduces latency for multi-tool workflows and decreases token consumption by allowing Claude to filter or process data before it reaches the model's context window. On agentic search benchmarks like [BrowseComp](https://arxiv.org/abs/2504.12516) and [DeepSearchQA](https://github.com/google-deepmind/deepsearchqa), which test multistep web research and complex information retrieval, adding programmatic tool calling on top of basic search tools improved performance by an average of 11% while using 24% fewer input tokens (see [Improved web search with dynamic filtering](https://claude.com/blog/improved-web-search-with-dynamic-filtering)).
 
 Consider checking budget compliance across 20 employees: the traditional approach requires 20 separate model round-trips, pulling thousands of expense line items into the context along the way. With programmatic tool calling, a single script runs all 20 lookups, filters the results, and returns only the employees who exceeded their limits, shrinking what Claude needs to reason over from hundreds of kilobytes down to a handful of lines.
 
@@ -51654,7 +51654,7 @@ When you configure a tool to be callable from code execution and Claude decides 
 This approach is particularly useful for:
 
 * **Large data processing:** Filter or aggregate tool results before they reach Claude's context
-* **Multi-step workflows:** Save tokens and latency by calling tools serially or in a loop without sampling Claude in-between tool calls
+* **Multistep workflows:** Save tokens and latency by calling tools serially or in a loop without sampling Claude in-between tool calls
 * **Conditional logic:** Make decisions based on intermediate tool results
 
 <Note>
@@ -53180,7 +53180,7 @@ This behavior only applies when your request already has at least one `cache_con
 
 **URL:** https://platform.claude.com/docs/en/build-with-claude/mid-conversation-effort-example
 
-Build a session-level mode that grants standing consent for multi-agent fan-out, switched on and off with mid-conversation system messages.
+Build a session-level mode that grants standing consent for multiagent fan-out, switched on and off with mid-conversation system messages.
 
 ---
 
@@ -53579,20 +53579,20 @@ The reminders are short on purpose. They flip the mode and point at the tool des
 
 ## Grant standing consent in the tool description
 
-The Workflow tool carries the real behavioral contract: the opt-in rule, the standing consent that applies while the mode is on, granularity guidance for sizing the fan-out, and the quality patterns the model can reach for (a verification wave, a completeness critic, multi-phase sequencing). Subagents also get a `report_findings` tool so their results come back as structured JSON instead of prose, and the bash tool is the Anthropic-defined `bash_20250124` tool run locally.
+The Workflow tool carries the real behavioral contract: the opt-in rule, the standing consent that applies while the mode is on, granularity guidance for sizing the fan-out, and the quality patterns the model can reach for (a verification wave, a completeness critic, multiphase sequencing). Subagents also get a `report_findings` tool so their results come back as structured JSON instead of prose, and the bash tool is the Anthropic-defined `bash_20250124` tool run locally.
 
 <CodeGroup>
   ```python Python
   WORKFLOW_TOOL = {
       "name": "Workflow",
       "description": (
-          "Orchestrate a multi-agent workflow: split a large task into independent subtasks "
+          "Orchestrate a multiagent workflow: split a large task into independent subtasks "
           "and run them as parallel agents, then collect their results.\n\n"
           "Opt-in: only use this tool when the user explicitly asks for a workflow, or when a "
           "system message confirms that orchestration mode is on.\n\n"
           "Quality patterns: adversarial verification (a second wave of agents checks the first "
           "wave's findings against the source), a completeness critic (one agent hunts for what "
-          "the others missed), and multi-phase sequencing (understand, design, implement, and "
+          "the others missed), and multiphase sequencing (understand, design, implement, and "
           "review as separate workflow calls, reading results between phases). A useful default "
           "is hybrid: scout inline first to discover the work-list, then fan out over it.\n\n"
           "Granularity: scope each subtask to a distinct concern, component, or question rather "
@@ -53655,13 +53655,13 @@ The Workflow tool carries the real behavioral contract: the opt-in rule, the sta
   const WORKFLOW_TOOL: Anthropic.Tool = {
     name: "Workflow",
     description:
-      "Orchestrate a multi-agent workflow: split a large task into independent subtasks " +
+      "Orchestrate a multiagent workflow: split a large task into independent subtasks " +
       "and run them as parallel agents, then collect their results.\n\n" +
       "Opt-in: only use this tool when the user explicitly asks for a workflow, or when a " +
       "system message confirms that orchestration mode is on.\n\n" +
       "Quality patterns: adversarial verification (a second wave of agents checks the first " +
       "wave's findings against the source), a completeness critic (one agent hunts for what " +
-      "the others missed), and multi-phase sequencing (understand, design, implement, and " +
+      "the others missed), and multiphase sequencing (understand, design, implement, and " +
       "review as separate workflow calls, reading results between phases). A useful default " +
       "is hybrid: scout inline first to discover the work-list, then fan out over it.\n\n" +
       "Granularity: scope each subtask to a distinct concern, component, or question rather " +
@@ -53723,13 +53723,13 @@ The Workflow tool carries the real behavioral contract: the opt-in rule, the sta
   {
       Name = "Workflow",
       Description =
-          "Orchestrate a multi-agent workflow: split a large task into independent subtasks "
+          "Orchestrate a multiagent workflow: split a large task into independent subtasks "
           + "and run them as parallel agents, then collect their results.\n\n"
           + "Opt-in: only use this tool when the user explicitly asks for a workflow, or when a "
           + "system message confirms that orchestration mode is on.\n\n"
           + "Quality patterns: adversarial verification (a second wave of agents checks the first "
           + "wave's findings against the source), a completeness critic (one agent hunts for what "
-          + "the others missed), and multi-phase sequencing (understand, design, implement, and "
+          + "the others missed), and multiphase sequencing (understand, design, implement, and "
           + "review as separate workflow calls, reading results between phases). A useful default "
           + "is hybrid: scout inline first to discover the work-list, then fan out over it.\n\n"
           + "Granularity: scope each subtask to a distinct concern, component, or question rather "
@@ -53802,13 +53802,13 @@ The Workflow tool carries the real behavioral contract: the opt-in rule, the sta
   var workflowTool = anthropic.ToolUnionParam{
   	OfTool: &anthropic.ToolParam{
   		Name: "Workflow",
-  		Description: anthropic.String("Orchestrate a multi-agent workflow: split a large task into independent subtasks " +
+  		Description: anthropic.String("Orchestrate a multiagent workflow: split a large task into independent subtasks " +
   			"and run them as parallel agents, then collect their results.\n\n" +
   			"Opt-in: only use this tool when the user explicitly asks for a workflow, or when a " +
   			"system message confirms that orchestration mode is on.\n\n" +
   			"Quality patterns: adversarial verification (a second wave of agents checks the first " +
   			"wave's findings against the source), a completeness critic (one agent hunts for what " +
-  			"the others missed), and multi-phase sequencing (understand, design, implement, and " +
+  			"the others missed), and multiphase sequencing (understand, design, implement, and " +
   			"review as separate workflow calls, reading results between phases). A useful default " +
   			"is hybrid: scout inline first to discover the work-list, then fan out over it.\n\n" +
   			"Granularity: scope each subtask to a distinct concern, component, or question rather " +
@@ -53871,13 +53871,13 @@ The Workflow tool carries the real behavioral contract: the opt-in rule, the sta
   ```java Java
   static final Tool WORKFLOW_TOOL = Tool.builder()
           .name("Workflow")
-          .description("Orchestrate a multi-agent workflow: split a large task into independent subtasks "
+          .description("Orchestrate a multiagent workflow: split a large task into independent subtasks "
                   + "and run them as parallel agents, then collect their results.\n\n"
                   + "Opt-in: only use this tool when the user explicitly asks for a workflow, or when a "
                   + "system message confirms that orchestration mode is on.\n\n"
                   + "Quality patterns: adversarial verification (a second wave of agents checks the first "
                   + "wave's findings against the source), a completeness critic (one agent hunts for what "
-                  + "the others missed), and multi-phase sequencing (understand, design, implement, and "
+                  + "the others missed), and multiphase sequencing (understand, design, implement, and "
                   + "review as separate workflow calls, reading results between phases). A useful default "
                   + "is hybrid: scout inline first to discover the work-list, then fan out over it.\n\n"
                   + "Granularity: scope each subtask to a distinct concern, component, or question rather "
@@ -53932,13 +53932,13 @@ The Workflow tool carries the real behavioral contract: the opt-in rule, the sta
   const WORKFLOW_TOOL = [
       'name' => 'Workflow',
       'description' =>
-          'Orchestrate a multi-agent workflow: split a large task into independent subtasks '
+          'Orchestrate a multiagent workflow: split a large task into independent subtasks '
           . "and run them as parallel agents, then collect their results.\n\n"
           . 'Opt-in: only use this tool when the user explicitly asks for a workflow, or when a '
           . "system message confirms that orchestration mode is on.\n\n"
           . 'Quality patterns: adversarial verification (a second wave of agents checks the first '
           . 'wave\'s findings against the source), a completeness critic (one agent hunts for what '
-          . 'the others missed), and multi-phase sequencing (understand, design, implement, and '
+          . 'the others missed), and multiphase sequencing (understand, design, implement, and '
           . 'review as separate workflow calls, reading results between phases). A useful default '
           . "is hybrid: scout inline first to discover the work-list, then fan out over it.\n\n"
           . 'Granularity: scope each subtask to a distinct concern, component, or question rather '
@@ -53999,13 +53999,13 @@ The Workflow tool carries the real behavioral contract: the opt-in rule, the sta
   WORKFLOW_TOOL = {
     name: "Workflow",
     description:
-      "Orchestrate a multi-agent workflow: split a large task into independent subtasks " \
+      "Orchestrate a multiagent workflow: split a large task into independent subtasks " \
       "and run them as parallel agents, then collect their results.\n\n" \
       "Opt-in: only use this tool when the user explicitly asks for a workflow, or when a " \
       "system message confirms that orchestration mode is on.\n\n" \
       "Quality patterns: adversarial verification (a second wave of agents checks the first " \
       "wave's findings against the source), a completeness critic (one agent hunts for what " \
-      "the others missed), and multi-phase sequencing (understand, design, implement, and " \
+      "the others missed), and multiphase sequencing (understand, design, implement, and " \
       "review as separate workflow calls, reading results between phases). A useful default " \
       "is hybrid: scout inline first to discover the work-list, then fan out over it.\n\n" \
       "Granularity: scope each subtask to a distinct concern, component, or question rather " \
@@ -56059,7 +56059,7 @@ The agent appends the user's message first, then any system messages that are du
     "tools": [
       {
         "name": "Workflow",
-        "description": "Orchestrate a multi-agent workflow: split a large task into independent subtasks and run them as parallel agents, then collect their results. Opt-in: only use this tool when the user explicitly asks for a workflow, or when a system message confirms that orchestration mode is on. Granularity: scope each subtask to a distinct concern rather than per line or file section; a review of a small module rarely needs more than about ten. Standing consent: while a system message confirms orchestration mode is on, author and run a workflow for every substantive task by default; work solo only on conversational turns or trivial mechanical edits.",
+        "description": "Orchestrate a multiagent workflow: split a large task into independent subtasks and run them as parallel agents, then collect their results. Opt-in: only use this tool when the user explicitly asks for a workflow, or when a system message confirms that orchestration mode is on. Granularity: scope each subtask to a distinct concern rather than per line or file section; a review of a small module rarely needs more than about ten. Standing consent: while a system message confirms orchestration mode is on, author and run a workflow for every substantive task by default; work solo only on conversational turns or trivial mechanical edits.",
         "input_schema": {
           "type": "object",
           "properties": {
@@ -56103,7 +56103,7 @@ The agent appends the user's message first, then any system messages that are du
   tools:
     - name: Workflow
       description: >-
-        Orchestrate a multi-agent workflow: split a large task into independent
+        Orchestrate a multiagent workflow: split a large task into independent
         subtasks and run them as parallel agents, then collect their results.
         Opt-in: only use this tool when the user explicitly asks for a workflow,
         or when a system message confirms that orchestration mode is on.
@@ -64854,7 +64854,7 @@ Understanding when compaction triggers helps you tune thresholds and verify expe
 
 * Long-running agent tasks that process many files or data sources
 * Research workflows that accumulate large amounts of information
-* Multi-step tasks with clear, measurable progress
+* Multistep tasks with clear, measurable progress
 * Tasks that produce artifacts (files, reports) that persist outside the conversation
 
 **Less ideal use cases:**
@@ -65010,10 +65010,10 @@ Image tokens are included in these budgets.
 Newer models don't receive these injected tags. On Claude Opus 4.7 and later, Claude Fable 5, and Claude Mythos 5, you can give the model an explicit budget with [task budgets](/docs/en/build-with-claude/task-budgets), which are in beta.
 
 <Tip>
-  For agents that span multiple sessions, design your state artifacts so that context recovery is fast when a new session starts. The [memory tool's multi-session pattern](/docs/en/agents-and-tools/tool-use/memory-tool#multi-session-software-development-pattern) walks through a concrete approach. See also [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
+  For agents that span multiple sessions, design your state artifacts so that context recovery is fast when a new session starts. The [memory tool's multisession pattern](/docs/en/agents-and-tools/tool-use/memory-tool#multisession-software-development-pattern) walks through a concrete approach. See also [Effective harnesses for long-running agents](https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents).
 </Tip>
 
-For prompting guidance on using context awareness, see [Prompting best practices](/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#context-awareness-and-multi-window-workflows).
+For prompting guidance on using context awareness, see [Prompting best practices](/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#context-awareness-and-multiwindow-workflows).
 
 ## Manage context with compaction
 
@@ -65095,7 +65095,7 @@ A few situations where this matters:
 * **Per-turn context that must be authoritative.** You want to inject a freshness note, a session deadline, or a tool-availability change with system-level weight, and it changes too often to live in the cached prefix.
 * **State changes your application observes.** Your application notices something Claude should treat as an operator-level fact: files changed on disk, the user toggled an auto-approve setting, available tools changed, or the remaining token budget dropped below a threshold.
 * **User input that should not interrupt an agentic loop.** A user types a follow-up while Claude is still executing tools for the previous request. Relaying it as a system message after the next tool result lets Claude fold the new input into the work it is already doing, instead of treating it as a fresh request to switch to. See [Placement after tool results](#placement-after-tool-results) below.
-* **Mode switches that grant standing permissions.** A session-level mode can use a mid-conversation system message to grant standing consent to an expensive capability, such as automatically launching multi-agent workflows, with a short refresher every several turns and an exit notice when the mode is turned off. For a worked example, see [Build an orchestration mode](/docs/en/build-with-claude/mid-conversation-effort-example).
+* **Mode switches that grant standing permissions.** A session-level mode can use a mid-conversation system message to grant standing consent to an expensive capability, such as automatically launching multiagent workflows, with a short refresher every several turns and an exit notice when the mode is turned off. For a worked example, see [Build an orchestration mode](/docs/en/build-with-claude/mid-conversation-effort-example).
 
 In all of these cases you could put the instruction in a regular `user` message, and Claude does follow instructions that arrive in user turns. The difference is priority: a `user` message is treated as coming from the end user, while a `system` message is treated as coming from you, the application operator. When the two conflict, system instructions take precedence, so use the `system` role for operator-level facts and constraints that should hold even if the end user asks for something different. A mid-conversation system message keeps that operator-level priority without paying the cache-miss cost of editing the top-level `system` field.
 
@@ -66272,7 +66272,7 @@ If experiencing unexpected behavior:
 If you find that 5 minutes is too short, Anthropic also offers a 1-hour cache duration [at additional cost](#pricing).
 
 <Note>
-  The 1-hour cache duration is available on the Claude API, [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), [Amazon Bedrock (legacy)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy), [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), and [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry).
+  The 1-hour cache duration is available on the Claude API, [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), [Amazon Bedrock (Opus 4.6 and earlier)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy), [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), and [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry).
 </Note>
 
 To use the extended cache, include `ttl` in the `cache_control` definition like this:
@@ -71450,7 +71450,7 @@ PDF support is available on the Claude API, [Claude Platform on AWS](/docs/en/bu
 
 ### Amazon Bedrock PDF support
 
-When using PDF support through the Converse API, part of [Claude on Amazon Bedrock (legacy)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy), there are two distinct document processing modes:
+When using PDF support through the Converse API, part of [Claude on Amazon Bedrock (Opus 4.6 and earlier)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy), there are two distinct document processing modes:
 
 <Note>
   **Important:** To access Claude's full visual PDF understanding capabilities in the Converse API, you must enable citations. Without citations enabled, the API falls back to basic text extraction only. Learn more about [working with citations](/docs/en/build-with-claude/citations).
@@ -75145,7 +75145,7 @@ Skills are reusable, filesystem-based resources that give Claude domain-specific
 
 * **Specialize Claude:** Tailor capabilities for domain-specific tasks
 * **Reduce repetition:** Create once, use automatically
-* **Compose capabilities:** Combine Skills for complex, multi-step tasks
+* **Compose capabilities:** Combine Skills for complex, multistep tasks
 
 <Note>
   For more on the architecture and real-world applications of Agent Skills, see the engineering blog post [Equipping agents for the real world with Agent Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills).
@@ -77209,7 +77209,7 @@ Organize findings by theme. Include:
 Check that every claim references the correct source document. If citations are incomplete, return to Step 3.
 ````
 
-This example shows how workflows apply to analysis tasks that don't require code. The checklist pattern works for any complex, multi-step process.
+This example shows how workflows apply to analysis tasks that don't require code. The checklist pattern works for any complex, multistep process.
 
 **Example 2: PDF form filling workflow** (for Skills with code):
 
@@ -77254,7 +77254,7 @@ Run: `python scripts/verify_output.py output.pdf`
 If verification fails, return to Step 2.
 ````
 
-Clear steps prevent Claude from skipping critical validation. The checklist helps both Claude and you track progress through multi-step workflows.
+Clear steps prevent Claude from skipping critical validation. The checklist helps both Claude and you track progress through multistep workflows.
 
 ### Implement feedback loops
 
@@ -78040,7 +78040,7 @@ Note that API requests support a maximum of 8 Skills per request (see [Using Ski
 
 ### Start specific, consolidate later
 
-Encourage teams to start with narrow, workflow-specific Skills rather than broad, multi-purpose ones. As patterns emerge across your organization, consolidate related Skills into role-based bundles.
+Encourage teams to start with narrow, workflow-specific Skills rather than broad, multipurpose ones. As patterns emerge across your organization, consolidate related Skills into role-based bundles.
 
 <Tip>
   Use evaluations to decide when to consolidate. Merge narrow Skills into a broader one only when the consolidated Skill's evaluations confirm equivalent performance to the individual Skills it replaces.
@@ -85790,9 +85790,9 @@ upstream:
 
 ---
 
-# Claude in Amazon Bedrock
+# Claude in Amazon Bedrock (Opus 4.7 and later)
 
-# Claude in Amazon Bedrock
+# Claude in Amazon Bedrock (Opus 4.7 and later)
 
 **URL:** https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock
 
@@ -85803,7 +85803,7 @@ Access Claude models through Amazon Bedrock with AWS-native authentication, bill
 This guide walks you through setting up and making API calls to Claude in Amazon Bedrock. Claude in Amazon Bedrock runs on AWS-managed infrastructure with zero operator access (Anthropic personnel have no access to the inference infrastructure), letting you build sensitive applications entirely inside the AWS security boundary while using the same Messages API shape you use with Anthropic's first-party API.
 
 <Note>
-  This page covers Claude in Amazon Bedrock, which serves Claude through the Messages API at `/anthropic/v1/messages` on AWS-managed infrastructure. The previous Amazon Bedrock integration (the `InvokeModel` and `Converse` APIs with ARN-versioned model identifiers) remains available and is documented at [Claude on Amazon Bedrock (legacy)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy). For an Anthropic-operated alternative on AWS with AWS Marketplace billing and typically same-day feature access, see [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws).
+  This page covers Claude in Amazon Bedrock, which serves Claude through the Messages API at `/anthropic/v1/messages` on AWS-managed infrastructure. The previous Amazon Bedrock integration (the `InvokeModel` and `Converse` APIs with ARN-versioned model identifiers) remains available and is documented at [Claude on Amazon Bedrock (Opus 4.6 and earlier)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy). For an Anthropic-operated alternative on AWS with AWS Marketplace billing and typically same-day feature access, see [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws).
 </Note>
 
 ## Access
@@ -87010,9 +87010,9 @@ Foundry does not include Anthropic's standard rate limit headers (`anthropic-rat
 
 ---
 
-# Claude on Amazon Bedrock (legacy)
+# Claude on Amazon Bedrock (Opus 4.6 and earlier)
 
-# Claude on Amazon Bedrock (legacy)
+# Claude on Amazon Bedrock (Opus 4.6 and earlier)
 
 **URL:** https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy
 
@@ -88050,7 +88050,7 @@ First, install Anthropic's [client SDK](/docs/en/cli-sdks-libraries/overview) fo
 <Tabs>
   <Tab title="Python">
     ```bash
-    pip install -U google-cloud-aiplatform "anthropic[vertex]"
+    pip install -U "anthropic[vertex]"
     ```
   </Tab>
 
@@ -88075,39 +88075,47 @@ First, install Anthropic's [client SDK](/docs/en/cli-sdks-libraries/overview) fo
   <Tab title="Java">
     <CodeGroup>
       ```groovy Gradle
-      implementation("com.anthropic:anthropic-java-vertex:2.47.1")
+      implementation("com.anthropic:anthropic-java:2.48.0")
+      implementation("com.anthropic:anthropic-java-vertex:2.48.0")
       ```
 
       ```xml Maven
       <dependency>
           <groupId>com.anthropic</groupId>
+          <artifactId>anthropic-java</artifactId>
+          <version>2.48.0</version>
+      </dependency>
+      <dependency>
+          <groupId>com.anthropic</groupId>
           <artifactId>anthropic-java-vertex</artifactId>
-          <version>2.47.1</version>
+          <version>2.48.0</version>
       </dependency>
       ```
 
       ```java Java
       import com.anthropic.client.AnthropicClient;
       import com.anthropic.client.okhttp.AnthropicOkHttpClient;
-      import com.anthropic.vertex.backends.VertexBackend;
-      import com.anthropic.models.messages.MessageCreateParams;
       import com.anthropic.models.messages.Message;
+      import com.anthropic.models.messages.MessageCreateParams;
       import com.anthropic.models.messages.Model;
-      // ...
-              AnthropicClient client = AnthropicOkHttpClient.builder()
-                  .backend(VertexBackend.fromEnv())
-                  .build();
+      import com.anthropic.vertex.backends.VertexBackend;
 
-              MessageCreateParams params = MessageCreateParams.builder()
-                  .model(Model.CLAUDE_OPUS_4_8)
-                  .maxTokens(1024L)
-                  .addUserMessage("What is the capital of France?")
-                  .build();
+      void main() {
+          AnthropicClient client = AnthropicOkHttpClient.builder()
+              .backend(VertexBackend.fromEnv())
+              .build();
 
-              Message response = client.messages().create(params);
-              response.content().stream()
-                  .flatMap(block -> block.text().stream())
-                  .forEach(textBlock -> System.out.println(textBlock.text()));
+          MessageCreateParams params = MessageCreateParams.builder()
+              .model(Model.CLAUDE_OPUS_4_8)
+              .maxTokens(1024L)
+              .addUserMessage("What is the capital of France?")
+              .build();
+
+          Message response = client.messages().create(params);
+          response.content().stream()
+              .flatMap(block -> block.text().stream())
+              .forEach(textBlock -> IO.println(textBlock.text()));
+      }
       ```
     </CodeGroup>
   </Tab>
@@ -88167,22 +88175,16 @@ The following examples show how to generate text from Claude on Agent Platform:
 <CodeGroup>
   ```bash cURL
   MODEL_ID=claude-opus-4-8
-  LOCATION=global
   PROJECT_ID=MY_PROJECT_ID
 
-  curl \
-  -X POST \
-  -H "Authorization: Bearer $(gcloud auth print-access-token)" \
-  -H "Content-Type: application/json" \
-  https://$LOCATION-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/anthropic/models/${MODEL_ID}:streamRawPredict -d \
-  '{
-    "anthropic_version": "vertex-2023-10-16",
-    "messages": [{
-      "role": "user",
-      "content": "Hey Claude!"
-    }],
-    "max_tokens": 100
-  }'
+  curl https://aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/global/publishers/anthropic/models/${MODEL_ID}:rawPredict \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "anthropic_version": "vertex-2023-10-16",
+      "messages": [{"role": "user", "content": "Hey Claude!"}],
+      "max_tokens": 100
+    }'
   ```
 
   ```bash CLI
@@ -88222,35 +88224,27 @@ The following examples show how to generate text from Claude on Agent Platform:
     region
   });
 
-  async function main() {
-    const result = await client.messages.create({
-      model: "claude-opus-4-8",
-      max_tokens: 100,
-      messages: [
-        {
-          role: "user",
-          content: "Hey Claude!"
-        }
-      ]
-    });
-    console.log(JSON.stringify(result, null, 2));
-  }
-
-  main();
+  const result = await client.messages.create({
+    model: "claude-opus-4-8",
+    max_tokens: 100,
+    messages: [
+      {
+        role: "user",
+        content: "Hey Claude!"
+      }
+    ]
+  });
+  console.log(JSON.stringify(result, null, 2));
   ```
 
   ```csharp C#
-  using Anthropic;
   using Anthropic.Models.Messages;
   using Anthropic.Vertex;
 
   var projectId = "MY_PROJECT_ID";
   var region = "global";
 
-  var client = new AnthropicClient
-  {
-      Backend = new VertexBackend(projectId, region)
-  };
+  var client = new AnthropicVertexClient(new AnthropicVertexCredentials(region, projectId));
 
   var parameters = new MessageCreateParams
   {
@@ -88278,7 +88272,7 @@ The following examples show how to generate text from Claude on Agent Platform:
   	)
 
   	message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-  		Model:     "claude-opus-4-8",
+  		Model:     anthropic.ModelClaudeOpus4_8,
   		MaxTokens: 100,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hey Claude!")),
@@ -88295,24 +88289,27 @@ The following examples show how to generate text from Claude on Agent Platform:
   import com.anthropic.client.okhttp.AnthropicOkHttpClient;
   import com.anthropic.models.messages.Message;
   import com.anthropic.models.messages.MessageCreateParams;
+  import com.anthropic.models.messages.Model;
   import com.anthropic.vertex.backends.VertexBackend;
-  // ...
+
+  void main() {
       // Uses default Google Cloud credentials
       AnthropicClient client = AnthropicOkHttpClient.builder()
-        .backend(VertexBackend.fromEnv())
-        .build();
+          .backend(VertexBackend.fromEnv())
+          .build();
 
       Message message = client
-        .messages()
-        .create(
-          MessageCreateParams.builder()
-            .model("claude-opus-4-8")
-            .maxTokens(100)
-            .addUserMessage("Hey Claude!")
-            .build()
-        );
+          .messages()
+          .create(
+              MessageCreateParams.builder()
+                  .model(Model.CLAUDE_OPUS_4_8)
+                  .maxTokens(100)
+                  .addUserMessage("Hey Claude!")
+                  .build()
+          );
 
-      System.out.println(message);
+      IO.println(message);
+  }
   ```
 
   ```php PHP
@@ -88445,6 +88442,20 @@ Regional and multi-region endpoints include a 10% pricing premium over global en
 Set the `region` parameter to `"global"` when initializing the client:
 
 <CodeGroup>
+  ```bash cURL
+  MODEL_ID=claude-opus-4-8
+  PROJECT_ID=MY_PROJECT_ID
+
+  curl https://aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/global/publishers/anthropic/models/${MODEL_ID}:rawPredict \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "anthropic_version": "vertex-2023-10-16",
+      "messages": [{"role": "user", "content": "Hey Claude!"}],
+      "max_tokens": 100
+    }'
+  ```
+
   ```bash CLI
   # The ant CLI does not support Agent Platform.
   ```
@@ -88491,20 +88502,17 @@ Set the `region` parameter to `"global"` when initializing the client:
       }
     ]
   });
+  console.log(JSON.stringify(result, null, 2));
   ```
 
   ```csharp C#
-  using Anthropic;
   using Anthropic.Models.Messages;
   using Anthropic.Vertex;
 
   var projectId = "MY_PROJECT_ID";
   var region = "global";
 
-  var client = new AnthropicClient
-  {
-      Backend = new VertexBackend(projectId, region)
-  };
+  var client = new AnthropicVertexClient(new AnthropicVertexCredentials(region, projectId));
 
   var parameters = new MessageCreateParams
   {
@@ -88520,6 +88528,7 @@ Set the `region` parameter to `"global"` when initializing the client:
   ```go Go
   import (
   	"context"
+  	"fmt"
 
   	"github.com/anthropics/anthropic-sdk-go"
   	"github.com/anthropics/anthropic-sdk-go/vertex"
@@ -88530,27 +88539,33 @@ Set the `region` parameter to `"global"` when initializing the client:
   		vertex.WithGoogleAuth(context.Background(), "global", "MY_PROJECT_ID"),
   	)
 
-  	message, _ := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-  		Model:     "claude-opus-4-8",
+  	message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+  		Model:     anthropic.ModelClaudeOpus4_8,
   		MaxTokens: 100,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hey Claude!")),
   		},
   	})
-  	_ = message
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Printf("%+v\n", message)
   ```
 
   ```java Java
   import com.anthropic.client.AnthropicClient;
   import com.anthropic.client.okhttp.AnthropicOkHttpClient;
   import com.anthropic.models.messages.MessageCreateParams;
+  import com.anthropic.models.messages.Model;
   import com.anthropic.vertex.backends.VertexBackend;
+  import com.google.auth.oauth2.GoogleCredentials;
 
-  void main() {
+  void main() throws Exception {
       // Uses default Google Cloud credentials
       AnthropicClient client = AnthropicOkHttpClient.builder()
           .backend(
               VertexBackend.builder()
+                  .googleCredentials(GoogleCredentials.getApplicationDefault())
                   .region("global")
                   .project("MY_PROJECT_ID")
                   .build()
@@ -88561,7 +88576,7 @@ Set the `region` parameter to `"global"` when initializing the client:
           .messages()
           .create(
               MessageCreateParams.builder()
-                  .model("claude-opus-4-8")
+                  .model(Model.CLAUDE_OPUS_4_8)
                   .maxTokens(100)
                   .addUserMessage("Hey Claude!")
                   .build()
@@ -88615,6 +88630,21 @@ Set the `region` parameter to `"global"` when initializing the client:
 Set the `region` parameter to a multi-region identifier: `"us"` for the United States or `"eu"` for the European Union. The SDK routes requests to the corresponding multi-region endpoint (`https://aiplatform.us.rep.googleapis.com` or `https://aiplatform.eu.rep.googleapis.com`), which dynamically balances traffic across regions within that geography.
 
 <CodeGroup>
+  ```bash cURL
+  MODEL_ID=claude-opus-4-8
+  LOCATION=us # Multi-region identifier: "us" or "eu"
+  PROJECT_ID=MY_PROJECT_ID
+
+  curl https://aiplatform.${LOCATION}.rep.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/anthropic/models/${MODEL_ID}:rawPredict \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "anthropic_version": "vertex-2023-10-16",
+      "messages": [{"role": "user", "content": "Hey Claude!"}],
+      "max_tokens": 100
+    }'
+  ```
+
   ```bash CLI
   # The ant CLI does not support Agent Platform.
   ```
@@ -88661,20 +88691,17 @@ Set the `region` parameter to a multi-region identifier: `"us"` for the United S
       }
     ]
   });
+  console.log(JSON.stringify(result, null, 2));
   ```
 
   ```csharp C#
-  using Anthropic;
   using Anthropic.Models.Messages;
   using Anthropic.Vertex;
 
   var projectId = "MY_PROJECT_ID";
   var region = "us"; // Multi-region identifier: "us" or "eu"
 
-  var client = new AnthropicClient
-  {
-      Backend = new VertexBackend(projectId, region)
-  };
+  var client = new AnthropicVertexClient(new AnthropicVertexCredentials(region, projectId));
 
   var parameters = new MessageCreateParams
   {
@@ -88690,6 +88717,7 @@ Set the `region` parameter to a multi-region identifier: `"us"` for the United S
   ```go Go
   import (
   	"context"
+  	"fmt"
 
   	"github.com/anthropics/anthropic-sdk-go"
   	"github.com/anthropics/anthropic-sdk-go/vertex"
@@ -88700,27 +88728,33 @@ Set the `region` parameter to a multi-region identifier: `"us"` for the United S
   		vertex.WithGoogleAuth(context.Background(), "us", "MY_PROJECT_ID"),
   	)
 
-  	message, _ := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-  		Model:     "claude-opus-4-8",
+  	message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+  		Model:     anthropic.ModelClaudeOpus4_8,
   		MaxTokens: 100,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hey Claude!")),
   		},
   	})
-  	_ = message
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Printf("%+v\n", message)
   ```
 
   ```java Java
   import com.anthropic.client.AnthropicClient;
   import com.anthropic.client.okhttp.AnthropicOkHttpClient;
   import com.anthropic.models.messages.MessageCreateParams;
+  import com.anthropic.models.messages.Model;
   import com.anthropic.vertex.backends.VertexBackend;
+  import com.google.auth.oauth2.GoogleCredentials;
 
-  void main() {
+  void main() throws Exception {
       // Multi-region identifier: "us" or "eu"
       AnthropicClient client = AnthropicOkHttpClient.builder()
           .backend(
               VertexBackend.builder()
+                  .googleCredentials(GoogleCredentials.getApplicationDefault())
                   .region("us")
                   .project("MY_PROJECT_ID")
                   .build()
@@ -88731,7 +88765,7 @@ Set the `region` parameter to a multi-region identifier: `"us"` for the United S
           .messages()
           .create(
               MessageCreateParams.builder()
-                  .model("claude-opus-4-8")
+                  .model(Model.CLAUDE_OPUS_4_8)
                   .maxTokens(100)
                   .addUserMessage("Hey Claude!")
                   .build()
@@ -88781,9 +88815,25 @@ Set the `region` parameter to a multi-region identifier: `"us"` for the United S
 
 **Using regional endpoints:**
 
-Specify a specific region like `"us-east1"` or `"europe-west1"`:
+Specify a specific region such as `"us-east5"` or `"europe-west1"`:
 
 <CodeGroup>
+  ```bash cURL
+  # Specific regional endpoints support Claude Sonnet 4.6 and earlier; newer models use the global or multi-region endpoints
+  MODEL_ID=claude-sonnet-4-6
+  LOCATION=us-east5 # Specify a specific region
+  PROJECT_ID=MY_PROJECT_ID
+
+  curl https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${LOCATION}/publishers/anthropic/models/${MODEL_ID}:rawPredict \
+    -H "Authorization: Bearer $(gcloud auth print-access-token)" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "anthropic_version": "vertex-2023-10-16",
+      "messages": [{"role": "user", "content": "Hey Claude!"}],
+      "max_tokens": 100
+    }'
+  ```
+
   ```bash CLI
   # The ant CLI does not support Agent Platform.
   ```
@@ -88792,12 +88842,13 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
   from anthropic import AnthropicVertex
 
   project_id = "MY_PROJECT_ID"
-  region = "us-east1"  # Specify a specific region
+  region = "us-east5"  # Specify a specific region
 
   client = AnthropicVertex(project_id=project_id, region=region)
 
   message = client.messages.create(
-      model="claude-opus-4-8",
+      # Specific regional endpoints support Claude Sonnet 4.6 and earlier; newer models use the global or multi-region endpoints
+      model="claude-sonnet-4-6",
       max_tokens=100,
       messages=[
           {
@@ -88813,7 +88864,7 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
   import { AnthropicVertex } from "@anthropic-ai/vertex-sdk";
 
   const projectId = "MY_PROJECT_ID";
-  const region = "us-east1"; // Specify a specific region
+  const region = "us-east5"; // Specify a specific region
 
   const client = new AnthropicVertex({
     projectId,
@@ -88821,7 +88872,8 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
   });
 
   const result = await client.messages.create({
-    model: "claude-opus-4-8",
+    // Specific regional endpoints support Claude Sonnet 4.6 and earlier; newer models use the global or multi-region endpoints
+    model: "claude-sonnet-4-6",
     max_tokens: 100,
     messages: [
       {
@@ -88830,24 +88882,22 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
       }
     ]
   });
+  console.log(JSON.stringify(result, null, 2));
   ```
 
   ```csharp C#
-  using Anthropic;
   using Anthropic.Models.Messages;
   using Anthropic.Vertex;
 
   var projectId = "MY_PROJECT_ID";
-  var region = "us-east1";
+  var region = "us-east5"; // Specify a specific region
 
-  AnthropicClient client = new()
-  {
-      Backend = new VertexBackend(projectId, region)
-  };
+  var client = new AnthropicVertexClient(new AnthropicVertexCredentials(region, projectId));
 
   var parameters = new MessageCreateParams
   {
-      Model = Model.ClaudeOpus4_8,
+      // Specific regional endpoints support Claude Sonnet 4.6 and earlier; newer models use the global or multi-region endpoints
+      Model = Model.ClaudeSonnet4_6,
       MaxTokens = 100,
       Messages = [new() { Role = Role.User, Content = "Hey Claude!" }]
   };
@@ -88859,6 +88909,7 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
   ```go Go
   import (
   	"context"
+  	"fmt"
 
   	"github.com/anthropics/anthropic-sdk-go"
   	"github.com/anthropics/anthropic-sdk-go/vertex"
@@ -88866,31 +88917,38 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
   // ...
   	// Specify a specific region
   	client := anthropic.NewClient(
-  		vertex.WithGoogleAuth(context.Background(), "us-east1", "MY_PROJECT_ID"),
+  		vertex.WithGoogleAuth(context.Background(), "us-east5", "MY_PROJECT_ID"),
   	)
 
-  	message, _ := client.Messages.New(context.Background(), anthropic.MessageNewParams{
-  		Model:     "claude-opus-4-8",
+  	message, err := client.Messages.New(context.Background(), anthropic.MessageNewParams{
+  		// Specific regional endpoints support Claude Sonnet 4.6 and earlier; newer models use the global or multi-region endpoints
+  		Model:     anthropic.ModelClaudeSonnet4_6,
   		MaxTokens: 100,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hey Claude!")),
   		},
   	})
-  	_ = message
+  	if err != nil {
+  		panic(err)
+  	}
+  	fmt.Printf("%+v\n", message)
   ```
 
   ```java Java
   import com.anthropic.client.AnthropicClient;
   import com.anthropic.client.okhttp.AnthropicOkHttpClient;
   import com.anthropic.models.messages.MessageCreateParams;
+  import com.anthropic.models.messages.Model;
   import com.anthropic.vertex.backends.VertexBackend;
+  import com.google.auth.oauth2.GoogleCredentials;
 
-  void main() {
+  void main() throws Exception {
       // Uses default Google Cloud credentials with specific region
       AnthropicClient client = AnthropicOkHttpClient.builder()
           .backend(
               VertexBackend.builder()
-                  .region("us-east1") // Specify a specific region
+                  .googleCredentials(GoogleCredentials.getApplicationDefault())
+                  .region("us-east5") // Specify a specific region
                   .project("MY_PROJECT_ID")
                   .build()
           )
@@ -88900,7 +88958,8 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
           .messages()
           .create(
               MessageCreateParams.builder()
-                  .model("claude-opus-4-8")
+                  // Specific regional endpoints support Claude Sonnet 4.6 and earlier; newer models use the global or multi-region endpoints
+                  .model(Model.CLAUDE_SONNET_4_6)
                   .maxTokens(100)
                   .addUserMessage("Hey Claude!")
                   .build()
@@ -88916,7 +88975,7 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
   use Anthropic\Vertex;
 
   $client = Vertex\Client::fromEnvironment(
-      location: 'us-east1',
+      location: 'us-east5',
       projectId: 'MY_PROJECT_ID',
   );
 
@@ -88925,7 +88984,8 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
       messages: [
           ['role' => 'user', 'content' => 'Hey Claude!']
       ],
-      model: 'claude-opus-4-8',
+      // Specific regional endpoints support Claude Sonnet 4.6 and earlier; newer models use the global or multi-region endpoints
+      model: 'claude-sonnet-4-6',
   );
   echo $message->content[0]->text;
   ```
@@ -88934,12 +88994,13 @@ Specify a specific region like `"us-east1"` or `"europe-west1"`:
   require "anthropic"
 
   client = Anthropic::VertexClient.new(
-    region: "us-east1", # Specify a specific region
+    region: "us-east5", # Specify a specific region
     project_id: "MY_PROJECT_ID"
   )
 
   message = client.messages.create(
-    model: "claude-opus-4-8",
+    # Specific regional endpoints support Claude Sonnet 4.6 and earlier; newer models use the global or multi-region endpoints
+    model: "claude-sonnet-4-6",
     max_tokens: 100,
     messages: [{role: "user", content: "Hey Claude!"}]
   )
@@ -88990,20 +89051,20 @@ Claude Platform on AWS follows the same data retention policy as the first-party
 
 Both offerings let you use Claude through AWS, but they differ in architecture, API surface, and feature availability.
 
-| Aspect                       | Claude Platform on AWS                                                                          | [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock) | [Amazon Bedrock (legacy)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy) |
-| ---------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------- |
-| **Who operates the stack**   | Anthropic                                                                                       | AWS                                                                             | AWS                                                                                   |
-| **API surface**              | Claude API (`/v1/{endpoint}`)                                                                   | Messages API at `/anthropic/v1/messages`                                        | Bedrock Converse / InvokeModel                                                        |
-| **Feature availability**     | Typically same-day as Claude API (see [feature limitations](#features-not-supported))           | Per Amazon Bedrock release schedule                                             | Per Amazon Bedrock release schedule                                                   |
-| **Agent Skills**             | Available (beta)                                                                                | Not available (requires code execution)                                         | Not available                                                                         |
-| **Beta features**            | Pass through with `anthropic-beta` headers (see [feature limitations](#features-not-supported)) | `anthropic-beta` header not supported                                           | `anthropic-beta` header not supported                                                 |
-| **Authentication**           | AWS IAM / SigV4 or API key                                                                      | AWS IAM / SigV4                                                                 | AWS IAM / SigV4 or bearer token                                                       |
-| **Billing**                  | AWS Marketplace                                                                                 | AWS (native service)                                                            | AWS (native service)                                                                  |
-| **Base URL**                 | `aws-external-anthropic.{region}.api.aws`                                                       | `bedrock-mantle.{region}.api.aws`                                               | `bedrock-runtime.{region}.amazonaws.com`                                              |
-| **SDK client**               | Platform-specific client class (for example, `AnthropicAWS` in Python), in beta                 | `AnthropicBedrockMantle`                                                        | `AnthropicBedrock` / Bedrock SDK                                                      |
-| **Console**                  | Claude Console (`platform.claude.com`, access through the AWS Console)                          | Bedrock Console                                                                 | Bedrock Console                                                                       |
-| **Rate limits and quotas**   | Managed by Anthropic                                                                            | Managed by AWS                                                                  | Managed by AWS                                                                        |
-| **Inference data processor** | Anthropic                                                                                       | AWS                                                                             | AWS                                                                                   |
+| Aspect                       | Claude Platform on AWS                                                                          | [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock) | [Amazon Bedrock (Opus 4.6 and earlier)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy) |
+| ---------------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| **Who operates the stack**   | Anthropic                                                                                       | AWS                                                                             | AWS                                                                                                 |
+| **API surface**              | Claude API (`/v1/{endpoint}`)                                                                   | Messages API at `/anthropic/v1/messages`                                        | Bedrock Converse / InvokeModel                                                                      |
+| **Feature availability**     | Typically same-day as Claude API (see [feature limitations](#features-not-supported))           | Per Amazon Bedrock release schedule                                             | Per Amazon Bedrock release schedule                                                                 |
+| **Agent Skills**             | Available (beta)                                                                                | Not available (requires code execution)                                         | Not available                                                                                       |
+| **Beta features**            | Pass through with `anthropic-beta` headers (see [feature limitations](#features-not-supported)) | `anthropic-beta` header not supported                                           | `anthropic-beta` header not supported                                                               |
+| **Authentication**           | AWS IAM / SigV4 or API key                                                                      | AWS IAM / SigV4                                                                 | AWS IAM / SigV4 or bearer token                                                                     |
+| **Billing**                  | AWS Marketplace                                                                                 | AWS (native service)                                                            | AWS (native service)                                                                                |
+| **Base URL**                 | `aws-external-anthropic.{region}.api.aws`                                                       | `bedrock-mantle.{region}.api.aws`                                               | `bedrock-runtime.{region}.amazonaws.com`                                                            |
+| **SDK client**               | Platform-specific client class (for example, `AnthropicAWS` in Python), in beta                 | `AnthropicBedrockMantle`                                                        | `AnthropicBedrock` / Bedrock SDK                                                                    |
+| **Console**                  | Claude Console (`platform.claude.com`, access through the AWS Console)                          | Bedrock Console                                                                 | Bedrock Console                                                                                     |
+| **Rate limits and quotas**   | Managed by Anthropic                                                                            | Managed by AWS                                                                  | Managed by AWS                                                                                      |
+| **Inference data processor** | Anthropic                                                                                       | AWS                                                                             | AWS                                                                                                 |
 
 If you need AWS-operated Claude, see [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock). Claude Platform on AWS uses a separate capacity pool from both the first-party Claude API and Amazon Bedrock. You can run workloads on more than one platform and fail over between them.
 
@@ -89509,7 +89570,7 @@ See the [comparison table](#claude-platform-on-aws-vs-amazon-bedrock) for featur
 
 ### Claude Managed Agents
 
-[Claude Managed Agents](/docs/en/managed-agents/overview) is available on Claude Platform on AWS, including [agents](/docs/en/managed-agents/agent-setup), [environments](/docs/en/managed-agents/environments), [sessions](/docs/en/managed-agents/sessions), [credential vaults](/docs/en/managed-agents/vaults), [memory stores](/docs/en/managed-agents/memory), [webhooks](/docs/en/managed-agents/webhooks), [multiagent orchestration](/docs/en/managed-agents/multi-agent), and [self-hosted sandboxes](/docs/en/managed-agents/self-hosted-sandboxes).
+[Claude Managed Agents](/docs/en/managed-agents/overview) is available on Claude Platform on AWS, including [agents](/docs/en/managed-agents/agent-setup), [environments](/docs/en/managed-agents/environments), [sessions](/docs/en/managed-agents/sessions), [credential vaults](/docs/en/managed-agents/vaults), [memory stores](/docs/en/managed-agents/memory), [webhooks](/docs/en/managed-agents/webhooks), [multiagent orchestration](/docs/en/managed-agents/multiagent-orchestration), and [self-hosted sandboxes](/docs/en/managed-agents/self-hosted-sandboxes).
 
 Session behavior on Claude Platform on AWS differs from first-party Claude Managed Agents in one way:
 
@@ -89990,20 +90051,20 @@ If you currently use Claude on Bedrock, migrating to Claude Platform on AWS requ
 
 The migration delta depends on which Bedrock integration you're coming from. The following table shows both the [current Bedrock integration](/docs/en/build-with-claude/claude-in-amazon-bedrock) (Messages API at `bedrock-mantle.{region}.api.aws`) and the [legacy InvokeModel integration](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy).
 
-| Aspect                     | From [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock)                    | From [Amazon Bedrock (legacy)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy)              | To Claude Platform on AWS                                                                                                                                                              |
-| -------------------------- | ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Base URL**               | `bedrock-mantle.{region}.api.aws`                                                                       | `bedrock-runtime.{region}.amazonaws.com`                                                                | `aws-external-anthropic.{region}.api.aws`                                                                                                                                              |
-| **API format**             | Messages API at `/anthropic/v1/messages`                                                                | Bedrock Converse / InvokeModel                                                                          | Claude API (`/v1/{endpoint}`)                                                                                                                                                          |
-| **Model IDs**              | anthropic.claude-haiku-4-5                                                                              | anthropic.claude-haiku-4-5-20251001-v1:0(with a `us.` or `global.` inference profile prefix)            | claude-haiku-4-5                                                                                                                                                                       |
-| **SDK client**             | `AnthropicBedrockMantle`                                                                                | `AnthropicBedrock` / Bedrock SDK                                                                        | Platform-specific client (see [Install an SDK](#install-an-sdk)), in beta                                                                                                              |
-| **SDK package**            | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, and others                                           | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, or AWS SDK                                           | `anthropic[aws]`, `@anthropic-ai/aws-sdk`, and others (see [Install an SDK](#install-an-sdk))                                                                                          |
-| **SigV4 service name**     | `bedrock-mantle`                                                                                        | `bedrock`                                                                                               | `aws-external-anthropic`                                                                                                                                                               |
-| **Streaming format**       | SSE                                                                                                     | AWS EventStream                                                                                         | SSE (same as Claude API)                                                                                                                                                               |
-| **Workspace header**       | Not applicable                                                                                          | Not applicable                                                                                          | `anthropic-workspace-id` required                                                                                                                                                      |
-| **Region availability**    | See [Amazon Bedrock regions](https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-regions.html) | See [Amazon Bedrock regions](https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-regions.html) | All AWS commercial regions                                                                                                                                                             |
-| **Anthropic organization** | None required                                                                                           | None required                                                                                           | New organization created at sign-up. Existing organizations can't be converted (see [Moving from an existing Anthropic organization](#moving-from-an-existing-anthropic-organization)) |
+| Aspect                     | From [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock)                    | From [Amazon Bedrock (Opus 4.6 and earlier)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy) | To Claude Platform on AWS                                                                                                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Base URL**               | `bedrock-mantle.{region}.api.aws`                                                                       | `bedrock-runtime.{region}.amazonaws.com`                                                                 | `aws-external-anthropic.{region}.api.aws`                                                                                                                                              |
+| **API format**             | Messages API at `/anthropic/v1/messages`                                                                | Bedrock Converse / InvokeModel                                                                           | Claude API (`/v1/{endpoint}`)                                                                                                                                                          |
+| **Model IDs**              | anthropic.claude-haiku-4-5                                                                              | anthropic.claude-haiku-4-5-20251001-v1:0(with a `us.` or `global.` inference profile prefix)             | claude-haiku-4-5                                                                                                                                                                       |
+| **SDK client**             | `AnthropicBedrockMantle`                                                                                | `AnthropicBedrock` / Bedrock SDK                                                                         | Platform-specific client (see [Install an SDK](#install-an-sdk)), in beta                                                                                                              |
+| **SDK package**            | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, and others                                           | `anthropic[bedrock]`, `@anthropic-ai/bedrock-sdk`, or AWS SDK                                            | `anthropic[aws]`, `@anthropic-ai/aws-sdk`, and others (see [Install an SDK](#install-an-sdk))                                                                                          |
+| **SigV4 service name**     | `bedrock-mantle`                                                                                        | `bedrock`                                                                                                | `aws-external-anthropic`                                                                                                                                                               |
+| **Streaming format**       | SSE                                                                                                     | AWS EventStream                                                                                          | SSE (same as Claude API)                                                                                                                                                               |
+| **Workspace header**       | Not applicable                                                                                          | Not applicable                                                                                           | `anthropic-workspace-id` required                                                                                                                                                      |
+| **Region availability**    | See [Amazon Bedrock regions](https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-regions.html) | See [Amazon Bedrock regions](https://docs.aws.amazon.com/bedrock/latest/userguide/bedrock-regions.html)  | All AWS commercial regions                                                                                                                                                             |
+| **Anthropic organization** | None required                                                                                           | None required                                                                                            | New organization created at sign-up. Existing organizations can't be converted (see [Moving from an existing Anthropic organization](#moving-from-an-existing-anthropic-organization)) |
 
-If you're on the current Bedrock integration, the request body format is already the Messages API. The changes are the base URL, SigV4 service name, model IDs, and adding the `anthropic-workspace-id` header. If you're on the legacy InvokeModel or Converse API, you'll also rewrite the request and response shapes to the Messages API format. See [Claude on Amazon Bedrock (legacy)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy) for the request-shape mapping.
+If you're on the current Bedrock integration, the request body format is already the Messages API. The changes are the base URL, SigV4 service name, model IDs, and adding the `anthropic-workspace-id` header. If you're on the legacy InvokeModel or Converse API, you'll also rewrite the request and response shapes to the Messages API format. See [Claude on Amazon Bedrock (Opus 4.6 and earlier)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy) for the request-shape mapping.
 
 ### What you gain
 
@@ -91304,7 +91365,7 @@ Create the agent once as a reusable resource and reference it by ID each time yo
 | `tools`       | The tools available to the agent. Combines [pre-built agent tools](/docs/en/managed-agents/tools), [MCP tools](/docs/en/managed-agents/mcp-connector), and [custom tools](/docs/en/managed-agents/tools#custom-tools).                                                                                           |
 | `mcp_servers` | [MCP servers](/docs/en/managed-agents/mcp-connector) that provide standardized third-party capabilities.                                                                                                                                                                                                         |
 | `skills`      | [Skills](/docs/en/managed-agents/skills) that supply domain-specific context with progressive disclosure.                                                                                                                                                                                                        |
-| `multiagent`  | A coordinator declaration listing the agents this agent can delegate to. See [Multi-agent sessions](/docs/en/managed-agents/multi-agent).                                                                                                                                                                        |
+| `multiagent`  | A coordinator declaration listing the agents this agent can delegate to. See [Multiagent orchestration](/docs/en/managed-agents/multiagent-orchestration).                                                                                                                                                       |
 | `description` | A description of what the agent does.                                                                                                                                                                                                                                                                            |
 | `metadata`    | Arbitrary key-value pairs for your own tracking.                                                                                                                                                                                                                                                                 |
 
@@ -91592,7 +91653,7 @@ Updating an agent generates a new version when the configuration changes. The `v
 
 * **No-op detection.** If the update produces no change relative to the current version, no new version is created and the existing version is returned.
 
-* **Coordinator rosters are not updated.** Coordinators that reference this agent in their `multiagent.agents` roster keep the version that was pinned when the coordinator was created or last updated, even if the reference omits `version`. To delegate to the new version, [update the coordinator](/docs/en/managed-agents/multi-agent#configure-the-coordinator) so its roster references it.
+* **Coordinator rosters are not updated.** Coordinators that reference this agent in their `multiagent.agents` roster keep the version that was pinned when the coordinator was created or last updated, even if the reference omits `version`. To delegate to the new version, [update the coordinator](/docs/en/managed-agents/multiagent-orchestration#configure-the-coordinator) so its roster references it.
 
 ## Agent lifecycle
 
@@ -93259,7 +93320,7 @@ To list, retrieve, delete, and version custom skills, see [Managing custom skill
 
 ## Attach skills to an agent
 
-Attach skills when creating an agent. Each [session](/docs/en/managed-agents/sessions) supports up to 20 skills total, counted across every agent in the session (see [Multi-agent sessions](/docs/en/managed-agents/multi-agent)).
+Attach skills when creating an agent. Each [session](/docs/en/managed-agents/sessions) supports up to 20 skills total, counted across every agent in the session (see [Multiagent orchestration](/docs/en/managed-agents/multiagent-orchestration)).
 
 Each entry in the `skills` array uses the following fields:
 
@@ -94747,7 +94808,7 @@ Shared responsibility model for self-hosted sandbox environments.
 
 ---
 
-Anthropic secures the control plane across all environments: session and work queue integrity, multi-tenant isolation, and agent-context minimization. When you self-host, the following responsibilities fall to you.
+Anthropic secures the control plane across all environments: session and work queue integrity, multitenant isolation, and agent-context minimization. When you self-host, the following responsibilities fall to you.
 
 ## What you own
 
@@ -97410,7 +97471,7 @@ Runtime behavior:
 
 * When no MCP credential matches by `mcp_server_url`, the connection is attempted unauthenticated and will error if the server requires authentication.
 * When multiple vaults contain a matching credential, the first vault with a match wins.
-* In [multi-agent sessions](/docs/en/managed-agents/multi-agent), vault credentials apply to every thread. An agent whose own definition declares the matching MCP server authenticates with these credentials. See [Connect agents to MCP servers](/docs/en/managed-agents/multi-agent#connect-agents-to-mcp-servers).
+* In [multiagent sessions](/docs/en/managed-agents/multiagent-orchestration), vault credentials apply to every thread. An agent whose own definition declares the matching MCP server authenticates with these credentials. See [Connect agents to MCP servers](/docs/en/managed-agents/multiagent-orchestration#connect-agents-to-mcp-servers).
 
 ## Rotate a credential
 
@@ -99683,7 +99744,7 @@ By default, the agent's response text reaches the stream as buffered `agent.mess
 
 ### Opt in to previews
 
-Previews are opt-in per stream connection. Add the `event_deltas[]` query parameter to `GET /v1/sessions/{session_id}/events/stream`, repeating it once for each event type you want previewed. The accepted values are `agent.message` and `agent.thinking`; any other value returns a 400 error. Only the session-level event stream supports the parameter. [Session thread](/docs/en/managed-agents/multi-agent) event streams reject it.
+Previews are opt-in per stream connection. Add the `event_deltas[]` query parameter to `GET /v1/sessions/{session_id}/events/stream`, repeating it once for each event type you want previewed. The accepted values are `agent.message` and `agent.thinking`; any other value returns a 400 error. Only the session-level event stream supports the parameter. [Session thread](/docs/en/managed-agents/multiagent-orchestration) event streams reject it.
 
 When a previewed event begins, the stream emits an `event_start` carrying the upcoming event's type and `id`:
 
@@ -100195,7 +100256,7 @@ Previews are tuned for responsiveness. Build against these constraints:
 
 * **Best effort:** Under load, the server may shed deltas for an event. When it does, you receive a contiguous prefix of the text and then no further deltas for that event. The buffered `agent.message` still arrives complete. Never treat an accumulated preview as final.
 * **No replay on reconnect:** Deltas are delivered only to the connection that opted in, while it is open. If the stream drops, follow the [reconnect procedure](#integrating-events) in the Streaming events tab: reopen the stream and list the event history. The history includes any buffered events emitted while you were disconnected, including the `agent.message` your preview was waiting for. There is no way to re-request missed deltas.
-* **Primary thread, text only:** Previews cover assistant text on the session's primary thread. Tool use, tool results, MCP results, and activity on other [session threads](/docs/en/managed-agents/multi-agent) are never previewed.
+* **Primary thread, text only:** Previews cover assistant text on the session's primary thread. Tool use, tool results, MCP results, and activity on other [session threads](/docs/en/managed-agents/multiagent-orchestration) are never previewed.
 * **Start-only `agent.thinking`:** An `agent.thinking` preview emits only the `event_start` as a signal that a thinking block has started; no `event_delta` events follow it.
 * **Never persisted:** `event_start` and `event_delta` exist only on the live stream. They do not appear in the session's event history (`GET /v1/sessions/{session_id}/events`).
 
@@ -102362,18 +102423,18 @@ Webhook events return the event `type` and `id`, not the full object. When you r
 
 <Tabs>
   <Tab title="Session events">
-    | Event                              | Trigger                                                                                                                                          |
-    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-    | `session.status_run_started`       | Agent execution kicked off. This triggers at every session status transition to `running`.                                                       |
-    | `session.status_idled`             | Agent awaiting input, for example a tool permission approval or a new user message.                                                              |
-    | `session.status_rescheduled`       | A transient error occurred and the session is retrying automatically.                                                                            |
-    | `session.status_terminated`        | The session hit a terminal error.                                                                                                                |
-    | `session.thread_created`           | New [multi-agent thread](/docs/en/managed-agents/multi-agent) opened, meaning an additional agent called by the coordinator is kicking off work. |
-    | `session.thread_idled`             | An agent in a [multi-agent interaction](/docs/en/managed-agents/multi-agent) is waiting for input.                                               |
-    | `session.thread_terminated`        | A [multi-agent thread](/docs/en/managed-agents/multi-agent) was archived.                                                                        |
-    | `session.outcome_evaluation_ended` | [Outcome evaluation](/docs/en/managed-agents/define-outcomes) for a single iteration completed.                                                  |
-    | `session.updated`                  | Session properties changed (for example, its name or configuration was updated).                                                                 |
-    | `session.deleted`                  | Session permanently deleted. There is no object left to fetch, so treat the event itself as final.                                               |
+    | Event                              | Trigger                                                                                                                                                      |
+    | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | `session.status_run_started`       | Agent execution kicked off. This triggers at every session status transition to `running`.                                                                   |
+    | `session.status_idled`             | Agent awaiting input, for example a tool permission approval or a new user message.                                                                          |
+    | `session.status_rescheduled`       | A transient error occurred and the session is retrying automatically.                                                                                        |
+    | `session.status_terminated`        | The session hit a terminal error.                                                                                                                            |
+    | `session.thread_created`           | New [multiagent thread](/docs/en/managed-agents/multiagent-orchestration) opened, meaning an additional agent called by the coordinator is kicking off work. |
+    | `session.thread_idled`             | An agent in a [multiagent interaction](/docs/en/managed-agents/multiagent-orchestration) is waiting for input.                                               |
+    | `session.thread_terminated`        | A [multiagent thread](/docs/en/managed-agents/multiagent-orchestration) was archived.                                                                        |
+    | `session.outcome_evaluation_ended` | [Outcome evaluation](/docs/en/managed-agents/define-outcomes) for a single iteration completed.                                                              |
+    | `session.updated`                  | Session properties changed (for example, its name or configuration was updated).                                                                             |
+    | `session.deleted`                  | Session permanently deleted. There is no object left to fetch, so treat the event itself as final.                                                           |
   </Tab>
 
   <Tab title="Vault events">
@@ -106344,17 +106405,19 @@ When a store reaches its 2,000-memory limit, writes to new memories fail: both d
 
 ---
 
-# Multi-agent sessions
+# Multiagent orchestration
 
-# Multi-agent sessions
+# Multiagent orchestration
 
-**URL:** https://platform.claude.com/docs/en/managed-agents/multi-agent
+**URL:** https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration
 
 Coordinate multiple agents within a single session.
 
 ---
 
-Multi-agent orchestration lets one agent coordinate with others to complete complex work. Agents can act in parallel with their own isolated context, which helps improve output quality and can also improve time to completion.
+Multiagent orchestration lets one agent coordinate with others to complete complex work. Agents can act in parallel with their own isolated context, which helps improve output quality and can also improve time to completion.
+
+Not sure a multiagent setup fits your problem? See [when to use multiagent systems (and when not to)](https://claude.com/blog/building-multi-agent-systems-when-and-how-to-use-them).
 
 <Note>
   Managed Agents API requests require the `managed-agents-2026-04-01` beta header, except memory store endpoints, which use `agent-memory-2026-07-22` instead. The SDK sets the correct beta header automatically. See [Beta headers](/docs/en/api/beta-headers#endpoint-specific-headers).
@@ -106370,7 +106433,7 @@ Each agent uses its own configuration: model, system prompt, tools, MCP servers,
 
 ### What to delegate
 
-Multi-agent coordination is best suited for complex tasks that either require work across a variety of surfaces, or where multiple well-scoped tasks contribute to an overall goal.
+Multiagent coordination is best suited for complex tasks that either require work across a variety of surfaces, or where multiple well-scoped tasks contribute to an overall goal.
 
 Patterns that work well:
 
@@ -107388,7 +107451,7 @@ The session `status` is an aggregation of all agent activity; if at least one th
 
 ### Primary thread events
 
-These events surface multi-agent activity on the primary thread at `/v1/sessions/:id/events/stream`.
+These events surface multiagent activity on the primary thread at `/v1/sessions/:id/events/stream`.
 
 | Type                               | Description                                                                                                            |
 | ---------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
@@ -107802,6 +107865,8 @@ Create and manage deployments with the Claude API: run an agent on a recurring c
 ---
 
 A **scheduled deployment** allows an [agent](/docs/en/managed-agents/agent-setup) to start [sessions](/docs/en/managed-agents/sessions) autonomously, enabling task completion over a predictable cadence. You create and manage deployments with the Deployments API, part of the Claude API.
+
+For the launch context and examples of what teams run on schedules, see [scheduled deployments and vaults in Claude Managed Agents](https://claude.com/blog/whats-new-in-claude-managed-agents) on the blog.
 
 <Note>
   All Managed Agents API requests require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically.
@@ -108485,35 +108550,35 @@ Persisted event type strings follow a `{domain}.{action}` naming convention; the
   </Tab>
 
   <Tab title="Agent events">
-    | Type                             | Description                                                                                                         |
-    | -------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-    | `agent.message`                  | Agent response containing text content blocks.                                                                      |
-    | `agent.thinking`                 | Agent thinking content, emitted separately from messages.                                                           |
-    | `agent.tool_use`                 | Agent invokes a pre-built agent tool (bash, file operations, and so on).                                            |
-    | `agent.tool_result`              | Result of a pre-built agent tool execution.                                                                         |
-    | `agent.mcp_tool_use`             | Agent invokes an MCP server tool.                                                                                   |
-    | `agent.mcp_tool_result`          | Result of an MCP tool execution.                                                                                    |
-    | `agent.custom_tool_use`          | Agent invokes one of your custom tools. Respond with a `user.custom_tool_result` event.                             |
-    | `agent.thread_context_compacted` | Conversation history was compacted to fit the context window.                                                       |
-    | `agent.thread_message_received`  | In a [multi-agent](/docs/en/managed-agents/multi-agent) session, an agent delivered its result to the coordinator.  |
-    | `agent.thread_message_sent`      | In a [multi-agent](/docs/en/managed-agents/multi-agent) session, the coordinator sent a follow-up to another agent. |
+    | Type                             | Description                                                                                                                     |
+    | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+    | `agent.message`                  | Agent response containing text content blocks.                                                                                  |
+    | `agent.thinking`                 | Agent thinking content, emitted separately from messages.                                                                       |
+    | `agent.tool_use`                 | Agent invokes a pre-built agent tool (bash, file operations, and so on).                                                        |
+    | `agent.tool_result`              | Result of a pre-built agent tool execution.                                                                                     |
+    | `agent.mcp_tool_use`             | Agent invokes an MCP server tool.                                                                                               |
+    | `agent.mcp_tool_result`          | Result of an MCP tool execution.                                                                                                |
+    | `agent.custom_tool_use`          | Agent invokes one of your custom tools. Respond with a `user.custom_tool_result` event.                                         |
+    | `agent.thread_context_compacted` | Conversation history was compacted to fit the context window.                                                                   |
+    | `agent.thread_message_received`  | In a [multiagent](/docs/en/managed-agents/multiagent-orchestration) session, an agent delivered its result to the coordinator.  |
+    | `agent.thread_message_sent`      | In a [multiagent](/docs/en/managed-agents/multiagent-orchestration) session, the coordinator sent a follow-up to another agent. |
   </Tab>
 
   <Tab title="Session events">
-    | Type                                | Description                                                                                                                  |
-    | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
-    | `session.status_running`            | Agent is actively processing.                                                                                                |
-    | `session.status_idle`               | Agent finished its current task and is waiting for input. Includes a `stop_reason` indicating why the agent stopped.         |
-    | `session.status_rescheduled`        | A transient error occurred and the session is retrying automatically.                                                        |
-    | `session.status_terminated`         | Session ended because of an unrecoverable error.                                                                             |
-    | `session.deleted`                   | Session was deleted. Terminates any active event stream; no further events are emitted for this session.                     |
-    | `session.updated`                   | Session update request changed at least one field. Includes only the fields that changed. Updates apply on the next turn.    |
-    | `session.error`                     | An error occurred during processing. Includes a typed `error` object with a `retry_status`.                                  |
-    | `session.thread_created`            | A [multi-agent](/docs/en/managed-agents/multi-agent) thread was created.                                                     |
-    | `session.thread_status_running`     | A [multi-agent](/docs/en/managed-agents/multi-agent) thread started activity.                                                |
-    | `session.thread_status_idle`        | A [multi-agent](/docs/en/managed-agents/multi-agent) thread finished its turn and is awaiting input. Includes `stop_reason`. |
-    | `session.thread_status_rescheduled` | A [multi-agent](/docs/en/managed-agents/multi-agent) thread hit a transient error and is retrying automatically.             |
-    | `session.thread_status_terminated`  | A [multi-agent](/docs/en/managed-agents/multi-agent) thread was archived or reached a terminal error.                        |
+    | Type                                | Description                                                                                                                              |
+    | ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+    | `session.status_running`            | Agent is actively processing.                                                                                                            |
+    | `session.status_idle`               | Agent finished its current task and is waiting for input. Includes a `stop_reason` indicating why the agent stopped.                     |
+    | `session.status_rescheduled`        | A transient error occurred and the session is retrying automatically.                                                                    |
+    | `session.status_terminated`         | Session ended because of an unrecoverable error.                                                                                         |
+    | `session.deleted`                   | Session was deleted. Terminates any active event stream; no further events are emitted for this session.                                 |
+    | `session.updated`                   | Session update request changed at least one field. Includes only the fields that changed. Updates apply on the next turn.                |
+    | `session.error`                     | An error occurred during processing. Includes a typed `error` object with a `retry_status`.                                              |
+    | `session.thread_created`            | A [multiagent](/docs/en/managed-agents/multiagent-orchestration) thread was created.                                                     |
+    | `session.thread_status_running`     | A [multiagent](/docs/en/managed-agents/multiagent-orchestration) thread started activity.                                                |
+    | `session.thread_status_idle`        | A [multiagent](/docs/en/managed-agents/multiagent-orchestration) thread finished its turn and is awaiting input. Includes `stop_reason`. |
+    | `session.thread_status_rescheduled` | A [multiagent](/docs/en/managed-agents/multiagent-orchestration) thread hit a transient error and is retrying automatically.             |
+    | `session.thread_status_terminated`  | A [multiagent](/docs/en/managed-agents/multiagent-orchestration) thread was archived or reached a terminal error.                        |
   </Tab>
 
   <Tab title="Span events">
@@ -108624,6 +108689,10 @@ The [Admin API](/docs/en/api/admin) allows you to programmatically manage your o
   * An **Admin API key** (starting with `sk-ant-admin...`) sent in the `x-api-key` header. Only organization members with the admin role can provision one. See [Create an Admin API key](/docs/en/manage-claude/admin-api-keys).
   * An **OAuth bearer token** with the `org:admin` scope sent in the `authorization: Bearer` header. Only members with the admin, owner, or primary owner role can obtain one. See [Obtain an OAuth bearer token](#oauth-bearer-token).
 </Check>
+
+<Note>
+  **Claude Enterprise:** Claude Enterprise (claude.ai) organizations use the Admin API too, with a scoped API key created in claude.ai. Of the endpoints on this page, only members and invites are available to them (in beta), alongside Claude-Enterprise-only endpoints: groups and custom-role reads (beta), and [spend limits](/docs/en/manage-claude/spend-limits-api). See [User management](/docs/en/manage-claude/user-management) for Claude Enterprise.
+</Note>
 
 <Note>
   **Claude Platform on AWS:** Most of the Admin API is not available on Claude Platform on AWS. Workspace endpoints (create, get, list, update, and archive on `/v1/organizations/workspaces`) are available. Other endpoints including organization members, workspace members, invites, API keys, usage reports, cost reports, and rate limit reports are not available. See [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws) for details.
@@ -108906,6 +108975,585 @@ To effectively use the Admin API:
 </AccordionGroup>
 
 For workspace-specific questions, see the [Workspaces FAQ](/docs/en/manage-claude/workspaces#faq).
+
+
+---
+
+# User management
+
+# User management
+
+**URL:** https://platform.claude.com/docs/en/manage-claude/user-management
+
+Manage the people in your Claude Enterprise organization with the Admin API: list members and change roles, send and withdraw invites, manage groups, and read custom roles.
+
+---
+
+This page covers managing the people in your **Claude Enterprise** (claude.ai) organization programmatically, using the [Admin API](/docs/en/api/admin): list members and look them up by email address, change a member's role, remove members, send and withdraw invites, manage your enterprise's groups and their membership, and read your organization's custom roles. For Claude Console (Claude Platform) organizations, see the [Admin API guide for Claude Console](/docs/en/manage-claude/admin-api).
+
+<Note>
+  **The endpoints on this page are in beta for Claude Enterprise organizations.** The beta is enabled for all Claude Enterprise organizations. Group and custom-role requests must include the [beta header](/docs/en/api/beta-headers) `anthropic-beta: ce-user-management-2026-07-13`; requests without it return 404. Member and invite requests take no beta header.
+</Note>
+
+## Which endpoints can your organization use?
+
+The Admin API is a single set of endpoints under `https://api.anthropic.com/v1/organizations/`. Claude Console and Claude Enterprise organizations authenticate with [different keys](/docs/en/manage-claude/admin-api-keys) and each have access to a different subset of the endpoints:
+
+| Endpoints                                                                                                                                                                                                                                                                                             | Claude Console (Claude Platform)                             | Claude Enterprise (claude.ai)   |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ | ------------------------------- |
+| [Members](#members) and [invites](#invites)                                                                                                                                                                                                                                                           | Available; see [Admin API](/docs/en/manage-claude/admin-api) | **Beta** (this page)            |
+| [Groups](#groups)                                                                                                                                                                                                                                                                                     | Not available                                                | **Beta** (this page)            |
+| [Custom roles](#custom-roles)                                                                                                                                                                                                                                                                         | Not available                                                | **Beta**, read-only (this page) |
+| [Spend limits](/docs/en/manage-claude/spend-limits-api)                                                                                                                                                                                                                                               | Not available                                                | Available                       |
+| [Workspaces](/docs/en/manage-claude/workspaces), [API keys](/docs/en/manage-claude/admin-api#api-keys), [usage and cost reports](/docs/en/manage-claude/usage-cost-api), [rate limits](/docs/en/manage-claude/rate-limits-api), and the other [Admin API](/docs/en/manage-claude/admin-api) endpoints | Available                                                    | Not available                   |
+
+Members and invites are the same endpoints for both organization types; this page documents their Claude Enterprise behavior, including the Claude Enterprise [organization roles](#organization-roles). The group and custom-role endpoints exist only for Claude Enterprise.
+
+<Check>
+  **Scoped Admin API key required**
+
+  These endpoints require an Admin API key with the `read:members` scope (member and invite `GET` endpoints, and all custom-role endpoints; there is no separate role scope), the `write:members` scope (member and invite `POST` and `DELETE` endpoints), the `read:rbac_groups` scope (group `GET` endpoints), or the `write:rbac_groups` scope (group `POST` and `DELETE` endpoints). A key carrying the `read:org_audit` scope (a read-only scope for security-audit integrations) can also call every `GET` endpoint on this page and the [Compliance API](/docs/en/manage-claude/compliance-api) read endpoints. See [Create an Admin API key](/docs/en/manage-claude/admin-api-keys#create-a-key-for-a-claude-enterprise-organization) for where your primary owner creates one and which scopes to select. Pass the key in the `x-api-key` header on every request. Member and invite requests also require the `anthropic-version: 2023-06-01` header, as shown in the examples; group and custom-role requests do not, and instead require the `anthropic-beta` header described in the preceding note.
+</Check>
+
+## Overview
+
+This page covers five resources:
+
+| Resource          | Endpoints                                                                                                                                                                                                                 | Use for                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Members**       | `GET /v1/organizations/users` `GET /v1/organizations/users/{user_id}` `POST /v1/organizations/users/{user_id}` `DELETE /v1/organizations/users/{user_id}`                                                                 | List the organization's members or look one up by email; change a member's role; remove a member.          |
+| **Invites**       | `POST /v1/organizations/invites` `GET /v1/organizations/invites` `GET /v1/organizations/invites/{invite_id}` `DELETE /v1/organizations/invites/{invite_id}`                                                               | Invite a person to the organization, track the invitation's status, and withdraw it before it is accepted. |
+| **Groups**        | `GET /v1/organizations/rbac_groups` `GET /v1/organizations/rbac_groups/{group_id}` `POST /v1/organizations/rbac_groups` `POST /v1/organizations/rbac_groups/{group_id}` `DELETE /v1/organizations/rbac_groups/{group_id}` | Read your enterprise's groups and the custom roles attached to each; create, rename, and delete groups.    |
+| **Group members** | `GET /v1/organizations/rbac_groups/{group_id}/members` `POST /v1/organizations/rbac_groups/{group_id}/members` `DELETE /v1/organizations/rbac_groups/{group_id}/members/{user_id}`                                        | Read a group's members; add and remove members.                                                            |
+| **Custom roles**  | `GET /v1/organizations/rbac_roles` `GET /v1/organizations/rbac_roles/{role_id}` `GET /v1/organizations/rbac_roles/{role_id}/permissions`                                                                                  | Read your organization's custom roles and the permissions each role grants.                                |
+
+Custom roles and their group attachments are managed in [claude.ai organization settings](https://claude.ai/admin-settings); the API reads them but cannot change them.
+
+## Quick start
+
+List the organization's members, newest first:
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/users?limit=20" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+```json
+{
+  "data": [
+    {
+      "type": "user",
+      "id": "user_01AbCdEfGhIjKlMnOpQrSt",
+      "email": "jane@example.com",
+      "name": "Jane Smith",
+      "role": "user",
+      "added_at": "2026-06-12T09:14:03Z"
+    }
+  ],
+  "has_more": false,
+  "first_id": "user_01AbCdEfGhIjKlMnOpQrSt",
+  "last_id": "user_01AbCdEfGhIjKlMnOpQrSt"
+}
+```
+
+## Key concepts
+
+### Organization roles
+
+Every member has exactly one organization role. Reads return the member's role as one of five values:
+
+| Role               | Meaning                                                                                   |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| `user`             | A standard member.                                                                        |
+| `managed`          | A member whose permissions are granted through the custom roles attached to their groups. |
+| `owner`            | An organization owner.                                                                    |
+| `membership_admin` | A member who can manage the organization's members.                                       |
+| `primary_owner`    | The organization's primary owner. There is exactly one.                                   |
+
+The API can assign only the `user` and `managed` roles, on invite creation and on role updates. The administrative roles (`owner`, `membership_admin`, and `primary_owner`) are assigned in claude.ai organization settings, and members holding them cannot be modified or removed through this API.
+
+### Members and invites
+
+A person becomes a member by accepting an invite (or through your organization's single sign-on, where configured). Creating an invite sends an invitation email; the invite then reads as `pending` until the recipient accepts (`accepted`) or its server-assigned `expires_at` passes (`expired`). Only a `pending` invite can be withdrawn. To change a pending invitation's email address or role, withdraw it and create a new one.
+
+If your organization's plan draws members from a finite pool of purchased seats, a pending invite consumes a seat. The create-invite endpoint does not take a seat or tier parameter: the seat is assigned automatically from the lowest tier that has availability. Creating an invite when no seat is free fails with a 400 error rather than purchasing a seat. Withdrawing the invite, letting it expire, or removing the member later returns the seat to the pool.
+
+### Groups and roles
+
+Groups connect members to custom roles (role-based access control, the `rbac` in the endpoint paths and scope names). Groups are owned by your enterprise as a whole (the parent organization together with every organization under it) rather than by a single organization, so the group scopes (`read:rbac_groups` and `write:rbac_groups`) require a key created for all linked organizations. Each group carries a `source_type`: `direct` for groups created in claude.ai, `scim` for groups provisioned by your identity provider. A group's `roles` field lists the IDs of the custom roles attached to it; resolve them to names and permissions with the [custom role endpoints](#custom-roles), noting that the role catalog is per-organization while groups are enterprise-wide, so fetching a role that belongs to a different organization of your enterprise returns 404 for your key. The field is `null` (rather than `[]`) when role data was temporarily unavailable, so retry to distinguish a degraded read from a group with no roles.
+
+## Rate limits
+
+Admin API endpoints share a per-organization limit of **100 requests per minute**; invite creation has its own limit of **1,200 requests per hour** instead. Requests over a limit return **429 Too Many Requests**.
+
+## Pagination
+
+Member and invite lists use ID-based pagination: pass `limit` (default 20, max 1000) plus at most one of `before_id` or `after_id`, and page using the `first_id` and `last_id` fields of each response until `has_more` is `false`. Group and custom-role lists use an **opaque cursor** instead: the response's `next_page` value is passed unchanged as the `page` parameter on the next request, until `next_page` is `null`.
+
+## Error responses
+
+Error responses follow the standard shape documented in [Errors](/docs/en/api/errors).
+
+## Members
+
+### List members
+
+`GET /v1/organizations/users` returns the organization's members, most recently added first. Filter by `email` to look up a specific member; the match is case-insensitive and tolerates common variants of the same address (for example, `jane+hiring@example.com` matches `jane@example.com`). Requires the `read:members` scope.
+
+For complete parameter details and response schemas, see [List users](/docs/en/api/admin/users/list) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/users?email=jane@example.com" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+### Get a member
+
+`GET /v1/organizations/users/{user_id}` returns one member by ID. Requires the `read:members` scope.
+
+For complete parameter details and response schemas, see [Get user](/docs/en/api/admin/users/retrieve) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/users/user_01AbCdEfGhIjKlMnOpQrSt" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+### Change a member's role
+
+`POST /v1/organizations/users/{user_id}` sets the member's role to `user` or `managed`. Members holding an administrative role (`owner`, `membership_admin`, or `primary_owner`) cannot be changed through this endpoint, and administrative roles cannot be assigned; both return 400 and are managed in claude.ai organization settings. If your organization's identity provider manages roles (advanced SSO or advanced SCIM provisioning), role updates return 400. Requires the `write:members` scope.
+
+For complete parameter details and response schemas, see [Update user](/docs/en/api/admin/users/update) in the API reference.
+
+```bash cURL
+curl -X POST "https://api.anthropic.com/v1/organizations/users/user_01AbCdEfGhIjKlMnOpQrSt" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{"role": "managed"}'
+```
+
+### Remove a member
+
+`DELETE /v1/organizations/users/{user_id}` removes the member from the organization, returning any purchased seat they occupied to the organization's pool. Members holding an administrative role cannot be removed through this endpoint, and if your identity provider manages membership (SCIM), removals return 400. Requires the `write:members` scope.
+
+For complete parameter details and response schemas, see [Remove user](/docs/en/api/admin/users/delete) in the API reference.
+
+```bash cURL
+curl -X DELETE "https://api.anthropic.com/v1/organizations/users/user_01AbCdEfGhIjKlMnOpQrSt" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+```json
+{
+  "type": "user_deleted",
+  "id": "user_01AbCdEfGhIjKlMnOpQrSt"
+}
+```
+
+## Invites
+
+### Create an invite
+
+`POST /v1/organizations/invites` sends an invitation email and returns the invite with a server-assigned `expires_at`. `role` must be `user` or `managed`. If a pending invite already exists for the email address, or the address already belongs to a member, the request returns 400 naming the existing resource. Organizations whose identity provider provisions users automatically (JIT or SCIM) cannot create invites through the API. Requires the `write:members` scope.
+
+On plans that draw members from a finite seat pool, the invite automatically takes a seat from the lowest tier that has availability; the API does not take a tier parameter. If no seat is free, the request fails with a 400 error rather than purchasing a seat. Add seats through the organization's plan management and retry.
+
+The optional `rbac_group_ids` field lists groups (by `rbac_group_`-prefixed ID) to assign to the member when they accept. Passing a non-empty `rbac_group_ids` additionally requires the key to carry the `write:rbac_groups` scope, because group assignment can grant the permissions attached to the group's roles.
+
+For complete parameter details and response schemas, see [Create invite](/docs/en/api/admin/invites/create) in the API reference.
+
+```bash cURL
+curl -X POST "https://api.anthropic.com/v1/organizations/invites" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01" \
+  -d '{
+    "email": "newhire@example.com",
+    "role": "managed",
+    "rbac_group_ids": ["rbac_group_01UvWxYzAbCdEfGhIjKlMn"]
+  }'
+```
+
+```json
+{
+  "type": "invite",
+  "id": "invite_01QrStUvWxYzAbCdEfGhIj",
+  "email": "newhire@example.com",
+  "role": "managed",
+  "invited_at": "2026-07-06T16:20:11Z",
+  "expires_at": "2026-07-27T16:20:11Z",
+  "accepted_at": null,
+  "status": "pending",
+  "rbac_group_ids": ["rbac_group_01UvWxYzAbCdEfGhIjKlMn"]
+}
+```
+
+### List invites
+
+`GET /v1/organizations/invites` returns the organization's invites, most recent first, across the `pending`, `accepted`, and `expired` states; there is no status filter. Requires the `read:members` scope.
+
+For complete parameter details and response schemas, see [List invites](/docs/en/api/admin/invites/list) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/invites?limit=20" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+### Get an invite
+
+`GET /v1/organizations/invites/{invite_id}` returns one invite by ID. Requires the `read:members` scope.
+
+For complete parameter details and response schemas, see [Get invite](/docs/en/api/admin/invites/retrieve) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/invites/invite_01QrStUvWxYzAbCdEfGhIj" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+### Withdraw an invite
+
+`DELETE /v1/organizations/invites/{invite_id}` withdraws a `pending` invite, deactivating the link in the invitation email. Withdrawing an `accepted` invite returns 400 (remove the member instead); withdrawing an `expired` invite returns 400. Requires the `write:members` scope.
+
+For complete parameter details and response schemas, see [Delete invite](/docs/en/api/admin/invites/delete) in the API reference.
+
+```bash cURL
+curl -X DELETE "https://api.anthropic.com/v1/organizations/invites/invite_01QrStUvWxYzAbCdEfGhIj" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+## Groups
+
+Groups your enterprise creates directly, in [claude.ai organization settings](https://claude.ai/admin-settings) or through this API (`source_type: "direct"`), support every endpoint in this section. Groups provisioned by your identity provider (`source_type: "scim"`) can be read but not modified: renaming or deleting a SCIM group, or changing its membership, returns 400, because your identity provider owns it. Every group request must include the `anthropic-beta: ce-user-management-2026-07-13` header, as shown in the examples; requests without it return 404. Unlike member and invite requests, group requests do not require the `anthropic-version` header.
+
+### List groups
+
+`GET /v1/organizations/rbac_groups` returns your enterprise's groups, including identity-provider-managed (`scim`) groups. Requires the `read:rbac_groups` scope.
+
+For complete parameter details and response schemas, see [List groups](/docs/en/api/admin/rbac_groups/list) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/rbac_groups?limit=20" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13"
+```
+
+```json
+{
+  "data": [
+    {
+      "type": "rbac_group",
+      "id": "rbac_group_01UvWxYzAbCdEfGhIjKlMn",
+      "name": "Engineering",
+      "source_type": "direct",
+      "roles": ["rbac_role_01CdEfGhIjKlMnOpQrStUv"],
+      "created_at": "2026-03-18T10:01:42Z",
+      "updated_at": "2026-05-02T08:55:09Z"
+    }
+  ],
+  "has_more": false,
+  "next_page": null
+}
+```
+
+### Get a group
+
+`GET /v1/organizations/rbac_groups/{group_id}` returns one group by ID. Requires the `read:rbac_groups` scope.
+
+For complete parameter details and response schemas, see [Get group](/docs/en/api/admin/rbac_groups/retrieve) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_01UvWxYzAbCdEfGhIjKlMn" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13"
+```
+
+### Create a group
+
+`POST /v1/organizations/rbac_groups` creates a group with the given `name` (1–255 characters) and no roles or members. Requires the `write:rbac_groups` scope.
+
+For complete parameter details and response schemas, see [Create group](/docs/en/api/admin/rbac_groups/create) in the API reference.
+
+```bash cURL
+curl -X POST "https://api.anthropic.com/v1/organizations/rbac_groups" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13" \
+  -d '{"name": "Engineering"}'
+```
+
+```json
+{
+  "type": "rbac_group",
+  "id": "rbac_group_01UvWxYzAbCdEfGhIjKlMn",
+  "name": "Engineering",
+  "source_type": "direct",
+  "roles": [],
+  "created_at": "2026-07-09T18:00:00Z",
+  "updated_at": "2026-07-09T18:00:00Z"
+}
+```
+
+### Rename a group
+
+`POST /v1/organizations/rbac_groups/{group_id}` updates the group. `name` is the only field this endpoint can change. Requires the `write:rbac_groups` scope.
+
+For complete parameter details and response schemas, see [Update group](/docs/en/api/admin/rbac_groups/update) in the API reference.
+
+```bash cURL
+curl -X POST "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_01UvWxYzAbCdEfGhIjKlMn" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13" \
+  -d '{"name": "Platform Engineering"}'
+```
+
+### Delete a group
+
+`DELETE /v1/organizations/rbac_groups/{group_id}` deletes the group. Its members remain members of their organizations, but they lose the permissions of its attached roles, and a group [spend limit](/docs/en/manage-claude/spend-limits-api), if one existed, stops applying to them. Requires the `write:rbac_groups` scope.
+
+For complete parameter details and response schemas, see [Delete group](/docs/en/api/admin/rbac_groups/delete) in the API reference.
+
+```bash cURL
+curl -X DELETE "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_01UvWxYzAbCdEfGhIjKlMn" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13"
+```
+
+```json
+{
+  "id": "rbac_group_01UvWxYzAbCdEfGhIjKlMn",
+  "type": "rbac_group_deleted"
+}
+```
+
+### List a group's members
+
+`GET /v1/organizations/rbac_groups/{group_id}/members` returns the group's members (each with their `user_id` and email), oldest first. Only current members of your enterprise's organizations are returned, so a page might contain fewer than `limit` entries while `has_more` is `true`. Requires the `read:rbac_groups` scope.
+
+For complete parameter details and response schemas, see [List group members](/docs/en/api/admin/rbac_groups/members/list) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_01UvWxYzAbCdEfGhIjKlMn/members?limit=100" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13"
+```
+
+```json
+{
+  "data": [
+    {
+      "type": "rbac_group_member",
+      "group_id": "rbac_group_01UvWxYzAbCdEfGhIjKlMn",
+      "user_id": "user_01AbCdEfGhIjKlMnOpQrSt",
+      "email": "jane@example.com",
+      "created_at": "2026-04-07T12:30:00Z"
+    }
+  ],
+  "has_more": false,
+  "next_page": null
+}
+```
+
+### Add a member to a group
+
+`POST /v1/organizations/rbac_groups/{group_id}/members` adds an organization member to the group by `user_id`. The user must already be a member of one of your enterprise's organizations (the request returns 404 otherwise), and adding someone who is already in the group returns 400. For `scim` groups, membership is managed in your identity provider and this request returns 400. To assign groups to a person who has not joined yet, use `rbac_group_ids` on [invite creation](#create-an-invite) instead. Requires the `write:rbac_groups` scope.
+
+For complete parameter details and response schemas, see [Add group member](/docs/en/api/admin/rbac_groups/members/create) in the API reference.
+
+```bash cURL
+curl -X POST "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_01UvWxYzAbCdEfGhIjKlMn/members" \
+  -H "content-type: application/json" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13" \
+  -d '{"user_id": "user_01AbCdEfGhIjKlMnOpQrSt"}'
+```
+
+```json
+{
+  "type": "rbac_group_member",
+  "group_id": "rbac_group_01UvWxYzAbCdEfGhIjKlMn",
+  "user_id": "user_01AbCdEfGhIjKlMnOpQrSt",
+  "email": "jane@example.com",
+  "created_at": "2026-07-09T18:00:00Z"
+}
+```
+
+### Remove a member from a group
+
+`DELETE /v1/organizations/rbac_groups/{group_id}/members/{user_id}` removes the member from the group; they remain a member of their organization. The request returns 404 if the user is not a member of the group, and 400 for `scim` groups, whose membership is managed in your identity provider. Requires the `write:rbac_groups` scope.
+
+For complete parameter details and response schemas, see [Remove group member](/docs/en/api/admin/rbac_groups/members/delete) in the API reference.
+
+```bash cURL
+curl -X DELETE "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_01UvWxYzAbCdEfGhIjKlMn/members/user_01AbCdEfGhIjKlMnOpQrSt" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13"
+```
+
+```json
+{
+  "group_id": "rbac_group_01UvWxYzAbCdEfGhIjKlMn",
+  "user_id": "user_01AbCdEfGhIjKlMnOpQrSt",
+  "type": "rbac_group_member_deleted"
+}
+```
+
+## Custom roles
+
+Custom roles are read-only through the API: these endpoints catalog your organization's custom roles (defined in [claude.ai organization settings](https://claude.ai/admin-settings) or provisioned by Anthropic) and the permissions each role grants. Custom-role reads use the `read:members` scope (there is no separate role scope) and work with an organization-level key: unlike the group endpoints, they do not require a key created for all linked organizations, and the catalog returned is your organization's own. Custom-role requests, like group requests, must include the `anthropic-beta: ce-user-management-2026-07-13` header; requests without it return 404.
+
+### List roles
+
+`GET /v1/organizations/rbac_roles` returns your organization's custom roles. Requires the `read:members` scope.
+
+For complete parameter details and response schemas, see [List roles](/docs/en/api/admin/rbac_roles/list) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/rbac_roles?limit=20" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13"
+```
+
+```json
+{
+  "data": [
+    {
+      "type": "rbac_role",
+      "id": "rbac_role_01CdEfGhIjKlMnOpQrStUv",
+      "name": "Engineering base",
+      "created_at": "2026-03-18T10:01:42Z",
+      "updated_at": "2026-05-02T08:55:09Z"
+    }
+  ],
+  "has_more": false,
+  "next_page": null
+}
+```
+
+### Get a role
+
+`GET /v1/organizations/rbac_roles/{role_id}` returns one role by ID. Requires the `read:members` scope.
+
+For complete parameter details and response schemas, see [Get role](/docs/en/api/admin/rbac_roles/retrieve) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/rbac_roles/rbac_role_01CdEfGhIjKlMnOpQrStUv" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13"
+```
+
+### List a role's permissions
+
+`GET /v1/organizations/rbac_roles/{role_id}/permissions` returns the role's permissions. Each permission pairs a `resource` (what it applies to: the organization's product features, a connector tool, a connector OAuth scope, one connector, or every connector) with an `action` (what it grants on that resource). Rows for features not enabled for your organization are omitted, so a page might contain fewer than `limit` rows while `has_more` is `true`. Requires the `read:members` scope.
+
+Two `action` values need special care: an `organization` permission whose action is `capability_access_all` (every product feature) or `capability_access_all_ga` (every generally available product feature) is a blanket grant (one that covers neither model access nor the `permission_`-prefixed admin-panel permissions) and is listed as that single row rather than expanded. When you tally what a role grants, treat a blanket row as covering everything its variant describes, not just the features named in other rows.
+
+For complete parameter details and response schemas, see [List role permissions](/docs/en/api/admin/rbac_roles/permissions/list) in the API reference.
+
+```bash cURL
+curl "https://api.anthropic.com/v1/organizations/rbac_roles/rbac_role_01CdEfGhIjKlMnOpQrStUv/permissions?limit=20" \
+  -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+  -H "anthropic-beta: ce-user-management-2026-07-13"
+```
+
+```json
+{
+  "data": [
+    {
+      "type": "rbac_role_permission",
+      "resource": {
+        "type": "organization",
+        "organization_id": "12345678-1234-5678-1234-567812345678"
+      },
+      "action": "capability_access_all_ga"
+    },
+    {
+      "type": "rbac_role_permission",
+      "resource": {
+        "type": "connector_tool",
+        "connector_id": "mcpsrv_01WxYzAbCdEfGhIjKlMnOp",
+        "tool_name": "search_tickets"
+      },
+      "action": "use"
+    }
+  ],
+  "has_more": false,
+  "next_page": null
+}
+```
+
+## Example workflows
+
+### Offboard a departing employee
+
+1. Look up the member by email:
+
+   ```bash cURL
+   curl "https://api.anthropic.com/v1/organizations/users?email=departing@example.com" \
+     -H "x-api-key: $ANTHROPIC_ADMIN_KEY" \
+     -H "anthropic-version: 2023-06-01"
+   ```
+
+2. Remove them with `DELETE /v1/organizations/users/{user_id}`, using the `id` from the response. Their seat, if any, returns to the pool.
+
+3. If the person had not yet joined, the lookup returns no member; list invites and withdraw their `pending` invite instead.
+
+### Audit group membership
+
+1. List groups and record each group's `id`, `name`, and `roles`.
+
+2. For each group that carries sensitive roles, page through `GET /v1/organizations/rbac_groups/{group_id}/members` and compare the member emails against your identity provider's roster.
+
+3. Remove members who should no longer be in the group with `DELETE /v1/organizations/rbac_groups/{group_id}/members/{user_id}`. For `scim` groups, make the change in your identity provider instead.
+
+## Frequently asked questions
+
+### Is this a different API from the Admin API?
+
+No. The member and invite endpoints are the same `/v1/organizations/` endpoints that Claude Console organizations use; this page documents their Claude Enterprise behavior. The group and custom-role endpoints are part of the same API and exist only for Claude Enterprise organizations. The [availability table](#which-endpoints-can-your-organization-use) shows which endpoints each organization type can call.
+
+### Can I assign the owner or membership admin role through the API?
+
+No. The API assigns only `user` and `managed`, on invite creation and role updates. Administrative roles are assigned in claude.ai organization settings, and members holding them cannot be modified or removed through the API.
+
+### Can I create or modify groups through the API?
+
+Yes, with the `write:rbac_groups` scope: create, rename, and delete groups, and add or remove their members. Two things the API cannot change: groups provisioned by your identity provider (`source_type: "scim"`), whose name and membership are owned by the identity provider, and custom roles, which are managed in claude.ai organization settings (the API [reads them](#custom-roles)).
+
+### Does an unaccepted invite consume a seat?
+
+On plans with a finite seat pool, yes: a `pending` invite holds a seat. Withdrawing the invite or letting it expire frees the seat. On plans without a seat pool, invites consume nothing.
+
+### My organization uses single sign-on. Which operations work?
+
+If your identity provider provisions users automatically (JIT or SCIM), invite creation returns 400. If it manages roles (advanced SSO or advanced SCIM provisioning), role updates return 400. If it manages membership (SCIM provisioning), member removals return 400. Reads work regardless.
+
+## See also
+
+<CardGroup cols={2}>
+  <Card title="Create an Admin API key" href="/docs/en/manage-claude/admin-api-keys">
+    Where your primary owner creates a scoped key and which scopes to select.
+  </Card>
+
+  <Card title="Compliance API" href="/docs/en/manage-claude/compliance-org-data">
+    Read organizations, users, roles, groups, and settings for audit and eDiscovery.
+  </Card>
+
+  <Card title="Analytics APIs" href="/docs/en/manage-claude/analytics-api">
+    Per-user and time-bucketed usage and cost reporting for Claude Enterprise.
+  </Card>
+
+  <Card title="Spend Limits API" href="/docs/en/manage-claude/spend-limits-api">
+    Set per-member spend limits and review increase requests.
+  </Card>
+</CardGroup>
 
 
 ---
@@ -109424,10 +110072,10 @@ Where you create the key depends on which Claude product your organization uses.
 
 ## Which key do you need?
 
-| Your organization                                           | Create the key in                                                                         | Key prefix           | Who can create it                                                                                                                                                                          | Works with                                                                                                                                                                                                                                                                                                                                    |
-| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Claude Console** (Claude Platform, `platform.claude.com`) | [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys) | `sk-ant-admin01-...` | Organization members with the **admin** role                                                                                                                                               | [Admin API](/docs/en/manage-claude/admin-api), [Usage and Cost API](/docs/en/manage-claude/usage-cost-api), [Rate Limits API](/docs/en/manage-claude/rate-limits-api), [Claude Code Analytics API](/docs/en/manage-claude/claude-code-analytics-api), and the Compliance API [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) |
-| **Claude Enterprise** (`claude.ai`)                         | [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access)    | `sk-ant-api01-...`   | The parent organization's **primary owner** (all linked organizations). An **organization owner** can create one carrying Compliance API scopes only, restricted to their own organization | [Compliance API](/docs/en/manage-claude/compliance-api), [Claude Enterprise Analytics API](/docs/en/manage-claude/analytics-api), and [Spend Limits API](/docs/en/manage-claude/spend-limits-api), according to the [scopes](#choose-scopes-for-a-claude-enterprise-key) you select                                                           |
+| Your organization                                           | Create the key in                                                                         | Key prefix           | Who can create it                                                                                                                                                                          | Works with                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ----------------------------------------------------------- | ----------------------------------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Claude Console** (Claude Platform, `platform.claude.com`) | [Claude Console > Settings > Admin keys](https://platform.claude.com/settings/admin-keys) | `sk-ant-admin01-...` | Organization members with the **admin** role                                                                                                                                               | [Admin API](/docs/en/manage-claude/admin-api), [Usage and Cost API](/docs/en/manage-claude/usage-cost-api), [Rate Limits API](/docs/en/manage-claude/rate-limits-api), [Claude Code Analytics API](/docs/en/manage-claude/claude-code-analytics-api), and the Compliance API [Activity Feed](/docs/en/manage-claude/compliance-activity-feed)                                                                 |
+| **Claude Enterprise** (`claude.ai`)                         | [claude.ai > Organization settings > API](https://claude.ai/admin-settings/api-access)    | `sk-ant-api01-...`   | The parent organization's **primary owner** (all linked organizations). An **organization owner** can create one carrying Compliance API scopes only, restricted to their own organization | [User management](/docs/en/manage-claude/user-management) (the Admin API's member, invite, and group endpoints, in beta), [Compliance API](/docs/en/manage-claude/compliance-api), [Claude Enterprise Analytics API](/docs/en/manage-claude/analytics-api), and [Spend Limits API](/docs/en/manage-claude/spend-limits-api), according to the [scopes](#choose-scopes-for-a-claude-enterprise-key) you select |
 
 A key created in one organization cannot be used to manage a different organization. If your company uses both Claude Console and Claude Enterprise, create one key in each.
 
@@ -109475,15 +110123,20 @@ A key created in one organization cannot be used to manage a different organizat
 
 When you create a Claude Enterprise key, select every scope that the APIs you plan to call require. Scopes are fixed at creation; to add a scope later, create a new key.
 
-| To call...                                                                                                                             | Select these scopes           |
-| -------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
-| [Spend Limits API](/docs/en/manage-claude/spend-limits-api): read members' effective spend limits and increase requests                | `read:spend_limits`           |
-| [Spend Limits API](/docs/en/manage-claude/spend-limits-api): set or clear per-user spend limits; approve or deny increase requests     | `write:spend_limits`          |
-| [Claude Enterprise Analytics API](/docs/en/manage-claude/analytics-api): engagement, adoption, cost, and usage reports                 | `read:analytics`              |
-| [Compliance API Activity Feed](/docs/en/manage-claude/compliance-activity-feed): organization-wide activity events                     | `read:compliance_activities`  |
-| [Compliance API content endpoints](/docs/en/manage-claude/compliance-content-data): read chats, files, projects, and users             | `read:compliance_user_data`   |
-| [Compliance API content endpoints](/docs/en/manage-claude/compliance-content-data): delete chats, files, and projects                  | `delete:compliance_user_data` |
-| [Compliance API organization endpoints](/docs/en/manage-claude/compliance-org-data): read organization metadata and effective settings | `read:compliance_org_data`    |
+| To call...                                                                                                                                                                                                                                      | Select these scopes           |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------- |
+| Admin API [user management](/docs/en/manage-claude/user-management): list and look up members and invites; read custom roles and their permissions                                                                                              | `read:members`                |
+| Admin API [user management](/docs/en/manage-claude/user-management): change member roles, remove members, create and withdraw invites                                                                                                           | `write:members`               |
+| Admin API [user management](/docs/en/manage-claude/user-management): read groups and their members                                                                                                                                              | `read:rbac_groups`            |
+| Admin API [user management](/docs/en/manage-claude/user-management): create, rename, and delete groups; add and remove group members; assign groups on invite creation                                                                          | `write:rbac_groups`           |
+| [Spend Limits API](/docs/en/manage-claude/spend-limits-api): read members' effective spend limits and increase requests                                                                                                                         | `read:spend_limits`           |
+| [Spend Limits API](/docs/en/manage-claude/spend-limits-api): set or clear per-user spend limits; approve or deny increase requests                                                                                                              | `write:spend_limits`          |
+| [Claude Enterprise Analytics API](/docs/en/manage-claude/analytics-api): engagement, adoption, cost, and usage reports                                                                                                                          | `read:analytics`              |
+| [Compliance API Activity Feed](/docs/en/manage-claude/compliance-activity-feed): organization-wide activity events                                                                                                                              | `read:compliance_activities`  |
+| [Compliance API content endpoints](/docs/en/manage-claude/compliance-content-data): read chats, files, projects, and users                                                                                                                      | `read:compliance_user_data`   |
+| [Compliance API content endpoints](/docs/en/manage-claude/compliance-content-data): delete chats, files, and projects                                                                                                                           | `delete:compliance_user_data` |
+| [Compliance API organization endpoints](/docs/en/manage-claude/compliance-org-data): read organization metadata and effective settings                                                                                                          | `read:compliance_org_data`    |
+| Admin API [user management](/docs/en/manage-claude/user-management) read endpoints and every Compliance API read endpoint, with a single read-only scope (for security-audit integrations; does not include the Spend Limits or Analytics APIs) | `read:org_audit`              |
 
 The Compliance and Analytics APIs must be enabled for your organization before keys with those scopes can be used. See [Set up the Compliance API](/docs/en/manage-claude/compliance-api-access#set-up-the-compliance-api) and [Analytics APIs](/docs/en/manage-claude/analytics-api#get-access-to-the-claude-enterprise-analytics-api).
 
@@ -110175,7 +110828,7 @@ You can construct the client with explicit credentials or with no arguments. Wit
     -H "content-type: application/json" \
     --data @- <<'JSON' | jq -r '.content[0].text'
   {
-    "model": "claude-sonnet-4-6",
+    "model": "claude-opus-4-8",
     "max_tokens": 1024,
     "messages": [{"role": "user", "content": "Hello, Claude"}]
   }
@@ -110198,7 +110851,7 @@ You can construct the client with explicit credentials or with no arguments. Wit
   )
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello, Claude"}],
   )
@@ -110223,7 +110876,7 @@ You can construct the client with explicit credentials or with no arguments. Wit
   });
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello, Claude" }]
   });
@@ -110248,7 +110901,7 @@ You can construct the client with explicit credentials or with no arguments. Wit
   )
 
   message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-  	Model:     anthropic.ModelClaudeSonnet4_6,
+  	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 1024,
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello, Claude")),
@@ -110279,7 +110932,7 @@ You can construct the client with explicit credentials or with no arguments. Wit
           .build();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello, Claude")
           .build());
@@ -110300,7 +110953,7 @@ You can construct the client with explicit credentials or with no arguments. Wit
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello, Claude" }],
   });
@@ -110333,7 +110986,7 @@ You can construct the client with explicit credentials or with no arguments. Wit
   ));
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello, Claude']],
   );
@@ -110355,7 +111008,7 @@ You can construct the client with explicit credentials or with no arguments. Wit
   )
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello, Claude"}]
   )
@@ -110579,7 +111232,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
     -H "anthropic-version: 2023-06-01" \
     -H "content-type: application/json" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-opus-4-8",
       "max_tokens": 1024,
       "messages": [{"role": "user", "content": "Hello from AWS"}]
     }' | jq -r '.content[0].text'
@@ -110614,7 +111267,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
   )
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello from AWS"}],
   )
@@ -110652,7 +111305,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
   });
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello from AWS" }]
   });
@@ -110693,7 +111346,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
   )
 
   message, err := client.Messages.New(ctx, anthropic.MessageNewParams{
-  	Model:     anthropic.ModelClaudeSonnet4_6,
+  	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 1024,
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello from AWS")),
@@ -110725,7 +111378,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
           .build();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello from AWS")
           .build());
@@ -110746,7 +111399,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello from AWS" }],
   });
@@ -110788,7 +111441,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
   # ANTHROPIC_FEDERATION_RULE_ID, ANTHROPIC_ORGANIZATION_ID, and
   # ANTHROPIC_SERVICE_ACCOUNT_ID, and ANTHROPIC_WORKSPACE_ID are read from the environment
   ant messages create \
-    --model claude-sonnet-4-6 \
+    --model claude-opus-4-8 \
     --max-tokens 1024 \
     --message '{role: user, content: "Hello from AWS"}'
   ```
@@ -110812,7 +111465,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
   ));
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello from AWS']],
   );
@@ -110841,7 +111494,7 @@ Call `GetWebIdentityToken` with `https://api.anthropic.com` as the audience, the
   )
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello from AWS"}]
   )
@@ -111032,7 +111685,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
     -H "anthropic-version: 2023-06-01" \
     -H "content-type: application/json" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-opus-4-8",
       "max_tokens": 1024,
       "messages": [{"role": "user", "content": "Hello from EKS"}]
     }' | jq -r '.content[0].text'
@@ -111057,7 +111710,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
   )
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello from EKS"}],
   )
@@ -111082,7 +111735,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
   });
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello from EKS" }]
   });
@@ -111114,7 +111767,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
   )
 
   message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-  	Model:     anthropic.ModelClaudeSonnet4_6,
+  	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 1024,
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello from EKS")),
@@ -111130,7 +111783,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
   AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello from EKS")
           .build());
@@ -111145,7 +111798,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello from EKS" }],
   });
@@ -111162,7 +111815,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
   # Reads ANTHROPIC_FEDERATION_RULE_ID, ANTHROPIC_ORGANIZATION_ID,
   # ANTHROPIC_SERVICE_ACCOUNT_ID, ANTHROPIC_WORKSPACE_ID, and ANTHROPIC_IDENTITY_TOKEN_FILE
   ant messages create \
-    --model claude-sonnet-4-6 \
+    --model claude-opus-4-8 \
     --max-tokens 1024 \
     --message '{role: user, content: "Hello from EKS"}'
   ```
@@ -111175,7 +111828,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
   $client = new Client();
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello from EKS']],
   );
@@ -111190,7 +111843,7 @@ Inside the pod, the projected token is at `/var/run/secrets/anthropic.com/token`
   client = Anthropic::Client.new
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello from EKS"}]
   )
@@ -111416,7 +112069,7 @@ Set the federation environment variables on the job and call the SDK normally. `
     -H "anthropic-version: 2023-06-01" \
     -H "content-type: application/json" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-opus-4-8",
       "max_tokens": 1024,
       "messages": [{"role": "user", "content": "Hello, Claude"}]
     }' | jq -r '.content[0].text'
@@ -111431,7 +112084,7 @@ Set the federation environment variables on the job and call the SDK normally. `
   client = anthropic.Anthropic()
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello, Claude"}],
   )
@@ -111447,7 +112100,7 @@ Set the federation environment variables on the job and call the SDK normally. `
   const client = new Anthropic();
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello, Claude" }]
   });
@@ -111465,7 +112118,7 @@ Set the federation environment variables on the job and call the SDK normally. `
   client := anthropic.NewClient()
 
   message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-  	Model:     anthropic.ModelClaudeSonnet4_6,
+  	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 1024,
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello, Claude")),
@@ -111481,7 +112134,7 @@ Set the federation environment variables on the job and call the SDK normally. `
   AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello, Claude")
           .build());
@@ -111496,7 +112149,7 @@ Set the federation environment variables on the job and call the SDK normally. `
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello, Claude" }],
   });
@@ -111514,7 +112167,7 @@ Set the federation environment variables on the job and call the SDK normally. `
   # ANTHROPIC_SERVICE_ACCOUNT_ID, ANTHROPIC_WORKSPACE_ID, and ANTHROPIC_IDENTITY_TOKEN_FILE
   # from the job environment.
   ant messages create \
-    --model claude-sonnet-4-6 \
+    --model claude-opus-4-8 \
     --max-tokens 1024 \
     --message '{role: user, content: "Hello, Claude"}'
   ```
@@ -111528,7 +112181,7 @@ Set the federation environment variables on the job and call the SDK normally. `
   $client = new Client();
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello, Claude']],
   );
@@ -111544,7 +112197,7 @@ Set the federation environment variables on the job and call the SDK normally. `
   client = Anthropic::Client.new
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello, Claude"}]
   )
@@ -111741,7 +112394,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
     -H "anthropic-version: 2023-06-01" \
     -H "content-type: application/json" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-opus-4-8",
       "max_tokens": 1024,
       "messages": [{"role": "user", "content": "Hello from Cloud Run"}]
     }' | jq -r '.content[0].text'
@@ -111773,7 +112426,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
   )
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello from Cloud Run"}],
   )
@@ -111807,7 +112460,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
   });
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello from Cloud Run" }]
   });
@@ -111843,7 +112496,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
   )
 
   message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-  	Model:     anthropic.ModelClaudeSonnet4_6,
+  	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 1024,
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello from Cloud Run")),
@@ -111879,7 +112532,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
           .build();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello from Cloud Run")
           .build());
@@ -111900,7 +112553,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello from Cloud Run" }],
   });
@@ -111940,7 +112593,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
   # ANTHROPIC_FEDERATION_RULE_ID, ANTHROPIC_ORGANIZATION_ID, and
   # ANTHROPIC_SERVICE_ACCOUNT_ID, and ANTHROPIC_WORKSPACE_ID are read from the environment.
   ant messages create \
-    --model claude-sonnet-4-6 \
+    --model claude-opus-4-8 \
     --max-tokens 1024 \
     --message '{role: user, content: "Hello from Cloud Run"}'
   ```
@@ -111965,7 +112618,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
   $client = new Client(credentials: $credentials);
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello from Cloud Run']],
   );
@@ -111988,7 +112641,7 @@ Inside your Google Cloud workload, fetch the identity token from the metadata se
   client = Anthropic::Client.new(credentials: credentials)
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello from Cloud Run"}]
   )
@@ -112186,7 +112839,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
     -H "anthropic-version: 2023-06-01" \
     -H "content-type: application/json" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-opus-4-8",
       "max_tokens": 1024,
       "messages": [{"role": "user", "content": "Hello, Claude"}]
     }' | jq -r '.content[0].text'
@@ -112201,7 +112854,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
   client = anthropic.Anthropic()
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello, Claude"}],
   )
@@ -112217,7 +112870,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
   const client = new Anthropic();
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello, Claude" }]
   });
@@ -112235,7 +112888,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
   client := anthropic.NewClient()
 
   message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-  	Model:     anthropic.ModelClaudeSonnet4_6,
+  	Model:     anthropic.ModelClaudeOpus4_8,
   	MaxTokens: 1024,
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello, Claude")),
@@ -112251,7 +112904,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
   AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello, Claude")
           .build());
@@ -112266,7 +112919,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello, Claude" }],
   });
@@ -112283,7 +112936,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
   # Reads ANTHROPIC_FEDERATION_RULE_ID, ANTHROPIC_ORGANIZATION_ID,
   # ANTHROPIC_SERVICE_ACCOUNT_ID, ANTHROPIC_WORKSPACE_ID, and ANTHROPIC_IDENTITY_TOKEN_FILE
   ant messages create \
-    --model claude-sonnet-4-6 \
+    --model claude-opus-4-8 \
     --max-tokens 1024 \
     --message '{role: user, content: "Hello, Claude"}'
   ```
@@ -112296,7 +112949,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
   $client = new Client();
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello, Claude']],
   );
@@ -112311,7 +112964,7 @@ The pod spec in [Configure Kubernetes](#configure-kubernetes) sets `ANTHROPIC_ID
   client = Anthropic::Client.new
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello, Claude"}]
   )
@@ -112540,7 +113193,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
     -H "anthropic-version: 2023-06-01" \
     -H "content-type: application/json" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-opus-4-8",
       "max_tokens": 1024,
       "messages": [{"role": "user", "content": "Hello from Azure"}]
     }' | jq -r '.content[0].text'
@@ -112592,7 +113245,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
   )
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello from Azure"}],
   )
@@ -112635,7 +113288,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
   });
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello from Azure" }]
   });
@@ -112705,7 +113358,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
   	)
 
   	message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-  		Model:     anthropic.ModelClaudeSonnet4_6,
+  		Model:     anthropic.ModelClaudeOpus4_8,
   		MaxTokens: 1024,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello from Azure")),
@@ -112753,7 +113406,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
           .build();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello from Azure")
           .build());
@@ -112774,7 +113427,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello from Azure" }],
   });
@@ -112856,7 +113509,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
   $client = new Client(credentials: $credentials);
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello from Azure']],
   );
@@ -112896,7 +113549,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
   client = Anthropic::Client.new(credentials: credentials)
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello from Azure"}]
   )
@@ -112919,7 +113572,7 @@ The samples fetch the managed identity token from the platform's token endpoint:
   # ANTHROPIC_FEDERATION_RULE_ID, ANTHROPIC_ORGANIZATION_ID,
   # ANTHROPIC_SERVICE_ACCOUNT_ID, and ANTHROPIC_WORKSPACE_ID are read from the environment.
   ant messages create \
-    --model claude-sonnet-4-6 \
+    --model claude-opus-4-8 \
     --max-tokens 1024 \
     --message '{role: user, content: "Hello from Azure"}'
   ```
@@ -113143,7 +113796,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
     -H "anthropic-version: 2023-06-01" \
     -H "content-type: application/json" \
     -d '{
-      "model": "claude-sonnet-4-6",
+      "model": "claude-opus-4-8",
       "max_tokens": 1024,
       "messages": [{"role": "user", "content": "Hello from Azure"}]
     }' | jq -r '.content[0].text'
@@ -113186,7 +113839,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
   )
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello from Azure"}],
   )
@@ -113231,7 +113884,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
   });
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello from Azure" }]
   });
@@ -113300,7 +113953,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
   		}),
   	)
   	message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-  		Model:     anthropic.ModelClaudeSonnet4_6,
+  		Model:     anthropic.ModelClaudeOpus4_8,
   		MaxTokens: 1024,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello from Azure")),
@@ -113347,7 +114000,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
           .build();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello from Azure")
           .build());
@@ -113368,7 +114021,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello from Azure" }],
   });
@@ -113440,7 +114093,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
   );
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello from Azure']],
   );
@@ -113477,7 +114130,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
   )
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello from Azure"}]
   )
@@ -113502,7 +114155,7 @@ Two different client IDs appear in the samples. `<APP_ID>` is the audience app r
   # ANTHROPIC_ORGANIZATION_ID, ANTHROPIC_SERVICE_ACCOUNT_ID, and ANTHROPIC_WORKSPACE_ID are read
   # from the environment.
   ant messages create \
-    --model claude-sonnet-4-6 \
+    --model claude-opus-4-8 \
     --max-tokens 1024 \
     --message '{role: user, content: "Hello from Azure"}'
   ```
@@ -113664,7 +114317,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
     -H "authorization: Bearer $ACCESS_TOKEN" \
     -H "anthropic-version: 2023-06-01" \
     -H "content-type: application/json" \
-    -d '{"model": "claude-sonnet-4-6", "max_tokens": 1024, "messages": [{"role": "user", "content": "Hello, Claude"}]}' \
+    -d '{"model": "claude-opus-4-8", "max_tokens": 1024, "messages": [{"role": "user", "content": "Hello, Claude"}]}' \
     | jq -r '.content[0].text'
   ```
 
@@ -113701,7 +114354,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
   )
 
   message = client.messages.create(
-      model="claude-sonnet-4-6",
+      model="claude-opus-4-8",
       max_tokens=1024,
       messages=[{"role": "user", "content": "Hello, Claude"}],
   )
@@ -113741,7 +114394,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
   });
 
   const message = await client.messages.create({
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{ role: "user", content: "Hello, Claude" }]
   });
@@ -113806,7 +114459,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
   		}),
   	)
   	message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-  		Model:     anthropic.ModelClaudeSonnet4_6,
+  		Model:     anthropic.ModelClaudeOpus4_8,
   		MaxTokens: 1024,
   		Messages: []anthropic.MessageParam{
   			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello, Claude")),
@@ -113851,7 +114504,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
           .build();
 
   var message = client.messages().create(MessageCreateParams.builder()
-          .model(Model.CLAUDE_SONNET_4_6)
+          .model(Model.CLAUDE_OPUS_4_8)
           .maxTokens(1024)
           .addUserMessage("Hello, Claude")
           .build());
@@ -113872,7 +114525,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
 
   var message = await client.Messages.Create(new()
   {
-      Model = Model.ClaudeSonnet4_6,
+      Model = Model.ClaudeOpus4_8,
       MaxTokens = 1024,
       Messages = [new() { Role = Role.User, Content = "Hello, Claude" }],
   });
@@ -113923,7 +114576,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
   # ANTHROPIC_ORGANIZATION_ID, ANTHROPIC_SERVICE_ACCOUNT_ID, ANTHROPIC_WORKSPACE_ID, and
   # ANTHROPIC_IDENTITY_TOKEN_FILE and performs the exchange.
   ant messages create \
-    --model claude-sonnet-4-6 \
+    --model claude-opus-4-8 \
     --max-tokens 1024 \
     --message '{role: user, content: "Hello, Claude"}'
   ```
@@ -113961,7 +114614,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
   );
 
   $message = $client->messages->create(
-      model: 'claude-sonnet-4-6',
+      model: 'claude-opus-4-8',
       maxTokens: 1024,
       messages: [['role' => 'user', 'content' => 'Hello, Claude']],
   );
@@ -113997,7 +114650,7 @@ Unlike platform-native providers (AWS, Google Cloud, Kubernetes), which make a t
   )
 
   message = client.messages.create(
-    model: "claude-sonnet-4-6",
+    model: "claude-opus-4-8",
     max_tokens: 1024,
     messages: [{role: "user", content: "Hello, Claude"}]
   )
@@ -114232,7 +114885,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
         -H "anthropic-version: 2023-06-01" \
         -H "content-type: application/json" \
         -d '{
-          "model": "claude-sonnet-4-6",
+          "model": "claude-opus-4-8",
           "max_tokens": 1024,
           "messages": [{"role": "user", "content": "Hello, Claude"}]
         }' | jq -r '.content[0].text'
@@ -114243,7 +114896,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       # ANTHROPIC_IDENTITY_TOKEN_FILE, plus ANTHROPIC_FEDERATION_RULE_ID,
       # ANTHROPIC_ORGANIZATION_ID, ANTHROPIC_SERVICE_ACCOUNT_ID, and ANTHROPIC_WORKSPACE_ID.
       ant messages create \
-        --model claude-sonnet-4-6 \
+        --model claude-opus-4-8 \
         --max-tokens 1024 \
         --message '{role: user, content: "Hello, Claude"}'
       ```
@@ -114257,7 +114910,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       client = anthropic.Anthropic()
 
       message = client.messages.create(
-          model="claude-sonnet-4-6",
+          model="claude-opus-4-8",
           max_tokens=1024,
           messages=[{"role": "user", "content": "Hello, Claude"}],
       )
@@ -114273,7 +114926,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       const client = new Anthropic();
 
       const message = await client.messages.create({
-        model: "claude-sonnet-4-6",
+        model: "claude-opus-4-8",
         max_tokens: 1024,
         messages: [{ role: "user", content: "Hello, Claude" }]
       });
@@ -114292,7 +114945,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
 
       var message = await client.Messages.Create(new()
       {
-          Model = Model.ClaudeSonnet4_6,
+          Model = Model.ClaudeOpus4_8,
           MaxTokens = 1024,
           Messages = [new() { Role = Role.User, Content = "Hello, Claude" }],
       });
@@ -114312,7 +114965,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       client := anthropic.NewClient()
 
       message, err := client.Messages.New(context.TODO(), anthropic.MessageNewParams{
-      	Model:     anthropic.ModelClaudeSonnet4_6,
+      	Model:     anthropic.ModelClaudeOpus4_8,
       	MaxTokens: 1024,
       	Messages: []anthropic.MessageParam{
       		anthropic.NewUserMessage(anthropic.NewTextBlock("Hello, Claude")),
@@ -114331,7 +114984,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
       var message = client.messages().create(MessageCreateParams.builder()
-              .model(Model.CLAUDE_SONNET_4_6)
+              .model(Model.CLAUDE_OPUS_4_8)
               .maxTokens(1024)
               .addUserMessage("Hello, Claude")
               .build());
@@ -114348,7 +115001,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       $client = new Client();
 
       $message = $client->messages->create(
-          model: 'claude-sonnet-4-6',
+          model: 'claude-opus-4-8',
           maxTokens: 1024,
           messages: [['role' => 'user', 'content' => 'Hello, Claude']],
       );
@@ -114364,7 +115017,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       client = Anthropic::Client.new
 
       message = client.messages.create(
-        model: "claude-sonnet-4-6",
+        model: "claude-opus-4-8",
         max_tokens: 1024,
         messages: [{role: "user", content: "Hello, Claude"}]
       )
@@ -114405,7 +115058,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       )
 
       message = client.messages.create(
-          model="claude-sonnet-4-6",
+          model="claude-opus-4-8",
           max_tokens=1024,
           messages=[{"role": "user", "content": "Hello, Claude"}],
       )
@@ -114451,7 +115104,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
       	)
 
       	message, err := client.Messages.New(ctx, anthropic.MessageNewParams{
-      		Model:     anthropic.ModelClaudeSonnet4_6,
+      		Model:     anthropic.ModelClaudeOpus4_8,
       		MaxTokens: 1024,
       		Messages: []anthropic.MessageParam{
       			anthropic.NewUserMessage(anthropic.NewTextBlock("Hello, Claude")),
@@ -116851,12 +117504,12 @@ This guide walks through configuring an Azure Key Vault key as a [customer-manag
 
 ## Anthropic app information
 
-In order to have Anthropic use your encryption key, you must configure an Anthropic multi-tenant application ID and display name. Those values are:
+In order to have Anthropic use your encryption key, you must configure an Anthropic multitenant application ID and display name. Those values are:
 
-| Field                           | Value                                  |
-| ------------------------------- | -------------------------------------- |
-| Multi-tenant app client ID (US) | `8635ae1a-3e5d-44e8-a4ed-e0f614466f87` |
-| App display name                | `anthropic-cmek-client-us`             |
+| Field                          | Value                                  |
+| ------------------------------ | -------------------------------------- |
+| Multitenant app client ID (US) | `8635ae1a-3e5d-44e8-a4ed-e0f614466f87` |
+| App display name               | `anthropic-cmek-client-us`             |
 
 <Warning>
   Use only this published client ID and display name. Never trust an identifier provided over email, chat, or any onboarding channel.
@@ -116865,7 +117518,7 @@ In order to have Anthropic use your encryption key, you must configure an Anthro
 ## Encryption key setup
 
 <Steps>
-  <Step title="Consent to the Anthropic multi-tenant application">
+  <Step title="Consent to the Anthropic multitenant application">
     This creates a service principal in your Entra tenant for Anthropic's CMEK client application. The application requests no Microsoft Graph permissions; it exists solely as a federation target for Key Vault data-plane access.
 
     ```bash

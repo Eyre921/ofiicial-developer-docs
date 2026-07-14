@@ -29,3 +29,5 @@ Follow our [complete Assistant quickstart guide](/guides/assistant/quickstart/n8
 * Create your first assistant
 * Import a ready-to-use workflow template
 * Start chatting with your documents
+
+Or use the [n8n skill](/guides/get-started/ai-coding-tools) to build n8n workflows in agentic IDEs aned CLIs like Claude Code, Cursor, and more.

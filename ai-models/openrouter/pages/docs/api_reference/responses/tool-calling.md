@@ -1,7 +1,7 @@
 ---
 title: "Tool Calling"
-source: https://openrouter.ai/docs/api/reference/responses/tool-calling.md
-path: docs/api/reference/responses/tool-calling
+source: https://openrouter.ai/docs/api_reference/responses/tool-calling.md
+path: docs/api_reference/responses/tool-calling
 ---
 
 > ## Documentation Index

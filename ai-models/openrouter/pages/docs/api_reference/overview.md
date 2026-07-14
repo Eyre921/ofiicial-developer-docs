@@ -1,7 +1,7 @@
 ---
 title: "API Reference"
-source: https://openrouter.ai/docs/api/reference/overview.md
-path: docs/api/reference/overview
+source: https://openrouter.ai/docs/api_reference/overview.md
+path: docs/api_reference/overview
 ---
 
 > ## Documentation Index
@@ -29,7 +29,7 @@ These specifications can be used with tools like [Swagger UI](https://swagger.io
 
 Here is the request schema as a TypeScript type. This will be the body of your `POST` request to the `/api/v1/chat/completions` endpoint (see the [quick start](/quickstart) above for an example).
 
-For a complete list of parameters, see the [Parameters](/api/reference/parameters).
+For a complete list of parameters, see the [Parameters](/api_reference/parameters).
 
 <CodeGroup>
   ```typescript title="Request Schema" expandable lines theme={null}
@@ -53,7 +53,7 @@ For a complete list of parameters, see the [Parameters](/api/reference/parameter
     // See "Plugins" section: openrouter.ai/docs/guides/features/plugins
     plugins?: Plugin[];
 
-    // See LLM Parameters (openrouter.ai/docs/api/reference/parameters)
+    // See LLM Parameters (openrouter.ai/docs/api_reference/parameters)
     max_tokens?: number; // Range: [1, context_length)
     temperature?: number; // Range: [0, 2]
 

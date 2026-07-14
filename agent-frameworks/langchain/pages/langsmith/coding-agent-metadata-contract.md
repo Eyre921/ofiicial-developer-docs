@@ -28,13 +28,14 @@ The following integrations implement this schema:
 
 Every run type must include the following identity fields in its metadata:
 
-| Field                     | Description                                                                                             |
-| ------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `ls_agent_kind`           | High-level kind of agent, for example `"coding-agent"`.                                                 |
-| `ls_integration`          | Identifier of the integration emitting the run (see [Supported integrations](#supported-integrations)). |
-| `ls_agent_runtime`        | Human-readable runtime name, for example `"Claude Code 1.0.28"`.                                        |
-| `thread_id`               | Stable identifier for the conversation thread. Used to group related runs in LangSmith's Threads view.  |
-| `ls_trace_schema_version` | Currently `"coding-agent-v1"`.                                                                          |
+| Field                     | Description                                                                                                  |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `ls_agent_type`           | The run's type within the agent. Should be one of `"root"`, `"subagent"`, `"middleware"`, or `"compaction"`. |
+| `ls_agent_purpose`        | High-level purpose of the agent, for example `"coding"`.                                                     |
+| `ls_integration`          | Identifier of the integration emitting the run (see [Supported integrations](#supported-integrations)).      |
+| `ls_agent_runtime`        | Human-readable runtime name, for example `"Claude Code 1.0.28"`.                                             |
+| `thread_id`               | Stable identifier for the conversation thread. Used to group related runs in LangSmith's Threads view.       |
+| `ls_trace_schema_version` | Currently `"coding-agent-v1"`.                                                                               |
 
 ## Availability tiers
 

@@ -495,7 +495,7 @@ Integrate Pinecone directly into your application. Use these SDK calls wherever 
   npm install @pinecone-database/pinecone
   ```
 
-  ```shell Java theme={null} theme={null}
+  ```shell Java theme={null}
   # Maven
   <dependency>
     <groupId>io.pinecone</groupId>

@@ -1,7 +1,7 @@
 ---
 title: "Web Search"
-source: https://openrouter.ai/docs/api/reference/responses/web-search.md
-path: docs/api/reference/responses/web-search
+source: https://openrouter.ai/docs/api_reference/responses/web-search.md
+path: docs/api_reference/responses/web-search
 ---
 
 > ## Documentation Index

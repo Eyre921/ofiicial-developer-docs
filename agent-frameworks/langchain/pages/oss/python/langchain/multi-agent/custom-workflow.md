@@ -188,6 +188,10 @@ A common use case is combining [retrieval](/oss/python/langchain/retrieval) with
   result = workflow.invoke({"question": "Who won the 2024 WNBA Championship?"})
   print(result["answer"])
   ```
+
+  <Info>
+    In production, use a persistent vector store such as [Valkey](/oss/python/integrations/vectorstores/valkey), [Databricks Vector Search](/oss/python/integrations/vectorstores/databricks_vector_search), or [MongoDB Atlas](/oss/python/integrations/vectorstores/mongodb_atlas) instead of `InMemoryVectorStore`. See [all vector stores](/oss/python/integrations/vectorstores).
+  </Info>
 </Accordion>
 
 ***

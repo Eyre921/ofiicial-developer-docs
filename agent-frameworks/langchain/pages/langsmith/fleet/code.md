@@ -45,10 +45,9 @@ If the agent you're trying to invoke is a <Tooltip href="/langsmith/fleet/manage
 
 To get your agent's `agent_id` and `api_url`:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-code), navigate to your agent's inbox.
-2. Next to the agent name, click the <Icon icon="pencil" /> **Edit Agent** icon.
-3. Click the <Icon icon="settings" /> **Settings** icon in the top right corner.
-4. Click **View code snippets** to see pre-populated values for your agent.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-code), open your agent.
+2. In the sidebar, expand the **Advanced settings** drawer.
+3. Under **Developer**, click **View code snippets** to see pre-populated values for your agent.
 
 Copy the code below and replace `agent_id` and `api_url` with the values from your agent's code snippets.
 

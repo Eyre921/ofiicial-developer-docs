@@ -259,6 +259,7 @@ Checkout collects the following tax ID types in the given regions:
 | UY | uy_ruc | Uruguayan RUC number | 123456789012 | Yes |
 | UZ | uz_tin | Uzbekistan TIN Number | 123456789 | No |
 | UZ | uz_vat | Uzbekistan VAT Number | 123456789012 | Yes |
+| VN | vn_tin | Vietnamese tax ID number | 1234567890 | No |
 | ZA | za_vat | South African VAT number | 4123456789 | Yes |
 | ZM | zm_tin | Zambia Tax Identification Number | 1004751879 | No |
 | ZW | zw_tin | Zimbabwe Tax Identification Number | 1234567890 | No |

@@ -39,9 +39,9 @@ To let your customers manage their own payment methods, implement processes that
 To change a customer’s default payment method for invoices and subscriptions, make an API call to [update customer](https://docs.stripe.com/api.md#update_customer) and provide a new value for the `invoice_settings.default_payment_method` property.
 
 ```curl
-curl https://api.stripe.com/v1/customers/cus_V9T7vofUbZMqpv \
+curl https://api.stripe.com/v1/customers/{{CUSTOMER_ID}} \
   -u "<<YOUR_SECRET_KEY>>:" \
-  -d "invoice_settings[default_payment_method]=pm_1Msy7wLkdIwHu7ixsxmFvcz7"
+  -d "invoice_settings[default_payment_method]={{PAYMENTMETHOD_ID}}"
 ```
 
 For information on how Checkout handles saved payment methods, see [Create a Checkout Session](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-customer). To consider default payment methods in other scenarios, use custom code.

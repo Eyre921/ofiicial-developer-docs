@@ -1,7 +1,7 @@
 ---
 title: "Basic Usage"
-source: https://openrouter.ai/docs/api/reference/responses/basic-usage.md
-path: docs/api/reference/responses/basic-usage
+source: https://openrouter.ai/docs/api_reference/responses/basic-usage.md
+path: docs/api_reference/responses/basic-usage
 ---
 
 > ## Documentation Index

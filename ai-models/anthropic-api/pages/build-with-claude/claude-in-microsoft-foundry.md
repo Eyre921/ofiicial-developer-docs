@@ -804,4 +804,4 @@ Foundry does not include Anthropic's standard rate limit headers (`anthropic-rat
 
 ---
 
-# Claude on Amazon Bedrock (legacy)
+# Claude on Amazon Bedrock (Opus 4.6 and earlier)

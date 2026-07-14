@@ -519,11 +519,17 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | Base 44 | Hosting, database, AI |
 | Blaxel | Hosting, sandbox, AI |
 | Browserbase | Browser, AI |
+| Chatbase | AI |
 | Chroma | Database, AI |
 | Clerk | Authentication |
 | ClickHouse | Database, analytics |
 | Cloudflare | Hosting, database, storage, domains, cache, queues, browser |
+| Composio | AI |
+| CreateOS | Compute |
+| Customer.io | Messaging, email |
+| Datadog | Observability, analytics |
 | Daytona | Sandboxes, hosting |
+| Depot | CI, compute |
 | E2B | Hosting, sandbox |
 | Elevenlabs | AI |
 | Exa | Search, AI |
@@ -534,6 +540,7 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | Hugging Face | AI, hosting, storage |
 | Inngest | Queue |
 | Kernel | Browser, AI |
+| Klaviyo | Email, messaging |
 | Laravel Cloud | Hosting, cache, database |
 | Metronome | Payments |
 | Mixpanel | Analytics |
@@ -546,13 +553,19 @@ These providers co-designed the integration protocol with Stripe. The protocol s
 | PostHog | Analytics, feature flags |
 | Prisma | Database |
 | Privy | Payments, authentication |
+| Pydantic | Observability, analytics |
 | Railway | Hosting, database, storage, cache |
 | Render | Hosting, database |
+| RevenueCat | Payments, analytics |
 | Runloop | Sandboxes, AI |
+| Schematic | Feature flags, payments |
 | Sentry | Observability |
+| Spaceship | Domains |
 | Squarespace | Domains |
+| Steelbrowser | Browser, AI |
 | Supabase | Database, authentication, storage |
 | Supermemory | AI, database, search |
+| Tabstack | Search, browser |
 | Turso | Database |
 | Twilio | Communications |
 | Upstash | Cache, search, database |

@@ -1338,4 +1338,4 @@ When a store reaches its 2,000-memory limit, writes to new memories fail: both d
 
 ---
 
-# Multi-agent sessions
+# Multiagent orchestration

@@ -12,8 +12,6 @@ GitHub Copilot can use a variety of AI models. This article explains how these m
 
 ## OpenAI models
 
-> [!IMPORTANT] GPT-5.5 is available at a promotional multiplier of 7.5x.
-
 Used for:
 
 * GPT-5 mini
@@ -101,7 +99,7 @@ Used for:
 
 * Kimi K2.7 Code
 
-Kimi K2.7 Code was developed by Moonshot AI. It is an open-weight model that may be less aligned than other Copilot models, with an elevated risk of producing harmful content. GitHub's content filtering applies, but you should review the [Kimi K2.7 Code model card](https://huggingface.co/moonshotai/Kimi-K2.7-Code) and conduct your own evaluations before enabling it.
+Kimi K2.7 Code was developed by Moonshot AI. It is an open-weight model. GitHub's content filtering applies, but you should review the [Kimi K2.7 Code model card](https://huggingface.co/moonshotai/Kimi-K2.7-Code) and conduct your own evaluations before enabling it.
 
 When using Kimi K2.7 Code, input prompts and output completions continue to run through GitHub Copilot's content filters for public code matching, when applied, along with those for harmful or offensive content.
 

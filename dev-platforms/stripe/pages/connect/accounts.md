@@ -75,7 +75,7 @@ Select one of the available countries when you create an Express connected accou
 
 Some countries are available only when using [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md).
 
-To know when Express connected accounts are available in your country, [contact Stripe](connect+DK@stripe.com).
+To know when Express connected accounts are available in your country, [contact Stripe](connect@stripe.com).
 
 - AE
 - AG
@@ -224,7 +224,7 @@ Select one of the available countries when you create a Custom connected account
 
 Some countries are available only when using [cross-border payouts](https://docs.stripe.com/connect/cross-border-payouts.md).
 
-To request notification when Custom connected accounts are available in your country, [contact Stripe](connect+DK@stripe.com).
+To request notification when Custom connected accounts are available in your country, [contact Stripe](connect@stripe.com).
 
 - AE
 - AG

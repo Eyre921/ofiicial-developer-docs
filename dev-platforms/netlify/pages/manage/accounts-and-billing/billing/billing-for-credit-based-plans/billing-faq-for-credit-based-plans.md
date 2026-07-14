@@ -24,7 +24,7 @@ If you've created your Netlify account with a Free, Starter, or Pro plan before 
 | I want to . . . | Docs links |
 |----|----|
 | Review my team's credit balance and usage | [Monitor usage for Credit-based plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/monitor-usage-for-credit-based-plans) |
-| Buy add-on credits | [Buy add-on credits](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-add-on-credits) |
+| Buy credits in packs | [Buy credit packs](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-credit-packs) |
 | Configure auto recharge | [Configure auto recharge](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/configure-auto-recharge) |
 | Find invoices | [View payment history](/manage/accounts-and-billing/billing/manage-payments/#find-payment-history-or-invoices) |
 | Change my billing information | [Change billing information](/manage/accounts-and-billing/billing/manage-payments) |
@@ -110,6 +110,18 @@ Learn more about [pricing for AI inference](/manage/accounts-and-billing/billing
 
 > **Tip - Want to limit Agent Runners?:** To help you control costs for Agent Runners and AI Gateway, you can [set an AI inference credit usage limit](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features/#limit-ai-feature-usage). Once the AI inference limit is reached, your team can no longer start agent runs and active agent runs stop. AI Gateway usage is also paused. Learn more in our docs on [Managing AI features](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features/#limit-ai-feature-usage).
 
+### How can I better understand my credit balance? 
+
+Your credit balance will show you actively available credits in a list. This credit ledger list shows you your monthly plan credits, as well as when credits were granted and when they expire, such as credits granted through promotions or Hackathon events. Your credit balance will use up credits in order of their expiration date.
+
+To check out the credit balance for your team's project, go to 
+### NavigationPath Component:
+
+Usage & billing > Credit balance
+.
+
+Learn more about [how credits work](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work#credit-balance-usage-order) and the order they are used up.
+
 ### What happens when credits are used up?
 
 Once your monthly credit allotment is used up for all web projects on your team, all of your web projects (sites/apps) are paused and visitors to your web projects will find a `Site not available` page at each of your web project's URLs.
@@ -118,20 +130,67 @@ In addition, while your web projects are paused, they will not receive new web r
 
 If you're on the free plan, your project has a fixed amount of credits and you can either wait till the start of your next billing cycle or upgrade to a paid plan.
 
+### Can I change my monthly credits on the Pro plan?
+
+On the Pro plan, Team Owners can choose monthly credits that fit their team between these options:
+- Base option: 3,000 monthly credits
+- 5,000 credits
+- 10,000 credits
+- 15,000 credits
+- 20,000 credits
+
+You can change your monthly credits for the Pro plan as many times as you like but downgrading only takes effect at the start of your next billing cycle.
+
+When upgrading to a Pro plan with more monthly credits, you can expect the following: 
+- Your billing cycle resets
+- your upgrade takes effect immediately, no matter where you are in your billing cycle
+- You'll get a prorated refund from your previous plan (similar to when you upgrade from a Personal plan to a Pro plan)
+
+When you downgrade to a Pro plan with less monthly credits, you can expect the following: 
+- The downgrade is scheduled at the end of the billing cycle. You continue to enjoy the features until then.
+- Any unused monthly plan credits, including rollover credits, are removed from your account once the downgrade takes effect. Credits from credit packs or auto recharge aren't affected and remain available.
+- The billing cycle isn't affected since downgrading is scheduled based on your current billing cycle.
+
+For example, if you downgrade your Pro plan monthly credits from 5,000 credits or higher to the base 3,000 credits or another plan, any unused monthly plan credits, including rollover credits, are removed from your account once the downgrade takes effect.
+
+Similarly, if you downgrade your Pro plan monthly credits from 20,000 credits to a lower tier, such as 10,000, any unused monthly plan credits, including rollover credits, are removed from your account once the downgrade takes effect.
+
+As a Team Owner, to change your monthly credits for the Pro plan:
+
+1. Go to 
+### NavigationPath Component:
+
+Usage & billing > Plan details
+.
+
+Learn more in [Change your pricing plan](/manage/accounts-and-billing/billing/change-your-pricing-plan/#downgrading-or-upgrading-your-monthly-credits-on-a-pro-plan).
+
+### When do changes to my Pro plan monthly credits take effect?
+
+If you upgrade to higher monthly credits in the Pro plan, these updates take effect immediately.
+
+If you downgrade, your new monthly credits will not take effect until the end of your current billing cycle. This means you can still use the higher monthly credits issued for that billing cycle. 
+
+For example, if you downgrade from 5,000 monthly credits to the base 3,000 monthly credits, then any unused monthly plan credits, including rollover credits, are removed from your account once the change takes effect. You won't be able to roll over monthly plan credits going forward on the base 3,000 plan.
+
+Learn more in [Change your pricing plan](/manage/accounts-and-billing/billing/change-your-pricing-plan/#downgrading-or-upgrading-your-monthly-credits-on-a-pro-plan).
+
 ### Can I buy more credits than my monthly credit balance allotment? 
 
 If you have a Credit-based Personal or Pro plan, there are two ways to buy more credits:
 
-- **Buy add-on credits in credit packs**: Purchase additional credits at any time in credit packs. These add-on credits roll over for future months. Learn more about [buying add-on credits](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-add-on-credits).
-- **Enable auto recharge**: Automatically reload your credit balance when it runs out with small increments of credits. These add-on credits roll over for future months. Learn more about [auto credit recharge](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/configure-auto-recharge).
+- **Buy credit packs**: Purchase additional credits at any time in credit packs. Credits bought in credit packs roll over for future months. Learn more about [buying credit packs](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-credit-packs).
+- **Enable auto recharge**: Automatically reload your credit balance when it runs out with small increments of credits. Any credits remaining from auto recharge roll over for future months. Learn more about [auto credit recharge](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/configure-auto-recharge).
 
-You may want to buy add-on credits in credit packs and still enable auto recharge. For example, perhaps you're building out new functionality for your projects using Agent Runners so you buy an add-on credit pack. You may choose to set up auto recharge to ensure your projects don't run out of credits. You can also keep auto recharge off to help control costs and only buy credits beyond your monthly plan in credit packs when you need them.
+You may want to buy credit packs and still enable auto recharge. For example, perhaps you're building out new functionality for your projects using Agent Runners so you buy a credit pack. You may choose to set up auto recharge to ensure your projects don't run out of credits. You can also keep auto recharge off to help control costs and only buy credits beyond your monthly plan in credit packs when you need them.
 
 ### Do credits roll over or expire? 
 
-Your monthly credit balance is reset at the start of each billing cycle. Once your web projects use up their monthly credit allotment, they will use any left over add-on credits from your last auto recharge. Add-on credits roll over to the next billing cycle but are only used once your monthly credit allotment is used up.
+Your monthly credit balance resets at the start of each billing cycle, and any remaining credits do not roll over unless you have a Pro plan with 5,000 credits or more. On those plans, unused monthly credits roll over for one billing cycle, after which they expire. Any change to your Pro plan monthly credits, whether an upgrade or a downgrade, removes all unused monthly credits from your account, including rollover credits once the change takes effect. Learn more about [when changes to your Pro plan monthly credits take effect.](#when-do-changes-to-my-pro-plan-monthly-credits-take-effect)
 
-Excess credits from the monthly credit allotment are not rolled over to the next billing cycle. For example, if your monthly credit allotment is 300 credits and your team uses 200 credits by the end of your billing cycle, then your remaining 100 credits will not roll over to the next billing cycle. At the start of the next billing cycle, you will have your refreshed monthly credit allotment based on your pricing plan.
+Credits granted through promotions or Hackathon events typically have their own expiration date set when they're issued.
+
+To learn more, check out [How can I better understand my credit balance?](#how-can-i-better-understand-my-credit-balance)
 
 ### What counts as a production deploy?
 
@@ -305,5 +364,4 @@ We do not have a free trial but you can test out Netlify on the free plan.
 ### How do I cancel? 
 
 To learn how to delete a team or delete your Netlify user, and the impact of either action, visit our Forums for a verified Support Guide on [how to cancel an account](https://answers.netlify.com/t/support-guide-how-to-cancel-an-account/10856).
-
 

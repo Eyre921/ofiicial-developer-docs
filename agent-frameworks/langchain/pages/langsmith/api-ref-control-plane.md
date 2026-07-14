@@ -112,7 +112,7 @@ def create_deployment() -> str:
         "source_config": {
             "integration_id": INTEGRATION_ID,
             "repo_url": "https://github.com/langchain-ai/langgraph-example",
-            "deployment_type": "dev",
+            "deployment_type": "serverless",
             "build_on_push": False,
             "custom_url": None,
             "resource_spec": None,

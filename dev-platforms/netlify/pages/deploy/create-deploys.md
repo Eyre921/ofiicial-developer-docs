@@ -68,6 +68,8 @@ Netlify Drop
 team's Projects page
 .
 
+You don't have to build your project first. As long as you're logged in, you can drop a web project that still needs a build step, and Netlify will detect your framework and run the build for you before publishing. Dropping a pre-built output folder also works. If you drop a project without being logged in, Netlify publishes the files as-is.
+
 If you need to update a site that you created using drag and drop, update and rebuild your project locally. Then, drag the project's updated output folder to the deploy dropzone at the bottom of the site's **Deploys** page. This will start a new site deploy with the updated files.  You can also use this functionality to manually update any site that is not connected to a Git repository.
 
 ## API endpoints

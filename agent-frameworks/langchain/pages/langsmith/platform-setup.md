@@ -10,11 +10,9 @@ Host and manage LangSmith infrastructure for observability, evaluation, and prom
   <div>
     <h1>Set up LangSmith</h1>
 
-    This section covers how to host and manage LangSmith infrastructure for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-engineering).
+    Set up **LangSmith** for [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), and [prompt engineering](/langsmith/prompt-engineering). LangSmith offers two hosting models: fully managed Cloud, or Self-hosted (Enterprise) for full control.
 
-    <h2>Choose how to set up LangSmith</h2>
-
-    Deploy LangSmith in one of two modes:
+    If you also want to deploy agents in production, you can use [**LangSmith Deployment**](/langsmith/deployment) with either hosting model.
 
     <CardGroup>
       <Card title="Cloud" href="/langsmith/cloud" icon="cloud">
@@ -32,18 +30,23 @@ Host and manage LangSmith infrastructure for observability, evaluation, and prom
 
     <h2>Compare Cloud and Self-hosted</h2>
 
-    | Feature                                          | **Cloud**                           | **Self-hosted**                           |
-    | ------------------------------------------------ | ----------------------------------- | ----------------------------------------- |
-    | **Infrastructure location**                      | LangChain's cloud                   | Your infrastructure                       |
-    | **Who manages updates**                          | LangChain                           | You                                       |
-    | **Can deploy agents?**                           | ✅ Yes                               | ✅ Yes (with LangSmith Deployment enabled) |
-    | **Observability data location**                  | LangChain cloud                     | Your infrastructure                       |
-    | **[Pricing](https://www.langchain.com/pricing)** | Plus tier                           | Enterprise                                |
-    | **Best for**                                     | Quick setup, managed infrastructure | Full control, data isolation              |
+    | Feature                                          | **Cloud**                           | **Self-hosted**                      |
+    | ------------------------------------------------ | ----------------------------------- | ------------------------------------ |
+    | **Infrastructure location**                      | LangChain's cloud                   | Your infrastructure                  |
+    | **Who manages updates**                          | LangChain                           | You                                  |
+    | **Observability data location**                  | LangChain cloud                     | Your infrastructure                  |
+    | **Pairs with LangSmith Deployment**              | Yes                                 | When you enable LangSmith Deployment |
+    | **[Pricing](https://www.langchain.com/pricing)** | Plus tier                           | Enterprise                           |
+    | **Best for**                                     | Quick setup, managed infrastructure | Full control, data isolation         |
 
-    <Note>
-      To self-host Agent Servers for [LangSmith Deployment](/langsmith/deployment) (which deploys and runs agents in production), refer to the [Hybrid](/langsmith/hybrid) page—a platform setup option that runs Agent Servers in your infrastructure while sending traces to either [Cloud](/langsmith/cloud) or [Self-hosted](/langsmith/self-hosted) LangSmith.
-    </Note>
+    Both hosting models support [LangSmith Deployment](/langsmith/deployment) for agent workloads. Refer to the [LangSmith Deployment overview](/langsmith/deployment) to pick a topology (Cloud managed, Hybrid, self-hosted with control plane, or standalone).
+
+    <h2>Common setups</h2>
+
+    * **Fastest to start, managed everything.** [LangSmith Cloud](/langsmith/cloud) paired with [LangSmith Deployment](/langsmith/deployment) on Cloud. LangChain hosts the platform, and, when you use LangSmith Deployment, also hosts your [Agent Servers](/langsmith/agent-server).
+    * **Observability data must stay in your infrastructure.** Self-hosted LangSmith, paired with any LangSmith Deployment topology, including [self-hosted LangSmith Deployment](/langsmith/deploy-with-control-plane) for agent workloads.
+    * **Managed observability, agents in your VPC.** LangSmith Cloud paired with [Hybrid](/langsmith/hybrid) LangSmith Deployment. Traces and evaluations stay on SaaS while agent workloads stay in your infrastructure.
+    * **Observability only, no agent hosting.** LangSmith Cloud or self-hosted, without LangSmith Deployment. Run your agents wherever you already run apps and send traces to LangSmith.
 
     <h2>Related</h2>
 

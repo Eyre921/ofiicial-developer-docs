@@ -30,7 +30,7 @@
 - [Speech configuration](https://docs.vapi.ai/customization/speech-configuration.md): Control when your assistant starts and stops speaking
 - [Voice pipeline configuration](https://docs.vapi.ai/customization/voice-pipeline-configuration.md): Complete guide to configuring VAPI's voice pipeline for optimal conversation timing and interruption handling
 - [Voice fallback configuration](https://docs.vapi.ai/voice-fallback-plan.md): Configure fallback voices that activate automatically if your primary voice fails.
-- [Transcriber fallback configuration](https://docs.vapi.ai/customization/transcriber-fallback-plan.md): Configure fallback transcribers that activate automatically if your primary transcriber fails.
+- [Transcriber fallback configuration](https://docs.vapi.ai/customization/transcriber-fallback-plan.md): Configure fallback transcribers so calls keep working if your primary speech-to-text provider fails. Covers automatic fallback, manual fallback, and HIPAA-compliant provider options.
 - [OpenAI Realtime](https://docs.vapi.ai/openai-realtime.md): Build voice assistants with OpenAI's native speech-to-speech models for ultra-low latency conversations
 - [Provider Keys](https://docs.vapi.ai/customization/provider-keys.md): Bring your own API keys to Vapi.
 - [Introduction to Tools](https://docs.vapi.ai/tools.md): Extend your assistant's capabilities with powerful function calling tools.
@@ -138,7 +138,7 @@
 - [Simulations quickstart](https://docs.vapi.ai/observability/simulations-quickstart.md): Test your AI assistants with realistic AI-powered callers
 - [Simulations advanced](https://docs.vapi.ai/observability/simulations-advanced.md): Master testing strategies and best practices for AI voice agent simulations
 - [Boards quickstart](https://docs.vapi.ai/observability/boards-quickstart.md): Create custom analytics dashboards in minutes
-- [Structured outputs quickstart](https://docs.vapi.ai/assistants/structured-outputs-quickstart.md): Get started with structured data extraction in 5 minutes
+- [Structured outputs quickstart](https://docs.vapi.ai/assistants/structured-outputs-quickstart.md): Set up structured data extraction from calls in a few minutes. Create a schema, link it to an assistant, test extraction, and configure HIPAA-safe storage settings.
 - [Structured outputs examples](https://docs.vapi.ai/assistants/structured-outputs-examples.md): Real-world examples and templates for common use cases
 - [Scorecard quickstart](https://docs.vapi.ai/observability/scorecard-quickstart.md): Automatically grade calls against KPIs using structured outputs
 - [Monitoring quickstart](https://docs.vapi.ai/observability/monitoring-quickstart.md): Set up automated quality monitoring for your voice AI agents
@@ -195,14 +195,14 @@
 - [Vapi Enterprise](https://docs.vapi.ai/enterprise/plans.md): Build and scale with Vapi.
 - [Definitions](https://docs.vapi.ai/glossary.md): Useful terms and definitions for Vapi & voice AI applications.
 - [RSS Feed](https://docs.vapi.ai/rss-feed.md): Stay updated with the latest incidents from Vapi or third party providers
-- [Data Flow](https://docs.vapi.ai/security-and-privacy/data-flow.md): Understand how data flows through Vapi when using custom storage and custom models
+- [Data Flow](https://docs.vapi.ai/security-and-privacy/data-flow.md): How data flows through Vapi's voice pipeline. What's processed in real time, what's stored by default, and how custom storage or custom model servers change where data lives.
 - [Single Sign-On (SSO)](https://docs.vapi.ai/security-and-privacy/sso.md): Let your team access Vapi through your identity provider using SAML or OIDC.
 - [JWT Authentication](https://docs.vapi.ai/customization/jwt-authentication.md): Secure API authentication guide
 - [Recording consent plan](https://docs.vapi.ai/security-and-privacy/recording-consent-plan.md): Learn how to configure recording consent plans to ensure compliance with privacy laws and regulations
 - [GDPR Compliance](https://docs.vapi.ai/security-and-privacy/GDPR.md): Learn how Vapi ensures GDPR compliance for its voice assistant platform.
-- [HIPAA Compliance](https://docs.vapi.ai/security-and-privacy/hipaa.md): Learn how to ensure privacy when using Vapi's voice assistant platform.
+- [HIPAA Compliance](https://docs.vapi.ai/security-and-privacy/hipaa.md): HIPAA on Vapi. Enable organization-wide compliance mode, use approved LLM, voice, and transcriber providers, and control how call recordings and logs are stored.
 - [Zero Data Retention (ZDR)](https://docs.vapi.ai/security-and-privacy/zero-data-retention.md): Zero Data Retention (ZDR) is a Vapi organization add-on that stops Vapi from storing call recordings, transcripts, messages, summaries, and logs after a call ends.
-- [Retrieve call artifacts](https://docs.vapi.ai/security-and-privacy/retrieve-call-artifacts.md): Download recordings and call logs from Vapi's private storage using authenticated, short-lived URLs.
+- [Retrieve call artifacts](https://docs.vapi.ai/security-and-privacy/retrieve-call-artifacts.md): How to download call recordings and logs from Vapi's private storage using your Private API Key and short-lived, authenticated redirect URLs.
 - [PCI Compliance](https://docs.vapi.ai/security-and-privacy/pci.md): Ensure secure payment data handling while using Vapi’s voice assistant platform.
 - [Proxy server guide](https://docs.vapi.ai/security-and-privacy/proxy-server.md): Keep assistant configs and API keys on your backend. Route Web SDK calls through your proxy.
 - [Static IP addresses](https://docs.vapi.ai/security-and-privacy/static-ip-addresses.md): Whitelist Vapi IP addresses

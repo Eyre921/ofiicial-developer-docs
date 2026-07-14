@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1484 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1483 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -297,7 +297,6 @@
 - `langsmith/fleet/workspace-admin` — [Manage workspace administration](pages/langsmith/fleet/workspace-admin.md) · [原文](https://docs.langchain.com/langsmith/fleet/workspace-admin)
 - `langsmith/gcp-self-hosted` — [Self-hosted LangSmith on GCP](pages/langsmith/gcp-self-hosted.md) · [原文](https://docs.langchain.com/langsmith/gcp-self-hosted)
 - `langsmith/generative-ui-react` — [How to implement generative user interfaces with LangGraph](pages/langsmith/generative-ui-react.md) · [原文](https://docs.langchain.com/langsmith/generative-ui-react)
-- `langsmith/get-started-integrations` — [Integrations](pages/langsmith/get-started-integrations.md) · [原文](https://docs.langchain.com/langsmith/get-started-integrations)
 - `langsmith/govern` — [Governance](pages/langsmith/govern.md) · [原文](https://docs.langchain.com/langsmith/govern)
 - `langsmith/govern-overview` — [Govern](pages/langsmith/govern-overview.md) · [原文](https://docs.langchain.com/langsmith/govern-overview)
 - `langsmith/granular-usage` — [Granular billable usage](pages/langsmith/granular-usage.md) · [原文](https://docs.langchain.com/langsmith/granular-usage)

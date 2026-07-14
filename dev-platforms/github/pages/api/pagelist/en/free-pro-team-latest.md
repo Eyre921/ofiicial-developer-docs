@@ -734,7 +734,8 @@ path: api/pagelist/en/free-pro-team-latest
 /en/code-security/concepts/code-scanning/code-scanning
 /en/code-security/concepts/code-scanning/code-scanning-alerts
 /en/code-security/concepts/code-scanning/risk-assessment
-/en/code-security/concepts/code-scanning/copilot-autofix-for-code-scanning
+/en/code-security/concepts/code-scanning/autofix-for-code-scanning
+/en/code-security/concepts/code-scanning/ai-powered-security-detections
 /en/code-security/concepts/code-scanning/setup-types
 /en/code-security/concepts/code-scanning/integration-with-code-scanning
 /en/code-security/concepts/code-scanning/sarif-files
@@ -2767,6 +2768,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/rest/search
 /en/rest/search/search
 /en/rest/secret-scanning
+/en/rest/secret-scanning/custom-patterns
 /en/rest/secret-scanning/push-protection
 /en/rest/secret-scanning/secret-scanning
 /en/rest/security-advisories

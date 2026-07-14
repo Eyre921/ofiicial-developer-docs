@@ -249,11 +249,14 @@ POST /projects/{project_id}/agent-variables
 
 **Request body:**
 
-| Parameter     | Type    | Description                                                                                    |
-| ------------- | ------- | ---------------------------------------------------------------------------------------------- |
-| `key`         | String  | The variable name, following the `DG_<VARIABLE_NAME>` format                                   |
-| `value`       | Any     | The value to substitute. Can be any valid JSON type: string, number, boolean, object, or array |
-| `api_version` | Integer | Optional. API version. Defaults to `1`                                                         |
+| Parameter      | Type    | Description                                                                                    |
+| -------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `key`          | String  | The variable name, following the `DG_<VARIABLE_NAME>` format                                   |
+| `value`        | Any     | The value to substitute. Can be any valid JSON type: string, number, boolean, object, or array |
+| `is_sensitive` | String  | Required. Must be `false`                                                                      |
+| `api_version`  | Integer | Optional. API version. Defaults to `1`                                                         |
+
+The `is_sensitive` field currently only accepts `"false"`. Support for sensitive variables is on our roadmap and will be available in the future.
 
 **Example request:**
 
@@ -263,7 +266,8 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agent-variables \
   -H "Content-Type: application/json" \
   -d '{
     "key": "DG_LISTEN_MODEL",
-    "value": "nova-3"
+    "value": "nova-3",
+    "is_sensitive": "false"
   }'
 ```
 
@@ -305,7 +309,8 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agent-variables \
   -H "Content-Type: application/json" \
   -d '{
     "key": "DG_SYSTEM_PROMPT",
-    "value": "You are a helpful customer service agent for Acme Corp."
+    "value": "You are a helpful customer service agent for Acme Corp.",
+    "is_sensitive": "false"
   }'
 ```
 

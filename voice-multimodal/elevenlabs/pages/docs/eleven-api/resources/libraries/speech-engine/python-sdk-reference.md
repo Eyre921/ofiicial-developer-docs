@@ -56,7 +56,7 @@ await engine.serve(
 
 #### Disabling authentication
 
-By default `serve()` verifies the `X-Elevenlabs-Speech-Engine-Authorization` header on every incoming connection. If your server sits behind an infrastructure layer that already restricts incoming traffic to ElevenLabs (typically an IP allowlist scoped to [ElevenLabs' egress ranges](/docs/overview/capabilities/speech-engine#ip-allowlisting)), you can skip JWT verification by passing `disable_auth=True`:
+By default `serve()` verifies the `X-Elevenlabs-Speech-Engine-Authorization` header on every incoming connection. If your server sits behind an infrastructure layer that already restricts incoming traffic to ElevenLabs (typically an IP allowlist scoped to [ElevenLabs' egress ranges](/docs/eleven-api/resources/ip-allowlisting)), you can skip JWT verification by passing `disable_auth=True`:
 
 ```python
 # No api_key required when disable_auth is True

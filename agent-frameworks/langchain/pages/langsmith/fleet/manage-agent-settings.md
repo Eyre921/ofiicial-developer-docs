@@ -12,30 +12,28 @@ This page explains how to manage the settings for your agents in LangSmith Fleet
 
 To change the model for your agent:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), navigate to your agent's inbox.
-2. Next to the agent name, click the <Icon icon="pencil" /> **Edit Agent** icon.
-3. In the top right corner, click the <Icon icon="settings" /> **Settings** icon.
-4. Select the **Model** you want to use.
-5. Enter the API key for the model.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), open your agent.
+2. In the sidebar, expand the **Advanced settings** drawer.
+3. In the **Model** section, select the model you want to use.
+4. If the model requires an API key, add it in the **API keys** section.
 
-For information on how to add a custom model, see [Custom models](/langsmith/fleet/essentials#custom-models).
+Custom models are available for enterprise deployments. For more information, see [Custom models](/langsmith/fleet/essentials#custom-models).
 
 ## Reconnect tool integrations
 
 To reconnect a tool integration to an agent:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), navigate to your agent's inbox.
-2. Next to the agent name, click the <Icon icon="pencil" /> **Edit Agent** icon.
-3. In the top right corner, click the <Icon icon="settings" /> **Settings** icon.
-4. In the **Connected Integrations** section, click the **Connect** button next to the tool you want to reconnect.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), open your agent.
+2. In the sidebar, expand the **Connections** drawer.
+3. Click **Manage** next to the integration to review or reconnect it.
 
 ## Download agent files
 
-To download the files for your agent, click the <Icon icon="settings" /> **Settings** icon in the top right corner of the agent and select **Download ZIP**. This will export the agent configuration as a ZIP file.
+To download the files for your agent, open the agent, expand the **Advanced settings** drawer in the sidebar, and under **Developer** click **Download ZIP**. This exports the agent configuration as a ZIP file.
 
 ## Change access to the agent
 
-Agents can either be private to the creator or shared within a LangSmith workspace.
+Agents can be private to the creator, shared with specific people, or shared with your entire LangSmith workspace.
 
 | Feature                  | Private agents                          | [Workspace agents](#workspace-scoped-agent-details)                                                                    |
 | ------------------------ | --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
@@ -43,7 +41,7 @@ Agents can either be private to the creator or shared within a LangSmith workspa
 | **OAuth authentication** | OAuth credentials are scoped to creator | OAuth credentials are scoped to each user; new users cloning workspace agents must re-authenticate with selected tools |
 | **Secrets**              | Uses workspace-scoped LangSmith secrets | Uses workspace-scoped LangSmith secrets (same as private agents)                                                       |
 
-To change the agent visibility, click the <Icon icon="lock" /> **Visibility settings** icon in the top right corner of the agent and select either **Only me** or **Workspace**.
+To change the agent visibility, open your agent, expand the **Sharing** drawer in the sidebar, and select **Private** or **Workspace**. To share with specific people, click **+ Add** next to **Specific people**.
 
 ### Workspace-scoped agent details
 
@@ -67,20 +65,18 @@ By default, your agent requires approval before saving to the memories folder. W
 
 To disable the memory approval requirement:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), navigate to your agent's inbox.
-2. Next to the agent name, click the <Icon icon="pencil" /> **Edit Agent** icon.
-3. In the top right corner, click the <Icon icon="settings" /> **Settings** icon.
-4. In the **Memory** section, toggle **Require approval to update memories** to off.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), open your agent.
+2. In the sidebar, expand the **Knowledge** drawer.
+3. In the **Memory** section, set **Update memory and instructions** to **Auto**.
 
 ## Use the agent programmatically
 
 You can use the [LangGraph SDK](/langsmith/reference) to connect to your agent through code. To view the code snippets needed to call your agent programmatically:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), navigate to your agent's inbox.
-2. Next to the agent name, click the <Icon icon="pencil" /> **Edit Agent** icon.
-3. In the top right corner, click the <Icon icon="settings" /> **Settings** icon.
-4. Click the **View code snippets** button.
-5. Copy the pre-populated code snippets for your agent.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), open your agent.
+2. In the sidebar, expand the **Advanced settings** drawer.
+3. Under **Developer**, click **View code snippets**.
+4. Copy the pre-populated code snippets for your agent.
 
 For more information, see [Call agents from code](/langsmith/fleet/code).
 
@@ -88,24 +84,22 @@ For more information, see [Call agents from code](/langsmith/fleet/code).
 
 To pause an agent, pause its channels:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), navigate to your agent's inbox.
-2. Next to the agent name, click the <Icon icon="pencil" /> **Edit Agent** icon.
-3. In the graph view, click the **Pause** button in the **Channels** box.
-4. Click **Save Changes**.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), open your agent.
+2. In the sidebar, expand the **Channels** drawer.
+3. Click the **Pause channels** button.
 
 <Tip>
-  To resume, click the **Resume channels** button in the **Channels** box.
+  To resume, click the **Resume channels** button.
 </Tip>
 
 ## Delete agent
 
 To permanently delete an agent:
 
-1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), navigate to your agent's inbox.
-2. Next to the agent name, click the <Icon icon="pencil" /> **Edit Agent** icon.
-3. In the top right corner, click the <Icon icon="settings" /> **Settings** icon.
-4. Click the **Delete Agent** button.
-5. To confirm the deletion, click the **Delete** button.
+1. In the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-manage-agent-settings), open your agent.
+2. In the sidebar, expand the **Advanced settings** drawer.
+3. In the **Danger zone** section, click **Delete agent**.
+4. To confirm the deletion, click the **Delete** button.
 
 <Warning>
   This action cannot be undone. It will permanently delete the agent, all threads linked to the agent, and unlink any attached channels.

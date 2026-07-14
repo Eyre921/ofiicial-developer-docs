@@ -106,10 +106,9 @@ The connection now succeeds and Salesforce tools become available to agents in y
 
 After connecting, add Salesforce tools to a specific agent:
 
-1. Open your agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-salesforce) and click the <Icon icon="pencil" /> **Edit Agent** icon.
-2. In the **Toolbox** section, click **+ Add**.
+1. Open your agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-salesforce).
+2. In the sidebar, expand the **Connections** drawer and click **Add connection**.
 3. Search for **Salesforce Query** and add it to the agent.
-4. Click **Save changes**.
 
 ## Troubleshooting
 

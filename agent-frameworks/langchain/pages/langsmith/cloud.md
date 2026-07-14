@@ -4,16 +4,12 @@ source: https://docs.langchain.com/langsmith/cloud
 path: langsmith/cloud
 ---
 
-<Callout icon="rocket">
-  If you're ready to deploy your app to LangSmith Cloud (AWS or GCP), follow the [Cloud deployment quickstart](/langsmith/deployment-quickstart) or the [full setup guide](/langsmith/deploy-to-cloud). This page explains the Cloud managed architecture for reference.
-</Callout>
-
-The **Cloud** option is a fully managed model where LangChain hosts and operates all LangSmith infrastructure and services:
+The **Cloud** hosting option is a fully managed model where LangChain hosts and operates all LangSmith infrastructure and services:
 
 * **Fully managed infrastructure**: LangChain handles all infrastructure, updates, scaling, and maintenance.
-* **Deploy Agent Servers from GitHub**: Connect your repositories and deploy [Agent Servers](/langsmith/deployment) to the cloud with a few clicks.
+* [**LangSmith UI**](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud): Full access to [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), [agent deployment management](/langsmith/deployment), and [Studio](/langsmith/studio).
+* **Deploy Agent Servers from GitHub**: Connect your repositories and deploy [Agent Servers](/langsmith/deployment) to the Cloud with a few clicks.
 * **Automated CI/CD for Agent Servers**: The build and deployment process for your [Agent Servers](/langsmith/deployment) is handled automatically by the platform.
-* **LangSmith UI**: Full access to [observability](/langsmith/observability), [evaluation](/langsmith/evaluation), [deployment management](/langsmith/deployment), and [Studio](/langsmith/studio).
 
 |                                               | **Who manages it** | **Where it runs**               |
 | --------------------------------------------- | ------------------ | ------------------------------- |
@@ -21,26 +17,26 @@ The **Cloud** option is a fully managed model where LangChain hosts and operates
 | **Your Agent Servers**                        | LangChain          | LangChain's cloud (AWS and GCP) |
 | **CI/CD for your apps**                       | LangChain          | LangChain's cloud (AWS and GCP) |
 
+<Callout icon="rocket">
+  If you're ready to deploy your app to LangSmith Cloud (AWS or GCP), follow the [Cloud deployment quickstart](/langsmith/deployment-quickstart) or the [full setup guide](/langsmith/deploy-to-cloud). This page explains the Cloud managed architecture for reference.
+</Callout>
+
 <img alt="Cloud deployment: LangChain hosts and manages all components including the UI, APIs, and your Agent Servers." />
-
-## Get started
-
-To deploy your first application to Cloud, follow the [Cloud deployment quickstart](/langsmith/deployment-quickstart) or refer to the [comprehensive setup guide](/langsmith/deploy-to-cloud).
 
 ## Cloud architecture and scalability
 
 <Note>
   This section is only relevant for cloud-managed LangSmith at [https://smith.langchain.com](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-cloud), [https://eu.smith.langchain.com](https://eu.smith.langchain.com), [https://apac.smith.langchain.com](https://apac.smith.langchain.com), and [https://aws.smith.langchain.com](https://aws.smith.langchain.com).
 
-  For information on the self-hosted LangSmith solution, please refer to the [self-hosted documentation](/langsmith/self-hosted).
+  For information on the Self-hosted LangSmith solution, refer to the [Self-hosted documentation](/langsmith/self-hosted).
 </Note>
 
-LangSmith is deployed on Google Cloud Platform (GCP) for the US, EU, and APAC SaaS regions and on Amazon Web Services (AWS) for the AWS-hosted US SaaS region. The platform is designed to be highly scalable. Many customers run production workloads on LangSmith for LLM application observability, evaluation, and agent deployment.
+LangSmith is hosted on Google Cloud Platform (GCP) for the US, EU, and APAC SaaS regions and on Amazon Web Services (AWS) for the AWS-hosted US SaaS region. The platform is designed to be highly scalable. Many customers run production workloads on LangSmith for LLM application observability, evaluation, and agent deployment.
 
-The US-based LangSmith service (default GCP region) is deployed in the `us-central1` (Iowa) region of GCP.
+The US-based LangSmith service (default GCP region) is hosted in the `us-central1` (Iowa) region of GCP.
 
 <Note>
-  The [EU-based LangSmith service](https://eu.smith.langchain.com) is now available (as of mid-July 2024) and is deployed in the `europe-west4` (Netherlands) region of GCP. If you are interested in an enterprise plan in this region, [contact our sales team](https://www.langchain.com/contact-sales).
+  The [EU-based LangSmith service](https://eu.smith.langchain.com) is available and hosted in the `europe-west4` (Netherlands) region of GCP. If you are interested in an Enterprise plan in this region, [contact our sales team](https://www.langchain.com/contact-sales).
 </Note>
 
 <Note>
@@ -76,7 +72,7 @@ Data listed here is stored exclusively in the US:
 
 The following applies to the **US, EU, and APAC** SaaS regions on GCP.
 
-LangSmith is composed of the following services, all deployed on Google Kubernetes Engine (GKE):
+LangSmith is composed of the following services, all hosted on Google Kubernetes Engine (GKE):
 
 * LangSmith Frontend: serves the LangSmith UI.
 * LangSmith Backend: serves the LangSmith API.
@@ -101,7 +97,7 @@ Some additional GCP services we use include:
 
 The following applies to the **AWS US** SaaS region in `us-east-2` (Ohio). The same logical LangSmith components run on **Amazon EKS** instead of GKE.
 
-LangSmith is composed of the following services, all deployed on Amazon EKS:
+LangSmith is composed of the following services, all hosted on Amazon EKS:
 
 * LangSmith Frontend: serves the LangSmith UI.
 * LangSmith Backend: serves the LangSmith API.
@@ -148,7 +144,7 @@ All traffic leaving LangSmith services will be routed through a NAT gateway. All
 It may be helpful to allowlist these IP addresses if connecting to your own AzureOpenAI service or other endpoints that may be required by the Playground or Online Evaluation.
 
 <Note>
-  Traffic from agents deployed on LangSmith Deployment egresses through a separate set of NAT IPs. For that list, refer to [Allowlist IP addresses](/langsmith/deploy-to-cloud#allowlist-ip-addresses) in the Cloud deployment guide.
+  Traffic from agents deployed on [LangSmith Deployment](/langsmith/deployment) egresses through a separate set of NAT IPs. For that list, refer to [Allowlist IP addresses](/langsmith/deploy-to-cloud#allowlist-ip-addresses) in the Cloud deployment guide.
 </Note>
 
 ### Ingress into LangChain SaaS
@@ -169,7 +165,7 @@ You may need to allowlist these to enable traffic from your private network to L
 ## Private connectivity (Enterprise)
 
 <Callout icon="lock">
-  **Enterprise only.** Private connectivity is available exclusively for Enterprise customers. Contact your account representative or [sales@langchain.dev](mailto:sales@langchain.dev) to enable this feature.
+  [**Enterprise only.**](/langsmith/pricing-plans) Private connectivity is available exclusively for Enterprise customers. Contact your account representative or [sales@langchain.dev](mailto:sales@langchain.dev) to enable this feature.
 </Callout>
 
 Enterprise customers can connect to LangSmith without exposing traffic to the public internet using **AWS PrivateLink** or **GCP Private Service Connect (PSC)**.
@@ -216,7 +212,7 @@ Customers on **AWS** can connect to LangSmith via [AWS PrivateLink](https://docs
 
 #### Configure DNS
 
-Configure DNS so that `aws.api.smith.langchain.com` resolves to your VPC endpoint's private DNS name within your VPC. You can use any private DNS solution — Route 53 Private Hosted Zones, a corporate DNS resolver, or any DNS server reachable from your VPC.
+Configure DNS so that `aws.api.smith.langchain.com` resolves to your VPC endpoint's private DNS name within your VPC. You can use any private DNS solution: Route 53 Private Hosted Zones, a corporate DNS resolver, or any DNS server reachable from your VPC.
 
 First, get your endpoint's DNS name:
 
@@ -227,7 +223,7 @@ aws ec2 describe-vpc-endpoints \
   --output text --region <YOUR_REGION>
 ```
 
-Then create a CNAME record for `aws.api.smith.langchain.com` pointing to that DNS name. Here's an example using Route 53:
+Then, create a CNAME record for `aws.api.smith.langchain.com` pointing to that DNS name. Here's an example using Route 53:
 
 <CodeGroup>
   ```bash AWS CLI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}

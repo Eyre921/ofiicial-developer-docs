@@ -272,7 +272,7 @@ You can cancel a payment from the Dashboard when:
 If you no longer intend to collect a payment, you can [cancel a PaymentIntent](https://docs.stripe.com/api/payment_intents/cancel.md). You can keep a PaymentIntent in an incomplete status, like `requires_confirmation` or `requires_payment_method`, because incomplete PaymentIntents are useful in understanding the conversion rate at checkout. The following code example shows a request to cancel a PaymentIntent:
 
 ```curl
-curl -X POST https://api.stripe.com/v1/payment_intents/pi_32AkjQ5H4Bas2eAolX13/cancel \
+curl -X POST https://api.stripe.com/v1/payment_intents/{{PAYMENTINTENT_ID}}/cancel \
   -u "<<YOUR_SECRET_KEY>>:"
 ```
 

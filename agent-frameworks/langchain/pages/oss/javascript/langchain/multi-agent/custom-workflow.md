@@ -202,6 +202,10 @@ A common use case is combining [retrieval](/oss/javascript/langchain/retrieval) 
   });
   console.log(result.answer);
   ```
+
+  <Info>
+    In production, use a persistent vector store such as [Weaviate](/oss/javascript/integrations/vectorstores/weaviate), [Pinecone](/oss/javascript/integrations/vectorstores/pinecone), or [MongoDB Atlas](/oss/javascript/integrations/vectorstores/mongodb_atlas) instead of `MemoryVectorStore`. See [all vector stores](/oss/javascript/integrations/vectorstores).
+  </Info>
 </Accordion>
 
 ***

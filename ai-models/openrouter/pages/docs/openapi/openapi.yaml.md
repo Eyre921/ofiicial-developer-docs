@@ -199,6 +199,7 @@ components:
               - $ref: '#/components/schemas/ShellServerTool'
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
               - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
               - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
               - $ref: '#/components/schemas/DatetimeServerTool'
@@ -687,7 +688,10 @@ components:
       description: >-
         Enable automatic prompt caching. When set at the top level, the system
         automatically applies cache breakpoints to the last cacheable block in
-        the request. Currently supported for Anthropic Claude models.
+        the request. When set on an individual content block, it marks an
+        explicit cache breakpoint; block-level markers also work on OpenAI
+        models that support explicit prompt caching — OpenRouter converts them
+        to the provider's native format.
       example:
         type: ephemeral
       properties:
@@ -3795,6 +3799,7 @@ components:
               - $ref: '#/components/schemas/ShellServerTool'
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
           type: array
         top_logprobs:
           type: integer
@@ -4343,6 +4348,7 @@ components:
         - recraft
         - reka
         - relace
+        - sail-research
         - sakana
         - sambanova
         - seed
@@ -4523,7 +4529,10 @@ components:
         - $ref: '#/components/schemas/AnthropicCacheControlDirective'
         - properties: {}
           type: object
-      description: Cache control for the content part
+      description: >-
+        Anthropic-style cache breakpoint for the content part. Interchangeable
+        with the OpenAI-style `prompt_cache_breakpoint` marker: OpenRouter
+        converts between the two based on the provider serving the request.
       example:
         ttl: 5m
         type: ephemeral
@@ -4620,6 +4629,8 @@ components:
       properties:
         cache_control:
           $ref: '#/components/schemas/ChatContentCacheControl'
+        prompt_cache_breakpoint:
+          $ref: '#/components/schemas/PromptCacheBreakpoint'
         text:
           type: string
         type:
@@ -5127,6 +5138,11 @@ components:
           format: double
           nullable: true
           type: number
+        prompt_cache_key:
+          nullable: true
+          type: string
+        prompt_cache_options:
+          $ref: '#/components/schemas/PromptCacheOptions'
         provider:
           $ref: '#/components/schemas/ProviderPreferences'
         reasoning:
@@ -5886,31 +5902,7 @@ components:
               type: integer
           type: object
         server_tool_use_details:
-          description: Usage for server-side tool execution (e.g., web search)
-          nullable: true
-          properties:
-            tool_calls_executed:
-              description: >-
-                Number of OpenRouter server tool calls that executed and
-                produced a result
-              nullable: true
-              type: integer
-            tool_calls_requested:
-              description: >-
-                Total number of OpenRouter server-orchestrated tool calls the
-                model requested, across all tool types. Provider-native tools
-                (e.g. native web search) are not counted here.
-              nullable: true
-              type: integer
-            web_search_requests:
-              description: >-
-                Number of web searches performed by server-side tools. For
-                server-orchestrated tool calls a web search is also counted in
-                tool_calls_requested; provider-native web search may report
-                web_search_requests only. Do not sum the two.
-              nullable: true
-              type: integer
-          type: object
+          $ref: '#/components/schemas/ServerToolUseDetails'
         total_tokens:
           description: Total number of tokens
           type: integer
@@ -6784,6 +6776,7 @@ components:
         enforce_zdr_google: false
         enforce_zdr_openai: true
         enforce_zdr_other: false
+        enforce_zdr_xai: false
         ignored_models: null
         ignored_providers: null
         limit_usd: 50
@@ -6845,9 +6838,9 @@ components:
           deprecated: true
           description: >-
             Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai,
-            enforce_zdr_google, and enforce_zdr_other instead. When provided,
-            its value is copied into any of those per-provider fields that are
-            not explicitly specified on the request.
+            enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead.
+            When provided, its value is copied into any of those per-provider
+            fields that are not explicitly specified on the request.
           example: false
           nullable: true
           type: boolean
@@ -6875,8 +6868,15 @@ components:
         enforce_zdr_other:
           description: >-
             Whether to enforce zero data retention for models that are not from
-            Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not
-            provided.
+            Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when
+            not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_xai:
+          description: >-
+            Whether to enforce zero data retention for xAI models. Falls back to
+            enforce_zdr when not provided.
           example: false
           nullable: true
           type: boolean
@@ -6944,6 +6944,7 @@ components:
           enforce_zdr_google: false
           enforce_zdr_openai: true
           enforce_zdr_other: false
+          enforce_zdr_xai: false
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -9362,6 +9363,7 @@ components:
           enforce_zdr_google: false
           enforce_zdr_openai: true
           enforce_zdr_other: false
+          enforce_zdr_xai: false
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -9546,6 +9548,7 @@ components:
         enforce_zdr_google: false
         enforce_zdr_openai: true
         enforce_zdr_other: false
+        enforce_zdr_xai: false
         id: 550e8400-e29b-41d4-a716-446655440000
         ignored_models: null
         ignored_providers: null
@@ -9610,9 +9613,9 @@ components:
           deprecated: true
           description: >-
             Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai,
-            enforce_zdr_google, and enforce_zdr_other instead. When provided,
-            its value is copied into any of those per-provider fields that are
-            not explicitly specified on the request.
+            enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead.
+            When provided, its value is copied into any of those per-provider
+            fields that are not explicitly specified on the request.
           example: false
           nullable: true
           type: boolean
@@ -9640,8 +9643,15 @@ components:
         enforce_zdr_other:
           description: >-
             Whether to enforce zero data retention for models that are not from
-            Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not
-            provided.
+            Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when
+            not provided.
+          example: false
+          nullable: true
+          type: boolean
+        enforce_zdr_xai:
+          description: >-
+            Whether to enforce zero data retention for xAI models. Falls back to
+            enforce_zdr when not provided.
           example: false
           nullable: true
           type: boolean
@@ -11414,6 +11424,7 @@ components:
             enforce_zdr_google: false
             enforce_zdr_openai: true
             enforce_zdr_other: false
+            enforce_zdr_xai: false
             id: 550e8400-e29b-41d4-a716-446655440000
             ignored_models: null
             ignored_providers: null
@@ -13304,6 +13315,7 @@ components:
                 - Recraft
                 - Reka
                 - Relace
+                - Sail Research
                 - Sakana AI
                 - SambaNova
                 - Seed
@@ -13940,6 +13952,78 @@ components:
           type: string
       required:
         - data
+      type: object
+    NamespaceFunctionTool:
+      description: A function tool grouped inside a namespace tool
+      example:
+        name: spawn_agent
+        type: function
+      properties:
+        allowed_callers:
+          items:
+            enum:
+              - direct
+              - programmatic
+            type: string
+          nullable: true
+          type: array
+        defer_loading:
+          type: boolean
+        description:
+          nullable: true
+          type: string
+        name:
+          type: string
+        output_schema:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
+        parameters:
+          additionalProperties:
+            nullable: true
+          nullable: true
+          type: object
+        strict:
+          nullable: true
+          type: boolean
+        type:
+          enum:
+            - function
+          type: string
+      required:
+        - type
+        - name
+      type: object
+    NamespaceTool:
+      description: Groups function/custom tools under a shared namespace
+      example:
+        description: Tools for spawning and managing sub-agents.
+        name: multi_agent_v1
+        tools:
+          - name: spawn_agent
+            type: function
+        type: namespace
+      properties:
+        description:
+          type: string
+        name:
+          type: string
+        tools:
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/NamespaceFunctionTool'
+              - $ref: '#/components/schemas/CustomTool'
+          type: array
+        type:
+          enum:
+            - namespace
+          type: string
+      required:
+        - type
+        - name
+        - description
+        - tools
       type: object
     NotFoundResponse:
       description: Not Found - Resource does not exist
@@ -18900,9 +18984,10 @@ components:
     PricingOverride:
       description: >-
         A conditional override of the base pricing. An entry applies only when
-        all of its condition fields (e.g. min_prompt_tokens) match the request;
-        among applicable entries, later entries win per price key; price keys
-        absent from an entry inherit the base price.
+        all of its condition fields (e.g. min_prompt_tokens, or the
+        utc_start/utc_end time window) match the request; among applicable
+        entries, later entries win per price key; price keys absent from an
+        entry inherit the base price.
       example:
         completion: '0.00002'
         min_prompt_tokens: 200000
@@ -18935,12 +19020,30 @@ components:
         prompt:
           description: Overridden price in USD per token for prompt (input) processing
           type: string
+        utc_end:
+          description: >-
+            Condition: exclusive end of a daily UTC time window as an HHMM clock
+            number (e.g. 400 = 04:00)
+          format: double
+          type: number
+        utc_start:
+          description: >-
+            Condition: inclusive start of a daily UTC time window as an HHMM
+            clock number (e.g. 100 = 01:00, 1030 = 10:30). The entry applies
+            while the current UTC time is inside the half-open window
+            [utc_start, utc_end), which may wrap past midnight (utc_start >
+            utc_end).
+          format: double
+          type: number
       type: object
     PromptCacheBreakpoint:
       description: >-
-        Marks an explicit prompt-cache boundary on this content block.
-        Everything through the block carrying this marker is part of the
-        candidate cached prefix. Only supported by OpenAI GPT-5.6 and newer.
+        Marks an explicit prompt-cache boundary on this content block
+        (OpenAI-style). Everything through the block carrying this marker is
+        part of the candidate cached prefix. Supported natively by OpenAI
+        GPT-5.6 and newer; on providers that use Anthropic-style
+        `cache_control`, OpenRouter converts the marker to that format
+        automatically.
       example:
         mode: explicit
       nullable: true
@@ -19057,6 +19160,7 @@ components:
         - Recraft
         - Reka
         - Relace
+        - Sail Research
         - Sakana AI
         - SambaNova
         - Seed
@@ -19480,6 +19584,10 @@ components:
           additionalProperties:
             nullable: true
           type: object
+        sail-research:
+          additionalProperties:
+            nullable: true
+          type: object
         sakana:
           additionalProperties:
             nullable: true
@@ -19892,6 +20000,7 @@ components:
             - Recraft
             - Reka
             - Relace
+            - Sail Research
             - Sakana AI
             - SambaNova
             - Seed
@@ -20076,12 +20185,13 @@ components:
               type: string
             overrides:
               description: >-
-                Conditional overrides of the base pricing (e.g. long-context
-                pricing). An entry applies when all of its condition fields
-                (e.g. min_prompt_tokens) match the request; among applicable
-                entries, later entries win per key; price keys absent from an
-                entry inherit the base price. The top-level pricing keys always
-                reflect the price that applies under default conditions.
+                Conditional overrides of the base pricing (e.g. long-context or
+                time-based pricing). An entry applies when all of its condition
+                fields (e.g. min_prompt_tokens, or the utc_start/utc_end time
+                window) match the request; among applicable entries, later
+                entries win per key; price keys absent from an entry inherit the
+                base price. The top-level pricing keys always reflect the price
+                that applies under default conditions.
               items:
                 $ref: '#/components/schemas/PricingOverride'
               type: array
@@ -20216,12 +20326,13 @@ components:
           type: string
         overrides:
           description: >-
-            Conditional overrides of the base pricing (e.g. long-context
-            pricing). An entry applies when all of its condition fields (e.g.
-            min_prompt_tokens) match the request; among applicable entries,
-            later entries win per key; price keys absent from an entry inherit
-            the base price. The top-level pricing keys always reflect the price
-            that applies under default conditions.
+            Conditional overrides of the base pricing (e.g. long-context or
+            time-based pricing). An entry applies when all of its condition
+            fields (e.g. min_prompt_tokens, or the utc_start/utc_end time
+            window) match the request; among applicable entries, later entries
+            win per key; price keys absent from an entry inherit the base price.
+            The top-level pricing keys always reflect the price that applies
+            under default conditions.
           items:
             $ref: '#/components/schemas/PricingOverride'
           type: array
@@ -21115,6 +21226,7 @@ components:
               - $ref: '#/components/schemas/ShellServerTool'
               - $ref: '#/components/schemas/ApplyPatchServerTool'
               - $ref: '#/components/schemas/CustomTool'
+              - $ref: '#/components/schemas/NamespaceTool'
               - $ref: '#/components/schemas/AdvisorServerTool_OpenRouter'
               - $ref: '#/components/schemas/SubagentServerTool_OpenRouter'
               - $ref: '#/components/schemas/DatetimeServerTool'
@@ -21268,6 +21380,36 @@ components:
         - high
       example: medium
       type: string
+    ServerToolUseDetails:
+      description: Usage for server-side tool execution (e.g., web search)
+      example:
+        tool_calls_executed: 2
+        tool_calls_requested: 2
+        web_search_requests: 2
+      nullable: true
+      properties:
+        tool_calls_executed:
+          description: >-
+            Number of OpenRouter server tool calls that executed and produced a
+            result.
+          nullable: true
+          type: integer
+        tool_calls_requested:
+          description: >-
+            Total number of OpenRouter server-orchestrated tool calls the model
+            requested, across all tool types. Provider-native tools (e.g. native
+            web search) are not counted here.
+          nullable: true
+          type: integer
+        web_search_requests:
+          description: >-
+            Number of web searches performed by server-side tools. For
+            server-orchestrated tool calls a web search is also counted in
+            tool_calls_requested; provider-native web search may report
+            web_search_requests only. Do not sum the two.
+          nullable: true
+          type: integer
+      type: object
     ServiceTier:
       enum:
         - auto
@@ -23309,9 +23451,9 @@ components:
           deprecated: true
           description: >-
             Deprecated. Use enforce_zdr_anthropic, enforce_zdr_openai,
-            enforce_zdr_google, and enforce_zdr_other instead. When provided,
-            its value is copied into any of those per-provider fields that are
-            not explicitly specified on the request.
+            enforce_zdr_google, enforce_zdr_xai, and enforce_zdr_other instead.
+            When provided, its value is copied into any of those per-provider
+            fields that are not explicitly specified on the request.
           example: true
           nullable: true
           type: boolean
@@ -23339,8 +23481,15 @@ components:
         enforce_zdr_other:
           description: >-
             Whether to enforce zero data retention for models that are not from
-            Anthropic, OpenAI, or Google. Falls back to enforce_zdr when not
-            provided.
+            Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when
+            not provided.
+          example: true
+          nullable: true
+          type: boolean
+        enforce_zdr_xai:
+          description: >-
+            Whether to enforce zero data retention for xAI models. Falls back to
+            enforce_zdr when not provided.
           example: true
           nullable: true
           type: boolean
@@ -23397,6 +23546,7 @@ components:
           enforce_zdr_google: true
           enforce_zdr_openai: true
           enforce_zdr_other: true
+          enforce_zdr_xai: true
           id: 550e8400-e29b-41d4-a716-446655440000
           ignored_models: null
           ignored_providers: null
@@ -23678,6 +23828,8 @@ components:
                 Whether a request was made using a Bring Your Own Key
                 configuration
               type: boolean
+            server_tool_use_details:
+              $ref: '#/components/schemas/ServerToolUseDetails'
           type: object
       description: Token usage information for the response
       example:
@@ -26319,6 +26471,7 @@ paths:
               - recraft
               - reka
               - relace
+              - sail-research
               - sakana
               - sambanova
               - seed
@@ -29274,6 +29427,7 @@ paths:
               enforce_zdr_google: false
               enforce_zdr_openai: true
               enforce_zdr_other: false
+              enforce_zdr_xai: false
               ignored_models: null
               ignored_providers: null
               limit_usd: 50
@@ -29300,6 +29454,7 @@ paths:
                   enforce_zdr_google: false
                   enforce_zdr_openai: true
                   enforce_zdr_other: false
+                  enforce_zdr_xai: false
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
@@ -29531,6 +29686,7 @@ paths:
                   enforce_zdr_google: true
                   enforce_zdr_openai: true
                   enforce_zdr_other: true
+                  enforce_zdr_xai: true
                   id: 550e8400-e29b-41d4-a716-446655440000
                   ignored_models: null
                   ignored_providers: null
@@ -36941,7 +37097,8 @@ paths:
     post:
       description: >-
         Remove multiple members from a workspace. Members with active API keys
-        in the workspace cannot be removed. [Management
+        in the workspace cannot be removed. SCIM-managed members cannot be
+        removed; changes must be made in your identity provider. [Management
         key](/docs/guides/overview/auth/management-api-keys) required.
       operationId: bulkRemoveWorkspaceMembers
       parameters:

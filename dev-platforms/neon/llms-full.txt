@@ -21,15 +21,26 @@ The Anthropic Messages endpoint exposes the [Anthropic Messages API](https://doc
 
 **Note:** The Anthropic SDK appends `/v1/messages` to the base URL automatically. Set the base URL to `/ai-gateway/anthropic` (without `/v1`).
 
+This endpoint is also reachable at the shorter `/anthropic/v1/messages` path (no `/ai-gateway` prefix). Both behave identically. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+
+## Setup
+
+Set these environment variables. See [Get started](https://neon.com/docs/ai-gateway/get-started) for how to obtain them.
+
+```bash
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aws.neon.tech
+```
+
 ## Supported models
 
 This endpoint accepts Anthropic models only. See the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models) for the full list. Supported models:
 
-- `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5`
-- `claude-sonnet-4-6`
+- `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5`, `claude-opus-4-1`
+- `claude-sonnet-4-6`, `claude-sonnet-4-5`, `claude-sonnet-4`
 - `claude-haiku-4-5`
 
-Sending a non-Anthropic model ID returns `400 model is not available on this endpoint`. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you need to call multiple providers from the same code.
+Sending a non-Anthropic model ID returns `400 model "<model-id>" is not available on the anthropic_messages endpoint`, naming whichever model you sent. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you need to call multiple providers from the same code.
 
 ## Basic request
 
@@ -193,10 +204,10 @@ All other headers are stripped. The `Authorization` header is replaced with the 
 
 ## Error handling
 
-| Status            | Message                                   | Cause                                     |
-| ----------------- | ----------------------------------------- | ----------------------------------------- |
-| `400 Bad Request` | `unknown model`                           | Model ID not in the catalog               |
-| `400 Bad Request` | `model is not available on this endpoint` | Non-Anthropic model sent to this endpoint |
+| Status            | Message                                                                  | Cause                                     |
+| ----------------- | ------------------------------------------------------------------------ | ----------------------------------------- |
+| `400 Bad Request` | `unknown model "<model-id>"`                                             | Model ID not in the catalog               |
+| `400 Bad Request` | `model "<model-id>" is not available on the anthropic_messages endpoint` | Non-Anthropic model sent to this endpoint |
 
 For authentication, quota, and upstream errors, see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting).
 
@@ -298,42 +309,44 @@ client = OpenAI(
 
 ## Environment variables
 
-Neon provides four gateway env vars. Two follow OpenAI's standard naming so existing SDKs pick them up automatically. Two use `NEON_`-prefixed names that survive a user overriding the `OPENAI_*` variables with their own provider keys.
+Neon provides two gateway env vars. `NEON_AI_GATEWAY_BASE_URL` is the bare branch host, so you append the dialect path yourself when configuring an SDK.
 
-| Variable                   | Value                                                                                                   |
-| -------------------------- | ------------------------------------------------------------------------------------------------------- |
-| `OPENAI_API_KEY`           | Bearer token (`nt_live_...`)                                                                            |
-| `OPENAI_BASE_URL`          | Full OpenAI Responses dialect URL: `https://<branch-host>/ai-gateway/openai/v1` — **includes the path** |
-| `NEON_AI_GATEWAY_TOKEN`    | Same bearer token as `OPENAI_API_KEY`                                                                   |
-| `NEON_AI_GATEWAY_BASE_URL` | Bare branch host: `https://<branch-host>` — **no path**; append `/ai-gateway/<dialect>/v1` yourself     |
+| Variable                   | Value                                                                                               |
+| -------------------------- | --------------------------------------------------------------------------------------------------- |
+| `NEON_AI_GATEWAY_TOKEN`    | Bearer token (`nt_live_...`)                                                                        |
+| `NEON_AI_GATEWAY_BASE_URL` | Bare branch host: `https://<branch-host>`, with no path. Append `/ai-gateway/<dialect>/v1` yourself |
 
-`OPENAI_BASE_URL` and `NEON_AI_GATEWAY_BASE_URL` point at different URLs. `OPENAI_BASE_URL` already includes `/ai-gateway/openai/v1`, so `new OpenAI()` picks it up with zero config and calls the Responses API. `NEON_AI_GATEWAY_BASE_URL` is the bare host — append the dialect path yourself:
+Append the dialect path for the endpoint you need:
 
 ```
 NEON_AI_GATEWAY_BASE_URL + /ai-gateway/mlflow/v1   → chat completions (all providers)
-NEON_AI_GATEWAY_BASE_URL + /ai-gateway/openai/v1   → OpenAI Responses API (= OPENAI_BASE_URL)
+NEON_AI_GATEWAY_BASE_URL + /ai-gateway/openai/v1   → OpenAI Responses API
 NEON_AI_GATEWAY_BASE_URL + /ai-gateway/anthropic   → Anthropic Messages API
 NEON_AI_GATEWAY_BASE_URL + /ai-gateway/gemini      → Gemini generateContent API
 ```
 
+Most dialects are also reachable at a shorter top-level path with no `/ai-gateway/<dialect>` prefix: `/v1/chat/completions` for chat completions, `/openai/v1/responses` for OpenAI Responses, and `/anthropic/v1/messages` for Anthropic Messages. Gemini's shorter alias keeps the `gemini` segment: `/v1/gemini/v1beta/models/{model}:generateContent`. `GET /v1/models` lists the catalog in an OpenRouter-shaped response. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full mapping.
+
+To use an OpenAI SDK, set its `apiKey` and `baseURL` from these variables (see the examples below).
+
 ## Credentials in Neon Functions
 
-When your code runs inside Neon Functions, all four env vars are injected automatically. No credential creation step required:
+When your code runs inside Neon Functions, both gateway env vars are injected automatically. No credential creation step required:
 
-| Variable                   | Value                                                   |
-| -------------------------- | ------------------------------------------------------- |
-| `NEON_AI_GATEWAY_TOKEN`    | Bearer token for the AI Gateway                         |
-| `NEON_AI_GATEWAY_BASE_URL` | Branch gateway host with `https://` prefix, no path     |
-| `OPENAI_API_KEY`           | Same value as `NEON_AI_GATEWAY_TOKEN`                   |
-| `OPENAI_BASE_URL`          | Branch gateway host including the OpenAI Responses path |
+| Variable                   | Value                                               |
+| -------------------------- | --------------------------------------------------- |
+| `NEON_AI_GATEWAY_TOKEN`    | Bearer token for the AI Gateway                     |
+| `NEON_AI_GATEWAY_BASE_URL` | Branch gateway host with `https://` prefix, no path |
 
-`new OpenAI()` works with zero configuration because `OPENAI_API_KEY` and `OPENAI_BASE_URL` are already set:
+Configure an OpenAI SDK by setting `apiKey` and `baseURL` from these variables. Use the OpenAI Responses dialect for `responses.create()`:
 
 ```typescript
 import OpenAI from 'openai';
 
-// Reads OPENAI_API_KEY + OPENAI_BASE_URL from the environment automatically.
-const client = new OpenAI();
+const client = new OpenAI({
+  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/openai/v1`,
+});
 
 const response = await client.responses.create({
   model: 'gpt-5-mini',
@@ -341,7 +354,7 @@ const response = await client.responses.create({
 });
 ```
 
-For the chat completions endpoint or when you need credentials that survive a user overriding `OPENAI_*` with their own keys, use the `NEON_AI_GATEWAY_*` vars:
+For the chat completions endpoint, point the base URL at the `mlflow` dialect instead:
 
 ```typescript
 import OpenAI from 'openai';
@@ -408,13 +421,17 @@ The chat completions endpoint is the recommended way to use Neon AI Gateway. It'
 
 **Base URL:** `https://<branch-host>/ai-gateway/mlflow/v1`
 
+This endpoint is also reachable at the shorter `/v1/chat/completions` path (no `/ai-gateway/mlflow` prefix). Both behave identically. See [Shorter /v1 paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+
+If you're using an OpenRouter-compatible client that asks for a base URL, set it to `https://<branch-host>/v1` and call `/chat/completions`.
+
 ## Setup
 
 Set these environment variables. See [Get started](https://neon.com/docs/ai-gateway/get-started) for how to obtain them.
 
 ```bash
 NEON_AI_GATEWAY_TOKEN=nt_live_...
-NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.c2.us-east-2.aws.neon.tech
+NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aws.neon.tech
 ```
 
 ## Basic request
@@ -595,7 +612,7 @@ Error responses use the standard OpenAI error format:
 ```json
 {
   "error": {
-    "message": "unknown model",
+    "message": "unknown model \"<model-id>\"",
     "type": "invalid_request_error",
     "code": "invalid_model"
   }
@@ -629,6 +646,17 @@ The Gemini endpoint exposes the [Google Gemini API](https://ai.google.dev/api/ge
 
 **Note:** Only `generateContent` and `streamGenerateContent` are supported. Requests to other actions (such as `countTokens`) return `404 unsupported gemini action`.
 
+This endpoint also has a shorter alias with no `/ai-gateway` prefix: `https://<branch-host>/v1/gemini/v1beta/models/<model>:<action>`. Both behave identically. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+
+## Setup
+
+Set these environment variables. See [Get started](https://neon.com/docs/ai-gateway/get-started) for how to obtain them.
+
+```bash
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aws.neon.tech
+```
+
 ## Supported models
 
 This endpoint accepts Google models only:
@@ -643,7 +671,7 @@ This endpoint accepts Google models only:
 | `gemini-2-5-pro`        |       |
 | `gemini-2-5-flash`      |       |
 
-Sending a non-Google model ID returns `400 model is not available on this endpoint`. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you want to call Gemini models alongside other providers from the same code.
+Sending a non-Google model ID returns `400 model "<model-id>" is not available on the gemini_generate_content endpoint`, naming whichever model you sent. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you want to call Gemini models alongside other providers from the same code.
 
 ## Basic request
 
@@ -743,13 +771,12 @@ When calling the REST API directly, the model ID and action must appear in the p
 
 ## Error handling
 
-| Status            | Message                                   | Cause                                                                 |
-| ----------------- | ----------------------------------------- | --------------------------------------------------------------------- |
-| `400 Bad Request` | `unknown model`                           | Model ID not in the catalog                                           |
-| `400 Bad Request` | `model is not available on this endpoint` | Non-Google model sent to this endpoint                                |
-| `400 Bad Request` | `missing or invalid model`                | No model field in request body                                        |
-| `404 Not Found`   | `unsupported gemini action`               | Action other than `generateContent` or `streamGenerateContent` in URL |
-| `404 Not Found`   | `invalid gemini model path`               | Malformed `model:action` segment in URL                               |
+| Status            | Message                                                                       | Cause                                                                 |
+| ----------------- | ----------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| `400 Bad Request` | `unknown model "<model-id>"`                                                  | Model ID not in the catalog                                           |
+| `400 Bad Request` | `model "<model-id>" is not available on the gemini_generate_content endpoint` | Non-Google model sent to this endpoint                                |
+| `404 Not Found`   | `unsupported gemini action`                                                   | Action other than `generateContent` or `streamGenerateContent` in URL |
+| `404 Not Found`   | `invalid gemini model path`                                                   | Malformed `model:action` segment in URL                               |
 
 For authentication, quota, and upstream errors, see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting).
 
@@ -803,13 +830,13 @@ export NEON_AI_GATEWAY_TOKEN=nt_live_...
 Your branch's AI Gateway host is available in the Neon Console on the AI Gateway page, or via the Neon API. It follows this format:
 
 ```
-br-<name>-api.<cell>.<region>.aws.neon.tech
+br-<name>-api.ai.<cell>.<region>.aws.neon.tech
 ```
 
 For example:
 
 ```bash
-export NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.c2.us-east-2.aws.neon.tech
+export NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aws.neon.tech
 ```
 
 This is different from your database connection string.
@@ -978,6 +1005,10 @@ model: 'gemini-2-5-flash'
 
 See [Models](https://neon.com/docs/ai-gateway/models) for the full list of available model IDs.
 
+**Using the AI SDK?:**
+
+For TypeScript apps and agents, use [`@neon/ai-sdk-provider`](https://www.npmjs.com/package/@neon/ai-sdk-provider) with the Vercel AI SDK. It reads `NEON_AI_GATEWAY_BASE_URL` and `NEON_AI_GATEWAY_TOKEN`, then routes each catalog model to the best AI Gateway endpoint for that provider.
+
 ## Next steps
 
 - [Models](https://neon.com/docs/ai-gateway/models): full model catalog and which endpoint to use per provider
@@ -1030,13 +1061,15 @@ During the private preview, the following limits apply:
 
 If you hit a limit, you'll receive a `429 Too Many Requests` response. Requests resume when the rate limit window resets.
 
-These limits apply to input tokens. Upstream output token limits (20,000 OTPM for most models) apply independently, so you can hit a `429` on output tokens without reaching the input limit. See [Databricks Foundation Model API limits](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/limits) for details.
+These limits are counted against total tokens (input and output combined), not input alone. Upstream output token limits (20,000 OTPM for most models) apply independently, so you can hit a `429` on output tokens without reaching the gateway's TPM limit. See [Databricks Foundation Model API limits](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/limits) for details.
 
 Once billing begins, usage will also be capped by your prepaid credit balance. See [Pricing](https://neon.com/docs/ai-gateway/models#pricing) below.
 
 ## Pricing
 
 Inference is free during the private preview. See [Pricing](https://neon.com/docs/ai-gateway/overview#pricing) for what to expect when billing begins.
+
+Independent of billing, Neon enforces an account-level daily spend cap on AI Gateway usage, separate from the per-minute rate limits above. If your account exceeds it, every AI Gateway endpoint returns `429 Too Many Requests` with error code `REQUEST_LIMIT_EXCEEDED` until the cap resets or the block is lifted. This can happen even though inference itself isn't billed yet. Neon hasn't published a fixed cap value; it isn't a flat number and can vary by account. See [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#429-account-quota-exceeded) if you hit this.
 
 ## Available models
 
@@ -1313,6 +1346,45 @@ All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GAT
 | Google Gemma 3 12B        | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                           |
 | Meta, Databricks, Alibaba | `/v1/chat/completions` | Chat completions only                                                                    |
 
+## Shorter /v1 paths
+
+Most dialects above are also reachable at a shorter path with no `/ai-gateway/<dialect>` prefix. These are additive aliases: the `/ai-gateway/...` paths documented throughout this page keep working and aren't deprecated. Both forms use the same branch host, bearer token, request body, response body, model routing, rate limits, and quota behavior. Only chat completions and Gemini use a top-level `/v1/...` prefix; OpenAI Responses and Anthropic Messages have their own shorter prefixes instead of a bare `/v1/`.
+
+Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-gateway/...` paths when a framework or existing Neon example expects the older dialect-specific route.
+
+| Shorter path                                            | Equivalent to                                              |
+| ------------------------------------------------------- | ---------------------------------------------------------- |
+| `POST /v1/chat/completions`                             | `/ai-gateway/mlflow/v1/chat/completions`                   |
+| `POST /openai/v1/responses`                             | `/ai-gateway/openai/v1/responses`                          |
+| `POST /anthropic/v1/messages`                           | `/ai-gateway/anthropic/v1/messages`                        |
+| `POST /v1/gemini/v1beta/models/{model}:generateContent` | `/ai-gateway/gemini/v1beta/models/{model}:generateContent` |
+
+### List available models
+
+`GET /v1/models` lists the model catalog in an OpenRouter-shaped response, authenticated the same way as the endpoints above:
+
+```bash
+curl "$NEON_AI_GATEWAY_BASE_URL/v1/models" \
+  -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN"
+```
+
+```json
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "claude-sonnet-4-6",
+      "canonical_slug": "claude-sonnet-4-6",
+      "pricing": null,
+      "per_request_limits": null,
+      "context_length": null
+    }
+  ]
+}
+```
+
+`canonical_slug`, `pricing`, `per_request_limits`, and `context_length` are reserved OpenRouter-compatible fields. `pricing`, `per_request_limits`, and `context_length` are currently always `null`; use the tables earlier on this page for context window and model details in the meantime.
+
 ## Provider terms
 
 Models are hosted by Databricks and served through Neon AI Gateway. You are responsible for complying with each provider's applicable terms of use.
@@ -1341,7 +1413,20 @@ The OpenAI Responses endpoint exposes the [OpenAI Responses API](https://platfor
 
 **Base URL:** `https://<branch-host>/ai-gateway/openai/v1`
 
+This endpoint is also reachable at the shorter `/openai/v1/responses` path (no `/ai-gateway` prefix). Both behave identically. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
+
+If you're using an OpenAI-compatible client that accepts a base URL, set it to either `https://<branch-host>/ai-gateway/openai/v1` or `https://<branch-host>/openai/v1`. The request and response shapes are the standard OpenAI Responses API shape.
+
 **Warning:** All codex model variants (`gpt-5-3-codex`, `gpt-5-2-codex`, `gpt-5-1-codex-max`, `gpt-5-1-codex-mini`) **require this endpoint**. They do not work with the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions).
+
+## Setup
+
+Set these environment variables. See [Get started](https://neon.com/docs/ai-gateway/get-started) for how to obtain them.
+
+```bash
+NEON_AI_GATEWAY_TOKEN=nt_live_...
+NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aws.neon.tech
+```
 
 ## Supported models
 
@@ -1358,8 +1443,11 @@ This endpoint accepts OpenAI models only:
 | `gpt-5-1-codex-max`  | Requires this endpoint |
 | `gpt-5-1-codex-mini` | Requires this endpoint |
 | `gpt-5-1`            |                        |
+| `gpt-5`              |                        |
+| `gpt-5-mini`         |                        |
+| `gpt-5-nano`         |                        |
 
-Sending a non-OpenAI model ID returns `400 model is not available on this endpoint`.
+Sending a non-OpenAI model ID returns `400 model "<model-id>" is not available on the openai_responses endpoint`.
 
 ## Basic request
 
@@ -1455,12 +1543,39 @@ curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/openai/v1/responses" \
   }'
 ```
 
+## Image generation with Vercel AI SDK
+
+The `@neon/ai-sdk-provider` package re-exports the OpenAI provider's Responses image-generation tool as `neon.tools.imageGeneration()`. Use it with OpenAI-routed models such as `gpt-5-mini`.
+
+Use `streamText`, not `generateText`: image results are returned as tool-result parts, and a full base64 image reliably runs into size limits on a non-streaming response.
+
+```typescript
+import { neon } from '@neon/ai-sdk-provider';
+import { streamText } from 'ai';
+
+const result = streamText({
+  model: neon('gpt-5-mini'),
+  messages: [{ role: 'user', content: 'Create a simple Neon database mascot.' }],
+  tools: {
+    image: neon.tools.imageGeneration({
+      outputFormat: 'jpeg',
+      size: '1024x1024',
+      partialImages: 3,
+    }),
+  },
+});
+
+return result.toUIMessageStreamResponse();
+```
+
+AI SDK `generateImage()` is not supported by AI Gateway; image generation is available only through this Responses tool.
+
 ## Error handling
 
-| Status            | Message                                   | Cause                                  |
-| ----------------- | ----------------------------------------- | -------------------------------------- |
-| `400 Bad Request` | `unknown model`                           | Model ID not in the catalog            |
-| `400 Bad Request` | `model is not available on this endpoint` | Non-OpenAI model sent to this endpoint |
+| Status            | Message                                                                | Cause                                  |
+| ----------------- | ---------------------------------------------------------------------- | -------------------------------------- |
+| `400 Bad Request` | `unknown model "<model-id>"`                                           | Model ID not in the catalog            |
+| `400 Bad Request` | `model "<model-id>" is not available on the openai_responses endpoint` | Non-OpenAI model sent to this endpoint |
 
 For authentication, quota, and upstream errors, see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting).
 
@@ -1488,6 +1603,7 @@ Neon AI Gateway is the LLM inference layer built into the Neon backend. It lets 
 - **Standard SDKs, one URL change.** OpenAI SDK, Anthropic SDK, and google-genai all work out of the box.
 - **AI follows your branches.** Each branch has its own gateway endpoint. If you use Neon branches for preview deployments, AI requests from a feature branch are scoped to that branch. It's the same isolation your database already gets.
 - **Streaming support.** Server-sent events work on all endpoints with no extra configuration.
+- **Shorter, OpenRouter-style paths.** Chat completions and Gemini are reachable at a shorter top-level `/v1/...` path; OpenAI Responses and Anthropic Messages have their own shorter aliases (`/openai/v1/...`, `/anthropic/v1/...`). `GET /v1/models` lists the catalog. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths).
 
 ## Pricing
 
@@ -1564,21 +1680,21 @@ The credential store or branch resolver is temporarily unavailable.
 
 ## Model errors
 
-### `400 unknown model`
+### `400 unknown model "<model-id>"`
 
-The `model` field in the request body does not match any entry in the AI Gateway catalog.
+The `model` field in the request body does not match any entry in the AI Gateway catalog. The error message includes the model ID you sent.
 
 **Fix:** Check the model ID against the [full model catalog](https://neon.com/docs/ai-gateway/models). Use the short form (e.g., `claude-sonnet-4-6`) or the `databricks-` prefixed form (`databricks-claude-sonnet-4-6`) — both are accepted.
 
-### `400 model is not available on this endpoint`
+### `400 model "<model-id>" is not available on the <endpoint> endpoint`
 
-The model exists in the catalog but doesn't work with the endpoint you're calling.
+The model exists in the catalog but doesn't work with the endpoint you're calling. The error message names both the model and the endpoint dialect it was sent to (for example, `anthropic_messages`, `openai_responses`, `gemini_generate_content`, or `chat_completions`).
 
 **Fix:** Check which endpoint the model requires:
 
 - Anthropic models (`claude-*`) on `/openai/v1/responses` → use `/anthropic/v1/messages` or `/mlflow/v1/chat/completions`
 - OpenAI codex models on `/mlflow/v1/chat/completions` → use `/openai/v1/responses`
-- Google models on `/anthropic/v1/messages` → use `/gemini/v1beta/...` or `/mlflow/v1/chat/completions`
+- Google models on `/anthropic/v1/messages` → use `/ai-gateway/gemini/v1beta/...` or `/mlflow/v1/chat/completions`
 
 See [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use).
 
@@ -1594,9 +1710,9 @@ The request body does not contain a valid `model` field.
 
 ### `404 unsupported gemini action`
 
-The action in the Gemini endpoint URL is not `generateContent`.
+The action in the Gemini endpoint URL is unsupported. The AI Gateway supports Gemini `generateContent` and streaming `streamGenerateContent` calls.
 
-**Fix:** Only `generateContent` is supported. The URL must end with `:<model-id>:generateContent`. Other actions (`countTokens`, `streamGenerateContent`, etc.) are not available.
+**Fix:** Use either `:<model-id>:generateContent` or `:<model-id>:streamGenerateContent`. Other actions (`countTokens`, etc.) are not available.
 
 ### `404 invalid gemini model path`
 
@@ -1618,7 +1734,7 @@ The request host does not match the expected format or region.
 - The host has no parseable AWS region label. Returns 400.
 - The region in the host has no configured workspace. Returns 404.
 
-**Fix:** Verify that you are using the correct AI Gateway host from the Neon Console or API. The host format for production is `<branch-id>-api.<cell>.<region>.aws.neon.tech`. Do not construct the host manually.
+**Fix:** Verify that you are using the correct AI Gateway host from the Neon Console or API. The host format for production is `<branch-id>-api.ai.<cell>.<region>.aws.neon.tech`. Do not construct the host manually.
 
 ---
 
@@ -1632,16 +1748,18 @@ The request hit the upstream Databricks/provider rate limit.
 
 ### `429`: account quota exceeded
 
-Your account's AI Gateway quota is blocked. The response body is:
+Your account's AI Gateway quota is blocked. This can happen if you exceed the token-per-minute limits in [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits), or if your account exceeds its daily spend cap, which is a separate, account-level limit that can block requests even while inference is free during the preview. See [Pricing](https://neon.com/docs/ai-gateway/models#pricing). The response body looks like this:
 
 ```json
 {
   "error_code": "REQUEST_LIMIT_EXCEEDED",
-  "message": "ai gateway quota exceeded"
+  "message": "ai gateway daily token limit exceeded"
 }
 ```
 
-**Fix:** Check the `Retry-After` header. If present, the block is temporary and will lift at that time. If absent, the block is permanent until resolved. Contact support for a quota increase or to resolve a permanent block. See [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits) for current quota values.
+If the block is due to the per-minute token limit specifically rather than the daily cap, the message reads `ai gateway per-minute token limit exceeded...` instead.
+
+**Fix:** Check the `Retry-After` header. If present, the block is temporary and will lift at that time. If absent, the block is permanent until resolved. Contact support for a quota increase or to resolve a permanent block. See [Rate limits](https://neon.com/docs/ai-gateway/models#rate-limits) for current per-minute quota values.
 
 ---
 
@@ -1662,7 +1780,7 @@ Most AI Gateway errors use the standard OpenAI error envelope:
 ```json
 {
   "error": {
-    "message": "unknown model"
+    "message": "unknown model \"<model-id>\""
   }
 }
 ```
@@ -1672,7 +1790,7 @@ The quota block error uses a different shape:
 ```json
 {
   "error_code": "REQUEST_LIMIT_EXCEEDED",
-  "message": "ai gateway quota exceeded"
+  "message": "ai gateway daily token limit exceeded"
 }
 ```
 
@@ -5387,7 +5505,7 @@ async function verifyWebhook(rawBody: string, headers: Headers) {
   }
 
   // 1. Fetch JWKS and find the matching key
-  const res = await fetch(`${process.env.NEON_AUTH_BASE_URL}/.well-known/jks.json`);
+  const res = await fetch(`${process.env.NEON_AUTH_BASE_URL}/.well-known/jwks.json`);
   const jwks = await res.json();
   const jwk = jwks.keys.find((k: { kid: string }) => k.kid === kid);
   if (!jwk) throw new Error(`Key ${kid} not found in JWKS`);
@@ -5887,7 +6005,7 @@ The response includes:
 | `table_name`               | Table name for synced user data (`users_sync`)                                                            |
 | `base_url`                 | Base URL of the auth service, used for SDK configuration and the interactive API reference (`/reference`) |
 
-**Important:** The enable response is the only time the API returns `pub_client_key` and `secret_server_key`. Store them securely. Subsequent `GET` requests do not include these fields.
+**Important:** The enable response is the only time the API returns `pub_client_key` and `secret_server_key`. Store them securely. Subsequent `GET` requests do not include these fields. For client initialization examples that combine Neon Auth and the Data API from a single Neon URL, see [`createClient()` in the JavaScript SDK reference](https://neon.com/docs/reference/javascript-sdk#initializing).
 
 If Managed BetterAuth is already enabled on the branch, this call returns an error.
 
@@ -6094,7 +6212,7 @@ Password reset links expire after **15 minutes**. If a link expires, users need 
 
 --- [Document source](https://neon.com/docs/auth/guides/plugins.md) ---
 
-> Summary: Managed BetterAuth exposes a managed subset of Better Auth plugins (Admin, Email OTP, JWT, Magic Link, Organization, Open API, Phone Number) through the Neon SDK; plugins are not installed or configured directly. Use this page to check which plugins are fully supported versus partially supported, and how to configure them via the Neon Console or Neon API. The Organization plugin has partial support while JWT token claims are still under development.
+> Summary: Managed BetterAuth exposes a managed subset of Better Auth plugins (Admin, Email OTP, JWT, Magic Link, Organization, Open API, Phone Number) through the Neon SDK; plugins are not installed or configured directly. Use this page to check which plugins are fully supported versus partially supported, and how to configure them via the Neon Console or Neon API. The Organization plugin has partial support.
 
 # Plugins
 
@@ -6116,15 +6234,15 @@ The following Better Auth plugins are currently supported in Managed BetterAuth:
 
 ## Supported plugins
 
-| Plugin                                                                 | Status                                          |
-| ---------------------------------------------------------------------- | ----------------------------------------------- |
-| [Admin](https://neon.com/docs/auth/guides/plugins/admin)               | ✅ Supported                                     |
-| [Email OTP](https://neon.com/docs/auth/guides/plugins/email-otp)       | ✅ Supported                                     |
-| [JWT](https://neon.com/docs/auth/guides/plugins/jwt)                   | ✅ Supported                                     |
-| [Magic Link](https://neon.com/docs/auth/guides/plugins/magic-link)     | ✅ Supported                                     |
-| [Organization](https://neon.com/docs/auth/guides/plugins/organization) | ⚠️ Partial (JWT token claims under development) |
-| [Open API](https://neon.com/docs/auth/guides/plugins/openapi)          | ✅ Supported                                     |
-| [Phone Number](https://neon.com/docs/auth/guides/plugins/phone-number) | ✅ Supported                                     |
+| Plugin                                                                 | Status      |
+| ---------------------------------------------------------------------- | ----------- |
+| [Admin](https://neon.com/docs/auth/guides/plugins/admin)               | ✅ Supported |
+| [Email OTP](https://neon.com/docs/auth/guides/plugins/email-otp)       | ✅ Supported |
+| [JWT](https://neon.com/docs/auth/guides/plugins/jwt)                   | ✅ Supported |
+| [Magic Link](https://neon.com/docs/auth/guides/plugins/magic-link)     | ✅ Supported |
+| [Organization](https://neon.com/docs/auth/guides/plugins/organization) | ⚠️ Partial  |
+| [Open API](https://neon.com/docs/auth/guides/plugins/openapi)          | ✅ Supported |
+| [Phone Number](https://neon.com/docs/auth/guides/plugins/phone-number) | ✅ Supported |
 
 For more runnable Managed BetterAuth samples, see the [neondatabase/neon-js](https://github.com/neondatabase/neon-js/tree/main/examples) examples repository:
 
@@ -6762,6 +6880,8 @@ Your Managed BetterAuth JWKS endpoint is located at:
 <YOUR_NEON_AUTH_URL>/.well-known/jwks.json
 ```
 
+If you verify Neon Auth JWTs inside [Neon Functions](https://neon.com/docs/compute/functions/overview), the platform injects `NEON_AUTH_BASE_URL` and `NEON_AUTH_JWKS_URL` when Neon Auth is provisioned on the branch. Use `NEON_AUTH_JWKS_URL` directly instead of deriving it yourself. See [Functions environment variables](https://neon.com/docs/compute/functions/environment-variables#neon-injected-variables).
+
 ### Verification example
 
 The following examples demonstrate how to verify a Managed BetterAuth JWT in several programming languages. No matter which language you use, the process is the same: fetch the JWKS from the provided endpoint and use it to validate the token's signature and claims. If your preferred language isn't included here, you can apply these same principles in your own environment.
@@ -7187,7 +7307,7 @@ Managed BetterAuth is built on [Better Auth](https://www.better-auth.com/) and c
 
 **Note: Preview Feature**
 
-The Organization plugin is currently in **Beta**. Support for JWT token claims is under development.
+The Organization plugin is currently in **Beta**. Support for JWT token claims is available.
 
 ## Why use this plugin?
 
@@ -8393,8 +8513,14 @@ Managed BetterAuth validates `webhook_url` when you configure webhooks to reduce
 - **HTTPS only** — HTTP URLs are rejected.
 - **Hostname required** — Use a domain name (for example `https://your-app.com/webhooks/neon-auth`). Raw IP addresses (for example `https://93.184.216.34/webhook`) are rejected, including public IPs.
 - **No internal targets** — Localhost, private IP addresses, link-local addresses (including cloud metadata endpoints), and encoded IP bypass formats (octal, decimal, hex) are blocked.
+- **No redirects** — Webhook delivery does not follow HTTP `3xx` redirects. Configure the final HTTPS endpoint directly.
+- **DNS pinning during delivery** — Neon Auth validates the hostname's resolved IP addresses and only connects to that validated set. If DNS later resolves the same hostname to a different IP during delivery, the delivery is blocked as a DNS rebinding attempt.
 
 Digit-prefixed domains such as `1password.com` are allowed. If configuration fails validation, the API returns an error with code `INVALID_WEBHOOK_URL_FORMAT`.
+
+**Warning: Internal webhook targets are not supported**
+
+Webhook endpoints that point at private networks, localhost, cloud metadata services, raw IP literals, or endpoints reached only after a redirect are rejected or blocked during delivery. If an existing webhook depended on an internal target, move it behind a public HTTPS hostname before enabling Neon Auth webhooks.
 
 ### Set or update configuration
 
@@ -8477,7 +8603,7 @@ All events share a common JSON envelope:
 }
 ```
 
-The `user` object fields are all optional and vary by event. Available fields: `id`, `email`, `name`, `phone_number`, `image`, `email_verified`, `phone_number_verified`, `created_at`.
+The `user` object uses a fixed allowlist. Fields are optional and vary by event; fields that are not present are omitted. Available fields: `id`, `name`, `email`, `image`, `role`, `banned`, `email_verified`, `phone_number`, `phone_number_verified`, `created_at`, `updated_at`, `ban_reason`, `ban_expires`, `two_factor_enabled`, `is_anonymous`. Neon Auth drops any user fields outside this allowlist, including new Better Auth or plugin fields that have not been explicitly added to the webhook contract.
 
 ### `send.otp` event data
 
@@ -8514,6 +8640,8 @@ These events fire only when a new user record is created in the database. They d
 | `auth_provider` | string | `"credential"`, `"google"`, `"github"`, or `"vercel"` |
 | `ip_address`    | string | Requester's IP address                                |
 | `user_agent`    | string | Requester's user agent                                |
+
+If sign-up metadata is present and passes validation, it is included as `event_data.signup_metadata`. To limit payload size and prevent oversized egress, Neon Auth only includes `signup_metadata` when it is a plain object, serializes to at most 10 KiB of UTF-8 JSON, and is nested no more than 5 levels deep. Oversized, too-deep, array, or primitive metadata is dropped from the webhook payload.
 
 ### `phone_number.verified` event data
 
@@ -9101,11 +9229,11 @@ Server components now call `auth.getSession()` and read the user from the return
 
 ### Install packages
 
-Uninstall Stack Auth packages and install `@neondatabase/auth`
+Uninstall Stack Auth packages and install `@neondatabase/neon-js`
 
 ```bash filename="Terminal"
 npm uninstall @stackframe/stack
-npm install @neondatabase/auth@latest @neondatabase/auth-ui
+npm install @neondatabase/neon-js@latest @neondatabase/auth-ui
 ```
 
 **What changed**  
@@ -9131,9 +9259,12 @@ export const stackClientApp = new StackClientApp({
 
 ```tsx
 // src/auth.ts
-import { createAuthClient } from '@neondatabase/auth';
+import { createAuthClient } from '@neondatabase/neon-js/auth';
+import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react/adapters';
 
-export const authClient = createAuthClient(import.meta.env.VITE_NEON_AUTH_URL);
+export const authClient = createAuthClient(import.meta.env.VITE_NEON_AUTH_URL, {
+  adapter: BetterAuthReactAdapter(),
+});
 const { useSession } = authClient;
 ```
 
@@ -9142,7 +9273,7 @@ You replace the Stack Auth client app with a Managed BetterAuth `authClient` wir
 
 ### Replace components
 
-Components are the same as Next.js. Use `<AuthView>`, `<UserButton>`, `<SignedIn>`, and `<SignedOut>` from `@neondatabase/neon-auth-ui`.
+Components are the same as Next.js. Use `<AuthView>`, `<UserButton>`, `<SignedIn>`, and `<SignedOut>` from `@neondatabase/auth-ui`.
 
 **What changed**  
 The UI building blocks are shared across frameworks, so you can reuse the same auth components in SPAs.
@@ -9166,7 +9297,7 @@ export function MyComponent() {
 import { useSession } from './auth';
 
 export function MyComponent() {
-  const { data: session } = useSession();
+  const { data } = useSession();
   const user = data?.user;
 
   return <div>{user ? `Hello, ${user.name || user.email}` : 'Not logged in'}</div>;
@@ -9174,7 +9305,7 @@ export function MyComponent() {
 ```
 
 **What changed**  
-Instead of a React hook from Stack Auth, you call `authClient.getSession()` and manage the session in your own component state.
+Instead of a React hook from Stack Auth, you call the `useSession()` hook from `authClient` and read the user from its response.
 
 ### Update provider setup
 
@@ -9298,7 +9429,7 @@ Managed BetterAuth provides a Supabase-compatible API, and Neon Data API provide
 - Data API enabled (Managed BetterAuth is enabled by default when you enable Data API):
   - Go to **Data API** in the Neon Console and enable it
   - In **Data API → Configuration**, verify it's configured with **Managed BetterAuth**
-  - Copy your Data API base URL and Auth URL from the Console - you'll need both
+  - Copy your Neon connection host and database name from **Connect** in the Console. The SDK derives both the Auth and Data API URLs from this single base URL. See [Initialize the client](https://neon.com/docs/reference/javascript-sdk#initializing) for the derivation rules, or use the separate Auth and Data API base URLs instead if you'd rather configure them explicitly
 
 ## Install Neon SDK
 
@@ -9311,24 +9442,24 @@ npm install @neondatabase/neon-js@latest
 
 ## Update environment variables
 
-Replace your Supabase credentials with your Managed BetterAuth and Data API URLs:
+Replace your Supabase credentials with a single Neon base URL. `createClient()` derives both the Auth and Data API URLs from it automatically:
 
 ```env filename=".env"
 # Remove these:
 # VITE_SUPABASE_URL=https://your-project.supabase.co
 # VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
-# Add these:
-VITE_NEON_AUTH_URL=https://ep-xxx.neonauth.us-east-2.aws.neon.build/neondb/auth
-VITE_NEON_DATA_API_URL=https://ep-xxx.us-east-2.aws.neon.build/neondb/rest/v1
+# Add this:
+VITE_NEON_URL=https://ep-xxx.c-2.us-east-2.aws.neon.build/dbname
 ```
 
-**Get your URLs:**
+**Get your URL:**
 
-1. **Auth URL**: Go to **Auth → Configuration** in the Neon Console
-2. **Data API URL**: Go to **Data API** in the Neon Console
+Your Neon base URL is the host and database name from your Neon connection string, served over `https://`. Find these values under **Connect** in the Neon Console.
 
 **Note:** The `VITE_` prefix is for Vite. Use `NEXT_PUBLIC_` for Next.js, or no prefix for Node.js.
+
+**Tip:** If you already copied separate Auth and Data API base URLs from the Console (for example, from an earlier setup), you can still pass them explicitly with the object form. See [Initialize the client](https://neon.com/docs/reference/javascript-sdk#initializing) for both forms.
 
 ## Update client initialization
 
@@ -9350,14 +9481,8 @@ export const supabase = createClient(
 ```typescript filename="src/auth.ts"
 import { createClient, SupabaseAuthAdapter } from '@neondatabase/neon-js';
 
-export const client = createClient({
-  auth: {
-    url: import.meta.env.VITE_NEON_AUTH_URL,
-    adapter: SupabaseAuthAdapter(),
-  },
-  dataApi: {
-    url: import.meta.env.VITE_NEON_DATA_API_URL,
-  },
+export const client = createClient(import.meta.env.VITE_NEON_URL, {
+  auth: { adapter: SupabaseAuthAdapter() },
 });
 ```
 
@@ -9446,12 +9571,12 @@ ORDER BY "createdAt" DESC;
 
 ## What changed?
 
-| Feature                   | Supabase                            | Neon                                 |
-| ------------------------- | ----------------------------------- | ------------------------------------ |
-| **User ID type**          | `UUID`                              | `UUID`                               |
-| **Client config**         | URL + anon key                      | Auth URL + Data API URL              |
-| **Environment variables** | `SUPABASE_URL`, `SUPABASE_ANON_KEY` | `NEON_AUTH_URL`, `NEON_DATA_API_URL` |
-| **SDK package**           | `@supabase/supabase-js`             | `@neondatabase/neon-js`              |
+| Feature                   | Supabase                            | Neon                                                |
+| ------------------------- | ----------------------------------- | --------------------------------------------------- |
+| **User ID type**          | `UUID`                              | `UUID`                                              |
+| **Client config**         | URL + anon key                      | Single base URL (auto-derives Auth + Data API URLs) |
+| **Environment variables** | `SUPABASE_URL`, `SUPABASE_ANON_KEY` | `NEON_URL`                                          |
+| **SDK package**           | `@supabase/supabase-js`             | `@neondatabase/neon-js`                             |
 
 ## API compatibility
 
@@ -9585,7 +9710,7 @@ export const { GET, POST } = auth.handler();
 
 **For React/Vite (client-side):**
 
-See the [Client SDK reference](https://neon.com/docs/reference/javascript-sdk) for complete API documentation.
+See the [Client SDK reference](https://neon.com/docs/reference/javascript-sdk) for complete API documentation. If you want one client for both Neon Auth and the Data API, initialize `createClient()` from a single Neon URL as shown in [`createClient()` initialization](https://neon.com/docs/reference/javascript-sdk#initializing).
 
 ```typescript filename="src/auth.ts"
 import { createAuthClient } from '@neondatabase/neon-js/auth';
@@ -9756,7 +9881,9 @@ This guide shows you how to integrate Managed BetterAuth into a [Next.js](https:
 
 ## Enable Auth in your Neon project
 
-Enable Auth in your [Neon project](https://console.neon.tech) and copy your Auth URL from Configuration.
+If you don't have a Neon project yet, create one at [console.neon.tech](https://console.neon.tech).
+
+Go to the **Auth** page in your project dashboard and click **Enable Auth**, then copy your Auth URL from the Configuration tab.
 
 **Console path:** Project → Branch → Auth → Configuration
 
@@ -10185,6 +10312,10 @@ VITE_NEON_AUTH_URL=https://ep-xxx.neonauth.us-east-2.aws.neon.build/neondb/auth
 
 Create a `src/auth.js` file to configure your auth client:
 
+**Tip: Using Auth and Data API together?**
+
+This quick start uses the standalone Auth client. For one `createClient()` instance that derives both Auth and Data API URLs from a single Neon URL, see [`createClient()` initialization](https://neon.com/docs/reference/javascript-sdk#initializing).
+
 ```javascript filename="src/auth.js"
 import { createAuthClient } from '@neondatabase/neon-js/auth';
 
@@ -10402,9 +10533,13 @@ In `Add to src/styles.css`:
 
 Create a `src/auth.ts` file to initialize the auth client:
 
+**Tip: Using Auth and Data API together?**
+
+This quick start uses the standalone Auth client. For one `createClient()` instance that derives both Auth and Data API URLs from a single Neon URL, see [`createClient()` initialization](https://neon.com/docs/reference/javascript-sdk#initializing).
+
 ```typescript filename="src/auth.ts"
 import { createAuthClient } from '@neondatabase/neon-js/auth';
-import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react';
+import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react/adapters';
 
 export const authClient = createAuthClient(import.meta.env.VITE_NEON_AUTH_URL, { adapter: BetterAuthReactAdapter() });
 ```
@@ -11783,17 +11918,17 @@ Managed BetterAuth is built on [Better Auth](https://www.better-auth.com/). Not 
 
 ### Supported
 
-| Plugin                                                                             | Status                                          |
-| ---------------------------------------------------------------------------------- | ----------------------------------------------- |
-| [Email & password](https://www.better-auth.com/docs/authentication/email-password) | ✅ Supported                                     |
-| Social OAuth (Google, GitHub, Vercel)                                              | ✅ Supported                                     |
-| [Email OTP](https://neon.com/docs/auth/guides/plugins/email-otp)                   | ✅ Supported                                     |
-| [Admin](https://neon.com/docs/auth/guides/plugins/admin)                           | ✅ Supported                                     |
-| [Organization](https://neon.com/docs/auth/guides/plugins/organization)             | ⚠️ Partial (JWT token claims under development) |
-| [JWT](https://neon.com/docs/auth/guides/plugins/jwt)                               | ✅ Supported                                     |
-| [Magic Link](https://neon.com/docs/auth/guides/plugins/magic-link)                 | ✅ Supported                                     |
-| [Open API](https://neon.com/docs/auth/guides/plugins/openapi)                      | ✅ Supported                                     |
-| [Phone Number](https://neon.com/docs/auth/guides/plugins/phone-number)             | ✅ Supported                                     |
+| Plugin                                                                             | Status      |
+| ---------------------------------------------------------------------------------- | ----------- |
+| [Email & password](https://www.better-auth.com/docs/authentication/email-password) | ✅ Supported |
+| Social OAuth (Google, GitHub, Vercel)                                              | ✅ Supported |
+| [Email OTP](https://neon.com/docs/auth/guides/plugins/email-otp)                   | ✅ Supported |
+| [Admin](https://neon.com/docs/auth/guides/plugins/admin)                           | ✅ Supported |
+| [Organization](https://neon.com/docs/auth/guides/plugins/organization)             | ⚠️ Partial  |
+| [JWT](https://neon.com/docs/auth/guides/plugins/jwt)                               | ✅ Supported |
+| [Magic Link](https://neon.com/docs/auth/guides/plugins/magic-link)                 | ✅ Supported |
+| [Open API](https://neon.com/docs/auth/guides/plugins/openapi)                      | ✅ Supported |
+| [Phone Number](https://neon.com/docs/auth/guides/plugins/phone-number)             | ✅ Supported |
 
 See [Set up OAuth](https://neon.com/docs/auth/guides/setup-oauth) for Neon-specific OAuth configuration (including Vercel). Email flows such as verification and password reset are covered in [Email verification](https://neon.com/docs/auth/guides/email-verification), [Password reset](https://neon.com/docs/auth/guides/password-reset), and [User management](https://neon.com/docs/auth/guides/user-management).
 
@@ -11929,7 +12064,7 @@ In a React SPA, `createAuthClient(url)` without an adapter returns a vanilla cli
 
 ```typescript
 import { createAuthClient } from '@neondatabase/neon-js/auth';
-import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react';
+import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react/adapters';
 
 const authClient = createAuthClient(url, {
   adapter: BetterAuthReactAdapter(),
@@ -11947,7 +12082,7 @@ The adapter must be imported from a subpath and called as a function:
 import { BetterAuthReactAdapter } from '@neondatabase/neon-js';
 
 // Correct
-import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react';
+import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react/adapters';
 const client = createAuthClient(url, { adapter: BetterAuthReactAdapter() });
 ```
 
@@ -12139,6 +12274,12 @@ Usage: `neon deploy [options]`
 Run Neon Functions locally with a dev server.
 
 Usage: `neon dev [options]`
+
+### diff
+
+Show a git-style schema diff between the current branch and another branch.
+
+Usage: `neon diff [compare-branch] [options]`
 
 ### env
 
@@ -12921,6 +13062,8 @@ neon branches rename mybranch teambranch
 
 Compares the latest schemas of any two branches, or compares against a specific point in a branch's own or another branch's history.
 
+For a git-style shortcut that defaults to comparing a branch against its parent, see [`neon diff`](https://neon.com/docs/cli/diff).
+
 The `[base-branch]` is the branch to compare against. It's optional; if omitted, the command uses the branch from your `set-context` file, or the project's default branch if no context is configured.
 
 The `[compare-source]` specifies the branch or state to compare against. Options are:
@@ -13500,7 +13643,32 @@ The top-level [`neon deploy`](https://neon.com/docs/cli/deploy) command is an al
 
 ## neon config init
 
-Scaffolds a starter `neon.ts` policy file in the current project and installs the `@neon/config` and `@neon/env` packages, so you can start managing a branch declaratively. If a `neon.ts`, `neon.mts`, `neon.js`, or `neon.mjs` file already exists, it is left untouched.
+Scaffolds a starter `neon.ts` policy file in the current project and installs the `@neon/config` and `@neon/env` packages, so you can start managing a branch declaratively. The generated file uses the standard named `defineConfig` import from `@neon/config/v1` and exports the result as the module default, for example:
+
+```ts filename="neon.ts"
+import { defineConfig } from "@neon/config/v1";
+
+export default defineConfig({
+  // Declare your Neon services here
+  auth: false,
+  // Branch policy: per-branch tuning
+  branch: (branch) => {
+    if (branch.isDefault) {
+      // Default branch: no overrides, uses project defaults
+      return {};
+    }
+    if (!branch.exists) {
+      // New non-default branches: auto-expire
+      // Run `neon checkout <name>` to create a new branch with these settings
+      return { ttl: "7d" };
+    }
+    // Existing branch: no changes
+    return {};
+  },
+});
+```
+
+If a `neon.ts`, `neon.mts`, `neon.js`, or `neon.mjs` file already exists, `config init` is idempotent: it leaves that file untouched instead of overwriting hand-written policy.
 
 `config init` runs entirely locally and does not call the Neon API. It detects your package manager (npm, pnpm, yarn, or bun) from how the command was invoked. Pass `--no-install` to skip installation and just print the command to run.
 
@@ -13517,6 +13685,15 @@ neon config init [options]
 ```bash
 neon config init
 ```
+
+For non-interactive setup, run it with package installation disabled, then install the printed dependencies yourself (or add them to your lockfile in a separate step):
+
+```bash
+neon config init --no-install
+npm install @neon/config @neon/env
+```
+
+Use `config init` when you want a trusted starter artifact and package list. Hand-write `neon.ts` instead when you need a different filename/module format or want to avoid modifying files in the current directory.
 
 **Tip:** After running an interactive [`neon link`](https://neon.com/docs/cli/link), the CLI offers to run `config init` as its final step, unless the project already has a `neon.ts` file.
 
@@ -13625,7 +13802,7 @@ neon config apply [options]
 For non-interactive use (scripts, CI, agents), pass `--update-existing` and `--allow-protected` to auto-confirm the corresponding prompts.
 
 ```bash
-neon config apply --branch feature/auth --update-existing
+neon config apply --branch feature/auth --update-existing --allow-protected
 ```
 
 --- [Document source](https://neon.com/docs/cli/connection-string.md) ---
@@ -14043,6 +14220,93 @@ Serve one function on an explicit port (fails if the port is taken):
 ```bash
 neon dev --source ./functions/hello.ts --port 3000
 ```
+
+--- [Document source](https://neon.com/docs/cli/diff.md) ---
+
+> Summary: The Neon CLI `diff` command prints a git-style schema diff between two branches: the branch under review (the `+++` side) and the branch you compare against (the `---` side). Use this reference for the exact positional argument and flags: set the branch under review with `--branch`, the branch to compare against with the `compare-branch` positional, limit output to one database with `--database`, and target a project with `--project-id`.
+
+# Neon CLI command: diff
+
+Show a git-style schema diff between two branches
+
+The `diff` command shows a git-style schema diff between two branches, in the same unified diff format `git diff` produces. The branch under review is the `+++` side; the branch you compare against is the `---` side. Omit the `compare-branch` argument to diff against the reviewed branch's parent, which answers "what did I change since branching?". See [Schema diff](https://neon.com/docs/guides/schema-diff) for more on comparing schemas in Neon.
+
+The `+++` branch comes from `--branch`, or the branch pinned in your [`.neon` context file](https://neon.com/docs/cli/set-context), or the project's default branch, in that order. `diff` covers every database on that branch unless you pass `--database`. Use `--output json` or `--output yaml` for a machine-readable diff, one entry per database.
+
+`neon diff` is a shortcut for comparing branch schemas. To compare against a historical point in time (by timestamp or LSN), use the [`neon branches schema-diff`](https://neon.com/docs/cli/branches#schema-diff) subcommand.
+
+## Usage
+
+```bash
+neon diff [compare-branch] [options]
+```
+
+## Options
+
+| Option               | Description                                                                                        | Type   | Default | Required |
+| -------------------- | -------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--branch`, `-b`     | The branch to review (the '+++' side). Defaults to the branch pinned in the local context (.neon). | string | —       |    No    |
+| `--database`, `--db` | Limit the diff to a single database. Defaults to every database on the current branch.             | string | —       |    No    |
+| `--project-id`       | Project ID                                                                                         | string | —       |    No    |
+
+## Examples
+
+Diff the branch pinned in your `.neon` context against its parent. This works only when the pinned branch has a parent; against the project's default branch it errors, since there's nothing above it to compare:
+
+```bash
+neon diff
+```
+
+Diff the reviewed branch's schema against the `main` branch:
+
+```bash
+neon diff main
+```
+
+## Example output
+
+Say your `feature/checkout` branch adds a `discount_code` column to the `orders` table and a new `coupons` table on top of `main`. Diff it against `main` with `--branch`, which reviews an explicit branch regardless of your `.neon` context:
+
+```bash
+neon diff main --branch feature/checkout
+```
+
+```diff filename="Output"
+INFO: → Comparing schema main → feature/checkout
+diff --neon database neondb
+--- main (br-solitary-block-atxzqx8a)
++++ feature/checkout (br-wandering-bar-atq2lw6c)
+@@ -22,6 +22,19 @@
+ SET default_table_access_method = heap;
+
+ --
++-- Name: coupons; Type: TABLE; Schema: public; Owner: neondb_owner
++--
++
++CREATE TABLE public.coupons (
++    code text NOT NULL,
++    percent_off integer NOT NULL,
++    expires_at timestamp with time zone
++);
++
++
++ALTER TABLE public.coupons OWNER TO neondb_owner;
++
++--
+ -- Name: orders; Type: TABLE; Schema: public; Owner: neondb_owner
+ --
+
+@@ -29,7 +42,8 @@
+     id integer NOT NULL,
+     customer_id integer NOT NULL,
+     total numeric(10,2) NOT NULL,
+-    created_at timestamp with time zone DEFAULT now()
++    created_at timestamp with time zone DEFAULT now(),
++    discount_code text
+ );
+```
+
+Each branch's schema is dumped as `pg_dump --schema-only` SQL and the two dumps are compared, so the diff includes generated lines you didn't write directly, such as `-- Name: ...` comments and `ALTER TABLE ... OWNER TO` statements. Lines prefixed with `+` exist only on the branch under review; `-` lines exist only on the compare branch. If the schemas match, `diff` reports no differences instead.
 
 --- [Document source](https://neon.com/docs/cli/env.md) ---
 
@@ -19928,6 +20192,10 @@ How you authenticate depends on who calls the function:
 
 When [Managed BetterAuth](https://neon.com/docs/auth/overview) is enabled on the branch, the function gets `NEON_AUTH_JWKS_URL` and `NEON_AUTH_BASE_URL` injected at runtime. Verify incoming tokens against the JWKS with [`jose`](https://github.com/panva/jose), and check that the token's issuer matches your Managed BetterAuth URL. Build the remote key set once at module scope, then verify on each request:
 
+```bash
+npm install jose
+```
+
 ```ts filename="functions/secure.ts"
 import { createRemoteJWKSet, jwtVerify } from 'jose';
 
@@ -20054,6 +20322,7 @@ neon deploy
 | ------------------- | ----------------- | ---------------------------------------------------------------------------------------------------- |
 | `--config`          | walks up from cwd | Path to the `neon.ts` policy                                                                         |
 | `--env`             | (none)            | Path to a `.env` file loaded before `neon.ts` is evaluated, so function `env` values resolve from it |
+| `--env-pull`        | `true`            | Pull the branch's env vars into a local `.env` after a successful apply (`--no-env-pull` to skip)    |
 | `--branch`          | linked branch     | Target branch ID or name                                                                             |
 | `--project-id`      | linked project    | Project ID                                                                                           |
 | `--update-existing` | `false`           | Auto-confirm overriding existing remote settings on the branch                                       |
@@ -20095,6 +20364,10 @@ neon functions deploy hello --src . --env RESEND_API_KEY=re_...
 neon functions deploy hello --src functions/hello.ts --branch feat/my-feature
 ```
 
+The CLI doesn't support a config-only deploy. Every `neon functions deploy` call bundles and uploads source, whether you pass `--src` or let it default to the current directory, so there's no way to change just an environment variable without also pointing at valid source, as in the example above.
+
+For a deploy that skips bundling and updates only the environment or runtime, use [the API](https://neon.com/docs/compute/functions/deploy#deploy-with-the-api), which accepts config-only updates.
+
 ## Deploy with the API
 
 Bundle with esbuild, zip the output, then POST to the deploy endpoint.
@@ -20113,7 +20386,7 @@ zip -j function.zip dist/index.mjs
 
 The archive's entry file must be named `index.mjs` or `index.js`; the runtime looks for those names.
 
-From Node.js, `buildFunctionBundle` from [`@neon/config-runtime`](https://www.npmjs.com/package/@neon/config-runtime) does both steps in one call and produces exactly the archive the deploy endpoint expects:
+From Node.js, `buildFunctionBundle` from [`@neon/config-runtime`](https://neon.com/docs/reference/config-runtime#function-bundling) does both steps in one call and produces exactly the archive the deploy endpoint expects. See the [`@neon/config-runtime` reference](https://neon.com/docs/reference/config-runtime) for the rest of that package's programmatic API (`inspect`, `plan`, `apply`), useful for calling a deploy from a custom CI step instead of the CLI:
 
 ```ts
 import { buildFunctionBundle } from "@neon/config-runtime/v1";
@@ -20143,7 +20416,31 @@ curl -X POST \
 | `runtime`     | string | No                | `nodejs24` is the only valid value                                                                    |
 | `environment` | string | No                | JSON-encoded string-to-string map                                                                     |
 
-The API returns immediately. Poll the get endpoint (see [Check status](https://neon.com/docs/compute/functions/deploy#check-status)) until the deployment completes.
+The deploy endpoint accepts `multipart/form-data`. Use a `zip` part for code deploys and a single `environment` part containing the JSON-encoded map; don't send bracketed fields such as `environment[KEY]=value`. The first deployment for a function must include `zip`; later deployments can omit it for config-only changes.
+
+The API returns immediately for code deploys. Poll the get endpoint (see [Check status](https://neon.com/docs/compute/functions/deploy#check-status)) until the deployment completes. Config-only deployments can complete synchronously because they reuse the latest bundle. Builds have an absolute 2-minute budget from the time the deploy is accepted; if the build can't complete within that window, the deployment fails.
+
+### Deploy with `@neon/sdk`
+
+The beta [`@neon/sdk`](https://www.npmjs.com/package/@neon/sdk) client includes a `neon.functions` namespace for branch-scoped function management:
+
+```ts
+import { createNeonClient } from '@neon/sdk';
+import { readFile } from 'node:fs/promises';
+
+const neon = createNeonClient({ apiKey: process.env.NEON_API_KEY! });
+const projectId = process.env.NEON_PROJECT_ID!;
+const branchId = process.env.NEON_BRANCH_ID!;
+const zipBytes = await readFile('function.zip');
+
+const { data: deployment } = await neon.functions.deploy(projectId, branchId, 'hello', {
+  zip: new File([zipBytes], 'function.zip', { type: 'application/zip' }),
+  runtime: 'nodejs24',
+  environment: JSON.stringify({ MY_SECRET: 'value' }),
+});
+```
+
+`neon.functions.deploy` uses the same multipart API fields as the raw endpoint. `list`, `get`, `update`, and `delete` are also available under `neon.functions`.
 
 ## Slugs
 
@@ -20226,26 +20523,24 @@ Neon injects connection strings, credentials, and service URLs automatically at 
 
 Each variable is present only when its service is enabled on the branch. `DATABASE_URL` and `DATABASE_URL_UNPOOLED`, for example, are undefined on a functions-only branch with no Postgres database.
 
-| Variable                                     | Service            | Description                                                                                                                                        |
-| -------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `DATABASE_URL`                               | Postgres           | Pooled connection string. Use this for most queries.                                                                                               |
-| `DATABASE_URL_UNPOOLED`                      | Postgres           | Direct connection string. Use for migrations, `LISTEN`/`NOTIFY`, and multi-round-trip transactions.                                                |
-| `NEON_BRANCH`                                | Core               | Branch name (e.g. `main`, `preview/foo`). Present on all branches.                                                                                 |
-| `NEON_AUTH_BASE_URL`                         | Managed BetterAuth | Base URL for Managed BetterAuth.                                                                                                                   |
-| `NEON_AUTH_JWKS_URL`                         | Managed BetterAuth | JWKS endpoint for verifying Managed BetterAuth JWTs. See [Authentication](https://neon.com/docs/compute/functions/authentication).                 |
-| `NEON_DATA_API_URL`                          | Data API           | Base URL for the Neon Data API (PostgREST). Present when the Data API is provisioned on the branch.                                                |
-| `OPENAI_API_KEY`                             | AI Gateway         | Gateway key, under the OpenAI-standard name so the OpenAI SDKs pick it up automatically.                                                           |
-| `OPENAI_BASE_URL`                            | AI Gateway         | OpenAI **Responses API** endpoint (`/ai-gateway/openai/v1`). An OpenAI SDK reading these two variables reaches `responses.create()` with no setup. |
-| `NEON_AI_GATEWAY_TOKEN`                      | AI Gateway         | Gateway token. Same value as `OPENAI_API_KEY`.                                                                                                     |
-| `NEON_AI_GATEWAY_BASE_URL`                   | AI Gateway         | Gateway host root. Append a dialect route, e.g. `/ai-gateway/mlflow/v1` for Chat Completions.                                                      |
-| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Object Storage     | S3-compatible credentials for the branch's buckets.                                                                                                |
-| `AWS_ENDPOINT_URL_S3`, `AWS_REGION`          | Object Storage     | S3 endpoint and region. The `AWS_*` names mean the AWS SDKs work with no setup.                                                                    |
+| Variable                                     | Service            | Description                                                                                                                                           |
+| -------------------------------------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DATABASE_URL`                               | Postgres           | Pooled connection string. Use this for most queries.                                                                                                  |
+| `DATABASE_URL_UNPOOLED`                      | Postgres           | Direct connection string. Use for migrations, `LISTEN`/`NOTIFY`, and multi-round-trip transactions.                                                   |
+| `NEON_BRANCH`                                | Core               | Branch name (e.g. `main`, `preview/foo`). Present on all branches.                                                                                    |
+| `NEON_AUTH_BASE_URL`                         | Managed BetterAuth | Base URL for Managed BetterAuth.                                                                                                                      |
+| `NEON_AUTH_JWKS_URL`                         | Managed BetterAuth | JWKS endpoint for verifying Managed BetterAuth JWTs. See [Authentication](https://neon.com/docs/compute/functions/authentication).                    |
+| `NEON_DATA_API_URL`                          | Data API           | Base URL for the Neon Data API (PostgREST). Present when the Data API is provisioned on the branch.                                                   |
+| `NEON_AI_GATEWAY_TOKEN`                      | AI Gateway         | Gateway bearer token.                                                                                                                                 |
+| `NEON_AI_GATEWAY_BASE_URL`                   | AI Gateway         | Gateway host root. Append a dialect route, e.g. `/ai-gateway/mlflow/v1` for Chat Completions or `/ai-gateway/openai/v1` for the OpenAI Responses API. |
+| `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY` | Object Storage     | S3-compatible credentials for the branch's buckets.                                                                                                   |
+| `AWS_ENDPOINT_URL_S3`, `AWS_REGION`          | Object Storage     | S3 endpoint and region. The `AWS_*` names mean the AWS SDKs work with no setup.                                                                       |
 
 These variables are branch-scoped: each branch injects its own values. A function deployed to a preview branch connects to that branch's database, not the default branch's.
 
 **Note: Two AI Gateway endpoints**
 
-`OPENAI_BASE_URL` targets the gateway's OpenAI **Responses API** (`/ai-gateway/openai/v1`). The **Chat Completions** endpoint is at a different path: point the SDK's base URL at `${NEON_AI_GATEWAY_BASE_URL}/ai-gateway/mlflow/v1` (see [Chat completions](https://neon.com/docs/ai-gateway/chat-completions)). The [`@neon/ai-sdk-provider`](https://neon.com/docs/compute/functions/agents) handles this routing for you.
+`NEON_AI_GATEWAY_BASE_URL` is the bare gateway host: append a dialect path yourself. Use `/ai-gateway/openai/v1` for the OpenAI **Responses API** and `/ai-gateway/mlflow/v1` for **Chat Completions** (see [Chat completions](https://neon.com/docs/ai-gateway/chat-completions)). The [`@neon/ai-sdk-provider`](https://neon.com/docs/compute/functions/agents) handles this routing for you.
 
 **Note: Local pull vs. deployed runtime**
 
@@ -20278,7 +20573,7 @@ Pass `--env KEY=VALUE` to `neon functions deploy`. The flag is repeatable:
 neon functions deploy hello --src functions/hello.ts --env RESEND_API_KEY=re_...
 ```
 
-Don't define variables under the names Neon injects (`DATABASE_URL`, `OPENAI_*`, `AWS_*`). Those are provided by the platform when the matching service is enabled on the branch, and setting your own collides with the injected values. The `NEON_` prefix is reserved (see [Constraints](https://neon.com/docs/compute/functions/environment-variables#constraints)).
+Neon injects variables like `DATABASE_URL`, `NEON_AI_GATEWAY_*`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL_S3`, and `AWS_REGION` when the matching service is enabled on the branch. These are defaults, not reserved names: if you define a variable with the same name, your value overrides the injected one.
 
 A deploy doesn't wipe variables set by earlier deploys. The `--env` flags you pass are merged into the existing set:
 
@@ -20332,15 +20627,14 @@ neon env pull --file .env.preview
 
 To pull from a different branch, switch with `neon checkout`; it pulls the new branch's variables as part of the switch.
 
-`env pull` writes only the Neon-managed variables and preserves every other line in the file. That's `DATABASE_URL` and `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`, plus the variables for each service **declared in `neon.ts`**: the Managed BetterAuth URLs, the Neon Data API URL, the AI Gateway credentials (`OPENAI_API_KEY`, `OPENAI_BASE_URL`, `NEON_AI_GATEWAY_*`), and the Object Storage credentials (`AWS_*`). Neon mints the AI Gateway key itself and uses the OpenAI-standard names, so the OpenAI SDKs pick it up from the environment.
+`env pull` writes only the Neon-managed variables and preserves every other line in the file. That's `DATABASE_URL` and `DATABASE_URL_UNPOOLED`, `NEON_BRANCH`, plus the variables for each service **declared in `neon.ts`**: the Managed BetterAuth URLs, the Neon Data API URL, the AI Gateway credentials (`NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`), and the Object Storage credentials (`AWS_*`).
 
 ## Constraints
 
-| Constraint                   | Value                                                               |
-| ---------------------------- | ------------------------------------------------------------------- |
-| Max variables per deployment | 1,000                                                               |
-| Max total size               | 64 KiB                                                              |
-| Reserved prefix              | `NEON_` (reserved for platform use, can't be set by user functions) |
+| Constraint                   | Value  |
+| ---------------------------- | ------ |
+| Max variables per deployment | 1,000  |
+| Max total size               | 64 KiB |
 
 --- [Document source](https://neon.com/docs/compute/functions/get-started.md) ---
 
@@ -20543,6 +20837,10 @@ What makes Neon Functions different from lambda-style serverless?
 Functions run on Neon's own compute platform, the same infrastructure that runs your Postgres, so they sit in the same region as your data.
 
 > During the private preview, Functions are available for **new projects** in the **AWS us-east-2** region only, created on or after June 15, 2026. See [Preview access](https://neon.com/docs/compute/functions/preview-access) for what's included.
+
+**Important: JavaScript and TypeScript only**
+
+Neon Functions currently run JavaScript or TypeScript on the Node.js runtime. Deploy JS/TS handlers, or code that bundles to JS for Node.js 24. Other runtimes and language targets aren't supported in the private preview.
 
 ## Request/response, not background jobs
 
@@ -22944,19 +23242,19 @@ Anonymous access still uses a JWT, but no user sign-in is required. How you obta
 ```js
 import { createClient } from '@neondatabase/neon-js';
 
-const client = createClient({
+const client = createClient(import.meta.env.VITE_NEON_DATABASE_URL, {
   auth: {
-    url: import.meta.env.VITE_NEON_AUTH_URL,
     allowAnonymous: true,
-  },
-  dataApi: {
-    url: import.meta.env.VITE_NEON_DATA_API_URL,
   },
 });
 
 // No sign-in needed. The SDK fetches and caches an anonymous JWT automatically.
 const { data, error } = await client.from('public_items').select('*');
 ```
+
+**Warning: Not yet on npm**
+
+The single-URL form shown above, `createClient(url)`, requires a version of `@neondatabase/neon-js` that has not been published to npm as of this writing. The latest published version, `0.6.2-beta`, only accepts the two-URL object form. If `npm install @neondatabase/neon-js` installs `0.6.2-beta` or earlier for you, use the [object-form alternative](https://neon.com/docs/reference/javascript-sdk#initializing) in the JavaScript SDK reference instead.
 
 **With a third-party provider:** Check whether your provider supports issuing anonymous or guest tokens. If it does, obtain the token using your provider's method and include it in the `Authorization: Bearer <token>` header on each request.
 
@@ -23133,7 +23431,7 @@ The key steps:
 
 ## Add your authentication provider
 
-You can configure your authentication provider when you first enable the Data API, or add it later from the **Configuration** tab. Select **Other Provider** from the dropdown and enter:
+You can configure your authentication provider when you first enable the Data API, or add it later from the **Settings** tab. Select **Other Provider** from the dropdown and enter:
 
 - Your provider's **JWKS URL** (see provider-specific instructions below).
 - Your **JWT Audience** value, if required by your provider (see [What is JWT Audience?](https://neon.com/docs/data-api/custom-authentication-providers#what-is-jwt-audience) below).
@@ -23429,7 +23727,7 @@ https://api.workos.com/sso/jwks/client_12345
 After configuring your authentication provider, include the JWT in your Data API requests:
 
 ```http
-GET https://your-project.data.neon.tech/v1/posts
+GET https://ep-example.apirest.us-east-1.aws.neon.tech/neondb/rest/v1/posts
 Authorization: Bearer {your_jwt_token}
 ```
 
@@ -24294,18 +24592,19 @@ bun install
 Create a `.env` file in the project root:
 
 ```env
-# Neon Data API URL
-# Find this in Neon Console → Data API page → "Data API URL"
-VITE_NEON_DATA_API_URL=https://your-project-id.data-api.neon.tech
-
-# Managed BetterAuth Base URL
-# Find this in Neon Console → Auth page → "Auth Base URL"
-VITE_NEON_AUTH_URL=https://your-project-id.auth.neon.tech
+# Neon database URL for the client (no username, password, or query parameters)
+# Start from the Data API URL in Neon Console → Data API or `neon data-api get`;
+# remove the `.apirest` hostname label and trailing `/rest/v1` path.
+# The SDK derives the Neon Auth and Data API URLs from this value.
+VITE_NEON_DATABASE_URL=https://ep-example.c-2.us-east-1.aws.neon.tech/neondb
 
 # Database Connection String (for migrations)
 # Find this in Neon Console → Dashboard → Connection string (select "Pooled connection")
+# This is a Postgres connection string, not the HTTPS URL used by VITE_NEON_DATABASE_URL above
 DATABASE_URL=postgresql://user:password@your-project-id.pooler.region.neon.tech/neondb?sslmode=require
 ```
+
+Prefer the older two-URL setup? See the [object-form alternative](https://neon.com/docs/reference/javascript-sdk#initializing) in the JavaScript SDK reference.
 
 ### Set up the database
 
@@ -24341,13 +24640,9 @@ import { createClient } from '@neondatabase/neon-js';
 import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react/adapters';
 import type { Database } from '../../types/database';
 
-export const client = createClient<Database>({
+export const client = createClient<Database>(import.meta.env.VITE_NEON_DATABASE_URL, {
   auth: {
     adapter: BetterAuthReactAdapter(),
-    url: import.meta.env.VITE_NEON_AUTH_URL,
-  },
-  dataApi: {
-    url: import.meta.env.VITE_NEON_DATA_API_URL,
   },
 });
 ```
@@ -24678,7 +24973,7 @@ Now test deleting a note that has paragraphs; both the note and its paragraphs s
 
 --- [Document source](https://neon.com/docs/data-api/generate-types.md) ---
 
-> Summary: The `npx @neondatabase/neon-js gen-types` command introspects a PostgreSQL schema and writes a TypeScript definition file with `Database`, `Tables`, `TablesInsert`, and `TablesUpdate` interfaces for type-safe Data API access. Use this page to add autocomplete, query-result type inference, and compile-time error checking to `@neondatabase/neon-js` or `@neondatabase/postgrest-js` clients. The tool accepts `--db-url`, `--output`, and `--schemas` flags and can run as a package.json script to keep generated types in sync after schema changes.
+> Summary: The `npx @neondatabase/neon-js gen-types` command introspects a PostgreSQL schema and writes a TypeScript definition file with `Database`, `Tables`, `TablesInsert`, and `TablesUpdate` interfaces for type-safe Data API access. Use this page to add autocomplete, query-result type inference, and compile-time error checking to `@neondatabase/neon-js` or `@neondatabase/postgrest-js` clients. The tool accepts `--db-url`, `--output`, and `--schema` flags and can run as a package.json script to keep generated types in sync after schema changes.
 
 # Generate TypeScript types from your database schema
 
@@ -24712,11 +25007,13 @@ npx @neondatabase/neon-js gen-types \
 
 ### Options
 
-| Flag        | Alias | Description                                    | Default               |
-| :---------- | :---- | :--------------------------------------------- | :-------------------- |
-| `--db-url`  | `-c`  | The PostgreSQL connection string (Required).   | -                     |
-| `--output`  | `-o`  | The path where the file will be saved.         | `./types/database.ts` |
-| `--schemas` | `-s`  | Comma-separated list of schemas to introspect. | `public`              |
+| Flag                    | Alias | Description                                                                                    | Default             |
+| :---------------------- | :---- | :--------------------------------------------------------------------------------------------- | :------------------ |
+| `--db-url`              | -     | The PostgreSQL connection string (Required).                                                   | -                   |
+| `--output`              | `-o`  | The path where the file will be saved.                                                         | `database.types.ts` |
+| `--schema`              | `-s`  | Schema to introspect. Repeatable to include multiple schemas, for example `-s public -s auth`. | `public`            |
+| `--postgrest-v9-compat` | -     | Disables one-to-one relationship detection.                                                    | `false`             |
+| `--query-timeout`       | -     | The timeout for the schema introspection query, for example `30s` or `1m`.                     | `15s`               |
 
 ## Use generated types
 
@@ -24728,10 +25025,7 @@ import type { Database } from '@/types/database';
 import { createClient } from '@neondatabase/neon-js';
 
 // Pass the generic to the client
-const client = createClient<Database>({
-  auth: { url: process.env.NEON_AUTH_URL },
-  dataApi: { url: process.env.NEON_DATA_API_URL },
-});
+const client = createClient<Database>(process.env.NEON_DATABASE_URL!);
 
 // 3. Enjoy full type safety
 const { data, error } = await client
@@ -24739,6 +25033,8 @@ const { data, error } = await client
   .select('id, content') // Autocomplete: only columns in 'posts'
   .eq('is_published', true); // Type check: ensures 'is_published' expects a boolean
 ```
+
+Use the HTTPS Neon database URL without credentials or query parameters for `NEON_DATABASE_URL`, for example `https://ep-example.c-2.us-east-1.aws.neon.tech/neondb`. You can find the matching Data API URL on the **Data API** page in the Neon Console or with `neon data-api get`; to get the single database URL, remove the `.apirest` hostname label and trailing `/rest/v1` path. If you start from a Neon Auth URL instead, remove the `.neonauth` hostname label and trailing `/auth` path. The cell label (if present), region, and database path stay the same. Prefer the older two-URL setup? See the [object-form alternative](https://neon.com/docs/reference/javascript-sdk#initializing) in the JavaScript SDK reference.
 
 ### Response types
 
@@ -25038,15 +25334,9 @@ npm install @neondatabase/neon-js
 import { createClient } from '@neondatabase/neon-js';
 
 // Initialize with Managed BetterAuth
-// Get your URLs from the Neon Console or run: neon data-api get
-const client = createClient({
-  auth: {
-    url: import.meta.env.VITE_NEON_AUTH_URL,
-  },
-  dataApi: {
-    url: import.meta.env.VITE_NEON_DATA_API_URL,
-  },
-});
+// Use your Neon database URL without credentials or query parameters.
+// Example: https://ep-example.c-2.us-east-1.aws.neon.tech/neondb
+const client = createClient(import.meta.env.VITE_NEON_DATABASE_URL);
 
 // Query - the JWT token is injected automatically when the user is signed in
 const { data, error } = await client
@@ -25058,7 +25348,11 @@ const { data, error } = await client
 console.log(data);
 ```
 
-**Note:** This client runs in the browser. Environment variable syntax depends on your framework: `import.meta.env.VITE_*` for Vite-based projects (Vite, SvelteKit, Astro), `process.env.NEXT_PUBLIC_*` for Next.js.
+**Warning: Not yet on npm**
+
+The single-URL form shown above, `createClient(url)`, requires a version of `@neondatabase/neon-js` that has not been published to npm as of this writing. The latest published version, `0.6.2-beta`, only accepts the two-URL object form. If `npm install @neondatabase/neon-js` installs `0.6.2-beta` or earlier for you, use the [object-form alternative](https://neon.com/docs/reference/javascript-sdk#initializing) in the JavaScript SDK reference instead.
+
+**Note:** This client runs in the browser. Environment variable syntax depends on your framework: `import.meta.env.VITE_*` for Vite-based projects (Vite, SvelteKit, Astro), `process.env.NEXT_PUBLIC_*` for Next.js. The `VITE_NEON_DATABASE_URL` value is not your Postgres connection string; use the HTTPS Neon database URL shown in the example above. You can find the matching Data API URL on the **Data API** page in the Neon Console or with `neon data-api get`; to get the single database URL, remove the `.apirest` hostname label and trailing `/rest/v1` path. If you start from a Neon Auth URL instead, remove the `.neonauth` hostname label and trailing `/auth` path. The cell label (if present), region, and database path stay the same.
 
 **Any authentication provider**
 
@@ -25363,6 +25657,12 @@ Defines which PostgreSQL schemas are exposed as REST API endpoints. By default, 
 
 **Note:** **Permissions apply:** Adding a schema here exposes the _endpoints_, but the database role used by the API must still have `USAGE` privileges on the schema and `SELECT` privileges on the tables. Refer to [Access control for Data API](https://neon.com/docs/data-api/access-control) for more details.
 
+### Extra search path schemas
+
+**Default:** `Empty`
+
+Adds extra PostgreSQL schemas to the search path used for every Data API request. These schemas aren't exposed as REST API endpoints themselves; they're only available for database objects inside your [exposed schemas](https://neon.com/docs/data-api/manage#exposed-schemas) to reference, which is useful for schemas that hold PostgreSQL extensions. Corresponds to the `db_extra_search_path` field in the API settings object.
+
 ### Anonymous role
 
 **Default:** `anonymous`
@@ -25380,6 +25680,12 @@ Enforces a hard limit on the number of rows returned in a single API response. T
 **Default:** `.role`
 
 Specifies the path within the JWT token that contains the database role name. The Data API uses this role to execute queries on behalf of the authenticated user. For example, `.role` extracts the value of the top-level `role` claim from the token. Corresponds to the `jwt_role_claim_key` field in the API settings object. This field is required when updating settings via the API.
+
+### JWT cache max lifetime
+
+**Default:** `Empty`
+
+Sets the maximum lifetime, in seconds, that a validated JWT is kept in the Data API's cache. Caching validated tokens reduces the number of times the Data API needs to fetch and verify keys from your authentication provider's JWKS URL. Corresponds to the `jwt_cache_max_lifetime` field in the API settings object.
 
 ### CORS allowed origins
 
@@ -25714,11 +26020,11 @@ The `sub` claim in this example: `41a5f680-89d2-474d-ae59-e27bfbbbd293` represen
 
 If you're using Managed BetterAuth, you can use the Auth API reference UI to create test users and obtain JWT tokens for testing with tools like Postman or cURL.
 
-Navigate to your Auth URL with `/reference` appended (for example, `https://ep-example.neonauth.us-east-1.aws.neon.tech/neondb/auth/reference`). You can find your **Auth URL** on the **Auth** page on the **Configuration** tab in the Neon Console. From there, you can:
+Navigate to your Auth URL with `/reference` appended (for example, `https://ep-example.neonauth.us-east-1.aws.neon.tech/neondb/auth/reference`). You can find your **Auth URL** on the **Auth** page, **Configuration** tab in the Neon Console. From there, you can:
 
-1. Create a test user with `POST /api/auth/sign-up/email`.
-2. Sign in with `POST /api/auth/sign-in/email`.
-3. Call `GET /api/auth/get-session` and copy the JWT from the `Set-Auth-Jwt` response header.
+1. Create a test user with `POST /sign-up/email`.
+2. Sign in with `POST /sign-in/email`.
+3. Call `GET /get-session` and copy the JWT from the `Set-Auth-Jwt` response header.
 4. Use that JWT in your Data API requests.
 
 For step-by-step instructions, see [Testing with Managed BetterAuth](https://neon.com/docs/data-api/get-started#testing-with-neon-auth).
@@ -25821,7 +26127,7 @@ The OpenAPI schema feature is disabled in your Data API configuration.
 ### Fix
 
 1. Go to the **Data API** page in the Neon Console
-2. Open the **Configuration** panel
+2. Open the **Settings** tab
 3. Enable the **OpenAPI schema** toggle
 4. Try your request again
 
@@ -25873,7 +26179,7 @@ JWT tokens have a limited lifespan (typically around 15 minutes). Once expired, 
 
 ### Fix
 
-Sign in again to get a fresh token. If you're using Managed BetterAuth, call `POST /api/auth/sign-in/email` in the Auth API reference UI, then call `GET /api/auth/get-session` and copy the new JWT from the `Set-Auth-Jwt` response header.
+Sign in again to get a fresh token. If you're using Managed BetterAuth, call `POST /sign-in/email` in the Auth API reference UI, then call `GET /get-session` and copy the new JWT from the `Set-Auth-Jwt` response header.
 
 For programmatic token refresh, see your authentication provider's documentation on token renewal.
 
@@ -89071,6 +89377,8 @@ You can use the Neon CLI to:
 - Compare the latest schemas of any two branches
 - Compare against a specific point in its own or another branch's history
 
+For a git-style unified diff between two branches, you can also use the top-level [`neon diff`](https://neon.com/docs/cli/diff) shortcut.
+
 Use the `schema-diff` subcommand from the `branches` command:
 
 ```bash
@@ -110980,6 +111288,295 @@ For more about collations in Postgres, see [Collation Support](https://www.postg
 
 The `track_commit_timestamp` Postgres parameter is currently not supported in Neon due to platform constraints.
 
+--- [Document source](https://neon.com/docs/reference/config-runtime.md) ---
+
+> Summary: @neon/config-runtime is the lower-level, scriptable engine behind neon config / neon deploy: inspect, plan, and apply a neon.ts policy directly from Node.js, without going through the neon CLI. Use it to build a custom CI step, a deploy script, or another tool that needs to reconcile a branch against a neon.ts policy.
+
+# @neon/config-runtime
+
+Programmatic API for running a neon.ts policy from your own scripts and CI.
+
+`@neon/config-runtime` is the package the [`neon` CLI](https://neon.com/docs/cli/config) itself uses to run a [`neon.ts`](https://neon.com/docs/reference/neon-ts) policy: read a branch's live state, diff a policy against it, apply the result, and bundle and deploy Neon Functions. Import it directly when you're writing your own CI step or script and the CLI commands (`neon config plan`, `neon deploy`) don't fit. For example, a custom GitHub Actions job that applies a policy to a freshly created preview branch.
+
+If you just want to run `neon.ts` from the command line, use the [`neon config` / `neon deploy` commands](https://neon.com/docs/cli/config) instead. Reach for this package only when you need to call the same logic from your own Node.js code.
+
+**Note:** `@neon/config-runtime` is filesystem- and env-agnostic: it never reads a `.neon` context file or `NEON_*` environment variables (except the `NEON_API_KEY` / `NEON_API_HOST` fallbacks documented under [Authentication](https://neon.com/docs/reference/config-runtime#authentication)). You resolve `projectId` and `branchId` yourself and pass them in explicitly. This is different from the `neon` CLI, which resolves both from `.neon` / `NEON_*` for you.
+
+## Install
+
+```bash
+npm install @neon/config-runtime
+```
+
+Requires Node.js 20.19 or later. Import from the `/v1` subpath to pin a specific major version:
+
+```ts
+import { inspect, plan, apply } from "@neon/config-runtime/v1";
+```
+
+This package pulls in `esbuild` (a native binary) to bundle Neon Functions for deploy, so it belongs in a CLI, CI job, or deploy script, not in `neon.ts` itself. `neon.ts` should only ever import [`@neon/config`](https://neon.com/docs/reference/neon-ts), which has no native dependencies.
+
+## Resolving project and branch ids
+
+Every function on this page takes `projectId` and a Neon branch id (`br-…`), not a branch name. Look these up yourself before calling in:
+
+- `neon projects list --output json` and `neon branches list --output json` (the [Neon CLI](https://neon.com/docs/cli))
+- The Neon API's [list branches](https://api-docs.neon.tech/reference/listprojectbranches) endpoint
+- The `.neon` context file written by `neon link` (the CLI's own resolution mechanism, if your script runs alongside it)
+
+Passing a branch name where an id is expected fails with a `PLATFORM_BRANCH_NOT_FOUND` error (see [Error handling](https://neon.com/docs/reference/config-runtime#error-handling)).
+
+## Quick example
+
+```ts
+import config from "../neon";
+import { apply, inspect, plan } from "@neon/config-runtime/v1";
+
+const target = { projectId: "solitary-fog-12345678", branchId: "br-cool-forest-12345678" };
+
+const live = await inspect(target); // read the branch's current live state
+const diff = await plan(config, target); // dry-run: what would apply change?
+const result = await apply(config, target); // apply the policy for real
+```
+
+`apply` throws if the branch already has settings your policy would override. See [`apply`](https://neon.com/docs/reference/config-runtime#apply) for how to allow that.
+
+## Authentication
+
+None of the functions on this page take a Neon session or browser login. They authenticate with a Neon API key, resolved in this order:
+
+1. The `apiKey` option, if you pass one.
+2. The `NEON_API_KEY` environment variable.
+3. `~/.config/neonctl/credentials.json`, written after running `neon auth` (or `npx neonctl auth`): the same file the CLI itself uses.
+
+If none of these resolve, every function throws a `PlatformError` with code `PLATFORM_MISSING_API_KEY` and a message pointing you to [console.neon.tech/app/settings/api-keys](https://console.neon.tech/app/settings/api-keys) to generate a key. `apiHost` follows the same pattern for `inspect`, `plan`, `apply`, `pullConfig`, and `pushConfig`: pass it explicitly, or let it fall back to `NEON_API_HOST` and then Neon's production API. `createBranch` is the exception: `CreateBranchOptions` has no `apiHost` field, so you can't override the host per call there. It still honors `NEON_API_HOST` from the environment if you set it.
+
+For CI, don't rely on the local CLI credentials fallback. A script that works on a developer machine because `neon auth` wrote `~/.config/neonctl/credentials.json` will fail in a clean CI runner. Pass `apiKey` explicitly or set `NEON_API_KEY` in the job environment.
+
+Pass `api` instead to inject your own `NeonApi` adapter (used internally for tests; most callers don't need this).
+
+## Operations
+
+The three functions below mirror the Terraform mental model (`inspect` reads state, `plan` previews a diff, `apply` reconciles it) and are what `neon config status` / `plan` / `apply` call internally.
+
+### `inspect`
+
+```ts
+function inspect(options: ConfigOperationOptions): Promise<PulledBranchConfig>;
+```
+
+Reads a branch's live Neon state and reverse-engineers it into a `neon.ts`-shaped `Config`, plus raw project/branch metadata. Read-only, and never mutates anything.
+
+| `ConfigOperationOptions` field | Type       | Description                                                                          |
+| ------------------------------ | ---------- | ------------------------------------------------------------------------------------ |
+| `projectId`                    | `string`   | Required.                                                                            |
+| `branchId`                     | `string`   | Required. Must already exist on the project; `inspect` never creates one.            |
+| `apiKey`                       | `string?`  | See [Authentication](https://neon.com/docs/reference/config-runtime#authentication). |
+| `apiHost`                      | `string?`  | See [Authentication](https://neon.com/docs/reference/config-runtime#authentication). |
+| `api`                          | `NeonApi?` | Inject a custom adapter (mainly for tests).                                          |
+
+Returns a `PulledBranchConfig`:
+
+| Field     | Type                                                      | Description                                                                                                                                                 |
+| --------- | --------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `project` | `{ id, name, region, pgVersion, orgId? }`                 | Project metadata.                                                                                                                                           |
+| `branch`  | `{ id, name, parent?, isDefault, protected, expiresAt? }` | Branch metadata.                                                                                                                                            |
+| `config`  | `Config`                                                  | The branch's state, expressed as a `neon.ts`-shaped policy (static `auth`/`dataApi` toggles plus a `branch` closure carrying its lifecycle/compute tuning). |
+| `preview` | `PulledPreview?`                                          | Buckets, functions, and issued credentials on the branch. Omitted entirely when the branch has none.                                                        |
+
+A pulled function is reported as `{ slug, name }` only: the remote has no record of the local `source` file path, so a pulled config can't redeploy a function without you re-adding `source` by hand.
+
+### `plan`
+
+```ts
+function plan(config: Config, options: ConfigOperationOptions): Promise<PushResult>;
+```
+
+Computes what `apply` would do, without mutating anything (the equivalent of `terraform plan`). Takes the same options as `inspect`.
+
+Returns a `PushResult` with the same shape as [`apply`](https://neon.com/docs/reference/config-runtime#apply). On a dry run, `applied` describes the changes that would be applied; no remote state is modified.
+
+### `apply`
+
+```ts
+function apply(config: Config, options: ApplyOptions): Promise<PushResult>;
+```
+
+Applies a `neon.ts` policy to an existing branch. Never creates a project or branch: both must already exist (use [`createBranch`](https://neon.com/docs/reference/config-runtime#createbranch) to provision one from a policy). `ApplyOptions` extends `ConfigOperationOptions` with:
+
+| Field                  | Type               | Default | Description                                                                                                                                                          |
+| ---------------------- | ------------------ | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `updateExisting`       | `boolean`          | `false` | Auto-confirm overriding existing remote settings (TTL, `protected`, compute settings). Without it, drift from the branch's current state throws `PushConflictError`. |
+| `allowProtectedBranch` | `boolean`          | `false` | Auto-confirm applying to a branch marked protected on Neon (see the note below the table).                                                                           |
+| `bundleFunction`       | `FunctionBundler?` | esbuild | Custom bundler for function source. See [Function bundling](https://neon.com/docs/reference/config-runtime#function-bundling).                                       |
+
+`apply` doesn't accept an interactive confirmation callback (that's only on the lower-level [`pushConfig`](https://neon.com/docs/reference/config-runtime#pushconfig)), so it's either non-interactive (pass `updateExisting`/`allowProtectedBranch` up front) or it fails closed: unresolved drift throws `PushConflictError` (see [Error handling](https://neon.com/docs/reference/config-runtime#error-handling)). Note that a protected branch with **no** other drift is not itself blocked by `allowProtectedBranch: false`; that flag only matters together with the interactive `confirm` callback on `pushConfig`.
+
+Returns a `PushResult`:
+
+| Field        | Type               | Description                                                                                                                               |
+| ------------ | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `projectId`  | `string`           | Target project id.                                                                                                                        |
+| `orgId`      | `string?`          | Organization id for the target project, when the API returns one.                                                                         |
+| `branchId`   | `string`           | Target branch id.                                                                                                                         |
+| `branchName` | `string`           | Target branch name.                                                                                                                       |
+| `dryRun`     | `boolean`          | `true` for `plan` / `pushConfig({ dryRun: true })`; `applied` then records planned changes only.                                          |
+| `applied`    | `AppliedChange[]`  | Ordered list of policy changes that were applied or, on dry runs, would be applied. Each entry identifies the changed resource and field. |
+| `conflicts`  | `ConflictReport[]` | Conflicts found while comparing local policy with remote state. Empty when the push can proceed.                                          |
+
+### `createBranch`
+
+```ts
+function createBranch(config: Config, options: CreateBranchOptions): Promise<CreateBranchResult>;
+```
+
+Creates a branch **from** a `neon.ts` policy and brings it up with its declared settings in one step: it calls the Neon API directly to create the branch, then applies the rest of the policy to it with `pushConfig`. This is the flow `neon checkout <new-name>` needs when it creates a new branch, and the CLI calls this function to get it (not the other way around). Concretely, `createBranch` evaluates the policy with `branch.exists: false` (so creation-time tuning gated on `!branch.exists` actually resolves), creates the branch from the policy's `parent` (falling back to the project's default branch), then reconciles the rest of the policy onto it.
+
+| `CreateBranchOptions` field | Type               | Description                                                                                                |
+| --------------------------- | ------------------ | ---------------------------------------------------------------------------------------------------------- |
+| `projectId`                 | `string`           | Required.                                                                                                  |
+| `branchName`                | `string`           | Required. Must not already exist on the project.                                                           |
+| `apiKey`                    | `string?`          | See [Authentication](https://neon.com/docs/reference/config-runtime#authentication).                       |
+| `api`                       | `NeonApi?`         | Inject a custom adapter.                                                                                   |
+| `bundleFunction`            | `FunctionBundler?` | Custom bundler. See [Function bundling](https://neon.com/docs/reference/config-runtime#function-bundling). |
+
+Returns `{ branchId, branchName, result: PushResult }`. Throws a `PlatformError` (`PLATFORM_CONFLICT`) if `branchName` already exists, or (`PLATFORM_BRANCH_NOT_FOUND`) if the policy's `parent` names a branch that doesn't exist on the project.
+
+## Lower-level: `pullConfig` and `pushConfig`
+
+`inspect`, `plan`, and `apply` are thin, intent-revealing wrappers over two lower-level primitives. Reach for these directly when you need control they don't expose: most commonly, an interactive confirmation prompt, or evaluating the `branch` closure as a creation (`branchExists: false`) so creation-time tuning resolves.
+
+`pushConfig` always requires a `branchId` that already exists on the project; `branchExists: false` only changes how the policy is evaluated, not whether the branch has to exist. `pushConfig` never creates a branch, on `dryRun` or otherwise. If the branch doesn't exist yet, use [`createBranch`](https://neon.com/docs/reference/config-runtime#createbranch) instead.
+
+### `pullConfig`
+
+```ts
+function pullConfig(options: PullConfigOptions): Promise<PulledBranchConfig>;
+```
+
+Functionally identical to [`inspect`](https://neon.com/docs/reference/config-runtime#inspect): `inspect` forwards its options (`projectId`, `branchId`, `api`, `apiKey`, `apiHost`) to `pullConfig` unchanged and returns its result directly, with no other logic in between. The two names exist so call sites can read naturally (`inspect` next to `plan`/`apply`) while the engine module stays named after what it does.
+
+### `pushConfig`
+
+```ts
+function pushConfig(config: Config, options: PushConfigOptions): Promise<PushResult>;
+```
+
+Returns the same `PushResult` shape as [`apply`](https://neon.com/docs/reference/config-runtime#apply). With `dryRun: true`, `applied` is the ordered list of changes that would be applied, and the function does not mutate remote state.
+
+The engine behind `plan` and `apply`. `PushConfigOptions` is `ApplyOptions` plus:
+
+| Field          | Type                                                           | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| -------------- | -------------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `branchExists` | `boolean`                                                      | `true`  | Evaluate the policy's `branch` closure as if the target branch doesn't exist yet (`branch.exists: false`), without changing whether it physically exists on Neon. `createBranch` uses this internally so creation-time tuning (TTL, compute, `parent`) resolves right after provisioning.                                                                                                                                                                              |
+| `confirm`      | `(context: PushConfirmContext) => boolean \| Promise<boolean>` | none    | Invoked once, before any mutation, when the push needs confirmation: either the branch is protected (and `allowProtectedBranch` isn't `true`) or applying would override existing settings (and `updateExisting` isn't `true`). Return `true` to proceed; a `false` return throws `PushAbortedError`. Not invoked, and no mutation runs, when the plan has unresolvable conflicts: those throw `PushConflictError` regardless of `confirm`. Never invoked on `dryRun`. |
+| `dryRun`       | `boolean`                                                      | `false` | Compute the full plan against live remote state without executing any mutations. `plan(config, target)` is exactly `pushConfig(config, { ...target, dryRun: true, updateExisting: true })`.                                                                                                                                                                                                                                                                            |
+
+`PushConfirmContext` passed to `confirm`:
+
+| Field             | Type      | Description                                                                                                                                                            |
+| ----------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `branchName`      | `string`  | Target branch's name.                                                                                                                                                  |
+| `protectedBranch` | `boolean` | `true` when the branch is protected on Neon and `allowProtectedBranch` wasn't set.                                                                                     |
+| `overrideUpdates` | `boolean` | `true` when the plan would override existing remote settings and `updateExisting` wasn't set. Additive changes (enabling a service for the first time) never set this. |
+
+Use `confirm` to render your own "are you sure?" prompt instead of failing closed with `PushConflictError`, for example in an interactive CLI built on top of this package.
+
+## Function bundling
+
+Deploying a Neon Function means bundling its source into a ZIP archive. By default, `apply`, `pushConfig`, and `createBranch` do this with esbuild:
+
+```ts
+type FunctionBundler = (fn: ResolvedFunctionConfig) => Promise<Uint8Array>;
+
+function buildFunctionBundle(fn: ResolvedFunctionConfig): Promise<Uint8Array>;
+```
+
+`buildFunctionBundle` is loaded lazily and only when a deploy actually bundles a function, so a caller that never deploys functions, or that supplies its own `bundleFunction`, never pulls esbuild's native binary into their build. Inject a custom bundler via the `bundleFunction` option on `apply` / `pushConfig` / `createBranch` when your runtime can't ship that binary, for example a single-file packaged CLI, or a restricted CI sandbox.
+
+`ResolvedFunctionConfig` (what your bundler receives) has all deploy defaults already applied: `slug`, `name`, `source` (path to the entry file), `env` (resolved key/value pairs), `runtime`, and an optional `dev` block used only by `neon dev`.
+
+**Note:** The `neon` CLI has its own separate `NEON_ESBUILD_PATH` escape hatch for "esbuild not found" errors (see [Preview access](https://neon.com/docs/compute/functions/preview-access#known-limitations)). That variable is read by the CLI's own bundler, not by `buildFunctionBundle` in this package, so it has no effect when you call `@neon/config-runtime` directly. Pass `bundleFunction` instead.
+
+## Load a `neon.ts` file
+
+```ts
+function loadConfigFromFile(options?: LoadConfigOptions): Promise<{ config: Config; resolvedPath: string }>;
+```
+
+Re-exported from `@neon/config` for convenience. Use it when your script doesn't already have a `Config` object in scope, for example a CI step that runs independently of a bundler that could `import` `neon.ts` directly.
+
+| `LoadConfigOptions` field | Type      | Description                                                             |
+| ------------------------- | --------- | ----------------------------------------------------------------------- |
+| `path`                    | `string?` | Explicit path to a config file. Takes precedence over the search below. |
+| `cwd`                     | `string?` | Starting directory for the upward search. Defaults to `process.cwd()`.  |
+| `stopAt`                  | `string?` | Hard ceiling for the upward walk. Defaults to the OS home directory.    |
+
+Without `path`, it walks up from `cwd` looking for `neon.ts` / `neon.mts` / `neon.js` / `neon.mjs`, stopping at the first directory containing `.git` (monorepo-friendly: an intermediate `package.json` doesn't stop the walk).
+
+## A custom CI step
+
+Putting the pieces together: a script that plans and applies a policy against a specific branch, suitable as its own CI job:
+
+```ts filename="scripts/deploy-branch.ts"
+import { loadConfigFromFile, plan, apply } from "@neon/config-runtime/v1";
+
+// Resolve these yourself: from CI variables you set, `neon branches list --output json`,
+// or the Neon API. This package never reads `.neon` or `NEON_*` (besides NEON_API_KEY / NEON_API_HOST).
+const projectId = process.env.NEON_PROJECT_ID!;
+const branchId = process.env.NEON_BRANCH_ID!;
+const shouldApply = process.env.NEON_APPLY === "true";
+
+const { config } = await loadConfigFromFile();
+
+// NEON_API_KEY in the environment is picked up automatically, so there's no need to pass apiKey.
+const target = {
+  projectId,
+  branchId,
+  updateExisting: true,
+  allowProtectedBranch: true,
+};
+
+const planned = await plan(config, target);
+console.log(`Plan: ${planned.applied.length} change(s) for ${planned.branchName}`);
+
+if (!shouldApply) {
+  console.log("Dry run only. Set NEON_APPLY=true to apply this plan.");
+  process.exit(0);
+}
+
+const result = await apply(config, target);
+
+console.log(`Applied ${result.applied.length} change(s) to ${result.branchName}`);
+```
+
+Run it with `tsx` or after compiling with `tsc`, the same as any Node.js script:
+
+```bash
+npx tsx scripts/deploy-branch.ts
+```
+
+## Error handling
+
+Every error this package throws extends `PlatformError` (also re-exported here from `@neon/config`), which carries a stable `code` string plus optional `details`. Prefer `isPlatformError(err)` over `err instanceof PlatformError`: a `neon.ts` loaded through the internal TypeScript loader ([jiti](https://github.com/unjs/jiti)) imports its own copy of this package, so an error it throws can fail `instanceof` across that boundary. `isPlatformError` checks the `code` string instead, which survives it.
+
+The subclasses relevant to programmatic use:
+
+| Class                                                 | `code`                        | Thrown by             | When                                                                                                                                                                                                                         |
+| ----------------------------------------------------- | ----------------------------- | --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `PushConflictError`                                   | `PLATFORM_PUSH_CONFLICT`      | `apply`, `pushConfig` | Local policy conflicts with remote state and you didn't pass `updateExisting`. Carries a `conflicts: ConflictReport[]` array.                                                                                                |
+| `PushAbortedError`                                    | `PLATFORM_PUSH_ABORTED`       | `pushConfig`          | Your `confirm` callback returned `false`. Carries `branchName` and `reasons`.                                                                                                                                                |
+| `ConfigLoadError`                                     | `PLATFORM_CONFIG_LOAD_FAILED` | `loadConfigFromFile`  | No config file found, or it failed to evaluate.                                                                                                                                                                              |
+| `PlatformError` with code `PLATFORM_MISSING_API_KEY`  | `PLATFORM_MISSING_API_KEY`    | any operation         | No `apiKey` could be resolved. See [Authentication](https://neon.com/docs/reference/config-runtime#authentication).                                                                                                          |
+| `PlatformError` with code `PLATFORM_BRANCH_NOT_FOUND` | `PLATFORM_BRANCH_NOT_FOUND`   | any operation         | `branchId` doesn't exist on the project (see [Resolving project and branch ids](https://neon.com/docs/reference/config-runtime#resolving-project-and-branch-ids)), or a policy's `parent` names a branch that doesn't exist. |
+
+A `ConflictReport` (on `PushConflictError.conflicts` and `PushResult.conflicts`) has `kind`, `identifier`, `field`, `current`, `desired`, and a human-readable `reason`.
+
+## Related
+
+- [`neon.ts` reference](https://neon.com/docs/reference/neon-ts): the policy this package operates on, and the `neon config` / `neon deploy` CLI commands that wrap it.
+- [neon-pkgs source](https://github.com/neondatabase/neon-pkgs/tree/main/packages/config-runtime) on GitHub.
+
 --- [Document source](https://neon.com/docs/reference/feeds.md) ---
 
 > Summary: Neon RSS feeds give subscribers real-time updates from the Changelog (neon.com/docs/changelog/rss.xml), Blog, Community Guides, and Status page tracking regional uptime. Use this page when you want to monitor Neon releases, blog posts, or incidents without polling the site, including routing feeds into Slack with the /feed subscribe command.
@@ -111364,7 +111961,7 @@ An [Organizations](https://neon.com/docs/reference/glossary#organization) role i
 
 ## Neon
 
-The backend for apps and agents. Includes Neon Postgres, Managed BetterAuth, and Data API today, with Storage, Compute, and AI Gateway coming soon. Neon Postgres is serverless, with autoscaling, branching, instant restore, and scale-to-zero. For more information, see [Why Neon?](https://neon.com/docs/introduction).
+The backend for apps and agents. Includes Neon Postgres, Managed BetterAuth, Data API, and [AI Gateway](https://neon.com/docs/ai-gateway/overview) (in private preview) today, with Storage and Compute coming soon. Neon Postgres is serverless, with autoscaling, branching, instant restore, and scale-to-zero. For more information, see [Why Neon?](https://neon.com/docs/introduction).
 
 ## Neon API
 
@@ -111758,19 +112355,16 @@ Use this when you only need authentication (no database queries). You get:
 
 The auth methods are identical; only the access path differs. `client.auth.signIn.email()` and `auth.signIn.email()` do the same thing.
 
+For the full client, pass a single HTTPS Neon database URL without credentials or query parameters. The SDK derives the Neon Auth URL and Data API URL automatically. If you already have a Neon Auth URL or Data API URL, use the same URL without the `.neonauth` or `.apirest` hostname label and without the trailing `/auth` or `/rest/v1` path. The cell label (if present), region, and database path stay the same. If you need to override either derived URL, the object form is still supported.
+
 **Full client**
 
 ```typescript
 import { createClient } from '@neondatabase/neon-js';
 
-const client = createClient({
-  auth: {
-    url: import.meta.env.VITE_NEON_AUTH_URL,
-  },
-  dataApi: {
-    url: import.meta.env.VITE_NEON_DATA_API_URL,
-  },
-});
+// Use your Neon database URL without credentials or query parameters.
+// Example: https://ep-example.c-2.us-east-1.aws.neon.tech/neondb
+const client = createClient(import.meta.env.VITE_NEON_DATABASE_URL);
 ```
 
 **Auth-only**
@@ -111787,14 +112381,7 @@ const auth = createAuthClient(import.meta.env.VITE_NEON_AUTH_URL);
 import { createClient } from '@neondatabase/neon-js';
 import type { Database } from './types/database.types';
 
-const client = createClient<Database>({
-  auth: {
-    url: import.meta.env.VITE_NEON_AUTH_URL,
-  },
-  dataApi: {
-    url: import.meta.env.VITE_NEON_DATA_API_URL,
-  },
-});
+const client = createClient<Database>(import.meta.env.VITE_NEON_DATABASE_URL);
 ```
 
 **With a different adapter**
@@ -111803,9 +112390,22 @@ const client = createClient<Database>({
 import { createClient } from '@neondatabase/neon-js';
 import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react/adapters';
 
-const client = createClient({
+const client = createClient(import.meta.env.VITE_NEON_DATABASE_URL, {
   auth: {
     adapter: BetterAuthReactAdapter(),
+  },
+});
+```
+
+**Warning: Not yet on npm**
+
+The single-URL form shown above, `createClient(url)`, requires a version of `@neondatabase/neon-js` that has not been published to npm as of this writing. The latest published version, `0.6.2-beta`, only accepts the two-URL object form below. If `npm install @neondatabase/neon-js` installs `0.6.2-beta` or earlier for you, use the object form instead.
+
+The object form remains available for custom endpoint layouts or local development setups where the Auth and Data API URLs cannot be derived from the same Neon database URL:
+
+```typescript
+const client = createClient({
+  auth: {
     url: import.meta.env.VITE_NEON_AUTH_URL,
   },
   dataApi: {
@@ -112963,6 +113563,8 @@ npm install @neon/config
 
 The package source is on [GitHub](https://github.com/neondatabase/neon-pkgs/tree/main/packages/config).
 
+`neon.ts` itself is declarative: it only describes the policy. `neon config` / `neon deploy` (below) are how the CLI runs it. To call the same `inspect` / `plan` / `apply` logic from your own script or CI job instead of the CLI, see [`@neon/config-runtime`](https://neon.com/docs/reference/config-runtime).
+
 Link your working directory to a Neon project before using `neon.ts` commands:
 
 ```bash
@@ -113172,6 +113774,7 @@ The key list autocompletes from your config, so selecting a variable from a serv
 | ------------------- | -------------- | ---------------------------------------------------------------------------------------------------- |
 | `--config`          | (auto)         | Path to the `neon.ts` file. When omitted, the CLI walks up from cwd stopping at `.git`               |
 | `--env`             | (none)         | Path to a `.env` file loaded before `neon.ts` is evaluated, so function `env` values resolve from it |
+| `--env-pull`        | `true`         | Pull the branch's env vars into a local `.env` after a successful apply (`--no-env-pull` to skip)    |
 | `--branch`          | linked branch  | Target branch ID or name                                                                             |
 | `--project-id`      | linked project | Project ID                                                                                           |
 | `--update-existing` | `false`        | Auto-confirm overriding existing remote settings                                                     |
@@ -113185,11 +113788,11 @@ Functions, Storage, and AI Gateway are in private preview. They require a new pr
 
 Preview services are declared under the `preview` block. All three are optional and independent:
 
-| Field               | Type                                 | What it enables                                                                                                   |
-| ------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------- |
-| `preview.functions` | Record of slug → function def        | Neon Functions. Long-running Node.js compute on the branch                                                        |
-| `preview.buckets`   | Record of name → bucket def          | Neon Object Storage. S3-compatible object storage, branched with your database                                    |
-| `preview.aiGateway` | `true`, `false`, `{ enabled: bool }` | Neon AI Gateway. Injects `OPENAI_API_KEY`, `OPENAI_BASE_URL`, `NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL` |
+| Field               | Type                                 | What it enables                                                                |
+| ------------------- | ------------------------------------ | ------------------------------------------------------------------------------ |
+| `preview.functions` | Record of slug → function def        | Neon Functions. Long-running Node.js compute on the branch                     |
+| `preview.buckets`   | Record of name → bucket def          | Neon Object Storage. S3-compatible object storage, branched with your database |
+| `preview.aiGateway` | `true`, `false`, `{ enabled: bool }` | Neon AI Gateway. Injects `NEON_AI_GATEWAY_TOKEN`, `NEON_AI_GATEWAY_BASE_URL`   |
 
 ### `preview.functions`
 

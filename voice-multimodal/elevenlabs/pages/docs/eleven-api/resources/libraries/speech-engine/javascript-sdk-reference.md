@@ -261,7 +261,7 @@ The `onTranscript` handler receives an `AbortSignal` that fires when the user in
 
 ### Disabling authentication
 
-By default both `attach()` and `SpeechEngineServer` verify the `X-Elevenlabs-Speech-Engine-Authorization` header on every incoming connection. If your server sits behind an infrastructure layer that already restricts incoming traffic to ElevenLabs (typically an IP allowlist scoped to [ElevenLabs' egress ranges](/docs/overview/capabilities/speech-engine#ip-allowlisting)), you can skip JWT verification by passing `disableAuth: true`:
+By default both `attach()` and `SpeechEngineServer` verify the `X-Elevenlabs-Speech-Engine-Authorization` header on every incoming connection. If your server sits behind an infrastructure layer that already restricts incoming traffic to ElevenLabs (typically an IP allowlist scoped to [ElevenLabs' egress ranges](/docs/eleven-api/resources/ip-allowlisting)), you can skip JWT verification by passing `disableAuth: true`:
 
 ```typescript
 // Standalone — no apiKey required when disableAuth is true

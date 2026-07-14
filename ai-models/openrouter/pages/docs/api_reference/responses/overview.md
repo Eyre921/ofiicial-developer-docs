@@ -1,7 +1,7 @@
 ---
 title: "Responses API Beta"
-source: https://openrouter.ai/docs/api/reference/responses/overview.md
-path: docs/api/reference/responses/overview
+source: https://openrouter.ai/docs/api_reference/responses/overview.md
+path: docs/api_reference/responses/overview
 ---
 
 > ## Documentation Index
@@ -114,5 +114,5 @@ For comprehensive error handling guidance, see [Error Handling](./error-handling
 
 ## Rate Limits
 
-Standard OpenRouter rate limits apply. See [API Limits](/api/reference/limits) for details.
+Standard OpenRouter rate limits apply. See [API Limits](/api_reference/limits) for details.
 

@@ -12,7 +12,7 @@ path: docs/voice-agent-latency-report
 
 &#x20;Voice Agent
 
-The `LatencyReport` message is the richest latency signal the Agent API emits. The server sends it after each turn with a breakdown of latency across the full STT → LLM → TTS pipeline.
+The `LatencyReport` message is the richest latency signal the Agent API emits. The server sends it after each turn with a breakdown of LLM, TTS, and end-to-end latency.
 
 ## Purpose
 
@@ -25,7 +25,6 @@ All fields are floats in seconds, and each is optional (omitted when not applica
 | Field                  | Type   | What It Measures                                                |
 | ---------------------- | ------ | --------------------------------------------------------------- |
 | `type`                 | string | Must be `"LatencyReport"`.                                      |
-| `stt_latency`          | number | Speech-to-text: audio received to transcript produced.          |
 | `ttt_token_latency`    | number | Time to first token of any type (text, tool call, or thinking). |
 | `ttt_text_latency`     | number | Time to first text token from the LLM.                          |
 | `ttt_tool_latency`     | number | Time to first tool-call token from the LLM.                     |
@@ -38,7 +37,6 @@ All fields are floats in seconds, and each is optional (omitted when not applica
 ```json JSON
 {
   "type": "LatencyReport",
-  "stt_latency": 0.12,
   "ttt_token_latency": 0.34,
   "ttt_text_latency": 0.36,
   "ttt_tool_latency": 0.41,
@@ -52,7 +50,7 @@ All fields are floats in seconds, and each is optional (omitted when not applica
 
 Capture `LatencyReport` the same way as every other frame to chart and troubleshoot latency:
 
-* Attribute end-to-end latency to the STT, LLM, or TTS stage.
+* Compare end-to-end latency with LLM and TTS latency.
 * Separate LLM time-to-first-token from TTS time.
 * Isolate tool-call and thinking overhead from text generation.
 

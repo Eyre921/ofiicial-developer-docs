@@ -132,4 +132,4 @@ upstream:
 
 ---
 
-# Claude in Amazon Bedrock
+# Claude in Amazon Bedrock (Opus 4.7 and later)

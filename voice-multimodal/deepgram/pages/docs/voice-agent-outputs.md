@@ -24,6 +24,6 @@ Server Events are messages sent from the Deepgram server to the client over the 
 * [`PromptUpdated` / `SpeakUpdated` / `ThinkUpdated`](/docs/voice-agent-acknowledgements): Server confirms that an `Update*` message has been applied.
 * [`Agent Audio Done`](/docs/voice-agent-agent-audio-done): Indicates that the server has finished sending the final audio segment to the client.
 * [`Error` / `Warning`](/docs/voice-agent-errors-warnings): Server reports a fatal error (`Error`) or non-fatal issue (`Warning`).
-* [`Latency Report`](/docs/voice-agent-latency-report): Provides a detailed STT, LLM, and TTS latency breakdown for each turn.
+* [`Latency Report`](/docs/voice-agent-latency-report): Provides a detailed LLM, TTS, and end-to-end latency breakdown for each turn.
 
 Each of these events serves a specific purpose in managing the flow of the conversation and keeping the client informed about the state of the interaction. They allow for a dynamic and responsive experience when using Deepgram's Voice Agent API.

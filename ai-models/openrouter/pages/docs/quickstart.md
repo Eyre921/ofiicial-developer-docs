@@ -111,7 +111,7 @@ The most direct way to use OpenRouter. Send standard HTTP requests to the `/api/
   ```
 </CodeGroup>
 
-The API also supports [streaming](/api/reference/streaming). You can also use the [OpenAI SDK](#using-the-openai-sdk) pointed at OpenRouter as a drop-in replacement.
+The API also supports [streaming](/api_reference/streaming). You can also use the [OpenAI SDK](#using-the-openai-sdk) pointed at OpenRouter as a drop-in replacement.
 
 ***
 

@@ -1,7 +1,7 @@
 ---
 title: "Authentication"
-source: https://openrouter.ai/docs/api/reference/authentication.md
-path: docs/api/reference/authentication
+source: https://openrouter.ai/docs/api_reference/authentication.md
+path: docs/api_reference/authentication
 ---
 
 > ## Documentation Index

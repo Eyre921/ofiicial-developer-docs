@@ -170,7 +170,7 @@ A Team Owner is a paid role on Legacy plans, which means they contribute to your
 
 ### Note - Team members are free on the Credit Pro plan
 
-On the Credit Pro plan, team member seats are unlimited and included in your $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
+On the Credit Pro plan, team member seats are unlimited and included starting in the base $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
 
 #### Organization Owner
 
@@ -198,7 +198,7 @@ Developers are paid roles on Legacy plans. They contribute to your [total member
 
 ### Note - Team members are free on the Credit Pro plan
 
-On the Credit Pro plan, team member seats are unlimited and included in your $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
+On the Credit Pro plan, team member seats are unlimited and included starting in the base $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
 
 ### Publisher
 
@@ -206,7 +206,7 @@ A Publisher can do everything an [Internal Builder](#internal-builder) can do in
 
 ### Note - Team members are free on the Credit Pro plan
 
-On the Credit Pro plan, team member seats are unlimited and included in your $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
+On the Credit Pro plan, team member seats are unlimited and included starting in the base $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
 
 ### Internal Builder
 
@@ -229,7 +229,7 @@ In the Visual Editor, the Internal Builder role was previously called the Conten
 
 ### Note - Team members are free on the Credit Pro plan
 
-On the Credit Pro plan, team member seats are unlimited and included in your $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
+On the Credit Pro plan, team member seats are unlimited and included starting in the base $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
 
 ### Git Contributor
 
@@ -266,3 +266,4 @@ To learn how to give site feedback as a Reviewer, check out our [Reviewers quick
 > **Pricing Information:** This feature is available on [Enterprise](https://www.netlify.com/pricing/?category=enterprise) plans.
 
 Billing Admins can change the team plan and modify billing information, but do not have access to other team or site features.
+

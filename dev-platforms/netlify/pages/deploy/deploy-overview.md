@@ -394,7 +394,7 @@ Team Owners can allow all builds for non-team members to run and deploy without 
 
 ### Note - Team members are free on the Credit Pro plan
 
-On the Credit Pro plan, you can add unlimited team member seats for free. Unlimited seats are included in your monthly subscription cost of $20/month plus your usage costs. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
+On the Credit Pro plan, you can add unlimited team member seats for free. Unlimited seats are included in your monthly subscription cost starting at $20/month for 3,000 credits. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
 
 Teams on plans that charge for Git Contributors, such as the Legacy Pro plan, will be charged for auto-approved Git Contributors. See the [Billing FAQ](/manage/accounts-and-billing/billing/billing-for-legacy-plans/billing-faq-for-legacy-plans#git-contributors-and-billing) page for details. Credit Pro includes unlimited team seats and is not charged for auto-approved Git Contributors.
 
@@ -489,3 +489,4 @@ Preview Server URLs require a Netlify login to preview.
 - [Deploy notifications](/deploy/deploy-notifications)
 - [Post processing](/build/post-processing/overview/)
 - [Compiled build and deploy resources - start here!](https://answers.netlify.com/t/support-guide-compiled-build-and-deploy-resources-start-here/50679)
+

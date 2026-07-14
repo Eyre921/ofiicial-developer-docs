@@ -977,11 +977,7 @@ For detailed configuration options including stdio servers, OAuth authentication
 
 ## System prompt
 
-Deep Agents come with a built-in system prompt. A deep agent's value comes from the orchestration layer the SDK provides on top of the model—planning, virtual-filesystem tools, and subagents—and the model needs to know those exist and when to reach for them. The built-in prompt teaches the agent how to use that scaffolding so you don't have to re-derive it for every project; tweak it through a [profile](/oss/javascript/deepagents/profiles#harness-profiles) or your own `system_prompt=` rather than copying it verbatim.
-
-When middleware add special tools, like the filesystem tools, it appends them to the system prompt.
-
-Each deep agent should also include a custom system prompt specific to its specific use case:
+Deep Agents ship with a built-in base system prompt that teaches the agent how to use the harness scaffolding (planning, filesystem tools, subagents). Pass `system_prompt=` to prepend your own instructions before that base prompt:
 
 <CodeGroup>
   ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
@@ -1083,170 +1079,15 @@ Each deep agent should also include a custom system prompt specific to its speci
   ```
 </CodeGroup>
 
-### Prompt assembly
-
-Deep Agents builds the system prompt from up to four named parts so that caller-supplied instructions, the SDK's built-in agent guidance, and any model-specific [profile](/oss/javascript/deepagents/profiles) overrides can coexist with predictable precedence. Without this layering, a profile suffix tuned for Claude (for example) could overwrite or be overwritten by your `system_prompt=` argument depending on call order; the named slots make the ordering explicit and stable.
-
-In practice, most callers only encounter two slots: `USER` (your `system_prompt=`) and `BASE` (the SDK default). Selecting a model with a built-in profile—Anthropic or OpenAI today—adds a `SUFFIX`. The full four-part assembly is mainly relevant when you author a custom `HarnessProfile` or debug why a profile's text appears where it does.
-
-The four named parts (each may be absent):
-
-| Name     | Source                                                                                        | Notes                                                     |
-| -------- | --------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| `USER`   | `system_prompt=` argument to `create_deep_agent`                                              | `str` or `SystemMessage`; omitted when unset.             |
-| `BASE`   | The SDK default (`BASE_AGENT_PROMPT`)                                                         | Always present unless replaced by a profile's `CUSTOM`.   |
-| `CUSTOM` | [`HarnessProfile.base_system_prompt`](/oss/javascript/deepagents/profiles#harness-profiles)   | Replaces `BASE` outright when a matching profile sets it. |
-| `SUFFIX` | [`HarnessProfile.system_prompt_suffix`](/oss/javascript/deepagents/profiles#harness-profiles) | Appended last when a matching profile sets it.            |
-
-The order is always **`USER` -> (`BASE` or `CUSTOM`) -> `SUFFIX`**, joined by blank lines (`\n\n`). Two invariants follow:
-
-1. **`USER` is always at the front.** The caller's text precedes any SDK or profile content, so persona/instructions take precedence regardless of which model is selected.
-2. **`SUFFIX` is always at the end.** Profile suffixes sit closest to the conversation history, where model-tuning guidance lands most reliably.
-
-Assembled shapes (✓ = field is set, - = field is unset):
-
-| `system_prompt=` | profile `base_system_prompt` (`CUSTOM`) | profile `system_prompt_suffix` (`SUFFIX`) | Final assembled system prompt |
-| ---------------- | :-------------------------------------: | :---------------------------------------: | ----------------------------- |
-| `None`           |                    -                    |                     -                     | `BASE`                        |
-| `None`           |                    -                    |                     ✓                     | `BASE` + `SUFFIX`             |
-| `None`           |                    ✓                    |                     -                     | `CUSTOM`                      |
-| `None`           |                    ✓                    |                     ✓                     | `CUSTOM` + `SUFFIX`           |
-| `str`            |                    -                    |                     -                     | `USER` + `BASE`               |
-| `str`            |                    -                    |                     ✓                     | `USER` + `BASE` + `SUFFIX`    |
-| `str`            |                    ✓                    |                     -                     | `USER` + `CUSTOM`             |
-| `str`            |                    ✓                    |                     ✓                     | `USER` + `CUSTOM` + `SUFFIX`  |
-
-Worked example—built-in profiles (Anthropic, OpenAI) ship only a `system_prompt_suffix`, so a typical call lands in the `str` + `-` + `✓` row:
-
-<CodeGroup>
-  ```python Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-  agent = create_deep_agent(
-      model="google_genai:gemini-3.5-flash",
-      system_prompt="You are a customer-support agent for ACME Corp.",
-  )
-  # Final = USER + BASE + SUFFIX
-  #       = "You are a customer-support agent for ACME Corp."
-  #         + "\n\n"
-  #         + BASE_AGENT_PROMPT
-  #         + "\n\n"
-  #         + <Claude-specific guidance>
-  ```
-
-  ```python OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-  agent = create_deep_agent(
-      model="openai:gpt-5.5",
-      system_prompt="You are a customer-support agent for ACME Corp.",
-  )
-  # Final = USER + BASE + SUFFIX
-  #       = "You are a customer-support agent for ACME Corp."
-  #         + "\n\n"
-  #         + BASE_AGENT_PROMPT
-  #         + "\n\n"
-  #         + <Claude-specific guidance>
-  ```
-
-  ```python Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-  agent = create_deep_agent(
-      model="anthropic:claude-sonnet-4-6",
-      system_prompt="You are a customer-support agent for ACME Corp.",
-  )
-  # Final = USER + BASE + SUFFIX
-  #       = "You are a customer-support agent for ACME Corp."
-  #         + "\n\n"
-  #         + BASE_AGENT_PROMPT
-  #         + "\n\n"
-  #         + <Claude-specific guidance>
-  ```
-
-  ```python OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-  agent = create_deep_agent(
-      model="openrouter:z-ai/glm-5.2",
-      system_prompt="You are a customer-support agent for ACME Corp.",
-  )
-  # Final = USER + BASE + SUFFIX
-  #       = "You are a customer-support agent for ACME Corp."
-  #         + "\n\n"
-  #         + BASE_AGENT_PROMPT
-  #         + "\n\n"
-  #         + <Claude-specific guidance>
-  ```
-
-  ```python Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-  agent = create_deep_agent(
-      model="fireworks:accounts/fireworks/models/glm-5p2",
-      system_prompt="You are a customer-support agent for ACME Corp.",
-  )
-  # Final = USER + BASE + SUFFIX
-  #       = "You are a customer-support agent for ACME Corp."
-  #         + "\n\n"
-  #         + BASE_AGENT_PROMPT
-  #         + "\n\n"
-  #         + <Claude-specific guidance>
-  ```
-
-  ```python Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-  agent = create_deep_agent(
-      model="baseten:zai-org/GLM-5.2",
-      system_prompt="You are a customer-support agent for ACME Corp.",
-  )
-  # Final = USER + BASE + SUFFIX
-  #       = "You are a customer-support agent for ACME Corp."
-  #         + "\n\n"
-  #         + BASE_AGENT_PROMPT
-  #         + "\n\n"
-  #         + <Claude-specific guidance>
-  ```
-
-  ```python Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-  from deepagents import create_deep_agent
-
-  agent = create_deep_agent(
-      model="ollama:north-mini-code-1.0",
-      system_prompt="You are a customer-support agent for ACME Corp.",
-  )
-  # Final = USER + BASE + SUFFIX
-  #       = "You are a customer-support agent for ACME Corp."
-  #         + "\n\n"
-  #         + BASE_AGENT_PROMPT
-  #         + "\n\n"
-  #         + <Claude-specific guidance>
-  ```
-</CodeGroup>
-
-<Note>
-  Passing a `SystemMessage` (rather than a string) triggers a different concatenation path: the right-hand assembly (`BASE`-or-`CUSTOM` plus any `SUFFIX`) is appended as an additional text content block onto the message's existing `content_blocks`. The same logical ordering applies (caller blocks first), and any `cache_control` markers on the caller's blocks are preserved—useful for placing explicit Anthropic prompt-cache breakpoints.
-</Note>
+When middleware adds special tools, like the filesystem tools, it appends its own guidance to the system prompt at runtime.
 
 <AccordionGroup>
   <Accordion title="Subagent prompts">
-    The [prompt assembly](#prompt-assembly) overlay rules also apply to declarative [subagents](/oss/javascript/deepagents/subagents): each subagent re-runs profile resolution against **its own model**, then applies the resolved profile's `base_system_prompt` / `system_prompt_suffix` to its authored `system_prompt`. The subagent's `system_prompt` plays the `BASE` role; `CUSTOM` and `SUFFIX` come from the profile that matches the subagent's model (which may differ from the main agent's profile).
-
-    | `spec["system_prompt"]` | profile `base_system_prompt` (`CUSTOM`) | profile `system_prompt_suffix` (`SUFFIX`) | Final subagent system prompt |
-    | ----------------------- | :-------------------------------------: | :---------------------------------------: | ---------------------------- |
-    | authored                |                    -                    |                     -                     | authored                     |
-    | authored                |                    -                    |                     ✓                     | authored + `SUFFIX`          |
-    | authored                |                    ✓                    |                     -                     | `CUSTOM`                     |
-    | authored                |                    ✓                    |                     ✓                     | `CUSTOM` + `SUFFIX`          |
-
-    There is no `USER` segment for subagents. The spec's authored `system_prompt` is the closest analog and stays in the `BASE` slot. A profile that ships only a `system_prompt_suffix` (the common case for built-in Anthropic / OpenAI profiles) just appends to whatever the subagent author wrote. A profile that sets `base_system_prompt` will *replace* the authored prompt outright.
+    Declarative [subagents](/oss/javascript/deepagents/subagents) resolve profile overlays against their own model, then apply the resolved profile's `base_system_prompt` / `system_prompt_suffix` to the subagent's authored `system_prompt`. A profile that ships only a `system_prompt_suffix` (the common case for built-in Anthropic / OpenAI profiles) appends to the authored prompt. A profile that sets `base_system_prompt` replaces it outright.
   </Accordion>
 
   <Accordion title="General-purpose subagent prompt">
-    The auto-added [general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent) follows the [prompt assembly](#prompt-assembly) overlay rules with one extra layer: the GP base prompt is resolved as **`general_purpose_subagent.system_prompt` (if set) -> `HarnessProfile.base_system_prompt` (if set) -> SDK general-purpose default**. The profile suffix layers on top either way.
-
-    The two override fields can both carry a base-prompt replacement, but they are not interchangeable. `general_purpose_subagent.system_prompt` is general-purpose-specific configuration; `base_system_prompt` is a global override that primarily targets the main agent. When both are set, the **general-purpose-specific intent wins for the general-purpose subagent** so a user tuning both fields never sees their GP override silently dropped:
+    The auto-added [general-purpose subagent](/oss/javascript/deepagents/subagents#the-general-purpose-subagent) resolves its base prompt as **`general_purpose_subagent.system_prompt` (if set) -> `HarnessProfile.base_system_prompt` (if set) -> SDK general-purpose default**, with the profile suffix layered on top. When both override fields are set, the general-purpose-specific one wins so a caller tuning both fields never sees their GP override silently dropped:
 
     ```python theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
     from deepagents import (
@@ -1271,8 +1112,6 @@ Worked example—built-in profiles (Anthropic, OpenAI) ship only a `system_promp
     | ----------- | ------------------------------------------------------- |
     | Main agent  | `"You are ACME's support orchestrator." + SUFFIX`       |
     | GP subagent | `"You are a research subagent. Cite sources." + SUFFIX` |
-
-    If `general_purpose_subagent.system_prompt` is unset, the GP subagent falls back to `base_system_prompt` (when set) and finally to the SDK general-purpose default.
   </Accordion>
 </AccordionGroup>
 

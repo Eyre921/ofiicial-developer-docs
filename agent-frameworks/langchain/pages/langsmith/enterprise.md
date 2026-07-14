@@ -4,15 +4,15 @@ source: https://docs.langchain.com/langsmith/enterprise
 path: langsmith/enterprise
 ---
 
-Deployment options, access control, data privacy, cost controls, and security compliance for Enterprise users.
+Hosting options, access control, data privacy, cost controls, and security compliance for Enterprise users.
 
-This page is a reference hub for enterprise teams and includes information on features that are important for your organization, like [deployment options](#deployment-options), [access control](#access-control), [data privacy](#data-privacy-and-pii), and [cost controls](#cost-controls-and-usage).
+This page is a reference hub for enterprise teams and includes information on features that are important for your organization, like [hosting options](#hosting-options), [access control](#access-control), [data privacy](#data-privacy-and-pii), and [cost controls](#cost-controls-and-usage).
 
 <Callout>
-  For questions about enterprise [pricing](/langsmith/pricing-plans) or to get started, [contact our sales team](https://www.langchain.com/contact-sales).
+  For questions about Enterprise [pricing](/langsmith/pricing-plans) or to get started, [contact our sales team](https://www.langchain.com/contact-sales).
 </Callout>
 
-## Deployment options
+## Hosting options
 
 Choose how to host LangSmith to match your infrastructure and data residency requirements.
 
@@ -26,7 +26,7 @@ Choose how to host LangSmith to match your infrastructure and data residency req
   </Card>
 
   <Card title="Self-hosted" icon="server-2" href="/langsmith/self-hosted">
-    Deploy LangSmith entirely within your own infrastructure using Kubernetes.
+    Host LangSmith entirely within your own infrastructure using Kubernetes.
   </Card>
 </CardGroup>
 

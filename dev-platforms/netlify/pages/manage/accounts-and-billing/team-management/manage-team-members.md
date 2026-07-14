@@ -39,7 +39,7 @@ Depending on your team [plan](https://www.netlify.com/pricing/?category=develope
 
 ### Note - Team members are free on the Credit Pro plan
 
-On the Credit Pro plan, team member seats are unlimited and included in your $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
+On the Credit Pro plan, team member seats are unlimited and included starting in the base $20/month plan at no additional cost. [Learn more about Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/), or see the [April 2026 pricing update](https://www.netlify.com/changelog/2026-04-14-pricing-updates-april-2026/).
 
 ## Invite Reviewers
 

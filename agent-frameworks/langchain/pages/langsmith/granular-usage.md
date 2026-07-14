@@ -7,9 +7,9 @@ path: langsmith/granular-usage
 Retrieve detailed trace and LangSmith Deployment usage data broken down by workspace, project, user, or API key.
 
 <Note>
-  **Trace usage:** For LangSmith Cloud, granular billable trace data collection started on January 5, 2026. Data is not available for traces ingested before this date.
+  **Trace usage:** For LangSmith [Cloud](/langsmith/cloud), granular billable trace data collection started on January 5, 2026. Data is not available for traces ingested before this date.
 
-  For self-hosted instances, trace data collection begins when the feature is enabled via the following environment variables, or after [upgrading to a version with it enabled by default](/langsmith/self-hosted-changelog#langsmith-0-13-12).
+  For [Self-hosted](/langsmith/self-hosted) instances, trace data collection begins when the feature is enabled via the following environment variables, or after [upgrading to a version with it enabled by default](/langsmith/self-hosted-changelog#langsmith-0-13-12).
 
   ```env theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   DEFAULT_ORG_FEATURE_ENABLE_GRANULAR_USAGE_REPORTING=true
@@ -28,10 +28,10 @@ Both kinds share the same query parameters (time range, workspace filter, groupi
 
 These APIs enable you to:
 
-* Track usage across different teams or workspaces
-* Identify which users or API keys are consuming the most traces or running the most agents
-* Analyze usage patterns over time
-* Export usage data for internal reporting
+* Track usage across different teams or [workspaces](/langsmith/administration-overview).
+* Identify which users or [API keys](/langsmith/create-account-api-key#api-keys) are consuming the most traces or running the most agents.
+* Analyze usage patterns over time.
+* Export usage data for internal reporting.
 
 ## Prerequisites
 

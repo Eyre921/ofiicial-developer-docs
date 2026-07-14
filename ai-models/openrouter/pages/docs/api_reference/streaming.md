@@ -1,7 +1,7 @@
 ---
 title: "Streaming"
-source: https://openrouter.ai/docs/api/reference/streaming.md
-path: docs/api/reference/streaming
+source: https://openrouter.ai/docs/api_reference/streaming.md
+path: docs/api_reference/streaming
 ---
 
 > ## Documentation Index

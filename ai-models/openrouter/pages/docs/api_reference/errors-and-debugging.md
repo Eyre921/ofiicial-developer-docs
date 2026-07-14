@@ -1,7 +1,7 @@
 ---
 title: "Errors and Debugging"
-source: https://openrouter.ai/docs/api/reference/errors-and-debugging.md
-path: docs/api/reference/errors-and-debugging
+source: https://openrouter.ai/docs/api_reference/errors-and-debugging.md
+path: docs/api_reference/errors-and-debugging
 ---
 
 > ## Documentation Index

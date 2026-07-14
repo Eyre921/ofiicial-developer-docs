@@ -10,7 +10,7 @@ You can access a variety of tools in LangSmith Fleet. Use tool integrations and 
 
 ## Add a tool
 
-You can add a tool from the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools) to make it available to all agents in the workspace or from the agent editor to add it to a specific agent.
+You can add a tool from the [Fleet > Integrations tab](https://smith.langchain.com/agents/tools) to make it available to all agents in the workspace or from the agent sidebar to add it to a specific agent.
 
 <Tabs>
   <Tab title="From Fleet > Integrations">
@@ -21,13 +21,12 @@ You can add a tool from the [Fleet > Integrations tab](https://smith.langchain.c
     3. Follow the prompts to connect the tool to your agent.
   </Tab>
 
-  <Tab title="From the agent editor">
+  <Tab title="From the agent sidebar">
     To add a tool to a specific agent:
 
     1. In [Fleet](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-tools), select the agent to which you want to add the tool.
-    2. In the graph view, navigate to the **Toolbox** section and click **+ Add**.
+    2. In the sidebar, expand the **Connections** drawer and click **Add connection**.
     3. Select the tool you want to add.
-    4. Click **Save Changes**.
   </Tab>
 </Tabs>
 
@@ -41,9 +40,8 @@ To remove a tool from your agent:
   </Step>
 
   <Step title="Remove the tool">
-    1. In the graph view, navigate to the **Toolbox** section and find the tool you want to remove.
+    1. In the sidebar, expand the **Connections** drawer and find the tool you want to remove.
     2. Click the <Icon icon="trash" /> **Remove** icon for the tool.
-    3. Click **Save Changes**.
   </Step>
 </Steps>
 

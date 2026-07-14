@@ -388,6 +388,40 @@ vectorStore.similaritySearch("query", 2, { source: "tweets" });
     });
     ```
   </Accordion>
+
+  <Accordion title="Voyage AI">
+    Install dependencies:
+
+    <CodeGroup>
+      ```bash npm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      npm install @langchain/mongodb @langchain/core
+      ```
+
+      ```bash yarn theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      yarn add @langchain/mongodb @langchain/core
+      ```
+
+      ```bash pnpm theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+      pnpm add @langchain/mongodb @langchain/core
+      ```
+    </CodeGroup>
+
+    Add environment variables:
+
+    ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    VOYAGE_API_KEY=your-api-key
+    ```
+
+    Instantiate the model:
+
+    ```typescript theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+    import { VoyageEmbeddings } from "@langchain/mongodb";
+
+    const embeddings = new VoyageEmbeddings({
+      model: "voyage-4"
+    });
+    ```
+  </Accordion>
 </AccordionGroup>
 
 **Select vector store:**

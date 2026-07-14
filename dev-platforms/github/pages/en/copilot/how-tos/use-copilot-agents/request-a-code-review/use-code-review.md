@@ -14,6 +14,8 @@ GitHub Copilot can review your code and provide feedback. Where possible, Copilo
 
 For a full introduction to GitHub Copilot code review, see [About GitHub Copilot code review](/en/copilot/concepts/agents/code-review).
 
+Copilot code review uses GitHub Actions to run agentic capabilities. For more information, see [Agentic capabilities for Copilot code review](/en/copilot/concepts/agents/code-review#usage-of-github-actions-runners-for-agentic-capabilities-in-code-review).
+
 <div class="ghd-tool webui">
 
 Copilot code review is also available for organization members without a Copilot license, when enabled by an enterprise administrator or organization owner. See [Copilot code review for organization members without a Copilot license](/en/copilot/concepts/agents/code-review#copilot-code-review-for-organization-members-without-a-copilot-license).
@@ -69,11 +71,13 @@ To automatically request re-reviews from Copilot on every push, enable automatic
 
 ## Customizing Copilot's reviews with custom instructions
 
-You can customize Copilot code review by adding custom instructions to your repository.
+You can customize Copilot code review by adding custom instructions to your repository. Repository custom instructions can either be repository wide or path specific.
 
-Repository custom instructions can either be repository wide or path specific. You specify repository-wide custom instructions in a `.github/copilot-instructions.md` file in your repository. You can use this file to store information that you want Copilot to consider when reviewing code anywhere in the repository.
+Use `.github/copilot-instructions.md` for repository-wide review guidance that should apply across the entire codebase. This is a good place to describe organization-wide expectations, such as coding standards, review criteria, or general practices that Copilot should consider in every review.
 
-You can also write instructions that Copilot will only use when reviewing code in files that match a specified path. You write these instructions in one or more `.github/instructions/**/*.instructions.md` files.
+Use an `AGENTS.md` file in the root of your repository to provide additional repository context that helps Copilot better understand how your project works. For example, you can explain which patterns are intentional, which parts of the codebase need closer scrutiny, and what your team considers good architecture, testing, and implementation practices. This helps make reviews more relevant and aligned with the way your team builds software.
+
+Use `.github/instructions/**/*.instructions.md` files for path-specific instructions that only apply when reviewing matching files. This is useful when different parts of the repository follow different conventions, require specialized checks, or need review guidance tailored to a particular language, framework, or subsystem.
 
 For more information, see [Adding repository custom instructions for GitHub Copilot](/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions).
 
@@ -168,11 +172,13 @@ To provide feedback, hover over the comment and click the thumbs up or thumbs do
 
 ## Customizing Copilot's reviews with custom instructions
 
-You can customize Copilot code review by adding custom instructions to your repository.
+You can customize Copilot code review by adding custom instructions to your repository. Repository custom instructions can either be repository wide or path specific.
 
-Repository custom instructions can either be repository wide or path specific. You specify repository-wide custom instructions in a `.github/copilot-instructions.md` file in your repository. You can use this file to store information that you want Copilot to consider when reviewing code anywhere in the repository.
+Use `.github/copilot-instructions.md` for repository-wide review guidance that should apply across the entire codebase. This is a good place to describe organization-wide expectations, such as coding standards, review criteria, or general practices that Copilot should consider in every review.
 
-You can also write instructions that Copilot will only use when reviewing code in files that match a specified path. You write these instructions in one or more `.github/instructions/**/*.instructions.md` files.
+Use an `AGENTS.md` file in the root of your repository to provide additional repository context that helps Copilot better understand how your project works. For example, you can explain which patterns are intentional, which parts of the codebase need closer scrutiny, and what your team considers good architecture, testing, and implementation practices. This helps make reviews more relevant and aligned with the way your team builds software.
+
+Use `.github/instructions/**/*.instructions.md` files for path-specific instructions that only apply when reviewing matching files. This is useful when different parts of the repository follow different conventions, require specialized checks, or need review guidance tailored to a particular language, framework, or subsystem.
 
 For more information, see [Adding repository custom instructions for GitHub Copilot](/en/copilot/how-tos/copilot-on-github/customize-copilot/add-custom-instructions/add-repository-instructions).
 

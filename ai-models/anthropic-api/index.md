@@ -1,6 +1,6 @@
 # ai-models/anthropic-api 文档索引
 
-> 共 306 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 307 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -229,9 +229,9 @@
 - `build-with-claude/batch-processing` — [Batch processing](pages/build-with-claude/batch-processing.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/batch-processing)
 - `build-with-claude/cache-diagnostics` — [Cache diagnostics](pages/build-with-claude/cache-diagnostics.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/cache-diagnostics)
 - `build-with-claude/citations` — [Citations](pages/build-with-claude/citations.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/citations)
-- `build-with-claude/claude-in-amazon-bedrock` — [Claude in Amazon Bedrock](pages/build-with-claude/claude-in-amazon-bedrock.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock)
+- `build-with-claude/claude-in-amazon-bedrock` — [Claude in Amazon Bedrock (Opus 4.7 and later)](pages/build-with-claude/claude-in-amazon-bedrock.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/claude-in-amazon-bedrock)
 - `build-with-claude/claude-in-microsoft-foundry` — [Claude in Microsoft Foundry](pages/build-with-claude/claude-in-microsoft-foundry.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/claude-in-microsoft-foundry)
-- `build-with-claude/claude-on-amazon-bedrock-legacy` — [Claude on Amazon Bedrock (legacy)](pages/build-with-claude/claude-on-amazon-bedrock-legacy.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy)
+- `build-with-claude/claude-on-amazon-bedrock-legacy` — [Claude on Amazon Bedrock (Opus 4.6 and earlier)](pages/build-with-claude/claude-on-amazon-bedrock-legacy.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy)
 - `build-with-claude/claude-on-vertex-ai` — [Claude on Google Cloud](pages/build-with-claude/claude-on-vertex-ai.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/claude-on-vertex-ai)
 - `build-with-claude/claude-platform-on-aws` — [Claude Platform on AWS](pages/build-with-claude/claude-platform-on-aws.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/claude-platform-on-aws)
 - `build-with-claude/compaction` — [See also](pages/build-with-claude/compaction.md) · [原文](https://platform.claude.com/docs/en/build-with-claude/compaction)
@@ -286,6 +286,7 @@
 - `manage-claude/rate-limits-api` — [Rate Limits API](pages/manage-claude/rate-limits-api.md) · [原文](https://platform.claude.com/docs/en/manage-claude/rate-limits-api)
 - `manage-claude/spend-limits-api` — [See also](pages/manage-claude/spend-limits-api.md) · [原文](https://platform.claude.com/docs/en/manage-claude/spend-limits-api)
 - `manage-claude/usage-cost-api` — [Usage and Cost API](pages/manage-claude/usage-cost-api.md) · [原文](https://platform.claude.com/docs/en/manage-claude/usage-cost-api)
+- `manage-claude/user-management` — [User management](pages/manage-claude/user-management.md) · [原文](https://platform.claude.com/docs/en/manage-claude/user-management)
 - `manage-claude/wif-admin-api` — [Manage WIF with the Admin API](pages/manage-claude/wif-admin-api.md) · [原文](https://platform.claude.com/docs/en/manage-claude/wif-admin-api)
 - `manage-claude/wif-providers/aws` — [Use WIF with AWS](pages/manage-claude/wif-providers/aws.md) · [原文](https://platform.claude.com/docs/en/manage-claude/wif-providers/aws)
 - `manage-claude/wif-providers/azure` — [Use WIF with Microsoft Entra ID](pages/manage-claude/wif-providers/azure.md) · [原文](https://platform.claude.com/docs/en/manage-claude/wif-providers/azure)
@@ -310,7 +311,7 @@
 - `managed-agents/github` — [Accessing GitHub](pages/managed-agents/github.md) · [原文](https://platform.claude.com/docs/en/managed-agents/github)
 - `managed-agents/mcp-connector` — [MCP connector](pages/managed-agents/mcp-connector.md) · [原文](https://platform.claude.com/docs/en/managed-agents/mcp-connector)
 - `managed-agents/memory` — [Using agent memory](pages/managed-agents/memory.md) · [原文](https://platform.claude.com/docs/en/managed-agents/memory)
-- `managed-agents/multi-agent` — [Multi-agent sessions](pages/managed-agents/multi-agent.md) · [原文](https://platform.claude.com/docs/en/managed-agents/multi-agent)
+- `managed-agents/multiagent-orchestration` — [Multiagent orchestration](pages/managed-agents/multiagent-orchestration.md) · [原文](https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration)
 - `managed-agents/onboarding` — [Prototype in Console](pages/managed-agents/onboarding.md) · [原文](https://platform.claude.com/docs/en/managed-agents/onboarding)
 - `managed-agents/overview` — [Managed Agents](pages/managed-agents/overview.md) · [原文](https://platform.claude.com/docs/en/managed-agents/overview)
 - `managed-agents/permission-policies` — [Permission policies](pages/managed-agents/permission-policies.md) · [原文](https://platform.claude.com/docs/en/managed-agents/permission-policies)

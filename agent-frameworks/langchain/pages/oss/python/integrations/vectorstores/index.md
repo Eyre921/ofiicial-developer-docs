@@ -307,10 +307,12 @@ vector_store.similarity_search(
     if not os.environ.get("VOYAGE_API_KEY"):
       os.environ["VOYAGE_API_KEY"] = getpass.getpass("Enter API key for Voyage AI: ")
 
-    from langchain-voyageai import VoyageAIEmbeddings
+    from langchain_voyageai import VoyageAIEmbeddings
 
     embeddings = VoyageAIEmbeddings(model="voyage-3")
     ```
+
+    For more information, see the [Voyage AI documentation](https://www.mongodb.com/docs/voyageai/models/text-embeddings/).
   </Accordion>
 
   <Accordion title="IBM watsonx">
@@ -650,6 +652,8 @@ vector_store.similarity_search(
         relevance_score_fn="cosine",
     )
     ```
+
+    For more information, see the [MongoDB LangChain integration docs](https://www.mongodb.com/docs/atlas/ai-integrations/langchain/#vector-store).
   </Accordion>
 
   <Accordion title="PGVector">

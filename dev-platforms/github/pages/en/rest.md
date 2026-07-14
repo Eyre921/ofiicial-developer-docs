@@ -12,7 +12,7 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Quickstart for GitHub REST API](/en/rest/quickstart)
 
-  <p>Learn how to get started with the GitHub REST API.</p>
+  Learn how to get started with the GitHub REST API.
 
 * [Getting started with the REST API](/en/rest/using-the-rest-api/getting-started-with-the-rest-api)
 
@@ -32,15 +32,15 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 
 * [Keeping your API credentials secure](/en/rest/authentication/keeping-your-api-credentials-secure)
 
-  <p>Follow these best practices to keep your API credentials and tokens secure.</p>
+  Follow these best practices to keep your API credentials and tokens secure.
 
 * [Scripting with the REST API and JavaScript](/en/rest/guides/scripting-with-the-rest-api-and-javascript)
 
-  <p>Write a script using the Octokit.js SDK to interact with the REST API.</p>
+  Write a script using the Octokit.js SDK to interact with the REST API.
 
 * [Troubleshooting the REST API](/en/rest/using-the-rest-api/troubleshooting-the-rest-api)
 
-  <p>Learn how to diagnose and resolve common problems for the REST API.</p>
+  Learn how to diagnose and resolve common problems for the REST API.
 
 * [Using pagination in the REST API](/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
 
@@ -851,6 +851,10 @@ Create integrations, retrieve data, and automate your workflows with the GitHub 
 * [REST API endpoints for search](/en/rest/search/search)
 
   Use the REST API to search for specific items on GitHub.
+
+* [REST API endpoints for secret scanning custom patterns](/en/rest/secret-scanning/custom-patterns)
+
+  Use the REST API to manage custom patterns for secret scanning.
 
 * [REST API endpoints for push protection bypass requests](/en/delegated-bypass)
 

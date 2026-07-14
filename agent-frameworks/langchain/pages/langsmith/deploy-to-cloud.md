@@ -41,8 +41,8 @@ Choose the deployment method that fits your workflow—the LangSmith UI connects
        4. Specify the full path to the [LangGraph API config file](/langsmith/cli#configuration-file) including the file name. For example, if the file `langgraph.json` is in the root of the repository, specify `langgraph.json`.
        5. Use the checkbox to **Automatically update deployment on push to branch**. If checked, the deployment will automatically be updated when changes are pushed to the specified **Git Branch**. You can enable or disable this setting on the [Deployment Settings](#deployment-settings) in [the UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-to-cloud).
           For **Deployment Type**:
-          * Development deployments are meant for non-production use cases and are provisioned with minimal resources.
-          * Production deployments can serve up to 500 requests/second and are provisioned with highly available storage with automatic backups.
+          * Serverless deployments are cost-optimized for background and latency-tolerant agents, as well as development, testing, and preview branches. They scale to zero after a period of inactivity and wake on the next request. Compute is billed while resources are provisioned, including during idle time before scale-down.
+          * Dedicated deployments are always-on and provisioned with highly available storage and automatic backups for production workloads.
        6. Determine if the deployment should be **Shareable through Studio**.
           1. If unchecked, the deployment will only be accessible with a valid LangSmith API key for the [workspace](/langsmith/administration-overview#workspaces).
           2. If checked, the deployment will be accessible through [Studio](/langsmith/studio) to any LangSmith user. A direct URL to Studio for the deployment will be provided to share with other LangSmith users.
@@ -70,10 +70,13 @@ Choose the deployment method that fits your workflow—the LangSmith UI connects
        ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
        langgraph deploy
        ```
-       This creates a `dev` deployment named after your project directory. Use `--name` to specify a different name or `--deployment-type prod` for a production deployment:
+       This creates a Serverless deployment named after your project directory. Use `--name` to specify a different name or `--deployment-type dedicated` for a Dedicated deployment:
        ```shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
-       langgraph deploy --name my-agent --deployment-type prod
+       langgraph deploy --name my-agent --deployment-type dedicated
        ```
+       <Note>
+         Organizations still on previous pricing until October 1, 2026 use `--deployment-type prod` or `--deployment-type dev` instead. For details, see [`langgraph deploy`](/langsmith/cli#deploy) and [Manage billing](/langsmith/billing#langsmith-deployment-billing).
+       </Note>
        After the command completes, the deployment is queued for provisioning. Environment variables can be managed through the [LangSmith UI](https://smith.langchain.com?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-deploy-to-cloud) after the deployment is created, or configured in the [`env` field of your `langgraph.json`](/langsmith/cli#configuration-file).
   </Tab>
 </Tabs>

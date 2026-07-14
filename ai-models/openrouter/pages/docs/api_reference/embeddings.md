@@ -1,7 +1,7 @@
 ---
 title: "Embeddings"
-source: https://openrouter.ai/docs/api/reference/embeddings.md
-path: docs/api/reference/embeddings
+source: https://openrouter.ai/docs/api_reference/embeddings.md
+path: docs/api_reference/embeddings
 ---
 
 > ## Documentation Index
@@ -684,6 +684,6 @@ Common errors you may encounter:
 
 * [Models Page](https://openrouter.ai/models?fmt=cards\&output_modalities=embeddings) - Browse all available embedding models
 * [Provider Routing](/guides/routing/provider-selection) - Control which providers serve your requests
-* [Authentication](/api/reference/authentication) - Learn about API key authentication
-* [Errors](/api/reference/errors-and-debugging) - Detailed error codes and handling
+* [Authentication](/api_reference/authentication) - Learn about API key authentication
+* [Errors](/api_reference/errors-and-debugging) - Detailed error codes and handling
 

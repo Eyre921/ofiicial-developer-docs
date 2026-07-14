@@ -2665,6 +2665,764 @@ Output:
 - [`format`](https://www.prisma.io/docs/cli/format): Format and validate your Prisma schema file with consistent structure
 - [`generate`](https://www.prisma.io/docs/cli/generate): Generate artifacts like Prisma Client based on your Prisma schema
 
+# Concepts (/docs/console/concepts)
+
+Location: Console > Concepts
+
+The Console workflows are based on five main concepts:
+
+* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
+* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
+* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
+* [**Branches**](#branch): For projects that use [Prisma Compute](/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
+* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
+
+Here is a visual illustration of how these concepts relate to each other:
+
+<img alt="How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other" src="/img/platform/pdp-concepts.png" width="1480" height="1127" />
+
+User account [#user-account]
+
+A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
+
+If you need to delete your user account, go [here](/console/more/support#deleting-your-pdp-account).
+
+Workspace [#workspace]
+
+You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
+
+In each workspace, you can:
+
+* view and manage all projects (and their resources) in that workspace.
+* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
+* view the usage of your enabled Prisma products across all projects in that workspace.
+* invite other users to collaborate in the workspace.
+* access [Query Insights](/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
+
+Project [#project]
+
+In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](/orm/prisma-schema/overview) per project.
+
+In each project, you can:
+
+* view and manage all resources (like databases) in that project.
+
+The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
+
+Branch [#branch]
+
+For projects that use [Prisma Compute](/compute), a branch groups the resources for one line of work:
+
+```text
+workspace → project → branch → { apps, databases }
+```
+
+A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
+
+* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
+* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
+* [Environment variables](/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
+
+Learn more in [Branching](/compute/branching).
+
+Resources [#resources]
+
+Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
+
+* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
+* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](/compute).
+* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
+
+In each project, you can:
+
+* Create and manage multiple resources (databases or environments)
+* Generate connection strings specific to each resource
+* Configure product-specific settings:
+  * **For Prisma Postgres databases**:
+    * View database metrics and performance
+    * Configure connection settings
+    * Manage database users and permissions
+  * **For Accelerate resources**:
+    * Set your database connection string
+    * Configure the region for connection pooling
+    * Adjust connection pool size and performance settings
+    * Set query duration and response size limits
+    * Enable static IP for secure connections
+
+The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
+
+## Related pages
+
+- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
+
+# Getting Started (/docs/console/getting-started)
+
+Location: Console > Getting Started
+
+This guide walks you through setting up your Console account and creating your first project.
+
+Prerequisites [#prerequisites]
+
+* A GitHub account (for authentication)
+* A Prisma project (optional, but recommended)
+
+Step 1: Create your account [#step-1-create-your-account]
+
+1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
+2. Click **Sign in with GitHub**
+3. Authorize Prisma Console to access your GitHub account
+
+You now have a Console account with a default workspace.
+
+Step 2: Set up a workspace [#step-2-set-up-a-workspace]
+
+When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
+
+Create a workspace (optional) [#create-a-workspace-optional]
+
+To create an additional workspace:
+
+1. Click the workspace dropdown in the top navigation
+2. Click **Create Workspace**
+3. Enter a name for your workspace
+4. Click **Create**
+
+Step 3: Create a project [#step-3-create-a-project]
+
+Projects organize your databases and environments within a workspace.
+
+Using the Console web interface [#using-the-console-web-interface]
+
+1. Navigate to your workspace
+2. Click **Create Project**
+3. Enter a project name
+4. Click **Create**
+
+Step 4: Create a resource [#step-4-create-a-resource]
+
+Resources are the actual databases or environments within your project.
+
+For Prisma Postgres [#for-prisma-postgres]
+
+1. Navigate to your project
+2. Click **Create Database**
+3. Enter a database name
+4. Select a region
+5. Click **Create**
+
+For Accelerate [#for-accelerate]
+
+1. Navigate to your project
+2. Click **Create Environment**
+3. Enter an environment name (e.g., "production")
+4. Click **Create**
+
+Step 5: Generate a connection string [#step-5-generate-a-connection-string]
+
+Connection strings authenticate your application's requests to Prisma products.
+
+Using the Console web interface [#using-the-console-web-interface-1]
+
+1. Navigate to your resource (database or environment)
+2. Click **Connection Strings** tab
+3. Click **Create Connection String**
+4. Enter a name for the connection string
+5. Copy the connection string and store it securely
+6. Click **Done**
+
+Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
+
+Add the connection string to your `.env` file:
+
+```bash
+# For Accelerate
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY"
+```
+
+Next steps [#next-steps]
+
+* Learn more about [Console concepts](/console/concepts)
+* Explore [database metrics](/console/features/metrics)
+* Check out the [CLI reference](/cli/console)
+
+## Related pages
+
+- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
+
+# Console (/docs/console)
+
+Location: Console
+
+Overview [#overview]
+
+The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
+
+* [Query Insights](/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
+* [Prisma Postgres](/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
+* [Prisma Compute](/compute): Runs your app next to your Prisma Postgres database, currently in [Public Beta](/console/more/feature-maturity#public-beta). Inspect projects, branches, apps, and deployments in the Console; deploy with the [`@prisma/cli`](/compute/getting-started) beta package.
+
+Getting started [#getting-started]
+
+To start using Prisma products, you'll need to:
+
+1. Create a Console account
+2. Set up a workspace for your team
+3. Create a project for your application
+4. Generate connection strings for your resources
+
+Learn more in the [Getting Started](/console/getting-started) guide.
+
+Core concepts [#core-concepts]
+
+The Console is organized around four main concepts:
+
+* **[User account](/console/concepts#user-account)**: Your personal account to manage workspaces and projects
+* **[Workspaces](/console/concepts#workspace)**: Team-level container where billing is managed
+* **[Projects](/console/concepts#project)**: Application-level container within a workspace
+* **[Resources](/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
+
+Read more about [Console concepts](/console/concepts).
+
+Console CLI [#console-cli]
+
+In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
+
+Learn more about the [Console CLI commands](/cli/console).
+
+## Related pages
+
+- [`Build faster with Prisma + AI`](https://www.prisma.io/docs/ai): Build faster with Prisma and AI coding tools like Cursor, Codex, and ChatGPT
+- [`Choose a setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to start using Prisma ORM, Prisma Postgres, or Prisma Compute in a new or existing TypeScript project.
+- [`CLI Overview`](https://www.prisma.io/docs/cli): The Prisma CLI is the command-line interface for Prisma ORM. Use it to initialize projects, generate Prisma Client, manage databases, run migrations, and more
+- [`Guides`](https://www.prisma.io/docs/guides): A collection of guides for various tasks and workflows
+- [`Introduction to Prisma Next`](https://www.prisma.io/docs/next): Prisma Next is the next major version of Prisma ORM, available in Early Access.
+
+# Guides (/docs/guides)
+
+Location: Guides
+
+Welcome to the Guides section! Here you'll find practical, step-by-step guides to help you accomplish specific tasks with Prisma products, including Prisma ORM, Prisma Accelerate, Prisma Postgres, and more.
+
+Quick start [#quick-start]
+
+Scaffold a new project with Prisma ORM and Prisma Postgres already set up:
+
+  
+
+#### bun
+
+```bash
+bun create prisma@latest
+```
+
+#### pnpm
+
+```bash
+pnpm create prisma@latest
+```
+
+#### yarn
+
+```bash
+yarn create prisma@latest
+```
+
+#### npm
+
+```bash
+npm create prisma@latest
+```
+
+Pick your framework and options from the prompts. To skip prompts use `--yes`, to set a framework upfront use `--template` (`next`, `hono`, `svelte`, `astro`, `nuxt`, `tanstack-start`, `nestjs`, `elysia`, `turborepo`).
+
+Getting started [#getting-started]
+
+* [Next.js](/guides/frameworks/nextjs) - Learn how to use Prisma ORM in a Next.js app and deploy it to Vercel
+* [Hono](/guides/frameworks/hono) - Learn how to use Prisma ORM in a Hono app
+* [SvelteKit](/guides/frameworks/sveltekit) - Learn how to use Prisma ORM in a SvelteKit app
+
+## Related pages
+
+- [`Build faster with Prisma + AI`](https://www.prisma.io/docs/ai): Build faster with Prisma and AI coding tools like Cursor, Codex, and ChatGPT
+- [`Choose a setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to start using Prisma ORM, Prisma Postgres, or Prisma Compute in a new or existing TypeScript project.
+- [`CLI Overview`](https://www.prisma.io/docs/cli): The Prisma CLI is the command-line interface for Prisma ORM. Use it to initialize projects, generate Prisma Client, manage databases, run migrations, and more
+- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
+- [`Introduction to Prisma Next`](https://www.prisma.io/docs/next): Prisma Next is the next major version of Prisma ORM, available in Early Access.
+
+# Writing guides (/docs/guides/making-guides)
+
+Location: Guides > Writing guides
+
+Introduction [#introduction]
+
+This guide shows you how to write guides for Prisma ORM documentation. It covers the required structure, formatting, and style conventions to ensure consistency across all guides. You'll learn about frontmatter requirements, section organization, and writing style.
+
+Prerequisites [#prerequisites]
+
+Before writing a guide, make sure you have:
+
+* A clear understanding of the topic you're writing about
+* Access to the Prisma documentation repository
+* Familiarity with Markdown and MDX
+* Knowledge of the target audience for your guide
+
+Guide structure [#guide-structure]
+
+Required frontmatter [#required-frontmatter]
+
+Every guide must include the following frontmatter at the top of the file:
+
+```mdx
+---
+title: '[Descriptive title]'
+description: '[One-sentence summary of what the guide covers]'
+---
+```
+
+* `title`: A clear, descriptive title (e.g., "Next.js", "Multiple databases", "GitHub Actions")
+* `description`: A one-sentence summary that describes what you'll learn or accomplish
+* `image`: A unique header image for social media sharing (coordinate with the design team)
+
+All frontmatter fields should use sentence case.
+
+Required sections [#required-sections]
+
+1. **Introduction** (H2: `##`)
+   * Brief overview of what the guide covers
+   * What the reader will learn/accomplish
+   * Link to any example repositories or related resources on GitHub
+
+2. **Prerequisites** (H2: `##`)
+   * Required software/tools with version numbers (e.g., "Node.js 20+")
+   * Required accounts (e.g., "A Prisma Data Platform account")
+   * Keep it concise - only list what's truly necessary
+
+3. **Main content sections** (H2: `##`)
+   * Use numbered steps (e.g., "## 1. Set up your project", "## 2. Install and Configure Prisma")
+   * Use numbered subsections (e.g., "### 2.1. Install dependencies", "### 2.2. Define your Prisma Schema")
+   * Each step should build on previous steps
+   * Include all commands and code snippets needed
+
+4. **Next steps** (H2: `##`)
+   * What to do after completing the guide
+   * Related guides or documentation (with links)
+   * Additional resources
+
+Writing style and voice [#writing-style-and-voice]
+
+General principles [#general-principles]
+
+* Write in a clear, conversational tone
+* Use active voice and present tense
+* Address the reader directly using "you" (e.g., "You'll learn how to...")
+* Avoid jargon and explain technical terms when necessary
+* Be concise but thorough
+* Guide readers step-by-step through the process
+
+Code examples [#code-examples]
+
+* Include complete, runnable code examples
+* Use syntax highlighting with language specification
+* Include file paths in code block metadata using `title=`
+* Use ` ```bash title=".env" ` for `.env` files so inline `# [!code ++]`, `# [!code --]`, and `# [!code highlight]` annotations render correctly
+* Reserve ` ```text ` for other plain-text files that do not need Fumadocs code annotations
+* Use comments sparingly - only when needed to explain complex logic
+* Use ` ```npm ` for package manager commands (auto-converts to pnpm/yarn/bun)
+* Use ` ```bash ` for shell commands and `.env` files
+* Use ` ```text ` for other plain text files
+* Use ` ```typescript `, ` ```prisma `, ` ```json ` for respective languages
+
+Example with file path:
+
+```typescript title="src/lib/prisma.ts"
+import { PrismaClient } from "../generated/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+const prisma = new PrismaClient({
+  adapter,
+});
+
+export default prisma;
+```
+
+Example showing changes:
+
+```typescript title="prisma.config.ts"
+import "dotenv/config"; // [!code ++]
+import { defineConfig, env } from "prisma/config";
+
+export default defineConfig({
+  schema: "prisma/schema.prisma",
+  migrations: {
+    path: "prisma/migrations",
+  },
+  datasource: {
+    url: env("DATABASE_URL"),
+  },
+});
+```
+
+Formatting conventions [#formatting-conventions]
+
+* Use backticks for inline code:
+  * File names: `` `schema.prisma` ``
+  * Directory names: `` `prisma/` ``
+  * Code elements: `` `PrismaClient` ``
+  * Package manager commands: Use ` ```npm ` blocks (see [Package manager commands](#package-manager-commands))
+* Use admonitions for important information:
+  ```markdown
+  :::info
+  Context or background information
+  :::
+
+  :::note
+  Important details to remember
+  :::
+
+  :::warning
+  Critical information or gotchas
+  :::
+
+  :::tip
+  Helpful suggestions or best practices
+  :::
+  ```
+* Use proper heading hierarchy (never skip levels)
+* Use numbered sections (e.g., "## 1. Setup", "### 1.1. Install")
+* Link to other documentation pages using relative paths (e.g., `[Database drivers](/orm/core-concepts/supported-databases/database-drivers)`)
+
+Guide categories [#guide-categories]
+
+| Category            | Directory                      | Description                         | Examples                                                                                                                                                                              |
+| ------------------- | ------------------------------ | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Framework**       | `guides/frameworks/`           | Integrate Prisma with frameworks    | [Next.js](/guides/frameworks/nextjs), [NestJS](/guides/frameworks/nestjs), [SvelteKit](/guides/frameworks/sveltekit)                                                                  |
+| **Deployment**      | `guides/deployment/`           | Deploy apps and set up monorepos    | [Turborepo](/guides/deployment/turborepo), [Cloudflare Workers](/guides/deployment/cloudflare-workers)                                                                                |
+| **Integration**     | `guides/integrations/`         | Use Prisma with platforms and tools | [GitHub Actions](/guides/integrations/github-actions), [Supabase](/guides/integrations/supabase-accelerate)                                                                           |
+| **Database**        | `guides/database/`             | Database patterns and migrations    | [Multiple databases](/guides/database/multiple-databases), [Data migration](/guides/database/data-migration)                                                                          |
+| **Authentication**  | `guides/authentication/`       | Authentication patterns with Prisma | [Auth.js + Next.js](/guides/authentication/authjs/nextjs), [Better Auth + Next.js](/guides/authentication/better-auth/nextjs), [Clerk + Next.js](/guides/authentication/clerk/nextjs) |
+| **Prisma Postgres** | `guides/postgres/`             | Prisma Postgres features            | [Vercel](/guides/postgres/vercel), [Netlify](/guides/postgres/netlify), [Viewing data](/guides/postgres/viewing-data)                                                                 |
+| **Migration**       | `guides/switch-to-prisma-orm/` | Switch from other ORMs              | [From Mongoose](/guides/switch-to-prisma-orm/from-mongoose), [From Drizzle](/guides/switch-to-prisma-orm/from-drizzle)                                                                |
+
+Common patterns [#common-patterns]
+
+Package manager commands [#package-manager-commands]
+
+Use ` ```npm ` code blocks for package manager commands. These automatically convert to other package managers (pnpm, yarn, bun) in the UI:
+
+  
+
+#### bun
+
+```bash
+bun add prisma --dev
+```
+
+#### pnpm
+
+```bash
+pnpm add prisma --save-dev
+```
+
+#### yarn
+
+```bash
+yarn add prisma --dev
+```
+
+#### npm
+
+```bash
+npm install prisma --save-dev
+```
+
+Environment variables [#environment-variables]
+
+Show `.env` file examples using ` ```bash title=".env" ` blocks:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
+```
+
+If you need to show changes in an `.env` file, use bash comments for the Fumadocs annotations:
+
+```bash title=".env"
+DATABASE_URL="postgresql://user:password@localhost:5432/mydb" # [!code --]
+
+DATABASE_URL="postgresql://user:password@db.example.com:5432/mydb" # [!code ++]
+```
+
+Database provider compatibility [#database-provider-compatibility]
+
+Include an info admonition when commands or code are PostgreSQL-specific:
+
+```markdown
+:::info
+
+If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](/orm/core-concepts/supported-databases/database-drivers).
+
+:::
+```
+
+Prisma Client instantiation [#prisma-client-instantiation]
+
+Show the standard pattern for creating a Prisma Client with database adapters:
+
+```typescript title="lib/prisma.ts"
+import { PrismaClient } from "../generated/prisma";
+import { PrismaPg } from "@prisma/adapter-pg";
+
+const adapter = new PrismaPg({
+  connectionString: process.env.DATABASE_URL!,
+});
+
+const prisma = new PrismaClient({
+  adapter,
+});
+
+export default prisma;
+```
+
+Include a warning about connection pooling:
+
+```markdown
+:::warning
+We recommend using a connection pooler (like [Prisma Accelerate](https://www.prisma.io/accelerate)) to manage database connections efficiently.
+:::
+```
+
+Best practices [#best-practices]
+
+1. **Keep it focused**
+   * Each guide should cover one main topic
+   * Break complex topics into multiple guides
+   * Link to related guides instead of duplicating content
+
+2. **Show don't tell**
+   * Include practical, real-world examples
+   * Provide complete, working code samples
+   * Explain why certain approaches are recommended
+
+3. **Consider the context**
+   * Explain prerequisites clearly
+   * Don't assume prior knowledge
+   * Link to foundational concepts within or outside of our docs when needed
+
+4. **Maintain consistency**
+   * Follow the established guide structure
+   * Use consistent terminology
+   * Match the style of existing guides
+
+5. **Think about maintenance**
+   * Use version numbers where appropriate
+   * Avoid time-sensitive references
+   * Consider future updates when structuring content
+
+Guide template [#guide-template]
+
+Use this template as a starting point for new guides. The template includes common sections and patterns used across Prisma guides.
+
+Basic template structure [#basic-template-structure]
+
+Copy this template for a new guide:
+
+````markdown
+---
+title: '[Your guide title]'
+description: '[One-sentence summary of what you'll learn]'
+image: '/img/guides/[guide-name]-cover.png'
+---
+
+## Introduction
+
+[Brief overview of what this guide covers and what you'll accomplish. Include a link to an example repository if available.]
+
+## Prerequisites
+
+- [Node.js 20+](https://nodejs.org)
+- [Any other prerequisites]
+
+## 1. Set up your project
+
+[Instructions for creating or setting up the project]
+
+```npm
+# Example command
+npx create-next-app@latest my-app
+cd my-app
+```
+
+## 2. Install and Configure Prisma
+
+### 2.1. Install dependencies
+
+To get started with Prisma, you'll need to install a few dependencies:
+
+```npm
+npm install prisma tsx @types/pg --save-dev
+```
+
+```npm
+npm install @prisma/client @prisma/adapter-pg dotenv pg
+```
+
+:::info
+
+If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](/orm/core-concepts/supported-databases/database-drivers).
+
+:::
+
+Once installed, initialize Prisma in your project:
+
+```npm
+npx prisma init --output ../generated/prisma
+```
+
+:::info
+
+`prisma init` creates the Prisma scaffolding and a local `DATABASE_URL`. In the next step, you will create a Prisma Postgres database and replace that value with a direct `postgres://...` connection string.
+
+:::
+
+This will create:
+
+- A `prisma` directory with a `schema.prisma` file
+- A Prisma Postgres database
+- A `.env` file containing the `DATABASE_URL`
+- A `prisma.config.ts` file for configuration
+
+Create a Prisma Postgres database and replace the generated `DATABASE_URL` in your `.env` file with the `postgres://...` connection string from the CLI output:
+
+```npm
+npx create-db
+```
+
+### 2.2. Define your Prisma Schema
+
+In the `prisma/schema.prisma` file, add your models:
+
+```prisma title="prisma/schema.prisma"
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User { // [!code ++]
+  id    Int     @id @default(autoincrement()) // [!code ++]
+  email String  @unique // [!code ++]
+  name  String? // [!code ++]
+  posts Post[] // [!code ++]
+} // [!code ++]
+
+model Post { // [!code ++]
+  id        Int     @id @default(autoincrement()) // [!code ++]
+  title     String // [!code ++]
+  content   String? // [!code ++]
+  published Boolean @default(false) // [!code ++]
+  authorId  Int // [!code ++]
+  author    User    @relation(fields: [authorId], references: [id]) // [!code ++]
+} // [!code ++]
+```
+
+### 2.3. Run migrations and generate Prisma Client
+
+Create the database tables:
+
+```npm
+npx prisma migrate dev --name init
+```
+
+Then generate Prisma Client:
+
+```npm
+npx prisma generate
+```
+
+## 3. [Integration-specific steps]
+
+[Add framework or platform-specific integration steps here]
+
+## Next steps
+
+Now that you've completed this guide, you can:
+
+- [Suggestion 1]
+- [Suggestion 2]
+- [Related guide 1](/path/to/guide)
+- [Related guide 2](/path/to/guide)
+
+For more information:
+
+- [Prisma documentation](/orm)
+- [Related documentation]
+````
+
+Adding guides to navigation [#adding-guides-to-navigation]
+
+Guides are organized by category in subdirectories. To add a guide to the navigation, you need to update the appropriate `meta.json` file.
+
+Main categories [#main-categories]
+
+The main guide categories are listed in `meta.json`:
+
+```json title="apps/docs/content/docs/guides/meta.json"
+{
+  "title": "Guides",
+  "root": true,
+  "icon": "NotebookTabs",
+  "pages": [
+    "index",
+    "frameworks",
+    "deployment",
+    "authentication",
+    "integrations",
+    "postgres",
+    "database",
+    "switch-to-prisma-orm",
+    "upgrade-prisma-orm"
+  ]
+}
+```
+
+Adding a guide to a category [#adding-a-guide-to-a-category]
+
+To add a guide to a category (e.g., `frameworks`), edit the category's `meta.json` file:
+
+```json title="apps/docs/content/docs/guides/frameworks/meta.json"
+{
+  "title": "Frameworks",
+  "defaultOpen": true,
+  "pages": [
+    "nextjs",
+    "astro",
+    "nuxt",
+    "your-new-guide" // [!code ++]
+  ]
+}
+```
+
+The page name should match your `.mdx` filename without the extension. For example, if your file is `your-new-guide.mdx`, add `"your-new-guide"` to the `pages` array.
+
+Next steps [#next-steps]
+
+After reading this guide, you can:
+
+* Start writing your own guide using the provided template
+* Review existing guides in the category you're contributing to
+* Coordinate with the design team for a unique header image
+* Submit your guide for review
+
+## Related pages
+
+- [`Overview`](https://www.prisma.io/docs/guides/next): Practical, step-by-step guides for building with Prisma Next, each one run end to end before it ships.
+
 # Branching (/docs/compute/branching)
 
 Location: Compute > Branching
@@ -6004,764 +6762,6 @@ What to read next [#what-to-read-next]
 - [`Configuration`](https://www.prisma.io/docs/compute/configuration): Declare your deployable app in a typed prisma.compute.ts file so deploys are reproducible and monorepos work, without re-passing flags every time.
 - [`Deployments`](https://www.prisma.io/docs/compute/deployments): Build, deploy, inspect, promote, and roll back app deployments on Prisma Compute.
 
-# Concepts (/docs/console/concepts)
-
-Location: Console > Concepts
-
-The Console workflows are based on five main concepts:
-
-* [**User account**](#user-account): In order to use Prisma products, you need to have a Console user account. A *user* will typically create one user account to manage all their workspaces, projects and resources. The *user* can also be invited to join other workspaces to collaborate on the projects in that workspace.
-* [**Workspaces**](#workspace): A user account can belong to multiple workspaces. A workspace typically represents a *team* of individuals working together on one or more projects. **Billing is on a workspace level**, i.e. the invoice for a workspace at the end of the month captures all costs associated with the projects in that workspace.
-* [**Projects**](#project): A project belongs to a workspace. It typically represents the *application* or *service* a team is working on.
-* [**Branches**](#branch): For projects that use [Prisma Compute](/compute), resources are grouped into branches. A branch is an isolated infrastructure boundary for one line of work, usually mapping to a Git branch.
-* [**Resources**](#resources): Resources represent the actual services or databases within a project. For example, in Prisma Postgres, each project can contain multiple databases. For Prisma Compute, each branch contains apps and their deployments. For Accelerate, resources might correspond to different environments (like `Development`, `Staging`, or `Production`). **Connection strings are provisioned at the resource level**, and products are configured per resource as well (e.g., the database connection string used for Accelerate).
-
-Here is a visual illustration of how these concepts relate to each other:
-
-<img alt="How the concepts of the Console (user account, workspaces, projects, and resources) relate to each other" src="/img/platform/pdp-concepts.png" width="1480" height="1127" />
-
-User account [#user-account]
-
-A user account is the prerequisite for any interactions with Prisma products. You can use it to manage your workspaces (and their projects). A user account can be invited to collaborate on workspaces created by other users as well.
-
-If you need to delete your user account, go [here](/console/more/support#deleting-your-pdp-account).
-
-Workspace [#workspace]
-
-You can create several workspaces. A workspace is an isolated space to host projects. A workspace can have multiple user accounts associated with it so that multiple users can collaborate on the projects in the workspace.
-
-In each workspace, you can:
-
-* view and manage all projects (and their resources) in that workspace.
-* manage billing, i.e. select a [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs), configure payment methods, or view the invoice history.
-* view the usage of your enabled Prisma products across all projects in that workspace.
-* invite other users to collaborate in the workspace.
-* access [Query Insights](/query-insights) to measure query performance and receive AI-powered recommendations (available with Prisma Postgres).
-
-Project [#project]
-
-In each workspace, you can create several projects. A project typically represents an application (a product or service). You typically have one [Prisma schema](/orm/prisma-schema/overview) per project.
-
-In each project, you can:
-
-* view and manage all resources (like databases) in that project.
-
-The number of projects you can create in a workspace depends on the [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs) configured in that workspace.
-
-Branch [#branch]
-
-For projects that use [Prisma Compute](/compute), a branch groups the resources for one line of work:
-
-```text
-workspace → project → branch → { apps, databases }
-```
-
-A branch usually maps to a Git branch, but it's a real resource that owns the apps and databases for that work:
-
-* The **first branch** in a project is the production branch, usually `main`. It's protected and durable.
-* **Every other branch** is a preview branch by default: disposable infrastructure for testing changes before they merge.
-* [Environment variables](/compute/environment-variables) are scoped to production, to preview, or to a single preview branch.
-
-Learn more in [Branching](/compute/branching).
-
-Resources [#resources]
-
-Resources represent the actual services or databases within a project. The type of resources available depends on the Prisma products you're using:
-
-* **For Prisma Postgres**: Each project can contain multiple databases. These databases are the primary resources you'll manage.
-* **For Prisma Compute**: Each branch contains apps. An app is an HTTP service, and each built version of an app is a deployment. See [Prisma Compute](/compute).
-* **For Accelerate**: Resources typically correspond to different deployment stages (like `Development`, `Staging`, or `Production`).
-
-In each project, you can:
-
-* Create and manage multiple resources (databases or environments)
-* Generate connection strings specific to each resource
-* Configure product-specific settings:
-  * **For Prisma Postgres databases**:
-    * View database metrics and performance
-    * Configure connection settings
-    * Manage database users and permissions
-  * **For Accelerate resources**:
-    * Set your database connection string
-    * Configure the region for connection pooling
-    * Adjust connection pool size and performance settings
-    * Set query duration and response size limits
-    * Enable static IP for secure connections
-
-The number of resources you can create in a project depends on your [subscription plan](https://www.prisma.io/pricing?utm_source=docs\&utm_medium=platform-docs).
-
-## Related pages
-
-- [`Getting Started`](https://www.prisma.io/docs/console/getting-started): Quick start guide for setting up and using the Prisma Console
-
-# Getting Started (/docs/console/getting-started)
-
-Location: Console > Getting Started
-
-This guide walks you through setting up your Console account and creating your first project.
-
-Prerequisites [#prerequisites]
-
-* A GitHub account (for authentication)
-* A Prisma project (optional, but recommended)
-
-Step 1: Create your account [#step-1-create-your-account]
-
-1. Go to [console.prisma.io/login](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console)
-2. Click **Sign in with GitHub**
-3. Authorize Prisma Console to access your GitHub account
-
-You now have a Console account with a default workspace.
-
-Step 2: Set up a workspace [#step-2-set-up-a-workspace]
-
-When you create an account, a default workspace is automatically created for you. You can create additional workspaces for different teams or organizations.
-
-Create a workspace (optional) [#create-a-workspace-optional]
-
-To create an additional workspace:
-
-1. Click the workspace dropdown in the top navigation
-2. Click **Create Workspace**
-3. Enter a name for your workspace
-4. Click **Create**
-
-Step 3: Create a project [#step-3-create-a-project]
-
-Projects organize your databases and environments within a workspace.
-
-Using the Console web interface [#using-the-console-web-interface]
-
-1. Navigate to your workspace
-2. Click **Create Project**
-3. Enter a project name
-4. Click **Create**
-
-Step 4: Create a resource [#step-4-create-a-resource]
-
-Resources are the actual databases or environments within your project.
-
-For Prisma Postgres [#for-prisma-postgres]
-
-1. Navigate to your project
-2. Click **Create Database**
-3. Enter a database name
-4. Select a region
-5. Click **Create**
-
-For Accelerate [#for-accelerate]
-
-1. Navigate to your project
-2. Click **Create Environment**
-3. Enter an environment name (e.g., "production")
-4. Click **Create**
-
-Step 5: Generate a connection string [#step-5-generate-a-connection-string]
-
-Connection strings authenticate your application's requests to Prisma products.
-
-Using the Console web interface [#using-the-console-web-interface-1]
-
-1. Navigate to your resource (database or environment)
-2. Click **Connection Strings** tab
-3. Click **Create Connection String**
-4. Enter a name for the connection string
-5. Copy the connection string and store it securely
-6. Click **Done**
-
-Step 6: Use the connection string in your application [#step-6-use-the-connection-string-in-your-application]
-
-Add the connection string to your `.env` file:
-
-```bash
-# For Accelerate
-DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=YOUR_API_KEY"
-```
-
-Next steps [#next-steps]
-
-* Learn more about [Console concepts](/console/concepts)
-* Explore [database metrics](/console/features/metrics)
-* Check out the [CLI reference](/cli/console)
-
-## Related pages
-
-- [`Concepts`](https://www.prisma.io/docs/console/concepts): Understand the core concepts of the Prisma Console: user accounts, workspaces, projects, and resources
-
-# Console (/docs/console)
-
-Location: Console
-
-Overview [#overview]
-
-The [Console](https://console.prisma.io/login?utm_source=docs\&utm_medium=content\&utm_content=console) enables you to manage and configure your projects that use Prisma products, and helps you integrate them into your application:
-
-* [Query Insights](/query-insights): Inspect slow queries, connect Prisma calls to SQL, and apply focused fixes.
-* [Prisma Postgres](/postgres): A managed PostgreSQL database that is optimized for Prisma ORM.
-* [Prisma Compute](/compute): Runs your app next to your Prisma Postgres database, currently in [Public Beta](/console/more/feature-maturity#public-beta). Inspect projects, branches, apps, and deployments in the Console; deploy with the [`@prisma/cli`](/compute/getting-started) beta package.
-
-Getting started [#getting-started]
-
-To start using Prisma products, you'll need to:
-
-1. Create a Console account
-2. Set up a workspace for your team
-3. Create a project for your application
-4. Generate connection strings for your resources
-
-Learn more in the [Getting Started](/console/getting-started) guide.
-
-Core concepts [#core-concepts]
-
-The Console is organized around four main concepts:
-
-* **[User account](/console/concepts#user-account)**: Your personal account to manage workspaces and projects
-* **[Workspaces](/console/concepts#workspace)**: Team-level container where billing is managed
-* **[Projects](/console/concepts#project)**: Application-level container within a workspace
-* **[Resources](/console/concepts#resources)**: Actual services or databases within a project (databases for Prisma Postgres)
-
-Read more about [Console concepts](/console/concepts).
-
-Console CLI [#console-cli]
-
-In addition to the web interface, the Prisma CLI provides another way to interact with your Console account and manage Prisma products. This can be useful for programmatic access, such as integrating into CI workflows.
-
-Learn more about the [Console CLI commands](/cli/console).
-
-## Related pages
-
-- [`Build faster with Prisma + AI`](https://www.prisma.io/docs/ai): Build faster with Prisma and AI coding tools like Cursor, Codex, and ChatGPT
-- [`Choose a setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to start using Prisma ORM, Prisma Postgres, or Prisma Compute in a new or existing TypeScript project.
-- [`CLI Overview`](https://www.prisma.io/docs/cli): The Prisma CLI is the command-line interface for Prisma ORM. Use it to initialize projects, generate Prisma Client, manage databases, run migrations, and more
-- [`Guides`](https://www.prisma.io/docs/guides): A collection of guides for various tasks and workflows
-- [`Introduction to Prisma Next`](https://www.prisma.io/docs/next): Prisma Next is the next major version of Prisma ORM, available in Early Access.
-
-# Guides (/docs/guides)
-
-Location: Guides
-
-Welcome to the Guides section! Here you'll find practical, step-by-step guides to help you accomplish specific tasks with Prisma products, including Prisma ORM, Prisma Accelerate, Prisma Postgres, and more.
-
-Quick start [#quick-start]
-
-Scaffold a new project with Prisma ORM and Prisma Postgres already set up:
-
-  
-
-#### bun
-
-```bash
-bun create prisma@latest
-```
-
-#### pnpm
-
-```bash
-pnpm create prisma@latest
-```
-
-#### yarn
-
-```bash
-yarn create prisma@latest
-```
-
-#### npm
-
-```bash
-npm create prisma@latest
-```
-
-Pick your framework and options from the prompts. To skip prompts use `--yes`, to set a framework upfront use `--template` (`next`, `hono`, `svelte`, `astro`, `nuxt`, `tanstack-start`, `nestjs`, `elysia`, `turborepo`).
-
-Getting started [#getting-started]
-
-* [Next.js](/guides/frameworks/nextjs) - Learn how to use Prisma ORM in a Next.js app and deploy it to Vercel
-* [Hono](/guides/frameworks/hono) - Learn how to use Prisma ORM in a Hono app
-* [SvelteKit](/guides/frameworks/sveltekit) - Learn how to use Prisma ORM in a SvelteKit app
-
-## Related pages
-
-- [`Build faster with Prisma + AI`](https://www.prisma.io/docs/ai): Build faster with Prisma and AI coding tools like Cursor, Codex, and ChatGPT
-- [`Choose a setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to start using Prisma ORM, Prisma Postgres, or Prisma Compute in a new or existing TypeScript project.
-- [`CLI Overview`](https://www.prisma.io/docs/cli): The Prisma CLI is the command-line interface for Prisma ORM. Use it to initialize projects, generate Prisma Client, manage databases, run migrations, and more
-- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
-- [`Introduction to Prisma Next`](https://www.prisma.io/docs/next): Prisma Next is the next major version of Prisma ORM, available in Early Access.
-
-# Writing guides (/docs/guides/making-guides)
-
-Location: Guides > Writing guides
-
-Introduction [#introduction]
-
-This guide shows you how to write guides for Prisma ORM documentation. It covers the required structure, formatting, and style conventions to ensure consistency across all guides. You'll learn about frontmatter requirements, section organization, and writing style.
-
-Prerequisites [#prerequisites]
-
-Before writing a guide, make sure you have:
-
-* A clear understanding of the topic you're writing about
-* Access to the Prisma documentation repository
-* Familiarity with Markdown and MDX
-* Knowledge of the target audience for your guide
-
-Guide structure [#guide-structure]
-
-Required frontmatter [#required-frontmatter]
-
-Every guide must include the following frontmatter at the top of the file:
-
-```mdx
----
-title: '[Descriptive title]'
-description: '[One-sentence summary of what the guide covers]'
----
-```
-
-* `title`: A clear, descriptive title (e.g., "Next.js", "Multiple databases", "GitHub Actions")
-* `description`: A one-sentence summary that describes what you'll learn or accomplish
-* `image`: A unique header image for social media sharing (coordinate with the design team)
-
-All frontmatter fields should use sentence case.
-
-Required sections [#required-sections]
-
-1. **Introduction** (H2: `##`)
-   * Brief overview of what the guide covers
-   * What the reader will learn/accomplish
-   * Link to any example repositories or related resources on GitHub
-
-2. **Prerequisites** (H2: `##`)
-   * Required software/tools with version numbers (e.g., "Node.js 20+")
-   * Required accounts (e.g., "A Prisma Data Platform account")
-   * Keep it concise - only list what's truly necessary
-
-3. **Main content sections** (H2: `##`)
-   * Use numbered steps (e.g., "## 1. Set up your project", "## 2. Install and Configure Prisma")
-   * Use numbered subsections (e.g., "### 2.1. Install dependencies", "### 2.2. Define your Prisma Schema")
-   * Each step should build on previous steps
-   * Include all commands and code snippets needed
-
-4. **Next steps** (H2: `##`)
-   * What to do after completing the guide
-   * Related guides or documentation (with links)
-   * Additional resources
-
-Writing style and voice [#writing-style-and-voice]
-
-General principles [#general-principles]
-
-* Write in a clear, conversational tone
-* Use active voice and present tense
-* Address the reader directly using "you" (e.g., "You'll learn how to...")
-* Avoid jargon and explain technical terms when necessary
-* Be concise but thorough
-* Guide readers step-by-step through the process
-
-Code examples [#code-examples]
-
-* Include complete, runnable code examples
-* Use syntax highlighting with language specification
-* Include file paths in code block metadata using `title=`
-* Use ` ```bash title=".env" ` for `.env` files so inline `# [!code ++]`, `# [!code --]`, and `# [!code highlight]` annotations render correctly
-* Reserve ` ```text ` for other plain-text files that do not need Fumadocs code annotations
-* Use comments sparingly - only when needed to explain complex logic
-* Use ` ```npm ` for package manager commands (auto-converts to pnpm/yarn/bun)
-* Use ` ```bash ` for shell commands and `.env` files
-* Use ` ```text ` for other plain text files
-* Use ` ```typescript `, ` ```prisma `, ` ```json ` for respective languages
-
-Example with file path:
-
-```typescript title="src/lib/prisma.ts"
-import { PrismaClient } from "../generated/prisma";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-const prisma = new PrismaClient({
-  adapter,
-});
-
-export default prisma;
-```
-
-Example showing changes:
-
-```typescript title="prisma.config.ts"
-import "dotenv/config"; // [!code ++]
-import { defineConfig, env } from "prisma/config";
-
-export default defineConfig({
-  schema: "prisma/schema.prisma",
-  migrations: {
-    path: "prisma/migrations",
-  },
-  datasource: {
-    url: env("DATABASE_URL"),
-  },
-});
-```
-
-Formatting conventions [#formatting-conventions]
-
-* Use backticks for inline code:
-  * File names: `` `schema.prisma` ``
-  * Directory names: `` `prisma/` ``
-  * Code elements: `` `PrismaClient` ``
-  * Package manager commands: Use ` ```npm ` blocks (see [Package manager commands](#package-manager-commands))
-* Use admonitions for important information:
-  ```markdown
-  :::info
-  Context or background information
-  :::
-
-  :::note
-  Important details to remember
-  :::
-
-  :::warning
-  Critical information or gotchas
-  :::
-
-  :::tip
-  Helpful suggestions or best practices
-  :::
-  ```
-* Use proper heading hierarchy (never skip levels)
-* Use numbered sections (e.g., "## 1. Setup", "### 1.1. Install")
-* Link to other documentation pages using relative paths (e.g., `[Database drivers](/orm/core-concepts/supported-databases/database-drivers)`)
-
-Guide categories [#guide-categories]
-
-| Category            | Directory                      | Description                         | Examples                                                                                                                                                                              |
-| ------------------- | ------------------------------ | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Framework**       | `guides/frameworks/`           | Integrate Prisma with frameworks    | [Next.js](/guides/frameworks/nextjs), [NestJS](/guides/frameworks/nestjs), [SvelteKit](/guides/frameworks/sveltekit)                                                                  |
-| **Deployment**      | `guides/deployment/`           | Deploy apps and set up monorepos    | [Turborepo](/guides/deployment/turborepo), [Cloudflare Workers](/guides/deployment/cloudflare-workers)                                                                                |
-| **Integration**     | `guides/integrations/`         | Use Prisma with platforms and tools | [GitHub Actions](/guides/integrations/github-actions), [Supabase](/guides/integrations/supabase-accelerate)                                                                           |
-| **Database**        | `guides/database/`             | Database patterns and migrations    | [Multiple databases](/guides/database/multiple-databases), [Data migration](/guides/database/data-migration)                                                                          |
-| **Authentication**  | `guides/authentication/`       | Authentication patterns with Prisma | [Auth.js + Next.js](/guides/authentication/authjs/nextjs), [Better Auth + Next.js](/guides/authentication/better-auth/nextjs), [Clerk + Next.js](/guides/authentication/clerk/nextjs) |
-| **Prisma Postgres** | `guides/postgres/`             | Prisma Postgres features            | [Vercel](/guides/postgres/vercel), [Netlify](/guides/postgres/netlify), [Viewing data](/guides/postgres/viewing-data)                                                                 |
-| **Migration**       | `guides/switch-to-prisma-orm/` | Switch from other ORMs              | [From Mongoose](/guides/switch-to-prisma-orm/from-mongoose), [From Drizzle](/guides/switch-to-prisma-orm/from-drizzle)                                                                |
-
-Common patterns [#common-patterns]
-
-Package manager commands [#package-manager-commands]
-
-Use ` ```npm ` code blocks for package manager commands. These automatically convert to other package managers (pnpm, yarn, bun) in the UI:
-
-  
-
-#### bun
-
-```bash
-bun add prisma --dev
-```
-
-#### pnpm
-
-```bash
-pnpm add prisma --save-dev
-```
-
-#### yarn
-
-```bash
-yarn add prisma --dev
-```
-
-#### npm
-
-```bash
-npm install prisma --save-dev
-```
-
-Environment variables [#environment-variables]
-
-Show `.env` file examples using ` ```bash title=".env" ` blocks:
-
-```bash title=".env"
-DATABASE_URL="postgresql://user:password@localhost:5432/mydb"
-```
-
-If you need to show changes in an `.env` file, use bash comments for the Fumadocs annotations:
-
-```bash title=".env"
-DATABASE_URL="postgresql://user:password@localhost:5432/mydb" # [!code --]
-
-DATABASE_URL="postgresql://user:password@db.example.com:5432/mydb" # [!code ++]
-```
-
-Database provider compatibility [#database-provider-compatibility]
-
-Include an info admonition when commands or code are PostgreSQL-specific:
-
-```markdown
-:::info
-
-If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](/orm/core-concepts/supported-databases/database-drivers).
-
-:::
-```
-
-Prisma Client instantiation [#prisma-client-instantiation]
-
-Show the standard pattern for creating a Prisma Client with database adapters:
-
-```typescript title="lib/prisma.ts"
-import { PrismaClient } from "../generated/prisma";
-import { PrismaPg } from "@prisma/adapter-pg";
-
-const adapter = new PrismaPg({
-  connectionString: process.env.DATABASE_URL!,
-});
-
-const prisma = new PrismaClient({
-  adapter,
-});
-
-export default prisma;
-```
-
-Include a warning about connection pooling:
-
-```markdown
-:::warning
-We recommend using a connection pooler (like [Prisma Accelerate](https://www.prisma.io/accelerate)) to manage database connections efficiently.
-:::
-```
-
-Best practices [#best-practices]
-
-1. **Keep it focused**
-   * Each guide should cover one main topic
-   * Break complex topics into multiple guides
-   * Link to related guides instead of duplicating content
-
-2. **Show don't tell**
-   * Include practical, real-world examples
-   * Provide complete, working code samples
-   * Explain why certain approaches are recommended
-
-3. **Consider the context**
-   * Explain prerequisites clearly
-   * Don't assume prior knowledge
-   * Link to foundational concepts within or outside of our docs when needed
-
-4. **Maintain consistency**
-   * Follow the established guide structure
-   * Use consistent terminology
-   * Match the style of existing guides
-
-5. **Think about maintenance**
-   * Use version numbers where appropriate
-   * Avoid time-sensitive references
-   * Consider future updates when structuring content
-
-Guide template [#guide-template]
-
-Use this template as a starting point for new guides. The template includes common sections and patterns used across Prisma guides.
-
-Basic template structure [#basic-template-structure]
-
-Copy this template for a new guide:
-
-````markdown
----
-title: '[Your guide title]'
-description: '[One-sentence summary of what you'll learn]'
-image: '/img/guides/[guide-name]-cover.png'
----
-
-## Introduction
-
-[Brief overview of what this guide covers and what you'll accomplish. Include a link to an example repository if available.]
-
-## Prerequisites
-
-- [Node.js 20+](https://nodejs.org)
-- [Any other prerequisites]
-
-## 1. Set up your project
-
-[Instructions for creating or setting up the project]
-
-```npm
-# Example command
-npx create-next-app@latest my-app
-cd my-app
-```
-
-## 2. Install and Configure Prisma
-
-### 2.1. Install dependencies
-
-To get started with Prisma, you'll need to install a few dependencies:
-
-```npm
-npm install prisma tsx @types/pg --save-dev
-```
-
-```npm
-npm install @prisma/client @prisma/adapter-pg dotenv pg
-```
-
-:::info
-
-If you are using a different database provider (MySQL, SQL Server, SQLite), install the corresponding driver adapter package instead of `@prisma/adapter-pg`. For more information, see [Database drivers](/orm/core-concepts/supported-databases/database-drivers).
-
-:::
-
-Once installed, initialize Prisma in your project:
-
-```npm
-npx prisma init --output ../generated/prisma
-```
-
-:::info
-
-`prisma init` creates the Prisma scaffolding and a local `DATABASE_URL`. In the next step, you will create a Prisma Postgres database and replace that value with a direct `postgres://...` connection string.
-
-:::
-
-This will create:
-
-- A `prisma` directory with a `schema.prisma` file
-- A Prisma Postgres database
-- A `.env` file containing the `DATABASE_URL`
-- A `prisma.config.ts` file for configuration
-
-Create a Prisma Postgres database and replace the generated `DATABASE_URL` in your `.env` file with the `postgres://...` connection string from the CLI output:
-
-```npm
-npx create-db
-```
-
-### 2.2. Define your Prisma Schema
-
-In the `prisma/schema.prisma` file, add your models:
-
-```prisma title="prisma/schema.prisma"
-generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
-}
-
-datasource db {
-  provider = "postgresql"
-}
-
-model User { // [!code ++]
-  id    Int     @id @default(autoincrement()) // [!code ++]
-  email String  @unique // [!code ++]
-  name  String? // [!code ++]
-  posts Post[] // [!code ++]
-} // [!code ++]
-
-model Post { // [!code ++]
-  id        Int     @id @default(autoincrement()) // [!code ++]
-  title     String // [!code ++]
-  content   String? // [!code ++]
-  published Boolean @default(false) // [!code ++]
-  authorId  Int // [!code ++]
-  author    User    @relation(fields: [authorId], references: [id]) // [!code ++]
-} // [!code ++]
-```
-
-### 2.3. Run migrations and generate Prisma Client
-
-Create the database tables:
-
-```npm
-npx prisma migrate dev --name init
-```
-
-Then generate Prisma Client:
-
-```npm
-npx prisma generate
-```
-
-## 3. [Integration-specific steps]
-
-[Add framework or platform-specific integration steps here]
-
-## Next steps
-
-Now that you've completed this guide, you can:
-
-- [Suggestion 1]
-- [Suggestion 2]
-- [Related guide 1](/path/to/guide)
-- [Related guide 2](/path/to/guide)
-
-For more information:
-
-- [Prisma documentation](/orm)
-- [Related documentation]
-````
-
-Adding guides to navigation [#adding-guides-to-navigation]
-
-Guides are organized by category in subdirectories. To add a guide to the navigation, you need to update the appropriate `meta.json` file.
-
-Main categories [#main-categories]
-
-The main guide categories are listed in `meta.json`:
-
-```json title="apps/docs/content/docs/guides/meta.json"
-{
-  "title": "Guides",
-  "root": true,
-  "icon": "NotebookTabs",
-  "pages": [
-    "index",
-    "frameworks",
-    "deployment",
-    "authentication",
-    "integrations",
-    "postgres",
-    "database",
-    "switch-to-prisma-orm",
-    "upgrade-prisma-orm"
-  ]
-}
-```
-
-Adding a guide to a category [#adding-a-guide-to-a-category]
-
-To add a guide to a category (e.g., `frameworks`), edit the category's `meta.json` file:
-
-```json title="apps/docs/content/docs/guides/frameworks/meta.json"
-{
-  "title": "Frameworks",
-  "defaultOpen": true,
-  "pages": [
-    "nextjs",
-    "astro",
-    "nuxt",
-    "your-new-guide" // [!code ++]
-  ]
-}
-```
-
-The page name should match your `.mdx` filename without the extension. For example, if your file is `your-new-guide.mdx`, add `"your-new-guide"` to the `pages` array.
-
-Next steps [#next-steps]
-
-After reading this guide, you can:
-
-* Start writing your own guide using the provided template
-* Review existing guides in the category you're contributing to
-* Coordinate with the design team for a unique header image
-* Submit your guide for review
-
-## Related pages
-
-- [`Overview`](https://www.prisma.io/docs/guides/next): Practical, step-by-step guides for building with Prisma Next, each one run end to end before it ships.
-
 # Using API Clients (/docs/management-api/api-clients)
 
 Location: Management API > Using API Clients
@@ -9893,6 +9893,198 @@ Getting started [#getting-started]
 - [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
 - [`Guides`](https://www.prisma.io/docs/guides): A collection of guides for various tasks and workflows
 
+# Choose a setup path (/docs/next/getting-started)
+
+Location: Next > Choose a setup path
+
+Start with a quickstart if you want Prisma Next to create the app. Use the existing-project path if you already have an app and database.
+
+Start a new project [#start-a-new-project]
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@next
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@next
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@next
+```
+
+#### npm
+
+```bash
+npx create-prisma@next
+```
+
+- [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create the app, choose PostgreSQL, initialize the database, seed data, and run the first query.
+
+- [Quickstart with MongoDB](/next/quickstart/mongodb): Create the app, choose MongoDB, start or connect to MongoDB, seed data, and run the first query.
+
+Use Prisma Postgres [#use-prisma-postgres]
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@next
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@next
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@next
+```
+
+#### npm
+
+```bash
+npx create-prisma@next
+```
+
+- [Quickstart with Prisma Postgres](/prisma-postgres/quickstart/prisma-next): Create a Prisma Next app and let setup provision Prisma Postgres for the first run.
+
+- [From the CLI](/next/prisma-postgres/from-the-cli): Start from the command line when you want the Prisma Postgres path without browsing Console first.
+
+Add to an existing project [#add-to-an-existing-project]
+
+  
+
+#### bun
+
+```bash
+bunx prisma-next init
+```
+
+#### pnpm
+
+```bash
+pnpm dlx prisma-next init
+```
+
+#### yarn
+
+```bash
+yarn dlx prisma-next init
+```
+
+#### npm
+
+```bash
+npx prisma-next init
+```
+
+- [Add to PostgreSQL](/next/add-to-existing-project/postgresql): Add Prisma Next to an existing PostgreSQL app and infer a starter contract from the live schema.
+
+- [Add to MongoDB](/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB app and model the collections you want to query first.
+
+After setup [#after-setup]
+
+* Use the generated app scripts for the first run.
+* Open `prisma-next.md` or the installed Prisma Next skills when you want agent-ready guidance inside the project.
+* Change the starter contract when you are ready to model your own data.
+* Open the [Prisma Next overview](/orm/next) when you want the concepts behind the setup.
+
+# Introduction to Prisma Next (/docs/next)
+
+Location: Introduction to Prisma Next
+
+Prisma Next is a ground-up rebuild of Prisma ORM, covering the runtime, query APIs, migration flow, and project setup.
+
+> [!NOTE]
+> Prisma Next is in Early Access
+> 
+> Prisma Next is the next major version of Prisma ORM, available now in Early Access. It’s the cutting-edge version of Prisma ORM and will become the future of Prisma, so we’d love for you to try it, explore what’s new, and [share your feedback in Discord](https://pris.ly/discord).
+> 
+> If you want to stay on the current generally available version of Prisma ORM, you can continue with [Prisma 7](/getting-started).
+
+Use Prisma Next when you want to try the new developer experience before it becomes the default Prisma ORM path.
+
+  
+
+#### bun
+
+```bash
+bunx create-prisma@next
+```
+
+#### pnpm
+
+```bash
+pnpm dlx create-prisma@next
+```
+
+#### yarn
+
+```bash
+yarn dlx create-prisma@next
+```
+
+#### npm
+
+```bash
+npx create-prisma@next
+```
+
+Start with the setup page when you want a guided first run.
+
+- [Choose a setup path](/next/getting-started): Pick a new-project quickstart or add Prisma Next to an existing app.
+
+What you can try [#what-you-can-try]
+
+- [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create a Prisma Next app, initialize the database, seed data, and run the first query.
+
+- [Quickstart with MongoDB](/next/quickstart/mongodb): Create a Prisma Next app with a local MongoDB replica set or your own MongoDB deployment.
+
+- [Add to PostgreSQL](/next/add-to-existing-project/postgresql): Add Prisma Next to an existing PostgreSQL app with `prisma-next init`.
+
+- [Add to MongoDB](/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB app and model the collections you want to query first.
+
+- [Use Prisma Postgres](/prisma-postgres/quickstart/prisma-next): Create a Prisma Next app backed by Prisma Postgres.
+
+Learn the fundamentals [#learn-the-fundamentals]
+
+Once you are connected, the Fundamentals section teaches the everyday query patterns.
+
+- [Reading data](/orm/next/fundamentals/reading-data): Filter with where, project with select, sort, and paginate.
+
+- [Writing data](/orm/next/fundamentals/writing-data): Create, update, delete, upsert, and the bulk write variants.
+
+- [Relations and joins](/orm/next/fundamentals/relations-and-joins): Read related records with include on PostgreSQL and MongoDB.
+
+- [Transactions](/orm/next/fundamentals/transactions): Make several writes succeed or fail together.
+
+- [Advanced queries](/orm/next/fundamentals/advanced-queries): The SQL builder and the MongoDB pipeline builder for shapes the ORM can't express.
+
+Learn the concepts [#learn-the-concepts]
+
+- [Prisma Next overview](/orm/next): Learn the core ideas behind contracts, emitted artifacts, runtime clients, query styles, and migrations.
+
+## Related pages
+
+- [`Build faster with Prisma + AI`](https://www.prisma.io/docs/ai): Build faster with Prisma and AI coding tools like Cursor, Codex, and ChatGPT
+- [`Choose a setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to start using Prisma ORM, Prisma Postgres, or Prisma Compute in a new or existing TypeScript project.
+- [`CLI Overview`](https://www.prisma.io/docs/cli): The Prisma CLI is the command-line interface for Prisma ORM. Use it to initialize projects, generate Prisma Client, manage databases, run migrations, and more
+- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
+- [`Guides`](https://www.prisma.io/docs/guides): A collection of guides for various tasks and workflows
+
 # Deploy your first app (/docs/prisma-compute/deploy)
 
 Location: Prisma Compute > Deploy your first app
@@ -10295,198 +10487,6 @@ What's next [#whats-next]
 * [Deployments](/compute/deployments): promote, roll back, and inspect what you ship.
 * [GitHub integration](/compute/github): the full picture on deploy-on-push, monorepos, and cleanup.
 * [Read the full CLI getting-started guide](/compute/getting-started) for frameworks, project linking, and CI.
-
-# Choose a setup path (/docs/next/getting-started)
-
-Location: Next > Choose a setup path
-
-Start with a quickstart if you want Prisma Next to create the app. Use the existing-project path if you already have an app and database.
-
-Start a new project [#start-a-new-project]
-
-  
-
-#### bun
-
-```bash
-bunx create-prisma@next
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-prisma@next
-```
-
-#### yarn
-
-```bash
-yarn dlx create-prisma@next
-```
-
-#### npm
-
-```bash
-npx create-prisma@next
-```
-
-- [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create the app, choose PostgreSQL, initialize the database, seed data, and run the first query.
-
-- [Quickstart with MongoDB](/next/quickstart/mongodb): Create the app, choose MongoDB, start or connect to MongoDB, seed data, and run the first query.
-
-Use Prisma Postgres [#use-prisma-postgres]
-
-  
-
-#### bun
-
-```bash
-bunx create-prisma@next
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-prisma@next
-```
-
-#### yarn
-
-```bash
-yarn dlx create-prisma@next
-```
-
-#### npm
-
-```bash
-npx create-prisma@next
-```
-
-- [Quickstart with Prisma Postgres](/prisma-postgres/quickstart/prisma-next): Create a Prisma Next app and let setup provision Prisma Postgres for the first run.
-
-- [From the CLI](/next/prisma-postgres/from-the-cli): Start from the command line when you want the Prisma Postgres path without browsing Console first.
-
-Add to an existing project [#add-to-an-existing-project]
-
-  
-
-#### bun
-
-```bash
-bunx prisma-next init
-```
-
-#### pnpm
-
-```bash
-pnpm dlx prisma-next init
-```
-
-#### yarn
-
-```bash
-yarn dlx prisma-next init
-```
-
-#### npm
-
-```bash
-npx prisma-next init
-```
-
-- [Add to PostgreSQL](/next/add-to-existing-project/postgresql): Add Prisma Next to an existing PostgreSQL app and infer a starter contract from the live schema.
-
-- [Add to MongoDB](/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB app and model the collections you want to query first.
-
-After setup [#after-setup]
-
-* Use the generated app scripts for the first run.
-* Open `prisma-next.md` or the installed Prisma Next skills when you want agent-ready guidance inside the project.
-* Change the starter contract when you are ready to model your own data.
-* Open the [Prisma Next overview](/orm/next) when you want the concepts behind the setup.
-
-# Introduction to Prisma Next (/docs/next)
-
-Location: Introduction to Prisma Next
-
-Prisma Next is a ground-up rebuild of Prisma ORM, covering the runtime, query APIs, migration flow, and project setup.
-
-> [!NOTE]
-> Prisma Next is in Early Access
-> 
-> Prisma Next is the next major version of Prisma ORM, available now in Early Access. It’s the cutting-edge version of Prisma ORM and will become the future of Prisma, so we’d love for you to try it, explore what’s new, and [share your feedback in Discord](https://pris.ly/discord).
-> 
-> If you want to stay on the current generally available version of Prisma ORM, you can continue with [Prisma 7](/getting-started).
-
-Use Prisma Next when you want to try the new developer experience before it becomes the default Prisma ORM path.
-
-  
-
-#### bun
-
-```bash
-bunx create-prisma@next
-```
-
-#### pnpm
-
-```bash
-pnpm dlx create-prisma@next
-```
-
-#### yarn
-
-```bash
-yarn dlx create-prisma@next
-```
-
-#### npm
-
-```bash
-npx create-prisma@next
-```
-
-Start with the setup page when you want a guided first run.
-
-- [Choose a setup path](/next/getting-started): Pick a new-project quickstart or add Prisma Next to an existing app.
-
-What you can try [#what-you-can-try]
-
-- [Quickstart with PostgreSQL](/next/quickstart/postgresql): Create a Prisma Next app, initialize the database, seed data, and run the first query.
-
-- [Quickstart with MongoDB](/next/quickstart/mongodb): Create a Prisma Next app with a local MongoDB replica set or your own MongoDB deployment.
-
-- [Add to PostgreSQL](/next/add-to-existing-project/postgresql): Add Prisma Next to an existing PostgreSQL app with `prisma-next init`.
-
-- [Add to MongoDB](/next/add-to-existing-project/mongodb): Add Prisma Next to an existing MongoDB app and model the collections you want to query first.
-
-- [Use Prisma Postgres](/prisma-postgres/quickstart/prisma-next): Create a Prisma Next app backed by Prisma Postgres.
-
-Learn the fundamentals [#learn-the-fundamentals]
-
-Once you are connected, the Fundamentals section teaches the everyday query patterns.
-
-- [Reading data](/orm/next/fundamentals/reading-data): Filter with where, project with select, sort, and paginate.
-
-- [Writing data](/orm/next/fundamentals/writing-data): Create, update, delete, upsert, and the bulk write variants.
-
-- [Relations and joins](/orm/next/fundamentals/relations-and-joins): Read related records with include on PostgreSQL and MongoDB.
-
-- [Transactions](/orm/next/fundamentals/transactions): Make several writes succeed or fail together.
-
-- [Advanced queries](/orm/next/fundamentals/advanced-queries): The SQL builder and the MongoDB pipeline builder for shapes the ORM can't express.
-
-Learn the concepts [#learn-the-concepts]
-
-- [Prisma Next overview](/orm/next): Learn the core ideas behind contracts, emitted artifacts, runtime clients, query styles, and migrations.
-
-## Related pages
-
-- [`Build faster with Prisma + AI`](https://www.prisma.io/docs/ai): Build faster with Prisma and AI coding tools like Cursor, Codex, and ChatGPT
-- [`Choose a setup path`](https://www.prisma.io/docs/getting-started): Choose the fastest path to start using Prisma ORM, Prisma Postgres, or Prisma Compute in a new or existing TypeScript project.
-- [`CLI Overview`](https://www.prisma.io/docs/cli): The Prisma CLI is the command-line interface for Prisma ORM. Use it to initialize projects, generate Prisma Client, manage databases, run migrations, and more
-- [`Console`](https://www.prisma.io/docs/console): Learn how to use the Console to manage and integrate Prisma products into your application.
-- [`Guides`](https://www.prisma.io/docs/guides): A collection of guides for various tasks and workflows
 
 # From the CLI (/docs/prisma-postgres/from-the-cli)
 

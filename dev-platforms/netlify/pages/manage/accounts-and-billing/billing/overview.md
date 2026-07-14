@@ -31,7 +31,7 @@ If you've created your Netlify account with a Free, Starter, or Pro plan before 
 - [Credit-based pricing plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/)
 - [How credits work for enterprise plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/how-credits-work-for-enterprise-plans/)
 - [Pricing for AI features](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/pricing-for-ai-features/)
-- [Buy add-on credits](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-add-on-credits/)
+- [Buy credit packs](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/buy-credit-packs/)
 - [Configure auto-recharge](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/configure-auto-recharge/)
 - [Monitor usage for Credit-based plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/monitor-usage-for-credit-based-plans/)
 - [Billing FAQ for Credit-based plans](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/billing-faq-for-credit-based-plans/)

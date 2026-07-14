@@ -4,6 +4,8 @@ source: https://docs.langchain.com/langsmith/insights
 path: langsmith/insights
 ---
 
+Use LangSmith Insights to automatically analyze traces, detect usage patterns, identify common agent behaviors, and surface failure modes without manual trace review.
+
 Insights automatically analyzes your traces to detect usage patterns, common agent behaviors, and failure modes, so you do not need to review thousands of traces manually.
 
 Insights uses hierarchical categorization to make sense of your data and highlight actionable trends.

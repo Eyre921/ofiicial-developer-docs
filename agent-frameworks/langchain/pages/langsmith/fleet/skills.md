@@ -69,15 +69,14 @@ You can create a skill two ways:
 
   <Tab title="Manually">
     1. Select an agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills).
-    2. Click <Icon icon="pencil" /> **Edit Agent**.
-    3. In the **Skills** section, click **Create**.
+    2. In the sidebar, expand the **Knowledge** drawer.
+    3. In the **Skills** section, click **+ Add skill**.
     4. Enter the skill name, description, and instructions.
-    5. Click **Save Changes**.
   </Tab>
 </Tabs>
 
 <Tip>
-  When you create a new agent, Fleet automatically generates relevant skills if the agent would benefit from them. These skills are private by default. You can [share them to your workspace](#share-a-skill) from the agent editor.
+  When you create a new agent, Fleet automatically generates relevant skills if the agent would benefit from them. These skills are private by default. You can [share them to your workspace](#share-a-skill) from the agent sidebar.
 </Tip>
 
 ## Fix recurring mistakes
@@ -95,10 +94,9 @@ The agent creates a `SKILL.md` encoding the correct behavior. On future sessions
 ## Edit a private skill
 
 1. Select an agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills).
-2. Click <Icon icon="pencil" /> **Edit Agent**.
+2. In the sidebar, expand the **Knowledge** drawer.
 3. In the **Skills** section, select the skill to edit.
 4. Update the skill name, description, or instructions.
-5. Click **Save Changes**.
 
 ## Edit a shared skill
 
@@ -114,11 +112,11 @@ The agent creates a `SKILL.md` encoding the correct behavior. On future sessions
 ## Share a skill
 
 1. Select an agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills).
-2. Click <Icon icon="pencil" /> **Edit Agent**.
-3. In the **Skills** section of the graph view, select the skill to share.
-4. Click <Icon icon="share" />**Share**.
+2. In the sidebar, expand the **Knowledge** drawer.
+3. In the **Skills** section, select the skill to share.
+4. Click <Icon icon="share" /> **Share**.
 
-Once shared, the skill appears on the [**Skills**](https://smith.langchain.com/agents/skills) page. You can add shared skills to any agent in the workspace from the agent editor, and the general-purpose chat picks them up automatically.
+Once shared, the skill appears on the [**Skills**](https://smith.langchain.com/agents/skills) page. You can add shared skills to any agent in the workspace from the agent sidebar, and the general-purpose chat picks them up automatically.
 
 <Note>
   Only the creator of a shared skill can edit or delete it.
@@ -129,7 +127,7 @@ Once shared, the skill appears on the [**Skills**](https://smith.langchain.com/a
 Deleting a private skill removes it permanently, since it is stored in that agent's memory.
 
 1. Select the agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-skills).
-2. Click <Icon icon="pencil" /> **Edit Agent**.
+2. In the sidebar, expand the **Knowledge** drawer.
 3. In the **Skills** section, click the <Icon icon="trash" /> icon for the skill to delete.
 
 ## Delete a shared skill

@@ -110,7 +110,7 @@ Before registering in Fleet, you need to create an Azure Bot resource and obtain
 
 ## Link the bot to an agent
 
-You can link a Teams bot to an agent from the integrations page or from the agent editor.
+You can link a Teams bot to an agent from the integrations page or from the agent sidebar.
 
 ### Link from the integrations page
 
@@ -118,13 +118,12 @@ You can link a Teams bot to an agent from the integrations page or from the agen
 2. Select the bot you want to link.
 3. From the dropdown menu, choose the agent you want to link to.
 
-### Link from the agent editor
+### Link from the agent sidebar
 
 1. Select your agent from **My Agents** in the left-hand navigation.
-2. Click <Icon icon="pencil" /> **Edit Agent**.
-3. Scroll to the **Channels** section.
-4. Click **Teams**.
-5. From the dropdown menu, select the Teams app you want to link.
+2. In the sidebar, expand the **Channels** drawer.
+3. Select **Teams**.
+4. From the dropdown menu, select the Teams app you want to link.
 
 ## Add Teams tools
 
@@ -134,16 +133,14 @@ Tools let your agent take actions in Teams. To respond to messages and interact 
   You can also ask your agent to add these tools itself. In the agent chat, try: "Add the Teams tools so you can respond to messages."
 </Tip>
 
-1. In the agent editor, scroll to the **Tools** section.
-2. Click **+ Add**.
-3. Search for "Teams" and add the tools you need:
+1. In the sidebar, expand the **Connections** drawer and click **Add connection**.
+2. Search for "Teams" and add the tools you need:
    * **teams\_bot\_send\_proactive\_message** — Send messages back to the Teams conversation
    * **microsoft\_teams\_list\_my\_teams** — List teams the authenticated user belongs to
    * **microsoft\_teams\_list\_channels** — List channels in a team
    * **microsoft\_teams\_post\_channel\_message** — Post a message to a channel
    * **microsoft\_teams\_read\_channel\_messages** — Read recent messages from a channel
-4. If prompted, click **Connect** to authorize the Microsoft Graph tools.
-5. Click **Save changes**.
+3. If prompted, click **Connect** to authorize the Microsoft Graph tools.
 
 <Note>
   The `teams_bot_send_proactive_message` tool uses Bot Framework credentials and does not require separate OAuth authorization. The other Teams tools use Microsoft Graph API and may require OAuth consent.

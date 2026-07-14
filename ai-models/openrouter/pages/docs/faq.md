@@ -166,7 +166,7 @@ export const BYOK_FEE_MONTHLY_REQUEST_THRESHOLD = '1M';
     2. API keys (passed as Bearer tokens) for accessing the completions API and other core endpoints
     3. [Management API keys](/guides/overview/auth/management-api-keys) for programmatically managing API keys through the key management endpoints
 
-    [Learn more about API authentication](/api/reference/authentication).
+    [Learn more about API authentication](/api_reference/authentication).
   </Accordion>
 
   <Accordion title="How are rate limits calculated?">
@@ -174,14 +174,14 @@ export const BYOK_FEE_MONTHLY_REQUEST_THRESHOLD = '1M';
     If you have purchased at least {FREE_MODEL_CREDITS_THRESHOLD} credits, your free model rate limit will be {FREE_MODEL_HAS_CREDITS_RPD} requests per day.
     Otherwise, you will be rate limited to {FREE_MODEL_NO_CREDITS_RPD} free model API requests per day.
 
-    You can learn more about how rate limits work for paid accounts in our [rate limits documentation](/api/reference/limits).
+    You can learn more about how rate limits work for paid accounts in our [rate limits documentation](/api_reference/limits).
   </Accordion>
 
   <Accordion title="What API endpoints are available?">
     OpenRouter implements the OpenAI API specification for /completions and
     /chat/completions endpoints, allowing you to use any model with the same
     request/response format. Additional endpoints like /api/v1/models are also
-    available. See our [API documentation](/api/reference/overview) for
+    available. See our [API documentation](/api_reference/overview) for
     detailed specifications.
   </Accordion>
 
@@ -195,7 +195,7 @@ export const BYOK_FEE_MONTHLY_REQUEST_THRESHOLD = '1M';
     Streaming uses server-sent events (SSE) for real-time token delivery. Set
     `stream: true` in your request to enable streaming responses.
 
-    [Learn more about streaming](/api/reference/streaming).
+    [Learn more about streaming](/api_reference/streaming).
   </Accordion>
 
   <Accordion title="What SDK support is available?">

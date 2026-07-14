@@ -1,7 +1,7 @@
 ---
 title: "Parameters"
-source: https://openrouter.ai/docs/api/reference/parameters.md
-path: docs/api/reference/parameters
+source: https://openrouter.ai/docs/api_reference/parameters.md
+path: docs/api_reference/parameters
 ---
 
 > ## Documentation Index

@@ -1,10 +1,11 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 166 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 167 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
 
+- `accessibility` — [Use Claude Code with a screen reader](pages/accessibility.md) · [原文](https://code.claude.com/docs/en/accessibility)
 - `admin-setup` — [Set up Claude Code for your organization](pages/admin-setup.md) · [原文](https://code.claude.com/docs/en/admin-setup)
 - `advisor` — [Escalate hard decisions with the advisor tool](pages/advisor.md) · [原文](https://code.claude.com/docs/en/advisor)
 - `agent-teams` — [Orchestrate teams of Claude Code sessions](pages/agent-teams.md) · [原文](https://code.claude.com/docs/en/agent-teams)

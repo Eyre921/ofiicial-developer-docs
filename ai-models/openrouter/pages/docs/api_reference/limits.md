@@ -1,7 +1,7 @@
 ---
 title: "Limits"
-source: https://openrouter.ai/docs/api/reference/limits.md
-path: docs/api/reference/limits
+source: https://openrouter.ai/docs/api_reference/limits.md
+path: docs/api_reference/limits
 ---
 
 > ## Documentation Index
@@ -342,7 +342,7 @@ Rate limits govern how many requests you can make. There are a few rate limits t
 
 ### Handling 429 errors
 
-Requests rejected with <StatusCode code={HTTPStatus.S429_Too_Many_Requests} /> fail with a standard [error response](/api/reference/errors-and-debugging):
+Requests rejected with <StatusCode code={HTTPStatus.S429_Too_Many_Requests} /> fail with a standard [error response](/api_reference/errors-and-debugging):
 
 ```json lines theme={null}
 {
@@ -386,5 +386,5 @@ If a rate limit is hit after streaming has started, the error arrives as an SSE 
 data: {"id":"cmpl-abc123","object":"chat.completion.chunk","created":1234567890,"model":"openai/gpt-4o","provider":"openai","error":{"code":429,"message":"Rate limit exceeded"},"choices":[{"index":0,"delta":{"content":""},"finish_reason":"error"}]}
 ```
 
-See [Handling Errors During Streaming](/api/reference/streaming#handling-errors-during-streaming) for details and code examples.
+See [Handling Errors During Streaming](/api_reference/streaming#handling-errors-during-streaming) for details and code examples.
 

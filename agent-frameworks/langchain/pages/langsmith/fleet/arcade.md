@@ -63,10 +63,9 @@ After an admin configures Arcade, other users must connect their own Arcade acco
 
 After connecting, add Arcade tools to a specific agent:
 
-1. Open your agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-arcade) and click the <Icon icon="pencil" /> **Edit Agent** icon.
-2. In the **Toolbox** section, click **+ Add**.
+1. Open your agent in [Fleet](https://smith.langchain.com/agents?utm_source=docs\&utm_medium=cta\&utm_campaign=langsmith-signup\&utm_content=langsmith-fleet-arcade).
+2. In the sidebar, expand the **Connections** drawer and click **Add connection**.
 3. Select the Arcade tools you want to enable for the agent.
-4. Click **Save changes**.
 
 The agent can now call these tools at runtime. When a tool requires authorization, Arcade prompts the user to grant access via OAuth.
 

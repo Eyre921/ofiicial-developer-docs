@@ -1,5 +1,5 @@
 ---
-title: "Claude on Amazon Bedrock (legacy)"
+title: "Claude on Amazon Bedrock (Opus 4.6 and earlier)"
 source: https://platform.claude.com/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy
 path: build-with-claude/claude-on-amazon-bedrock-legacy
 ---

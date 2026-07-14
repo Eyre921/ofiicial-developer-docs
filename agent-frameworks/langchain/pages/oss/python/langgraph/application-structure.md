@@ -14,7 +14,7 @@ This guide shows a typical structure of an application and shows you how to prov
 
 ## Key concepts
 
-To deploy using the LangSmith, the following information should be provided:
+To deploy using LangSmith, the following information should be provided:
 
 1. A [LangGraph configuration file](#configuration-file-concepts) (`langgraph.json`) that specifies the dependencies, graphs, and environment variables to use for the application.
 2. The [graphs](#graphs) that implement the logic of the application.

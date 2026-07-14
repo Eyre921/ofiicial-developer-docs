@@ -1,7 +1,7 @@
 ---
 title: "Reasoning"
-source: https://openrouter.ai/docs/api/reference/responses/reasoning.md
-path: docs/api/reference/responses/reasoning
+source: https://openrouter.ai/docs/api_reference/responses/reasoning.md
+path: docs/api_reference/responses/reasoning
 ---
 
 > ## Documentation Index

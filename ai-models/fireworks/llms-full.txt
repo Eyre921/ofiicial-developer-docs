@@ -27042,21 +27042,24 @@ Fireworks supports most [JSON Schema 2020-12](https://json-schema.org/specificat
 * Types: `string`, `number`, `integer`, `boolean`, `object`, `array`, `null`
 * Object constraints: `properties`, `required`, `additionalProperties`
 * Array constraints: `items`
-* Composition: `anyOf`, `allOf`
+* Length/size constraints: `minLength`, `maxLength`, `minItems`, `maxItems`
+* Regular expressions: `pattern`
+* Composition: `anyOf`, `allOf`, `oneOf`
 * Reuse: `$defs` (Draft 2020-12) and `definitions` (Draft 7), referenced via `$ref`
 * Annotations: `$id`, `$schema`, `description`, `title`, `default`
 * Recursive references (self-recursive `$ref`, mutually recursive `$defs`)
 
 **Not yet supported:**
 
-* `oneOf` composition
-* Length/size constraints (`minLength`, `maxLength`, `minItems`, `maxItems`)
-* Regular expressions (`pattern`)
 * External `$ref` URIs (HTTP/file). Only in-document JSON Pointer fragments are resolved.
 
 <Tip>
   Fireworks automatically prevents hallucinated fields by treating schemas with `properties` as if `"unevaluatedProperties": false` is set.
 </Tip>
+
+<Note>
+  `pattern` is enforced on a best-effort basis: regexes that can be compiled into the underlying grammar are enforced, and constructs that can't (e.g. lookahead/lookbehind) are safely ignored — the field falls back to an unconstrained string and the request still succeeds.
+</Note>
 
 ### JSON Pointer references (`$ref`)
 

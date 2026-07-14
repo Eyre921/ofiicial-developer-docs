@@ -10,11 +10,19 @@ Add up to 100 email addresses to the suppression list at once.
 <Warning>
   The Suppressions API is currently in private beta and only available to a
   limited number of users. APIs might change before GA.
+  [Get in touch](https://resend.com/contact) if you're interested in testing
+  this feature.
 
   <span />
 
-  [Get in touch](https://resend.com/contact) if you're interested in testing
-  this feature.
+  Once you have access, upgrade your Resend SDK to use the methods on this
+  page:
+
+  <CodeGroup>
+    ```bash Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+    npm install resend@6.18.0-canary.0
+    ```
+  </CodeGroup>
 </Warning>
 
 ## Body Parameters
@@ -25,12 +33,22 @@ Add up to 100 email addresses to the suppression list at once.
 </ParamField>
 
 <RequestExample>
+  ```ts Node.js theme={"theme":{"light":"github-light","dark":"vesper"}}
+  import { Resend } from 'resend';
+
+  const resend = new Resend('re_xxxxxxxxx');
+
+  const { data, error } = await resend.suppressions.batch.add({
+    emails: ['steve.wozniak@example.com', 'susan.kare@example.com'],
+  });
+  ```
+
   ```bash cURL theme={"theme":{"light":"github-light","dark":"vesper"}}
   curl -X POST 'https://api.resend.com/suppressions/batch/add' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
        -H 'Content-Type: application/json' \
        -d $'{
-    "emails": ["steve.wozniak@gmail.com", "bill.gates@microsoft.com"]
+    "emails": ["steve.wozniak@example.com", "susan.kare@example.com"]
   }'
   ```
 </RequestExample>
