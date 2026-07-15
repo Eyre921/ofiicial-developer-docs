@@ -810,7 +810,6 @@ The table below shows a list of events logged on the Activity page.
 | webhook-created | Active | A webhook was created. |
 | webhook-deleted | Active | A webhook was deleted. |
 | webhook-updated | Active | A webhook was updated. |
-| workflow-deployment-key-accessed | Active | A workflow deployment key was accessed. |
 
 
 --------------------------------------------------------------------------------
@@ -43999,6 +43998,17 @@ vercel usage --breakdown daily
 
 [Learn more about the usage command](/docs/cli/usage)
 
+### vcr
+
+Manage [Vercel Container Registry](/docs/container-registry) repositories, tags, and images from the terminal. See the [Container Registry CLI Reference](/docs/container-registry/cli-reference) for the full surface.
+
+```bash
+vercel vcr ls
+vercel vcr login docker
+```
+
+[Learn more about the vcr command](/docs/cli/vcr)
+
 ### webhooks
 
 Manage webhooks for your account. This command is in beta.
@@ -46738,6 +46748,55 @@ The JSON output includes:
 - `chargeCount`: The number of individual charges processed
 
 When using `--breakdown`, the JSON output includes a `breakdown` array containing usage data for each period, plus a `grandTotal` object with aggregated totals.
+
+
+--------------------------------------------------------------------------------
+title: "vercel vcr"
+description: "Manage Vercel Container Registry from the Vercel CLI: list, inspect, create, and delete repositories, browse tags, and manage images from your terminal."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/cli/vcr"
+--------------------------------------------------------------------------------
+
+# vercel vcr
+
+The `vercel vcr` command is the entry point for managing [Vercel Container Registry](/docs/container-registry) (VCR) from the Vercel CLI. It groups subcommands for listing, inspecting, creating, and deleting repositories, and for managing their tags and images. The full command surface is documented in the [Container Registry CLI Reference](/docs/container-registry/cli-reference). This page summarizes the entry point and links to the full reference.
+
+## Usage
+
+```bash filename="terminal"
+vercel vcr [subcommand]
+```
+
+*Using \`vercel vcr\` to manage Vercel Container Registry from the terminal.*
+
+## Examples
+
+### List repositories in the linked project
+
+```bash filename="terminal"
+vercel vcr ls
+```
+
+*List the container registry repositories in the linked project.*
+
+### Authenticate Docker with VCR
+
+```bash filename="terminal"
+vercel vcr login docker
+```
+
+*Authenticate Docker with the Vercel Container Registry using a short-lived
+OIDC token.*
+
+## Full reference
+
+For the full list of subcommands, options, and examples, see the [Container Registry CLI Reference](/docs/container-registry/cli-reference). Use `vercel vcr login` to authenticate Docker, Podman, or Buildah with VCR, `vercel vcr tag` to browse a repository's tags, and `vercel vcr image` to list, inspect, or delete images. To push and pull images, use Docker-compatible tooling as described in the [Container Registry documentation](/docs/container-registry#push-an-image).
+
+## Related
+
+- [Container Registry CLI Reference](/docs/container-registry/cli-reference)
+- [Vercel Container Registry overview](/docs/container-registry)
+- [Container Registry limits and pricing](/docs/container-registry/limits-and-pricing)
 
 
 --------------------------------------------------------------------------------
@@ -54451,6 +54510,503 @@ Most SDK calls have a [`vercel connect`](/docs/cli/connect) CLI equivalent. The 
 
 
 --------------------------------------------------------------------------------
+title: "Container Registry CLI Reference"
+description: "Use the vercel vcr command group to manage Vercel Container Registry repositories, tags, and images from the command line."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/container-registry/cli-reference"
+--------------------------------------------------------------------------------
+
+# Container Registry CLI Reference
+
+The `vercel vcr` command group lets you manage [Vercel Container Registry](/docs/container-registry) (VCR) repositories, tags, and images from your terminal. Use it to list, inspect, create, and delete repositories, browse a repository's tags, and manage the images stored in each repository.
+
+`vercel vcr` is part of the [Vercel CLI](/docs/cli). To push and pull images, use Docker-compatible tooling as described in the [Container Registry documentation](/docs/container-registry#push-an-image).
+
+Each command operates on a single Vercel project. By default, the CLI uses the [linked project](/docs/cli/link). Pass `--project` to target a different project.
+
+## Installation
+
+Install the Vercel CLI globally to use the `vercel vcr` commands:
+
+<CodeBlock>
+  <Code tab="pnpm">
+    ```bash
+    pnpm i vercel
+    ```
+  </Code>
+  <Code tab="yarn">
+    ```bash
+    yarn i vercel
+    ```
+  </Code>
+  <Code tab="npm">
+    ```bash
+    npm i vercel
+    ```
+  </Code>
+  <Code tab="bun">
+    ```bash
+    bun i vercel
+    ```
+  </Code>
+</CodeBlock>
+
+## Authentication
+
+Log in to your Vercel account:
+
+```bash filename="terminal"
+vercel login
+```
+
+Then link the directory to a Vercel project so the commands default to it:
+
+```bash filename="terminal"
+vercel link
+```
+
+## `vercel vcr`
+
+Manage Vercel Container Registry repositories and images.
+
+```bash filename="terminal"
+vercel vcr <subcommand> [OPTIONS]
+```
+
+**Available subcommands:**
+
+- [`ls`](#vercel-vcr-ls): List container registry repositories for a project. (alias: `list`)
+- [`inspect`](#vercel-vcr-inspect): Show details for a single repository. (alias: `get`)
+- [`add`](#vercel-vcr-add): Create a container registry repository. (alias: `create`)
+- [`rm`](#vercel-vcr-rm): Delete a container registry repository. (aliases: `remove`, `delete`)
+- [`login`](#vercel-vcr-login): Authenticate a container tool with the Vercel Container Registry.
+- [`tag`](#vercel-vcr-tag): List or inspect a repository's tags. (alias: `tags`)
+- [`image`](#vercel-vcr-image): List, inspect, or delete images in a repository. (alias: `images`)
+
+For more help, try running `vercel vcr <subcommand> --help`.
+
+## `vercel vcr ls`
+
+List container registry repositories for a project.
+
+```bash filename="terminal"
+vercel vcr ls [OPTIONS]
+```
+
+### `vercel vcr ls` example
+
+```bash filename="terminal"
+# List repositories in the linked project
+vercel vcr ls
+
+# List repositories for a specific project as JSON
+vercel vcr ls --project my-app --format json
+
+# Page through results using the cursor reported by the previous page
+vercel vcr ls --cursor <token>
+```
+
+### `vercel vcr ls` options
+
+| Option                   | Short | Description                                                    |
+| ------------------------ | ----- | ------------------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project).          |
+| `--limit <number>`       | -     | Number of results to return per page (default: 20, max: 100). |
+| `--cursor <token>`       | `-c`  | Cursor from a previous page to continue listing from.         |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                                |
+
+### `vercel vcr ls` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+## `vercel vcr inspect`
+
+Show details for a single repository.
+
+```bash filename="terminal"
+vercel vcr inspect [OPTIONS] <repository>
+```
+
+### `vercel vcr inspect` example
+
+```bash filename="terminal"
+# Inspect a repository by name
+vercel vcr inspect my-repository
+
+# Inspect a repository by ID
+vercel vcr inspect repo_CVSY2AmyvugNN6WOTFKOF5VfeZ6r
+```
+
+### `vercel vcr inspect` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr inspect` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr inspect` arguments
+
+| Argument       | Description                                     |
+| -------------- | ----------------------------------------------- |
+| `<repository>` | The name or ID of the repository to inspect.    |
+
+## `vercel vcr add`
+
+Create a container registry repository.
+
+```bash filename="terminal"
+vercel vcr add [OPTIONS] <name>
+```
+
+### `vercel vcr add` example
+
+```bash filename="terminal"
+# Create a repository
+vercel vcr add my-repository
+```
+
+> **💡 Note:** Repository names can include lowercase letters, numbers, periods,
+> underscores, and dashes. The name can't start or end with a period,
+> underscore, or dash.
+
+### `vercel vcr add` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr add` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr add` arguments
+
+| Argument | Description                        |
+| -------- | ---------------------------------- |
+| `<name>` | The name of the repository to create. |
+
+## `vercel vcr rm`
+
+Delete a container registry repository and all of its images.
+
+```bash filename="terminal"
+vercel vcr rm [OPTIONS] <repository>
+```
+
+> **💡 Note:** This action is permanent and cannot be undone.
+
+### `vercel vcr rm` example
+
+```bash filename="terminal"
+# Delete a repository, with a confirmation prompt
+vercel vcr rm my-repository
+
+# Delete a repository without the confirmation prompt
+vercel vcr rm my-repository --yes
+```
+
+### `vercel vcr rm` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr rm` flags
+
+| Flag     | Short | Description                          |
+| -------- | ----- | ------------------------------------ |
+| `--yes`  | `-y`  | Skip the confirmation prompt.        |
+| `--help` | `-h`  | Display help information.            |
+
+### `vercel vcr rm` arguments
+
+| Argument       | Description                              |
+| -------------- | ---------------------------------------- |
+| `<repository>` | The name or ID of the repository to delete. |
+
+## `vercel vcr login`
+
+Authenticate a container tool (Docker, Podman, or Buildah) with the Vercel Container Registry.
+
+```bash filename="terminal"
+vercel vcr login [OPTIONS] <engine>
+```
+
+Vercel mints a short-lived, project-scoped OpenID Connect (OIDC) token and passes it to the container tool with the username `oidc`. The credentials are valid for 12 hours. Re-run the command to refresh them.
+
+The container tool must be installed and on your `PATH`. If it isn't, the command fails with an error like `` `docker` is not installed or not on your PATH. Install it and try again. ``
+
+### `vercel vcr login` example
+
+```bash filename="terminal"
+# Log in with Docker
+vercel vcr login docker
+
+# Log in with Podman
+vercel vcr login podman
+
+# Log in with Buildah
+vercel vcr login buildah
+
+# Log in for a specific project
+vercel vcr login docker --project my-app
+```
+
+### `vercel vcr login` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr login` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr login` arguments
+
+| Argument   | Description                                             |
+| ---------- | ------------------------------------------------------- |
+| `<engine>` | The container tool to authenticate: `docker`, `podman`, or `buildah`. |
+
+## `vercel vcr tag`
+
+List or inspect a repository's tags.
+
+```bash filename="terminal"
+vercel vcr tag <subcommand> [OPTIONS]
+```
+
+### `vercel vcr tag` subcommands
+
+- [`ls`](#vercel-vcr-tag-ls): List a repository's tags. (alias: `list`)
+- [`inspect`](#vercel-vcr-tag-inspect): Show details for a single tag. (alias: `get`)
+
+## `vercel vcr tag ls`
+
+List a repository's tags.
+
+```bash filename="terminal"
+vercel vcr tag ls [OPTIONS] <repository>
+```
+
+### `vercel vcr tag ls` example
+
+```bash filename="terminal"
+# List a repository's tags
+vercel vcr tag ls my-app
+
+# Sort by tag name in ascending order
+vercel vcr tag ls my-app --sort-by tag --sort-order asc
+
+# Return the first five tags
+vercel vcr tag ls my-app --limit 5
+```
+
+### `vercel vcr tag ls` options
+
+| Option                   | Short | Description                                                    |
+| ------------------------ | ----- | ------------------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project).          |
+| `--sort-by <field>`      | -     | Field to sort tags by. `updatedAt` (default) or `tag`.        |
+| `--sort-order <order>`   | -     | Sort direction. `asc` or `desc` (default).                    |
+| `--limit <number>`       | -     | Number of results to return per page (default: 20, max: 100). |
+| `--cursor <token>`       | `-c`  | Cursor from a previous page to continue listing from.         |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                                |
+
+### `vercel vcr tag ls` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr tag ls` arguments
+
+| Argument       | Description                                  |
+| -------------- | -------------------------------------------- |
+| `<repository>` | The name or ID of the repository to list tags for. |
+
+## `vercel vcr tag inspect`
+
+Show details for a single tag.
+
+```bash filename="terminal"
+vercel vcr tag inspect [OPTIONS] <repository> <tag>
+```
+
+### `vercel vcr tag inspect` example
+
+```bash filename="terminal"
+# Inspect a tag by name
+vercel vcr tag inspect my-app latest
+```
+
+### `vercel vcr tag inspect` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr tag inspect` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr tag inspect` arguments
+
+| Argument       | Description                                  |
+| -------------- | -------------------------------------------- |
+| `<repository>` | The name or ID of the repository the tag belongs to. |
+| `<tag>`        | The tag to inspect.                          |
+
+## `vercel vcr image`
+
+List, inspect, or delete images in a repository.
+
+```bash filename="terminal"
+vercel vcr image <subcommand> [OPTIONS]
+```
+
+### `vercel vcr image` subcommands
+
+- [`ls`](#vercel-vcr-image-ls): List images in a container registry repository. (alias: `list`)
+- [`inspect`](#vercel-vcr-image-inspect): Show details for a single image, including its layer history. (alias: `get`)
+- [`rm`](#vercel-vcr-image-rm): Delete an image from a repository. (aliases: `remove`, `delete`)
+
+## `vercel vcr image ls`
+
+List images in a container registry repository.
+
+```bash filename="terminal"
+vercel vcr image ls [OPTIONS] <repository>
+```
+
+### `vercel vcr image ls` example
+
+```bash filename="terminal"
+# List images in a repository
+vercel vcr image ls my-app
+
+# List only untagged images as JSON
+vercel vcr image ls my-app --untagged --format json
+```
+
+### `vercel vcr image ls` options
+
+| Option                   | Short | Description                                                    |
+| ------------------------ | ----- | ------------------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project).          |
+| `--limit <number>`       | -     | Number of results to return per page (default: 20, max: 100). |
+| `--cursor <token>`       | `-c`  | Cursor from a previous page to continue listing from.         |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                                |
+
+### `vercel vcr image ls` flags
+
+| Flag         | Short | Description                        |
+| ------------ | ----- | ---------------------------------- |
+| `--untagged` | -     | Only list images that have no tags. |
+| `--help`     | `-h`  | Display help information.          |
+
+### `vercel vcr image ls` arguments
+
+| Argument       | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `<repository>` | The name or ID of the repository to list images for. |
+
+## `vercel vcr image inspect`
+
+Show details for a single image, including its layer history.
+
+```bash filename="terminal"
+vercel vcr image inspect [OPTIONS] <repository> <image-id>
+```
+
+### `vercel vcr image inspect` example
+
+```bash filename="terminal"
+# Inspect an image by ID
+vercel vcr image inspect my-app image_XTPv9FRCWob68TkdGMUHC9vCXIAz
+```
+
+### `vercel vcr image inspect` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr image inspect` flags
+
+| Flag     | Short | Description               |
+| -------- | ----- | ------------------------- |
+| `--help` | `-h`  | Display help information. |
+
+### `vercel vcr image inspect` arguments
+
+| Argument       | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `<repository>` | The name or ID of the repository the image belongs to. |
+| `<image-id>`   | The ID of the image to inspect.                |
+
+## `vercel vcr image rm`
+
+Delete an image from a repository.
+
+```bash filename="terminal"
+vercel vcr image rm [OPTIONS] <repository> <image-id>
+```
+
+> **💡 Note:** This action is permanent and cannot be undone.
+
+### `vercel vcr image rm` example
+
+```bash filename="terminal"
+# Delete an image by ID, with a confirmation prompt
+vercel vcr image rm my-app image_Ml0PUBaNT8SRrYXDOOEiFedAsAEs
+
+# Delete an image without the confirmation prompt
+vercel vcr image rm my-app image_Ml0PUBaNT8SRrYXDOOEiFedAsAEs --yes
+```
+
+### `vercel vcr image rm` options
+
+| Option                   | Short | Description                                          |
+| ------------------------ | ----- | ---------------------------------------------------- |
+| `--project <name-or-id>` | `-p`  | Project name or ID (defaults to the linked project). |
+| `--format <format>`      | `-F`  | Output format. Accepts `json`.                       |
+
+### `vercel vcr image rm` flags
+
+| Flag     | Short | Description                   |
+| -------- | ----- | ----------------------------- |
+| `--yes`  | `-y`  | Skip the confirmation prompt. |
+| `--help` | `-h`  | Display help information.     |
+
+### `vercel vcr image rm` arguments
+
+| Argument       | Description                                    |
+| -------------- | ---------------------------------------------- |
+| `<repository>` | The name or ID of the repository the image belongs to. |
+| `<image-id>`   | The ID of the image to delete.                 |
+
+
+--------------------------------------------------------------------------------
 title: "Container Registry limits and pricing"
 description: "Storage pricing, size limits, plan limits, and compatibility limits for Vercel Container Registry."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -54528,27 +55084,20 @@ Create a VCR repository from your project dashboard:
 
 You can also push to a new repository path with Docker-compatible tooling. VCR creates the repository automatically when your authenticated account has access to the project.
 
-## Authenticate Docker to VCR
+## Authenticate a container tool to VCR
 
-Use OpenID Connect (OIDC) when `VERCEL_OIDC_TOKEN` is available in your shell. Vercel provides this token automatically in deployments.
+The recommended way to authenticate is with OpenID Connect (OIDC) through the [Vercel CLI](/docs/cli). In a [linked project](/docs/cli/link), `vercel vcr login` authenticates a container tool with VCR. It supports Docker, Podman, and Buildah:
 
-For local development, link your project, pull the token into `.env.local`, source it, and sign in to Docker:
-
-```bash filename="Terminal"
+```bash filename="terminal"
 vercel link
-vercel env pull .env.local
-source .env.local
-
-printf '%s' "$VERCEL_OIDC_TOKEN" | docker login vcr.vercel.com \
-  --username oidc \
-  --password-stdin
+vercel vcr login docker
 ```
 
-The Docker username is `oidc` for OIDC authentication.
+Vercel mints a short-lived, project-scoped OIDC token and passes it to the container tool with the username `oidc`. The credentials are valid for 12 hours. Re-run the command to refresh them. Use `--project` to authenticate a different project.
 
 Or create a Vercel token from the [Account Tokens page](/account/tokens), then set `VERCEL_TOKEN` to that value:
 
-```bash filename="Terminal"
+```bash filename="terminal"
 printf '%s' "$VERCEL_TOKEN" | docker login vcr.vercel.com \
   --username "$VERCEL_TEAM_ID" \
   --password-stdin
@@ -54568,7 +55117,7 @@ To use zstd compression, build and push the image with Docker Buildx:
 
 > **💡 Note:** Vercel recommends zstd compression for images pushed to VCR.
 
-```bash filename="Terminal"
+```bash filename="terminal"
 docker buildx build \
   --platform linux/amd64,linux/arm64 \
   --output "type=image,name=vcr.vercel.com/team-slug/project-slug/my-repository:latest,push=true,oci-mediatypes=true,compression=zstd,compression-level=3,force-compression=true" \
@@ -54577,7 +55126,7 @@ docker buildx build \
 
 If Docker Buildx is unavailable, you can build and push the image with Docker. This command does not set zstd compression:
 
-```bash filename="Terminal"
+```bash filename="terminal"
 docker build \
   -t vcr.vercel.com/team-slug/project-slug/my-repository:latest \
   .
@@ -54589,9 +55138,13 @@ docker push vcr.vercel.com/team-slug/project-slug/my-repository:latest
 
 Pull a VCR image with the same full repository path:
 
-```bash filename="Terminal"
+```bash filename="terminal"
 docker pull vcr.vercel.com/team-slug/project-slug/my-repository:latest
 ```
+
+## Manage repositories from the CLI
+
+Use the `vercel vcr` command group in the [Vercel CLI](/docs/cli) to list, inspect, create, and delete repositories, and to manage their tags and images. For all commands, subcommands, and options, see the [Container Registry CLI Reference](/docs/container-registry/cli-reference).
 
 ## Limits and pricing
 
@@ -59708,6 +60261,7 @@ If access is lost due to removal of team owners, use the following group names t
 | `vercel-role-billing`     | [Billing](/docs/rbac/access-roles#billing-role)                                                                              |
 | `vercel-role-viewer`      | [Viewer Pro](/docs/rbac/access-roles#pro-viewer-role) or [Viewer Enterprise](/docs/rbac/access-roles#enterprise-viewer-role) |
 | `vercel-role-contributor` | [Contributor](/docs/rbac/access-roles#contributor-role)                                                                      |
+| `vercel-role-security`    | [Security](/docs/rbac/access-roles#security-role)                                                                            |
 
 
 --------------------------------------------------------------------------------
@@ -75726,6 +76280,65 @@ If a segment is referenced by a flag or segment:
 
 
 --------------------------------------------------------------------------------
+title: "Flag Evaluation Metrics"
+description: "Track Vercel Flags evaluations and see which variant each evaluation returns."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/flags/vercel-flags/evaluation-metrics"
+--------------------------------------------------------------------------------
+
+# Flag Evaluation Metrics
+
+Evaluation metrics show how often a feature flag is evaluated and which variants those evaluations resolve to. Use them to verify a rollout behaves as expected, confirm that traffic reaches a new variant, or check whether a flag is still in use before archiving it.
+
+## Where to find evaluation metrics
+
+Each flag's detail page shows an **Evaluations** chart with the last 10 minutes of evaluations, broken down by variant. Select **View Flag Evaluations** on the chart to open the full evaluation metrics view.
+
+The full view lets you adjust the time range, granularity, grouping, filters, and chart type. Flag configuration changes appear as chart markers, so you can compare evaluation shifts with recent configuration changes.
+
+## Capabilities
+
+| Capability      | Details                                                             |
+| --------------- | ------------------------------------------------------------------- |
+| Historical data | Query up to 90 days of evaluation data                              |
+| Granularity     | Down to 1 minute                                                    |
+| Grouping        | Group evaluations by one or more dimensions                         |
+| Filtering       | Filter evaluations by the same dimensions                           |
+
+### Grouping dimensions
+
+By default, evaluations are grouped by variant. You can group and filter by these dimensions:
+
+| Dimension             | Description                                                                  |
+| --------------------- | ---------------------------------------------------------------------------- |
+| **Variant**           | The variant the evaluation resolved to                                       |
+| **Environment**       | The environment the flag was evaluated in (Production, Preview, Development) |
+| **Reason**            | Why the evaluation resolved to its variant                                   |
+| **Client**            | The client that evaluated the flag                                           |
+| **SDK Environment**   | The environment of the SDK key used for the evaluation                       |
+| **SDK Key**           | The SDK key used for the evaluation                                          |
+| **Reporting Project** | The project that reported the evaluation                                     |
+
+## Required SDK version
+
+Clients report evaluation metrics starting with `@vercel/flags-core` version 1.6.0. Clients on older versions still evaluate flags correctly, but their evaluations don't show up in the metrics.
+
+> **💡 Note:** The [Flags SDK adapter](/docs/flags/vercel-flags/sdks/flags-sdk) uses
+> `@vercel/flags-core` internally. Make sure your installed dependencies
+> resolve to version 1.6.0 or later.
+
+When the **Evaluations** chart detects clients using `@vercel/flags-core` earlier than 1.6.0, it shows a warning. Update those clients to the latest SDK version so future evaluations appear in the metrics.
+
+Clients that report evaluations also report their SDK version. The warning clears once no client has reported an outdated version for 24 hours. Keep in mind that older deployments, such as active preview deployments or a previous production deployment still receiving traffic, can keep reporting an old SDK version and keep the warning visible.
+
+## Next steps
+
+- [Update the SDK](/docs/flags/vercel-flags/quickstart)
+- [Manage SDK keys](/docs/flags/vercel-flags/dashboard/sdk-keys)
+- [Integrate flags with Web Analytics](/docs/flags/observability/web-analytics)
+
+
+--------------------------------------------------------------------------------
 title: "Limits and Pricing for Vercel Flags"
 description: "Learn about limits and pricing for Vercel Flags."
 last_updated: "2018-10-20T01:46:40.000Z"
@@ -76666,6 +77279,200 @@ The following order of precedence determines which settings take effect. Setting
 ## Pricing and usage
 
 See the [fluid compute pricing](/docs/functions/usage-and-pricing) documentation for details on how fluid compute is priced, including active CPU, provisioned memory, and invocations.
+
+
+--------------------------------------------------------------------------------
+title: "Deploy a Celery app on Vercel"
+description: "Deploy a Celery app on Vercel. Learn how Celery workers use Vercel Queues and Vercel Functions to process background tasks."
+last_updated: "2018-10-20T01:46:40.000Z"
+source: "https://vercel.com/docs/frameworks/backend/celery"
+--------------------------------------------------------------------------------
+
+# Deploy a Celery app on Vercel
+
+> **🔒 Permissions Required**: Vercel Queues
+
+Deploy a Celery app to Vercel with the Python runtime, Vercel Queues, and Vercel
+Functions. Vercel builds each Celery worker as a private, queue-triggered
+Vercel Function, so you don't need to run a long-lived worker process.
+
+## Create or import your app
+
+Create a Celery app or use an existing one:
+
+## Configure the Celery application
+
+Celery projects on Vercel must declare their dependencies in `pyproject.toml`
+
+```toml filename="pyproject.toml"
+[project]
+name = "celery-on-vercel"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+  "celery>=5.3.0",
+  "fastapi",
+]
+```
+
+This example uses FastAPI to enqueue tasks. You can use any supported Python web
+framework for the producer.
+
+### Define the Celery application
+
+Create a Celery application and set its default queue:
+
+```py filename="tasks.py"
+import os
+
+from celery import Celery
+
+QUEUE_NAME = "celery"
+
+app = Celery(
+    "celery-on-vercel",
+    broker=os.getenv("CELERY_BROKER_URL", "vercel://"),
+)
+app.conf.task_default_queue = QUEUE_NAME
+
+@app.task
+def add(x: int, y: int) -> int:
+    return x + y
+```
+
+The `vercel://` broker sends Celery tasks to Vercel Queues. Vercel sets
+`CELERY_BROKER_URL` to `vercel://` automatically during local development and
+after deployment unless you set the environment variable yourself.
+
+### Export the Celery worker
+
+Export the Celery application from a worker entrypoint. Importing `tasks`
+registers its tasks on the application:
+
+```py filename="worker.py"
+from tasks import app
+
+__all__ = ["app"]
+```
+
+Add the web entrypoint and Celery worker to `pyproject.toml`:
+
+```toml filename="pyproject.toml"
+[tool.vercel]
+entrypoint = "main:app"
+
+[[tool.vercel.subscribers]]
+entrypoint = "worker:app"
+topics = ["celery"]
+```
+
+The subscriber `entrypoint` uses the `module:object` format. The `topics` value
+must match the Celery queue name in `tasks.py`.
+
+Vercel builds `main:app` as the public web application and `worker:app` as a
+private Vercel Function. Only Vercel Queues can invoke the worker function.
+
+### Send tasks
+
+Import a task into your web application and call `delay` as you would in any
+Celery application:
+
+```py filename="main.py"
+from fastapi import FastAPI
+
+from tasks import add
+
+app = FastAPI()
+
+@app.post("/tasks")
+def enqueue_task(x: int, y: int):
+    task = add.delay(x, y)
+    return {"taskId": task.id}
+```
+
+Each call to `delay` publishes a message to the `celery` topic. Vercel Queues
+then invokes the subscriber function to run the task.
+
+### Local development
+
+Use `vercel dev` to run the web application and Celery subscriber locally:
+
+```bash filename="terminal"
+vercel dev
+```
+
+`vercel dev` starts both your web application and Celery worker locally. You
+don't need to run `celery worker` in another terminal.
+
+> **💡 Note:** Minimum CLI version required: 56.1.0
+
+### Deploying the application
+
+Deploy the project by connecting your Git repository or by using the [Vercel
+CLI](/docs/cli/deploy):
+
+```bash filename="terminal"
+vc deploy
+```
+
+> **💡 Note:** Minimum CLI version required: 56.1.0
+
+Vercel installs the Celery adapter during the build and provides Queue
+authentication to the deployed functions. You don't need to provision Redis,
+RabbitMQ, or separate queue credentials.
+
+## Vercel Functions
+
+When your web function calls `delay` or `apply_async`, the Vercel broker
+transport publishes the task to the configured topic. Vercel Queues invokes the
+private subscriber function, which runs the task and acknowledges the message
+after it succeeds.
+
+If the function raises an exception or times out, Vercel Queues makes the
+message available for another delivery. Queues provides
+[at-least-once delivery](/docs/queues/concepts#at-least-once-delivery), so tasks
+should be idempotent.
+
+To control the retry delay or limit concurrent task executions, add options to
+the subscriber:
+
+```toml filename="pyproject.toml"
+[[tool.vercel.subscribers]]
+entrypoint = "worker:app"
+topics = ["celery"]
+retry_after_seconds = 60
+max_concurrency = 10
+```
+
+See [Queues concepts](/docs/queues/concepts) for details about retries,
+visibility timeouts, concurrency, and message retention.
+
+> **💡 Note:** Vercel Queues acts as the Celery broker, not a Celery result backend. Store
+> task results in a database or use [Runtime
+> Cache](/docs/caching/runtime-cache) for temporary state.
+
+## Limitations
+
+Celery tasks run inside [Vercel Functions](/docs/functions), so all [Vercel
+Functions limitations](/docs/functions/limitations) apply, including maximum
+duration and bundle size.
+
+- **Task arguments**: Arguments must be JSON-serializable. Vercel Queues
+  supports messages up to [100 MB](/docs/queues/pricing#limits).
+- **Long-running processes**: Vercel uses queue-triggered functions instead of a
+  persistent `celery worker` process. Worker control commands and features that
+  require persistent process state aren't available.
+- **Periodic tasks**: `celery beat` requires a long-running process. Use [Vercel
+  Cron Jobs](/docs/cron-jobs) to call a route that enqueues Celery tasks.
+
+## More resources
+
+For more about deploying Celery on Vercel, see:
+
+- [Celery official documentation](https://docs.celeryq.dev/)
+- [Vercel Queues documentation](/docs/queues)
+- [Vercel Functions documentation](/docs/functions)
+- [Python runtime documentation](/docs/functions/runtimes/python)
 
 
 --------------------------------------------------------------------------------
@@ -108039,7 +108846,7 @@ The Vercel Pro plan is designed for professional developers, freelancers, and bu
 
 - **[Credit-based billing](#monthly-credit)**: Pro includes monthly credit that can be used flexibly across [usage dimensions](/docs/pricing#managed-infrastructure-billable-resources)
 - **[Free viewer seats](#viewer-team-seat)**: Unlimited read-only access to the Vercel dashboard so that project collaborators can view deployments, check analytics, and comment on previews
-- **[Turbo build machines](/docs/builds/managing-builds#larger-build-machines)**: New projects use Turbo build machines (30 vCPUs, 60 GB memory) by default
+- **[Elastic build machines](/docs/builds/managing-builds#elastic-build-machines)**: New teams use Elastic build machines by default. Elastic automatically selects a machine for each project based on its build workload
 - **[Paid add-ons](#paid-add-ons)**: Additional enterprise-grade features are available as add-ons
 
 For a full breakdown of the features included in the Pro plan, see the [pricing page](https://vercel.com/pricing).
@@ -143314,8 +144121,39 @@ Follow the [Workflow SDK getting started guide](https://workflow-sdk.dev/docs/ge
 - [**Sleep and hooks**](/docs/workflows/concepts#sleep): Pause for minutes to months, or wait for external events.
 - [**Observability**](/docs/workflows#observability): Track runs in real time, trace failures, and analyze performance.
 - [**Streams**](https://workflow-sdk.dev/docs/foundations/streaming): Stream data in and out of workflows with managed persistence.
+- [**Multi-region**](/docs/workflows#multi-region): Run workflows close to your users across all Vercel Function regions.
 - [**Skew Protection**](/docs/workflows/concepts#skew-protection): Protect your workflows from version skew.
 - [**Usage-based pricing**](/docs/workflows/pricing): Pay only for Events, Data Written, and Data Retained.
+
+## Multi-region
+
+Workflows runs in every [Vercel Function region](/docs/regions). When a run starts, Workflows pins it to a single region and keeps its state, queue dispatch, and streams there for the run's lifetime. This avoids cross-region round trips on the hot path and contains the blast radius of a regional event to the runs pinned there.
+
+Reads, hook resumes, and stream consumers can come from anywhere. The platform routes them to the run's region automatically.
+
+### Automatic region pinning
+
+By default, Workflows pins a run to the region of the function that started it. No configuration needed:
+
+- Deploy your app to a single region and every run lives in that region.
+- Deploy your app to multiple regions and each run is pinned to the region that served the user who triggered it.
+
+### Explicit region selection
+
+To pin a run to a specific region, pass the `region` option to `start()`:
+
+```typescript filename="app/api/start-workflow/route.ts"
+import { start } from 'workflow/api';
+import { myWorkflow } from '@/workflows/my-workflow';
+
+const run = await start(myWorkflow, [input], { region: 'sfo1' });
+```
+
+The `region` option controls where the run's data is stored and where its queue messages are dispatched from. It does not deploy your code to that region. For step execution to happen in the selected region, deploy your app there. To do this, [configure Function regions](/docs/functions/configuring-functions/region) through the `regions` key in `vercel.json` or the Function Regions project setting. If you deploy your app to a region other than the requested one, the run's data stays in the requested region while its steps execute in the nearest deployed region.
+
+### Version and migration
+
+Multi-region requires `workflow` version `5.0.0-beta.33` or later. Runs created by the 4.x release line always live in `iad1`. Workflows locks each run's region at creation. To run in a different region, start a new run. Upgrading the SDK does not migrate runs created before the upgrade.
 
 ## Observability
 
@@ -143461,25 +144299,19 @@ Workflow SDK.
 
 ## Getting started
 
-Install the `vercel` package:
+Add the `vercel` package and workflow entrypoint to `pyproject.toml`:
 
-```bash filename="Terminal"
-pip install vercel
+```toml filename="pyproject.toml"
+[project]
+requires-python = ">=3.12"
+dependencies = ["vercel"]
+
+[[tool.vercel.workflows]]
+entrypoint = "app.workflows:wf"
 ```
 
-Configure `experimentalServices` in your `vercel.json`:
-
-```json filename="vercel.json"
-{
-  "experimentalServices": {
-    "ai_content_workflow": {
-      "type": "worker",
-      "entrypoint": "app/workflows/ai_content_workflow.py",
-      "topics": ["__wkf_*"]
-    }
-  }
-}
-```
+The workflow `entrypoint` uses the `module:object` format and points to the
+exported `Workflows` registry.
 
 ## Workflows
 
@@ -143505,6 +144337,16 @@ async def ai_content_workflow(*, topic: str):
         "draft": draft,
         "summary": summary,
     }
+```
+
+Export the registry from the workflow package and import the module containing
+your workflow so its definitions are registered:
+
+```python filename="app/workflows/__init__.py"
+from app.workflow import wf
+from app.workflows import ai_content_workflow
+
+__all__ = ["ai_content_workflow", "wf"]
 ```
 
 ## Steps

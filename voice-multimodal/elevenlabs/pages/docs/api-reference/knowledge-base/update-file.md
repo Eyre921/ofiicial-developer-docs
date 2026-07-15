@@ -204,6 +204,21 @@ components:
         - id
         - name
       title: KnowledgeBaseFolderPathSegmentResponseModel
+    ContentFormat:
+      type: string
+      enum:
+        - html
+        - markdown
+      default: html
+      description: >-
+        Canonical representation of a knowledge base document's stored content.
+
+
+        HTML is the legacy default; documents created before this field existed
+        are
+
+        interpreted as HTML.
+      title: ContentFormat
     AutoSyncInfo:
       type: object
       properties:
@@ -418,6 +433,9 @@ components:
               type: string
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
             auto_sync_info:
               oneOf:
                 - $ref: '#/components/schemas/AutoSyncInfo'
@@ -468,6 +486,9 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
             filename:
               type: string
             external_sync_info:
@@ -523,6 +544,9 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
           required:
             - type
             - id
@@ -638,7 +662,7 @@ components:
 
 ```json
 {
-  "file": "<file: SGVsbG8gV29ybGQ=>"
+  "file": "<file: U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl>"
 }
 ```
 
@@ -654,26 +678,23 @@ components:
     "role": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<p>Project Plan for Q3 2024 outlining milestones and deliverables.</p>",
-  "id": "doc_9f8b7c6a2d3e4f1a",
+  "extracted_inner_html": "<p>This is the extracted content from the PDF document for indexing and search.</p>",
+  "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
     "created_at_unix_secs": 1685600000,
     "last_updated_at_unix_secs": 1688201600,
-    "size_bytes": 245760
+    "size_bytes": 2457600
   },
-  "name": "Project Plan Q3 2024",
+  "name": "Product_Manual_2024.pdf",
   "supported_usages": [
     "auto"
   ],
-  "folder_parent_id": "folder_123abc456def",
+  "content_format": "html",
+  "folder_parent_id": "folder_9a8b7c6d5e4f3g2h1i0j",
   "folder_path": [
     {
-      "id": "folder_root",
-      "name": "Company Documents"
-    },
-    {
-      "id": "folder_123abc456def",
-      "name": "Project Plans"
+      "id": "folder_1234567890abcdef",
+      "name": "Product Documentation"
     }
   ],
   "auto_sync_info": {
@@ -725,7 +746,7 @@ func main() {
 
 	url := "https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file"
 
-	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"SGVsbG8gV29ybGQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+	payload := strings.NewReader("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
 
 	req, _ := http.NewRequest("PATCH", url, payload)
 
@@ -753,7 +774,7 @@ http.use_ssl = true
 
 request = Net::HTTP::Patch.new(url)
 request["Content-Type"] = 'multipart/form-data; boundary=---011000010111000001101001'
-request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"SGVsbG8gV29ybGQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
+request.body = "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n"
 
 response = http.request(request)
 puts response.read_body
@@ -765,7 +786,7 @@ import com.mashape.unirest.http.Unirest;
 
 HttpResponse<String> response = Unirest.patch("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file")
   .header("Content-Type", "multipart/form-data; boundary=---011000010111000001101001")
-  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"SGVsbG8gV29ybGQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
+  .body("-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n")
   .asString();
 ```
 
@@ -779,7 +800,7 @@ $response = $client->request('PATCH', 'https://api.elevenlabs.io/v1/convai/knowl
   'multipart' => [
     [
         'name' => 'file',
-        'filename' => 'SGVsbG8gV29ybGQ=',
+        'filename' => 'U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl',
         'contents' => null
     ]
   ]
@@ -793,7 +814,7 @@ using RestSharp;
 
 var client = new RestClient("https://api.elevenlabs.io/v1/convai/knowledge-base/documentation_id/update-file");
 var request = new RestRequest(Method.PATCH);
-request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"SGVsbG8gV29ybGQ=\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
+request.AddParameter("multipart/form-data; boundary=---011000010111000001101001", "-----011000010111000001101001\r\nContent-Disposition: form-data; name=\"file\"; filename=\"U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl\"\r\nContent-Type: application/octet-stream\r\n\r\n\r\n-----011000010111000001101001--\r\n", ParameterType.RequestBody);
 IRestResponse response = client.Execute(request);
 ```
 
@@ -804,7 +825,7 @@ let headers = ["Content-Type": "multipart/form-data; boundary=---011000010111000
 let parameters = [
   [
     "name": "file",
-    "fileName": "SGVsbG8gV29ybGQ="
+    "fileName": "U29tZSBiaW5hcnkgY29udGVudCBvZiBhIHBkZiBmaWxl"
   ]
 ]
 

@@ -119,13 +119,11 @@ This guide shows you how to set up and deploy a simple Supabase edge function ex
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>

@@ -102,9 +102,25 @@ components:
             Configuration for soft timeout functionality. Provides immediate
             feedback during longer LLM responses.
       title: TurnConfigOverride
+    TTSConversationalModel:
+      type: string
+      enum:
+        - eleven_turbo_v2
+        - eleven_turbo_v2_5
+        - eleven_flash_v2
+        - eleven_flash_v2_5
+        - eleven_multilingual_v2
+        - eleven_v3_conversational
+      default: eleven_flash_v2
+      title: TTSConversationalModel
     TTSConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          oneOf:
+            - $ref: '#/components/schemas/TTSConversationalModel'
+            - type: 'null'
+          description: The model to use for TTS
         voice_id:
           type:
             - string
@@ -556,7 +572,7 @@ components:
 ```json
 {
   "success": true,
-  "message": "Outbound call initiated successfully.",
+  "message": "Outbound call successfully initiated via Exotel.",
   "conversation_id": "conv_abc123xyz789",
   "callSid": "EXO1234567890abcdef"
 }

@@ -182,6 +182,21 @@ components:
       required:
         - id
       title: KnowledgeBaseFolderPathSegmentResponseModel
+    type_:ContentFormat:
+      type: string
+      enum:
+        - html
+        - markdown
+      default: html
+      description: >-
+        Canonical representation of a knowledge base document's stored content.
+
+
+        HTML is the legacy default; documents created before this field existed
+        are
+
+        interpreted as HTML.
+      title: ContentFormat
     type_:AutoSyncInfo:
       type: object
       properties:
@@ -376,6 +391,8 @@ components:
               type: string
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
             auto_sync_info:
               $ref: '#/components/schemas/type_:AutoSyncInfo'
           required:
@@ -422,6 +439,8 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
             filename:
               type: string
             external_sync_info:
@@ -473,6 +492,8 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
           required:
             - type
             - id
@@ -592,29 +613,30 @@ components:
     "anonymous_access_level_override": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<div><h1>ElevenLabs API Documentation</h1><p>Use this API to access ElevenLabs services programmatically.</p></div>",
+  "extracted_inner_html": "<h1>ElevenLabs API Documentation</h1><p>Use this API to access ElevenLabs services programmatically.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
-    "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1688201600,
-    "size_bytes": 20480
+    "created_at_unix_secs": 1685606400,
+    "last_updated_at_unix_secs": 1688208000,
+    "size_bytes": 45230
   },
   "name": "ElevenLabs API Documentation",
   "supported_usages": [
     "prompt"
   ],
-  "url": "https://elevenlabs.io/docs/api",
+  "url": "https://docs.elevenlabs.io/api/v1/convai/knowledge-base/21m00Tcm4TlvDq8ikWAM",
   "auto_sync_info": {
     "minimum_frequency_days": 7,
-    "auto_remove": true,
+    "auto_remove": false,
     "consec_failures": 0,
-    "next_refresh_by": 1688806400
+    "next_refresh_by": 1688812800
   },
-  "folder_parent_id": "root_folder_123",
+  "content_format": "html",
+  "folder_parent_id": "root_folder_01",
   "folder_path": [
     {
-      "id": "root_folder_123",
-      "name": "Root Folder"
+      "id": "root_folder_01",
+      "name": "API Documentation"
     }
   ]
 }

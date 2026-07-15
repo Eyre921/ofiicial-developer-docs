@@ -12,7 +12,7 @@ Learn about tax requirements for platforms and marketplaces, and how to enable S
 
 Many countries and US states require marketplace operators to collect sales tax and VAT on their facilitated sales. The US refers to these businesses as marketplace facilitators, while other regions, such as Europe, might refer to them as deemed sellers.
 
-As a marketplace operator, your tax collection requirements differ depending on the country or state. However, if your electronic interface enables transactions between buyers and sellers and you directly or indirectly collect customer payments, you might need to fulfill tax collection responsibilities.
+As a marketplace operator, your tax collection requirements differ depending on the country or state. However, if your electronic interface enables transactions between customers and sellers and you directly or indirectly collect customer payments, you might need to fulfill tax collection responsibilities.
 
 If your businesses operates a marketplace or platform, you must first determine whether they qualify as a marketplace facilitator or a deemed seller, then make sure that they maintain tax compliance. If you’re unsure about your business’s tax requirements, consult a tax advisor.
 

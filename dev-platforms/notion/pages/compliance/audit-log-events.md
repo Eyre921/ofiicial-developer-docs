@@ -294,6 +294,9 @@ Events are split into the following categories:
 * **Ability for managed users to edit their profile information updated**: That the ability for managed users to edit their profile information was updated for an organization.
 * **Ability for managed users to grant support access updated**: That the ability for managed users to grant support access was updated for an organization.
 * **Ability for managed users to join external workspaces updated**: That the ability for managed users to join external workspaces was updated for an organization.
+* **AI provider credential created**: That an AI provider credential was created for an organization.
+* **AI provider credential deleted**: That an AI provider credential was deleted for an organization.
+* **AI provider credential rotated**: That an AI provider credential was rotated for an organization.
 * **AI toggled for the organization**: That the AI feature setting was toggled for an organization.
 * **All managed users logged out**: That an admin has logged out every managed user account in the organization.
 * **All managed users’ passwords cleared**: That an admin has cleared all managed user accounts' passwords in the organization.

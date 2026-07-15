@@ -128,9 +128,23 @@ components:
             Configuration for soft timeout functionality. Provides immediate
             feedback during longer LLM responses.
       title: TurnConfigOverride
+    type_:TtsConversationalModel:
+      type: string
+      enum:
+        - eleven_turbo_v2
+        - eleven_turbo_v2_5
+        - eleven_flash_v2
+        - eleven_flash_v2_5
+        - eleven_multilingual_v2
+        - eleven_v3_conversational
+      default: eleven_flash_v2
+      title: TtsConversationalModel
     type_:TtsConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          $ref: '#/components/schemas/type_:TtsConversationalModel'
+          description: The model to use for TTS
         voice_id:
           type: string
           description: The voice ID to use for TTS
@@ -608,21 +622,21 @@ components:
   "status": "pending",
   "retry_count": 0,
   "telephony_call_config": {
-    "ringing_timeout_secs": 45
+    "ringing_timeout_secs": 60
   },
   "agent_name": "Support Agent Team A",
-  "phone_number_id": "phone_num_9876543210fedcba",
+  "phone_number_id": "phone_9876543210fedcba",
   "phone_provider": "twilio",
   "whatsapp_params": {
     "whatsapp_call_permission_request_template_name": "permission_request_template_01",
     "whatsapp_call_permission_request_template_language_code": "en_US",
-    "whatsapp_phone_number_id": "wa_num_1122334455"
+    "whatsapp_phone_number_id": "wa_phone_1122334455"
   },
-  "branch_id": "branch_nyc_001",
+  "branch_id": "branch_north_america_01",
   "environment": "production",
   "timezone": "America/New_York",
   "target_concurrency_limit": 20,
-  "branch_name": "New York City Branch"
+  "branch_name": "North America Support"
 }
 ```
 

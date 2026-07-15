@@ -24,7 +24,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Workflow syntax for GitHub Actions](/en/actions/reference/workflows-and-actions/workflow-syntax)
 
-  A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.
+  <p>A workflow is a configurable automated process made up of one or more jobs. You must create a YAML file to define your workflow configuration.</p>
 
 * [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 
@@ -32,7 +32,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Using artifact attestations to establish provenance for builds](/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations)
 
-  Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.
+  <p>Artifact attestations enable you to increase the supply chain security of your builds by establishing where and how your software was built.</p>
 
 * [Migrating to GitHub Actions](/en/actions/tutorials/migrate-to-github-actions)
 
@@ -40,7 +40,7 @@ Automate, customize, and execute your software development workflows right in yo
 
 * [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows)
 
-  Learn how to avoid duplication when creating a workflow by reusing existing workflows.
+  <p>Learn how to avoid duplication when creating a workflow by reusing existing workflows.</p>
 
 * [Viewing GitHub Actions metrics](/en/actions/how-tos/administer/view-metrics)
 

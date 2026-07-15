@@ -56,7 +56,7 @@ Never refund payments using a different method than the one originally used. If 
 
 If you run a marketplace business (such as a *Connect* (Connect is Stripe's solution for multi-party businesses, such as marketplace or software platforms, to route payments between sellers, customers, and other recipients) platform) where your users are responsible for providing service to your customers, this type of fraud occurs when a fraudulent business takes payments without providing the services or goods to customers.
 
-For example, a marketplace that connects buyers and sellers can run the risk of a seller taking payment from the buyer and not sending the goods. In such cases, if the funds can’t be recovered from the seller, [responsibility](https://docs.stripe.com/connect/account-balances.md#accounting-for-negative-balances) for the disputed amount and fee is ultimately on the platform.
+For example, a marketplace that connects customers and sellers can run the risk of a seller taking payment from the customer and not sending the goods. In such cases, if the funds can’t be recovered from the seller, [responsibility](https://docs.stripe.com/connect/account-balances.md#accounting-for-negative-balances) for the disputed amount and fee is ultimately on the platform.
 
 ## Friendly fraud 
 

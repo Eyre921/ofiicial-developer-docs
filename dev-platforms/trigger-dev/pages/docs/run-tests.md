@@ -6,18 +6,19 @@ path: docs/run-tests
 
 You can use the dashboard to run a test of your tasks.
 
-From the "Test" page in the side menu of the dashboard you can run a test for any of your tasks from any environment.
+You can run a test for any of your tasks, in any environment, from the dashboard.
 
-<img alt="Select an environment" />
+<Note>
+  There is no longer a "Test" page in the sidebar. You test a task from the task itself: on the
+  Tasks page open a task (or use the "Test" action next to a task in the Runs list) and press the
+  "Test" button to open its test page.
+</Note>
 
-<Icon icon="circle-1" /> Select a task to test
+On a task's test page you can:
 
-<Icon icon="circle-2" /> Include a payload or metadata
+* Enter the run's input — a JSON **payload** and optional **metadata**. Scheduled tasks show timestamp fields instead of a payload.
+* Configure run **options** like the machine size, version, queue, tags, retries, max duration, or a delay.
+* Pre-populate the form from a previous run with **Recent runs**, or save and reuse a configuration with **Templates**.
+* Press **Run test** to trigger the run.
 
-<Icon icon="circle-3" /> Configure any additional options like the machine size, queue or delay
-
-<Icon icon="circle-4" /> Select from previous test runs
-
-<Icon icon="circle-5" /> Save the current test configuration as a template for later
-
-<Icon icon="circle-6" /> Run the test
+<img alt="Test page" />

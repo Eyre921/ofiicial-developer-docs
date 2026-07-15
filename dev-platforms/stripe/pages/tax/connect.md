@@ -20,7 +20,7 @@ Stripe Tax is designed to support different multi-party use cases:
 | --- | --- | --- |
 | [Tax for software platforms](https://docs.stripe.com/tax/tax-for-platforms.md) | - You’re a SaaS platform that enables other businesses with software services to reach their customers.
 - Your *connected accounts* assume responsibility for collecting and remitting taxes. | - An e-commerce platform like Shopify or Squarespace that enables businesses to build their own online stores to sell directly to customers. |
-| [Tax for marketplaces](https://docs.stripe.com/tax/tax-for-marketplaces.md) | - You’re a marketplace that connects buyers and sellers on a single platform, typically through websites or apps where products are listed by various third-party vendors.
+| [Tax for marketplaces](https://docs.stripe.com/tax/tax-for-marketplaces.md) | - You’re a marketplace that connects customers and sellers on a single platform, typically through websites or apps where products are listed by various third-party vendors.
 - Your *platform* assumes responsibility for collecting and remitting taxes. | - An e-commerce marketplace like Etsy or Amazon that allows a single shopping cart for goods sold by multiple businesses. |
 
 [Stripe Connect’s distinction between SaaS platforms and marketplaces](https://docs.stripe.com/connect/how-connect-works.md#use-cases) doesn’t strictly correspond to the tax definition of marketplaces that are responsible for tax collection. Consult with a tax advisor who understands your business model to determine the tax obligations for both your platform and your connected accounts.

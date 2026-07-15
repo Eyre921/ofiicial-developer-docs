@@ -10,7 +10,7 @@ path: docs/api-reference/history/list
 
 GET https://api.elevenlabs.io/v1/history
 
-Returns a list of your generated audio.
+Returns a list of your generated audio (e.g. text to speech, speech to speech, Studio, dubbing). Music and SFX generations are not included and cannot currently be retrieved via the API.
 
 Reference: https://elevenlabs.io/docs/api-reference/history/list
 
@@ -26,7 +26,10 @@ paths:
     get:
       operationId: list
       summary: Get generated items
-      description: Returns a list of your generated audio.
+      description: >-
+        Returns a list of your generated audio (e.g. text to speech, speech to
+        speech, Studio, dubbing). Music and SFX generations are not included and
+        cannot currently be retrieved via the API.
       tags:
         - history
       parameters:

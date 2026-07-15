@@ -1,6 +1,6 @@
 # ai-models/together 文档索引
 
-> 共 264 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 266 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -137,6 +137,7 @@
 - `docs/kimi-k2-quickstart` — [Kimi K2 quickstart](pages/docs/kimi-k2-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2-quickstart)
 - `docs/kimi-k2-thinking-quickstart` — [Kimi K2 Thinking quickstart](pages/docs/kimi-k2-thinking-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2-thinking-quickstart)
 - `docs/kimi-k2.6-quickstart` — [Kimi K2.6 quickstart](pages/docs/kimi-k2.6-quickstart.md) · [原文](https://docs.together.ai/docs/kimi-k2.6-quickstart)
+- `docs/kueue-on-gpu-clusters` — [Queue GPU jobs with Kueue](pages/docs/kueue-on-gpu-clusters.md) · [原文](https://docs.together.ai/docs/kueue-on-gpu-clusters)
 - `docs/langgraph` — [LangGraph](pages/docs/langgraph.md) · [原文](https://docs.together.ai/docs/langgraph)
 - `docs/mixture-of-agents` — [Together mixture of agents (MoA)](pages/docs/mixture-of-agents.md) · [原文](https://docs.together.ai/docs/mixture-of-agents)
 - `docs/nanochat-on-instant-clusters` — [Run nanochat on instant clusters](pages/docs/nanochat-on-instant-clusters.md) · [原文](https://docs.together.ai/docs/nanochat-on-instant-clusters)
@@ -170,6 +171,7 @@
 - `docs/together-deployments` — [Architecture](pages/docs/together-deployments.md) · [原文](https://docs.together.ai/docs/together-deployments)
 - `docs/using-together-with-mastra` — [Mastra quickstart](pages/docs/using-together-with-mastra.md) · [原文](https://docs.together.ai/docs/using-together-with-mastra)
 - `docs/using-together-with-vercels-ai-sdk` — [Vercel AI SDK quickstart](pages/docs/using-together-with-vercels-ai-sdk.md) · [原文](https://docs.together.ai/docs/using-together-with-vercels-ai-sdk)
+- `docs/volcano-on-gpu-clusters` — [Gang-schedule GPU jobs with Volcano](pages/docs/volcano-on-gpu-clusters.md) · [原文](https://docs.together.ai/docs/volcano-on-gpu-clusters)
 - `docs/wan2.7-quickstart` — [Wan 2.7 quickstart](pages/docs/wan2.7-quickstart.md) · [原文](https://docs.together.ai/docs/wan2.7-quickstart)
 - `docs/workflows` — [Agent workflows](pages/docs/workflows.md) · [原文](https://docs.together.ai/docs/workflows)
 

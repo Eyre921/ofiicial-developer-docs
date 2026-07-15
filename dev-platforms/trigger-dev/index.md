@@ -1,6 +1,6 @@
 # dev-platforms/trigger-dev 文档索引
 
-> 共 307 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 310 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -187,6 +187,10 @@
 - `docs/management/batches/retrieve` — [Retrieve a batch](pages/docs/management/batches/retrieve.md) · [原文](https://trigger.dev/docs/management/batches/retrieve)
 - `docs/management/batches/retrieve-results` — [Retrieve batch results](pages/docs/management/batches/retrieve-results.md) · [原文](https://trigger.dev/docs/management/batches/retrieve-results)
 - `docs/management/batches/stream-items` — [Stream batch items](pages/docs/management/batches/stream-items.md) · [原文](https://trigger.dev/docs/management/batches/stream-items)
+- `docs/management/bulk-actions/abort` — [Abort bulk action](pages/docs/management/bulk-actions/abort.md) · [原文](https://trigger.dev/docs/management/bulk-actions/abort)
+- `docs/management/bulk-actions/create` — [Create bulk action](pages/docs/management/bulk-actions/create.md) · [原文](https://trigger.dev/docs/management/bulk-actions/create)
+- `docs/management/bulk-actions/list` — [List bulk actions](pages/docs/management/bulk-actions/list.md) · [原文](https://trigger.dev/docs/management/bulk-actions/list)
+- `docs/management/bulk-actions/retrieve` — [Retrieve bulk action](pages/docs/management/bulk-actions/retrieve.md) · [原文](https://trigger.dev/docs/management/bulk-actions/retrieve)
 - `docs/management/deployments/get-latest` — [Get latest deployment](pages/docs/management/deployments/get-latest.md) · [原文](https://trigger.dev/docs/management/deployments/get-latest)
 - `docs/management/deployments/list` — [List deployments](pages/docs/management/deployments/list.md) · [原文](https://trigger.dev/docs/management/deployments/list)
 - `docs/management/deployments/promote` — [Promote deployment](pages/docs/management/deployments/promote.md) · [原文](https://trigger.dev/docs/management/deployments/promote)
@@ -214,7 +218,6 @@
 - `docs/management/queues/pause` — [Pause or Resume Queue](pages/docs/management/queues/pause.md) · [原文](https://trigger.dev/docs/management/queues/pause)
 - `docs/management/queues/retrieve` — [Retrieve Queue](pages/docs/management/queues/retrieve.md) · [原文](https://trigger.dev/docs/management/queues/retrieve)
 - `docs/management/runs/add-tags` — [Add tags to a run](pages/docs/management/runs/add-tags.md) · [原文](https://trigger.dev/docs/management/runs/add-tags)
-- `docs/management/runs/bulk-actions` — [Bulk actions](pages/docs/management/runs/bulk-actions.md) · [原文](https://trigger.dev/docs/management/runs/bulk-actions)
 - `docs/management/runs/cancel` — [Cancel run](pages/docs/management/runs/cancel.md) · [原文](https://trigger.dev/docs/management/runs/cancel)
 - `docs/management/runs/list` — [List runs](pages/docs/management/runs/list.md) · [原文](https://trigger.dev/docs/management/runs/list)
 - `docs/management/runs/replay` — [Replay run](pages/docs/management/runs/replay.md) · [原文](https://trigger.dev/docs/management/runs/replay)
@@ -256,7 +259,6 @@
 - `docs/observability/dashboards` — [Dashboards](pages/docs/observability/dashboards.md) · [原文](https://trigger.dev/docs/observability/dashboards)
 - `docs/observability/query` — [Query](pages/docs/observability/query.md) · [原文](https://trigger.dev/docs/observability/query)
 - `docs/open-source-contributing` — [Contributing](pages/docs/open-source-contributing.md) · [原文](https://trigger.dev/docs/open-source-contributing)
-- `docs/open-source-self-hosting` — [Docker (legacy)](pages/docs/open-source-self-hosting.md) · [原文](https://trigger.dev/docs/open-source-self-hosting)
 - `docs/private-networking/aws-console-setup` — [Setting up PrivateLink in the AWS Console](pages/docs/private-networking/aws-console-setup.md) · [原文](https://trigger.dev/docs/private-networking/aws-console-setup)
 - `docs/private-networking/overview` — [Private networking](pages/docs/private-networking/overview.md) · [原文](https://trigger.dev/docs/private-networking/overview)
 - `docs/private-networking/troubleshooting` — [Troubleshooting private networking](pages/docs/private-networking/troubleshooting.md) · [原文](https://trigger.dev/docs/private-networking/troubleshooting)
@@ -281,6 +283,7 @@
 - `docs/run-tests` — [Run tests](pages/docs/run-tests.md) · [原文](https://trigger.dev/docs/run-tests)
 - `docs/run-usage` — [Usage](pages/docs/run-usage.md) · [原文](https://trigger.dev/docs/run-usage)
 - `docs/runs` — [Runs](pages/docs/runs.md) · [原文](https://trigger.dev/docs/runs)
+- `docs/runs/bulk-actions` — [Bulk actions](pages/docs/runs/bulk-actions.md) · [原文](https://trigger.dev/docs/runs/bulk-actions)
 - `docs/runs/heartbeats` — [Heartbeats](pages/docs/runs/heartbeats.md) · [原文](https://trigger.dev/docs/runs/heartbeats)
 - `docs/runs/max-duration` — [Max duration](pages/docs/runs/max-duration.md) · [原文](https://trigger.dev/docs/runs/max-duration)
 - `docs/runs/metadata` — [Run metadata](pages/docs/runs/metadata.md) · [原文](https://trigger.dev/docs/runs/metadata)

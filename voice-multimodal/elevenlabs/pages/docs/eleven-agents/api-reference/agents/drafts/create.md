@@ -1173,6 +1173,9 @@ components:
     type_:TtsConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          $ref: '#/components/schemas/type_:TtsConversationalModel'
+          description: The model to use for TTS
         voice_id:
           type: string
           description: The voice ID to use for TTS

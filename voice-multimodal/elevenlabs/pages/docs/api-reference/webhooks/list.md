@@ -94,6 +94,13 @@ components:
       required:
         - usage_type
       title: WorkspaceWebhookUsageResponseModel
+    WorkspaceWebhookEventType:
+      type: string
+      enum:
+        - voice_library_removal_notice
+        - speech_to_text
+        - agent_qa
+      title: WorkspaceWebhookEventType
     WorkspaceWebhookResponseModel:
       type: object
       properties:
@@ -131,6 +138,15 @@ components:
           description: >-
             The list of products that are currently configured to trigger this
             webhook.
+        events:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/WorkspaceWebhookEventType'
+          description: >-
+            The workspace-level events this webhook is currently subscribed to.
+            Only populated when usages are requested.
         most_recent_failure_error_code:
           type:
             - integer

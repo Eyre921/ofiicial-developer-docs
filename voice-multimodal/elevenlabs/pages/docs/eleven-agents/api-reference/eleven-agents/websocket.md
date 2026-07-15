@@ -1054,9 +1054,24 @@ components:
             feedback during longer LLM responses.
       description: Configuration for turn detection
       title: ConversationInitiationClientDataConversationConfigOverrideTurn
+    ConversationInitiationClientDataConversationConfigOverrideTtsModelId:
+      type: string
+      enum:
+        - eleven_turbo_v2
+        - eleven_turbo_v2_5
+        - eleven_flash_v2
+        - eleven_flash_v2_5
+        - eleven_multilingual_v2
+        - eleven_v3_conversational
+      description: The model to use for TTS
+      title: ConversationInitiationClientDataConversationConfigOverrideTtsModelId
     ConversationInitiationClientDataConversationConfigOverrideTts:
       type: object
       properties:
+        model_id:
+          $ref: >-
+            #/components/schemas/ConversationInitiationClientDataConversationConfigOverrideTtsModelId
+          description: The model to use for TTS
         voice_id:
           type: string
           description: The voice ID to use for TTS

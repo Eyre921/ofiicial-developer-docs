@@ -2705,35 +2705,35 @@ Add an endpoint on your server that creates a [PaymentIntent](https://docs.strip
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Add Stripe to your React app
 
@@ -3233,35 +3233,35 @@ Add an endpoint on your server that creates a [PaymentIntent](https://docs.strip
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Install the SDK
 
@@ -3581,35 +3581,35 @@ Add an endpoint on your server that creates a [PaymentIntent](https://docs.strip
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Configure payment methods
 
-Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and buyer location.
+Stripe enables cards and other common payment methods by default with [dynamic payment methods](https://docs.stripe.com/payments/payment-methods/dynamic-payment-methods.md). You can update and configure payment methods from the [Dashboard](https://dashboard.stripe.com/settings/payment_methods) with no code required. Stripe filters payment methods based on eligibility and payment method preferences, then orders and displays them by probability based on factors including amount, currency, and customer location.
 
 ### Install the SDK
 

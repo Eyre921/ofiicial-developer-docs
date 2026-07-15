@@ -144,7 +144,7 @@ Any parameters provided directly to the PaymentIntent or SetupIntent at confirma
 
 ## Optional: Setting conditional parameters setup_future_usage or capture_method based on payment method
 
-With a [ConfirmationToken](https://docs.stripe.com/api/confirmation_tokens/object.md), we’ve added extra validations to make sure that your client settings are consistent with your server settings. This could conflict with your integration if you’re conditionally setting `setup_future_usage` or `capture_method` on the `PaymentIntent` or `SetupIntent` based on the payment method chosen by the end buyer. If you run into this issue, the correct way to integrate is the following:
+With a [ConfirmationToken](https://docs.stripe.com/api/confirmation_tokens/object.md), we’ve added extra validations to make sure that your client settings are consistent with your server settings. This could conflict with your integration if you’re conditionally setting `setup_future_usage` or `capture_method` on the `PaymentIntent` or `SetupIntent` based on the payment method chosen by the end customer. If you run into this issue, the correct way to integrate is the following:
 
 1. Do *not* set `setup_future_usage` or `capture_method` when instantiating Elements.
 2. Do *not* set `setup_future_usage` or `capture_method` for the higher level parameter on the Intent (for example, `paymentIntent.create({ setup_future_usage = 'off_session'})`).

@@ -2208,7 +2208,7 @@ components:
         cascade_timeout_seconds:
           type: number
           format: double
-          default: 8
+          default: 4
           description: >-
             Time in seconds before cascading to backup LLM. Must be between 2
             and 15 seconds.

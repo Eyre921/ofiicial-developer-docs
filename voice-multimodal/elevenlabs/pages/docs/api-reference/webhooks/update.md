@@ -74,6 +74,13 @@ servers:
     description: Production Singapore
 components:
   schemas:
+    WorkspaceWebhookEventType:
+      type: string
+      enum:
+        - voice_library_removal_notice
+        - speech_to_text
+        - agent_qa
+      title: WorkspaceWebhookEventType
     Body_Update_workspace_webhook_v1_workspace_webhooks__webhook_id__patch:
       type: object
       properties:
@@ -99,6 +106,17 @@ components:
           description: >-
             A list of request headers to include with the webhook delivery
             (optional)
+        events:
+          type:
+            - array
+            - 'null'
+          items:
+            $ref: '#/components/schemas/WorkspaceWebhookEventType'
+          description: >-
+            The complete set of workspace-level events this webhook should be
+            subscribed to. The webhook is added to the events in the list and
+            removed from any not in the list. Omit to leave the current event
+            subscriptions unchanged.
       required:
         - is_disabled
         - name

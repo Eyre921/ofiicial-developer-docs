@@ -283,7 +283,7 @@ You can display your return, refund, and legal policies on the payment page in a
 
 Go to the [Checkout and Payment Links settings](https://dashboard.stripe.com/settings/checkout) to configure the information you want to display.
 
-Presenting this information can increase buyer confidence and minimize [cart abandonment](https://docs.stripe.com/payments/checkout/abandoned-carts.md).
+Presenting this information can increase customer confidence and minimize [cart abandonment](https://docs.stripe.com/payments/checkout/abandoned-carts.md).
 
 ## Customize checkout with URL parameters 
 

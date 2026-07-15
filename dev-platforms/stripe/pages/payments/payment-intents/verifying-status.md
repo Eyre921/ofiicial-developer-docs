@@ -105,7 +105,7 @@ Stripe can send *webhook* (A webhook is a real-time push notification sent to yo
 
 Don’t attempt to handle order *fulfillment* (Fulfillment is the process of providing the goods or services purchased by a customer, typically after payment is collected) on the client side because customers can leave the page after payment is complete but before the fulfillment process initiates. Instead, use webhooks to monitor the `payment_intent.succeeded` event and handle its completion asynchronously instead of attempting to initiate fulfillment on the client side.
 
-> It’s technically possible to use polling instead of webhooks to monitor for changes caused by asynchronous operations—repeatedly retrieving a PaymentIntent so that you can check its status—but doing so is much less reliable and might cause rate limiiting issues. Stripe enforces [rate limiting](https://docs.stripe.com/testing.md#rate-limits) on API requests, so exercise caution if you decide to use polling.
+> You can use polling instead of webhooks to monitor for changes caused by asynchronous operations—repeatedly retrieving a PaymentIntent to check its status—but it’s much less reliable and might trigger rate limits. Stripe enforces [rate limits](https://docs.stripe.com/testing.md#rate-limits) on API requests, so use caution if you use polling.
 
 To handle a webhook event, create a route on your server and configure a corresponding webhook endpoint [in the Dashboard](https://dashboard.stripe.com/account/webhooks). Stripe sends the `payment_intent.succeeded` event when a payment succeeds, and the `payment_intent.payment_failed` event when a payment fails.
 

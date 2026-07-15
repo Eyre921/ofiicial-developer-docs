@@ -168,6 +168,21 @@ components:
       required:
         - id
       title: KnowledgeBaseFolderPathSegmentResponseModel
+    type_:ContentFormat:
+      type: string
+      enum:
+        - html
+        - markdown
+      default: html
+      description: >-
+        Canonical representation of a knowledge base document's stored content.
+
+
+        HTML is the legacy default; documents created before this field existed
+        are
+
+        interpreted as HTML.
+      title: ContentFormat
     type_:AutoSyncInfo:
       type: object
       properties:
@@ -362,6 +377,8 @@ components:
               type: string
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
             auto_sync_info:
               $ref: '#/components/schemas/type_:AutoSyncInfo'
           required:
@@ -408,6 +425,8 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
             filename:
               type: string
             external_sync_info:
@@ -459,6 +478,8 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
           required:
             - type
             - id
@@ -582,8 +603,8 @@ components:
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
     "created_at_unix_secs": 1685600000,
-    "last_updated_at_unix_secs": 1688200000,
-    "size_bytes": 45230
+    "last_updated_at_unix_secs": 1688201600,
+    "size_bytes": 24576
   },
   "name": "ElevenLabs API Documentation",
   "supported_usages": [
@@ -594,12 +615,13 @@ components:
     "minimum_frequency_days": 7,
     "auto_remove": true,
     "consec_failures": 0,
-    "next_refresh_by": 1688800000
+    "next_refresh_by": 1688806400
   },
+  "content_format": "html",
   "folder_parent_id": null,
   "folder_path": [
     {
-      "id": "rootfolder123",
+      "id": "rootFolder123",
       "name": "Root"
     }
   ]

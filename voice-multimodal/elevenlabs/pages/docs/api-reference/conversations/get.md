@@ -1110,9 +1110,25 @@ components:
             Configuration for soft timeout functionality. Provides immediate
             feedback during longer LLM responses.
       title: TurnConfigOverride
+    TTSConversationalModel:
+      type: string
+      enum:
+        - eleven_turbo_v2
+        - eleven_turbo_v2_5
+        - eleven_flash_v2
+        - eleven_flash_v2_5
+        - eleven_multilingual_v2
+        - eleven_v3_conversational
+      default: eleven_flash_v2
+      title: TTSConversationalModel
     TTSConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          oneOf:
+            - $ref: '#/components/schemas/TTSConversationalModel'
+            - type: 'null'
+          description: The model to use for TTS
         voice_id:
           type:
             - string
@@ -2794,13 +2810,14 @@ components:
 
 ```json
 {
-  "agent_id": "123",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
   "status": "processing",
   "metadata": {
     "start_time_unix_secs": 1714423232,
-    "call_duration_secs": 10
+    "call_duration_secs": 10,
+    "cost_fiat": 1.1
   },
-  "conversation_id": "123",
+  "conversation_id": "conv_7401k5m9x2p8ec3rqv6dtnhb0fzw",
   "has_audio": true,
   "has_user_audio": true,
   "has_response_audio": true,
@@ -2811,7 +2828,11 @@ components:
       "time_in_call_secs": 10,
       "message": "Hello, how are you?"
     }
-  ]
+  ],
+  "agent_name": "My agent",
+  "version_id": "agtvrsn_5xM3yVvZQKV0EfqQpLr2",
+  "environment": "production",
+  "tag_ids": []
 }
 ```
 
@@ -2821,10 +2842,8 @@ components:
 import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
-    const client = new ElevenLabsClient({
-        apiKey: "xi-api-key",
-    });
-    await client.conversationalAi.conversations.get("123", {});
+    const client = new ElevenLabsClient();
+    await client.conversationalAi.conversations.get("conversation_id", {});
 }
 main();
 
@@ -2833,12 +2852,10 @@ main();
 ```python
 from elevenlabs import ElevenLabs
 
-client = ElevenLabs(
-    api_key="xi-api-key",
-)
+client = ElevenLabs()
 
 client.conversational_ai.conversations.get(
-    conversation_id="123",
+    conversation_id="conversation_id",
 )
 
 ```
@@ -2854,11 +2871,9 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/123"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/conversation_id"
 
 	req, _ := http.NewRequest("GET", url, nil)
-
-	req.Header.Add("xi-api-key", "xi-api-key")
 
 	res, _ := http.DefaultClient.Do(req)
 
@@ -2875,13 +2890,12 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/123")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/conversation_id")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
 
 request = Net::HTTP::Get.new(url)
-request["xi-api-key"] = 'xi-api-key'
 
 response = http.request(request)
 puts response.read_body
@@ -2891,8 +2905,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/123")
-  .header("xi-api-key", "xi-api-key")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/conversation_id")
   .asString();
 ```
 
@@ -2902,11 +2915,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/123', [
-  'headers' => [
-    'xi-api-key' => 'xi-api-key',
-  ],
-]);
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/conversation_id');
 
 echo $response->getBody();
 ```
@@ -2914,22 +2923,18 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/123");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/conversation_id");
 var request = new RestRequest(Method.GET);
-request.AddHeader("xi-api-key", "xi-api-key");
 IRestResponse response = client.Execute(request);
 ```
 
 ```swift
 import Foundation
 
-let headers = ["xi-api-key": "xi-api-key"]
-
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/123")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/conversation_id")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"
-request.allHTTPHeaderFields = headers
 
 let session = URLSession.shared
 let dataTask = session.dataTask(with: request as URLRequest, completionHandler: { (data, response, error) -> Void in

@@ -52,7 +52,7 @@ Stripe calculates tax on a cross-border transaction taking into account the foll
 
 - The location of your business.
 - The tax registrations you’ve added to Stripe.
-- The location of the buyer.
+- The location of the customer.
 - The location where the activity is performed.
 - The type of the product sold (based on which [product tax code](https://docs.stripe.com/tax/tax-codes.md) you assigned to your product).
 - The status of the customer (whether they’re an individual or a business).

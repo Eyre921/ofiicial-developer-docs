@@ -80468,7 +80468,7 @@ begin
   -- Step 1: Check for explicit allow
   select count(*) into allow_count
   from public.signup_networks
-  where type = 'allow' and ip::inet << cidr;
+  where type = 'allow' and ip <<= cidr;
 
   if allow_count > 0 then
     -- If explicitly allowed, allow signup
@@ -80478,7 +80478,7 @@ begin
   -- Step 2: Check for explicit deny
   select count(*) into deny_count
   from public.signup_networks
-  where type = 'deny' and ip::inet << cidr;
+  where type = 'deny' and ip <<= cidr;
 
   if deny_count > 0 then
     return jsonb_build_object(
@@ -138406,13 +138406,17 @@ At this stage you have a fully functional application!
 
 Supabase integrates with many of your favorite third-party services.
 
+## Dashboard Integrations
+
+Install and manage extensions, wrappers, and Postgres Modules directly into your project in a couple of clicks. [Browse Dashboard Integrations](https://supabase.com/dashboard/project/_/integrations)
+
+## Partner Catalog
+
+Browse a curated list of Partners who offer one-click integrations, guides or other ways to extend your Supabase project. [Browse the Partner Catalog](https://supabase.com/partners/catalog)
+
 ## Vercel Marketplace
 
 Create and manage your Supabase projects directly through Vercel. [Get started with Vercel](https://supabase.com/docs/guides/integrations/vercel-marketplace).
-
-## Supabase Marketplace
-
-Browse tools for extending your Supabase project. [Browse the Supabase Marketplace](https://supabase.com/partners/integrations).
 
 
 ---
@@ -138620,6 +138624,41 @@ You can update scopes of your OAuth app at any time, but existing OAuth app user
 | `Secrets`        | `Write` | Create or update a project's secretsUpdate a project's pgsodium configuration                                                                                                                                                                            |
 | `Storage`        | `Read`  | Retrieve a project's storage buckets.                                                                                                                                                                                                                    |
 |                  |         |                                                                                                                                                                                                                                                          |
+
+
+---
+
+# Partner Catalog
+
+Integrations and Partners
+
+The [Partner Catalog](https://supabase.com/partners/catalog) is Supabase's public directory of third-party integrations. It lists tools that extend your Supabase project. These tools cover Auth, Caching, Hosting, and Low-code categories.
+
+The Partner Catalog is different from [Dashboard Integrations](https://supabase.com/guides/integrations#dashboard-integrations). You install Dashboard Integrations directly from a project in the Supabase Dashboard.
+
+## Build an integration
+
+Supabase provides several integration points:
+
+- The [Postgres connection](https://supabase.com/docs/guides/database/connecting-to-postgres). Anything that works with Postgres also works with Supabase projects.
+- The [Project REST API](https://supabase.com/docs/guides/api#rest-api-overview) & client libraries.
+- The [Project GraphQL API](https://supabase.com/docs/guides/api#graphql-api-overview).
+- The [Platform API](https://supabase.com/docs/reference/api).
+
+## List your integration
+
+[Apply to the Partners program](https://supabase.com/partners/catalog#become-a-partner) to list your integration in the Partner Catalog and in the Supabase docs.
+
+Integrations are assessed on the following criteria:
+
+- **Business viability**
+  While we welcome everyone to built an integration, we only list companies that are deemed to be long-term viable. This includes an official business registration and bank account, meaningful revenue, or Venture Capital backing. We require this criteria to ensure the health of the catalog.
+- **Compliance**
+  Integrations should not infringe on the Supabase brand/trademark. In short, you cannot use "Supabase" in the name. As the listing appears on the Supabase domain, we don't want to mislead developers into thinking that an integration is an official product.
+- **Service Level Agreements**
+  All listings are required to have their own Terms and Conditions, Privacy Policy, and Acceptable Use Policy, and the company must have resources to meet their SLAs.
+- **Maintainability**
+  All integrations are required to be maintained and functional with Supabase, and the company may be assessed on your ability to remain functional over a long time horizon.
 
 
 ---
@@ -139289,42 +139328,6 @@ curl 'https://api.supabase.com/v1/projects/{ref}/analytics/endpoints/logs.all' \
   --data-urlencode 'iso_timestamp_start=2025-03-23T00:00:00Z' \
   --data-urlencode 'iso_timestamp_end=2025-03-23T01:00:00Z'
 ```
-
-
----
-
-# Supabase Marketplace
-
-Integrations and Partners
-
-The Supabase Marketplace brings together all the tools you need to extend your Supabase project. This includes:
-
-- [Experts](https://supabase.com/partners/experts) - partners to help you build and support your Supabase project.
-- [Integrations](https://supabase.com/partners/integrations) - extend your projects with external Auth, Caching, Hosting, and Low-code tools.
-
-## Build an integration
-
-Supabase provides several integration points:
-
-- The [Postgres connection](https://supabase.com/docs/guides/database/connecting-to-postgres). Anything that works with Postgres also works with Supabase projects.
-- The [Project REST API](https://supabase.com/docs/guides/api#rest-api-overview) & client libraries.
-- The [Project GraphQL API](https://supabase.com/docs/guides/api#graphql-api-overview).
-- The [Platform API](https://supabase.com/docs/reference/api).
-
-## List your integration
-
-[Apply to the Partners program](https://supabase.com/partners/integrations#become-a-partner) to list your integration in the Partners marketplace and in the Supabase docs.
-
-Integrations are assessed on the following criteria:
-
-- **Business viability**
-  While we welcome everyone to built an integration, we only list companies that are deemed to be long-term viable. This includes an official business registration and bank account, meaningful revenue, or Venture Capital backing. We require this criteria to ensure the health of the marketplace.
-- **Compliance**
-  Integrations should not infringe on the Supabase brand/trademark. In short, you cannot use "Supabase" in the name. As the listing appears on the Supabase domain, we don't want to mislead developers into thinking that an integration is an official product.
-- **Service Level Agreements**
-  All listings are required to have their own Terms and Conditions, Privacy Policy, and Acceptable Use Policy, and the company must have resources to meet their SLAs.
-- **Maintainability**
-  All integrations are required to be maintained and functional with Supabase, and the company may be assessed on your ability to remain functional over a long time horizon.
 
 
 ---

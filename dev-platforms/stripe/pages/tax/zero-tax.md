@@ -56,7 +56,7 @@ The most common reasons for a zero tax result are the following:
 | Not registered | `not_collecting` | You must register before collecting tax in a jurisdiction. You can specify where you’re registered to collect tax on [the Tax settings page](https://dashboard.stripe.com/settings/tax). |
 | Sale treated as non-taxable | `not_collecting` | You applied the product tax code `txcd_00000000` to treat the transaction as non-taxable. |
 | Exempt products | `product_exempt` | The product is exempt from tax. |
-| Reverse charge | `reverse_charge` | Transactions between two businesses might be subject to reverse charge. In these cases, the buyer is responsible for accounting for the VAT due under the reverse charge. |
+| Reverse charge | `reverse_charge` | Transactions between two businesses might be subject to reverse charge. In these cases, the customer is responsible for accounting for the VAT due under the reverse charge. |
 | Exempt customers | `customer_exempt` | Some customers are exempt from paying indirect tax in certain jurisdictions. You can specify when a customer is exempt on the Customer object. |
 | Product or territory not supported | `not_supported` | Stripe Tax doesn’t support the country or territory, or doesn’t support the product in the jurisdiction where tax is due. |
 | No tax due | `not_subject_to_tax` | - The jurisdiction doesn’t impose a tax.
@@ -80,16 +80,16 @@ Learn more about how to [register for sales tax, VAT, and GST](https://docs.stri
 
 ### Exempt or zero-rated products
 
-Products might be exempt or zero-rated in some jurisdictions. Both conditions result in no tax charged to the buyer, but the implications for the seller differ:
+Products might be exempt or zero-rated in some jurisdictions. Both conditions result in no tax charged to the customer, but the implications for the seller differ:
 
 - Exempt products: These products aren’t subject to VAT, and sellers typically can’t reclaim input VAT on costs related to producing or supplying them.
-- Zero-rated products: These products are technically taxable, but a 0% VAT rate is applied. The buyer pays no tax, but sellers can usually reclaim input VAT on related expenses.
+- Zero-rated products: These products are technically taxable, but a 0% VAT rate is applied. The customer pays no tax, but sellers can usually reclaim input VAT on related expenses.
 
 If you don’t want to collect tax on a given product, tell Stripe Tax to treat it as non-taxable by assigning it tax code Nontaxable (`txcd_00000000`). Otherwise, Stripe Tax automatically determines when a product is exempt or zero-rated.
 
 ### Reverse charge 
 
-In most transactions, the seller is responsible for collecting and remitting tax owed by the buyer. However, in a reverse charge transaction, the buyer must calculate and remit the tax. In this scenario, the seller’s invoice specifies that the transaction is subject to reverse charge and doesn’t include tax in the total amount. Reverse charge is common in the cross-border sale of B2B services.
+In most transactions, the seller is responsible for collecting and remitting tax owed by the customer. However, in a reverse charge transaction, the customer must calculate and remit the tax. In this scenario, the seller’s invoice specifies that the transaction is subject to reverse charge and doesn’t include tax in the total amount. Reverse charge is common in the cross-border sale of B2B services.
 
 Stripe Tax automatically applies the reverse charge based on the presence of a tax ID and the jurisdictions involved in the transaction. You can also set a customer’s tax status to reverse charge using the API or the Dashboard. Learn more about [tax IDs](https://docs.stripe.com/billing/customer/tax-ids.md) and the [Customer object](https://docs.stripe.com/invoicing/customer.md).
 

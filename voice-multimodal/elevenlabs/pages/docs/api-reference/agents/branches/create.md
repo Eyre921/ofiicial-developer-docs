@@ -1318,6 +1318,11 @@ components:
     TTSConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          oneOf:
+            - $ref: '#/components/schemas/TTSConversationalModel'
+            - type: 'null'
+          description: The model to use for TTS
         voice_id:
           type:
             - string

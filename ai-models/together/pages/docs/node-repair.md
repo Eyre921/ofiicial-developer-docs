@@ -26,14 +26,35 @@ When [passive](/docs/health-checks#passive-health-checks) or [active](/docs/heal
 
 ### Recommended repair actions
 
-When the system generates a repair recommendation, it selects the appropriate action based on the detected issue:
+When the system generates a repair recommendation, it selects an action based on the detected issue. Auto repair uses three repair actions, from lightest to heaviest: reboot, quick reprovision, and migrate to new host (see [Available repair actions](#available-repair-actions)). If a lighter action does not clear the issue, it escalates to a heavier one. Some signals are warning-only: they surface an alert for review without an automated repair action.
 
-| **Detected issue**                                  | **Recommended action** |
-| --------------------------------------------------- | ---------------------- |
-| **GPU fell off the bus**                            | Migrate to new host    |
-| **GPU thermal throttling** (SmClockThermalThrottle) | Migrate to new host    |
-| **Xid error**                                       | Reboot                 |
-| **Drained Slurm node**                              | Migrate to new host    |
+The detected issues come from [passive health check signals](/docs/health-checks#detected-failure-modes):
+
+| **Detected issue**                | **Signal**                       | **Recommended action**               |
+| --------------------------------- | -------------------------------- | ------------------------------------ |
+| GPU fell off the bus              | `DmesgGpuFallenOffBus`           | Migrate to new host                  |
+| GPU thermal throttling            | `GpuSmClockThermalThrottle`      | Migrate to new host                  |
+| High PCIe replay rate             | `GpuPcieReplayRateHigh`          | Migrate to new host                  |
+| InfiniBand rails down or degraded | `IBRailsDownOrDegraded`          | Migrate to new host                  |
+| InfiniBand link flapping          | `IBLinkFlapping`                 | Migrate to new host                  |
+| Fatal platform hardware error     | `NpdCperHardwareErrorFatal`      | Quick reprovision                    |
+| Read-only filesystem              | `NpdReadonlyFilesystem`          | Quick reprovision                    |
+| XFS shutdown                      | `NpdXfsShutdown`                 | Quick reprovision                    |
+| GPU Xid error                     | `DmesgXidError`                  | Reboot (Xid 79 migrates to new host) |
+| Uncorrectable ECC error           | `GpuEccDoubleBitError`           | Reboot                               |
+| GPU row-remap failure             | `GpuRowRemapFailure`             | Reboot                               |
+| Kernel deadlock                   | `NpdKernelDeadlock`              | Reboot                               |
+| Frequent kubelet restarts         | `NpdFrequentKubeletRestart`      | Reboot                               |
+| Frequent containerd restarts      | `NpdFrequentContainerdRestart`   | Reboot                               |
+| Frequent netdev unregister        | `NpdFrequentUnregisterNetDevice` | Reboot                               |
+| Node memory pressure              | `KubeNodeMemoryPressure`         | Reboot                               |
+| Node PID pressure                 | `KubeNodePIDPressure`            | Reboot                               |
+| Node disk pressure                | `KubeNodeDiskPressure`           | Warning                              |
+| Slurm node unavailable            | `SlurmNodeUnavailable`           | Warning                              |
+
+<Note>
+  Automated recommendations are enabled per cluster and are still expanding. Not every signal above triggers an automated recommendation today; some raise an internal alert that Together's team reviews first. Every recommendation is reviewed and accepted by you before a repair runs.
+</Note>
 
 ### Behavioral details
 

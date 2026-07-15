@@ -32,7 +32,7 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
-  With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.
+  <p>With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.</p>
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 

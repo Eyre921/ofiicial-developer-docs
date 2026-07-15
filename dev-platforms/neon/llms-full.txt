@@ -6826,6 +6826,16 @@ export async function getJwtToken() {
 }
 ```
 
+If your app is served from a different origin than your Managed Better Auth URL (for example a Vite or SPA dev server on `localhost` talking to auth on `*.neon.tech`), configure the auth client to send the session cookie on cross-origin requests. Otherwise `authClient.token()` returns `data.token` as `undefined` and calls to your API fail with 401.
+
+```ts filename="src/auth.ts"
+export const authClient = createAuthClient(NEON_AUTH_URL, {
+  fetchOptions: { credentials: 'include' },
+});
+```
+
+Cross-domain setups have further limitations, notably Safari ITP blocking third-party cookies, with reverse-proxy or shared-parent-domain workarounds. See [Better Auth: Safari, ITP, and Cross-Domain Setups](https://www.better-auth.com/docs/concepts/cookies#safari-itp-and-cross-domain-setups).
+
 ### Using the session header
 
 When you call `authClient.getSession()`, Managed BetterAuth automatically includes a JWT in the response headers. If you are using a custom fetcher or need to intercept the token immediately after a session check:
@@ -10541,7 +10551,12 @@ This quick start uses the standalone Auth client. For one `createClient()` insta
 import { createAuthClient } from '@neondatabase/neon-js/auth';
 import { BetterAuthReactAdapter } from '@neondatabase/neon-js/auth/react/adapters';
 
-export const authClient = createAuthClient(import.meta.env.VITE_NEON_AUTH_URL, { adapter: BetterAuthReactAdapter() });
+// credentials: 'include' sends the session cookie on cross-origin requests.
+// Required if you later call authClient.token() from an origin other than your Managed Better Auth URL.
+export const authClient = createAuthClient(import.meta.env.VITE_NEON_AUTH_URL, {
+  adapter: BetterAuthReactAdapter(),
+  fetchOptions: { credentials: 'include' },
+});
 ```
 
 ## Create the Auth Provider
@@ -102271,7 +102286,7 @@ Once all steps are complete, we'll grant access to the account or transfer proje
 
 --- [Document source](https://neon.com/docs/manage/accounts.md) ---
 
-> Summary: Neon account settings let you update your profile, change your password, and configure two-factor authentication (2FA). Use this page to switch login methods, enable or remove TOTP-based 2FA, manage personal API keys, or permanently delete your account. 2FA removal has a 24-hour security delay. Deleted accounts can be reactivated within 30 days, after which all data is permanently removed.
+> Summary: Neon account settings let you update your profile, change your password, and configure two-factor authentication (2FA) or passkeys. Use this page to switch login methods, enable or remove TOTP-based 2FA, add or remove passkeys, manage personal API keys, or permanently delete your account. 2FA and passkey removal both have a 24-hour security delay. Deleted accounts can be reactivated within 30 days, after which all data is permanently removed.
 
 # Accounts
 
@@ -102321,7 +102336,7 @@ No surprises here: just enter your current password, then your new one (twice). 
 
 Protect your account with two-factor authentication (2FA). Once enabled, you'll enter a 6-digit code from your authenticator app each time you log in.
 
-If your organization admin requires 2FA for the organization, you must enroll in 2FA to continue accessing that organization.
+If your organization admin requires 2FA for the organization, you must enroll in 2FA or set up a [passkey](https://neon.com/docs/manage/accounts#passkeys) to continue accessing that organization.
 
 ### Enable 2FA
 
@@ -102347,6 +102362,39 @@ For security, removal is **delayed by 24 hours**. During the cooldown:
 - 2FA remains active until the cooldown expires.
 
 **Note:** Recovery codes are not currently supported. Keep your authenticator app backed up or synced across devices. If you lose access to your authenticator, [contact Support](https://neon.com/docs/introduction/support).
+
+## Passkeys
+
+A passkey lets you verify it's you when you sign in, using your device's built-in biometrics (like Touch ID or Windows Hello) or a security key, instead of typing a code. Passkeys are saved through your browser or operating system's passkey manager, such as Google Password Manager or iCloud Keychain.
+
+You can set up both a passkey and two-factor authentication (2FA) on your account. At sign-in, use whichever one you have available.
+
+### Add a passkey
+
+1. Go to **Account settings** and select **Passkeys** from the sidebar.
+2. Click **Add passkey**.
+3. Give the passkey a name, then click **Continue**.
+4. Follow your browser or device's prompts to save the passkey, for example, to Google Password Manager, iCloud Keychain, or a security key.
+
+Your new passkey appears in the list on this page. Click **Add another passkey** to register a passkey for another device.
+
+### Sign in with a passkey
+
+After you enter your email and password, click **Sign in with Passkey** to verify with your passkey instead of entering a code from your authenticator app. Follow your browser or device's prompts to complete verification. If you have more than one passkey saved, your browser may first ask which one to use.
+
+### Remove a passkey
+
+1. Go to **Account settings** and select **Passkeys** from the sidebar.
+2. Click **Remove** next to the passkey you want to remove.
+3. Verify your identity with an existing passkey.
+
+For security, removal is **delayed by 24 hours**. During the cooldown, the entry shows the time remaining and a **Cancel removal** button in place of **Remove**.
+
+- You'll receive an email notification saying someone requested to remove the passkey, with a link to cancel the removal if it wasn't you.
+- You can also cancel anytime from your account settings by clicking **Cancel removal**.
+- The passkey remains active until the cooldown expires.
+
+**Note:** If you lose access to your only passkey and have no other way to sign in, [contact Support](https://neon.com/docs/introduction/support).
 
 ## Create personal API keys
 
@@ -106433,12 +106481,12 @@ Permissions within the organization are exclusively managed by Admins. As an Adm
 
 ## Require 2FA for organization members
 
-Admins can require two-factor authentication (2FA) for everyone in the organization from **Organization → Settings**.
+Admins can require two-factor authentication (2FA) for everyone in the organization from **Organization → Settings**. A passkey satisfies this requirement too, so members can enroll in either 2FA or a passkey to comply.
 
-- You can only enable this if your own account already has 2FA enabled.
-- When required 2FA is on, members who are not enrolled are prompted to set up 2FA when they access the organization.
+- You can only enable this if your own account already has 2FA or a passkey set up.
+- When required 2FA is on, members who don't have 2FA or a passkey enrolled are prompted to set one up when they access the organization.
 
-See [Manage your Neon account](https://neon.com/docs/manage/accounts#two-factor-authentication) for personal 2FA setup steps.
+See [Manage your Neon account](https://neon.com/docs/manage/accounts#two-factor-authentication) for personal 2FA setup steps, or [Passkeys](https://neon.com/docs/manage/accounts#passkeys) for passkey setup steps.
 
 ## Invite Collaborators
 

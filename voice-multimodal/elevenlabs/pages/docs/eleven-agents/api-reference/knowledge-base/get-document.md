@@ -174,6 +174,21 @@ components:
       required:
         - id
       title: KnowledgeBaseFolderPathSegmentResponseModel
+    type_:ContentFormat:
+      type: string
+      enum:
+        - html
+        - markdown
+      default: html
+      description: >-
+        Canonical representation of a knowledge base document's stored content.
+
+
+        HTML is the legacy default; documents created before this field existed
+        are
+
+        interpreted as HTML.
+      title: ContentFormat
     type_:AutoSyncInfo:
       type: object
       properties:
@@ -368,6 +383,8 @@ components:
               type: string
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
             auto_sync_info:
               $ref: '#/components/schemas/type_:AutoSyncInfo'
           required:
@@ -414,6 +431,8 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
             filename:
               type: string
             external_sync_info:
@@ -465,6 +484,8 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/type_:ContentFormat'
           required:
             - type
             - id
@@ -581,15 +602,15 @@ components:
     "creator_name": "Alice Johnson",
     "creator_email": "alice.johnson@elevenlabs.io",
     "role": "admin",
-    "anonymous_access_level_override": "viewer",
+    "anonymous_access_level_override": "admin",
     "access_source": "creator"
   },
-  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. Here you can find all the information needed to integrate with our services.</p>",
+  "extracted_inner_html": "<h1>ElevenLabs API Overview</h1><p>Welcome to the ElevenLabs API documentation. This guide provides details on how to use our API programmatically.</p>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
     "created_at_unix_secs": 1685606400,
     "last_updated_at_unix_secs": 1688294400,
-    "size_bytes": 4523
+    "size_bytes": 45230
   },
   "name": "ElevenLabs API Overview",
   "supported_usages": [
@@ -602,6 +623,7 @@ components:
     "consec_failures": 0,
     "next_refresh_by": 1688899200
   },
+  "content_format": "html",
   "folder_parent_id": "root_folder_01",
   "folder_path": [
     {

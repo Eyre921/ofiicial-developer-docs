@@ -2878,21 +2878,25 @@ Signals that the agent's turn is finished — stop reading and wait for user inp
 headers:
   ["trigger-control", "turn-complete"]
   ["public-access-token", "eyJ..."]   // optional, refreshed JWT
-  ["session-in-event-id", "42"]       // optional, agent-internal resume cursor
+  ["session-in-event-id", "42"]       // optional, send-correlation + resume cursor
 body: ""
 ```
 
-| Header                                  | Description                                                                                                                                                                                               |
-| --------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `trigger-control: turn-complete`        | Always present on this record.                                                                                                                                                                            |
-| `public-access-token: <jwt>` (optional) | A refreshed JWT with the same session + run scopes. If present, replace your stored token.                                                                                                                |
-| `session-in-event-id: <seq>` (optional) | Internal cursor used by the agent to resume `.in` across worker boots without replaying already-processed user messages. Custom transports should ignore this header — it carries no client-side meaning. |
+| Header                                  | Description                                                                                                                                                                                                                                                                                                                                    |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `trigger-control: turn-complete`        | Always present on this record.                                                                                                                                                                                                                                                                                                                 |
+| `public-access-token: <jwt>` (optional) | A refreshed JWT with the same session + run scopes. If present, replace your stored token.                                                                                                                                                                                                                                                     |
+| `session-in-event-id: <seq>` (optional) | The agent's committed `.in` cursor for this turn: the seq of the last user record it had consumed when the turn finished. Compare it to the `seq` from your `.in/append` to tell whether this turn-complete is *yours* (see the warning below). Also used internally to resume `.in` across worker boots without replaying processed messages. |
 
 When you receive this record:
 
 1. Update `publicAccessToken` if one is included on the headers.
 2. Close the stream reader (unless you want to keep it open across turns — see [Resuming a stream](#resuming-a-stream)).
 3. Wait for the next user message before sending on `.in`.
+
+<Warning>
+  **Correlate turn-completes to your send.** A `turn-complete` on `.out` can belong to an *earlier* turn than the message you just sent, for example a concurrent action (an undo) whose completion lands on the stream first. Only treat a `turn-complete` as terminal for your send if its `session-in-event-id` is greater than or equal to the `seq` returned by that send's `.in/append`; skip any lower one and keep reading. Closing on the wrong turn drops your response until the next reload. The built-in `TriggerChatTransport` does this correlation for you.
+</Warning>
 
 ### `upgrade-required` control record
 
@@ -2978,7 +2982,7 @@ Content-Type: application/json
 
 `{sessionId}` accepts the same friendly-or-external forms as `.out`. The `publicAccessToken` from session-create authorizes both.
 
-The body is a JSON-serialized [`ChatInputChunk`](#chatinputchunk) — a tagged union covering messages, stops, and actions. Send them as raw JSON strings (not wrapped in a `data` field). On success the response is `200 OK` with body `{ "ok": true }`; on failure it's `4xx`/`5xx` with `{ "ok": false, "error": "<message>" }`. Common failures:
+The body is a JSON-serialized [`ChatInputChunk`](#chatinputchunk), a tagged union covering messages, stops, and actions. Send them as raw JSON strings (not wrapped in a `data` field). On success the response is `200 OK` with body `{ "ok": true, "seq": <number> }`, where `seq` is the appended record's `.in` sequence number. Use it to correlate this send to the turn that consumes it (see [`turn-complete` control record](#turn-complete-control-record)). On failure it's `4xx`/`5xx` with `{ "ok": false, "error": "<message>" }`. Common failures:
 
 | Status | When                                                                                                                                                                                                                                                                                                                                      |
 | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -14660,42 +14664,69 @@ These follow the [llms.txt standard](https://llmstxt.org) and can be fed directl
 # Bulk actions
 Source: https://trigger.dev/docs/bulk-actions
 
-Perform actions like replay and cancel on multiple runs at once.
+Replay or cancel multiple runs from the dashboard using filters or selected run IDs.
 
-Bulk actions allow you to perform replaying and canceling on multiple runs at once. This is especially useful when you need to retry a batch of failed runs with a new version of your code, or when you need to cancel multiple in-progress runs.
+**Bulk actions let you replay or cancel multiple runs asynchronously from the dashboard.**
+
+Use bulk actions when you need to retry failed runs after deploying a fix, or stop a group of queued or executing runs.
+
+<Note>
+  For backend code, see [Bulk actions with the SDK](/docs/runs/bulk-actions).
+</Note>
 
 <video />
 
-## How to create a new bulk action
+## Create a bulk action in the dashboard
 
-<Icon icon="circle-1" /> Open the bulk action panel from the top right of the runs page
+<Steps>
+  <Step title="Open the bulk action panel">
+    Open the runs page and click **Bulk action** in the top right.
 
-<img alt="Access bulk actions" />
+    <img alt="Open the bulk action panel from the runs page" />
+  </Step>
 
-<Icon icon="circle-2" /> Filter the runs table to show the runs you want to bulk action
+  <Step title="Choose the runs">
+    Filter the runs table to target a group of runs, or select individual runs from the table.
+  </Step>
 
-<Icon icon="circle-3" /> Alternatively, you can select individual runs
+  <Step title="Configure the action">
+    Choose **Replay** or **Cancel**, add an optional name, then confirm the action.
 
-<Icon icon="circle-4" /> Choose the runs you want to bulk action
+    <img alt="Configure and create a bulk action" />
+  </Step>
 
-<Icon icon="circle-5" /> Name your bulk action (optional)
+  <Step title="Track progress">
+    Open the bulk action page to see progress, view affected runs, or replay the action.
 
-<Icon icon="circle-6" /> Choose the action you want to perform, replay or cancel
-
-<Icon icon="circle-7" /> Click the "Replay" or "Cancel" button and confirm in the dialog
-
-<img alt="Access bulk actions" />
-
-<Icon icon="circle-8" /> You'll now view the bulk action processing from the bulk action page
-
-<Icon icon="circle-9" /> You can replay or view the runs from this page
-
-<img alt="Access bulk actions" />
+    <img alt="View bulk action progress" />
+  </Step>
+</Steps>
 
 <Note>
-  You can only cancel runs that are in states that allow cancellation (like QUEUED or EXECUTING).
-  Runs that are already completed, failed, or in other final states by the time the bulk action process gets to them, cannot be canceled.
+  You can only cancel runs that are still cancelable, such as queued or executing runs. Runs that have already reached a final state cannot be canceled.
 </Note>
+
+## Create a bulk action from the SDK
+
+Use `runs.bulk.replay()` or `runs.bulk.cancel()` when you want to create a bulk action from your backend code.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const action = await runs.bulk.replay({
+  filter: {
+    status: "FAILED",
+    taskIdentifier: "sync-customer",
+    period: "24h",
+  },
+  name: "Replay failed customer syncs",
+});
+
+const completed = await runs.bulk.poll(action.id);
+console.log(completed.status, completed.counts);
+```
+
+See [Bulk actions with the SDK](/docs/runs/bulk-actions) for canceling, listing, polling, and aborting bulk actions from your backend code.
 
 
 # Changelog
@@ -15037,7 +15068,7 @@ The Trigger.dev CLI has a number of options and commands to help you develop loc
 | [login](/docs/cli-login-commands)                 | Login with Trigger.dev so you can perform authenticated actions.   |
 | [init](/docs/cli-init-commands)                   | Initialize your existing project for development with Trigger.dev. |
 | [dev](/docs/cli-dev-commands)                     | Run your Trigger.dev tasks locally.                                |
-| [deploy](/docs/cli-deploy-commands)               | Deploy your Trigger.dev v3 project to the cloud.                   |
+| [deploy](/docs/cli-deploy-commands)               | Deploy your Trigger.dev project to the cloud.                      |
 | [whoami](/docs/cli-whoami-commands)               | Display the current logged in user and project details.            |
 | [logout](/docs/cli-logout-commands)               | Logout of Trigger.dev.                                             |
 | [list-profiles](/docs/cli-list-profiles-commands) | List all of your CLI profiles.                                     |
@@ -18313,6 +18344,33 @@ The callback is passed a context object with the following properties:
 * `projectRef`: The project ref of the Trigger.dev project
 * `env`: The environment variables that are currently set in the Trigger.dev project
 
+### Marking variables as secrets
+
+Return the array form and set `isSecret: true` on any variable you want stored as a [secret](/docs/deploy-environment-variables). Secret env vars are redacted in the dashboard and their values can't be revealed after they're set, just like manually created secret variables. You can mix secret and non-secret variables in the same callback.
+
+```ts theme={"theme":"css-variables"}
+import { defineConfig } from "@trigger.dev/sdk";
+import { syncEnvVars } from "@trigger.dev/build/extensions/core";
+
+export default defineConfig({
+  build: {
+    extensions: [
+      syncEnvVars(async (ctx) => {
+        return [
+          { name: "PUBLIC_API_URL", value: "https://api.example.com" },
+          { name: "DATABASE_URL", value: "postgres://...", isSecret: true },
+        ];
+      }),
+    ],
+  },
+});
+```
+
+<Note>
+  `isSecret` is only available when you return the array form (`{ name, value, isSecret }`). The
+  record form (`{ KEY: "value" }`) always creates non-secret variables.
+</Note>
+
 ### Example: Sync env vars from Infisical
 
 In this example we're using env vars from [Infisical](https://infisical.com).
@@ -20644,6 +20702,10 @@ export const openaiTask = task({
 });
 ```
 
+## Replay failed runs in bulk
+
+After you deploy a fix, use [bulk actions](/docs/bulk-actions) to replay multiple failed runs from the dashboard, or [bulk actions with the SDK](/docs/runs/bulk-actions) to replay them from backend code. Bulk replay creates an asynchronous action that targets selected run IDs or a `runs.list()` filter, so you can retry a known failure set without replaying each run individually.
+
 
 # CI / GitHub Actions
 Source: https://trigger.dev/docs/github-actions
@@ -21006,7 +21068,7 @@ Source: https://trigger.dev/docs/github-repo
 
 Trigger.dev is [Open Source on GitHub](https://github.com/triggerdotdev/trigger.dev). You can contribute to the project by submitting issues, pull requests, or simply by using it and providing feedback.
 
-You can also [self-host](/docs/open-source-self-hosting) the project if you want to run it on your own infrastructure.
+You can also [self-host](/docs/self-hosting/overview) the project if you want to run it on your own infrastructure.
 
 
 # Claude Agent SDK setup guide
@@ -22457,24 +22519,30 @@ To learn more, take a look at the following resources:
 # ClickHouse chat agent
 Source: https://trigger.dev/docs/guides/example-projects/clickhouse-chat-agent
 
-Build a chat agent that answers questions about your data by writing and running SQL against ClickHouse Cloud, using chat.agent() and the ClickHouse Node.js client.
+Build a chat agent that answers questions about your ClickHouse data with charts, tables and maps instead of text, using chat.agent(), generative UI with json-render, and a Next.js frontend.
 
 ## Overview
 
-This example is a [chat agent](/docs/ai-chat/overview) that answers natural-language questions about the data in a [ClickHouse Cloud](https://clickhouse.com/cloud) database. The agent discovers the schema, writes ClickHouse SQL, runs it through the official [ClickHouse Node.js client](https://clickhouse.com/docs/integrations/javascript), and streams back answers with markdown tables. Trigger.dev handles the chat session, turn loop, streaming, and resumability — the whole agent is one `chat.agent()` call and three tools.
+This example is a fullstack [chat agent](/docs/ai-chat/overview) that answers natural-language questions about the data in a [ClickHouse Cloud](https://clickhouse.com/cloud) database — and presents the answers as **interactive charts, tables, stat cards and maps** instead of walls of text. The agent discovers the schema, writes ClickHouse SQL, runs it through the official [ClickHouse Node.js client](https://clickhouse.com/docs/integrations/javascript), then calls a `renderVisualization` tool with a [json-render](https://json-render.dev) spec that a Next.js chat UI renders live with [shadcn/ui](https://ui.shadcn.com) components.
 
 **Tech stack:**
 
-* **[Trigger.dev AI chat](/docs/ai-chat/overview)** for the agent session, turn loop, and streaming
+* **[Trigger.dev AI chat](/docs/ai-chat/overview)** for the agent session, turn loop, streaming and resumability
+* **[AI Prompts](/docs/ai/prompts)** for a versioned system prompt with dashboard overrides and per-generation LLM observability
 * **[ClickHouse Node.js client](https://clickhouse.com/docs/integrations/javascript)** (`@clickhouse/client`) for queries over HTTPS
-* **[AI SDK](https://ai-sdk.dev/)** with Anthropic Claude for the model and tool calling
+* **[AI SDK](https://ai-sdk.dev/)** with Anthropic Claude for the model and tool calling, and `useChat` on the frontend
+* **[json-render](https://json-render.dev)** with the [`@json-render/shadcn`](https://www.npmjs.com/package/@json-render/shadcn) component library for generative UI
+* **Next.js** chat app using [`useTriggerChatTransport`](/docs/ai-chat/frontend) — the browser talks directly to Trigger.dev, no API route to maintain
+* **shadcn charts** (Recharts) and **[mapcn](https://mapcn.dev)** (MapLibre GL, free CARTO tiles) for the chart and map components
 
 **Features:**
 
-* **Schema discovery tools**: `listTables` reads table names, engines, and row counts from `system.tables`; `describeTable` returns column names and types using a bound `Identifier` query param, so table names are never interpolated into SQL strings
+* **Generative UI**: a `renderVisualization` tool takes a json-render spec — bar/line/area/pie charts, data tables, stat-card KPI rows and point maps, composed in cards and grids — with the query results inlined. Specs are validated against the component catalog and errors are returned to the model, so it corrects the spec and retries.
+* **One shared catalog**: the same module generates the system-prompt component reference and validates tool calls, so the prompt and the renderer can't drift apart
+* **Versioned system prompt**: defined with `prompts.define()`, resolvable per-run, overridable from the dashboard without redeploying — and storing it via `chat.prompt.set()` wires up `experimental_telemetry`, so every model call appears in the run trace with token, cost and latency metrics
+* **Schema discovery tools**: `listTables` reads table names, engines and row counts from `system.tables`; `describeTable` returns column names and types using bound `Identifier` query params, so table names are never interpolated into SQL strings
 * **Read-only query tool**: `runQuery` accepts SELECT-style statements only, enforced in code and backed by ClickHouse settings — `readonly=2`, a 1,000-row result cap, and a 30 second execution timeout
 * **Self-correcting SQL**: query errors are returned to the model as tool output, so the agent reads the ClickHouse error, fixes its SQL, and retries
-* **Single environment variable**: the ClickHouse connection is one `CLICKHOUSE_URL` with the credentials embedded, set in the Trigger.dev dashboard
 
 ## GitHub repo
 
@@ -22487,25 +22555,53 @@ This example is a [chat agent](/docs/ai-chat/overview) that answers natural-lang
 
 ### The agent
 
-The agent is defined with [`chat.agent()`](/docs/ai-chat/overview). Tools are declared on the config so tool results survive history re-conversion across turns, and the `run` function returns a `streamText()` call:
+The agent is defined with [`chat.agent()`](/docs/ai-chat/overview). The system prompt is a versioned [AI Prompt](/docs/ai/prompts): the editable analyst guidance lives in the prompt template, while the json-render component reference is generated from the catalog at run time and injected as a template variable. Storing the resolved prompt with `chat.prompt.set()` lets `chat.toStreamTextOptions()` supply the system text, model, config and telemetry:
 
-```ts trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
+```ts src/trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
+import { prompts } from "@trigger.dev/sdk";
 import { chat } from "@trigger.dev/sdk/ai";
 import { anthropic } from "@ai-sdk/anthropic";
-import { stepCountIs, streamText } from "ai";
+import { createProviderRegistry, stepCountIs, streamText } from "ai";
+import { z } from "zod";
+import { catalogPromptSection } from "../lib/catalog";
+
+const registry = createProviderRegistry({ anthropic });
+
+const systemPrompt = prompts.define({
+  id: "clickhouse-analyst",
+  model: "anthropic:claude-opus-4-8",
+  variables: z.object({ componentReference: z.string() }),
+  content: `You are a ClickHouse data analyst. ...
+
+## renderVisualization spec reference
+
+{{componentReference}}`,
+});
 
 export const clickhouseAgent = chat.agent({
   id: "clickhouse-agent",
   idleTimeoutInSeconds: 300,
-  tools: { listTables, describeTable, runQuery },
+  // Declared on the config so tool results survive history re-conversion across turns
+  tools: { listTables, describeTable, runQuery, renderVisualization },
+
+  onChatStart: async () => {
+    // Latest prompt version (or an active dashboard override), with the
+    // component reference generated from the catalog so it always matches
+    // the deployed code.
+    const resolved = await systemPrompt.resolve({
+      componentReference: catalogPromptSection(),
+    });
+    chat.prompt.set(resolved);
+  },
+
   run: async ({ messages, tools, signal }) => {
     return streamText({
-      // Spread chat.toStreamTextOptions() FIRST — it wires up
-      // prepareStep (compaction, steering, background injection),
-      // the system prompt set via chat.prompt(), and telemetry.
-      ...chat.toStreamTextOptions(),
+      // Fallback model only — placed BEFORE the spread so the stored
+      // prompt's model (including dashboard overrides) wins when set.
       model: anthropic("claude-opus-4-8"),
-      system: SYSTEM_PROMPT,
+      // Wires up prepareStep (compaction, steering, background injection),
+      // plus the system prompt + model + config + telemetry from chat.prompt().
+      ...chat.toStreamTextOptions({ registry }),
       messages,
       tools,
       stopWhen: stepCountIs(15),
@@ -22515,18 +22611,127 @@ export const clickhouseAgent = chat.agent({
 });
 ```
 
-The system prompt tells the agent to explore the schema before querying, write ClickHouse SQL (not Postgres dialect), prefer aggregations, and present results as markdown tables.
+<Warning>
+  On AI SDK v5/v6, `experimental_telemetry` comes from the stored prompt via
+  `chat.toStreamTextOptions()` — without `chat.prompt.set()`, model calls don't appear as spans in
+  the run trace.
+</Warning>
+
+### Generative UI with one shared catalog
+
+A single module defines which components the model may use: `Table`, `Card`, `Grid`, `Badge` and friends from `@json-render/shadcn`, plus custom chart components (shadcn charts on Recharts), a `Stat` card, and a `PointMap` built on mapcn. The same catalog produces the system-prompt reference and validates tool calls:
+
+```ts src/lib/catalog.ts theme={"theme":"css-variables"}
+import { defineCatalog } from "@json-render/core";
+import { schema } from "@json-render/react/schema";
+import { shadcnComponentDefinitions } from "@json-render/shadcn/catalog";
+
+export const catalog = defineCatalog(schema, {
+  components: {
+    // Layout & text from the stock shadcn catalog
+    Card: shadcnComponentDefinitions.Card,
+    Grid: shadcnComponentDefinitions.Grid,
+    Table: shadcnComponentDefinitions.Table,
+    // ...plus custom BarChart, LineChart, AreaChart, PieChart, Stat, PointMap
+  },
+  actions: {},
+});
+
+// Generates a component reference (props as JSON schema, from the same zod
+// definitions) for the system prompt — the prompt can't drift from the code.
+export function catalogPromptSection(): string {
+  /* ... */
+}
+
+// Validates a spec against the catalog; errors are phrased for the model
+// to correct and retry.
+export function validateSpec(spec: VisualizationSpec) {
+  /* ... */
+}
+```
+
+The `renderVisualization` tool accepts a flat json-render spec with the data rows inlined from earlier `runQuery` results. Validation failures go back to the model as tool output:
+
+```ts src/trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
+const renderVisualization = tool({
+  description:
+    "Render charts, tables and stat cards for the user, instead of describing data as text.",
+  inputSchema: z.object({
+    spec: z.object({
+      root: z.string(),
+      elements: z.record(
+        z.string(),
+        z.object({
+          type: z.string(),
+          props: z.record(z.string(), z.unknown()),
+          children: z.array(z.string()).optional(),
+        })
+      ),
+    }),
+  }),
+  execute: async ({ spec }) => {
+    const result = validateSpec(spec);
+    if (!result.ok) {
+      // The model reads these, fixes the spec, and calls the tool again
+      return { ok: false, errors: result.errors };
+    }
+    return { ok: true, note: "Rendered to the user. Add at most a one-sentence takeaway." };
+  },
+});
+```
+
+### The Next.js chat UI
+
+The frontend uses `useChat` with [`useTriggerChatTransport`](/docs/ai-chat/frontend) — the browser subscribes to the session's streams directly, authenticated by two small server actions. `renderVisualization` tool parts in the message stream render through json-render's `<Renderer>` with the shadcn component registry:
+
+```tsx src/components/chat.tsx theme={"theme":"css-variables"}
+"use client";
+
+import { useChat } from "@ai-sdk/react";
+import { useTriggerChatTransport } from "@trigger.dev/sdk/chat/react";
+import type { clickhouseAgent } from "@/trigger/clickhouse-agent";
+import { mintChatAccessToken, startChatSession } from "@/app/actions";
+
+export function Chat() {
+  const transport = useTriggerChatTransport<typeof clickhouseAgent>({
+    task: "clickhouse-agent",
+    accessToken: ({ chatId }) => mintChatAccessToken(chatId),
+    startSession: ({ chatId, clientData }) => startChatSession({ chatId, clientData }),
+  });
+
+  const { messages, sendMessage, stop, status } = useChat({ transport });
+  // Render text parts as markdown; render tool-renderVisualization parts
+  // with json-render's <Renderer spec={...} registry={registry} />
+}
+```
+
+The registry maps every catalog component to its React implementation — the stock `@json-render/shadcn` components plus the custom charts and map:
+
+```tsx src/lib/registry.tsx theme={"theme":"css-variables"}
+import { defineRegistry } from "@json-render/react";
+import { shadcnComponents } from "@json-render/shadcn";
+import { catalog } from "./catalog";
+
+export const { registry } = defineRegistry(catalog, {
+  components: {
+    Card: shadcnComponents.Card,
+    Table: shadcnComponents.Table,
+    // ...
+    BarChart: ({ props }) => <BarChartView {...props} />,
+    PointMap: ({ props }) => <PointMapView {...props} />,
+  },
+});
+```
 
 ### The query tool
 
 `runQuery` guards against writes twice: a statement allowlist in code, and ClickHouse settings on the request itself. Errors are returned to the model instead of thrown, which is what makes the agent self-correct:
 
-```ts trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
+```ts src/trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
 const READ_ONLY_STATEMENTS = /^\s*(select|with|show|describe|desc|explain|exists)\b/i;
 
 const runQuery = tool({
-  description:
-    "Run a read-only SQL query against ClickHouse and get the results as JSON rows.",
+  description: "Run a read-only SQL query against ClickHouse and get the results as JSON rows.",
   inputSchema: z.object({
     query: z.string().describe("The ClickHouse SQL query to run"),
   }),
@@ -22557,34 +22762,45 @@ const runQuery = tool({
 });
 ```
 
-### Connecting to ClickHouse
+### Running it
 
-The client reads a single `CLICKHOUSE_URL` environment variable — the HTTPS endpoint with credentials embedded — set in the Trigger.dev dashboard on the [Environment Variables page](/docs/deploy-environment-variables):
+The example needs `CLICKHOUSE_URL` and `ANTHROPIC_API_KEY` set in the Trigger.dev dashboard on the [Environment Variables page](/docs/deploy-environment-variables), and `TRIGGER_PROJECT_REF` plus `TRIGGER_SECRET_KEY` in the local `.env` for the Next.js server actions:
+
+```bash .env theme={"theme":"css-variables"}
+TRIGGER_PROJECT_REF=proj_xxxxxxxxxxxxxxxxxxxxxxxx
+TRIGGER_SECRET_KEY=tr_dev_xxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Run the agent and the app in two terminals, then open [http://localhost:3000](http://localhost:3000):
 
 ```bash theme={"theme":"css-variables"}
-CLICKHOUSE_URL=https://default:YOUR_PASSWORD@YOUR_SERVICE.clickhouse.cloud:8443
+pnpm dev:trigger   # the agent
+pnpm dev           # the Next.js app
 ```
 
-```ts trigger/clickhouse-agent.ts theme={"theme":"css-variables"}
-import { createClient } from "@clickhouse/client";
-
-const clickhouse = createClient({ url: process.env.CLICKHOUSE_URL });
-```
-
-### Chatting with the agent
-
-Run `npx trigger.dev@latest dev`, then open the **AI agents** page in the dashboard and chat with `clickhouse-agent` in the playground. With a dataset like [NYC Taxi](https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi) loaded, asking "What were the top 5 busiest pickup days?" produces a `listTables` call, a `describeTable` call, a SQL aggregation, and a streamed markdown table of results.
+With a dataset like [NYC Taxi](https://clickhouse.com/docs/getting-started/example-datasets/nyc-taxi) loaded, asking for a dashboard of daily trip volume, hourly demand and revenue by payment type produces a stat-card KPI row, two charts and a pie in one composed card — and asking "Where do trips start and end?" produces two interactive maps with size-scaled markers.
 
 ## Relevant code
 
-* **Agent + tools**: [trigger/clickhouse-agent.ts](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/trigger/clickhouse-agent.ts): the `chat.agent()` definition, the three tools, the read-only guards, and the ClickHouse client
-* **Trigger config**: [trigger.config.ts](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/trigger.config.ts): project config pointing at the `trigger/` directory
+* **Agent + tools**: [src/trigger/clickhouse-agent.ts](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/src/trigger/clickhouse-agent.ts): the `chat.agent()` definition, the versioned prompt, the four tools, the read-only guards, and the ClickHouse client
+* **Shared catalog**: [src/lib/catalog.ts](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/src/lib/catalog.ts): component definitions, prompt-reference generation, and spec validation
+* **Component registry**: [src/lib/registry.tsx](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/src/lib/registry.tsx): maps catalog components to shadcn/Recharts/mapcn implementations
+* **Chat UI**: [src/components/chat.tsx](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/src/components/chat.tsx): `useChat` + `useTriggerChatTransport`, message parts, and visualization rendering
+* **Server actions**: [src/app/actions.ts](https://github.com/triggerdotdev/examples/blob/main/clickhouse-chat-agent/src/app/actions.ts): session creation and token minting
 
 ## Learn more
 
 <CardGroup>
   <Card title="AI chat overview" icon="message-bot" href="/ai-chat/overview">
     How chat agents, sessions, and the turn loop work.
+  </Card>
+
+  <Card title="Frontend" icon="browser" href="/ai-chat/frontend">
+    The chat transport, session tokens, and reconnection.
+  </Card>
+
+  <Card title="AI Prompts" icon="file-lines" href="/ai/prompts">
+    Versioned prompts with dashboard overrides and generation tracking.
   </Card>
 
   <Card title="Tools" icon="wrench" href="/ai-chat/tools">
@@ -26414,7 +26630,7 @@ After creating the task, deploy your project.
   ```
 </CodeGroup>
 
-Once deployed, navigate to the `test` page in the sidebar of your [Trigger.dev dashboard](https://cloud.trigger.dev), click on your `prod` environment, and select the `sentryErrorTest` task.
+Once deployed, open the `sentry-error-test` task in your [Trigger.dev dashboard](https://cloud.trigger.dev) (make sure you're in your `prod` environment) and press the "Test" button to open the test page for it.
 
 Run a test task with an empty payload by clicking the `Run test` button.
 
@@ -27436,13 +27652,11 @@ This guide will show you how to setup Trigger.dev in your existing Bun project, 
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>
@@ -27543,13 +27757,11 @@ Follow these steps if you don't already have Trigger.dev set up in your project.
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>
@@ -28045,13 +28257,11 @@ This guide will show you how to setup Trigger.dev in your existing Next.js proje
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>
@@ -28903,13 +29113,11 @@ This guide will show you how to setup Trigger.dev in your existing Node.js proje
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>
@@ -29024,13 +29232,11 @@ Follow these steps if you don't already have Trigger.dev set up in your project.
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>
@@ -29275,13 +29481,11 @@ This guide will show you how to setup Trigger.dev in your existing Remix project
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>
@@ -30225,13 +30429,11 @@ This guide shows you how to set up and deploy a simple Supabase edge function ex
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>
@@ -34483,7 +34685,11 @@ Additional bundles are available for \$10/month per 100 concurrent connections. 
 | Batch trigger payload  | Each item can be up to 3MB (SDK 4.3.1+). Prior: 1MB total combined |
 | Task outputs           | Must not exceed 10MB                                               |
 
-Payloads and outputs that exceed 512KB will be offloaded to object storage and a presigned URL will be provided to download the data when calling `runs.retrieve`. You don't need to do anything to handle this in your tasks however, as we will transparently upload/download these during operation.
+Large payloads and outputs are offloaded to object storage automatically. You don't need to do anything to handle this in your tasks, as we upload and download the data transparently during operation.
+
+On the way in, the SDK uploads any trigger or batch-item payload over 128KB to object storage before sending, so large triggers and batches don't exceed the request body limit. `trigger` and `triggerAndWait` have done this since SDK 4.5.0, and `batchTrigger` and `batchTriggerAndWait` (including the by-id and by-task variants) do too from SDK 4.5.2.
+
+Payloads and outputs over 512KB are kept in object storage rather than inline. Calling `runs.retrieve` returns that offloaded data as a presigned download URL (`payloadPresignedUrl` / `outputPresignedUrl`).
 
 ## Batch size
 
@@ -36102,6 +36308,38 @@ The batch is sealed when the stream completes successfully.
 
 
 
+# Abort bulk action
+Source: https://trigger.dev/docs/management/bulk-actions/abort
+
+v3-openapi POST /api/v1/bulk-actions/{bulkActionId}/abort
+Abort a pending bulk action so it stops processing additional runs. Runs already processed by the action are not undone.
+
+
+
+# Create bulk action
+Source: https://trigger.dev/docs/management/bulk-actions/create
+
+v3-openapi POST /api/v1/bulk-actions
+Create an asynchronous bulk action to cancel or replay runs selected by run IDs or filters.
+
+
+
+# List bulk actions
+Source: https://trigger.dev/docs/management/bulk-actions/list
+
+v3-openapi GET /api/v1/bulk-actions
+List bulk actions in the current environment. Bulk actions are returned newest first and can be paginated with cursor pagination.
+
+
+
+# Retrieve bulk action
+Source: https://trigger.dev/docs/management/bulk-actions/retrieve
+
+v3-openapi GET /api/v1/bulk-actions/{bulkActionId}
+Retrieve the status and aggregate processing counts for a bulk action.
+
+
+
 # Get latest deployment
 Source: https://trigger.dev/docs/management/deployments/get-latest
 
@@ -36527,183 +36765,6 @@ Source: https://trigger.dev/docs/management/runs/add-tags
 v3-openapi POST /api/v1/runs/{runId}/tags
 Adds one or more tags to a run. Runs can have a maximum of 10 tags. Duplicate tags are ignored.
 
-
-
-# Bulk actions
-Source: https://trigger.dev/docs/management/runs/bulk-actions
-
-Cancel or replay many runs from the SDK using run IDs or the same filters as runs.list().
-
-**Bulk actions let you cancel or replay many runs asynchronously from the SDK by selecting runs with run IDs or `runs.list()` filters.**
-
-A bulk action returns a handle immediately. Use the handle to retrieve progress, poll until completion, list previous actions, or abort pending work.
-
-## Create a bulk replay
-
-Use `runs.bulk.replay()` to replay every run that matches a filter.
-
-```ts Your backend code theme={"theme":"css-variables"}
-import { runs } from "@trigger.dev/sdk";
-
-const action = await runs.bulk.replay({
-  filter: {
-    status: "FAILED",
-    taskIdentifier: "sync-customer",
-    period: "24h",
-  },
-  name: "Replay failed customer syncs",
-  targetRegion: "eu-central-1",
-});
-
-const completed = await runs.bulk.poll(action.id);
-console.log(completed.status, completed.counts);
-```
-
-`filter` accepts the same filters as [`runs.list()`](/docs/management/runs/list), excluding pagination fields. Provide at least one filter field; use `runIds` when you want to target specific runs. Relative time filters such as `period` are resolved when the bulk action is created, so later batches process the same fixed time range.
-
-<Warning>
-  Filters inherit the same time semantics as `runs.list()`: when you don't pass `from`, `to`, or `period`, the action defaults to the **last 7 days** and won't target older matching runs. To cover a wider range, pass an explicit `period` (such as `"30d"`), a `from` timestamp, or a `from`/`to` pair. This default only applies to `filter` selections; `runIds` selections are never time-bounded.
-</Warning>
-
-<Note>
-  Each environment can only run a limited number of bulk replays at the same time. If you start a replay while too many are still in progress, the call fails and returns an error. Wait for an in-progress replay to finish (or [abort](#abort-a-bulk-action) one) before starting another. Bulk cancels are not subject to this limit.
-</Note>
-
-<ParamField type="BulkActionFilter">
-  Selects runs using the same filter shape as `runs.list()`, excluding `limit`, `after`, and `before`.
-</ParamField>
-
-<ParamField type="string[]">
-  Selects specific run IDs. Provide either `filter` or `runIds`, not both.
-</ParamField>
-
-<ParamField type="string">
-  A name for the bulk action.
-</ParamField>
-
-<ParamField type="string">
-  Replays matching runs in a specific region. When omitted, each replay keeps the original run's region. This option is only available for `runs.bulk.replay()`.
-</ParamField>
-
-## Create a bulk cancel
-
-Use `runs.bulk.cancel()` to cancel every run that matches a filter, or specific run IDs.
-
-```ts Your backend code theme={"theme":"css-variables"}
-import { runs } from "@trigger.dev/sdk";
-
-const action = await runs.bulk.cancel({
-  runIds: ["run_1234", "run_5678"],
-  name: "Cancel selected runs",
-});
-
-console.log(action.id);
-```
-
-Only runs that are still cancelable when the action reaches them are canceled. Runs that have already reached a final state count as failures in the bulk action summary.
-
-## Retrieve progress
-
-Use `runs.bulk.retrieve()` to read the current status and aggregate counts.
-
-```ts Your backend code theme={"theme":"css-variables"}
-import { runs } from "@trigger.dev/sdk";
-
-const action = await runs.bulk.retrieve("bulk_1234");
-
-console.log(action.status);
-console.log(action.counts.total, action.counts.success, action.counts.failure);
-```
-
-The returned bulk action object has these fields:
-
-<ResponseField name="id" type="string">
-  The bulk action ID, starting with `bulk_`.
-</ResponseField>
-
-<ResponseField name="type" type="'CANCEL' | 'REPLAY'">
-  The action being performed.
-</ResponseField>
-
-<ResponseField name="status" type="'PENDING' | 'COMPLETED' | 'ABORTED'">
-  The current bulk action status.
-</ResponseField>
-
-<ResponseField name="counts" type="object">
-  Aggregate processing counts.
-
-  <Expandable title="properties">
-    <ResponseField name="total" type="number">
-      The number of runs selected when the bulk action was created.
-    </ResponseField>
-
-    <ResponseField name="success" type="number">
-      The number of runs processed successfully.
-    </ResponseField>
-
-    <ResponseField name="failure" type="number">
-      The number of runs that could not be processed.
-    </ResponseField>
-  </Expandable>
-</ResponseField>
-
-<ResponseField name="createdAt" type="Date">
-  The date and time the bulk action was created.
-</ResponseField>
-
-<ResponseField name="completedAt" type="Date">
-  The date and time the bulk action completed.
-</ResponseField>
-
-## Poll for completion
-
-Use `runs.bulk.poll()` to wait until the bulk action leaves the `PENDING` state.
-
-```ts Your backend code theme={"theme":"css-variables"}
-import { runs } from "@trigger.dev/sdk";
-
-const completed = await runs.bulk.poll("bulk_1234", {
-  pollIntervalMs: 2_000,
-});
-
-console.log(completed.status);
-```
-
-## Abort a bulk action
-
-Use `runs.bulk.abort()` to stop future batches from being processed.
-
-```ts Your backend code theme={"theme":"css-variables"}
-import { runs } from "@trigger.dev/sdk";
-
-await runs.bulk.abort("bulk_1234");
-```
-
-Abort is best effort. Runs already being processed in the current batch may still finish.
-
-## List bulk actions
-
-Use `runs.bulk.list()` to page through previous bulk actions in the current environment.
-
-```ts Your backend code theme={"theme":"css-variables"}
-import { runs } from "@trigger.dev/sdk";
-
-const page = await runs.bulk.list({ limit: 25 });
-
-for (const action of page.data) {
-  console.log(action.id, action.status);
-}
-```
-
-List results support the same auto-pagination helpers as other management API list methods:
-
-```ts Your backend code theme={"theme":"css-variables"}
-import { runs } from "@trigger.dev/sdk";
-
-for await (const action of runs.bulk.list({ limit: 25 })) {
-  console.log(action.id, action.status);
-}
-```
 
 
 # Cancel run
@@ -38479,16 +38540,14 @@ Source: https://trigger.dev/docs/migrating-from-v3
 What's new in v4, how to migrate, and breaking changes.
 
 <Warning>
-  **Action required: Trigger.dev v3 deprecation**
+  **Trigger.dev v3 has been retired**
 
-  We're retiring Trigger.dev v3. **New v3 deploys will stop working from 1 April 2026.** Trigger.dev v4 is stable, fully supported, and recommended for all users.
+  Trigger.dev v3 is end of life. v4 is stable, fully supported, and recommended for all users.
 
-  **Key dates:**
+  * On Trigger.dev Cloud, v3 has been shut down: v3 triggers and deploys no longer run.
+  * If you self-host, 4.5.0 is the last version we officially support for running v3. Stay on 4.5.0 or upgrade to v4; 4.5.1 and later reject v3 triggers, batch triggers, and deploys with an upgrade message.
 
-  * **1 April 2026** — New v3 deploys will no longer work. Existing v3 runs will continue to execute.
-  * **1 July 2026** — v3 will be fully shut down. All v3 runs will stop executing.
-
-  **What you need to do:** Migrate to v4 before April to avoid disruption to your task executions. The migration takes about 2 minutes — follow the steps on this page below. If you have questions or need help, [contact us](https://trigger.dev/contact) or reach out in our [Discord](https://trigger.dev/discord).
+  **What you need to do:** Migrate to v4. The migration takes about 2 minutes; follow the steps below. If you have questions or need help, [contact us](https://trigger.dev/contact) or reach out in our [Discord](https://trigger.dev/discord).
 </Warning>
 
 ## What's new in v4?
@@ -40226,551 +40285,6 @@ Go to our [GitHub repository](https://github.com/triggerdotdev/trigger.dev) and 
 * And more!
 
 
-# Docker (legacy)
-Source: https://trigger.dev/docs/open-source-self-hosting
-
-Self-host Trigger.dev on your own infrastructure using Docker.
-
-<Note>This is a legacy guide for self-hosting v3 using Docker, you can find the v4 guide [here](/docs/self-hosting/docker).</Note>
-
-<Warning>Security, scaling, and reliability concerns are not fully addressed here. This guide is meant for evaluation purposes and won't result in a production-ready deployment.</Warning>
-
-## Overview
-
-<Frame>
-  <img alt="Self-hosting architecture" />
-</Frame>
-
-The self-hosting guide covers two alternative setups. The first option uses a simple setup where you run everything on one server. With the second option, the webapp and worker components are split on two separate machines.
-
-You're going to need at least one Debian (or derivative) machine with Docker and Docker Compose installed. We'll also use Ngrok to expose the webapp to the internet.
-
-## Support
-
-It's dangerous to go alone! Join the self-hosting channel on our [Discord server](https://discord.gg/NQTxt5NA7s).
-
-## Caveats
-
-<Note>The v3 worker components don't have ARM support yet.</Note>
-
-This guide outlines a quick way to start self-hosting Trigger.dev for evaluation purposes - it won't result in a production-ready deployment. Security, scaling, and reliability concerns are not fully addressed here.
-
-As self-hosted deployments tend to have unique requirements and configurations, we don't provide specific advice for securing your deployment, scaling up, or improving reliability.
-
-Should the burden ever get too much, we'd be happy to see you on [Trigger.dev cloud](https://trigger.dev/pricing) where we deal with these concerns for you.
-
-<Accordion title="Please consider these additional warnings">
-  * The [docker checkpoint](https://docs.docker.com/reference/cli/docker/checkpoint/) command is an experimental feature which may not work as expected. It won't be enabled by default. Instead, the containers will stay up and their processes frozen. They won't consume CPU but they *will* consume RAM.
-  * The `docker-provider` does not currently enforce any resource limits. This means your tasks can consume up to the total machine CPU and RAM. Having no limits may be preferable when self-hosting, but can impact the performance of other services.
-  * The worker components (not the tasks!) have direct access to the Docker socket. This means they can run any Docker command. To restrict access, you may want to consider using [Docker Socket Proxy](https://github.com/Tecnativa/docker-socket-proxy).
-  * The task containers are running with host networking. This means there is no network isolation between them and the host machine. They will be able to access any networked service on the host.
-  * There is currently no support for adding multiple worker machines, but we're working on it.
-</Accordion>
-
-## Requirements
-
-* 4 CPU
-* 8 GB RAM
-* Debian or derivative
-* Optional: A separate machine for the worker components
-
-You will also need a way to expose the webapp to the internet. This can be done with a reverse proxy, or with a service like Ngrok. We will be using the latter in this guide.
-
-## Option 1: Single server
-
-This is the simplest setup. You run everything on one server. It's a good option if you have spare capacity on an existing machine, and have no need to independently scale worker capacity.
-
-### Server setup
-
-Some very basic steps to get started:
-
-1. [Install Docker](https://docs.docker.com/get-docker/)
-2. [Install Docker Compose](https://docs.docker.com/compose/install/)
-3. [Install Ngrok](https://ngrok.com/download)
-
-<Accordion title="On a Debian server, you can run these commands">
-  ```bash theme={"theme":"css-variables"}
-  # add ngrok repo
-  curl -s https://ngrok-agent.s3.amazonaws.com/ngrok.asc | \
-      sudo tee /etc/apt/trusted.gpg.d/ngrok.asc >/dev/null && \
-      echo "deb https://ngrok-agent.s3.amazonaws.com buster main" | \
-      sudo tee /etc/apt/sources.list.d/ngrok.list
-
-  # add docker repo
-  curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc && \
-      sudo chmod a+r /etc/apt/keyrings/docker.asc && \
-      echo \
-        "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
-        $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-  # update and install
-  sudo apt-get update
-  sudo apt-get install -y \
-      docker.io \
-      docker-compose-plugin \
-      ngrok
-  ```
-</Accordion>
-
-### Trigger.dev setup
-
-1. Clone the [Trigger.dev docker repository](https://github.com/triggerdotdev/docker)
-
-```bash theme={"theme":"css-variables"}
-git clone https://github.com/triggerdotdev/docker
-cd docker
-```
-
-2. Run the start script and follow the prompts
-
-```bash theme={"theme":"css-variables"}
-./start.sh # hint: you can append -d to run in detached mode
-```
-
-#### Manual
-
-Alternatively, you can follow these manual steps after cloning the docker repo:
-
-1. Create the `.env` file
-
-```bash theme={"theme":"css-variables"}
-cp .env.example .env
-```
-
-2. Generate the required secrets
-
-```bash theme={"theme":"css-variables"}
-echo MAGIC_LINK_SECRET=$(openssl rand -hex 16)
-echo SESSION_SECRET=$(openssl rand -hex 16)
-echo ENCRYPTION_KEY=$(openssl rand -hex 16)
-echo PROVIDER_SECRET=$(openssl rand -hex 32)
-echo COORDINATOR_SECRET=$(openssl rand -hex 32)
-```
-
-3. Replace the default secrets in the `.env` file with the generated ones
-
-4. Run docker compose to start the services
-
-```bash theme={"theme":"css-variables"}
-. lib.sh # source the helper function
-docker_compose -p=trigger up
-```
-
-### Tunnelling
-
-You will need to expose the webapp to the internet. You can use Ngrok for this. If you already have a working reverse proxy setup and a domain, you can skip to the last step.
-
-1. Start Ngrok. You may get prompted to sign up - it's free.
-
-```bash theme={"theme":"css-variables"}
-./tunnel.sh
-```
-
-2. Copy the domain from the output, for example: `1234-42-42-42-42.ngrok-free.app`
-
-3. Uncomment the `TRIGGER_PROTOCOL` and `TRIGGER_DOMAIN` lines in the `.env` file. Set it to the domain you copied.
-
-```bash theme={"theme":"css-variables"}
-TRIGGER_PROTOCOL=https
-TRIGGER_DOMAIN=1234-42-42-42-42.ngrok-free.app
-```
-
-4. Quit the start script and launch it again, or run this:
-
-```bash theme={"theme":"css-variables"}
-./stop.sh && ./start.sh
-```
-
-### Registry setup
-
-If you want to deploy v3 projects, you will need access to a Docker registry. The [CLI deploy](/docs/cli-deploy-commands) command will push the images, and then the worker machine can pull them when needed. We will use Docker Hub as an example.
-
-1. Sign up for a free account at [Docker Hub](https://hub.docker.com/)
-
-2. Edit the `.env` file and add the registry details
-
-```bash theme={"theme":"css-variables"}
-DEPLOY_REGISTRY_HOST=docker.io
-DEPLOY_REGISTRY_NAMESPACE=<your_dockerhub_username>
-```
-
-3. Log in to Docker Hub both locally and your server. For the split setup, this will be the worker machine. You may want to create an [access token](https://hub.docker.com/settings/security) for this.
-
-```bash theme={"theme":"css-variables"}
-docker login -u <your_dockerhub_username> docker.io
-```
-
-4. Required on some systems: Run the login command inside the `docker-provider` container so it can pull deployment images to run your tasks.
-
-```bash theme={"theme":"css-variables"}
-docker exec -ti \
-  trigger-docker-provider-1 \
-  docker login -u <your_dockerhub_username> docker.io
-```
-
-5. Restart the services
-
-```bash theme={"theme":"css-variables"}
-./stop.sh && ./start.sh
-```
-
-6. You can now deploy v3 projects using the CLI with these flags:
-
-```
-npx trigger.dev@latest deploy --self-hosted --push
-```
-
-## Option 2: Split services
-
-With this setup, the webapp will run on a different machine than the worker components. This allows independent scaling of your workload capacity.
-
-### Webapp setup
-
-All steps are the same as for a single server, except for the following:
-
-1. **Startup.** Run the start script with the `webapp` argument
-
-```bash theme={"theme":"css-variables"}
-./start.sh webapp
-```
-
-2. **Tunnelling.** This is now *required*. Please follow the [tunnelling](/docs/open-source-self-hosting#tunnelling) section.
-
-### Worker setup
-
-1. **Environment variables.** Copy your `.env` file from the webapp to the worker machine:
-
-```bash theme={"theme":"css-variables"}
-# an example using scp
-scp -3 root@<webapp_machine>:docker/.env root@<worker_machine>:docker/.env
-```
-
-2. **Startup.** Run the start script with the `worker` argument
-
-```bash theme={"theme":"css-variables"}
-./start.sh worker
-```
-
-3. **Tunnelling.** This is *not* required for the worker components.
-
-4. **Registry setup.** Follow the [registry setup](/docs/open-source-self-hosting#registry-setup) section but run the last command on the worker machine - note the container name is different:
-
-```bash theme={"theme":"css-variables"}
-docker exec -ti \
-  trigger-worker-docker-provider-1 \
-  docker login -u <your_dockerhub_username> docker.io
-```
-
-## Additional features
-
-### Large payloads
-
-By default, payloads over 512KB will be offloaded to S3-compatible storage. If you don't provide the required env vars, runs with payloads larger than this will fail.
-
-For example, using Cloudflare R2:
-
-```bash theme={"theme":"css-variables"}
-OBJECT_STORE_BASE_URL="https://<bucket>.<account>.r2.cloudflarestorage.com"
-OBJECT_STORE_ACCESS_KEY_ID="<r2 access key with read/write access to bucket>"
-OBJECT_STORE_SECRET_ACCESS_KEY="<r2 secret key>"
-```
-
-Alternatively, you can increase the threshold:
-
-```bash theme={"theme":"css-variables"}
-# size in bytes, example with 5MB threshold
-TASK_PAYLOAD_OFFLOAD_THRESHOLD=5242880
-```
-
-### Version locking
-
-There are several reasons to lock the version of your Docker images:
-
-* **Backwards compatibility.** We try our best to maintain compatibility with older CLI versions, but it's not always possible. If you don't want to update your CLI, you can lock your Docker images to that specific version.
-* **Ensuring full feature support.** Sometimes, new CLI releases will also require new or updated platform features. Running unlocked images can make any issues difficult to debug. Using a specific tag can help here as well.
-
-By default, the images will point at the latest versioned release via the `v3` tag. You can override this by specifying a different tag in your `.env` file. For example:
-
-```bash theme={"theme":"css-variables"}
-TRIGGER_IMAGE_TAG=v3.0.4
-```
-
-### Auth options
-
-By default, magic link auth is the only login option. If the `EMAIL_TRANSPORT` env var is not set, the magic links will be logged by the webapp container and not sent via email.
-
-Depending on your choice of mail provider/transport, you will want to configure a set of variables like one of the following:
-
-##### Resend:
-
-```bash theme={"theme":"css-variables"}
-EMAIL_TRANSPORT=resend
-FROM_EMAIL=
-REPLY_TO_EMAIL=
-RESEND_API_KEY=<your_resend_api_key>
-```
-
-##### SMTP
-
-Note that setting `SMTP_SECURE=false` does *not* mean the email is sent insecurely.
-This simply means that the connection is secured using the modern STARTTLS protocol command instead of implicit TLS.
-You should only set this to true when the SMTP server host directs you to do so (generally when using port 465)
-
-```bash theme={"theme":"css-variables"}
-EMAIL_TRANSPORT=smtp
-FROM_EMAIL=
-REPLY_TO_EMAIL=
-SMTP_HOST=<your_smtp_server>
-SMTP_PORT=587
-SMTP_SECURE=false
-SMTP_USER=<your_smtp_username>
-SMTP_PASSWORD=<your_smtp_password>
-```
-
-##### AWS Simple Email Service
-
-Credentials are to be supplied as with any other program using the AWS SDK.
-In this scenario, you would likely either supply the additional environment variables `AWS_REGION`, `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` or, when running on AWS, use credentials supplied by the EC2 IMDS.
-
-```bash theme={"theme":"css-variables"}
-EMAIL_TRANSPORT=aws-ses
-FROM_EMAIL=
-REPLY_TO_EMAIL=
-```
-
-All email addresses can sign up and log in this way. If you would like to restrict this, you can use the `WHITELISTED_EMAILS` env var. For example:
-
-```bash theme={"theme":"css-variables"}
-# every email that does not match this regex will be rejected
-WHITELISTED_EMAILS="^(authorized@yahoo\.com|authorized@gmail\.com)$"
-```
-
-It's currently impossible to restrict GitHub OAuth logins by account name or email like above, so this method is *not recommended* for self-hosted instances. It's also very easy to lock yourself out of your own instance.
-
-<Warning>Only enable GitHub auth if you understand the risks! We strongly advise you against this.</Warning>
-
-Your GitHub OAuth app needs a callback URL `https://<your_domain>/auth/github/callback` and you will have to set the following env vars:
-
-```bash theme={"theme":"css-variables"}
-AUTH_GITHUB_CLIENT_ID=<your_client_id>
-AUTH_GITHUB_CLIENT_SECRET=<your_client_secret>
-```
-
-### Checkpoint support
-
-<Warning>
-  This requires an *experimental Docker feature*. Successfully checkpointing a task today, does not
-  mean you will be able to restore it tomorrow. Your data may be lost. You've been warned!
-</Warning>
-
-Checkpointing allows you to save the state of a running container to disk and restore it later. This can be useful for
-long-running tasks that need to be paused and resumed without losing state. Think fan-out and fan-in, or long waits in email campaigns.
-
-The checkpoints will be pushed to the same registry as the deployed images. Please see the [registry setup](#registry-setup) section for more information.
-
-#### Requirements
-
-* Debian, **NOT** a derivative like Ubuntu
-* Additional storage space for the checkpointed containers
-
-#### Setup
-
-Underneath the hood this uses Checkpoint and Restore in Userspace, or [CRIU](https://github.com/checkpoint-restore/criu) in short. We'll have to do a few things to get this working:
-
-1. Install CRIU
-
-```bash theme={"theme":"css-variables"}
-sudo apt-get update
-sudo apt-get install criu
-```
-
-2. Tweak the config so we can successfully checkpoint our workloads
-
-```bash theme={"theme":"css-variables"}
-mkdir -p /etc/criu
-
-cat << EOF >/etc/criu/runc.conf
-tcp-close
-EOF
-```
-
-3. Make sure everything works
-
-```bash theme={"theme":"css-variables"}
-sudo criu check
-```
-
-3. Enable Docker experimental features, by adding the following to `/etc/docker/daemon.json`
-
-```json theme={"theme":"css-variables"}
-{
-  "experimental": true
-}
-```
-
-4. Restart the Docker daemon
-
-```bash theme={"theme":"css-variables"}
-sudo systemctl restart docker
-```
-
-5. Uncomment `FORCE_CHECKPOINT_SIMULATION=0` in your `.env` file. Alternatively, run this:
-
-```bash theme={"theme":"css-variables"}
-echo "FORCE_CHECKPOINT_SIMULATION=0" >> .env
-```
-
-6. Restart the services
-
-```bash theme={"theme":"css-variables"}
-# if you're running everything on the same machine
-./stop.sh && ./start.sh
-
-# if you're running the worker on a different machine
-./stop.sh worker && ./start.sh worker
-```
-
-## Updating
-
-Once you have everything set up, you will periodically want to update your Docker images. You can easily do this by running the update script and restarting your services:
-
-```bash theme={"theme":"css-variables"}
-./update.sh
-./stop.sh && ./start.sh
-```
-
-Sometimes, we will make more extensive changes that require pulling updated compose files, scripts, etc from our docker repo:
-
-```bash theme={"theme":"css-variables"}
-git pull
-./stop.sh && ./start.sh
-```
-
-Occasionally, you may also have to update your `.env` file, but we will try to keep these changes to a minimum. Check the `.env.example` file for new variables.
-
-### From beta
-
-If you're coming from the beta CLI package images, you will need to:
-
-* **Stash you changes.** If you made any changes, stash them with `git stash`.
-* **Switch branches.** We moved back to main. Run `git checkout main` in your docker repo.
-* **Pull in updates.** We've added a new container for [Electric](https://github.com/electric-sql/electric) and made some other improvements. Run `git pull` to get the latest updates.
-* **Apply your changes.** If you stashed your changes, apply them with `git stash pop`.
-* **Update your images.** We've also published new images. Run `./update.sh` to pull them.
-* **Restart all services.** Run `./stop.sh && ./start.sh` and you're good to go.
-
-In summary, run this wherever you cloned the docker repo:
-
-```bash theme={"theme":"css-variables"}
-# if you made changes
-git stash
-
-# switch to the main branch and pull the latest changes
-git checkout main
-git pull
-
-# if you stashed your changes
-git stash pop
-
-# update and restart your services
-./update.sh
-./stop.sh && ./start.sh
-```
-
-## Troubleshooting
-
-* **Deployment fails at the push step.** The machine running `deploy` needs registry access:
-
-```bash theme={"theme":"css-variables"}
-docker login -u <username> <registry>
-# this should now succeed
-npx trigger.dev@latest deploy --self-hosted --push
-```
-
-* **Prod runs fail to start.** The `docker-provider` needs registry access:
-
-```bash theme={"theme":"css-variables"}
-# single server? run this:
-docker exec -ti \
-  trigger-docker-provider-1 \
-  docker login -u <your_dockerhub_username> docker.io
-
-# split webapp and worker? run this on the worker:
-docker exec -ti \
-  trigger-worker-docker-provider-1 \
-  docker login -u <your_dockerhub_username> docker.io
-```
-
-## CLI usage
-
-This section highlights some of the CLI commands and options that are useful when self-hosting. Please check the [CLI reference](/docs/cli-introduction) for more in-depth documentation.
-
-### Login
-
-To avoid being redirected to the [Trigger.dev Cloud](https://cloud.trigger.dev) login page when using the CLI, you can specify the URL of your self-hosted instance with the `--api-url` or `-a` flag. For example:
-
-```bash theme={"theme":"css-variables"}
-npx trigger.dev@latest login -a http://trigger.example.com
-```
-
-Once you've logged in, the CLI will remember your login details and you won't need to specify the URL again with other commands.
-
-#### Custom profiles
-
-You can specify a custom profile when logging in. This allows you to easily use the CLI with our cloud product and your self-hosted instance at the same time. For example:
-
-```
-npx trigger.dev@latest login -a http://trigger.example.com --profile my-profile
-```
-
-You can then use this profile with other commands:
-
-```
-npx trigger.dev@latest dev --profile my-profile
-```
-
-To list all your profiles, use the `list-profiles` command:
-
-```
-npx trigger.dev@latest list-profiles
-```
-
-#### Verify login
-
-It can be useful to check you have successfully logged in to the correct instance. You can do this with the `whoami` command, which will also show the API URL:
-
-```bash theme={"theme":"css-variables"}
-npx trigger.dev@latest whoami
-
-# with a custom profile
-npx trigger.dev@latest whoami --profile my-profile
-```
-
-### Deploy
-
-On [Trigger.dev Cloud](https://cloud.trigger.dev), we build deployments remotely and push those images for you. When self-hosting you will have to do that locally yourself. This can be done with the `--self-hosted` and `--push` flags. For example:
-
-```
-npx trigger.dev@latest deploy --self-hosted --push
-```
-
-### CI / GitHub Actions
-
-When running the CLI in a CI environment, your login profiles won't be available. Instead, you can use the `TRIGGER_API_URL` and `TRIGGER_ACCESS_TOKEN` environment
-variables to point at your self-hosted instance and authenticate.
-
-For more detailed instructions, see the [GitHub Actions guide](/docs/github-actions).
-
-## Telemetry
-
-By default, the Trigger.dev webapp sends telemetry data to our servers. This data is used to improve the product and is not shared with third parties. If you would like to opt-out of this, you can set the `TRIGGER_TELEMETRY_DISABLED` environment variable in your `.env` file. The value doesn't matter, it just can't be empty. For example:
-
-```bash theme={"theme":"css-variables"}
-TRIGGER_TELEMETRY_DISABLED=1
-```
-
-
 # Setting up PrivateLink in the AWS Console
 Source: https://trigger.dev/docs/private-networking/aws-console-setup
 
@@ -41711,7 +41225,7 @@ Using an AI coding assistant? Copy this prompt and paste it into Claude Code, Cu
 
 <Steps>
   <Step title="Create a Trigger.dev account">
-    Sign up at [Trigger.dev Cloud](https://cloud.trigger.dev) (or [self-host](/docs/open-source-self-hosting)). The onboarding flow will guide you through creating your first organization and project.
+    Sign up at [Trigger.dev Cloud](https://cloud.trigger.dev) (or [self-host](/docs/self-hosting/overview)). The onboarding flow will guide you through creating your first organization and project.
   </Step>
 
   <Step title="Run the CLI `init` command">
@@ -41770,13 +41284,11 @@ Using an AI coding assistant? Copy this prompt and paste it into Claude Code, Cu
   </Step>
 
   <Step title="Perform a test run using the dashboard">
-    The CLI `dev` command spits out various useful URLs. Right now we want to visit the Test page.
+    The CLI `dev` command spits out various useful URLs, including a link to the dashboard. Open it, find your Example task on the Tasks page, and press the "Test" button to open its test page.
 
-    You should see our Example task in the list <Icon icon="circle-1" />, select it. Most tasks have a "payload" which you enter in the JSON editor <Icon icon="circle-2" />, but our example task doesn't need any input.
+    Most tasks have a "payload" which you enter in the JSON editor, but our example task doesn't need any input. You can also configure run options, pre-populate the form from recent runs, and save run templates.
 
-    You can configure options on the run <Icon icon="circle-3" />, view recent payloads <Icon icon="circle-4" />, and create run templates <Icon icon="circle-5" />.
-
-    Press the "Run test" button <Icon icon="circle-6" />.
+    Press the "Run test" button.
 
     <img alt="Test page" />
   </Step>
@@ -44671,21 +44183,22 @@ Source: https://trigger.dev/docs/run-tests
 
 You can use the dashboard to run a test of your tasks.
 
-From the "Test" page in the side menu of the dashboard you can run a test for any of your tasks from any environment.
+You can run a test for any of your tasks, in any environment, from the dashboard.
 
-<img alt="Select an environment" />
+<Note>
+  There is no longer a "Test" page in the sidebar. You test a task from the task itself: on the
+  Tasks page open a task (or use the "Test" action next to a task in the Runs list) and press the
+  "Test" button to open its test page.
+</Note>
 
-<Icon icon="circle-1" /> Select a task to test
+On a task's test page you can:
 
-<Icon icon="circle-2" /> Include a payload or metadata
+* Enter the run's input — a JSON **payload** and optional **metadata**. Scheduled tasks show timestamp fields instead of a payload.
+* Configure run **options** like the machine size, version, queue, tags, retries, max duration, or a delay.
+* Pre-populate the form from a previous run with **Recent runs**, or save and reuse a configuration with **Templates**.
+* Press **Run test** to trigger the run.
 
-<Icon icon="circle-3" /> Configure any additional options like the machine size, queue or delay
-
-<Icon icon="circle-4" /> Select from previous test runs
-
-<Icon icon="circle-5" /> Save the current test configuration as a template for later
-
-<Icon icon="circle-6" /> Run the test
+<img alt="Test page" />
 
 
 # Usage
@@ -45203,6 +44716,192 @@ For more on real-time updates, see the [Realtime](/docs/realtime) documentation.
 
 It's possible to trigger a run for a task that hasn't been deployed yet. The run will enter the "Waiting for deploy" state until the task is deployed. Once deployed, the run will be queued and executed normally.
 This feature is particularly useful in CI/CD pipelines where you want to trigger tasks before the deployment is complete.
+
+
+# Bulk actions
+Source: https://trigger.dev/docs/runs/bulk-actions
+
+Cancel or replay many runs from the SDK using run IDs or SDK run-list filters.
+
+**Bulk actions let you cancel or replay many runs asynchronously from the SDK by selecting runs with run IDs or SDK run-list filters.**
+
+A bulk action returns a handle immediately. Use the handle to retrieve progress, poll until completion, list previous actions, or abort pending work.
+
+## Create a bulk replay
+
+Use `runs.bulk.replay()` to replay every run that matches a filter.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const action = await runs.bulk.replay({
+  filter: {
+    status: "FAILED",
+    taskIdentifier: "sync-customer",
+    period: "24h",
+  },
+  name: "Replay failed customer syncs",
+  targetRegion: "eu-central-1",
+});
+
+const completed = await runs.bulk.poll(action.id);
+console.log(completed.status, completed.counts);
+```
+
+`filter` accepts the SDK run-list filter fields, excluding pagination fields such as `limit`, `after`, and `before`. This is the TypeScript SDK shape used by `runs.list()` (`from`, `to`, and `period` are top-level fields), not the nested `filter[createdAt]` query shape shown in the raw HTTP list-runs endpoint. Provide at least one filter field; use `runIds` when you want to target specific runs. Relative time filters such as `period` are resolved when the bulk action is created, so later batches process the same fixed time range.
+
+<Warning>
+  Filters inherit the same time semantics as `runs.list()`: when you don't pass `from`, `to`, or `period`, the action defaults to the **last 7 days** and won't target older matching runs. To cover a wider range, pass an explicit `period` (such as `"30d"`), a `from` timestamp, or a `from`/`to` pair. This default only applies to `filter` selections; `runIds` selections are never time-bounded.
+</Warning>
+
+<ParamField type="BulkActionFilter">
+  Selects runs using the SDK run-list filter shape, excluding `limit`, `after`, and `before`. In raw HTTP requests these fields are sent as JSON body properties, so time fields are top-level (`from`, `to`, `period`) instead of nested under `createdAt`.
+</ParamField>
+
+<ParamField type="string[]">
+  Selects specific run IDs. Provide either `filter` or `runIds`, not both.
+</ParamField>
+
+<ParamField type="string">
+  A name for the bulk action.
+</ParamField>
+
+<ParamField type="string">
+  Replays matching runs in a specific region. When omitted, each replay keeps the original run's region. This option is only available for `runs.bulk.replay()`.
+</ParamField>
+
+## Create a bulk cancel
+
+Use `runs.bulk.cancel()` to cancel every run that matches a filter, or specific run IDs.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const action = await runs.bulk.cancel({
+  runIds: ["run_1234", "run_5678"],
+  name: "Cancel selected runs",
+});
+
+console.log(action.id);
+```
+
+Only runs that are still cancelable when the action reaches them are canceled. Runs that have already reached a final state count as failures in the bulk action summary.
+
+## Retrieve progress
+
+Use `runs.bulk.retrieve()` to read the current status and aggregate counts.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const action = await runs.bulk.retrieve("bulk_1234");
+
+console.log(action.status);
+console.log(action.counts.total, action.counts.success, action.counts.failure);
+```
+
+The returned bulk action object has these fields:
+
+<ResponseField name="id" type="string">
+  The bulk action ID, starting with `bulk_`.
+</ResponseField>
+
+<ResponseField name="type" type="'CANCEL' | 'REPLAY'">
+  The action being performed.
+</ResponseField>
+
+<ResponseField name="status" type="'PENDING' | 'COMPLETED' | 'ABORTED'">
+  The current bulk action status.
+</ResponseField>
+
+<ResponseField name="counts" type="object">
+  Aggregate processing counts.
+
+  <Expandable title="properties">
+    <ResponseField name="total" type="number">
+      The number of runs selected when the bulk action was created.
+    </ResponseField>
+
+    <ResponseField name="success" type="number">
+      The number of runs processed successfully.
+    </ResponseField>
+
+    <ResponseField name="failure" type="number">
+      The number of runs that could not be processed.
+    </ResponseField>
+  </Expandable>
+</ResponseField>
+
+<ResponseField name="createdAt" type="Date">
+  The date and time the bulk action was created.
+</ResponseField>
+
+<ResponseField name="completedAt" type="Date">
+  The date and time the bulk action completed.
+</ResponseField>
+
+## Poll for completion
+
+Use `runs.bulk.poll()` to wait until the bulk action leaves the `PENDING` state.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const completed = await runs.bulk.poll("bulk_1234", {
+  pollIntervalMs: 2_000,
+});
+
+console.log(completed.status);
+```
+
+## Abort a bulk action
+
+Use `runs.bulk.abort()` to stop future batches from being processed.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+await runs.bulk.abort("bulk_1234");
+```
+
+Abort is best effort. Runs already being processed in the current batch may still finish.
+
+<Note>
+  Each environment can only run a limited number of bulk replays at the same time. If you start a replay while too many are still in progress, the call fails and returns an error. Wait for an in-progress replay to finish or abort one before starting another. Bulk cancels are not subject to this limit.
+</Note>
+
+## List bulk actions
+
+Use `runs.bulk.list()` to page through previous bulk actions in the current environment.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const page = await runs.bulk.list({ limit: 25 });
+
+for (const action of page.data) {
+  console.log(action.id, action.status);
+}
+```
+
+List results support the same auto-pagination helpers as other management API list methods:
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+for await (const action of runs.bulk.list({ limit: 25 })) {
+  console.log(action.id, action.status);
+}
+```
+
+## API reference
+
+The SDK methods use the bulk actions HTTP API:
+
+* [Create bulk action](/docs/management/bulk-actions/create)
+* [List bulk actions](/docs/management/bulk-actions/list)
+* [Retrieve bulk action](/docs/management/bulk-actions/retrieve)
+* [Abort bulk action](/docs/management/bulk-actions/abort)
 
 
 # Heartbeats
@@ -46487,6 +46186,12 @@ TRIGGER_IMAGE_TAG=v4.5.0
 
 We patch the latest released version line only, so keep an eye on new releases to receive security fixes. See [Security & vulnerability reporting](/docs/self-hosting/security).
 
+<Note>
+  Trigger.dev 4.5.0 is the last version we officially support for running v3 (SDK v3) tasks. If
+  you still have v3 tasks, pin `TRIGGER_IMAGE_TAG` to exactly `v4.5.0` or [migrate to
+  v4](/docs/migrating-from-v3). 4.5.1 and later reject v3 triggers and deploys with an upgrade message.
+</Note>
+
 ## Task events
 
 By default, task events (timeline, logs, spans) are stored in PostgreSQL. For production deployments we recommend storing them in ClickHouse instead, it scales to much higher volumes and avoids unbounded growth of the `TaskEvent` table.
@@ -46532,8 +46237,6 @@ See the [webapp environment variables](/docs/self-hosting/env/webapp) for the fu
   # Run this from the /hosting/docker/webapp directory
   docker compose logs -f webapp
   ```
-
-* **Deploy fails with `ERROR: schema "graphile_worker" does not exist`.** This error occurs when Graphile Worker migrations fail to run during webapp startup. Check the webapp logs for certificate-related errors like `self-signed certificate in certificate chain`. This is often caused by PostgreSQL SSL certificate issues when using an external PostgreSQL instance with SSL enabled. Ensure that both the webapp and supervisor containers have access to the same CA certificate used by your PostgreSQL instance. You can configure this by mounting the certificate file and setting the `NODE_EXTRA_CA_CERTS` environment variable to point to the certificate path. Once the certificate issue is resolved, the migrations will complete and create the required `graphile_worker` schema.
 
 * **ClickHouse migrations say "no migrations to run" but schema is missing.** The goose migration tracker is out of sync. Exec into the webapp container, set the GOOSE env vars (from webapp startup logs), and run `goose reset && goose up`.
 
@@ -46750,11 +46453,8 @@ Environment variables for the webapp container.
 | `AWS_REGION`                                     | No       | —                                              | AWS region for SES.                                                                                                                                                                                           |
 | `AWS_ACCESS_KEY_ID`                              | No       | —                                              | AWS access key ID for SES.                                                                                                                                                                                    |
 | `AWS_SECRET_ACCESS_KEY`                          | No       | —                                              | AWS secret access key for SES.                                                                                                                                                                                |
-| **Graphile & Redis worker**                      |          |                                                |                                                                                                                                                                                                               |
-| `WORKER_CONCURRENCY`                             | No       | 10                                             | Redis worker concurrency.                                                                                                                                                                                     |
-| `WORKER_POLL_INTERVAL`                           | No       | 1000                                           | Redis worker poll interval (ms).                                                                                                                                                                              |
-| `WORKER_SCHEMA`                                  | No       | graphile\_worker                               | Graphile worker schema.                                                                                                                                                                                       |
-| `GRACEFUL_SHUTDOWN_TIMEOUT`                      | No       | 60000 (1m)                                     | Graphile graceful shutdown timeout (ms). Affects shutdown time.                                                                                                                                               |
+| **Worker**                                       |          |                                                |                                                                                                                                                                                                               |
+| `GRACEFUL_SHUTDOWN_TIMEOUT`                      | No       | 60000 (1m)                                     | Graceful shutdown timeout (ms). Affects shutdown time.                                                                                                                                                        |
 | **Concurrency limits**                           |          |                                                |                                                                                                                                                                                                               |
 | `DEFAULT_ENV_EXECUTION_CONCURRENCY_LIMIT`        | No       | 100                                            | Default env execution concurrency.                                                                                                                                                                            |
 | `DEFAULT_ORG_EXECUTION_CONCURRENCY_LIMIT`        | No       | 300                                            | Default org execution concurrency, needs to be 3x env concurrency.                                                                                                                                            |
@@ -46836,6 +46536,7 @@ Environment variables for the webapp container.
 | `SERVER_OTEL_SPAN_ATTRIBUTE_VALUE_LENGTH_LIMIT`  | No       | 8192                                           | OTel span attribute value length limit.                                                                                                                                                                       |
 | **Task events**                                  |          |                                                |                                                                                                                                                                                                               |
 | `EVENT_REPOSITORY_DEFAULT_STORE`                 | No       | postgres                                       | Where to store task events. Set to `clickhouse_v2` to store in ClickHouse (recommended for production).                                                                                                       |
+| `EVENT_REPOSITORY_POSTGRES_WRITES_DISABLED`      | No       | 0                                              | Skip all PostgreSQL task-event writes (set to `1`). Only enable when `EVENT_REPOSITORY_DEFAULT_STORE` is `clickhouse_v2`, otherwise task events are lost.                                                     |
 | **Realtime**                                     |          |                                                |                                                                                                                                                                                                               |
 | `REALTIME_STREAM_VERSION`                        | No       | v1                                             | Stream version exposed to tasks via the `TRIGGER_REALTIME_STREAM_VERSION` variable. Distinct from `REALTIME_STREAMS_DEFAULT_VERSION`. One of `v1`, `v2`.                                                      |
 | `REALTIME_STREAM_MAX_LENGTH`                     | No       | 1000                                           | Realtime stream max length.                                                                                                                                                                                   |
@@ -46866,8 +46567,6 @@ Environment variables for the webapp container.
 | `MAXIMUM_DEV_QUEUE_SIZE`                         | No       | —                                              | Maximum queued runs per queue in development environments.                                                                                                                                                    |
 | `MAXIMUM_DEPLOYED_QUEUE_SIZE`                    | No       | —                                              | Maximum queued runs per queue in deployed (staging/prod) environments.                                                                                                                                        |
 | **Misc**                                         |          |                                                |                                                                                                                                                                                                               |
-| `PROVIDER_SECRET`                                | No       | provider-secret                                | Secret for provider auth. **Must be set to a secure value in self-hosted/production**; the default is insecure.                                                                                               |
-| `COORDINATOR_SECRET`                             | No       | coordinator-secret                             | Secret for coordinator auth. **Must be set to a secure value in self-hosted/production**; the default is insecure.                                                                                            |
 | `TRIGGER_TELEMETRY_DISABLED`                     | No       | —                                              | Disable telemetry.                                                                                                                                                                                            |
 | `NODE_MAX_OLD_SPACE_SIZE`                        | No       | 8192                                           | Maximum memory allocation for Node.js heap in MiB (e.g. "4096" for 4GB).                                                                                                                                      |
 | `OPENAI_API_KEY`                                 | No       | —                                              | OpenAI API key.                                                                                                                                                                                               |
@@ -47506,6 +47205,12 @@ webapp:
 
 ## Version locking
 
+<Note>
+  Trigger.dev 4.5.0 is the last version we officially support for running v3 (SDK v3) tasks. If
+  you still have v3 tasks, pin to exactly 4.5.0 or [migrate to v4](/docs/migrating-from-v3). 4.5.1 and
+  later reject v3 triggers and deploys with an upgrade message.
+</Note>
+
 You can lock versions in two ways:
 
 **Helm chart version (recommended):**
@@ -47580,7 +47285,6 @@ kubectl delete namespace trigger
 * **Deploy fails**: Verify registry access and authentication
 * **Pods stuck pending**: Describe the pod and check the events
 * **Worker token issues**: Check webapp and supervisor logs for errors
-* **Deploy fails with `ERROR: schema "graphile_worker" does not exist`**: See the [Docker troubleshooting](/docs/self-hosting/docker#troubleshooting) section for details on resolving PostgreSQL SSL certificate issues that prevent Graphile Worker migrations.
 
 See the [Docker troubleshooting](/docs/self-hosting/docker#troubleshooting) section for more information.
 
@@ -47615,6 +47319,13 @@ Self-hosting Trigger.dev means you run and manage the platform on your own infra
 You are responsible for provisioning resources, handling updates, and managing any security, scaling or reliability challenges that arise. See [Security & vulnerability reporting](/docs/self-hosting/security) for how to report issues and stay informed about security releases.
 
 We provide version-tagged releases for self-hosted deployments. It's highly advised to use these tags exclusively and keep them locked with your CLI version.
+
+<Warning>
+  **v3 is end of life.** Trigger.dev 4.5.0 is the last version we officially support for running
+  v3 (SDK v3) tasks. If you still have v3 tasks, stay on 4.5.0 or [migrate to
+  v4](/docs/migrating-from-v3). 4.5.1 and later reject v3 triggers, batch triggers, and deploys with an
+  upgrade message; v4 workloads are unaffected.
+</Warning>
 
 ## Should you self-host?
 
@@ -48809,11 +48520,11 @@ export const secondScheduledTask = schedules.task({
 });
 ```
 
-When you run the [dev](/docs/cli-dev-commands) or [deploy](/docs/cli-deploy-commands) commands, declarative schedules will be synced. If you add, delete or edit the `cron` property it will be updated when you run these commands. You can view your schedules on the Schedules page in the dashboard.
+When you run the [dev](/docs/cli-dev-commands) or [deploy](/docs/cli-deploy-commands) commands, declarative schedules will be synced. If you add, delete or edit the `cron` property it will be updated when you run these commands. You can view your synced schedules in the dashboard: open the task on the Tasks page and check its "Schedules" tab.
 
 ### Imperative schedules
 
-Alternatively you can explicitly attach schedules to a `schedules.task`. You can do this in the Schedules page in the dashboard by just pressing the "New schedule" button, or you can use the SDK to create schedules.
+Alternatively you can explicitly attach schedules to a `schedules.task`. You can do this in the dashboard from the scheduled task's page by pressing the "Create schedule" button, or you can use the SDK to create schedules.
 
 The advantage of imperative schedules is that they can be created dynamically, for example, you could create a schedule for each user in your database. They can also be activated, disabled, edited, and deleted without deploying new code by using the SDK or dashboard.
 
@@ -48848,31 +48559,49 @@ There are two situations when a scheduled task won't trigger:
 
 ## Attaching schedules in the dashboard
 
-You need to attach a schedule to a task before it will run on a schedule. You can attach static schedules in the dashboard:
+You need to attach a schedule to a task before it will run on a schedule. You can attach imperative schedules in the dashboard:
+
+<Note>
+  **The Schedules page has moved.** There is no longer a standalone "Schedules" page in the
+  sidebar. Schedules now live on the Tasks page: open a scheduled task to create, view, edit,
+  enable/disable, and delete its schedules. The old `/schedules` URL redirects to the Tasks page.
+
+  The scheduled task must already exist first — define it in your code with `schedules.task()` and
+  sync it to the environment by running the [dev](/docs/cli-dev-commands) or
+  [deploy](/docs/cli-deploy-commands) command so it appears on the Tasks page. A project with no tasks
+  yet will only show the deploy onboarding.
+</Note>
 
 <Steps>
-  <Step title="Go to the Schedules page">
-    In the sidebar select the "Schedules" page, then press the "New schedule" button. Or you can
-    follow the onboarding and press the create in dashboard button. <img alt="Blank schedules
-    page" />
+  <Step title="Open the scheduled task">
+    In the sidebar select the "Tasks" page, then select the scheduled task you want to attach a
+    schedule to (scheduled tasks have a clock icon, and you can filter the list to Scheduled).
+
+    <img alt="Scheduled task page" />
   </Step>
 
   <Step title="Create your schedule">
-    Fill in the form and press "Create schedule" when you're done. <img alt="Environment variables
-    page" />
+    Press the "Create schedule" button, fill in the form, and press "Create schedule" when you're
+    done. <img alt="Create schedule form" />
 
     These are the options when creating a schedule:
 
     | Name              | Description                                                                                                                            |
     | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
     | Task              | The id of the task you want to attach to.                                                                                              |
-    | Cron pattern      | The schedule in cron format.                                                                                                           |
+    | Cron pattern      | The schedule in cron format. You can also describe it in natural language and press "Generate" to fill this in.                        |
     | Timezone          | The timezone the schedule will run in. Defaults to "UTC"                                                                               |
     | External id       | An optional external id, usually you'd use a userId.                                                                                   |
     | Deduplication key | An optional deduplication key. If you pass the same value, it will update rather than create. Scoped per project, not per environment. |
     | Environments      | The environments this schedule will run in.                                                                                            |
   </Step>
 </Steps>
+
+## Managing schedules in the dashboard
+
+Open the scheduled task and switch to the "Schedules" tab to see every schedule attached to it — both declarative and imperative — with its type, cron pattern, external id, next and last run, and status.
+
+Click a schedule to open the inspector, where you can **enable/disable**, **edit**, or **delete** imperative schedules without deploying new code. Declarative schedules are managed in your code, so they can't be edited or deleted from here.
 
 ## Attaching schedules with the SDK
 
@@ -48981,13 +48710,19 @@ You can also retrieve, list, delete, deactivate and re-activate schedules using 
 
 You can test a scheduled task in the dashboard. Note that the `scheduleId` will always come through as `sched_1234` to the run.
 
+<Note>
+  There is no longer a standalone "Test" page in the sidebar. You test a task from the task itself —
+  open it on the Tasks page and press the "Test schedule" button.
+</Note>
+
 <Steps>
-  <Step title="Go to the Test page">
-    In the sidebar select the "Test" page, then select a scheduled task from the list (they have a
-    clock icon on them) <img alt="Test page" />
+  <Step title="Open the test page for your task">
+    On the "Tasks" page, open your scheduled task and press the "Test schedule" button.
+
+    <img alt="Scheduled task page" />
   </Step>
 
-  <Step title="Create your schedule">
+  <Step title="Run the test">
     Fill in the form \[1]. You can select from a recent run \[2] to pre-populate the fields. Press "Run
     test" when you're ready <img alt="Schedule test form" />
   </Step>

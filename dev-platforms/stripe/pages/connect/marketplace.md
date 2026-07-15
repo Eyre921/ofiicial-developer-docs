@@ -38,7 +38,7 @@ Charging an application fee allows you to earn revenue and cover your costs to k
 A diagram showing monetization for a marketplace (See full diagram at https://docs.stripe.com/connect/marketplace)
 ## Merchant risk
 
-Your marketplace platform is responsible for covering the negative balances of your connected accounts. Use [Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md) to prevent, detect, and mitigate both buyer risk and financially risky connected accounts.
+Your marketplace platform is responsible for covering the negative balances of your connected accounts. Use [Radar for Platforms](https://docs.stripe.com/radar/radar-for-platforms.md) to prevent, detect, and mitigate both customer risk and financially risky connected accounts.
 
 ## Resources
 

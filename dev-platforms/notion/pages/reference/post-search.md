@@ -9,7 +9,9 @@ Searches all parent or child pages and data_sources that have been shared with a
 
 Returns all [pages](/reference/page) or [data\_sources](/reference/data-source) , excluding duplicated linked databases, that have titles that include the `query` param. If no `query` param is provided, then the response contains all pages or data\_sources that have been shared with the connection. The results adhere to any limitations related to an [connection’s capabilities](/reference/capabilities).
 
-To limit the request to search only pages or to search only data\_source, use the `filter` param.
+To limit the request to pages or data sources, use the `filter` parameter with `property: "object"` and a `value` of `"page"` or `"data_source"`.
+
+To list content in the trash, set `filter.in_trash` to `true`. You can combine `in_trash` with the object filter or use it by itself.
 
 ### Errors
 

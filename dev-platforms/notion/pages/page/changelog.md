@@ -4,6 +4,15 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="July 14, 2026">
+  ### Longer-lived Notion MCP access tokens
+
+  Notion MCP access tokens now last about eight hours, up from one hour. Clients
+  must continue to rely on the token response's `expires_in` value, but the longer
+  lifetime reduces refresh frequency and makes connections more resilient to
+  client-side refresh failures.
+</Update>
+
 <Update label="July 8, 2026">
   We released [`v5.23.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.23.0) of `@notionhq/client`, our SDK for JavaScript and TypeScript. Here's what's new:
 

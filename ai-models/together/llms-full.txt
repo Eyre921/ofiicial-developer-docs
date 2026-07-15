@@ -16580,14 +16580,51 @@ Passive checks monitor node telemetry and system logs in real time. There is no 
 
 ### Detected failure modes
 
-Passive health checks currently detect three categories of failure:
+Passive checks continuously watch node telemetry, GPU metrics, and system logs, and raise a signal when a node shows one of the conditions below. Each signal that meets repair criteria generates a [repair recommendation](/docs/node-repair#auto-node-repair) with a suggested action.
 
-* **GPU fell off the bus:** The GPU becomes unreachable on the PCIe bus, typically caused by a hardware or connector failure. The node can no longer schedule GPU workloads until the GPU is restored.
-* **GPU thermal throttling:** Sustained high temperatures cause the GPU to reduce clock speeds. Training throughput and inference latency degrade without any visible error in your application.
-* **Fatal Xid errors:** Critical NVIDIA driver errors (for example, Xid 79) that indicate unrecoverable GPU faults. The GPU is unusable until the node is repaired.
+#### GPU and accelerator
+
+| Condition               | Signal                      | Typical cause                                                                                     |
+| ----------------------- | --------------------------- | ------------------------------------------------------------------------------------------------- |
+| GPU fell off the bus    | `DmesgGpuFallenOffBus`      | GPU becomes unreachable on the PCIe bus, typically a hardware or connector failure.               |
+| GPU thermal throttling  | `GpuSmClockThermalThrottle` | Sustained high temperature forces SM clocks down, degrading throughput with no application error. |
+| GPU Xid error           | `DmesgXidError`             | NVIDIA driver or hardware Xid fault reported in the kernel log.                                   |
+| Uncorrectable ECC error | `GpuEccDoubleBitError`      | Double-bit GPU memory error.                                                                      |
+| GPU row-remap failure   | `GpuRowRemapFailure`        | GPU memory row-remap failed; the GPU likely needs replacement (RMA).                              |
+| High PCIe replay rate   | `GpuPcieReplayRateHigh`     | Degraded PCIe link integrity.                                                                     |
+
+#### InfiniBand networking
+
+| Condition              | Signal                  | Typical cause                                                                        |
+| ---------------------- | ----------------------- | ------------------------------------------------------------------------------------ |
+| Rails down or degraded | `IBRailsDownOrDegraded` | Fewer than 8 active 400G InfiniBand rails (a rail is down or negotiated below 400G). |
+| Link flapping          | `IBLinkFlapping`        | Repeated InfiniBand link-down events on a compute rail.                              |
+
+#### Node OS, kernel, and resources
+
+| Condition                     | Signal                           | Typical cause                                |
+| ----------------------------- | -------------------------------- | -------------------------------------------- |
+| Fatal platform hardware error | `NpdCperHardwareErrorFatal`      | Fatal CPER-reported platform hardware error. |
+| Read-only filesystem          | `NpdReadonlyFilesystem`          | Root or data filesystem remounted read-only. |
+| XFS shutdown                  | `NpdXfsShutdown`                 | XFS filesystem shut down after an error.     |
+| Kernel deadlock               | `NpdKernelDeadlock`              | A kernel task is stuck.                      |
+| Frequent kubelet restarts     | `NpdFrequentKubeletRestart`      | kubelet is restarting repeatedly.            |
+| Frequent containerd restarts  | `NpdFrequentContainerdRestart`   | containerd is restarting repeatedly.         |
+| Frequent netdev unregister    | `NpdFrequentUnregisterNetDevice` | Repeated network device unregister events.   |
+| Memory pressure               | `KubeNodeMemoryPressure`         | Node under sustained memory pressure.        |
+| Disk pressure                 | `KubeNodeDiskPressure`           | Node under sustained disk pressure.          |
+| PID pressure                  | `KubeNodePIDPressure`            | Node is exhausting available process IDs.    |
+
+#### Scheduler
+
+| Condition              | Signal                 | Typical cause                       |
+| ---------------------- | ---------------------- | ----------------------------------- |
+| Slurm node unavailable | `SlurmNodeUnavailable` | Slurm marks the node DOWN or DRAIN. |
+
+See [Recommended repair actions](/docs/node-repair#recommended-repair-actions) for the repair action each signal maps to.
 
 <Note>
-  The list of detected failure modes is expanding. Future releases will cover additional hardware and software signals.
+  Detection coverage is expanding, and automated recommendations are enabled per cluster. Not every signal triggers an automated recommendation today; some raise an internal alert that Together's team reviews. Future releases will cover additional hardware and software signals.
 </Note>
 
 ### Active vs. passive checks
@@ -32771,6 +32808,229 @@ bustling atmosphere would be a perfect refuge from the cold! 🧥🍷
 Notice how K2.6 maintains context across all turns: it identifies Google from the logo image to call the stock price tool (Turn 3), and recognizes New York City from the skyline image to call the appropriate weather and restaurant tools (Turn 4).
 
 
+# Queue GPU jobs with Kueue
+Source: https://docs.together.ai/docs/kueue-on-gpu-clusters
+
+Install Kueue and gate GPU jobs on quota so a shared cluster admits work as capacity frees up.
+
+<Tip>Using a coding agent? Load the [together-kueue](https://github.com/togethercomputer/skills/tree/main/skills/together-kueue) skill to teach your agent to write correct Kueue and GPU cluster code for Together AI. [Learn more](/docs/agent-skills).</Tip>
+
+<Note>
+  Running third-party schedulers on Together GPU clusters is in beta. The steps and pinned version here (Kueue v0.18.3) are validated on current clusters, but the workflow and defaults may change. Report issues to [support@together.ai](mailto:support@together.ai).
+</Note>
+
+[Kueue](https://kueue.sigs.k8s.io/) is a Kubernetes-native job queueing controller. Instead of letting every job compete for GPUs the moment it is created, Kueue holds jobs in a queue and admits them only when their quota is available, suspending the rest. This is how you share a fixed GPU pool across teams without overcommitting it. This guide installs Kueue on a Together GPU cluster and gates jobs on GPU quota.
+
+For the concepts behind each object below, see the [Kueue documentation](https://kueue.sigs.k8s.io/docs/concepts/).
+
+## Prerequisites
+
+* A Together [Kubernetes GPU cluster](/docs/gpu-clusters-quickstart) in the **Ready** state.
+* `kubectl` configured against the cluster. Download credentials with `tg beta clusters get-credentials <cluster_id> --set-default-context`.
+* Cluster-admin access. The kubeconfig from the Together CLI grants it.
+
+## Install Kueue
+
+Apply the versioned release manifest. Use `--server-side` because the bundled custom resource definitions are large. For other install methods and configuration options, see the [Kueue installation guide](https://kueue.sigs.k8s.io/docs/installation/):
+
+```bash theme={null}
+kubectl apply --server-side -f https://github.com/kubernetes-sigs/kueue/releases/download/v0.18.3/manifests.yaml
+```
+
+Wait for the controller to become available:
+
+```bash theme={null}
+kubectl -n kueue-system wait --for=condition=Available deployment/kueue-controller-manager --timeout=240s
+kubectl -n kueue-system get pods
+```
+
+```
+NAME                                        READY   STATUS    RESTARTS   AGE
+kueue-controller-manager-6c8685b746-tlc47   1/1     Running   0          20s
+```
+
+<Tip>
+  Prefer Helm? Install the chart from the registry: `helm install kueue oci://registry.k8s.io/kueue/charts/kueue --version 0.18.3 --namespace kueue-system --create-namespace`.
+</Tip>
+
+## Define quotas
+
+Kueue admits jobs against quota described by three resources:
+
+* **[ResourceFlavor](https://kueue.sigs.k8s.io/docs/concepts/resource_flavor/):** a class of nodes. One flavor is enough when your GPU nodes are homogeneous.
+* **[ClusterQueue](https://kueue.sigs.k8s.io/docs/concepts/cluster_queue/):** the cluster-wide quota pool. It must cover every resource your jobs request, including CPU and memory, or matching jobs are never admitted.
+* **[LocalQueue](https://kueue.sigs.k8s.io/docs/concepts/local_queue/):** a namespaced pointer to a ClusterQueue that users submit jobs to.
+
+Create all three, budgeting eight GPUs:
+
+```yaml kueue-quota.yaml theme={null}
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ResourceFlavor               # a class of nodes; one is enough for homogeneous GPUs
+metadata:
+  name: gpu-flavor
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: ClusterQueue                 # the cluster-wide quota pool
+metadata:
+  name: gpu-cluster-queue
+spec:
+  namespaceSelector: {}            # {} accepts jobs from every namespace
+  resourceGroups:
+    - coveredResources: ["cpu", "memory", "nvidia.com/gpu"]  # every resource jobs request must be listed here
+      flavors:
+        - name: gpu-flavor         # must match the ResourceFlavor name above
+          resources:
+            - name: "cpu"
+              nominalQuota: 64
+            - name: "memory"
+              nominalQuota: 512Gi
+            - name: "nvidia.com/gpu"
+              nominalQuota: 8       # admit at most 8 GPUs worth of jobs at once
+---
+apiVersion: kueue.x-k8s.io/v1beta2
+kind: LocalQueue                   # namespaced entry point users submit jobs to
+metadata:
+  namespace: default
+  name: gpu-queue
+spec:
+  clusterQueue: gpu-cluster-queue  # points at the ClusterQueue above
+```
+
+```bash theme={null}
+kubectl apply -f kueue-quota.yaml
+```
+
+`nominalQuota` is the amount of each resource the ClusterQueue can admit at once. Set the GPU quota to the number of GPUs you want this queue to control.
+
+## Attach shared storage
+
+Together provisions a static [PersistentVolume](/docs/gpu-clusters-management#kubernetes-usage) named after your cluster's shared volume. Bind a PersistentVolumeClaim to it so queued jobs read and write the same dataset and checkpoints:
+
+```yaml shared-pvc.yaml theme={null}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-pvc
+spec:
+  accessModes:
+    - ReadWriteMany                 # many pods across nodes mount it at the same time
+  storageClassName: shared-wekafs   # Together's default shared storage class
+  volumeName: <SHARED_VOLUME_NAME>  # the static PV named after your shared volume
+  resources:
+    requests:
+      storage: 100Gi
+```
+
+```bash theme={null}
+kubectl apply -f shared-pvc.yaml
+kubectl get pvc shared-pvc   # STATUS should be Bound
+```
+
+Storage is not a quota resource, so it does not affect admission. The next section mounts this claim into the job.
+
+## Submit a job to a queue
+
+Point a standard `batch/v1` Job at the LocalQueue with the `kueue.x-k8s.io/queue-name` label and set `suspend: true`. Kueue takes over the suspend flag and flips it to `false` when it admits the job. For other supported workload types (JobSet, RayJob, MPIJob, and more), see [running jobs with Kueue](https://kueue.sigs.k8s.io/docs/tasks/run/jobs/):
+
+```yaml gpu-job.yaml theme={null}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: gpu-job-a
+  namespace: default
+  labels:
+    kueue.x-k8s.io/queue-name: gpu-queue   # send this job to the "gpu-queue" LocalQueue
+spec:
+  parallelism: 1
+  completions: 1
+  suspend: true                            # start suspended; Kueue unsuspends it on admission
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: worker
+          image: nvidia/cuda:12.4.0-base-ubuntu22.04
+          command: ["bash", "-c", "nvidia-smi -L; sleep 180"]
+          resources:
+            requests:
+              cpu: "2"                       # counted against the ClusterQueue cpu quota
+              memory: "8Gi"                  # counted against the memory quota
+            limits:
+              nvidia.com/gpu: 6              # counted against the nvidia.com/gpu quota
+          volumeMounts:
+            - name: shared
+              mountPath: /mnt/shared         # shared volume mounted into the job
+      volumes:
+        - name: shared
+          persistentVolumeClaim:
+            claimName: shared-pvc            # the PVC bound above
+```
+
+```bash theme={null}
+kubectl apply -f gpu-job.yaml
+```
+
+Kueue creates a [`Workload`](https://kueue.sigs.k8s.io/docs/concepts/workload/) object for the job and admits it because six GPUs fit within the eight-GPU quota. The job's `suspend` flag flips to `false` and its pod starts:
+
+```bash theme={null}
+kubectl get workloads
+```
+
+```
+NAME                  QUEUE       ADMITTED
+job-gpu-job-a-272f3   gpu-queue   True
+```
+
+## Watch quota gate a second job
+
+Submit a second job that also requests six GPUs. Together the two jobs need 12 GPUs, past the eight-GPU quota. Copy `gpu-job.yaml` to a new name (`gpu-job-b`) and apply it, then compare the two:
+
+```bash theme={null}
+kubectl get jobs -o custom-columns='NAME:.metadata.name,SUSPEND:.spec.suspend,ACTIVE:.status.active'
+```
+
+```
+NAME        SUSPEND   ACTIVE
+gpu-job-a   false     1
+gpu-job-b   true      <none>
+```
+
+The first job runs; the second stays suspended. Its Workload reports exactly why:
+
+```bash theme={null}
+WORKLOAD=$(kubectl get workloads -o name | grep gpu-job-b)
+kubectl get "$WORKLOAD" -o jsonpath='{.status.conditions[?(@.type=="QuotaReserved")].message}'
+# couldn't assign flavors to pod set main: insufficient unused quota for nvidia.com/gpu in flavor gpu-flavor, 4 more needed
+```
+
+When the first job finishes or you delete it, Kueue re-admits the queued job automatically and its pod starts, no resubmission needed:
+
+```bash theme={null}
+kubectl delete job gpu-job-a
+kubectl get job gpu-job-b -o jsonpath='{.spec.suspend}{"\n"}'
+# false
+```
+
+## Troubleshooting
+
+* **A job never leaves `suspend: true`:** its combined request exceeds the ClusterQueue quota, or the ClusterQueue does not cover one of its resources. Check the Workload's `QuotaReserved` condition message.
+* **The job runs immediately without queueing:** the `kueue.x-k8s.io/queue-name` label is missing or names a LocalQueue that does not exist in the job's namespace.
+* **The ClusterQueue shows no active quota:** its ResourceFlavor is missing or misnamed. The `flavors[].name` must match a ResourceFlavor.
+* **A job requesting only GPUs is never admitted:** the ClusterQueue must also cover the CPU and memory the pods request. Add them to `coveredResources`.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Gang-schedule GPU jobs with Volcano" icon="layout-grid" href="/docs/volcano-on-gpu-clusters">
+    Run distributed training with all-or-nothing gang scheduling.
+  </Card>
+
+  <Card title="Manage GPU clusters" icon="server" href="/docs/gpu-clusters-management">
+    Deploy workloads, attach storage, and access the Kubernetes dashboard.
+  </Card>
+</CardGroup>
+
+
 # LangGraph
 Source: https://docs.together.ai/docs/langgraph
 
@@ -33896,14 +34156,35 @@ When [passive](/docs/health-checks#passive-health-checks) or [active](/docs/heal
 
 ### Recommended repair actions
 
-When the system generates a repair recommendation, it selects the appropriate action based on the detected issue:
+When the system generates a repair recommendation, it selects an action based on the detected issue. Auto repair uses three repair actions, from lightest to heaviest: reboot, quick reprovision, and migrate to new host (see [Available repair actions](#available-repair-actions)). If a lighter action does not clear the issue, it escalates to a heavier one. Some signals are warning-only: they surface an alert for review without an automated repair action.
 
-| **Detected issue**                                  | **Recommended action** |
-| --------------------------------------------------- | ---------------------- |
-| **GPU fell off the bus**                            | Migrate to new host    |
-| **GPU thermal throttling** (SmClockThermalThrottle) | Migrate to new host    |
-| **Xid error**                                       | Reboot                 |
-| **Drained Slurm node**                              | Migrate to new host    |
+The detected issues come from [passive health check signals](/docs/health-checks#detected-failure-modes):
+
+| **Detected issue**                | **Signal**                       | **Recommended action**               |
+| --------------------------------- | -------------------------------- | ------------------------------------ |
+| GPU fell off the bus              | `DmesgGpuFallenOffBus`           | Migrate to new host                  |
+| GPU thermal throttling            | `GpuSmClockThermalThrottle`      | Migrate to new host                  |
+| High PCIe replay rate             | `GpuPcieReplayRateHigh`          | Migrate to new host                  |
+| InfiniBand rails down or degraded | `IBRailsDownOrDegraded`          | Migrate to new host                  |
+| InfiniBand link flapping          | `IBLinkFlapping`                 | Migrate to new host                  |
+| Fatal platform hardware error     | `NpdCperHardwareErrorFatal`      | Quick reprovision                    |
+| Read-only filesystem              | `NpdReadonlyFilesystem`          | Quick reprovision                    |
+| XFS shutdown                      | `NpdXfsShutdown`                 | Quick reprovision                    |
+| GPU Xid error                     | `DmesgXidError`                  | Reboot (Xid 79 migrates to new host) |
+| Uncorrectable ECC error           | `GpuEccDoubleBitError`           | Reboot                               |
+| GPU row-remap failure             | `GpuRowRemapFailure`             | Reboot                               |
+| Kernel deadlock                   | `NpdKernelDeadlock`              | Reboot                               |
+| Frequent kubelet restarts         | `NpdFrequentKubeletRestart`      | Reboot                               |
+| Frequent containerd restarts      | `NpdFrequentContainerdRestart`   | Reboot                               |
+| Frequent netdev unregister        | `NpdFrequentUnregisterNetDevice` | Reboot                               |
+| Node memory pressure              | `KubeNodeMemoryPressure`         | Reboot                               |
+| Node PID pressure                 | `KubeNodePIDPressure`            | Reboot                               |
+| Node disk pressure                | `KubeNodeDiskPressure`           | Warning                              |
+| Slurm node unavailable            | `SlurmNodeUnavailable`           | Warning                              |
+
+<Note>
+  Automated recommendations are enabled per cluster and are still expanding. Not every signal above triggers an automated recommendation today; some raise an internal alert that Together's team reviews first. Every recommendation is reviewed and accepted by you before a repair runs.
+</Note>
 
 ### Behavioral details
 
@@ -35337,11 +35618,11 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | -------------------------- | --------------- | ---------- |
 | GPU Clusters               | ✅               | ✅          |
 | API Keys                   | ✅               | ✅          |
+| Serverless inference       | ✅               | ✅          |
 | Fine-tuning                | ✅               | ❌          |
 | Files                      | ✅               | ❌          |
 | Evaluations                | ✅               | ❌          |
 | Batch                      | ✅               | ❌          |
-| Serverless inference       | ✅               | ❌          |
 | Code Interpreter           | ✅               | N/A        |
 | Container Inference        | ❌               | ❌          |
 | Storage                    | ❌               | ❌          |
@@ -41934,6 +42215,246 @@ Some available model IDs include:
 * `intfloat/multilingual-e5-large-instruct`
 
 ***
+
+
+# Gang-schedule GPU jobs with Volcano
+Source: https://docs.together.ai/docs/volcano-on-gpu-clusters
+
+Install the Volcano scheduler and run gang-scheduled GPU jobs on a Together Kubernetes cluster.
+
+<Tip>Using a coding agent? Load the [together-volcano](https://github.com/togethercomputer/skills/tree/main/skills/together-volcano) skill to teach your agent to write correct Volcano and GPU cluster code for Together AI. [Learn more](/docs/agent-skills).</Tip>
+
+<Note>
+  Running third-party schedulers on Together GPU clusters is in beta. The steps and pinned version here (Volcano v1.15.0) are validated on current clusters, but the workflow and defaults may change. Report issues to [support@together.ai](mailto:support@together.ai).
+</Note>
+
+[Volcano](https://volcano.sh/) is a Kubernetes-native batch scheduler for AI, machine learning, and high-performance computing workloads. Its defining feature is [gang scheduling](https://volcano.sh/en/docs/gang_scheduling/): a group of pods is scheduled all-at-once or not at all, so a distributed training job never starts with half its workers running and the rest stuck pending. This guide installs Volcano on a Together GPU cluster and runs a gang-scheduled job across the cluster's GPUs.
+
+For background on every field used here, see the [Volcano documentation](https://volcano.sh/en/docs/).
+
+## Prerequisites
+
+* A Together [Kubernetes GPU cluster](/docs/gpu-clusters-quickstart) in the **Ready** state.
+* `kubectl` configured against the cluster. Download credentials with `tg beta clusters get-credentials <cluster_id> --set-default-context`.
+* Cluster-admin access. The kubeconfig from the Together CLI grants it.
+
+Confirm you can reach the cluster and see its GPU nodes:
+
+```bash theme={null}
+kubectl get nodes -o custom-columns='NODE:.metadata.name,GPU:.status.allocatable.nvidia\.com/gpu'
+```
+
+GPU nodes report an `nvidia.com/gpu` count. The NVIDIA device plugin that exposes this resource is preinstalled on Together clusters.
+
+## Install Volcano
+
+Install the scheduler, controllers, and custom resource definitions from the versioned release manifest. For other install methods and version compatibility, see the [Volcano installation guide](https://volcano.sh/en/docs/installation/):
+
+```bash theme={null}
+kubectl apply -f https://raw.githubusercontent.com/volcano-sh/volcano/v1.15.0/installer/volcano-development.yaml
+```
+
+Wait for the control plane to become available:
+
+```bash theme={null}
+kubectl -n volcano-system wait --for=condition=Available deployment --all --timeout=180s
+kubectl -n volcano-system get pods
+```
+
+All pods should be `Running` or `Completed`:
+
+```
+NAME                                  READY   STATUS      RESTARTS   AGE
+volcano-admission-5f4fcdc56f-6n2j4    1/1     Running     0          3m
+volcano-admission-init-bbjdf          0/1     Completed   0          3m
+volcano-controllers-f79b44f67-nxbg7   1/1     Running     0          3m
+volcano-scheduler-d8b968cbb-kc885     1/1     Running     0          3m
+```
+
+Volcano creates a `default` queue automatically:
+
+```bash theme={null}
+kubectl get queue
+```
+
+<Tip>
+  Prefer Helm? Add the chart repo and install into the same namespace: `helm repo add volcano-sh https://volcano-sh.github.io/helm-charts && helm install volcano volcano-sh/volcano -n volcano-system --create-namespace`.
+</Tip>
+
+## Create a queue
+
+A [queue](https://volcano.sh/en/docs/queue/) is the unit Volcano uses to divide cluster capacity between teams or workloads. Create one with a GPU capability cap so jobs in it can request up to eight GPUs:
+
+```yaml research-queue.yaml theme={null}
+apiVersion: scheduling.volcano.sh/v1beta1
+kind: Queue
+metadata:
+  name: research
+spec:
+  reclaimable: true      # let other queues borrow this queue's idle capacity
+  weight: 1              # relative share of contended resources vs. other queues
+  capability:           # hard ceiling on what jobs in this queue can use at once
+    nvidia.com/gpu: 8
+```
+
+```bash theme={null}
+kubectl apply -f research-queue.yaml
+```
+
+* `weight`: the queue's share of cluster resources relative to other queues when capacity is contended.
+* `capability`: the hard upper bound on resources the queue can consume at once.
+* `reclaimable`: whether the queue gives resources back to other queues when it is over its fair share.
+
+See the [queue reference](https://volcano.sh/en/docs/queue/) for the full field list, including hierarchical queues and guaranteed resources.
+
+## Attach shared storage
+
+Together provisions a static [PersistentVolume](/docs/gpu-clusters-management#kubernetes-usage) named after your cluster's shared volume. Bind a PersistentVolumeClaim to it so every worker reads and writes the same dataset and checkpoints:
+
+```yaml shared-pvc.yaml theme={null}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: shared-pvc
+spec:
+  accessModes:
+    - ReadWriteMany                 # many pods across nodes mount it at the same time
+  storageClassName: shared-wekafs   # Together's default shared storage class
+  volumeName: <SHARED_VOLUME_NAME>  # the static PV named after your shared volume
+  resources:
+    requests:
+      storage: 100Gi
+```
+
+```bash theme={null}
+kubectl apply -f shared-pvc.yaml
+kubectl get pvc shared-pvc   # STATUS should be Bound
+```
+
+The next section mounts this claim into the job.
+
+## Run a gang-scheduled job
+
+A Volcano [`Job`](https://volcano.sh/en/docs/vcjob/) (`vcjob`) wraps a set of tasks and enforces gang scheduling through `minAvailable`. The scheduler admits the job only once it can place at least `minAvailable` pods together. The following job runs four workers, each requesting two GPUs, for eight GPUs total, with the shared volume mounted at `/mnt/shared`:
+
+```yaml gpu-gang-job.yaml theme={null}
+apiVersion: batch.volcano.sh/v1alpha1
+kind: Job                          # a Volcano Job (vcjob), not a core batch/v1 Job
+metadata:
+  name: gpu-gang
+spec:
+  minAvailable: 4                  # gang size: schedule all 4 pods together or none
+  schedulerName: volcano           # route pods to Volcano instead of the default scheduler
+  queue: research                  # draw resources from the "research" queue
+  policies:
+    - event: PodEvicted            # if any pod in the gang is evicted...
+      action: RestartJob           # ...restart the whole job so workers stay in sync
+  tasks:
+    - replicas: 4                  # number of worker pods in the gang
+      name: worker
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: worker
+              image: nvidia/cuda:12.4.0-base-ubuntu22.04
+              command: ["bash", "-c", "nvidia-smi -L; sleep 300"]
+              resources:
+                limits:
+                  nvidia.com/gpu: 2  # GPUs per worker; 4 x 2 = 8 GPUs for the gang
+              volumeMounts:
+                - name: shared
+                  mountPath: /mnt/shared   # shared volume visible to every worker
+          volumes:
+            - name: shared
+              persistentVolumeClaim:
+                claimName: shared-pvc      # the PVC bound above
+```
+
+```bash theme={null}
+kubectl apply -f gpu-gang-job.yaml
+```
+
+`schedulerName: volcano` routes the pods to Volcano instead of the default Kubernetes scheduler. `minAvailable: 4` means all four workers start together or none do.
+
+Watch the job reach `Running`:
+
+```bash theme={null}
+kubectl get vcjob gpu-gang
+```
+
+```
+NAME       STATUS    MINAVAILABLE   RUNNINGS   AGE
+gpu-gang   Running   4              4          30s
+```
+
+Volcano tracks the group through a `PodGroup`. Inspect it and the pods:
+
+```bash theme={null}
+kubectl get podgroup
+kubectl get pods -l volcano.sh/job-name=gpu-gang -o wide
+```
+
+Confirm the GPUs are visible inside a worker:
+
+```bash theme={null}
+kubectl logs gpu-gang-worker-0
+```
+
+```
+GPU 0: NVIDIA H100 80GB HBM3 (UUID: GPU-0b416d98-...)
+GPU 1: NVIDIA H100 80GB HBM3 (UUID: GPU-149c362a-...)
+```
+
+Confirm the shared volume is mounted and writable from every worker. All workers read and write the same `ReadWriteMany` volume, so a file written by one is visible to the others:
+
+```bash theme={null}
+kubectl exec gpu-gang-worker-0 -- touch /mnt/shared/hello
+kubectl exec gpu-gang-worker-1 -- ls /mnt/shared   # shows hello
+```
+
+### Verify all-or-nothing behavior
+
+Gang scheduling matters most when a job cannot fit. Delete the running job, then submit one that requests more GPUs than the cluster has (eight workers at two GPUs each is 16 GPUs, past this cluster's 8):
+
+```bash theme={null}
+kubectl delete vcjob gpu-gang
+```
+
+Change `minAvailable` to `8` and `replicas` to `8` in the manifest and reapply. The job stays `Pending` and, critically, **no** pods run. The default scheduler would start as many as fit and strand the rest; Volcano keeps the whole group pending:
+
+```bash theme={null}
+kubectl get pods -l volcano.sh/job-name=gpu-gang --no-headers | awk '{print $3}' | sort | uniq -c
+#    8 Pending
+
+kubectl get events --field-selector involvedObject.name=gpu-gang-worker-0 | tail -1
+# Warning  FailedScheduling  ... once resource is released and minAvailable is satisfied
+```
+
+The `PodGroup` sits in the `Inqueue` phase until enough resources free up to admit the entire gang.
+
+## Route other workloads to Volcano
+
+Any pod, Deployment, or third-party job type can use Volcano by setting `schedulerName: volcano` in its pod template. This is how you schedule multi-node training launched through the [MPI Operator](https://github.com/kubeflow/mpi-operator), which is preinstalled on Together clusters. For gang guarantees on those workloads, create a `PodGroup` and reference it from the pods; see the [Volcano documentation](https://volcano.sh/en/docs/podgroup/).
+
+## Troubleshooting
+
+* **Pods stay `Pending` and the `PodGroup` is `Inqueue`:** the queue cannot fit `minAvailable` pods at once. Lower `minAvailable`, raise the queue's `capability`, or wait for other jobs to release GPUs.
+* **Pods schedule on the default scheduler instead of Volcano:** `schedulerName: volcano` is missing from the pod template. On a `vcjob` it belongs under `spec`.
+* **Job rejected on creation:** the Volcano admission webhook may still be starting. Confirm `volcano-admission` is `Running` in the `volcano-system` namespace and reapply.
+* **Queue rejects a job:** the job's total request exceeds the queue's `capability`. Raise the cap or split the work.
+
+## Next steps
+
+<CardGroup>
+  <Card title="Queue GPU jobs with Kueue" icon="stack-2" href="/docs/kueue-on-gpu-clusters">
+    Gate GPU jobs on quota with a Kubernetes-native queueing controller.
+  </Card>
+
+  <Card title="Manage GPU clusters" icon="server" href="/docs/gpu-clusters-management">
+    Deploy workloads, attach storage, and access the Kubernetes dashboard.
+  </Card>
+</CardGroup>
 
 
 # Wan 2.7 quickstart

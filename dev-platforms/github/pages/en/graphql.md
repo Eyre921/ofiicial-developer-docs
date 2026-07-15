@@ -12,7 +12,7 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
 * [About the GraphQL API](/en/graphql/overview/about-the-graphql-api)
 
-  The GitHub GraphQL API offers flexibility and the ability to define precisely the data you want to fetch.
+  <p>The GitHub GraphQL API offers flexibility and the ability to define precisely the data you want to fetch.</p>
 
 * [Introduction to GraphQL](/en/graphql/guides/introduction-to-graphql)
 
@@ -24,7 +24,7 @@ To create integrations, retrieve data, and automate your workflows, use the GitH
 
 * [Using pagination in the GraphQL API](/en/graphql/guides/using-pagination-in-the-graphql-api)
 
-  Learn how to traverse data sets using cursor based pagination with the GraphQL API.
+  <p>Learn how to traverse data sets using cursor based pagination with the GraphQL API.</p>
 
 * [Migrating from REST to GraphQL](/en/graphql/guides/migrating-from-rest-to-graphql)
 

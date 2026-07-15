@@ -1364,6 +1364,9 @@ Events are split into the following categories:
 * **Ability for managed users to edit their profile information updated**: That the ability for managed users to edit their profile information was updated for an organization.
 * **Ability for managed users to grant support access updated**: That the ability for managed users to grant support access was updated for an organization.
 * **Ability for managed users to join external workspaces updated**: That the ability for managed users to join external workspaces was updated for an organization.
+* **AI provider credential created**: That an AI provider credential was created for an organization.
+* **AI provider credential deleted**: That an AI provider credential was deleted for an organization.
+* **AI provider credential rotated**: That an AI provider credential was rotated for an organization.
 * **AI toggled for the organization**: That the AI feature setting was toggled for an organization.
 * **All managed users logged out**: That an admin has logged out every managed user account in the organization.
 * **All managed users’ passwords cleared**: That an admin has cleared all managed user accounts' passwords in the organization.
@@ -11209,10 +11212,11 @@ Its token lifecycle has a few behaviors worth designing your client around. The
 guarantees below are the ones you can rely on; build for them as the strictest
 case.
 
-#### Token lifetimes
+#### Token lifecycle
 
-* **Access tokens** expire one hour after they are issued. Refresh proactively, a
-  few minutes before expiry, rather than waiting for a `401`.
+* **Access tokens** currently last about **eight hours**, but this duration is
+  subject to change. Always use the token response's `expires_in` value and
+  refresh proactively rather than hard-coding a lifetime.
 * **Refresh tokens** expire under either of two conditions, whichever comes
   first: an absolute maximum lifetime of **180 days** measured from when the user
   first authorized the connection (this cap does not slide — refreshing does not
@@ -11221,6 +11225,17 @@ case.
   lapses after 30 days. In either case the next refresh returns `invalid_grant`
   and the user must re-authorize. Treat periodic reconnection as expected, not
   exceptional, and make sure your reconnect flow is easy to reach.
+
+For reliable long-lived connections:
+
+* Persist dynamic client registration credentials (`client_id` and
+  `client_secret`) durably and reuse them, because re-registering orphans prior
+  grants. Alternatively, use a Client ID Metadata Document (CIMD), which Notion
+  MCP supports.
+* Persist each rotated `refresh_token` atomically and serialize refreshes per
+  grant. Never refresh the same grant concurrently from multiple processes.
+* Treat `invalid_grant` as terminal: clear the stored tokens and reauthorize
+  once. Do not retry-loop.
 
 #### Refresh token rotation
 
@@ -16350,6 +16365,15 @@ Source: https://developers.notion.com/guides/resources/notion-s-api-workspace
 Source: https://developers.notion.com/page/changelog
 
 
+
+<Update label="July 14, 2026">
+  ### Longer-lived Notion MCP access tokens
+
+  Notion MCP access tokens now last about eight hours, up from one hour. Clients
+  must continue to rely on the token response's `expires_in` value, but the longer
+  lifetime reduces refresh frequency and makes connections more resilient to
+  client-side refresh failures.
+</Update>
 
 <Update label="July 8, 2026">
   We released [`v5.23.0`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.23.0) of `@notionhq/client`, our SDK for JavaScript and TypeScript. Here's what's new:
@@ -23771,7 +23795,9 @@ Searches all parent or child pages and data_sources that have been shared with a
 
 Returns all [pages](/reference/page) or [data\_sources](/reference/data-source) , excluding duplicated linked databases, that have titles that include the `query` param. If no `query` param is provided, then the response contains all pages or data\_sources that have been shared with the connection. The results adhere to any limitations related to an [connection’s capabilities](/reference/capabilities).
 
-To limit the request to search only pages or to search only data\_source, use the `filter` param.
+To limit the request to pages or data sources, use the `filter` parameter with `property: "object"` and a `value` of `"page"` or `"data_source"`.
+
+To list content in the trash, set `filter.in_trash` to `true`. You can combine `in_trash` with the object filter or use it by itself.
 
 ### Errors
 
@@ -26749,6 +26775,7 @@ The search endpoint works best when it's being used to query for pages and datab
 * **Searching or filtering within a particular database.** This use case is much better served by finding the database ID and using the [Query a data source](/reference/query-a-data-source) endpoint.
 * **Immediate and complete results.** Search indexing is not immediate. If a connection performs a search quickly after a page is shared with the connection (such as immediately after a user performs OAuth), then the response may not contain the page.
   * When a connection needs to present a user interface that depends on search results, we recommend including a *Refresh* button to retry the search. This will allow users to determine if the expected result is present or not, and give them a way to try again.
+* **Listing content in the trash.** Trash results are search-index-backed and eventually consistent. Results include only content the connection can access.
 
 
 # Sort data source entries

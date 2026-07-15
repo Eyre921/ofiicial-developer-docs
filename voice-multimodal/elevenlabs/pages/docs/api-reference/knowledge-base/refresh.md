@@ -188,6 +188,21 @@ components:
         - id
         - name
       title: KnowledgeBaseFolderPathSegmentResponseModel
+    ContentFormat:
+      type: string
+      enum:
+        - html
+        - markdown
+      default: html
+      description: >-
+        Canonical representation of a knowledge base document's stored content.
+
+
+        HTML is the legacy default; documents created before this field existed
+        are
+
+        interpreted as HTML.
+      title: ContentFormat
     AutoSyncInfo:
       type: object
       properties:
@@ -402,6 +417,9 @@ components:
               type: string
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
             auto_sync_info:
               oneOf:
                 - $ref: '#/components/schemas/AutoSyncInfo'
@@ -452,6 +470,9 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
             filename:
               type: string
             external_sync_info:
@@ -507,6 +528,9 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
           required:
             - type
             - id
@@ -639,9 +663,9 @@ components:
   "extracted_inner_html": "<div><h1>ElevenLabs API Documentation</h1><p>Welcome to the ElevenLabs API documentation...</p></div>",
   "id": "21m00Tcm4TlvDq8ikWAM",
   "metadata": {
-    "created_at_unix_secs": 1685000000,
-    "last_updated_at_unix_secs": 1687600000,
-    "size_bytes": 245678
+    "created_at_unix_secs": 1685600000,
+    "last_updated_at_unix_secs": 1688201600,
+    "size_bytes": 45230
   },
   "name": "ElevenLabs API Documentation",
   "supported_usages": [
@@ -652,8 +676,9 @@ components:
     "minimum_frequency_days": 7,
     "auto_remove": false,
     "consec_failures": 0,
-    "next_refresh_by": 1688200000
+    "next_refresh_by": 1688806400
   },
+  "content_format": "html",
   "folder_parent_id": null,
   "folder_path": [
     {

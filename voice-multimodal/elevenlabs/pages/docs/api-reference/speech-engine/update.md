@@ -354,7 +354,7 @@ components:
           description: The pronunciation dictionary locators
         enable_phoneme_tags:
           type: boolean
-          default: false
+          default: true
           description: >-
             Opt-in to SSML phoneme tag handling for V3 models. When enabled,
             phoneme tags (inline and from pronunciation dictionaries) are parsed
@@ -870,7 +870,7 @@ components:
           description: The pronunciation dictionary locators
         enable_phoneme_tags:
           type: boolean
-          default: false
+          default: true
           description: >-
             Opt-in to SSML phoneme tag handling for V3 models. When enabled,
             phoneme tags (inline and from pronunciation dictionaries) are parsed

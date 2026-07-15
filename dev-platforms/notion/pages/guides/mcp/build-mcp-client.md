@@ -916,10 +916,11 @@ Its token lifecycle has a few behaviors worth designing your client around. The
 guarantees below are the ones you can rely on; build for them as the strictest
 case.
 
-#### Token lifetimes
+#### Token lifecycle
 
-* **Access tokens** expire one hour after they are issued. Refresh proactively, a
-  few minutes before expiry, rather than waiting for a `401`.
+* **Access tokens** currently last about **eight hours**, but this duration is
+  subject to change. Always use the token response's `expires_in` value and
+  refresh proactively rather than hard-coding a lifetime.
 * **Refresh tokens** expire under either of two conditions, whichever comes
   first: an absolute maximum lifetime of **180 days** measured from when the user
   first authorized the connection (this cap does not slide — refreshing does not
@@ -928,6 +929,17 @@ case.
   lapses after 30 days. In either case the next refresh returns `invalid_grant`
   and the user must re-authorize. Treat periodic reconnection as expected, not
   exceptional, and make sure your reconnect flow is easy to reach.
+
+For reliable long-lived connections:
+
+* Persist dynamic client registration credentials (`client_id` and
+  `client_secret`) durably and reuse them, because re-registering orphans prior
+  grants. Alternatively, use a Client ID Metadata Document (CIMD), which Notion
+  MCP supports.
+* Persist each rotated `refresh_token` atomically and serialize refreshes per
+  grant. Never refresh the same grant concurrently from multiple processes.
+* Treat `invalid_grant` as terminal: clear the stored tokens and reauthorize
+  once. Do not retry-loop.
 
 #### Refresh token rotation
 

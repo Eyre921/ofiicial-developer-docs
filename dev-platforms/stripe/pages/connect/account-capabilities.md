@@ -417,7 +417,7 @@ Learn more about [payment method support for Connect](https://docs.stripe.com/pa
 
 ### India international payments
 
-You must request the capability to support transactions from buyers located outside of India who use a currency different than INR.
+You must request the capability to support transactions from customers located outside of India who use a currency different than INR.
 
 Complete the following during your onboarding process to enable international payments:
 

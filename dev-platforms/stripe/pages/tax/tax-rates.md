@@ -73,7 +73,7 @@ In the case where the customer is liable for the tax (that is, under the reverse
 
 If a one time payment is performed using Checkout, the exemption status is captured as [customer_details](https://docs.stripe.com/api/checkout/sessions/object.md#checkout_session_object-customer_details) in the Checkout Session object.
 
-If the customer is either exempt or reverse, for invoices with *inclusive* tax rates, the buyer pays the `unit_amount` price *minus* the tax that would’ve been paid had the user not been exempt or reverse. In other words, manual tax rates effectively calculate taxes as if the user weren’t exempt and then “backs out” the taxes.
+If the customer is either exempt or reverse, for invoices with *inclusive* tax rates, the customer pays the `unit_amount` price *minus* the tax that would’ve been paid had the user not been exempt or reverse. In other words, manual tax rates effectively calculate taxes as if the user weren’t exempt and then “backs out” the taxes.
 
 The following table illustrates a 10% tax rate modifying the total amount due for an exempt or reverse customer. The first row is an example of “backed out” taxes.
 

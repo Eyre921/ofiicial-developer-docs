@@ -78,8 +78,8 @@ The CustomerSessions API provides additional control over:
 
 - When to show or hide the save consent box
 - When to show or hide the saved payment methods
-- Allowing buyers to remove saved payment methods
-- Preventing buyers from removing the last saved payment method
+- Allowing customers to remove saved payment methods
+- Preventing customers from removing the last saved payment method
 ![Payment Element saved payment methods](https://b.stripecdn.com/docs-statics-srv/assets/pe-saved-payment-methods.6aef147c8b230f2cb50c115b2054f814.png)
 
 Examples of how customers can access saved payment methods in Payment Element

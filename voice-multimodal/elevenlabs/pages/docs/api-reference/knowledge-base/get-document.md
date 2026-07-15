@@ -194,6 +194,21 @@ components:
         - id
         - name
       title: KnowledgeBaseFolderPathSegmentResponseModel
+    ContentFormat:
+      type: string
+      enum:
+        - html
+        - markdown
+      default: html
+      description: >-
+        Canonical representation of a knowledge base document's stored content.
+
+
+        HTML is the legacy default; documents created before this field existed
+        are
+
+        interpreted as HTML.
+      title: ContentFormat
     AutoSyncInfo:
       type: object
       properties:
@@ -408,6 +423,9 @@ components:
               type: string
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
             auto_sync_info:
               oneOf:
                 - $ref: '#/components/schemas/AutoSyncInfo'
@@ -458,6 +476,9 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
             filename:
               type: string
             external_sync_info:
@@ -513,6 +534,9 @@ components:
                 parent folder.
             extracted_inner_html:
               type: string
+            content_format:
+              $ref: '#/components/schemas/ContentFormat'
+              default: html
           required:
             - type
             - id
@@ -641,6 +665,7 @@ components:
     "minimum_frequency_days": 7,
     "next_refresh_by": 1
   },
+  "content_format": "html",
   "extracted_inner_html": "string",
   "folder_parent_id": "string",
   "folder_path": [

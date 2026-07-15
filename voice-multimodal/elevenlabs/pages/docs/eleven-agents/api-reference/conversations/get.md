@@ -997,9 +997,23 @@ components:
             Configuration for soft timeout functionality. Provides immediate
             feedback during longer LLM responses.
       title: TurnConfigOverride
+    type_:TtsConversationalModel:
+      type: string
+      enum:
+        - eleven_turbo_v2
+        - eleven_turbo_v2_5
+        - eleven_flash_v2
+        - eleven_flash_v2_5
+        - eleven_multilingual_v2
+        - eleven_v3_conversational
+      default: eleven_flash_v2
+      title: TtsConversationalModel
     type_:TtsConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          $ref: '#/components/schemas/type_:TtsConversationalModel'
+          description: The model to use for TTS
         voice_id:
           type: string
           description: The voice ID to use for TTS
@@ -2471,13 +2485,115 @@ components:
 
 ```json
 {
-  "agent_id": "123",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
   "status": "processing",
   "metadata": {
     "start_time_unix_secs": 1714423232,
-    "call_duration_secs": 10
+    "call_duration_secs": 10,
+    "accepted_time_unix_secs": 1,
+    "cost": 1,
+    "deletion_settings": {
+      "deletion_time_unix_secs": 1,
+      "deleted_logs_at_time_unix_secs": 1,
+      "deleted_audio_at_time_unix_secs": 1,
+      "deleted_transcript_at_time_unix_secs": 1,
+      "delete_transcript_and_pii": true,
+      "delete_audio": true
+    },
+    "feedback": {
+      "type": "thumbs",
+      "overall_score": "like",
+      "likes": 1,
+      "dislikes": 1,
+      "rating": 1,
+      "comment": "comment"
+    },
+    "authorization_method": "invalid",
+    "charging": {
+      "dev_discount": true,
+      "is_burst": true,
+      "tier": "tier",
+      "llm_price": 1.1,
+      "llm_charge": 1,
+      "call_charge": 1,
+      "platform_charge": 1,
+      "platform_price": 1.1,
+      "free_minutes_consumed": 1.1,
+      "free_llm_dollars_consumed": 1.1
+    },
+    "phone_call": {
+      "type": "exotel",
+      "agent_number": "agent_number",
+      "call_sid": "call_sid",
+      "direction": "inbound",
+      "external_number": "external_number",
+      "phone_number_id": "phone_number_id",
+      "stream_sid": "stream_sid"
+    },
+    "batch_call": {
+      "batch_call_id": "batch_call_id",
+      "batch_call_recipient_id": "batch_call_recipient_id"
+    },
+    "termination_reason": "termination_reason",
+    "error": {
+      "code": 1,
+      "reason": "reason"
+    },
+    "warnings": [
+      "warnings"
+    ],
+    "main_language": "main_language",
+    "rag_usage": {
+      "usage_count": 1,
+      "embedding_model": "embedding_model"
+    },
+    "text_only": true,
+    "features_usage": {
+      "pii_zrm_workspace": true,
+      "pii_zrm_agent": true,
+      "is_livekit": true
+    },
+    "eleven_assistant": {
+      "is_eleven_assistant": true
+    },
+    "initiator_id": "initiator_id",
+    "conversation_initiation_source": "unknown",
+    "conversation_initiation_source_version": "conversation_initiation_source_version",
+    "timezone": "timezone",
+    "async_metadata": {
+      "delivery_status": "pending",
+      "delivery_timestamp": 1,
+      "external_system": "external_system",
+      "external_id": "external_id",
+      "delivery_error": "delivery_error",
+      "external_link": "external_link",
+      "retry_count": 1,
+      "last_retry_timestamp": 1,
+      "last_processed_external_message_id": "last_processed_external_message_id"
+    },
+    "whatsapp": {
+      "whatsapp_user_id": "whatsapp_user_id",
+      "direction": "inbound",
+      "whatsapp_phone_number_id": "whatsapp_phone_number_id",
+      "awaiting_first_user_message": true
+    },
+    "sms": {
+      "direction": "inbound",
+      "sms_user_phone_number": "sms_user_phone_number",
+      "phone_number_id": "phone_number_id",
+      "agent_phone_number": "agent_phone_number"
+    },
+    "agent_created_from": "cli",
+    "agent_last_updated_from": "cli",
+    "voice_rewards": [
+      {
+        "voice_id": "voice_id",
+        "reward_usd_cents": 1.1
+      }
+    ],
+    "cost_fiat": 1.1
   },
-  "conversation_id": "123",
+  "conversation_id": "conv_7401k5m9x2p8ec3rqv6dtnhb0fzw",
   "has_audio": true,
   "has_user_audio": true,
   "has_response_audio": true,
@@ -2486,9 +2602,197 @@ components:
     {
       "role": "user",
       "time_in_call_secs": 10,
-      "message": "Hello, how are you?"
+      "agent_metadata": {
+        "agent_id": "agent_id"
+      },
+      "message": "Hello, how are you?",
+      "multivoice_message": {
+        "parts": [
+          {
+            "text": "text",
+            "voice_label": null,
+            "time_in_call_secs": null
+          }
+        ]
+      },
+      "tool_calls": [
+        {
+          "request_id": "request_id",
+          "tool_name": "tool_name",
+          "params_as_json": "params_as_json",
+          "tool_has_been_called": true
+        }
+      ],
+      "tool_results": [
+        {
+          "is_error": true,
+          "request_id": "request_id",
+          "result_value": "result_value",
+          "tool_has_been_called": true,
+          "tool_name": "tool_name"
+        }
+      ],
+      "feedback": {
+        "score": "like",
+        "time_in_call_secs": 1
+      },
+      "llm_override": "llm_override",
+      "rag_retrieval_info": {
+        "chunks": [
+          {
+            "document_id": "document_id",
+            "chunk_id": "chunk_id",
+            "vector_distance": 1.1
+          }
+        ],
+        "embedding_model": "e5_mistral_7b_instruct",
+        "retrieval_query": "retrieval_query",
+        "rag_latency_secs": 1.1
+      },
+      "interrupted": true,
+      "ignored_as_backchannel": true,
+      "original_message": "original_message",
+      "reasoning": [
+        {}
+      ],
+      "source_medium": "audio",
+      "source_event_id": 1,
+      "used_static_kb_document_ids": [
+        "used_static_kb_document_ids"
+      ],
+      "user_identifier": "user_identifier",
+      "file_input": {
+        "file_id": "file_id",
+        "original_filename": "original_filename",
+        "mime_type": "mime_type",
+        "file_url": "file_url"
+      },
+      "contextual_update_info": {
+        "context_id": "context_id"
+      },
+      "reasoned": true
     }
-  ]
+  ],
+  "agent_name": "My agent",
+  "conversation_product": "conversation_product",
+  "user_id": "user_id",
+  "branch_id": "branch_id",
+  "version_id": "agtvrsn_5xM3yVvZQKV0EfqQpLr2",
+  "analysis": {
+    "call_successful": "success",
+    "transcript_summary": "transcript_summary",
+    "evaluation_criteria_results": {
+      "key": {
+        "criteria_id": "criteria_id",
+        "result": "success",
+        "rationale": "rationale"
+      }
+    },
+    "data_collection_results": {
+      "key": {
+        "data_collection_id": "data_collection_id",
+        "rationale": "rationale",
+        "json_schema": {
+          "type": "string",
+          "description": "A user-provided message"
+        }
+      }
+    },
+    "evaluation_criteria_results_list": [
+      {
+        "criteria_id": "criteria_id",
+        "result": "success",
+        "rationale": "rationale"
+      }
+    ],
+    "data_collection_results_list": [
+      {
+        "data_collection_id": "data_collection_id",
+        "rationale": "rationale",
+        "json_schema": {
+          "type": "string",
+          "description": "A user-provided message"
+        }
+      }
+    ],
+    "call_success_score": 1.1,
+    "call_summary_title": "call_summary_title",
+    "scoped": [
+      {
+        "scope": "conversation",
+        "source_agent_id": "source_agent_id",
+        "successful": "success"
+      }
+    ]
+  },
+  "visited_agents": [
+    {
+      "agent_id": "agent_id",
+      "branch_id": "branch_id"
+    }
+  ],
+  "conversation_initiation_client_data": {
+    "conversation_config_override": {
+      "asr": {
+        "keywords": [
+          "hello",
+          "world"
+        ]
+      },
+      "turn": {
+        "soft_timeout_config": {
+          "message": "Hhmmmm...yeah."
+        }
+      },
+      "tts": {
+        "model_id": "eleven_turbo_v2",
+        "voice_id": "cjVigY5qzO86Huf0OWal",
+        "stability": 0.5,
+        "speed": 1,
+        "similarity_boost": 0.8
+      },
+      "agent": {
+        "first_message": "Hello, how can I help you today?",
+        "language": "en",
+        "prompt": {
+          "prompt": "You are a helpful assistant that can answer questions about the topic of the conversation.",
+          "llm": "gemini-2.0-flash-001",
+          "tool_ids": [
+            "tool_ids"
+          ],
+          "knowledge_base": [
+            {
+              "type": "file",
+              "name": "My Knowledge Base",
+              "id": "123",
+              "usage_mode": "auto"
+            }
+          ]
+        }
+      }
+    },
+    "custom_llm_extra_body": {
+      "key": "value"
+    },
+    "user_id": "user_id",
+    "source_info": {
+      "source": "unknown",
+      "version": "version"
+    },
+    "branch_id": "branch_id",
+    "environment": "environment",
+    "starting_workflow_node_id": "starting_workflow_node_id",
+    "dynamic_variables": {
+      "key": "value"
+    }
+  },
+  "environment": "production",
+  "tag_ids": [
+    "tag_ids"
+  ],
+  "otlp_traces": {
+    "key": "value"
+  }
 }
 ```
 
@@ -2499,7 +2803,9 @@ import { ElevenLabsClient } from "@elevenlabs/elevenlabs-js";
 
 async function main() {
     const client = new ElevenLabsClient();
-    await client.conversationalAi.conversations.get("123", {});
+    await client.conversationalAi.conversations.get("21m00Tcm4TlvDq8ikWAM", {
+        format: "json",
+    });
 }
 main();
 
@@ -2511,7 +2817,8 @@ from elevenlabs import ElevenLabs
 client = ElevenLabs()
 
 client.conversational_ai.conversations.get(
-    conversation_id="123",
+    conversation_id="21m00Tcm4TlvDq8ikWAM",
+    format="json",
 )
 
 ```
@@ -2527,7 +2834,7 @@ import (
 
 func main() {
 
-	url := "https://api.elevenlabs.io/v1/convai/conversations/123"
+	url := "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM?format=json"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -2546,7 +2853,7 @@ func main() {
 require 'uri'
 require 'net/http'
 
-url = URI("https://api.elevenlabs.io/v1/convai/conversations/123")
+url = URI("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM?format=json")
 
 http = Net::HTTP.new(url.host, url.port)
 http.use_ssl = true
@@ -2561,7 +2868,7 @@ puts response.read_body
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.Unirest;
 
-HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/123")
+HttpResponse<String> response = Unirest.get("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM?format=json")
   .asString();
 ```
 
@@ -2571,7 +2878,7 @@ require_once('vendor/autoload.php');
 
 $client = new \GuzzleHttp\Client();
 
-$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/123');
+$response = $client->request('GET', 'https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM?format=json');
 
 echo $response->getBody();
 ```
@@ -2579,7 +2886,7 @@ echo $response->getBody();
 ```csharp
 using RestSharp;
 
-var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/123");
+var client = new RestClient("https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM?format=json");
 var request = new RestRequest(Method.GET);
 IRestResponse response = client.Execute(request);
 ```
@@ -2587,7 +2894,7 @@ IRestResponse response = client.Execute(request);
 ```swift
 import Foundation
 
-let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/123")! as URL,
+let request = NSMutableURLRequest(url: NSURL(string: "https://api.elevenlabs.io/v1/convai/conversations/21m00Tcm4TlvDq8ikWAM?format=json")! as URL,
                                         cachePolicy: .useProtocolCachePolicy,
                                     timeoutInterval: 10.0)
 request.httpMethod = "GET"

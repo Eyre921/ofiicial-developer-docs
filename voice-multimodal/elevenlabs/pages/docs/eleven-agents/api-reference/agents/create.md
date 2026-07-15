@@ -477,7 +477,7 @@ components:
           description: The pronunciation dictionary locators
         enable_phoneme_tags:
           type: boolean
-          default: false
+          default: true
           description: >-
             Opt-in to SSML phoneme tag handling for V3 models. When enabled,
             phoneme tags (inline and from pronunciation dictionaries) are parsed
@@ -639,6 +639,9 @@ components:
     type_:TtsConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          $ref: '#/components/schemas/type_:TtsConversationalModel'
+          description: The model to use for TTS
         voice_id:
           type: string
           description: The voice ID to use for TTS
@@ -2873,7 +2876,7 @@ components:
         cascade_timeout_seconds:
           type: number
           format: double
-          default: 8
+          default: 4
           description: >-
             Time in seconds before cascading to backup LLM. Must be between 2
             and 15 seconds.
@@ -3698,6 +3701,10 @@ components:
     type_:TtsConversationalConfigOverrideConfig:
       type: object
       properties:
+        model_id:
+          type: boolean
+          default: false
+          description: Whether to allow overriding the model_id field.
         voice_id:
           type: boolean
           default: false

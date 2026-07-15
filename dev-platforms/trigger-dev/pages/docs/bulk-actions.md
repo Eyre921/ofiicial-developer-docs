@@ -4,39 +4,66 @@ source: https://trigger.dev/docs/bulk-actions
 path: docs/bulk-actions
 ---
 
-Perform actions like replay and cancel on multiple runs at once.
+Replay or cancel multiple runs from the dashboard using filters or selected run IDs.
 
-Bulk actions allow you to perform replaying and canceling on multiple runs at once. This is especially useful when you need to retry a batch of failed runs with a new version of your code, or when you need to cancel multiple in-progress runs.
+**Bulk actions let you replay or cancel multiple runs asynchronously from the dashboard.**
+
+Use bulk actions when you need to retry failed runs after deploying a fix, or stop a group of queued or executing runs.
+
+<Note>
+  For backend code, see [Bulk actions with the SDK](/docs/runs/bulk-actions).
+</Note>
 
 <video />
 
-## How to create a new bulk action
+## Create a bulk action in the dashboard
 
-<Icon icon="circle-1" /> Open the bulk action panel from the top right of the runs page
+<Steps>
+  <Step title="Open the bulk action panel">
+    Open the runs page and click **Bulk action** in the top right.
 
-<img alt="Access bulk actions" />
+    <img alt="Open the bulk action panel from the runs page" />
+  </Step>
 
-<Icon icon="circle-2" /> Filter the runs table to show the runs you want to bulk action
+  <Step title="Choose the runs">
+    Filter the runs table to target a group of runs, or select individual runs from the table.
+  </Step>
 
-<Icon icon="circle-3" /> Alternatively, you can select individual runs
+  <Step title="Configure the action">
+    Choose **Replay** or **Cancel**, add an optional name, then confirm the action.
 
-<Icon icon="circle-4" /> Choose the runs you want to bulk action
+    <img alt="Configure and create a bulk action" />
+  </Step>
 
-<Icon icon="circle-5" /> Name your bulk action (optional)
+  <Step title="Track progress">
+    Open the bulk action page to see progress, view affected runs, or replay the action.
 
-<Icon icon="circle-6" /> Choose the action you want to perform, replay or cancel
-
-<Icon icon="circle-7" /> Click the "Replay" or "Cancel" button and confirm in the dialog
-
-<img alt="Access bulk actions" />
-
-<Icon icon="circle-8" /> You'll now view the bulk action processing from the bulk action page
-
-<Icon icon="circle-9" /> You can replay or view the runs from this page
-
-<img alt="Access bulk actions" />
+    <img alt="View bulk action progress" />
+  </Step>
+</Steps>
 
 <Note>
-  You can only cancel runs that are in states that allow cancellation (like QUEUED or EXECUTING).
-  Runs that are already completed, failed, or in other final states by the time the bulk action process gets to them, cannot be canceled.
+  You can only cancel runs that are still cancelable, such as queued or executing runs. Runs that have already reached a final state cannot be canceled.
 </Note>
+
+## Create a bulk action from the SDK
+
+Use `runs.bulk.replay()` or `runs.bulk.cancel()` when you want to create a bulk action from your backend code.
+
+```ts Your backend code theme={"theme":"css-variables"}
+import { runs } from "@trigger.dev/sdk";
+
+const action = await runs.bulk.replay({
+  filter: {
+    status: "FAILED",
+    taskIdentifier: "sync-customer",
+    period: "24h",
+  },
+  name: "Replay failed customer syncs",
+});
+
+const completed = await runs.bulk.poll(action.id);
+console.log(completed.status, completed.counts);
+```
+
+See [Bulk actions with the SDK](/docs/runs/bulk-actions) for canceling, listing, polling, and aborting bulk actions from your backend code.

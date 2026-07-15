@@ -977,9 +977,23 @@ components:
             Configuration for soft timeout functionality. Provides immediate
             feedback during longer LLM responses.
       title: TurnConfigOverride
+    type_:TtsConversationalModel:
+      type: string
+      enum:
+        - eleven_turbo_v2
+        - eleven_turbo_v2_5
+        - eleven_flash_v2
+        - eleven_flash_v2_5
+        - eleven_multilingual_v2
+        - eleven_v3_conversational
+      default: eleven_flash_v2
+      title: TtsConversationalModel
     type_:TtsConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          $ref: '#/components/schemas/type_:TtsConversationalModel'
+          description: The model to use for TTS
         voice_id:
           type: string
           description: The voice ID to use for TTS
@@ -2451,11 +2465,11 @@ components:
 
 ```json
 {
-  "agent_id": "agent_id",
-  "status": "initiated",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "status": "processing",
   "metadata": {
-    "start_time_unix_secs": 1,
-    "call_duration_secs": 1,
+    "start_time_unix_secs": 1714423232,
+    "call_duration_secs": 10,
     "accepted_time_unix_secs": 1,
     "cost": 1,
     "deletion_settings": {
@@ -2559,7 +2573,7 @@ components:
     ],
     "cost_fiat": 1.1
   },
-  "conversation_id": "conversation_id",
+  "conversation_id": "conv_7401k5m9x2p8ec3rqv6dtnhb0fzw",
   "has_audio": true,
   "has_user_audio": true,
   "has_response_audio": true,
@@ -2567,11 +2581,11 @@ components:
   "transcript": [
     {
       "role": "user",
-      "time_in_call_secs": 1,
+      "time_in_call_secs": 10,
       "agent_metadata": {
         "agent_id": "agent_id"
       },
-      "message": "message",
+      "message": "Hello, how are you?",
       "multivoice_message": {
         "parts": [
           {
@@ -2639,11 +2653,11 @@ components:
       "reasoned": true
     }
   ],
-  "agent_name": "agent_name",
+  "agent_name": "My agent",
   "conversation_product": "conversation_product",
   "user_id": "user_id",
   "branch_id": "branch_id",
-  "version_id": "version_id",
+  "version_id": "agtvrsn_5xM3yVvZQKV0EfqQpLr2",
   "analysis": {
     "call_successful": "success",
     "transcript_summary": "transcript_summary",
@@ -2711,6 +2725,7 @@ components:
         }
       },
       "tts": {
+        "model_id": "eleven_turbo_v2",
         "voice_id": "cjVigY5qzO86Huf0OWal",
         "stability": 0.5,
         "speed": 1,
@@ -2751,7 +2766,7 @@ components:
       "key": "value"
     }
   },
-  "environment": "environment",
+  "environment": "production",
   "tag_ids": [
     "tag_ids"
   ],

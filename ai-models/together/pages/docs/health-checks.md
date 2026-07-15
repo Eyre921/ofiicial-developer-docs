@@ -228,14 +228,51 @@ Passive checks monitor node telemetry and system logs in real time. There is no 
 
 ### Detected failure modes
 
-Passive health checks currently detect three categories of failure:
+Passive checks continuously watch node telemetry, GPU metrics, and system logs, and raise a signal when a node shows one of the conditions below. Each signal that meets repair criteria generates a [repair recommendation](/docs/node-repair#auto-node-repair) with a suggested action.
 
-* **GPU fell off the bus:** The GPU becomes unreachable on the PCIe bus, typically caused by a hardware or connector failure. The node can no longer schedule GPU workloads until the GPU is restored.
-* **GPU thermal throttling:** Sustained high temperatures cause the GPU to reduce clock speeds. Training throughput and inference latency degrade without any visible error in your application.
-* **Fatal Xid errors:** Critical NVIDIA driver errors (for example, Xid 79) that indicate unrecoverable GPU faults. The GPU is unusable until the node is repaired.
+#### GPU and accelerator
+
+| Condition               | Signal                      | Typical cause                                                                                     |
+| ----------------------- | --------------------------- | ------------------------------------------------------------------------------------------------- |
+| GPU fell off the bus    | `DmesgGpuFallenOffBus`      | GPU becomes unreachable on the PCIe bus, typically a hardware or connector failure.               |
+| GPU thermal throttling  | `GpuSmClockThermalThrottle` | Sustained high temperature forces SM clocks down, degrading throughput with no application error. |
+| GPU Xid error           | `DmesgXidError`             | NVIDIA driver or hardware Xid fault reported in the kernel log.                                   |
+| Uncorrectable ECC error | `GpuEccDoubleBitError`      | Double-bit GPU memory error.                                                                      |
+| GPU row-remap failure   | `GpuRowRemapFailure`        | GPU memory row-remap failed; the GPU likely needs replacement (RMA).                              |
+| High PCIe replay rate   | `GpuPcieReplayRateHigh`     | Degraded PCIe link integrity.                                                                     |
+
+#### InfiniBand networking
+
+| Condition              | Signal                  | Typical cause                                                                        |
+| ---------------------- | ----------------------- | ------------------------------------------------------------------------------------ |
+| Rails down or degraded | `IBRailsDownOrDegraded` | Fewer than 8 active 400G InfiniBand rails (a rail is down or negotiated below 400G). |
+| Link flapping          | `IBLinkFlapping`        | Repeated InfiniBand link-down events on a compute rail.                              |
+
+#### Node OS, kernel, and resources
+
+| Condition                     | Signal                           | Typical cause                                |
+| ----------------------------- | -------------------------------- | -------------------------------------------- |
+| Fatal platform hardware error | `NpdCperHardwareErrorFatal`      | Fatal CPER-reported platform hardware error. |
+| Read-only filesystem          | `NpdReadonlyFilesystem`          | Root or data filesystem remounted read-only. |
+| XFS shutdown                  | `NpdXfsShutdown`                 | XFS filesystem shut down after an error.     |
+| Kernel deadlock               | `NpdKernelDeadlock`              | A kernel task is stuck.                      |
+| Frequent kubelet restarts     | `NpdFrequentKubeletRestart`      | kubelet is restarting repeatedly.            |
+| Frequent containerd restarts  | `NpdFrequentContainerdRestart`   | containerd is restarting repeatedly.         |
+| Frequent netdev unregister    | `NpdFrequentUnregisterNetDevice` | Repeated network device unregister events.   |
+| Memory pressure               | `KubeNodeMemoryPressure`         | Node under sustained memory pressure.        |
+| Disk pressure                 | `KubeNodeDiskPressure`           | Node under sustained disk pressure.          |
+| PID pressure                  | `KubeNodePIDPressure`            | Node is exhausting available process IDs.    |
+
+#### Scheduler
+
+| Condition              | Signal                 | Typical cause                       |
+| ---------------------- | ---------------------- | ----------------------------------- |
+| Slurm node unavailable | `SlurmNodeUnavailable` | Slurm marks the node DOWN or DRAIN. |
+
+See [Recommended repair actions](/docs/node-repair#recommended-repair-actions) for the repair action each signal maps to.
 
 <Note>
-  The list of detected failure modes is expanding. Future releases will cover additional hardware and software signals.
+  Detection coverage is expanding, and automated recommendations are enabled per cluster. Not every signal triggers an automated recommendation today; some raise an internal alert that Together's team reviews. Future releases will cover additional hardware and software signals.
 </Note>
 
 ### Active vs. passive checks

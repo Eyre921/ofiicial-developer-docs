@@ -110,11 +110,11 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | -------------------------- | --------------- | ---------- |
 | GPU Clusters               | ✅               | ✅          |
 | API Keys                   | ✅               | ✅          |
+| Serverless inference       | ✅               | ✅          |
 | Fine-tuning                | ✅               | ❌          |
 | Files                      | ✅               | ❌          |
 | Evaluations                | ✅               | ❌          |
 | Batch                      | ✅               | ❌          |
-| Serverless inference       | ✅               | ❌          |
 | Code Interpreter           | ✅               | N/A        |
 | Container Inference        | ❌               | ❌          |
 | Storage                    | ❌               | ❌          |

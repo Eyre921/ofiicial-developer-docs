@@ -20,3 +20,4 @@ The search endpoint works best when it's being used to query for pages and datab
 * **Searching or filtering within a particular database.** This use case is much better served by finding the database ID and using the [Query a data source](/reference/query-a-data-source) endpoint.
 * **Immediate and complete results.** Search indexing is not immediate. If a connection performs a search quickly after a page is shared with the connection (such as immediately after a user performs OAuth), then the response may not contain the page.
   * When a connection needs to present a user interface that depends on search results, we recommend including a *Refresh* button to retry the search. This will allow users to determine if the expected result is present or not, and give them a way to try again.
+* **Listing content in the trash.** Trash results are search-index-backed and eventually consistent. Results include only content the connection can access.

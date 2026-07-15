@@ -1106,9 +1106,25 @@ components:
             Configuration for soft timeout functionality. Provides immediate
             feedback during longer LLM responses.
       title: TurnConfigOverride
+    TTSConversationalModel:
+      type: string
+      enum:
+        - eleven_turbo_v2
+        - eleven_turbo_v2_5
+        - eleven_flash_v2
+        - eleven_flash_v2_5
+        - eleven_multilingual_v2
+        - eleven_v3_conversational
+      default: eleven_flash_v2
+      title: TTSConversationalModel
     TTSConversationalConfigOverride:
       type: object
       properties:
+        model_id:
+          oneOf:
+            - $ref: '#/components/schemas/TTSConversationalModel'
+            - type: 'null'
+          description: The model to use for TTS
         voice_id:
           type:
             - string
@@ -2798,210 +2814,14 @@ components:
 
 ```json
 {
-  "agent_id": "string",
-  "status": "initiated",
+  "agent_id": "agent_3701k3ttaq12ewp8b7qv5rfyszkz",
+  "status": "processing",
   "metadata": {
-    "start_time_unix_secs": 1,
-    "call_duration_secs": 1,
-    "cost_fiat": 1.1,
-    "accepted_time_unix_secs": 1,
-    "cost": 1,
-    "deletion_settings": {
-      "deletion_time_unix_secs": 1,
-      "deleted_logs_at_time_unix_secs": 1,
-      "deleted_audio_at_time_unix_secs": 1,
-      "deleted_transcript_at_time_unix_secs": 1,
-      "delete_transcript_and_pii": false,
-      "delete_audio": false
-    },
-    "feedback": {
-      "type": "thumbs",
-      "overall_score": "like",
-      "likes": 0,
-      "dislikes": 0,
-      "rating": 1,
-      "comment": "string"
-    },
-    "authorization_method": "public",
-    "charging": {
-      "dev_discount": false,
-      "is_burst": false,
-      "tier": "string",
-      "llm_usage": {
-        "irreversible_generation": {
-          "model_usage": {}
-        },
-        "initiated_generation": {
-          "model_usage": {}
-        }
-      },
-      "llm_price": 1.1,
-      "llm_charge": 1,
-      "call_charge": 1,
-      "platform_charge": 1,
-      "platform_usage": {
-        "category_usage": {}
-      },
-      "platform_price": 1.1,
-      "free_minutes_consumed": 0,
-      "free_llm_dollars_consumed": 0,
-      "tts_usage": {
-        "primary_tts_model": "string",
-        "total_audio_output_seconds": 0,
-        "total_characters": 0,
-        "per_voice_usage": [
-          {
-            "voice_id": "string",
-            "audio_output_seconds": 0
-          }
-        ]
-      },
-      "asr_usage": {
-        "asr_model": "string",
-        "total_transcription_calls": 0,
-        "total_audio_input_seconds": 0
-      }
-    },
-    "phone_call": {
-      "agent_number": "string",
-      "call_sid": "string",
-      "direction": "inbound",
-      "external_number": "string",
-      "phone_number_id": "string",
-      "stream_sid": "string",
-      "type": "string"
-    },
-    "batch_call": {
-      "batch_call_id": "string",
-      "batch_call_recipient_id": "string"
-    },
-    "termination_reason": "",
-    "error": {
-      "code": 1,
-      "reason": "string"
-    },
-    "warnings": [
-      "string"
-    ],
-    "main_language": "string",
-    "rag_usage": {
-      "usage_count": 1,
-      "embedding_model": "string"
-    },
-    "text_only": false,
-    "features_usage": {
-      "language_detection": {
-        "enabled": false,
-        "used": false
-      },
-      "transfer_to_agent": {
-        "enabled": false,
-        "used": false
-      },
-      "transfer_to_number": {
-        "enabled": false,
-        "used": false
-      },
-      "multivoice": {
-        "enabled": false,
-        "used": false
-      },
-      "dtmf_tones": {
-        "enabled": false,
-        "used": false
-      },
-      "external_mcp_servers": {
-        "enabled": false,
-        "used": false
-      },
-      "pii_zrm_workspace": false,
-      "pii_zrm_agent": false,
-      "tool_dynamic_variable_updates": {
-        "enabled": false,
-        "used": false
-      },
-      "is_livekit": false,
-      "voicemail_detection": {
-        "enabled": false,
-        "used": false
-      },
-      "dtmf_input": {
-        "enabled": false,
-        "used": false
-      },
-      "workflow": {
-        "enabled": false,
-        "tool_node": {
-          "enabled": false,
-          "used": false
-        },
-        "standalone_agent_node": {
-          "enabled": false,
-          "used": false
-        },
-        "phone_number_node": {
-          "enabled": false,
-          "used": false
-        },
-        "end_node": {
-          "enabled": false,
-          "used": false
-        }
-      },
-      "agent_testing": {
-        "enabled": false,
-        "tests_ran_after_last_modification": false,
-        "tests_ran_in_last_7_days": false
-      },
-      "versioning": {
-        "enabled": false,
-        "used": false
-      },
-      "file_input": {
-        "enabled": false,
-        "used": false
-      }
-    },
-    "eleven_assistant": {
-      "is_eleven_assistant": false
-    },
-    "initiator_id": "string",
-    "conversation_initiation_source": "unknown",
-    "conversation_initiation_source_version": "string",
-    "timezone": "string",
-    "async_metadata": {
-      "delivery_status": "pending",
-      "delivery_timestamp": 1,
-      "external_system": "string",
-      "external_id": "string",
-      "delivery_error": "string",
-      "external_link": "string",
-      "retry_count": 0,
-      "last_retry_timestamp": 1,
-      "last_processed_external_message_id": "string"
-    },
-    "whatsapp": {
-      "whatsapp_user_id": "string",
-      "direction": "unknown",
-      "whatsapp_phone_number_id": "string",
-      "awaiting_first_user_message": true
-    },
-    "sms": {
-      "direction": "inbound",
-      "sms_user_phone_number": "string",
-      "phone_number_id": "string",
-      "agent_phone_number": "string"
-    },
-    "agent_created_from": "unknown",
-    "agent_last_updated_from": "unknown",
-    "voice_rewards": [
-      {
-        "voice_id": "string",
-        "reward_usd_cents": 1.1
-      }
-    ]
+    "start_time_unix_secs": 1714423232,
+    "call_duration_secs": 10,
+    "cost_fiat": 1.1
   },
-  "conversation_id": "string",
+  "conversation_id": "conv_7401k5m9x2p8ec3rqv6dtnhb0fzw",
   "has_audio": true,
   "has_user_audio": true,
   "has_response_audio": true,
@@ -3009,219 +2829,14 @@ components:
   "transcript": [
     {
       "role": "user",
-      "time_in_call_secs": 1,
-      "agent_metadata": {
-        "agent_id": "string",
-        "branch_id": "string",
-        "workflow_node_id": "string",
-        "version_id": "string"
-      },
-      "message": "string",
-      "multivoice_message": {
-        "parts": [
-          {
-            "text": "string",
-            "voice_label": "string",
-            "time_in_call_secs": 1
-          }
-        ]
-      },
-      "tool_calls": [
-        {
-          "request_id": "string",
-          "tool_name": "string",
-          "params_as_json": "string",
-          "tool_has_been_called": true,
-          "type": "system",
-          "tool_details": {
-            "type": "webhook",
-            "method": "string",
-            "url": "string",
-            "body": "string",
-            "headers": {},
-            "path_params": {},
-            "query_params": {}
-          }
-        }
-      ],
-      "tool_results": [
-        {
-          "dynamic_variable_updates": [
-            {
-              "new_value": "string",
-              "old_value": "string",
-              "tool_name": "string",
-              "tool_request_id": "string",
-              "updated_at": 1.1,
-              "variable_name": "string"
-            }
-          ],
-          "error_type": "",
-          "is_blocked": false,
-          "is_error": true,
-          "raw_error_message": "",
-          "request_id": "string",
-          "result_value": "string",
-          "tool_has_been_called": true,
-          "tool_latency_secs": 0,
-          "tool_name": "string",
-          "type": "client"
-        }
-      ],
-      "feedback": {
-        "score": "like",
-        "time_in_call_secs": 1
-      },
-      "llm_override": "string",
-      "conversation_turn_metrics": {
-        "metrics": {},
-        "convai_asr_provider": "string",
-        "convai_tts_model": "string",
-        "convai_tts_cascade": "string"
-      },
-      "rag_retrieval_info": {
-        "chunks": [
-          {
-            "document_id": "string",
-            "chunk_id": "string",
-            "vector_distance": 1.1
-          }
-        ],
-        "embedding_model": "e5_mistral_7b_instruct",
-        "retrieval_query": "string",
-        "rag_latency_secs": 1.1,
-        "used_chunk_ids": [
-          "string"
-        ]
-      },
-      "llm_usage": {
-        "model_usage": {}
-      },
-      "interrupted": false,
-      "ignored_as_backchannel": false,
-      "original_message": "string",
-      "reasoning": [
-        {
-          "summary": "string",
-          "provider_redact": false
-        }
-      ],
-      "source_medium": "audio",
-      "source_event_id": 1,
-      "used_static_kb_document_ids": [
-        "string"
-      ],
-      "user_identifier": "string",
-      "file_input": {
-        "file_id": "string",
-        "original_filename": "string",
-        "mime_type": "string",
-        "file_url": "string"
-      },
-      "contextual_update_info": {
-        "context_id": "string",
-        "is_superseded": false
-      },
-      "reasoned": false
+      "time_in_call_secs": 10,
+      "message": "Hello, how are you?"
     }
   ],
-  "agent_name": "string",
-  "conversation_product": "agent",
-  "user_id": "string",
-  "branch_id": "string",
-  "version_id": "string",
-  "analysis": {
-    "call_successful": "success",
-    "transcript_summary": "string",
-    "evaluation_criteria_results": {},
-    "data_collection_results": {},
-    "evaluation_criteria_results_list": [
-      {
-        "criteria_id": "string",
-        "result": "success",
-        "rationale": "string",
-        "scoring_mode": "binary",
-        "score": 1,
-        "max_score": 1
-      }
-    ],
-    "data_collection_results_list": [
-      {
-        "data_collection_id": "string",
-        "rationale": "string",
-        "value": null,
-        "json_schema": {
-          "type": "string",
-          "description": "A user-provided message"
-        }
-      }
-    ],
-    "call_success_score": 1.1,
-    "call_summary_title": "string",
-    "scoped": [
-      {
-        "scope": "conversation",
-        "source_agent_id": "string",
-        "successful": "success",
-        "source_branch_id": "string",
-        "evaluation_criteria_results": {},
-        "data_collection_results": {},
-        "success_score": 1.1
-      }
-    ]
-  },
-  "visited_agents": [
-    {
-      "agent_id": "string",
-      "branch_id": "string"
-    }
-  ],
-  "conversation_initiation_client_data": {
-    "conversation_config_override": {
-      "asr": {
-        "keywords": [
-          "hello",
-          "world"
-        ]
-      },
-      "turn": {
-        "soft_timeout_config": {
-          "message": "Hhmmmm...yeah."
-        }
-      },
-      "tts": {
-        "voice_id": "cjVigY5qzO86Huf0OWal",
-        "stability": 0.5,
-        "speed": 1,
-        "similarity_boost": 0.8
-      },
-      "agent": {
-        "first_message": "Hello, how can I help you today?",
-        "language": "en",
-        "prompt": {
-          "prompt": "You are a helpful assistant that can answer questions about the topic of the conversation.",
-          "llm": "gemini-2.0-flash-001",
-          "tool_ids": [],
-          "knowledge_base": []
-        }
-      }
-    },
-    "custom_llm_extra_body": {},
-    "user_id": "string",
-    "source_info": {
-      "source": "unknown",
-      "version": "string"
-    },
-    "branch_id": "string",
-    "environment": "string",
-    "starting_workflow_node_id": "string",
-    "dynamic_variables": {}
-  },
+  "agent_name": "My agent",
+  "version_id": "agtvrsn_5xM3yVvZQKV0EfqQpLr2",
   "environment": "production",
-  "tag_ids": [
-    "string"
-  ],
-  "otlp_traces": {}
+  "tag_ids": []
 }
 ```
 

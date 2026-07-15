@@ -25,7 +25,7 @@ Taxability and tax rates vary by location and category of products you’re sell
 
 ## Monitor your obligations and register
 
-You need to identify the locations where you have sales tax, VAT, or GST obligations and need to register to collect tax. If you sell into multiple locations, you need to be familiar with the [tax laws in those locations](https://docs.stripe.com/tax/supported-countries.md) because the place where your transaction takes place determines where you’re required to collect tax. This can be the seller’s country, the buyer’s country, or another location.
+You need to identify the locations where you have sales tax, VAT, or GST obligations and need to register to collect tax. If you sell into multiple locations, you need to be familiar with the [tax laws in those locations](https://docs.stripe.com/tax/supported-countries.md) because the place where your transaction takes place determines where you’re required to collect tax. This can be the seller’s country, the customer’s country, or another location.
 
 As your business grows and you sell to more locations, you need to register to collect tax in more locations. Stripe Tax tracks your Stripe transactions and helps you monitor your tax obligations. [Read more about tax obligation monitoring](https://docs.stripe.com/tax/monitoring.md).
 

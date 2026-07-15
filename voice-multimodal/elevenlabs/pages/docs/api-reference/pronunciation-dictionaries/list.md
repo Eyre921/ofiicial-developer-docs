@@ -68,6 +68,15 @@ paths:
               - string
               - 'null'
             default: DESCENDING
+        - name: include_archived
+          in: query
+          description: >-
+            Whether to include archived pronunciation dictionaries in the
+            response.
+          required: false
+          schema:
+            type: boolean
+            default: true
         - name: xi-api-key
           in: header
           required: false

@@ -192,7 +192,7 @@ By default, Stripe pays out funds that have settled in your connected accountsâ€
 
 Your platform is liable for losses incurred by negative balances on your connected accounts. Your platform is responsible for reviewing new connected accounts during onboarding and determining the risk profile of your users.
 
-Recommended for marketplaces that collect payments from buyers to payout sellers, or for advanced platforms that want full control over how risk and negative liabilities are managed on connected accounts:
+Recommended for marketplaces that collect payments from customers to payout sellers, or for advanced platforms that want full control over how risk and negative liabilities are managed on connected accounts:
 
 - Your platform must monitor connected accounts for ongoing risk of loss.
 - Your platform has to build flows to communicate and remediate connected accounts when you detect fraud or risk.
