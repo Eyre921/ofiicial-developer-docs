@@ -51,6 +51,8 @@ The API returns the reason for a tax result in the [taxability_reason](https://d
 
 The most common reasons for a zero tax result are the following:
 
+`not_collecting` is ambiguous: it means either no active registration in the customer’s jurisdiction **or** a Nontaxable product tax code (`txcd_00000000`) on the product. Check the product’s tax code before concluding it’s a registration gap.
+
 | Reason | taxability_reason | Explanation |
 | --- | --- | --- |
 | Not registered | `not_collecting` | You must register before collecting tax in a jurisdiction. You can specify where you’re registered to collect tax on [the Tax settings page](https://dashboard.stripe.com/settings/tax). |

@@ -72,7 +72,7 @@ Conditions in which auto-refresh is disabled:
 * Auto-refresh is disabled due to high data volume (100 logs per second). Try adding a [filter](https://docs.sentry.io/concepts/data-management/filtering.md#logs-filtering) to reduce the number of logs.
 * Auto-refresh will be disabled due to reaching a max auto-refresh time of 10 minutes.
 * Auto-refresh will be disabled if there is an error fetching logs.
-* Auto-refresh is not available in the aggregates view.
+* Auto-refresh is not available in the [aggregates view](https://docs.sentry.io/product/logs.md#aggregates-view).
 
 **Export Data**\
 You can export up to 10,000 log lines in CSV or [JSON Lines (JSONL)](https://jsonlines.org/) format.
@@ -81,7 +81,29 @@ You can export up to 10,000 log lines in CSV or [JSON Lines (JSONL)](https://jso
   * **Note:** Use either format to export the currently displayed columns, or use JSONL to export All Columns.
 * Depending on the size, the file will either download directly or be sent to you via email.
 
-### [Query Volumes](https://docs.sentry.io/product/logs.md#query-volumes)
+## [Visualizing Log Data](https://docs.sentry.io/product/logs.md#visualizing-log-data)
+
+The Logs Explorer includes a **Visualize** panel under **Advanced** that controls the charts displayed above the log table.
+
+### [Configuring Charts](https://docs.sentry.io/product/logs.md#configuring-charts)
+
+* The first chart defaults to `count(logs)` as a fixed time-series bar chart representing log volume over the selected time range. Change the function (like `sum`, `avg`, `count`) to visualize a different metric.
+* Click **+ Add Chart** to add additional charts. Each additional chart lets you choose a function (like `sum`, `avg`, `count`) and an attribute (like `payload_size`) to visualize.
+* Additional charts also support **Area**, **Line**, and **Bar** chart types.
+
+### [Group By](https://docs.sentry.io/product/logs.md#group-by)
+
+Use the **Group By** section under Visualize to break down charts by an attribute (for example, `device.name` or `severity`). You can ad multiple Group Bys to the same chart.
+
+## [Aggregates View](https://docs.sentry.io/product/logs.md#aggregates-view)
+
+Switch to the **Aggregates** tab to see the grouped by log data. The table shows one row per group with columns for each function you've configured in Visualize (for example, `count(logs)` and `sum(payload_size)` grouped by `device.name`).
+
+Use the aggregates view to identify high-volume log sources, compare payload sizes across functions, or spot patterns without scrolling through individual log lines.
+
+Auto-refresh is not available in the aggregates view.
+
+## [Query Volumes](https://docs.sentry.io/product/logs.md#query-volumes)
 
 When the number of logs returned by a query is too high, there are a couple of changes to the logs explorer functionality. To reduce query volumes, consider [filtering logs](https://docs.sentry.io/concepts/data-management/filtering.md#logs-filtering) or refining your [search query](https://docs.sentry.io/concepts/search.md) with more specific criteria.
 

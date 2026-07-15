@@ -53496,16 +53496,16 @@ For more on the underlying streaming model, see [Universal-3.5 Pro Streaming](/s
 
 The Voice Agent API officially supports the following output languages, each backed by at least one [voice](/voice-agents/voice-agent-api/voices) with a matching primary or native accent:
 
-| Language | Flag | Recommended voices                                                                                          |
-| -------- | ---- | ----------------------------------------------------------------------------------------------------------- |
-| English  | 🇺🇸 | `ivy`, `james`, `tyler`, `winter`, `bella`, `david`, `kyle`, `helen`, `martha`, `river`, `emma`, `victor`, `eleanor` |
-| French   | 🇫🇷 | `pierre`                                                                                                    |
-| Italian  | 🇮🇹 | `giulia`, `luca`                                                                                            |
-| Spanish  | 🇪🇸 | `lucia`, `mateo`, `diego`                                                                                   |
-| Hindi    | 🇮🇳 | `arjun`                                                                                                     |
-| Russian  | 🇷🇺 | `dmitri`                                                                                                    |
+| Language   | Flag | Recommended voices                                                                                    |
+| ---------- | ---- | ----------------------------------------------------------------------------------------------------- |
+| English    | 🇺🇸 | `alba`, `anna`, `charles`, `eve`, `george`, `jane`, `jean`, `mary`, `michael`, `paul`, `vera`         |
+| Italian    | 🇮🇹 | `giovanni`                                                                                            |
+| Spanish    | 🇪🇸 | `lola`                                                                                                |
+| German     | 🇩🇪 | `juergen`                                                                                             |
+| Portuguese | 🇵🇹 | `rafael`                                                                                              |
+| French     | 🇫🇷 | `estelle`                                                                                             |
 
-See the [Voices](/voice-agents/voice-agent-api/voices) page for voice descriptions and audio samples.
+See the [Voices](/voice-agents/voice-agent-api/voices) page for voice descriptions and audio samples. Legacy voices such as `ivy`, `james`, `pierre`, `giulia`, `lucia`, `arjun`, and `dmitri` are [deprecated](/voice-agents/voice-agent-api/voices#deprecated-voices) and will be removed in a future release.
 
 ### Coming soon
 
@@ -53513,8 +53513,7 @@ Native-accent voices for the following languages are on the roadmap. If you'd li
 
 | Language   | Flag |
 | ---------- | ---- |
-| German     | 🇩🇪 |
-| Portuguese | 🇵🇹 |
+| Hindi      | 🇮🇳 |
 | Turkish    | 🇹🇷 |
 | Dutch      | 🇳🇱 |
 | Swedish    | 🇸🇪 |
@@ -55599,7 +55598,7 @@ curl -X POST https://agents.assemblyai.com/v1/agents \
   -d '{
     "name": "Support Assistant",
     "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-    "voice": { "voice_id": "ivy" }
+    "voice": { "voice_id": "anna" }
   }'
 ```
 
@@ -55614,7 +55613,7 @@ resp = requests.post(
     json={
         "name": "Support Assistant",
         "system_prompt": "You are a friendly support agent. Keep replies under two sentences.",
-        "voice": {"voice_id": "ivy"},
+        "voice": {"voice_id": "anna"},
     },
 )
 resp.raise_for_status()
@@ -55632,7 +55631,7 @@ const res = await fetch("https://agents.assemblyai.com/v1/agents", {
   body: JSON.stringify({
     name: "Support Assistant",
     system_prompt: "You are a friendly support agent. Keep replies under two sentences.",
-    voice: { voice_id: "ivy" },
+    voice: { voice_id: "anna" },
   }),
 });
 const data = await res.json();
@@ -55645,7 +55644,7 @@ Configuring inline over the WebSocket instead of on a stored agent? Set it on `s
 {
   "type": "session.update",
   "session": {
-    "output": { "voice": "ivy" }
+    "output": { "voice": "anna" }
   }
 }
 ```
@@ -55659,49 +55658,72 @@ The agent recognizes far more input languages than it speaks. For the authoritat
 In short:
 
 - **Input (recognized):** 18 languages, with native code-switching.
-- **Output (spoken):** 6 officially supported languages — 🇺🇸 English, 🇫🇷 French, 🇮🇹 Italian, 🇪🇸 Spanish, 🇮🇳 Hindi, and 🇷🇺 Russian — each backed by at least one voice below with a matching accent. More output languages are [on the roadmap](/voice-agents/voice-agent-api/supported-languages#coming-soon).
+- **Output (spoken):** 6 officially supported languages — 🇺🇸 English, 🇮🇹 Italian, 🇪🇸 Spanish, 🇩🇪 German, 🇵🇹 Portuguese, and 🇫🇷 French — each backed by at least one voice below with a matching accent. More output languages are [on the roadmap](/voice-agents/voice-agent-api/supported-languages#coming-soon).
 
 ## Choose a voice by accent
 
 Each voice has a primary accent:
 
 - For 🇺🇸 **American English** — the right pick for an English agent — choose from [Voices](#voices).
-- For a **native accent** in French, Italian, Spanish, Hindi, or Russian, choose the matching [language-specific voice](#language-specific-voices).
+- For a **native accent** in Italian, Spanish, German, Portuguese, or French, choose the matching [language-specific voice](#language-specific-voices).
 
 ## Voices
 
 These voices have an American English accent and are the recommended pick for English agents.
 
-| Voice       | Accent  | Description                                  | Sample                                                              |
-| ----------- | ------- | -------------------------------------------- | ------------------------------------------------------------------- |
-| `ivy`       | 🇺🇸      | Professional, deliberate, smooth             | <audio controls src="/docs/assets/audio/voices/ivy.mp3" />               |
-| `james`     | 🇺🇸      | Conversational, professional, male           | <audio controls src="/docs/assets/audio/voices/james.mp3" />             |
-| `tyler`     | 🇺🇸      | Theatrical, energetic, chatty, jagged        | <audio controls src="/docs/assets/audio/voices/tyler.mp3" />             |
-| `winter`    | 🇺🇸      | Empathetic, aesthetic, conversational        | <audio controls src="/docs/assets/audio/voices/winter.mp3" />            |
-| `bella`     | 🇺🇸      | High-pitched, chatty                         | <audio controls src="/docs/assets/audio/voices/bella.mp3" />             |
-| `david`     | 🇺🇸      | Deep, calming, conversational                | <audio controls src="/docs/assets/audio/voices/david.mp3" />             |
-| `kyle`      | 🇺🇸      | Chatty, nasal, expressive                    | <audio controls src="/docs/assets/audio/voices/kyle.mp3" />              |
-| `helen`     | 🇺🇸      | Soft, older, calming                         | <audio controls src="/docs/assets/audio/voices/helen.mp3" />             |
-| `martha`    | 🇺🇸      | Southern, older, warm                        | <audio controls src="/docs/assets/audio/voices/martha.mp3" />            |
-| `river`     | 🇺🇸      | Slow, calming, ASMR                          | <audio controls src="/docs/assets/audio/voices/river.mp3" />             |
-| `emma`      | 🇺🇸      | Lively, young, conversational                | <audio controls src="/docs/assets/audio/voices/emma.mp3" />              |
-| `victor`    | 🇺🇸      | Deep, older                                  | <audio controls src="/docs/assets/audio/voices/victor.mp3" />            |
-| `eleanor`   | 🇺🇸      | Deeper, older, calming                       | <audio controls src="/docs/assets/audio/voices/eleanor.mp3" />           |
+| Voice      | Accent  | Sample                                                          |
+| ---------- | ------- | --------------------------------------------------------------- |
+| `alba`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/alba.mp3" />     |
+| `anna`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/anna.mp3" />     |
+| `charles`  | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/charles.mp3" />  |
+| `eve`      | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/eve.mp3" />      |
+| `george`   | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/george.mp3" />   |
+| `jane`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/jane.mp3" />     |
+| `jean`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/jean.mp3" />     |
+| `mary`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/mary.mp3" />     |
+| `michael`  | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/michael.mp3" />  |
+| `paul`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/paul.mp3" />     |
+| `vera`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/vera.mp3" />     |
 
 ## Language-specific voices
 
 These voices have a native accent in a specific non-English language and code-switch naturally between that language and English.
 
-| Voice       | Native accent                        | Description                            | Sample                                                              |
-| ----------- | ------------------------------------ | -------------------------------------- | ------------------------------------------------------------------- |
-| `arjun`     | 🇮🇳 Hindi/Hinglish                     | Conversational                         | <audio controls src="/docs/assets/audio/voices/arjun.mp3" />             |
-| `dmitri`    | 🇷🇺 Russian                            | Conversational                         | <audio controls src="/docs/assets/audio/voices/dmitri.mp3" />            |
-| `pierre`    | 🇫🇷 French                             | Conversational                         | <audio controls src="/docs/assets/audio/voices/pierre.mp3" />            |
-| `giulia`    | 🇮🇹 Italian                            |                                        | <audio controls src="/docs/assets/audio/voices/giulia.mp3" />            |
-| `luca`      | 🇮🇹 Italian                            |                                        | <audio controls src="/docs/assets/audio/voices/luca.mp3" />              |
-| `lucia`     | 🇪🇸 Spanish                            |                                        | <audio controls src="/docs/assets/audio/voices/lucia.mp3" />             |
-| `mateo`     | 🇪🇸 Spanish                            |                                        | <audio controls src="/docs/assets/audio/voices/mateo.mp3" />             |
-| `diego`     | 🇨🇴 Spanish (Latin American)           | Colombian                              | <audio controls src="/docs/assets/audio/voices/diego.mp3" />             |
+| Voice       | Native accent    | Sample                                                             |
+| ----------- | ---------------- | ------------------------------------------------------------------ |
+| `giovanni`  | 🇮🇹 Italian       | <audio controls src="/docs/assets/audio/voices/giovanni.mp3" />    |
+| `lola`      | 🇪🇸 Spanish       | <audio controls src="/docs/assets/audio/voices/lola.mp3" />        |
+| `juergen`   | 🇩🇪 German        | <audio controls src="/docs/assets/audio/voices/juergen.mp3" />     |
+| `rafael`    | 🇵🇹 Portuguese    | <audio controls src="/docs/assets/audio/voices/rafael.mp3" />      |
+| `estelle`   | 🇫🇷 French        | <audio controls src="/docs/assets/audio/voices/estelle.mp3" />     |
+
+## Deprecated voices
+
+  The voices below are deprecated and will be removed in a future release. Use one of the [Voices](#voices) or [language-specific voices](#language-specific-voices) above for new agents, and migrate existing agents when convenient.
+
+| Voice     | Accent                        | Description                                  | Sample                                                              |
+| --------- | ----------------------------- | -------------------------------------------- | ------------------------------------------------------------------- |
+| `ivy`     | 🇺🇸                            | Professional, deliberate, smooth             | <audio controls src="/docs/assets/audio/voices/ivy.mp3" />          |
+| `james`   | 🇺🇸                            | Conversational, professional, male           | <audio controls src="/docs/assets/audio/voices/james.mp3" />        |
+| `tyler`   | 🇺🇸                            | Theatrical, energetic, chatty, jagged        | <audio controls src="/docs/assets/audio/voices/tyler.mp3" />        |
+| `winter`  | 🇺🇸                            | Empathetic, aesthetic, conversational        | <audio controls src="/docs/assets/audio/voices/winter.mp3" />       |
+| `bella`   | 🇺🇸                            | High-pitched, chatty                         | <audio controls src="/docs/assets/audio/voices/bella.mp3" />        |
+| `david`   | 🇺🇸                            | Deep, calming, conversational                | <audio controls src="/docs/assets/audio/voices/david.mp3" />        |
+| `kyle`    | 🇺🇸                            | Chatty, nasal, expressive                    | <audio controls src="/docs/assets/audio/voices/kyle.mp3" />         |
+| `helen`   | 🇺🇸                            | Soft, older, calming                         | <audio controls src="/docs/assets/audio/voices/helen.mp3" />        |
+| `martha`  | 🇺🇸                            | Southern, older, warm                        | <audio controls src="/docs/assets/audio/voices/martha.mp3" />       |
+| `river`   | 🇺🇸                            | Slow, calming, ASMR                          | <audio controls src="/docs/assets/audio/voices/river.mp3" />        |
+| `emma`    | 🇺🇸                            | Lively, young, conversational                | <audio controls src="/docs/assets/audio/voices/emma.mp3" />         |
+| `victor`  | 🇺🇸                            | Deep, older                                  | <audio controls src="/docs/assets/audio/voices/victor.mp3" />       |
+| `eleanor` | 🇺🇸                            | Deeper, older, calming                       | <audio controls src="/docs/assets/audio/voices/eleanor.mp3" />      |
+| `arjun`   | 🇮🇳 Hindi/Hinglish             | Conversational                               | <audio controls src="/docs/assets/audio/voices/arjun.mp3" />        |
+| `dmitri`  | 🇷🇺 Russian                    | Conversational                               | <audio controls src="/docs/assets/audio/voices/dmitri.mp3" />       |
+| `pierre`  | 🇫🇷 French                     | Conversational                               | <audio controls src="/docs/assets/audio/voices/pierre.mp3" />       |
+| `giulia`  | 🇮🇹 Italian                    |                                              | <audio controls src="/docs/assets/audio/voices/giulia.mp3" />       |
+| `luca`    | 🇮🇹 Italian                    |                                              | <audio controls src="/docs/assets/audio/voices/luca.mp3" />         |
+| `lucia`   | 🇪🇸 Spanish                    |                                              | <audio controls src="/docs/assets/audio/voices/lucia.mp3" />        |
+| `mateo`   | 🇪🇸 Spanish                    |                                              | <audio controls src="/docs/assets/audio/voices/mateo.mp3" />        |
+| `diego`   | 🇨🇴 Spanish (Latin American)   | Colombian                                    | <audio controls src="/docs/assets/audio/voices/diego.mp3" />        |
 
 ---
 
@@ -58874,13 +58896,51 @@ You can control the action items output by adjusting the params.
 You can set the `include_decisions` param to `true` which will configure the call to include decisions made within the
 text as action items.
 
-### Effort
+## Effort
 
 The `effort` param lets you determine whether to spend more processing power to get higher quality action items.
 
 Currently there are two options: `low` which is the default, and `medium`.
 
 Action items is not a high precision task, so generally the default `low` effort will be sufficient.
+
+### Example
+
+```python expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+
+headers = {
+    "authorization": "<YOUR_API_KEY>"
+}
+
+# Need to transcribe a local file? Learn more here: https://www.assemblyai.com/docs/getting-started/transcribe-an-audio-file
+
+upload_url = "https://assembly.ai/wildfires.mp3"
+
+# Configure transcript with speaker identification
+
+data = {
+    "audio_url": upload_url,
+    "language_detection": True,
+    "speaker_labels": True,
+    "speech_understanding": {
+        "request": {
+            "action_items": {
+                "effort": "medium"
+            }
+        }
+    }
+}
+
+# Submit the transcription request
+
+response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
+# ... fetch results in GET
+
+```
 
 ### When to use medium
 
@@ -61322,6 +61382,46 @@ To assist with this there is a configuration to increase the quality of the resu
 
 Speaker Identification has two effort modes currently: low and medium. The default is low.
 
+### Example
+
+```python expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+
+headers = {
+    "authorization": "<YOUR_API_KEY>"
+}
+
+# Need to transcribe a local file? Learn more here: https://www.assemblyai.com/docs/getting-started/transcribe-an-audio-file
+
+upload_url = "https://assembly.ai/wildfires.mp3"
+
+# Configure transcript with speaker identification
+
+data = {
+    "audio_url": upload_url,
+    "language_detection": True,
+    "speaker_labels": True,
+    "speech_understanding": {
+        "request": {
+            "speaker_identification": {
+                "speaker_type": "name",
+                "speakers": [{"name": "Michel Martin"}, {"name": "Peter DeCarlo"}]  # Change these values to match the names of the speakers in your file
+                "effort": "medium"
+            }
+        }
+    }
+}
+
+# Submit the transcription request
+
+response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
+# ... fetch results in GET
+
+```
+
 ### When to use low/default effort
 
 The low/default effort works best for lower complexity situations. Some examples:
@@ -61893,7 +61993,7 @@ You can pick between two different `summary_type` params of `bullets` and `parag
 Bullets will get you short concise bullet point style chapter summaries. Meanwhile, paragraph will generally give you
 longer more detailed summaries.
 
-### Effort
+## Effort
 
 The `effort` param lets you determine whether to spend more processing power to get higher quality summaries.
 
@@ -61901,6 +62001,45 @@ Currently there are two options: `low` which is the default, and `medium`.
 
 Summaries are not a data intensive task, nor do they typically need utmost accuracy. For the majority of use
 cases leaving `effort` at low/the default will be all you need.
+
+### Example
+
+```python expandable
+import requests
+import time
+
+base_url = "https://api.assemblyai.com"
+
+headers = {
+    "authorization": "<YOUR_API_KEY>"
+}
+
+# Need to transcribe a local file? Learn more here: https://www.assemblyai.com/docs/getting-started/transcribe-an-audio-file
+
+upload_url = "https://assembly.ai/wildfires.mp3"
+
+# Configure transcript with speaker identification
+
+data = {
+    "audio_url": upload_url,
+    "language_detection": True,
+    "speaker_labels": True,
+    "speech_understanding": {
+        "request": {
+            "summarization": {
+                "summary_type": "bullets"
+                "effort": "medium"
+            }
+        }
+    }
+}
+
+# Submit the transcription request
+
+response = requests.post(base_url + "/v2/transcript", headers=headers, json=data)
+# ... fetch results in GET
+
+```
 
 ### When to use medium
 

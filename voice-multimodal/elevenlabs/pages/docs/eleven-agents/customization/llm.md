@@ -163,3 +163,33 @@ Certain LLMs available on our platform may be suitable for use in environments r
 * [Custom LLM integration](/docs/eleven-agents/customization/llm/custom-llm)
 * [LLM cascading](/docs/eleven-agents/customization/llm/llm-cascading)
 * [Optimizing costs](/docs/eleven-agents/customization/llm/optimizing-costs)
+
+## Models Hosted by ElevenLabs
+
+ElevenLabs offers access to a variety of AI models, including select third-party models that are hosted by ElevenLabs.
+
+When a model is designated as “Hosted by ElevenLabs”, the model is deployed and operated on infrastructure managed by ElevenLabs. These models are currently hosted in the United States, or in the region of your enterprise deployment.
+
+#### How to identify models Hosted by ElevenLabs
+
+Models hosted by ElevenLabs are clearly labeled in the ElevenLabs interface. Look for the “Hosted by ElevenLabs” designation when browsing or selecting models.
+
+#### How your data is handled
+
+For models hosted by ElevenLabs, requests are processed within ElevenLabs-managed infrastructure. This means that the original model provider does not receive, access, or process the inputs and outputs submitted through ElevenLabs.
+
+By hosting these models, ElevenLabs can provide a consistent experience while maintaining control over the infrastructure used to serve model requests.
+
+## Frequently asked questions
+
+#### Where are self-hosted models hosted?
+
+Models hosted by ElevenLabs are currently hosted on infrastructure located in the United States, or in the region of your enterprise deployment.
+
+#### Does the original model provider access my data or metadata of my usage?
+
+For models hosted by ElevenLabs, the model’s original developer never receives your inputs or outputs and has no access to the data about the deployment that processes them.
+
+#### How do I know whether a model is Hosted by ElevenLabs?
+
+Models hosted by ElevenLabs are clearly identified in the ElevenLabs interface with a “Hosted by ElevenLabs” designation.

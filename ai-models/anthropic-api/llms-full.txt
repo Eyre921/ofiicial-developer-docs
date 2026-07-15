@@ -434,7 +434,7 @@ Make your first API call to Claude and build a simple web search assistant.
             }
 
             dependencies {
-                implementation("com.anthropic:anthropic-java:2.47.1")
+                implementation("com.anthropic:anthropic-java:2.48.0")
             }
 
             application {
@@ -460,7 +460,7 @@ Make your first API call to Claude and build a simple web search assistant.
                 <dependency>
                   <groupId>com.anthropic</groupId>
                   <artifactId>anthropic-java</artifactId>
-                  <version>2.47.1</version>
+                  <version>2.48.0</version>
                 </dependency>
               </dependencies>
             </project>
@@ -829,7 +829,7 @@ Features on the Claude Platform are assigned one of the following availability c
 | **Deprecated**               | Feature is still functional but no longer recommended. A migration path and removal timeline are provided.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 | **Retired**                  | Feature is no longer available.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 
-**Platform labels:** Claude API (Anthropic first-party) · [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws) (Anthropic-operated on AWS) · [Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock) (AWS-operated) · [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai) (Google-operated) · [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry) (Anthropic-operated on Azure)
+**Platform labels:** Claude API (Anthropic first-party) · [Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock) (AWS-operated) · [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws) (Anthropic-operated on AWS) · [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai) (Google-operated) · [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry) (Anthropic-operated on Azure)
 
 ## Model capabilities
 
@@ -1484,7 +1484,7 @@ The following example makes a request that may be refused and redeems the credit
 
 ## Where it works
 
-Fallback credit is in beta on the Claude API, Claude Platform on AWS, Amazon Bedrock, Google Cloud, and Microsoft Foundry. Credit tokens returned in [Message Batches](/docs/en/build-with-claude/batch-processing) results cannot be redeemed. Redemption applies only to direct Messages API requests.
+Fallback credit is in beta on the Claude API, Amazon Bedrock, Claude Platform on AWS, Google Cloud, and Microsoft Foundry. Credit tokens returned in [Message Batches](/docs/en/build-with-claude/batch-processing) results cannot be redeemed. Redemption applies only to direct Messages API requests.
 
 The retry model must be one of the refused model's permitted fallback targets. At launch, Claude Fable 5's permitted target is Claude Opus 4.8 (`claude-opus-4-8`).
 
@@ -2155,7 +2155,7 @@ The `usage.iterations` array records every attempt. A model that declined appear
 
 ### Continuing the conversation
 
-On the next turn, send the assistant content back as you received it. After a mid-output fallback, `content` can include block types the declining model produced before the handoff; the table below covers which to keep and which to drop when you echo the turn.
+On the next turn, send the assistant content back as you received it. After a mid-output fallback, `content` can include block types the declining model produced before the handoff; the following table covers which to keep and which to drop when you echo the turn.
 
 | Block type                                                                             | On the next turn                                                                                                                                                                                                               |
 | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -2809,7 +2809,7 @@ The most common stop reason. Indicates Claude finished its response naturally.
 </CodeGroup>
 
 <Accordion title="Empty responses with end_turn">
-  Sometimes Claude returns an empty response (exactly 2-3 tokens with no content) with `stop_reason: "end_turn"`. This typically happens when Claude interprets that the assistant turn is complete, particularly after tool results.
+  Sometimes Claude returns an empty response (exactly 2-3 tokens with no content) with `stop_reason: "end_turn"`. This typically occurs when Claude interprets that the assistant turn is complete, particularly after tool results.
 
   **Common causes:**
 
@@ -2818,7 +2818,7 @@ The most common stop reason. Indicates Claude finished its response naturally.
 
   **How to prevent empty responses:**
 
-  <CodeGroup>
+  <CodeGroup exclude="shell">
     ```python Python
     # INCORRECT: Adding text immediately after tool_result
     messages = [
@@ -3140,7 +3140,7 @@ The most common stop reason. Indicates Claude finished its response naturally.
 
   If you still get empty responses after fixing the message structure, add a continuation prompt in a new user message rather than retrying with the empty response:
 
-  <CodeGroup>
+  <CodeGroup exclude="shell">
     ```python Python
     def handle_empty_response(client, messages):
         response = client.messages.create(
@@ -3493,9 +3493,9 @@ Claude stopped because it reached the `max_tokens` limit specified in your reque
 </CodeGroup>
 
 <Accordion title="Incomplete tool use blocks">
-  If Claude's response is cut off due to hitting the `max_tokens` limit, and the truncated response contains an incomplete tool use block, you'll need to retry the request with a higher `max_tokens` value to get the full tool use.
+  If Claude's response is cut off because it hit the `max_tokens` limit, and the truncated response contains an incomplete tool use block, you'll need to retry the request with a higher `max_tokens` value to get the full tool use.
 
-  <CodeGroup>
+  <CodeGroup exclude="shell:cURL">
     ```bash CLI
     RESPONSE=$(ant messages create --max-tokens 1024 \
       --format jsonl < request.yaml)
@@ -4676,7 +4676,7 @@ Claude stopped because it reached the model's context window limit. This lets yo
 
 Make it a habit to check the `stop_reason` in your response handling logic:
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   def handle_response(response):
       if response.stop_reason == "tool_use":
@@ -4809,7 +4809,7 @@ Make it a habit to check the `stop_reason` in your response handling logic:
 
 When a response is truncated because of token limits or the context window, append a notice so the reader knows the output is incomplete. To continue generating from where the response left off instead, see [Ensuring complete responses](#ensuring-complete-responses).
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   def handle_truncated_response(response):
       if response.stop_reason in ["max_tokens", "model_context_window_exceeded"]:
@@ -4927,7 +4927,7 @@ When a response is truncated because of token limits or the context window, appe
 
 When using [server tools](/docs/en/agents-and-tools/tool-use/server-tools), the API may return `pause_turn` if the server-side sampling loop reaches its iteration limit (default 10). Handle this by continuing the conversation:
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   def handle_server_tool_conversation(client, user_query, tools, max_continuations=5):
       """
@@ -5570,7 +5570,7 @@ When using streaming, `stop_reason` is:
   **Simpler with tool runner:** The following example shows manual tool handling. For most use cases, the [tool runner](/docs/en/agents-and-tools/tool-use/tool-runner) automatically handles tool execution with much less code.
 </Tip>
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   def complete_tool_workflow(client, user_query, tools):
       messages = [{"role": "user", "content": user_query}]
@@ -5779,7 +5779,7 @@ When using streaming, `stop_reason` is:
 
 ### Ensuring complete responses
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   def get_complete_response(client, prompt, max_attempts=3):
       messages = [{"role": "user", "content": prompt}]
@@ -6011,7 +6011,7 @@ When using streaming, `stop_reason` is:
 
 With the `model_context_window_exceeded` stop reason, you can request the maximum possible tokens without calculating input size:
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   def get_max_possible_tokens(client, prompt):
       """
@@ -6582,7 +6582,7 @@ See [Mid-conversation system messages](/docs/en/build-with-claude/mid-conversati
 
 ## Putting words in Claude's mouth
 
-You can pre-fill part of Claude's response in the last position of the input messages list. This can be used to shape Claude's response. The example below uses `"max_tokens": 1` to get a single multiple choice answer from Claude.
+You can pre-fill part of Claude's response in the last position of the input messages list. This can be used to shape Claude's response. The following example uses `"max_tokens": 1` to get a single multiple choice answer from Claude.
 
 <Warning>
   Prefilling is not supported on Claude Fable 5, [Claude Mythos 5](https://anthropic.com/glasswing), [Claude Mythos Preview](https://anthropic.com/glasswing), Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Sonnet 5, and Claude Sonnet 4.6. Requests using prefill with these models return a 400 error. Use [structured outputs](/docs/en/build-with-claude/structured-outputs) on models that support it, or system prompt instructions, instead. See the [migration guide](/docs/en/about-claude/models/migration-guide) for migration patterns.
@@ -6903,11 +6903,11 @@ Claude can read both text and images in requests. Images can be supplied using t
   const anthropic = new Anthropic();
 
   // Option 1: Base64-encoded image
-  const image_url =
+  const imageUrl =
     "https://upload.wikimedia.org/wikipedia/commons/a/a7/Camponotus_flavomarginatus_ant.jpg";
-  const image_media_type = "image/jpeg";
-  const image_array_buffer = await (await fetch(image_url)).arrayBuffer();
-  const image_data = Buffer.from(image_array_buffer).toString("base64");
+  const imageMediaType = "image/jpeg";
+  const imageArrayBuffer = await (await fetch(imageUrl)).arrayBuffer();
+  const imageData = Buffer.from(imageArrayBuffer).toString("base64");
 
   const message = await anthropic.messages.create({
     model: "claude-opus-4-8",
@@ -6920,8 +6920,8 @@ Claude can read both text and images in requests. Images can be supplied using t
             type: "image",
             source: {
               type: "base64",
-              media_type: image_media_type,
-              data: image_data
+              media_type: imageMediaType,
+              data: imageData
             }
           },
           {
@@ -8170,10 +8170,10 @@ Full thinking content is encrypted and returned in the `signature` field. This f
 
 Here are some important considerations on thinking encryption:
 
-* When [streaming responses](/docs/en/build-with-claude/extended-thinking#streaming-thinking), the signature is added via a `signature_delta` inside a `content_block_delta` event just before the `content_block_stop` event.
+* When [streaming responses](/docs/en/build-with-claude/extended-thinking#streaming-thinking), the signature is added through a `signature_delta` inside a `content_block_delta` event just before the `content_block_stop` event.
 * `signature` values are significantly longer in Claude 4 models than in previous models.
 * The `signature` field is an opaque field and should not be interpreted or parsed.
-* `signature` values are compatible across platforms (Claude APIs, [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), and [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai)). Values generated on one platform will be compatible with another.
+* `signature` values are compatible across platforms (Claude APIs, [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), and [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai)). Values generated on one platform are compatible with another.
 
 ### Thinking output on Claude Fable 5 and Claude Mythos 5
 
@@ -8311,7 +8311,7 @@ This is especially useful for bulk operations that don't require immediate resul
 * Large-scale evaluations: Process thousands of test cases efficiently.
 * Content moderation: Analyze large volumes of user-generated content asynchronously.
 * Data analysis: Generate insights or summaries for large datasets.
-* Bulk content generation: Create large amounts of text for various purposes (e.g., product descriptions, article summaries).
+* Bulk content generation: Create large amounts of text for various purposes (for example, product descriptions, article summaries).
 
 ### Batch limitations
 
@@ -8320,8 +8320,8 @@ This is especially useful for bulk operations that don't require immediate resul
 * Batch results are available for 29 days after creation. After that, you may still view the Batch, but its results will no longer be available for download.
 * Batches are scoped to a [Workspace](/settings/workspaces). You may view all batches (and their results) that were created within the Workspace that your API key belongs to.
 * Rate limits apply to both Batches API HTTP requests and the number of requests within a batch waiting to be processed. See [Message Batches API rate limits](/docs/en/api/rate-limits#message-batches-api). Additionally, processing may be slowed down based on current demand and your request volume. In that case, you may see more requests expiring after 24 hours.
-* Due to high throughput and concurrent processing, batches may go slightly over your Workspace's configured [spend limit](/settings/limits).
-* Each batched request must have `max_tokens` of at least `1`. `max_tokens: 0` ([cache pre-warming](/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache)) is not supported inside a batch, since an ephemeral cache entry written during batch processing would likely expire before the follow-up request runs.
+* Because of high throughput and concurrent processing, batches may go slightly over your Workspace's configured [spend limit](/settings/limits).
+* Each batched request must have `max_tokens` of at least `1`. `max_tokens: 0` ([cache pre-warming](/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache)) is not supported inside a batch, because an ephemeral cache entry written during batch processing would likely expire before the follow-up request runs.
 
 ### Supported models
 
@@ -8338,7 +8338,7 @@ Almost any request you can make to the Messages API can be included in a batch. 
 * Extended thinking
 * Most beta features
 
-Since each request in the batch is processed independently, you can mix different types of requests within a single batch.
+Because each request in the batch is processed independently, you can mix different types of requests within a single batch.
 
 A small number of Messages API parameters are **not** supported in batch requests. Including any of these returns a validation error:
 
@@ -8352,7 +8352,7 @@ A small number of Messages API parameters are **not** supported in batch request
 | `research_preview_2026_02: "active"`                        | Research preview mode is not available on the batch path.                                  |
 
 <Tip>
-  Since batches can take longer than 5 minutes to process, consider using the [1-hour cache duration](/docs/en/build-with-claude/prompt-caching#1-hour-cache-duration) with prompt caching for better cache hit rates when processing batches with shared context.
+  Because batches can take longer than 5 minutes to process, consider using the [1-hour cache duration](/docs/en/build-with-claude/prompt-caching#1-hour-cache-duration) with prompt caching for better cache hit rates when processing batches with shared context.
 </Tip>
 
 ## Pricing
@@ -8981,7 +8981,7 @@ You can list all Message Batches in your Workspace using the [list endpoint](/do
 
 ### Retrieving batch results
 
-Once batch processing has ended, each Messages request in the batch has a result. There are 4 result types:
+Once batch processing has ended, each Messages request in the batch has a result. There are four result types:
 
 | Result Type | Description                                                                                                                                                                 |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -9211,12 +9211,12 @@ If your result has an error, its `result.error` will be set to the standard [err
 <Tip>
   **Batch results may not match input order**
 
-  Batch results can be returned in any order, and may not match the ordering of requests when the batch was created. In the above example, the result for the second batch request is returned before the first. To correctly match results with their corresponding requests, always use the `custom_id` field.
+  Batch results can be returned in any order, and may not match the ordering of requests when the batch was created. In the preceding example, the result for the second batch request is returned before the first. To correctly match results with their corresponding requests, always use the `custom_id` field.
 </Tip>
 
 ### Canceling a Message Batch
 
-You can cancel a Message Batch that is currently processing using the [cancel endpoint](/docs/en/api/canceling-message-batches). Immediately after cancellation, a batch's `processing_status` will be `canceling`. You can use the same polling technique described above to wait until cancellation is finalized. Canceled batches end up with a status of `ended` and may contain partial results for requests that were processed before cancellation.
+You can cancel a Message Batch that is currently processing using the [cancel endpoint](/docs/en/api/canceling-message-batches). Immediately after cancellation, a batch's `processing_status` will be `canceling`. You can use the same polling technique described earlier to wait until cancellation is finalized. Canceled batches end up with a status of `ended` and may contain partial results for requests that were processed before cancellation.
 
 <CodeGroup>
   ```bash cURL
@@ -9324,7 +9324,7 @@ The response will show the batch in a `canceling` state:
 
 ### Using prompt caching with Message Batches
 
-The Message Batches API supports prompt caching, allowing you to potentially reduce costs and processing time for batch requests. The pricing discounts from prompt caching and Message Batches can stack, providing even greater cost savings when both features are used together. However, since batch requests are processed asynchronously and concurrently, cache hits are provided on a best-effort basis. Users typically experience cache hit rates ranging from 30% to 98%, depending on their traffic patterns.
+The Message Batches API supports prompt caching, allowing you to potentially reduce costs and processing time for batch requests. The pricing discounts from prompt caching and Message Batches can stack, providing even greater cost savings when both features are used together. However, because batch requests are processed asynchronously and concurrently, cache hits are provided on a best-effort basis. Users typically experience cache hit rates ranging from 30% to 98%, depending on their traffic patterns.
 
 To maximize the likelihood of cache hits in your batch requests:
 
@@ -10110,7 +10110,7 @@ For ZDR eligibility across all features, see [API and data retention](/docs/en/m
   </Accordion>
 
   <Accordion title="Is the Batches API available for all models?">
-    See [above](#supported-models) for the list of supported models.
+    See [Supported models](#supported-models) for the list of supported models.
   </Accordion>
 
   <Accordion title="Can I use the Message Batches API with other API features?">
@@ -10502,7 +10502,7 @@ Integrate citations with Claude in these steps:
   <Step title="Claude provides cited response">
     * Responses may now include multiple text blocks where each text block can contain a claim that Claude is making and a list of citations that support the claim.
 
-    * Citations reference specific locations in source documents. The format of these citations are dependent on the type of document being cited from.
+    * Citations reference specific locations in source documents. The format of these citations is dependent on the type of document being cited from.
 
       * **For PDFs:** Citations include the page number range (1-indexed).
       * **For plain text documents:** Citations include the character index range (0-indexed).
@@ -10520,7 +10520,7 @@ Integrate citations with Claude in these steps:
   For example, if you want Claude to be able to cite specific sentences from your RAG chunks, you should put each RAG chunk into a plain text document. Otherwise, if you do not want any further chunking to be done, or if you want to customize any additional chunking, you can put RAG chunks into custom content document(s).
 </Tip>
 
-### Citable vs non-citable content
+### Citable versus non-citable content
 
 * Text found within a document's `source` content can be cited from.
 * `title` and `context` are optional fields that are passed to the model but not used toward cited content.
@@ -11166,7 +11166,7 @@ Plain text documents are automatically chunked into sentences. You can provide t
 
 ### PDF documents
 
-PDF documents can be provided as base64-encoded data, a URL, or by `file_id`. PDF text is extracted and chunked into sentences. As image citations are not yet supported, PDFs that are scans of documents and do not contain extractable text will not be citable.
+PDF documents can be provided as base64-encoded data, a URL, or by `file_id`. PDF text is extracted and chunked into sentences. As image citations are not yet supported, PDFs that are scans of documents and do not contain extractable text are not citable.
 
 <Tabs>
   <Tab title="Base64">
@@ -12504,7 +12504,7 @@ This approach has two major advantages:
 | `xhigh`  | Extended capability for long-horizon work. Available on Claude Fable 5, Claude Mythos 5, Claude Opus 4.8, Claude Opus 4.7, and Claude Sonnet 5.                                                                                    | Long-running agentic and coding tasks (over 30 minutes) with token budgets in the millions |
 | `high`   | High capability. Equivalent to not setting the parameter.                                                                                                                                                                          | Complex reasoning, difficult coding problems, agentic tasks                                |
 | `medium` | Balanced approach with moderate token savings.                                                                                                                                                                                     | Agentic tasks that require a balance of speed, cost, and performance                       |
-| `low`    | Most efficient. Significant token savings with some capability reduction.                                                                                                                                                          | Simpler tasks that need the best speed and lowest costs, like subagents                    |
+| `low`    | Most efficient. Significant token savings with some capability reduction.                                                                                                                                                          | Simpler tasks that need the best speed and lowest costs, such as subagents                 |
 
 <Note>
   Effort is a behavioral signal, not a strict token budget. At lower effort levels, Claude will still think on sufficiently difficult problems, but it will think less than it would at higher effort levels for the same problem.
@@ -12540,7 +12540,7 @@ The API default is `high`. To use `xhigh`, set `effort` explicitly; the value yo
 | `low`    | Efficient, but best for short, scoped tasks. Pair `low` with explicit checklists if your task has multiple sections.                                                                                                       |
 | `medium` | The drop-in for the average workflow where you want good results while reducing costs.                                                                                                                                     |
 | `high`   | Advanced use cases that still need a balance of intelligence and token consumption. This is often the sweet spot balancing quality and token efficiency.                                                                   |
-| `xhigh`  | The recommended starting point for coding and agentic work, and for exploratory tasks like repeated tool calling, detailed web search, and knowledge-base search. Expect meaningfully higher token usage than `high`.      |
+| `xhigh`  | The recommended starting point for coding and agentic work, and for exploratory tasks such as repeated tool calling, detailed web search, and knowledge-base search. Expect meaningfully higher token usage than `high`.   |
 | `max`    | Reserve for genuinely frontier problems. On most workloads `max` adds significant cost for relatively small quality gains, and on some structured-output or less intelligence-sensitive tasks it can lead to overthinking. |
 
 Claude Opus 4.7 also respects effort levels more strictly than Claude Opus 4.6, especially at `low` and `medium`. At lower effort levels, the model scopes its work to what was asked rather than going above and beyond. If you observe shallow reasoning on complex problems with Claude Opus 4.7, raise effort rather than prompting around it. If you must keep effort low for latency, add targeted guidance like "This task involves multistep reasoning. Think carefully before responding."
@@ -12741,7 +12741,7 @@ Reduce effort if a task completes but takes longer than necessary, or if you wan
 ## When to adjust the effort parameter
 
 * Use **max effort** when you need the absolute highest capability with no constraints: the most thorough reasoning and deepest analysis. Available on Claude Fable 5, Claude Mythos 5, Claude Opus 4.8, Claude Mythos Preview, Claude Opus 4.7, Claude Opus 4.6, Claude Sonnet 5, and Claude Sonnet 4.6.
-* Use **xhigh effort** for advanced coding and complex agentic work requiring extended exploration, like repeated tool calling and detailed search. Available on Claude Fable 5, Claude Mythos 5, Claude Opus 4.8, Claude Opus 4.7, and Claude Sonnet 5.
+* Use **xhigh effort** for advanced coding and complex agentic work requiring extended exploration, such as repeated tool calling and detailed search. Available on Claude Fable 5, Claude Mythos 5, Claude Opus 4.8, Claude Opus 4.7, and Claude Sonnet 5.
 * Use **high effort** (the default) for complex reasoning, nuanced analysis, difficult coding problems, or any task where quality matters more than speed or cost.
 * Use **medium effort** as a balanced option when you want solid performance without the full token expenditure of high effort.
 * Use **low effort** when you're optimizing for speed (because Claude answers with fewer tokens) or cost. For example, simple classification tasks, quick lookups, or high-volume use cases where marginal quality improvements don't justify additional latency or spend.
@@ -12884,8 +12884,8 @@ Need help deciding which text embedding model to use? Check out the [FAQ](https:
 
 To access Voyage embeddings:
 
-1. Sign up on Voyage AI's website
-2. Obtain an API key
+1. Sign up on Voyage AI's website.
+2. Obtain an API key.
 3. Set the API key as an environment variable for convenience:
 
 ```bash
@@ -12918,7 +12918,7 @@ print(result.embeddings[0])
 print(result.embeddings[1])
 ```
 
-`result.embeddings` will be a list of two embedding vectors, each containing 1024 floating-point numbers. After running the above code, the two embeddings will be printed on the screen:
+`result.embeddings` will be a list of two embedding vectors, each containing 1024 floating-point numbers. After running the preceding code, the two embeddings will be printed on the screen:
 
 ```text
 [-0.013131560757756233, 0.019828535616397858, ...]   # embedding for "Sample text 1"
@@ -12988,7 +12988,7 @@ documents = [
 ]
 ```
 
-First, use Voyage to convert each document into an embedding vector
+First, use Voyage to convert each document into an embedding vector.
 
 ```python
 import voyageai
@@ -13022,7 +13022,7 @@ retrieved_id = np.argmax(similarities)
 print(documents[retrieved_id])
 ```
 
-Note that `input_type="document"` and `input_type="query"` are used for embedding the document and query, respectively. More specification can be found in [Voyage Python library](/docs/en/build-with-claude/embeddings#voyage-python-library).
+Note that `input_type="document"` and `input_type="query"` are used for embedding the document and query, respectively. More specification can be found in [Voyage Python library](#voyage-python-library).
 
 The output would be the 5th document, which is indeed the most relevant to the query:
 
@@ -13065,7 +13065,7 @@ If you are looking for a detailed set of cookbooks on how to do RAG with embeddi
   </Accordion>
 
   <Accordion title="Which similarity function should I use?">
-    You can use Voyage embeddings with either dot-product similarity, cosine similarity, or Euclidean distance. An explanation about embedding similarity can be found in this [vector similarity guide](https://www.pinecone.io/learn/vector-similarity/).
+    You can use Voyage embeddings with either dot-product similarity, cosine similarity, or Euclidean distance. For an explanation of embedding similarity, see this [vector similarity guide](https://www.pinecone.io/learn/vector-similarity/).
 
     Voyage AI embeddings are normalized to length 1, which means that:
 
@@ -13094,7 +13094,7 @@ If you are looking for a detailed set of cookbooks on how to do RAG with embeddi
     >
     >   * When `input_type="document"`, a query like "Apple's conference call to discuss fourth fiscal quarter results and business updates is scheduled for Thursday, November 2, 2023 at 2p.m. PT / 5p.m. ET." will become "**Represent the document for retrieval:** Apple's conference call to discuss fourth fiscal quarter results and business updates is scheduled for Thursday, November 2, 2023 at 2p.m. PT / 5p.m. ET."
 
-    `voyage-large-2-instruct`, as the name suggests, is trained to be responsive to additional instructions that are prepended to the input text. For classification, clustering, or other [MTEB](https://huggingface.co/mteb) subtasks, please use the [voyage-large-2-instruct instructions](https://github.com/voyage-ai/voyage-large-2-instruct).
+    `voyage-large-2-instruct`, as the name suggests, is trained to be responsive to additional instructions that are prepended to the input text. For classification, clustering, or other [MTEB](https://huggingface.co/mteb) subtasks, use the [voyage-large-2-instruct instructions](https://github.com/voyage-ai/voyage-large-2-instruct).
   </Accordion>
 
   <Accordion title="What quantization options are available?">
@@ -13102,7 +13102,7 @@ If you are looking for a detailed set of cookbooks on how to do RAG with embeddi
 
     * `float`: Each returned embedding is a list of 32-bit (4-byte) single-precision floating-point numbers. This is the default and provides the highest precision / retrieval accuracy.
     * `int8` and `uint8`: Each returned embedding is a list of 8-bit (1-byte) integers ranging from -128 to 127 and 0 to 255, respectively.
-    * `binary` and `ubinary`: Each returned embedding is a list of 8-bit integers that represent bit-packed, quantized single-bit embedding values: `int8` for `binary` and `uint8` for `ubinary`. The length of the returned list of integers is 1/8 of the actual dimension of the embedding. The binary type uses the offset binary method, which you can learn more about in the FAQ below.
+    * `binary` and `ubinary`: Each returned embedding is a list of 8-bit integers that represent bit-packed, quantized single-bit embedding values: `int8` for `binary` and `uint8` for `ubinary`. The length of the returned list of integers is 1/8 of the actual dimension of the embedding. The binary type uses the offset binary method, which you can learn more about in the [FAQ](#faq).
 
     > **Binary quantization example**
     >
@@ -13220,24 +13220,23 @@ Here is an example of using extended thinking in the Messages API:
 <CodeGroup>
   ```bash cURL
   curl https://api.anthropic.com/v1/messages \
-       --header "x-api-key: $ANTHROPIC_API_KEY" \
-       --header "anthropic-version: 2023-06-01" \
-       --header "content-type: application/json" \
-       --data \
-  '{
-    "model": "claude-sonnet-4-6",
-    "max_tokens": 16000,
-    "thinking": {
-      "type": "enabled",
-      "budget_tokens": 10000
-    },
-    "messages": [
-      {
-        "role": "user",
-        "content": "Are there an infinite number of prime numbers such that n mod 4 == 3?"
-      }
-    ]
-  }'
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "content-type: application/json" \
+    -d '{
+      "model": "claude-sonnet-4-6",
+      "max_tokens": 16000,
+      "thinking": {
+        "type": "enabled",
+        "budget_tokens": 10000
+      },
+      "messages": [
+        {
+          "role": "user",
+          "content": "Are there an infinite number of prime numbers such that n mod 4 == 3?"
+        }
+      ]
+    }'
   ```
 
   ```bash CLI
@@ -13775,11 +13774,11 @@ Here are some important considerations for summarized thinking:
 
 You can stream extended thinking responses using [server-sent events (SSE)](https://developer.mozilla.org/en-US/Web/API/Server-sent%5Fevents/Using%5Fserver-sent%5Fevents).
 
-When streaming is enabled for extended thinking, you receive thinking content via `thinking_delta` events.
+When streaming is enabled for extended thinking, you receive thinking content through `thinking_delta` events.
 
 When `display: "omitted"` is set, no `thinking_delta` events are emitted. See [Controlling thinking display](#controlling-thinking-display).
 
-For more documentation on streaming via the Messages API, see [Streaming Messages](/docs/en/build-with-claude/streaming).
+For more documentation on streaming through the Messages API, see [Streaming Messages](/docs/en/build-with-claude/streaming).
 
 Here's how to handle streaming with thinking:
 
@@ -15082,7 +15081,7 @@ Earlier Claude 4 models here means Claude Sonnet 4.5, Claude Opus 4.1 (deprecate
 Here are some important considerations for interleaved thinking:
 
 * With interleaved thinking, the `budget_tokens` can exceed the `max_tokens` parameter, as it represents the total budget across all thinking blocks within one assistant turn.
-* Interleaved thinking is only supported for [tools used via the Messages API](/docs/en/agents-and-tools/tool-use/overview).
+* Interleaved thinking is only supported for [tools used through the Messages API](/docs/en/agents-and-tools/tool-use/overview).
 * The Claude API and [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws) accept `interleaved-thinking-2025-05-14` in requests to any model without returning an error. On models that don't support interleaved thinking, the header is ignored. On Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, and Claude Sonnet 5, it's deprecated and safely ignored. On Claude Mythos Preview, it's not needed and safely ignored.
 * On partner-operated platforms (for example, [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock) and [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai)), if you pass `interleaved-thinking-2025-05-14` to any model aside from Claude Opus 4.8, Claude Opus 4.7, Claude Sonnet 5, Claude Opus 4.6, Claude Sonnet 4.6, Claude Opus 4.5, Claude Opus 4.1 (deprecated), Opus 4 ([retired, except on Google Cloud](/docs/en/about-claude/model-deprecations)), Sonnet 4.5, or Sonnet 4 ([retired, except on Bedrock and Google Cloud](/docs/en/about-claude/model-deprecations)), your request will fail.
 
@@ -16636,10 +16635,10 @@ Full thinking content is encrypted and returned in the `signature` field. This f
 
 Here are some important considerations on thinking encryption:
 
-* When [streaming responses](/docs/en/build-with-claude/extended-thinking#streaming-thinking), the signature is added via a `signature_delta` inside a `content_block_delta` event just before the `content_block_stop` event.
+* When [streaming responses](/docs/en/build-with-claude/extended-thinking#streaming-thinking), the signature is added through a `signature_delta` inside a `content_block_delta` event just before the `content_block_stop` event.
 * `signature` values are significantly longer in Claude 4 models than in previous models.
 * The `signature` field is an opaque field and should not be interpreted or parsed.
-* `signature` values are compatible across platforms (Claude APIs, [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), and [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai)). Values generated on one platform will be compatible with another.
+* `signature` values are compatible across platforms (Claude APIs, [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), and [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai)). Values generated on one platform are compatible with another.
 
 ## Redacted thinking blocks
 
@@ -16999,10 +16998,10 @@ Fast mode runs the same model with a faster inference configuration. There is no
 
 Fast mode is priced at a per-model multiplier on standard rates across the full context window, including requests over 200k input tokens. The following table shows fast mode pricing for each supported model:
 
-| Model           | Input      | Output      |
-| --------------- | ---------- | ----------- |
-| Claude Opus 4.8 | $10 / MTok | $50 / MTok  |
-| Claude Opus 4.7 | $30 / MTok | $150 / MTok |
+| Model           | Input          | Output          |
+| --------------- | -------------- | --------------- |
+| Claude Opus 4.8 | $10 USD / MTok | $50 USD / MTok  |
+| Claude Opus 4.7 | $30 USD / MTok | $150 USD / MTok |
 
 Fast mode pricing stacks with other pricing modifiers:
 
@@ -17200,7 +17199,7 @@ If you'd prefer to fall back to standard speed rather than wait for fast mode ca
 
 Because setting `max_retries` to `0` also disables retries for other transient errors (overloaded, internal server errors), the following examples reissue the original request with default retries for those cases.
 
-<CodeGroup>
+<CodeGroup exclude="shell:cURL">
   ```bash CLI
   # `ant` retries 429/5xx automatically and has no per-request max_retries
   # override, so on a fast-mode 429 the fallback runs after the built-in
@@ -17868,10 +17867,10 @@ Search results use the following structure:
 
 ### Optional fields
 
-| Field           | Type   | Description                                            |
-| --------------- | ------ | ------------------------------------------------------ |
-| `citations`     | object | Citation configuration with `enabled` boolean field    |
-| `cache_control` | object | Cache control settings (e.g., `{"type": "ephemeral"}`) |
+| Field           | Type   | Description                                                   |
+| --------------- | ------ | ------------------------------------------------------------- |
+| `citations`     | object | Citation configuration with `enabled` boolean field           |
+| `cache_control` | object | Cache control settings (for example, `{"type": "ephemeral"}`) |
 
 Each item in the `content` array must be a text block with:
 
@@ -17884,7 +17883,7 @@ The most powerful use case is returning search results from your custom tools. T
 
 ### Example: Knowledge base tool
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   from anthropic.types import (
       MessageParam,
@@ -18545,53 +18544,52 @@ You can also provide search results directly in user messages. This is useful fo
   ```bash cURL
   #!/bin/sh
   curl https://api.anthropic.com/v1/messages \
-       --header "x-api-key: $ANTHROPIC_API_KEY" \
-       --header "anthropic-version: 2023-06-01" \
-       --header "content-type: application/json" \
-       --data \
-  '{
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "content-type: application/json" \
+    -d '{
       "model": "claude-opus-4-8",
       "max_tokens": 1024,
       "messages": [
-          {
-              "role": "user",
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "search_result",
+              "source": "https://docs.company.com/api-reference",
+              "title": "API Reference - Authentication",
               "content": [
-                  {
-                      "type": "search_result",
-                      "source": "https://docs.company.com/api-reference",
-                      "title": "API Reference - Authentication",
-                      "content": [
-                          {
-                              "type": "text",
-                              "text": "All API requests must include an API key in the Authorization header. Keys can be generated from the dashboard. Rate limits: 1000 requests per hour for standard tier, 10000 for premium."
-                          }
-                      ],
-                      "citations": {
-                          "enabled": true
-                      }
-                  },
-                  {
-                      "type": "search_result",
-                      "source": "https://docs.company.com/quickstart",
-                      "title": "Getting Started Guide",
-                      "content": [
-                          {
-                              "type": "text",
-                              "text": "To get started: 1) Sign up for an account, 2) Generate an API key from the dashboard, 3) Install our SDK using pip install company-sdk, 4) Initialize the client with your API key."
-                          }
-                      ],
-                      "citations": {
-                          "enabled": true
-                      }
-                  },
-                  {
-                      "type": "text",
-                      "text": "Based on these search results, how do I authenticate API requests and what are the rate limits?"
-                  }
-              ]
-          }
+                {
+                  "type": "text",
+                  "text": "All API requests must include an API key in the Authorization header. Keys can be generated from the dashboard. Rate limits: 1000 requests per hour for standard tier, 10000 for premium."
+                }
+              ],
+              "citations": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "search_result",
+              "source": "https://docs.company.com/quickstart",
+              "title": "Getting Started Guide",
+              "content": [
+                {
+                  "type": "text",
+                  "text": "To get started: 1) Sign up for an account, 2) Generate an API key from the dashboard, 3) Install our SDK using pip install company-sdk, 4) Initialize the client with your API key."
+                }
+              ],
+              "citations": {
+                "enabled": true
+              }
+            },
+            {
+              "type": "text",
+              "text": "Based on these search results, how do I authenticate API requests and what are the rate limits?"
+            }
+          ]
+        }
       ]
-  }'
+    }'
   ```
 
   ```bash CLI
@@ -19230,9 +19228,9 @@ When `citations.enabled` is set to `true`, Claude includes citation references w
 
 ## Limitations
 
-* Search result content blocks are available on Claude API, Amazon Bedrock, and Google Cloud
-* Only text content is supported within search results (no images or other media)
-* The `content` array must contain at least one text block
+* Search result content blocks are available on Claude API, Amazon Bedrock, and Google Cloud.
+* Only text content is supported within search results (no images or other media).
+* The `content` array must contain at least one text block.
 
 ## Next steps
 
@@ -19271,7 +19269,7 @@ When creating a Message, you can set `"stream": true` to incrementally stream th
 
 ## Streaming with SDKs
 
-The [Python](https://github.com/anthropics/anthropic-sdk-python) and [TypeScript](https://github.com/anthropics/anthropic-sdk-typescript) SDKs offer multiple ways of streaming. The [PHP](https://github.com/anthropics/anthropic-sdk-php) SDK provides streaming via `createStream()`. The Python SDK allows both sync and async streams. See the documentation in each SDK for details.
+The [Python](https://github.com/anthropics/anthropic-sdk-python) and [TypeScript](https://github.com/anthropics/anthropic-sdk-typescript) SDKs offer multiple ways of streaming. The [PHP](https://github.com/anthropics/anthropic-sdk-php) SDK provides streaming through `createStream()`. The Python SDK allows both sync and async streams. See the documentation in each SDK for details.
 
 <CodeGroup>
   ```bash CLI
@@ -19628,7 +19626,7 @@ Note: Current models only support emitting one complete key and value property f
 
 ### Thinking delta
 
-When using [extended thinking](/docs/en/build-with-claude/extended-thinking#streaming-thinking) with streaming enabled, you'll receive thinking content via `thinking_delta` events. These deltas correspond to the `thinking` field of the `thinking` content blocks.
+When using [extended thinking](/docs/en/build-with-claude/extended-thinking#streaming-thinking) with streaming enabled, you'll receive thinking content through `thinking_delta` events. These deltas correspond to the `thinking` field of the `thinking` content blocks.
 
 For thinking content, a special `signature_delta` event is sent just before the `content_block_stop` event. This signature is used to verify the integrity of the thinking block.
 
@@ -20904,10 +20902,10 @@ Here's how to detect and handle streaming refusals in your application:
   ```bash cURL
   # Stream request and check for refusal
   response=$(curl -N https://api.anthropic.com/v1/messages \
-    --header "anthropic-version: 2023-06-01" \
-    --header "content-type: application/json" \
-    --header "x-api-key: $ANTHROPIC_API_KEY" \
-    --data '{
+    -H "anthropic-version: 2023-06-01" \
+    -H "content-type: application/json" \
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -d '{
       "model": "claude-opus-4-8",
       "messages": [{"role": "user", "content": "Hello"}],
       "max_tokens": 1024,
@@ -21161,11 +21159,11 @@ Here's how to detect and handle streaming refusals in your application:
 
 The API currently handles refusals in three different ways:
 
-| Refusal Type                       | Response Format              | When It Occurs                                  |
+| Refusal type                       | Response format              | When it occurs                                  |
 | ---------------------------------- | ---------------------------- | ----------------------------------------------- |
 | Streaming classifier refusals      | **`stop_reason`: `refusal`** | During streaming when content violates policies |
 | API input and copyright validation | 400 error codes              | When input fails validation checks              |
-| Model-generated refusals           | Standard text responses      | When the model itself decides to refuse         |
+| Model-generated refusals           | Standard text responses      | When the model itself refuses                   |
 
 <Note>
   Future API versions will expand the **`stop_reason`: `refusal`** pattern to unify refusal handling across all types.
@@ -24120,24 +24118,24 @@ Add `task_budget` to `output_config` and include the beta header:
 <CodeGroup>
   ```bash cURL
   curl https://api.anthropic.com/v1/messages \
-      --no-buffer \
-      --header "x-api-key: $ANTHROPIC_API_KEY" \
-      --header "anthropic-version: 2023-06-01" \
-      --header "anthropic-beta: task-budgets-2026-03-13" \
-      --header "content-type: application/json" \
-      --data '{
-          "model": "claude-opus-4-8",
-          "max_tokens": 128000,
-          "stream": true,
-          "messages": [{
-              "role": "user",
-              "content": "Review the codebase and propose a refactor plan."
-          }],
-          "output_config": {
-              "effort": "high",
-              "task_budget": {"type": "tokens", "total": 64000}
-          }
-      }'
+    -N \
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "anthropic-beta: task-budgets-2026-03-13" \
+    -H "content-type: application/json" \
+    -d '{
+      "model": "claude-opus-4-8",
+      "max_tokens": 128000,
+      "stream": true,
+      "messages": [{
+        "role": "user",
+        "content": "Review the codebase and propose a refactor plan."
+      }],
+      "output_config": {
+        "effort": "high",
+        "task_budget": {"type": "tokens", "total": 64000}
+      }
+    }'
   ```
 
   ```bash CLI
@@ -24434,7 +24432,7 @@ Your client sent the turn-1 user message three times and the turn-1 assistant me
 
 If your agentic loop compacts or rewrites context between requests (for example, by summarizing earlier turns), the server has no memory of how much budget was spent before compaction. Pass `remaining` on the next request so the countdown continues from where you left off rather than resetting to `total`:
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   output_config = {
       "effort": "high",
@@ -24457,6 +24455,18 @@ If your agentic loop compacts or rewrites context between requests (for example,
   };
   ```
 
+  ```csharp C#
+  var outputConfig = new BetaOutputConfig
+  {
+      Effort = Effort.High,
+      TaskBudget = new BetaTokenTaskBudget
+      {
+          Total = 128000,
+          Remaining = 128000 - tokensSpentSoFar,
+      },
+  };
+  ```
+
   ```go Go
   outputConfig := anthropic.BetaOutputConfigParam{
   	Effort: anthropic.BetaOutputConfigEffortHigh,
@@ -24475,18 +24485,6 @@ If your agentic loop compacts or rewrites context between requests (for example,
           .remaining(128000L - tokensSpentSoFar)
           .build())
       .build();
-  ```
-
-  ```csharp C#
-  var outputConfig = new BetaOutputConfig
-  {
-      Effort = Effort.High,
-      TaskBudget = new BetaTokenTaskBudget
-      {
-          Total = 128000,
-          Remaining = 128000 - tokensSpentSoFar,
-      },
-  };
   ```
 
   ```php PHP
@@ -25671,25 +25669,25 @@ The advisor is a weaker fit for single-turn Q\&A (nothing to plan), pure pass-th
 <CodeGroup>
   ```bash cURL
   curl https://api.anthropic.com/v1/messages \
-      --header "x-api-key: $ANTHROPIC_API_KEY" \
-      --header "anthropic-version: 2023-06-01" \
-      --header "anthropic-beta: advisor-tool-2026-03-01" \
-      --header "content-type: application/json" \
-      --data '{
-          "model": "claude-sonnet-5",
-          "max_tokens": 4096,
-          "tools": [
-              {
-                  "type": "advisor_20260301",
-                  "name": "advisor",
-                  "model": "claude-fable-5"
-              }
-          ],
-          "messages": [{
-              "role": "user",
-              "content": "Build a concurrent worker pool in Go with graceful shutdown."
-          }]
-      }'
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "anthropic-beta: advisor-tool-2026-03-01" \
+    -H "content-type: application/json" \
+    -d '{
+      "model": "claude-sonnet-5",
+      "max_tokens": 4096,
+      "tools": [
+        {
+          "type": "advisor_20260301",
+          "name": "advisor",
+          "model": "claude-fable-5"
+        }
+      ],
+      "messages": [{
+        "role": "user",
+        "content": "Build a concurrent worker pool in Go with graceful shutdown."
+      }]
+    }'
   ```
 
   ```bash CLI
@@ -26004,7 +26002,7 @@ Advisor rate limits draw from the same per-model bucket as direct calls to the a
 
 Pass the full assistant content, including `advisor_tool_result` blocks, back to the API on subsequent turns. This example uses `claude-opus-4-8` as the advisor so the plaintext advice is visible in `response.content`; the mechanics are identical for any advisor model.
 
-<CodeGroup>
+<CodeGroup exclude="shell, go">
   ```python Python
   client = anthropic.Anthropic()
 
@@ -26284,7 +26282,7 @@ If a Haiku executor has not called the advisor in its first assistant turn, appe
 
 With the default `NUDGE_TURN` of 2, the reminder typically arrives after the model has oriented on the task but before it has committed to an approach.
 
-<CodeGroup>
+<CodeGroup exclude="shell, go">
   ```python Python
   client = anthropic.Anthropic()
 
@@ -26328,7 +26326,8 @@ With the default `NUDGE_TURN` of 2, the reminder typically arrives after the mod
       )
       messages.append({"role": "assistant", "content": response.content})
       advisor_called = advisor_called or any(
-          b.type == "server_tool_use" and b.name == "advisor" for b in response.content
+          block.type == "server_tool_use" and block.name == "advisor"
+          for block in response.content
       )
       if response.stop_reason == "end_turn":
           break
@@ -27327,7 +27326,7 @@ Claude determines which command to run. Your application owns everything else: t
   <Step title="Create a persistent bash session">
     Start one long-lived bash process and run every command inside it. Because a pipe to a live process never reports end-of-file, the session prints a unique sentinel line after each command to mark where that command's output ends:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       import subprocess
       import uuid
@@ -27727,7 +27726,7 @@ Claude determines which command to run. Your application owns everything else: t
   <Step title="Process Claude's tool calls">
     Extract and run commands from Claude's responses:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       tool_results = []
       for content in response.content:
@@ -28234,7 +28233,7 @@ Claude determines which command to run. Your application owns everything else: t
   <Step title="Implement safety measures">
     Add validation and restrictions. Use an allowlist rather than a blocklist: a blocklist misses any command it didn't anticipate. The example also rejects shell operators that appear as separate words:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       import shlex
 
@@ -28544,7 +28543,7 @@ When a command fails or the session breaks, tell Claude what happened. Return th
   <Accordion title="Use command timeouts">
     A command that never finishes, such as one that waits for input, blocks the session forever because its sentinel line never arrives. Give every command a deadline. When the deadline passes, stop the shell and everything the command started, then restart the session:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       import concurrent.futures
       import os
@@ -28700,7 +28699,7 @@ When a command fails or the session breaks, tell Claude what happened. Return th
   <Accordion title="Maintain session state">
     Keep the bash session persistent to maintain environment variables and working directory:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       # Commands run in the same session maintain state
       commands = [
@@ -28770,7 +28769,7 @@ When a command fails or the session breaks, tell Claude what happened. Return th
   <Accordion title="Handle large outputs">
     Truncate large outputs to prevent token limit issues:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       def truncate_output(output, max_lines=100):
           lines = output.split("\n")
@@ -28853,7 +28852,7 @@ When a command fails or the session breaks, tell Claude what happened. Return th
   <Accordion title="Log all commands">
     Keep an audit trail. Route every command through one wrapper that records the command before it runs and the output after it finishes. A command that hangs or breaks the session still leaves a record:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       import logging
 
@@ -29095,7 +29094,7 @@ Code execution is available on:
 Code execution is not currently available on Amazon Bedrock or Google Cloud.
 
 <Note>
-  For [Claude Mythos Preview](https://anthropic.com/glasswing), code execution is supported on the Claude API and Microsoft Foundry only. It is not available for Mythos Preview on Amazon Bedrock, Google Cloud, or Claude Platform on AWS.
+  For [Claude Mythos Preview](https://anthropic.com/glasswing), code execution is supported on the Claude API and Microsoft Foundry only. It is not available for Mythos Preview on Amazon Bedrock, Claude Platform on AWS, or Google Cloud.
 </Note>
 
 ## Quick start
@@ -29308,7 +29307,7 @@ If you want Claude to run code for a borderline request, ask explicitly (for exa
 To analyze your own data files (such as CSV, Excel, or images), upload them through the Files API and reference them in your request:
 
 <Note>
-  Using the Files API with Code Execution requires the Files API beta header: `"anthropic-beta": "files-api-2025-04-14"`
+  Using the Files API with code execution requires the Files API beta header: `"anthropic-beta": "files-api-2025-04-14"`
 </Note>
 
 The Python environment can process various file types uploaded through the Files API, including:
@@ -30515,7 +30514,7 @@ When used without these tools, code execution is billed by execution time, track
 * Execution time has a minimum of 5 minutes
 * Each organization receives **1,550 free hours** of usage per month
 * Additional usage beyond 1,550 hours is billed at **$0.05 per hour, per container**
-* If files are included in the request, execution time is billed even if the tool is not invoked, due to files being preloaded onto the container
+* If files are included in the request, execution time is billed even if the tool is not invoked, because files are preloaded onto the container
 
 Code execution usage is tracked in the response:
 
@@ -32743,15 +32742,15 @@ Because your application controls where and how computer use data is stored, com
 
 Computer use follows the standard [tool use pricing](/docs/en/agents-and-tools/tool-use/overview#pricing). When using the computer use tool:
 
-**System prompt overhead**: The computer use beta adds 466-499 tokens to the system prompt
+**System prompt overhead:** The computer use beta adds 466-499 tokens to the system prompt
 
-**Computer use tool token usage**:
+**Computer use tool token usage:**
 
 | Model             | Input tokens per tool definition |
 | ----------------- | -------------------------------- |
 | Claude 4.x models | 735 tokens                       |
 
-**Additional token consumption**:
+**Additional token consumption:**
 
 * Screenshot images (see [Vision pricing](/docs/en/build-with-claude/vision))
 * Tool execution results returned to Claude
@@ -32800,7 +32799,7 @@ Use the latest Claude Opus (4.8) model for complex tools and ambiguous queries; 
 Use Claude Haiku models for straightforward tools, but note they may infer missing parameters.
 
 <Tip>
-  If using Claude with tool use and extended thinking, refer to the [extended thinking guide](/docs/en/build-with-claude/extended-thinking) for more information.
+  If using Claude with tool use and extended thinking, refer to the [extended thinking](/docs/en/build-with-claude/extended-thinking) guide for more information.
 </Tip>
 
 ## Specifying client tools
@@ -34014,7 +34013,7 @@ This page explains the concepts behind tool use: where tools run, how the agenti
 
 ## The tool-use contract
 
-Tool use is a contract between your application and the model. You specify what operations are available and what shape their inputs and outputs take; Claude decides when and how to call them. The model never executes anything on its own. It emits a structured request, your code (or Anthropic's servers) runs the operation, and the result flows back into the conversation.
+Tool use is a contract between your application and the model. You specify what operations are available and what shape their inputs and outputs take; Claude determines when and how to call them. The model never executes anything on its own. It emits a structured request, your code (or Anthropic's servers) runs the operation, and the result flows back into the conversation.
 
 This contract makes the model behave less like a text generator and more like a function you call. Engineers with classical API experience can integrate tool use the same way they would any other typed interface: define the schema, handle the callback, return a result. The difference is that the caller on the other side is a language model choosing which function to invoke based on the conversation.
 
@@ -34026,7 +34025,7 @@ The primary axis along which tools differ is where the code executes. Every tool
 
 You write the schema, you execute the code, you return the results. This is the main event: the vast majority of tool-use traffic is [user-defined tools](/docs/en/agents-and-tools/tool-use/define-tools) calling into application-specific logic.
 
-When Claude decides to use one of your tools, the API response contains a `tool_use` block with the tool name and a JSON object of arguments. Your application extracts those arguments, runs the operation (a database query, an HTTP call, a file write, whatever the tool does), and sends the output back in a `tool_result` block on the next request. Claude never sees your implementation; it only sees the schema you provided and the result you returned.
+When Claude calls one of your tools, the API response contains a `tool_use` block with the tool name and a JSON object of arguments. Your application extracts those arguments, runs the operation (a database query, an HTTP call, a file write, whatever the tool does), and sends the output back in a `tool_result` block on the next request. Claude never sees your implementation; it only sees the schema you provided and the result you returned.
 
 ### Anthropic-schema tools (client-executed)
 
@@ -34058,7 +34057,7 @@ For the mechanics of building requests, handling parallel tool calls, and format
 
 ## The server-side loop
 
-Server-executed tools run their own loop inside Anthropic's infrastructure. A single request from your application might trigger several web searches or code executions before a response comes back. The model searches, reads results, decides to search again, and iterates until it has what it needs, all without your application participating.
+Server-executed tools run their own loop inside Anthropic's infrastructure. A single request from your application might trigger several web searches or code executions before a response comes back. The model searches, reads results, determines whether to search again, and iterates until it has what it needs, all without your application participating.
 
 This internal loop has an iteration limit. If the model is still iterating when it hits the cap, the response comes back with `stop_reason: "pause_turn"` instead of `"end_turn"`. A paused turn means the work isn't finished; re-send the conversation (including the paused response) to let the model continue where it left off. See [Server tools](/docs/en/agents-and-tools/tool-use/server-tools) for the continuation pattern.
 
@@ -34097,7 +34096,7 @@ Tool use doesn't fit when:
   </Card>
 
   <Card href="/docs/en/agents-and-tools/tool-use/define-tools" title="Define tools">
-    Schema specification, descriptions, and tool\_choice.
+    Schema specification, descriptions, and `tool_choice`.
   </Card>
 
   <Card href="/docs/en/agents-and-tools/tool-use/tool-reference" title="Tool reference">
@@ -34401,7 +34400,7 @@ Claude's reply to a request like the previous one ends with a `tool_use` block t
 
 Four SDKs provide memory tool helpers that handle the tool interface and the loop. Subclass `BetaAbstractMemoryTool` (Python and C#), use `betaMemoryTool` (TypeScript), or implement `BetaMemoryToolHandler` (Java) to back memory with your own storage, such as files on disk, a database, cloud storage, or encrypted files. Python and TypeScript also ship a ready-made local-filesystem implementation, `BetaLocalFilesystemMemoryTool`. The helper and tool-runner surfaces live in each SDK's beta namespace even though the memory tool itself is generally available. The Go and Ruby SDKs have no memory helper, so those examples run the tool-use loop themselves, and PHP wraps your handler closure in its generic `BetaRunnableTool`. All three use an in-memory store that you replace with your own storage.
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   import anthropic
   from anthropic.tools import BetaLocalFilesystemMemoryTool
@@ -36576,7 +36575,7 @@ See [Handle tool calls](/docs/en/agents-and-tools/tool-use/handle-tool-calls) fo
 
 **2. Weak prompting**
 
-Default prompting may not be sufficient. Use the stronger system prompt from [Maximizing parallel tool use](#maximizing-parallel-tool-use).
+Default prompting might not be sufficient. Use the stronger system prompt from [Maximizing parallel tool use](#maximizing-parallel-tool-use).
 
 **3. Measuring parallel tool usage**
 
@@ -37767,7 +37766,7 @@ This restricts the tool to direct invocation only, bypassing the internal code e
 `allowed_callers` controls how a tool can be invoked: directly by Claude (`"direct"`), from inside a code execution container (for example, `"code_execution_20260120"`), or both. The `_20260209` versions of the web tools default to the code execution caller only; earlier versions default to `["direct"]`. On models that don't support programmatic tool calling, these versions require `allowed_callers: ["direct"]`; without it the API returns a validation error that says to set it.
 
 <Note>
-  Even when web fetch is used in a ZDR-eligible configuration, website publishers may retain any parameters passed to the URL if Claude fetches content from their site.
+  Even when web fetch is used in a ZDR-eligible configuration, website publishers might retain any parameters passed to the URL if Claude fetches content from their site.
 </Note>
 
 ## Domain filtering
@@ -38955,7 +38954,7 @@ Some examples of when to use the text editor tool are:
 
 * **Code debugging:** Have Claude identify and fix bugs in your code, from syntax errors to logic issues.
 * **Code refactoring:** Let Claude improve your code structure, readability, and performance through targeted edits.
-* **Documentation generation:** Ask Claude to add docstrings, comments, or README files to your codebase.
+* **Documentation generation:** Ask Claude to add docstrings, comments, or README files to your code base.
 * **Test creation:** Have Claude create unit tests for your code based on its understanding of the implementation.
 
 ## Use the text editor tool
@@ -39096,6 +39095,7 @@ You can optionally specify a `max_characters` parameter to control truncation wh
   ```java Java
   import com.anthropic.models.messages.ToolTextEditor20250728;
   // ...
+  void main() {
     AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
     ToolTextEditor20250728 editorTool =
@@ -39112,6 +39112,7 @@ You can optionally specify a `max_characters` parameter to control truncation wh
 
     Message message = client.messages().create(params);
     IO.println(message);
+  }
   ```
 
   ```php PHP
@@ -39440,6 +39441,7 @@ First, your application provides Claude with the text editor tool and a prompt t
   ```java Java
   import com.anthropic.models.messages.ToolTextEditor20250728;
   // ...
+  void main() {
     AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
     ToolTextEditor20250728 editorTool =
@@ -39454,6 +39456,7 @@ First, your application provides Claude with the text editor tool and a prompt t
 
     Message message = client.messages().create(params);
     IO.println(message);
+  }
   ```
 
   ```php PHP
@@ -39820,50 +39823,48 @@ Your application should then read the file and return its contents to Claude:
   ```
 
   ```java Java
-  import com.anthropic.models.messages.ToolTextEditor20250728;
-  // ...
-      AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+  AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
-      MessageCreateParams params = MessageCreateParams.builder()
-        .model(Model.CLAUDE_OPUS_4_8)
-        .maxTokens(1024)
-        .addTool(ToolTextEditor20250728.builder().build())
-        .addUserMessage("There's a syntax error in my primes.py file. Can you help me fix it?")
-        .addAssistantMessageOfBlockParams(
-          List.of(
-            ContentBlockParam.ofText(
-              TextBlockParam.builder()
-                .text("I'll help you fix the syntax error in your primes.py file. First, let me take a look at the file to identify the issue.")
-                .build()
-            ),
-            ContentBlockParam.ofToolUse(
-              ToolUseBlockParam.builder()
-                .id("toolu_01AbCdEfGhIjKlMnOpQrStU")
-                .name("str_replace_based_edit_tool")
-                .input(
-                  ToolUseBlockParam.Input.builder()
-                    .putAdditionalProperty("command", JsonValue.from("view"))
-                    .putAdditionalProperty("path", JsonValue.from("primes.py"))
-                    .build()
-                )
+  MessageCreateParams params = MessageCreateParams.builder()
+    .model(Model.CLAUDE_OPUS_4_8)
+    .maxTokens(1024)
+    .addTool(ToolTextEditor20250728.builder().build())
+    .addUserMessage("There's a syntax error in my primes.py file. Can you help me fix it?")
+    .addAssistantMessageOfBlockParams(
+      List.of(
+        ContentBlockParam.ofText(
+          TextBlockParam.builder()
+            .text("I'll help you fix the syntax error in your primes.py file. First, let me take a look at the file to identify the issue.")
+            .build()
+        ),
+        ContentBlockParam.ofToolUse(
+          ToolUseBlockParam.builder()
+            .id("toolu_01AbCdEfGhIjKlMnOpQrStU")
+            .name("str_replace_based_edit_tool")
+            .input(
+              ToolUseBlockParam.Input.builder()
+                .putAdditionalProperty("command", JsonValue.from("view"))
+                .putAdditionalProperty("path", JsonValue.from("primes.py"))
                 .build()
             )
-          )
+            .build()
         )
-        .addUserMessageOfBlockParams(
-          List.of(
-            ContentBlockParam.ofToolResult(
-              ToolResultBlockParam.builder()
-                .toolUseId("toolu_01AbCdEfGhIjKlMnOpQrStU")
-                .content("1: def is_prime(n):\n2:     \"\"\"Check if a number is prime.\"\"\"\n3:     if n <= 1:\n4:         return False\n5:     if n <= 3:\n6:         return True\n7:     if n % 2 == 0 or n % 3 == 0:\n8:         return False\n9:     i = 5\n10:     while i * i <= n:\n11:         if n % i == 0 or n % (i + 2) == 0:\n12:             return False\n13:         i += 6\n14:     return True\n15: \n16: def get_primes(limit):\n17:     \"\"\"Generate a list of prime numbers up to the given limit.\"\"\"\n18:     primes = []\n19:     for num in range(2, limit + 1)\n20:         if is_prime(num):\n21:             primes.append(num)\n22:     return primes\n23: \n24: def main():\n25:     \"\"\"Main function to demonstrate prime number generation.\"\"\"\n26:     limit = 100\n27:     prime_list = get_primes(limit)\n28:     print(f\"Prime numbers up to {limit}:\")\n29:     print(prime_list)\n30:     print(f\"Found {len(prime_list)} prime numbers.\")\n31: \n32: if __name__ == \"__main__\":\n33:     main()")
-                .build()
-            )
-          )
+      )
+    )
+    .addUserMessageOfBlockParams(
+      List.of(
+        ContentBlockParam.ofToolResult(
+          ToolResultBlockParam.builder()
+            .toolUseId("toolu_01AbCdEfGhIjKlMnOpQrStU")
+            .content("1: def is_prime(n):\n2:     \"\"\"Check if a number is prime.\"\"\"\n3:     if n <= 1:\n4:         return False\n5:     if n <= 3:\n6:         return True\n7:     if n % 2 == 0 or n % 3 == 0:\n8:         return False\n9:     i = 5\n10:     while i * i <= n:\n11:         if n % i == 0 or n % (i + 2) == 0:\n12:             return False\n13:         i += 6\n14:     return True\n15: \n16: def get_primes(limit):\n17:     \"\"\"Generate a list of prime numbers up to the given limit.\"\"\"\n18:     primes = []\n19:     for num in range(2, limit + 1)\n20:         if is_prime(num):\n21:             primes.append(num)\n22:     return primes\n23: \n24: def main():\n25:     \"\"\"Main function to demonstrate prime number generation.\"\"\"\n26:     limit = 100\n27:     prime_list = get_primes(limit)\n28:     print(f\"Prime numbers up to {limit}:\")\n29:     print(prime_list)\n30:     print(f\"Found {len(prime_list)} prime numbers.\")\n31: \n32: if __name__ == \"__main__\":\n33:     main()")
+            .build()
         )
-        .build();
+      )
+    )
+    .build();
 
-      Message message = client.messages().create(params);
-      System.out.println(message);
+  Message message = client.messages().create(params);
+  System.out.println(message);
   ```
 
   ```php PHP
@@ -39956,7 +39957,7 @@ Your application should then read the file and return its contents to Claude:
 <Tip>
   **Line numbers**
 
-  In the example above, the `view` tool result includes file contents with line numbers prepended to each line (e.g., "1: def is\_prime(n):"). Line numbers are not required, but they are essential for successfully using the `view_range` parameter to examine specific sections of files and the `insert_line` parameter to add content at precise locations.
+  In the preceding example, the `view` tool result includes file contents with line numbers prepended to each line (for example, "1: def is\_prime(n):"). Line numbers are not required, but they are essential for successfully using the `view_range` parameter to examine specific sections of files and the `insert_line` parameter to add content at precise locations.
 </Tip>
 
 Claude identifies the syntax error and uses the `str_replace` command to fix it:
@@ -40256,60 +40257,58 @@ Your application should then make the edit and return the result:
   ```
 
   ```java Java
-  import com.anthropic.models.messages.ToolTextEditor20250728;
-  // ...
-      AnthropicClient client = AnthropicOkHttpClient.fromEnv();
+  AnthropicClient client = AnthropicOkHttpClient.fromEnv();
 
-      MessageCreateParams params = MessageCreateParams.builder()
-        .model(Model.CLAUDE_OPUS_4_8)
-        .maxTokens(1024)
-        .addTool(ToolTextEditor20250728.builder().build())
-        // Previous messages would go here
-        .addAssistantMessageOfBlockParams(
-          List.of(
-            ContentBlockParam.ofText(
-              TextBlockParam.builder()
-                .text(
-                  "I found the syntax error in your primes.py file. In the `get_primes` function, there is a missing colon (:) at the end of the for loop line. Let me fix that for you."
+  MessageCreateParams params = MessageCreateParams.builder()
+    .model(Model.CLAUDE_OPUS_4_8)
+    .maxTokens(1024)
+    .addTool(ToolTextEditor20250728.builder().build())
+    // Previous messages would go here
+    .addAssistantMessageOfBlockParams(
+      List.of(
+        ContentBlockParam.ofText(
+          TextBlockParam.builder()
+            .text(
+              "I found the syntax error in your primes.py file. In the `get_primes` function, there is a missing colon (:) at the end of the for loop line. Let me fix that for you."
+            )
+            .build()
+        ),
+        ContentBlockParam.ofToolUse(
+          ToolUseBlockParam.builder()
+            .id("toolu_01PqRsTuVwXyZAbCdEfGh")
+            .name("str_replace_based_edit_tool")
+            .input(
+              ToolUseBlockParam.Input.builder()
+                .putAdditionalProperty("command", JsonValue.from("str_replace"))
+                .putAdditionalProperty("path", JsonValue.from("primes.py"))
+                .putAdditionalProperty(
+                  "old_str",
+                  JsonValue.from("    for num in range(2, limit + 1)")
                 )
-                .build()
-            ),
-            ContentBlockParam.ofToolUse(
-              ToolUseBlockParam.builder()
-                .id("toolu_01PqRsTuVwXyZAbCdEfGh")
-                .name("str_replace_based_edit_tool")
-                .input(
-                  ToolUseBlockParam.Input.builder()
-                    .putAdditionalProperty("command", JsonValue.from("str_replace"))
-                    .putAdditionalProperty("path", JsonValue.from("primes.py"))
-                    .putAdditionalProperty(
-                      "old_str",
-                      JsonValue.from("    for num in range(2, limit + 1)")
-                    )
-                    .putAdditionalProperty(
-                      "new_str",
-                      JsonValue.from("    for num in range(2, limit + 1):")
-                    )
-                    .build()
+                .putAdditionalProperty(
+                  "new_str",
+                  JsonValue.from("    for num in range(2, limit + 1):")
                 )
                 .build()
             )
-          )
+            .build()
         )
-        .addUserMessageOfBlockParams(
-          List.of(
-            ContentBlockParam.ofToolResult(
-              ToolResultBlockParam.builder()
-                .toolUseId("toolu_01PqRsTuVwXyZAbCdEfGh")
-                .content("Successfully replaced text at exactly one location.")
-                .build()
-            )
-          )
+      )
+    )
+    .addUserMessageOfBlockParams(
+      List.of(
+        ContentBlockParam.ofToolResult(
+          ToolResultBlockParam.builder()
+            .toolUseId("toolu_01PqRsTuVwXyZAbCdEfGh")
+            .content("Successfully replaced text at exactly one location.")
+            .build()
         )
-        .build();
+      )
+    )
+    .build();
 
-      Message message = client.messages().create(params);
-      System.out.println(message);
+  Message message = client.messages().create(params);
+  System.out.println(message);
   ```
 
   ```php PHP
@@ -40434,7 +40433,7 @@ The tool type is `type: "text_editor_20250728"` for Claude 4 models.
   <Step title="Handle editor tool calls">
     Create a function that processes tool calls from Claude based on the command type:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       def handle_editor_tool(tool_call):
           input_params = tool_call.input
@@ -40589,7 +40588,7 @@ The tool type is `type: "text_editor_20250728"` for Claude 4 models.
   <Step title="Process Claude's responses">
     Extract and handle tool calls from Claude's responses:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       # Process tool use in Claude's response
       for content in response.content:
@@ -40793,23 +40792,23 @@ When using the text editor tool, various errors may occur. Here is guidance on h
   <Accordion title="Provide clear context">
     When asking Claude to fix or modify code, be specific about what files need to be examined or what issues need to be addressed. Clear context helps Claude identify the right files and make appropriate changes.
 
-    **Less helpful prompt**: "Can you fix my code?"
+    **Less helpful prompt:** "Can you fix my code?"
 
-    **Better prompt**: "There's a syntax error in my primes.py file that prevents it from running. Can you fix it?"
+    **Better prompt:** "There's a syntax error in my primes.py file that prevents it from running. Can you fix it?"
   </Accordion>
 
   <Accordion title="Be explicit about file paths">
     Specify file paths clearly when needed, especially if you're working with multiple files or files in different directories.
 
-    **Less helpful prompt**: "Review my helper file"
+    **Less helpful prompt:** "Review my helper file"
 
-    **Better prompt**: "Can you check my utils/helpers.py file for any performance issues?"
+    **Better prompt:** "Can you check my utils/helpers.py file for any performance issues?"
   </Accordion>
 
   <Accordion title="Create backups before editing">
     Implement a backup system in your application that creates copies of files before allowing Claude to edit them, especially for important or production code.
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       def backup_file(file_path):
           """Create a backup of a file before editing."""
@@ -40888,7 +40887,7 @@ When using the text editor tool, various errors may occur. Here is guidance on h
   <Accordion title="Handle unique text replacement carefully">
     The `str_replace` command requires an exact match for the text to be replaced. Your application should ensure that there is exactly one match for the old text or provide appropriate error messages.
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       def safe_replace(file_path, old_text, new_text):
           """Replace text only if there's exactly one match."""
@@ -41031,7 +41030,7 @@ When using the text editor tool, various errors may occur. Here is guidance on h
   <Accordion title="Verify changes">
     After Claude makes changes to a file, verify the changes by running tests or checking that the code still works as expected.
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       def verify_changes(file_path):
           """Run tests or checks after making changes."""
@@ -41186,10 +41185,10 @@ The text editor tool can be used alongside other Claude tools. When combining to
 
 | Date             | Version                | Changes                                                                                                                                                                                                                                                               |
 | ---------------- | ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| July 28, 2025    | `text_editor_20250728` | Release of an updated text editor Tool that fixes some issues and adds an optional `max_characters` parameter. It is otherwise identical to `text_editor_20250429`.                                                                                                   |
-| April 29, 2025   | `text_editor_20250429` | Release of the text editor Tool for Claude 4. This version removes the `undo_edit` command but maintains all other capabilities. The tool name has been updated to reflect its str\_replace-based architecture.                                                       |
-| March 13, 2025   | `text_editor_20250124` | Introduction of standalone text editor Tool documentation. This version is optimized for Claude Sonnet 3.7 but has identical capabilities to the previous version.                                                                                                    |
-| October 22, 2024 | `text_editor_20241022` | Initial release of the text editor Tool with Claude Sonnet 3.5 ([retired](/docs/en/about-claude/model-deprecations)). Provides capabilities for viewing, creating, and editing files through the `view`, `create`, `str_replace`, `insert`, and `undo_edit` commands. |
+| July 28, 2025    | `text_editor_20250728` | Release of an updated text editor tool that fixes some issues and adds an optional `max_characters` parameter. It is otherwise identical to `text_editor_20250429`.                                                                                                   |
+| April 29, 2025   | `text_editor_20250429` | Release of the text editor tool for Claude 4. This version removes the `undo_edit` command but maintains all other capabilities. The tool name has been updated to reflect its str\_replace-based architecture.                                                       |
+| March 13, 2025   | `text_editor_20250124` | Introduction of standalone text editor tool documentation. This version is optimized for Claude Sonnet 3.7 but has identical capabilities to the previous version.                                                                                                    |
+| October 22, 2024 | `text_editor_20241022` | Initial release of the text editor tool with Claude Sonnet 3.5 ([retired](/docs/en/about-claude/model-deprecations)). Provides capabilities for viewing, creating, and editing files through the `view`, `create`, `str_replace`, `insert`, and `undo_edit` commands. |
 
 ## Next steps
 
@@ -41201,7 +41200,7 @@ Here are some ideas for how to use the text editor tool in more convenient and p
 * **Implement file format conversion**: Let Claude help you convert files from one format to another
 * **Automate documentation**: Set up workflows for Claude to automatically document your code
 
-The text editor tool enables Claude to work directly with your codebase, supporting workflows from debugging to automated documentation.
+The text editor tool enables Claude to work directly with your code base, supporting workflows from debugging to automated documentation.
 
 <CardGroup cols={3}>
   <Card title="Tool use overview" icon="wrench" href="/docs/en/agents-and-tools/tool-use/overview">
@@ -41216,9 +41215,9 @@ The text editor tool enables Claude to work directly with your codebase, support
 
 ---
 
-# Tool Runner (SDK)
+# Tool runner (SDK)
 
-# Tool Runner (SDK)
+# Tool runner (SDK)
 
 **URL:** https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner
 
@@ -43930,14 +43929,14 @@ This tutorial builds a calendar-management agent in five concentric rings. Each 
 The example tool is `create_calendar_event`. Its schema uses nested objects, arrays, and optional fields, so you will see how Claude handles realistic input shapes rather than a single flat string.
 
 <Note>
-  Every ring runs standalone. Copy any ring into a fresh file and it will execute without the code from earlier rings.
+  Every ring runs standalone. Copy any ring into a fresh file and it will run without the code from earlier rings.
 </Note>
 
 ## Ring 1: Single tool, single turn
 
 The smallest possible tool-using program: one tool, one user message, one tool call, one result. The code is heavily commented so you can map each line to the [tool use lifecycle](/docs/en/agents-and-tools/tool-use/how-tool-use-works).
 
-The request sends a `tools` array alongside the user message. When Claude decides to call a tool, the response comes back with `stop_reason: "tool_use"` and a `tool_use` content block containing the tool name, a unique `id`, and the structured `input`. Your code executes the tool, then sends the result back in a `tool_result` block whose `tool_use_id` matches the `id` from the call.
+The request sends a `tools` array alongside the user message. When Claude decides to call a tool, the response comes back with `stop_reason: "tool_use"` and a `tool_use` content block containing the tool name, a unique `id`, and the structured `input`. Your code runs the tool, then sends the result back in a `tool_result` block whose `tool_use_id` matches the `id` from the call.
 
 <CodeGroup>
   ```bash cURL
@@ -48647,7 +48646,7 @@ Web fetch is a [server tool](/docs/en/agents-and-tools/tool-use/server-tools): t
 
 When you add the web fetch tool to your API request:
 
-1. Claude decides when to fetch content based on the prompt and available URLs.
+1. Claude determines when to fetch content based on the prompt and available URLs.
 2. The API retrieves the full text content from the specified URL.
 3. For PDFs, the API returns the content as base64-encoded data and processes it like a directly attached PDF document.
 4. Claude analyzes the fetched content and provides a response with optional citations.
@@ -49249,7 +49248,7 @@ For security reasons, the web fetch tool can only fetch URLs that have previousl
 * URLs in client-side tool results
 * URLs from previous web search or web fetch results
 
-The tool cannot fetch arbitrary URLs that Claude generates or URLs from container-based server tools (Code Execution, Bash, etc.).
+The tool cannot fetch arbitrary URLs that Claude generates or URLs from container-based server tools (such as Code Execution and Bash).
 
 ## Combined search and fetch
 
@@ -49650,23 +49649,23 @@ The following examples use `web_search_20260318`:
 <CodeGroup>
   ```bash cURL
   curl https://api.anthropic.com/v1/messages \
-      --header "x-api-key: $ANTHROPIC_API_KEY" \
-      --header "anthropic-version: 2023-06-01" \
-      --header "content-type: application/json" \
-      --data '{
-          "model": "claude-opus-4-8",
-          "max_tokens": 4096,
-          "messages": [
-              {
-                  "role": "user",
-                  "content": "Search for the current prices of AAPL and GOOGL, then calculate which has a better P/E ratio."
-              }
-          ],
-          "tools": [{
-              "type": "web_search_20260318",
-              "name": "web_search"
-          }]
-      }'
+    -H "x-api-key: $ANTHROPIC_API_KEY" \
+    -H "anthropic-version: 2023-06-01" \
+    -H "content-type: application/json" \
+    -d '{
+      "model": "claude-opus-4-8",
+      "max_tokens": 4096,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Search for the current prices of AAPL and GOOGL, then calculate which has a better P/E ratio."
+        }
+      ],
+      "tools": [{
+        "type": "web_search_20260318",
+        "name": "web_search"
+      }]
+    }'
   ```
 
   ```bash CLI
@@ -50147,7 +50146,7 @@ Citations are always enabled for web search, and each `web_search_result_locatio
 The web search citation fields `cited_text`, `title`, and `url` do not count toward input or output token usage.
 
 <Note>
-  When displaying API outputs directly to end users, citations must be included to the original source. If you are making modifications to API outputs, including by reprocessing and/or combining them with your own material before displaying them to end users, display citations as appropriate based on consultation with your legal team.
+  When displaying API outputs directly to end users, citations must be included to the original source. If you are making modifications to API outputs, including by reprocessing or combining them with your own material before displaying them to end users, display citations as appropriate based on consultation with your legal team.
 </Note>
 
 ### Errors
@@ -50190,7 +50189,7 @@ For caching tool definitions across turns, see [Tool use with prompt caching](/d
 
 ## Streaming
 
-With streaming enabled, you'll receive search events as part of the stream. There will be a pause while the search executes:
+With streaming enabled, you'll receive search events as part of the stream. There will be a pause while the search runs:
 
 ```sse Output
 event: message_start
@@ -50288,7 +50287,7 @@ Fine-grained tool streaming delivers a tool's input to your client as Claude gen
 
 ## How to use fine-grained tool streaming
 
-All models support fine-grained tool streaming on the Claude API, [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), and [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry). To use it, set `eager_input_streaming` to `true` on any user-defined tool where you want fine-grained streaming enabled, and enable streaming on your request.
+All models support fine-grained tool streaming on the Claude API, [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), and [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry). To use it, set `eager_input_streaming` to `true` on any user-defined tool where you want fine-grained streaming enabled, and enable streaming on your request.
 
 The `eager_input_streaming` field is optional. Setting it to `true` turns on fine-grained streaming for that tool, and omitting it gives you standard buffered streaming, in which the API buffers and validates each parameter value before streaming it back. The exception is a request that still sends the legacy `fine-grained-tool-streaming-2025-05-14` beta header, which turns fine-grained streaming on for tools that leave the field unset. The per-tool field replaces that header, and an explicit `false` keeps buffered streaming for a tool even when a request still sends it. See [Tool reference](/docs/en/agents-and-tools/tool-use/tool-reference) for the field definition.
 
@@ -52957,7 +52956,7 @@ The computer use tool subsumes most others by operating a full desktop. Claude s
 }
 ```
 
-Computer use is the most general option and also the slowest, since every action requires a screenshot roundtrip. Prefer narrower tools when they cover your use case, and reach for computer use when nothing else fits. See [Computer use tool](/docs/en/agents-and-tools/tool-use/computer-use-tool) for the sandbox setup.
+Computer use is the most general option and also the slowest, because every action requires a screenshot roundtrip. Prefer narrower tools when they cover your use case, and reach for computer use when nothing else fits. See [Computer use tool](/docs/en/agents-and-tools/tool-use/computer-use-tool) for the sandbox setup.
 
 ## Next steps
 
@@ -59386,7 +59385,7 @@ When a model works on long tasks with many tool-use iterations, total token cons
 
 This example appears in the SDK languages only: its value is the budget-tracking logic around the request. The raw request combines the `trigger` from [Trigger configuration](#trigger-configuration) with `pause_after_compaction` from [Pausing after compaction](#pausing-after-compaction).
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   client = anthropic.Anthropic()
   messages = [{"role": "user", "content": "Hello, Claude"}]
@@ -66208,7 +66207,7 @@ User: [Text response, cache=True]
 
 On earlier Opus/Sonnet models and all Haiku models, all previous thinking blocks are removed from context at this point. On Opus 4.5+ and Sonnet 4.6+, prior thinking blocks are kept by default and remain part of the cached prefix.
 
-For more detailed information, see the [extended thinking documentation](/docs/en/build-with-claude/extended-thinking#understanding-thinking-block-caching-behavior).
+For more detailed information, see the [extended thinking](/docs/en/build-with-claude/extended-thinking#understanding-thinking-block-caching-behavior) documentation.
 
 ### Cache storage and sharing
 
@@ -66272,7 +66271,7 @@ If experiencing unexpected behavior:
 If you find that 5 minutes is too short, Anthropic also offers a 1-hour cache duration [at additional cost](#pricing).
 
 <Note>
-  The 1-hour cache duration is available on the Claude API, [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), [Amazon Bedrock (Opus 4.6 and earlier)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy), [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), and [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry).
+  The 1-hour cache duration is available on the Claude API, [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), [Amazon Bedrock (Opus 4.6 and earlier)](/docs/en/build-with-claude/claude-on-amazon-bedrock-legacy), [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), and [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry).
 </Note>
 
 To use the extended cache, include `ttl` in the `cache_control` definition like this:
@@ -66304,7 +66303,7 @@ The response will include detailed cache information like the following:
 
 Note that the current `cache_creation_input_tokens` field equals the sum of the values in the `cache_creation` object.
 
-If you see `ephemeral_5m_input_tokens` writes you didn't request while using server tools such as web search, see [this guide on prompt caching and tool use](/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching#server-tool-results-are-cached-automatically).
+If you see `ephemeral_5m_input_tokens` writes you didn't request while using server tools such as web search, see [Tool use with prompt caching](/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching#server-tool-results-are-cached-automatically).
 
 ### When to use the 1-hour cache
 
@@ -68680,7 +68679,7 @@ For ZDR eligibility across all features, see [API and data retention](/docs/en/m
 
     For more details on cache invalidation, see [What invalidates the cache](#what-invalidates-the-cache).
 
-    For more on extended thinking, including its interaction with tool use and prompt caching, see the [extended thinking documentation](/docs/en/build-with-claude/extended-thinking#extended-thinking-and-prompt-caching).
+    For more on extended thinking, including its interaction with tool use and prompt caching, see the [extended thinking](/docs/en/build-with-claude/extended-thinking#extended-thinking-and-prompt-caching) documentation.
   </Accordion>
 
   <Accordion title="How do I enable prompt caching?">
@@ -69683,7 +69682,7 @@ All [active models](/docs/en/about-claude/models/overview) support token countin
 ### Count tokens in messages with extended thinking
 
 <Note>
-  See [how the context window is calculated with extended thinking](/docs/en/build-with-claude/extended-thinking#how-context-window-is-calculated-with-extended-thinking) for more details
+  See [how the context window is calculated with extended thinking](/docs/en/build-with-claude/extended-thinking#how-context-window-is-calculated-with-extended-thinking) for more details.
 
   * Thinking blocks from **previous** assistant turns are ignored and **do not** count toward your input tokens
   * **Current** assistant turn thinking **does** count toward your input tokens
@@ -69888,7 +69887,7 @@ All [active models](/docs/en/about-claude/models/overview) support token countin
   )
 
   response, err := client.Messages.CountTokens(context.TODO(), anthropic.MessageCountTokensParams{
-  	Model:    anthropic.Model("claude-sonnet-4-6"),
+  	Model:    anthropic.ModelClaudeSonnet4_6,
   	Thinking: anthropic.ThinkingConfigParamOfEnabled(16000),
   	Messages: []anthropic.MessageParam{
   		anthropic.NewUserMessage(anthropic.NewTextBlock("Are there an infinite number of prime numbers such that n mod 4 == 3?")),
@@ -71290,12 +71289,14 @@ Download files that were created by [skills](/docs/en/build-with-claude/skills-g
   	}
   	defer resp.Body.Close()
 
-  	fileContent, err := io.ReadAll(resp.Body)
+  	out, err := os.Create("downloaded_file.txt")
   	if err != nil {
   		return err
   	}
+  	defer out.Close()
 
-  	return os.WriteFile("downloaded_file.txt", fileContent, 0644)
+  	_, err = io.Copy(out, resp.Body)
+  	return err
   }
 
   ```
@@ -71439,14 +71440,14 @@ Claude works with any standard PDF. Ensure your request size meets these require
 Both limits are on the entire request payload, including any other content sent alongside PDFs. For large PDFs, consider uploading with the [Files API](#option-3-files-api) and referencing by `file_id` to keep request payloads small.
 
 <Tip>
-  Dense PDFs (many small-font pages, complex tables, or heavy graphics) can fill the context window before reaching the page limit. Requests with large PDFs can also fail before reaching the page limit, even when using the Files API. Try splitting the document into sections; for large files, since each page is processed as an image, downsampling embedded images can also help.
+  Dense PDFs (many small-font pages, complex tables, or heavy graphics) can fill the context window before reaching the page limit. Requests with large PDFs can also fail before reaching the page limit, even when using the Files API. Try splitting the document into sections; for large files, because each page is processed as an image, downsampling embedded images can also help.
 </Tip>
 
-Since PDF support relies on Claude's vision capabilities, it is subject to the same [limitations and considerations](/docs/en/build-with-claude/vision#limitations) as other vision tasks.
+Because PDF support relies on Claude's vision capabilities, it is subject to the same [limitations and considerations](/docs/en/build-with-claude/vision#limitations) as other vision tasks.
 
 ### Supported platforms and models
 
-PDF support is available on the Claude API, [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock) (see [Amazon Bedrock PDF support](#amazon-bedrock-pdf-support)), [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), and [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry). All [active models](/docs/en/about-claude/models/overview) support PDF processing.
+PDF support is available on the Claude API, [Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock) (see [Amazon Bedrock PDF support](#amazon-bedrock-pdf-support)), [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), and [Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry). All [active models](/docs/en/about-claude/models/overview) support PDF processing.
 
 ### Amazon Bedrock PDF support
 
@@ -71494,7 +71495,7 @@ If Claude isn't seeing images or charts in your PDFs when using the Converse API
 
 ### Send your first PDF request
 
-Let's start with a simple example using the Messages API. You can provide PDFs to Claude in three ways:
+Start with a simple example using the Messages API. You can provide PDFs to Claude in three ways:
 
 1. As a URL reference to a PDF hosted online
 2. As a base64-encoded PDF in `document` content blocks
@@ -72463,10 +72464,10 @@ When you send a PDF to Claude, the following steps occur:
 
 ### Estimate your costs
 
-The token count of a PDF file depends on the total text extracted from the document as well as the number of pages:
+The token count of a PDF file depends on the total text extracted from the document and the number of pages:
 
 * Text token costs: Each page typically uses 1,500-3,000 tokens per page depending on content density. Standard API pricing applies with no additional PDF fees.
-* Image token costs: Since each page is converted into an image, the same [image-based cost calculations](/docs/en/build-with-claude/vision#evaluate-image-size) are applied.
+* Image token costs: Because each page is converted into an image, the same [image-based cost calculations](/docs/en/build-with-claude/vision#evaluate-image-size) are applied.
 
 You can use [token counting](/docs/en/build-with-claude/token-counting) to estimate costs for your specific PDFs.
 
@@ -76085,7 +76086,7 @@ The presentation was created in the code execution container and saved as a file
 </CodeGroup>
 
 <Note>
-  For complete details on working with generated files, see the [code execution tool documentation](/docs/en/agents-and-tools/tool-use/code-execution-tool#retrieve-generated-files).
+  For complete details on working with generated files, see the [code execution tool](/docs/en/agents-and-tools/tool-use/code-execution-tool#retrieve-generated-files) documentation.
 </Note>
 
 ## Try more examples
@@ -77776,7 +77777,7 @@ Skills run in a code execution environment with filesystem access, bash commands
 
 1. **Metadata pre-loaded:** At startup, the name and description from all Skills' YAML frontmatter are loaded into the system prompt
 2. **Files read on-demand:** Claude uses bash Read tools to access SKILL.md and other files from the filesystem when needed
-3. **Scripts executed efficiently:** Utility scripts can be executed via bash without loading their full contents into context. Only the script's output consumes tokens
+3. **Scripts executed efficiently:** Utility scripts can be executed through bash without loading their full contents into context. Only the script's output consumes tokens
 4. **No context penalty for large files:** Reference files, data, or documentation don't consume context tokens until actually read
 
 * **File paths matter:** Claude navigates your skill directory like a filesystem. Use forward slashes (`reference/guide.md`), not backslashes
@@ -78018,11 +78019,11 @@ Evaluation results signal when to act:
   </Step>
 
   <Step title="Deploy">
-    Upload via the Skills API for workspace-wide access. See [Using Skills with the API](/docs/en/build-with-claude/skills-guide) for upload and version management. Document the Skill in your internal registry with purpose, owner, and version.
+    Upload through the Skills API for workspace-wide access. See [Using Skills with the API](/docs/en/build-with-claude/skills-guide) for upload and version management. Document the Skill in your internal registry with purpose, owner, and version.
   </Step>
 
   <Step title="Monitor">
-    Track usage patterns and collect feedback from users. Re-run evaluations periodically to detect drift or regressions as workflows and models evolve. Usage analytics are not currently available via the Skills API. Implement application-level logging to track which Skills are included in requests.
+    Track usage patterns and collect feedback from users. Re-run evaluations periodically to detect drift or regressions as workflows and models evolve. Usage analytics are not currently available through the Skills API. Implement application-level logging to track which Skills are included in requests.
   </Step>
 
   <Step title="Iterate or deprecate">
@@ -78077,11 +78078,11 @@ Each role-based bundle should contain only the Skills relevant to that role's da
 
 ### Source control
 
-Store Skill directories in Git for history tracking, code review via pull requests, and rollback capability. Each Skill directory (containing SKILL.md and any bundled files) maps naturally to a Git-tracked folder.
+Store Skill directories in Git for history tracking, code review through pull requests, and rollback capability. Each Skill directory (containing SKILL.md and any bundled files) maps naturally to a Git-tracked folder.
 
 ### API-based distribution
 
-The Skills API provides workspace-scoped distribution. Skills uploaded via the API are available to all workspace members. See [Using Skills with the API](/docs/en/build-with-claude/skills-guide) for upload, versioning, and management endpoints.
+The Skills API provides workspace-scoped distribution. Skills uploaded through the API are available to all workspace members. See [Using Skills with the API](/docs/en/build-with-claude/skills-guide) for upload, versioning, and management endpoints.
 
 ### Versioning strategy
 
@@ -78450,7 +78451,7 @@ When Skills create documents (Excel, PowerPoint, PDF, Word), they return `file_i
 
 1. Skills create files during code execution.
 2. Response includes `file_id` for each created file.
-3. Use Files API to download the actual file content.
+3. Use the Files API to download the actual file content.
 4. Save locally or process as needed.
 
 **Example: Creating and downloading an Excel file**
@@ -79084,7 +79085,7 @@ When Skills create documents (Excel, PowerPoint, PDF, Word), they return `file_i
 </CodeGroup>
 
 <Note>
-  For complete details on the Files API, see the [Files API documentation](/docs/en/api/beta/files/download).
+  For complete details on the Files API, see the [Files API](/docs/en/api/beta/files/download) documentation.
 </Note>
 
 ### Multi-turn conversations
@@ -82820,7 +82821,7 @@ For ZDR eligibility across all features, see [API and data retention](/docs/en/m
 ## Next steps
 
 <CardGroup cols={3}>
-  <Card title="API Reference" icon="book" href="/docs/en/api/beta/skills/create">
+  <Card title="API reference" icon="book" href="/docs/en/api/beta/skills/create">
     Complete API reference with all endpoints
   </Card>
 
@@ -83460,17 +83461,7 @@ For detailed explanations of the OAuth flow, refer to the [Authorization section
 
 ## Client-side MCP helpers
 
-If you manage your own MCP client connection (for example, with local stdio servers, MCP prompts, or MCP resources), the SDKs provide helper functions that convert between MCP types and Claude API types. This eliminates manual conversion code when using an MCP SDK (such as the [TypeScript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)) alongside the Anthropic SDK.
-
-<Note>
-  These helpers are available in the Python, TypeScript, Java, Go, Ruby, and PHP SDKs. They are not yet available in the C# SDK. The examples in this section use TypeScript; in other languages, import the equivalent helpers from:
-
-  * **Python:** `anthropic.lib.tools.mcp` (install with `pip install anthropic[mcp]`)
-  * **Java:** `com.anthropic.mcp.BetaMcp` in the `anthropic-java-mcp` module
-  * **Go:** `github.com/anthropics/anthropic-sdk-go/mcp`
-  * **Ruby:** `Anthropic::Mcp` (requires the `mcp` gem)
-  * **PHP:** `Anthropic\Lib\Tools\BetaMcp`
-</Note>
+If you manage your own MCP client connection (for example, with local stdio servers, MCP prompts, or MCP resources), the SDKs provide helper functions that convert between MCP types and Claude API types. This eliminates manual conversion code when using an MCP SDK for your language (for example, the [TypeScript MCP SDK](https://github.com/modelcontextprotocol/typescript-sdk)) alongside the Anthropic SDK.
 
 <Note>
   Use the [`mcp_servers` API parameter](#using-the-mcp-connector-in-the-messages-api) when you have remote servers accessible by URL and only need tool support. Use the client-side helpers when you need local servers, prompts, resources, or more control over the connection with the base SDK.
@@ -83480,22 +83471,129 @@ If you manage your own MCP client connection (for example, with local stdio serv
 
 Install both the Anthropic SDK and the MCP SDK:
 
-```bash
-npm install @anthropic-ai/sdk @modelcontextprotocol/sdk
-```
+<Tabs>
+  <Tab title="Python">
+    The MCP helpers are included in the `mcp` extra, which requires Python 3.10 or later:
+
+    ```bash
+    pip install "anthropic[mcp]"
+    ```
+  </Tab>
+
+  <Tab title="TypeScript">
+    ```bash
+    npm install @anthropic-ai/sdk @modelcontextprotocol/sdk
+    ```
+  </Tab>
+
+  <Tab title="C#">
+    The helpers live in the separate `Anthropic.Mcp` package; the MCP client itself comes from the official [ModelContextProtocol package](https://www.nuget.org/packages/ModelContextProtocol):
+
+    ```bash
+    dotnet add package Anthropic.Mcp
+    dotnet add package ModelContextProtocol
+    ```
+  </Tab>
+
+  <Tab title="Go">
+    The helpers live in the `mcp` subpackage of the Go SDK, which builds on the [MCP Go SDK](https://github.com/modelcontextprotocol/go-sdk):
+
+    ```bash
+    go get github.com/anthropics/anthropic-sdk-go/mcp
+    ```
+  </Tab>
+
+  <Tab title="Java">
+    The helpers live in the separate `anthropic-java-mcp` artifact, which requires Java 17 or later (the core SDK supports Java 8):
+
+    <Tabs>
+      <Tab title="Gradle">
+        ```kotlin
+        implementation("com.anthropic:anthropic-java-mcp:2.48.0")
+        ```
+      </Tab>
+
+      <Tab title="Maven">
+        ```xml
+        <dependency>
+            <groupId>com.anthropic</groupId>
+            <artifactId>anthropic-java-mcp</artifactId>
+            <version>2.48.0</version>
+        </dependency>
+        ```
+      </Tab>
+    </Tabs>
+  </Tab>
+
+  <Tab title="PHP">
+    The helpers use the official [MCP PHP SDK](https://packagist.org/packages/mcp/sdk):
+
+    ```bash
+    composer require "anthropic-ai/sdk" "mcp/sdk"
+    ```
+  </Tab>
+
+  <Tab title="Ruby">
+    The helpers use the official [`mcp` gem](https://rubygems.org/gems/mcp):
+
+    ```bash
+    bundle add anthropic mcp
+    ```
+  </Tab>
+</Tabs>
 
 ### Available helpers
 
-Import the helpers from the beta namespace:
+Import the helpers for your language:
 
-```typescript
-import {
-  mcpTools,
-  mcpMessages,
-  mcpResourceToContent,
-  mcpResourceToFile
-} from "@anthropic-ai/sdk/helpers/beta/mcp";
-```
+<CodeGroup exclude="shell">
+  ```python Python
+  from anthropic.lib.tools.mcp import (
+      async_mcp_tool,
+      mcp_message,
+      mcp_resource_to_content,
+      mcp_resource_to_file,
+  )
+  ```
+
+  ```typescript TypeScript
+  import {
+    mcpTools,
+    mcpMessages,
+    mcpResourceToContent,
+    mcpResourceToFile
+  } from "@anthropic-ai/sdk/helpers/beta/mcp";
+  ```
+
+  ```csharp C#
+  using Anthropic.Helpers.Beta;
+  using Anthropic.Helpers.Beta.Mcp;
+  ```
+
+  ```go Go
+  import (
+  	"github.com/anthropics/anthropic-sdk-go/mcp"
+  )
+
+  ```
+
+  ```java Java
+  import com.anthropic.helpers.McpBetaTool;
+  import com.anthropic.mcp.BetaMcp;
+  ```
+
+  ```php PHP
+  use Anthropic\Lib\Tools\BetaMcp;
+  ```
+
+  ```ruby Ruby
+  require "anthropic"
+
+  # The helpers are exposed on the Anthropic::Mcp module
+  ```
+</CodeGroup>
+
+Helper names and exact signatures follow each language's conventions; this table shows the TypeScript forms:
 
 | Helper                           | Description                                                                             |
 | -------------------------------- | --------------------------------------------------------------------------------------- |
@@ -83508,78 +83606,618 @@ import {
 
 Convert MCP tools for use with the SDK's [tool runner](/docs/en/agents-and-tools/tool-use/tool-runner), which handles tool execution automatically:
 
-```typescript
-import { mcpTools } from "@anthropic-ai/sdk/helpers/beta/mcp";
-import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+<CodeGroup exclude="shell">
+  ```python Python
+  from anthropic.lib.tools.mcp import async_mcp_tool
+  from mcp import ClientSession
+  from mcp.client.stdio import StdioServerParameters, stdio_client
 
-const anthropic = new Anthropic();
+  client = AsyncAnthropic()
 
-// Connect to an MCP server
-const transport = new StdioClientTransport({ command: "mcp-server", args: [] });
-const mcpClient = new Client({ name: "my-client", version: "1.0.0" });
-await mcpClient.connect(transport);
 
-// List tools and convert them for the Claude API
-const { tools } = await mcpClient.listTools();
-const finalMessage = await anthropic.beta.messages.toolRunner({
-  model: "claude-opus-4-8",
-  max_tokens: 1024,
-  messages: [{ role: "user", content: "What tools do you have available?" }],
-  tools: mcpTools(tools, mcpClient)
-});
+  async def main() -> None:
+      # Connect to an MCP server
+      server_params = StdioServerParameters(command="mcp-server")
+      async with stdio_client(server_params) as (read, write):
+          async with ClientSession(read, write) as mcp_client:
+              await mcp_client.initialize()
 
-console.log(finalMessage);
-```
+              # List tools and convert them for the Claude API
+              tools_result = await mcp_client.list_tools()
+              runner = client.beta.messages.tool_runner(
+                  model="claude-opus-4-8",
+                  max_tokens=1024,
+                  messages=[
+                      {"role": "user", "content": "What tools do you have available?"},
+                  ],
+                  tools=[async_mcp_tool(tool, mcp_client) for tool in tools_result.tools],
+              )
+
+              final_message = await runner.until_done()
+              print(final_message)
+
+
+  asyncio.run(main())
+  ```
+
+  ```typescript TypeScript
+  import {
+    mcpTools,
+    type MCPCallToolResultLike,
+    type MCPClientLike
+  } from "@anthropic-ai/sdk/helpers/beta/mcp";
+  import { Client } from "@modelcontextprotocol/sdk/client/index.js";
+  import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
+
+  const anthropic = new Anthropic();
+
+  // Connect to an MCP server
+  const transport = new StdioClientTransport({ command: "mcp-server", args: [] });
+  const mcpClient = new Client({ name: "my-client", version: "1.0.0" });
+  await mcpClient.connect(transport);
+
+  // List tools and convert them for the Claude API
+  const { tools } = await mcpClient.listTools();
+
+  // The MCP SDK's callTool return type still includes a legacy result shape that
+  // mcpTools does not accept; narrow it. Drop this once MCPClientLike widens.
+  const mcpClientForTools: MCPClientLike = {
+    callTool: (params) => mcpClient.callTool(params) as Promise<MCPCallToolResultLike>
+  };
+
+  const finalMessage = await anthropic.beta.messages.toolRunner({
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "What tools do you have available?" }],
+    tools: mcpTools(tools, mcpClientForTools)
+  });
+
+  console.log(finalMessage);
+  ```
+
+  ```csharp C#
+  using Anthropic.Helpers.Beta;
+  using Anthropic.Helpers.Beta.Mcp;
+  using Anthropic.Models.Beta.Messages;
+  using ModelContextProtocol.Client;
+  using Messages = Anthropic.Models.Messages;
+
+  var anthropic = new AnthropicClient();
+
+  // Connect to an MCP server
+  await using var mcpClient = await McpClient.CreateAsync(
+      new StdioClientTransport(new StdioClientTransportOptions { Command = "mcp-server" })
+  );
+
+  // List tools and convert them for the Claude API
+  var tools = await BetaMcp.ListToolsAsync(mcpClient);
+  var runner = anthropic.Beta.Messages.ToolRunner(
+      new MessageCreateParams
+      {
+          Model = Messages::Model.ClaudeOpus4_8,
+          MaxTokens = 1024,
+          Messages =
+          [
+              new BetaMessageParam
+              {
+                  Role = Role.User,
+                  Content = "What tools do you have available?",
+              },
+          ],
+      },
+      tools
+  );
+
+  var finalMessage = await runner.RunUntilDoneAsync();
+  Console.WriteLine(finalMessage);
+  ```
+
+  ```go Go
+  import (
+  // ...
+
+  // ...
+  	"github.com/anthropics/anthropic-sdk-go/mcp"
+  	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
+  )
+
+  func main() {
+  	client := anthropic.NewClient()
+  	ctx := context.Background()
+
+  	// Connect to an MCP server
+  	mcpClient := mcpsdk.NewClient(&mcpsdk.Implementation{Name: "my-client", Version: "1.0.0"}, nil)
+  	session, err := mcpClient.Connect(ctx, &mcpsdk.CommandTransport{Command: exec.Command("mcp-server")}, nil)
+  	if err != nil {
+  		log.Fatal(err)
+  	}
+  	defer session.Close()
+
+  	// List tools and convert them for the Claude API
+  	toolsResult, err := session.ListTools(ctx, nil)
+  	if err != nil {
+  		log.Fatal(err)
+  	}
+  	betaTools, err := mcp.NewBetaTools(toolsResult.Tools, session)
+  	if err != nil {
+  		log.Fatal(err)
+  	}
+
+  	runner := client.Beta.Messages.NewToolRunner(betaTools, anthropic.BetaToolRunnerParams{
+  		BetaMessageNewParams: anthropic.BetaMessageNewParams{
+  			Model:     anthropic.ModelClaudeOpus4_8,
+  			MaxTokens: 1024,
+  			Messages: []anthropic.BetaMessageParam{
+  				anthropic.NewBetaUserMessage(anthropic.NewBetaTextBlock("What tools do you have available?")),
+  			},
+  		},
+  	})
+
+  	finalMessage, err := runner.RunToCompletion(ctx)
+  	if err != nil {
+  		log.Fatal(err)
+  	}
+  	fmt.Println(finalMessage.RawJSON())
+  }
+
+  ```
+
+  ```java Java
+  import com.anthropic.helpers.BetaToolRunner;
+  import com.anthropic.helpers.McpBetaTool;
+  import com.anthropic.mcp.BetaMcp;
+  import com.anthropic.models.beta.messages.BetaMessage;
+  import com.anthropic.models.beta.messages.MessageCreateParams;
+  import com.anthropic.models.messages.Model;
+  import io.modelcontextprotocol.client.McpClient;
+  import io.modelcontextprotocol.client.McpSyncClient;
+  import io.modelcontextprotocol.client.transport.ServerParameters;
+  import io.modelcontextprotocol.client.transport.StdioClientTransport;
+  import io.modelcontextprotocol.json.McpJsonDefaults;
+  import io.modelcontextprotocol.spec.McpSchema;
+  // ...
+
+  void main() throws Exception {
+      AnthropicClient anthropic = AnthropicOkHttpClient.fromEnv();
+
+      // Connect to an MCP server
+      StdioClientTransport transport = new StdioClientTransport(
+              ServerParameters.builder("mcp-server").build(), McpJsonDefaults.getMapper());
+
+      try (McpSyncClient mcpClient = McpClient.sync(transport)
+              .clientInfo(new McpSchema.Implementation("my-client", "1.0.0"))
+              .build()) {
+
+          mcpClient.initialize();
+
+          // List tools and convert them for the Claude API
+          List<McpBetaTool> betaTools = BetaMcp.mcpTools(mcpClient.listTools().tools(), mcpClient);
+
+          MessageCreateParams params = MessageCreateParams.builder()
+                  .model(Model.CLAUDE_OPUS_4_8)
+                  .maxTokens(1024L)
+                  .addUserMessage("What tools do you have available?")
+                  .addTools(betaTools)
+                  .build();
+
+          // The runner yields one message per assistant turn; the last is the final response
+          BetaToolRunner runner = anthropic.beta().messages().toolRunner(params);
+          BetaMessage finalMessage = null;
+          for (BetaMessage message : runner) {
+              finalMessage = message;
+          }
+          IO.println(finalMessage);
+      }
+  }
+  ```
+
+  ```php PHP
+  use Anthropic\Lib\Tools\BetaMcp;
+  use Mcp\Client;
+  use Mcp\Client\Transport\HttpTransport;
+
+  $anthropic = new Anthropic();
+
+  // Connect to an MCP server. The PHP MCP client connects over HTTP; point this
+  // at your server's endpoint.
+  $mcp = Client::builder()->build();
+  $mcp->connect(new HttpTransport('http://localhost:8000/mcp'));
+
+  // List tools and convert them for the Claude API
+  $runner = $anthropic->beta->messages->toolRunner(
+      maxTokens: 1024,
+      messages: [['role' => 'user', 'content' => 'What tools do you have available?']],
+      model: 'claude-opus-4-8',
+      tools: BetaMcp::tools($mcp->listTools()->tools, $mcp),
+  );
+
+  echo $runner->runUntilDone(), "\n";
+  ```
+
+  ```ruby Ruby
+  require "mcp"
+
+  anthropic = Anthropic::Client.new
+
+  # Connect to an MCP server
+  transport = MCP::Client::Stdio.new(command: "mcp-server")
+  mcp_client = MCP::Client.new(transport: transport)
+  mcp_client.connect
+
+  # List tools and convert them for the Claude API
+  runner = anthropic.beta.messages.tool_runner(
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: [{ role: "user", content: "What tools do you have available?" }],
+    tools: Anthropic::Mcp.tools(mcp_client.tools, mcp_client)
+  )
+
+  final_message = runner.run_until_finished.last
+  puts final_message
+  ```
+</CodeGroup>
 
 ### Use MCP prompts
 
 Convert MCP prompt messages into Claude API message format:
 
-```typescript
-import { mcpMessages } from "@anthropic-ai/sdk/helpers/beta/mcp";
+<CodeGroup exclude="shell">
+  ```python Python
+  from anthropic.lib.tools.mcp import mcp_message
 
-const { messages } = await mcpClient.getPrompt({ name: "my-prompt" });
-const response = await anthropic.beta.messages.create({
-  model: "claude-opus-4-8",
-  max_tokens: 1024,
-  messages: mcpMessages(messages)
-});
+  prompt = await mcp_client.get_prompt(name="my-prompt")
+  response = await client.beta.messages.create(
+      model="claude-opus-4-8",
+      max_tokens=1024,
+      messages=[mcp_message(message) for message in prompt.messages],
+  )
 
-console.log(response);
-```
+  print(response)
+  ```
+
+  ```typescript TypeScript
+  import { mcpMessages } from "@anthropic-ai/sdk/helpers/beta/mcp";
+
+  const { messages } = await mcpClient.getPrompt({ name: "my-prompt" });
+  const response = await anthropic.beta.messages.create({
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: mcpMessages(messages)
+  });
+
+  console.log(response);
+  ```
+
+  ```csharp C#
+  var prompt = await mcpClient.GetPromptAsync("my-prompt");
+  var response = await anthropic.Beta.Messages.Create(
+      new MessageCreateParams
+      {
+          Model = Messages::Model.ClaudeOpus4_8,
+          MaxTokens = 1024,
+          Messages = BetaMcp.Messages(prompt.Messages),
+      }
+  );
+
+  Console.WriteLine(response);
+  ```
+
+  ```go Go
+  prompt, err := session.GetPrompt(ctx, &mcpsdk.GetPromptParams{Name: "my-prompt"})
+  if err != nil {
+  	log.Fatal(err)
+  }
+
+  messages := make([]anthropic.BetaMessageParam, 0, len(prompt.Messages))
+  for _, promptMessage := range prompt.Messages {
+  	message, err := mcp.ToMessage(promptMessage)
+  	if err != nil {
+  		log.Fatal(err)
+  	}
+  	messages = append(messages, message)
+  }
+
+  response, err := client.Beta.Messages.New(ctx, anthropic.BetaMessageNewParams{
+  	Model:     anthropic.ModelClaudeOpus4_8,
+  	MaxTokens: 1024,
+  	Messages:  messages,
+  })
+  if err != nil {
+  	log.Fatal(err)
+  }
+  fmt.Println(response.RawJSON())
+  ```
+
+  ```java Java
+  McpSchema.GetPromptResult prompt = mcpClient.getPrompt(
+          new McpSchema.GetPromptRequest("my-prompt", Map.of()));
+
+  BetaMessage response = anthropic.beta().messages().create(MessageCreateParams.builder()
+          .model(Model.CLAUDE_OPUS_4_8)
+          .maxTokens(1024L)
+          .messages(BetaMcp.mcpMessages(prompt.messages()))
+          .build());
+
+  IO.println(response);
+  ```
+
+  ```php PHP
+  $prompt = $mcp->getPrompt('my-prompt');
+
+  $response = $anthropic->beta->messages->create(
+      maxTokens: 1024,
+      messages: array_map(BetaMcp::message(...), $prompt->messages),
+      model: 'claude-opus-4-8',
+  );
+
+  echo $response, "\n";
+  ```
+
+  ```ruby Ruby
+  prompt = mcp_client.get_prompt(name: "my-prompt")
+
+  response = anthropic.beta.messages.create(
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: prompt["messages"].map { |message| Anthropic::Mcp.message(message) }
+  )
+
+  puts response
+  ```
+</CodeGroup>
 
 ### Use MCP resources
 
 Convert MCP resources into content blocks to include in messages, or into file objects for upload:
 
-```typescript
-import { mcpResourceToContent, mcpResourceToFile } from "@anthropic-ai/sdk/helpers/beta/mcp";
+<CodeGroup exclude="shell">
+  ```python Python
+  from anthropic.lib.tools.mcp import (
+      mcp_resource_to_content,
+      mcp_resource_to_file,
+  )
 
-// As a content block in a message
-const resource = await mcpClient.readResource({ uri: "file:///path/to/doc.txt" });
-await anthropic.beta.messages.create({
-  model: "claude-opus-4-8",
-  max_tokens: 1024,
-  messages: [
-    {
-      role: "user",
-      content: [
-        mcpResourceToContent(resource),
-        { type: "text", text: "Summarize this document" }
-      ]
-    }
-  ]
-});
+  # As a content block in a message
+  resource = await mcp_client.read_resource(uri="file:///path/to/doc.txt")
+  response = await client.beta.messages.create(
+      model="claude-opus-4-8",
+      max_tokens=1024,
+      messages=[
+          {
+              "role": "user",
+              "content": [
+                  mcp_resource_to_content(resource),
+                  {"type": "text", "text": "Summarize this document"},
+              ],
+          }
+      ],
+  )
+  print(response)
 
-// As a file upload
-const fileResource = await mcpClient.readResource({ uri: "file:///path/to/data.json" });
-await anthropic.beta.files.upload({ file: mcpResourceToFile(fileResource) });
-```
+  # As a file upload
+  file_resource = await mcp_client.read_resource(
+      uri="file:///path/to/data.json",
+  )
+  uploaded = await client.beta.files.upload(
+      file=mcp_resource_to_file(file_resource),
+  )
+  print(uploaded.id)
+  ```
+
+  ```typescript TypeScript
+  import { mcpResourceToContent, mcpResourceToFile } from "@anthropic-ai/sdk/helpers/beta/mcp";
+
+  // As a content block in a message
+  const resource = await mcpClient.readResource({ uri: "file:///path/to/doc.txt" });
+  const response = await anthropic.beta.messages.create({
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: [
+      {
+        role: "user",
+        content: [
+          mcpResourceToContent(resource),
+          { type: "text", text: "Summarize this document" }
+        ]
+      }
+    ]
+  });
+  console.log(response);
+
+  // As a file upload
+  const fileResource = await mcpClient.readResource({ uri: "file:///path/to/data.json" });
+  const uploaded = await anthropic.beta.files.upload({ file: mcpResourceToFile(fileResource) });
+  console.log(uploaded.id);
+  ```
+
+  ```csharp C#
+  // As a content block in a message
+  var resource = await mcpClient.ReadResourceAsync("file:///path/to/doc.txt");
+  var response = await anthropic.Beta.Messages.Create(
+      new MessageCreateParams
+      {
+          Model = Messages::Model.ClaudeOpus4_8,
+          MaxTokens = 1024,
+          Messages =
+          [
+              new BetaMessageParam
+              {
+                  Role = Role.User,
+                  Content = new BetaMessageParamContent(
+                      [
+                          BetaMcp.ResourceToContent(resource),
+                          new BetaTextBlockParam { Text = "Summarize this document" },
+                      ]
+                  ),
+              },
+          ],
+      }
+  );
+
+  Console.WriteLine(response);
+
+  // As a file upload
+  var fileResource = await mcpClient.ReadResourceAsync("file:///path/to/data.json");
+  var (filename, data, mediaType) = BetaMcp.ResourceToFile(fileResource);
+
+  // Build the file part explicitly so the resource's filename and MIME type
+  // carry through to the upload.
+  var file = new BinaryContent { Stream = new MemoryStream(data), FileName = filename };
+  if (mediaType is not null)
+  {
+      file.ContentType = new(mediaType);
+  }
+
+  var uploaded = await anthropic.Beta.Files.Upload(new FileUploadParams { File = file });
+  Console.WriteLine(uploaded.ID);
+  ```
+
+  ```go Go
+  // As a content block in a message
+  resource, err := session.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: "file:///path/to/doc.txt"})
+  if err != nil {
+  	log.Fatal(err)
+  }
+  block, err := mcp.ResourceToBlock(resource)
+  if err != nil {
+  	log.Fatal(err)
+  }
+
+  response, err := client.Beta.Messages.New(ctx, anthropic.BetaMessageNewParams{
+  	Model:     anthropic.ModelClaudeOpus4_8,
+  	MaxTokens: 1024,
+  	Messages: []anthropic.BetaMessageParam{
+  		anthropic.NewBetaUserMessage(
+  			// ResourceToBlock returns the tool-result content union; message
+  			// content is a separate union type, so re-wrap the shared variants
+  			// (mcp.ToMessage does the same internally).
+  			anthropic.BetaContentBlockParamUnion{
+  				OfText:     block.OfText,
+  				OfImage:    block.OfImage,
+  				OfDocument: block.OfDocument,
+  			},
+  			anthropic.NewBetaTextBlock("Summarize this document"),
+  		),
+  	},
+  })
+  if err != nil {
+  	log.Fatal(err)
+  }
+  fmt.Println(response.RawJSON())
+
+  // As a file upload
+  fileResult, err := session.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: "file:///path/to/data.json"})
+  if err != nil {
+  	log.Fatal(err)
+  }
+  fileReader, err := mcp.ResourceToFile(fileResult)
+  if err != nil {
+  	log.Fatal(err)
+  }
+  uploaded, err := client.Beta.Files.Upload(ctx, anthropic.BetaFileUploadParams{File: fileReader})
+  if err != nil {
+  	log.Fatal(err)
+  }
+  fmt.Println(uploaded.ID)
+  ```
+
+  ```java Java
+  // As a content block in a message
+  McpSchema.ReadResourceResult resource = mcpClient.readResource(
+          new McpSchema.ReadResourceRequest("file:///path/to/doc.txt"));
+
+  List<BetaContentBlockParam> content =
+          new ArrayList<>(BetaMcp.mcpResourceContents(resource));
+  content.add(BetaContentBlockParam.ofText(
+          BetaTextBlockParam.builder().text("Summarize this document").build()));
+
+  BetaMessage response = anthropic.beta().messages().create(MessageCreateParams.builder()
+          .model(Model.CLAUDE_OPUS_4_8)
+          .maxTokens(1024L)
+          .addUserMessageOfBetaContentBlockParams(content)
+          .build());
+
+  IO.println(response);
+
+  // As a file upload
+  McpSchema.ReadResourceResult fileResource = mcpClient.readResource(
+          new McpSchema.ReadResourceRequest("file:///path/to/data.json"));
+
+  McpResourceFile resourceFile = BetaMcp.mcpResourceFiles(fileResource).getFirst();
+
+  // Build the file part explicitly so the resource's filename and MIME type
+  // carry through to the upload.
+  MultipartField.Builder<InputStream> fileField = MultipartField.<InputStream>builder()
+          .value(new ByteArrayInputStream(resourceFile.content()))
+          .filename(resourceFile.filename());
+  if (resourceFile.mimeType() != null) {
+      fileField.contentType(resourceFile.mimeType());
+  }
+
+  var uploaded = anthropic.beta().files().upload(FileUploadParams.builder()
+          .file(fileField.build())
+          .build());
+
+  IO.println(uploaded.id());
+  ```
+
+  ```php PHP
+  // As a content block in a message
+  $resource = $mcp->readResource('file:///path/to/doc.txt');
+
+  $response = $anthropic->beta->messages->create(
+      maxTokens: 1024,
+      messages: [
+          [
+              'role' => 'user',
+              'content' => [
+                  BetaMcp::resourceToContent($resource),
+                  ['type' => 'text', 'text' => 'Summarize this document'],
+              ],
+          ],
+      ],
+      model: 'claude-opus-4-8',
+  );
+
+  echo $response, "\n";
+
+  // As a file upload
+  $fileResource = $mcp->readResource('file:///path/to/data.json');
+  $file = $anthropic->beta->files->upload(file: BetaMcp::resourceToFile($fileResource));
+  echo $file->id, "\n";
+  ```
+
+  ```ruby Ruby
+  # As a content block in a message
+  resource = mcp_client.read_resource(uri: "file:///path/to/doc.txt")
+
+  response = anthropic.beta.messages.create(
+    model: "claude-opus-4-8",
+    max_tokens: 1024,
+    messages: [
+      {
+        role: "user",
+        content: [
+          *Anthropic::Mcp.resource_to_contents(resource),
+          { type: "text", text: "Summarize this document" }
+        ]
+      }
+    ]
+  )
+
+  puts response
+
+  # As a file upload
+  file_resource = mcp_client.read_resource(uri: "file:///path/to/data.json")
+  file = Anthropic::Mcp.resource_to_files(file_resource).first
+  uploaded_file = anthropic.beta.files.upload(file: file)
+  puts uploaded_file.id
+  ```
+</CodeGroup>
 
 ### Error handling
 
-The conversion functions throw `UnsupportedMCPValueError` if an MCP value isn't supported by the Claude API. This can happen with unsupported content types, MIME types, or non-HTTP resource links.
+The conversion functions throw `UnsupportedMCPValueError` if an MCP value isn't supported by the Claude API (in Go, the helpers return an `UnsupportedValueError`; in Java and C#, they throw `AnthropicInvalidDataException`). This can happen with unsupported content types, MIME types, or resource links (resolve resource links with your MCP client before converting).
 
 ## Batch requests
 
@@ -83718,7 +84356,7 @@ Connect Claude to third-party remote MCP servers through the MCP connector API. 
 
 ---
 
-Several companies have deployed remote MCP servers that developers can connect to via the Anthropic MCP connector API. These servers expand the capabilities available to developers and end users by providing remote access to various services and tools through the MCP protocol.
+Several companies have deployed remote MCP servers that developers can connect to by using the Anthropic MCP connector API. These servers expand the capabilities available to developers and end users by providing remote access to various services and tools through the MCP protocol.
 
 <Note>
   The remote MCP servers listed below are third-party services designed to work with the Claude API. These servers are not owned, operated, or endorsed by Anthropic. Users should only connect to remote MCP servers they trust and should review each server's security practices and terms before connecting.
@@ -83776,7 +84414,7 @@ The [tunnel stack](/docs/en/agents-and-tools/mcp-tunnels/concepts#components) is
 * **[cloudflared](/docs/en/agents-and-tools/mcp-tunnels/concepts#components):** Cloudflare's open-source tunnel connector. It initiates outbound-only connections to the [tunnel edge](/docs/en/agents-and-tools/mcp-tunnels/concepts#components) and carries encrypted traffic from Anthropic to your proxy.
 * **[Proxy](/docs/en/agents-and-tools/mcp-tunnels/concepts#components):** Anthropic's routing component. It terminates [inner TLS](/docs/en/agents-and-tools/mcp-tunnels/concepts#components), validates that upstream IPs fall within an allowed range, and routes each request to the correct [upstream MCP server](/docs/en/agents-and-tools/mcp-tunnels/concepts#components) based on hostname.
 
-Each MCP server you expose gets a hostname under your tunnel domain (for example, `docs.<your-tunnel-domain>`). You attach these hostnames to a Managed Agent session in the Console, or pass them to the Messages API through the [MCP connector](/docs/en/agents-and-tools/mcp-connector).
+Each MCP server you expose gets a hostname under your tunnel domain (for example, `docs.<your-tunnel-domain>`). You attach these hostnames to a Managed Agent session in the Claude Console, or pass them to the Messages API through the [MCP connector](/docs/en/agents-and-tools/mcp-connector).
 
 ## Prerequisites
 
@@ -84343,7 +84981,7 @@ You need:
   * **Programmatic access (recommended).** Turn on **Set up programmatic access** when creating the tunnel (or create the federation rule directly under **Settings > Workload identity** if you're letting the setup component create the tunnel) so the setup component can authenticate through Workload Identity Federation. Record the federation rule ID (`fdrl_...`) and your organization ID.
   * **Manual.** Skip programmatic access. You'll [get the tunnel token from the Console](/docs/en/agents-and-tools/mcp-tunnels/console#get-the-connection-details), generate a CA and server certificate yourself, and [register the CA in the Console](/docs/en/agents-and-tools/mcp-tunnels/console#add-a-ca-certificate).
 
-* **A host with Docker and Docker Compose** installed. The manual flow also requires `openssl` (1.1.1 or newer).
+* **A host with Docker and Docker Compose** installed. The manual flow also requires `openssl` (1.1.1 or later).
 
 * **Outbound network connectivity** from the host to `api.anthropic.com` (443 TCP) and the [tunnel edge](/docs/en/agents-and-tools/mcp-tunnels/concepts#components) (7844 TCP and UDP). See the full [network requirements](/docs/en/agents-and-tools/mcp-tunnels/overview#network-requirements).
 
@@ -85898,7 +86536,7 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Claude i
     <Tabs>
       <Tab title="Gradle">
         ```kotlin
-        implementation("com.anthropic:anthropic-java-bedrock:2.47.1")
+        implementation("com.anthropic:anthropic-java-bedrock:2.48.0")
         ```
       </Tab>
 
@@ -85907,7 +86545,7 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Claude i
         <dependency>
             <groupId>com.anthropic</groupId>
             <artifactId>anthropic-java-bedrock</artifactId>
-            <version>2.47.1</version>
+            <version>2.48.0</version>
         </dependency>
         ```
       </Tab>
@@ -86547,8 +87185,6 @@ The Foundry SDKs require an API key and either a resource name or base URL. The 
   ```
 
   ```php PHP
-  <?php
-
   use Anthropic\Foundry;
 
   $client = Foundry\Client::withCredentials(
@@ -86873,7 +87509,7 @@ Requests that use these features against a deployment hosted on Azure return a `
 
 ## API responses
 
-API responses from Claude in Microsoft Foundry follow the standard [Claude API response format](/docs/en/api/messages/create). This includes the `usage` object in response bodies, which provides detailed token consumption information for your requests. The `usage` object is consistent across all platforms (Claude API, Foundry, Claude Platform on AWS, Amazon Bedrock, and Google Cloud).
+API responses from Claude in Microsoft Foundry follow the standard [Claude API response format](/docs/en/api/messages/create). This includes the `usage` object in response bodies, which provides detailed token consumption information for your requests. The `usage` object is consistent across all platforms (Claude API, Amazon Bedrock, Claude Platform on AWS, Foundry, and Google Cloud).
 
 For details on response headers specific to Foundry, see [Correlation request IDs](#correlation-request-ids).
 
@@ -87070,14 +87706,14 @@ Anthropic's [client SDKs](/docs/en/cli-sdks-libraries/overview) support Bedrock.
   <Tab title="Java">
     <CodeGroup>
       ```groovy Gradle
-      implementation("com.anthropic:anthropic-java-bedrock:2.47.1")
+      implementation("com.anthropic:anthropic-java-bedrock:2.48.0")
       ```
 
       ```xml Maven
       <dependency>
           <groupId>com.anthropic</groupId>
           <artifactId>anthropic-java-bedrock</artifactId>
-          <version>2.47.1</version>
+          <version>2.48.0</version>
       </dependency>
       ```
 
@@ -87370,15 +88006,12 @@ The following examples show how to generate text from Claude on Bedrock:
     awsRegion: "us-west-2"
   });
 
-  async function main() {
-    const message = await client.messages.create({
-      model: "global.anthropic.claude-opus-4-6-v1",
-      max_tokens: 256,
-      messages: [{ role: "user", content: "Hello, world" }]
-    });
-    console.log(message);
-  }
-  main().catch(console.error);
+  const message = await client.messages.create({
+    model: "global.anthropic.claude-opus-4-6-v1",
+    max_tokens: 256,
+    messages: [{ role: "user", content: "Hello, world" }]
+  });
+  console.log(message);
   ```
 
   ```csharp C#
@@ -88073,7 +88706,7 @@ First, install Anthropic's [client SDK](/docs/en/cli-sdks-libraries/overview) fo
   </Tab>
 
   <Tab title="Java">
-    <CodeGroup>
+    <CodeGroup exclude="shell, python, typescript, csharp, go, php, ruby">
       ```groovy Gradle
       implementation("com.anthropic:anthropic-java:2.48.0")
       implementation("com.anthropic:anthropic-java-vertex:2.48.0")
@@ -88168,7 +88801,7 @@ Lifecycle terms (Deprecated, Retired) are defined in [Model deprecations](/docs/
 
 ### Making requests
 
-Before running requests you may need to run `gcloud auth application-default login` to authenticate with Google Cloud.
+Before running requests you might need to run `gcloud auth application-default login` to authenticate with Google Cloud.
 
 The following examples show how to generate text from Claude on Agent Platform:
 
@@ -88362,7 +88995,7 @@ Data handling for this offering is governed by Google Cloud. For details, see [A
 
 Agent Platform provides a [request-response logging service](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/request-response-logging) that allows customers to log the prompts and completions associated with your usage.
 
-Anthropic recommends that you log your activity on at least a 30-day rolling basis in order to understand your activity and investigate any potential misuse.
+Anthropic recommends that you log your activity on at least a 30-day rolling basis to understand your activity and investigate any potential misuse.
 
 <Note>
   Turning on this service does not give Google or Anthropic any access to your content.
@@ -88395,7 +89028,7 @@ For the full feature list with Google Cloud availability, see [Features overview
 
 Claude Fable 5, Claude Opus 4.8, Claude Opus 4.7, Claude Opus 4.6, Claude Sonnet 5, and Claude Sonnet 4.6 have a [1M-token context window](/docs/en/build-with-claude/context-windows) on Agent Platform. Other Claude models, including Sonnet 4.5 and Sonnet 4 (deprecated), have a 200k-token context window.
 
-Agent Platform limits request payloads to 30 MB. When sending large documents or many images, you may reach this limit before the token limit.
+Agent Platform limits request payloads to 30 MB. When sending large documents or many images, you might reach this limit before the token limit.
 
 ## Global, multi-region, and regional endpoints
 
@@ -89233,7 +89866,7 @@ AWS publishes token-generator libraries for [JavaScript](https://github.com/aws/
 
 Pass the generated token to the SDK the same way you'd pass an AWS Console-generated API key:
 
-<CodeGroup>
+<CodeGroup exclude="shell, csharp, go, php, ruby">
   ```python Python
   from token_generator_for_aws_external_anthropic import TokenGenerator
   from anthropic import AnthropicAWS
@@ -90289,7 +90922,7 @@ See [Tools](/docs/en/managed-agents/tools) for the full list and configuration o
 ## Beta access
 
 <Note>
-  Claude Managed Agents is currently in beta. All Managed Agents endpoints require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically. Behaviors may be refined between releases to improve outputs.
+  Claude Managed Agents is in beta. All Managed Agents endpoints require the `managed-agents-2026-04-01` beta header. The SDK sets the beta header automatically. Behaviors may be refined between releases to improve outputs.
 </Note>
 
 To get started, you need:
@@ -90350,7 +90983,7 @@ This guide walks you through creating an agent, setting up an environment, start
     For Linux environments, download the release binary directly.
 
     ```bash
-    VERSION=1.15.0
+    VERSION=1.17.0
     OS=$(uname -s | tr '[:upper:]' '[:lower:]')
     case $(uname -m) in
       x86_64) ARCH=amd64 ;;
@@ -90401,7 +91034,7 @@ ant --version
 
   <Tab title="Java">
     ```groovy Gradle
-    implementation("com.anthropic:anthropic-java:2.47.1")
+    implementation("com.anthropic:anthropic-java:2.48.0")
     ```
   </Tab>
 
@@ -91826,7 +92459,7 @@ Claude Managed Agents supports connecting [Model Context Protocol (MCP)](https:/
 MCP configuration is split across two steps:
 
 1. **Agent creation** declares which MCP servers the agent connects to, by name and URL.
-2. **Session creation** supplies auth for those servers by referencing a pre-registered [vault](/docs/en/managed-agents/vaults).
+2. **Session creation** supplies authentication for those servers by referencing a pre-registered [vault](/docs/en/managed-agents/vaults).
 
 This separation keeps secrets out of reusable agent definitions while letting each session authenticate with its own credentials.
 
@@ -95036,7 +95669,7 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
             For Linux environments, download the release binary directly.
 
             ```bash
-            VERSION=1.15.0
+            VERSION=1.17.0
             OS=$(uname -s | tr '[:upper:]' '[:lower:]')
             case $(uname -m) in
               x86_64) ARCH=amd64 ;;
@@ -95075,7 +95708,7 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
 
         ```text
         FROM your-base-image
-        ARG ANT_VERSION=1.15.0
+        ARG ANT_VERSION=1.17.0
         ARG TARGETARCH
         RUN ARCH=$([ "$TARGETARCH" = "arm64" ] && echo arm64 || echo amd64) && \
             curl -fsSL "https://github.com/anthropics/anthropic-cli/releases/download/v${ANT_VERSION}/ant_${ANT_VERSION}_linux_${ARCH}.tar.gz" \
@@ -95113,7 +95746,7 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
       <Step title="Run the worker">
         `EnvironmentWorker` claims work items assigned to the environment, downloads skills, executes tool calls in the working directory, and posts results back. Authenticate with the environment key you generated in [Before you begin](#before-you-begin).
 
-        <CodeGroup>
+        <CodeGroup exclude="shell">
           ```python Python
           import asyncio
           import os
@@ -95228,7 +95861,7 @@ Choose **always-on** for the simplest setup: a long-running process polls the qu
       <Step title="Implement the webhook handler">
         `EnvironmentWorker` claims the work item, downloads skills, executes tool calls in the working directory, posts results back, and exits. Invoke it when `session.status_run_started` fires.
 
-        <CodeGroup>
+        <CodeGroup exclude="shell">
           ```python Python
           import os
           import anthropic
@@ -95581,7 +96214,7 @@ EnvironmentWorker(client, ..., tools=lambda env: [beta_bash_tool(env), my_custom
 
 **With `work.poller()` and `tool_runner()`:** pass a tool list as `tools` to `client.beta.sessions.events.tool_runner()`. To build that list, set up `AgentToolContext` yourself and call `beta_agent_toolset_20260401(env)`:
 
-<CodeGroup>
+<CodeGroup exclude="shell">
   ```python Python
   from anthropic.lib.tools.agent_toolset import (
       AgentToolContext,
@@ -95773,7 +96406,7 @@ See [Self-hosted worker](/docs/en/managed-agents/reference#self-hosted-worker) i
   <Step title="Register the implementation with the worker">
     Pass the tool through the worker's `tools` factory (see [SDK helpers](#sdk-helpers)), alongside the built-in toolset:
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       import asyncio
       import os
@@ -95940,7 +96573,7 @@ The SDKs' [Client-side MCP helpers](/docs/en/agents-and-tools/mcp-connector#clie
   <Step title="Declare the server's tools on the agent">
     List the MCP server's tools and declare each one as a `custom` tool; the MCP `name`, `description`, and `inputSchema` map one to one onto the custom tool's fields. If the server paginates its tool list, declare every page; the worker must list the same pages.
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       import asyncio
       from typing import Any, cast
@@ -96155,7 +96788,7 @@ The SDKs' [Client-side MCP helpers](/docs/en/agents-and-tools/mcp-connector#clie
   <Step title="Serve the tools from the worker">
     Connect to the same MCP server at startup, convert its tools with the MCP helpers, and register them alongside the built-in toolset. Keep one MCP session open for the life of the worker.
 
-    <CodeGroup>
+    <CodeGroup exclude="shell">
       ```python Python
       import asyncio
       import os
@@ -96240,8 +96873,7 @@ The SDKs' [Client-side MCP helpers](/docs/en/agents-and-tools/mcp-connector#clie
       ```
 
       ```csharp C#
-      // EnvironmentWorker and the client-side MCP helpers are not currently
-      // available in the C# SDK.
+      // EnvironmentWorker is not currently available in the C# SDK.
       ```
 
       ```go Go
@@ -104264,8 +104896,8 @@ Use the [Files API](/docs/en/build-with-claude/files) to list files scoped to a 
       scope_id="sesn_abc123",
       betas=["managed-agents-2026-04-01"],
   )
-  for f in files:
-      print(f.id, f.filename)
+  for file in files:
+      print(file.id, file.filename)
 
   # Download a file
   content = client.beta.files.download(files.data[0].id)
@@ -104278,8 +104910,8 @@ Use the [Files API](/docs/en/build-with-claude/files) to list files scoped to a 
     scope_id: "sesn_abc123",
     betas: ["managed-agents-2026-04-01"]
   });
-  for (const f of files.data) {
-    console.log(f.id, f.filename);
+  for (const file of files.data) {
+    console.log(file.id, file.filename);
   }
 
   // Download a file
@@ -104560,7 +105192,7 @@ The dream produces another **output memory store**, separate from the input. The
   ```
 </CodeGroup>
 
-Dreaming inputs include the pre-existing memory store and an array of sessions. The model selected will run the dreaming pipeline; during the research preview `claude-fable-5`, `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-5`, and `claude-sonnet-4-6` are supported. You can optionally pass `instructions` to steer the dreaming process; see [Steer with instructions](#steer-with-instructions).
+Dreaming inputs include the pre-existing memory store and an array of sessions. The selected model runs the dreaming pipeline; during the research preview `claude-fable-5`, `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-5`, and `claude-sonnet-4-6` are supported. You can optionally pass `instructions` to steer the dreaming process; see [Steer with instructions](#steer-with-instructions).
 
 The response is the full `dream` resource with `status: "pending"`:
 
@@ -104858,7 +105490,7 @@ When `status` reaches `completed`, the `memory_store` entry in `outputs[]` refer
   ```
 </CodeGroup>
 
-The dream itself never deletes or modifies its inputs. On `failed` or `canceled` the output store persists with partial contents so you can inspect what was produced before stopping; clean it up via the Memory Stores API if you don't need it.
+The dream itself never deletes or modifies its inputs. On `failed` or `canceled` the output store persists with partial contents so you can inspect what was produced before stopping; clean it up through the Memory Stores API if you don't need it.
 
 <Warning>
   While a dream is `pending` or `running`, archiving or deleting its output store is rejected with a 400. Archiving or deleting an *input* store or session mid-run will cause the dream to fail with `input_memory_store_unavailable` or `input_session_unavailable`.
@@ -104964,7 +105596,7 @@ Archive sets `archived_at` on a dream that has reached a terminal state (`comple
   ```
 </CodeGroup>
 
-Archiving a dream does not touch its output memory store; manage that separately via the [Memory Stores API](/docs/en/managed-agents/memory).
+Archiving a dream does not touch its output memory store; manage that separately through the [Memory Stores API](/docs/en/managed-agents/memory).
 
 ## List dreams
 
@@ -105037,7 +105669,7 @@ Returns all non-archived dreams in the workspace, newest first. Use `limit` (def
 
 ## Errors
 
-A non-exhaustive list of possible dreaming errors is below.
+A non-exhaustive list of possible dreaming errors follows.
 
 | `error.type`                      | When                                                                                            |
 | --------------------------------- | ----------------------------------------------------------------------------------------------- |
@@ -105060,7 +105692,7 @@ Dreams are billed at standard API token rates for the model you select; `usage` 
 | `instructions` length | 4,096 characters                                                                               |
 | Supported models      | `claude-fable-5`, `claude-opus-4-8`, `claude-opus-4-7`, `claude-sonnet-5`, `claude-sonnet-4-6` |
 
-Default rate limits apply to dream creation while this feature is in beta. [Contact support](https://support.claude.com) if you need higher limits.
+Default rate limits apply to dream creation while this feature is in research preview. [Contact support](https://support.claude.com) if you need higher limits.
 
 
 ---
@@ -106392,7 +107024,7 @@ To permanently remove a store along with all of its memories and versions, use [
 
 When a store reaches its 2,000-memory limit, writes to new memories fail: both direct `memories.create` calls and the agent's file writes to unmapped paths. Existing memories remain readable and editable. The following practices help you stay well under the limit and recover gracefully if you reach it.
 
-* **Use focused stores.** Rather than one large general-purpose store, use smaller purpose-built stores — one per user, one for shared domain knowledge, and one for project-specific context. Each store has its own 2,000-memory limit, so keeping stores scoped reduces the chance any single one fills up.
+* **Use focused stores.** Rather than one large general-purpose store, use smaller purpose-built stores: one per user, one for shared domain knowledge, and one for project-specific context. Each store has its own 2,000-memory limit, so keeping stores scoped reduces the chance any single one fills up.
 
 * **Condense or prune before the store fills up.** Delete stale or redundant memories with `memories.delete`. You can also run a [dreaming session](/docs/en/managed-agents/dreams), which consolidates fragmented content into a separate new output store rather than modifying the original. Switch your sessions over to that output store, then archive or delete the original.
 
@@ -109656,9 +110288,9 @@ Create and manage workspaces in the [Claude Console](/settings/workspaces).
 
 To modify a workspace's name or color:
 
-1. Select the workspace from the list
-2. Click the ellipsis menu (**...**) and choose **Edit details**
-3. Update the name or color and save your changes
+1. Select the workspace from the list.
+2. Click the ellipsis menu (**...**) and choose **Edit details**.
+3. Update the name or color and save your changes.
 
 <Note>
   The Default Workspace cannot be renamed or deleted.
@@ -109666,10 +110298,10 @@ To modify a workspace's name or color:
 
 #### Add members to a workspace
 
-1. Navigate to the workspace's **Members** tab
-2. Click **Add to Workspace**
-3. Select an organization member and assign them a [workspace role](#workspace-roles-and-permissions)
-4. Confirm the addition
+1. Navigate to the workspace's **Members** tab.
+2. Click **Add to Workspace**.
+3. Select an organization member and assign them a [workspace role](#workspace-roles-and-permissions).
+4. Confirm the addition.
 
 To remove a member, click the trash icon next to their name.
 
@@ -110066,7 +110698,7 @@ Create an Admin API key for your Claude Console or Claude Enterprise organizatio
 
 ---
 
-An Admin API key authenticates every API in the **Admin** section of this guide (the [Admin API](/docs/en/manage-claude/admin-api), [Analytics APIs](/docs/en/manage-claude/analytics-api), [Compliance API](/docs/en/manage-claude/compliance-api), [Spend Limits API](/docs/en/manage-claude/spend-limits-api), [Usage and Cost API](/docs/en/manage-claude/usage-cost-api), and [Rate Limits API](/docs/en/manage-claude/rate-limits-api)), with one exception: the Admin API's service-account, federation-issuer, and federation-rule endpoints accept only an OAuth bearer token with the `org:admin` scope; see [Obtain an OAuth bearer token](/docs/en/manage-claude/admin-api#oauth-bearer-token). You do not need a separate key for each API.
+An Admin API key authenticates every API in the **Admin** section of this guide: the [Admin API](/docs/en/manage-claude/admin-api), [Analytics APIs](/docs/en/manage-claude/analytics-api), [Compliance API](/docs/en/manage-claude/compliance-api), [Spend Limits API](/docs/en/manage-claude/spend-limits-api), [Usage and Cost API](/docs/en/manage-claude/usage-cost-api), and [Rate Limits API](/docs/en/manage-claude/rate-limits-api). You do not need a separate key for each API. The one exception is the Admin API's service-account, federation-issuer, and federation-rule endpoints, which accept only an OAuth bearer token with the `org:admin` scope. See [Obtain an OAuth bearer token](/docs/en/manage-claude/admin-api#oauth-bearer-token).
 
 Where you create the key depends on which Claude product your organization uses.
 
@@ -110183,7 +110815,7 @@ The Admin API lets you create and manage [Workload Identity Federation](/docs/en
 
 ## Prerequisites
 
-Every request on this page authenticates with an OAuth bearer token that carries the `org:admin` scope. The scope is granted only to organization members with the admin, owner, or primary owner role, and it grants access to the whole organization: any workspace binding is ignored. There are two ways to obtain a token, and they carry different permissions: a token from your own login acts as a user, while a federated token acts as a service account and cannot perform every operation on this page.
+Every request on this page authenticates with an OAuth bearer token that carries the `org:admin` scope. The scope is granted only to organization members with the admin, owner, or primary owner role, and it grants access to the whole organization: any workspace binding is ignored. There are two ways to obtain a token, and they carry different permissions: a token from your own login acts as a user, whereas a federated token acts as a service account and cannot perform every operation on this page.
 
 ### Interactive (your terminal)
 
@@ -110556,11 +111188,11 @@ For complete parameter details and response schemas, see the [Service accounts A
 
 The `issuer_url`, `jwks.discovery_base`, and `jwks.url` fields are validated:
 
-| Constraint | Detail                                                                                                                    |
-| ---------- | ------------------------------------------------------------------------------------------------------------------------- |
-| Scheme     | Must be `https`.                                                                                                          |
-| Port       | Must be `443` (explicit or default).                                                                                      |
-| Host       | Must be a public DNS host name for your OIDC provider. Must resolve to public IP addresses; IP literals are not accepted. |
+| Constraint | Detail                                                                                                                   |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Scheme     | Must be `https`.                                                                                                         |
+| Port       | Must be `443` (explicit or default).                                                                                     |
+| Host       | Must be a public DNS hostname for your OIDC provider. Must resolve to public IP addresses; IP literals are not accepted. |
 
 URL validation failures return `400 invalid_request_error` with the field name as a prefix on the error message (for example, `issuer_url: url must use https scheme`).
 
@@ -110738,7 +111370,7 @@ An issuer has two pieces of configuration:
 * **Issuer URL:** The exact `iss` claim value that appears in the provider's JWTs, for example `https://token.actions.githubusercontent.com` or `https://oidc.eks.us-west-2.amazonaws.com/id/EXAMPLE`.
 * **JWKS source:** How Anthropic fetches the public keys to verify JWT signatures. Use `discovery` (the default) for any provider that serves `/.well-known/openid-configuration` at its issuer URL. Use `explicit_url` to point at a JWKS endpoint directly, or `inline` to upload the key set for issuers that are not reachable from the public internet (for example, a private Kubernetes cluster).
 
-Issuer and JWKS URLs must be `https`, on port 443, and use a public DNS host name that resolves to public IP addresses; IP literals are not accepted. These constraints apply only to URLs Anthropic fetches; in `explicit_url` and `inline` modes the `issuer_url` is compared as a string and may reference an internal hostname.
+Issuer and JWKS URLs must be `https`, on port 443, and use a public DNS hostname that resolves to public IP addresses; IP literals are not accepted. These constraints apply only to URLs Anthropic fetches; in `explicit_url` and `inline` modes the `issuer_url` is compared as a string and may reference an internal hostname.
 
 You typically register one issuer per environment: your production EKS cluster, your staging cluster, and GitHub Actions are three separate issuers.
 
@@ -115029,7 +115661,7 @@ The Anthropic SDKs can either read the JWT-SVID from the file that spiffe-helper
   <Tab title="Callable through the SPIFFE Workload API">
     Workloads that link a SPIFFE Workload API client directly can skip spiffe-helper and pass the SDK a callable that fetches a fresh JWT-SVID from the agent socket. The SDK invokes the callable before each token exchange, so the workload always presents an unexpired SVID. Python ([py-spiffe](https://github.com/HewlettPackard/py-spiffe)) and Go ([go-spiffe](https://github.com/spiffe/go-spiffe)) have mature Workload API clients.
 
-    <CodeGroup>
+    <CodeGroup exclude="shell, typescript, java, csharp, php, ruby">
       ```python Python
       import os
       import anthropic
@@ -115386,7 +116018,7 @@ Track Claude Code usage, productivity metrics, and developer activity across you
 
 ### Key concepts
 
-* **Daily aggregation**: Returns metrics for a single day specified by the `starting_at` parameter
+* **Daily aggregation:** Returns metrics for a single day specified by the `starting_at` parameter
 * **User-level data**: Each record represents one user's activity for the specified day
 * **Productivity metrics**: Track sessions, lines of code, commits, pull requests, and tool usage
 * **Token and cost data**: Monitor usage and estimated costs broken down by Claude model
@@ -115438,7 +116070,7 @@ Each response record contains the following metrics for a single user on a singl
 
 #### Dimensions
 
-* **date**: Date in RFC 3339 format (UTC timestamp)
+* **date:** Date in RFC 3339 format (UTC timestamp)
 * **actor**: The user or API key that performed the Claude Code actions (either `user_actor` with `email_address` or `api_actor` with `api_key_name`)
 * **organization\_id**: Organization UUID
 * **customer\_type**: Type of customer account (`api` for API customers, `subscription` for Pro/Team customers)
@@ -115465,7 +116097,7 @@ Breakdown of tool action acceptance and rejection rates by tool type:
 
 For each Claude model used:
 
-* **model**: Claude model identifier (e.g., `claude-opus-4-8`)
+* **model:** Claude model identifier (for example, `claude-opus-4-8`)
 * **tokens.input/output**: Input and output token counts for this model
 * **tokens.cache\_read/cache\_creation**: Cache-related token usage for this model
 * **estimated\_cost.amount**: Estimated cost in cents USD for this model
@@ -115548,7 +116180,7 @@ The cursor encodes the position of the last record and ensures stable pagination
 
 ## Common use cases
 
-* **Executive dashboards**: Create high-level reports showing Claude Code impact on development velocity
+* **Executive dashboards:** Create high-level reports showing Claude Code impact on development velocity
 * **AI tool comparison**: Export metrics to compare Claude Code with other AI coding tools like Copilot and Cursor
 * **Developer productivity analysis**: Track individual and team productivity metrics over time
 * **Cost tracking and allocation**: Monitor spending patterns and allocate costs by team or project
@@ -115580,7 +116212,7 @@ Historical Claude Code analytics data is retained and accessible through the API
 
 ### Which Claude Code deployments are supported?
 
-This API only tracks Claude Code usage on the Claude API. Usage through [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws), [Claude in Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry), [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), or [Claude on Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai) is not included.
+This API only tracks Claude Code usage on the Claude API. Usage through [Claude in Amazon Bedrock](/docs/en/build-with-claude/claude-in-amazon-bedrock), [Claude in Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry), [Claude on Google Cloud](/docs/en/build-with-claude/claude-on-vertex-ai), or [Claude Platform on AWS](/docs/en/build-with-claude/claude-platform-on-aws) is not included.
 
 ### What does it cost to use this API?
 
@@ -116170,11 +116802,11 @@ The Usage & Cost Admin API provides programmatic and granular access to historic
 
 This API enables you to better monitor, analyze, and optimize your Claude implementations:
 
-* **Accurate Usage Tracking:** Get precise token counts and usage patterns instead of relying solely on response token counting
-* **Cost Reconciliation:** Match internal records with Anthropic billing for finance and accounting teams
-* **Product performance and improvement:** Monitor product performance while measuring if changes to the system have improved it, or setup alerting
+* **Accurate usage tracking:** Get precise token counts and usage patterns instead of relying solely on response token counting
+* **Cost reconciliation:** Match internal records with Anthropic billing for finance and accounting teams
+* **Product performance and improvement:** Monitor product performance while measuring if changes to the system have improved it, or set up alerting
 * **[Rate limit](/docs/en/api/rate-limits) optimization:** Optimize features like [prompt caching](/docs/en/build-with-claude/prompt-caching) or specific prompts to make the most of your allocated capacity.
-* **Advanced Analysis:** Perform deeper data analysis than what's available in Console
+* **Advanced analysis:** Perform deeper data analysis than what's available in Console
 
 <Check>
   **Admin API key required.** These endpoints require an Admin API key, which is different from a standard Claude API key. See [Create an Admin API key](/docs/en/manage-claude/admin-api-keys) to find where to create one for your organization type and which scopes to select.
@@ -116252,10 +116884,10 @@ Track token consumption across your organization with detailed breakdowns by mod
 
 ### Key concepts
 
-* **Time buckets**: Aggregate usage data in fixed intervals (`1m`, `1h`, or `1d`)
-* **Token tracking**: Measure uncached input, cached input, cache creation, and output tokens
-* **Filtering & grouping**: Filter by API key, workspace, model, service tier, context window, [data residency](/docs/en/manage-claude/data-residency), or speed (beta), and group results by these dimensions
-* **Server tool usage**: Track usage of server-side tools like web search
+* **Time buckets:** Aggregate usage data in fixed intervals (`1m`, `1h`, or `1d`)
+* **Token tracking:** Measure uncached input, cached input, cache creation, and output tokens
+* **Filtering & grouping:** Filter by API key, workspace, model, service tier, context window, [data residency](/docs/en/manage-claude/data-residency), or speed (beta), and group results by these dimensions
+* **Server tool usage:** Track usage of server-side tools like web search
 
 For complete parameter details and response schemas, see the [Usage API reference](/docs/en/api/admin-api/usage-cost/get-messages-usage-report).
 
@@ -116342,7 +116974,7 @@ bucket_width=1d" \
 
 #### Fast mode (research preview)
 
-Track [fast mode](/docs/en/build-with-claude/fast-mode) usage by grouping and filtering with the `speed` dimension. This is useful for monitoring standard vs. fast mode usage.
+Track [fast mode](/docs/en/build-with-claude/fast-mode) usage by grouping and filtering with the `speed` dimension. This is useful for monitoring standard versus fast mode usage.
 
 ```bash cURL
 curl "https://api.anthropic.com/v1/organizations/usage_report/messages?\
@@ -116376,7 +117008,7 @@ bucket_width=1d" \
 
 ### Time granularity limits
 
-| Granularity | Default Limit | Maximum Limit | Use Case               |
+| Granularity | Default limit | Maximum limit | Use case               |
 | ----------- | ------------- | ------------- | ---------------------- |
 | `1m`        | 60 buckets    | 1440 buckets  | Real-time monitoring   |
 | `1h`        | 24 buckets    | 168 buckets   | Daily patterns         |
@@ -116388,10 +117020,10 @@ Retrieve service-level cost breakdowns in USD with the `/v1/organizations/cost_r
 
 ### Key concepts
 
-* **Currency**: All costs in USD, reported as decimal strings in lowest units (cents)
-* **Cost types**: Track token usage, web search, and code execution costs
-* **Grouping**: Group costs by workspace or description for detailed breakdowns. When grouping by `description`, responses include parsed fields like `model` and `inference_geo`
-* **Time buckets**: Daily granularity only (`1d`)
+* **Currency:** All costs in USD, reported as decimal strings in lowest units (cents)
+* **Cost types:** Track token usage, web search, and code execution costs
+* **Grouping:** Group costs by workspace or description for detailed breakdowns. When grouping by `description`, responses include parsed fields like `model` and `inference_geo`
+* **Time buckets:** Daily granularity only (`1d`)
 
 For complete parameter details and response schemas, see the [Cost API reference](/docs/en/api/admin-api/usage-cost/get-cost-report).
 
@@ -116444,7 +117076,7 @@ page=page_xyz..." \
 
 Explore detailed implementations in [Claude Cookbook](https://platform.claude.com/cookbooks):
 
-* **Daily usage reports**: Track token consumption trends
+* **Daily usage reports:** Track token consumption trends
 * **Cost attribution**: Allocate expenses by workspace for chargebacks
 * **Cache efficiency**: Measure and optimize prompt caching
 * **Budget monitoring**: Set up alerts for spending thresholds
@@ -116760,7 +117392,7 @@ Learn about how Anthropic's APIs and associated features retain data, including 
 
 ---
 
-This page covers the Claude API (`api.anthropic.com`) and Claude Platform on AWS, where Anthropic is the data processor. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, the cloud provider is the data processor; refer to those platforms' data retention and compliance documentation for their equivalent controls.
+This page covers the Claude API (`api.anthropic.com`), Claude Platform on AWS, and [Claude in Microsoft Foundry](/docs/en/build-with-claude/claude-in-microsoft-foundry), where Anthropic is the data processor. On Amazon Bedrock and Google Cloud's Agent Platform, the cloud provider is the data processor; refer to those platforms' data retention and compliance documentation for their equivalent controls.
 
 Anthropic offers two data handling arrangements for the Claude API: [zero data retention (ZDR)](#zero-data-retention-zdr-scope) and [HIPAA readiness](#hipaa-readiness). The [feature eligibility table](#feature-eligibility) lists which API features each arrangement covers. For Anthropic's standard retention policies outside these arrangements, see the [commercial data retention policy](https://privacy.claude.com/en/articles/7996866-how-long-do-you-store-my-organization-s-data) and the [consumer data retention policy](https://privacy.claude.com/en/articles/10023548-how-long-do-you-store-my-data).
 
@@ -116891,7 +117523,7 @@ Claude Fable 5 and Claude Mythos 5 are designated [Covered Models](https://suppo
 }
 ```
 
-The 30-day data retention requirement applies wherever Covered Models are offered. On the Claude API (including Claude Platform on AWS), Anthropic handles retained data. On Amazon Bedrock, Google Cloud's Agent Platform, and Microsoft Foundry, retained data stays within your cloud provider's environment; review each platform's documentation for enablement steps.
+The 30-day data retention requirement applies wherever Covered Models are offered. On the Claude API (including Claude Platform on AWS), Anthropic handles retained data. On Amazon Bedrock and Google Cloud's Agent Platform, retained data stays within your cloud provider's environment; review each platform's documentation for enablement steps.
 
 ### Enable 30-day retention for a workspace
 
@@ -117356,10 +117988,10 @@ arn:aws:iam::915198916910:role/anthropic-cmek-client-us
     The `EncryptionContext` condition is recommended but optional. Anthropic always includes your workspace's compartment ID in the encryption context, so ciphertext is cryptographically bound to that compartment regardless. Adding the condition provides defense-in-depth at the IAM layer. To start without it, omit the `Condition` block from the `AllowAnthropicCMEKCrypto` statement and add it later with `kms:PutKeyPolicy`.
 
     <Note>
-      **Finding your compartment ID:** Each workspace has a compartment ID that scopes its CMEK data. Find it in the Claude Console under **Workspace > Security > Encryption keys** (the **Compartment ID** field), or read the `compartment_id` field returned by the [Get Workspace](/docs/en/api/admin-api/workspaces/get-workspace) endpoint. Substitute that value for `<compartment-uuid>` in the key policy above. Anthropic also sends it as the encryption context when validating the key, so the condition value must match for validation to succeed.
+      **Finding your compartment ID:** Each workspace has a compartment ID that scopes its CMEK data. Find it in the Claude Console under **Workspace > Security > Encryption keys** (the **Compartment ID** field), or read the `compartment_id` field returned by the [Get Workspace](/docs/en/api/admin-api/workspaces/get-workspace) endpoint. Substitute that value for `<compartment-uuid>` in the preceding key policy. Anthropic also sends it as the encryption context when validating the key, so the condition value must match for validation to succeed.
     </Note>
 
-    You can also create the key from the AWS Console. Choose a symmetric key with the encrypt and decrypt key usage, a single-region key, and KMS key material origin. The Create-key wizard commits a key policy at its **Review** step: if you add Anthropic's account ID `915198916910` under key usage permissions there, the generated policy grants the whole Anthropic account broader actions (such as `kms:ReEncrypt*` and `kms:GenerateDataKey*`) with no `EncryptionContext` condition, and validation would still succeed against it. To avoid leaving an over-permissive key, finish the wizard with administrative permissions only, then open the key's **Key policy** tab and replace the JSON with the role-scoped policy shown above (the three statements scoped to the `anthropic-cmek-client-us` role, with the `EncryptionContext` condition).
+    You can also create the key from the AWS Console. Choose a symmetric key with the encrypt and decrypt key usage, a single-region key, and KMS key material origin. The Create-key wizard commits a key policy at its **Review** step: if you add Anthropic's account ID `915198916910` under key usage permissions there, the generated policy grants the whole Anthropic account broader actions (such as `kms:ReEncrypt*` and `kms:GenerateDataKey*`) with no `EncryptionContext` condition, and validation would still succeed against it. To avoid leaving an over-permissive key, finish the wizard with administrative permissions only, then open the key's **Key policy** tab and replace the JSON with the role-scoped policy shown earlier (the three statements scoped to the `anthropic-cmek-client-us` role, with the `EncryptionContext` condition).
 
     <Frame caption="Configure key: symmetric, encrypt and decrypt, single-region key.">
       ![AWS KMS Create key wizard on the Configure key step, with Symmetric key type, Encrypt and decrypt key usage, and Single-Region key selected.](/docs/images/cmek/aws-configure-key.png)
@@ -117373,8 +118005,8 @@ arn:aws:iam::915198916910:role/anthropic-cmek-client-us
       ![AWS KMS Define key administrative permissions step listing IAM roles that can administer the key.](/docs/images/cmek/aws-admin-permissions.png)
     </Frame>
 
-    <Frame caption="Do not add Anthropic's account ID here. This wizard step produces an over-permissive policy. Leave usage permissions empty and edit the Key policy JSON after creation (see above).">
-      ![AWS KMS Define key usage permissions step shown as an anti-pattern: adding Anthropic's account ID 915198916910 under Other AWS accounts here yields an over-permissive policy. Skip this step and leave it empty.](/docs/images/cmek/aws-usage-permissions.png)
+    <Frame caption="Do not add Anthropic's account ID here. This wizard step produces an over-permissive policy. Leave usage permissions empty and edit the Key policy JSON after creation (see the preceding key policy).">
+      ![AWS KMS Define key usage permissions step with Anthropic's account ID entered under Other AWS accounts.](/docs/images/cmek/aws-usage-permissions.png)
     </Frame>
   </Step>
 </Steps>
@@ -117504,7 +118136,7 @@ This guide walks through configuring an Azure Key Vault key as a [customer-manag
 
 ## Anthropic app information
 
-In order to have Anthropic use your encryption key, you must configure an Anthropic multitenant application ID and display name. Those values are:
+To have Anthropic use your encryption key, you must configure an Anthropic multitenant application ID and display name. Those values are:
 
 | Field                          | Value                                  |
 | ------------------------------ | -------------------------------------- |
@@ -117737,7 +118369,7 @@ This guide walks through configuring a Google Cloud KMS key as a [customer-manag
 
 ## Anthropic service account email
 
-In order to have Anthropic use your encryption key, you must give Anthropic's service account a key it can use for encrypting data. The service account email for Anthropic CMEK is:
+To have Anthropic use your encryption key, you must give Anthropic's service account a key it can use for encrypting data. The service account email for Anthropic CMEK is:
 
 ```text wrap
 anthropic-cmek-client-us@gcp-anthropic-cmek-clients.iam.gserviceaccount.com
@@ -117748,7 +118380,7 @@ anthropic-cmek-client-us@gcp-anthropic-cmek-clients.iam.gserviceaccount.com
 </Warning>
 
 <Note>
-  **Domain restricted sharing:** If your project is under a Google Cloud organization that enforces `constraints/iam.allowedPolicyMemberDomains`, the IAM bindings below are rejected because the Anthropic service account is outside your organization. You need either a project-level carve-out on that constraint, or to add Anthropic's Cloud Identity customer ID (format `C0xxxxxxxx`) to the allowed list. Contact Anthropic for the customer ID if needed.
+  **Domain restricted sharing:** If your project is under a Google Cloud organization that enforces `constraints/iam.allowedPolicyMemberDomains`, the following IAM bindings are rejected because the Anthropic service account is outside your organization. You need either a project-level carve-out on that constraint, or to add Anthropic's Cloud Identity customer ID (format `C0xxxxxxxx`) to the allowed list. Contact Anthropic for the customer ID if needed.
 </Note>
 
 ## Encryption key setup
@@ -117897,7 +118529,7 @@ How you register the key depends on which product you use.
         If validation fails, common causes are:
 
         * **VPC Service Controls:** if a service perimeter protects Cloud KMS in your project, add Anthropic to an access level on the perimeter (or exclude the key's project) so Anthropic can reach the key.
-        * **Domain restricted sharing:** the `constraints/iam.allowedPolicyMemberDomains` org policy can strip the Anthropic service account binding (see the note above). Confirm the binding is present with `gcloud kms keys get-iam-policy <your-key-name> --project=<your-project-id> --location=<region> --keyring=<your-keyring-name>`.
+        * **Domain restricted sharing:** the `constraints/iam.allowedPolicyMemberDomains` org policy can strip the Anthropic service account binding (see the earlier note). Confirm the binding is present with `gcloud kms keys get-iam-policy <your-key-name> --project=<your-project-id> --location=<region> --keyring=<your-keyring-name>`.
         * **Disabled or destroyed key version:** confirm the key's primary version is enabled, and not disabled, scheduled for destruction, or destroyed.
       </Step>
 
@@ -118034,7 +118666,7 @@ These features remain available, but their data is not encrypted under your key.
 
 * Claude Code Desktop, Claude Code on the web, and Claude in Slack. Anthropic recommends disabling any of these that are not appropriate for your use case in the admin console.
 * Beta and research preview features may not be covered by CMEK and can break in CMEK organizations, for example Claude Security and Claude Design.
-* On-demand data export under Settings > Privacy.
+* On-demand data export under **Settings** > **Privacy**.
 
 On both products, account data for users in your organization (such as names, email addresses, and profile pictures) is not encrypted under your key.
 
@@ -118781,7 +119413,7 @@ anthropic-ratelimit-requests-reset: 2026-04-21T14:38:25Z
 
 **Fix:** Wait the number of seconds in the `retry-after` header, then retry. If the header is absent (for example, stripped by an intermediary), fall back to exponential backoff (start at 1 second, double up to 60 seconds). Do not advance your pagination cursor on a 429: the failed request returned no data, so the cursor from the last successful page is still correct.
 
-Requests that fail authentication (a missing or unrecognized key, or a Claude API key rather than a Compliance Access Key or Admin API key) reject before the rate limiter and do not consume quota. A valid key that lacks the endpoint's required scope consumes one quota unit before the 403 is returned.
+Requests that fail authentication (a missing or unrecognized key, or a Claude API key rather than a Compliance Access Key or Admin API key) are rejected before the rate limiter and do not consume quota. A valid key that lacks the endpoint's required scope consumes one quota unit before the 403 is returned.
 
 If you poll the [Activity Feed](/docs/en/manage-claude/compliance-activity-feed) on a schedule, budget your aggregate request rate (across all keys, linked organizations, and concurrent workers) below the parent-organization limit. Watch `anthropic-ratelimit-requests-remaining` to slow down before you reach it. See [Design your compliance integration](/docs/en/manage-claude/compliance-integration-patterns#choose-a-feed-consumption-pattern) for choosing between window-polling and cursor-driven ingestion.
 
@@ -119024,7 +119656,7 @@ The [Get effective organization settings](/docs/en/api/compliance/organizations/
 This endpoint requires `read:compliance_org_data`; a key without that scope returns [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden). The target must be one of the parent's linked organizations: the parent organization itself is not a valid target. An unknown organization, an organization ID that is not a valid UUID, an organization outside your parent's tree, and a parent organization that does not yet have access to this endpoint all return the same [404 Not Found](/docs/en/manage-claude/compliance-errors#404-not-found), so a 404 does not reveal whether an organization exists. The settings endpoint is enabled per parent organization separately from the rest of the Compliance API; if every request returns 404, contact your Anthropic representative.
 
 <Note>
-  Before June 30, 2026, this endpoint required the separate `read:compliance_org_settings` scope. That scope has been retired: it can no longer be selected or granted when creating a key, and a key that carries only the retired scope returns [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden) — create a new Compliance Access Key with `read:compliance_org_data` instead.
+  Before June 30, 2026, this endpoint required the separate `read:compliance_org_settings` scope. That scope has been retired: it can no longer be selected or granted when creating a key, and a key that carries only the retired scope returns [403 Forbidden](/docs/en/manage-claude/compliance-errors#403-forbidden). Create a new Compliance Access Key with `read:compliance_org_data` instead.
 </Note>
 
 ```bash cURL

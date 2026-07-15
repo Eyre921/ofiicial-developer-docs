@@ -1,12 +1,11 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 357 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 371 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
 
 - `ask-ai` — [Ask AI](pages/ask-ai.md) · [原文](https://developers.deepgram.com/ask-ai.md)
-- `asyncapi.json` — [AsyncAPI JSON](pages/asyncapi.json.md) · [原文](https://developers.deepgram.com/asyncapi.json)
 - `asyncapi.yaml` — [AsyncAPI YAML](pages/asyncapi.yaml.md) · [原文](https://developers.deepgram.com/asyncapi.yaml)
 - `home` — [Welcome to Deepgram's Docs!](pages/home.md) · [原文](https://developers.deepgram.com/home.md)
 - `openapi.json` — [OpenAPI JSON](pages/openapi.json.md) · [原文](https://developers.deepgram.com/openapi.json)
@@ -93,6 +92,19 @@
 - `docs/find-and-replace` — [Find and Replace](pages/docs/find-and-replace.md) · [原文](https://developers.deepgram.com/docs/find-and-replace.md)
 - `docs/flux-self-hosted` — [Using the Flux Model](pages/docs/flux-self-hosted.md) · [原文](https://developers.deepgram.com/docs/flux-self-hosted.md)
 - `docs/flux-template-apps` — [Template Apps](pages/docs/flux-template-apps.md) · [原文](https://developers.deepgram.com/docs/flux-template-apps.md)
+- `docs/flux-tts/batch` — [Getting Started with Flux TTS Batch (REST)](pages/docs/flux-tts/batch.md) · [原文](https://developers.deepgram.com/docs/flux-tts/batch.md)
+- `docs/flux-tts/batch-vs-streaming` — [Batch vs Streaming: Which Should I Use?](pages/docs/flux-tts/batch-vs-streaming.md) · [原文](https://developers.deepgram.com/docs/flux-tts/batch-vs-streaming.md)
+- `docs/flux-tts/client-messages` — [Client Messages](pages/docs/flux-tts/client-messages.md) · [原文](https://developers.deepgram.com/docs/flux-tts/client-messages.md)
+- `docs/flux-tts/context` — [Cross-Turn Context](pages/docs/flux-tts/context.md) · [原文](https://developers.deepgram.com/docs/flux-tts/context.md)
+- `docs/flux-tts/feature-overview` — [Flux TTS Feature Overview](pages/docs/flux-tts/feature-overview.md) · [原文](https://developers.deepgram.com/docs/flux-tts/feature-overview.md)
+- `docs/flux-tts/migrating` — [Migrating from /v1/speak to Flux TTS](pages/docs/flux-tts/migrating.md) · [原文](https://developers.deepgram.com/docs/flux-tts/migrating.md)
+- `docs/flux-tts/overview` — [Flux TTS Overview](pages/docs/flux-tts/overview.md) · [原文](https://developers.deepgram.com/docs/flux-tts/overview.md)
+- `docs/flux-tts/quickstart` — [Getting Started with Flux TTS](pages/docs/flux-tts/quickstart.md) · [原文](https://developers.deepgram.com/docs/flux-tts/quickstart.md)
+- `docs/flux-tts/server-messages` — [Server Messages](pages/docs/flux-tts/server-messages.md) · [原文](https://developers.deepgram.com/docs/flux-tts/server-messages.md)
+- `docs/flux-tts/state` — [The Speech Lifecycle and State Machine](pages/docs/flux-tts/state.md) · [原文](https://developers.deepgram.com/docs/flux-tts/state.md)
+- `docs/flux-tts/template-apps` — [Template Apps](pages/docs/flux-tts/template-apps.md) · [原文](https://developers.deepgram.com/docs/flux-tts/template-apps.md)
+- `docs/flux-tts/voice-agent` — [Voice Agent Integration Patterns](pages/docs/flux-tts/voice-agent.md) · [原文](https://developers.deepgram.com/docs/flux-tts/voice-agent.md)
+- `docs/flux-tts/voices` — [Flux TTS Voices & Languages](pages/docs/flux-tts/voices.md) · [原文](https://developers.deepgram.com/docs/flux-tts/voices.md)
 - `docs/flux/agent` — [Build a Flux-enabled Voice Agent](pages/docs/flux/agent.md) · [原文](https://developers.deepgram.com/docs/flux/agent.md)
 - `docs/flux/close-stream` — [Close Stream](pages/docs/flux/close-stream.md) · [原文](https://developers.deepgram.com/docs/flux/close-stream.md)
 - `docs/flux/configuration` — [End-of-Turn Detection Parameters](pages/docs/flux/configuration.md) · [原文](https://developers.deepgram.com/docs/flux/configuration.md)
@@ -351,10 +363,12 @@
 - `reference/self-hosted/distribution-credentials/delete` — [Delete a Project Self-Hosted Distribution Credential](pages/reference/self-hosted/distribution-credentials/delete.md) · [原文](https://developers.deepgram.com/reference/self-hosted/distribution-credentials/delete.md)
 - `reference/self-hosted/distribution-credentials/get` — [Get a Project Self-Hosted Distribution Credential](pages/reference/self-hosted/distribution-credentials/get.md) · [原文](https://developers.deepgram.com/reference/self-hosted/distribution-credentials/get.md)
 - `reference/self-hosted/distribution-credentials/list` — [List Project Self-Hosted Distribution Credentials](pages/reference/self-hosted/distribution-credentials/list.md) · [原文](https://developers.deepgram.com/reference/self-hosted/distribution-credentials/list.md)
+- `reference/speak/v-2/audio/generate` — [Flux Text to Speech (batch)](pages/reference/speak/v-2/audio/generate.md) · [原文](https://developers.deepgram.com/reference/speak/v-2/audio/generate.md)
 - `reference/speech-to-text/listen-flux` — [Turn-based Audio (Flux)](pages/reference/speech-to-text/listen-flux.md) · [原文](https://developers.deepgram.com/reference/speech-to-text/listen-flux.md)
 - `reference/speech-to-text/listen-pre-recorded` — [Pre-Recorded Audio](pages/reference/speech-to-text/listen-pre-recorded.md) · [原文](https://developers.deepgram.com/reference/speech-to-text/listen-pre-recorded.md)
 - `reference/speech-to-text/listen-streaming` — [Live Audio](pages/reference/speech-to-text/listen-streaming.md) · [原文](https://developers.deepgram.com/reference/speech-to-text/listen-streaming.md)
 - `reference/text-intelligence/analyze-text` — [Analyze Text](pages/reference/text-intelligence/analyze-text.md) · [原文](https://developers.deepgram.com/reference/text-intelligence/analyze-text.md)
+- `reference/text-to-speech/speak-flux` — [Turn-based Speech (Flux)](pages/reference/text-to-speech/speak-flux.md) · [原文](https://developers.deepgram.com/reference/text-to-speech/speak-flux.md)
 - `reference/text-to-speech/speak-request` — [Single Text Request](pages/reference/text-to-speech/speak-request.md) · [原文](https://developers.deepgram.com/reference/text-to-speech/speak-request.md)
 - `reference/text-to-speech/speak-streaming` — [Continuous Text Stream](pages/reference/text-to-speech/speak-streaming.md) · [原文](https://developers.deepgram.com/reference/text-to-speech/speak-streaming.md)
 - `reference/voice-agent/agent-configurations/create-agent-configuration` — [Create Agent Configuration](pages/reference/voice-agent/agent-configurations/create-agent-configuration.md) · [原文](https://developers.deepgram.com/reference/voice-agent/agent-configurations/create-agent-configuration.md)

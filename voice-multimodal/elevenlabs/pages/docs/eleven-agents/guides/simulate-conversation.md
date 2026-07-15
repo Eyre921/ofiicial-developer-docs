@@ -8,6 +8,10 @@ path: docs/eleven-agents/guides/simulate-conversation
 
 # Simulate Conversations
 
+This guide and the endpoints it uses are deprecated. Use the
+[Simulation](/docs/eleven-agents/customization/agent-testing#simulation-testing) agent test type
+instead.
+
 ## Overview
 
 The ElevenLabs Agents API allows you to simulate and evaluate text-based conversations with your AI agent. This guide will teach you how to implement an end-to-end simulation testing workflow using the simulate conversation endpoints ([batch](/docs/api-reference/agents/simulate-conversation) and [streaming](/docs/api-reference/agents/simulate-conversation-stream)), enabling you to granularly test and improve your agent's performance to ensure it meets your interaction goals.

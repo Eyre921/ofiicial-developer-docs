@@ -34176,6 +34176,7 @@ try {
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)         | `tts-1`                  |
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)         | `tts-1-hd`               |
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)         | `gpt-4o-mini-tts`        |
+| [Mistral](/providers/ai-sdk-providers/mistral#speech-models)       | `voxtral-mini-tts-2603`  |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models) | `eleven_v3`              |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models) | `eleven_multilingual_v2` |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models) | `eleven_flash_v2_5`      |
@@ -51446,6 +51447,51 @@ The following optional provider options are available for Google Vertex models:
 
   Consult [Google's Documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/add-labels-to-api-calls) for usage details.
 
+- **imageConfig** _object_
+
+  Optional. Configuration for image generation. Only supported by Gemini image models.
+
+  See [Google's GenerationConfig documentation](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/reference/rest/v1/GenerationConfig) for usage details.
+  - **aspectRatio** _string_
+
+    Optional. The aspect ratio of generated images. Defaults to 1:1 squares, or to matching the output image size to that of an input image. Can be one of the following:
+    - 1:1
+    - 2:3
+    - 3:2
+    - 3:4
+    - 4:3
+    - 4:5
+    - 5:4
+    - 9:16
+    - 16:9
+    - 21:9
+
+  - **imageSize** _string_
+
+    Optional. Controls the output image resolution. Defaults to 1K. Can be one of the following:
+    - 1K
+    - 2K
+    - 4K
+
+  - **personGeneration** _string_
+
+    Optional. Controls the generation of people in images. Can be one of the following:
+    - `PERSON_GENERATION_UNSPECIFIED`
+    - `ALLOW_ALL`
+    - `ALLOW_ADULT`
+    - `ALLOW_NONE`
+
+  - **prominentPeople** _string_
+
+    Optional. Controls whether generation of prominent people (celebrities) is allowed. When set together with `personGeneration`, `personGeneration` takes precedence. Can be one of the following:
+    - `PROMINENT_PEOPLE_UNSPECIFIED`
+    - `ALLOW_PROMINENT_PEOPLE`
+    - `BLOCK_PROMINENT_PEOPLE`
+
+  - **imageOutputOptions** _\{ mimeType?: 'image/jpeg' | 'image/png', compressionQuality?: number \}_
+
+    Optional. The image output format for generated images.
+
 You can use Google Vertex language models to generate text with the `generateText` function:
 
 ```ts highlight="1,4"
@@ -53281,7 +53327,8 @@ description: Learn how to use Mistral.
 
 # Mistral AI Provider
 
-The [Mistral AI](https://mistral.ai/) provider contains language model support for the Mistral chat API.
+The [Mistral AI](https://mistral.ai/) provider contains language model,
+embedding model, and speech model support for Mistral APIs.
 
 ## Setup
 
@@ -53574,6 +53621,75 @@ const result = await generateObject({
   full list of available models. The table above lists popular models. You can
   also pass any available provider model ID as a string if needed.
 </Note>
+
+## Speech Models
+
+You can create models that call the
+[Mistral speech API](https://docs.mistral.ai/api/endpoint/audio/speech) using
+the `.speech()` factory method:
+
+```ts
+const model = mistral.speech('voxtral-mini-tts-2603');
+```
+
+Use a preset or saved voice ID with [`generateSpeech`](/docs/reference/ai-sdk-core/generate-speech):
+
+```ts
+import { mistral } from '@ai-sdk/mistral';
+import { generateSpeech } from 'ai';
+
+const result = await generateSpeech({
+  model: mistral.speech('voxtral-mini-tts-2603'),
+  text: 'Hello from the AI SDK!',
+  voice: 'en_paul_neutral',
+  outputFormat: 'mp3',
+});
+
+const audio = result.audio.uint8Array;
+```
+
+The Mistral speech model maps `voice` to Mistral's `voice_id`. It supports
+`mp3`, `wav`, `pcm`, `flac`, and `opus` output formats and defaults to `mp3`.
+The `instructions`, `speed`, and `language` settings are not supported and
+produce warnings when provided.
+
+Mistral also supports one-off voice cloning with base64-encoded reference
+audio. Pass it through `providerOptions.mistral.refAudio` and use
+`MistralSpeechModelOptions` for type checking:
+
+```ts highlight="9-13"
+import { readFile } from 'node:fs/promises';
+import { mistral, type MistralSpeechModelOptions } from '@ai-sdk/mistral';
+import { generateSpeech } from 'ai';
+
+const referenceAudio = await readFile('./reference.mp3');
+
+const result = await generateSpeech({
+  model: mistral.speech('voxtral-mini-tts-2603'),
+  text: 'Hello from the AI SDK!',
+  providerOptions: {
+    mistral: {
+      refAudio: referenceAudio.toString('base64'),
+    } satisfies MistralSpeechModelOptions,
+  },
+});
+```
+
+When `refAudio` is provided, it takes precedence over `voice`. Reference audio
+is redacted from request metadata and API call errors returned by the provider.
+
+<Note>
+  Only use reference audio with the speaker's explicit consent. Follow Mistral's
+  voice cloning usage policy and disclose AI-generated audio when required. This
+  provider integration supports non-streaming speech generation; Mistral's
+  streaming speech API is not exposed through `SpeechModelV2`.
+</Note>
+
+### Model Capabilities
+
+| Model                   | Saved Voices | Reference Audio | Non-Streaming |
+| ----------------------- | ------------ | --------------- | ------------- |
+| `voxtral-mini-tts-2603` | <Check />    | <Check />       | <Check />     |
 
 ## Embedding Models
 
@@ -70525,6 +70641,7 @@ try {
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)         | `tts-1`                  |
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)         | `tts-1-hd`               |
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)         | `gpt-4o-mini-tts`        |
+| [Mistral](/providers/ai-sdk-providers/mistral#speech-models)       | `voxtral-mini-tts-2603`  |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models) | `eleven_v3`              |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models) | `eleven_multilingual_v2` |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models) | `eleven_flash_v2_5`      |
@@ -94601,6 +94718,51 @@ The following optional provider options are available for Google Vertex models:
 
   Consult [Google's Documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/add-labels-to-api-calls) for usage details.
 
+- **imageConfig** _object_
+
+  Optional. Configuration for image generation. Only supported by Gemini image models.
+
+  See [Google's GenerationConfig documentation](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/reference/rest/v1/GenerationConfig) for usage details.
+  - **aspectRatio** _string_
+
+    Optional. The aspect ratio of generated images. Defaults to 1:1 squares, or to matching the output image size to that of an input image. Can be one of the following:
+    - 1:1
+    - 2:3
+    - 3:2
+    - 3:4
+    - 4:3
+    - 4:5
+    - 5:4
+    - 9:16
+    - 16:9
+    - 21:9
+
+  - **imageSize** _string_
+
+    Optional. Controls the output image resolution. Defaults to 1K. Can be one of the following:
+    - 1K
+    - 2K
+    - 4K
+
+  - **personGeneration** _string_
+
+    Optional. Controls the generation of people in images. Can be one of the following:
+    - `PERSON_GENERATION_UNSPECIFIED`
+    - `ALLOW_ALL`
+    - `ALLOW_ADULT`
+    - `ALLOW_NONE`
+
+  - **prominentPeople** _string_
+
+    Optional. Controls whether generation of prominent people (celebrities) is allowed. When set together with `personGeneration`, `personGeneration` takes precedence. Can be one of the following:
+    - `PROMINENT_PEOPLE_UNSPECIFIED`
+    - `ALLOW_PROMINENT_PEOPLE`
+    - `BLOCK_PROMINENT_PEOPLE`
+
+  - **imageOutputOptions** _\{ mimeType?: 'image/jpeg' | 'image/png', compressionQuality?: number \}_
+
+    Optional. The image output format for generated images.
+
 - **streamFunctionCallArguments** _boolean_
 
   Optional. When set to true, function call arguments will be streamed
@@ -97446,7 +97608,8 @@ description: Learn how to use Mistral.
 
 # Mistral AI Provider
 
-The [Mistral AI](https://mistral.ai/) provider contains language model support for the Mistral chat API.
+The [Mistral AI](https://mistral.ai/) provider contains language model,
+embedding model, and speech model support for Mistral APIs.
 
 ## Setup
 
@@ -97769,6 +97932,75 @@ const result = await generateText({
   full list of available models. The table above lists popular models. You can
   also pass any available provider model ID as a string if needed.
 </Note>
+
+## Speech Models
+
+You can create models that call the
+[Mistral speech API](https://docs.mistral.ai/api/endpoint/audio/speech) using
+the `.speech()` factory method:
+
+```ts
+const model = mistral.speech('voxtral-mini-tts-2603');
+```
+
+Use a preset or saved voice ID with [`generateSpeech`](/docs/reference/ai-sdk-core/generate-speech):
+
+```ts
+import { mistral } from '@ai-sdk/mistral';
+import { experimental_generateSpeech as generateSpeech } from 'ai';
+
+const result = await generateSpeech({
+  model: mistral.speech('voxtral-mini-tts-2603'),
+  text: 'Hello from the AI SDK!',
+  voice: 'en_paul_neutral',
+  outputFormat: 'mp3',
+});
+
+const audio = result.audio.uint8Array;
+```
+
+The Mistral speech model maps `voice` to Mistral's `voice_id`. It supports
+`mp3`, `wav`, `pcm`, `flac`, and `opus` output formats and defaults to `mp3`.
+The `instructions`, `speed`, and `language` settings are not supported and
+produce warnings when provided.
+
+Mistral also supports one-off voice cloning with base64-encoded reference
+audio. Pass it through `providerOptions.mistral.refAudio` and use
+`MistralSpeechModelOptions` for type checking:
+
+```ts highlight="9-13"
+import { readFile } from 'node:fs/promises';
+import { mistral, type MistralSpeechModelOptions } from '@ai-sdk/mistral';
+import { experimental_generateSpeech as generateSpeech } from 'ai';
+
+const referenceAudio = await readFile('./reference.mp3');
+
+const result = await generateSpeech({
+  model: mistral.speech('voxtral-mini-tts-2603'),
+  text: 'Hello from the AI SDK!',
+  providerOptions: {
+    mistral: {
+      refAudio: referenceAudio.toString('base64'),
+    } satisfies MistralSpeechModelOptions,
+  },
+});
+```
+
+When `refAudio` is provided, it takes precedence over `voice`. Reference audio
+is redacted from request metadata and API call errors returned by the provider.
+
+<Note>
+  Only use reference audio with the speaker's explicit consent. Follow Mistral's
+  voice cloning usage policy and disclose AI-generated audio when required. This
+  provider integration supports non-streaming speech generation; Mistral's
+  streaming speech API is not exposed through `SpeechModelV3`.
+</Note>
+
+### Model Capabilities
+
+| Model                   | Saved Voices | Reference Audio | Non-Streaming |
+| ----------------------- | ------------ | --------------- | ------------- |
+| `voxtral-mini-tts-2603` | <Check />    | <Check />       | <Check />     |
 
 ## Embedding Models
 
@@ -103966,7 +104198,7 @@ This will install the [AI SDK](/docs) and the AI SDK's React hooks.
 
 Let’s add a function to generate embeddings. Copy the following code into your `lib/ai/embedding.ts` file.
 
-```tsx filename="lib/ai/embedding.ts" highlight="1-2,4,13-21"
+```tsx filename="lib/ai/embedding.ts" highlight="1,3,12-21"
 import { embedMany } from 'ai';
 
 const embeddingModel = 'openai/text-embedding-ada-002';
@@ -110727,7 +110959,7 @@ fastify.listen({ port: 8080 });
 
 `createUIMessageStream` can be used to send custom data to the client.
 
-```ts filename='index.ts' highlight="8-11,18"
+```ts filename='index.ts' highlight="12-17"
 import { createUIMessageStream, streamText, toUIMessageStream } from 'ai';
 import Fastify from 'fastify';
 
@@ -110774,7 +111006,7 @@ fastify.listen({ port: 8080 });
 
 You can use the `textStream` property to get a text stream from the result and then pipe it to the response.
 
-```ts filename='index.ts' highlight="15"
+```ts filename='index.ts' highlight="14"
 import { streamText } from 'ai';
 import Fastify from 'fastify';
 
@@ -114978,10 +115210,10 @@ description: Run AI SDK agents in an interactive terminal UI.
 
 # Terminal UI
 
-The `@ai-sdk/tui` package lets you run a `ToolLoopAgent` in an interactive
-terminal interface. It is useful for local development, demos, and internal
-tools where a terminal experience is enough and you do not want to build a
-custom UI.
+The `@ai-sdk/tui` package lets you run a local `ToolLoopAgent` or connect to a
+remote agent through a `ChatTransport` in an interactive terminal interface.
+It is useful for local development, demos, and internal tools where a terminal
+experience is enough and you do not want to build a custom UI.
 
 The terminal UI handles prompt input, streamed assistant responses, markdown
 rendering, tool cards, reasoning sections, scrolling, and tool approval prompts.
@@ -115027,6 +115259,27 @@ await runAgentTUI({
 ```
 
 `runAgentTUI` runs until the user exits with `Esc` or `Ctrl+C`.
+
+## Connecting to a Remote Agent
+
+Pass a `ChatTransport` instead of an `agent` to connect the terminal UI to a
+remote AI SDK UI message endpoint:
+
+```ts
+import { runAgentTUI } from '@ai-sdk/tui';
+import { DefaultChatTransport } from 'ai';
+
+await runAgentTUI({
+  title: 'Remote Agent',
+  transport: new DefaultChatTransport({
+    api: 'https://example.com/api/chat',
+  }),
+});
+```
+
+The transport controls the endpoint, authentication, request body, and other
+remote communication behavior. The terminal UI keeps its internal chat id and
+message history private to the transport contract.
 
 ## Sandbox
 
@@ -115107,10 +115360,10 @@ await runAgentTUI({ title: 'Weather Agent', agent });
 
 ## Compatibility
 
-`runAgentTUI` is designed for agents that can be run directly from terminal user
-input. The agent must not require per-call options and must not use structured
+When using the `agent` option, the agent must be runnable directly from terminal
+user input. It must not require per-call options and must not use structured
 output, because the terminal UI cannot infer those values from a free-form
-prompt.
+prompt. Use a `transport` for remote agents that need custom request handling.
 
 Use `agent.generate()` or `agent.stream()` directly for examples or apps that
 need fixed prompts, call options, structured output, custom result inspection, or
@@ -115226,7 +115479,7 @@ For example, here’s how you can generate text with various models using the AI
 ## AI SDK Core Functions
 
 AI SDK Core has various functions designed for [text generation](./generating-text), [structured data generation](./generating-structured-data), and [tool usage](./tools-and-tool-calling).
-These functions take a standardized approach to setting up [prompts](./prompts) and [settings](./settings), making it easier to work with different models.
+These functions take a standardized approach to setting up [prompts](/docs/foundations/prompts) and [settings](./settings), making it easier to work with different models.
 
 - [`generateText`](/docs/ai-sdk-core/generating-text): Generates text and [tool calls](./tools-and-tool-calling).
   This function is ideal for non-interactive use cases such as automation tasks where you need to write text (e.g. drafting email or summarizing web pages) and for agents that use tools.
@@ -115270,7 +115523,7 @@ const { text } = await generateText({
 });
 ```
 
-You can use more [advanced prompts](./prompts) to generate text with more complex instructions and content:
+You can use more [advanced prompts](/docs/foundations/prompts) to generate text with more complex instructions and content:
 
 ```tsx
 import { generateText } from 'ai';
@@ -115338,7 +115591,7 @@ When using `generateText`, you can provide an `onEnd` callback that is triggered
 ).
 It contains the text, usage information, finish reason, messages, steps, total usage, and more:
 
-```tsx highlight="6-8"
+```tsx highlight="7-10"
 import { generateText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -115503,7 +115756,7 @@ Errors become part of the stream and are not thrown to prevent e.g. servers from
 
 To log errors, you can provide an `onError` callback that is triggered when an error occurs.
 
-```tsx highlight="6-8"
+```tsx highlight="7-9"
 import { streamText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -115549,7 +115802,7 @@ It receives all stream part types from `stream`, including:
 - `error`
 - `raw`
 
-```tsx highlight="6-11"
+```tsx highlight="7-12"
 import { streamText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -115572,7 +115825,7 @@ When using `streamText`, you can provide an `onEnd` callback that is triggered w
 ).
 It contains the text, usage information, finish reason, messages, steps, total usage, and more:
 
-```tsx highlight="6-8"
+```tsx highlight="7-10"
 import { streamText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -116160,7 +116413,7 @@ You can consume the structured output on the client with the [`useObject`](/docs
 
 To handle errors, provide an `onError` callback:
 
-```tsx highlight="5-7"
+```tsx highlight="6-8"
 import { streamText, Output } from 'ai';
 
 const result = streamText({
@@ -116364,7 +116617,7 @@ const { output } = await generateText({
 
 You can add `.describe("...")` to individual schema properties to give the model hints about what each property is for. This helps improve the quality and accuracy of generated structured data:
 
-```ts highlight="5,9"
+```ts highlight="9,16,19-20"
 import { generateText, Output } from 'ai';
 __PROVIDER_IMPORT__;
 import { z } from 'zod';
@@ -116401,7 +116654,7 @@ Property descriptions are particularly useful for:
 
 You can optionally specify a `name` and `description` for the output. These are used by some providers for additional LLM guidance, e.g. via tool or schema name.
 
-```ts highlight="6-7"
+```ts highlight="8-9"
 import { generateText, Output } from 'ai';
 __PROVIDER_IMPORT__;
 import { z } from 'zod';
@@ -116565,7 +116818,7 @@ Function tools and dynamic tools contain several core elements:
 
 The `tools` parameter of `generateText` and `streamText` is an object that has the tool names as keys and the tools as values:
 
-```ts highlight="6-17"
+```ts highlight="7-18"
 import { z } from 'zod';
 import { generateText, tool, isStepCount } from 'ai';
 __PROVIDER_IMPORT__;
@@ -116608,7 +116861,7 @@ model for each generation step. It receives the matching tool `context` from
 `toolsContext` and the current `experimental_sandbox`, if one was provided. If `prepareStep`
 updates `toolsContext` or `experimental_sandbox`, the next step uses those updated values.
 
-```ts highlight="6-14,28-33"
+```ts highlight="5-16,32-35"
 import { generateText, tool } from 'ai';
 import { z } from 'zod';
 
@@ -116958,7 +117211,7 @@ In the following example, there are two steps:
    1. The tool result is sent to the model.
    1. The model generates a response considering the tool result.
 
-```ts highlight="18-19"
+```ts highlight="19-20"
 import { z } from 'zod';
 import { generateText, tool, isStepCount } from 'ai';
 __PROVIDER_IMPORT__;
@@ -116992,7 +117245,7 @@ It contains all the text, tool calls, tool results, per-step `performance`, and 
 
 #### Example: Extract tool results from all steps
 
-```ts highlight="3,9-10"
+```ts highlight="4,10-11"
 import { generateText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -117317,7 +117570,7 @@ It supports the following settings:
 - `none`: the model must not call tools
 - `{ type: 'tool', toolName: string (typed) }`: the model must call the specified tool
 
-```ts highlight="18"
+```ts highlight="19"
 import { z } from 'zod';
 import { generateText, tool } from 'ai';
 __PROVIDER_IMPORT__;
@@ -117422,7 +117675,7 @@ const result = await generateText({
 The abort signals from `generateText` and `streamText` are forwarded to the tool execution.
 You can access them in the second parameter of the `execute` function and e.g. abort long-running computations or forward them to fetch calls inside tools.
 
-```ts highlight="6,11,14"
+```ts highlight="7,12,15"
 import { z } from 'zod';
 import { generateText, tool } from 'ai';
 __PROVIDER_IMPORT__;
@@ -117592,7 +117845,7 @@ The following tool input lifecycle hooks are available:
 
 ### Example
 
-```ts highlight="15-23"
+```ts highlight="16-24"
 import { streamText, tool } from 'ai';
 __PROVIDER_IMPORT__;
 import { z } from 'zod';
@@ -117879,7 +118132,7 @@ the AI SDK provides the `activeTools` property.
 It is an array of tool names that are currently active.
 By default, the value is `undefined` and all tools are active.
 
-```ts highlight="7"
+```ts highlight="8"
 import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 __PROVIDER_IMPORT__;
@@ -117902,7 +118155,7 @@ debugging. The list can be partial: tools listed in `toolOrder` are sent first
 in that order, and any remaining tools are sent afterwards in alphabetical
 order. Tool names are typed from your `tools` object.
 
-```ts highlight="9"
+```ts highlight="7"
 import { generateText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -117942,7 +118195,7 @@ that converts the tool result into a content part.
 
 Here is an example for converting a screenshot into a content part:
 
-```ts highlight="22-27"
+```ts highlight="23-38"
 const result = await generateText({
   model: __MODEL__,
   tools: {
@@ -119308,7 +119561,7 @@ description: Learn how to configure the AI SDK.
 
 Large language models (LLMs) typically provide settings to augment their output.
 
-All AI SDK functions support the following common settings in addition to the model, the [prompt](./prompts), and additional provider-specific settings:
+All AI SDK functions support the following common settings in addition to the model, the [prompt](/docs/foundations/prompts), and additional provider-specific settings:
 
 ```ts highlight="3-6"
 const result = await generateText({
@@ -119859,7 +120112,7 @@ Google's `gemini-embedding-2` model (also available as `gemini-embedding-2-previ
 
 The `embedMany` function now supports parallel processing with configurable `maxParallelCalls` to optimize performance:
 
-```ts highlight={"3"}
+```ts highlight={"4"}
 import { embedMany } from 'ai';
 
 const { embeddings, usage } = await embedMany({
@@ -120091,7 +120344,7 @@ Each item in the `ranking` array contains:
 
 Use `topN` to limit the number of results returned. This is useful for retrieving only the most relevant documents:
 
-```ts highlight={"7"}
+```ts highlight={"8"}
 import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
@@ -120129,7 +120382,7 @@ The `rerank` function accepts an optional `maxRetries` parameter of type `number
 that you can use to set the maximum number of retries for the reranking process.
 It defaults to `2` retries (3 attempts in total). You can set it to `0` to disable retries.
 
-```ts highlight={"7"}
+```ts highlight={"8"}
 import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
@@ -120147,7 +120400,7 @@ The `rerank` function accepts an optional `abortSignal` parameter of
 type [`AbortSignal`](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal)
 that you can use to abort the reranking process or set a timeout.
 
-```ts highlight={"7"}
+```ts highlight={"8"}
 import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
@@ -120164,7 +120417,7 @@ const { ranking } = await rerank({
 The `rerank` function accepts an optional `headers` parameter of type `Record<string, string>`
 that you can use to add custom headers to the reranking request.
 
-```ts highlight={"7"}
+```ts highlight={"8"}
 import { cohere } from '@ai-sdk/cohere';
 import { rerank } from 'ai';
 
@@ -120328,7 +120581,7 @@ You can pass such settings to the `generateImage` function
 using the `providerOptions` parameter. The options for the provider
 (`openai` in the example below) become request body properties.
 
-```tsx highlight={"12"}
+```tsx highlight={"8-13"}
 import { generateImage } from 'ai';
 import { openai, type OpenAIImageModelGenerationOptions } from '@ai-sdk/openai';
 
@@ -120929,7 +121182,11 @@ The `audio` stream must contain raw audio chunks. `Uint8Array` chunks are raw by
   the provider.
 </Note>
 
-OpenAI streaming transcription uses `openai.transcription('gpt-realtime-whisper')`. xAI uses the same `xai.transcription()` model for request/response and streaming transcription; `experimental_streamTranscribe` uses xAI's WebSocket STT transport under the hood.
+OpenAI streaming transcription uses `openai.transcription('gpt-realtime-whisper')`.
+Cartesia uses `cartesia.transcription('ink-2')` for streaming-only Ink 2
+transcription. xAI uses the same `xai.transcription()` model for request/response
+and streaming transcription; `experimental_streamTranscribe` selects the
+provider's WebSocket STT transport.
 
 ```ts
 import { xai } from '@ai-sdk/xai';
@@ -120981,7 +121238,7 @@ const transcript = await transcribe({
 When `audio` is a URL, the SDK downloads the file with a default **2 GiB** size limit.
 You can customize this using `createDownload`:
 
-```ts highlight="1,8"
+```ts highlight="1,7"
 import { transcribe, createDownload } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
@@ -120994,7 +121251,7 @@ const transcript = await transcribe({
 
 You can also provide a fully custom download function:
 
-```ts highlight="6-12"
+```ts highlight="7-13"
 import { transcribe } from 'ai';
 import { openai } from '@ai-sdk/openai';
 
@@ -121037,7 +121294,7 @@ that you can use to abort the transcription process or set a timeout.
 
 This is particularly useful when combined with URL downloads to prevent long-running requests:
 
-```ts highlight="8"
+```ts highlight="7"
 import { openai } from '@ai-sdk/openai';
 import { transcribe } from 'ai';
 
@@ -121147,6 +121404,7 @@ try {
 | [Google Vertex](/providers/ai-sdk-providers/google-vertex#transcription-models) | `telephony`              |
 | [xAI](/providers/ai-sdk-providers/xai#transcription-models)                     | `default`                |
 | [Cartesia](/providers/ai-sdk-providers/cartesia#transcription-models)           | `ink-whisper`            |
+| [Cartesia](/providers/ai-sdk-providers/cartesia#streaming-transcription-models) | `ink-2`                  |
 
 Above are a small subset of the transcription models supported by the AI SDK providers. For more, see the respective provider documentation.
 
@@ -121303,6 +121561,7 @@ try {
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)               | `tts-1`                             |
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)               | `tts-1-hd`                          |
 | [OpenAI](/providers/ai-sdk-providers/openai#speech-models)               | `gpt-4o-mini-tts`                   |
+| [Mistral](/providers/ai-sdk-providers/mistral#speech-models)             | `voxtral-mini-tts-2603`             |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models)       | `eleven_v3`                         |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models)       | `eleven_multilingual_v2`            |
 | [ElevenLabs](/providers/ai-sdk-providers/elevenlabs#speech-models)       | `eleven_flash_v2_5`                 |
@@ -121475,7 +121734,7 @@ const { videos } = await generateVideo({
 
 Some video models support generating videos from an input image. You can provide an image using the prompt object:
 
-```tsx highlight={"7-10"}
+```tsx highlight={"6-9"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -121506,7 +121765,7 @@ Some video models support first-last-frame generation, where you provide the
 starting and/or ending frames of the video. Use the `frameImages` option to pass
 role-tagged images in a provider-agnostic way:
 
-```tsx highlight={"5-16"}
+```tsx highlight={"4-13"}
 const { video } = await generateVideo({
   model: __VIDEO_MODEL__,
   prompt: 'The cat walks across the scene and transforms into a dog by the end',
@@ -121529,7 +121788,7 @@ Some video models support reference-to-video generation, where you provide one o
 more reference images or videos that the model incorporates into the generated video. Use the `inputReferences` option to pass
 these inputs in a provider-agnostic way:
 
-```tsx highlight={"5-8"}
+```tsx highlight={"4-7"}
 const { video } = await generateVideo({
   model: __VIDEO_MODEL__,
   prompt: 'The two characters meet in a bustling market',
@@ -121542,7 +121801,7 @@ const { video } = await generateVideo({
 
 For URL-based video references, use the object form with an explicit `mediaType`:
 
-```tsx highlight={"5-10"}
+```tsx highlight={"4-9"}
 const { video } = await generateVideo({
   model: __VIDEO_MODEL__,
   prompt: 'Match the motion in the reference clip',
@@ -121624,7 +121883,7 @@ Video generation is an asynchronous process that can take several minutes to com
 
 You can configure the polling timeout using provider-specific options. Each provider exports a type for its options that you can use with `satisfies` for type safety:
 
-```tsx highlight={"10-12"}
+```tsx highlight={"8-12"}
 import { experimental_generateVideo as generateVideo } from 'ai';
 import { fal, type FalVideoModelOptions } from '@ai-sdk/fal';
 
@@ -123098,7 +123357,7 @@ description: Learn how to handle errors in the AI SDK Core
 
 Regular errors are thrown and can be handled using the `try/catch` block.
 
-```ts highlight="3,8-10"
+```ts highlight="4,9-11"
 import { generateText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -123120,7 +123379,7 @@ When errors occur during streams that do not support error chunks,
 the error is thrown as a regular error.
 You can handle these errors using the `try/catch` block.
 
-```ts highlight="3,12-14"
+```ts highlight="4,13-15"
 import { streamText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -123145,7 +123404,7 @@ You can handle those parts similar to other parts.
 It is recommended to also add a try-catch block for errors that
 happen outside of the streaming.
 
-```ts highlight="13-21"
+```ts highlight="14-22"
 import { streamText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -123188,7 +123447,7 @@ When streams are aborted (e.g., via chat stop button), you may want to perform c
 
 The `onAbort` callback is called when a stream is aborted via `AbortSignal`, but `onEnd` is not called. This ensures you can still update your UI state appropriately.
 
-```ts highlight="5-9"
+```ts highlight="6-10"
 import { streamText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -123216,7 +123475,7 @@ The `onAbort` callback receives:
 
 You can also handle abort events directly in the stream:
 
-```ts highlight="10-13"
+```ts highlight="11-14"
 import { streamText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -123420,7 +123679,7 @@ const result = streamText({
 
 ### Simulate UI Message Stream Responses
 
-You can also simulate [UI Message Stream](/docs/ai-sdk-ui/stream-protocol#ui-message-stream) responses for testing,
+You can also simulate [UI Message Stream](/docs/ai-sdk-ui/stream-protocol#ui-message-stream-example) responses for testing,
 debugging, or demonstration purposes.
 
 Here is a Next example:
@@ -124479,7 +124738,7 @@ Because callbacks run as part of the lifecycle, keep them fast or enqueue expens
 Use `onStart` and `onEnd` to record one application log for the beginning and end of a call.
 The `callId` is available across lifecycle events, so you can correlate logs from the same request.
 
-```tsx highlight="8-20"
+```tsx highlight="8-23"
 import { generateText } from 'ai';
 __PROVIDER_IMPORT__;
 
@@ -124548,7 +124807,7 @@ Use step events when you want timing that includes SDK-managed work such as loca
 When you use tools with `generateText` or `streamText`, a single user request can involve multiple model calls.
 Each model call is a step. The model may call a tool in one step, receive the tool result, and then produce a final answer in the next step.
 
-```tsx highlight="10-29"
+```tsx highlight="17-31"
 import { generateText, isStepCount, tool } from 'ai';
 import { z } from 'zod';
 __PROVIDER_IMPORT__;
@@ -124595,7 +124854,7 @@ This helps answer questions such as:
 Tool execution callbacks run around the tool's `execute` function.
 Use them to record tool usage, latency, successful results, and tool errors.
 
-```tsx highlight="17-35"
+```tsx highlight="19-36"
 import { generateText, tool } from 'ai';
 import { z } from 'zod';
 __PROVIDER_IMPORT__;
@@ -124642,7 +124901,7 @@ const result = await generateText({
 Embedding and reranking callbacks are simpler: they expose `onStart` and `onEnd` around the operation.
 This is useful for retrieval pipelines where you want to understand how often you are embedding, how many values you embed, and how reranking changes result sets.
 
-```tsx highlight="10-23"
+```tsx highlight="10-24,32-37"
 import { embedMany, rerank } from 'ai';
 import { cohere } from '@ai-sdk/cohere';
 
@@ -124717,7 +124976,7 @@ This distinction matters when the step includes local tool execution: the step d
 Lifecycle callbacks receive the full `runtimeContext` and `toolsContext` values that flow through the call.
 This makes callbacks useful for attaching application context without changing prompts or tool inputs.
 
-```tsx highlight="8-17,23-28"
+```tsx highlight="8-24,26-39"
 import { generateText, tool } from 'ai';
 import { z } from 'zod';
 __PROVIDER_IMPORT__;
@@ -128198,8 +128457,8 @@ By using `FileList`, you can send multiple files as attachments along with a mes
 <Note>
   Currently, only `image/*` and `text/*` content types get automatically
   converted into [multi-modal content
-  parts](/docs/foundations/prompts#multi-modal-messages). You will need to
-  handle other content types manually.
+  parts](/docs/foundations/prompts#file-parts). You will need to handle other
+  content types manually.
 </Note>
 
 ```tsx filename="app/page.tsx"
@@ -128570,7 +128829,7 @@ When processing messages on the server that contain tool calls, custom metadata,
 
 When your messages include tool calls, validate them against your tool definitions:
 
-```tsx filename="app/api/chat/route.ts" highlight="9-27,34-39"
+```tsx filename="app/api/chat/route.ts" highlight="7-8,14-27,35-45"
 import {
   convertToModelMessages,
   createUIMessageStreamResponse,
@@ -128760,7 +129019,7 @@ export default function Chat({
 
 When loading messages from storage that contain tools, metadata, or custom data
 parts, validate them using `validateUIMessages` before processing (see the
-[validation section](#validating-messages-from-database) above).
+[validation section](#validating-messages-on-the-server) above).
 
 </Note>
 
@@ -128890,7 +129149,7 @@ export async function POST(req: Request) {
 
 Alternatively, you can use `createUIMessageStream` to control the message ID by writing a start message part:
 
-```tsx filename="app/api/chat/route.ts" highlight="9-19"
+```tsx filename="app/api/chat/route.ts" highlight="14-18,25-27"
 import {
   generateId,
   streamText,
@@ -131322,7 +131581,7 @@ export async function POST(req: Request) {
 <Note>
   You can also send stream data from custom backends, e.g. Python / FastAPI,
   using the [UI Message Stream
-  Protocol](/docs/ai-sdk-ui/stream-protocol#ui-message-stream-protocol).
+  Protocol](/docs/ai-sdk-ui/stream-protocol#data-stream-protocol).
 </Note>
 
 ## Types of Streamable Data
@@ -134582,9 +134841,9 @@ description: API Reference for the runAgentTUI function.
 
 # `runAgentTUI()`
 
-Runs a `ToolLoopAgent` in an interactive terminal UI. The terminal UI reads user
-prompts, streams assistant responses, renders markdown, displays tool and
-reasoning sections, and handles manual tool approvals.
+Runs a local agent or chat transport in an interactive terminal UI. The
+terminal UI reads user prompts, streams assistant responses, renders markdown,
+displays tool and reasoning sections, and handles manual tool approvals.
 
 `runAgentTUI` runs until the user exits with `Esc` or `Ctrl+C`.
 
@@ -134626,9 +134885,16 @@ await runAgentTUI({
             {
               name: 'agent',
               type: 'AgentTUIAgent',
-              isRequired: true,
+              isOptional: true,
               description:
-                'The agent to run. The agent must not require per-call options and must not use structured output.',
+                'The agent to run. Provide exactly one of `agent` or `transport`. The agent must not require per-call options and must not use structured output.',
+            },
+            {
+              name: 'transport',
+              type: 'ChatTransport<UIMessage>',
+              isOptional: true,
+              description:
+                'The transport used to communicate with a remote agent. Provide exactly one of `agent` or `transport`.',
             },
             {
               name: 'title',
@@ -134745,6 +135011,19 @@ await runAgentTUI({
 });
 ```
 
+## Example with a Chat Transport
+
+```ts
+import { DefaultChatTransport } from 'ai';
+
+await runAgentTUI({
+  title: 'Remote Assistant',
+  transport: new DefaultChatTransport({
+    api: 'https://example.com/api/chat',
+  }),
+});
+```
+
 ## Example with Sandbox
 
 ```ts
@@ -134769,8 +135048,9 @@ working directory or exposed ports.
 
 ## Compatibility
 
-Use `runAgentTUI` for agents that can run directly from free-form user input.
-Use `agent.generate()` or `agent.stream()` directly when you need fixed prompts,
+Use the `agent` option for agents that can run directly from free-form user
+input. Use the `transport` option to communicate with a remote agent. Use
+`agent.generate()` or `agent.stream()` directly when you need fixed prompts,
 per-call options, structured output, custom result inspection, or custom stream
 processing.
 
@@ -134778,7 +135058,7 @@ processing.
 
 - [Terminal UI guide](/docs/agents/terminal-ui)
 - [Building Agents](/docs/agents/building-agents)
-- [ToolLoopAgent guide](/docs/agents/overview#tooloopagent-class)
+- [ToolLoopAgent guide](/docs/agents/overview#toolloopagent-class)
 
 ---
 title: AI SDK TUI
@@ -137748,7 +138028,7 @@ The following OpenAI-specific metadata may be returned:
 
 For reasoning models like `gpt-5`, you can enable reasoning summaries to see the model's thought process. Different models support different summarizers—for example, `o4-mini` supports detailed summaries. Set `reasoningSummary: "auto"` to automatically receive the richest level available. When `reasoningEffort` is set to a value other than `'none'`, the OpenAI Responses provider defaults `reasoningSummary` to `'detailed'`; set `reasoningSummary: null` to omit reasoning summaries.
 
-```ts highlight="8-9,16"
+```ts highlight="10-14,17-23"
 import {
   openai,
   type OpenAILanguageModelResponsesOptions,
@@ -138215,6 +138495,95 @@ The MCP tool can be configured with:
   a built-in provider-defined tool that allows OpenAI models to directly connect
   to MCP servers, while the general MCP client requires you to convert MCP tools
   to AI SDK tools first.
+</Note>
+
+#### Computer Tool
+
+The OpenAI Responses API supports the GA computer tool through
+`openai.tools.computer`. The model returns an ordered batch of browser or
+desktop actions for your application to execute, and your application returns
+an updated screenshot.
+
+```ts
+import { openai } from '@ai-sdk/openai';
+import { generateText, isStepCount } from 'ai';
+import { captureScreenshot, executeComputerAction } from '@/utils/computer-use';
+
+const result = await generateText({
+  model: openai.responses('gpt-5.4'),
+  tools: {
+    computer: openai.tools.computer({
+      needsApproval: ({ pendingSafetyChecks }) =>
+        pendingSafetyChecks.length > 0,
+
+      execute: async ({ actions, pendingSafetyChecks }) => {
+        for (const action of actions) {
+          await executeComputerAction(action);
+        }
+
+        return {
+          output: {
+            type: 'computer_screenshot',
+            imageUrl: `data:image/png;base64,${await captureScreenshot()}`,
+            detail: 'original',
+          },
+          acknowledgedSafetyChecks: pendingSafetyChecks,
+        };
+      },
+    }),
+  },
+  prompt: 'Open the settings page and enable dark mode.',
+  stopWhen: isStepCount(10),
+});
+```
+
+The execute callback receives:
+
+- **actions** - An ordered array of `click`, `double_click`, `drag`,
+  `keypress`, `move`, `screenshot`, `scroll`, `type`, and `wait` actions.
+  Execute every action in order before capturing the next screenshot.
+- **pendingSafetyChecks** - Safety checks returned by OpenAI. Review these
+  before continuing and include accepted checks in
+  `acknowledgedSafetyChecks`.
+- **status** - The computer call status.
+
+The action union is also exported as `OpenAIComputerAction`. Action-specific
+fields are:
+
+| Action         | Fields                                               |
+| -------------- | ---------------------------------------------------- |
+| `click`        | `button`, `x`, `y`, optional `keys`                  |
+| `double_click` | `x`, `y`, optional `keys`                            |
+| `drag`         | `path` containing `{ x, y }` points, optional `keys` |
+| `keypress`     | `keys`                                               |
+| `move`         | `x`, `y`, optional `keys`                            |
+| `screenshot`   | No additional fields                                 |
+| `scroll`       | `x`, `y`, `scrollX`, `scrollY`, optional `keys`      |
+| `type`         | `text`                                               |
+| `wait`         | No additional fields                                 |
+
+Safety checks use the exported `OpenAIComputerSafetyCheck` type.
+
+Return a `computer_screenshot` with either:
+
+- **imageUrl** - A fully qualified URL or image data URL.
+- **fileId** - The ID of an uploaded screenshot file.
+
+`detail` can be `auto`, `low`, `high`, or `original`. `original` preserves the
+captured resolution and is recommended when accurate coordinates are
+important.
+
+Computer calls and `computer_call_output` screenshot results are carried
+through multi-step generations when using `store`, `previousResponseId`, or
+OpenAI conversations. You can also set `store: false`; the provider will
+serialize the complete call and screenshot result into each follow-up request.
+
+<Note type="warning">
+  Run computer use in an isolated browser or VM. Restrict reachable domains,
+  accounts, credentials, environment variables, and file-system access. Treat
+  on-screen content as untrusted prompt-injection input, require confirmation
+  immediately before consequential actions, and avoid exposing sensitive
+  information in screenshots.
 </Note>
 
 #### Local Shell Tool
@@ -139302,7 +139671,7 @@ They support additional settings and response metadata:
 
 - You can use the response `usage` to access the number of reasoning tokens that the model generated via `usage.outputTokenDetails.reasoningTokens`.
 
-```ts highlight="4,7-11,17"
+```ts highlight="4,7-11,15"
 import { openai, type OpenAILanguageModelChatOptions } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
@@ -139560,7 +139929,7 @@ const result = streamText({
 OpenAI provides usage information for predicted outputs (`acceptedPredictionTokens` and `rejectedPredictionTokens`).
 You can access it in the `providerMetadata` object.
 
-```ts highlight="11"
+```ts highlight="3-4"
 const openaiMetadata = (await result.providerMetadata)?.openai;
 
 const acceptedPredictionTokens = openaiMetadata?.acceptedPredictionTokens;
@@ -139655,7 +140024,7 @@ including `gpt-4o` and `gpt-4o-mini`.
 - For GPT-5.6 and later models, `usage.inputTokenDetails.cacheWriteTokens` reports tokens written to the cache.
 - For GPT-5.6 and later models, `promptCacheOptions.ttl` sets a minimum cache lifetime of 30 minutes. Earlier models generally retain in-memory prefixes for 5-10 minutes of inactivity, up to one hour.
 
-```ts highlight="11"
+```ts highlight="9"
 import { openai } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
@@ -142909,7 +143278,7 @@ To use skills, you need to:
 1. Enable the code execution tool
 2. Specify the container with skills in `providerOptions`
 
-```ts highlight="4,9-17,19-23"
+```ts highlight="6-8,10-23"
 import { anthropic, AnthropicLanguageModelOptions } from '@ai-sdk/anthropic';
 import { generateText } from 'ai';
 
@@ -142939,7 +143308,7 @@ const result = await generateText({
 
 You can also use custom skills by specifying `type: 'custom'`:
 
-```ts highlight="9-11"
+```ts highlight="11-15"
 const result = await generateText({
   model: anthropic('claude-sonnet-4-5'),
   tools: {
@@ -146885,7 +147254,7 @@ const model = deepgram.transcription('nova-3');
 
 You can also pass additional provider-specific options using the `providerOptions` argument. For example, supplying the `summarize` option will enable summaries for sections of content.
 
-```ts highlight="6"
+```ts highlight="11-15"
 import { transcribe } from 'ai';
 import {
   deepgram,
@@ -148147,7 +148516,7 @@ The response will contain the tool calls and results from the code execution.
 With [Google Search grounding](https://ai.google.dev/gemini-api/docs/google-search),
 the model has access to the latest information using Google Search.
 
-```ts highlight="8,17-20"
+```ts highlight="8,17-19"
 import { google } from '@ai-sdk/google';
 import { GoogleProviderMetadata } from '@ai-sdk/google';
 import { generateText } from 'ai';
@@ -148306,7 +148675,7 @@ Google provides a provider-defined URL context tool.
 
 The URL context tool allows you to provide specific URLs that you want the model to analyze directly in from the prompt.
 
-```ts highlight="9,13-17"
+```ts highlight="9,13-15"
 import { google } from '@ai-sdk/google';
 import { generateText } from 'ai';
 
@@ -148467,7 +148836,7 @@ This enables the model to provide answers based on your specific data sources an
   Google provider (`@ai-sdk/google`) to use this feature.
 </Note>
 
-```ts highlight="8,17-20"
+```ts highlight="5-8,13-17,25-27"
 import { createGoogleVertex } from '@ai-sdk/google-vertex';
 import { GoogleProviderMetadata } from '@ai-sdk/google';
 import { generateText } from 'ai';
@@ -149673,7 +150042,7 @@ spoken text, so `instructions: 'Say cheerfully'` with `text: 'Hello'` speaks `Sa
 For multi-speaker dialogue, pass a `multiSpeakerVoiceConfig` through `providerOptions`. Each speaker
 name must match a name used in the input text. When set, it overrides the top-level `voice`.
 
-```ts highlight="8-23"
+```ts highlight="7-22"
 import { generateSpeech } from 'ai';
 import { google, type GoogleSpeechModelOptions } from '@ai-sdk/google';
 
@@ -150182,6 +150551,51 @@ The following optional provider options are available for Google Vertex models:
   Optional. Defines labels used in billing reports.
 
   Consult [Google's Documentation](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/add-labels-to-api-calls) for usage details.
+
+- **imageConfig** _object_
+
+  Optional. Configuration for image generation. Only supported by Gemini image models.
+
+  See [Google's GenerationConfig documentation](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/reference/rest/v1/GenerationConfig) for usage details.
+  - **aspectRatio** _string_
+
+    Optional. The aspect ratio of generated images. Defaults to 1:1 squares, or to matching the output image size to that of an input image. Can be one of the following:
+    - 1:1
+    - 2:3
+    - 3:2
+    - 3:4
+    - 4:3
+    - 4:5
+    - 5:4
+    - 9:16
+    - 16:9
+    - 21:9
+
+  - **imageSize** _string_
+
+    Optional. Controls the output image resolution. Defaults to 1K. Can be one of the following:
+    - 1K
+    - 2K
+    - 4K
+
+  - **personGeneration** _string_
+
+    Optional. Controls the generation of people in images. Can be one of the following:
+    - `PERSON_GENERATION_UNSPECIFIED`
+    - `ALLOW_ALL`
+    - `ALLOW_ADULT`
+    - `ALLOW_NONE`
+
+  - **prominentPeople** _string_
+
+    Optional. Controls whether generation of prominent people (celebrities) is allowed. When set together with `personGeneration`, `personGeneration` takes precedence. Can be one of the following:
+    - `PROMINENT_PEOPLE_UNSPECIFIED`
+    - `ALLOW_PROMINENT_PEOPLE`
+    - `BLOCK_PROMINENT_PEOPLE`
+
+  - **imageOutputOptions** _\{ mimeType?: 'image/jpeg' | 'image/png', compressionQuality?: number \}_
+
+    Optional. The image output format for generated images.
 
 - **streamFunctionCallArguments** _boolean_
 
@@ -153042,7 +153456,8 @@ description: Learn how to use Mistral.
 
 # Mistral AI Provider
 
-The [Mistral AI](https://mistral.ai/) provider contains language model support for the Mistral chat API.
+The [Mistral AI](https://mistral.ai/) provider contains language model,
+embedding model, and speech model support for Mistral APIs.
 
 ## Setup
 
@@ -153348,6 +153763,75 @@ const result = await generateText({
   full list of available models. The table above lists popular models. You can
   also pass any available provider model ID as a string if needed.
 </Note>
+
+## Speech Models
+
+You can create models that call the
+[Mistral speech API](https://docs.mistral.ai/api/endpoint/audio/speech) using
+the `.speech()` factory method:
+
+```ts
+const model = mistral.speech('voxtral-mini-tts-2603');
+```
+
+Use a preset or saved voice ID with [`generateSpeech`](/docs/reference/ai-sdk-core/generate-speech):
+
+```ts
+import { mistral } from '@ai-sdk/mistral';
+import { generateSpeech } from 'ai';
+
+const result = await generateSpeech({
+  model: mistral.speech('voxtral-mini-tts-2603'),
+  text: 'Hello from the AI SDK!',
+  voice: 'en_paul_neutral',
+  outputFormat: 'mp3',
+});
+
+const audio = result.audio.uint8Array;
+```
+
+The Mistral speech model maps `voice` to Mistral's `voice_id`. It supports
+`mp3`, `wav`, `pcm`, `flac`, and `opus` output formats and defaults to `mp3`.
+The `instructions`, `speed`, and `language` settings are not supported and
+produce warnings when provided.
+
+Mistral also supports one-off voice cloning with base64-encoded reference
+audio. Pass it through `providerOptions.mistral.refAudio` and use
+`MistralSpeechModelOptions` for type checking:
+
+```ts highlight="9-13"
+import { readFile } from 'node:fs/promises';
+import { mistral, type MistralSpeechModelOptions } from '@ai-sdk/mistral';
+import { generateSpeech } from 'ai';
+
+const referenceAudio = await readFile('./reference.mp3');
+
+const result = await generateSpeech({
+  model: mistral.speech('voxtral-mini-tts-2603'),
+  text: 'Hello from the AI SDK!',
+  providerOptions: {
+    mistral: {
+      refAudio: referenceAudio.toString('base64'),
+    } satisfies MistralSpeechModelOptions,
+  },
+});
+```
+
+When `refAudio` is provided, it takes precedence over `voice`. Reference audio
+is redacted from request metadata and API call errors returned by the provider.
+
+<Note>
+  Only use reference audio with the speaker's explicit consent. Follow Mistral's
+  voice cloning usage policy and disclose AI-generated audio when required. This
+  provider integration supports non-streaming speech generation; Mistral's
+  streaming speech API is not exposed through `SpeechModelV4`.
+</Note>
+
+### Model Capabilities
+
+| Model                   | Saved Voices | Reference Audio | Non-Streaming |
+| ----------------------- | ------------ | --------------- | ------------- |
+| `voxtral-mini-tts-2603` | <Check />    | <Check />       | <Check />     |
 
 ## Embedding Models
 
@@ -157835,7 +158319,7 @@ const model = elevenLabs.transcription('scribe_v1');
 
 You can also pass additional provider-specific options using the `providerOptions` argument. For example, supplying the input language in ISO-639-1 (e.g. `en`) format can sometimes improve transcription performance if known beforehand.
 
-```ts highlight="6"
+```ts highlight="10-14"
 import { transcribe } from 'ai';
 import {
   elevenLabs,
@@ -157907,7 +158391,8 @@ description: Learn how to use the Cartesia provider for the AI SDK.
 # Cartesia Provider
 
 The [Cartesia](https://cartesia.ai/) provider contains Sonic speech generation,
-Ink-Whisper batch transcription, and Ink 2 realtime transcription support.
+Ink-Whisper batch transcription, and Ink 2 realtime and streaming transcription
+support.
 
 ## Setup
 
@@ -157969,6 +158454,11 @@ You can use the following optional settings to customize the Cartesia provider i
   Defaults to the global `fetch` function.
   You can use it as a middleware to intercept requests,
   or to provide a custom fetch implementation for e.g. testing.
+
+- **webSocket** _WebSocketConstructor_
+
+  Custom WebSocket implementation for Ink 2 streaming transcription.
+  Defaults to the global `WebSocket` constructor.
 
 ## Speech Models
 
@@ -158099,6 +158589,57 @@ setup.
 | ------- | ----------------------- | ------------------- |
 | `ink-2` | <Check size={18} />     | <Check size={18} /> |
 
+## Streaming Transcription Models
+
+<Note type="warning">Streaming transcription is an experimental feature.</Note>
+
+Ink 2 is also available through the transcription streaming API. Create the
+model with `.transcription()` and pass it to `experimental_streamTranscribe`:
+
+```ts
+import { cartesia } from '@ai-sdk/cartesia';
+import { experimental_streamTranscribe as streamTranscribe } from 'ai';
+
+const result = streamTranscribe({
+  model: cartesia.transcription('ink-2'),
+  audio, // ReadableStream<Uint8Array | string> containing raw audio chunks
+  inputAudioFormat: { type: 'audio/pcm', rate: 24000 },
+  providerOptions: {
+    cartesia: {
+      language: 'en',
+    },
+  },
+});
+
+for await (const part of result.fullStream) {
+  if (part.type === 'transcript-partial') {
+    console.log('partial:', part.text);
+  }
+
+  if (part.type === 'transcript-final') {
+    console.log('final:', part.text);
+  }
+}
+```
+
+The provider creates a short-lived, STT-scoped Cartesia access token before
+opening the WebSocket, so the API key is not included in the WebSocket URL.
+Send audio chunks at approximately their playback rate; Cartesia's realtime
+endpoint is intended for live audio rather than bulk file upload.
+
+Ink 2 supports English audio and uses Cartesia's native turn detection by
+default. To finalize only when the input audio stream ends, pass
+`providerOptions.cartesia.streaming.turnDetection: false`.
+
+See [Transcription](/docs/ai-sdk-core/transcription) for more information about
+streaming transcription.
+
+### Model Capabilities
+
+| Model   | Streaming Transcription | Turn Detection      |
+| ------- | ----------------------- | ------------------- |
+| `ink-2` | <Check size={18} />     | <Check size={18} /> |
+
 ## Batch Transcription Models
 
 You can create models that call the [Cartesia transcription API](https://docs.cartesia.ai/api-reference/stt/transcribe)
@@ -158125,7 +158666,7 @@ const result = await transcribe({
 
 You can also pass additional provider-specific options using the `providerOptions` argument:
 
-```ts highlight="6"
+```ts highlight="11-15"
 import { transcribe } from 'ai';
 import {
   cartesia,

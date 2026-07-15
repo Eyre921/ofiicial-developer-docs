@@ -4321,6 +4321,7 @@ components:
         - inflection
         - io-net
         - ionstream
+        - krea
         - liquid
         - mancer
         - mara
@@ -5132,6 +5133,8 @@ components:
               - $ref: '#/components/schemas/ParetoRouterPlugin'
               - $ref: '#/components/schemas/FusionPlugin'
           type: array
+        prediction:
+          $ref: '#/components/schemas/Prediction'
         presence_penalty:
           description: Presence penalty (-2.0 to 2.0)
           example: 0
@@ -13332,6 +13335,7 @@ components:
                 - Wafer
                 - WandB
                 - Quiver
+                - Krea
                 - Xiaomi
                 - xAI
                 - Z.AI
@@ -18408,6 +18412,7 @@ components:
         - logit_bias
         - logprobs
         - top_logprobs
+        - prediction
         - seed
         - response_format
         - structured_outputs
@@ -18728,6 +18733,45 @@ components:
         - context_compression
       example: guardrail
       type: string
+    Prediction:
+      description: >-
+        Static predicted output content. Supported models can use this to reduce
+        latency when much of the response is known in advance.
+      example:
+        content: Expected response
+        type: content
+      nullable: true
+      properties:
+        content:
+          anyOf:
+            - type: string
+            - items:
+                $ref: '#/components/schemas/PredictionContentText'
+              type: array
+        type:
+          enum:
+            - content
+          type: string
+      required:
+        - type
+        - content
+      type: object
+    PredictionContentText:
+      description: Text content part for a predicted output.
+      example:
+        text: Expected response
+        type: text
+      properties:
+        text:
+          type: string
+        type:
+          enum:
+            - text
+          type: string
+      required:
+        - type
+        - text
+      type: object
     PreferredMaxLatency:
       anyOf:
         - format: double
@@ -19177,6 +19221,7 @@ components:
         - Wafer
         - WandB
         - Quiver
+        - Krea
         - Xiaomi
         - xAI
         - Z.AI
@@ -19429,6 +19474,10 @@ components:
             nullable: true
           type: object
         klusterai:
+          additionalProperties:
+            nullable: true
+          type: object
+        krea:
           additionalProperties:
             nullable: true
           type: object
@@ -20017,6 +20066,7 @@ components:
             - Wafer
             - WandB
             - Quiver
+            - Krea
             - Xiaomi
             - xAI
             - Z.AI
@@ -26444,6 +26494,7 @@ paths:
               - inflection
               - io-net
               - ionstream
+              - krea
               - liquid
               - mancer
               - mara

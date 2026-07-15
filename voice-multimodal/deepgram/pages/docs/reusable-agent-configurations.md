@@ -214,14 +214,14 @@ Template variables can substitute any JSON value—a string, number, boolean, or
   "listen": {
     "provider": {
       "type": "deepgram",
-      "model": "DG_LISTEN_MODEL",
+      "model": DG_LISTEN_MODEL,
       "smart_format": false
     }
   },
   "think": {
     "provider": {
       "type": "open_ai",
-      "model": "DG_THINK_MODEL"
+      "model": DG_THINK_MODEL
     },
     "prompt": "You are a helpful agent."
   },
@@ -253,10 +253,10 @@ POST /projects/{project_id}/agent-variables
 | -------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | `key`          | String  | The variable name, following the `DG_<VARIABLE_NAME>` format                                   |
 | `value`        | Any     | The value to substitute. Can be any valid JSON type: string, number, boolean, object, or array |
-| `is_sensitive` | String  | Required. Must be `false`                                                                      |
+| `is_sensitive` | Boolean | Required. Must be `false`                                                                      |
 | `api_version`  | Integer | Optional. API version. Defaults to `1`                                                         |
 
-The `is_sensitive` field currently only accepts `"false"`. Support for sensitive variables is on our roadmap and will be available in the future.
+The `is_sensitive` field currently only accepts `false`. Support for sensitive variables is on our roadmap and will be available in the future.
 
 **Example request:**
 
@@ -267,7 +267,7 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agent-variables \
   -d '{
     "key": "DG_LISTEN_MODEL",
     "value": "nova-3",
-    "is_sensitive": "false"
+    "is_sensitive": false
   }'
 ```
 
@@ -310,7 +310,7 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agent-variables \
   -d '{
     "key": "DG_SYSTEM_PROMPT",
     "value": "You are a helpful customer service agent for Acme Corp.",
-    "is_sensitive": "false"
+    "is_sensitive": false
   }'
 ```
 
@@ -321,7 +321,7 @@ curl -X POST https://api.deepgram.com/v1/projects/{project_id}/agents \
   -H "Authorization: Token YOUR_DEEPGRAM_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "config": "{\"language\": \"en\", \"listen\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"nova-3\"}}, \"think\": {\"provider\": {\"type\": \"open_ai\", \"model\": \"gpt-4o-mini\"}, \"prompt\": \"DG_SYSTEM_PROMPT\"}, \"speak\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"aura-2-thalia-en\"}}, \"greeting\": \"Hello! How can I help you today?\"}",
+    "config": "{\"language\": \"en\", \"listen\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"nova-3\"}}, \"think\": {\"provider\": {\"type\": \"open_ai\", \"model\": \"gpt-4o-mini\"}, \"prompt\": DG_SYSTEM_PROMPT}, \"speak\": {\"provider\": {\"type\": \"deepgram\", \"model\": \"aura-2-thalia-en\"}}, \"greeting\": \"Hello! How can I help you today?\"}",
     "metadata": {
       "name": "acme-support-agent"
     }

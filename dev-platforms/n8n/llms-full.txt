@@ -4088,7 +4088,7 @@ An overview of configuration environment variables for self-hosted n8n.
 
 This section lists the environment variables that you can use to change n8n's configuration settings when self-hosting n8n.
 
-For the complete and most up-to-date list of all environment variables, see the full reference in the n8n docs repository: [Full environment variables index](https://github.com/n8n-io/n8n-docs/tree/main/docs/hosting/configuration/environment-variables/README.md).
+For the complete and most up-to-date list of all environment variables, see the full reference in the n8n docs repository: [Full environment variables index](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables).
 
 {% hint style="info" %}
 **File-based configuration**
@@ -7196,7 +7196,7 @@ This document describes how to configure your n8n instance to support user manag
 Refer to the main [User management](/administer/manage-users-and-access) guide for more information about usage, including:
 
 * [Managing users](/administer/manage-users-and-access/add-and-remove-users)
-* [Account types](/administer/manage-users-and-access/understand-account-types)
+* [Account types](broken://spaces/wMJrGrimpx3PxCJpUswm/pages/c17Eqx1JImm8zqNwxXjT)
 * [Best practices](/administer/manage-users-and-access/follow-best-practices)
 
 For LDAP setup information, refer to [LDAP](/administer/manage-users-and-access/verify-user-identity/connect-ldap).

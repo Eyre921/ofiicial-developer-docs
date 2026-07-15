@@ -1,5 +1,5 @@
 ---
-title: "Tool Runner (SDK)"
+title: "Tool runner (SDK)"
 source: https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner
 path: agents-and-tools/tool-use/tool-runner
 ---

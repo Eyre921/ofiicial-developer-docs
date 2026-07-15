@@ -40,9 +40,10 @@ To install Resend from the Vercel Marketplace:
 4. To create a new Resend account for your Vercel project, click on the "Create Account" option and **Continue**.
 5. Click **Accept and Create** to continue the installation.
 6. Select your custom domain associated with your Vercel project (or purchase a domain from Vercel).
-7. Select a plan (free or paid).
-8. Click **Continue** and **Create** to complete the installation.
-9. Select your Vercel project to connect the domain to Resend and click **Connect**.
+7. Select the region your emails will be sent from (defaults to North Virginia).
+8. Select a plan (free or paid).
+9. Click **Continue** and **Create** to complete the installation.
+10. Select your Vercel project to connect the domain to Resend and click **Connect**.
 
 Vercel creates a new Resend account for your Vercel project, connects the domain to Resend, and provisions an API key.
 
@@ -50,7 +51,7 @@ Vercel creates a new Resend account for your Vercel project, connects the domain
 
 Add Resend to the linked project from your terminal. With the [Vercel CLI](https://vercel.com/docs/cli) installed:
 
-1. Run `vc i resend -m domain=example.com`.
+1. Run `vc i resend -m domain=example.com`. To choose the region your emails will be sent from, pass it as metadata: `-m region=eu-west-1` (defaults to `us-east-1`). Supported regions: `us-east-1`, `eu-west-1`, `sa-east-1`, and `ap-northeast-1`.
 2. Select your custom domain associated with your Vercel project (or purchase a domain from Vercel).
 3. Select a plan (free or paid).
 4. Click **Continue** and **Create** to complete the installation.

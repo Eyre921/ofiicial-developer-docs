@@ -70767,7 +70767,19 @@ Bundling the [MCP server](https://supabase.com/docs/guides/getting-started/mcp) 
 
 ## Installation
 
-Choose your AI coding agent and follow the installation steps:
+### Quick install
+
+The [`plugins`](https://www.npmjs.com/package/plugins) package installs the Supabase plugin into any supported AI coding agent with a single command. It auto-detects which agent tools you have installed and installs the plugin to all of them.
+
+```bash
+npx plugins add supabase-community/supabase-plugin
+```
+
+Add the `--yes` flag to install the Supabase plugin without the confirmation prompt/UI.
+
+### Manual install
+
+Alternatively, choose your AI coding agent and follow the installation steps:
 
 
 
@@ -107242,11 +107254,13 @@ from
 
 Encryption library for Postgres
 
-Supabase DOES NOT RECOMMEND any new usage of [`pgsodium`](https://github.com/michelp/pgsodium).
+Supabase **does not recommend** the usage of [pgsodium](https://github.com/michelp/pgsodium) as it will be deprecated. Use [Supabase Vault](https://supabase.com/docs/guides/database/vault) instead.
 
-The [`pgsodium`](https://github.com/michelp/pgsodium) extension is expected to go through a deprecation cycle in the near future. We will reach out to owners of impacted projects to assist with migrations away from [`pgsodium`](https://github.com/michelp/pgsodium) once the deprecation process begins.
+We will reach out to owners of impacted projects to assist with migrations away from [pgsodium](https://github.com/michelp/pgsodium) once the deprecation process begins.
 
-Note: The [Vault extension](https://supabase.com/docs/guides/database/vault) won’t be impacted. Its internal implementation will shift away from pgsodium, but the interface and API will remain unchanged.
+Vault and `pgsodium` are **separate** extensions. Vault doesn't depend on `pgsodium` and **is not** affected by this deprecation.
+
+Note: Vault is self-contained and doesn't depend on `pgsodium`. It shares the same per-project [root key](https://supabase.com/docs/guides/database/vault#encryption-key-location) (same format and location) but exposes its own interface - the `vault.secrets` table and `decrypted_secrets` view - so switching to Vault does not change how your key is managed.
 
 [`pgsodium`](https://github.com/michelp/pgsodium) is a Postgres extension which provides SQL access to [`libsodium`'s](https://doc.libsodium.org/) high-level cryptographic algorithms.
 
@@ -107256,16 +107270,13 @@ Note that Supabase projects are encrypted at rest by default which likely is suf
 
 ## Get the root encryption key for your Supabase project
 
-Encryption requires keys. Keeping the keys in the same database as the encrypted data would be unsafe. For more information about managing the `pgsodium` root encryption key on your Supabase project see **[encryption key location](https://supabase.com/docs/guides/database/vault#encryption-key-location)**. This key is required to decrypt values stored in [Supabase Vault](https://supabase.com/docs/guides/database/vault) and data encrypted with Transparent Column Encryption.
+Encryption requires keys. Keeping the keys in the same database as the encrypted data would be unsafe. Supabase Vault and `pgsodium` share the same per-project root encryption key; for more information about managing it see **[encryption key location](https://supabase.com/docs/guides/database/vault#encryption-key-location)**. This key is required to decrypt values stored in [Supabase Vault](https://supabase.com/docs/guides/database/vault) and data encrypted with Transparent Column Encryption.
 
 ## Resources
 
 - [Supabase Vault](https://supabase.com/docs/guides/database/vault)
 - Read more about Supabase Vault in the [blog post](https://supabase.com/blog/vault-now-in-beta)
 - [Supabase Vault on GitHub](https://github.com/supabase/vault)
-
-## Resources
-
 - Official [`pgsodium` documentation](https://github.com/michelp/pgsodium)
 
 
@@ -117797,11 +117808,11 @@ updated_at       | 2022-12-14 02:51:13.938396+00
 
 
 
-As we mentioned, Vault uses Transparent Column Encryption (TCE) to store secrets in an authenticated encrypted form. There are some details around that you may be curious about. What does authenticated mean? Where is the encryption key stored? This section explains those details.
+As we mentioned, Vault stores secrets in an authenticated encrypted form. There are some details around that you may be curious about. What does authenticated mean? Where is the encryption key stored? This section explains those details.
 
 ### Authenticated encryption with associated data
 
-The first important feature of TCE is that it uses an [Authenticated Encryption with Associated Data](https://en.wikipedia.org/wiki/Authenticated_encryption#Authenticated_encryption_with_associated_data_\(AEAD\)) encryption algorithm (based on `libsodium`).
+The first important feature is that it uses an [Authenticated Encryption with Associated Data](https://en.wikipedia.org/wiki/Authenticated_encryption#Authenticated_encryption_with_associated_data_\(AEAD\)) encryption algorithm (based on `libsodium`).
 
 ### Encryption key location
 
@@ -117813,15 +117824,34 @@ Another important feature is that the encryption key is never stored in the data
 
 This is an important safety precaution - there is little value in storing the encryption key in the database itself as this would be like locking your front door but leaving the key in the lock! Storing the key outside the database fixes this issue.
 
-Where is the key stored? Supabase creates and manages the encryption key in our secured backend systems. We keep this key safe and separate from your data. You remain in control of your key - a separate API endpoint is available that you can use to access the key if you want to decrypt your data outside of Supabase.
+Where is the key stored? Supabase creates and manages a unique encryption key for each project in our secured backend systems. We keep this key safe and separate from your data. You remain in control of your key - the [Management API endpoint](https://supabase.com/docs/reference/api/v1-get-pgsodium-config) returns your project's 64-character hex root key so you can decrypt your data outside of Supabase or copy it to another project.
 
-Which roles should have access to the `vault.secrets` table should be carefully considered. There are two ways to grant access, the first is that the `postgres` user can explicitly grant access to the vault table itself.
+Which roles should have access to the `vault.secrets` table should be carefully considered. One example would be the `postgres` user explicitly granting access to the vault table.
+
+### Key portability and migration
+
+Each Supabase project has its own root encryption key. Same-project operations - pausing and restoring, and Point-in-Time or in-place restores - keep the same key, so your secrets stay readable automatically. The [Restore to a new project](https://supabase.com/docs/guides/platform/clone-project) and [Branching](https://supabase.com/docs/guides/deployment/branching) flows also copy the key to the new project.
+
+However, if you migrate to a **new** project with a manual `pg_dump` / `pg_restore`, that project is created with its own fresh key and **cannot decrypt** secrets copied from the old project. Before relying on the migrated data, copy the old project's root key to the new project. The `pgsodium` Management API endpoint returns and accepts the 64-character hex root key, and is only available for active (not paused or removed) projects:
+
+```bash
+export OLD_PROJECT_REF="<old_project_ref>"
+export NEW_PROJECT_REF="<new_project_ref>"
+export SUPABASE_ACCESS_TOKEN="<personal_access_token>"
+
+curl "https://api.supabase.com/v1/projects/$OLD_PROJECT_REF/pgsodium" \
+  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" |
+curl "https://api.supabase.com/v1/projects/$NEW_PROJECT_REF/pgsodium" \
+  -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
+  -X PUT --json @-
+```
+
+See [Backup and restore using the CLI](https://supabase.com/docs/guides/platform/migrating-within-supabase/backup-restore) for the full restore procedure.
 
 ### Resources
 
 - Read more about Supabase Vault in the [blog post](https://supabase.com/blog/vault-now-in-beta)
 - [Supabase Vault on GitHub](https://github.com/supabase/vault)
-- [Column Encryption](https://supabase.com/docs/guides/database/column-encryption)
 
 
 ---
@@ -125472,7 +125502,7 @@ Limits applied Edge Functions in Supabase's hosted platform.
 
 ## Platform limits
 
-- Maximum Function Size: 20MB (After bundling using CLI)
+- Maximum Function Size: 20MB (bundled locally via the CLI) or 5MB (bundled server-side, e.g. via the Management API or Dashboard)
 - Maximum no. of Functions per project:
   - Free: 100
   - Pro: 500
@@ -139429,16 +139459,18 @@ When using Vercel Marketplace, the following limitations apply:
 
 Learn how to develop locally and use the Supabase CLI
 
-Develop locally while running the Supabase stack on your machine.
+To develop your applications using the locally running Supabase stack, you'll need to install the [Supabase CLI](#cli) and a container runtime.
 
-Note: As a prerequisite, you must install a container runtime compatible with Docker APIs.
+Note: A container manager compatible with Docker APIs is a prerequisite:
 
-- [Docker Desktop](https://docs.docker.com/desktop/) (macOS, Windows, Linux)
+- [Docker Desktop](https://docs.docker.com/desktop/) (macOS, Windows, Linux) - preferred option
 - [Rancher Desktop](https://rancherdesktop.io/) (macOS, Windows, Linux)
 - [Podman](https://podman.io/) (macOS, Windows, Linux)
 - [OrbStack](https://orbstack.dev/) (macOS)
 
 ## Quickstart
+
+Note: Pick an install method and use the same tab in every step below. **Homebrew** gives you a global `supabase` command. **npm, pnpm, and yarn** install the CLI into your project as a dev dependency, so you run it through your package runner (`npx supabase`, `pnpm supabase`, or `yarn supabase`). See [Install and run the CLI](https://supabase.com/docs/guides/local-development/cli/getting-started) for details.
 
 1. Install the Supabase CLI:
 
@@ -139468,7 +139500,7 @@ Note: As a prerequisite, you must install a container runtime compatible with Do
    brew install supabase/tap/supabase
    ```
 
-2. In your repo, initialize the Supabase project:
+2. In your repo, initialize the local Supabase project:
 
    **npm**
 
@@ -139485,7 +139517,7 @@ Note: As a prerequisite, you must install a container runtime compatible with Do
    **pnpm**
 
    ```sh
-   pnpx supabase init
+   pnpm supabase init
    ```
 
    **brew**
@@ -139494,7 +139526,7 @@ Note: As a prerequisite, you must install a container runtime compatible with Do
    supabase init
    ```
 
-3. Start the Supabase stack:
+3. Start the local Supabase stack:
 
    **npm**
 
@@ -139511,7 +139543,7 @@ Note: As a prerequisite, you must install a container runtime compatible with Do
    **pnpm**
 
    ```sh
-   pnpx supabase start
+   pnpm supabase start
    ```
 
    **brew**
@@ -139539,15 +139571,13 @@ Local development with Supabase allows you to work on your projects in a self-co
 2. Offline work: You can continue development even without an internet connection.
 3. Cost-effective: Local development is free and doesn't consume your project's quota.
 4. Enhanced privacy: Sensitive data remains on your local machine during development.
-5. Easy testing: You can experiment with different configurations and features without affecting your production environment.
-
-To get started with local development, you'll need to install the [Supabase CLI](#cli) and Docker. The Supabase CLI allows you to start and manage your local Supabase stack, while Docker is used to run the necessary services.
+5. Safe testing: You can experiment with different configurations and features without affecting your production environment.
 
 Once set up, you can initialize a new Supabase project, start the local stack, and begin developing your application using local Supabase services. This includes access to a local Postgres database, Auth, Storage, and other Supabase features.
 
 ## CLI
 
-The Supabase CLI is a powerful tool that enables developers to manage their Supabase projects directly from the terminal. It provides a suite of commands for various tasks, including:
+The Supabase CLI is a tool that enables developers to run Supabase services locally and manage hosted projects directly from the terminal. It provides a suite of commands for various tasks, including:
 
 - Setting up and managing local development environments
 - Generating TypeScript types for your database schema
@@ -139558,6 +139588,436 @@ The Supabase CLI is a powerful tool that enables developers to manage their Supa
 With the CLI, you can streamline your development workflow, automate repetitive tasks, and maintain consistency across different environments. It's an essential tool for both local development and CI/CD pipelines.
 
 See the [CLI Getting Started guide](https://supabase.com/docs/guides/local-development/cli/getting-started) for more information.
+
+
+---
+
+# Local development workflow
+
+Set up and run your day-to-day local development workflow with the Supabase CLI.
+
+This guide walks through two common starting points for local development with the Supabase CLI, and shows how they converge into the same daily workflow. By the end, you'll have a `./supabase` directory in your repo that anyone can clone to recreate the full project, locally or on a fresh remote instance.
+
+There are two starting points, both leading to the same place: database schema and migrations tracked in version control, with seed data for local development.
+
+- **[Move an existing project to local development](#move-an-existing-project-to-local-development)**: you have a project on the Supabase platform and want to bring it into a proper local development workflow.
+- **[Start a new project from scratch](#start-a-new-project-from-scratch)**: you're building locally and will eventually push to a remote instance.
+
+## Before you begin
+
+You need the Supabase CLI installed and a Docker-compatible runtime running. If you haven't set these up yet, see [Install and run the CLI](https://supabase.com/docs/guides/local-development/cli/getting-started) for installation across macOS, Windows, and Linux, and for the details of what `supabase start` brings up and how to access each service.
+
+Keep in mind that **the local stack is for development only**. It is not hardened for production use and must never be exposed to external traffic. It has no TLS, no rate limiting, and default credentials. Use it to develop and test, then deploy to the [Supabase Platform](https://supabase.com) or a proper self-hosted setup for anything beyond that.
+
+Note: How you invoke the CLI depends on how you installed it:
+
+- Installed globally with **Homebrew or Scoop**: run `supabase <command>`.
+- Added as a **project dependency** with npm, pnpm, yarn, or bun: run it through your package runner instead, for example `npx supabase <command>` (or `pnpm supabase`, `yarn supabase`, `bunx supabase`).
+
+Every example in this guide is written as `supabase <command>`. Translate it to whichever form matches your install. See [Install and run the CLI](https://supabase.com/docs/guides/local-development/cli/getting-started) for the full setup.
+
+Tip: If you want a working project to explore rather than an empty one, `supabase bootstrap` scaffolds a starter application (Next.js, Flutter, and more) with schema, migrations, and config already wired up. It's an alternative entry point to `supabase init` when starting a new project from scratch.
+
+## The `./supabase` directory
+
+After `supabase init`, your project contains a `./supabase` directory. Here's what goes in it and what to commit:
+
+| Path                   | Purpose                                                           | Commit? |
+| ---------------------- | ----------------------------------------------------------------- | ------- |
+| `config.toml`          | Local stack configuration (ports, auth settings, etc.)            | Yes     |
+| `migrations/`          | Timestamped SQL migration files, applied in order                 | Yes     |
+| `seed.sql`             | Dev/test data, applied after migrations on `start` and `db reset` | Yes     |
+| `schemas/`             | Declarative schema files (if using that approach)                 | Yes     |
+| `.temp/`, `.branches/` | CLI internal state                                                | No      |
+
+The `config.toml` is safe to commit. It contains no secrets by default. If you add sensitive values (OAuth credentials, API keys), use the `env()` function to reference environment variables instead of hardcoding them. See [Managing config and secrets](https://supabase.com/docs/guides/local-development/managing-config).
+
+Note: Many database commands accept `--local` and `--linked` flags to choose what they act on. The defaults are not the same across commands: `db diff` and `db reset` default to `--local`, while `db pull`, `db push`, and `db dump` default to `--linked`. When in doubt, pass the flag explicitly.
+
+## Move an existing project to local development
+
+You've built a project on the Supabase platform, with tables created via the Dashboard, SQL editor, or client libraries. Now you want a local dev setup with everything in version control.
+
+### Step 1: Initialize
+
+In your project root:
+
+```bash
+supabase init
+```
+
+This creates `./supabase/config.toml`. If you already have a project directory with application code, run this at the root. The `supabase/` directory will sit alongside your app code.
+
+### Step 2: Authenticate
+
+```bash
+supabase login
+```
+
+Opens a browser to generate an access token. The token is stored locally and used for all subsequent CLI commands that interact with the platform.
+
+### Step 3: Link to your remote project
+
+```bash
+supabase link --project-ref <project-id>
+```
+
+Find your project ID in the Supabase Dashboard URL: `https://supabase.com/dashboard/project/<project-id>`.
+
+This tells the CLI which remote project to connect to for `db pull`, `db push`, and other remote operations. You'll be prompted for the database password, which is the password set when you created the project.
+
+### Step 4: Pull the remote schema
+
+```bash
+supabase db pull
+```
+
+This connects to your remote database, dumps the entire schema, and saves it as a migration file:
+
+```
+supabase/migrations/<timestamp>_remote_schema.sql
+```
+
+This initial migration is your baseline. It represents the current state of your database, and all future changes build on top of it. `db pull` also records this migration as already applied in the remote migration history (the `supabase_migrations.schema_migrations` table), so a later `db push` won't try to reapply it.
+
+Caution: `db pull` diffs your remote database against the CLI's default local stack, so the generated file can include statements you didn't expect. A common example is `DROP EXTENSION pg_net;`, emitted when your remote project has an extension disabled that the local stack enables by default. These statements apply silently on `db reset` and change your local schema, so read the file before committing it. See [Cleaning up generated migrations](#cleaning-up-generated-migrations) for what to look for.
+
+Tip: If you also use Supabase Auth or Storage and have customized their schemas, pull them separately:
+
+```bash
+supabase db pull --schema auth -f pull-auth-schema
+supabase db pull --schema storage -f pull-storage-schema
+```
+
+These schemas are managed by Supabase and typically don't need to be pulled unless you've made custom modifications.
+
+### Step 5: Create seed data
+
+You have two options:
+
+**Option A: Dump existing data from remote** (then clean it up):
+
+```bash
+supabase db dump --data-only --linked > supabase/seed.sql
+```
+
+Caution: Review and clean up the dump before committing. Remove production user data, secrets, personal information, and anything sensitive. Keep only representative test data that a developer needs to work with the project.
+
+**Option B: Write seed data by hand** (recommended for most projects):
+
+Create `supabase/seed.sql` with INSERT statements that set up a useful local development state: a few test users, sample data, and so on. This is often better than dumping production data because you control exactly what's in it.
+
+For more on organizing seed files, glob patterns, and generating realistic data, see [Seeding your database](https://supabase.com/docs/guides/local-development/seeding-your-database).
+
+### Step 6: Verify
+
+```bash
+supabase start
+supabase db reset
+```
+
+`db reset` destroys the local database and recreates it from scratch: it applies all migrations in order, then runs `seed.sql`. If this succeeds, your setup is reproducible. Anyone who clones the repo can do the same.
+
+### Step 7: Commit
+
+```bash
+git add supabase/
+git commit -m "add supabase local development setup"
+```
+
+Your project now has a fully reproducible local development environment.
+
+Note: For an existing project, the pulled migration already serves as your schema baseline. You don't need to also create a `schemas/` directory, because that would mean maintaining two representations of the same schema. If you want to adopt declarative schemas later, see [Declarative database schemas](https://supabase.com/docs/guides/local-development/declarative-database-schemas). For day-to-day changes going forward, see [The daily workflow](#the-daily-workflow) below.
+
+## Start a new project from scratch
+
+No remote project yet. You're building from scratch and want to do it right from the start.
+
+### Step 1: Initialize
+
+```bash
+supabase init
+```
+
+### Step 2: Start the local stack
+
+```bash
+supabase start
+```
+
+On first run, Docker images are pulled, which takes a few minutes. Subsequent starts are fast. Once running, the CLI outputs local service URLs and credentials, including the Studio URL for a local instance of the Dashboard. See [Install and run the CLI](https://supabase.com/docs/guides/local-development/cli/getting-started#access-your-projects-services) for the full output and how to reach each service.
+
+### Step 3: Create your schema
+
+Two approaches, pick one:
+
+**Option A: Declarative schema** (recommended for new projects)
+
+Declare the state you want your database to be in as a file in `supabase/schemas/`, for example:
+
+```sql title="supabase/schemas/schema.sql"
+create table public.todos (
+  id bigint generated by default as identity primary key,
+  created_at timestamptz default now() not null,
+  title text not null,
+  is_complete boolean default false not null,
+  user_id uuid references auth.users (id) default auth.uid() not null
+);
+
+alter table public.todos enable row level security;
+
+create policy "Users can read their own todos"
+  on public.todos for select
+  using (auth.uid() = user_id);
+
+create policy "Users can create their own todos"
+  on public.todos for insert
+  with check (auth.uid() = user_id);
+```
+
+Then generate a migration from it:
+
+```bash
+supabase db diff -f initial-schema
+```
+
+This compares your declared schema against the current (empty) database and generates a migration file in `supabase/migrations/`. For the full declarative workflow, including managing views and functions, ordering schema files, and known caveats, see [Declarative database schemas](https://supabase.com/docs/guides/local-development/declarative-database-schemas).
+
+**Option B: Write the migration directly**
+
+```bash
+supabase migration new initial-schema
+```
+
+This creates an empty file at `supabase/migrations/<timestamp>_initial-schema.sql`. Write your SQL in it, then apply:
+
+```bash
+supabase db reset
+```
+
+### Step 4: Add seed data
+
+Create `supabase/seed.sql`:
+
+```sql title="supabase/seed.sql"
+-- Create a test user (Supabase Auth)
+-- Note: this is a placeholder row so seeded data has a user_id to reference.
+-- It has no password, so it can't be used to sign in. To create a
+-- login-capable user, use the Auth admin API or the local Studio.
+insert into auth.users (id, email, raw_user_meta_data)
+values ('d0e3c8f0-1234-5678-9abc-def012345678', 'test@example.com', '{}');
+
+-- Seed application data
+insert into public.todos (title, user_id)
+values
+  ('Buy groceries', 'd0e3c8f0-1234-5678-9abc-def012345678'),
+  ('Write documentation', 'd0e3c8f0-1234-5678-9abc-def012345678');
+```
+
+### Step 5: Verify
+
+```bash
+supabase db reset
+```
+
+Drops everything, applies migrations, runs seed. If this passes, your project is reproducible.
+
+### Step 6: Commit
+
+```bash
+git add supabase/
+git commit -m "add supabase local development setup"
+```
+
+## The daily workflow
+
+Both starting points converge here. You have a working `./supabase` directory in your repo. Here's how day-to-day development works.
+
+### Making schema changes
+
+Which approach you use is a project-level decision, set when you first created your schema - not a per-change choice. It depends on whether you keep declarative files in `supabase/schemas/`. Pick the tab that matches your project.
+
+**Declarative schemas**
+
+1. Edit your schema file(s) in `supabase/schemas/` (add a table, a column, a policy, etc.)
+2. Generate a migration: `supabase db diff -f add-due-date-to-todo`
+3. Review the generated migration file. See [Cleaning up generated migrations](#cleaning-up-generated-migrations)
+4. Verify the full chain: `supabase db reset`
+5. Commit the schema file **and** the migration together
+
+Caution: `db diff` compares your `supabase/schemas/` files against your existing migrations; it does **not** read the live local database. Changes you make directly in Studio or via SQL are ignored, so `db diff` reports "No schema changes found" and silently drops them. Always edit the schema files, then diff.
+
+**Imperative migrations**
+
+**If you made changes through the local Studio UI:**
+
+```bash
+supabase db diff -f add-due-date-to-todo
+```
+
+This captures your UI changes as a migration file. This works only when your project has **no** declarative files in `supabase/schemas/`: `db diff` then compares the live local database against your migrations. If you use declarative schemas, don't edit through Studio expecting `db diff` to catch it - see the **Declarative schemas** tab.
+
+**If you prefer to write SQL directly:**
+
+```bash
+supabase migration new add-due-date-to-todo
+```
+
+Write the SQL in the generated file. Then verify:
+
+```bash
+supabase db reset
+```
+
+Commit the migration.
+
+### Generating types
+
+If your app uses the generated TypeScript types, regenerate them whenever your schema changes:
+
+```bash
+supabase gen types --lang typescript --local > database.types.ts
+```
+
+Use `--linked` instead of `--local` to generate from your remote project. TypeScript is the default language; pass `--lang go`, `--lang swift`, or `--lang python` for others.
+
+For working with the generated types (helper types, JSON inference, type-safe queries) and automating regeneration in CI, see [Generating types](https://supabase.com/docs/guides/api/rest/generating-types).
+
+### Staying in sync with your team
+
+When someone else pushes new migrations:
+
+```bash
+git pull
+supabase db reset
+```
+
+`db reset` replays all migrations from scratch, so you'll always match the current state of the repo.
+
+## Pushing to a remote project
+
+When you're ready to deploy your schema to a remote Supabase instance:
+
+```bash
+# Authenticate (if not already)
+supabase login
+
+# Link to the remote project (if not already)
+supabase link --project-ref <project-id>
+
+# Preview what will be applied
+supabase db push --dry-run
+
+# Apply migrations
+supabase db push
+```
+
+`db push` applies only migrations that haven't been applied to the remote yet. It tracks this via the `supabase_migrations.schema_migrations` table created automatically on the remote database.
+
+To also seed a fresh remote instance (dev/staging environments only):
+
+```bash
+supabase db push --include-seed
+```
+
+Caution: Never use `--include-seed` on a production database. Seed data is for development and testing.
+
+### Resetting a remote dev or staging project
+
+If a dev or staging remote drifts or gets into a messy state, you can wipe it and rebuild it from your local migrations:
+
+```bash
+supabase db reset --linked
+```
+
+Unlike the default `supabase db reset`, which targets your local database, the `--linked` flag runs against the remote project you connected with `supabase link`: it drops the remote schema, then replays every local migration in order. Add `--include-seed` to reload seed data as well.
+
+Danger: `db reset --linked` is destructive: it erases all data in the linked remote database. Only run it against throwaway dev or staging projects, and double-check which project you're linked to (`supabase projects list` shows the linked one) before running it. Never use it on production.
+
+For multi-environment setups with CI/CD (feature branches, staging, production), see [Managing Environments](https://supabase.com/docs/guides/deployment/managing-environments).
+
+## Key commands at a glance
+
+| Command                                | What it does                                                                                            |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| `supabase init`                        | Creates `./supabase/config.toml`                                                                        |
+| `supabase start`                       | Starts the local stack, applies migrations + seed                                                       |
+| `supabase stop`                        | Stops the local stack (data persists until `db reset`)                                                  |
+| `supabase db reset`                    | Destroys local DB, applies all migrations + seed from scratch                                           |
+| `supabase db reset --linked`           | Destroys the **linked remote** DB and rebuilds it from local migrations (destructive; dev/staging only) |
+| `supabase db diff -f <name>`           | Generates a migration by diffing current DB state against a shadow database                             |
+| `supabase db pull`                     | Pulls remote schema into a new local migration file                                                     |
+| `supabase db push`                     | Applies pending local migrations to the remote database                                                 |
+| `supabase db dump`                     | Exports remote DB schema (or `--data-only` for data) via `pg_dump`                                      |
+| `supabase migration new <name>`        | Creates an empty migration file                                                                         |
+| `supabase migration list`              | Compares local migrations against remote migration history                                              |
+| `supabase gen types --lang typescript` | Generates TypeScript types from your database schema                                                    |
+| `supabase link --project-ref`          | Connects local project to a remote Supabase project                                                     |
+| `supabase login`                       | Authenticates with the Supabase platform                                                                |
+
+For the full command reference and every flag, see the [CLI reference](https://supabase.com/docs/reference/cli).
+
+## Cleaning up generated migrations
+
+When `supabase db diff` generates a migration, it may include statements that are technically correct but noisy. Review every generated migration before committing.
+
+### Grants
+
+You may see lines like:
+
+```sql
+GRANT MAINTAIN, REFERENCES, TRIGGER, TRUNCATE ON public.todos TO anon;
+GRANT MAINTAIN, REFERENCES, TRIGGER, TRUNCATE ON public.todos TO authenticated;
+GRANT MAINTAIN, REFERENCES, TRIGGER, TRUNCATE ON public.todos TO service_role;
+```
+
+These appear because the diff tool treats permissions as part of the schema state. For tables in the `public` schema, these grants are applied by default and the lines are redundant. They're harmless, but if you want clean migrations, you can remove them. Be consistent across your team about whether you keep or remove them.
+
+### Revoke/re-grant patterns
+
+Sometimes a diff produces:
+
+```sql
+REVOKE ALL ON TABLE public.todos FROM anon;
+GRANT ALL ON TABLE public.todos TO anon;
+```
+
+This is the diff tool being overly cautious. If you haven't changed permissions, these lines can be safely removed.
+
+### Extension statements
+
+`CREATE EXTENSION IF NOT EXISTS ...` may appear. Keep these if the extension is required by your migration. Remove them if the extension is already created by a previous migration or is part of the default Supabase setup.
+
+### Known limitations of `db diff`
+
+The diff is generated by `pg-delta`, the default schema diff engine. (The older [`migra`](https://github.com/djrobstep/migra) engine is still available: set `enabled = false` under `[experimental.pgdelta]` in `config.toml`, or pass `--use-migra`.) No diff engine captures everything. Most notably, DML (INSERT, UPDATE, DELETE) is not tracked, so data changes must be added to the migration manually, and some entities like RLS policy renames and certain view properties don't diff cleanly. See the [full list of caveats](https://supabase.com/docs/guides/local-development/declarative-database-schemas#known-caveats) in the declarative schemas guide.
+
+Treat `db diff` output as a draft, not a final migration. When in doubt, review the generated SQL and adjust it manually.
+
+## Troubleshooting
+
+**`db reset` fails with a migration error**
+
+The output will show which migration file failed and the SQL error. Fix the migration file, then run `db reset` again.
+
+**`db push` says migrations are already applied**
+
+The remote database already has those migrations in its history. Run `supabase migration list` to compare local vs. remote state. If they're out of sync, use `supabase migration repair` to correct the remote history.
+
+**Schema drift: remote was changed outside of migrations**
+
+If someone modified the remote database directly (via Dashboard, SQL editor, etc.), run `supabase db pull` to capture those changes as a new migration file. Then `supabase db reset` locally to verify everything still works.
+
+**Docker issues on `supabase start`**
+
+Ensure Docker is running and has at least 7 GB of RAM allocated. If containers fail health checks, try:
+
+```bash
+supabase stop
+supabase start
+```
+
+If problems persist, `supabase stop --no-backup` for a clean restart (this removes local database data).
 
 
 ---
@@ -139573,7 +140033,34 @@ The Supabase CLI enables you to run the entire Supabase stack locally, on your m
 1. `supabase init` to create a new local project
 2. `supabase start` to launch the Supabase services
 
+Note: There are two ways to install the CLI, and they change the command you type:
+
+- **Project dependency** with `npm`, `pnpm`, or `yarn` installs the CLI into a single project (there is no global `supabase` command with this method). Run it through your package runner instead, for example `npx supabase <command>`.
+- **Global install** with Homebrew, Scoop, or Linux packages. Run commands as `supabase <command>`.
+
+Either way, the CLI is **project-scoped**: most commands (including `start`) expect to run inside a directory that has been initialized with `supabase init`, which creates the `supabase/` folder and `config.toml`. Run `init` first, then the other commands from the same directory.
+
+The rest of this page writes examples as `supabase <command>`; translate them to `npx supabase <command>` if you installed the CLI as a project dependency.
+
 ## Installing the Supabase CLI
+
+**npm**
+
+Install the CLI as a project dev dependency. This adds it to a single project rather than installing a global command:
+
+```sh
+npm install supabase --save-dev
+# or: pnpm add -D supabase / yarn add -D supabase / bun add -D supabase
+```
+
+Pin the version in `package.json` so your whole team uses the same CLI version. Then run every command through your package runner:
+
+```sh
+npx supabase --help
+# or: pnpm supabase / yarn supabase / bunx supabase
+```
+
+Caution: The Supabase CLI requires **Node.js 20 or later** when run via `npx` or `npm`. Older Node.js versions, such as 16, are not supported and fail to start the CLI.
 
 **macOS**
 
@@ -139594,7 +140081,7 @@ scoop install supabase
 
 **Linux**
 
-The CLI is available through [Homebrew](https://brew.sh) and Linux packages.
+The CLI is available via [Homebrew](https://brew.sh) and Linux packages.
 
 #### Homebrew
 
@@ -139612,25 +140099,23 @@ and run one of the following:
 - `sudo dpkg -i <...>.deb`
 - `sudo rpm -i <...>.rpm`
 
-**Node.js**
-
-Run the CLI by prefixing each command with `npx` or `bunx`:
-
-```sh
-npx supabase --help
-```
-
-Caution: The Supabase CLI requires **Node.js 20 or later** when run via `npx` or `npm`. Older Node.js versions, such as 16, are not supported and fail to start the CLI.
-
-You can also install the CLI as dev dependency via [npm](https://www.npmjs.com/package/supabase):
-
-```sh
-npm install supabase --save-dev
-```
-
 ## Beta channel
 
 Pre-release CLI builds ship from the development branch (`X.Y.Z-beta.N` versions). Use the npm `beta` dist-tag, or install `supabase-beta` via Homebrew / Scoop (separate packages from stable).
+
+**npm**
+
+Install as a dev dependency:
+
+```sh
+npm install supabase@beta --save-dev
+```
+
+Or run without installing:
+
+```sh
+npx supabase@beta --help
+```
 
 **macOS**
 
@@ -139658,20 +140143,6 @@ brew link --overwrite supabase-beta
 #### Linux packages
 
 Beta builds are attached to [GitHub pre-releases](https://github.com/supabase/cli/releases). Download the `.apk`, `.deb`, or `.rpm` for your platform and install with the same commands as [Linux packages](#linux-packages) above.
-
-**Node.js**
-
-Install as a dev dependency:
-
-```sh
-npm install supabase@beta --save-dev
-```
-
-Or run without installing:
-
-```sh
-npx supabase@beta --help
-```
 
 ## Updating the Supabase CLI
 
@@ -139723,7 +140194,7 @@ brew upgrade supabase-beta
    - `sudo dpkg -i <...>.deb`
    - `sudo rpm -i <...>.rpm`
 
-**Node.js**
+**npm**
 
 If you have installed the CLI as dev dependency via [npm](https://www.npmjs.com/package/supabase), you can update it with:
 
@@ -139747,9 +140218,9 @@ supabase db dump --local --data-only > supabase/seed.sql
 supabase stop --no-backup
 ```
 
-## Running Supabase locally
+## Running a local Supabase project
 
-The Supabase CLI uses Docker containers to manage the local development stack. Follow the official guide to install and configure [Docker Desktop](https://docs.docker.com/desktop) on your machine.
+The most common thing you'll do with the CLI is run the full Supabase stack (Postgres, Auth, Storage, and the rest) on your own machine. That stack runs in Docker containers, so you need a container runtime installed first. Follow the official guide to install and configure [Docker Desktop](https://docs.docker.com/desktop) on your machine.
 
 Alternately, you can use a different container tool that offers Docker compatible APIs.
 
@@ -139758,7 +140229,7 @@ Alternately, you can use a different container tool that offers Docker compatibl
 - [OrbStack](https://orbstack.dev/) (macOS)
 - [colima](https://github.com/abiosoft/colima) (macOS)
 
-Inside the folder where you want to create your project, run:
+With a container runtime running, go to the folder where you want to create your project and initialize it:
 
 ```bash
 supabase init
@@ -139766,11 +140237,13 @@ supabase init
 
 This creates a new `supabase` folder. It's safe to commit this folder to version control.
 
-Now, to start the Supabase stack, run:
+Now, from the same folder, start the Supabase stack:
 
 ```bash
 supabase start
 ```
+
+Note: If you installed the CLI as a project dependency (npm, pnpm, yarn, or bun), run these as `npx supabase init` and `npx supabase start` instead. See the [note above](#installing-the-supabase-cli).
 
 This takes time on your first run because the CLI needs to download the Docker images to your local machine. The CLI includes the entire Supabase stack, and a few additional images useful for local development (like a local SMTP server and a database diff tool).
 
@@ -139861,7 +140334,7 @@ Note: `sb_publishable_...` is the publishable key output when you run the comman
 
 **Analytics**
 
-Local logs rely on the Supabase Analytics Server which accesses the docker logging driver by either volume mounting `/var/run/docker.sock` domain socket on Linux and macOS, or exposing `tcp://localhost:2375` daemon socket on Windows. These settings must be configured manually after [installing](https://supabase.com/docs/guides/cli/getting-started#installing-the-supabase-cli) the Supabase CLI.
+Local logs rely on the Supabase Analytics Server which accesses the docker logging driver by either volume mounting `/var/run/docker.sock` domain socket on Linux and macOS, or exposing `tcp://localhost:2375` daemon socket on Windows. These settings must be configured manually after [installing](https://supabase.com/docs/guides/local-development/cli/getting-started#installing-the-supabase-cli) the Supabase CLI.
 
 Note: For advanced logs analysis using the Logs Explorer, it is advised to use the BigQuery backend instead of the default Postgres backend. Read about the steps [here](https://supabase.com/docs/reference/self-hosting-analytics/introduction#bigquery).
 
@@ -140286,6 +140759,267 @@ For hosted projects managed by Supabase, copy the templates into the [Email Temp
 
 ---
 
+# Database migrations
+
+Track and version your database schema changes with migrations.
+
+Supabase is a flexible platform that lets you decide how you want to build your projects. You can use the Dashboard directly to get up and running, or use a proper local setup. We suggest you work locally and deploy your changes to a linked project on the [Supabase Platform](https://app.supabase.io/).
+
+Develop locally using the CLI to run a local Supabase stack. You can use the integrated Studio Dashboard to make changes, then capture your changes in schema migration files, which can be saved in version control.
+
+Alternatively, if you're comfortable with migration files and SQL, you can write your own migrations and push them to the local database for testing before sharing your changes.
+
+Tip: This page is a focused tutorial on migrations. If you want to move an existing platform project to local development, or set up a reproducible project from scratch and take it all the way to a remote deploy, see the [Local development workflow](https://supabase.com/docs/guides/local-development/cli-workflows) guide. It covers both starting points, the daily development loop, pushing to production, cleaning up generated migrations, and troubleshooting.
+
+## Database migrations
+
+Database changes are managed through "migrations." Database migrations are a common way of tracking changes to your database over time.
+
+
+
+For this guide, we'll create a table called `employees` and see how we can make changes to it.
+
+1. **Create your first migration file**
+
+To get started, generate a [new migration](https://supabase.com/docs/reference/cli/supabase-migration-new) to store the SQL needed to create our `employees` table
+
+```bash name=Terminal
+supabase migration new create_employees_table
+```
+
+2. **Add the SQL to your migration file**
+
+This creates a new migration: supabase/migrations/\<timestamp>
+\_create\_employees\_table.sql.
+
+To that file, add the SQL to create this `employees` table
+
+```sql name=20250101000000_create_employees_table.sql
+create table employees (
+  id bigint primary key generated always as identity,
+  name text,
+  email text,
+  created_at timestamptz default now()
+);
+```
+
+3. **Apply your migration**
+
+Now that you have a migration file, you can run this migration and create the `employees` table.
+
+Use the `reset` command here to reset the database to the current migrations
+
+```bash name=Terminal
+supabase db reset
+```
+
+4. **Modify your employees table**
+
+Now you can visit your new `employees` table in the Dashboard.
+
+Next, modify your `employees` table by adding a column for department. Create a new migration file for that.
+
+```bash name=Terminal
+supabase migration new add_department_to_employees_table
+```
+
+5. **Add a new column to your table**
+
+This creates a new migration file: supabase/migrations/\<timestamp>
+\_add\_department\_to\_employees\_table.sql.
+
+To that file, add the SQL to create a new department column
+
+```sql name=20250101000001_add_department_to_employees_table.sql
+alter table if exists public.employees
+add department text default 'Hooli';
+```
+
+### Add sample data
+
+Now that you are managing your database with migrations scripts, it would be great have some seed data to use every time you reset the database.
+
+For this, you can create a seed script in `supabase/seed.sql`.
+
+1. **Populate your table**
+
+Insert data into your `employees` table with your `supabase/seed.sql` file.
+
+```sql name=supabase/seed.sql
+insert into public.employees
+  (name)
+values
+  ('Erlich Bachman'),
+  ('Richard Hendricks'),
+  ('Monica Hall');
+```
+
+2. **Reset your database**
+
+Reset your database (apply current migrations), and populate with seed data
+
+```bash name=Terminal
+supabase db reset
+```
+
+You should now see the `employees` table, along with your seed data in the Dashboard! All of your database changes are captured in code, and you can reset to a known state at any time, complete with seed data.
+
+### Diffing changes
+
+This workflow is great if you know SQL and are comfortable creating tables and columns. If not, you can still use the Dashboard to create tables and columns, and then use the CLI to diff your changes and create migrations.
+
+Create a new table called `cities`, with columns `id`, `name` and `population`. To see the corresponding SQL for this, you can use the `supabase db diff --schema public` command. This will show you the SQL that will be run to create the table and columns. The output of `supabase db diff` will look something like this:
+
+```
+Diffing schemas: public
+Finished supabase db diff on branch main.
+
+create table "public"."cities" (
+    "id" bigint primary key generated always as identity,
+    "name" text,
+    "population" bigint
+);
+
+```
+
+Alternately, you can view your table definitions directly from the Table Editor:
+
+![SQL Definition](/docs/img/guides/cli/sql-definitions.png)
+
+You can then copy this SQL into a new migration file, and run `supabase db reset` to apply the changes.
+
+The last step is deploying these changes to a live Supabase project.
+
+## Deploy your project
+
+You've been developing your project locally, making changes to your tables via migrations. It's time to deploy your project to the Supabase Platform and start scaling up to millions of users! Head over to [Supabase](https://supabase.com/dashboard) and create a new project to deploy to.
+
+### Log in to the Supabase CLI
+
+```bash name=Terminal
+supabase login
+```
+
+```bash name=npx
+npx supabase login
+```
+
+### Link your project
+
+Associate your local project with your remote project using [`supabase link`](https://supabase.com/docs/reference/cli/usage#supabase-link).
+
+```bash
+supabase link --project-ref <project-id>
+# You can get <project-id> from your project's dashboard URL: https://supabase.com/dashboard/project/<project-id>
+```
+
+Note: If your remote database already has schema changes that aren't in your local migrations (for example, tables you created directly in the Dashboard), capture them before you push:
+
+```bash
+supabase db pull
+supabase db reset
+```
+
+`db pull` writes those changes to a `<timestamp>_remote_schema.sql` migration so your local and remote histories line up, and `db reset` re-applies your migrations locally to confirm they're consistent. For a brand-new remote project with nothing in it yet, skip this step.
+
+### Deploy database changes
+
+Deploy any local database migrations using [`db push`](https://supabase.com/docs/reference/cli/usage#supabase-db-push):
+
+```sh
+supabase db push
+```
+
+Visiting your live project on [Supabase](https://supabase.com/dashboard), you'll see a new `employees` table, complete with the `department` column you added in the second migration above.
+
+### Deploy Edge Functions
+
+If your project uses Edge Functions, you can deploy these using [`functions deploy`](https://supabase.com/docs/reference/cli/usage#supabase-functions-deploy):
+
+```sh
+supabase functions deploy <function_name>
+```
+
+### Use Auth locally
+
+To use Auth locally, update your project's `supabase/config.toml` file that gets created after running `supabase init`. Add any providers you want, and set enabled to `true`.
+
+```bash supabase/config.toml
+[auth.external.github]
+enabled = true
+client_id = "env(SUPABASE_AUTH_GITHUB_CLIENT_ID)"
+secret = "env(SUPABASE_AUTH_GITHUB_SECRET)"
+redirect_uri = "http://localhost:54321/auth/v1/callback"
+```
+
+As a best practice, any secret values should be loaded from environment variables. You can add them to `.env` file in your project's root directory for the CLI to automatically substitute them.
+
+```bash .env
+SUPABASE_AUTH_GITHUB_CLIENT_ID="redacted"
+SUPABASE_AUTH_GITHUB_SECRET="redacted"
+```
+
+For these changes to take effect, you need to run `supabase stop` and `supabase start` again.
+
+If you have additional triggers or RLS policies defined on your `auth` schema, you can pull them as a migration file locally.
+
+```bash
+supabase db pull --schema auth
+```
+
+### Sync storage buckets
+
+Your RLS policies on storage buckets can be pulled locally by specifying `storage` schema. For example,
+
+```bash
+supabase db pull --schema storage
+```
+
+The buckets and objects themselves are rows in the storage tables so they won't appear in your schema. You can instead define them via `supabase/config.toml` file. For example,
+
+```bash supabase/config.toml
+[storage.buckets.images]
+public = false
+file_size_limit = "50MiB"
+allowed_mime_types = ["image/png", "image/jpeg"]
+objects_path = "./images"
+```
+
+This will upload files from `supabase/images` directory to a bucket named `images` in your project with one command.
+
+```bash
+supabase seed buckets
+```
+
+### Sync any schema with `--schema`
+
+You can synchronize your database with a specific schema using the `--schema` option as follows:
+
+```bash
+supabase db pull --schema <schema_name>
+```
+
+Caution: Using `--schema`
+
+If the local `supabase/migrations` directory is empty, the `db pull` command will ignore the `--schema` parameter.
+
+To fix this, you can pull twice:
+
+```bash
+supabase db pull
+supabase db pull --schema <schema_name>
+```
+
+## Limitations and considerations
+
+The local development environment is not as feature-complete as the Supabase Platform. Here are some of the differences:
+
+- You cannot update your project settings in the Dashboard. This must be done using the local config file.
+- The CLI version determines the local version of Studio used, so make sure you keep your local [Supabase CLI up to date](https://github.com/supabase/cli#getting-started). We're constantly adding new features and bug fixes.
+
+
+---
+
 # Declarative database schemas
 
 Manage your database schemas in one place and generate versioned migrations.
@@ -140295,6 +141029,8 @@ Manage your database schemas in one place and generate versioned migrations.
 Declarative schemas provide a developer-friendly way to maintain schema migrations.
 
 [Migrations](https://supabase.com/docs/guides/deployment/database-migrations) are traditionally managed imperatively (you provide the instructions on how exactly to change the database). This can lead to related information being scattered over multiple migration files. With declarative schemas, you instead declare the state you want your database to be in, and the instructions are generated for you.
+
+Because the schema files are the source of truth, make every change by editing them - not through Studio or the SQL editor. `supabase db diff` compares your schema files, not the live database, so changes made directly to the database are not picked up.
 
 ## Schema migrations
 
@@ -140331,6 +141067,8 @@ supabase migration up
 ```
 
 ### Updating your schema
+
+Caution: With declarative schemas, the files in `supabase/schemas/` are the source of truth. `supabase db diff` compares **those files** against your migrations - it does **not** read the live database. Changes you make directly (Studio, the SQL editor, `psql`) are invisible to the diff: it reports "No schema changes found" and the change is silently dropped. Always edit the schema files, then run `db diff`.
 
 1. **Add a new column**
 
@@ -140469,7 +141207,7 @@ Danger: SQL statements generated in a down migration are usually destructive. Yo
 
 ## Known caveats
 
-The `migra` diff tool used for generating schema diff is capable of tracking most database changes. However, there are edge cases where it can fail.
+Schema diffs are generated by `pg-delta`, the default diff engine, which tracks most database changes. However, there are edge cases where schema diff can fail. The known cases below were documented against the legacy [`migra`](https://github.com/djrobstep/migra) engine (still available via `enabled = false` under `[experimental.pgdelta]` in `config.toml`, or `--use-migra`); some, such as duplicated grants from default privileges, also apply to `pg-delta`. Review every generated migration regardless of engine.
 
 If you need to use any of the entities below, remember to add them through [versioned migrations](https://supabase.com/docs/guides/deployment/database-migrations) instead.
 
@@ -140563,275 +141301,6 @@ For more advanced secrets management workflows, including:
 - **Encrypted configuration values**: Use encrypted values directly in your `config.toml`
 
 See the [Managing secrets for branches](https://supabase.com/docs/guides/deployment/branching#managing-secrets-for-branches) section in our branching documentation, or check out the [dotenvx example repository](https://github.com/supabase/supabase/blob/master/examples/slack-clone/nextjs-slack-clone-dotenvx/README.md) for a complete implementation.
-
-
----
-
-# Local development with schema migrations
-
-Develop locally with the Supabase CLI and schema migrations.
-
-Supabase is a flexible platform that lets you decide how you want to build your projects. You can use the Dashboard directly to get up and running, or use a proper local setup. We suggest you work locally and deploy your changes to a linked project on the [Supabase Platform](https://app.supabase.io/).
-
-Develop locally using the CLI to run a local Supabase stack. You can use the integrated Studio Dashboard to make changes, then capture your changes in schema migration files, which can be saved in version control.
-
-Alternatively, if you're comfortable with migration files and SQL, you can write your own migrations and push them to the local database for testing before sharing your changes.
-
-## Database migrations
-
-Database changes are managed through "migrations." Database migrations are a common way of tracking changes to your database over time.
-
-
-
-For this guide, we'll create a table called `employees` and see how we can make changes to it.
-
-1. **Create your first migration file**
-
-To get started, generate a [new migration](https://supabase.com/docs/reference/cli/supabase-migration-new) to store the SQL needed to create our `employees` table
-
-```bash name=Terminal
-supabase migration new create_employees_table
-```
-
-2. **Add the SQL to your migration file**
-
-This creates a new migration: supabase/migrations/\<timestamp>
-\_create\_employees\_table.sql.
-
-To that file, add the SQL to create this `employees` table
-
-```sql name=20250101000000_create_employees_table.sql
-create table employees (
-  id bigint primary key generated always as identity,
-  name text,
-  email text,
-  created_at timestamptz default now()
-);
-```
-
-3. **Apply your migration**
-
-Now that you have a migration file, you can run this migration and create the `employees` table.
-
-Use the `reset` command here to reset the database to the current migrations
-
-```bash name=Terminal
-supabase db reset
-```
-
-4. **Modify your employees table**
-
-Now you can visit your new `employees` table in the Dashboard.
-
-Next, modify your `employees` table by adding a column for department. Create a new migration file for that.
-
-```bash name=Terminal
-supabase migration new add_department_to_employees_table
-```
-
-5. **Add a new column to your table**
-
-This creates a new migration file: supabase/migrations/\<timestamp>
-\_add\_department\_to\_employees\_table.sql.
-
-To that file, add the SQL to create a new department column
-
-```sql name=20250101000001_add_department_to_employees_table.sql
-alter table if exists public.employees
-add department text default 'Hooli';
-```
-
-### Add sample data
-
-Now that you are managing your database with migrations scripts, it would be great have some seed data to use every time you reset the database.
-
-For this, you can create a seed script in `supabase/seed.sql`.
-
-1. **Populate your table**
-
-Insert data into your `employees` table with your `supabase/seed.sql` file.
-
-```sql name=supabase/seed.sql
-insert into public.employees
-  (name)
-values
-  ('Erlich Bachman'),
-  ('Richard Hendricks'),
-  ('Monica Hall');
-```
-
-2. **Reset your database**
-
-Reset your database (apply current migrations), and populate with seed data
-
-```bash name=Terminal
-supabase db reset
-```
-
-You should now see the `employees` table, along with your seed data in the Dashboard! All of your database changes are captured in code, and you can reset to a known state at any time, complete with seed data.
-
-### Diffing changes
-
-This workflow is great if you know SQL and are comfortable creating tables and columns. If not, you can still use the Dashboard to create tables and columns, and then use the CLI to diff your changes and create migrations.
-
-Create a new table called `cities`, with columns `id`, `name` and `population`. To see the corresponding SQL for this, you can use the `supabase db diff --schema public` command. This will show you the SQL that will be run to create the table and columns. The output of `supabase db diff` will look something like this:
-
-```
-Diffing schemas: public
-Finished supabase db diff on branch main.
-
-create table "public"."cities" (
-    "id" bigint primary key generated always as identity,
-    "name" text,
-    "population" bigint
-);
-
-```
-
-Alternately, you can view your table definitions directly from the Table Editor:
-
-![SQL Definition](/docs/img/guides/cli/sql-definitions.png)
-
-You can then copy this SQL into a new migration file, and run `supabase db reset` to apply the changes.
-
-The last step is deploying these changes to a live Supabase project.
-
-## Deploy your project
-
-You've been developing your project locally, making changes to your tables via migrations. It's time to deploy your project to the Supabase Platform and start scaling up to millions of users! Head over to [Supabase](https://supabase.com/dashboard) and create a new project to deploy to.
-
-### Log in to the Supabase CLI
-
-```bash name=Terminal
-supabase login
-```
-
-```bash name=npx
-npx supabase login
-```
-
-### Link your project
-
-Associate your project with your remote project using [`supabase link`](https://supabase.com/docs/reference/cli/usage#supabase-link).
-
-```bash
-supabase link --project-ref <project-id>
-# You can get <project-id> from your project's dashboard URL: https://supabase.com/dashboard/project/<project-id>
-
-supabase db pull
-# Capture any changes that you have made to your remote database before you went through the steps above
-# If you have not made any changes to the remote database, skip this step
-```
-
-`supabase/migrations` is now populated with a migration in `<timestamp>_remote_schema.sql`.
-This migration captures any changes required for your local database to match the schema of your remote Supabase project.
-
-Review the generated migration file and once happy, apply the changes to your local instance:
-
-```bash
-# To apply the new migration to your local database:
-supabase migration up
-
-# To reset your local database completely:
-supabase db reset
-```
-
-Note: There are a few commands required to link your project. We are in the process of consolidating these commands into a single command. Bear with us!
-
-### Deploy database changes
-
-Deploy any local database migrations using [`db push`](https://supabase.com/docs/reference/cli/usage#supabase-db-push):
-
-```sh
-supabase db push
-```
-
-Visiting your live project on [Supabase](https://supabase.com/dashboard), you'll see a new `employees` table, complete with the `department` column you added in the second migration above.
-
-### Deploy Edge Functions
-
-If your project uses Edge Functions, you can deploy these using [`functions deploy`](https://supabase.com/docs/reference/cli/usage#supabase-functions-deploy):
-
-```sh
-supabase functions deploy <function_name>
-```
-
-### Use Auth locally
-
-To use Auth locally, update your project's `supabase/config.toml` file that gets created after running `supabase init`. Add any providers you want, and set enabled to `true`.
-
-```bash supabase/config.toml
-[auth.external.github]
-enabled = true
-client_id = "env(SUPABASE_AUTH_GITHUB_CLIENT_ID)"
-secret = "env(SUPABASE_AUTH_GITHUB_SECRET)"
-redirect_uri = "http://localhost:54321/auth/v1/callback"
-```
-
-As a best practice, any secret values should be loaded from environment variables. You can add them to `.env` file in your project's root directory for the CLI to automatically substitute them.
-
-```bash .env
-SUPABASE_AUTH_GITHUB_CLIENT_ID="redacted"
-SUPABASE_AUTH_GITHUB_SECRET="redacted"
-```
-
-For these changes to take effect, you need to run `supabase stop` and `supabase start` again.
-
-If you have additional triggers or RLS policies defined on your `auth` schema, you can pull them as a migration file locally.
-
-```bash
-supabase db pull --schema auth
-```
-
-### Sync storage buckets
-
-Your RLS policies on storage buckets can be pulled locally by specifying `storage` schema. For example,
-
-```bash
-supabase db pull --schema storage
-```
-
-The buckets and objects themselves are rows in the storage tables so they won't appear in your schema. You can instead define them via `supabase/config.toml` file. For example,
-
-```bash supabase/config.toml
-[storage.buckets.images]
-public = false
-file_size_limit = "50MiB"
-allowed_mime_types = ["image/png", "image/jpeg"]
-objects_path = "./images"
-```
-
-This will upload files from `supabase/images` directory to a bucket named `images` in your project with one command.
-
-```bash
-supabase seed buckets
-```
-
-### Sync any schema with `--schema`
-
-You can synchronize your database with a specific schema using the `--schema` option as follows:
-
-```bash
-supabase db pull --schema <schema_name>
-```
-
-Caution: Using `--schema`
-
-If the local `supabase/migrations` directory is empty, the `db pull` command will ignore the `--schema` parameter.
-
-To fix this, you can pull twice:
-
-```bash
-supabase db pull
-supabase db pull --schema <schema_name>
-```
-
-## Limitations and considerations
-
-The local development environment is not as feature-complete as the Supabase Platform. Here are some of the differences:
-
-- You cannot update your project settings in the Dashboard. This must be done using the local config file.
-- The CLI version determines the local version of Studio used, so make sure you keep your local [Supabase CLI up to date](https://github.com/supabase/cli#getting-started). We're constantly adding new features and bug fixes.
 
 
 ---
@@ -140933,7 +141402,9 @@ Tip: The CLI processes seed files in the order they are declared in the `sql_pat
 
 ## Generating seed data
 
-You can generate seed data for local development using [Snaplet](https://github.com/snaplet/seed).
+For most projects, a hand-written `supabase/seed.sql` (see [Using seed files](#using-seed-files) above) is the simplest and most reliable approach. If you need large volumes of realistic data, you can generate it with [Snaplet Seed](https://github.com/supabase-community/seed).
+
+Note: Snaplet wound down as a company in 2024 and open-sourced its tooling. `@snaplet/seed` is now community-maintained at [supabase-community/seed](https://github.com/supabase-community/seed) and receives only occasional fixes, so treat it as an optional convenience rather than a required part of the workflow.
 
 Tip: To use Snaplet, you need to have Node.js and npm installed. You can add Node.js to your project by running `npm init -y` in your project directory.
 
@@ -141027,23 +141498,22 @@ Running `npx tsx seed.ts > supabase/seed.sql` generates the relevant SQL stateme
 
 ```sql
 -- The `Post.createdBy` user with an email address ending in `"@acme.org"`
-INSERT INTO "User" (name, email) VALUES ("John Snow", "snow@acme.org")
+insert into "User" (name, email) values ('John Snow', 'snow@acme.org');
 
---- A `Post` with the title `"There is a lot of snow around here!"`
-INSERT INTO "Post" (title, content, createdBy) VALUES (
-  "There is a lot of snow around here!",
-  "Lorem ipsum dolar",
-  1)
+-- - A `Post` with the title `"There is a lot of snow around here!"`
+insert into "Post" (title, content, createdBy)
+values
+  ('There is a lot of snow around here!', 'Lorem ipsum dolar', 1);
 
---- Three `Post.Comment` from three different users.
-INSERT INTO "User" (name, email) VALUES ("Stephanie Shadow", "shadow@domain.com")
-INSERT INTO "Comment" (text, userId, postId) VALUES ("I love cheese", 2, 1)
+-- - Three `Post.Comment` from three different users.
+insert into "User" (name, email) values ('Stephanie Shadow', 'shadow@domain.com');
+insert into "Comment" (text, userId, postId) values ('I love cheese', 2, 1);
 
-INSERT INTO "User" (name, email) VALUES ("John Rambo", "rambo@trymore.dev")
-INSERT INTO "Comment" (text, userId, postId) VALUES ("Lorem ipsum dolar sit", 3, 1)
+insert into "User" (name, email) values ('John Rambo', 'rambo@trymore.dev');
+insert into "Comment" (text, userId, postId) values ('Lorem ipsum dolar sit', 3, 1);
 
-INSERT INTO "User" (name, email) VALUES ("Steven Plank", "s@plank.org")
-INSERT INTO "Comment" (text, userId, postId) VALUES ("Actually, that's not correct...", 4, 1)
+insert into "User" (name, email) values ('Steven Plank', 's@plank.org');
+insert into "Comment" (text, userId, postId) values ('Actually, that''s not correct...', 4, 1);
 ```
 
 Whenever your database structure changes, you will need to regenerate `@snaplet/seed` to keep it in sync with the new structure. You can do this by running:
@@ -141066,7 +141536,7 @@ npx @snaplet/seed sync
 npx tsx seed.ts > supabase/seed.sql
 ```
 
-For more information, check out Snaplet's [seed documentation](https://snaplet-seed.netlify.app/seed/integrations/supabase)
+For more information, see the [Snaplet Seed repository](https://github.com/supabase-community/seed).
 
 
 ---
@@ -143115,6 +143585,7 @@ Note: You can clone your Supabase project by restoring your data from an existin
 - All data and indexes
 - Database roles, permissions and users
 - Auth user data (user accounts, hashed passwords, and authentication records from the auth schema)
+- Encryption root key (so [Vault](https://supabase.com/docs/guides/database/vault) secrets and encrypted columns remain readable in the new project)
 
 **What needs manual reconfiguration?**
 
@@ -148649,6 +149120,8 @@ Run the command mentioned and restart the terminal.
 
 ### Restore backup using CLI
 
+Note: These steps cover a manual logical restore (`pg_dump` / `psql`) into a project you create yourself. The [Restore to a new project](https://supabase.com/docs/guides/platform/clone-project) and [Branching](https://supabase.com/docs/guides/deployment/branching) flows copy your encryption root key to the new project automatically, so the key-copy step below does not apply to them.
+
 1. **Create project**
 
 Create a [new project](https://database.new)
@@ -148684,7 +149157,7 @@ Replace `[YOUR-PASSWORD]` in the connection string with the database password. I
 
 5. **Restore your Project with PSQL**
 
-**Column encryption disabled**
+**No Vault or column encryption**
 
 Run these commands after replacing `[CONNECTION_STRING]` with your connection string from the previous steps:
 
@@ -148699,9 +149172,13 @@ psql \
   --dbname [CONNECTION_STRING]
 ```
 
-**Column encryption enabled**
+**Supabase Vault or column encryption**
 
-If you use [column encryption](https://supabase.com/docs/guides/database/column-encryption), copy the root encryption key to your new project using your [Personal Access Token](https://supabase.com/dashboard/account/tokens).
+Caution: Retrieve the root encryption key from the **old** project *before* you pause or delete it. The API below only returns the key for active projects - once the old project is paused or removed, the key (and any data encrypted with it) can no longer be retrieved.
+
+Backup files never contain the root key; they hold only encrypted data. A newly created project is initialized with its own fresh root key, so Vault secrets and encrypted columns restored from the old project cannot be decrypted until you copy the old key across. Overwriting a project's root key makes any data encrypted under a different key inaccessible.
+
+If you use [Supabase Vault](https://supabase.com/docs/guides/database/vault) or [pgsodium](https://supabase.com/docs/guides/database/extensions/pgsodium), copy the root encryption key to your new project using your [Personal Access Token](https://supabase.com/dashboard/account/tokens). Both rely on the same per-project root key.
 
 You can restore the project using both the old and new project ref (the project ref is the value between "https\://" and ".supabase.co" in the URL) instead of the URL.
 
@@ -148716,6 +149193,8 @@ curl "https://api.supabase.com/v1/projects/$NEW_PROJECT_REF/pgsodium" \
   -H "Authorization: Bearer $SUPABASE_ACCESS_TOKEN" \
   -X PUT --json @-
 ```
+
+The endpoint both returns and expects the 64-character hex root key.
 
 6. **Reactivate Database publications**
 
@@ -177527,7 +178006,12 @@ Web scraping often requires a headless browser operator, such as [puppeteer](htt
 
 # Edge Function bundle size issues
 
-Edge Functions have a 20MB source code limit. If your function exceeds this limit, deployment will fail.
+The maximum size of a deployed Edge Function depends on how it's bundled:
+
+- **Local bundling (Supabase CLI):** up to **20 MB**. The CLI bundles your function and its dependencies on your machine before uploading.
+- **Server-side bundling (Management API or Dashboard):** up to **5 MB**. When you deploy without local bundling, bundling runs on the server, which has a lower infrastructure limit.
+
+If your function exceeds the applicable limit, deployment fails with an error such as `Function source code exceeds the maximum deployment size`.
 
 ## Check your bundle size
 
@@ -177566,6 +178050,10 @@ Consider breaking large functions into smaller, more focused functions. Each fun
 ### Choose lightweight alternatives
 
 Research smaller packages that provide the same functionality. Many NPM packages designed for Node.js include unnecessary polyfills that increase bundle size.
+
+## Deploying larger functions
+
+If your function is under 20 MB but exceeds the 5 MB server-side limit, bundle it locally with the Supabase CLI to get the higher limit. Run `supabase functions deploy` with the `--use-docker` flag to force local bundling.
 
 ## Additional resources
 

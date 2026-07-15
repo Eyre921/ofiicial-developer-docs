@@ -27016,7 +27016,16 @@ When [creating a new deployment](#create-new-deployment), a new revision is crea
 
 ## View build and server logs
 
-Build and server logs are available for each revision. LangSmith Cloud also supports native Datadog forwarding for server logs and traces. To enable Datadog logs, configure the deployment with `DD_API_KEY`, `DD_LOGS_ENABLED=true`, and `DD_LOG_INJECTION=true`. For more information, see [`DD_API_KEY`](/langsmith/env-var#dd_api_key).
+Build and server logs are available for each revision.
+
+### Forward server logs to Datadog
+
+LangSmith Cloud can forward Agent Server logs to Datadog. To turn on log forwarding, set both of these environment variables or secrets on the deployment:
+
+* **`DD_API_KEY`**: Your [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/). Log forwarding requires it.
+* **`DD_LOGS_ENABLED=true`**: Forwards Agent Server logs to Datadog.
+
+To correlate logs with traces, also set `DD_LOGS_INJECTION=true`. For the full list of Datadog variables (`DD_SITE`, `DD_ENV`, `DD_SERVICE`, and more), see [Supported Datadog environment variables](/langsmith/env-var#dd_api_key).
 
 <Tabs>
   <Tab title="LangSmith UI">
@@ -30420,13 +30429,23 @@ For advanced CORS configuration, see [how to add custom CORS configuration](/lan
 
 Defaults to `*` (all origins).
 
-## `DD_API_KEY`
+<h2>
+  Supported Datadog environment variables
+</h2>
 
-Specify `DD_API_KEY` (your [Datadog API Key](https://docs.datadoghq.com/account_management/api-app-keys/)) to automatically enable Datadog tracing for the deployment. Specify other [`DD_*` environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) to configure the tracing instrumentation.
+Set these environment variables or secrets on the deployment to send Agent Server traces and logs to Datadog. Every variable takes effect only when `DD_API_KEY` is set, which wraps the application process in Datadog's [`ddtrace-run`](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html) tracer and log-collection agent.
 
-If `DD_API_KEY` is specified, the application process is wrapped in the [`ddtrace-run` command](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html). Other `DD_*` environment variables, such as `DD_SITE`, `DD_ENV`, `DD_SERVICE`, and `DD_TRACE_ENABLED`, are typically needed to properly configure the tracing instrumentation. See [`DD_*` environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) for more details.
+* **`DD_API_KEY`**: Your [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/). Required. Sending any traces or logs to Datadog requires it.
+* **`DD_LOGS_ENABLED`**: Set to `true` to forward Agent Server logs to Datadog. Omit it or set it to `false` to disable log forwarding.
+* **`DD_LOGS_INJECTION`**: Set to `true` to add trace and span identifiers to logs so that logs correlate with traces.
+* **`DD_TRACE_ENABLED`**: Controls Datadog trace collection. Set to `true` to collect traces or `false` to disable it.
+* **`DD_SITE`**: The Datadog site to send data to, such as `datadoghq.com` or `datadoghq.eu`. Defaults to `datadoghq.com`.
+* **`DD_ENV`**: The environment name applied to traces and logs, such as `production`.
+* **`DD_SERVICE`**: The service name applied to traces and logs.
+* **`DD_TRACE_DEBUG`**: Set to `true` to enable debug logging in the `ddtrace` tracer when troubleshooting.
+* **`DD_LOG_LEVEL`**: The Datadog Agent log level, such as `debug`, when troubleshooting.
 
-To send logs to Datadog, also set `DD_LOGS_ENABLED=true`. Set `DD_LOG_INJECTION=true` to include trace and span identifiers in logs for trace correlation. You can enable `DD_TRACE_DEBUG=true` and set `DD_LOG_LEVEL=debug` to troubleshoot.
+For the full set of tracing options, see the [`DD_*` environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) reference.
 
 <Note>
   Enabling `DD_API_KEY` (and thus `ddtrace-run`) can override or interfere with other auto-instrumentation solutions (such as OpenTelemetry) that you may have instrumented into your application code.
@@ -30641,13 +30660,23 @@ For advanced CORS configuration, see [how to add custom CORS configuration](/lan
 
 Defaults to `*` (all origins).
 
-## `DD_API_KEY`
+<h2>
+  Supported Datadog environment variables
+</h2>
 
-Specify `DD_API_KEY` (your [Datadog API Key](https://docs.datadoghq.com/account_management/api-app-keys/)) to automatically enable Datadog tracing for the deployment. Specify other [`DD_*` environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) to configure the tracing instrumentation.
+Set these environment variables or secrets on the deployment to send Agent Server traces and logs to Datadog. Every variable takes effect only when `DD_API_KEY` is set, which wraps the application process in Datadog's [`ddtrace-run`](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html) tracer and log-collection agent.
 
-If `DD_API_KEY` is specified, the application process is wrapped in the [`ddtrace-run` command](https://ddtrace.readthedocs.io/en/stable/installation_quickstart.html). Other `DD_*` environment variables, such as `DD_SITE`, `DD_ENV`, `DD_SERVICE`, and `DD_TRACE_ENABLED`, are typically needed to properly configure the tracing instrumentation. See [`DD_*` environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) for more details.
+* **`DD_API_KEY`**: Your [Datadog API key](https://docs.datadoghq.com/account_management/api-app-keys/). Required. Sending any traces or logs to Datadog requires it.
+* **`DD_LOGS_ENABLED`**: Set to `true` to forward Agent Server logs to Datadog. Omit it or set it to `false` to disable log forwarding.
+* **`DD_LOGS_INJECTION`**: Set to `true` to add trace and span identifiers to logs so that logs correlate with traces.
+* **`DD_TRACE_ENABLED`**: Controls Datadog trace collection. Set to `true` to collect traces or `false` to disable it.
+* **`DD_SITE`**: The Datadog site to send data to, such as `datadoghq.com` or `datadoghq.eu`. Defaults to `datadoghq.com`.
+* **`DD_ENV`**: The environment name applied to traces and logs, such as `production`.
+* **`DD_SERVICE`**: The service name applied to traces and logs.
+* **`DD_TRACE_DEBUG`**: Set to `true` to enable debug logging in the `ddtrace` tracer when troubleshooting.
+* **`DD_LOG_LEVEL`**: The Datadog Agent log level, such as `debug`, when troubleshooting.
 
-To send logs to Datadog, also set `DD_LOGS_ENABLED=true`. Set `DD_LOG_INJECTION=true` to include trace and span identifiers in logs for trace correlation. You can enable `DD_TRACE_DEBUG=true` and set `DD_LOG_LEVEL=debug` to troubleshoot.
+For the full set of tracing options, see the [`DD_*` environment variables](https://ddtrace.readthedocs.io/en/stable/configuration.html) reference.
 
 <Note>
   Enabling `DD_API_KEY` (and thus `ddtrace-run`) can override or interfere with other auto-instrumentation solutions (such as OpenTelemetry) that you may have instrumented into your application code.
@@ -127697,7 +127726,7 @@ When configured, Deep Agents Code displays a status line with a link to the Lang
 # Use remote sandboxes
 Source: https://docs.langchain.com/oss/javascript/deepagents/code/remote-sandboxes
 
-Run Deep Agents Code tool execution in LangSmith, AgentCore, Daytona, Modal, Runloop, or Vercel sandboxes. Install provider extras, set credentials, and use flags and setup scripts.
+Run Deep Agents Code tool execution in LangSmith, AgentCore, Daytona, Modal, Runloop, Vercel, or E2B sandboxes. Install provider dependencies, set credentials, and use flags and setup scripts.
 
 Deep Agents Code uses the [sandbox as tool](/oss/javascript/deepagents/sandboxes#sandbox-as-tool-pattern) pattern: the `dcode` process (LLM loop, memory, tool dispatch) runs on your machine, but agent tool calls (`read_file`, `write_file`, `execute`, etc.) target the remote sandbox, not your local filesystem. To get files into the sandbox, use a [setup script](#setup-scripts) or the provider's file transfer APIs (see [Working with files](/oss/javascript/deepagents/sandboxes#working-with-files)).
 
@@ -127705,7 +127734,7 @@ For a deeper look at sandbox architecture, integration patterns, and security be
 
 <Steps>
   <Step title="Install provider dependency" icon="download">
-    Each provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`:
+    Each built-in provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`. Third-party providers such as E2B install as packages with the `--package` flag:
 
     <Tabs>
       <Tab title="LangSmith">
@@ -127771,9 +127800,23 @@ For a deeper look at sandbox architecture, integration patterns, and security be
           ```
         </CodeGroup>
       </Tab>
+
+      <Tab title="E2B">
+        E2B is a [third-party provider](#third-party-providers) published by the `langchain-e2b` package. Install it as a package, not a `deepagents-code` extra:
+
+        <CodeGroup>
+          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          /install langchain-e2b --package
+          ```
+
+          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          dcode --install langchain-e2b --package
+          ```
+        </CodeGroup>
+      </Tab>
     </Tabs>
 
-    To install support for every sandbox provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell.
+    To install support for every built-in provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell. The `all-sandboxes` extra does not include third-party providers such as E2B.
   </Step>
 
   <Step title="Set provider credentials" icon="key">
@@ -127822,6 +127865,12 @@ For a deeper look at sandbox architecture, integration patterns, and security be
 
         When running on Vercel, [OIDC](https://vercel.com/docs/oidc) credentials are used automatically instead.
       </Tab>
+
+      <Tab title="E2B">
+        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        export E2B_API_KEY="your-key"
+        ```
+      </Tab>
     </Tabs>
   </Step>
 
@@ -127862,6 +127911,12 @@ For a deeper look at sandbox architecture, integration patterns, and security be
         dcode --sandbox vercel
         ```
       </Tab>
+
+      <Tab title="E2B">
+        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        dcode --sandbox e2b
+        ```
+      </Tab>
     </Tabs>
   </Step>
 </Steps>
@@ -127885,6 +127940,7 @@ Each provider exposes a default working directory inside the sandbox. Setup scri
 | Modal     | `/workspace`      |
 | Runloop   | `/home/user`      |
 | Vercel    | `/vercel/sandbox` |
+| E2B       | `/home/user`      |
 
 Examples:
 
@@ -127908,9 +127964,9 @@ dcode --sandbox
 
 ## Pluggable providers
 
-The six built-in providers above aren't the only options. Deep Agents Code discovers sandbox providers from three sources, so you can use providers shipped by other packages or declare your own without changing Deep Agents Code:
+The built-in providers are not the only options. Deep Agents Code discovers sandbox providers from three sources, so you can use providers shipped by other packages or declare your own without changing Deep Agents Code:
 
-1. **Built-in providers** — the curated set above, installed as `deepagents-code` extras.
+1. **Built-in providers** — LangSmith, AgentCore, Daytona, Modal, Runloop, and Vercel, shipped with `deepagents-code` (LangSmith by default, the others as extras).
 2. **[Third-party providers](#third-party-providers)** — published by other installed packages via a Python entry point.
 3. **[Config-declared providers](#config-declared-providers)** — defined in your `~/.deepagents/config.toml`.
 
@@ -143902,7 +143958,7 @@ Sandboxes are especially useful for:
 These examples assume you have already created a sandbox/devbox using the provider's SDK and have credentials set up. For signup, authentication, and provider-specific lifecycle details, see [Available providers](#available-providers).
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { ChatAnthropic } from "@langchain/anthropic";
   import { SandboxClient } from "langsmith/sandbox";
@@ -143932,7 +143988,7 @@ These examples assume you have already created a sandbox/devbox using the provid
   }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { ChatAnthropic } from "@langchain/anthropic";
   import { SandboxClient } from "langsmith/sandbox";
@@ -143962,7 +144018,7 @@ These examples assume you have already created a sandbox/devbox using the provid
   }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { ChatAnthropic } from "@langchain/anthropic";
   import { SandboxClient } from "langsmith/sandbox";
@@ -143992,7 +144048,7 @@ These examples assume you have already created a sandbox/devbox using the provid
   }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { ChatAnthropic } from "@langchain/anthropic";
   import { SandboxClient } from "langsmith/sandbox";
@@ -144022,7 +144078,7 @@ These examples assume you have already created a sandbox/devbox using the provid
   }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { ChatAnthropic } from "@langchain/anthropic";
   import { SandboxClient } from "langsmith/sandbox";
@@ -144052,7 +144108,7 @@ These examples assume you have already created a sandbox/devbox using the provid
   }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { ChatAnthropic } from "@langchain/anthropic";
   import { SandboxClient } from "langsmith/sandbox";
@@ -144082,7 +144138,7 @@ These examples assume you have already created a sandbox/devbox using the provid
   }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { ChatAnthropic } from "@langchain/anthropic";
   import { SandboxClient } from "langsmith/sandbox";
@@ -144184,7 +144240,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
 </Tip>
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144210,7 +144266,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
   }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144236,7 +144292,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
   }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144262,7 +144318,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
   }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144288,7 +144344,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
   }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144314,7 +144370,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
   }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144340,7 +144396,7 @@ Each conversation gets its own sandbox. The first run creates it; follow-up turn
   }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144376,7 +144432,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
 </Warning>
 
 <CodeGroup>
-  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Google theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144401,7 +144457,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   }
   ```
 
-  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenAI theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144426,7 +144482,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   }
   ```
 
-  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Anthropic theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144451,7 +144507,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   }
   ```
 
-  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts OpenRouter theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144476,7 +144532,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   }
   ```
 
-  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Fireworks theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144501,7 +144557,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   }
   ```
 
-  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Baseten theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144526,7 +144582,7 @@ Every thread on the same assistant reuses one sandbox. Files, installed packages
   }
   ```
 
-  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+  ```ts Ollama theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
   import { createDeepAgent, LangSmithSandbox } from "deepagents";
   import { SandboxClient } from "langsmith/sandbox";
   import type { LangGraphRunnableConfig } from "@langchain/langgraph";
@@ -144600,7 +144656,7 @@ Trade-offs:
 
 * 🔴 Network latency on each execution call.
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 import "dotenv/config";
 import { createDeepAgent, LangSmithSandbox } from "deepagents";
 import { SandboxClient } from "langsmith/sandbox";
@@ -144744,7 +144800,7 @@ graph LR
 
 Use `uploadFiles()` to populate the sandbox before the agent runs. File contents are provided as `Uint8Array`:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const encoder = new TextEncoder();
 const responses = await sandbox.uploadFiles([
   ["src/index.js", encoder.encode("console.log('Hello')")],
@@ -144763,7 +144819,7 @@ for (const res of responses) {
 
 Use `downloadFiles()` to retrieve files from the sandbox after the agent finishes:
 
-```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}} theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+```ts theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
 const results = await sandbox.downloadFiles(["src/index.js", "output.txt"]);
 
 const decoder = new TextDecoder();
@@ -223529,7 +223585,7 @@ When configured, Deep Agents Code displays a status line with a link to the Lang
 # Use remote sandboxes
 Source: https://docs.langchain.com/oss/python/deepagents/code/remote-sandboxes
 
-Run Deep Agents Code tool execution in LangSmith, AgentCore, Daytona, Modal, Runloop, or Vercel sandboxes. Install provider extras, set credentials, and use flags and setup scripts.
+Run Deep Agents Code tool execution in LangSmith, AgentCore, Daytona, Modal, Runloop, Vercel, or E2B sandboxes. Install provider dependencies, set credentials, and use flags and setup scripts.
 
 Deep Agents Code uses the [sandbox as tool](/oss/python/deepagents/sandboxes#sandbox-as-tool-pattern) pattern: the `dcode` process (LLM loop, memory, tool dispatch) runs on your machine, but agent tool calls (`read_file`, `write_file`, `execute`, etc.) target the remote sandbox, not your local filesystem. To get files into the sandbox, use a [setup script](#setup-scripts) or the provider's file transfer APIs (see [Working with files](/oss/python/deepagents/sandboxes#working-with-files)).
 
@@ -223537,7 +223593,7 @@ For a deeper look at sandbox architecture, integration patterns, and security be
 
 <Steps>
   <Step title="Install provider dependency" icon="download">
-    Each provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`:
+    Each built-in provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`. Third-party providers such as E2B install as packages with the `--package` flag:
 
     <Tabs>
       <Tab title="LangSmith">
@@ -223603,9 +223659,23 @@ For a deeper look at sandbox architecture, integration patterns, and security be
           ```
         </CodeGroup>
       </Tab>
+
+      <Tab title="E2B">
+        E2B is a [third-party provider](#third-party-providers) published by the `langchain-e2b` package. Install it as a package, not a `deepagents-code` extra:
+
+        <CodeGroup>
+          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          /install langchain-e2b --package
+          ```
+
+          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          dcode --install langchain-e2b --package
+          ```
+        </CodeGroup>
+      </Tab>
     </Tabs>
 
-    To install support for every sandbox provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell.
+    To install support for every built-in provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell. The `all-sandboxes` extra does not include third-party providers such as E2B.
   </Step>
 
   <Step title="Set provider credentials" icon="key">
@@ -223654,6 +223724,12 @@ For a deeper look at sandbox architecture, integration patterns, and security be
 
         When running on Vercel, [OIDC](https://vercel.com/docs/oidc) credentials are used automatically instead.
       </Tab>
+
+      <Tab title="E2B">
+        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        export E2B_API_KEY="your-key"
+        ```
+      </Tab>
     </Tabs>
   </Step>
 
@@ -223694,6 +223770,12 @@ For a deeper look at sandbox architecture, integration patterns, and security be
         dcode --sandbox vercel
         ```
       </Tab>
+
+      <Tab title="E2B">
+        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        dcode --sandbox e2b
+        ```
+      </Tab>
     </Tabs>
   </Step>
 </Steps>
@@ -223717,6 +223799,7 @@ Each provider exposes a default working directory inside the sandbox. Setup scri
 | Modal     | `/workspace`      |
 | Runloop   | `/home/user`      |
 | Vercel    | `/vercel/sandbox` |
+| E2B       | `/home/user`      |
 
 Examples:
 
@@ -223740,9 +223823,9 @@ dcode --sandbox
 
 ## Pluggable providers
 
-The six built-in providers above aren't the only options. Deep Agents Code discovers sandbox providers from three sources, so you can use providers shipped by other packages or declare your own without changing Deep Agents Code:
+The built-in providers are not the only options. Deep Agents Code discovers sandbox providers from three sources, so you can use providers shipped by other packages or declare your own without changing Deep Agents Code:
 
-1. **Built-in providers** — the curated set above, installed as `deepagents-code` extras.
+1. **Built-in providers** — LangSmith, AgentCore, Daytona, Modal, Runloop, and Vercel, shipped with `deepagents-code` (LangSmith by default, the others as extras).
 2. **[Third-party providers](#third-party-providers)** — published by other installed packages via a Python entry point.
 3. **[Config-declared providers](#config-declared-providers)** — defined in your `~/.deepagents/config.toml`.
 

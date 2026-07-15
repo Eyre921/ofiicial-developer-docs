@@ -113,7 +113,7 @@ These are our featured English voices, selected for their versatility and qualit
 
 ***
 
-## Aura-2 Spanish Voices (EA)
+## Aura-2 Spanish Voices
 
 ### Featured Aura-2 Spanish Voices
 

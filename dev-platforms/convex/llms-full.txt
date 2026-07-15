@@ -117,11 +117,12 @@
 
 - [Convex Agent Skills](/ai/agent-skills.md): Install Convex Agent Skills to give your AI coding agent specialized Convex workflows
 - [Convex MCP Server](/ai/convex-mcp-server.md): Convex MCP server
+- [Convex Agent Plugins](/ai/convex-plugins.md): What the official Convex plugins for coding agents do, how to install them for Claude Code, Codex, and Cursor, how to use them effectively, and how to give feedback.
 - [AI Code Generation](/ai/overview.md): How to use AI code generation effectively with Convex
-- [Using Claude Code with Convex](/ai/using-claude-code.md): Tips and best practices for using Claude Code with Convex
-- [Using Codex with Convex](/ai/using-codex.md): Tips and best practices for using OpenAI Codex with Convex
+- [Using Claude Code with Convex](/ai/using-claude-code.md): Build and scale apps with Claude Code and Convex, and get the full power of Convex out of the official Claude Code plugin: MCP tools, hooks, and skills.
+- [Using Codex with Convex](/ai/using-codex.md): Build and scale apps with OpenAI Codex and Convex, and get the full power of Convex out of the official Codex plugin: subagents, MCP tools, and skills.
 - [Using Conductor with Convex](/ai/using-conductor.md): Tips and best practices for using Conductor with Convex
-- [Using Cursor with Convex](/ai/using-cursor.md): Tips and best practices for using Cursor with Convex
+- [Using Cursor with Convex](/ai/using-cursor.md): Build and scale apps with Cursor and Convex, and get the full power of Convex out of the official Cursor plugin: MCP tools, hooks, and skills.
 - [Using GitHub Copilot with Convex](/ai/using-github-copilot.md): Tips and best practices for using GitHub Copilot with Convex
 
 ## agents
@@ -2266,6 +2267,10 @@ import { ... } from "@convex-dev/agent";
 ---
 
 # AI Agents
+
+Looking to use an AI coding assistant with Convex?
+
+This section is about **building AI agent applications on Convex** (threads, tools, RAG, workflows) with the `@convex-dev/agent` component. If instead you want to use an **AI coding assistant** — Cursor, GitHub Copilot, Claude Code, or Codex — to write your Convex app, head to [AI coding](/ai/overview.md) and the [Convex agent plugins](/ai/convex-plugins.md).
 
 ## Building AI Agents with Convex[​](#building-ai-agents-with-convex "Direct link to Building AI Agents with Convex")
 
@@ -4635,13 +4640,14 @@ Skills are installed into `.agents/skills/` in your project and are automaticall
 
 ## Available Skills[​](#available-skills "Direct link to Available Skills")
 
-| Skill                       | Description                                     |
-| --------------------------- | ----------------------------------------------- |
-| `/convex-quickstart`        | Set up a new Convex project from scratch        |
-| `/convex-setup-auth`        | Configure authentication for your Convex app    |
-| `/convex-migration-helper`  | Plan and run data migrations                    |
-| `/convex-create-component`  | Create a new Convex component                   |
-| `/convex-performance-audit` | Audit and optimize Convex queries and mutations |
+| Skill                       | Description                                                            |
+| --------------------------- | ---------------------------------------------------------------------- |
+| `/convex`                   | Top-level entry point — routes to the right Convex skill for your task |
+| `/convex-quickstart`        | Set up a new Convex project from scratch                               |
+| `/convex-setup-auth`        | Configure authentication for your Convex app                           |
+| `/convex-migration-helper`  | Plan and run data migrations                                           |
+| `/convex-create-component`  | Create a new Convex component                                          |
+| `/convex-performance-audit` | Audit and optimize Convex queries and mutations                        |
 
 Skills are added and updated regularly, so this list may not be exhaustive. See the [get-convex/agent-skills](https://github.com/get-convex/agent-skills) repo for the latest.
 
@@ -4839,12 +4845,89 @@ Related posts from
 
 ---
 
+# Convex Agent Plugins
+
+Convex publishes official plugins for the major coding agents. With the plugin installed, you can describe an app in one sentence and watch your agent scaffold it, running, in front of you, then keep shipping features while it reads your real deployment instead of guessing, catches its own mistakes as it works, and follows idiomatic Convex patterns.
+
+This page explains what the plugins do, how to install them, how to get the most out of them, and how to send us feedback. For agent-specific setup, see the dedicated pages for [Claude Code](/ai/using-claude-code.md), [Codex](/ai/using-codex.md), and [Cursor](/ai/using-cursor.md).
+
+## What the plugin does[​](#what-the-plugin-does "Direct link to What the plugin does")
+
+Every Convex plugin bundles three kinds of help:
+
+* **Tools**: a built-in [Convex MCP server](/ai/convex-mcp-server.md) that lets the agent securely interact with your dev deployment. It can read your data, logs, and insights, and run functions, so the agent works from what your deployment actually contains instead of guessing.
+* **Hooks and monitors**: background checks that run as the agent works. A pre-commit typecheck, an end-of-turn verify loop, and monitors that surface dev and production errors let the agent find and fix issues without you having to point them out.
+* **Skills and specialized agents**: focused instructions that teach the agent how to do specific Convex tasks correctly, invoked automatically when relevant or on demand.
+
+## What you can do with it[​](#what-you-can-do-with-it "Direct link to What you can do with it")
+
+A plain-English request goes a long way. The agent picks the right skill automatically, or you can invoke one explicitly:
+
+| Ask for…                  | The skill           | What it does                                                                                                      |
+| ------------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| "build me a todo app"     | **quickstart**      | One sentence in, a running app out, scaffolded and built live in front of you.                                    |
+| "add sign-in"             | **auth**            | Full authentication wired end to end, passkeys by default, including the `auth.config.ts` that trips everyone up. |
+| "add a chatbot"           | **agent**           | A real in-app AI agent backend: threads, message history, tool calls, and vector-search RAG.                      |
+| "change my schema safely" | **migrate**         | Change a live schema without breaking data: stage, backfill every existing row, verify, then tighten.             |
+| "add \<a feature>"        | **add**             | Pulls in the right piece of the Convex component ecosystem: crons, file storage, and more.                        |
+| "review my functions"     | **convex-reviewer** | Audits your `convex/` code for validator, auth, and performance issues and shows you the fixes.                   |
+
+On top of the on-demand skills, an always-on Convex specialist quietly reviews every function the agent writes under `convex/`, so idiomatic APIs, correct validators, and indexed queries are the default, not something you have to ask for. New skills land regularly.
+
+## Install[​](#install "Direct link to Install")
+
+Pick your agent. Each install is one command (full walkthroughs on the per-agent pages linked above):
+
+ Claude Code
+
+```
+/plugin install convex@claude-plugins-official
+```
+
+ Codex (from Codex's built-in plugin directory)
+
+```
+codex plugin add convex@openai-curated
+```
+
+For the newest build straight from Convex, see the [nightly marketplace install](/ai/using-codex.md#install-the-convex-plugin).
+
+ Cursor: install from the Cursor Marketplace, or manually:
+
+```
+cd ~/.cursor/plugins
+
+git clone https://github.com/get-convex/convex-agent-plugins convex
+
+# then restart Cursor
+```
+
+## Using the plugins effectively[​](#using-the-plugins-effectively "Direct link to Using the plugins effectively")
+
+A few habits get you the best results:
+
+* **Describe the outcome, not the API.** "Let users upload profile photos" routes to the right skill better than naming internal Convex primitives. The plugin knows the mapping.
+* **Let the checks work.** The hooks catch typecheck and deploy issues on their own; you rarely need to paste errors back in.
+* **Ask for a review before you ship.** "Audit my Convex functions" runs the security, auth, and performance pass over your backend.
+* **Trust the deployment tools.** For "what's in my database?" or "why is this slow?", the agent can read your dev deployment directly through the MCP server instead of guessing.
+
+## Giving feedback[​](#giving-feedback "Direct link to Giving feedback")
+
+We're constantly working on improving the plugins with rigorous evals and real-world reports. You can help:
+
+* **Report a bug or request a skill** by opening an issue on the plugin repo for your agent: [Claude Code](https://github.com/get-convex/convex-backend-skill/issues) · [Codex](https://github.com/get-convex/convex-codex-plugin/issues) · [Cursor](https://github.com/get-convex/convex-agent-plugins/issues).
+* **Improve the AI rules**: if the agent writes non-idiomatic Convex, contribute a case to the [convex-evals repo](https://github.com/get-convex/convex-evals) so we can measure and fix it.
+* **Ask the community** in the [Convex Discord](https://convex.dev/community).
+
+
+---
+
 # AI Code Generation
 
 Convex is designed around a small set of composable abstractions with strong guarantees that result in code that is not only faster to write, but easier to read and maintain, whether written by a team member or an LLM. Key features make sure you get bug-free AI generated code:
 
 1. **Queries are Just TypeScript** Your database queries are pure TypeScript functions with end-to-end type safety and IDE support. This means AI can generate database code using the large training set of TypeScript code without switching to SQL.
-2. **Less Code for the Same Work** Since so much infrastructure and boiler plate is automatically managed by Convex there is less code to write, and thus less code to get wrong.
+2. **Less Code for the Same Work** Since so much infrastructure and boilerplate is automatically managed by Convex there is less code to write, and thus less code to get wrong.
 3. **Automatic Reactivity** The reactive system automatically tracks data dependencies and updates your UI. AI doesn't need to manually manage subscriptions, WebSocket connections, or complex state synchronization—Convex handles all of this automatically.
 4. **Transactional Guarantees** Queries are read-only and mutations run in transactions. These constraints make it nearly impossible for AI to write code that could corrupt your data or leave your app in an inconsistent state.
 
@@ -5000,13 +5083,19 @@ See [Creating and deleting deploy keys from the CLI](/cli/deploy-key-types.md#de
 
 [Claude Code](https://claude.com/claude-code), Anthropic's agentic coding tool, makes it easy to write and maintain apps built with Convex. Let's walk through how to set up Claude Code for the best possible results with Convex.
 
+## Claude Code and Convex[​](#claude-code-and-convex "Direct link to Claude Code and Convex")
+
+Claude Code works great with Convex out of the box. Because Convex is a TypeScript backend with end-to-end type safety, Claude Code's mistakes surface as compile errors, ACID transactions keep concurrent writes consistent, and apps scale without extra infrastructure. That's all you need to build anything from a real-time chat app to an AI agent backend. Adding the plugin lets you leverage the full power of Convex: Claude Code reads your live deployment through the MCP server, catches its own errors with the built-in hooks, and applies the idiomatic Convex patterns its skills and subagents know.
+
 ## Install the Convex plugin in Claude Code[​](#install-the-convex-plugin-in-claude-code "Direct link to Install the Convex plugin in Claude Code")
 
 The official Convex plugin makes Claude Code work better with your Convex project. It includes:
 
 * **Tools** that let your agent securely interact with your dev deployment (e.g. read the data/logs/insights or run functions).
-* **Hooks and monitors** that help your agent automatically identify issues in your code.
+* **Hooks and monitors** that keep your generated types in sync and surface errors as the agent works.
 * **Skills and specialized agents** that teach your agent how to use Convex the most effectively.
+
+See the [Agent Plugins overview](/ai/convex-plugins.md) for everything the plugin bundles.
 
 To install the plugin, run the following command in Claude Code:
 
@@ -5024,8 +5113,6 @@ claude "build me a todo app with Convex" --permission-mode auto
 
 Claude Code handles the rest. It runs `npm create convex@latest` and `npx convex dev --once`, which [auto-provisions a local backend](/cli/agent-mode.md#local-backend) without prompting for login because the agent's shell is non-interactive.
 
-After the initial setup, leave `npx convex dev` running in a separate terminal so Claude Code always sees up-to-date generated types. Without it the agent can get stuck in a linting loop.
-
 If you'd rather scaffold the project yourself first and then bring in Claude Code, the manual sequence is:
 
 ```
@@ -5038,7 +5125,7 @@ claude
 
 ## Adding to an existing project[​](#adding-to-an-existing-project "Direct link to Adding to an existing project")
 
-If your project already has Convex set up, [install the Convex plugin](#install-the-convex-plugin) to make Claude Code Convex-aware.
+If your project already has Convex set up, [install the Convex plugin](#install-the-convex-plugin-in-claude-code) to make Claude Code Convex-aware.
 
 Now start asking Claude Code questions like:
 
@@ -5071,15 +5158,39 @@ For per-agent cloud dev deployments scoped to a single throwaway deploy key, see
 
 [Codex](https://openai.com/codex), OpenAI's coding agent, makes it easy to write and maintain apps built with Convex. Let's walk through how to set up Codex for the best possible results with Convex.
 
+## Codex and Convex[​](#codex-and-convex "Direct link to Codex and Convex")
+
+Codex works great with Convex out of the box. One all-in-one TypeScript backend (database, functions, workflows, real-time sync) means no glue code to get wrong, type safety catches guesses at compile time, and transactions keep data consistent under load, which covers everything from a live polling tool to an AI research agent. Adding the plugin lets you leverage the full power of Convex: Codex gets the `convex-expert` and `convex-reviewer` subagents, the Convex MCP server for reading your real deployment, and durable Components (Workpool, Workflow, Agent) for agentic workloads.
+
 ## Install the Convex plugin[​](#install-the-convex-plugin "Direct link to Install the Convex plugin")
 
-The official Convex plugin makes Codex work better with your Convex project. It includes guidance that teaches your agent how to use Convex the most effectively. Soon, this plugin will also automatically include tools that that let your agent securely interact with your dev deployment (e.g. read the data/logs/insights or run functions).
+The official Convex plugin makes Codex work better with your Convex project. It includes:
 
-To install the plugin, run the following command in Codex:
+* **Tools** that let your agent securely interact with your dev deployment (e.g. read the data/logs/insights or run functions), plus an error watcher that surfaces runtime errors as you work.
+* **Rules and skills** that teach your agent how to use Convex the most effectively.
+* **Specialized subagents** (`convex-expert` and `convex-reviewer`) for deep Convex work and code review.
+
+See the [Agent Plugins overview](/ai/convex-plugins.md) for everything the plugin bundles.
+
+Convex is listed in Codex's built-in plugin directory, so a single command installs the reviewed release:
 
 ```
 codex plugin add convex@openai-curated
 ```
+
+caution
+
+The directory entry is currently the lighter Convex ChatGPT-app connector. For the full plugin, with skills, subagents, and the runtime error watcher, install the marketplace build below.
+
+**Want the newest build?** The directory release is reviewed by OpenAI and can lag the latest plugin. To pull the newest build straight from Convex, add the Convex marketplace and install from it:
+
+```
+codex plugin marketplace add get-convex/convex-codex-plugin
+
+codex plugin add convex@convex-codex-plugin
+```
+
+To update the marketplace build later, run `codex plugin marketplace upgrade` and then re-run `codex plugin add convex@convex-codex-plugin`.
 
 ## Starting a new project[​](#starting-a-new-project "Direct link to Starting a new project")
 
@@ -5090,8 +5201,6 @@ codex "build me a todo app with Convex"
 ```
 
 Codex handles the rest. It runs `npm create convex@latest`, `npx convex ai-files install` (which writes a managed Convex section into `AGENTS.md` and installs Convex [Agent Skills](/ai/agent-skills.md) into `.agents/skills/`), and `npx convex dev --once`, which [auto-provisions a local backend](/cli/agent-mode.md#local-backend) without prompting for login because the agent's shell is non-interactive.
-
-After the initial setup, leave `npx convex dev` running in a separate terminal so Codex always sees up-to-date generated types. Without it the agent can get stuck in a linting loop.
 
 If you'd rather scaffold the project yourself first and then bring in Codex, the manual sequence is:
 
@@ -5172,8 +5281,6 @@ For per-agent cloud dev deployments scoped to a single throwaway deploy key, see
 
 Create a new Conductor workspace on an empty directory and describe what you want to build. The agent handles the rest. It runs `npm create convex@latest`, `npx convex ai-files install` (which writes a managed Convex section into `CLAUDE.md` and `AGENTS.md` and installs Convex [Agent Skills](/ai/agent-skills.md) into `.agents/skills/`), and `npx convex dev --once`, which [auto-provisions a local backend](/cli/agent-mode.md#local-backend) without prompting for login because the agent's shell is non-interactive.
 
-After the initial setup, leave `npx convex dev` running in the workspace terminal so the agent always sees up-to-date generated types. Without it the agent can get stuck in a linting loop.
-
 To give each Conductor workspace its own cloud dev deployment automatically, wire the [per-worktree recipe](/cli/agent-mode.md#worktree-setups) into your project's `conductor.json` setup script.
 
 If you'd rather scaffold the project yourself first and then point Conductor at it, the manual sequence is:
@@ -5227,13 +5334,19 @@ Now you can ask the agent questions like:
 
 [Cursor](https://cursor.com), the AI code editor, makes it easy to write and maintain apps built with Convex. Let's walk through how to set up Cursor for the best possible results with Convex.
 
+## Cursor and Convex[​](#cursor-and-convex "Direct link to Cursor and Convex")
+
+Cursor works great with Convex out of the box. Because Convex is one type-safe TypeScript backend (database, functions, real-time sync, and file storage), Cursor writes code that's caught at compile time, stays transactional, and scales without extra infrastructure, which is plenty to build a chat app, a collaborative editor, or a multiplayer game. Adding the plugin lets you leverage the full power of Convex: Cursor reads your real deployment through the MCP server instead of guessing, catches its own type and deploy errors as it works, and follows the idiomatic Convex patterns the skills encode.
+
 ## Install the Convex plugin in Cursor[​](#install-the-convex-plugin-in-cursor "Direct link to Install the Convex plugin in Cursor")
 
 The official Convex plugin makes Cursor work better with your Convex project. It includes:
 
 * **Tools** that let your agent securely interact with your dev deployment (e.g. read the data/logs/insights or run functions).
-* **Development hooks** that help your agent automatically identify issues in your code.
+* **Development hooks** that keep your generated types in sync and catch type and deploy errors as the agent works.
 * **Rules, skills, and specialized agents** that teach your agent how to use Convex the most effectively.
+
+See the [Agent Plugins overview](/ai/convex-plugins.md) for everything the plugin bundles.
 
 To install the plugin, go to the *Customize* page of the Agents window, search for the *Convex* plugin and click *Add*.
 
@@ -5303,11 +5416,11 @@ Now start asking it questions like:
 
 ## Tips and tricks[​](#tips-and-tricks "Direct link to Tips and tricks")
 
-### Install and run Convex yourself[​](#install-and-run-convex-yourself "Direct link to Install and run Convex yourself")
+### Run Convex during development[​](#run-convex-during-development "Direct link to Run Convex during development")
 
-Keeping Convex running is crucial because [it automatically generates](https://docs.convex.dev/cli#run-the-convex-dev-server) the client-side types. Without this, the agent can get stuck in a linting loop since it can't access the types for the queries and mutations it created.
+Run Convex (`npx convex dev`) in a terminal while you build so your functions deploy and your app updates live.
 
-We recommended that you install (`npm install convex`) and run convex (`npx convex dev`) yourself in a terminal window.
+With the plugin installed, its development hooks keep your [generated types](https://docs.convex.dev/cli#run-the-convex-dev-server) in sync as the agent works, so it won't get stuck in the linting loop that stale types can otherwise cause. Without the plugin, keeping `npx convex dev` running is what keeps those types fresh.
 
 ### Keep your requests small[​](#keep-your-requests-small "Direct link to Keep your requests small")
 
@@ -5364,7 +5477,7 @@ We're constantly working on improving the quality of these rules for Convex by u
 
 ## Setup the Convex MCP Server[​](#setup-the-convex-mcp-server "Direct link to Setup the Convex MCP Server")
 
-The Convex CLI comes with a [Convex Model Context Protocol](/ai/convex-mcp-server.md) (MCP) server built in. The Convex MCP server gives your AI coding agent access to the your Convex deployment to query and optimize your project.
+The Convex CLI comes with a [Convex Model Context Protocol](/ai/convex-mcp-server.md) (MCP) server built in. The Convex MCP server gives your AI coding agent access to your Convex deployment to query and optimize your project.
 
 To get started with [MCP in VS Code](https://code.visualstudio.com/docs/copilot/chat/mcp-servers) then create a file in `.vscode/mcp.json` and add the following:
 
@@ -5398,7 +5511,7 @@ and in the selection of tools that the model has access to in chat:
 
 Now start asking it questions like:
 
-* Evaluate and convex schema and suggest improvements
+* Evaluate my convex schema and suggest improvements
 * What are this app's public endpoints?
 * Run the `my_convex_function` query
 
@@ -6469,7 +6582,7 @@ This loads reactive queries and executes mutations over a WebSocket.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react/client.ts:332](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L332)
+[react/client.ts:333](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L333)
 
 ## Accessors[​](#accessors "Direct link to Accessors")
 
@@ -6487,7 +6600,7 @@ Not guaranteed to match the address with which this client was constructed: it m
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[react/client.ts:367](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L367)
+[react/client.ts:368](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L368)
 
 ***
 
@@ -6505,7 +6618,7 @@ The Logger for this client.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[react/client.ts:731](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L731)
+[react/client.ts:732](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L732)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -6529,7 +6642,7 @@ Set the authentication token to be used for subsequent queries and mutations. `f
 
 #### Defined in[​](#defined-in-3 "Direct link to Defined in")
 
-[react/client.ts:426](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L426)
+[react/client.ts:427](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L427)
 
 ***
 
@@ -6545,7 +6658,7 @@ Clear the current authentication token if set.
 
 #### Defined in[​](#defined-in-4 "Direct link to Defined in")
 
-[react/client.ts:450](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L450)
+[react/client.ts:451](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L451)
 
 ***
 
@@ -6580,7 +6693,7 @@ The [Watch](/api/interfaces/react.Watch.md) object.
 
 #### Defined in[​](#defined-in-5 "Direct link to Defined in")
 
-[react/client.ts:483](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L483)
+[react/client.ts:484](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L484)
 
 ***
 
@@ -6612,7 +6725,7 @@ To use this in a React component, call useQuery() and ignore the return value.
 
 #### Defined in[​](#defined-in-6 "Direct link to Defined in")
 
-[react/client.ts:559](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L559)
+[react/client.ts:560](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L560)
 
 ***
 
@@ -6643,7 +6756,7 @@ A promise of the mutation's result.
 
 #### Defined in[​](#defined-in-7 "Direct link to Defined in")
 
-[react/client.ts:636](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L636)
+[react/client.ts:637](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L637)
 
 ***
 
@@ -6674,7 +6787,7 @@ A promise of the action's result.
 
 #### Defined in[​](#defined-in-8 "Direct link to Defined in")
 
-[react/client.ts:657](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L657)
+[react/client.ts:658](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L658)
 
 ***
 
@@ -6707,7 +6820,7 @@ A promise of the query's result.
 
 #### Defined in[​](#defined-in-9 "Direct link to Defined in")
 
-[react/client.ts:677](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L677)
+[react/client.ts:678](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L678)
 
 ***
 
@@ -6725,7 +6838,7 @@ The [ConnectionState](/api/modules/browser.md#connectionstate) with the Convex b
 
 #### Defined in[​](#defined-in-10 "Direct link to Defined in")
 
-[react/client.ts:704](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L704)
+[react/client.ts:705](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L705)
 
 ***
 
@@ -6763,7 +6876,7 @@ An unsubscribe function to stop listening.
 
 #### Defined in[​](#defined-in-11 "Direct link to Defined in")
 
-[react/client.ts:720](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L720)
+[react/client.ts:721](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L721)
 
 ***
 
@@ -6783,7 +6896,7 @@ A `Promise` fulfilled when the connection has been completely closed.
 
 #### Defined in[​](#defined-in-12 "Direct link to Defined in")
 
-[react/client.ts:743](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L743)
+[react/client.ts:744](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L744)
 
 
 ---
@@ -10544,7 +10657,7 @@ An optimistic update locally updates queries while a mutation is pending. Once t
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react/client.ts:282](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L282)
+[react/client.ts:283](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L283)
 
 
 ---
@@ -10583,7 +10696,7 @@ The return value of the server-side function call.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react/client.ts:136](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L136)
+[react/client.ts:137](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L137)
 
 
 ---
@@ -10622,7 +10735,7 @@ The return value of the server-side function call.
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react/client.ts:64](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L64)
+[react/client.ts:65](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L65)
 
 ## Methods[​](#methods "Direct link to Methods")
 
@@ -10660,7 +10773,7 @@ A new `ReactMutation` with the update configured.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[react/client.ts:87](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L87)
+[react/client.ts:88](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L88)
 
 
 ---
@@ -10717,7 +10830,7 @@ This will subscribe to this query and call the callback whenever the query resul
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react/client.ts:170](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L170)
+[react/client.ts:171](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L171)
 
 ***
 
@@ -10741,7 +10854,7 @@ The result of the query or `undefined` if it isn't known.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[react/client.ts:182](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L182)
+[react/client.ts:183](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L183)
 
 ***
 
@@ -10759,7 +10872,7 @@ If we have not yet received a result for this query, this will be `undefined`.
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[react/client.ts:194](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L194)
+[react/client.ts:195](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L195)
 
 
 ---
@@ -10782,7 +10895,7 @@ If there is an existing subscription to a query function with the same name and 
 
 #### Defined in[​](#defined-in "Direct link to Defined in")
 
-[react/client.ts:241](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L241)
+[react/client.ts:242](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L242)
 
 
 ---
@@ -17176,7 +17289,7 @@ Type representing the state of an auth integration with Convex.
 
 #### Defined in[​](#defined-in-1 "Direct link to Defined in")
 
-[react/client.ts:817](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L817)
+[react/client.ts:818](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L818)
 
 ***
 
@@ -17195,7 +17308,7 @@ Result returned by object-form [useQuery\_experimental](/api/modules/react.md#us
 
 #### Defined in[​](#defined-in-2 "Direct link to Defined in")
 
-[react/client.ts:827](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L827)
+[react/client.ts:828](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L828)
 
 ***
 
@@ -17579,7 +17692,7 @@ The active [ConvexReactClient](/api/classes/react.ConvexReactClient.md) object, 
 
 #### Defined in[​](#defined-in-19 "Direct link to Defined in")
 
-[react/client.ts:792](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L792)
+[react/client.ts:793](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L793)
 
 ***
 
@@ -17691,7 +17804,7 @@ the result of the query. Returns `undefined` while loading.
 
 #### Defined in[​](#defined-in-21 "Direct link to Defined in")
 
-[react/client.ts:884](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L884)
+[react/client.ts:885](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L885)
 
 ***
 
@@ -17754,7 +17867,7 @@ the current query state as a [UseQueryResult](/api/modules/react.md#usequeryresu
 
 #### Defined in[​](#defined-in-22 "Direct link to Defined in")
 
-[react/client.ts:948](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L948)
+[react/client.ts:949](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L949)
 
 ***
 
@@ -17822,7 +17935,7 @@ The [ReactMutation](/api/interfaces/react.ReactMutation.md) object with that nam
 
 #### Defined in[​](#defined-in-23 "Direct link to Defined in")
 
-[react/client.ts:1044](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1044)
+[react/client.ts:1045](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1045)
 
 ***
 
@@ -17902,7 +18015,7 @@ The [ReactAction](/api/interfaces/react.ReactAction.md) object with that name.
 
 #### Defined in[​](#defined-in-24 "Direct link to Defined in")
 
-[react/client.ts:1113](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1113)
+[react/client.ts:1114](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1114)
 
 ***
 
@@ -17926,7 +18039,7 @@ The current [ConnectionState](/api/modules/browser.md#connectionstate) with the 
 
 #### Defined in[​](#defined-in-25 "Direct link to Defined in")
 
-[react/client.ts:1152](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1152)
+[react/client.ts:1153](https://github.com/get-convex/convex-js/blob/main/src/react/client.ts#L1153)
 
 ***
 
@@ -40294,11 +40407,12 @@ POST
 
 Streams a consistent, resumable export of a deployment's data — either the whole deployment or a subset of components, tables, and columns (see the request body). Streaming export must be enabled on the deployment, and the caller must have the `deployment:data:view` permission.
 
-Call this endpoint repeatedly, passing the `cursor` from each response back in the next request; omit `cursor` on the first call. The cursor is opaque — store and send it back verbatim. Each response contains:
+Call this endpoint repeatedly, passing the `pagination.nextCursor` from each response back in the next request as `cursor`; omit `cursor` on the first call. The cursor is opaque — store and send it back verbatim. Each response contains:
 
-* `values`: document revisions in the order they should be applied. A value with `_deleted: true` is a tombstone marking that document as deleted.
+* `values`: document revisions in the order they should be applied. Each entry carries the document's fields under `value`; an entry with `deleted: true` is a tombstone marking that document as deleted.
 * `truncates`: tables whose contents were replaced wholesale (for example by an `npx convex import`). Drop everything you have stored for each listed table; the `values` in this and later responses re-populate it.
-* `status`: `inProgress` while the export is still being assembled — the data returned so far is not yet a consistent view, so keep calling. Once it becomes `synced`, the values applied so far form a consistent snapshot of the deployment as of the returned `syncedTs` timestamp. You can keep calling to continue streaming later changes; `hasMore` tells you whether more data is already available (`true`) or you've caught up to the latest commit (`false`).
+* `status`: `inProgress` while the export is still being assembled — the data returned so far is not yet a consistent view, so keep calling. Once it becomes `synced`, the values applied so far form a consistent snapshot of the deployment as of the returned `syncedTs` timestamp. You can keep calling to continue streaming later changes.
+* `pagination`: `nextCursor` to pass back on the next call (always present, since the sync is always resumable) and `hasMore`, which tells you whether more data is already available (`true`) or you've caught up to the latest commit (`false`).
 
 Persist the cursor and keep calling within the deployment's data retention window so the export can resume where it left off. This endpoint must be called at least once every 3 days; if too much time passes between calls the cursor falls outside the retention window and can no longer be resumed. When that happens the endpoint responds with a `400` (`DataSyncCursorExpired`), and you must restart the sync from scratch by calling again with no cursor.
 
@@ -55288,6 +55402,8 @@ These actions run against the deployment itself. On production deployments, a Te
 | `deployment:functions:runInternalQueries`, `deployment:functions:runTestQuery`         | Run internal queries or test queries against the deployment. | ✓          | ✓              | ✓             |
 | `deployment:functions:runInternalMutations`, `deployment:functions:runInternalActions` | Run internal mutations or actions against the deployment.    | ✓          | ✓ *non-prod*   | ✓             |
 | `deployment:functions:actAsUser`                                                       | Run functions as another authenticated user.                 | ✓          | ✓ *non-prod*   | ✓             |
+| `deployment:usage:view`, `deployment:usageLimits:view`                                 | Read the deployment's current usage and its usage limits.    | ✓          | ✓              | ✓             |
+| `deployment:usageLimits:write`                                                         | Create, update, or delete the deployment's usage limits.     | ✓          | ✓ *non-prod*   | ✓             |
 
 ### Backups[​](#backups "Direct link to Backups")
 

@@ -98,6 +98,7 @@
 - [Troubleshoot call errors](https://docs.vapi.ai/calls/troubleshoot-call-errors.md): Learn to diagnose failed calls based on what the caller experienced.
 - [Call analysis](https://docs.vapi.ai/assistants/call-analysis.md): Summarize and evaluate calls automatically
 - [Call recording, logging and transcribing](https://docs.vapi.ai/assistants/call-recording.md): Learn how to configure artifact plans to record calls, generate transcripts, and store logs for analysis
+- [Retrieve call artifacts](https://docs.vapi.ai/assistants/retrieve-call-artifacts.md): How to download call recordings and logs from Vapi's private storage using your Private API Key and short-lived, authenticated redirect URLs.
 - [Outbound campaigns quickstart](https://docs.vapi.ai/outbound-campaigns/quickstart.md): Build a simple personalized outbound campaign that conducts post-service feedback and follow-up calls to improve customer experience
 - [Outbound campaigns overview](https://docs.vapi.ai/outbound-campaigns/overview.md): Learn how to efficiently schedule calls, manage recipients, analyze performance metrics, and review detailed call logs and transcripts with Vapi's Outbound Call Campaigns
 - [Chat quickstart](https://docs.vapi.ai/chat/quickstart.md): Build your first text-based conversation with a Vapi assistant in 5 minutes
@@ -202,7 +203,6 @@
 - [GDPR Compliance](https://docs.vapi.ai/security-and-privacy/GDPR.md): Learn how Vapi ensures GDPR compliance for its voice assistant platform.
 - [HIPAA Compliance](https://docs.vapi.ai/security-and-privacy/hipaa.md): HIPAA on Vapi. Enable organization-wide compliance mode, use approved LLM, voice, and transcriber providers, and control how call recordings and logs are stored.
 - [Zero Data Retention (ZDR)](https://docs.vapi.ai/security-and-privacy/zero-data-retention.md): Zero Data Retention (ZDR) is a Vapi organization add-on that stops Vapi from storing call recordings, transcripts, messages, summaries, and logs after a call ends.
-- [Retrieve call artifacts](https://docs.vapi.ai/security-and-privacy/retrieve-call-artifacts.md): How to download call recordings and logs from Vapi's private storage using your Private API Key and short-lived, authenticated redirect URLs.
 - [PCI Compliance](https://docs.vapi.ai/security-and-privacy/pci.md): Ensure secure payment data handling while using Vapi’s voice assistant platform.
 - [Proxy server guide](https://docs.vapi.ai/security-and-privacy/proxy-server.md): Keep assistant configs and API keys on your backend. Route Web SDK calls through your proxy.
 - [Static IP addresses](https://docs.vapi.ai/security-and-privacy/static-ip-addresses.md): Whitelist Vapi IP addresses

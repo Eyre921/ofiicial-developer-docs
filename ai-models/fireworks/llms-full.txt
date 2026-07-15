@@ -9987,9 +9987,9 @@ If you've been using managed RFT and want more control — custom loss functions
 
 ### MoE models and Routing Replay
 
-For Mixture-of-Experts (MoE) models like Kimi K2 (384 experts), training stability benefits from **Routing Replay** — caching the expert routing assignments from the reference policy's forward pass and replaying them during the training forward pass. This ensures that the same experts process the same tokens in both the reference and policy models, reducing gradient noise from routing changes.
+For Mixture-of-Experts (MoE) models like Kimi K2 (384 experts), training stability benefits from **Routing Replay**. Routing Replay captures the expert routing assignments used by the inference sampler and replays them during the policy training forward pass. This keeps training on the same expert paths that produced the rollout and reduces variance caused by routing changes.
 
-Routing Replay is available in the Training API via the `loss_fn_inputs` mechanism — you can pass routing matrices from the reference forward pass into the training datum. Use the Training API when you need to inspect or customize those forward-pass inputs directly.
+To use Routing Replay with the Training API, request routing matrices while sampling, align them with the training input tokens, and pass them through `tinker.ModelInput.from_ints(..., routing_matrices=...)` when constructing the policy datum. You can inspect or customize the matrices before constructing the datum.
 
 
 # Basics

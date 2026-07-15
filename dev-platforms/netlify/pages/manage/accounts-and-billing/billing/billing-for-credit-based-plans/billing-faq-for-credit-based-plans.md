@@ -108,7 +108,7 @@ AI inference is a usage meter that measures the costs of using AI models and age
 
 Learn more about [pricing for AI inference](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/pricing-for-ai-features).
 
-> **Tip - Want to limit Agent Runners?:** To help you control costs for Agent Runners and AI Gateway, you can [set an AI inference credit usage limit](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features/#limit-ai-feature-usage). Once the AI inference limit is reached, your team can no longer start agent runs and active agent runs stop. AI Gateway usage is also paused. Learn more in our docs on [Managing AI features](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features/#limit-ai-feature-usage).
+> **Tip - Want to limit Agent Runners?:** To help you control costs for Agent Runners, you can [set an AI Credit Usage Limit](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features/#limit-ai-feature-usage). Once the limit is reached, your team can no longer start agent runs and active agent runs stop. The limit applies to AI inference from Agent Runners only, so AI Gateway usage isn't affected. On Enterprise plans, the limit factors in AI inference from both Agent Runners and AI Gateway - though only agent runs are paused when it's reached. Learn more in our docs on [Managing AI features](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features/#limit-ai-feature-usage).
 
 ### How can I better understand my credit balance? 
 
@@ -279,7 +279,7 @@ Netlify Credit-based pricing plans come with built-in plan limits.
 
 If your projects go over these limits, your projects will be paused and will no longer receive web requests, form submissions, etc. until the start of the next billing cycle unless you upgrade to a higher plan or enable [auto recharge](/manage/accounts-and-billing/billing/billing-for-credit-based-plans/configure-auto-recharge).
 
-To help you control costs for Agent Runners and AI Gateway, you can [set an AI inference credit usage limit](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features/#limit-ai-feature-usage). Once the AI inference limit is reached, your team can no longer start agent runs and active agent runs stop. AI Gateway usage is also paused. Learn more in our docs on [Managing AI features](/build/build-with-ai/manage-ai-for-your-team/manage-ai-features/#limit-ai-feature-usage).
+> **Snippet** component (self-closing)
 
 ### Can I set a hard spending limit for metered features and have it shut off when the limit is reached?
 

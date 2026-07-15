@@ -99,6 +99,12 @@ To start executing an Automation, you need to:
         Once you're done with the email, you can click on **Start** to enable the Automation.
 
         <img alt="Automation Enabled" />
+
+        <Note>
+          While an Automation is enabled, its steps cannot be edited. To make changes,
+          duplicate the Automation, edit the copy, and switch over by stopping new runs
+          on the original. In-flight runs will finish on the version they started with.
+        </Note>
       </Step>
 
       <Step title="Send an Event">

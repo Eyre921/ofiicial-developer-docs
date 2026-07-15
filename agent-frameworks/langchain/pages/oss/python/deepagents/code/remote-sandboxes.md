@@ -4,7 +4,7 @@ source: https://docs.langchain.com/oss/python/deepagents/code/remote-sandboxes
 path: oss/python/deepagents/code/remote-sandboxes
 ---
 
-Run Deep Agents Code tool execution in LangSmith, AgentCore, Daytona, Modal, Runloop, or Vercel sandboxes. Install provider extras, set credentials, and use flags and setup scripts.
+Run Deep Agents Code tool execution in LangSmith, AgentCore, Daytona, Modal, Runloop, Vercel, or E2B sandboxes. Install provider dependencies, set credentials, and use flags and setup scripts.
 
 Deep Agents Code uses the [sandbox as tool](/oss/python/deepagents/sandboxes#sandbox-as-tool-pattern) pattern: the `dcode` process (LLM loop, memory, tool dispatch) runs on your machine, but agent tool calls (`read_file`, `write_file`, `execute`, etc.) target the remote sandbox, not your local filesystem. To get files into the sandbox, use a [setup script](#setup-scripts) or the provider's file transfer APIs (see [Working with files](/oss/python/deepagents/sandboxes#working-with-files)).
 
@@ -12,7 +12,7 @@ For a deeper look at sandbox architecture, integration patterns, and security be
 
 <Steps>
   <Step title="Install provider dependency" icon="download">
-    Each provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`:
+    Each built-in provider ships as an optional extra. Install one from within a session with `/install`, or from the shell with `dcode --install`. Third-party providers such as E2B install as packages with the `--package` flag:
 
     <Tabs>
       <Tab title="LangSmith">
@@ -78,9 +78,23 @@ For a deeper look at sandbox architecture, integration patterns, and security be
           ```
         </CodeGroup>
       </Tab>
+
+      <Tab title="E2B">
+        E2B is a [third-party provider](#third-party-providers) published by the `langchain-e2b` package. Install it as a package, not a `deepagents-code` extra:
+
+        <CodeGroup>
+          ```txt In session theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          /install langchain-e2b --package
+          ```
+
+          ```bash Shell theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+          dcode --install langchain-e2b --package
+          ```
+        </CodeGroup>
+      </Tab>
     </Tabs>
 
-    To install support for every sandbox provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell.
+    To install support for every built-in provider at once, use the `all-sandboxes` extra: `/install all-sandboxes` in a session, or `dcode --install all-sandboxes` from the shell. The `all-sandboxes` extra does not include third-party providers such as E2B.
   </Step>
 
   <Step title="Set provider credentials" icon="key">
@@ -129,6 +143,12 @@ For a deeper look at sandbox architecture, integration patterns, and security be
 
         When running on Vercel, [OIDC](https://vercel.com/docs/oidc) credentials are used automatically instead.
       </Tab>
+
+      <Tab title="E2B">
+        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        export E2B_API_KEY="your-key"
+        ```
+      </Tab>
     </Tabs>
   </Step>
 
@@ -169,6 +189,12 @@ For a deeper look at sandbox architecture, integration patterns, and security be
         dcode --sandbox vercel
         ```
       </Tab>
+
+      <Tab title="E2B">
+        ```bash theme={"theme":{"light":"catppuccin-latte","dark":"catppuccin-mocha"}}
+        dcode --sandbox e2b
+        ```
+      </Tab>
     </Tabs>
   </Step>
 </Steps>
@@ -192,6 +218,7 @@ Each provider exposes a default working directory inside the sandbox. Setup scri
 | Modal     | `/workspace`      |
 | Runloop   | `/home/user`      |
 | Vercel    | `/vercel/sandbox` |
+| E2B       | `/home/user`      |
 
 Examples:
 
@@ -215,9 +242,9 @@ dcode --sandbox
 
 ## Pluggable providers
 
-The six built-in providers above aren't the only options. Deep Agents Code discovers sandbox providers from three sources, so you can use providers shipped by other packages or declare your own without changing Deep Agents Code:
+The built-in providers are not the only options. Deep Agents Code discovers sandbox providers from three sources, so you can use providers shipped by other packages or declare your own without changing Deep Agents Code:
 
-1. **Built-in providers** — the curated set above, installed as `deepagents-code` extras.
+1. **Built-in providers** — LangSmith, AgentCore, Daytona, Modal, Runloop, and Vercel, shipped with `deepagents-code` (LangSmith by default, the others as extras).
 2. **[Third-party providers](#third-party-providers)** — published by other installed packages via a Python entry point.
 3. **[Config-declared providers](#config-declared-providers)** — defined in your `~/.deepagents/config.toml`.
 

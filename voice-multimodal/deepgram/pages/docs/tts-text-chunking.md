@@ -14,6 +14,8 @@ path: docs/tts-text-chunking
 
 Text chunking significantly reduces perceived latency in TTS applications by allowing audio playback to begin sooner. This is especially important for conversational AI and voice agents where responsiveness is critical.
 
+**Using Flux TTS (`/v2/speak`)?** This guidance applies to Aura (`/v1/speak`). On Flux TTS, the server places flush boundaries internally — stream text in as it's produced and don't chunk client-side. See [Getting Started with Flux TTS](/docs/flux-tts/quickstart).
+
 Instead of waiting for the entire audio to be generated, chunking lets you:
 
 * Begin audio playback much faster

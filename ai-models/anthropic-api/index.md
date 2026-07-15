@@ -44,7 +44,7 @@
 - `agents-and-tools/tool-use/text-editor-tool` — [Text editor tool](pages/agents-and-tools/tool-use/text-editor-tool.md) · [原文](https://platform.claude.com/docs/en/agents-and-tools/tool-use/text-editor-tool)
 - `agents-and-tools/tool-use/tool-combinations` — [Tool combinations](pages/agents-and-tools/tool-use/tool-combinations.md) · [原文](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-combinations)
 - `agents-and-tools/tool-use/tool-reference` — [Tool reference](pages/agents-and-tools/tool-use/tool-reference.md) · [原文](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-reference)
-- `agents-and-tools/tool-use/tool-runner` — [Tool Runner (SDK)](pages/agents-and-tools/tool-use/tool-runner.md) · [原文](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner)
+- `agents-and-tools/tool-use/tool-runner` — [Tool runner (SDK)](pages/agents-and-tools/tool-use/tool-runner.md) · [原文](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-runner)
 - `agents-and-tools/tool-use/tool-search-tool` — [Tool search tool](pages/agents-and-tools/tool-use/tool-search-tool.md) · [原文](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-search-tool)
 - `agents-and-tools/tool-use/tool-use-with-prompt-caching` — [Tool use with prompt caching](pages/agents-and-tools/tool-use/tool-use-with-prompt-caching.md) · [原文](https://platform.claude.com/docs/en/agents-and-tools/tool-use/tool-use-with-prompt-caching)
 - `agents-and-tools/tool-use/troubleshooting-tool-use` — [Troubleshooting tool use](pages/agents-and-tools/tool-use/troubleshooting-tool-use.md) · [原文](https://platform.claude.com/docs/en/agents-and-tools/tool-use/troubleshooting-tool-use)

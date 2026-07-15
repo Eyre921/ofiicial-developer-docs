@@ -228,7 +228,7 @@ Learn more: [Protect against prompt injection](/docs/en/security#protect-against
 
 ### Remote Control
 
-A way to continue a local Claude Code session from your phone or browser via claude.ai. Your code stays on your machine; only the UI is remote. Different from Claude Code on the web, which runs in a cloud sandbox.
+A way to continue a local Claude Code session from your phone or browser via claude.ai. Your code execution and files stay on your machine; the interface is remote. Different from Claude Code on the web, which runs in a cloud sandbox.
 
 Learn more: [Remote Control](/docs/en/remote-control)
 
