@@ -10,6 +10,8 @@ path: docs/flux-tts/batch
 
 # Getting Started with Flux TTS Batch (REST)
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 The batch (REST) transport synthesizes a complete block of text and returns the full audio in one response. Use it to pre-generate fixed audio — IVR prompts, notifications, audiobook lines — where the whole text is known up front and you don't need incremental playback or interruption. For live, interruptible conversations, use the [real-time WebSocket](/docs/flux-tts/quickstart) instead (see [Batch vs Streaming](/docs/flux-tts/batch-vs-streaming)).
 
 Batch is stateless request/response: simple retries, high fan-out, no connection lifecycle to manage. It serves the same Flux voices as the streaming transport.

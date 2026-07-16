@@ -20,23 +20,23 @@ Learn how to start building, shipping, and maintaining software with GitHub. Exp
 
 * [Creating an account on GitHub](/en/get-started/start-your-journey/creating-an-account-on-github)
 
-  Create a personal account to get started with GitHub.
+  <p>Create a personal account to get started with GitHub.</p>
 
 * [Set up Git](/en/get-started/git-basics/set-up-git)
 
-  At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.
+  <p>At the heart of GitHub is an open-source version control system (VCS) called Git. Git is responsible for everything GitHub-related that happens locally on your computer.</p>
 
 * [Hello World](/en/get-started/start-your-journey/hello-world)
 
-  Follow this Hello World exercise to learn GitHub's pull request workflow.
+  <p>Follow this Hello World exercise to learn GitHub's pull request workflow.</p>
 
 * [Getting started with your GitHub account](/en/get-started/onboarding/getting-started-with-your-github-account)
 
-  <p>With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.</p>
+  With a personal account on GitHub, you can import or create repositories, collaborate with others, and connect with the GitHub community.
 
 * [GitHub's plans](/en/get-started/learning-about-github/githubs-plans)
 
-  An overview of GitHub's pricing plans.
+  <p>An overview of GitHub's pricing plans.</p>
 
 * [Quickstart for writing on GitHub](/en/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/quickstart-for-writing-on-github)
 

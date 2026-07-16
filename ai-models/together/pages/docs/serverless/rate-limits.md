@@ -1,5 +1,5 @@
 ---
-title: "Serverless rate limits"
+title: "Rate limits"
 source: https://docs.together.ai/docs/serverless/rate-limits
 path: docs/serverless/rate-limits
 ---

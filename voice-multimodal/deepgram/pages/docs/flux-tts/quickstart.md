@@ -10,6 +10,8 @@ path: docs/flux-tts/quickstart
 
 # Getting Started with Flux TTS
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 Flux TTS brings the Flux promise to speech synthesis. Where `/v1/speak` renders a buffer of text into audio and discards everything else, `/v2/speak` is built for the realities of a voice agent pipeline: streaming text in from an LLM, speaking it to a user, getting interrupted, resuming, and doing it across dozens of turns without losing conversational coherence.
 
 **Flux TTS is perfect for:** turn-based voice agents, customer service bots, phone assistants, and any application that streams LLM output to a speaker in real time.

@@ -32,15 +32,15 @@ Workflows are defined in the `.github/workflows` directory in a repository. A re
 * Deploying your application every time a release is created
 * Adding a label whenever a new issue is opened
 
-You can reference a workflow within another workflow. For more information, see [Reuse workflows](/en/actions/using-workflows/reusing-workflows).
+You can reference a workflow within another workflow. For more information, see [Reuse workflows](/en/actions/how-tos/reuse-automations/reuse-workflows).
 
-For more information, see [Writing workflows](/en/actions/using-workflows).
+For more information, see [Writing workflows](/en/actions/how-tos/write-workflows).
 
 ### Events
 
-An **event** is a specific activity in a repository that triggers a **workflow** run. For example, an activity can originate from GitHub when someone creates a pull request, opens an issue, or pushes a commit to a repository. You can also trigger a workflow to run on a [schedule](/en/actions/using-workflows/events-that-trigger-workflows#schedule), by [posting to a REST API](/en/rest/repos/repos#create-a-repository-dispatch-event), or manually.
+An **event** is a specific activity in a repository that triggers a **workflow** run. For example, an activity can originate from GitHub when someone creates a pull request, opens an issue, or pushes a commit to a repository. You can also trigger a workflow to run on a [schedule](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule), by [posting to a REST API](/en/rest/repos/repos#create-a-repository-dispatch-event), or manually.
 
-For a complete list of events that can be used to trigger workflows, see [Events that trigger workflows](/en/actions/using-workflows/events-that-trigger-workflows).
+For a complete list of events that can be used to trigger workflows, see [Events that trigger workflows](/en/actions/reference/workflows-and-actions/events-that-trigger-workflows).
 
 ### Jobs
 
@@ -54,7 +54,7 @@ You can also use a **matrix** to run the same job multiple times, each with a di
 
 For example, you might configure multiple build jobs for different architectures without any job dependencies and a packaging job that depends on those builds. The build jobs run in parallel, and once they complete successfully, the packaging job runs.
 
-For more information, see [Choosing what your workflow does](/en/actions/using-jobs).
+For more information, see [Choosing what your workflow does](/en/actions/how-tos/write-workflows/choose-what-workflows-do).
 
 ### Actions
 
@@ -66,18 +66,18 @@ An **action** is a pre-defined, reusable set of jobs or code that performs speci
 
 You can write your own actions, or you can find actions to use in your workflows in the GitHub Marketplace.
 
-For more information on actions, see [Reusing automations](/en/actions/creating-actions).
+For more information on actions, see [Reusing automations](/en/actions/how-tos/reuse-automations).
 
 ### Runners
 
 A **runner** is a server that runs your workflows when they're triggered. Each runner can run a single **job** at a time.
 GitHub provides Ubuntu Linux, Microsoft Windows, and macOS runners to run your **workflows**. Each workflow run executes in a fresh, newly-provisioned virtual machine.
 
-GitHub also offers larger runners, which are available in larger configurations. For more information, see [Using larger runners](/en/actions/using-github-hosted-runners/using-larger-runners).
+GitHub also offers larger runners, which are available in larger configurations. For more information, see [Using larger runners](/en/actions/how-tos/manage-runners/larger-runners).
 
 If you need a different operating system or require a specific hardware configuration, you can host your own runners.
 
-For more information about self-hosted runners, see [Managing self-hosted runners](/en/actions/how-tos/managing-self-hosted-runners).
+For more information about self-hosted runners, see [Managing self-hosted runners](/en/actions/how-tos/manage-runners/self-hosted-runners).
 
 ## Next steps
 

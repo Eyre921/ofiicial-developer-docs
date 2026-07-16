@@ -1740,8 +1740,8 @@ path: api/pagelist/en/free-pro-team-latest
 /en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/use-hooks
 /en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-environment
 /en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/configure-secrets-and-variables
-/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/customize-the-agent-firewall
 /en/copilot/how-tos/copilot-on-github/customize-copilot/customize-cloud-agent/test-custom-agents
+/en/copilot/how-tos/copilot-on-github/customize-copilot/customize-the-firewall
 /en/copilot/how-tos/copilot-on-github/customize-copilot/configure-mcp-servers
 /en/copilot/how-tos/copilot-on-github/customize-copilot/copilot-spaces
 /en/copilot/how-tos/copilot-on-github/customize-copilot/copilot-spaces/create-copilot-spaces

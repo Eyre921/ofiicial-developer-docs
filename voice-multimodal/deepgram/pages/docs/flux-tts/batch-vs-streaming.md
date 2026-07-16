@@ -10,6 +10,8 @@ path: docs/flux-tts/batch-vs-streaming
 
 # Batch vs Streaming: Which Should I Use?
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 Flux TTS is served on `/v2/speak` over two transports against the same voices. They're not tiers — pick by how the audio is consumed.
 
 ## The short answer

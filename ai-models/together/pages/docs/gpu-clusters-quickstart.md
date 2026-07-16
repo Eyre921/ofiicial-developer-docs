@@ -100,13 +100,14 @@ You should see all worker and control plane nodes listed.
 
 ### For Slurm Clusters
 
-1. **Add SSH key** (if not already done)
-   * Ensure your SSH key is added to your account at [api.together.ai/settings/ssh-key](https://api.together.ai/settings/ssh-key)
-   * Keys must be added before cluster creation
+1. **Choose an SSH access method**
+   * On clusters with OIDC enabled, select **OIDC** or **Key-based** in **SSH access method** on the cluster details page.
+   * **OIDC:** Install the [Together CLI](/reference/cli/getting-started) (`uv tool install "together[cli]"`, requires CLI 2.20+ and Python 3.10+) and choose a login name when prompted. No SSH key is required.
+   * **Key-based:** Add your SSH key at [api.together.ai/settings/ssh-key](https://api.together.ai/settings/ssh-key) before cluster creation.
 
 2. **Connect via SSH**
-   * Use the connection command shown in the cluster UI
-   * SSH directly to the Slurm login node
+   * Copy the head node command from the cluster sidebar with **Copy head node SSH command**.
+   * Paste and run the command in your terminal to reach the Slurm login node.
 
 3. **Verify Slurm**
 

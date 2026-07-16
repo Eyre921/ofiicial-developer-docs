@@ -136,7 +136,7 @@ Enter your email to request access.
 
 ## Payment options 
 
-Depending on the customer’s currency and the transaction amount, Klarna can present customers with various payment options. Cart ranges and geographic availability for payment options are determined by Klarna and might change at their discretion. Regardless of the underlying payment option selected, Stripe makes the full amount of the funds (minus fees) available to you upfront and Klarna collects the purchase amount from your customer, who repays Klarna directly. The following table describes the payment options and the buyer countries that support each option for one-time and recurring payments1.
+Depending on the customer’s currency and the transaction amount, Klarna can present customers with various payment options. Cart ranges and geographic availability for payment options are determined by Klarna and might change at their discretion. Regardless of the underlying payment option selected, Stripe makes the full amount of the funds (minus fees) available to you upfront and Klarna collects the purchase amount from your customer, who repays Klarna directly. The following table describes the payment options and the customer countries that support each option for one-time and recurring payments1.
 
 | Payment option | Customer country2 | Minimum/maximum |
 | --- | --- | --- |
@@ -291,7 +291,7 @@ Depending on the customer’s currency and the transaction amount, Klarna can pr
 
 ## Cross-border payments 
 
-The following table describes the requirements for using Klarna internationally. For example, a Swedish business can present in EUR to a buyer in Germany because they’re both in the *European Economic Area (EEA)* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and three additional states that are part of the European Free Trade Association). However, an Australian business must present in AUD, and can only accept payments from buyers in Australia.
+The following table describes the requirements for using Klarna internationally. For example, a Swedish business can present in EUR to a customer in Germany because they’re both in the *European Economic Area (EEA)* (The European Economic Area is a regional single market with free movement of labor, goods, and capital. It encompasses the European Union member states and three additional states that are part of the European Free Trade Association). However, an Australian business must present in AUD, and can only accept payments from customers in Australia.
 
 | Business location | Customer location | Presentment currency |
 | --- | --- | --- |
@@ -327,11 +327,11 @@ Connected accounts with access to the full Stripe Dashboard, including Standard 
 
 To enable Klarna for connected accounts without full access to the Stripe Dashboard, including Express and Custom accounts, request the `klarna_payments` [capability](https://docs.stripe.com/connect/account-capabilities.md). Customers see the name of your connected account during checkout and in the Klarna app.
 
-## Buyer country filtering
+## Customer country filtering
 
-Buyer country filtering applies when you enable a dynamic payment method on the Payment Element or Checkout Session. Klarna only displays as a payment method option if the buyer’s country is supported.
+Customer country filtering applies when you enable a dynamic payment method on the Payment Element or Checkout Session. Klarna only displays as a payment method option if the customer’s country is supported.
 
-We determine the buyer’s country in the following priority order:
+We determine the customer’s country in the following priority order:
 
 1. Shipping address country: The two-letter country code, not the full name of the country.
 2. Geocoded country: The country based on the client-side IP address.

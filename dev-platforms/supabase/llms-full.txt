@@ -65060,6 +65060,62 @@ For cases where the SDK isn't a fit, such as analytics jobs, admin tooling, back
 ---
 
 ---
+title: Unified Logs is now in open beta
+description: >-
+  One searchable view for logs across every Supabase service, with live tail,
+  filtering, and a timeline.
+author: 'jordi, joshenlim, kemal_y, steven_eubank'
+date: '2026-07-16'
+tags:
+  - logs
+  - observability
+categories:
+  - product
+---
+Today Unified Logs enters open beta. It brings logs from every service in your project into one searchable view: the API gateway, Postgres, Auth, Storage, PostgREST, Realtime, and the connection poolers.
+
+Before this, debugging a single request meant jumping between separate log pages. You checked the API gateway logs, then Postgres logs, then Auth logs, each with its own filters and its own tab. Correlating a request across services was slow, and by the time you found the right page the context was gone.
+
+Unified Logs puts all of that in one place.
+
+## One stream across your services
+
+Open Logs in the dashboard and you see every event as it happens, newest first. Each row shows the timestamp, the service, the method, the path, and the status. One row might be an API request, the next a Postgres connection, the next an Auth event, all in the same table.
+
+The sidebar lets you narrow the stream by log type. Turn off Storage and Realtime to focus on Postgres. Turn everything back on to see the full picture. The counts next to each type update as you filter, so you know how much traffic each service is producing.
+
+## Filter and search
+
+The filter bar at the top understands the shape of your logs. Filter by log type, level, status, method, or pathname, and combine those filters however you need. You can also run a free-text search across the event message to find a specific request.
+
+Filters live in the URL, so you can share a link to exactly what you are looking at with a teammate.
+
+## Live tail
+
+Click Live to stream new events into the table as they arrive. This is the fastest way to watch a deploy, reproduce a bug, or confirm that traffic is reaching the right service. Stop the stream at any point to inspect what you have without new rows pushing it down.
+
+## A timeline you can read
+
+The histogram above the table shows log volume over your selected time range, colored by level so errors and warnings stand out from successful requests. A spike in red tells you where to look. Select a range on the timeline to zoom into that window.
+
+## Follow a request through every service
+
+Click a row to open the detail panel. Instead of a wall of JSON, you see the request as it moved through your project: the network timing, the gateway, the database query, the Auth check. Each service adds its own block with the fields that matter. The raw JSON is still there in a second tab when you need it.
+
+## Send logs anywhere
+
+Unified Logs is for debugging inside the dashboard. When you want to keep logs long term or pull them into your own observability tooling, set up a [Log Drain](https://supabase.com/docs/guides/platform/log-drains) and forward events to the destination of your choice.
+
+## Try it
+
+Unified Logs is rolling out to all projects during open beta. Open the Logs section of your project to start using it. If you want the previous experience back, the "Go back to old logs" button switches you to the classic Logs Explorer at any time.
+
+This is a beta, and we want your feedback. Tell us what is missing, what is slow, and what you want to filter on next.
+
+
+---
+
+---
 name: Quivr
 title: >-
   Scaling Beyond No-Code: asap.work’s Journey to a Faster, Flexible Solution
@@ -78577,6 +78633,7 @@ Start here if you're new to Supabase Auth:
 
 - **[Auth with email and password](https://supabase.com/docs/guides/auth/passwords):** Sign up and sign in users with email and password.
 - **[Server-side rendering](https://supabase.com/docs/guides/auth/server-side):** Create a Supabase client for SSR frameworks like Next.js and SvelteKit.
+- **[Which package to use](https://supabase.com/docs/guides/auth/choosing-a-server-package):** supabase-js vs @supabase/ssr vs @supabase/server — which to use on the server.
 - **[Row Level Security](https://supabase.com/docs/guides/database/postgres/row-level-security):** Use RLS policies to authorize data access from the client.
 
 ## Providers
@@ -84683,6 +84740,96 @@ function App() {
 Web3 wallets don't expose any identifying information about the user other than their wallet address (public key). This is why accounts that were created using Sign in with Web3 don't have any email address or phone number associated.
 
 To associate an email address, phone number or other social login with their account you can use the `supabase.auth.updateUser()` or `supabase.auth.linkIdentity()` APIs.
+
+
+---
+
+# Which package to use
+
+When to use supabase-js, @supabase/ssr, or @supabase/server on the server.
+
+When you use Supabase from JavaScript on the server, there are three packages to choose from. They are not alternatives to each other — `@supabase/ssr` and `@supabase/server` both build on top of `supabase-js` and solve different problems. This guide helps you pick the right one.
+
+Note: These are JavaScript packages, not separate language SDKs. If you're looking for the client library for another language (Python, Swift, Kotlin, etc.), see the [client library references](https://supabase.com/docs/reference).
+
+## Which package to use
+
+The quickest way to decide is by **how the user's identity reaches your code**:
+
+- The session lives in **cookies** (an SSR framework like Next.js or SvelteKit) → use **`@supabase/ssr`**.
+- Auth arrives **per request in headers** (`Authorization: Bearer <jwt>`) → use **`@supabase/server`**.
+- You want the base client, or you're handling auth yourself → use **`@supabase/supabase-js`** directly.
+
+| Package                 | Use it when                                           | Runs in                                                                             | Auth model                                         |
+| ----------------------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `@supabase/supabase-js` | You want the base client, or you manage auth yourself | Browser and server                                                                  | You wire up auth                                   |
+| `@supabase/ssr`         | User sessions are stored in **cookies**               | SSR frameworks (Next.js, SvelteKit, TanStack Start)                                 | Cookie-based sessions, with refresh-token rotation |
+| `@supabase/server`      | Auth arrives **per request in headers**               | Edge Functions, Workers, Vercel, Bun, and framework APIs (Hono, H3, Elysia, NestJS) | Stateless Bearer JWT + `apikey`                    |
+
+## `@supabase/supabase-js`
+
+The isomorphic base client. `@supabase/ssr` and `@supabase/server` both wrap it — reach for `supabase-js` directly when you don't need either wrapper's auth handling.
+
+```ts
+import { createClient } from '@supabase/supabase-js'
+
+const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_PUBLISHABLE_KEY!)
+```
+
+## `@supabase/ssr`
+
+For SSR frameworks that store the user's session in cookies. It reads and writes session cookies and handles refresh-token rotation, so the same user and session are available on both the client and the server.
+
+```ts
+import { createServerClient } from '@supabase/ssr'
+
+const supabase = createServerClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_PUBLISHABLE_KEY!,
+  {
+    cookies: {
+      getAll() {
+        // return the request's cookies
+      },
+      setAll(cookiesToSet) {
+        // write cookies back on the response
+      },
+    },
+  }
+)
+```
+
+See the [server-side rendering guide](https://supabase.com/guides/auth/server-side) for framework-specific setup.
+
+## `@supabase/server`
+
+For stateless, header-based auth in backend runtimes — Edge Functions, Workers, and framework APIs. You declare who may call an endpoint and receive a ready-to-use context (a caller-scoped client that respects RLS, plus an admin client). It verifies JWTs and resolves the new API keys (`SUPABASE_PUBLISHABLE_KEYS` / `SUPABASE_SECRET_KEYS`) for you.
+
+```ts
+import { withSupabase } from '@supabase/server'
+
+export default {
+  fetch: withSupabase({ auth: 'user' }, async (req, ctx) => {
+    // ctx.supabase is scoped to the caller and respects RLS
+    const { data } = await ctx.supabase.from('todos').select()
+    return Response.json(data)
+  }),
+}
+```
+
+See the [`@supabase/server` reference](https://supabase.com/docs/reference/server) for the full API.
+
+Note: `@supabase/ssr` and `@supabase/server` coexist and are not replacements for each other, and `@supabase/ssr` is not deprecated. Pick based on where your code runs and how auth reaches it, using the table above.
+
+## Advanced: Combining `@supabase/server` and `@supabase/ssr`
+
+In a cookie-based framework you can compose the two — let `@supabase/ssr` own the cookie session lifecycle and hand the resolved token to `@supabase/server`'s primitives. This requires more setup, and deeper first-party integration is on the roadmap. See the [`@supabase/server` SSR frameworks guide](https://github.com/supabase/server/blob/main/docs/ssr-frameworks.md).
+
+## Next steps
+
+- [Server-side rendering](https://supabase.com/guides/auth/server-side) — set up `@supabase/ssr` for your framework.
+- [`@supabase/server` reference](https://supabase.com/docs/reference/server) — API for header-based server auth.
+- [`supabase-js` reference](https://supabase.com/docs/reference/javascript) — the base JavaScript client.
 
 
 ---
@@ -94290,7 +94437,7 @@ You will require the following information:
 4. A **Services ID** which uniquely identifies the web services provided by the app you registered in the previous step. You can create a new Services ID from the [Identifiers](https://developer.apple.com/account/resources/identifiers/list/serviceId) section in the Apple Developer Console (use the filter menu in the upper right side to see all Services IDs). These usually are a reverse domain name string, for example `com.example.app.web`.
 5. Configure Website URLs for the newly created **Services ID**. The web domain you should use is the domain your Supabase project is hosted on. This is usually `<project-id>.supabase.co` while the redirect URL is `https://<project-id>.supabase.co/auth/v1/callback`.
 6. Create a signing **Key** in the [Keys](https://developer.apple.com/account/resources/authkeys/list) section of the Apple Developer Console. You can use this key to generate a secret key using the tool below, which is added to your Supabase project's Auth configuration. Make sure you safely store the `AuthKey_XXXXXXXXXX.p8` file. If you ever lose access to it, or make it public accidentally, revoke it from the Apple Developer Console and create a new one immediately.
-7. Finally, add the information you configured above to the [Apple provider configuration in the Supabase dashboard](https://supabase.com/dashboard/project/_/auth/providers).
+7. Finally, add the information you configured above to the [Apple provider configuration in the Supabase dashboard](https://supabase.com/dashboard/project/_/auth/providers). If your project also uses native Sign in with Apple (for example on iOS, Expo, or Flutter), list this Services ID as the **first** entry in the *Client IDs* field. Supabase uses the first client ID in the list for the web `signInWithOAuth` flow, while the native `signInWithIdToken` flow accepts any client ID in the list as a valid token audience, regardless of order. If a native App ID comes before the Services ID, native sign-in keeps working but web sign-in is rejected by Apple.
 
 You can also configure the Apple auth provider using the Management API:
 
@@ -94646,7 +94793,7 @@ You will require the following information:
 4. A **Services ID** which uniquely identifies the web services provided by the app you registered in the previous step. You can create a new Services ID from the [Identifiers](https://developer.apple.com/account/resources/identifiers/list/serviceId) section in the Apple Developer Console (use the filter menu in the upper right side to see all Services IDs). These usually are a reverse domain name string, for example `com.example.app.web`.
 5. Configure Website URLs for the newly created **Services ID**. The web domain you should use is the domain your Supabase project is hosted on. This is usually `<project-id>.supabase.co` while the redirect URL is `https://<project-id>.supabase.co/auth/v1/callback`.
 6. Create a signing **Key** in the [Keys](https://developer.apple.com/account/resources/authkeys/list) section of the Apple Developer Console. You can use this key to generate a secret key using the tool below, which is added to your Supabase project's Auth configuration. Make sure you safely store the `AuthKey_XXXXXXXXXX.p8` file. If you ever lose access to it, or make it public accidentally, revoke it from the Apple Developer Console and create a new one immediately. You will have to generate a new secret key using this file every 6 months, so make sure you schedule a recurring reminder in your calendar!
-7. Finally, add the information you configured above to the [Apple provider configuration in the Supabase dashboard](https://supabase.com/dashboard/project/_/auth/providers).
+7. Finally, add the information you configured above to the [Apple provider configuration in the Supabase dashboard](https://supabase.com/dashboard/project/_/auth/providers). If your app also uses native Sign in with Apple (on iOS or macOS), list this Services ID as the **first** entry in the *Client IDs* field. Supabase uses the first client ID in the list for the web `signInWithOAuth` flow, while the native `signInWithIdToken` flow accepts any client ID in the list as a valid token audience, regardless of order. If a native App ID comes before the Services ID, native sign-in keeps working but web sign-in is rejected by Apple.
 
 Tip: Use this tool to generate a new Apple client secret. No keys leave your browser! Be aware that this tool does not currently work in Safari, so use Firefox or a Chrome-based browser instead.
 
@@ -187412,6 +187559,8 @@ This reference documents every object and method available in Supabase's isomorp
 
 To convert SQL queries to `supabase-js` calls, use the [SQL to REST API translator](https://supabase.com/docs/guides/api/sql-to-rest).
 
+Using `supabase-js` on the server? See [which package to use](https://supabase.com/docs/guides/auth/choosing-a-server-package) to decide between `supabase-js`, `@supabase/ssr`, and `@supabase/server`.
+
 ## Installing
 
 ### Install as package
@@ -208391,6 +208540,8 @@ var objects = await supabase.Storage.From("avatars").List();
 
 Adapters for Hono, H3, Elysia, and NestJS are included. You can also compose the lower-level primitives directly for custom frameworks or edge runtimes.
 
+Not sure this is the right package? See [which package to use](https://supabase.com/docs/guides/auth/choosing-a-server-package) — for cookie-based sessions in SSR frameworks, use [`@supabase/ssr`](https://supabase.com/docs/guides/auth/server-side) instead.
+
 ## Installing
 
 ### Install as a package
@@ -208475,13 +208626,29 @@ Creates an admin Supabase client that bypasses Row-Level Security.
 Uses a secret key for authentication, giving full access to all data.
 Stateless — one client per request.
 
+## Which key is used
+
+With `auth.keyName` set, that named key from `SUPABASE_SECRET_KEYS` is used —
+and it throws if the key doesn't exist. With `keyName` omitted, the `default`
+key is used, falling back to the first key in the set when no `default` exists.
+
+Note this differs from the `"secret"` auth mode, which matches the `default`
+key only and never falls back — see index.AuthModeWithKey.
+
 ### Examples
 
 #### Basic usage
 
 ```ts
+// Uses the `default` secret key (or the first key if no `default` exists)
 const supabaseAdmin = createAdminClient()
 const { data } = await supabaseAdmin.from('audit_log').insert({ action: 'user_login' })
+```
+
+#### Specific named key
+
+```ts
+const supabaseAdmin = createAdminClient({ auth: { keyName: 'internal' } })
 ```
 
 ## createContextClient
@@ -208490,6 +208657,16 @@ Creates a Supabase client scoped to the caller's context.
 
 Configured with a publishable key and (optionally) the caller's JWT,
 so Row-Level Security policies apply. Stateless — one client per request.
+
+## Which key is used
+
+With `auth.keyName` set, that named key from `SUPABASE_PUBLISHABLE_KEYS` is
+used — and it throws if the key doesn't exist. With `keyName` omitted, the
+`default` key is used, falling back to the first key in the set when no
+`default` exists.
+
+Note this differs from the `"publishable"` auth mode, which matches the
+`default` key only and never falls back — see index.AuthModeWithKey.
 
 ### Examples
 
@@ -208774,9 +208951,13 @@ Named secret key not found in `SUPABASE_SECRET_KEYS`.
 Authentication mode that determines what credentials a request must provide.
 
 - `"none"` — No credentials required. Every request is accepted.
-- `"publishable"` — Requires a valid publishable key in the `apikey` header.
-- `"secret"` — Requires a valid secret key in the `apikey` header (timing-safe comparison).
+- `"publishable"` — Requires a valid publishable key in the `apikey` header. Matches only the `default` key.
+- `"secret"` — Requires a valid secret key in the `apikey` header (timing-safe comparison). Matches only the `default` key.
 - `"user"` — Requires a valid JWT in the `Authorization: Bearer <token>` header.
+
+Bare `"publishable"` / `"secret"` resolve the `default` key from
+`SUPABASE_PUBLISHABLE_KEYS` / `SUPABASE_SECRET_KEYS`. To target another key or
+accept any key, see AuthModeWithKey.
 
 ### Examples
 
@@ -208799,7 +208980,8 @@ Extended auth mode that supports targeting a specific named key.
 
 Use the colon syntax (`"publishable:web_app"`) to require a specific named key
 from the `SUPABASE_PUBLISHABLE_KEYS` or `SUPABASE_SECRET_KEYS` JSON object.
-Use `"publishable:*"` or `"secret:*"` to accept any key in the set.
+Use `"publishable:*"` or `"secret:*"` to accept any key in the set. The bare
+form without a colon (`"publishable"` / `"secret"`) matches only the `default` key.
 
 ### Examples
 

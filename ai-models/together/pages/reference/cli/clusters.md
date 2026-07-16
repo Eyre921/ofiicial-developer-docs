@@ -108,6 +108,42 @@ tg beta clusters list-regions
 }
 ```
 
+## SSH into a cluster
+
+SSH into a Slurm cluster using a short-lived OIDC-signed certificate. The command opens your browser to sign in, requests a certificate from the cluster's certificate authority, and connects through the bastion host. No API key or long-lived SSH key is required.
+
+<Note>
+  Requires Together CLI 2.20+ and [Python 3.10+](https://www.python.org/). Check your version with `tg --version`. To install or upgrade, see [Get started](/reference/cli/getting-started#install-the-together-cli).
+</Note>
+
+```bash theme={null}
+tg beta clusters ssh https://dex.<REGION>.cloud.together.ai/<CLUSTER_ID> --login <LOGIN>
+```
+
+Copy the Dex issuer URL and login name from the cluster UI when **OIDC** is selected as the SSH access method.
+
+### Parameters
+
+| Flag                   | Description                                                                                                                                                                 |
+| ---------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DEX_URL` (positional) | Cluster Dex issuer URL: `https://dex.<BASE>/<CLUSTER_ID>`. **required**                                                                                                     |
+| `--login`, `-l`        | POSIX login or SSH username on the cluster. **required**                                                                                                                    |
+| `--host`               | Target host reachable through the bastion. Default: `slurm-login`. For compute nodes, pass the node hostname shown in the UI (for example, `worker-1.slurm-compute.slurm`). |
+| `--client-id`          | Dex public client ID. Default: `together-cli`.                                                                                                                              |
+| `--scope`              | OIDC scopes. Default: `openid email`.                                                                                                                                       |
+| `--key-type`           | Ephemeral key type (`ecdsa` or `ed25519`). Default: `ecdsa`.                                                                                                                |
+| `--ca-root`            | step-ca root certificate (PEM) for TLS verification.                                                                                                                        |
+| `--cache`              | Cache SSH keys and certificates while valid. Default: `true`.                                                                                                               |
+| `--refresh`            | Force refresh the cached SSH certificate.                                                                                                                                   |
+| `--cache-dir`          | Directory for cached SSH keys and certificates.                                                                                                                             |
+| `--print-ssh-command`  | Print the underlying `ssh` command instead of executing it.                                                                                                                 |
+| `--ssh-config-alias`   | Print an `ssh_config` Host entry for this alias instead of executing `ssh`.                                                                                                 |
+| `--write-ssh-config`   | Write or update the alias in `~/.together/ssh/config` and include it from `~/.ssh/config`. Requires `--ssh-config-alias`.                                                   |
+
+<Note>
+  Any arguments after `DEX_URL` are passed through to `ssh` as a remote command.
+</Note>
+
 ## Get cluster credentials
 
 Download the cluster's configuration and credentials to your local `.kube/config` file to manage Kubernetes resources.

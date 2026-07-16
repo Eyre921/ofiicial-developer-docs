@@ -10,6 +10,8 @@ path: docs/flux-tts/migrating
 
 # Migrating from /v1/speak to Flux TTS
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 Flux TTS ships on a new endpoint, `/v2/speak`. The `/v1/speak` endpoint stays available and unchanged, and all Aura model strings continue to work on it — there is no aliasing, redirect, or deprecation. You migrate when you're ready to build on the streaming-first surface.
 
 ## Which should you use?

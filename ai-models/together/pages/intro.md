@@ -60,7 +60,7 @@ Run, train, and serve open-source AI models on Together AI.
   </Card>
 </Columns>
 
-<SubHeading description="Together AI hosts many popular models, available via serverless or dedicated endpoints. On serverless, you're charged based on the tokens you use and the size of the model. On dedicated, you're charged based on GPU hours." />
+<SubHeading description="Together AI hosts many popular models, available via serverless or dedicated model inference. On serverless, you're charged based on the tokens you use and the size of the model. On dedicated, you're charged based on GPU hours." />
 
 <ModelGrid />
 

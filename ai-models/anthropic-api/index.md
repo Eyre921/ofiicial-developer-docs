@@ -1,6 +1,6 @@
 # ai-models/anthropic-api 文档索引
 
-> 共 307 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 308 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -311,6 +311,7 @@
 - `managed-agents/github` — [Accessing GitHub](pages/managed-agents/github.md) · [原文](https://platform.claude.com/docs/en/managed-agents/github)
 - `managed-agents/mcp-connector` — [MCP connector](pages/managed-agents/mcp-connector.md) · [原文](https://platform.claude.com/docs/en/managed-agents/mcp-connector)
 - `managed-agents/memory` — [Using agent memory](pages/managed-agents/memory.md) · [原文](https://platform.claude.com/docs/en/managed-agents/memory)
+- `managed-agents/migration` — [Migration](pages/managed-agents/migration.md) · [原文](https://platform.claude.com/docs/en/managed-agents/migration)
 - `managed-agents/multiagent-orchestration` — [Multiagent orchestration](pages/managed-agents/multiagent-orchestration.md) · [原文](https://platform.claude.com/docs/en/managed-agents/multiagent-orchestration)
 - `managed-agents/onboarding` — [Prototype in Console](pages/managed-agents/onboarding.md) · [原文](https://platform.claude.com/docs/en/managed-agents/onboarding)
 - `managed-agents/overview` — [Managed Agents](pages/managed-agents/overview.md) · [原文](https://platform.claude.com/docs/en/managed-agents/overview)
@@ -329,4 +330,4 @@
 
 ## test-and-evaluate
 
-- `test-and-evaluate/strengthen-guardrails/handle-streaming-refusals` — [Streaming refusals](pages/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md) · [原文](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals)
+- `test-and-evaluate/strengthen-guardrails/handle-streaming-refusals` — [Handle streaming refusals](pages/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals.md) · [原文](https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals)

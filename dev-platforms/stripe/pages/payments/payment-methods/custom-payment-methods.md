@@ -129,7 +129,7 @@ By using custom payment methods (CPM) and [third-party payment processors](https
 - You’re responsible for properly configuring the CPM and third-party payment processor integration, which might include configuring a redirect URL.
 - You must immediately remove any CPM and disable your PSP integration in the event your agreement with any PSP terminates or Stripe, at its sole discretion, gives you notices or documents its [prohibition of use of that type of custom payment method](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md#restricted-custom-payment-methods).
 - You can’t integrate with [restricted PSPs](https://docs.stripe.com/payments/payment-methods/custom-payment-methods.md#restricted-custom-payment-methods).
-- You’re solely responsible for correctly presenting buyers with their chosen CPM.
+- You’re solely responsible for correctly presenting customers with their chosen CPM.
 - You won’t misrepresent that Stripe processes payments for the CPMs you present to your customers.
 - As a third-party payment processor user, you’ve obtained the requisite permission to enable Stripe to collect, use, retain, and disclose the data provided through the integration (“PSP Data”).
 - You authorize Stripe to access and use the PSP Data to provide and update the Stripe services, comply with legal and financial partner requirements, and prevent and mitigate fraud, financial loss, and other harm.

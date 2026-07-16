@@ -30,6 +30,15 @@ tg --help
 
 The CLI is also installed as `together`, an alias of `tg` that's identical in behavior. Examples throughout these docs use `tg`.
 
+<Warning>
+  **Migrating from a `pip`-installed CLI?** An earlier `pip install together` can pin the CLI to an older Python interpreter and leave a stale `tg` binary earlier on your `PATH`, which shadows the `uv`-managed install. Commands that need a newer CLI (such as OIDC SSH into clusters, which requires 2.20+) then fail even after you upgrade. To switch to the `uv`-managed install:
+
+  1. Uninstall the pip package: `pip uninstall together`.
+  2. Reload your shell (or run `hash -r`) so `PATH` resolves to the `uv`-managed binary.
+  3. Reinstall: `uv tool install "together[cli]"`.
+  4. Confirm the version: `tg --version`.
+</Warning>
+
 ## Update the CLI
 
 ```bash theme={null}

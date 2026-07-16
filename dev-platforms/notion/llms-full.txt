@@ -10751,6 +10751,10 @@ Exchange the authorization code for access and refresh tokens:
     expires_in?: number
     refresh_token?: string
     scope?: string
+    // Identity fields, present on successful authorization-code exchanges
+    user_id?: string
+    workspace_id?: string
+    email_domain?: string
   }
 
   async function exchangeCodeForTokens(
@@ -10800,6 +10804,20 @@ Exchange the authorization code for access and refresh tokens:
   }
   ```
 </CodeGroup>
+
+<Note>
+  **Identity fields in the token response**
+
+  Successful authorization-code exchanges also return `user_id` and
+  `workspace_id`, the Notion IDs of the authorizing user and workspace, plus
+  `email_domain`, the lowercased domain of the authorizing user's email
+  address. Use them to associate the connection with a user and workspace
+  without an extra call. Refresh responses don't include these fields, so
+  store them from the initial exchange.
+
+  Notion may add fields to the token response over time. Parse it leniently
+  and [ignore fields you don't recognize](/reference/versioning#what-we-consider-backwards-compatible).
+</Note>
 
 <Warning>
   **Token storage security:**
@@ -10891,10 +10909,10 @@ Streamable HTTP first and automatically fall back to SSE if needed.
 
 ### Identify the connected workspace
 
-The OAuth token response intentionally omits workspace identity, and the public
-REST API's `GET /v1/users/me` does not accept MCP-audienced tokens. To label a
-connection with the workspace name and a stable ID after connecting, call the
-`fetch` tool with the special id `self`:
+The OAuth token response includes `user_id` and `workspace_id`, but not
+display names, and the public REST API's `GET /v1/users/me` does not accept
+MCP-audienced tokens. To label a connection with the workspace name after
+connecting, call the `fetch` tool with the special id `self`:
 
 <CodeGroup>
   ```typescript TypeScript theme={null}
@@ -16366,6 +16384,28 @@ Source: https://developers.notion.com/page/changelog
 
 
 
+<Update label="July 15, 2026">
+  ### New identity fields in OAuth token responses
+
+  [User objects](/reference/user) now include an `email_verified` boolean next to `person.email`, indicating whether Notion has verified that email address. The field appears anywhere person emails do, including the `owner` in [OAuth token responses](/guides/get-started/authorization) and [List all users](/reference/get-users) results.
+
+  Notion MCP token responses now include top-level `user_id`, `workspace_id`, and `email_domain` fields on successful authorization-code exchanges, so MCP clients can associate a connection with a Notion user and workspace without an extra call. See [Integrating your own MCP client](/guides/mcp/build-mcp-client#step-6-exchange-authorization-code-for-tokens).
+
+  New response fields like these are [backwards-compatible additions](/reference/versioning#what-we-consider-backwards-compatible) and appear on every API version. Parse responses leniently: ignore fields you don't recognize rather than rejecting them.
+
+  ### Notion app links in API responses use the new app domain
+
+  As part of Notion's move from `notion.so` to `notion.com`, the links Notion generates for its own records changed in early June 2026: the `url` values returned for [pages](/reference/page), [databases](/reference/database), and [data sources](/reference/data-source), and the `href` values for page and database [mentions](/reference/rich-text), now point at the Notion app domain with a page path prefix, `https://app.notion.com/p/{page-id}`, instead of `https://www.notion.so/{page-id}`. Existing `notion.so` links continue to open correctly.
+
+  These values are links for people to open in Notion, not stable identifiers: their domain and path format may change again. To reference a record, use its `id` field rather than parsing the URL, and use a page's [`public_url`](/reference/page) to link to its published site. Links authored by users, such as `link.url` in rich text and URL property values, and links to sites published on `notion.site` or custom domains are unchanged.
+
+  ### Search the trash and query archived pages
+
+  [Search](/reference/post-search) accepts a new `filter.in_trash` option to list trashed pages and data sources (databases on API versions before `2025-09-03`). [Query a data source](/reference/query-a-data-source#archived-pages) accepts a top-level `is_archived` body parameter to return archived pages instead of the default non-archived set.
+
+  **SDK support**: `@notionhq/client` [`v5.23.2`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.23.2) adds `filter.in_trash` support to `client.search()`. [`v5.23.1`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.23.1) exports rich text annotation types and fixes pagination helper type compatibility with endpoint methods under `strictNullChecks`.
+</Update>
+
 <Update label="July 14, 2026">
   ### Longer-lived Notion MCP access tokens
 
@@ -19300,7 +19340,7 @@ Individual data sources don't have permissions settings, so the set of Notion us
 | `icon`             | [Emoji](/reference/emoji-and-icon#emoji), [Icon](/reference/emoji-and-icon#icon), [Custom emoji](/reference/emoji-and-icon#custom-emoji), or [File](/reference/file-object) | Database icon. See [Icon](/reference/page-property-values#icon) for all supported types. An icon set in the Notion UI is returned by both [Retrieve a database](/reference/retrieve-a-database) and [Retrieve a data source](/reference/retrieve-a-data-source). |                                                                                                                                                                                                                                                                                                    |
 | `cover`            | [File object](/reference/file-object)                                                                                                                                       | Page cover image.                                                                                                                                                                                                                                                |                                                                                                                                                                                                                                                                                                    |
 | `parent`           | `object`                                                                                                                                                                    | Information about the database's parent. See [Parent object](/reference/parent-object).                                                                                                                                                                          | `{ "type": "page_id", "page_id": "af5f89b5-a8ff-4c56-a5e8-69797d11b9f8" }`                                                                                                                                                                                                                         |
-| `url`              | `string`                                                                                                                                                                    | The URL of the Notion database.                                                                                                                                                                                                                                  | `"https://www.notion.so/668d797c76fa49349b05ad288df2d136"`                                                                                                                                                                                                                                         |
+| `url`              | `string`                                                                                                                                                                    | The URL of the Notion database.                                                                                                                                                                                                                                  | `"https://app.notion.com/p/668d797c76fa49349b05ad288df2d136"`                                                                                                                                                                                                                                      |
 | `archived`         | `boolean`                                                                                                                                                                   | **Deprecated.** Use `in_trash` instead. This is an alias for `in_trash` and always returns the same value.                                                                                                                                                       | `false`                                                                                                                                                                                                                                                                                            |
 | `in_trash`         | `boolean`                                                                                                                                                                   | Whether the database has been trashed.                                                                                                                                                                                                                           | `false`                                                                                                                                                                                                                                                                                            |
 | `is_inline`        | `boolean`                                                                                                                                                                   | Has the value `true` if the database appears in the page as an inline block. Otherwise has the value `false` if the database appears as a child page.                                                                                                            | `false`                                                                                                                                                                                                                                                                                            |
@@ -21172,7 +21212,7 @@ The Page object contains the [page property values](/reference/page-property-val
               ]
           }
       },
-      "url": "https://www.notion.so/Bug-bash-be633bf1dfa0436db259571129a590e5",
+      "url": "https://app.notion.com/p/Bug-bash-be633bf1dfa0436db259571129a590e5",
   		"public_url": "https://jm-testing.notion.site/p1-6df2c07bfc6b4c46815ad205d132e22d"
   }
   ```
@@ -21202,7 +21242,7 @@ Page content is available as [blocks](/reference/block). The content can be read
 | `cover`            | [File object](/reference/file-object) (`type` of `"external"` or `"file_upload"` are supported)                                                                             | Page cover image.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |                                                                                          |
 | `properties`       | `object`                                                                                                                                                                    | Property values of this page. As of version `2022-06-28`, `properties` only contains the ID of the property; in prior versions `properties` contained the values as well. <br /> <br /> If `parent.type` is `"page_id"` or `"workspace"`, then the only valid key is `title`. <br /> <br /> If `parent.type` is `"data_source_id"`, then the keys and values of this field are determined by the [`properties`](/reference/property-object) of the [data source](/reference/data-source) this page belongs to.<br /> <br /> `key` string Name of a property as it appears in Notion.<br /> <br /> `value` object See [Page property values](/reference/page-property-values). | `{ "id": "A%40Hk" }`                                                                     |
 | `parent`           | `object`                                                                                                                                                                    | Information about the page's parent. See [Parent object](/reference/parent-object).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | `{ "type": "data_source_id", "data_source_id": "d9824bdc-8445-4327-be8b-5b47500af6ce" }` |
-| `url`              | `string`                                                                                                                                                                    | The URL of the Notion page.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `"https://www.notion.so/Avocado-d093f1d200464ce78b36e58a3f0d8043"`                       |
+| `url`              | `string`                                                                                                                                                                    | The URL of the Notion page.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | `"https://app.notion.com/p/Avocado-d093f1d200464ce78b36e58a3f0d8043"`                    |
 | `public_url`       | `string`                                                                                                                                                                    | The public page URL if the page has been published to the web. Otherwise, `null`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             | `"https://jm-testing.notion.site/p1-6df2c07bfc6b4c46815ad205d132e22d"1`                  |
 
 
@@ -26391,13 +26431,13 @@ When blocks are retrieved from a page using the [Retrieve a block](/reference/re
 
 Each rich text object contains the following fields.
 
-| Field                             | Type                | Description                                                                                                                                           | Example value                                                      |
-| :-------------------------------- | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------- |
-| `type`                            | `string` (enum)     | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`.                                                     | `"text"`                                                           |
-| `text` \| `mention` \| `equation` | `object`            | An object containing type-specific configuration.  <br /><br />Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples.    |
-| `annotations`                     | `object`            | The information used to style the rich text object. Refer to the annotation object section below for details.                                         | Refer to the annotation object section below for examples.         |
-| `plain_text`                      | `string`            | The plain text without annotations.                                                                                                                   | `"Some words "`                                                    |
-| `href`                            | `string` (optional) | The URL of any link or Notion mention in this text, if any.                                                                                           | `"https://www.notion.so/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
+| Field                             | Type                | Description                                                                                                                                           | Example value                                                         |
+| :-------------------------------- | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| `type`                            | `string` (enum)     | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`.                                                     | `"text"`                                                              |
+| `text` \| `mention` \| `equation` | `object`            | An object containing type-specific configuration.  <br /><br />Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples.       |
+| `annotations`                     | `object`            | The information used to style the rich text object. Refer to the annotation object section below for details.                                         | Refer to the annotation object section below for examples.            |
+| `plain_text`                      | `string`            | The plain text without annotations.                                                                                                                   | `"Some words "`                                                       |
+| `href`                            | `string` (optional) | The URL of any link or Notion mention in this text, if any.                                                                                           | `"https://app.notion.com/p/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
 
 ## The annotation object
 
@@ -26483,7 +26523,7 @@ If a connection doesn’t have [access](/reference/capabilities) to the mentione
       "color": "default"
     },
     "plain_text": "Database with test things",
-    "href": "https://www.notion.so/a1d8501e1ac143e9a6bdea9fe6c8822b"
+    "href": "https://app.notion.com/p/a1d8501e1ac143e9a6bdea9fe6c8822b"
   }
   ```
 </CodeGroup>
@@ -26576,7 +26616,7 @@ If a connection doesn’t have [access](/reference/capabilities) to the mentione
       "color": "default"
     },
     "plain_text": "This is a test page",
-    "href": "https://www.notion.so/3c612f56fdd04a30a4d6bda7d7426309"
+    "href": "https://app.notion.com/p/3c612f56fdd04a30a4d6bda7d7426309"
   }
   ```
 </CodeGroup>
@@ -28019,10 +28059,11 @@ These fields are shared by all users, including people and bots. Fields marked w
 
 User objects that represent people have the `type` property set to `"person"`. These objects also have the following properties:
 
-| Property       | Updatable    | Type     | Description                                                                                                               | Example value         |
-| :------------- | :----------- | :------- | :------------------------------------------------------------------------------------------------------------------------ | :-------------------- |
-| `person`       | Display-only | `object` | Properties only present for non-bot users.                                                                                |                       |
-| `person.email` | Display-only | `string` | Email address of person. This is only present if a connection has user capabilities that allow access to email addresses. | `"[email protected]"` |
+| Property                | Updatable    | Type      | Description                                                                                                               | Example value         |
+| :---------------------- | :----------- | :-------- | :------------------------------------------------------------------------------------------------------------------------ | :-------------------- |
+| `person`                | Display-only | `object`  | Properties only present for non-bot users.                                                                                |                       |
+| `person.email`          | Display-only | `string`  | Email address of person. This is only present if a connection has user capabilities that allow access to email addresses. | `"[email protected]"` |
+| `person.email_verified` | Display-only | `boolean` | Whether Notion has verified the person's email address. Returned under the same capability conditions as `person.email`.  | `true`                |
 
 ## Bots
 
@@ -28115,11 +28156,18 @@ Similarly, the page response will be returned with the property type `text` on t
 
 The following types of changes are made without a new API version. Your integration should be resilient to them:
 
-* **Additive changes** — new endpoints, new optional request parameters, new fields in response objects.
+* **Additive changes** — new endpoints, new optional request parameters, new fields in response objects. Additive changes apply to **every** API version at the same time, including older ones: pinning `Notion-Version` does not delay them.
+* **Link format changes** — the links Notion generates for its own records (`url` on pages, databases, and data sources, and `href` on page and database mentions) are for people to open, not stable identifiers. Their domain and path format may change; for example, they moved from `https://www.notion.so/{page-id}` to `https://app.notion.com/p/{page-id}` in June 2026. Use `id` fields to reference records instead of parsing these URLs. Links authored by users, such as `link.url` in rich text and URL property values, are returned as written.
 * **Opaque identifier format changes** — pagination cursors, request IDs, and other values not documented as stable identifiers may change in length, format, or structure at any time. Cursors may embed metadata such as session keys or timestamps. **Do not parse, validate, or store cursors beyond passing them back as `start_cursor`.** Only record identifiers (page IDs, database IDs, user IDs, block IDs, etc.) are guaranteed to be stable UUIDs.
 * **Error message text improvements** — human-readable `message` strings in error responses may be reworded for clarity. Programmatic error `code` values (e.g. `validation_error`, `object_not_found`) are stable and will not change without a version bump.
 * **Rate limit adjustments** — rate limits may change. Always respect `Retry-After` headers.
 * **Performance and ordering improvements** — result ordering for endpoints that don't guarantee a specific sort order may change. Pagination behavior may change to improve reliability.
+
+<Tip>
+  **Ignore unknown response fields**
+
+  Because new response fields appear on every API version as soon as they ship, deserialize API responses with a parser that ignores unrecognized fields. Strict parsing that rejects unknown keys will eventually break, and the risk is highest for clients that are slow to update, such as packaged desktop or mobile apps and device firmware. The same applies to Notion MCP OAuth and tool responses, which are not versioned with `Notion-Version` at all.
+</Tip>
 
 <Tip>
   **Treat all cursors as opaque**

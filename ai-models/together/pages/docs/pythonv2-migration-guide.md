@@ -318,7 +318,7 @@ while True:
 **Rerank**
 
 <Tip>
-  Rerank models like `mxbai-rerank-large-v2` are only available as [Dedicated Endpoints](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
+  Rerank models like `mxbai-rerank-large-v2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
 ```python theme={null}

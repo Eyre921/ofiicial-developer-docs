@@ -4727,6 +4727,83 @@ Refer to [Configuring multi-main setup](/deploy/host-n8n/configure-n8n/scaling/e
 | `N8N_MULTI_MAIN_SETUP_CHECK_INTERVAL` | Number  | `3`     | Interval (in seconds) for leader check in multi-main setup.           |
 
 
+# Scheduler
+
+Environment variables to configure the durable scheduler for your self-hosted n8n instance.
+
+These environment variables configure the durable scheduler, which runs time-based workflows from a database-backed queue instead of from each instance's memory. For what the durable scheduler changes, how to turn it on, and how it works, see [Durable scheduler](/deploy/host-n8n/configure-n8n/durable-scheduler).
+
+{% hint style="warning" %}
+**Preview feature**
+
+The durable scheduler is a preview feature behind an environment flag. The environment variables and default behavior can change before the feature reaches general availability.
+{% endhint %}
+
+## Enable the scheduler <a href="#enable-vars" id="enable-vars"></a>
+
+| Variable                | Type    | Default | Description                                                                                                                                                                                                                                                                                             |
+| ----------------------- | ------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_SCHEDULER_ENABLED` | Boolean | `false` | Whether to turn on the durable scheduler. When on, the scheduler stores scheduled runs in the database before they execute, so a restart doesn't drop them and, across multiple instances, each run executes once. Requires `N8N_USE_WORKFLOW_PUBLICATION_SERVICE` to take over Schedule Trigger nodes. |
+
+## Materialization <a href="#materialization-vars" id="materialization-vars"></a>
+
+Controls how far ahead and how often the scheduler records upcoming runs to the database.
+
+| Variable                                 | Type   | Default | Description                                                                                                                                                                                               |
+| ---------------------------------------- | ------ | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_SCHEDULER_MATERIALIZATION_WINDOW`   | Number | `60`    | How far into the future, in seconds, the scheduler records upcoming runs. A larger window commits more runs in advance (more resilient to downtime, slightly more storage churn). Must be greater than 0. |
+| `N8N_SCHEDULER_MATERIALIZATION_INTERVAL` | Number | `10`    | How often, in seconds, the scheduler scans active schedules to record the runs falling within the window. Must be greater than 0.                                                                         |
+| `N8N_SCHEDULER_MATERIALIZATION_TIMEOUT`  | Number | `60`    | How long, in seconds, a single scan may run before it's abandoned and retried on the next interval. Guards against a scan stuck on a slow database. Must be greater than 0.                               |
+
+## Execution <a href="#execution-vars" id="execution-vars"></a>
+
+Controls how often the scheduler starts due runs and how it claims each one so only one instance runs it.
+
+| Variable                          | Type   | Default | Description                                                                                                                                                                                                                                                                                                                                                                                           |
+| --------------------------------- | ------ | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_SCHEDULER_EXECUTOR_INTERVAL` | Number | `5`     | How often, in seconds, the scheduler checks for recorded runs whose time has arrived and starts them. Sets the worst-case delay between a run's scheduled time and when it starts. Lower it for tighter timing at the cost of more frequent polling. Must be greater than 0.                                                                                                                          |
+| `N8N_SCHEDULER_EXECUTOR_TIMEOUT`  | Number | `60`    | How long, in seconds, a single check for due runs may run before it's abandoned and retried on the next interval. Must be greater than 0.                                                                                                                                                                                                                                                             |
+| `N8N_SCHEDULER_LEASE_DURATION`    | Number | `60`    | How long, in seconds, an instance holds an exclusive claim on a run it picked up, so no other instance starts the same one. If the instance stops without finishing, the claim expires after this long and another instance may take over. Keep it comfortably above the time a run needs to get going: too short risks a double run, too long delays recovery after a crash. Must be greater than 0. |
+| `N8N_SCHEDULER_CLAIM_BATCH_SIZE`  | Number | `100`   | The most runs a single claim takes from the queue in one pass. Larger batches drain a backlog faster but hold more work on one instance per tick. Must be greater than 0.                                                                                                                                                                                                                             |
+
+## Recovery <a href="#recovery-vars" id="recovery-vars"></a>
+
+Controls the reaper, which releases runs an instance claimed but never finished so another instance can take them.
+
+| Variable                          | Type   | Default | Description                                                                                                                                                                                |
+| --------------------------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `N8N_SCHEDULER_REAPER_INTERVAL`   | Number | `30`    | How often, in seconds, the scheduler looks for runs an instance claimed but never finished (for example after a crash or shutdown) and makes them available again. Must be greater than 0. |
+| `N8N_SCHEDULER_REAPER_BATCH_SIZE` | Number | `100`   | The most expired-claim runs a single reaper pass reclaims. Larger batches recover a backlog faster but hold more work on one instance per pass. Must be greater than 0.                    |
+| `N8N_SCHEDULER_REAPER_TIMEOUT`    | Number | `60`    | How long, in seconds, a single recovery pass may run before it's abandoned and retried on the next interval. Must be greater than 0.                                                       |
+
+## Retention <a href="#retention-vars" id="retention-vars"></a>
+
+Controls how long the scheduler keeps finished runs as history and how often it deletes old ones. n8n keeps failed and missed runs longer than clean ones so you have time to notice and debug a problem.
+
+| Variable                           | Type   | Default  | Description                                                                                                                                                                                                                                                                        |
+| ---------------------------------- | ------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_SCHEDULER_RETENTION`          | Number | `86400`  | How long, in seconds, the scheduler keeps runs that finished cleanly (a success or a cancellation) before deleting them. Defaults to one day. Raise it to keep more history, lower it to reclaim database space sooner. Must be greater than 0.                                    |
+| `N8N_SCHEDULER_FAILED_RETENTION`   | Number | `604800` | How long, in seconds, the scheduler keeps runs that went wrong (a failure, or a missed run) before deleting them. Defaults to seven days. Keep it longer than `N8N_SCHEDULER_RETENTION` so there's time to debug; the scheduler warns if you set it lower. Must be greater than 0. |
+| `N8N_SCHEDULER_RETENTION_INTERVAL` | Number | `3600`   | How often, in seconds, the scheduler deletes finished runs older than the retention windows. Defaults to one hour. Must be greater than 0.                                                                                                                                         |
+| `N8N_SCHEDULER_RETENTION_TIMEOUT`  | Number | `300`    | How long, in seconds, a single cleanup pass may run before it's abandoned and retried on the next interval. Defaults to five minutes. Must be greater than 0.                                                                                                                      |
+
+## Coordination across instances <a href="#coordination-vars" id="coordination-vars"></a>
+
+Controls how the scheduler overlaps its background passes and spreads database load across instances.
+
+| Variable                              | Type   | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                   |
+| ------------------------------------- | ------ | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_SCHEDULER_MAX_CONCURRENT_PASSES` | Number | `10`    | The most background passes of the same kind that can run at once on one instance, when the database supports overlapping passes (PostgreSQL). If a pass comes due while the limit is already in use, n8n skips it. On SQLite, passes never overlap, so this setting has no effect. Must be greater than 0.                                                                                                    |
+| `N8N_SCHEDULER_JITTER_RATIO`          | Number | `0.1`   | A small random variation added to the timing of each periodic pass, as a fraction of the interval. With `0.1`, a pass set to run every 10 seconds actually runs every 9 to 11 seconds. This spreads out database queries from instances started at the same time, such as during a rolling deploy. Set it to `0` for exact intervals, or raise it to spread load more evenly. Must be at least 0 and below 1. |
+
+## Schedule behavior <a href="#behavior-vars" id="behavior-vars"></a>
+
+| Variable                          | Type                   | Default  | Description                                                                                                                                                                                                                                                                                                                                                       |
+| --------------------------------- | ---------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `N8N_SCHEDULER_MIN_INTERVAL`      | Number                 | `0`      | The smallest gap, in seconds, allowed between consecutive runs of the same schedule. n8n slows a schedule set to run more often down to this gap. Defaults to `0`, which disables the limit and honors whatever interval each schedule specifies. Set it to stop a runaway every-second schedule from overloading the instance.                                   |
+| `N8N_SCHEDULER_TRIGGER_NODE_MODE` | Enum (`legacy`, `new`) | `legacy` | How a Schedule Trigger node's "every N seconds" and "every N minutes" schedules fire. `legacy` keeps clock-aligned timing matching the in-memory scheduler; `new` spaces runs a steady N apart from activation time. Only affects second and minute intervals. See [Schedule Trigger timing](/deploy/host-n8n/configure-n8n/durable-scheduler#trigger-node-mode). |
+
+
 # Security
 
 Configure authentication and environment variable access in self-hosted n8n instance.
@@ -7196,7 +7273,7 @@ This document describes how to configure your n8n instance to support user manag
 Refer to the main [User management](/administer/manage-users-and-access) guide for more information about usage, including:
 
 * [Managing users](/administer/manage-users-and-access/add-and-remove-users)
-* [Account types](broken://spaces/wMJrGrimpx3PxCJpUswm/pages/c17Eqx1JImm8zqNwxXjT)
+* [Instance roles](https://app.gitbook.com/s/wMJrGrimpx3PxCJpUswm/manage-users-and-access/understand-instance-roles)
 * [Best practices](/administer/manage-users-and-access/follow-best-practices)
 
 For LDAP setup information, refer to [LDAP](/administer/manage-users-and-access/verify-user-identity/connect-ldap).
@@ -7773,6 +7850,87 @@ docker run --rm -it \
   -p 5680:5680 \
   n8nio/runners:custom
 ```
+
+
+# Durable scheduler
+
+How the durable scheduler runs time-based workflows from a database-backed queue for your self-hosted n8n instance.
+
+The durable scheduler runs time-based workflows, such as those that start with a Schedule Trigger node, from a database-backed queue instead of from each instance's memory. This page explains what the durable scheduler changes, how to turn it on, and how it works. For the environment variables that configure it, see [Scheduler environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler).
+
+{% hint style="warning" %}
+**Preview feature**
+
+The durable scheduler is a preview feature behind an environment flag. The environment variables and default behavior can change before the feature reaches general availability.
+{% endhint %}
+
+{% hint style="info" %}
+The durable scheduler is off by default and rolling out gradually. Existing instances keep using the in-memory scheduler and behave as before until you opt in. n8n recommends testing it in a non-production environment first.
+{% endhint %}
+
+## In-memory scheduler compared to the durable scheduler <a href="#in-memory-vs-durable" id="in-memory-vs-durable"></a>
+
+By default, n8n schedules time-based workflows in memory. Each main instance works out when its active schedules should fire and holds those timers in its own process. This works well for a single instance, but it has limits:
+
+* **Restarts lose pending runs.** When an instance stops, its in-memory timers go with it. n8n skips any run whose time passed during the downtime rather than catching it up.
+* **Multiple instances need a leader.** In a multi-main setup, only the leader fires schedules. If leadership changes at the wrong moment, timing can slip.
+
+The durable scheduler addresses both by moving scheduling into the database:
+
+* **Runs survive restarts.** The scheduler records each upcoming run in the database before it's due. A restart doesn't drop it. A run whose time passed while the instance was down still runs when the instance comes back, so it fires late rather than not at all.
+* **Each run executes once across instances.** Every main instance shares the same queue and claims runs from it. Only one instance picks up each run, so the work spreads across your mains instead of depending on a single leader.
+
+### What changes functionally <a href="#functional-changes" id="functional-changes"></a>
+
+When you turn the durable scheduler on, keep these behavior changes in mind:
+
+* **Timing precision.** The scheduler checks for due runs on a short interval (`N8N_SCHEDULER_EXECUTOR_INTERVAL`, five seconds by default), so a run can start up to one interval after its scheduled time. The in-memory scheduler fires closer to the exact instant.
+* **Clock-aligned timing is the default.** For "every N seconds" and "every N minutes" schedules, the durable scheduler keeps the same clock-aligned timing as the in-memory scheduler unless you change `N8N_SCHEDULER_TRIGGER_NODE_MODE`. See [Schedule Trigger timing](#trigger-node-mode).
+* **Late runs after downtime.** Because the scheduler records runs in advance, a run missed during downtime fires when the instance recovers instead of dropping.
+
+## Turn on the durable scheduler <a href="#turn-on" id="turn-on"></a>
+
+Set `N8N_SCHEDULER_ENABLED` to `true` to opt in.
+
+{% hint style="warning" %}
+The durable scheduler only takes over Schedule Trigger nodes when the workflow publication service is also on. Set both `N8N_SCHEDULER_ENABLED` and `N8N_USE_WORKFLOW_PUBLICATION_SERVICE` to `true`. If you enable the scheduler without the publication service, n8n logs a warning and Schedule Trigger nodes keep running on the in-memory scheduler.
+{% endhint %}
+
+The [remaining variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler) only take effect once the scheduler is on. The defaults suit most instances, so change them only to tune timing precision, storage, or load across instances. All durations are in seconds unless stated otherwise.
+
+## How the durable scheduler works <a href="#how-it-works" id="how-it-works"></a>
+
+These terms make the environment variables easier to reason about:
+
+* **Schedule**: a recurring rule, such as a Schedule Trigger node's "every 15 minutes" setting. The scheduler stores each schedule in the database.
+* **Run**: a single firing of a schedule at a specific time. The scheduler records upcoming runs ahead of time as individual rows.
+
+The scheduler moves each run through four stages, and each stage has its own [environment variables](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/scheduler):
+
+1. **Materialization.** The scheduler scans your active schedules and records the runs coming up soon (within the *materialization window*). This commits runs to the database before they're due.
+2. **Execution.** The scheduler checks for recorded runs whose time has arrived, claims each one so no other instance takes it, and starts the workflow.
+3. **Recovery.** If an instance claims a run but stops before finishing (for example after a crash), the *reaper* releases the run so another instance can pick it up.
+4. **Retention.** The scheduler keeps finished runs for a while as recent history, then deletes them to keep its tables small.
+
+Across multiple instances, every main runs all four stages. Claiming keeps this safe: because only one instance claims each run, running the loops everywhere shares the load rather than duplicating work.
+
+## Schedule Trigger timing (deviations) <a href="#trigger-node-mode" id="trigger-node-mode"></a>
+
+Under the durable scheduler, most Schedule Trigger schedules fire the same way they did in memory. On top of the instance-wide changes above (late runs after downtime, and each run executing once across instances), two cadences fire differently from the in-memory scheduler in specific cases:
+
+* **"Every N seconds" and "every N minutes".** `N8N_SCHEDULER_TRIGGER_NODE_MODE` controls how these fire. It's the only cadence the setting affects.
+* **"Every N hours", "days", "weeks", or "months".** These fire as before in everyday use, under either mode. The durable scheduler handles a few rare calendar edge cases more correctly than the in-memory scheduler: leap years, the 53rd week of a year, and daylight-saving transitions, where the in-memory scheduler could be off by one period.
+
+`N8N_SCHEDULER_TRIGGER_NODE_MODE` has two values:
+
+* `legacy` (default): runs fire on clock boundaries, the same as the in-memory scheduler. "Every 30 seconds" fires at :00 and :30 of each minute. The pattern restarts at the top of every minute, so an interval that doesn't divide evenly into 60 leaves an uneven gap at the minute boundary. "Every 7 seconds" fires at :00, :07, :14, and so on up to :56, then jumps back to :00, a 4-second gap instead of 7.
+* `new`: runs fire a fixed number of seconds apart, counted from the moment you activated the workflow instead of from clock boundaries. If you activate at :07, "every 30 seconds" fires at :07, :37, :07, and so on. The gap stays exactly the interval you set, including across minute boundaries, so "every 7 seconds" never drifts.
+
+`legacy` is the default, so timing stays the same while the durable scheduler rolls out. `new` is the intended future default.
+
+{% hint style="info" %}
+`N8N_SCHEDULER_TRIGGER_NODE_MODE` only affects "every N seconds" and "every N minutes" schedules. Every other cadence, including raw cron expressions, fires the same way under either value.
+{% endhint %}
 
 
 # Set up AI Assistant (Preview)
@@ -9037,326 +9195,6 @@ When running n8n at scale, with a large number of users, workflows, or execution
 n8n can run in different [modes](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode) depending on your needs. The `queue` mode provides the best scalability. Refer to [Queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode) for configuration details.
 
 You can configure data saving and pruning to improve database performance. Refer to [Execution data](/deploy/host-n8n/configure-n8n/scaling/manage-execution-data) for details.
-
-
-# Measure performance
-
-n8n performance and resource consumption benchmarking.
-
-n8n can handle up to 220 workflow executions per second on a single instance, with the ability to scale up further by adding more instances.
-
-This document outlines n8n's performance benchmarking. It describes the factors that affect performance, and includes two example benchmarks.
-
-## Performance factors <a href="#performance-factors" id="performance-factors"></a>
-
-The performance of n8n depends on factors including:
-
-* The workflow type
-* The resources available to n8n
-* How you configure n8n's scaling options
-
-## Run your own benchmarking <a href="#run-your-own-benchmarking" id="run-your-own-benchmarking"></a>
-
-To get an accurate estimate for your use case, run n8n's [benchmarking framework](https://github.com/n8n-io/n8n/tree/master/packages/%40n8n/benchmark). The repository contains more information about the benchmarking.
-
-## Example: Single instance performance <a href="#example-single-instance-performance" id="example-single-instance-performance"></a>
-
-This test measures how response time increases as requests per second increase. It looks at the response time when calling the Webhook Trigger node.
-
-Setup:
-
-* Hardware: ECS c5a.large instance (4GB RAM)
-* n8n setup: Single n8n instance (running in main mode, with Postgres database)
-* Workflow: Webhook Trigger node, Edit Fields node
-
-<figure><img src="/files/r03BYZ1wcm4IMbPRfRqH" alt=""><figcaption><p>This graph shows the percentage of requests to the Webhook Trigger node getting a response within 100 seconds, and how that varies with load. Under higher loads n8n usually still processes the data, but takes over 100s to respond.</p></figcaption></figure>
-
-## Example: Multi-instance performance <a href="#example-multi-instance-performance" id="example-multi-instance-performance"></a>
-
-This test measures how response time increases as requests per second increase. It looks at the response time when calling the Webhook Trigger node.
-
-Setup:
-
-* Hardware: seven ECS c5a.4xlarge instances (8GB RAM each)
-* n8n setup: two webhook instances, four worker instances, one database instance (MySQL), one main instance running n8n and Redis
-* Workflow: Webhook Trigger node, Edit Fields node
-* Multi-instance setups use [Queue mode](/deploy/host-n8n/configure-n8n/scaling/enable-queue-mode)
-
-<figure><img src="/files/F3BNio7Y8iFms7WQSeHW" alt=""><figcaption><p>This graph shows the percentage of requests to the Webhook Trigger node getting a response within 100 seconds, and how that varies with load. Under higher loads n8n usually still processes the data, but takes over 100s to respond.</p></figcaption></figure>
-
-
-# Enable queue mode
-
-You can run n8n in different modes depending on your needs. The queue mode provides the best scalability.
-
-{% hint style="info" %}
-**Binary data storage**
-
-n8n doesn't support queue mode with binary data storage in filesystem. If your workflows need to persist binary data in queue mode, you can use [S3 external storage](/deploy/host-n8n/configure-n8n/scaling/use-external-storage).
-{% endhint %}
-
-## How it works <a href="#how-it-works" id="how-it-works"></a>
-
-When running in queue mode, you have multiple n8n instances set up, with one main instance receiving workflow information (such as triggers) and the worker instances performing the executions.
-
-Each worker is its own Node.js instance, running in `main` mode, but able to handle multiple simultaneous workflow executions due to their high IOPS (input-output operations per second).
-
-By using worker instances and running in queue mode, you can scale n8n up (by adding workers) and down (by removing workers) as needed to handle the workload.
-
-This is the process flow:
-
-1. The main n8n instance handles timers and webhook calls, generating (but not running) a workflow execution.
-2. It passes the execution ID to a message broker, [Redis](#start-redis), which maintains the queue of pending executions and allows the next available worker to pick them up.
-3. A worker in the pool picks up message from Redis.
-4. The worker uses the execution ID to get workflow information from the database.
-5. After completing the workflow execution, the worker:
-   * Writes the results to the database.
-   * Posts to Redis, saying that the execution has finished.
-6. Redis notifies the main instance.
-
-!["Diagram showing the flow of data between the main n8n instance, Redis, the n8n workers, and the n8n database"](/files/HV5k1wPEAkfFIhiHi1Ul)
-
-## Configuring workers <a href="#configuring-workers" id="configuring-workers"></a>
-
-Workers are n8n instances that do the actual work. They receive information from the main n8n process about the workflows that have to get executed, execute the workflows, and update the status after each execution is complete.
-
-{% hint style="info" %}
-**Per-process event log files**
-
-If your workers share a writable filesystem, give each worker process a unique event log path. Refer to [Per-process event log files](/administer/observe-and-log/stream-logs-to-external-systems#per-process-event-log-files) for details.
-{% endhint %}
-
-### Set encryption key <a href="#set-encryption-key" id="set-encryption-key"></a>
-
-n8n automatically generates an encryption key upon first startup. You can also provide your own custom key using [environment variable](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables) if desired.
-
-The encryption key of the main n8n instance must be shared with all worker and webhooks processor nodes to ensure these worker nodes are able to access credentials stored in the database.
-
-Set the encryption key for each worker node in a [configuration file](/deploy/host-n8n/configure-n8n/basic-configuration) or by setting the corresponding environment variable:
-
-```bash
-export N8N_ENCRYPTION_KEY=<main_instance_encryption_key>
-```
-
-### Set executions mode <a href="#set-executions-mode" id="set-executions-mode"></a>
-
-{% hint style="info" %}
-**Database considerations**
-
-n8n recommends using Postgres 13+. Running n8n with execution mode set to `queue` with an SQLite database isn't recommended.
-{% endhint %}
-
-Set the environment variable `EXECUTIONS_MODE` to `queue` on the main instance and any workers using the following command.
-
-```bash
-export EXECUTIONS_MODE=queue
-```
-
-Alternatively, you can set `executions.mode` to `queue` in the [configuration file](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables).
-
-### Start Redis <a href="#start-redis" id="start-redis"></a>
-
-{% hint style="info" %}
-**Running Redis on a separate machine**
-
-You can run Redis on a separate machine, just make sure that it's accessible by the n8n instance.
-{% endhint %}
-
-To run Redis in a Docker container, follow the instructions below:
-
-Run the following command to start a Redis instance:
-
-```
-docker run --name some-redis -p 6379:6379  -d redis
-```
-
-By default, Redis runs on `localhost` on port `6379` with no password. Based on your Redis configuration, set the following configurations for the main n8n process. These will allow n8n to interact with Redis.
-
-| Using configuration file          | Using environment variables       | Description                                                                               |
-| --------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------- |
-| `queue.bull.redis.host:localhost` | `QUEUE_BULL_REDIS_HOST=localhost` | By default, Redis runs on `localhost`.                                                    |
-| `queue.bull.redis.port:6379`      | `QUEUE_BULL_REDIS_PORT=6379`      | The default port is `6379`. If Redis is running on a different port, configure the value. |
-
-You can also set the following optional configurations:
-
-| Using configuration file                    | Using environment variables          | Description                                                                                                                         |
-| ------------------------------------------- | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------- |
-| `queue.bull.redis.username:USERNAME`        | `QUEUE_BULL_REDIS_USERNAME`          | By default, Redis doesn't require a username. If you're using a specific user, configure it variable.                               |
-| `queue.bull.redis.password:PASSWORD`        | `QUEUE_BULL_REDIS_PASSWORD`          | By default, Redis doesn't require a password. If you're using a password, configure it variable.                                    |
-| `queue.bull.redis.db:0`                     | `QUEUE_BULL_REDIS_DB`                | The default value is `0`. If you change this value, update the configuration.                                                       |
-| `queue.bull.redis.timeoutThreshold:10000ms` | `QUEUE_BULL_REDIS_TIMEOUT_THRESHOLD` | Tells n8n how long it should wait if Redis is unavailable before exiting. The default value is `10000` (ms).                        |
-| `queue.bull.gracefulShutdownTimeout:30`     | `N8N_GRACEFUL_SHUTDOWN_TIMEOUT`      | A graceful shutdown timeout for workers to finish executing jobs before terminating the process. The default value is `30` seconds. |
-
-Now you can start your n8n instance and it will connect to your Redis instance.
-
-### Start workers <a href="#start-workers" id="start-workers"></a>
-
-You will need to start worker processes to allow n8n to execute workflows. If you want to host workers on a separate machine, install n8n on the machine and make sure that it's connected to your Redis instance and the n8n database.
-
-Start worker processes by running the following command from the root directory:
-
-```
-./packages/cli/bin/n8n worker
-```
-
-If you're using Docker, use the following command:
-
-```
-docker run --name n8n-queue -p 5679:5678 docker.n8n.io/n8nio/n8n worker
-```
-
-You can set up multiple worker processes. Make sure that all the worker processes have access to Redis and the n8n database.
-
-#### Worker server <a href="#worker-server" id="worker-server"></a>
-
-Each worker process runs a server that exposes optional endpoints:
-
-* `/healthz`: returns whether the worker is up, if you enable the `QUEUE_HEALTH_CHECK_ACTIVE` environment variable
-* `/healthz/readiness`: returns whether worker's DB and Redis connections are ready, if you enable the `QUEUE_HEALTH_CHECK_ACTIVE` environment variable
-* [credentials overwrite endpoint](/administer/manage-credentials/credential-overwrites)
-* [`/metrics`](/deploy/host-n8n/configure-n8n/basic-configuration/configuration-examples/enable-prometheus-metrics)
-
-{% hint style="info" %}
-**Customizing health check endpoints**
-
-You can customize the health check endpoint path using the [`N8N_ENDPOINT_HEALTH`](/deploy/host-n8n/configure-n8n/basic-configuration/use-environment-variables/endpoints) environment variable.
-{% endhint %}
-
-#### View running workers <a href="#view-running-workers" id="view-running-workers"></a>
-
-{% hint style="info" %}
-**Feature availability**
-
-* Available on Self-hosted Enterprise plans.
-* If you want access to this feature on Cloud Enterprise, [contact n8n](https://n8n-community.typeform.com/to/y9X2YuGa).
-  {% endhint %}
-
-You can view running workers and their performance metrics in n8n by selecting **Settings** > **Workers**.
-
-## Running n8n with queues <a href="#running-n8n-with-queues" id="running-n8n-with-queues"></a>
-
-When running n8n with queues, all the production workflow executions get processed by worker processes. For webhooks, this means the HTTP request is received by the main/webhook process, but the actual workflow execution is passed to a worker, which can add some overhead and latency.
-
-Redis acts as the message broker, and the database persists data, so access to both is required. Running a distributed system with this setup over SQLite isn't supported.
-
-{% hint style="info" %}
-**Migrate data**
-
-If you want to migrate data from one database to another, you can use the Export and Import commands. Refer to the [CLI commands for n8n](/deploy/host-n8n/configure-n8n/use-the-command-line#export-workflows-and-credentials) documentation to learn how to use these commands.
-{% endhint %}
-
-## Webhook processors <a href="#webhook-processors" id="webhook-processors"></a>
-
-{% hint style="info" %}
-**Keep in mind**
-
-Webhook processes rely on Redis and need the `EXECUTIONS_MODE` environment variable set too. Follow the [configure the workers](#configuring-workers) section above to setup webhook processor nodes.
-{% endhint %}
-
-Webhook processors are another layer of scaling in n8n. Configuring the webhook processor is optional, and allows you to scale the incoming webhook requests.
-
-This method allows n8n to process a huge number of parallel requests. All you have to do is add more webhook processes and workers accordingly. The webhook process will listen to requests on the same port (default: `5678`). Run these processes in containers or separate machines, and have a load balancing system to route requests accordingly.
-
-n8n doesn't recommend adding the main process to the load balancer pool. If you add the main process to the pool, it will receive requests and possibly a heavy load. This will result in degraded performance for editing, viewing, and interacting with the n8n UI.
-
-You can start the webhook processor by executing the following command from the root directory:
-
-```
-./packages/cli/bin/n8n webhook
-```
-
-If you're using Docker, use the following command:
-
-```
-docker run --name n8n-queue -p 5679:5678 -e "EXECUTIONS_MODE=queue" docker.n8n.io/n8nio/n8n webhook
-```
-
-### Configure webhook URL <a href="#configure-webhook-url" id="configure-webhook-url"></a>
-
-To configure your webhook URL, execute the following command on the machine running the main n8n instance:
-
-```bash
-export WEBHOOK_URL=https://your-webhook-url.com
-```
-
-You can also set this value in the configuration file.
-
-### Configure load balancer <a href="#configure-load-balancer" id="configure-load-balancer"></a>
-
-When using multiple webhook processes you will need a load balancer to route requests. If you are using the same domain name for your n8n instance and the webhooks, you can set up your load balancer to route requests as follows:
-
-* Redirect webhook triggers to the webhook servers pool. Paths to consider:
-  * `/webhook/*`: Webhook trigger node endpoints
-  * `/webhook-waiting/*`: Human-in-the-loop webhook endpoints used by nodes that perform "send and wait" operations (for example, the Slack node).
-* All other paths (the n8n internal API, the static files for the editor, etc.) should get routed to the main process
-
-**Note:** The default URL for manual workflow executions is `/webhook-test/*`. Make sure that these URLs route to your main process.
-
-You can change this path in the configuration file `endpoints.webhook` or using the `N8N_ENDPOINT_WEBHOOK` environment variable. If you change these, update your load balancer accordingly.
-
-### Disable webhook processing in the main process (optional) <a href="#disable-webhook-processing-in-the-main-process-optional" id="disable-webhook-processing-in-the-main-process-optional"></a>
-
-You have webhook processors to execute the workflows. You can disable the webhook processing in the main process. This will make sure to execute all webhook executions in the webhook processors. In the configuration file set `endpoints.disableProductionWebhooksOnMainProcess` to `true` so that n8n doesn't process webhook requests on the main process.
-
-Alternatively, you can use the following command:
-
-```bash
-export N8N_DISABLE_PRODUCTION_MAIN_PROCESS=true
-```
-
-When disabling the webhook process in the main process, run the main process and don't add it to the load balancer's webhook pool.
-
-## Configure worker concurrency <a href="#configure-worker-concurrency" id="configure-worker-concurrency"></a>
-
-You can define the number of jobs a worker can run in parallel by using the `concurrency` flag. It defaults to `10`. To change it:
-
-```bash
-n8n worker --concurrency=5
-```
-
-## Concurrency and scaling recommendations <a href="#concurrency-and-scaling-recommendations" id="concurrency-and-scaling-recommendations"></a>
-
-n8n recommends setting concurrency to 5 or higher for your worker instances. Setting low concurrency values with a large numbers of workers can exhaust your database's connection pool, leading to processing delays and failures.
-
-## Multi-main setup <a href="#multi-main-setup" id="multi-main-setup"></a>
-
-{% hint style="info" %}
-**Feature availability**
-
-* Available on Self-hosted Enterprise plans.
-  {% endhint %}
-
-In queue mode you can run more than one `main` process for high availability.
-
-In a single-mode setup, the `main` process does two sets of tasks:
-
-* **regular tasks**, such as running the API, serving the UI, and listening for webhooks, and
-* **at-most-once tasks**, such as running non-HTTP triggers (timers, pollers, and persistent connections like RabbitMQ and IMAP), and pruning executions and binary data.
-
-In a multi-main setup, there are two kinds of `main` processes:
-
-* **followers**, which run **regular tasks**, and
-* the **leader**, which runs **both regular and at-most-once tasks**.
-
-### Leader designation <a href="#leader-designation" id="leader-designation"></a>
-
-In a multi-main setup, all main instances handle the leadership process transparently to users. In case the current leader becomes unavailable, for example because it crashed or its event loop became too busy, other followers can take over. If the previous leader becomes responsive again, it becomes a follower.
-
-### Configuring multi-main setup <a href="#configuring-multi-main-setup" id="configuring-multi-main-setup"></a>
-
-To deploy n8n in multi-main setup, ensure:
-
-* All `main` processes are running in queue mode and are connected to Postgres and Redis.
-* All `main` and `worker` processes are running the same version of n8n.
-* All `main` processes have set the environment variable `N8N_MULTI_MAIN_SETUP_ENABLED` to `true`.
-* All `main` processes are running behind a load balancer with session persistence (sticky sessions) enabled.
-
-If needed, you can adjust the leader key options:
-
-| Using configuration file    | Using environment variables             | Description                                                   |
-| --------------------------- | --------------------------------------- | ------------------------------------------------------------- |
-| `multiMainSetup.ttl:10`     | `N8N_MULTI_MAIN_SETUP_KEY_TTL=10`       | Time to live (in seconds) for leader key in multi-main setup. |
-| `multiMainSetup.interval:3` | `N8N_MULTI_MAIN_SETUP_CHECK_INTERVAL=3` | Interval (in seconds) for leader check in multi-main setup.   |
 
 
 

@@ -440,7 +440,7 @@ This [GitHub notebook](https://github.com/togethercomputer/together-cookbook/blo
 
 ## Stop the endpoint
 
-Dedicated endpoints bill per minute as long as they're running. Step 4 deletes the endpoint at the end of the script, but if you skipped that step or want to delete it later, run:
+Dedicated model inference bills per minute as long as the endpoint is running. Step 4 deletes the endpoint at the end of the script, but if you skipped that step or want to delete it later, run:
 
 ```bash theme={null}
 tg endpoints delete "<ENDPOINT_ID>"

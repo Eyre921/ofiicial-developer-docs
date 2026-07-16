@@ -50,10 +50,10 @@ Make your first API call to Claude and build a simple web search assistant.
 
         ```json Output
         {
+          "model": "claude-opus-4-8",
           "id": "msg_013mHbppMPd2PrVJzGMZPt2D",
           "type": "message",
           "role": "assistant",
-          "model": "claude-opus-4-8",
           "content": [
             {
               "type": "text",
@@ -61,6 +61,8 @@ Make your first API call to Claude and build a simple web search assistant.
             }
           ],
           "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
           "usage": {
             "input_tokens": 21,
             "output_tokens": 305
@@ -116,10 +118,10 @@ Make your first API call to Claude and build a simple web search assistant.
 
         ```json Output
         {
+          "model": "claude-opus-4-8",
           "id": "msg_01N1ycuCkM5Mzd7WhTU4fwST",
           "type": "message",
           "role": "assistant",
-          "model": "claude-opus-4-8",
           "content": [
             {
               "type": "text",
@@ -127,6 +129,8 @@ Make your first API call to Claude and build a simple web search assistant.
             }
           ],
           "stop_reason": "end_turn",
+          "stop_sequence": null,
+          "stop_details": null,
           "usage": { "input_tokens": 21, "output_tokens": 305 }
         }
         ```

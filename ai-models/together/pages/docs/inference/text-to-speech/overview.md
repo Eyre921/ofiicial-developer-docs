@@ -82,7 +82,7 @@ Outputs a `speech.mp3` file.
 
 ## Available models
 
-For the current list of text-to-speech models, see the [serverless catalog](/docs/serverless/models) or the [dedicated endpoint model catalog](/docs/dedicated-endpoints/models).
+For the current list of text-to-speech models, see the [serverless catalog](/docs/serverless/models) or the [dedicated model inference catalog](/docs/dedicated-endpoints/models).
 
 ## Parameters
 

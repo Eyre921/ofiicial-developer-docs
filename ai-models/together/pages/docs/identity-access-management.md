@@ -46,7 +46,7 @@ A resource is anything you create or provision on Together:
 
 * **GPU Clusters**: Clusters for training and inference
 * **Fine-tuned Models**: Models you've customized with your data
-* **Dedicated Endpoints**: Always-on inference endpoints
+* **Dedicated model inference**: Always-on inference endpoints
 * **Evaluations**: Model evaluation runs
 * **Files**: Training data, datasets, and other uploads
 

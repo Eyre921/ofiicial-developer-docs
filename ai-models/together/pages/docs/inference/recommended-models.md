@@ -8,7 +8,7 @@ Our picks for common inference use cases.
 
 Together hosts 100+ open-source models across text, image, video, and audio.
 
-Most of the models below are for instant [serverless inference](/docs/serverless/models), or reserved hardware deployments on [dedicated endpoints](/docs/dedicated-endpoints/models). Both options use the same [inference API](/docs/inference/overview).
+Most of the models below are for instant [serverless inference](/docs/serverless/models), or reserved hardware deployments with [dedicated model inference](/docs/dedicated-endpoints/models). Both options use the same [inference API](/docs/inference/overview).
 
 ## Chat & text
 
@@ -50,11 +50,11 @@ Most of the models below are for instant [serverless inference](/docs/serverless
 
 ## Embeddings, rerank, and moderation
 
-| Use case       | Recommended model       | Model string                              | Notes                                                             | Learn more                                                                                                               |
-| :------------- | :---------------------- | :---------------------------------------- | :---------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| **Embeddings** | Multilingual E5 Large   | `intfloat/multilingual-e5-large-instruct` | -                                                                 | [Embeddings](/reference/embeddings-2)                                                                                    |
-| **Rerank**     | MixedBread Rerank Large | `mixedbread-ai/Mxbai-Rerank-Large-V2`     | Only on [dedicated endpoints](/docs/dedicated-endpoints/overview) | [Rerank](/docs/inference/embeddings/rerank), [Improve search with rerankers](/docs/how-to-improve-search-with-rerankers) |
-| **Moderation** | Llama Guard 4 12B       | `meta-llama/Llama-Guard-4-12B`            | -                                                                 | -                                                                                                                        |
+| Use case       | Recommended model       | Model string                              | Notes                                                                   | Learn more                                                                                                               |
+| :------------- | :---------------------- | :---------------------------------------- | :---------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------------------- |
+| **Embeddings** | Multilingual E5 Large   | `intfloat/multilingual-e5-large-instruct` | -                                                                       | [Embeddings](/reference/embeddings-2)                                                                                    |
+| **Rerank**     | MixedBread Rerank Large | `mixedbread-ai/Mxbai-Rerank-Large-V2`     | Only on [dedicated model inference](/docs/dedicated-endpoints/overview) | [Rerank](/docs/inference/embeddings/rerank), [Improve search with rerankers](/docs/how-to-improve-search-with-rerankers) |
+| **Moderation** | Llama Guard 4 12B       | `meta-llama/Llama-Guard-4-12B`            | -                                                                       | -                                                                                                                        |
 
 ## Related resources
 
@@ -63,7 +63,7 @@ Most of the models below are for instant [serverless inference](/docs/serverless
     Full catalog with context windows, pricing, and capabilities.
   </Card>
 
-  <Card title="Dedicated endpoint models" icon="server" href="/docs/dedicated-endpoints/models">
+  <Card title="Dedicated model inference" icon="server" href="/docs/dedicated-endpoints/models">
     Models available on reserved hardware.
   </Card>
 

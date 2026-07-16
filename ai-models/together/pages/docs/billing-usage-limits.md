@@ -26,7 +26,7 @@ If you have an active Enterprise or Scale contract, your purchased rate limits s
 
 ### Need guaranteed throughput?
 
-If your workload depends on predictable, reserved capacity, [dedicated endpoints](/docs/dedicated-endpoints/overview) give you guaranteed rate limits for inference. You can provision them self-serve or [talk to sales](https://www.together.ai/contact-sales).
+If your workload depends on predictable, reserved capacity, [dedicated model inference](/docs/dedicated-endpoints/overview) gives you guaranteed rate limits for inference. You can provision it self-serve or [talk to sales](https://www.together.ai/contact-sales).
 
 ### Exceptions
 

@@ -5,6 +5,12 @@ Get started sending emails by adding a domain to your account.
 
 Resend sends emails using a domain you own. Before you can send or receive emails with Resend, you must have a verified domain associated with your account.
 
+<Info>
+  If you don't own a domain, please purchase one from a domain registrar such as
+  [Cloudflare](https://www.cloudflare.com/) or
+  [Namecheap](https://www.namecheap.com/) before continuing.
+</Info>
+
 ## Add a domain
 
 You can add and verify a domain you own in four ways:
@@ -14865,6 +14871,27 @@ resend topics create --name "Product updates"
 resend topics list | get | update | delete
 ```
 
+## Suppressions
+
+<Warning>
+  Suppressions is a private beta feature, gated per account. The commands show
+  up in `--help`, but calls return an API error unless the suppression list is
+  enabled for your account. [Get in touch](https://resend.com/contact) to join
+  the beta.
+</Warning>
+
+Manage the suppression list — addresses that won't receive your emails. Each entry has an `origin`: `bounce` and `complaint` are added automatically, while `manual` entries are the ones you add. `get` and `delete` accept either a suppression ID or the email address.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend suppressions list                              # List suppressed addresses (alias: ls)
+resend suppressions list --origin bounce              # Filter by origin: bounce | complaint | manual
+resend suppressions add spam@example.com              # Suppress a single address
+resend suppressions get spam@example.com              # Retrieve by ID or email
+resend suppressions delete spam@example.com --yes     # Remove by ID or email (alias: rm)
+resend suppressions batch add --file ./emails.json    # Suppress up to 100 from a JSON array of emails
+resend suppressions batch remove --file ./emails.json # Remove up to 100 (add --ids to treat entries as IDs)
+```
+
 ## Templates
 
 Create and manage email templates.
@@ -24027,6 +24054,15 @@ Define the file name that will be attached using the `filename` parameter.
     ]
   }'
   ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "Receipt for your payment" \
+    --html "<p>Thanks for the payment</p>" \
+    --attachment ./static/invoice.pdf
+  ```
 </CodeGroup>
 
 ## Embed Images using CID
@@ -24607,6 +24643,10 @@ You can send up to 100 emails in a single API call using the batch endpoint. Eac
     }
   ]'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails batch --file ./path/to/emails.json
+  ```
 </CodeGroup>
 
 ## Response format
@@ -24842,6 +24882,15 @@ Here's how you can add custom headers to your emails:
       "X-Entity-Ref-ID": "xxx_xxxx"
     }
   }'
+  ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --headers "X-Entity-Ref-ID=xxx_xxxx"
   ```
 </CodeGroup>
 
@@ -25709,6 +25758,15 @@ Idempotency keys are kept in the system for **24 hours**. This gives you an ampl
   }'
   ```
 
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --idempotency-key "welcome-user/123456789"
+  ```
+
   ```yaml SMTP {4} theme={"theme":{"light":"github-light","dark":"vesper"}}
   From: Acme <onboarding@resend.dev>
   To: delivered@resend.dev
@@ -26269,6 +26327,15 @@ The date can be defined using natural language, such as `"in 1 hour"`, `"tomorro
     "scheduled_at": "in 1 min"
   }'
   ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --scheduled-at "in 1 min"
+  ```
 </CodeGroup>
 
 ## Schedule using date format
@@ -26458,6 +26525,15 @@ You can also use a date in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) fo
     "scheduled_at": "2026-08-20T11:52:01.858Z"
   }'
   ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --scheduled-at "2026-08-20T11:52:01.858Z"
+  ```
 </CodeGroup>
 
 ## View a scheduled email
@@ -26567,9 +26643,14 @@ You can do so with the following method:
     "scheduled_at": "in 1 min"
   }'
   ```
+
+  ```bash CLI {2} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails update 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 \
+    --scheduled-at "in 1 min"
+  ```
 </CodeGroup>
 
-You can also reschedule an email directly in the Resend dashboard.
+You can also reschedule an email directly in the Resend Dashboard.
 
 <video />
 
@@ -26629,6 +26710,10 @@ If you need to cancel a scheduled email, you can do so with the following code:
   curl -X POST 'https://api.resend.com/emails/49a3999c-0ce1-4ea6-ab68-afcd6dc2e794/cancel' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
        -H 'Content-Type: application/json'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails cancel 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
   ```
 </CodeGroup>
 
@@ -26979,6 +27064,15 @@ Here's how you can add custom tags to your emails.
       }
     ]
   }'
+  ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --tags "category=confirm_email"
   ```
 </CodeGroup>
 
@@ -28919,6 +29013,15 @@ Here's how you can reply in thread using each SDK:
   }'
   ```
 
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "Re: Sending this example" \
+    --html "<p>Thanks for your email!</p>" \
+    --headers "In-Reply-To=<111-222-333@email.example.com>"
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   async fn example(
       State(state): State<Arc<AppState>>,
@@ -29108,6 +29211,16 @@ This helps email clients maintain the correct threading structure.
       "References": "<msg_id1@domain.com> <msg_id2@domain.com> <111-222-333@email.example.com>"
     }
   }'
+  ```
+
+  ```bash CLI {6-7} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "Re: Sending this example" \
+    --html "<p>Thanks for your email!</p>" \
+    --headers "In-Reply-To=<111-222-333@email.example.com>" \
+      "References=<msg_id1@domain.com> <msg_id2@domain.com> <111-222-333@email.example.com>"
   ```
 
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
@@ -33566,11 +33679,21 @@ Source: https://resend.com/docs/introduction
 
 Resend is the email API for developers.
 
-<Info>
+<div>
   For all documentation in an index, see
   [llms.txt](https://resend.com/docs/llms.txt). To view the full text of the
   documentation, see [llms-full.txt](https://resend.com/docs/llms-full.txt).
-</Info>
+</div>
+
+To get started with Resend, you'll need:
+
+1. Your own domain, [verified with Resend](/docs/add-a-domain)
+2. [A Resend API key](/docs/create-an-api-key)
+
+Then, you'll be ready to send [both types of emails](/docs/explore-sending-features):
+
+* **Transactional emails:** personalized, event-driven communication
+* **Marketing campaigns:** bulk email Broadcasts distributed to a contact list
 
 ## Quickstart
 

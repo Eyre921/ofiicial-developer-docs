@@ -262,28 +262,57 @@ kubectl -n kubernetes-dashboard get secret \
 
 3. Paste the token into the dashboard login
 
-## Direct SSH Access
+## Direct SSH access
 
 ### Prerequisites
 
-* SSH key must be added to your account at [api.together.ai/settings/ssh-key](https://api.together.ai/settings/ssh-key)
+Requirements depend on the SSH access method you use:
 
-### SSH to GPU Worker Nodes (in Kubernetes) and Slurm Compute Nodes (Slurm)
+* **OIDC (Together CLI):** Install the [Together CLI](/reference/cli/getting-started). On Slurm clusters with OIDC enabled, choose a login name when prompted in the cluster UI. No SSH key is required.
+* **Key-based:** Add an SSH key to your account at [api.together.ai/settings/ssh-key](https://api.together.ai/settings/ssh-key).
 
-You can SSH directly into any GPU worker node / Slurm compute node from the cluster UI.
+### Choose an SSH access method (Slurm)
+
+On Slurm clusters with OIDC enabled, the cluster details page includes an **SSH access method** selector in the sidebar (or at the top on mobile). The selector applies to the Slurm head node and all compute nodes.
+
+| Method        | What it does                                                                                  | Requirements                                                                                      |
+| ------------- | --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| **OIDC**      | Opens your browser to sign in and runs `tg beta clusters ssh` with a short-lived certificate. | [Together CLI](/reference/cli/getting-started) installed, login name chosen in the UI.            |
+| **Key-based** | Copies a standard `ssh -J` command for your SSH client.                                       | Uploaded SSH key at [api.together.ai/settings/ssh-key](https://api.together.ai/settings/ssh-key). |
+
+If OIDC is not configured on the cluster, only key-based SSH is available.
+
+When you select **OIDC**, expand **Set up CLI** next to the head node command to copy the install command:
+
+```bash theme={null}
+uv tool install "together[cli]"
+```
+
+OIDC SSH requires Together CLI 2.20+ and [Python 3.10+](https://www.python.org/). If you previously installed the CLI with `pip`, follow the migration steps in [Get started](/reference/cli/getting-started#install-the-together-cli) to move to the `uv`-managed install before connecting.
+
+### SSH to GPU worker nodes (in Kubernetes) and Slurm compute nodes (Slurm)
+
+You can SSH directly into any GPU worker node or Slurm compute node from the cluster UI.
 
 **From the UI:**
 
-1. Navigate to your cluster in the Together Cloud UI
-2. Go to the **Worker Nodes** section
-3. Find the node you want to access
-4. Click the **Copy** icon under the host column next to the node
-5. Paste and run the command in your terminal
+1. Navigate to your cluster in the Together Cloud UI.
+2. On Slurm clusters with OIDC, choose **OIDC** or **Key-based** in **SSH access method**.
+3. Go to the **Worker Nodes** section.
+4. Find the node you want to access.
+5. Select **Copy SSH command** next to the node.
+6. Paste and run the command in your terminal.
 
-The copied command includes the full hostname and is ready to use:
+The copied command depends on your access method. Key-based commands use a proxy jump host:
 
 ```bash theme={null}
-ssh 9cvq-68pzlt-99e6e06b-ec17-4198-96c2-6a7a9c2236b2.s1.us-central-4b.cloud.together.ai
+ssh -J <LOGIN>@ssh.<CLUSTER_ID>.<REGION>.cloud.together.ai <LOGIN>@<NODE_HOSTNAME>
+```
+
+OIDC commands use the Together CLI:
+
+```bash theme={null}
+tg beta clusters ssh https://dex.<REGION>.cloud.together.ai/<CLUSTER_ID> --login <LOGIN> --host <NODE_HOSTNAME>
 ```
 
 **Use cases for direct worker node access:**
@@ -309,15 +338,29 @@ ssh 9cvq-68pzlt-99e6e06b-ec17-4198-96c2-6a7a9c2236b2.s1.us-central-4b.cloud.toge
   If you need GPU workloads or PersistentVolumes on Kubernetes, exec into a pod with GPU and storage access.
 </Warning>
 
-### SSH to Slurm Login Nodes
+### SSH to Slurm login nodes
 
 For HPC workflows, [Slurm clusters](/docs/slurm) provide SSH access to login nodes for job submission.
 
-The cluster UI shows copy-ready Slurm commands tailored to your cluster. Use these to quickly verify connectivity and submit jobs.
+The cluster UI shows a copy-ready SSH command for the Slurm head node in the sidebar. Use **Copy head node SSH command** to connect to the login node, then submit jobs.
+
+**OIDC example (Together CLI):**
+
+```bash theme={null}
+tg beta clusters ssh https://dex.<REGION>.cloud.together.ai/<CLUSTER_ID> --login <LOGIN>
+```
+
+**Key-based example:**
+
+```bash theme={null}
+ssh -J <LOGIN>@ssh.<CLUSTER_ID>.<REGION>.cloud.together.ai <LOGIN>@slurm-login
+```
+
+See [SSH into a cluster](/reference/cli/clusters#ssh-into-a-cluster) for the full `tg beta clusters ssh` flag list.
 
 **Hostnames:**
 
-* Worker nodes: `<node-name>.slurm.pod` (e.g., `gpu-dp-hmqnh-nwlnj.slurm.pod`)
+* Worker nodes: `<NODE_NAME>.slurm-compute.slurm` (e.g., `gpu-dp-hmqnh-nwlnj.slurm-compute.slurm`)
 * Login node: Always `slurm-login` (where you'll start most jobs)
 
 **Common Slurm commands:**

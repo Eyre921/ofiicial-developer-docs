@@ -1,5 +1,5 @@
 ---
-title: "Serverless models"
+title: "Available models"
 source: https://docs.together.ai/docs/serverless/models
 path: docs/serverless/models
 ---
@@ -31,18 +31,10 @@ If you're not sure which model to use, see [Recommended models](/docs/inference/
 </Columns>
 
 <Note>
-  Serverless and dedicated endpoints support different sets of models. See the [dedicated endpoint model catalog](/docs/dedicated-endpoints/models) for details.
+  Serverless and dedicated model inference support different sets of models. See the [dedicated model inference catalog](/docs/dedicated-endpoints/models) for details.
 </Note>
 
-## Rate limits
-
-Serverless models are [rate-limited](/docs/serverless/rate-limits), so they work best when you're prototyping or evaluating a model, or when your production traffic is variable, bursty, or low enough that per-token pricing is cost-effective. If your traffic is steady, you need higher rate limits, or you want reserved hardware, use a [dedicated endpoint](/docs/dedicated-endpoints/overview).
-
-## Pricing
-
-Serverless models bill based on usage, with no minimums and no provisioning cost. Per-model rates are in the catalog tables below, and on [together.ai/pricing](https://together.ai/pricing).
-
-If you don't need real-time responses, some models are discounted up to 50% when run with [batch workloads](/docs/inference/batch/overview).
+For rate limits and pricing, see the [Serverless overview](/docs/serverless/overview).
 
 ## Chat models
 
@@ -251,7 +243,7 @@ Use our [Audio](/reference/audio-speech) endpoint for text-to-speech models. For
 
 ## Rerank models
 
-There are currently no rerank models offered via serverless. Rerank models like `mixedbread-ai/mxbai-rerank-large-v2` are only available as [dedicated endpoints](/docs/dedicated-endpoints/models).
+There are currently no rerank models offered via serverless. Rerank models like `mixedbread-ai/mxbai-rerank-large-v2` are only available with [dedicated model inference](/docs/dedicated-endpoints/models).
 
 ### **Rerank model examples**
 

@@ -167,7 +167,7 @@ We now have a way to retrieve from the vector index given a query.
 We will use a reranker model to improve retrieved chunk relevance quality:
 
 <Tip>
-  Rerank models like `Mxbai-Rerank-Large-V2` are only available as [Dedicated Endpoints](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
+  Rerank models like `Mxbai-Rerank-Large-V2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
 ```py Python theme={null}

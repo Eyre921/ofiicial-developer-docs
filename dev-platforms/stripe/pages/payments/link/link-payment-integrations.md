@@ -27,7 +27,10 @@ To integrate Link as a payment method, use [dynamic payment methods](https://doc
 
 This integration increases Link authorization rates by letting customers select a backup payment source. At checkout, if the customer’s Link account contains multiple eligible saved payment sources, Link suggests a backup. If the customer approves the backup, and the initial payment attempt fails, Link automatically retries the payment using the backup.
 
-> Link as a payment method doesn’t support [Interchange+ (IC+) pricing](https://support.stripe.com/questions/understanding-blended-interchange-pricing). Stripe bills all such Link transactions at a single blended rate. If you’re on IC+ pricing, integrate with Link as described in the [Link with card integrations](https://docs.stripe.com/payments/link/link-payment-integrations.md?link-integrations=link-card-integrations) tab.
+> Link as a payment method has the following limitations. If these affect your integration, use a [Link with card integration](https://docs.stripe.com/payments/link/link-payment-integrations.md?link-integrations=link-card-integrations) instead.
+> 
+> - It doesn’t support [Interchange+ (IC+) pricing](https://support.stripe.com/questions/understanding-blended-interchange-pricing). Stripe bills all such Link transactions at a single blended rate.
+- It doesn’t support advanced acquiring features such as [extended authorization](https://docs.stripe.com/payments/extended-authorization.md), [incremental authorization](https://docs.stripe.com/payments/incremental-authorization.md), and [overcapture](https://docs.stripe.com/payments/overcapture.md).
 
 #### Link with card integrations
 

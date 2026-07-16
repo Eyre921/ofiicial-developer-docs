@@ -1042,57 +1042,23 @@ Available models and how to specify them
 
 The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-Neon AI Gateway serves models hosted by Databricks. Use short model IDs in the `model` field — for example, `claude-sonnet-4-6`, `gpt-5-mini`, `gemini-2-5-flash`. The `databricks-` prefixed form is also accepted. The Neon Console and most examples use the short form.
+Neon AI Gateway serves models hosted by Databricks. Use short model IDs in the `model` field, for example `claude-sonnet-4-6`, `gpt-5-mini`, or `gemini-2-5-flash`. The `databricks-` prefixed form is also accepted. The Neon Console and most examples use the short form.
 
 **Important:** Models are hosted by Databricks and served through Neon AI Gateway. By using these models, you are responsible for complying with each provider's applicable terms of use. See [Provider terms](https://neon.com/docs/ai-gateway/models#provider-terms) below.
 
-**Note:** Model availability may vary by region. The catalog expands over time, so check back for new additions.
+Model availability may vary by region, and the catalog expands over time, so check back for new additions.
 
-The full catalog is published as the [`neon` provider on models.dev](https://models.dev/providers/neon) — the machine-readable source of truth — and served as JSON at [`neon.com/models.json`](https://neon.com/models.json).
+The full catalog is published as the [`neon` provider on models.dev](https://models.dev/providers/neon), the machine-readable source of truth, and served as JSON at [`neon.com/models.json`](https://neon.com/models.json).
 
 ## Model access
 
-Every project with AI Gateway access can call open-weight models (Llama, Qwen, gpt-oss, and others) right away. Check **Open weights only** in the [model catalog](https://neon.com/docs/ai-gateway/models#available-models) to see the full list.
+Neon AI Gateway serves frontier models like Claude (`claude-sonnet-4-6`), GPT (`gpt-5`), and Gemini (`gemini-2-5-flash`) alongside open-weight models like Qwen and gpt-oss. See the full list in the [catalog](https://neon.com/docs/ai-gateway/models#available-models) below.
 
-Foundation models from Anthropic, OpenAI, and Google are being rolled out gradually as we expand capacity. [Request access](https://neon.com/docs/ai-gateway/overview#foundation-model-access).
-
-## Quick picks
-
-Not sure which model to use? Start here.
-
-| I want to...                            | Recommended model                         | Open-weight alternative       |
-| --------------------------------------- | ----------------------------------------- | ----------------------------- |
-| Build a general chat or reasoning app   | `claude-sonnet-4-6`                       | `llama-4-maverick`            |
-| Understand images                       | `claude-sonnet-4-6` or `gemini-2-5-flash` | `llama-4-maverick`            |
-| Process audio or video                  | `gemini-3-5-flash`                        | —                             |
-| Generate or review code                 | `gpt-5-3-codex`                           | `gpt-oss-120b`                |
-| Run extended or deep reasoning          | `claude-opus-4-7` or `gpt-5-1`            | `qwen3-next-80b-a3b-instruct` |
-| Handle very long documents (1M+ tokens) | `gemini-3-1-pro` or `claude-opus-4-7`     | `qwen35-122b-a10b`            |
-| Keep costs low for lightweight tasks    | `claude-haiku-4-5` or `gpt-5-4-nano`      | `meta-llama-3-1-8b-instruct`  |
-
-## Rate limits
-
-During the beta, the following limit applies per account:
-
-| Limit                   | Value   |
-| ----------------------- | ------- |
-| Tokens per minute (TPM) | 200,000 |
-
-If you hit the limit, you'll receive a `429 Too Many Requests` response with a message like `ai gateway TPM limit exceeded for model "<model-id>"`. Requests resume when the rate limit window resets.
-
-The TPM limit is counted against total tokens (input and output combined), not input alone. Upstream output token limits (20,000 OTPM for most models) apply independently, so you can hit a `429` on output tokens without reaching the gateway's TPM limit. See [Databricks Foundation Model API limits](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/limits) for details.
-
-Once billing begins, usage will also be capped by your prepaid credit balance. See [Pricing](https://neon.com/docs/ai-gateway/models#pricing) below.
-
-## Pricing
-
-Inference is free during the beta. See [Pricing](https://neon.com/docs/ai-gateway/overview#pricing) for what to expect when billing begins.
-
-Independent of billing, Neon enforces an account-level daily spend cap on AI Gateway usage, separate from the per-minute rate limits above. If your account exceeds it, every AI Gateway endpoint returns `429 Too Many Requests` with error code `REQUEST_LIMIT_EXCEEDED` until the cap resets or the block is lifted. This can happen even though inference itself isn't billed yet. Neon hasn't published a fixed cap value; it isn't a flat number and can vary by account. See [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#429-account-quota-exceeded) if you hit this.
+Open-weight models are available to every project right away. Frontier models from Anthropic, OpenAI, and Google are rolling out gradually. Don't see them in your project yet? [Request early access](https://neon.com/docs/ai-gateway/overview#foundation-model-access).
 
 ## Available models
 
-Browse the full catalog below. Switch between the **Text** and **Image** tabs, filter by provider or open weights, sort any column, and click a model for a copy-paste quickstart (AI SDK, Mastra, Python, TypeScript, or cURL). The endpoint each snippet targets is baked into its base URL — `/v1` for chat completions, `/openai/v1` for the Responses API (image generation).
+Browse the full catalog below. Switch between the **Text** and **Image** tabs, filter by provider or open weights, sort any column, and click a model for a copy-paste quickstart (AI SDK, Mastra, Python, TypeScript, or cURL). The endpoint each snippet targets is baked into its base URL: `/v1` for chat completions, `/openai/v1` for the Responses API (image generation).
 
 ### Text models
 
@@ -1350,6 +1316,26 @@ print(sizes)
 
 For full request paths and when to prefer each endpoint, see [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use).
 
+## Rate limits
+
+During the beta, the following limit applies per account:
+
+| Limit                   | Value   |
+| ----------------------- | ------- |
+| Tokens per minute (TPM) | 200,000 |
+
+If you hit the limit, you'll receive a `429 Too Many Requests` response with a message like `ai gateway TPM limit exceeded for model "<model-id>"`. Requests resume when the rate limit window resets.
+
+The TPM limit is counted against total tokens (input and output combined), not input alone. Upstream output token limits (20,000 OTPM for most models) apply independently, so you can hit a `429` on output tokens without reaching the gateway's TPM limit. See [Databricks Foundation Model API limits](https://docs.databricks.com/aws/en/machine-learning/foundation-model-apis/limits) for details.
+
+Once billing begins, usage will also be capped by your prepaid credit balance. See [Pricing](https://neon.com/docs/ai-gateway/models#pricing) below.
+
+## Pricing
+
+Inference is free during the beta. See [Pricing](https://neon.com/docs/ai-gateway/overview#pricing) for what to expect when billing begins.
+
+Independent of billing, Neon enforces an account-level daily spend cap on AI Gateway usage, separate from the per-minute rate limits above. If your account exceeds it, every AI Gateway endpoint returns `429 Too Many Requests` with error code `REQUEST_LIMIT_EXCEEDED` until the cap resets or the block is lifted. This can happen even though inference itself isn't billed yet. Neon hasn't published a fixed cap value; it isn't a flat number and can vary by account. See [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting#429-account-quota-exceeded) if you hit this.
+
 ## Which endpoint to use
 
 Most models work with the [Chat completions](https://neon.com/docs/ai-gateway/chat-completions) endpoint. It is the recommended starting point and works with all providers. Use a provider-specific endpoint when required:
@@ -1367,7 +1353,7 @@ All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GAT
 
 **Warning: Content shape varies by model**
 
-For most models, `message.content` in a chat completions response is a plain string. For some models — confirmed on Gemini 3.x (`gemini-3-5-flash`, `gemini-3-1-pro`), `gpt-oss-120b`, and `qwen35-122b-a10b` — it's an array of typed content blocks instead (`{ type: 'reasoning', ... }`, `{ type: 'text', text: ... }`), matching how those models represent output natively. A low `max_tokens` value can also cut a response off before the `text` block appears, leaving only a `reasoning` block. Handle both shapes:
+For most models, `message.content` in a chat completions response is a plain string. For some models, confirmed on Gemini 3.x (`gemini-3-5-flash`, `gemini-3-1-pro`), `gpt-oss-120b`, and `qwen35-122b-a10b`, it's an array of typed content blocks instead (`{ type: 'reasoning', ... }`, `{ type: 'text', text: ... }`), matching how those models represent output natively. A low `max_tokens` value can also cut a response off before the `text` block appears, leaving only a `reasoning` block. Handle both shapes:
 
 ```typescript
 const { content } = response.choices[0].message;
@@ -1625,7 +1611,18 @@ One API for frontier and open-source models from Anthropic, OpenAI, Google, and 
 
 ## Foundation model access
 
-Every project with AI Gateway access can call open-weight models (Llama, Qwen, gpt-oss, and others) right away. Check **Open weights only** in the [model catalog](https://neon.com/docs/ai-gateway/models#available-models) to see the full list. Foundation model access is rolling out gradually as we expand capacity.
+Neon AI Gateway serves frontier models like Claude (`claude-sonnet-4-6`), GPT (`gpt-5`), and Gemini (`gemini-2-5-flash`) alongside open-weight models like Qwen and gpt-oss.
+
+**See every supported model in the [model catalog](https://neon.com/docs/ai-gateway/models#available-models).**
+
+Open-weight models are available to every project right away. Frontier models from Anthropic, OpenAI, and Google are rolling out gradually. Don't see them in your project yet? Request early access below.
+
+## Get started
+
+- [Quickstart](https://neon.com/docs/ai-gateway/get-started): Get a credential and make your first inference request in minutes.
+- [Models](https://neon.com/docs/ai-gateway/models): Browse the full model catalog and learn how to specify models in requests.
+- [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): Use the OpenAI-compatible endpoint with any model in the catalog.
+- [Authentication](https://neon.com/docs/ai-gateway/authentication): Understand how Neon credentials work with AI Gateway.
 
 ## Overview
 
@@ -1650,13 +1647,6 @@ AI Gateway pricing isn't finalized. Here's what to expect once it moves out of b
 - **Free for now.** Inference remains free through the end of the beta. Billing starts when AI Gateway reaches GA.
 
 We'll publish exact per-model rates on the [Neon pricing page](https://neon.com/pricing) and update this page before billing begins.
-
-## Quickstart
-
-- [Quickstart](https://neon.com/docs/ai-gateway/get-started): Get a credential and make your first inference request in minutes.
-- [Models](https://neon.com/docs/ai-gateway/models): Browse the full model catalog and learn how to specify models in requests.
-- [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): Use the OpenAI-compatible endpoint with any model in the catalog.
-- [Authentication](https://neon.com/docs/ai-gateway/authentication): Understand how Neon credentials work with AI Gateway.
 
 ## Starter templates
 
@@ -20970,6 +20960,17 @@ Functions run on Neon's own compute platform, the same infrastructure that runs 
 
 Neon Functions currently run JavaScript or TypeScript on the Node.js runtime. Deploy JS/TS handlers, or code that bundles to JS for Node.js 24. Other runtimes and language targets aren't supported during beta.
 
+## Get started
+
+- [Quickstart](https://neon.com/docs/compute/functions/get-started): Deploy your first function and call it over HTTP in under 5 minutes.
+- [AI agents](https://neon.com/docs/compute/functions/agents): Run streaming, tool-calling AI agents next to your data.
+- [WebSockets and SSE](https://neon.com/docs/compute/functions/websockets): Hold long-lived connections open with WebSockets or SSE.
+- [Authentication](https://neon.com/docs/compute/functions/authentication): Verify callers before a function does any work.
+- [Environment variables](https://neon.com/docs/compute/functions/environment-variables): Neon-injected variables and how to add your own secrets.
+- [Deploy and manage](https://neon.com/docs/compute/functions/deploy): CLI and API reference for deploying and managing functions.
+- [Logs](https://neon.com/docs/compute/functions/logs): View, search, and download a function's logs in the Console.
+- [Runtime limits](https://neon.com/docs/compute/functions/reference/runtime-limits): Timeouts, slug constraints, memory, and other hard limits.
+
 ## Request/response, not background jobs
 
 A function is always requested (by a `fetch`, a browser, an agent) and always returns a web response: JSON, an HTTP stream, an SSE feed, or a WebSocket upgrade.
@@ -21009,17 +21010,6 @@ Functions are backend primitives, not full-stack app hosting. Host your app on V
 
 - **Add a function to a full-stack app.** Your Next.js or TanStack Start app owns the UI, auth, and most routes. When one workload outgrows the host's short serverless limit (a WebSocket or SSE server, or a long-running agent), move only that piece onto a function and call it directly from the client. See [Authentication](https://neon.com/docs/compute/functions/authentication) for the direct-call pattern.
 - **Run the backend on functions.** When the frontend is client-only (a React or TanStack SPA), the client calls functions directly: REST APIs, request/response agents, MCP servers, and anything stateful that belongs close to Postgres and Object Storage.
-
-## Quickstart
-
-- [Quickstart](https://neon.com/docs/compute/functions/get-started): Deploy your first function and call it over HTTP in under 5 minutes.
-- [AI agents](https://neon.com/docs/compute/functions/agents): Run streaming, tool-calling AI agents next to your data.
-- [WebSockets and SSE](https://neon.com/docs/compute/functions/websockets): Hold long-lived connections open with WebSockets or SSE.
-- [Authentication](https://neon.com/docs/compute/functions/authentication): Verify callers before a function does any work.
-- [Environment variables](https://neon.com/docs/compute/functions/environment-variables): Neon-injected variables and how to add your own secrets.
-- [Deploy and manage](https://neon.com/docs/compute/functions/deploy): CLI and API reference for deploying and managing functions.
-- [Logs](https://neon.com/docs/compute/functions/logs): View, search, and download a function's logs in the Console.
-- [Runtime limits](https://neon.com/docs/compute/functions/reference/runtime-limits): Timeouts, slug constraints, memory, and other hard limits.
 
 ## Starter templates
 
@@ -119518,7 +119508,7 @@ Neon Object Storage is S3-compatible object storage built into the Neon backend 
 - **Two access modes.** `private` buckets require authentication for all operations. `public_read` buckets allow anonymous reads with authenticated writes.
 - **One credential system.** The same Neon credential system used by AI Gateway and Functions.
 
-## Quickstart
+## Get started
 
 - [Quickstart](https://neon.com/docs/storage/get-started): Create a credential, configure a client, and upload your first file.
 - [Buckets](https://neon.com/docs/storage/buckets): Create and manage buckets, set access levels, and understand how buckets branch.

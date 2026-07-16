@@ -8,6 +8,12 @@ Get started sending emails by adding a domain to your account.
 
 Resend sends emails using a domain you own. Before you can send or receive emails with Resend, you must have a verified domain associated with your account.
 
+<Info>
+  If you don't own a domain, please purchase one from a domain registrar such as
+  [Cloudflare](https://www.cloudflare.com/) or
+  [Namecheap](https://www.namecheap.com/) before continuing.
+</Info>
+
 ## Add a domain
 
 You can add and verify a domain you own in four ways:

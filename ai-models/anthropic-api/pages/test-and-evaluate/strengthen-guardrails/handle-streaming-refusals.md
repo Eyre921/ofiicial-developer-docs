@@ -1,5 +1,5 @@
 ---
-title: "Streaming refusals"
+title: "Handle streaming refusals"
 source: https://platform.claude.com/docs/en/test-and-evaluate/strengthen-guardrails/handle-streaming-refusals
 path: test-and-evaluate/strengthen-guardrails/handle-streaming-refusals
 ---
@@ -141,49 +141,36 @@ Here's how to detect and handle streaming refusals in your application:
   ```
 
   ```csharp C#
-  using System;
-  using System.Collections.Generic;
-  using System.Threading.Tasks;
-  using Anthropic;
-  using Anthropic.Models.Messages;
+  List<Message> messages = new();
+  AnthropicClient client = new();
 
-  class Program
+  var parameters = new MessageCreateParams
   {
-      private static List<Message> messages = new();
+      Model = Model.ClaudeOpus4_8,
+      MaxTokens = 1024,
+      Messages = [new() { Role = Role.User, Content = "Hello" }]
+  };
 
-      static async Task Main(string[] args)
+  try
+  {
+      await foreach (var msg in client.Messages.CreateStreaming(parameters))
       {
-          AnthropicClient client = new();
-
-          var parameters = new MessageCreateParams
+          if (msg.Type == "message_delta" && msg.Delta?.StopReason == "refusal")
           {
-              Model = Model.ClaudeOpus4_8,
-              MaxTokens = 1024,
-              Messages = [new() { Role = Role.User, Content = "Hello" }]
-          };
-
-          try
-          {
-              await foreach (var msg in client.Messages.CreateStreaming(parameters))
-              {
-                  if (msg.Type == "message_delta" && msg.Delta?.StopReason == "refusal")
-                  {
-                      ResetConversation();
-                      break;
-                  }
-              }
-          }
-          catch (Exception e)
-          {
-              Console.WriteLine($"Error: {e.Message}");
+              ResetConversation();
+              break;
           }
       }
+  }
+  catch (Exception e)
+  {
+      Console.WriteLine($"Error: {e.Message}");
+  }
 
-      private static void ResetConversation()
-      {
-          messages.Clear();
-          Console.WriteLine("Conversation reset due to refusal");
-      }
+  void ResetConversation()
+  {
+      messages.Clear();
+      Console.WriteLine("Conversation reset due to refusal");
   }
   ```
 
@@ -375,4 +362,4 @@ If you built refusal handling when this feature first shipped, or you're adding 
 
 ---
 
-# Structured outputs
+# Multilingual support

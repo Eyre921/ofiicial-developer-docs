@@ -10,6 +10,8 @@ path: docs/flux-tts/overview
 
 # Flux TTS Overview
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 Flux TTS brings the Flux promise to speech synthesis: a model and API built for the realities of a voice agent pipeline, not a one-shot text-to-audio pipe. It is served on the `/v2/speak` endpoint and shares one set of Flux voices across two transports.
 
 ## Two transports, one voice family

@@ -116,7 +116,7 @@ Use when evaluating pre-existing data from your dataset. Simply specify the colu
   * Optionally set `external_base_url` for custom OpenAI `chat/completions`-compatible endpoints.
 </Info>
 
-For dedicated endpoints, set `model_source = "dedicated"` and paste your endpoint ID into the model field. See [Dedicated Inference](/docs/dedicated-endpoints/overview).
+For dedicated model inference, set `model_source = "dedicated"` and paste your endpoint ID into the model field. See [dedicated model inference](/docs/dedicated-endpoints/overview).
 
 ## Step 3: Monitor Job Progress
 

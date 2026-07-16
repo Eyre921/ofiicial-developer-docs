@@ -473,7 +473,7 @@ See [OpenAI compatibility](/docs/inference/openai-compatibility) for the full li
     Browse the catalog of models for chat, coding, vision, and reasoning.
   </Card>
 
-  <Card title="Dedicated endpoints" icon="server-2" href="/docs/dedicated-endpoints/overview">
+  <Card title="Dedicated model inference" icon="server-2" href="/docs/dedicated-endpoints/overview">
     Reserve GPUs for steady traffic or fine-tuned models.
   </Card>
 

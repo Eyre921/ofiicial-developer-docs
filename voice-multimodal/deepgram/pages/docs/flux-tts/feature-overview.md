@@ -10,6 +10,8 @@ path: docs/flux-tts/feature-overview
 
 # Flux TTS Feature Overview
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 This page summarizes what the Flux TTS `/v2/speak` WebSocket supports at Early Access. For the full wire protocol, see [Client Messages](/docs/flux-tts/client-messages) and [Server Messages](/docs/flux-tts/server-messages).
 
 ## Model Selection

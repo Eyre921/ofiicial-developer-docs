@@ -457,6 +457,15 @@ Define the file name that will be attached using the `filename` parameter.
     ]
   }'
   ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "Receipt for your payment" \
+    --html "<p>Thanks for the payment</p>" \
+    --attachment ./static/invoice.pdf
+  ```
 </CodeGroup>
 
 ## Embed Images using CID

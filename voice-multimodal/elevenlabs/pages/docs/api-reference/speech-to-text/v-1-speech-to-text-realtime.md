@@ -121,6 +121,9 @@ channels:
             enable_logging:
               type: boolean
               default: true
+            entity_detection:
+              $ref: >-
+                #/components/schemas//v1/speech-to-text/realtime_entity_detection
         headers:
           type: object
           properties:
@@ -186,6 +189,19 @@ components:
       default: manual
       description: Strategy for committing transcriptions.
       title: /v1/speech-to-text/realtime_commit_strategy
+    /v1/speech-to-text/realtime_entity_detection:
+      oneOf:
+        - type: string
+        - type: array
+          items:
+            type: string
+      description: >-
+        Detect entities on committed transcripts. Can be 'all', a single entity
+        type or category, or a list of types/categories ('pii', 'phi', 'pci',
+        'other', 'offensive_language'). When enabled, detected entities are
+        delivered in a separate 'committed_transcript_entities' event with their
+        text, type, and character positions.
+      title: /v1/speech-to-text/realtime_entity_detection
     AudioFormatEnum:
       type: string
       enum:
@@ -385,6 +401,52 @@ components:
         - text
       description: Payload for committed transcription results with word-level timestamps.
       title: CommittedTranscriptWithTimestamps
+    DetectedEntity:
+      type: object
+      properties:
+        text:
+          type: string
+          description: The text that was identified as an entity.
+        entity_type:
+          type: string
+          description: >-
+            The type of entity detected (e.g., 'credit_card', 'email_address',
+            'person_name').
+        start_char:
+          type: integer
+          description: Start character position in the transcript text.
+        end_char:
+          type: integer
+          description: End character position in the transcript text.
+      required:
+        - text
+        - entity_type
+        - start_char
+        - end_char
+      description: An entity detected within transcribed text.
+      title: DetectedEntity
+    CommittedTranscriptEntities:
+      type: object
+      properties:
+        message_type:
+          type: string
+          enum:
+            - committed_transcript_entities
+          description: The message type identifier.
+        text:
+          type: string
+          description: The committed transcript text the entities were detected in.
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/DetectedEntity'
+          description: Detected entities. Empty if none were found.
+      required:
+        - message_type
+        - text
+        - entities
+      description: Payload for detected entities on a committed transcript.
+      title: CommittedTranscriptEntities
     ScribeError:
       type: object
       properties:
@@ -599,6 +661,7 @@ components:
         - $ref: '#/components/schemas/PartialTranscript'
         - $ref: '#/components/schemas/CommittedTranscript'
         - $ref: '#/components/schemas/CommittedTranscriptWithTimestamps'
+        - $ref: '#/components/schemas/CommittedTranscriptEntities'
         - $ref: '#/components/schemas/ScribeError'
         - $ref: '#/components/schemas/ScribeAuthError'
         - $ref: '#/components/schemas/ScribeQuotaExceededError'

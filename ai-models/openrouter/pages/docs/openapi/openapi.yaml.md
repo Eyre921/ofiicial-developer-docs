@@ -18,20 +18,23 @@ components:
           description: Artificial Analysis Agentic Index score
           example: 55.8
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         coding_index:
           description: Artificial Analysis Coding Index score
           example: 63.2
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         intelligence_index:
           description: Artificial Analysis Intelligence Index score
           example: 71.4
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
       required:
         - intelligence_index
         - coding_index
@@ -148,8 +151,9 @@ components:
         type: additional_tools
       properties:
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         role:
           enum:
             - unknown
@@ -212,8 +216,7 @@ components:
               - $ref: '#/components/schemas/ApplyPatchServerTool_OpenRouter'
               - $ref: '#/components/schemas/BashServerTool'
               - $ref: '#/components/schemas/ShellServerTool_OpenRouter'
-              - additionalProperties:
-                  nullable: true
+              - additionalProperties: {}
                 properties:
                   type:
                     type: string
@@ -231,8 +234,7 @@ components:
         - tools
       type: object
     AdvisorNestedTool:
-      additionalProperties:
-        nullable: true
+      additionalProperties: {}
       description: >-
         A tool made available to the advisor sub-agent. Only OpenRouter server
         tools (e.g. openrouter:web_search) are supported; function tools are
@@ -242,8 +244,7 @@ components:
         type: openrouter:web_search
       properties:
         parameters:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         type:
           type: string
@@ -382,8 +383,7 @@ components:
           type: array
       type: object
     AgentMessageItem:
-      additionalProperties:
-        nullable: true
+      additionalProperties: {}
       description: A message routed between agents in a multi-agent session
       example:
         author: /root/worker
@@ -394,15 +394,15 @@ components:
         type: agent_message
       properties:
         agent:
-          additionalProperties:
-            nullable: true
-          nullable: true
+          additionalProperties: {}
           properties:
             agent_name:
               type: string
           required:
             - agent_name
-          type: object
+          type:
+            - object
+            - 'null'
         author:
           type: string
         content:
@@ -418,8 +418,7 @@ components:
                   detail: auto
                   image_url: https://example.com/image.jpg
                   type: input_image
-              - additionalProperties:
-                  nullable: true
+              - additionalProperties: {}
                 properties:
                   encrypted_content:
                     type: string
@@ -433,8 +432,9 @@ components:
                 type: object
           type: array
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         recipient:
           type: string
         type:
@@ -497,8 +497,7 @@ components:
         type: advisor_tool_result
       properties:
         content:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         tool_use_id:
           type: string
@@ -714,7 +713,6 @@ components:
       example:
         ephemeral_1h_input_tokens: 0
         ephemeral_5m_input_tokens: 100
-      nullable: true
       properties:
         ephemeral_1h_input_tokens:
           type: integer
@@ -723,7 +721,9 @@ components:
       required:
         - ephemeral_5m_input_tokens
         - ephemeral_1h_input_tokens
-      type: object
+      type:
+        - object
+        - 'null'
     AnthropicCaller:
       discriminator:
         mapping:
@@ -752,13 +752,15 @@ components:
         document_index:
           type: integer
         document_title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         end_char_index:
           type: integer
         file_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         start_char_index:
           type: integer
         type:
@@ -788,8 +790,9 @@ components:
         document_index:
           type: integer
         document_title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         end_char_index:
           type: integer
         start_char_index:
@@ -821,13 +824,15 @@ components:
         document_index:
           type: integer
         document_title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         end_block_index:
           type: integer
         file_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         start_block_index:
           type: integer
         type:
@@ -857,8 +862,9 @@ components:
         document_index:
           type: integer
         document_title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         end_block_index:
           type: integer
         start_block_index:
@@ -890,13 +896,15 @@ components:
         document_index:
           type: integer
         document_title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         end_page_number:
           type: integer
         file_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         start_page_number:
           type: integer
         type:
@@ -926,8 +934,9 @@ components:
         document_index:
           type: integer
         document_title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         end_page_number:
           type: integer
         start_page_number:
@@ -948,13 +957,14 @@ components:
       default: null
       example:
         enabled: true
-      nullable: true
       properties:
         enabled:
           type: boolean
       required:
         - enabled
-      type: object
+      type:
+        - object
+        - 'null'
     AnthropicCitationSearchResultLocation:
       example:
         cited_text: Example cited text
@@ -976,8 +986,9 @@ components:
         start_block_index:
           type: integer
         title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - search_result_location
@@ -1012,8 +1023,9 @@ components:
         start_block_index:
           type: integer
         title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - search_result_location
@@ -1040,8 +1052,9 @@ components:
         encrypted_index:
           type: string
         title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - web_search_result_location
@@ -1068,8 +1081,9 @@ components:
         encrypted_index:
           type: string
         title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - web_search_result_location
@@ -1219,8 +1233,9 @@ components:
         type: compaction
       properties:
         content:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - compaction
@@ -1251,7 +1266,6 @@ components:
       example:
         expires_at: '2026-04-08T00:00:00Z'
         id: ctr_01abc
-      nullable: true
       properties:
         expires_at:
           type: string
@@ -1260,7 +1274,9 @@ components:
       required:
         - id
         - expires_at
-      type: object
+      type:
+        - object
+        - 'null'
     AnthropicContainerUpload:
       example:
         file_id: file_01abc
@@ -1304,8 +1320,9 @@ components:
             - $ref: '#/components/schemas/AnthropicBase64PdfSource'
             - $ref: '#/components/schemas/AnthropicPlainTextSource'
         title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - document
@@ -1326,14 +1343,16 @@ components:
         cache_control:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
         citations:
-          nullable: true
           properties:
             enabled:
               type: boolean
-          type: object
+          type:
+            - object
+            - 'null'
         context:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         source:
           oneOf:
             - $ref: '#/components/schemas/AnthropicBase64PdfSource'
@@ -1363,8 +1382,9 @@ components:
             - $ref: '#/components/schemas/AnthropicUrlPdfSource'
             - $ref: '#/components/schemas/AnthropicFileDocumentSource'
         title:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - document
@@ -1456,7 +1476,6 @@ components:
       example:
         type: input_tokens
         value: 50000
-      nullable: true
       properties:
         type:
           enum:
@@ -1467,7 +1486,9 @@ components:
       required:
         - type
         - value
-      type: object
+      type:
+        - object
+        - 'null'
     AnthropicInputTokensTrigger:
       example:
         type: input_tokens
@@ -1488,13 +1509,14 @@ components:
       example:
         ephemeral_1h_input_tokens: 0
         ephemeral_5m_input_tokens: 0
-      nullable: true
       properties:
         ephemeral_1h_input_tokens:
           type: integer
         ephemeral_5m_input_tokens:
           type: integer
-      type: object
+      type:
+        - object
+        - 'null'
     AnthropicMessageUsageIteration:
       allOf:
         - $ref: '#/components/schemas/AnthropicBaseUsageIteration'
@@ -1518,13 +1540,14 @@ components:
     AnthropicOutputTokensDetails:
       example:
         thinking_tokens: 0
-      nullable: true
       properties:
         thinking_tokens:
           type: integer
       required:
         - thinking_tokens
-      type: object
+      type:
+        - object
+        - 'null'
     AnthropicPlainTextSource:
       example:
         data: Hello, world!
@@ -1567,18 +1590,19 @@ components:
         category: cyber
         explanation: The request was refused due to policy.
         type: refusal
-      nullable: true
       properties:
         category:
           enum:
             - cyber
             - bio
             - null
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         explanation:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - refusal
@@ -1587,7 +1611,9 @@ components:
         - type
         - category
         - explanation
-      type: object
+      type:
+        - object
+        - 'null'
     AnthropicSearchResultBlockParam:
       example:
         content:
@@ -1634,7 +1660,6 @@ components:
       example:
         web_fetch_requests: 0
         web_search_requests: 1
-      nullable: true
       properties:
         web_fetch_requests:
           type: integer
@@ -1643,7 +1668,9 @@ components:
       required:
         - web_search_requests
         - web_fetch_requests
-      type: object
+      type:
+        - object
+        - 'null'
     AnthropicServiceTier:
       enum:
         - standard
@@ -1651,16 +1678,18 @@ components:
         - batch
         - null
       example: standard
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     AnthropicSpeed:
       enum:
         - fast
         - standard
         - null
       example: standard
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     AnthropicTextBlock:
       example:
         citations: null
@@ -1670,8 +1699,9 @@ components:
         citations:
           items:
             $ref: '#/components/schemas/AnthropicTextCitation'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         text:
           type: string
         type:
@@ -1712,8 +1742,9 @@ components:
                   #/components/schemas/AnthropicCitationWebSearchResultLocationParam
               - $ref: >-
                   #/components/schemas/AnthropicCitationSearchResultLocationParam
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         text:
           type: string
         type:
@@ -1796,20 +1827,25 @@ components:
         lines:
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         new_lines:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         new_start:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         old_lines:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         old_start:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         type:
           enum:
             - text_editor_code_execution_str_replace_result
@@ -1862,8 +1898,9 @@ components:
             - file_not_found
           type: string
         error_message:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - text_editor_code_execution_tool_result_error
@@ -1891,14 +1928,17 @@ components:
             - pdf
           type: string
         num_lines:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         start_line:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         total_lines:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         type:
           enum:
             - text_editor_code_execution_view_result
@@ -1936,8 +1976,9 @@ components:
         - omitted
         - null
       example: summarized
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     AnthropicThinkingTurns:
       example:
         type: thinking_turns
@@ -2010,8 +2051,9 @@ components:
         error_code:
           $ref: '#/components/schemas/AnthropicServerToolErrorCode'
         error_message:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - tool_search_tool_result_error
@@ -2058,8 +2100,7 @@ components:
           $ref: '#/components/schemas/AnthropicCaller'
         id:
           type: string
-        input:
-          nullable: true
+        input: {}
         name:
           type: string
         type:
@@ -2163,14 +2204,17 @@ components:
         cache_creation:
           $ref: '#/components/schemas/AnthropicCacheCreation'
         cache_creation_input_tokens:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         cache_read_input_tokens:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         inference_geo:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         input_tokens:
           type: integer
         output_tokens:
@@ -2222,8 +2266,9 @@ components:
         content:
           $ref: '#/components/schemas/AnthropicDocumentBlock'
         retrieved_at:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - web_fetch_result
@@ -2327,8 +2372,9 @@ components:
         encrypted_content:
           type: string
         page_age:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         title:
           type: string
         type:
@@ -2354,8 +2400,9 @@ components:
         encrypted_content:
           type: string
         page_age:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         title:
           type: string
         type:
@@ -2427,27 +2474,32 @@ components:
         region: California
         timezone: America/Los_Angeles
         type: approximate
-      nullable: true
       properties:
         city:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         country:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         region:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         timezone:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - approximate
           type: string
       required:
         - type
-      type: object
+      type:
+        - object
+        - 'null'
     ApiErrorType:
       description: Canonical OpenRouter error type, stable across all API formats
       enum:
@@ -2501,8 +2553,9 @@ components:
         call_id:
           type: string
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         operation:
           $ref: '#/components/schemas/ApplyPatchCallOperation'
         status:
@@ -2615,11 +2668,13 @@ components:
         call_id:
           type: string
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         output:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         status:
           enum:
             - completed
@@ -2888,13 +2943,14 @@ components:
         error:
           $ref: '#/components/schemas/BadGatewayResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -2909,10 +2965,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -2927,13 +2983,14 @@ components:
         error:
           $ref: '#/components/schemas/BadRequestResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -2948,10 +3005,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -3145,13 +3202,15 @@ components:
         type: error
       properties:
         code:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         message:
           type: string
         param:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         sequence_number:
           type: integer
         type:
@@ -3256,7 +3315,7 @@ components:
                       - enum:
                           - final_answer
                         type: string
-                      - nullable: true
+                      - type: 'null'
                   role:
                     anyOf:
                       - enum:
@@ -3289,7 +3348,7 @@ components:
               - $ref: '#/components/schemas/ApplyPatchCallItem'
               - $ref: '#/components/schemas/ApplyPatchCallOutputItem'
           type: array
-        - nullable: true
+        - type: 'null'
       example:
         - content: What is the weather today?
           role: user
@@ -3309,10 +3368,15 @@ components:
         stop_sequence: null
         type: message
         usage:
+          cache_creation: null
           cache_creation_input_tokens: null
           cache_read_input_tokens: null
+          inference_geo: null
           input_tokens: 12
           output_tokens: 8
+          output_tokens_details: null
+          server_tool_use: null
+          service_tier: standard
       properties:
         container:
           $ref: '#/components/schemas/AnthropicContainer'
@@ -3333,8 +3397,9 @@ components:
         stop_reason:
           $ref: '#/components/schemas/ORAnthropicStopReason'
         stop_sequence:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - message
@@ -3376,7 +3441,6 @@ components:
       example:
         effort: medium
         summary: auto
-      nullable: true
       properties:
         context:
           $ref: '#/components/schemas/ReasoningContext'
@@ -3386,7 +3450,9 @@ components:
           $ref: '#/components/schemas/ReasoningMode'
         summary:
           $ref: '#/components/schemas/ReasoningSummaryVerbosity'
-      type: object
+      type:
+        - object
+        - 'null'
     BaseReasoningDeltaEvent:
       description: Event emitted when reasoning text delta is streamed
       example:
@@ -3654,6 +3720,7 @@ components:
         completed_at: 1704067210
         created_at: 1704067200
         error: null
+        frequency_penalty: null
         id: resp-abc123
         incomplete_details: null
         instructions: null
@@ -3663,6 +3730,7 @@ components:
         object: response
         output: []
         parallel_tool_calls: true
+        presence_penalty: null
         status: completed
         temperature: null
         tool_choice: auto
@@ -3670,19 +3738,22 @@ components:
         top_p: null
       properties:
         background:
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         completed_at:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         created_at:
           type: integer
         error:
           $ref: '#/components/schemas/ResponsesErrorField'
         frequency_penalty:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         id:
           type: string
         incomplete_details:
@@ -3690,11 +3761,13 @@ components:
         instructions:
           $ref: '#/components/schemas/BaseInputs'
         max_output_tokens:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         max_tool_calls:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         metadata:
           $ref: '#/components/schemas/RequestMetadata'
         model:
@@ -3732,21 +3805,25 @@ components:
           type: boolean
         presence_penalty:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         previous_response_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         prompt:
           $ref: '#/components/schemas/StoredPromptTemplate'
         prompt_cache_key:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         reasoning:
           $ref: '#/components/schemas/BaseReasoningConfig'
         safety_identifier:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         service_tier:
           $ref: '#/components/schemas/ServiceTier'
         status:
@@ -3755,8 +3832,9 @@ components:
           type: boolean
         temperature:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         text:
           $ref: '#/components/schemas/TextConfig'
         tool_choice:
@@ -3805,15 +3883,17 @@ components:
           type: integer
         top_p:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         truncation:
           $ref: '#/components/schemas/Truncation'
         usage:
           $ref: '#/components/schemas/OpenAIResponsesUsage'
         user:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - id
         - object
@@ -4192,8 +4272,9 @@ components:
           items:
             type: string
           maxItems: 100
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         allowed_models:
           description: >-
             Optional allowlist of model slugs this credential may be used for.
@@ -4202,8 +4283,9 @@ components:
           items:
             type: string
           maxItems: 100
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         allowed_user_ids:
           description: >-
             Optional allowlist of user IDs that may use this credential. `null`
@@ -4212,8 +4294,9 @@ components:
           items:
             type: string
           maxItems: 100
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         created_at:
           description: ISO timestamp of when the credential was created.
           example: '2025-08-24T10:30:00Z'
@@ -4242,8 +4325,9 @@ components:
         name:
           description: Optional human-readable name for the credential.
           example: Production OpenAI Key
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         provider:
           $ref: '#/components/schemas/BYOKProviderSlug'
         sort_order:
@@ -4358,6 +4442,7 @@ components:
         - stepfun
         - streamlake
         - switchpoint
+        - tencent
         - tenstorrent
         - together
         - upstage
@@ -4420,7 +4505,7 @@ components:
             - items:
                 $ref: '#/components/schemas/ChatContentItems'
               type: array
-            - nullable: true
+            - type: 'null'
           description: Assistant message content
         images:
           $ref: '#/components/schemas/ChatAssistantImages'
@@ -4429,14 +4514,16 @@ components:
           type: string
         reasoning:
           description: Reasoning output
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         reasoning_details:
           $ref: '#/components/schemas/ChatReasoningDetails'
         refusal:
           description: Refusal message if content was refused
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         role:
           enum:
             - assistant
@@ -4717,8 +4804,9 @@ components:
         - error
         - null
       example: stop
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ChatFormatGrammarConfig:
       description: Custom grammar response format
       example:
@@ -4828,8 +4916,7 @@ components:
                   maxLength: 64
                   type: string
                 parameters:
-                  additionalProperties:
-                    nullable: true
+                  additionalProperties: {}
                   description: Function parameters as JSON Schema object
                   example:
                     properties:
@@ -4843,8 +4930,9 @@ components:
                 strict:
                   description: Enable strict schema adherence
                   example: false
-                  nullable: true
-                  type: boolean
+                  type:
+                    - boolean
+                    - 'null'
               required:
                 - name
               type: object
@@ -4912,8 +5000,7 @@ components:
           maxLength: 64
           type: string
         schema:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           description: JSON Schema object
           example:
             properties:
@@ -4926,8 +5013,9 @@ components:
         strict:
           description: Enable strict schema adherence
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
       required:
         - name
       type: object
@@ -4987,8 +5075,8 @@ components:
     ChatReasoningDetails:
       description: Reasoning details for extended thinking models
       example:
-        - thinking: Let me work through this step by step...
-          type: thinking
+        - text: Let me work through this step by step...
+          type: reasoning.text
       items:
         $ref: '#/components/schemas/ReasoningDetailUnion'
       type: array
@@ -4999,8 +5087,9 @@ components:
         - detailed
         - null
       example: concise
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ChatRequest:
       description: Chat completion request parameters
       example:
@@ -5021,8 +5110,9 @@ components:
           description: Frequency penalty (-2.0 to 2.0)
           example: 0
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         image_config:
           $ref: '#/components/schemas/ImageConfig'
         logit_bias:
@@ -5032,25 +5122,29 @@ components:
           description: Token logit bias adjustments
           example:
             '50256': -100
-          nullable: true
-          type: object
+          type:
+            - object
+            - 'null'
         logprobs:
           description: Return log probabilities
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         max_completion_tokens:
           description: Maximum tokens in completion
           example: 100
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         max_tokens:
           description: >-
             Maximum tokens (deprecated, use max_completion_tokens). Note: some
             providers enforce a minimum of 16.
           example: 100
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         messages:
           description: List of messages for the conversation
           example:
@@ -5077,8 +5171,9 @@ components:
             filtered out. Not all providers support this parameter.
           example: 0.1
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         modalities:
           description: >-
             Output modalities for the response. Supported values are "text",
@@ -5103,8 +5198,9 @@ components:
             true, the model may generate multiple tool calls in a single
             response.
           example: true
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         plugins:
           description: >-
             Plugins you want to enable for this request, including their
@@ -5139,11 +5235,13 @@ components:
           description: Presence penalty (-2.0 to 2.0)
           example: 0
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         prompt_cache_key:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         prompt_cache_options:
           $ref: '#/components/schemas/PromptCacheOptions'
         provider:
@@ -5166,8 +5264,9 @@ components:
                 - none
                 - null
               example: medium
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             summary:
               $ref: '#/components/schemas/ChatReasoningSummaryVerbosityEnum'
           type: object
@@ -5186,8 +5285,9 @@ components:
             - none
             - null
           example: medium
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         repetition_penalty:
           description: >-
             Penalizes tokens based on how much they have already appeared in the
@@ -5196,8 +5296,9 @@ components:
             parameter.
           example: 1
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         response_format:
           description: Response format configuration
           discriminator:
@@ -5221,8 +5322,9 @@ components:
         seed:
           description: Random seed for deterministic outputs
           example: 42
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         service_tier:
           description: The service tier to use for processing this request.
           enum:
@@ -5233,8 +5335,9 @@ components:
             - scale
             - null
           example: auto
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         session_id:
           description: >-
             A unique identifier for grouping related requests (e.g., a
@@ -5253,7 +5356,7 @@ components:
                 type: string
               maxItems: 4
               type: array
-            - nullable: true
+            - type: 'null'
           description: Stop sequences (up to 4)
           example:
             - |+
@@ -5271,8 +5374,9 @@ components:
           description: Sampling temperature (0-2)
           example: 0.7
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         tool_choice:
           $ref: '#/components/schemas/ChatToolChoice'
         tools:
@@ -5292,27 +5396,31 @@ components:
             this parameter.
           example: 0
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         top_k:
           description: >-
             Limits the model to choose from the top K most likely tokens at each
             step. A value of 1 means the model will always pick the most likely
             next token. Not all providers support this parameter.
           example: 40
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         top_logprobs:
           description: Number of top log probabilities to return (0-20)
           example: 5
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         top_p:
           description: Nucleus sampling parameter (0-1)
           example: 1
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         trace:
           $ref: '#/components/schemas/TraceConfig'
         user:
@@ -5335,6 +5443,7 @@ components:
         id: chatcmpl-123
         model: openai/gpt-4
         object: chat.completion
+        system_fingerprint: fp_44709d6fcb
         usage:
           completion_tokens: 15
           prompt_tokens: 10
@@ -5366,13 +5475,15 @@ components:
         service_tier:
           description: The service tier used by the upstream provider for this request
           example: default
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         system_fingerprint:
           description: System fingerprint
           example: fp_44709d6fcb
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         usage:
           $ref: '#/components/schemas/ChatUsage'
       required:
@@ -5514,8 +5625,9 @@ components:
         service_tier:
           description: The service tier used by the upstream provider for this request
           example: default
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         system_fingerprint:
           description: System fingerprint
           example: fp_44709d6fcb
@@ -5543,20 +5655,23 @@ components:
         content:
           description: Message content delta
           example: Hello
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         reasoning:
           description: Reasoning content delta
           example: I need to
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         reasoning_details:
           $ref: '#/components/schemas/ChatStreamReasoningDetails'
         refusal:
           description: Refusal message delta
           example: null
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         role:
           description: The role of the message author
           enum:
@@ -5592,7 +5707,6 @@ components:
       description: Streaming configuration options
       example:
         include_usage: true
-      nullable: true
       properties:
         include_usage:
           deprecated: true
@@ -5601,12 +5715,14 @@ components:
             included.
           example: true
           type: boolean
-      type: object
+      type:
+        - object
+        - 'null'
     ChatStreamReasoningDetails:
       description: Reasoning details for extended thinking models
       example:
         - text: Let me think about this...
-          type: text
+          type: reasoning.text
       items:
         $ref: '#/components/schemas/ReasoningDetailUnion'
       type: array
@@ -5691,8 +5807,9 @@ components:
           description: UTF-8 bytes of the token
           items:
             type: integer
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         logprob:
           description: Log probability of the token
           format: double
@@ -5707,8 +5824,9 @@ components:
               bytes:
                 items:
                   type: integer
-                nullable: true
-                type: array
+                type:
+                  - array
+                  - 'null'
               logprob:
                 format: double
                 type: number
@@ -5735,23 +5853,26 @@ components:
             token: ' Hello'
             top_logprobs: []
         refusal: null
-      nullable: true
       properties:
         content:
           description: Log probabilities for content tokens
           items:
             $ref: '#/components/schemas/ChatTokenLogprob'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         refusal:
           description: Log probabilities for refusal tokens
           items:
             $ref: '#/components/schemas/ChatTokenLogprob'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
       required:
         - content
-      type: object
+      type:
+        - object
+        - 'null'
     ChatToolCall:
       description: Tool call made by the assistant
       example:
@@ -5853,30 +5974,36 @@ components:
           type: integer
         completion_tokens_details:
           description: Detailed completion token usage
-          nullable: true
           properties:
             accepted_prediction_tokens:
               description: Accepted prediction tokens
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             audio_tokens:
               description: Tokens used for audio output
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             reasoning_tokens:
               description: Tokens used for reasoning
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             rejected_prediction_tokens:
               description: Rejected prediction tokens
-              nullable: true
-              type: integer
-          type: object
+              type:
+                - integer
+                - 'null'
+          type:
+            - object
+            - 'null'
         cost:
           description: Cost of the completion
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         cost_details:
           $ref: '#/components/schemas/CostDetails'
         is_byok:
@@ -5887,7 +6014,6 @@ components:
           type: integer
         prompt_tokens_details:
           description: Detailed prompt token usage
-          nullable: true
           properties:
             audio_tokens:
               description: Audio input tokens
@@ -5903,7 +6029,9 @@ components:
             video_tokens:
               description: Video input tokens
               type: integer
-          type: object
+          type:
+            - object
+            - 'null'
         server_tool_use_details:
           $ref: '#/components/schemas/ServerToolUseDetails'
         total_tokens:
@@ -6024,8 +6152,9 @@ components:
         type: code_interpreter_call
       properties:
         code:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         container_id:
           type: string
         id:
@@ -6055,8 +6184,9 @@ components:
                   - type
                   - logs
                 type: object
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         status:
           $ref: '#/components/schemas/ToolCallStatus'
         type:
@@ -6092,8 +6222,9 @@ components:
                     - 16g
                     - 64g
                     - null
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 type:
                   enum:
                     - auto
@@ -6122,8 +6253,7 @@ components:
         - type
       type: object
     CompactionItem:
-      additionalProperties:
-        nullable: true
+      additionalProperties: {}
       description: A context compaction marker with encrypted summary
       example:
         encrypted_content: enc_abc123...
@@ -6132,8 +6262,9 @@ components:
         encrypted_content:
           type: string
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - compaction
@@ -6146,8 +6277,10 @@ components:
       description: Event emitted when a response has completed successfully
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -6165,6 +6298,7 @@ components:
               status: completed
               type: message
           parallel_tool_calls: true
+          presence_penalty: null
           status: completed
           temperature: null
           tool_choice: auto
@@ -6197,8 +6331,7 @@ components:
       properties:
         filters:
           items:
-            additionalProperties:
-              nullable: true
+            additionalProperties: {}
             type: object
           type: array
         type:
@@ -6250,13 +6383,14 @@ components:
         error:
           $ref: '#/components/schemas/ConflictResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -6271,10 +6405,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -6406,8 +6540,9 @@ components:
           description: Optional label used in redaction placeholders or error messages
           example: '[API_KEY]'
           maxLength: 100
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         pattern:
           description: A regex pattern to match against request content
           example: \b(sk-[a-zA-Z0-9]{48})\b
@@ -6574,19 +6709,20 @@ components:
         - video_url
       type: object
     ContextCompactionItem:
-      additionalProperties:
-        nullable: true
+      additionalProperties: {}
       description: A context compaction marker with an optional encrypted summary
       example:
         encrypted_content: enc_abc123...
         type: context_compaction
       properties:
         encrypted_content:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - context_compaction
@@ -6626,22 +6762,24 @@ components:
         upstream_inference_completions_cost: 0.0004
         upstream_inference_cost: null
         upstream_inference_prompt_cost: 0.0008
-      nullable: true
       properties:
         upstream_inference_completions_cost:
           format: double
           type: number
         upstream_inference_cost:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         upstream_inference_prompt_cost:
           format: double
           type: number
       required:
         - upstream_inference_prompt_cost
         - upstream_inference_completions_cost
-      type: object
+      type:
+        - object
+        - 'null'
     CreateBYOKKeyRequest:
       example:
         key: sk-proj-abc123...
@@ -6656,8 +6794,9 @@ components:
           items:
             type: string
           maxItems: 100
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         allowed_user_ids:
           description: >-
             Optional allowlist of user IDs that may use this credential. `null`
@@ -6666,8 +6805,9 @@ components:
           items:
             type: string
           maxItems: 100
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         disabled:
           description: Whether this credential should be created in a disabled state.
           example: false
@@ -6689,8 +6829,9 @@ components:
           description: Optional human-readable name for the credential.
           example: Production OpenAI Key
           maxLength: 255
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         provider:
           $ref: '#/components/schemas/BYOKProviderSlug'
         workspace_id:
@@ -6731,8 +6872,10 @@ components:
       description: Event emitted when a response is created
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -6742,6 +6885,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: in_progress
           temperature: null
           tool_choice: auto
@@ -6795,8 +6939,9 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         allowed_providers:
           description: List of allowed provider IDs
           example:
@@ -6806,8 +6951,9 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         content_filter_builtins:
           description: >-
             Builtin content filters to apply. The "flag" action is only
@@ -6819,8 +6965,9 @@ components:
               slug: regex-prompt-injection
           items:
             $ref: '#/components/schemas/ContentFilterBuiltinEntryInput'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         content_filters:
           description: Custom regex content filters to apply to request messages
           example:
@@ -6829,14 +6976,16 @@ components:
               pattern: \b(sk-[a-zA-Z0-9]{48})\b
           items:
             $ref: '#/components/schemas/ContentFilterEntry'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         description:
           description: Description of the guardrail
           example: A guardrail for limiting API usage
           maxLength: 1000
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         enforce_zdr:
           deprecated: true
           description: >-
@@ -6845,44 +6994,50 @@ components:
             When provided, its value is copied into any of those per-provider
             fields that are not explicitly specified on the request.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_anthropic:
           description: >-
             Whether to enforce zero data retention for Anthropic models. Falls
             back to enforce_zdr when not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_google:
           description: >-
             Whether to enforce zero data retention for Google models. Falls back
             to enforce_zdr when not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_openai:
           description: >-
             Whether to enforce zero data retention for OpenAI models. Falls back
             to enforce_zdr when not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_other:
           description: >-
             Whether to enforce zero data retention for models that are not from
             Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when
             not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_xai:
           description: >-
             Whether to enforce zero data retention for xAI models. Falls back to
             enforce_zdr when not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         ignored_models:
           description: >-
             Array of model identifiers to exclude from routing (slug or
@@ -6892,8 +7047,9 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         ignored_providers:
           description: List of provider IDs to exclude from routing
           example:
@@ -6901,14 +7057,16 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         limit_usd:
           description: Spending limit in USD
           example: 50
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         name:
           description: Name for the new guardrail
           example: My New Guardrail
@@ -6982,11 +7140,11 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           description: >-
             Provider-specific configuration. The shape depends on `type` and is
             validated server-side.
@@ -7122,33 +7280,38 @@ components:
         default_image_model:
           description: Default image model for this workspace
           example: openai/dall-e-3
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         default_provider_sort:
           description: >-
             Default provider sort preference (price, throughput, latency,
             exacto)
           example: price
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         default_text_model:
           description: Default text model for this workspace
           example: openai/gpt-4o
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         description:
           description: Description of the workspace
           example: Production environment workspace
           maxLength: 500
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         io_logging_api_key_ids:
           description: Optional array of API key IDs to filter I/O logging
           example: null
           items:
             type: integer
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         io_logging_sampling_rate:
           description: Sampling rate for I/O logging (0.0001-1)
           example: 1
@@ -7437,8 +7600,7 @@ components:
         debug:
           properties:
             echo_upstream_body:
-              additionalProperties:
-                nullable: true
+              additionalProperties: {}
               type: object
             timings:
               properties:
@@ -7480,32 +7642,39 @@ components:
         temperature: 0.7
         top_k: 0
         top_p: 0.9
-      nullable: true
       properties:
         frequency_penalty:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         presence_penalty:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         repetition_penalty:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         temperature:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         top_k:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         top_p:
           format: double
-          nullable: true
-          type: number
-      type: object
+          type:
+            - number
+            - 'null'
+      type:
+        - object
+        - 'null'
     DeleteBYOKKeyResponse:
       example:
         deleted: true
@@ -7576,8 +7745,9 @@ components:
         - sort
         - null
       example: fallback
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
       x-fern-ignore: true
       x-speakeasy-deprecation-message: Use providers.sort.partition instead.
       x-speakeasy-ignore: true
@@ -7605,7 +7775,7 @@ components:
                   - $ref: '#/components/schemas/InputVideo'
               type: array
             - type: string
-            - nullable: true
+            - type: 'null'
         phase:
           anyOf:
             - enum:
@@ -7614,7 +7784,7 @@ components:
             - enum:
                 - final_answer
               type: string
-            - nullable: true
+            - type: 'null'
           description: >-
             The phase of an assistant message. Use `commentary` for an
             intermediate assistant message and `final_answer` for the final
@@ -7654,13 +7824,14 @@ components:
         error:
           $ref: '#/components/schemas/EdgeNetworkTimeoutResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -7675,10 +7846,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -7765,8 +7936,10 @@ components:
       description: Event emitted when a response has failed
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -7776,6 +7949,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: failed
           temperature: null
           tool_choice: auto
@@ -7856,20 +8030,23 @@ components:
           description: >-
             Opaque cursor for the next page; null when there are no more
             results.
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         data:
           items:
             $ref: '#/components/schemas/FileMetadata'
           type: array
         first_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         has_more:
           type: boolean
         last_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - data
         - has_more
@@ -7992,7 +8169,7 @@ components:
                 - value
               type: object
             - $ref: '#/components/schemas/CompoundFilter'
-            - nullable: true
+            - type: 'null'
         max_num_results:
           type: integer
         ranking_options:
@@ -8051,13 +8228,14 @@ components:
         error:
           $ref: '#/components/schemas/ForbiddenResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -8072,10 +8250,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -8113,12 +8291,12 @@ components:
         name:
           type: string
         schema:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         strict:
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         type:
           enum:
             - json_schema
@@ -8165,6 +8343,7 @@ components:
             - frame_type
           type: object
       example:
+        frame_type: first_frame
         image_url:
           url: https://example.com/image.png
         type: image_url
@@ -8258,18 +8437,20 @@ components:
         type: function
       properties:
         description:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         name:
           type: string
         parameters:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         strict:
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         type:
           enum:
             - function
@@ -8723,15 +8904,15 @@ components:
                     - format: double
                       type: number
                     - type: boolean
-                    - nullable: true
+                    - type: 'null'
                     - items:
                         anyOf:
                           - type: string
                           - format: double
                             type: number
                           - type: boolean
-                          - nullable: true
-                          - nullable: true
+                          - type: 'null'
+                          - type: 'null'
                       type: array
                     - additionalProperties:
                         anyOf:
@@ -8739,10 +8920,10 @@ components:
                           - format: double
                             type: number
                           - type: boolean
-                          - nullable: true
-                          - nullable: true
+                          - type: 'null'
+                          - type: 'null'
                       type: object
-                    - nullable: true
+                    - type: 'null'
                 description: >-
                   Optional configuration forwarded as the tool's `parameters`
                   object.
@@ -8882,8 +9063,7 @@ components:
           items:
             properties:
               parameters:
-                additionalProperties:
-                  nullable: true
+                additionalProperties: {}
                 description: >-
                   Optional configuration forwarded as the tool's `parameters`
                   object.
@@ -8940,8 +9120,7 @@ components:
                   example:
                     - content: What is the meaning of life?
                       role: user
-                  items:
-                    nullable: true
+                  items: {}
                   type: array
               required:
                 - messages
@@ -8955,13 +9134,15 @@ components:
             completion:
               description: The completion output
               example: The meaning of life is a philosophical question...
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             reasoning:
               description: Reasoning/thinking output, if any
               example: null
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           required:
             - reasoning
             - completion
@@ -8996,6 +9177,7 @@ components:
           cache_discount: null
           cancelled: false
           created_at: '2024-07-15T23:33:19.433273+00:00'
+          data_region: global
           external_user: user-123
           finish_reason: stop
           generation_time: 1200
@@ -9011,11 +9193,13 @@ components:
           native_tokens_completion_images: 0
           native_tokens_prompt: 10
           native_tokens_reasoning: 5
+          num_fetches: 0
           num_input_audio_prompt: 0
           num_media_completion: 0
           num_media_prompt: 1
           num_search_results: 5
           origin: https://openrouter.ai/
+          preset_id: a9e8d400-592a-494f-908c-375efa66cafd
           provider_name: Infermatic
           provider_responses: null
           request_id: req-1727282430-aBcDeFgHiJkLmNoPqRsT
@@ -9030,6 +9214,7 @@ components:
           upstream_inference_cost: 0.0012
           usage: 0.0015
           user_agent: Mozilla/5.0
+          web_search_engine: exa
       properties:
         data:
           description: Generation data
@@ -9045,24 +9230,28 @@ components:
                 - video
                 - image
                 - null
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             app_id:
               description: ID of the app that made the request
               example: 12345
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             cache_discount:
               description: Discount applied due to caching
               example: 0.0002
               format: double
-              nullable: true
-              type: number
+              type:
+                - number
+                - 'null'
             cancelled:
               description: Whether the generation was cancelled
               example: false
-              nullable: true
-              type: boolean
+              type:
+                - boolean
+                - 'null'
             created_at:
               description: ISO 8601 timestamp of when the generation was created
               example: '2024-07-15T23:33:19.433273+00:00'
@@ -9079,23 +9268,27 @@ components:
             external_user:
               description: External user identifier
               example: user-123
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             finish_reason:
               description: Reason the generation finished
               example: stop
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             generation_time:
               description: Time taken for generation in milliseconds
               example: 1200
               format: double
-              nullable: true
-              type: number
+              type:
+                - number
+                - 'null'
             http_referer:
               description: Referer header from the request
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             id:
               description: Unique identifier for the generation
               example: gen-3bhGkxlo4XFrqiabUM7NDtwDzWwG
@@ -9108,8 +9301,9 @@ components:
               description: Total latency in milliseconds
               example: 1250
               format: double
-              nullable: true
-              type: number
+              type:
+                - number
+                - 'null'
             model:
               description: Model used for the generation
               example: sao10k/l3-stheno-8b
@@ -9118,63 +9312,75 @@ components:
               description: Moderation latency in milliseconds
               example: 50
               format: double
-              nullable: true
-              type: number
+              type:
+                - number
+                - 'null'
             native_finish_reason:
               description: Native finish reason as reported by provider
               example: stop
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             native_tokens_cached:
               description: Native cached tokens as reported by provider
               example: 3
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             native_tokens_completion:
               description: Native completion tokens as reported by provider
               example: 25
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             native_tokens_completion_images:
               description: Native completion image tokens as reported by provider
               example: 0
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             native_tokens_prompt:
               description: Native prompt tokens as reported by provider
               example: 10
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             native_tokens_reasoning:
               description: Native reasoning tokens as reported by provider
               example: 5
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             num_fetches:
               description: Number of web fetches performed
               example: 0
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             num_input_audio_prompt:
               description: Number of audio inputs in the prompt
               example: 0
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             num_media_completion:
               description: Number of media items in the completion
               example: 0
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             num_media_prompt:
               description: Number of media items in the prompt
               example: 1
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             num_search_results:
               description: Number of search results included
               example: 5
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             origin:
               description: Origin URL of the request
               example: https://openrouter.ai/
@@ -9184,67 +9390,78 @@ components:
                 ID of the preset used for this generation, null if no preset was
                 used
               example: a9e8d400-592a-494f-908c-375efa66cafd
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             provider_name:
               description: Name of the provider that served the request
               example: Infermatic
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             provider_responses:
               description: >-
                 List of provider responses for this generation, including
                 fallback attempts
               items:
                 $ref: '#/components/schemas/ProviderResponse'
-              nullable: true
-              type: array
+              type:
+                - array
+                - 'null'
             request_id:
               description: >-
                 Unique identifier grouping all generations from a single API
                 request
               example: req-1727282430-aBcDeFgHiJkLmNoPqRsT
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             response_cache_source_id:
               description: >-
                 If this generation was served from response cache, contains the
                 original generation ID. Null otherwise.
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             router:
               description: Router used for the request (e.g., openrouter/auto)
               example: openrouter/auto
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             service_tier:
               description: >-
                 Service tier the upstream provider reported running this request
                 on, or null if it did not report one.
               example: priority
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             session_id:
               description: >-
                 Session identifier grouping multiple generations in the same
                 session
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             streamed:
               description: Whether the response was streamed
               example: true
-              nullable: true
-              type: boolean
+              type:
+                - boolean
+                - 'null'
             tokens_completion:
               description: Number of tokens in the completion
               example: 25
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             tokens_prompt:
               description: Number of tokens in the prompt
               example: 10
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             total_cost:
               description: Total cost of the generation in USD
               example: 0.0015
@@ -9253,14 +9470,16 @@ components:
             upstream_id:
               description: Upstream provider's identifier for this generation
               example: chatcmpl-791bcf62-080e-4568-87d0-94c72e3b4946
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             upstream_inference_cost:
               description: Cost charged by the upstream provider
               example: 0.0012
               format: double
-              nullable: true
-              type: number
+              type:
+                - number
+                - 'null'
             usage:
               description: Usage amount in USD
               example: 0.0015
@@ -9268,15 +9487,17 @@ components:
               type: number
             user_agent:
               description: User-Agent header from the request
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             web_search_engine:
               description: >-
                 The resolved web search engine used for this generation (e.g.
                 exa, firecrawl, parallel)
               example: exa
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           required:
             - id
             - upstream_id
@@ -9500,13 +9721,14 @@ components:
         error:
           $ref: '#/components/schemas/GoneResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -9524,10 +9746,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -9569,8 +9791,9 @@ components:
             - deepseek/deepseek-r1-0528:free
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         allowed_providers:
           description: List of allowed provider IDs
           example:
@@ -9579,8 +9802,9 @@ components:
             - google
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         content_filter_builtins:
           description: >-
             Builtin content filters applied to requests. Includes PII detectors
@@ -9591,8 +9815,9 @@ components:
               slug: email
           items:
             $ref: '#/components/schemas/ContentFilterBuiltinEntry'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         content_filters:
           description: Custom regex content filters applied to request messages
           example:
@@ -9601,8 +9826,9 @@ components:
               pattern: \b(sk-[a-zA-Z0-9]{48})\b
           items:
             $ref: '#/components/schemas/ContentFilterEntry'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         created_at:
           description: ISO 8601 timestamp of when the guardrail was created
           example: '2025-08-24T10:30:00Z'
@@ -9610,8 +9836,9 @@ components:
         description:
           description: Description of the guardrail
           example: Guardrail for production environment
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         enforce_zdr:
           deprecated: true
           description: >-
@@ -9620,44 +9847,50 @@ components:
             When provided, its value is copied into any of those per-provider
             fields that are not explicitly specified on the request.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_anthropic:
           description: >-
             Whether to enforce zero data retention for Anthropic models. Falls
             back to enforce_zdr when not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_google:
           description: >-
             Whether to enforce zero data retention for Google models. Falls back
             to enforce_zdr when not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_openai:
           description: >-
             Whether to enforce zero data retention for OpenAI models. Falls back
             to enforce_zdr when not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_other:
           description: >-
             Whether to enforce zero data retention for models that are not from
             Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when
             not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_xai:
           description: >-
             Whether to enforce zero data retention for xAI models. Falls back to
             enforce_zdr when not provided.
           example: false
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         id:
           description: Unique identifier for the guardrail
           example: 550e8400-e29b-41d4-a716-446655440000
@@ -9669,22 +9902,25 @@ components:
             - openai/gpt-4o-mini-2024-07-18
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         ignored_providers:
           description: List of provider IDs to exclude from routing
           example:
             - azure
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         limit_usd:
           description: Spending limit in USD
           example: 100
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         name:
           description: Name of the guardrail
           example: Production Guardrail
@@ -9694,8 +9930,9 @@ components:
         updated_at:
           description: ISO 8601 timestamp of when the guardrail was last updated
           example: '2025-08-24T15:45:00Z'
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         workspace_id:
           description: The workspace ID this guardrail belongs to.
           example: 0df9e665-d932-5740-b2c7-b52af166bc11
@@ -9714,16 +9951,16 @@ components:
         - monthly
         - null
       example: monthly
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ImageConfig:
       additionalProperties:
         anyOf:
           - type: string
           - format: double
             type: number
-          - items:
-              nullable: true
+          - items: {}
             type: array
       description: >-
         Provider-specific image configuration options. Keys and values vary by
@@ -9784,8 +10021,9 @@ components:
         provider_tag:
           description: Provider tag for request-side selection
           example: bytedance
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         supported_parameters:
           allOf:
             - $ref: '#/components/schemas/SupportedParameters'
@@ -9908,8 +10146,9 @@ components:
 
             - false: use only the primary/custom provider, and return the
             upstream error if it's unavailable.
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         ignore:
           description: >-
             List of provider slugs to ignore. If provided, this list is merged
@@ -9921,8 +10160,9 @@ components:
             anyOf:
               - $ref: '#/components/schemas/ProviderName'
               - type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         only:
           description: >-
             List of provider slugs to allow. If provided, this list is merged
@@ -9934,8 +10174,9 @@ components:
             anyOf:
               - $ref: '#/components/schemas/ProviderName'
               - type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         options:
           allOf:
             - $ref: '#/components/schemas/ProviderOptions'
@@ -9957,13 +10198,14 @@ components:
             anyOf:
               - $ref: '#/components/schemas/ProviderName'
               - type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         sort:
           anyOf:
             - $ref: '#/components/schemas/ProviderSort'
             - $ref: '#/components/schemas/ProviderSortConfig'
-            - nullable: true
+            - type: 'null'
           description: >-
             The sorting strategy to use for this request, if "order" is not
             specified. When set, no load balancing is performed.
@@ -10163,8 +10405,9 @@ components:
             - high
             - low
             - null
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         input_image_mask:
           properties:
             file_id:
@@ -10231,8 +10474,7 @@ components:
           - type: string
           - format: double
             type: number
-          - items:
-              nullable: true
+          - items: {}
             type: array
       description: >-
         Configuration for the openrouter:image_generation server tool. Accepts
@@ -10272,26 +10514,31 @@ components:
           description: The tokens generated
           type: integer
         completion_tokens_details:
-          nullable: true
           properties:
             audio_tokens:
               description: Tokens generated by the model for audio output.
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             image_tokens:
               description: Tokens generated by the model for image output.
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             reasoning_tokens:
               description: Tokens generated by the model for reasoning.
-              nullable: true
-              type: integer
-          type: object
+              type:
+                - integer
+                - 'null'
+          type:
+            - object
+            - 'null'
         cost:
           description: Cost of the completion
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         cost_details:
           $ref: '#/components/schemas/CostDetails'
         is_byok:
@@ -10300,68 +10547,80 @@ components:
         iterations:
           items:
             $ref: '#/components/schemas/AnthropicUsageIteration'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         prompt_tokens:
           description: Including images, input audio, and tools if any
           type: integer
         prompt_tokens_details:
           description: Breakdown of tokens used in the prompt.
-          nullable: true
           properties:
             audio_tokens:
               description: Tokens used for input audio.
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             cache_write_tokens:
               description: >-
                 Tokens written to cache. Only returned for models with explicit
                 caching and cache write pricing.
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             cached_tokens:
               description: Tokens cached by the endpoint.
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             file_tokens:
               description: Tokens used for input files/documents.
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             video_tokens:
               description: Tokens used for input video.
-              nullable: true
-              type: integer
-          type: object
+              type:
+                - integer
+                - 'null'
+          type:
+            - object
+            - 'null'
         server_tool_use:
           description: Usage for server-side tool execution (e.g., web search)
-          nullable: true
           properties:
             tool_calls_executed:
               description: >-
                 Number of OpenRouter server tool calls that executed and
                 produced a result.
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             tool_calls_requested:
               description: >-
                 Total number of OpenRouter server-orchestrated tool calls the
                 model requested, across all tool types. Provider-native tools
                 (e.g. native web search) are not counted here.
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             web_search_requests:
               description: >-
                 Number of web searches performed by server-side tools. For
                 server-orchestrated tool calls a web search is also counted in
                 tool_calls_requested; provider-native web search may report
                 web_search_requests only. Do not sum the two.
-              nullable: true
-              type: integer
-          type: object
+              type:
+                - integer
+                - 'null'
+          type:
+            - object
+            - 'null'
         service_tier:
           description: The service tier used by the upstream provider for this request
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         speed:
           $ref: '#/components/schemas/AnthropicSpeed'
         total_tokens:
@@ -10412,19 +10671,22 @@ components:
           properties:
             code:
               description: Provider error code, when supplied
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             message:
               description: Provider error message
               type: string
             param:
               description: Request parameter associated with the error, when supplied
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             type:
               description: Provider error type, when supplied
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           required:
             - message
           type: object
@@ -10693,20 +10955,23 @@ components:
     IncompleteDetails:
       example:
         reason: max_output_tokens
-      nullable: true
       properties:
         reason:
           enum:
             - max_output_tokens
             - content_filter
           type: string
-      type: object
+      type:
+        - object
+        - 'null'
     IncompleteEvent:
       description: Event emitted when a response is incomplete
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -10716,6 +10981,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: incomplete
           temperature: null
           tool_choice: auto
@@ -10741,8 +11007,10 @@ components:
       description: Event emitted when a response is in progress
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -10752,6 +11020,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: in_progress
           temperature: null
           tool_choice: auto
@@ -10812,8 +11081,9 @@ components:
         file_data:
           type: string
         file_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         file_url:
           type: string
         filename:
@@ -10840,8 +11110,9 @@ components:
             - original
           type: string
         image_url:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - input_image
@@ -10875,8 +11146,9 @@ components:
               - $ref: '#/components/schemas/InputFile'
               - $ref: '#/components/schemas/InputAudio'
               - $ref: '#/components/schemas/InputVideo'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         id:
           type: string
         role:
@@ -10949,7 +11221,7 @@ components:
                                     #/components/schemas/OpenAIResponsesRefusalContent
                             type: array
                           - type: string
-                          - nullable: true
+                          - type: 'null'
                     type: object
                 description: An output message item
                 example:
@@ -10967,8 +11239,9 @@ components:
                       summary:
                         items:
                           $ref: '#/components/schemas/ReasoningSummaryText'
-                        nullable: true
-                        type: array
+                        type:
+                          - array
+                          - 'null'
                     type: object
                 description: An output item containing reasoning
                 example:
@@ -11090,8 +11363,9 @@ components:
         - qwen3
         - null
       example: chatml
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     InternalServerResponse:
       description: Internal Server Error - Unexpected server error
       example:
@@ -11102,13 +11376,14 @@ components:
         error:
           $ref: '#/components/schemas/InternalServerResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -11123,10 +11398,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -11160,8 +11435,9 @@ components:
         assigned_by:
           description: User ID of who made the assignment
           example: user_abc123
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         created_at:
           description: ISO 8601 timestamp of when the assignment was created
           example: '2025-08-24T10:30:00Z'
@@ -11312,6 +11588,7 @@ components:
               p99: 0.85
             max_completion_tokens: 4096
             max_prompt_tokens: 8192
+            model_id: openai/gpt-4
             model_name: GPT-4
             name: 'OpenAI: GPT-4'
             pricing:
@@ -11321,7 +11598,7 @@ components:
               request: '0'
             provider_name: OpenAI
             quantization: fp16
-            status: default
+            status: 0
             supported_parameters:
               - temperature
               - top_p
@@ -11344,11 +11621,7 @@ components:
         architecture:
           allOf:
             - $ref: '#/components/schemas/ModelArchitecture'
-            - example:
-                instruct_type: chatml
-                modality: text
-                tokenizer: GPT
-              properties:
+            - properties:
                 input_modalities:
                   description: Supported input modalities
                   items:
@@ -11359,17 +11632,18 @@ components:
                 modality:
                   description: Primary modality of the model
                   example: text
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 output_modalities:
                   description: Supported output modalities
                   items:
                     $ref: '#/components/schemas/OutputModality'
                   type: array
                 tokenizer:
-                  allOf:
+                  anyOf:
                     - $ref: '#/components/schemas/ModelGroup'
-                    - nullable: true
+                    - type: 'null'
               required:
                 - tokenizer
                 - instruct_type
@@ -11687,18 +11961,21 @@ components:
                 type: string
               type: object
             timeout_ms:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             type:
               enum:
                 - exec
               type: string
             user:
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             working_directory:
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           required:
             - type
             - command
@@ -11736,9 +12013,9 @@ components:
         output:
           type: string
         status:
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolCallStatus'
-            - nullable: true
+            - type: 'null'
         type:
           enum:
             - local_shell_call_output
@@ -11789,11 +12066,13 @@ components:
         approve:
           type: boolean
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         reason:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - mcp_approval_response
@@ -11816,15 +12095,17 @@ components:
         arguments:
           type: string
         error:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         id:
           type: string
         name:
           type: string
         output:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         server_label:
           type: string
         type:
@@ -11854,8 +12135,9 @@ components:
         type: mcp_list_tools
       properties:
         error:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         id:
           type: string
         server_label:
@@ -11863,14 +12145,13 @@ components:
         tools:
           items:
             properties:
-              annotations:
-                nullable: true
+              annotations: {}
               description:
-                nullable: true
-                type: string
+                type:
+                  - string
+                  - 'null'
               input_schema:
-                additionalProperties:
-                  nullable: true
+                additionalProperties: {}
                 type: object
               name:
                 type: string
@@ -11909,7 +12190,7 @@ components:
                     type: string
                   type: array
               type: object
-            - nullable: true
+            - type: 'null'
         authorization:
           type: string
         connector_id:
@@ -11926,8 +12207,9 @@ components:
         headers:
           additionalProperties:
             type: string
-          nullable: true
-          type: object
+          type:
+            - object
+            - 'null'
         require_approval:
           anyOf:
             - properties:
@@ -11952,7 +12234,7 @@ components:
             - enum:
                 - never
               type: string
-            - nullable: true
+            - type: 'null'
         server_description:
           type: string
         server_label:
@@ -11979,8 +12261,9 @@ components:
         assigned_by:
           description: User ID of who made the assignment
           example: user_abc123
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         created_at:
           description: ISO 8601 timestamp of when the assignment was created
           example: '2025-08-24T10:30:00Z'
@@ -12024,8 +12307,7 @@ components:
         type: advisor_tool_result
       properties:
         content:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         tool_use_id:
           type: string
@@ -12125,8 +12407,9 @@ components:
               type: object
             - properties:
                 content:
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 type:
                   enum:
                     - compaction_delta
@@ -12150,6 +12433,7 @@ components:
       description: Event sent when a new content block starts
       example:
         content_block:
+          citations: []
           text: ''
           type: text
         index: 0
@@ -12173,8 +12457,9 @@ components:
             - $ref: '#/components/schemas/AnthropicAdvisorToolResult'
             - properties:
                 content:
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 type:
                   enum:
                     - compaction
@@ -12214,12 +12499,18 @@ components:
       description: Event sent when the message metadata changes (e.g., stop_reason)
       example:
         delta:
+          container: null
           stop_details: null
           stop_reason: end_turn
           stop_sequence: null
         type: message_delta
         usage:
+          cache_creation_input_tokens: null
+          cache_read_input_tokens: null
+          input_tokens: null
           output_tokens: 15
+          output_tokens_details: null
+          server_tool_use: null
       properties:
         delta:
           properties:
@@ -12230,8 +12521,9 @@ components:
             stop_reason:
               $ref: '#/components/schemas/ORAnthropicStopReason'
             stop_sequence:
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           required:
             - container
             - stop_details
@@ -12247,14 +12539,17 @@ components:
             cache_creation:
               $ref: '#/components/schemas/AnthropicCacheCreation'
             cache_creation_input_tokens:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             cache_read_input_tokens:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             input_tokens:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             iterations:
               items:
                 $ref: '#/components/schemas/AnthropicUsageIteration'
@@ -12264,7 +12559,6 @@ components:
             output_tokens_details:
               $ref: '#/components/schemas/AnthropicOutputTokensDetails'
             server_tool_use:
-              nullable: true
               properties:
                 web_fetch_requests:
                   type: integer
@@ -12273,7 +12567,9 @@ components:
               required:
                 - web_search_requests
                 - web_fetch_requests
-              type: object
+              type:
+                - object
+                - 'null'
           required:
             - input_tokens
             - output_tokens
@@ -12352,8 +12648,7 @@ components:
         - error
       type: object
     MessagesFallbackParam:
-      additionalProperties:
-        nullable: true
+      additionalProperties: {}
       description: >-
         Fallback model to try when the primary model fails or refuses. Only the
         `model` field is supported; per-attempt overrides are rejected.
@@ -12384,8 +12679,7 @@ components:
                         $ref: '#/components/schemas/AnthropicCacheControlDirective'
                       id:
                         type: string
-                      input:
-                        nullable: true
+                      input: {}
                       name:
                         type: string
                       type:
@@ -12466,8 +12760,7 @@ components:
                         $ref: '#/components/schemas/AnthropicCacheControlDirective'
                       id:
                         type: string
-                      input:
-                        nullable: true
+                      input: {}
                       name:
                         type: string
                       type:
@@ -12521,8 +12814,9 @@ components:
                       cache_control:
                         $ref: '#/components/schemas/AnthropicCacheControlDirective'
                       content:
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       type:
                         enum:
                           - compaction
@@ -12563,18 +12857,17 @@ components:
             - max
             - null
           example: medium
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         format:
           description: >-
             A schema to specify Claude's output format in responses. See
             [structured
             outputs](https://platform.claude.com/docs/en/build-with-claude/structured-outputs).
-          nullable: true
           properties:
             schema:
-              additionalProperties:
-                nullable: true
+              additionalProperties: {}
               type: object
             type:
               enum:
@@ -12583,7 +12876,9 @@ components:
           required:
             - type
             - schema
-          type: object
+          type:
+            - object
+            - 'null'
         task_budget:
           description: >-
             Task budget for an agentic turn. The model sees a countdown of
@@ -12592,12 +12887,12 @@ components:
           example:
             total: 400000
             type: tokens
-          nullable: true
           properties:
             remaining:
               minimum: 0
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             total:
               minimum: 20000
               type: integer
@@ -12608,7 +12903,9 @@ components:
           required:
             - type
             - total
-          type: object
+          type:
+            - object
+            - 'null'
       type: object
     MessagesPingEvent:
       description: Keep-alive ping event
@@ -12635,7 +12932,6 @@ components:
         cache_control:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
         context_management:
-          nullable: true
           properties:
             edits:
               items:
@@ -12649,12 +12945,13 @@ components:
                           - items:
                               type: string
                             type: array
-                          - nullable: true
+                          - type: 'null'
                       exclude_tools:
                         items:
                           type: string
-                        nullable: true
-                        type: array
+                        type:
+                          - array
+                          - 'null'
                       keep:
                         $ref: '#/components/schemas/AnthropicToolUsesKeep'
                       trigger:
@@ -12697,16 +12994,19 @@ components:
                     type: object
                   - properties:
                       instructions:
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       pause_after_compaction:
                         type: boolean
                       trigger:
-                        allOf:
-                          - $ref: '#/components/schemas/AnthropicInputTokensTrigger'
-                          - nullable: true
-                            properties: {}
-                            type: object
+                        anyOf:
+                          - allOf:
+                              - $ref: >-
+                                  #/components/schemas/AnthropicInputTokensTrigger
+                              - properties: {}
+                                type: object
+                          - type: 'null'
                         example:
                           type: input_tokens
                           value: 100000
@@ -12718,7 +13018,9 @@ components:
                       - type
                     type: object
               type: array
-          type: object
+          type:
+            - object
+            - 'null'
         fallbacks:
           description: >-
             Fallback models to try if the primary model fails or refuses, in
@@ -12729,20 +13031,23 @@ components:
             - model: claude-opus-4-8
           items:
             $ref: '#/components/schemas/MessagesFallbackParam'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         max_tokens:
           type: integer
         messages:
           items:
             $ref: '#/components/schemas/MessagesMessageParam'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         metadata:
           properties:
             user_id:
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           type: object
         model:
           type: string
@@ -12907,16 +13212,15 @@ components:
                   description:
                     type: string
                   input_schema:
-                    additionalProperties:
-                      nullable: true
+                    additionalProperties: {}
                     properties:
-                      properties:
-                        nullable: true
+                      properties: {}
                       required:
                         items:
                           type: string
-                        nullable: true
-                        type: array
+                        type:
+                          - array
+                          - 'null'
                       type:
                         default: object
                         type: string
@@ -12965,18 +13269,21 @@ components:
                   allowed_domains:
                     items:
                       type: string
-                    nullable: true
-                    type: array
+                    type:
+                      - array
+                      - 'null'
                   blocked_domains:
                     items:
                       type: string
-                    nullable: true
-                    type: array
+                    type:
+                      - array
+                      - 'null'
                   cache_control:
                     $ref: '#/components/schemas/AnthropicCacheControlDirective'
                   max_uses:
-                    nullable: true
-                    type: integer
+                    type:
+                      - integer
+                      - 'null'
                   name:
                     enum:
                       - web_search
@@ -12997,18 +13304,21 @@ components:
                   allowed_domains:
                     items:
                       type: string
-                    nullable: true
-                    type: array
+                    type:
+                      - array
+                      - 'null'
                   blocked_domains:
                     items:
                       type: string
-                    nullable: true
-                    type: array
+                    type:
+                      - array
+                      - 'null'
                   cache_control:
                     $ref: '#/components/schemas/AnthropicCacheControlDirective'
                   max_uses:
-                    nullable: true
-                    type: integer
+                    type:
+                      - integer
+                      - 'null'
                   name:
                     enum:
                       - web_search
@@ -13029,9 +13339,9 @@ components:
                   cache_control:
                     $ref: '#/components/schemas/AnthropicCacheControlDirective'
                   caching:
-                    allOf:
+                    anyOf:
                       - $ref: '#/components/schemas/AnthropicCacheControlDirective'
-                      - nullable: true
+                      - type: 'null'
                   defer_loading:
                     type: boolean
                   max_uses:
@@ -13057,8 +13367,7 @@ components:
               - $ref: '#/components/schemas/MessagesSearchModelsServerTool'
               - $ref: '#/components/schemas/WebFetchServerTool'
               - $ref: '#/components/schemas/OpenRouterWebSearchServerTool'
-              - additionalProperties:
-                  nullable: true
+              - additionalProperties: {}
                 properties:
                   type:
                     type: string
@@ -13091,12 +13400,10 @@ components:
         - $ref: '#/components/schemas/BaseMessagesResult'
         - properties:
             context_management:
-              nullable: true
               properties:
                 applied_edits:
                   items:
-                    additionalProperties:
-                      nullable: true
+                    additionalProperties: {}
                     properties:
                       type:
                         type: string
@@ -13106,7 +13413,9 @@ components:
                   type: array
               required:
                 - applied_edits
-              type: object
+              type:
+                - object
+                - 'null'
             openrouter_metadata:
               $ref: '#/components/schemas/OpenRouterMetadata'
             provider:
@@ -13117,8 +13426,9 @@ components:
                 - properties:
                     cost:
                       format: double
-                      nullable: true
-                      type: number
+                      type:
+                        - number
+                        - 'null'
                     cost_details:
                       $ref: '#/components/schemas/CostDetails'
                     is_byok:
@@ -13128,8 +13438,9 @@ components:
                         $ref: '#/components/schemas/AnthropicUsageIteration'
                       type: array
                     service_tier:
-                      nullable: true
-                      type: string
+                      type:
+                        - string
+                        - 'null'
                     speed:
                       $ref: '#/components/schemas/AnthropicSpeed'
                   type: object
@@ -13140,6 +13451,7 @@ components:
                 inference_geo: null
                 input_tokens: 100
                 output_tokens: 50
+                output_tokens_details: null
                 server_tool_use: null
                 service_tier: standard
           type: object
@@ -13166,6 +13478,7 @@ components:
           inference_geo: null
           input_tokens: 12
           output_tokens: 15
+          output_tokens_details: null
           server_tool_use: null
           service_tier: standard
     MessagesSearchModelsServerTool:
@@ -13190,6 +13503,7 @@ components:
       description: Event sent at the start of a streaming message
       example:
         message:
+          container: null
           content: []
           id: msg_01XFDUDYJgAACzvnptvVoYEL
           model: claude-sonnet-4-5-20250929
@@ -13199,8 +13513,15 @@ components:
           stop_sequence: null
           type: message
           usage:
+            cache_creation: null
+            cache_creation_input_tokens: null
+            cache_read_input_tokens: null
+            inference_geo: null
             input_tokens: 12
             output_tokens: 0
+            output_tokens_details: null
+            server_tool_use: null
+            service_tier: standard
         type: message_start
       properties:
         message:
@@ -13233,7 +13554,6 @@ components:
                 - Lynn 2
                 - Lynn
                 - Mancer
-                - Meta
                 - Modal
                 - Nineteen
                 - OctoAI
@@ -13296,6 +13616,7 @@ components:
                 - Liquid
                 - Mara
                 - Mancer 2
+                - Meta
                 - Minimax
                 - ModelRun
                 - Mistral
@@ -13328,6 +13649,7 @@ components:
                 - Stealth
                 - StreamLake
                 - Switchpoint
+                - Tencent
                 - Tenstorrent
                 - Together
                 - Upstage
@@ -13347,10 +13669,8 @@ components:
               type: string
             stop_details:
               $ref: '#/components/schemas/AnthropicRefusalStopDetails'
-            stop_reason:
-              nullable: true
-            stop_sequence:
-              nullable: true
+            stop_reason: {}
+            stop_sequence: {}
             type:
               enum:
                 - message
@@ -13373,6 +13693,7 @@ components:
                 inference_geo: null
                 input_tokens: 100
                 output_tokens: 50
+                output_tokens_details: null
                 server_tool_use: null
                 service_tier: standard
           required:
@@ -13524,8 +13845,9 @@ components:
         context_length:
           description: Maximum context length in tokens
           example: 8192
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         created:
           description: Unix timestamp of when the model was created
           example: 1692901234
@@ -13543,13 +13865,15 @@ components:
             The date after which the model may be removed. ISO 8601 date string
             (YYYY-MM-DD) or null if no expiration.
           example: '2025-06-01'
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         hugging_face_id:
           description: Hugging Face model identifier, if applicable
           example: microsoft/DialoGPT-medium
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         id:
           description: Unique identifier for the model
           example: openai/gpt-4
@@ -13559,8 +13883,9 @@ components:
             The date up to which the model was trained on data. ISO 8601 date
             string (YYYY-MM-DD) or null if unknown.
           example: '2024-10-01'
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         links:
           $ref: '#/components/schemas/ModelLinks'
         name:
@@ -13585,8 +13910,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         top_provider:
           $ref: '#/components/schemas/TopProviderInfo'
       required:
@@ -13625,8 +13951,9 @@ components:
         modality:
           description: Primary modality of the model
           example: text->text
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         output_modalities:
           description: Supported output modalities
           items:
@@ -13751,8 +14078,9 @@ components:
             values are accepted.
           items:
             $ref: '#/components/schemas/ReasoningEffort'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         supports_max_tokens:
           description: >-
             Present and `true` when the model accepts `reasoning.max_tokens` in
@@ -13774,12 +14102,18 @@ components:
             output_modalities:
               - text
             tokenizer: GPT
+          canonical_slug: openai/gpt-4
           context_length: 8192
           created: 1692901234
+          default_parameters: null
           description: >-
             GPT-4 is a large multimodal model that can solve difficult problems
             with greater accuracy.
+          expiration_date: null
           id: openai/gpt-4
+          knowledge_cutoff: null
+          links:
+            details: /api/v1/models/openai/gpt-4/endpoints
           name: GPT-4
           per_request_limits: null
           pricing:
@@ -13791,6 +14125,7 @@ components:
             - temperature
             - top_p
             - max_tokens
+          supported_voices: null
           top_provider:
             context_length: 8192
             is_moderated: true
@@ -13878,8 +14213,9 @@ components:
                 URL for the next page of results, or null if this is the last
                 page
               example: /api/v1/models?offset=500&limit=500
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           required:
             - next
           type: object
@@ -13969,28 +14305,31 @@ components:
               - direct
               - programmatic
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         defer_loading:
           type: boolean
         description:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         name:
           type: string
         output_schema:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         parameters:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         strict:
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         type:
           enum:
             - function
@@ -14039,13 +14378,14 @@ components:
         error:
           $ref: '#/components/schemas/NotFoundResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -14060,10 +14400,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -14095,8 +14435,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -14140,8 +14481,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -14208,8 +14550,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -14248,8 +14591,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -14318,8 +14662,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             database:
@@ -14369,8 +14714,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -14437,8 +14783,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -14485,8 +14832,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -14645,7 +14993,6 @@ components:
     ObservabilityFilterRulesConfig:
       description: Optional structured filter rules controlling which events are forwarded.
       example: null
-      nullable: true
       properties:
         enabled:
           default: true
@@ -14656,11 +15003,12 @@ components:
           type: array
       required:
         - groups
-      type: object
+      type:
+        - object
+        - 'null'
     ObservabilityFilterRulesConfigNullable:
       description: Optional structured filter rules controlling which events are forwarded.
       example: null
-      nullable: true
       properties:
         enabled:
           default: true
@@ -14671,7 +15019,9 @@ components:
           type: array
       required:
         - groups
-      type: object
+      type:
+        - object
+        - 'null'
     ObservabilityGrafanaDestination:
       example:
         api_key_hashes: null
@@ -14698,8 +15048,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -14738,8 +15089,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -14806,8 +15158,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             baseUrl:
@@ -14846,8 +15199,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -14914,8 +15268,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -14962,8 +15317,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15009,7 +15365,7 @@ components:
         api_key_hashes: null
         config:
           licenseKey: '****...AbCd'
-          region: US
+          region: us
         created_at: '2025-08-24T10:30:00Z'
         enabled: true
         filter_rules: null
@@ -15029,8 +15385,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             headers:
@@ -15068,8 +15425,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15136,8 +15494,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -15177,8 +15536,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15243,8 +15603,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             endpoint:
@@ -15278,8 +15639,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15345,8 +15707,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -15381,8 +15744,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15448,8 +15812,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -15485,8 +15850,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15553,8 +15919,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             accessKeyId:
@@ -15616,8 +15983,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15662,6 +16030,7 @@ components:
       example:
         api_key_hashes: null
         config:
+          dsn: https://abc123@o0.ingest.sentry.io/0
           otlpEndpoint: https://o0.ingest.sentry.io/api/0/otlp
         created_at: '2025-08-24T10:30:00Z'
         enabled: true
@@ -15682,8 +16051,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             dsn:
@@ -15719,8 +16089,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15786,8 +16157,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             account:
@@ -15835,8 +16207,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -15904,8 +16277,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             apiKey:
@@ -15948,8 +16322,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -16014,8 +16389,9 @@ components:
           example: null
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
           properties:
             headers:
@@ -16051,8 +16427,9 @@ components:
         name:
           description: Human-readable name for the destination.
           example: Production Langfuse
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         privacy_mode:
           description: >-
             When true, request/response bodies are not forwarded to this
@@ -16203,8 +16580,9 @@ components:
         call_id:
           type: string
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         output:
           anyOf:
             - type: string
@@ -16221,9 +16599,9 @@ components:
                   - $ref: '#/components/schemas/InputFile'
               type: array
         status:
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolCallStatus'
-            - nullable: true
+            - type: 'null'
         type:
           enum:
             - function_call_output
@@ -16495,8 +16873,9 @@ components:
         - disabled
         - null
       example: auto
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     OpenAIResponsesUsage:
       example:
         input_tokens: 100
@@ -16512,8 +16891,9 @@ components:
         input_tokens_details:
           properties:
             cache_write_tokens:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             cached_tokens:
               type: integer
           required:
@@ -16593,8 +16973,10 @@ components:
       description: Event emitted when a response is created
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -16604,6 +16986,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: in_progress
           temperature: null
           tool_choice: auto
@@ -16621,8 +17004,10 @@ components:
       description: Event emitted when a response is in progress
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -16632,6 +17017,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: in_progress
           temperature: null
           tool_choice: auto
@@ -16678,8 +17064,9 @@ components:
                 $ref: '#/components/schemas/OutputItems'
               type: array
             service_tier:
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
             text:
               $ref: '#/components/schemas/TextExtendedConfig'
             usage:
@@ -16687,8 +17074,10 @@ components:
           type: object
       description: Complete non-streaming response from the Responses API
       example:
+        completed_at: 1704067210
         created_at: 1704067200
         error: null
+        frequency_penalty: null
         id: resp-abc123
         incomplete_details: null
         instructions: null
@@ -16706,6 +17095,7 @@ components:
             status: completed
             type: message
         parallel_tool_calls: true
+        presence_penalty: null
         status: completed
         temperature: null
         tool_choice: auto
@@ -16767,8 +17157,9 @@ components:
             $ref: '#/components/schemas/PipelineStage'
           type: array
         region:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         requested:
           type: string
         strategy:
@@ -16846,15 +17237,17 @@ components:
           code_execution_20260120: '#/components/schemas/AnthropicCodeExecution20260120Caller'
           direct: '#/components/schemas/AnthropicDirectCaller'
         propertyName: type
-      example: null
+      example:
+        type: direct
       oneOf:
         - $ref: '#/components/schemas/AnthropicDirectCaller'
         - $ref: '#/components/schemas/AnthropicCodeExecution20250825Caller'
         - $ref: '#/components/schemas/AnthropicCodeExecution20260120Caller'
-        - nullable: true
+        - type: 'null'
     ORAnthropicServerToolUseBlock:
       example:
-        caller: null
+        caller:
+          type: direct
         id: srvtoolu_01abc
         input: {}
         name: advisor
@@ -16864,8 +17257,7 @@ components:
           $ref: '#/components/schemas/ORAnthropicNullableCaller'
         id:
           type: string
-        input:
-          nullable: true
+        input: {}
         name:
           type: string
         type:
@@ -16888,8 +17280,9 @@ components:
         - compaction
         - null
       example: end_turn
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     OutputAdvisorServerToolItem:
       description: An openrouter:advisor server tool output item
       example:
@@ -17122,8 +17515,7 @@ components:
         status: completed
         type: computer_call
       properties:
-        action:
-          nullable: true
+        action: {}
         call_id:
           type: string
         id:
@@ -17419,8 +17811,9 @@ components:
           description: >-
             The generated image as a base64-encoded string or URL, matching
             OpenAI image_generation_call format
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         revisedPrompt:
           type: string
         status:
@@ -17693,8 +18086,9 @@ components:
           type: string
         result:
           default: null
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         status:
           $ref: '#/components/schemas/ImageGenerationStatus'
         type:
@@ -17719,8 +18113,9 @@ components:
             $ref: '#/components/schemas/ReasoningTextContent'
           type: array
         encrypted_content:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         id:
           type: string
         status:
@@ -17857,8 +18252,9 @@ components:
                     - open_page
                   type: string
                 url:
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
               required:
                 - type
               type: object
@@ -17939,8 +18335,7 @@ components:
           enum:
             - openrouter:memory
           type: string
-        value:
-          nullable: true
+        value: {}
       required:
         - status
         - type
@@ -17971,7 +18366,7 @@ components:
             - enum:
                 - final_answer
               type: string
-            - nullable: true
+            - type: 'null'
           description: >-
             The phase of an assistant message. Use `commentary` for an
             intermediate assistant message and `final_answer` for the final
@@ -18044,15 +18439,17 @@ components:
             content:
               items:
                 $ref: '#/components/schemas/ReasoningTextContent'
-              nullable: true
-              type: array
+              type:
+                - array
+                - 'null'
             format:
               $ref: '#/components/schemas/ReasoningFormat'
             signature:
               description: A signature for the reasoning content, used for verification
               example: EvcBCkgIChABGAIqQKkSDbRuVEQUk9qN1odC098l9SEj...
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           type: object
       description: An output item containing reasoning
       example:
@@ -18117,11 +18514,13 @@ components:
                 type: string
               type: array
             max_output_length:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             timeout_ms:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
           required:
             - commands
             - max_output_length
@@ -18165,8 +18564,9 @@ components:
         id:
           type: string
         max_output_length:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         output:
           items:
             properties:
@@ -18479,13 +18879,14 @@ components:
         error:
           $ref: '#/components/schemas/PayloadTooLargeResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -18500,10 +18901,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -18518,13 +18919,14 @@ components:
         error:
           $ref: '#/components/schemas/PaymentRequiredResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -18539,10 +18941,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -18580,23 +18982,27 @@ components:
         p50:
           description: Maximum p50 latency (seconds)
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         p75:
           description: Maximum p75 latency (seconds)
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         p90:
           description: Maximum p90 latency (seconds)
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         p99:
           description: Maximum p99 latency (seconds)
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
       type: object
     PercentileStats:
       description: >-
@@ -18608,7 +19014,6 @@ components:
         p75: 35.2
         p90: 48.7
         p99: 85.3
-      nullable: true
       properties:
         p50:
           description: Median (50th percentile)
@@ -18635,7 +19040,9 @@ components:
         - p75
         - p90
         - p99
-      type: object
+      type:
+        - object
+        - 'null'
     PercentileThroughputCutoffs:
       description: >-
         Percentile-based throughput cutoffs. All specified cutoffs must be met
@@ -18647,30 +19054,33 @@ components:
         p50:
           description: Minimum p50 throughput (tokens/sec)
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         p75:
           description: Minimum p75 throughput (tokens/sec)
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         p90:
           description: Minimum p90 throughput (tokens/sec)
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         p99:
           description: Minimum p99 throughput (tokens/sec)
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
       type: object
     PerRequestLimits:
       description: Per-request token limits
       example:
         completion_tokens: 1000
         prompt_tokens: 1000
-      nullable: true
       properties:
         completion_tokens:
           description: Maximum completion tokens per request
@@ -18683,7 +19093,9 @@ components:
       required:
         - prompt_tokens
         - completion_tokens
-      type: object
+      type:
+        - object
+        - 'null'
     PipelineStage:
       example:
         data:
@@ -18700,11 +19112,11 @@ components:
       properties:
         cost_usd:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         data:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         guardrail_id:
           type: string
@@ -18740,7 +19152,6 @@ components:
       example:
         content: Expected response
         type: content
-      nullable: true
       properties:
         content:
           anyOf:
@@ -18755,7 +19166,9 @@ components:
       required:
         - type
         - content
-      type: object
+      type:
+        - object
+        - 'null'
     PredictionContentText:
       description: Text content part for a predicted output.
       example:
@@ -18777,7 +19190,7 @@ components:
         - format: double
           type: number
         - $ref: '#/components/schemas/PercentileLatencyCutoffs'
-        - nullable: true
+        - type: 'null'
       description: >-
         Preferred maximum latency (in seconds). Can be a number (applies to p50)
         or an object with percentile-specific cutoffs. Endpoints above the
@@ -18790,7 +19203,7 @@ components:
         - format: double
           type: number
         - $ref: '#/components/schemas/PercentileThroughputCutoffs'
-        - nullable: true
+        - type: 'null'
       description: >-
         Preferred minimum throughput (in tokens per second). Can be a number
         (applies to p50) or an object with percentile-specific cutoffs.
@@ -18817,14 +19230,17 @@ components:
         created_at:
           type: string
         creator_user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         description:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         designated_version_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         id:
           type: string
         name:
@@ -18834,13 +19250,15 @@ components:
         status:
           $ref: '#/components/schemas/PresetStatus'
         status_updated_at:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         updated_at:
           type: string
         workspace_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - id
         - creator_user_id
@@ -18869,11 +19287,9 @@ components:
         system_prompt: You are a helpful assistant.
         updated_at: '2026-04-20T10:00:00Z'
         version: 1
-      nullable: true
       properties:
         config:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         created_at:
           type: string
@@ -18884,8 +19300,9 @@ components:
         preset_id:
           type: string
         system_prompt:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         updated_at:
           type: string
         version:
@@ -18899,7 +19316,9 @@ components:
         - config
         - created_at
         - updated_at
-      type: object
+      type:
+        - object
+        - 'null'
     PresetStatus:
       description: The status of a preset.
       enum:
@@ -19004,27 +19423,32 @@ components:
         region: California
         timezone: America/Los_Angeles
         type: approximate
-      nullable: true
       properties:
         city:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         country:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         region:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         timezone:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - approximate
           type: string
       required:
         - type
-      type: object
+      type:
+        - object
+        - 'null'
     PricingOverride:
       description: >-
         A conditional override of the base pricing. An entry applies only when
@@ -19090,7 +19514,6 @@ components:
         automatically.
       example:
         mode: explicit
-      nullable: true
       properties:
         mode:
           enum:
@@ -19098,7 +19521,9 @@ components:
           type: string
       required:
         - mode
-      type: object
+      type:
+        - object
+        - 'null'
     PromptCacheOptions:
       description: >-
         Request-level prompt-cache controls. `mode: "explicit"` disables
@@ -19108,18 +19533,20 @@ components:
       example:
         mode: explicit
         ttl: 30m
-      nullable: true
       properties:
         mode:
           enum:
             - explicit
           type: string
         ttl:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - mode
-      type: object
+      type:
+        - object
+        - 'null'
     PromptInjectionScanScope:
       description: >-
         Which message roles to scan for prompt injection. Only applies to the
@@ -19131,7 +19558,6 @@ components:
       type: string
     ProviderName:
       enum:
-        - Meta
         - AkashML
         - AI21
         - AionLabs
@@ -19182,6 +19608,7 @@ components:
         - Liquid
         - Mara
         - Mancer 2
+        - Meta
         - Minimax
         - ModelRun
         - Mistral
@@ -19214,6 +19641,7 @@ components:
         - Stealth
         - StreamLake
         - Switchpoint
+        - Tencent
         - Tenstorrent
         - Together
         - Upstage
@@ -19238,496 +19666,376 @@ components:
           max_tokens: 1000
       properties:
         01ai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         ai21:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         aion-labs:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         akashml:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         alibaba:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         amazon-bedrock:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         amazon-nova:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         ambient:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         anthropic:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         anyscale:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         arcee-ai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         atlas-cloud:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         atoma:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         avian:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         azure:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         baidu:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         baseten:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         black-forest-labs:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         byteplus:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         centml:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         cerebras:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         chutes:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         cirrascale:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         clarifai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         cloudflare:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         cohere:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         crofai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         crucible:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         crusoe:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         darkbloom:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         decart:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         deepgram:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         deepinfra:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         deepseek:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         dekallm:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         digitalocean:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         enfer:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         fake-provider:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         featherless:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         fireworks:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         friendli:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         gmicloud:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         google-ai-studio:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         google-vertex:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         gopomelo:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         groq:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         heygen:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         huggingface:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         hyperbolic:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         hyperbolic-quantized:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         inception:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         inceptron:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         inferact-vllm:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         inference-net:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         infermatic:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         inflection:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         inocloud:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         io-net:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         ionstream:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         klusterai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         krea:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         lambda:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         lepton:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         liquid:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         lynn:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         lynn-private:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         mancer:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         mancer-old:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         mara:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         meta:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         minimax:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         mistral:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         modal:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         modelrun:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         modular:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         moonshotai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         morph:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         ncompass:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         nebius:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         nex-agi:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         nextbit:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         nineteen:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         novita:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         nvidia:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         octoai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         open-inference:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         openai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         parasail:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         perceptron:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         perplexity:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         phala:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         poolside:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         quiver:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         recraft:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         recursal:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         reflection:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         reka:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         relace:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         replicate:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         sail-research:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         sakana:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         sambanova:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         sambanova-cloaked:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         seed:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         sf-compute:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         siliconflow:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         sourceful:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         stealth:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         stepfun:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         streamlake:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         switchpoint:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         targon:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
+          type: object
+        tencent:
+          additionalProperties: {}
           type: object
         tenstorrent:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         together:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         together-lite:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         ubicloud:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         upstage:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         venice:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         wafer:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         wandb:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         xai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         xiaomi:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         z-ai:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
       type: object
     ProviderOverloadedResponse:
@@ -19740,13 +20048,14 @@ components:
         error:
           $ref: '#/components/schemas/ProviderOverloadedResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -19761,10 +20070,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -19776,7 +20085,6 @@ components:
         routing preference.
       example:
         allow_fallbacks: true
-      nullable: true
       properties:
         allow_fallbacks:
           description: >
@@ -19787,8 +20095,9 @@ components:
 
             - false: use only the primary/custom provider, and return the
             upstream error if it's unavailable.
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         data_collection:
           description: >-
             Data collection setting. If no available model provider meets the
@@ -19804,16 +20113,18 @@ components:
             - allow
             - null
           example: allow
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         enforce_distillable_text:
           description: >-
             Whether to restrict routing to only models that allow text
             distillation. When true, only models where the author has allowed
             distillation will be used.
           example: true
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         ignore:
           description: >-
             List of provider slugs to ignore. If provided, this list is merged
@@ -19825,8 +20136,9 @@ components:
             anyOf:
               - $ref: '#/components/schemas/ProviderName'
               - type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         max_price:
           description: >-
             The object specifying the maximum price you want to pay for this
@@ -19859,8 +20171,9 @@ components:
             anyOf:
               - $ref: '#/components/schemas/ProviderName'
               - type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         order:
           description: >-
             An ordered list of provider slugs. The router will attempt to use
@@ -19875,8 +20188,9 @@ components:
             anyOf:
               - $ref: '#/components/schemas/ProviderName'
               - type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         preferred_max_latency:
           $ref: '#/components/schemas/PreferredMaxLatency'
         preferred_min_throughput:
@@ -19885,21 +20199,23 @@ components:
           description: A list of quantization levels to filter the provider by.
           items:
             $ref: '#/components/schemas/Quantization'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         require_parameters:
           description: >-
             Whether to filter providers to only those that support the
             parameters you've provided. If this setting is omitted or set to
             false, then providers will receive only the parameters they support,
             and ignore the rest.
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         sort:
           anyOf:
             - $ref: '#/components/schemas/ProviderSort'
             - $ref: '#/components/schemas/ProviderSortConfig'
-            - nullable: true
+            - type: 'null'
           description: >-
             The sorting strategy to use for this request, if "order" is not
             specified. When set, no load balancing is performed.
@@ -19910,9 +20226,12 @@ components:
             endpoints. When true, only endpoints that do not retain prompts will
             be used.
           example: true
-          nullable: true
-          type: boolean
-      type: object
+          type:
+            - boolean
+            - 'null'
+      type:
+        - object
+        - 'null'
     ProviderResponse:
       description: Details of a provider response for a generation attempt
       example:
@@ -19964,7 +20283,6 @@ components:
             - Lynn 2
             - Lynn
             - Mancer
-            - Meta
             - Modal
             - Nineteen
             - OctoAI
@@ -20027,6 +20345,7 @@ components:
             - Liquid
             - Mara
             - Mancer 2
+            - Meta
             - Minimax
             - ModelRun
             - Mistral
@@ -20059,6 +20378,7 @@ components:
             - Stealth
             - StreamLake
             - Switchpoint
+            - Tencent
             - Tenstorrent
             - Together
             - Upstage
@@ -20086,8 +20406,9 @@ components:
         status:
           description: HTTP status code from the provider
           example: 200
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
       required:
         - status
       type: object
@@ -20115,8 +20436,9 @@ components:
             - exacto
             - null
           example: price
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         partition:
           description: >-
             Partitioning strategy for sorting: "model" (default) groups
@@ -20127,8 +20449,9 @@ components:
             - none
             - null
           example: model
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       type: object
     PublicEndpoint:
       description: Information about a specific model endpoint
@@ -20172,11 +20495,13 @@ components:
         latency_last_30m:
           $ref: '#/components/schemas/PercentileStats'
         max_completion_tokens:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         max_prompt_tokens:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         model_id:
           description: The unique identifier for the model (permaslug)
           example: openai/gpt-4
@@ -20261,9 +20586,9 @@ components:
         provider_name:
           $ref: '#/components/schemas/ProviderName'
         quantization:
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/Quantization'
-            - nullable: true
+            - type: 'null'
         status:
           $ref: '#/components/schemas/EndpointStatus'
         supported_parameters:
@@ -20288,20 +20613,23 @@ components:
             requests / (successful + error requests) * 100. Rate-limited
             requests are excluded. Returns null if insufficient data.
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         uptime_last_30m:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         uptime_last_5m:
           description: >-
             Uptime percentage over the last 5 minutes, calculated as successful
             requests / (successful + error requests) * 100. Rate-limited
             requests are excluded. Returns null if insufficient data.
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
       required:
         - name
         - model_id
@@ -20532,17 +20860,20 @@ components:
         - meta
       type: object
     ReasoningConfig:
-      allOf:
-        - $ref: '#/components/schemas/BaseReasoningConfig'
-        - nullable: true
-          properties:
-            enabled:
-              nullable: true
-              type: boolean
-            max_tokens:
-              nullable: true
-              type: integer
-          type: object
+      anyOf:
+        - allOf:
+            - $ref: '#/components/schemas/BaseReasoningConfig'
+            - properties:
+                enabled:
+                  type:
+                    - boolean
+                    - 'null'
+                max_tokens:
+                  type:
+                    - integer
+                    - 'null'
+              type: object
+        - type: 'null'
       description: Configuration for reasoning mode in the response
       example:
         enabled: true
@@ -20559,8 +20890,9 @@ components:
         - current_turn
         - null
       example: all_turns
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ReasoningDeltaEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningDeltaEvent'
@@ -20585,8 +20917,9 @@ components:
         format:
           $ref: '#/components/schemas/ReasoningFormat'
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         index:
           type: integer
         type:
@@ -20614,15 +20947,17 @@ components:
         format:
           $ref: '#/components/schemas/ReasoningFormat'
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         index:
           type: integer
         result:
           type: string
         tool_call_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         tool_name:
           type: string
         type:
@@ -20646,8 +20981,9 @@ components:
         format:
           $ref: '#/components/schemas/ReasoningFormat'
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         index:
           type: integer
         summary:
@@ -20672,16 +21008,19 @@ components:
         format:
           $ref: '#/components/schemas/ReasoningFormat'
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         index:
           type: integer
         signature:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         text:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - reasoning.text
@@ -20734,8 +21073,9 @@ components:
         - none
         - null
       example: medium
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ReasoningFormat:
       enum:
         - unknown
@@ -20747,8 +21087,9 @@ components:
         - google-gemini-v1
         - null
       example: unknown
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ReasoningItem:
       allOf:
         - $ref: '#/components/schemas/OutputItemReasoning'
@@ -20756,13 +21097,15 @@ components:
             content:
               items:
                 $ref: '#/components/schemas/ReasoningTextContent'
-              nullable: true
-              type: array
+              type:
+                - array
+                - 'null'
             format:
               $ref: '#/components/schemas/ReasoningFormat'
             signature:
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           type: object
       description: Reasoning output item with signature and format extensions
       example:
@@ -20781,8 +21124,9 @@ components:
         - pro
         - null
       example: standard
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ReasoningSummaryPartAddedEvent:
       allOf:
         - $ref: '#/components/schemas/BaseReasoningSummaryPartAddedEvent'
@@ -20861,8 +21205,9 @@ components:
         - detailed
         - null
       example: auto
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ReasoningTextContent:
       example:
         text: Let me think step by step about this problem...
@@ -20915,8 +21260,9 @@ components:
       example:
         session_id: abc-def-ghi
         user_id: '123'
-      nullable: true
-      type: object
+      type:
+        - object
+        - 'null'
     RequestTimeoutResponse:
       description: Request Timeout - Operation exceeded time limit
       example:
@@ -20927,13 +21273,14 @@ components:
         error:
           $ref: '#/components/schemas/RequestTimeoutResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -20948,10 +21295,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -21049,7 +21396,6 @@ components:
       example:
         code: rate_limit_exceeded
         message: Rate limit exceeded. Please try again later.
-      nullable: true
       properties:
         code:
           enum:
@@ -21078,7 +21424,9 @@ components:
       required:
         - code
         - message
-      type: object
+      type:
+        - object
+        - 'null'
     ResponsesRequest:
       description: Request schema for Responses endpoint
       example:
@@ -21100,34 +21448,40 @@ components:
         top_p: 0.9
       properties:
         background:
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         cache_control:
           $ref: '#/components/schemas/AnthropicCacheControlDirective'
         debug:
           $ref: '#/components/schemas/ChatDebugOptions'
         frequency_penalty:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         image_config:
           $ref: '#/components/schemas/ImageConfig'
         include:
           items:
             $ref: '#/components/schemas/ResponseIncludesEnum'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         input:
           $ref: '#/components/schemas/Inputs'
         instructions:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         max_output_tokens:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         max_tool_calls:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         metadata:
           $ref: '#/components/schemas/RequestMetadata'
         modalities:
@@ -21147,8 +21501,9 @@ components:
             type: string
           type: array
         parallel_tool_calls:
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         plugins:
           description: >-
             Plugins you want to enable for this request, including their
@@ -21179,16 +21534,21 @@ components:
           type: array
         presence_penalty:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         previous_response_id:
-          nullable: true
-          type: string
+          description: >-
+            Not supported. The Responses API is stateless: no responses are
+            stored, so a previous response cannot be referenced. Requests with a
+            non-null value are rejected with a 400 error. Send the full
+            conversation history in `input` instead.
         prompt:
           $ref: '#/components/schemas/StoredPromptTemplate'
         prompt_cache_key:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         prompt_cache_options:
           $ref: '#/components/schemas/PromptCacheOptions'
         provider:
@@ -21198,8 +21558,9 @@ components:
         route:
           $ref: '#/components/schemas/DeprecatedRoute'
         safety_identifier:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         service_tier:
           default: auto
           enum:
@@ -21209,8 +21570,9 @@ components:
             - priority
             - scale
             - null
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         session_id:
           description: >-
             A unique identifier for grouping related requests (e.g., a
@@ -21233,8 +21595,9 @@ components:
           type: boolean
         temperature:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         text:
           $ref: '#/components/schemas/TextExtendedConfig'
         tool_choice:
@@ -21294,12 +21657,14 @@ components:
         top_k:
           type: integer
         top_logprobs:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         top_p:
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         trace:
           $ref: '#/components/schemas/TraceConfig'
         truncation:
@@ -21317,7 +21682,12 @@ components:
     ResponsesStreamingResponse:
       example:
         data:
+          content_index: 0
           delta: Hello
+          item_id: item-1
+          logprobs: []
+          output_index: 0
+          sequence_number: 4
           type: response.output_text.delta
       properties:
         data:
@@ -21343,8 +21713,7 @@ components:
         - status
       type: object
     RouterParams:
-      additionalProperties:
-        nullable: true
+      additionalProperties: {}
       example:
         version_group: anthropic/claude-sonnet-4
       properties:
@@ -21437,30 +21806,34 @@ components:
         tool_calls_executed: 2
         tool_calls_requested: 2
         web_search_requests: 2
-      nullable: true
       properties:
         tool_calls_executed:
           description: >-
             Number of OpenRouter server tool calls that executed and produced a
             result.
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         tool_calls_requested:
           description: >-
             Total number of OpenRouter server-orchestrated tool calls the model
             requested, across all tool types. Provider-native tools (e.g. native
             web search) are not counted here.
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         web_search_requests:
           description: >-
             Number of web searches performed by server-side tools. For
             server-orchestrated tool calls a web search is also counted in
             tool_calls_requested; provider-native web search may report
             web_search_requests only. Do not sum the two.
-          nullable: true
-          type: integer
-      type: object
+          type:
+            - integer
+            - 'null'
+      type:
+        - object
+        - 'null'
     ServiceTier:
       enum:
         - auto
@@ -21470,8 +21843,9 @@ components:
         - scale
         - null
       example: default
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     ServiceUnavailableResponse:
       description: Service Unavailable - Service temporarily unavailable
       example:
@@ -21482,13 +21856,14 @@ components:
         error:
           $ref: '#/components/schemas/ServiceUnavailableResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -21503,10 +21878,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -21530,25 +21905,27 @@ components:
                 type: string
               type: array
             max_output_length:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             timeout_ms:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
           required:
             - commands
           type: object
         call_id:
           type: string
-        environment:
-          nullable: true
+        environment: {}
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         status:
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolCallStatus'
-            - nullable: true
+            - type: 'null'
         type:
           enum:
             - shell_call
@@ -21572,22 +21949,25 @@ components:
         call_id:
           type: string
         id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         max_output_length:
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         output:
           items:
-            additionalProperties:
-              nullable: true
+            additionalProperties: {}
             properties:
               content:
-                nullable: true
-                type: string
+                type:
+                  - string
+                  - 'null'
               exit_code:
-                nullable: true
-                type: integer
+                type:
+                  - integer
+                  - 'null'
               type:
                 type: string
             required:
@@ -21595,9 +21975,9 @@ components:
             type: object
           type: array
         status:
-          allOf:
+          anyOf:
             - $ref: '#/components/schemas/ToolCallStatus'
-            - nullable: true
+            - type: 'null'
         type:
           enum:
             - shell_call_output
@@ -21854,7 +22234,6 @@ components:
         id: prompt-abc123
         variables:
           name: John
-      nullable: true
       properties:
         id:
           type: string
@@ -21865,11 +22244,14 @@ components:
               - $ref: '#/components/schemas/InputText'
               - $ref: '#/components/schemas/InputImage'
               - $ref: '#/components/schemas/InputFile'
-          nullable: true
-          type: object
+          type:
+            - object
+            - 'null'
       required:
         - id
-      type: object
+      type:
+        - object
+        - 'null'
     StreamEvents:
       description: Union of all possible event types emitted during response streaming
       discriminator:
@@ -21921,8 +22303,10 @@ components:
         propertyName: type
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -21932,6 +22316,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: in_progress
           temperature: null
           tool_choice: auto
@@ -21994,8 +22379,10 @@ components:
       description: Event emitted when a response has completed successfully
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -22005,6 +22392,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: completed
           temperature: null
           tool_choice: auto
@@ -22022,8 +22410,10 @@ components:
       description: Event emitted when a response has failed
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -22033,6 +22423,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: failed
           temperature: null
           tool_choice: auto
@@ -22050,8 +22441,10 @@ components:
       description: Event emitted when a response is incomplete
       example:
         response:
+          completed_at: null
           created_at: 1704067200
           error: null
+          frequency_penalty: null
           id: resp-abc123
           incomplete_details: null
           instructions: null
@@ -22061,6 +22454,7 @@ components:
           object: response
           output: []
           parallel_tool_calls: true
+          presence_penalty: null
           status: incomplete
           temperature: null
           tool_choice: auto
@@ -22409,8 +22803,7 @@ components:
         - end
       type: object
     SubagentNestedTool:
-      additionalProperties:
-        nullable: true
+      additionalProperties: {}
       description: >-
         A tool made available to the subagent. Only OpenRouter server tools
         (e.g. openrouter:web_search) are supported; function tools are rejected
@@ -22420,8 +22813,7 @@ components:
         type: openrouter:web_search
       properties:
         parameters:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           type: object
         type:
           type: string
@@ -22827,8 +23219,9 @@ components:
             - low
             - medium
             - null
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       type: object
     TextDeltaEvent:
       allOf:
@@ -22878,8 +23271,9 @@ components:
                 - xhigh
                 - max
                 - null
-              nullable: true
-              type: string
+              type:
+                - string
+                - 'null'
           type: object
       description: Text output configuration including format and verbosity
       example:
@@ -22911,8 +23305,7 @@ components:
               type: string
         tools:
           items:
-            additionalProperties:
-              nullable: true
+            additionalProperties: {}
             type: object
           type: array
         type:
@@ -22934,13 +23327,14 @@ components:
         error:
           $ref: '#/components/schemas/TooManyRequestsResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -22955,10 +23349,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -22973,8 +23367,9 @@ components:
         context_length:
           description: Context length from the top provider
           example: 8192
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
         is_moderated:
           description: Whether the top provider moderates content
           example: true
@@ -22982,14 +23377,14 @@ components:
         max_completion_tokens:
           description: Maximum completion tokens from the top provider
           example: 4096
-          nullable: true
-          type: integer
+          type:
+            - integer
+            - 'null'
       required:
         - is_moderated
       type: object
     TraceConfig:
-      additionalProperties:
-        nullable: true
+      additionalProperties: {}
       description: >-
         Metadata for observability and tracing. Known keys (trace_id,
         trace_name, span_name, generation_name, parent_span_id) have special
@@ -23016,8 +23411,9 @@ components:
         - disabled
         - null
       example: auto
-      nullable: true
-      type: string
+      type:
+        - string
+        - 'null'
     UnauthorizedResponse:
       description: Unauthorized - Authentication required or invalid credentials
       example:
@@ -23028,13 +23424,14 @@ components:
         error:
           $ref: '#/components/schemas/UnauthorizedResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -23049,10 +23446,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -23064,7 +23461,6 @@ components:
       example:
         completion: '0.000015'
         prompt: '0.000003'
-      nullable: true
       properties:
         completion:
           description: Cost per output token (USD, decimal string).
@@ -23077,7 +23473,9 @@ components:
       required:
         - prompt
         - completion
-      type: object
+      type:
+        - object
+        - 'null'
     UnifiedBenchmarksAAItem:
       example:
         agentic_index: 58.3
@@ -23094,14 +23492,16 @@ components:
           description: Artificial Analysis Agentic Index composite score. Higher is better.
           example: 58.3
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         coding_index:
           description: Artificial Analysis Coding Index composite score. Higher is better.
           example: 65.8
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         display_name:
           description: Model name as listed on Artificial Analysis.
           example: GPT-4o
@@ -23112,8 +23512,9 @@ components:
             better.
           example: 71.2
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         model_permaslug:
           description: Stable OpenRouter model identifier.
           example: openai/gpt-4o
@@ -23162,8 +23563,9 @@ components:
           description: Average generation time in milliseconds.
           example: 3200
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         category:
           description: Category within the arena.
           example: codecategories
@@ -23194,20 +23596,25 @@ components:
           description: Placement distribution from tournament matches.
           properties:
             first_place:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             fourth_place:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             second_place:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             third_place:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
             total:
-              nullable: true
-              type: integer
+              type:
+                - integer
+                - 'null'
           required:
             - first_place
             - second_place
@@ -23256,8 +23663,9 @@ components:
           example: >-
             Source: Artificial Analysis (artificialanalysis.ai) via OpenRouter
             (openrouter.ai/rankings).
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         model_count:
           description: Number of unique models in the response.
           type: integer
@@ -23268,19 +23676,22 @@ components:
             - design-arena
             - null
           example: artificial-analysis
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         source_url:
           description: >-
             URL of the upstream data source, or null when results span multiple
             sources.
           example: https://artificialanalysis.ai
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         task_type:
           description: The task_type filter applied, or null if showing all.
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         version:
           description: Dataset version.
           enum:
@@ -23343,13 +23754,14 @@ components:
         error:
           $ref: '#/components/schemas/UnprocessableEntityResponseErrorData'
         openrouter_metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
         user_id:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - error
       type: object
@@ -23364,10 +23776,10 @@ components:
         message:
           type: string
         metadata:
-          additionalProperties:
-            nullable: true
-          nullable: true
-          type: object
+          additionalProperties: {}
+          type:
+            - object
+            - 'null'
       required:
         - code
         - message
@@ -23385,8 +23797,9 @@ components:
           items:
             type: string
           maxItems: 100
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         allowed_user_ids:
           description: >-
             Optional allowlist of user IDs that may use this credential. `null`
@@ -23395,8 +23808,9 @@ components:
           items:
             type: string
           maxItems: 100
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         disabled:
           description: Whether this credential is disabled.
           example: false
@@ -23419,8 +23833,9 @@ components:
           description: Optional human-readable name for the credential.
           example: Updated OpenAI Key
           maxLength: 255
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       type: object
     UpdateBYOKKeyResponse:
       example:
@@ -23459,8 +23874,9 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         allowed_providers:
           description: New list of allowed provider IDs
           example:
@@ -23470,8 +23886,9 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         content_filter_builtins:
           description: >-
             Builtin content filters to apply. Set to null to remove. The "flag"
@@ -23483,21 +23900,24 @@ components:
               slug: regex-prompt-injection
           items:
             $ref: '#/components/schemas/ContentFilterBuiltinEntryInput'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         content_filters:
           description: Custom regex content filters to apply. Set to null to remove.
           example: null
           items:
             $ref: '#/components/schemas/ContentFilterEntry'
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         description:
           description: New description for the guardrail
           example: Updated description
           maxLength: 1000
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         enforce_zdr:
           deprecated: true
           description: >-
@@ -23506,44 +23926,50 @@ components:
             When provided, its value is copied into any of those per-provider
             fields that are not explicitly specified on the request.
           example: true
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_anthropic:
           description: >-
             Whether to enforce zero data retention for Anthropic models. Falls
             back to enforce_zdr when not provided.
           example: true
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_google:
           description: >-
             Whether to enforce zero data retention for Google models. Falls back
             to enforce_zdr when not provided.
           example: true
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_openai:
           description: >-
             Whether to enforce zero data retention for OpenAI models. Falls back
             to enforce_zdr when not provided.
           example: true
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_other:
           description: >-
             Whether to enforce zero data retention for models that are not from
             Anthropic, OpenAI, Google, or xAI. Falls back to enforce_zdr when
             not provided.
           example: true
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         enforce_zdr_xai:
           description: >-
             Whether to enforce zero data retention for xAI models. Falls back to
             enforce_zdr when not provided.
           example: true
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         ignored_models:
           description: >-
             Array of model identifiers to exclude from routing (slug or
@@ -23553,8 +23979,9 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         ignored_providers:
           description: List of provider IDs to exclude from routing
           example:
@@ -23562,14 +23989,16 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         limit_usd:
           description: New spending limit in USD
           example: 75
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         name:
           description: New name for the guardrail
           example: Updated Guardrail Name
@@ -23628,11 +24057,11 @@ components:
           items:
             type: string
           minItems: 1
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         config:
-          additionalProperties:
-            nullable: true
+          additionalProperties: {}
           description: >-
             Provider-specific configuration fields to update. Masked values are
             ignored; unset fields keep their current value.
@@ -23701,33 +24130,38 @@ components:
         default_image_model:
           description: Default image model for this workspace
           example: openai/dall-e-3
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         default_provider_sort:
           description: >-
             Default provider sort preference (price, throughput, latency,
             exacto)
           example: price
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         default_text_model:
           description: Default text model for this workspace
           example: openai/gpt-4o
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         description:
           description: New description for the workspace
           example: Updated description
           maxLength: 500
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         io_logging_api_key_ids:
           description: Optional array of API key IDs to filter I/O logging
           example: null
           items:
             type: integer
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         io_logging_sampling_rate:
           description: Sampling rate for I/O logging (0.0001-1)
           example: 1
@@ -23849,39 +24283,42 @@ components:
         - end_index
       type: object
     Usage:
-      allOf:
-        - $ref: '#/components/schemas/OpenAIResponsesUsage'
-        - nullable: true
-          properties:
-            cost:
-              description: Cost of the completion
-              format: double
-              nullable: true
-              type: number
-            cost_details:
-              properties:
-                upstream_inference_cost:
+      anyOf:
+        - allOf:
+            - $ref: '#/components/schemas/OpenAIResponsesUsage'
+            - properties:
+                cost:
+                  description: Cost of the completion
                   format: double
-                  nullable: true
-                  type: number
-                upstream_inference_input_cost:
-                  format: double
-                  type: number
-                upstream_inference_output_cost:
-                  format: double
-                  type: number
-              required:
-                - upstream_inference_input_cost
-                - upstream_inference_output_cost
+                  type:
+                    - number
+                    - 'null'
+                cost_details:
+                  properties:
+                    upstream_inference_cost:
+                      format: double
+                      type:
+                        - number
+                        - 'null'
+                    upstream_inference_input_cost:
+                      format: double
+                      type: number
+                    upstream_inference_output_cost:
+                      format: double
+                      type: number
+                  required:
+                    - upstream_inference_input_cost
+                    - upstream_inference_output_cost
+                  type: object
+                is_byok:
+                  description: >-
+                    Whether a request was made using a Bring Your Own Key
+                    configuration
+                  type: boolean
+                server_tool_use_details:
+                  $ref: '#/components/schemas/ServerToolUseDetails'
               type: object
-            is_byok:
-              description: >-
-                Whether a request was made using a Bring Your Own Key
-                configuration
-              type: boolean
-            server_tool_use_details:
-              $ref: '#/components/schemas/ServerToolUseDetails'
-          type: object
+        - type: 'null'
       description: Token usage information for the response
       example:
         cost: 0.0012
@@ -24046,8 +24483,9 @@ components:
         cost:
           description: The cost of the video generation in USD.
           format: double
-          nullable: true
-          type: number
+          type:
+            - number
+            - 'null'
         is_byok:
           description: >-
             Whether the request was made using a Bring Your Own Key
@@ -24101,13 +24539,15 @@ components:
           type: string
         generate_audio:
           description: Whether the model supports generating audio alongside video
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         hugging_face_id:
           description: Hugging Face model identifier, if applicable
           example: microsoft/DialoGPT-medium
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         id:
           description: Unique identifier for the model
           example: openai/gpt-4
@@ -24120,14 +24560,16 @@ components:
           additionalProperties:
             type: string
           description: Pricing SKUs with provider prefix stripped, values as strings
-          nullable: true
-          type: object
+          type:
+            - object
+            - 'null'
         seed:
           description: >-
             Whether the model supports deterministic generation via seed
             parameter
-          nullable: true
-          type: boolean
+          type:
+            - boolean
+            - 'null'
         supported_aspect_ratios:
           description: Supported output aspect ratios
           items:
@@ -24142,14 +24584,16 @@ components:
               - '21:9'
               - '9:21'
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         supported_durations:
           description: Supported video durations in seconds
           items:
             type: integer
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         supported_frame_images:
           description: Supported frame image types (e.g. first_frame, last_frame)
           items:
@@ -24157,8 +24601,9 @@ components:
               - first_frame
               - last_frame
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         supported_resolutions:
           description: Supported output resolutions
           items:
@@ -24170,8 +24615,9 @@ components:
               - 2K
               - 4K
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         supported_sizes:
           description: Supported output sizes (width x height)
           items:
@@ -24213,8 +24659,9 @@ components:
               - 3840x2160
               - 5040x2160
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
       required:
         - id
         - canonical_slug
@@ -24455,19 +24902,22 @@ components:
           - example.com
         excluded_domains:
           - spam.com
-      nullable: true
       properties:
         allowed_domains:
           items:
             type: string
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         excluded_domains:
           items:
             type: string
-          nullable: true
-          type: array
-      type: object
+          type:
+            - array
+            - 'null'
+      type:
+        - object
+        - 'null'
     WebSearchEngine:
       description: The search engine to use for web search.
       enum:
@@ -24703,25 +25153,30 @@ components:
         region: California
         timezone: America/Los_Angeles
         type: approximate
-      nullable: true
       properties:
         city:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         country:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         region:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         timezone:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - approximate
           type: string
-      type: object
+      type:
+        - object
+        - 'null'
     WebSearchUserLocationServerTool:
       description: Approximate user location for location-biased results.
       example:
@@ -24732,17 +25187,21 @@ components:
         type: approximate
       properties:
         city:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         country:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         region:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         timezone:
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         type:
           enum:
             - approximate
@@ -24773,30 +25232,35 @@ components:
         created_by:
           description: User ID of the workspace creator
           example: user_abc123
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         default_image_model:
           description: Default image model for this workspace
           example: openai/dall-e-3
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         default_provider_sort:
           description: >-
             Default provider sort preference (price, throughput, latency,
             exacto)
           example: price
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         default_text_model:
           description: Default text model for this workspace
           example: openai/gpt-4o
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         description:
           description: Description of the workspace
           example: Production environment workspace
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         id:
           description: Unique identifier for the workspace
           example: 550e8400-e29b-41d4-a716-446655440000
@@ -24809,8 +25273,9 @@ components:
           example: null
           items:
             type: integer
-          nullable: true
-          type: array
+          type:
+            - array
+            - 'null'
         io_logging_sampling_rate:
           description: >-
             Sampling rate for I/O logging (0.0001-1). 1 means 100% of requests
@@ -24841,8 +25306,9 @@ components:
         updated_at:
           description: ISO 8601 timestamp of when the workspace was last updated
           example: '2025-08-24T15:45:00Z'
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
       required:
         - id
         - name
@@ -24893,8 +25359,9 @@ components:
             - monthly
             - null
           example: monthly
-          nullable: true
-          type: string
+          type:
+            - string
+            - 'null'
         updated_at:
           description: ISO 8601 timestamp of when the budget was last updated
           example: '2025-08-24T15:45:00Z'
@@ -25973,8 +26440,9 @@ paths:
                     - plain
                     - null
                   example: S256
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 code_verifier:
                   description: >-
                     The code verifier if code_challenge was used in the
@@ -26007,8 +26475,9 @@ paths:
                   user_id:
                     description: User ID associated with the API key
                     example: user_2yOPcMpKoQhcd4bVgSMlELRaIah
-                    nullable: true
-                    type: string
+                    type:
+                      - string
+                      - 'null'
                 required:
                   - key
                   - user_id
@@ -26091,8 +26560,9 @@ paths:
                   description: Optional expiration time for the API key to be created
                   example: '2027-12-31T23:59:59Z'
                   format: date-time
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 key_label:
                   description: >-
                     Optional custom label for the API key. Defaults to the app
@@ -26412,8 +26882,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -26532,6 +27003,7 @@ paths:
               - stepfun
               - streamlake
               - switchpoint
+              - tencent
               - tenstorrent
               - together
               - upstage
@@ -26955,6 +27427,7 @@ paths:
                 id: chatcmpl-123
                 model: openai/gpt-4
                 object: chat.completion
+                system_fingerprint: fp_44709d6fcb
                 usage:
                   completion_tokens: 10
                   prompt_tokens: 25
@@ -27606,8 +28079,9 @@ paths:
             example: 0
             maximum: 100
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
       responses:
         '200':
           content:
@@ -28353,8 +28827,9 @@ paths:
               limit are omitted, the full list is returned
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: >-
             Maximum number of records to return (max 1000). When both offset and
             limit are omitted, the full list is returned
@@ -28472,7 +28947,7 @@ paths:
                       request: '0'
                     provider_name: OpenAI
                     quantization: fp16
-                    status: default
+                    status: 0
                     supported_parameters:
                       - temperature
                       - top_p
@@ -28508,7 +28983,7 @@ paths:
                         request: '0'
                       provider_name: OpenAI
                       quantization: fp16
-                      status: default
+                      status: 0
                       supported_parameters:
                         - temperature
                         - top_p
@@ -29043,6 +29518,7 @@ paths:
                   cache_discount: null
                   cancelled: false
                   created_at: '2024-07-15T23:33:19.433273+00:00'
+                  data_region: global
                   external_user: user-123
                   finish_reason: stop
                   generation_time: 1200
@@ -29058,15 +29534,18 @@ paths:
                   native_tokens_completion_images: 0
                   native_tokens_prompt: 10
                   native_tokens_reasoning: 5
+                  num_fetches: 0
                   num_input_audio_prompt: 0
                   num_media_completion: 0
                   num_media_prompt: 1
                   num_search_results: 5
                   origin: https://openrouter.ai/
+                  preset_id: a9e8d400-592a-494f-908c-375efa66cafd
                   provider_name: Infermatic
                   provider_responses: null
                   request_id: req-1727282430-aBcDeFgHiJkLmNoPqRsT
                   router: openrouter/auto
+                  service_tier: priority
                   session_id: null
                   streamed: true
                   tokens_completion: 25
@@ -29076,6 +29555,7 @@ paths:
                   upstream_inference_cost: 0.0012
                   usage: 0.0015
                   user_agent: Mozilla/5.0
+                  web_search_engine: exa
               schema:
                 $ref: '#/components/schemas/GenerationResponse'
           description: Returns the request metadata for this generation
@@ -29373,8 +29853,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -29819,8 +30300,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -30079,8 +30561,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -30329,8 +30812,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -30412,8 +30896,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -30866,16 +31351,18 @@ paths:
                           keys, this is the member who created the key. For
                           individual users, this is the user's own ID.
                         example: user_2dHFtVWx2n56w6HkM0000000000
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       expires_at:
                         description: >-
                           ISO 8601 UTC timestamp when the API key expires, or
                           null if no expiration
                         example: '2027-12-31T23:59:59Z'
                         format: date-time
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       include_byok_in_limit:
                         description: >-
                           Whether to include external BYOK usage in the credit
@@ -30903,19 +31390,22 @@ paths:
                         description: Spending limit for the API key in USD
                         example: 100
                         format: double
-                        nullable: true
-                        type: number
+                        type:
+                          - number
+                          - 'null'
                       limit_remaining:
                         description: Remaining spending limit in USD
                         example: 74.5
                         format: double
-                        nullable: true
-                        type: number
+                        type:
+                          - number
+                          - 'null'
                       limit_reset:
                         description: Type of limit reset for the API key
                         example: monthly
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       rate_limit:
                         deprecated: true
                         description: >-
@@ -31041,8 +31531,9 @@ paths:
             description: Number of API keys to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: >-
             Filter API keys by workspace ID. By default, keys in the default
             workspace are returned.
@@ -31170,8 +31661,9 @@ paths:
                             created the key. For individual users, this is the
                             user's own ID.
                           example: user_2dHFtVWx2n56w6HkM0000000000
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         disabled:
                           description: Whether the API key is disabled
                           example: false
@@ -31182,8 +31674,9 @@ paths:
                             null if no expiration
                           example: '2027-12-31T23:59:59Z'
                           format: date-time
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         hash:
                           description: Unique hash identifier for the API key
                           example: >-
@@ -31203,19 +31696,22 @@ paths:
                           description: Spending limit for the API key in USD
                           example: 100
                           format: double
-                          nullable: true
-                          type: number
+                          type:
+                            - number
+                            - 'null'
                         limit_remaining:
                           description: Remaining spending limit in USD
                           example: 74.5
                           format: double
-                          nullable: true
-                          type: number
+                          type:
+                            - number
+                            - 'null'
                         limit_reset:
                           description: Type of limit reset for the API key
                           example: monthly
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         name:
                           description: Name of the API key
                           example: My Production Key
@@ -31225,8 +31721,9 @@ paths:
                             ISO 8601 timestamp of when the API key was last
                             updated
                           example: '2025-08-24T15:45:00Z'
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         usage:
                           description: >-
                             Total OpenRouter credit usage (in USD) for the API
@@ -31351,16 +31848,18 @@ paths:
                     the key.
                   example: user_2dHFtVWx2n56w6HkM0000000000
                   minLength: 1
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 expires_at:
                   description: >-
                     Optional ISO 8601 UTC timestamp when the API key should
                     expire. Must be UTC, other timezones will be rejected
                   example: '2027-12-31T23:59:59Z'
                   format: date-time
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 include_byok_in_limit:
                   description: Whether to include BYOK usage in the limit
                   example: true
@@ -31369,8 +31868,9 @@ paths:
                   description: Optional spending limit for the API key in USD
                   example: 50
                   format: double
-                  nullable: true
-                  type: number
+                  type:
+                    - number
+                    - 'null'
                 limit_reset:
                   description: >-
                     Type of limit reset for the API key (daily, weekly, monthly,
@@ -31382,8 +31882,9 @@ paths:
                     - monthly
                     - null
                   example: monthly
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 name:
                   description: Name for the new API key
                   example: My New API Key
@@ -31516,8 +32017,9 @@ paths:
                           keys, this is the member who created the key. For
                           individual users, this is the user's own ID.
                         example: user_2dHFtVWx2n56w6HkM0000000000
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       disabled:
                         description: Whether the API key is disabled
                         example: false
@@ -31528,8 +32030,9 @@ paths:
                           null if no expiration
                         example: '2027-12-31T23:59:59Z'
                         format: date-time
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       hash:
                         description: Unique hash identifier for the API key
                         example: >-
@@ -31549,19 +32052,22 @@ paths:
                         description: Spending limit for the API key in USD
                         example: 100
                         format: double
-                        nullable: true
-                        type: number
+                        type:
+                          - number
+                          - 'null'
                       limit_remaining:
                         description: Remaining spending limit in USD
                         example: 74.5
                         format: double
-                        nullable: true
-                        type: number
+                        type:
+                          - number
+                          - 'null'
                       limit_reset:
                         description: Type of limit reset for the API key
                         example: monthly
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       name:
                         description: Name of the API key
                         example: My Production Key
@@ -31571,8 +32077,9 @@ paths:
                           ISO 8601 timestamp of when the API key was last
                           updated
                         example: '2025-08-24T15:45:00Z'
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       usage:
                         description: Total OpenRouter credit usage (in USD) for the API key
                         example: 25.5
@@ -31893,8 +32400,9 @@ paths:
                           keys, this is the member who created the key. For
                           individual users, this is the user's own ID.
                         example: user_2dHFtVWx2n56w6HkM0000000000
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       disabled:
                         description: Whether the API key is disabled
                         example: false
@@ -31905,8 +32413,9 @@ paths:
                           null if no expiration
                         example: '2027-12-31T23:59:59Z'
                         format: date-time
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       hash:
                         description: Unique hash identifier for the API key
                         example: >-
@@ -31926,19 +32435,22 @@ paths:
                         description: Spending limit for the API key in USD
                         example: 100
                         format: double
-                        nullable: true
-                        type: number
+                        type:
+                          - number
+                          - 'null'
                       limit_remaining:
                         description: Remaining spending limit in USD
                         example: 74.5
                         format: double
-                        nullable: true
-                        type: number
+                        type:
+                          - number
+                          - 'null'
                       limit_reset:
                         description: Type of limit reset for the API key
                         example: monthly
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       name:
                         description: Name of the API key
                         example: My Production Key
@@ -31948,8 +32460,9 @@ paths:
                           ISO 8601 timestamp of when the API key was last
                           updated
                         example: '2025-08-24T15:45:00Z'
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       usage:
                         description: Total OpenRouter credit usage (in USD) for the API key
                         example: 25.5
@@ -32093,8 +32606,9 @@ paths:
                   description: New spending limit for the API key in USD
                   example: 75
                   format: double
-                  nullable: true
-                  type: number
+                  type:
+                    - number
+                    - 'null'
                 limit_reset:
                   description: >-
                     New limit reset type for the API key (daily, weekly,
@@ -32106,8 +32620,9 @@ paths:
                     - monthly
                     - null
                   example: daily
-                  nullable: true
-                  type: string
+                  type:
+                    - string
+                    - 'null'
                 name:
                   description: New name for the API key
                   example: Updated API Key Name
@@ -32226,8 +32741,9 @@ paths:
                           keys, this is the member who created the key. For
                           individual users, this is the user's own ID.
                         example: user_2dHFtVWx2n56w6HkM0000000000
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       disabled:
                         description: Whether the API key is disabled
                         example: false
@@ -32238,8 +32754,9 @@ paths:
                           null if no expiration
                         example: '2027-12-31T23:59:59Z'
                         format: date-time
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       hash:
                         description: Unique hash identifier for the API key
                         example: >-
@@ -32259,19 +32776,22 @@ paths:
                         description: Spending limit for the API key in USD
                         example: 100
                         format: double
-                        nullable: true
-                        type: number
+                        type:
+                          - number
+                          - 'null'
                       limit_remaining:
                         description: Remaining spending limit in USD
                         example: 74.5
                         format: double
-                        nullable: true
-                        type: number
+                        type:
+                          - number
+                          - 'null'
                       limit_reset:
                         description: Type of limit reset for the API key
                         example: monthly
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       name:
                         description: Name of the API key
                         example: My Production Key
@@ -32281,8 +32801,9 @@ paths:
                           ISO 8601 timestamp of when the API key was last
                           updated
                         example: '2025-08-24T15:45:00Z'
-                        nullable: true
-                        type: string
+                        type:
+                          - string
+                          - 'null'
                       usage:
                         description: Total OpenRouter credit usage (in USD) for the API key
                         example: 25.5
@@ -32428,19 +32949,30 @@ paths:
           content:
             application/json:
               example:
+                container: null
                 content:
-                  - text: >-
+                  - citations: []
+                    text: >-
                       I'm doing well, thank you for asking! How can I help you
                       today?
                     type: text
                 id: msg_abc123
                 model: anthropic/claude-sonnet-4
                 role: assistant
+                stop_details: null
                 stop_reason: end_turn
+                stop_sequence: null
                 type: message
                 usage:
+                  cache_creation: null
+                  cache_creation_input_tokens: null
+                  cache_read_input_tokens: null
+                  inference_geo: null
                   input_tokens: 12
                   output_tokens: 18
+                  output_tokens_details: null
+                  server_tool_use: null
+                  service_tier: standard
               schema:
                 $ref: '#/components/schemas/MessagesResult'
             text/event-stream:
@@ -32636,12 +33168,18 @@ paths:
                     output_modalities:
                       - text
                     tokenizer: GPT
+                  canonical_slug: openai/gpt-4
                   context_length: 8192
                   created: 1692901234
+                  default_parameters: null
                   description: >-
                     GPT-4 is a large multimodal model that can solve difficult
                     problems with greater accuracy.
+                  expiration_date: null
                   id: openai/gpt-4
+                  knowledge_cutoff: null
+                  links:
+                    details: /api/v1/models/openai/gpt-4/endpoints
                   name: GPT-4
                   per_request_limits: null
                   pricing:
@@ -32653,6 +33191,7 @@ paths:
                     - temperature
                     - top_p
                     - max_tokens
+                  supported_voices: null
                   top_provider:
                     context_length: 8192
                     is_moderated: true
@@ -32701,8 +33240,9 @@ paths:
               limit are omitted, the full list is returned
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: >-
             Maximum number of records to return (max 1000). When both offset and
             limit are omitted, the full list is returned
@@ -32862,8 +33402,9 @@ paths:
             description: Minimum prompt price in $/M tokens.
             example: 0
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Maximum prompt price in $/M tokens.
           in: query
           name: max_price
@@ -32872,8 +33413,9 @@ paths:
             description: Maximum prompt price in $/M tokens.
             example: 10
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: >-
             Filter models by architecture/model family (e.g. GPT, Claude,
             Gemini, Llama).
@@ -32961,8 +33503,9 @@ paths:
             description: Minimum completion (output) price in $/M tokens.
             example: 0
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Maximum completion (output) price in $/M tokens.
           in: query
           name: max_output_price
@@ -32971,8 +33514,9 @@ paths:
             description: Maximum completion (output) price in $/M tokens.
             example: 10
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Minimum model age in days since its creation date.
           in: query
           name: min_age_days
@@ -32981,8 +33525,9 @@ paths:
             description: Minimum model age in days since its creation date.
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum model age in days since its creation date.
           in: query
           name: max_age_days
@@ -32991,8 +33536,9 @@ paths:
             description: Maximum model age in days since its creation date.
             example: 90
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Minimum Artificial Analysis intelligence index.
           in: query
           name: min_intelligence_index
@@ -33001,8 +33547,9 @@ paths:
             description: Minimum Artificial Analysis intelligence index.
             example: 50
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Maximum Artificial Analysis intelligence index.
           in: query
           name: max_intelligence_index
@@ -33011,8 +33558,9 @@ paths:
             description: Maximum Artificial Analysis intelligence index.
             example: 100
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Minimum Artificial Analysis coding index.
           in: query
           name: min_coding_index
@@ -33021,8 +33569,9 @@ paths:
             description: Minimum Artificial Analysis coding index.
             example: 50
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Maximum Artificial Analysis coding index.
           in: query
           name: max_coding_index
@@ -33031,8 +33580,9 @@ paths:
             description: Maximum Artificial Analysis coding index.
             example: 100
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Minimum Artificial Analysis agentic index.
           in: query
           name: min_agentic_index
@@ -33041,8 +33591,9 @@ paths:
             description: Minimum Artificial Analysis agentic index.
             example: 50
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Maximum Artificial Analysis agentic index.
           in: query
           name: max_agentic_index
@@ -33051,8 +33602,9 @@ paths:
             description: Maximum Artificial Analysis agentic index.
             example: 100
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: >-
             Minimum tool-calling success rate, as a fraction in [0, 1] (e.g. 0.9
             = 90% of requests finishing with a tool_calls finish reason).
@@ -33066,8 +33618,9 @@ paths:
             example: 0.9
             maximum: 1
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
         - description: Maximum tool-calling success rate, as a fraction in [0, 1].
           in: query
           name: max_tool_success_rate
@@ -33077,8 +33630,9 @@ paths:
             example: 1
             maximum: 1
             minimum: 0
-            nullable: true
-            type: number
+            type:
+              - number
+              - 'null'
       responses:
         '200':
           content:
@@ -33124,11 +33678,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/ModelsListResponse'
             application/rss+xml:
-              example: >-
-                <?xml version="1.0" encoding="UTF-8"?><rss
-                version="2.0"><channel><title>OpenRouter
-                Models</title></channel></rss>
+              example: <rss><channel><title>OpenRouter Models</title></channel></rss>
               schema:
+                example: <rss><channel><title>OpenRouter Models</title></channel></rss>
                 type: string
           description: Returns a list of models or RSS feed
         '400':
@@ -33239,7 +33791,7 @@ paths:
                           request: '0'
                         provider_name: OpenAI
                         quantization: fp16
-                        status: default
+                        status: 0
                         supported_parameters:
                           - temperature
                           - top_p
@@ -33363,8 +33915,9 @@ paths:
               limit are omitted, the full list is returned
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: >-
             Maximum number of records to return (max 1000). When both offset and
             limit are omitted, the full list is returned
@@ -33494,8 +34047,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -33932,8 +34486,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -33955,7 +34510,7 @@ paths:
                     first_name: Jane
                     id: user_2dHFtVWx2n56w6HkM0000000000
                     last_name: Doe
-                    role: member
+                    role: org:member
                 total_count: 25
               schema:
                 properties:
@@ -33970,8 +34525,9 @@ paths:
                         first_name:
                           description: First name of the member
                           example: Jane
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         id:
                           description: User ID of the organization member
                           example: user_2dHFtVWx2n56w6HkM0000000000
@@ -33979,8 +34535,9 @@ paths:
                         last_name:
                           description: Last name of the member
                           example: Doe
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         role:
                           description: Role of the member in the organization
                           enum:
@@ -34066,8 +34623,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -34649,8 +35207,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -35130,8 +35689,9 @@ paths:
                               - ZM
                               - ZW
                             type: string
-                          nullable: true
-                          type: array
+                          type:
+                            - array
+                            - 'null'
                         headquarters:
                           description: >-
                             ISO 3166-1 Alpha-2 country code of the provider
@@ -35388,8 +35948,9 @@ paths:
                             - ZW
                             - null
                           example: US
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         name:
                           description: Display name of the provider
                           example: OpenAI
@@ -35397,8 +35958,9 @@ paths:
                         privacy_policy_url:
                           description: URL to the provider's privacy policy
                           example: https://openai.com/privacy
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         slug:
                           description: URL-friendly identifier for the provider
                           example: openai
@@ -35406,13 +35968,15 @@ paths:
                         status_page_url:
                           description: URL to the provider's status page
                           example: https://status.openai.com
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                         terms_of_service_url:
                           description: URL to the provider's terms of service
                           example: https://openai.com/terms
-                          nullable: true
-                          type: string
+                          type:
+                            - string
+                            - 'null'
                       required:
                         - name
                         - slug
@@ -35758,29 +36322,54 @@ paths:
           content:
             application/json:
               example:
+                completed_at: 1700000010
                 created_at: 1700000000
+                error: null
+                frequency_penalty: null
                 id: resp_abc123
+                incomplete_details: null
+                instructions: null
+                max_output_tokens: null
+                metadata: null
                 model: openai/gpt-4o
                 object: response
                 output:
                   - content:
-                      - text: >-
+                      - annotations: []
+                        text: >-
                           Why did the chicken cross the road? To get to the
                           other side!
                         type: output_text
+                    id: msg-abc123
                     role: assistant
+                    status: completed
                     type: message
+                parallel_tool_calls: true
+                presence_penalty: null
                 status: completed
+                temperature: null
+                tool_choice: auto
+                tools: []
+                top_p: null
                 usage:
-                  completion_tokens: 20
-                  prompt_tokens: 10
+                  input_tokens: 10
+                  input_tokens_details:
+                    cached_tokens: 0
+                  output_tokens: 20
+                  output_tokens_details:
+                    reasoning_tokens: 0
                   total_tokens: 30
               schema:
                 $ref: '#/components/schemas/OpenResponsesResult'
             text/event-stream:
               example:
                 data:
+                  content_index: 0
                   delta: Hello
+                  item_id: item-1
+                  logprobs: []
+                  output_index: 0
+                  sequence_number: 4
                   type: response.output_text.delta
               schema:
                 $ref: '#/components/schemas/ResponsesStreamingResponse'
@@ -36155,8 +36744,9 @@ paths:
             default: 0
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
       responses:
         '200':
           content:
@@ -36298,8 +36888,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit
@@ -36966,8 +37557,9 @@ paths:
             description: Number of records to skip for pagination
             example: 0
             minimum: 0
-            nullable: true
-            type: integer
+            type:
+              - integer
+              - 'null'
         - description: Maximum number of records to return (max 100)
           in: query
           name: limit

@@ -4,6 +4,28 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="July 15, 2026">
+  ### New identity fields in OAuth token responses
+
+  [User objects](/reference/user) now include an `email_verified` boolean next to `person.email`, indicating whether Notion has verified that email address. The field appears anywhere person emails do, including the `owner` in [OAuth token responses](/guides/get-started/authorization) and [List all users](/reference/get-users) results.
+
+  Notion MCP token responses now include top-level `user_id`, `workspace_id`, and `email_domain` fields on successful authorization-code exchanges, so MCP clients can associate a connection with a Notion user and workspace without an extra call. See [Integrating your own MCP client](/guides/mcp/build-mcp-client#step-6-exchange-authorization-code-for-tokens).
+
+  New response fields like these are [backwards-compatible additions](/reference/versioning#what-we-consider-backwards-compatible) and appear on every API version. Parse responses leniently: ignore fields you don't recognize rather than rejecting them.
+
+  ### Notion app links in API responses use the new app domain
+
+  As part of Notion's move from `notion.so` to `notion.com`, the links Notion generates for its own records changed in early June 2026: the `url` values returned for [pages](/reference/page), [databases](/reference/database), and [data sources](/reference/data-source), and the `href` values for page and database [mentions](/reference/rich-text), now point at the Notion app domain with a page path prefix, `https://app.notion.com/p/{page-id}`, instead of `https://www.notion.so/{page-id}`. Existing `notion.so` links continue to open correctly.
+
+  These values are links for people to open in Notion, not stable identifiers: their domain and path format may change again. To reference a record, use its `id` field rather than parsing the URL, and use a page's [`public_url`](/reference/page) to link to its published site. Links authored by users, such as `link.url` in rich text and URL property values, and links to sites published on `notion.site` or custom domains are unchanged.
+
+  ### Search the trash and query archived pages
+
+  [Search](/reference/post-search) accepts a new `filter.in_trash` option to list trashed pages and data sources (databases on API versions before `2025-09-03`). [Query a data source](/reference/query-a-data-source#archived-pages) accepts a top-level `is_archived` body parameter to return archived pages instead of the default non-archived set.
+
+  **SDK support**: `@notionhq/client` [`v5.23.2`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.23.2) adds `filter.in_trash` support to `client.search()`. [`v5.23.1`](https://github.com/makenotion/notion-sdk-js/releases/tag/v5.23.1) exports rich text annotation types and fixes pagination helper type compatibility with endpoint methods under `strictNullChecks`.
+</Update>
+
 <Update label="July 14, 2026">
   ### Longer-lived Notion MCP access tokens
 

@@ -1296,6 +1296,102 @@ const supportAgent = new Agent(components.agent, {
 });
 ```
 
+## Tracing LLM calls with OpenTelemetry[​](#tracing-llm-calls-with-opentelemetry "Direct link to Tracing LLM calls with OpenTelemetry")
+
+When you pass [`experimental_telemetry`](https://ai-sdk.dev/docs/ai-sdk-core/telemetry) to a generate or stream call, the AI SDK emits OpenTelemetry spans with the model, token usage, prompt, and response.
+
+To export them to an OTLP backend, register a tracer provider:
+
+```
+import { trace } from "@opentelemetry/api";
+
+import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
+
+import { resourceFromAttributes } from "@opentelemetry/resources";
+
+import {
+
+  BasicTracerProvider,
+
+  SimpleSpanProcessor,
+
+} from "@opentelemetry/sdk-trace-base";
+
+
+
+const tracerProvider = new BasicTracerProvider({
+
+  resource: resourceFromAttributes({ "service.name": "convex-agent" }),
+
+  spanProcessors: [
+
+    new SimpleSpanProcessor(
+
+      new OTLPTraceExporter({
+
+        url: process.env.OTEL_EXPORTER_OTLP_TRACES_ENDPOINT,
+
+        headers: {
+
+          Authorization: `Bearer ${process.env.OTEL_EXPORTER_OTLP_TRACES_TOKEN}`,
+
+        },
+
+      }),
+
+    ),
+
+  ],
+
+});
+
+trace.setGlobalTracerProvider(tracerProvider);
+```
+
+Then enable telemetry on the call, and flush the spans before the handler returns so their exports are [awaited](https://docs.convex.dev/understanding/best-practices/#await-all-promises):
+
+```
+export const generateTextWithTelemetry = action({
+
+  args: { prompt: v.string(), threadId: v.string() },
+
+  handler: async (ctx, { prompt, threadId }) => {
+
+    await authorizeThreadAccess(ctx, threadId);
+
+    const result = await agent.generateText(
+
+      ctx,
+
+      { threadId },
+
+      {
+
+        prompt,
+
+        experimental_telemetry: {
+
+          isEnabled: true,
+
+          functionId: "debugging/telemetry",
+
+        },
+
+      },
+
+    );
+
+    await tracerProvider.forceFlush();
+
+    return result.text;
+
+  },
+
+});
+```
+
+See the full example in [debugging/telemetry.ts](https://github.com/get-convex/agent/blob/main/example/convex/debugging/telemetry.ts).
+
 ## Inspecting the database in the dashboard[​](#inspecting-the-database-in-the-dashboard "Direct link to Inspecting the database in the dashboard")
 
 You can go to the Data tab in the dashboard and select the agent component above the table list to see the Agent data. The organization of the tables matches the [schema](https://github.com/get-convex/agent/blob/main/src/component/schema.ts). The most useful tables are:
@@ -40405,7 +40501,7 @@ POST
 
 **Early access:** this API is not yet stable and may change in backwards-incompatible ways without notice. Contact the Convex team before depending on it.
 
-Streams a consistent, resumable export of a deployment's data — either the whole deployment or a subset of components, tables, and columns (see the request body). Streaming export must be enabled on the deployment, and the caller must have the `deployment:data:view` permission.
+Streams a consistent, resumable export of a deployment's data — either the whole deployment or a subset of components, tables, and columns (see the request body). Streaming export must be enabled on the deployment, and the caller must have the `deployment:data:sync` permission.
 
 Call this endpoint repeatedly, passing the `pagination.nextCursor` from each response back in the next request as `cursor`; omit `cursor` on the first call. The cursor is opaque — store and send it back verbatim. Each response contains:
 
@@ -49993,7 +50089,7 @@ Please see our [Free, Starter, and Professional pricing page](https://www.convex
 
 # Usage Limits
 
-Usage limits let you cap how much usage a single deployment can consume per day or calendar month. They're a guardrail against runaway workloads: a scheduled function stuck in a loop, an action hammering a third-party API, or unexpected traffic spike that would otherwise show up on your bill.
+Usage limits allow you to cap how much usage a single deployment can consume per day or calendar month. Usage limits are a guardrail against runaway workloads: a scheduled function stuck in a loop, an action hammering a third-party API, or unexpected traffic spike that would otherwise show up on your bill.
 
 Deployment limits are especially useful on development deployments, where an AI coding agent left running unattended can burn through a lot of usage.
 
@@ -50010,33 +50106,35 @@ Each metric can have two thresholds, each enforced over a daily or monthly windo
 * The **warning threshold** is a soft limit: when it is exceeded, an event is recorded on the deployment's [history page](/dashboard/deployments/history.md).
 * The **disable threshold** is a hard limit: when it is exceeded, the deployment is disabled for the rest of the window, and new function calls return an error explaining that the deployment exceeded a usage limit.
 
-When either threshold is exceeded, Convex emails all team members. Development deployments send no email, so only the disable threshold is available there.
+When either threshold is reached on a Production or Preview deployments, Convex sends a notification email to all members of your team. Development deployments do not receive email notifications.
 
-A deployment disabled by a usage limit is re-enabled automatically when the window rolls over, or as soon as you raise, disable, or delete the limit that tripped.
+A deployment disabled by a usage limit is re-enabled automatically when the window rolls over, or as soon as you raise, disable, or delete the limit that was triggered.
 
 ## Windows[​](#windows "Direct link to Windows")
 
-Limits cover **calendar windows in UTC**, not rolling windows:
+Limits cover **calendar windows in UTC**:
 
 * **Daily** limits reset at midnight UTC.
 * **Monthly** limits reset on the first of the month, at midnight UTC.
 
-For example, a daily disable threshold of 5 GB of database I/O counts all usage since midnight UTC. If the deployment crosses it at 11pm UTC, it is disabled for the remaining hour — not for the next 24 hours — and comes back at midnight.
+For example, a daily disable threshold of 5 GB of database I/O counts all usage since midnight UTC. If the deployment exceeds the threshold at 11pm UTC, it is disabled for the remaining hour, and is re-enabled at midnight UTC.
 
-## Metrics[​](#metrics "Direct link to Metrics")
+## Available Metrics[​](#available-metrics "Direct link to Available Metrics")
 
-| Metric                          | Unit     | What it counts                                                                         |
-| ------------------------------- | -------- | -------------------------------------------------------------------------------------- |
-| Function calls                  | calls    | Query, mutation, action, HTTP action, and file storage calls.                          |
-| Query/Mutation compute          | GB-hours | Compute consumed running queries and mutations.                                        |
-| Action compute (Convex runtime) | GB-hours | Compute consumed running actions in the Convex runtime.                                |
-| Action compute (Node.js)        | GB-hours | Compute consumed running actions in the Node.js runtime.                               |
-| Action compute (CPU)            | GB-hours | CPU time consumed running actions.                                                     |
-| Database I/O                    | GB       | Bandwidth used reading from and writing to the database.                               |
-| Search queries                  | query-GB | Bandwidth used serving text and vector search queries.                                 |
-| Data egress                     | GB       | Bandwidth used serving file downloads, outgoing fetch requests, and log stream egress. |
+The available metrics for usage limits are based on [Convex Pricing](https://www.convex.dev/pricing)
 
-Which compute metrics your team is billed for depends on your plan and deployment class (see [pricing](https://www.convex.dev/pricing)). Limits are enforced on every metric you configure, whether or not you're billed for it.
+The full list of metrics you can configure a usage limit for are:
+
+| Metric                          | Unit     | What it counts                                                                                                                                                         |
+| ------------------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Function calls                  | calls    | Query, mutation, action, HTTP action, and file storage calls.                                                                                                          |
+| Query/Mutation compute          | GB-hours | Compute consumed running queries and mutations. This metric is only applicable to deployments running on dedicated hardware on the Convex Business & Enterprise plans. |
+| Action compute (Convex runtime) | GB-hours | Compute consumed running actions in the Convex runtime.                                                                                                                |
+| Action compute (Node.js)        | GB-hours | Compute consumed running actions in the Node.js runtime.                                                                                                               |
+| Action compute (CPU)            | GB-hours | CPU time consumed running actions. This metric replaces Action compute (Convex runtime) for teams on the Convex Business & Enterprise plans.                           |
+| Database I/O                    | GB       | Bandwidth used reading from and writing to the database.                                                                                                               |
+| Search queries                  | query-GB | Bandwidth used serving text and vector search queries.                                                                                                                 |
+| Data egress                     | GB       | Bandwidth used serving file downloads, outgoing fetch requests, and log stream egress.                                                                                 |
 
 ## Audit log[​](#audit-log "Direct link to Audit log")
 

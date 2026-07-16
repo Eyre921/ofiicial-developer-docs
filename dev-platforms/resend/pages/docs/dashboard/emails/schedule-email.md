@@ -189,6 +189,15 @@ The date can be defined using natural language, such as `"in 1 hour"`, `"tomorro
     "scheduled_at": "in 1 min"
   }'
   ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --scheduled-at "in 1 min"
+  ```
 </CodeGroup>
 
 ## Schedule using date format
@@ -378,6 +387,15 @@ You can also use a date in [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) fo
     "scheduled_at": "2026-08-20T11:52:01.858Z"
   }'
   ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --scheduled-at "2026-08-20T11:52:01.858Z"
+  ```
 </CodeGroup>
 
 ## View a scheduled email
@@ -487,9 +505,14 @@ You can do so with the following method:
     "scheduled_at": "in 1 min"
   }'
   ```
+
+  ```bash CLI {2} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails update 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794 \
+    --scheduled-at "in 1 min"
+  ```
 </CodeGroup>
 
-You can also reschedule an email directly in the Resend dashboard.
+You can also reschedule an email directly in the Resend Dashboard.
 
 <video />
 
@@ -549,6 +572,10 @@ If you need to cancel a scheduled email, you can do so with the following code:
   curl -X POST 'https://api.resend.com/emails/49a3999c-0ce1-4ea6-ab68-afcd6dc2e794/cancel' \
        -H 'Authorization: Bearer re_xxxxxxxxx' \
        -H 'Content-Type: application/json'
+  ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails cancel 49a3999c-0ce1-4ea6-ab68-afcd6dc2e794
   ```
 </CodeGroup>
 

@@ -17629,25 +17629,6 @@ AssemblyAI supports a wide range of languages across our speech-to-text models f
 
 Universal-3.5 Pro supports the following 18 languages. To automatically fall back to Universal-2 for anything outside this set, set `speech_models` to `["universal-3-5-pro", "universal-2"]` and set `language_detection` to `true`.
 
-- Arabic
-- Chinese (Mandarin)
-- Danish
-- Dutch
-- English (Global, Australian, British, US)
-- Finnish
-- French
-- German
-- Hebrew
-- Hindi
-- Italian
-- Japanese
-- Norwegian
-- Portuguese
-- Spanish
-- Swedish
-- Turkish
-- Vietnamese
-
 ### Regional dialects and variants
 
 Universal-3.5 Pro goes beyond standard language support with deep understanding of regional dialects and local variants. Whether your audio features Quebecois French, Mexican Spanish, or Brazilian Portuguese, the model accurately captures speech as it's naturally spoken — including colloquial expressions, local vocabulary, and accent-specific pronunciation patterns.
@@ -32134,15 +32115,24 @@ Pick the variant based on how close the speaker is to the microphone.
 | Near field  | `near-field`  | Headsets, handsets, and other close-talking microphones.                              |
 | Far field   | `far-field`   | Conference rooms, drive-thru speakers, laptop mics, and other distant capture setups. |
 
+## Tuning parameters
+
+Tune how aggressively each variant suppresses background audio with the following parameter.
+
+| Parameter               | Type  | Default | Description                                                                                                                                          |
+| ----------------------- | ----- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `voice_focus_threshold` | float | `0.7`   | Optional. A float between `0.0` and `1.0` that controls how aggressively background audio is suppressed. Higher values are more aggressive. Defaults to `0.7` for both variants. |
+
 ## Quickstart
 
-Set the `voice_focus` connection parameter when you open the WebSocket. Optionally tune `voice_focus_threshold`, a float between `0.0` and `1.0`, to control how aggressively background audio is suppressed. Higher values are more aggressive.
+Set the `voice_focus` connection parameter when you open the WebSocket. See [Tuning parameters](#tuning-parameters) to adjust how aggressively background audio is suppressed.
 
 ```python
 CONNECTION_PARAMS = {
     "sample_rate": 16000,
     "speech_model": "universal-3-5-pro",
     "voice_focus": "near-field",
+    # "voice_focus_threshold": 0.7,  # Optional, defaults to 0.7. Higher is more aggressive.
 }
 ```
 
@@ -32152,6 +32142,7 @@ client.connect(
         sample_rate=16000,
         speech_model="universal-3-5-pro",
         voice_focus="near-field",
+        # voice_focus_threshold=0.7,  # Optional, defaults to 0.7. Higher is more aggressive.
     )
 )
 ```
@@ -32161,6 +32152,7 @@ const CONNECTION_PARAMS = {
   sample_rate: 16000,
   speech_model: "universal-3-5-pro",
   voice_focus: "near-field",
+  // voice_focus_threshold: 0.7, // Optional, defaults to 0.7. Higher is more aggressive.
 };
 ```
 
@@ -32169,6 +32161,7 @@ const transcriber = client.streaming.transcriber({
   sampleRate: 16_000,
   speechModel: "universal-3-5-pro",
   voiceFocus: "near-field",
+  // voiceFocusThreshold: 0.7, // Optional, defaults to 0.7. Higher is more aggressive.
 });
 ```
 
@@ -35977,7 +35970,7 @@ Follow the [upstream repo's README](https://github.com/AssemblyAI/streaming-self
 1. **Get credentials and a license file** from your AssemblyAI representative — an AWS access key scoped to ECR, and a `license.jwt` file. The same license file works for both stacks.
 2. **Install Docker, Docker Compose, and the NVIDIA Container Toolkit.** See the README's [setup section](https://github.com/AssemblyAI/streaming-self-hosting-stack#setup-instructions) for verification commands.
 3. **Authenticate to ECR** with the provided AWS credentials.
-4. **Pick a stack and configure `.env`** with the image references from the repo's [`.env.example`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/.env.example).
+4. **Pick a stack and configure `.env`** with the image references from the repo's [`.env.example`](https://github.com/AssemblyAI/streaming-self-hosting-stack/blob/main/streaming/.env.example).
 5. **Start the stack** with `docker compose up -d` (Universal Streaming) or `docker compose -f docker-compose.u3pro.yml up -d` (Universal-3.5 Pro Streaming).
 
 Universal Streaming ASR containers take roughly **2 minutes** to become ready and log `Ready to serve!`. The Universal-3.5 Pro Streaming ASR container takes roughly **5 minutes** and logs `U3Pro ASR Server ready!`. Health checks may report `unhealthy` during startup — that is expected.
@@ -53479,7 +53472,7 @@ The Voice Agent API officially supports the following output languages, each bac
 
 | Language   | Flag | Recommended voices                                                                                    |
 | ---------- | ---- | ----------------------------------------------------------------------------------------------------- |
-| English    | 🇺🇸 | `alba`, `anna`, `charles`, `eve`, `george`, `jane`, `jean`, `mary`, `michael`, `paul`, `vera`         |
+| English    | 🇺🇸 🇬🇧 | `alba`, `anna`, `charles`, `eve`, `george`, `jane`, `jean`, `mary`, `michael` (🇺🇸), `paul`, `vera` (🇬🇧) |
 | Italian    | 🇮🇹 | `giovanni`                                                                                            |
 | Spanish    | 🇪🇸 | `lola`                                                                                                |
 | German     | 🇩🇪 | `juergen`                                                                                             |
@@ -55639,18 +55632,18 @@ The agent recognizes far more input languages than it speaks. For the authoritat
 In short:
 
 - **Input (recognized):** 18 languages, with native code-switching.
-- **Output (spoken):** 6 officially supported languages — 🇺🇸 English, 🇮🇹 Italian, 🇪🇸 Spanish, 🇩🇪 German, 🇵🇹 Portuguese, and 🇫🇷 French — each backed by at least one voice below with a matching accent. More output languages are [on the roadmap](/voice-agents/voice-agent-api/supported-languages#coming-soon).
+- **Output (spoken):** 6 officially supported languages — 🇺🇸🇬🇧 English, 🇮🇹 Italian, 🇪🇸 Spanish, 🇩🇪 German, 🇵🇹 Portuguese, and 🇫🇷 French — each backed by at least one voice below with a matching accent. More output languages are [on the roadmap](/voice-agents/voice-agent-api/supported-languages#coming-soon).
 
 ## Choose a voice by accent
 
 Each voice has a primary accent:
 
-- For 🇺🇸 **American English** — the right pick for an English agent — choose from [Voices](#voices).
+- For **English** — the right pick for an English agent — choose from [English voices](#english-voices). Most have a 🇺🇸 American accent; `paul` and `vera` have a 🇬🇧 British accent.
 - For a **native accent** in Italian, Spanish, German, Portuguese, or French, choose the matching [language-specific voice](#language-specific-voices).
 
-## Voices
+## English voices
 
-These voices have an American English accent and are the recommended pick for English agents.
+These voices have an English accent and are the recommended pick for English agents.
 
 | Voice      | Accent  | Sample                                                          |
 | ---------- | ------- | --------------------------------------------------------------- |
@@ -55663,8 +55656,8 @@ These voices have an American English accent and are the recommended pick for En
 | `jean`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/jean.mp3" />     |
 | `mary`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/mary.mp3" />     |
 | `michael`  | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/michael.mp3" />  |
-| `paul`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/paul.mp3" />     |
-| `vera`     | 🇺🇸      | <audio controls src="/docs/assets/audio/voices/vera.mp3" />     |
+| `paul`     | 🇬🇧      | <audio controls src="/docs/assets/audio/voices/paul.mp3" />     |
+| `vera`     | 🇬🇧      | <audio controls src="/docs/assets/audio/voices/vera.mp3" />     |
 
 ## Language-specific voices
 

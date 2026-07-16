@@ -202,6 +202,15 @@ Here's how you can add custom tags to your emails.
     ]
   }'
   ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --tags "category=confirm_email"
+  ```
 </CodeGroup>
 
 ## Add tags on the `POST /emails/batch` endpoint

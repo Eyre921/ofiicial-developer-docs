@@ -10,6 +10,8 @@ path: docs/flux-tts/client-messages
 
 # Client Messages
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 All client-to-server traffic on `/v2/speak` is JSON text frames. You stream synthesis text with `Speak`, end a turn with `Flush`, and shut down with `Close`. The server replies on a parallel set of [Server Messages](/docs/flux-tts/server-messages).
 
 A **turn** is one complete agent response, bounded by `Flush`. The server streams a turn's audio as text arrives; only `Flush` completes the turn. For how these messages drive turn state, see [The Speech Lifecycle](/docs/flux-tts/state).

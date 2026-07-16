@@ -1,429 +1,256 @@
 ---
-title: "Manage dedicated endpoints"
+title: "Manage endpoints and deployments"
 source: https://docs.together.ai/docs/dedicated-endpoints/manage
 path: docs/dedicated-endpoints/manage
 ---
 
-Create, start, stop, restart, list, update, and delete dedicated endpoints via the web UI or the Together API.
+Create, update, and delete resources for dedicated model inference.
+
+This page covers the lifecycle operations for dedicated model inference (DMI): creating endpoints and deployments, scaling, stopping, and deleting resources.
+
+The CLI's `tg beta endpoints deploy` command bundles several API/SDK operations into one step for convenience: it creates the endpoint (when you pass a new endpoint name), attaches a deployment to it, and routes 100% of traffic to that deployment. This page shows the individual operations underneath it.
+
+To create your first deployment end-to-end, [follow the quickstart](/docs/dedicated-endpoints/quickstart).
 
 ## Create an endpoint
 
-<Tip>
-  To avoid unexpected charges, you can set an [auto-shutdown](/docs/dedicated-endpoints/settings#auto-shutdown) timer when creating an endpoint. Make sure to review your active deployments periodically in the [models dashboard](https://api.together.ai/models) to stop endpoints you're no longer using.
-</Tip>
+Before you can create a deployment, you must [select a model](/docs/dedicated-endpoints/models), [choose a config](/docs/dedicated-endpoints/configs), and create an endpoint.
 
-<Tabs>
-  <Tab title="CLI / SDK">
-    First, list available hardware options for your model:
+The CLI has no standalone create-endpoint command: `tg beta endpoints deploy` creates the endpoint and its first deployment together (see [Create a deployment](#create-a-deployment) below). To create an empty endpoint on its own, use the SDK or API:
 
-    <CodeGroup>
-      ```shell Shell theme={null}
-      together endpoints hardware --model Qwen/Qwen3.5-9B-FP8
-      ```
+```python Python theme={null}
+from together import Together
 
-      ```python Python theme={null}
-      from together import Together
+client = Together()
+project_id = client.whoami().project_id
 
-      client = Together()
-
-      response = client.endpoints.list_hardware(model="Qwen/Qwen3.5-9B-FP8")
-      for hw in response.data:
-          print(hw.id)
-      ```
-
-      ```typescript TypeScript theme={null}
-      import Together from "together-ai";
-
-      const client = new Together();
-
-      const response = await client.endpoints.listHardware({
-        model: "Qwen/Qwen3.5-9B-FP8",
-      });
-      for (const hw of response.data) {
-        console.log(hw.id);
-      }
-      ```
-    </CodeGroup>
-
-    You'll see output similar to this:
-
-    ```shell Shell theme={null}
-    Hardware ID              GPU    Memory    Count    Price (per minute)    availability
-    1x_nvidia_h100_80gb_sxm  h100   80GB      1        \$0.06                ✓ available
-    ```
-
-    Then create the endpoint, using the ID for your preferred hardware option:
-
-    <CodeGroup>
-      ```shell Shell theme={null}
-      together endpoints create \
-        --model Qwen/Qwen3.5-9B-FP8 \
-        --hardware 1x_nvidia_h100_80gb_sxm \
-        --display-name "My endpoint" \
-        --wait
-      ```
-
-      ```python Python theme={null}
-      from together import Together
-
-      client = Together()
-
-      endpoint = client.endpoints.create(
-          model="Qwen/Qwen3.5-9B-FP8",
-          hardware="1x_nvidia_h100_80gb_sxm",
-          display_name="My endpoint",
-          autoscaling={"min_replicas": 1, "max_replicas": 1},
-      )
-      print(endpoint.id, endpoint.name)
-      ```
-
-      ```typescript TypeScript theme={null}
-      import Together from "together-ai";
-
-      const client = new Together();
-
-      const endpoint = await client.endpoints.create({
-        model: "Qwen/Qwen3.5-9B-FP8",
-        hardware: "1x_nvidia_h100_80gb_sxm",
-        display_name: "My endpoint",
-        autoscaling: { min_replicas: 1, max_replicas: 1 },
-      });
-      console.log(endpoint.id, endpoint.name);
-      ```
-    </CodeGroup>
-
-    ### Output
-
-    A successful create returns the new endpoint object:
-
-    ```json theme={null}
-    {
-      "object": "endpoint",
-      "id": "endpoint-d23901de-ef8f-44bf-b3e7-de9c1ca8f2d7",
-      "name": "devuser/Qwen/Qwen3.5-9B-FP8-a32b82a1",
-      "display_name": "My endpoint",
-      "model": "Qwen/Qwen3.5-9B-FP8",
-      "hardware": "1x_nvidia_h100_80gb_sxm",
-      "type": "dedicated",
-      "owner": "devuser",
-      "state": "PENDING",
-      "autoscaling": { "min_replicas": 1, "max_replicas": 1 },
-      "created_at": "2026-05-04T10:43:55.405Z"
-    }
-    ```
-
-    These are the two fields you'll use the most:
-
-    | Field  | Example                                         | What it's for                                                                                                                                                                                                                                           |
-    | ------ | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-    | `id`   | `endpoint-d23901de-ef8f-44bf-b3e7-de9c1ca8f2d7` | The unique identifier for the endpoint. Pass this as `endpoint_id` to all management operations: inspect, start, stop, update, and delete.                                                                                                              |
-    | `name` | `devuser/Qwen/Qwen3.5-9B-FP8-a32b82a1`          | The model identifier you pass as the `model` parameter when calling [inference APIs](/docs/inference/overview). It includes your username, the base model, and a unique suffix so you can run multiple deployments of the same base model side by side. |
-
-    The endpoint starts in `PENDING` and moves to `STARTED` once provisioning finishes (typically a few minutes). You can call the inference API as soon as the state is `STARTED`.
-
-    ### Target an availability zone
-
-    If you have latency or geographic constraints, you can target a specific availability zone. Only do this if you need to, since it can limit hardware availability.
-
-    <CodeGroup>
-      ```shell Shell theme={null}
-      together endpoints create \
-        --model Qwen/Qwen3.5-9B-FP8 \
-        --hardware 1x_nvidia_h100_80gb_sxm \
-        --display-name "My endpoint" \
-        --availability-zone us-east-1a \
-        --wait
-
-      # List all availability zones
-      together endpoints availability-zones
-      ```
-
-      ```python Python theme={null}
-      from together import Together
-
-      client = Together()
-
-      endpoint = client.endpoints.create(
-          model="Qwen/Qwen3.5-9B-FP8",
-          hardware="1x_nvidia_h100_80gb_sxm",
-          display_name="My endpoint",
-          availability_zone="us-east-1a",
-          autoscaling={"min_replicas": 1, "max_replicas": 1},
-      )
-
-      # List all availability zones
-      zones = client.endpoints.list_avzones()
-      print(zones.avzones)
-      ```
-
-      ```typescript TypeScript theme={null}
-      import Together from "together-ai";
-
-      const client = new Together();
-
-      const endpoint = await client.endpoints.create({
-        model: "Qwen/Qwen3.5-9B-FP8",
-        hardware: "1x_nvidia_h100_80gb_sxm",
-        display_name: "My endpoint",
-        availability_zone: "us-east-1a",
-        autoscaling: { min_replicas: 1, max_replicas: 1 },
-      });
-
-      // List all availability zones
-      const zones = await client.endpoints.listAvzones();
-      console.log(zones.avzones);
-      ```
-    </CodeGroup>
-  </Tab>
-
-  <Tab title="UI">
-    <Steps>
-      <Step title="Open the models page">
-        Go to the [Models page](https://api.together.ai/models) in the playground. Under **All models**, select **Dedicated** to filter to models that support dedicated endpoint deployment.
-      </Step>
-
-      <Step title="Pick a model">
-        Browse the available models and select the one you want to deploy.
-      </Step>
-
-      <Step title="Pick hardware">
-        Choose hardware for the endpoint. Options range across RTX-6000, L40, A100 SXM, A100 PCIe, and H100 at different price points.
-      </Step>
-
-      <Step title="Deploy">
-        Click the play button. The endpoint takes up to 10 minutes to come up. You can navigate away while it provisions and come back when it's ready.
-      </Step>
-
-      <Step title="Use the endpoint">
-        Once ready, copy the **model identifier** shown on the endpoint page and use it as the `model` parameter in your API calls. You'll find the endpoint anytime under **My Models > Endpoints**.
-      </Step>
-    </Steps>
-
-    **Need a custom configuration?** [Contact us](https://www.together.ai/forms/monthly-reserved).
-  </Tab>
-</Tabs>
-
-## Inspect an endpoint
-
-Get the current state and configuration of an endpoint by ID:
-
-<CodeGroup>
-  ```shell Shell theme={null}
-  together endpoints retrieve <endpoint_id>
-  ```
-
-  ```python Python theme={null}
-  from together import Together
-
-  client = Together()
-
-  endpoint = client.endpoints.retrieve("endpoint_id")
-  print(endpoint)
-  ```
-
-  ```typescript TypeScript theme={null}
-  import Together from "together-ai";
-
-  const client = new Together();
-
-  const endpoint = await client.endpoints.retrieve("endpoint_id");
-  console.log(endpoint);
-  ```
-</CodeGroup>
-
-Sample output:
-
-```
-ID:           endpoint-e6c6b82f-90f7-45b7-af39-3ca3b51d08xx
-Name:         tester/Qwen/Qwen3.5-9B-FP8-bb04c904
-Display Name: My endpoint
-Hardware:     1x_nvidia_h100_80gb_sxm
-Autoscaling:  Min=1, Max=1
-Model:        Qwen/Qwen3.5-9B-FP8
-Type:         dedicated
-Owner:        tester
-State:        READY
-Created:      2025-02-18 11:55:50.686000+00:00
+endpoint = client.beta.endpoints.create(
+    project_id=project_id,
+    name="my-endpoint",
+)
+print(endpoint)
 ```
 
-## List your endpoints
+The endpoint serves as a logical grouping of deployments, and the entry point for [routing traffic to your models](/docs/dedicated-endpoints/route-traffic).
 
-<CodeGroup>
-  ```shell Shell theme={null}
-  # All your endpoints
-  together endpoints list
+## Create a deployment
 
-  # Only on-demand dedicated endpoints
-  together endpoints list --type dedicated --usage-type on-demand
-  ```
+A deployment binds a model and a hardware config to an endpoint, and sets the [autoscaling policy](/docs/dedicated-endpoints/scaling) for spinning replicas up and down based on demand. `--min-replicas` and `--max-replicas` set the [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds).
 
-  ```python Python theme={null}
-  from together import Together
+Pass an existing endpoint ID (or a new endpoint name) to `tg beta endpoints deploy --endpoint` to add a deployment. The model is the positional argument, and the config is `--config`:
 
-  client = Together()
+```bash CLI theme={null}
+tg beta endpoints deploy ml_CbJNwQC2ZqCU2iFT3mrCh \
+  --endpoint ep_abc123 \
+  --deployment-name my-deployment \
+  --config cr_CbzGdmn14t3HYrXXitmKa \
+  --min-replicas 1 --max-replicas 2
+```
 
-  # All your endpoints
-  response = client.endpoints.list(mine=True)
-  for endpoint in response.data:
-      print(endpoint.id, endpoint.state)
+When a model has more than one [deployment profile](/docs/dedicated-endpoints/concepts#deployment-profile), `deploy` returns an error that lists the available profiles, for example:
 
-  # Only on-demand dedicated endpoints
-  response = client.endpoints.list(
-      mine=True,
-      type="dedicated",
-      usage_type="on-demand",
-  )
-  ```
+```text theme={null}
+Model has multiple deployment profiles. Re-run with --config <config_id>:
+  cr_CbzGdmn14t3HYrXXitmKa  NVIDIA-H100 x1  BF16  TP1
+  cr_CciJqTB35QmpMupbQNPPW  NVIDIA-H100 x1  FP8   TP1
+```
 
-  ```typescript TypeScript theme={null}
-  import Together from "together-ai";
+Re-run with `--config <cr_...>` to choose one. When a model has a single profile, the CLI selects it automatically. List a model's profiles anytime with `tg beta models configs <model_id>`.
 
-  const client = new Together();
+The CLI defaults `--min-replicas` and `--max-replicas` to `1`, so a bare `deploy` creates a single-replica deployment.
 
-  // All your endpoints
-  const all = await client.endpoints.list({ mine: true });
-  for (const endpoint of all.data) {
-    console.log(endpoint.id, endpoint.state);
-  }
+List and retrieve responses return a flat deployment object whose `model` and `config` resource names you can copy straight into a new create request:
 
-  // Only on-demand dedicated endpoints
-  const dedicated = await client.endpoints.list({
-    mine: true,
-    type: "dedicated",
-    usage_type: "on-demand",
-  });
-  ```
-</CodeGroup>
+```json theme={null}
+{
+  "id": "dep_abc123",
+  "projectId": "proj_abc123",
+  "endpointId": "ep_abc123",
+  "name": "your-project-slug/my-endpoint/my-deployment",
+  "createdAt": "2026-07-13T18:52:00Z",
+  "updatedAt": "2026-07-13T18:52:00Z",
+  "model": "projects/proj_abc123/models/ml_CbJNwQC2ZqCU2iFT3mrCh/revisions/rv_CbJ9yNrws93VQrZum1fTE",
+  "config": "projects/proj_abc123/configs/cr_CbzGdmn14t3HYrXXitmKa",
+  "autoscaling": {"minReplicas": 1, "maxReplicas": 2},
+  "hardware": "1xnvidia-h100-80gb",
+  "trafficMode": "TRAFFIC_MODE_LIVE",
+  "desiredReplicas": 1,
+  "status": {"state": "DEPLOYMENT_STATE_PROVISIONING", "scheduledReplicas": 0, "readyReplicas": 0, "message": "Scheduling replicas"}
+}
+```
 
-## Start, stop, and restart
+After you've created a deployment, you'll need to [route traffic](/docs/dedicated-endpoints/route-traffic) to it before it can serve requests.
 
-Stopping an endpoint pauses billing. Restarting brings it back online without re-provisioning hardware (subject to availability).
+### Create request flags
 
-<Tabs>
-  <Tab title="CLI / SDK">
-    <CodeGroup>
-      ```shell Shell theme={null}
-      # Stop a running endpoint (billing pauses immediately)
-      together endpoints stop <endpoint_id>
+Set these flags on `tg beta endpoints deploy` when you create a deployment:
 
-      # Start a stopped endpoint
-      together endpoints start <endpoint_id>
-      ```
+| Flag                | Required | Description                                                                                                                                                             |
+| ------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `MODEL`             | Yes      | Positional argument. The model to deploy: a public model name, a private model name, a private model ID (`ml_...`), or a fully resolved model path.                     |
+| `--endpoint`        | Yes      | The endpoint to deploy to. Pass an existing endpoint name or ID, or a new name to create the endpoint first.                                                            |
+| `--config`          | No       | Config ID (`cr_...`). Required when the model has more than one deployment profile; auto-selected when it has a single one.                                             |
+| `--deployment-name` | No       | Name for the deployment. Defaults to a combination of the endpoint and model names.                                                                                     |
+| `--min-replicas`    | No       | Minimum replicas. Default `1`.                                                                                                                                          |
+| `--max-replicas`    | No       | Maximum replicas. Default `1`.                                                                                                                                          |
+| `--scaling-metric`  | No       | Metric to autoscale on, set together with `--scaling-target`. Omit to use the default metric. See [scaling metrics](/docs/dedicated-endpoints/scaling#scaling-metrics). |
+| `--scaling-target`  | No       | Target value for `--scaling-metric`.                                                                                                                                    |
+| `--enable-lora`     | No       | Run the multi-LoRA kernel so adapters hot-load after deploy. Set at create time only: it can't be changed on a running deployment, so redeploy to toggle it.            |
 
-      ```python Python theme={null}
-      from together import Together
+For the full flag list, including placement, the autoscaling windows, and the scaling percentile, see the [CLI reference](/reference/cli/endpoints-beta#deploy).
 
-      client = Together()
+[Decoding optimizations](/docs/dedicated-endpoints/configs#decoding-optimizations), including speculative decoding, come from the config you select.
 
-      # Stop a running endpoint (billing pauses immediately)
-      client.endpoints.update("endpoint_id", state="STOPPED")
+## Poll deployment status
 
-      # Start a stopped endpoint
-      client.endpoints.update("endpoint_id", state="STARTED")
-      ```
+To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists each deployment's `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
 
-      ```typescript TypeScript theme={null}
-      import Together from "together-ai";
+```bash CLI theme={null}
+# Show the endpoint with each deployment's state and replica counts
+tg beta endpoints get ep_abc123
+```
 
-      const client = new Together();
+For the full set of status fields (scheduled replicas, status message), retrieve the deployment from the SDK or API and read `status`:
 
-      // Stop a running endpoint (billing pauses immediately)
-      await client.endpoints.update("endpoint_id", { state: "STOPPED" });
+```python Python theme={null}
+from together import Together
 
-      // Start a stopped endpoint
-      await client.endpoints.update("endpoint_id", { state: "STARTED" });
-      ```
-    </CodeGroup>
-  </Tab>
+client = Together()
+project_id = client.whoami().project_id
 
-  <Tab title="UI">
-    Open the [models page](https://api.together.ai/models), click your model to expand the row, click the three-dot menu, and select **Stop endpoint**. Confirm in the prompt. Once stopped, the endpoint shows as offline. The same menu lets you start it again if you stopped by mistake.
-  </Tab>
-</Tabs>
+deployment = client.beta.endpoints.deployments.retrieve(
+    "dep_abc123",
+    project_id=project_id,
+    endpoint_id="ep_abc123",
+)
+print(deployment.status.state)
+```
 
-## Update endpoint settings
+From here you can track its progress scaling up:
 
-You can change replica counts on a running endpoint without re-creating it. Both `min_replicas` and `max_replicas` must be supplied together.
+| Field                      | Description                                                                                                                                                                    |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `desiredReplicas`          | Target replica count from autoscaling.                                                                                                                                         |
+| `status.scheduledReplicas` | Replicas the scheduler has placed on clusters. May trail `desiredReplicas` while capacity is still being found, and exceed `status.readyReplicas` while placed replicas start. |
+| `status.readyReplicas`     | Replicas actively serving traffic.                                                                                                                                             |
+| `status.message`           | Human-readable explanation of the current stage or cause. Replica progress lives in the counts above, not in this string.                                                      |
+| `status.state`             | [See below](#deployment-states).                                                                                                                                               |
 
-<CodeGroup>
-  ```shell Shell theme={null}
-  together endpoints update --min-replicas 2 --max-replicas 4 <endpoint_id>
-  ```
+### Deployment states
 
-  ```python Python theme={null}
-  from together import Together
+A deployment reports its lifecycle in `status.state`. The API returns the fully-qualified enum (for example `DEPLOYMENT_STATE_READY`). This page uses the short name for readability.
 
-  client = Together()
+| State              | Description                                                                                                                                                                                               |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`PROVISIONING`** | The scheduler is placing replicas on clusters. `status.message` is `Scheduling replicas`.                                                                                                                 |
+| **`SCALING`**      | Replicas are starting or draining to reach the desired count. `status.message` is `Starting replicas` or `Scaling down`.                                                                                  |
+| **`READY`**        | All replicas are healthy and serving. `status.message` is `All replicas ready`. A deployment must also be in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic) to receive requests. |
+| **`DEGRADED`**     | The deployment is below the requested capacity or blocked by a transient issue. `status.message` explains the cause. It usually resolves on its own.                                                      |
+| **`STOPPING`**     | A transient teardown state. Replicas are draining after a stop was requested. It settles to `STOPPED` once cleanup completes, or to `FAILED` if teardown ends with a failure.                             |
+| **`STOPPED`**      | Scaled to zero replicas. The deployment isn't billing and isn't serving.                                                                                                                                  |
+| **`FAILED`**       | Terminal state. The `status.message` field explains why.                                                                                                                                                  |
 
-  client.endpoints.update(
-      "endpoint_id",
-      autoscaling={"min_replicas": 2, "max_replicas": 4},
-  )
-  ```
+A deployment that never reaches `READY` within six hours after starting will be marked as `FAILED`.
 
-  ```typescript TypeScript theme={null}
-  import Together from "together-ai";
+## Scale a deployment
 
-  const client = new Together();
+Deployment scale is controlled by the deployment's [replica bounds](/docs/dedicated-endpoints/scaling#replica-bounds), and optionally autoscaled using [scaling metrics](/docs/dedicated-endpoints/scaling#scaling-metrics). Set the initial bounds at deploy time (`--min-replicas`/`--max-replicas`), then change them on a running deployment:
 
-  await client.endpoints.update("endpoint_id", {
-    autoscaling: { min_replicas: 2, max_replicas: 4 },
-  });
-  ```
-</CodeGroup>
+```bash CLI theme={null}
+tg beta endpoints update dep_abc123 --min-replicas 2 --max-replicas 4
+```
 
-For other settings (hardware, decoding optimizations), see [Endpoint settings](/docs/dedicated-endpoints/settings). Some updates require a full deployment.
+## Stop a deployment
 
-## Delete an endpoint
+A deployment runs until you stop it. To stop a deployment and release its hardware, set both its replica bounds to `0`:
 
-Deletion is permanent. Stopped endpoints incur no charges, so prefer stopping unless you want to completely remove the endpoint.
+```bash CLI theme={null}
+tg beta endpoints update dep_abc123 --min-replicas 0 --max-replicas 0
+```
 
-<CodeGroup>
-  ```shell Shell theme={null}
-  together endpoints delete <endpoint_id>
-  ```
+The replicas keep serving until they finish draining, then the deployment moves to `DEPLOYMENT_STATE_STOPPED` and billing stops.
 
-  ```python Python theme={null}
-  from together import Together
+## Restart a deployment
 
-  client = Together()
+A stopped deployment doesn't restart on its own. To bring it back, raise both bounds to `1` or more:
 
-  client.endpoints.delete("endpoint_id")
-  ```
+```bash CLI theme={null}
+tg beta endpoints update dep_abc123 --min-replicas 1 --max-replicas 2
+```
 
-  ```typescript TypeScript theme={null}
-  import Together from "together-ai";
+## List resources
 
-  const client = new Together();
+List and get endpoints with the CLI:
 
-  await client.endpoints.delete("endpoint_id");
-  ```
-</CodeGroup>
+```bash CLI theme={null}
+# All endpoints in the project
+tg beta endpoints ls
+
+# One endpoint (includes each deployment's state and replica counts)
+tg beta endpoints get ep_abc123
+```
+
+### List flags
+
+`tg beta endpoints ls` accepts these flags:
+
+| Flag       | Description                                               |
+| ---------- | --------------------------------------------------------- |
+| `--limit`  | Maximum number of endpoints to return.                    |
+| `--after`  | Pagination cursor to start from.                          |
+| `--org`    | List org-scoped endpoints instead of project-scoped ones. |
+| `--public` | List public endpoints.                                    |
+
+List responses are paginated: when more results are available, the response includes `next_cursor`, which you pass as `--after` on the next request.
+
+## Delete resources
+
+Deletion is permanent. A deployment must be stopped before it can be deleted. Follow this order:
+
+1. [Scale the deployment to zero](#stop-a-deployment) and wait for `DEPLOYMENT_STATE_STOPPED`.
+2. Delete the deployment. If you use the SDK or API (not the CLI), set the deployment's [traffic split](/docs/dedicated-endpoints/route-traffic) weight to 0 on the endpoint first.
+3. Delete the endpoint once it has no deployments.
+
+The CLI's `rm` command is a smart-delete: it resolves the resource by its ID prefix, so the same command deletes an endpoint (`ep_`), a deployment (`dep_`), an A/B experiment (`abx_`), or a shadow experiment (`exp_`). When you run `tg beta endpoints rm dep_...`, the CLI automatically detaches the deployment from the traffic split and from any experiments it belongs to:
+
+```bash CLI theme={null}
+# Delete the deployment (must be stopped first; auto-detaches from the traffic split)
+tg beta endpoints rm dep_abc123
+
+# Delete the endpoint once it has no deployments
+tg beta endpoints rm ep_abc123
+```
+
+To delete an endpoint that still has deployments, pass `--force` to `rm`. If the endpoint has other deployments you want to keep, rebalance the remaining weights instead of clearing the split. See [Route traffic](/docs/dedicated-endpoints/route-traffic).
 
 ## Troubleshooting
 
-Endpoints don't always deploy immediately. Here are the most common reasons:
-
-* **Low availability:** Hardware may be available but only enough for a partial replica count. The endpoint starts but scales to the available count. If your minimum replica count is higher than current capacity, the endpoint stays queued until capacity recovers. To avoid the wait, lower the minimum replica count.
-* **Hardware unavailable error:** If you see "Hardware for endpoint not available now, please try again later", the hardware you selected is fully claimed. Try a comparable model on different hardware (use [whichllm.together.ai](https://whichllm.together.ai/) to find substitutes), or retry later.
-* **Model not supported:** Not every model is available for dedicated endpoint deployments. For a list of deployable models, see the [dedicated endpoint model catalog](/docs/dedicated-endpoints/models). A fine-tuned model can only deploy on a dedicated endpoint if its base model is supported.
+* **`endpoint_not_configured` (HTTP 400) though the deployment is `READY`:** Confirm the deployment is in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic) with a non-zero weight.
+* **Deployment `DEGRADED` with `Cannot place replicas: insufficient GPU capacity`:** Hardware for the config is constrained, so the scheduler couldn't place all replicas yet. Compare `status.scheduledReplicas` to `desiredReplicas`. The scheduler keeps retrying and the deployment starts once capacity frees up. To improve the chance of placement, request fewer replicas or choose a config with a smaller hardware footprint.
+* **Deployment `DEGRADED` with `Startup stalled` or `Not ready`:** A placed replica is still booting or hit a startup failure. Read the detail after the colon in `status.message`. The deployment stays `DEGRADED` rather than `FAILED` once any replica has been successfully started.
+* **Deployment `FAILED` with `Timed out waiting for readiness`:** No replica could be provisioned within six hours of the current run's start. Read the stall cause at the end of `status.message`. Restart the deployment to begin a fresh budget.
+* **Deployment `FAILED` for another reason:** Read `status.message`. Common causes include deterministic placement rejection (`Cannot place replicas: …`), manifest generation failure, or remediation exhaustion.
+* **Model not supported:** Not every model can be deployed. See the [model catalog](/docs/dedicated-endpoints/models). A fine-tuned model deploys only if its base model is supported.
+* **Deploy fails with `the model has no revisions to deploy`:** The model record exists but has no uploaded weights yet. Finish [uploading the model](/docs/dedicated-endpoints/custom-models#upload-the-model) and wait for the upload to succeed before you deploy it.
+* **Deploy fails with a revision validation error:** When you pin a specific model or speculator revision, that revision must have passed validation first. Deploy the latest validated revision, or wait for the pinned revision to finish validating.
+* **Deployment delete fails with `the deployment is referenced by an endpoint's traffic split and cannot be deleted; please drop traffic split weight to 0 before deleting the deployment` (HTTP 400):** The deployment still has weight in the endpoint's [traffic split](/docs/dedicated-endpoints/route-traffic). Set its weight to 0 (or remove it from the split) before deleting. The CLI's `tg beta endpoints rm dep_...` detaches it automatically.
 
 ## Next steps
 
 <CardGroup>
-  <Card title="Quickstart" icon="rocket" href="/docs/dedicated-endpoints/quickstart">
-    Deploy and call your first endpoint in 5 minutes.
+  <Card title="Configure autoscaling" icon="arrows-maximize" href="/docs/dedicated-endpoints/scaling">
+    Autoscale a deployment on the right metric.
   </Card>
 
-  <Card title="Available models" icon="list" href="/docs/dedicated-endpoints/models">
-    Browse the list of available models for instant deployment.
+  <Card title="Route traffic" icon="route" href="/docs/dedicated-endpoints/route-traffic">
+    Split traffic across deployments behind one endpoint.
   </Card>
 
-  <Card title="Endpoint settings" icon="adjustments-horizontal" href="/docs/dedicated-endpoints/settings">
-    Configure endpoint hardware, autoscaling, decoding, prompt caching.
+  <Card title="Observability" icon="chart-line" href="/docs/dedicated-endpoints/monitoring">
+    Monitor metrics and scrape the Prometheus-compatible endpoint.
   </Card>
 
-  <Card title="Scaling" icon="arrows-maximize" href="/docs/dedicated-endpoints/scaling">
-    Learn how endpoints scale and when to use vertical vs. horizontal scaling.
+  <Card title="Pricing" icon="cash" href="/docs/dedicated-endpoints/pricing">
+    Understand per-minute and reserved pricing.
   </Card>
 </CardGroup>

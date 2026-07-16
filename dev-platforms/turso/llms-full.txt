@@ -18288,29 +18288,37 @@ These flags enable features that are still under development. They may change or
   Experimental features may have incomplete implementations or known limitations. Use them for testing and development only.
 </Warning>
 
-| Flag                          | Description                                                              |
-| ----------------------------- | ------------------------------------------------------------------------ |
-| `--experimental-views`        | Enable views (`CREATE VIEW` / `DROP VIEW`)                               |
-| `--experimental-custom-types` | Enable custom types (`CREATE TYPE` / `DROP TYPE`)                        |
-| `--experimental-encryption`   | Enable at-rest database encryption                                       |
-| `--experimental-index-method` | Enable custom index methods. Necessary for FTS and Sparse Vector indexes |
-| `--experimental-autovacuum`   | Enable automatic database vacuuming                                      |
-| `--experimental-vacuum`       | Enable in-place `VACUUM`                                                 |
-| `--experimental-triggers`     | Enable triggers (`CREATE TRIGGER` / `DROP TRIGGER`)                      |
-| `--experimental-attach`       | Enable `ATTACH DATABASE` / `DETACH DATABASE`                             |
+| Flag                                     | Description                                                                         |
+| ---------------------------------------- | ----------------------------------------------------------------------------------- |
+| `--experimental-views`                   | Enable views (`CREATE VIEW` / `CREATE MATERIALIZED VIEW`)                           |
+| `--experimental-custom-types`            | Enable custom types (`CREATE TYPE` / `DROP TYPE` / `CREATE DOMAIN` / `DROP DOMAIN`) |
+| `--experimental-encryption`              | Enable at-rest database encryption                                                  |
+| `--experimental-index-method`            | Enable custom index methods. Necessary for FTS and sparse vector indexes            |
+| `--experimental-autovacuum`              | Enable automatic database vacuuming                                                 |
+| `--experimental-vacuum`                  | Enable in-place `VACUUM`                                                            |
+| `--experimental-attach`                  | Enable `ATTACH DATABASE` / `DETACH DATABASE`                                        |
+| `--experimental-generated-columns`       | Enable virtual `GENERATED ALWAYS AS` columns                                        |
+| `--experimental-without-rowid`           | Enable `WITHOUT ROWID` tables                                                       |
+| `--experimental-multiprocess-wal`        | Enable sharing a database between processes via a shared WAL coordinator            |
+| `--experimental-mvcc-passive-checkpoint` | Enable passive checkpointing under MVCC (`journal_mode=mvcc`)                       |
+
+<Info>
+  Triggers (`CREATE TRIGGER` / `DROP TRIGGER`) are stable as of Turso 0.7 and no longer require a flag.
+</Info>
 
 ```bash theme={null}
-# Enable views, triggers, and in-place VACUUM
-tursodb --experimental-views --experimental-triggers --experimental-vacuum mydata.db
+# Enable views, custom types, and in-place VACUUM
+tursodb --experimental-views --experimental-custom-types --experimental-vacuum mydata.db
 ```
 
 ## Other Flags
 
-| Flag               | Description                                                   |
-| ------------------ | ------------------------------------------------------------- |
-| `--unsafe-testing` | Enable unsafe testing features (e.g., `sqlite_dbpage` writes) |
-| `-h, --help`       | Print usage help                                              |
-| `-V, --version`    | Print version information                                     |
+| Flag               | Description                                                               |
+| ------------------ | ------------------------------------------------------------------------- |
+| `--mvcc`           | Start the MVCC concurrent-transaction harness instead of the normal shell |
+| `--unsafe-testing` | Enable unsafe testing features (e.g., `sqlite_dbpage` writes)             |
+| `-h, --help`       | Print usage help                                                          |
+| `-V, --version`    | Print version information                                                 |
 
 
 # Getting Started
@@ -19263,24 +19271,30 @@ Some Turso features are still experimental and must be explicitly enabled before
 
 ## Experimental Features List
 
-| Feature           | Flag               | Description                                                                                                                                                                                                                                  |
-| ----------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Views             | `views`            | [CREATE VIEW](/sql-reference/statements/create-view) and [CREATE MATERIALIZED VIEW](/sql-reference/statements/create-materialized-view)                                                                                                      |
-| Custom Types      | `custom_types`     | [CREATE TYPE](/sql-reference/statements/create-type), [DROP TYPE](/sql-reference/statements/drop-type), [CREATE DOMAIN](/sql-reference/statements/create-domain), and [DROP DOMAIN](/sql-reference/statements/drop-domain) for STRICT tables |
-| Triggers          | `triggers`         | [CREATE TRIGGER](/sql-reference/statements/create-trigger) and [DROP TRIGGER](/sql-reference/statements/drop-trigger)                                                                                                                        |
-| Encryption        | `encryption`       | At-rest encryption via [PRAGMA cipher / hexkey](/sql-reference/pragmas#encryption)                                                                                                                                                           |
-| Index Methods     | `index_method`     | [CREATE INDEX ... USING](/sql-reference/statements/create-index#using-clause) for FTS and custom index types                                                                                                                                 |
-| Autovacuum        | `autovacuum`       | Automatic database file compaction                                                                                                                                                                                                           |
-| Vacuum            | `vacuum`           | In-place [VACUUM](/sql-reference/statements/vacuum) compaction                                                                                                                                                                               |
-| Attach            | `attach`           | [ATTACH DATABASE](/sql-reference/statements/attach-database) and [DETACH DATABASE](/sql-reference/statements/detach-database)                                                                                                                |
-| Multi-Process WAL | `multiprocess_wal` | [Multi-Process Access](/sql-reference/multiprocess-access) — share a database file between OS processes via a shared WAL coordinator                                                                                                         |
+| Feature                 | Flag                      | Description                                                                                                                                                                                                                                  |
+| ----------------------- | ------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Views                   | `views`                   | [CREATE VIEW](/sql-reference/statements/create-view) and [CREATE MATERIALIZED VIEW](/sql-reference/statements/create-materialized-view)                                                                                                      |
+| Custom Types            | `custom_types`            | [CREATE TYPE](/sql-reference/statements/create-type), [DROP TYPE](/sql-reference/statements/drop-type), [CREATE DOMAIN](/sql-reference/statements/create-domain), and [DROP DOMAIN](/sql-reference/statements/drop-domain) for STRICT tables |
+| Encryption              | `encryption`              | At-rest encryption via [PRAGMA cipher / hexkey](/sql-reference/pragmas#encryption)                                                                                                                                                           |
+| Index Methods           | `index_method`            | [CREATE INDEX ... USING](/sql-reference/statements/create-index#using-clause) for FTS and custom index types                                                                                                                                 |
+| Autovacuum              | `autovacuum`              | Automatic database file compaction                                                                                                                                                                                                           |
+| Vacuum                  | `vacuum`                  | In-place [VACUUM](/sql-reference/statements/vacuum) compaction                                                                                                                                                                               |
+| Attach                  | `attach`                  | [ATTACH DATABASE](/sql-reference/statements/attach-database) and [DETACH DATABASE](/sql-reference/statements/detach-database)                                                                                                                |
+| Generated Columns       | `generated_columns`       | Virtual [`GENERATED ALWAYS AS`](/sql-reference/statements/create-table) columns                                                                                                                                                              |
+| Without Rowid           | `without_rowid`           | `WITHOUT ROWID` tables                                                                                                                                                                                                                       |
+| Multi-Process WAL       | `multiprocess_wal`        | [Multi-Process Access](/sql-reference/multiprocess-access) — share a database file between OS processes via a shared WAL coordinator                                                                                                         |
+| MVCC Passive Checkpoint | `mvcc_passive_checkpoint` | Passive checkpointing under MVCC (`journal_mode=mvcc`)                                                                                                                                                                                       |
+
+<Info>
+  Triggers are no longer experimental as of Turso 0.7 — [CREATE TRIGGER](/sql-reference/statements/create-trigger) and [DROP TRIGGER](/sql-reference/statements/drop-trigger) work without any flag.
+</Info>
 
 ## CLI
 
 Pass `--experimental-<feature>` flags when starting `tursodb`:
 
 ```bash theme={null}
-tursodb --experimental-views --experimental-triggers database.db
+tursodb --experimental-views --experimental-custom-types database.db
 ```
 
 Multiple flags can be combined:
@@ -19289,7 +19303,6 @@ Multiple flags can be combined:
 tursodb \
   --experimental-views \
   --experimental-custom-types \
-  --experimental-triggers \
   --experimental-encryption \
   --experimental-index-method \
   --experimental-vacuum \
@@ -19305,7 +19318,6 @@ use turso::Builder;
 
 let db = Builder::new_local("database.db")
     .experimental_encryption(true)
-    .experimental_triggers(true)
     .experimental_materialized_views(true)
     .experimental_custom_types(true)
     .experimental_index_method(true)
@@ -19324,7 +19336,7 @@ import turso
 
 conn = turso.connect(
     "database.db",
-    experimental_features="views,triggers,custom_types,vacuum",
+    experimental_features="views,custom_types,vacuum",
 )
 ```
 
@@ -19336,7 +19348,7 @@ Pass an array of feature strings to the `experimental` option:
 import { Database } from "@tursodatabase/libsql";
 
 const db = new Database("file:database.db", {
-    experimental: ["views", "triggers", "custom_types", "encryption", "vacuum"],
+    experimental: ["views", "custom_types", "encryption", "vacuum"],
 });
 ```
 
@@ -19347,14 +19359,14 @@ Set the `ExperimentalFeatures` field as a comma-separated string:
 ```go theme={null}
 db, err := turso.NewDatabase(turso.TursoDatabaseConfig{
     Path: "database.db",
-    ExperimentalFeatures: "views,triggers,custom_types,vacuum",
+    ExperimentalFeatures: "views,custom_types,vacuum",
 })
 ```
 
 The Go driver also supports DSN query parameters:
 
 ```go theme={null}
-db, err := sql.Open("turso", "database.db?experimental=views,triggers,vacuum")
+db, err := sql.Open("turso", "database.db?experimental=views,vacuum")
 ```
 
 ## Java SDK
@@ -19981,43 +19993,62 @@ LIMIT 5;
 
 The time extension is compatible with [sqlean-time](https://github.com/nalgeon/sqlean/blob/main/docs/time.md) and provides advanced time manipulation functions.
 
+<Info>
+  A **time value** (`t` in the tables below) is an opaque 13-byte **BLOB**, not an integer — this matches sqlean-time byte-for-byte (`version(1) + seconds(8) + nanoseconds(4)`, with seconds counted from year 0001). Any function that produces a time (`time_now`, `time_date`, `time_add`, …) returns a BLOB, and `typeof(time_now())` is `blob`. Use `time_to_unix` / `time_to_nano` to get an INTEGER, and the `time_fmt_*` functions to get TEXT.
+
+  To store a time value in a `STRICT` table, use a `BLOB` column, or convert it first:
+
+  ```sql theme={null}
+  CREATE TABLE X (t BLOB) STRICT;
+  INSERT INTO X (t) VALUES (time_now());
+
+  -- Or store a Unix integer:
+  CREATE TABLE Y (t INTEGER) STRICT;
+  INSERT INTO Y (t) VALUES (time_to_nano(time_now()));
+  ```
+</Info>
+
 ### Key Functions
 
-| Function                    | Parameters       | Return Type | Description                      |
-| --------------------------- | ---------------- | ----------- | -------------------------------- |
-| `time_now()`                | none             | INTEGER     | Current time as Unix nanoseconds |
-| `time_date(y,m,d,...)`      | INTEGER...       | INTEGER     | Create time from components      |
-| `time_unix(sec)`            | INTEGER          | INTEGER     | Create time from Unix seconds    |
-| `time_milli(ms)`            | INTEGER          | INTEGER     | Create time from milliseconds    |
-| `time_micro(us)`            | INTEGER          | INTEGER     | Create time from microseconds    |
-| `time_nano(ns)`             | INTEGER          | INTEGER     | Create time from nanoseconds     |
-| `time_to_unix(t)`           | INTEGER          | INTEGER     | Convert to Unix seconds          |
-| `time_to_milli(t)`          | INTEGER          | INTEGER     | Convert to milliseconds          |
-| `time_to_micro(t)`          | INTEGER          | INTEGER     | Convert to microseconds          |
-| `time_to_nano(t)`           | INTEGER          | INTEGER     | Convert to nanoseconds           |
-| `time_get_year(t)`          | INTEGER          | INTEGER     | Extract year                     |
-| `time_get_month(t)`         | INTEGER          | INTEGER     | Extract month (1-12)             |
-| `time_get_day(t)`           | INTEGER          | INTEGER     | Extract day (1-31)               |
-| `time_get_hour(t)`          | INTEGER          | INTEGER     | Extract hour (0-23)              |
-| `time_get_minute(t)`        | INTEGER          | INTEGER     | Extract minute (0-59)            |
-| `time_get_second(t)`        | INTEGER          | INTEGER     | Extract second (0-59)            |
-| `time_get_weekday(t)`       | INTEGER          | INTEGER     | Day of week (0=Sunday)           |
-| `time_get(t, field)`        | INTEGER, TEXT    | INTEGER     | Extract named field              |
-| `time_add(t, d)`            | INTEGER, INTEGER | INTEGER     | Add duration                     |
-| `time_add_date(t, y, m, d)` | INTEGER...       | INTEGER     | Add years/months/days            |
-| `time_sub(t, u)`            | INTEGER, INTEGER | INTEGER     | Difference between times         |
-| `time_since(t)`             | INTEGER          | INTEGER     | Duration since time              |
-| `time_until(t)`             | INTEGER          | INTEGER     | Duration until time              |
-| `time_trunc(t, field)`      | INTEGER, TEXT    | INTEGER     | Truncate to field                |
-| `time_after(t, u)`          | INTEGER, INTEGER | INTEGER     | 1 if t is after u                |
-| `time_before(t, u)`         | INTEGER, INTEGER | INTEGER     | 1 if t is before u               |
-| `time_compare(t, u)`        | INTEGER, INTEGER | INTEGER     | -1, 0, or 1                      |
-| `time_equal(t, u)`          | INTEGER, INTEGER | INTEGER     | 1 if equal                       |
-| `time_fmt_iso(t)`           | INTEGER          | TEXT        | Format as ISO 8601               |
-| `time_fmt_datetime(t)`      | INTEGER          | TEXT        | Format as datetime               |
-| `time_fmt_date(t)`          | INTEGER          | TEXT        | Format as date                   |
-| `time_fmt_time(t)`          | INTEGER          | TEXT        | Format as time                   |
-| `time_parse(s)`             | TEXT             | INTEGER     | Parse time string                |
+| Function                    | Parameters       | Return Type | Description                         |
+| --------------------------- | ---------------- | ----------- | ----------------------------------- |
+| `time_now()`                | none             | BLOB        | Current time                        |
+| `time_date(y,m,d,...)`      | INTEGER...       | BLOB        | Create time from components         |
+| `make_date(y,m,d)`          | INTEGER...       | BLOB        | Create time from a date             |
+| `make_timestamp(...)`       | INTEGER...       | BLOB        | Create time from a timestamp        |
+| `time_unix(sec)`            | INTEGER          | BLOB        | Create time from Unix seconds       |
+| `to_timestamp(sec)`         | INTEGER          | BLOB        | Create time from Unix seconds       |
+| `time_milli(ms)`            | INTEGER          | BLOB        | Create time from milliseconds       |
+| `time_micro(us)`            | INTEGER          | BLOB        | Create time from microseconds       |
+| `time_nano(ns)`             | INTEGER          | BLOB        | Create time from nanoseconds        |
+| `time_to_unix(t)`           | BLOB             | INTEGER     | Convert to Unix seconds             |
+| `time_to_milli(t)`          | BLOB             | INTEGER     | Convert to milliseconds             |
+| `time_to_micro(t)`          | BLOB             | INTEGER     | Convert to microseconds             |
+| `time_to_nano(t)`           | BLOB             | INTEGER     | Convert to nanoseconds              |
+| `time_get_year(t)`          | BLOB             | INTEGER     | Extract year                        |
+| `time_get_month(t)`         | BLOB             | INTEGER     | Extract month (1-12)                |
+| `time_get_day(t)`           | BLOB             | INTEGER     | Extract day (1-31)                  |
+| `time_get_hour(t)`          | BLOB             | INTEGER     | Extract hour (0-23)                 |
+| `time_get_minute(t)`        | BLOB             | INTEGER     | Extract minute (0-59)               |
+| `time_get_second(t)`        | BLOB             | INTEGER     | Extract second (0-59)               |
+| `time_get_weekday(t)`       | BLOB             | INTEGER     | Day of week (0=Sunday)              |
+| `time_get(t, field)`        | BLOB, TEXT       | INTEGER     | Extract named field                 |
+| `time_add(t, d)`            | BLOB, INTEGER    | BLOB        | Add duration                        |
+| `time_add_date(t, y, m, d)` | BLOB, INTEGER... | BLOB        | Add years/months/days               |
+| `time_sub(t, u)`            | BLOB, BLOB       | INTEGER     | Difference between times (duration) |
+| `time_since(t)`             | BLOB             | INTEGER     | Duration since time                 |
+| `time_until(t)`             | BLOB             | INTEGER     | Duration until time                 |
+| `time_trunc(t, field)`      | BLOB, TEXT       | BLOB        | Truncate to field                   |
+| `time_round(t, d)`          | BLOB, INTEGER    | BLOB        | Round to nearest duration           |
+| `time_after(t, u)`          | BLOB, BLOB       | INTEGER     | 1 if t is after u                   |
+| `time_before(t, u)`         | BLOB, BLOB       | INTEGER     | 1 if t is before u                  |
+| `time_compare(t, u)`        | BLOB, BLOB       | INTEGER     | -1, 0, or 1                         |
+| `time_equal(t, u)`          | BLOB, BLOB       | INTEGER     | 1 if equal                          |
+| `time_fmt_iso(t)`           | BLOB             | TEXT        | Format as ISO 8601                  |
+| `time_fmt_datetime(t)`      | BLOB             | TEXT        | Format as datetime                  |
+| `time_fmt_date(t)`          | BLOB             | TEXT        | Format as date                      |
+| `time_fmt_time(t)`          | BLOB             | TEXT        | Format as time                      |
+| `time_parse(s)`             | TEXT             | BLOB        | Parse time string                   |
 
 #### Duration Constants
 
@@ -20119,6 +20150,83 @@ SELECT percentile(value, 75) FROM scores;
 
 SELECT percentile_cont(value, 0.25) FROM scores;
 -- 20.0
+```
+
+## Crypto Extension
+
+The crypto extension provides hashing and encoding functions, compatible with [sqlean-crypto](https://github.com/nalgeon/sqlean/blob/main/docs/crypto.md).
+
+### Functions
+
+| Function                      | Parameters | Return Type | Description                                                                  |
+| ----------------------------- | ---------- | ----------- | ---------------------------------------------------------------------------- |
+| `crypto_md5(data)`            | TEXT/BLOB  | BLOB        | MD5 hash                                                                     |
+| `crypto_sha1(data)`           | TEXT/BLOB  | BLOB        | SHA-1 hash                                                                   |
+| `crypto_sha256(data)`         | TEXT/BLOB  | BLOB        | SHA-256 hash                                                                 |
+| `crypto_sha384(data)`         | TEXT/BLOB  | BLOB        | SHA-384 hash                                                                 |
+| `crypto_sha512(data)`         | TEXT/BLOB  | BLOB        | SHA-512 hash                                                                 |
+| `crypto_blake3(data)`         | TEXT/BLOB  | BLOB        | BLAKE3 hash                                                                  |
+| `crypto_encode(data, format)` | BLOB, TEXT | TEXT        | Encode a blob as text using `format` (e.g. `hex`, `base32`, `base64`, `url`) |
+| `crypto_decode(text, format)` | TEXT, TEXT | BLOB        | Decode text in the given `format` back into a blob                           |
+
+```sql theme={null}
+-- Hash a value and encode it as hex
+SELECT crypto_encode(crypto_sha256('hello'), 'hex');
+
+-- Base64 round-trip
+SELECT crypto_decode(crypto_encode(x'CAFE', 'base64'), 'base64');
+```
+
+## Fuzzy Extension
+
+The fuzzy extension provides string-similarity, distance, and phonetic functions, compatible with [sqlean-fuzzy](https://github.com/nalgeon/sqlean/blob/main/docs/fuzzy.md).
+
+### Functions
+
+| Function               | Parameters | Return Type | Description                             |
+| ---------------------- | ---------- | ----------- | --------------------------------------- |
+| `fuzzy_editdist(a, b)` | TEXT, TEXT | INTEGER     | Spellcheck-style edit distance          |
+| `fuzzy_leven(a, b)`    | TEXT, TEXT | INTEGER     | Levenshtein distance                    |
+| `fuzzy_damlev(a, b)`   | TEXT, TEXT | INTEGER     | Damerau-Levenshtein distance            |
+| `fuzzy_osadist(a, b)`  | TEXT, TEXT | INTEGER     | Optimal string alignment distance       |
+| `fuzzy_hamming(a, b)`  | TEXT, TEXT | INTEGER     | Hamming distance                        |
+| `fuzzy_jarowin(a, b)`  | TEXT, TEXT | REAL        | Jaro-Winkler similarity                 |
+| `fuzzy_soundex(s)`     | TEXT       | TEXT        | Soundex phonetic code                   |
+| `fuzzy_rsoundex(s)`    | TEXT       | TEXT        | Refined Soundex code                    |
+| `fuzzy_caver(s)`       | TEXT       | TEXT        | Caverphone phonetic code                |
+| `fuzzy_phonetic(s)`    | TEXT       | TEXT        | US Census phonetic code                 |
+| `fuzzy_translit(s)`    | TEXT       | TEXT        | Transliterate Unicode text to ASCII     |
+| `fuzzy_script(s)`      | TEXT       | INTEGER     | Identify the writing script of the text |
+| `phonetics(a, b)`      | TEXT, TEXT | INTEGER     | 1 if two strings are phonetically equal |
+
+```sql theme={null}
+-- Distance between two strings
+SELECT fuzzy_leven('awesome', 'aewsime');
+-- 3
+
+-- Phonetic encoding
+SELECT fuzzy_soundex('Robert');
+-- 'R163'
+```
+
+## IP Address Extension
+
+The ipaddr extension provides functions for working with IPv4 and IPv6 addresses and networks.
+
+### Functions
+
+| Function                  | Parameters | Return Type | Description                                         |
+| ------------------------- | ---------- | ----------- | --------------------------------------------------- |
+| `ipfamily(ip)`            | TEXT       | INTEGER     | Returns 4 for IPv4 or 6 for IPv6                    |
+| `iphost(ip)`              | TEXT       | TEXT        | The host portion of an address (strips any netmask) |
+| `ipmasklen(cidr)`         | TEXT       | INTEGER     | The prefix (mask) length of a CIDR network          |
+| `ipnetwork(cidr)`         | TEXT       | TEXT        | The network address of a CIDR value                 |
+| `ipcontains(network, ip)` | TEXT, TEXT | INTEGER     | 1 if the CIDR network contains the given address    |
+
+```sql theme={null}
+SELECT ipfamily('192.168.1.1');            -- 4
+SELECT ipnetwork('192.168.1.42/24');       -- '192.168.1.0/24'
+SELECT ipcontains('10.0.0.0/8', '10.1.2.3'); -- 1
 ```
 
 ## generate\_series
@@ -20509,6 +20617,105 @@ ORDER BY region, id;
 | 4  | South  | NULL   | 150.0          | 3             |
 | 6  | South  | 175.0  | 325.0          | 3             |
 
+## Ordered-Set Aggregates (WITHIN GROUP)
+
+<Info>
+  `mode`, `percentile_cont` and `percentile_disc` with `WITHIN GROUP (ORDER BY ...)` are built in and available by default — no extension required. The syntax and results match PostgreSQL. (Standard SQLite does not support `WITHIN GROUP`.)
+</Info>
+
+Ordered-set aggregates compute a result over the values of an `ORDER BY` expression, sorted within each group:
+
+```sql theme={null}
+mode() WITHIN GROUP (ORDER BY sort_expr)
+percentile_cont(fraction) WITHIN GROUP (ORDER BY sort_expr)
+percentile_disc(fraction) WITHIN GROUP (ORDER BY sort_expr)
+```
+
+The `ORDER BY` expression is the value being aggregated. For the percentile functions, the argument before `WITHIN GROUP` is the percentile *fraction*. NULL values of the `ORDER BY` expression are ignored; if there are no non-NULL values, the result is NULL.
+
+### mode()
+
+```sql theme={null}
+mode() WITHIN GROUP (ORDER BY X)
+```
+
+Returns the most frequent value of X. If several values are equally frequent, the smallest is returned. Works with any type and returns the value in its original type.
+
+| Parameter | Type | Description                                        |
+| --------- | ---- | -------------------------------------------------- |
+| X         | any  | The expression whose most frequent value to return |
+
+**Return type:** same as X
+
+```sql theme={null}
+SELECT mode() WITHIN GROUP (ORDER BY product) FROM sales;
+-- 'Widget' (the most frequent product)
+
+SELECT region, mode() WITHIN GROUP (ORDER BY product) AS top_product
+FROM sales
+GROUP BY region;
+```
+
+| region | top\_product |
+| ------ | ------------ |
+| North  | Widget       |
+| South  | Widget       |
+
+<Info>
+  `mode()` is only valid with `WITHIN GROUP`; calling `mode(X)` without it is an error.
+</Info>
+
+### percentile\_cont(fraction) and percentile\_disc(fraction)
+
+```sql theme={null}
+percentile_cont(fraction) WITHIN GROUP (ORDER BY X)
+percentile_disc(fraction) WITHIN GROUP (ORDER BY X)
+```
+
+Compute the `fraction`-th percentile of X, where `fraction` is between 0.0 and 1.0:
+
+* `percentile_cont` returns a continuous, interpolated value (always REAL).
+* `percentile_disc` returns the actual element at the discrete percentile position, in its original type.
+
+| Parameter | Type                                                  | Description                               |
+| --------- | ----------------------------------------------------- | ----------------------------------------- |
+| fraction  | REAL                                                  | Percentile fraction, 0.0 to 1.0           |
+| X         | numeric (`percentile_cont`) / any (`percentile_disc`) | The values to compute the percentile over |
+
+**Return type:** REAL for `percentile_cont`; same as X for `percentile_disc`
+
+```sql theme={null}
+-- Median, interpolated vs. an actual data point
+SELECT percentile_cont(0.5) WITHIN GROUP (ORDER BY amount) FROM sales;  -- 175.0
+SELECT percentile_disc(0.5) WITHIN GROUP (ORDER BY amount) FROM sales;  -- 175.0
+
+-- Quartiles per region
+SELECT region,
+       percentile_cont(0.25) WITHIN GROUP (ORDER BY amount) AS q1,
+       percentile_cont(0.75) WITHIN GROUP (ORDER BY amount) AS q3
+FROM sales
+WHERE amount IS NOT NULL
+GROUP BY region;
+```
+
+The fraction must be a constant with respect to the rows being aggregated — a literal, a constant expression, or a parameter. It cannot reference the columns being aggregated, and an out-of-range constant fraction is reported regardless of how many rows match:
+
+```sql theme={null}
+SELECT percentile_cont(2.0) WITHIN GROUP (ORDER BY amount) FROM sales;
+-- Error: percentile value 2 is not between 0 and 1
+```
+
+### Collation
+
+Text values are ordered using the applicable collation — an explicit `COLLATE` on the `ORDER BY` expression, the column's declared collation, or `BINARY` by default — consistent with `ORDER BY`.
+
+### Notes and limitations
+
+* A single `ORDER BY` expression is required. Multiple expressions, `DESC`, and `NULLS FIRST/LAST` inside `WITHIN GROUP` are not yet supported.
+* A subquery as the fraction argument is not currently supported.
+* These aggregates work with `GROUP BY`, `FILTER (WHERE ...)`, `HAVING`, subqueries, CTEs, joins, and attached databases.
+* The **percentile** extension also provides non-standard two-argument forms, `percentile_cont(Y, P)` and `percentile_disc(Y, P)` (see [Extension Aggregate Functions](#extension-aggregate-functions)). The `WITHIN GROUP` forms above are the SQL-standard versions and require no extension.
+
 ## Turso Extension: array\_agg(X)
 
 <Info>
@@ -20635,7 +20842,7 @@ percentile_cont(Y, P)
 percentile_disc(Y, P)
 ```
 
-SQL-standard percentile functions. `percentile_cont` uses continuous (interpolated) distribution, while `percentile_disc` returns the nearest discrete input value.
+These two-argument forms are a convenience provided by the **percentile** extension. The SQL-standard spelling — `percentile_cont(P) WITHIN GROUP (ORDER BY Y)` — is built in and needs no extension; see [Ordered-Set Aggregates](#ordered-set-aggregates-within-group) above. `percentile_cont` uses a continuous (interpolated) distribution, while `percentile_disc` returns a discrete input value.
 
 | Parameter | Type        | Description                               |
 | --------- | ----------- | ----------------------------------------- |
@@ -20801,19 +21008,21 @@ SELECT tags[1:3] FROM t;
 
 ### array\_length
 
-Returns the number of elements in an array.
+Returns the number of elements along a given dimension of an array.
 
 ```sql theme={null}
 array_length(array)
 array_length(array, dimension)
 ```
 
-| Parameter   | Type      | Description                                       |
-| ----------- | --------- | ------------------------------------------------- |
-| `array`     | BLOB/TEXT | The array to measure                              |
-| `dimension` | INTEGER   | Optional. Currently only dimension 1 is supported |
+| Parameter   | Type      | Description                                                                  |
+| ----------- | --------- | ---------------------------------------------------------------------------- |
+| `array`     | BLOB/TEXT | The array to measure                                                         |
+| `dimension` | INTEGER   | Optional. 1-based dimension index. Defaults to `1` (the outermost dimension) |
 
-**Returns:** INTEGER -- the number of elements. NULL if the input is NULL.
+**Returns:** INTEGER -- the number of elements along `dimension`. NULL if the input is NULL, if `dimension < 1`, or if `dimension` exceeds the array's nesting depth.
+
+For multi-dimensional arrays the walker peeks into element zero at each level, so values are reported as if every inner array at a given depth has the same length (the layout Turso materialises).
 
 ```sql theme={null}
 SELECT array_length(ARRAY[10, 20, 30]);
@@ -20823,6 +21032,46 @@ SELECT array_length('[]');
 -- 0
 
 SELECT array_length(NULL);
+-- NULL
+
+SELECT array_length(ARRAY[ARRAY[1,2,3], ARRAY[4,5,6]], 1);
+-- 2 (outer dimension)
+
+SELECT array_length(ARRAY[ARRAY[1,2,3], ARRAY[4,5,6]], 2);
+-- 3 (inner dimension)
+
+SELECT array_length(ARRAY[1, 2, 3], 2);
+-- NULL (dimension beyond the array's depth)
+
+SELECT array_length(ARRAY[1, 2, 3], 0);
+-- NULL (dimension < 1)
+```
+
+### array\_upper
+
+Returns the upper bound (inclusive) of a given dimension of an array.
+
+```sql theme={null}
+array_upper(array, dimension)
+```
+
+| Parameter   | Type      | Description             |
+| ----------- | --------- | ----------------------- |
+| `array`     | BLOB/TEXT | The array to measure    |
+| `dimension` | INTEGER   | 1-based dimension index |
+
+**Returns:** INTEGER -- the upper bound of `dimension`. NULL with the same conditions as `array_length`.
+
+Turso arrays are always 1-indexed, so `array_upper(arr, dim)` is equivalent to `array_length(arr, dim)` for every valid input. The function is provided for PostgreSQL compatibility.
+
+```sql theme={null}
+SELECT array_upper(ARRAY[10, 20, 30], 1);
+-- 3
+
+SELECT array_upper(ARRAY[ARRAY[1,2,3], ARRAY[4,5,6]], 2);
+-- 3
+
+SELECT array_upper(ARRAY[1, 2, 3], 2);
 -- NULL
 ```
 
@@ -23004,6 +23253,8 @@ Turso provides all SQLite math functions. These functions operate on numeric val
 | `power(X, Y)` | Alias for `pow(X, Y)`                                  | REAL        |
 | `sqrt(X)`     | Square root of X. X must be >= 0                       | REAL        |
 | `sign(X)`     | Returns -1, 0, or +1 for negative, zero, or positive X | INTEGER     |
+| `gcd(A, B)`   | Greatest common divisor of two integers                | INTEGER     |
+| `lcm(A, B)`   | Least common multiple of two integers                  | INTEGER     |
 
 ### Constants
 
@@ -23195,6 +23446,55 @@ exp(X)
 ```sql theme={null}
 SELECT exp(0);   -- 1.0
 SELECT exp(1);   -- 2.718281828459045
+```
+
+***
+
+### gcd()
+
+```sql theme={null}
+gcd(A, B)
+```
+
+| Parameter | Type    | Description    |
+| --------- | ------- | -------------- |
+| `A`       | INTEGER | First operand  |
+| `B`       | INTEGER | Second operand |
+
+**Returns:** INTEGER. The greatest common divisor of A and B. The result is always non-negative regardless of the signs of the inputs. `gcd(0, 0)` returns `0`. Returns NULL if either argument is NULL. Raises an integer-overflow error when the result is not representable as a signed 64-bit integer (the only such case involves `-9223372036854775808`).
+
+```sql theme={null}
+SELECT gcd(12, 8);     -- 4
+SELECT gcd(-12, 8);    -- 4
+SELECT gcd(0, 7);      -- 7
+SELECT gcd(0, 0);      -- 0
+SELECT gcd(NULL, 7);   -- NULL
+```
+
+<Info>
+  `gcd` and `lcm` are PostgreSQL/MySQL/Oracle-compatible additions that SQLite does not ship. They operate on signed 64-bit integers; non-integer text inputs that cannot be parsed return NULL.
+</Info>
+
+***
+
+### lcm()
+
+```sql theme={null}
+lcm(A, B)
+```
+
+| Parameter | Type    | Description    |
+| --------- | ------- | -------------- |
+| `A`       | INTEGER | First operand  |
+| `B`       | INTEGER | Second operand |
+
+**Returns:** INTEGER. The least common multiple of A and B. The result is always non-negative regardless of the signs of the inputs. `lcm(_, 0)` and `lcm(0, _)` return `0`. Returns NULL if either argument is NULL. Raises an integer-overflow error when the multiplication does not fit in a signed 64-bit integer.
+
+```sql theme={null}
+SELECT lcm(4, 6);      -- 12
+SELECT lcm(-4, 6);     -- 12
+SELECT lcm(5, 0);      -- 0
+SELECT lcm(NULL, 7);   -- NULL
 ```
 
 ***
@@ -23571,36 +23871,48 @@ Scalar functions accept one or more arguments and return a single value. They ca
 
 ### String Functions
 
-| Function                 | Description                                                                            |
-| ------------------------ | -------------------------------------------------------------------------------------- |
-| `char(X1, X2, ..., XN)`  | Returns a string composed of characters with Unicode code points X1 through XN         |
-| `concat(X, ...)`         | Concatenates all arguments as strings. NULL arguments are skipped                      |
-| `concat_ws(SEP, X, ...)` | Concatenates arguments with separator SEP. NULL arguments are skipped                  |
-| `format(FORMAT, ...)`    | Returns a formatted string using printf-style format specifiers                        |
-| `hex(X)`                 | Returns the uppercase hexadecimal representation of X                                  |
-| `instr(X, Y)`            | Returns the 1-based position of the first occurrence of Y in X, or 0 if not found      |
-| `length(X)`              | Returns the string length in characters, or blob length in bytes                       |
-| `lower(X)`               | Returns a lowercase copy of string X                                                   |
-| `ltrim(X)`               | Removes leading whitespace from X                                                      |
-| `ltrim(X, Y)`            | Removes leading characters found in Y from X                                           |
-| `octet_length(X)`        | Returns the length of X in bytes                                                       |
-| `printf(FORMAT, ...)`    | Alias for `format()`. Returns a formatted string                                       |
-| `quote(X)`               | Returns the SQL literal representation of X                                            |
-| `replace(X, Y, Z)`       | Returns X with every occurrence of Y replaced by Z                                     |
-| `rtrim(X)`               | Removes trailing whitespace from X                                                     |
-| `rtrim(X, Y)`            | Removes trailing characters found in Y from X                                          |
-| `soundex(X)`             | Returns the Soundex encoding of string X                                               |
-| `substr(X, Y)`           | Returns the substring of X starting at position Y (1-based)                            |
-| `substr(X, Y, Z)`        | Returns Z characters from X starting at position Y                                     |
-| `substring(X, Y)`        | Alias for `substr(X, Y)`                                                               |
-| `substring(X, Y, Z)`     | Alias for `substr(X, Y, Z)`                                                            |
-| `trim(X)`                | Removes leading and trailing whitespace from X                                         |
-| `trim(X, Y)`             | Removes leading and trailing characters found in Y from X                              |
-| `unhex(X)`               | Converts hexadecimal string X to a blob. Returns NULL if X contains non-hex characters |
-| `unhex(X, Y)`            | Like `unhex(X)`, but characters in Y are silently ignored in X                         |
-| `unicode(X)`             | Returns the Unicode code point of the first character of string X                      |
-| `upper(X)`               | Returns an uppercase copy of string X                                                  |
-| `zeroblob(N)`            | Returns a blob consisting of N zero bytes                                              |
+| Function                       | Description                                                                                         |
+| ------------------------------ | --------------------------------------------------------------------------------------------------- |
+| `char(X1, X2, ..., XN)`        | Returns a string composed of characters with Unicode code points X1 through XN                      |
+| `chr(X)`                       | Alias for `char(X)`. PostgreSQL/SQL-standard spelling                                               |
+| `concat(X, ...)`               | Concatenates all arguments as strings. NULL arguments are skipped                                   |
+| `concat_ws(SEP, X, ...)`       | Concatenates arguments with separator SEP. NULL arguments are skipped                               |
+| `format(FORMAT, ...)`          | Returns a formatted string using printf-style format specifiers                                     |
+| `hex(X)`                       | Returns the uppercase hexadecimal representation of X                                               |
+| `instr(X, Y)`                  | Returns the 1-based position of the first occurrence of Y in X, or 0 if not found                   |
+| `strpos(X, Y)`                 | Alias for `instr(X, Y)`. PostgreSQL spelling, identical argument order                              |
+| `length(X)`                    | Returns the string length in characters, or blob length in bytes                                    |
+| `char_length(X)`               | Alias for `length(X)`. SQL-standard short form                                                      |
+| `character_length(X)`          | Alias for `length(X)`. SQL-standard long form                                                       |
+| `lower(X)`                     | Returns a lowercase copy of string X                                                                |
+| `lpad(X, N)` / `lpad(X, N, F)` | Pads X on the left to length N using F (defaults to a single space)                                 |
+| `ltrim(X)`                     | Removes leading whitespace from X                                                                   |
+| `ltrim(X, Y)`                  | Removes leading characters found in Y from X                                                        |
+| `octet_length(X)`              | Returns the length of X in bytes                                                                    |
+| `printf(FORMAT, ...)`          | Alias for `format()`. Returns a formatted string                                                    |
+| `quote(X)`                     | Returns the SQL literal representation of X                                                         |
+| `repeat(X, N)`                 | Returns X concatenated N times. `N <= 0` produces an empty string                                   |
+| `replace(X, Y, Z)`             | Returns X with every occurrence of Y replaced by Z                                                  |
+| `reverse(X)`                   | Returns the characters of string X in reverse order. Alias for `string_reverse(X)`                  |
+| `rpad(X, N)` / `rpad(X, N, F)` | Pads X on the right to length N using F (defaults to a single space)                                |
+| `rtrim(X)`                     | Removes trailing whitespace from X                                                                  |
+| `rtrim(X, Y)`                  | Removes trailing characters found in Y from X                                                       |
+| `soundex(X)`                   | Returns the Soundex encoding of string X                                                            |
+| `string_reverse(X)`            | Returns the characters of string X in reverse order                                                 |
+| `substr(X, Y)`                 | Returns the substring of X starting at position Y (1-based)                                         |
+| `substr(X, Y, Z)`              | Returns Z characters from X starting at position Y                                                  |
+| `substring(X, Y)`              | Alias for `substr(X, Y)`                                                                            |
+| `substring(X, Y, Z)`           | Alias for `substr(X, Y, Z)`                                                                         |
+| `trim(X)`                      | Removes leading and trailing whitespace from X                                                      |
+| `trim(X, Y)`                   | Removes leading and trailing characters found in Y from X                                           |
+| `btrim(X)` / `btrim(X, Y)`     | Alias for `trim(X)` / `trim(X, Y)`. PostgreSQL/Oracle spelling                                      |
+| `unhex(X)`                     | Converts hexadecimal string X to a blob. Returns NULL if X contains non-hex characters              |
+| `unhex(X, Y)`                  | Like `unhex(X)`, but characters in Y are silently ignored in X                                      |
+| `unicode(X)`                   | Returns the Unicode code point of the first character of string X                                   |
+| `unistr(X)`                    | Evaluates PostgreSQL-style Unicode escapes in X (`\XXXX`, `\+XXXXXX`, `\uXXXX`, `\UXXXXXXXX`, `\\`) |
+| `unistr_quote(X)`              | Returns X as a quoted string literal with non-ASCII characters written as `unistr` escapes          |
+| `upper(X)`                     | Returns an uppercase copy of string X                                                               |
+| `zeroblob(N)`                  | Returns a blob consisting of N zero bytes                                                           |
 
 ### Conditional Functions
 
@@ -23652,6 +23964,7 @@ Scalar functions accept one or more arguments and return a single value. They ca
 | `total_changes()`     | Returns the total number of rows modified since the database connection was opened     |
 | `sqlite_version()`    | Returns the version string `"3.42.0"`                                                  |
 | `sqlite_source_id()`  | Returns the source identifier string for the SQLite-compatible engine                  |
+| `turso_version()`     | Returns the Turso engine version string (e.g. `"0.7.0"`)                               |
 | `load_extension(X)`   | Loads a Turso-native extension from the shared library at path X                       |
 
 ## Detailed Descriptions and Examples
@@ -23667,14 +23980,17 @@ SELECT abs(0);         -- 0
 SELECT abs(NULL);      -- NULL
 ```
 
-### char(X1, X2, ..., XN)
+### char(X1, X2, ..., XN) and chr(X)
 
-Returns a string composed of characters having the Unicode code points X1 through XN. Arguments that are not valid code points are replaced with the Unicode replacement character (U+FFFD).
+`char` returns a string composed of characters having the Unicode code points X1 through XN. Arguments that are not valid code points are replaced with the Unicode replacement character (U+FFFD).
+
+`chr` is a single-argument alias provided for PostgreSQL and SQL-standard compatibility. It is identical to `char(X)`.
 
 ```sql theme={null}
 SELECT char(72, 101, 108, 108, 111);   -- 'Hello'
 SELECT char(9731);                       -- snowman character
 SELECT hex(char(0));                     -- '00'
+SELECT chr(65);                          -- 'A'
 ```
 
 ### coalesce(X, Y, ...)
@@ -23765,27 +24081,35 @@ SELECT iif(NULL, 'yes', 'no');         -- 'no'
 SELECT if(10 > 5, 'big', 'small');     -- 'big'
 ```
 
-### instr(X, Y)
+### instr(X, Y) and strpos(X, Y)
 
 Returns the 1-based position of the first occurrence of string Y in string X. Returns 0 if Y is not found in X. If either argument is NULL, returns NULL.
+
+`strpos` is a PostgreSQL-compatible alias with the same argument order.
 
 ```sql theme={null}
 SELECT instr('Hello World', 'World');   -- 7
 SELECT instr('Hello World', 'xyz');     -- 0
 SELECT instr('abcabc', 'bc');           -- 2
+SELECT strpos('Hello World', 'World');  -- 7
 ```
 
-### length(X) and octet\_length(X)
+### length(X), char\_length(X), character\_length(X), and octet\_length(X)
 
 `length` returns the number of characters in a text value, or the number of bytes in a blob value. For NULL, returns NULL. For numeric values, returns the length of the text representation.
+
+`char_length` and `character_length` are SQL-standard aliases for `length`, accepted for compatibility with PostgreSQL and other engines.
 
 `octet_length` always returns the length in bytes, regardless of type.
 
 ```sql theme={null}
-SELECT length('Hello');          -- 5
-SELECT length(x'AABBCC');        -- 3 (bytes for blob)
-SELECT length(12345);            -- 5 (text representation)
-SELECT octet_length('Hello');    -- 5 (ASCII, 1 byte per char)
+SELECT length('Hello');             -- 5
+SELECT length(x'AABBCC');           -- 3 (bytes for blob)
+SELECT length(12345);               -- 5 (text representation)
+SELECT char_length('café');         -- 4 (counts characters, not bytes)
+SELECT character_length('café');    -- 4
+SELECT octet_length('Hello');       -- 5 (ASCII, 1 byte per char)
+SELECT octet_length('café');        -- 5 (é is 2 bytes in UTF-8)
 ```
 
 ### like(X, Y) and like(X, Y, Z)
@@ -23811,21 +24135,25 @@ SELECT lower('Hello World');   -- 'hello world'
 SELECT upper('Hello World');   -- 'HELLO WORLD'
 ```
 
-### ltrim(X), rtrim(X), trim(X)
+### ltrim(X), rtrim(X), trim(X), btrim(X)
 
 These functions remove characters from the ends of a string. Without a second argument, they remove whitespace. With a second argument Y, they remove any characters present in the string Y.
+
+`btrim` is a PostgreSQL/Oracle-compatible alias for `trim` (both the one- and two-argument forms).
 
 ```sql theme={null}
 -- Whitespace trimming
 SELECT ltrim('   Hello');          -- 'Hello'
 SELECT rtrim('Hello   ');          -- 'Hello'
 SELECT trim('   Hello   ');        -- 'Hello'
+SELECT btrim('   Hello   ');       -- 'Hello'
 
 -- Character trimming
-SELECT ltrim('xxxHello', 'x');     -- 'Hello'
-SELECT rtrim('Helloyyy', 'y');     -- 'Hello'
-SELECT trim('***Hello***', '*');   -- 'Hello'
-SELECT trim('abcHelloabc', 'abc'); -- 'Hello' (removes any of a, b, or c)
+SELECT ltrim('xxxHello', 'x');       -- 'Hello'
+SELECT rtrim('Helloyyy', 'y');       -- 'Hello'
+SELECT trim('***Hello***', '*');     -- 'Hello'
+SELECT trim('abcHelloabc', 'abc');   -- 'Hello' (removes any of a, b, or c)
+SELECT btrim('xyzHelloxyz', 'xyz');  -- 'Hello'
 ```
 
 ### max(X, Y, ...) and min(X, Y, ...)
@@ -23875,6 +24203,44 @@ SELECT hex(randomblob(4)); -- e.g., 'A1B2C3D4' (4 random bytes)
 SELECT abs(random()) % 100; -- random number between 0 and 99
 ```
 
+### lpad(X, N) and lpad(X, N, F)
+
+Left-pads the string X with the fill string F until the result has exactly N characters. F defaults to a single space. If X is already at least N characters long, it is truncated from the right to length N. F is cycled when it is more than one character long. Returns NULL if any argument is NULL. If F is an empty string, the input is returned unchanged.
+
+Lengths are counted in Unicode characters, not bytes, so multi-byte input is padded correctly.
+
+```sql theme={null}
+SELECT lpad('abc', 6);              -- '   abc'
+SELECT lpad('abc', 6, 'xy');        -- 'xyxabc'
+SELECT lpad('abcdef', 3);           -- 'abc'   (truncated from the right)
+SELECT lpad('aéc', 4);              -- ' aéc'  (character count, not bytes)
+SELECT lpad('abc', 10, '');         -- 'abc'   (empty fill)
+SELECT lpad(NULL, 5);               -- NULL
+```
+
+### rpad(X, N) and rpad(X, N, F)
+
+Right-pads the string X with the fill string F until the result has exactly N characters. F defaults to a single space. Truncation, fill cycling, NULL propagation, and empty-fill handling are identical to `lpad` (see the section above).
+
+```sql theme={null}
+SELECT rpad('abc', 6);              -- 'abc   '
+SELECT rpad('abc', 6, 'xy');        -- 'abcxyx'
+SELECT rpad('abcdef', 3);           -- 'abc'   (truncated from the right)
+SELECT rpad('aéc', 4);              -- 'aéc '
+```
+
+### repeat(X, N)
+
+Returns the string X concatenated with itself N times. Returns an empty string when `N <= 0`. Returns NULL if either argument is NULL. Non-text inputs are converted to their text representation first.
+
+```sql theme={null}
+SELECT repeat('ab', 3);      -- 'ababab'
+SELECT repeat('x', 0);       -- ''
+SELECT repeat('x', -1);      -- ''
+SELECT repeat('', 5);        -- ''
+SELECT repeat(NULL, 3);      -- NULL
+```
+
 ### replace(X, Y, Z)
 
 Returns a copy of string X with every occurrence of string Y replaced by string Z. If Y is empty, X is returned unchanged.
@@ -23883,6 +24249,20 @@ Returns a copy of string X with every occurrence of string Y replaced by string 
 SELECT replace('Hello World', 'World', 'Turso');   -- 'Hello Turso'
 SELECT replace('aabbcc', 'bb', 'XX');               -- 'aaXXcc'
 SELECT replace('2024-01-15', '-', '/');              -- '2024/01/15'
+```
+
+### reverse(X) and string\_reverse(X)
+
+Returns string X with its characters in reverse order. Reversal is done on Unicode characters, so multi-byte characters are preserved intact. Returns NULL if X is NULL. Non-text inputs are converted to their text representation first.
+
+`reverse` is the PostgreSQL (since version 17), MySQL, and Oracle spelling; `string_reverse` is the canonical Turso name. The two are interchangeable.
+
+```sql theme={null}
+SELECT reverse('hello');         -- 'olleh'
+SELECT reverse('');              -- ''
+SELECT reverse('café');          -- 'éfac'
+SELECT string_reverse('abc');    -- 'cba'
+SELECT reverse(NULL);            -- NULL
 ```
 
 ### round(X) and round(X, Y)
@@ -23992,6 +24372,14 @@ Returns the SQLite-compatible version string.
 
 ```sql theme={null}
 SELECT sqlite_version();  -- '3.42.0'
+```
+
+### turso\_version()
+
+Returns the version string of the Turso engine.
+
+```sql theme={null}
+SELECT turso_version();  -- e.g. '0.7.0'
 ```
 
 ### load\_extension(X)
@@ -24139,6 +24527,28 @@ Use this format for extremely compact representations. Eight dimensions are pack
 ```sql theme={null}
 SELECT vector1bit('[1, 0, 1, 1, 0, 0, 1, 0]');
 ```
+
+### vector32\_sparse
+
+Creates a 32-bit floating-point **sparse** vector from a JSON array. Only non-zero components are stored, which is efficient for high-dimensional vectors that are mostly zero.
+
+```sql theme={null}
+vector32_sparse(json_array)
+```
+
+| Parameter    | Type | Description                                        |
+| ------------ | ---- | -------------------------------------------------- |
+| `json_array` | TEXT | A JSON array of numbers, typically with many zeros |
+
+**Returns:** BLOB -- the vector in 32-bit float sparse binary format.
+
+```sql theme={null}
+SELECT vector32_sparse('[0.0, 0.0, 1.5, 0.0, 0.0, 2.5]');
+```
+
+<Info>
+  Sparse vectors can be indexed with the experimental sparse vector index method (enable `--experimental-index-method`). See [CREATE INDEX](/sql-reference/statements/create-index).
+</Info>
 
 ***
 
@@ -24405,7 +24815,7 @@ SELECT vector_extract(
 ```
 
 <Note>
-  Vector indexes are not yet supported. All similarity searches use a linear scan over the table. For large datasets, consider limiting search to a subset of rows with a WHERE clause.
+  By default, similarity searches use a linear scan over the table. An experimental sparse vector index method is available behind the `--experimental-index-method` flag; without it, consider limiting search to a subset of rows with a WHERE clause for large datasets.
 </Note>
 
 ## See Also
@@ -24424,7 +24834,7 @@ Perform calculations across sets of rows related to the current row without coll
 Window functions perform calculations across a set of rows that are related to the current row. Unlike aggregate functions with GROUP BY, window functions do not collapse rows into a single output row. Every input row produces a corresponding output row, with the window function result appended.
 
 <Info>
-  Turso supports aggregate functions used as window functions with the default frame definition. Custom frame specifications (ROWS, RANGE, or GROUPS with explicit bounds) and dedicated window functions (row\_number, rank, dense\_rank, ntile, lag, lead, first\_value, last\_value, nth\_value) are not yet supported.
+  Turso supports aggregate functions used as window functions with the default frame definition, the `row_number()` ranking function, and the `FILTER (WHERE ...)` clause. The remaining dedicated window functions (`rank`, `dense_rank`, `ntile`, `lag`, `lead`, `first_value`, `last_value`, `nth_value`) and custom frame specifications (ROWS, RANGE, or GROUPS with explicit bounds) are not yet supported.
 </Info>
 
 ## Syntax
@@ -24469,6 +24879,42 @@ Any aggregate function can be used as a window function by adding an OVER clause
 | `max(expression)`                     | Maximum value in the frame                                 |
 | `total(expression)`                   | Sum as REAL (returns 0.0 for empty frames instead of NULL) |
 | `group_concat(expression, separator)` | Concatenation of values in the frame                       |
+
+## Ranking Functions
+
+### row\_number()
+
+Assigns a sequential integer (starting at 1) to each row within its partition, in the order defined by the window's `ORDER BY`. This is the one dedicated ranking function supported in Turso.
+
+```sql theme={null}
+SELECT
+    department,
+    name,
+    salary,
+    ROW_NUMBER() OVER (PARTITION BY department ORDER BY salary DESC) AS rank_in_dept
+FROM employees;
+```
+
+| department  | name  | salary | rank\_in\_dept |
+| ----------- | ----- | ------ | -------------- |
+| Engineering | Alice | 90000  | 1              |
+| Engineering | Bob   | 85000  | 2              |
+| Engineering | Carol | 75000  | 3              |
+| Marketing   | Dave  | 70000  | 1              |
+| Marketing   | Eve   | 60000  | 2              |
+
+## FILTER (WHERE ...)
+
+A `FILTER (WHERE ...)` clause restricts which rows an aggregate window function includes, without affecting the rows returned by the query.
+
+```sql theme={null}
+SELECT
+    department,
+    name,
+    salary,
+    SUM(salary) FILTER (WHERE salary > 70000) OVER (PARTITION BY department) AS high_earner_total
+FROM employees;
+```
 
 ## PARTITION BY
 
@@ -24655,7 +25101,6 @@ The following window function features are not yet supported in Turso:
 
 | Feature                                   | Status        |
 | ----------------------------------------- | ------------- |
-| `row_number()`                            | Not supported |
 | `rank()`                                  | Not supported |
 | `dense_rank()`                            | Not supported |
 | `ntile(N)`                                | Not supported |
@@ -24670,7 +25115,8 @@ The following window function features are not yet supported in Turso:
 | Custom frame: `RANGE BETWEEN ... AND ...` | Not supported |
 | Custom frame: `GROUPS BETWEEN ...`        | Not supported |
 | `EXCLUDE` clause                          | Not supported |
-| `FILTER (WHERE ...)` on window functions  | Not supported |
+
+`row_number()` and `FILTER (WHERE ...)` are supported — see the sections above.
 
 ## See Also
 
@@ -25162,6 +25608,31 @@ PRAGMA ignore_check_constraints = 1;   -- disable CHECK constraints
 PRAGMA ignore_check_constraints = 0;   -- enable CHECK constraints
 ```
 
+### data\_sync\_retry
+
+Controls whether Turso retries a disk sync (fsync) after a failure instead of treating it as fatal.
+
+```sql theme={null}
+PRAGMA data_sync_retry = 1;   -- retry on sync failure
+PRAGMA data_sync_retry = 0;   -- do not retry (default)
+```
+
+### require\_where
+
+<Info>
+  **Turso Extension**: a safety pragma with no SQLite equivalent.
+</Info>
+
+When enabled, Turso rejects any `UPDATE` or `DELETE` that does not include a `WHERE` clause, guarding against accidental full-table modifications. `i_am_a_dummy` is an alias that enables the same behavior.
+
+```sql theme={null}
+PRAGMA require_where = 1;
+DELETE FROM users;            -- rejected: no WHERE clause
+DELETE FROM users WHERE id = 1;  -- allowed
+
+PRAGMA i_am_a_dummy = 1;      -- equivalent to require_where = 1
+```
+
 ## Integrity Checks
 
 ### integrity\_check
@@ -25196,6 +25667,28 @@ PRAGMA wal_checkpoint;
 ```
 
 A checkpoint writes pages from the WAL file back to the database file.
+
+## MVCC Tuning
+
+<Info>
+  **Turso Extension**: these pragmas apply only when MVCC mode is enabled (`PRAGMA journal_mode = mvcc`).
+</Info>
+
+### mvcc\_checkpoint\_threshold
+
+Sets the amount of committed work that accumulates before Turso triggers an MVCC checkpoint.
+
+```sql theme={null}
+PRAGMA mvcc_checkpoint_threshold = 1000;
+```
+
+### mvcc\_gc\_threshold
+
+Sets the threshold that controls how aggressively Turso garbage-collects obsolete MVCC row versions.
+
+```sql theme={null}
+PRAGMA mvcc_gc_threshold = 1000;
+```
 
 ## Change Data Capture
 
@@ -26087,7 +26580,7 @@ Create an index on a table to improve query performance for lookups, joins, and 
 
 ```sql theme={null}
 CREATE [UNIQUE] INDEX [IF NOT EXISTS] [schema-name.]index-name
-    ON table-name (column-or-expr [ASC|DESC], ...)
+    ON table-name (column-or-expr [COLLATE collation-name] [ASC|DESC], ...)
     [WHERE filter-expression];
 ```
 
@@ -26105,6 +26598,7 @@ CREATE [UNIQUE] INDEX [IF NOT EXISTS] [schema-name.]index-name
 | `index-name`              | A unique name for the index within the database.                                                                                |
 | `table-name`              | The table to index.                                                                                                             |
 | `column-or-expr`          | A column name or an expression to include in the index. Multiple entries are separated by commas.                               |
+| `COLLATE collation-name`  | An optional collation sequence applied to the indexed column (e.g. `NOCASE`).                                                   |
 | `ASC` / `DESC`            | Sort direction for the indexed column. Default is `ASC`.                                                                        |
 | `WHERE filter-expression` | An optional filter that creates a partial index. Only rows matching the expression are included in the index.                   |
 
@@ -26253,6 +26747,7 @@ CREATE INDEX idx_pending_tasks ON tasks (assignee, due_date)
 ## See Also
 
 * [DROP INDEX](/sql-reference/statements/drop-index) for removing indexes
+* [REINDEX](/sql-reference/statements/reindex) for rebuilding indexes
 * [CREATE TABLE](/sql-reference/statements/create-table) for inline UNIQUE and PRIMARY KEY constraints
 * [EXPLAIN](/sql-reference/statements/explain) for verifying index usage in query plans
 
@@ -26353,6 +26848,307 @@ GROUP BY customer_id;
 * [SELECT](/sql-reference/statements/select) for the query syntax used in view definitions
 
 
+# CREATE SEQUENCE
+Source: https://docs.turso.tech/sql-reference/statements/create-sequence
+
+Define a named sequence generator for producing auto-incrementing numeric values
+
+# CREATE SEQUENCE
+
+<Info>
+  **Turso Extension**: CREATE SEQUENCE is a Turso-specific statement not available in standard SQLite.
+</Info>
+
+The CREATE SEQUENCE statement defines a named sequence object that generates a series of numeric values. Sequences are independent of any table and can be used across multiple tables and queries via the `nextval()`, `currval()`, and `setval()` functions.
+
+## Syntax
+
+```sql theme={null}
+CREATE SEQUENCE [IF NOT EXISTS] [schema-name.]sequence-name
+    [START [WITH] value]
+    [INCREMENT [BY] value]
+    [MINVALUE value]
+    [MAXVALUE value]
+    [CYCLE | NO CYCLE];
+```
+
+## Description
+
+A sequence generates a series of integer values according to its configuration. Each call to `nextval()` produces the next value in the series. Sequences are persisted in the database schema and survive restarts.
+
+Unlike `AUTOINCREMENT` on an `INTEGER PRIMARY KEY`, sequences are standalone objects. A single sequence can supply values to multiple tables, or multiple sequences can feed into different columns of the same table.
+
+### Parameters
+
+| Parameter        | Description                                                                                                               | Default                                                                        |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `IF NOT EXISTS`  | Prevents an error if a sequence with the same name already exists. The statement is a no-op when the sequence is present. |                                                                                |
+| `schema-name`    | The name of an attached database. Defaults to the main database if omitted.                                               |                                                                                |
+| `sequence-name`  | The name of the sequence to create.                                                                                       |                                                                                |
+| `START [WITH]`   | The first value returned by `nextval()`.                                                                                  | `MINVALUE` for ascending sequences, `MAXVALUE` for descending sequences.       |
+| `INCREMENT [BY]` | The step between consecutive values. Use a negative value for descending sequences.                                       | `1`                                                                            |
+| `MINVALUE`       | The lower bound of the sequence.                                                                                          | `1` for ascending sequences, minimum 64-bit integer for descending sequences.  |
+| `MAXVALUE`       | The upper bound of the sequence.                                                                                          | Maximum 64-bit integer for ascending sequences, `-1` for descending sequences. |
+| `CYCLE`          | When the sequence reaches its boundary, wrap around to the opposite end instead of raising an error.                      | `NO CYCLE`                                                                     |
+
+### Validation
+
+The following rules are enforced at creation time:
+
+* `INCREMENT BY` must not be zero.
+* `MINVALUE` must be less than `MAXVALUE`.
+* For ascending sequences (`INCREMENT > 0`): `START` must be greater than or equal to `MINVALUE`.
+* For descending sequences (`INCREMENT < 0`): `START` must be less than or equal to `MAXVALUE`.
+
+## Sequence Functions
+
+### nextval()
+
+Returns the next value from the sequence and advances it.
+
+```sql theme={null}
+SELECT nextval('counter');
+-- 1
+SELECT nextval('counter');
+-- 2
+```
+
+On the first call, `nextval()` returns the `START` value. Each subsequent call increments by `INCREMENT BY`.
+
+Sequence persistence under WAL mode is transactional: the sequence backing-table update is committed or rolled back with the transaction that called `nextval()`. Under MVCC mode (`journal_mode=experimental_mvcc`) inside `BEGIN CONCURRENT`, the backing-table write is autonomous and survives an outer `ROLLBACK` (postgres-like). For BEGIN / BEGIN IMMEDIATE / autocommit, the inner write is bundled with the outer and rolls back with it (SQLite-like).
+
+Turso does not guarantee gap-free sequences, and it also does not guarantee PostgreSQL-style permanent burning of values from rolled-back transactions in WAL mode or under an exclusive (BEGIN IMMEDIATE / BEGIN DEFERRED) MVCC outer.
+
+If a transaction calls `nextval()` and rolls back, that value may be generated again later if no committed transaction used that value or a later value. If another concurrent transaction commits after allocating a later value, the rolled-back value can remain a gap. The guarantee is that persisted sequence state remains consistent with committed database state.
+
+### currval()
+
+Returns the last value returned by `nextval()` in the current connection. Raises an error if `nextval()` has not been called on this sequence in the current session.
+
+```sql theme={null}
+CREATE SEQUENCE my_seq;
+SELECT nextval('my_seq');
+-- 1
+SELECT nextval('my_seq');
+-- 2
+SELECT currval('my_seq');
+-- 2
+```
+
+### setval()
+
+Sets the sequence to an explicit value.
+
+```sql theme={null}
+setval(sequence_name, value)
+setval(sequence_name, value, is_called)
+```
+
+| Parameter       | Description                                                                                                                                     |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `sequence_name` | The name of the sequence.                                                                                                                       |
+| `value`         | The value to set. Must be within the sequence's `MINVALUE`..`MAXVALUE` range.                                                                   |
+| `is_called`     | When `true` (the default), the next `nextval()` will return `value + increment`. When `false`, the next `nextval()` will return `value` itself. |
+
+```sql theme={null}
+CREATE SEQUENCE my_seq;
+SELECT setval('my_seq', 100);
+-- 100
+SELECT nextval('my_seq');
+-- 101
+
+SELECT setval('my_seq', 200, false);
+-- 200
+SELECT nextval('my_seq');
+-- 200 (returns the set value since is_called was false)
+SELECT nextval('my_seq');
+-- 201
+```
+
+## Examples
+
+### Basic Sequence
+
+```sql theme={null}
+CREATE SEQUENCE counter;
+SELECT nextval('counter');
+-- 1
+SELECT nextval('counter');
+-- 2
+SELECT nextval('counter');
+-- 3
+```
+
+### Custom Start and Increment
+
+```sql theme={null}
+CREATE SEQUENCE order_seq START WITH 1000 INCREMENT BY 10;
+SELECT nextval('order_seq');
+-- 1000
+SELECT nextval('order_seq');
+-- 1010
+SELECT nextval('order_seq');
+-- 1020
+```
+
+### Descending Sequence
+
+```sql theme={null}
+CREATE SEQUENCE countdown START WITH 10 INCREMENT BY -1 MINVALUE 1 MAXVALUE 10;
+SELECT nextval('countdown');
+-- 10
+SELECT nextval('countdown');
+-- 9
+SELECT nextval('countdown');
+-- 8
+```
+
+### Cycling Sequence
+
+When the sequence reaches its boundary, it wraps around:
+
+```sql theme={null}
+CREATE SEQUENCE color_cycle MINVALUE 1 MAXVALUE 3 CYCLE;
+SELECT nextval('color_cycle');
+-- 1
+SELECT nextval('color_cycle');
+-- 2
+SELECT nextval('color_cycle');
+-- 3
+SELECT nextval('color_cycle');
+-- 1 (wraps around)
+SELECT nextval('color_cycle');
+-- 2
+```
+
+Without `CYCLE`, exceeding the boundary raises an error:
+
+```sql theme={null}
+CREATE SEQUENCE bounded MINVALUE 1 MAXVALUE 3;
+SELECT nextval('bounded');
+-- 1
+SELECT nextval('bounded');
+-- 2
+SELECT nextval('bounded');
+-- 3
+SELECT nextval('bounded');
+-- Error: nextval: reached maximum value of sequence "bounded"
+```
+
+### Sequence as Column Default
+
+A sequence can supply default values for a table column:
+
+```sql theme={null}
+CREATE SEQUENCE invoice_seq START WITH 1000;
+
+CREATE TABLE invoices (
+    id INTEGER PRIMARY KEY,
+    invoice_number INTEGER DEFAULT (nextval('invoice_seq')),
+    description TEXT
+);
+
+INSERT INTO invoices (description) VALUES ('First order');
+INSERT INTO invoices (description) VALUES ('Second order');
+INSERT INTO invoices (description) VALUES ('Third order');
+
+SELECT * FROM invoices;
+-- 1|1000|First order
+-- 2|1001|Second order
+-- 3|1002|Third order
+```
+
+### IF NOT EXISTS
+
+```sql theme={null}
+-- Safe to run multiple times
+CREATE SEQUENCE IF NOT EXISTS my_seq;
+CREATE SEQUENCE IF NOT EXISTS my_seq;
+SELECT nextval('my_seq');
+-- 1
+```
+
+## Concurrency
+
+`nextval()` and `setval()` persist sequence state to a backing table.
+
+In **WAL mode** (the default), the backing-table write rides on the caller's
+write transaction. Only one connection can hold the write lock at a time; if
+another connection is already writing, `SELECT nextval(...)` will return
+`SQLITE_BUSY` ("Database is busy"). This is different from `AUTOINCREMENT`,
+which uses a process-local allocator and writes the committed watermark with
+the table insert.
+
+In **MVCC mode** (`journal_mode=experimental_mvcc`), `nextval()` inside a
+`BEGIN CONCURRENT` outer wraps the backing-table write in an autonomous inner
+transaction that commits immediately and independently of the outer's eventual
+commit or rollback. This lets multiple concurrent `BEGIN CONCURRENT` callers
+each get a fresh value (serialized by the standard MVCC PK conflict + bounded
+retry on the backing table), and matches PostgreSQL's "burnt value" semantics
+for this case. For autocommit, `BEGIN`, `BEGIN IMMEDIATE`, and `BEGIN DEFERRED`,
+the outer holds the exclusive lock and the inner write runs inline — under
+those modes a `ROLLBACK` un-burns the value (SQLite-like).
+
+In rollback cases, generated values are not guaranteed to be reused and are
+not guaranteed to remain gaps. Reuse depends on the outer transaction mode
+and on whether another committed transaction advanced the durable watermark
+past that value.
+
+If your workload calls `nextval()` from many concurrent connections in WAL
+mode, consider using `AUTOINCREMENT` instead, or serializing sequence access
+at the application level.
+
+## Recovering the current value
+
+The "current value" reachable from a fresh connection depends on mode:
+
+* **WAL mode**: read `seq` from `sqlite_sequence` (for AUTOINCREMENT tables)
+  or query the sequence backing table directly:
+
+  ```sql theme={null}
+  SELECT MAX(value) FROM "__turso_internal_seq_<sequence_name>";
+  ```
+
+  Both are kept in sync at commit time.
+
+* **MVCC mode**: `sqlite_sequence` is updated **only at checkpoint time** —
+  between checkpoints it may lag the actual high-water mark or be empty for a
+  freshly-created AUTOINCREMENT table. Do **not** rely on `sqlite_sequence`
+  to recover the live value in MVCC mode. Instead, query the internal
+  sequence backing table directly:
+
+  ```sql theme={null}
+  SELECT MAX(value) FROM "__turso_internal_seq_<sequence_name>";
+  ```
+
+  For AUTOINCREMENT, the sequence name is `__turso_internal_autoincrement_<table>`,
+  so the backing-table query becomes:
+
+  ```sql theme={null}
+  SELECT MAX(value) FROM "__turso_internal_seq___turso_internal_autoincrement_<table>";
+  ```
+
+  After `PRAGMA wal_checkpoint(TRUNCATE)`, the backing table is coalesced to
+  a single row and `sqlite_sequence` is also brought up to date with exactly
+  one row per AUTOINCREMENT table — at that point both are safe to read with
+  normal SQLite-compatible queries.
+
+## Errors
+
+| Error                                                 | Cause                                                                           |
+| ----------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `sequence "name" already exists`                      | A sequence with that name already exists and `IF NOT EXISTS` was not specified. |
+| `INCREMENT must not be zero`                          | `INCREMENT BY 0` was specified.                                                 |
+| `MINVALUE (x) must be less than MAXVALUE (y)`         | `MINVALUE` is greater than or equal to `MAXVALUE`.                              |
+| `START value (x) cannot be less than MINVALUE (y)`    | For ascending sequences, `START` is below `MINVALUE`.                           |
+| `START value (x) cannot be greater than MAXVALUE (y)` | For descending sequences, `START` is above `MAXVALUE`.                          |
+
+## See Also
+
+* [DROP SEQUENCE](/sql-reference/statements/drop-sequence) for removing sequences
+* [CREATE TABLE](/sql-reference/statements/create-table) for `AUTOINCREMENT` on `INTEGER PRIMARY KEY` columns
+
+
 # CREATE TABLE
 Source: https://docs.turso.tech/sql-reference/statements/create-table
 
@@ -26451,11 +27247,23 @@ CREATE TABLE events (
 );
 ```
 
-Without `AUTOINCREMENT`, Turso may reuse rowid values after rows are deleted. With `AUTOINCREMENT`, the rowid is guaranteed to be greater than any rowid that has ever existed in the table, even if rows have been deleted.
+Without `AUTOINCREMENT`, Turso may reuse rowid values after rows are deleted. With `AUTOINCREMENT`, automatically generated rowids are greater than any rowid that has ever existed in a committed row for the table, even if rows have been deleted.
 
 <Info>
-  `AUTOINCREMENT` adds minor overhead because it updates the `sqlite_sequence` table on every insert. Only use it when you require strictly monotonically increasing identifiers.
+  `AUTOINCREMENT` adds minor overhead because it maintains a committed high-water mark. Rolled-back inserts do not have to permanently burn their generated rowids, but gaps are still possible when concurrent transactions commit later generated values.
 </Info>
+
+<Warning>
+  **AUTOINCREMENT under MVCC (`journal_mode=experimental_mvcc`)**: `sqlite_sequence` is updated lazily — only when the WAL is checkpointed. Between checkpoints it may lag the actual high-water mark or be empty for a freshly-created AUTOINCREMENT table. Do **not** rely on `sqlite_sequence` to recover the current value in MVCC mode. Instead, query the internal sequence backing table directly:
+
+  ```sql theme={null}
+  SELECT MAX(value) FROM "__turso_internal_seq___turso_internal_autoincrement_<table_name>";
+  ```
+
+  This row is updated immediately by every committed (and durably-burnt) `nextval`. After `PRAGMA wal_checkpoint(TRUNCATE)`, `sqlite_sequence` is coalesced to a single row per AUTOINCREMENT table and is then safe to read with normal SQLite-compatible queries.
+
+  Note also that MVCC autoincrement does **not** un-burn rolled-back rowids — a `ROLLBACK` after `INSERT` leaves a gap rather than recycling the rowid. SQLite WAL mode and Turso's WAL mode both un-burn on rollback; only MVCC mode keeps them burnt.
+</Warning>
 
 ### NOT NULL
 
@@ -26537,6 +27345,8 @@ Specifies the collation sequence used for text comparisons and sorting on the co
 | `BINARY`  | Compares text using the raw byte values (default) |
 | `NOCASE`  | Case-insensitive comparison for ASCII characters  |
 | `RTRIM`   | Like `BINARY`, but ignores trailing spaces        |
+
+Turso also resolves locale-aware collations and custom collations registered on the connection. An unknown collation name now raises a `no such collation sequence` error rather than being silently ignored.
 
 ```sql theme={null}
 CREATE TABLE contacts (
@@ -26698,9 +27508,16 @@ The following CREATE TABLE features are not yet supported:
 | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `CREATE TEMPORARY TABLE`                   | Temporary tables are not supported                                                                                                                                             |
 | `CREATE TABLE ... AS SELECT`               | Creating a table from a query result is not supported                                                                                                                          |
-| `WITHOUT ROWID`                            | WITHOUT ROWID tables are not supported                                                                                                                                         |
-| `GENERATED ALWAYS AS`                      | Generated (computed) columns are not supported                                                                                                                                 |
 | `ON CONFLICT` clause on column constraints | The column-level ON CONFLICT clause (e.g., `NOT NULL ON CONFLICT REPLACE`) is not supported. Use the [INSERT ... ON CONFLICT](/sql-reference/statements/upsert) syntax instead |
+
+### Experimental Features
+
+The following are available behind [experimental feature flags](/sql-reference/experimental-features):
+
+| Feature               | Flag                               | Notes                                                                           |
+| --------------------- | ---------------------------------- | ------------------------------------------------------------------------------- |
+| `WITHOUT ROWID`       | `--experimental-without-rowid`     | WITHOUT ROWID tables have limitations; see the experimental features page       |
+| `GENERATED ALWAYS AS` | `--experimental-generated-columns` | Virtual generated (computed) columns only; stored columns are not yet supported |
 
 ## Examples
 
@@ -26793,10 +27610,6 @@ Create a trigger that executes statements automatically in response to table cha
 
 # CREATE TRIGGER
 
-<Info>
-  This feature is experimental and must be [enabled before use](/sql-reference/experimental-features).
-</Info>
-
 Create a trigger that automatically executes one or more SQL statements when a row is inserted into, updated in, or deleted from a table.
 
 ## Syntax
@@ -26826,7 +27639,7 @@ A trigger defines a set of SQL statements that run automatically when a specifie
 | `IF NOT EXISTS`                   | Prevents an error if a trigger with the same name already exists.                                                                                                              |
 | `schema-name`                     | The name of the attached database containing the trigger. Defaults to the main database if omitted. Cannot be used with `TEMPORARY`.                                           |
 | `trigger-name`                    | A unique name for the trigger within the database.                                                                                                                             |
-| `BEFORE` / `AFTER` / `INSTEAD OF` | When the trigger fires relative to the triggering event. Default is `BEFORE`.                                                                                                  |
+| `BEFORE` / `AFTER` / `INSTEAD OF` | When the trigger fires relative to the triggering event. Default is `BEFORE`. `INSTEAD OF` triggers are not yet supported.                                                     |
 | `INSERT` / `UPDATE` / `DELETE`    | The data modification event that fires the trigger.                                                                                                                            |
 | `OF column-name, ...`             | For UPDATE triggers only. Restricts the trigger to fire only when the specified columns are modified.                                                                          |
 | `table-name`                      | The table (or view, for INSTEAD OF triggers) that the trigger monitors.                                                                                                        |
@@ -26852,9 +27665,11 @@ An `AFTER` trigger fires after the triggering statement has modified the row. Us
 
 ### INSTEAD OF Triggers
 
-An `INSTEAD OF` trigger can only be created on a view. It fires in place of the triggering INSERT, UPDATE, or DELETE, allowing you to make views writable.
+<Warning>
+  `INSTEAD OF` triggers are not yet supported in Turso. `CREATE TRIGGER ... INSTEAD OF ...` returns an error.
+</Warning>
 
-* The actual INSERT, UPDATE, or DELETE on the view does not execute. The trigger body is responsible for performing the desired changes on the underlying tables.
+In SQLite, an `INSTEAD OF` trigger can only be created on a view and fires in place of the triggering INSERT, UPDATE, or DELETE, allowing you to make views writable. Turso parses this syntax but does not yet execute it.
 
 ## Row References
 
@@ -28159,6 +28974,88 @@ DROP INDEX aux.idx_sessions_token;
 * [EXPLAIN](/sql-reference/statements/explain) for verifying query plans after dropping an index
 
 
+# DROP SEQUENCE
+Source: https://docs.turso.tech/sql-reference/statements/drop-sequence
+
+Remove a named sequence generator from the database
+
+# DROP SEQUENCE
+
+<Info>
+  **Turso Extension**: DROP SEQUENCE is a Turso-specific statement not available in standard SQLite.
+</Info>
+
+The DROP SEQUENCE statement removes a sequence object from the database. Once dropped, the sequence name can no longer be used with `nextval()`, `currval()`, or `setval()`.
+
+## Syntax
+
+```sql theme={null}
+DROP SEQUENCE [IF EXISTS] [schema-name.]sequence-name;
+```
+
+## Description
+
+DROP SEQUENCE removes the named sequence from the database schema. The sequence must exist unless the `IF EXISTS` clause is specified.
+
+### Clauses
+
+| Clause          | Description                                                                                                                    |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `IF EXISTS`     | Suppresses the error that would occur if the sequence does not exist. The statement is a no-op when the sequence is not found. |
+| `schema-name`   | The name of an attached database. Defaults to the main database if omitted.                                                    |
+| `sequence-name` | The name of the sequence to remove.                                                                                            |
+
+## Examples
+
+### Drop a Sequence
+
+```sql theme={null}
+CREATE SEQUENCE my_seq;
+SELECT nextval('my_seq');
+-- 1
+
+DROP SEQUENCE my_seq;
+
+SELECT nextval('my_seq');
+-- Error: sequence "my_seq" does not exist
+```
+
+### Drop with IF EXISTS
+
+```sql theme={null}
+-- Safe to run even if the sequence does not exist
+DROP SEQUENCE IF EXISTS nonexistent;
+```
+
+### Recreate After Drop
+
+Dropping and recreating a sequence resets it to its initial state:
+
+```sql theme={null}
+CREATE SEQUENCE counter;
+SELECT nextval('counter');
+-- 1
+SELECT nextval('counter');
+-- 2
+
+DROP SEQUENCE counter;
+CREATE SEQUENCE counter;
+
+SELECT nextval('counter');
+-- 1
+```
+
+## Errors
+
+| Error                            | Cause                                                                |
+| -------------------------------- | -------------------------------------------------------------------- |
+| `sequence "name" does not exist` | No sequence with that name exists and `IF EXISTS` was not specified. |
+
+## See Also
+
+* [CREATE SEQUENCE](/sql-reference/statements/create-sequence) for defining sequences
+
+
 # DROP TABLE
 Source: https://docs.turso.tech/sql-reference/statements/drop-table
 
@@ -28817,6 +29714,67 @@ DELETE FROM orders WHERE order_date < '2023-01-01';
 * [CREATE TABLE](/sql-reference/statements/create-table) for column definitions and default values
 
 
+# REINDEX
+Source: https://docs.turso.tech/sql-reference/statements/reindex
+
+Rebuild indexes from scratch
+
+# REINDEX
+
+The REINDEX statement deletes and recreates indexes from scratch. It is useful when a collation sequence definition has changed, or to rebuild an index that may have become out of date.
+
+## Syntax
+
+```sql theme={null}
+REINDEX;
+REINDEX collation-name;
+REINDEX [schema-name.]table-name;
+REINDEX [schema-name.]index-name;
+```
+
+## Description
+
+| Form                     | Description                                                |
+| ------------------------ | ---------------------------------------------------------- |
+| `REINDEX`                | Rebuild all indexes in all attached databases              |
+| `REINDEX collation-name` | Rebuild every index that uses the named collation sequence |
+| `REINDEX table-name`     | Rebuild all indexes associated with the named table        |
+| `REINDEX index-name`     | Rebuild the named index                                    |
+
+When a single unqualified name is given, Turso resolves it in the order **collation → table → index**: if the name matches a collation sequence, all indexes using that collation are rebuilt; otherwise it is treated as a table or index name.
+
+## Examples
+
+```sql theme={null}
+-- Rebuild every index in the database
+REINDEX;
+
+-- Rebuild all indexes on a table
+REINDEX orders;
+
+-- Rebuild a single index
+REINDEX idx_customer;
+
+-- Rebuild all indexes that use a collation
+REINDEX NOCASE;
+```
+
+## Limitations
+
+REINDEX returns an error in the following cases:
+
+* When the connection is in MVCC mode (`journal_mode=mvcc`).
+* On `WITHOUT ROWID` tables.
+* For custom index methods that have no backing B-tree, such as FTS and vector indexes.
+* When `PRAGMA query_only` is enabled.
+
+## See Also
+
+* [CREATE INDEX](/sql-reference/statements/create-index) for creating indexes
+* [DROP INDEX](/sql-reference/statements/drop-index) for removing indexes
+* [ANALYZE](/sql-reference/statements/analyze) for collecting index statistics
+
+
 # REPLACE
 Source: https://docs.turso.tech/sql-reference/statements/replace
 
@@ -29395,7 +30353,7 @@ function_name() OVER (
 Standard aggregate functions (`SUM`, `AVG`, `COUNT`, `MIN`, `MAX`, `TOTAL`, `GROUP_CONCAT`) can all be used as window functions.
 
 <Info>
-  Window functions in Turso use the default frame definition (RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW). Custom frame specifications (ROWS, RANGE, GROUPS with explicit bounds) are not supported. Built-in ranking functions (row\_number, rank, dense\_rank) are not yet available.
+  Window functions in Turso use the default frame definition (RANGE BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW). Custom frame specifications (ROWS, RANGE, GROUPS with explicit bounds) are not supported. The `row_number()` ranking function and the `FILTER (WHERE ...)` clause are supported; other ranking and navigation functions (`rank`, `dense_rank`, `lag`, `lead`, and so on) are not yet available.
 </Info>
 
 ## Set Operations
@@ -29522,7 +30480,10 @@ BEGIN [DEFERRED | IMMEDIATE | EXCLUSIVE] [TRANSACTION];
 COMMIT [TRANSACTION];
 END [TRANSACTION];
 
-ROLLBACK [TRANSACTION];
+ROLLBACK [TRANSACTION] [TO [SAVEPOINT] savepoint-name];
+
+SAVEPOINT savepoint-name;
+RELEASE [SAVEPOINT] savepoint-name;
 ```
 
 ## BEGIN
@@ -29610,8 +30571,35 @@ COMMIT;
 ROLLBACK;
 ```
 
+Each connection can have at most one active top-level transaction at a time. For finer-grained rollback within a transaction, use savepoints.
+
+## Savepoints
+
+Savepoints are named markers within a transaction that let you roll back part of the work without aborting the whole transaction. They can be nested.
+
+| Statement                                    | Description                                                                                                           |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `SAVEPOINT name`                             | Establishes a new savepoint with the given name                                                                       |
+| `RELEASE [SAVEPOINT] name`                   | Removes the savepoint (and any savepoints created after it), keeping its changes as part of the enclosing transaction |
+| `ROLLBACK [TRANSACTION] TO [SAVEPOINT] name` | Undoes all changes made since the savepoint, but keeps the savepoint and the transaction open                         |
+
+```sql theme={null}
+BEGIN;
+INSERT INTO accounts (name, balance) VALUES ('Alice', 1000);
+
+SAVEPOINT before_bonus;
+UPDATE accounts SET balance = balance + 500 WHERE name = 'Alice';
+
+-- Undo just the bonus, keep the insert
+ROLLBACK TO before_bonus;
+
+-- Discard the savepoint and keep the rest
+RELEASE before_bonus;
+COMMIT;
+```
+
 <Info>
-  Turso does not support SAVEPOINT or nested transactions. Each connection can have at most one active transaction at a time.
+  While a write statement on the same connection is still in progress, `SAVEPOINT`, `RELEASE`, and `ROLLBACK TO` may return `SQLITE_BUSY`.
 </Info>
 
 ## BEGIN CONCURRENT
@@ -32108,7 +33096,6 @@ Future encryption features in development:
 * **Key derivation from passphrases**: Use memorable passphrases instead of raw keys
 * **Encrypt existing databases**: Migrate unencrypted databases to encrypted format
 * **Key rotation**: Update encryption keys without data loss
-* **`ATTACH` support**: Work with multiple encrypted databases simultaneously
 
 
 # Quickstart

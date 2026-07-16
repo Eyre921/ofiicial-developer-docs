@@ -77,11 +77,18 @@ Similarly, the page response will be returned with the property type `text` on t
 
 The following types of changes are made without a new API version. Your integration should be resilient to them:
 
-* **Additive changes** — new endpoints, new optional request parameters, new fields in response objects.
+* **Additive changes** — new endpoints, new optional request parameters, new fields in response objects. Additive changes apply to **every** API version at the same time, including older ones: pinning `Notion-Version` does not delay them.
+* **Link format changes** — the links Notion generates for its own records (`url` on pages, databases, and data sources, and `href` on page and database mentions) are for people to open, not stable identifiers. Their domain and path format may change; for example, they moved from `https://www.notion.so/{page-id}` to `https://app.notion.com/p/{page-id}` in June 2026. Use `id` fields to reference records instead of parsing these URLs. Links authored by users, such as `link.url` in rich text and URL property values, are returned as written.
 * **Opaque identifier format changes** — pagination cursors, request IDs, and other values not documented as stable identifiers may change in length, format, or structure at any time. Cursors may embed metadata such as session keys or timestamps. **Do not parse, validate, or store cursors beyond passing them back as `start_cursor`.** Only record identifiers (page IDs, database IDs, user IDs, block IDs, etc.) are guaranteed to be stable UUIDs.
 * **Error message text improvements** — human-readable `message` strings in error responses may be reworded for clarity. Programmatic error `code` values (e.g. `validation_error`, `object_not_found`) are stable and will not change without a version bump.
 * **Rate limit adjustments** — rate limits may change. Always respect `Retry-After` headers.
 * **Performance and ordering improvements** — result ordering for endpoints that don't guarantee a specific sort order may change. Pagination behavior may change to improve reliability.
+
+<Tip>
+  **Ignore unknown response fields**
+
+  Because new response fields appear on every API version as soon as they ship, deserialize API responses with a parser that ignores unrecognized fields. Strict parsing that rejects unknown keys will eventually break, and the risk is highest for clients that are slow to update, such as packaged desktop or mobile apps and device firmware. The same applies to Notion MCP OAuth and tool responses, which are not versioned with `Notion-Version` at all.
+</Tip>
 
 <Tip>
   **Treat all cursors as opaque**

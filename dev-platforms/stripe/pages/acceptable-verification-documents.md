@@ -24,6 +24,7 @@ See the following list of documents that Stripe accepts as proof of identity, ad
 - Documents must be readable and in a valid upload file format
 - Documents must not be cropped or missing pages with crucial information, and all borders must be visible
 - If the country of residence differs from the country of the account, a passport is required for identity verification
+- You can’t use a single document to fulfill multiple requirements at the same time; for example, if you provide both identity and address verification documents, you must provide two different documents
 
 ## How to use this page
 

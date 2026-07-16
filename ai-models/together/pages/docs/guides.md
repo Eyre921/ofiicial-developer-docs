@@ -73,6 +73,8 @@ Quickstarts and step-by-step guides for building with Together AI.
 
   <GuideCard title="How to Use Cline" description="Get started with Cline for AI-powered development." href="/docs/how-to-use-cline" />
 
+  <GuideCard title="How to Use TogetherLink" description="Run Claude Code, Codex, Pi Code, OpenCode, and ChatGPT Desktop with Together AI models." href="/docs/how-to-use-togetherlink" />
+
   <GuideCard title="Videos" description="Generate high-quality videos from text and image prompts." href="/docs/inference/videos/overview" />
 
   <GuideCard title="Mixture of Agents" description="Combine multiple agents for enhanced problem-solving capabilities." href="/docs/mixture-of-agents" />

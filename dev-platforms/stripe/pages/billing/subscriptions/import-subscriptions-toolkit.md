@@ -236,7 +236,7 @@ If you have any errors in your uploaded file, the toolkit displays a failure sum
 
 2. Review the `processing_error` column to see the errors.
 
-3. Correct all the errors. Common errors include:
+3. Correct all errors. See [error codes](https://docs.stripe.com/error-codes.md) for details about each code. Common errors include:
 
 | Error                          | Troubleshooting                                                                                                                                                                                                                                                                                            |
 | ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

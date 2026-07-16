@@ -25,15 +25,15 @@ After you have your user’s authenticated accounts, you can initiate data refre
 The authentication flow is the client-side UI that allows your user to consent to data sharing and link their financial accounts to you and Stripe.
 
 Embed the UI in your client-side user flow. It works across all major browsers and platforms, including web, iOS, Android, and mobile web views.
-![Authentication Flow](https://b.stripecdn.com/docs-statics-srv/assets/canonical-flow-v3.e0b5244b9d16ed2e03e6ed656e5ab1df.png)
+![Authentication flow](https://docs.stripecdn.com/56bf3180f82d9867256f66e31a94b1ed537c7700fc034d899309f8ca3d2c73ec.png)
 
 Your user follows these steps during the authentication flow:
 
 | Step | Description |
 | --- | --- |
-| **Give consent** | Users consent to share requested data. |
-| **Select institution** | Users select their bank either from frequently chosen banks or by searching over more than 5,000 other supported banks. |
-| **Log into bank** | Users authenticate access to their accounts by logging into their bank. |
+| **Select institution** | Users select their bank from frequently chosen institutions or by searching more than 12,000 supported banks. |
+| **Provide consent** | Users agree to share requested data. |
+| **Log in to bank** | Users authenticate access to their accounts by logging into their bank. |
 | **Select accounts** | Users select which specific accounts to link. |
 | **Success** | Users see a success screen after authentication completes successfully. |
 
@@ -42,7 +42,7 @@ For payments integrations such as Setup Intents, you can configure the authentic
 ### Return user optimization
 
 Financial Connections enables your users to connect their accounts in fewer steps with [Link](https://support.stripe.com/questions/link-for-financial-connections-support-for-businesses), allowing them to save and reuse their bank account details across Stripe businesses.
-![Authentication Flow](https://b.stripecdn.com/docs-statics-srv/assets/return-user-flow-v3.5a17b62098a2cfb95d42bfe37f641d1e.png)
+![Return user authentication flow with {% $link.brand_name %}](https://docs.stripecdn.com/391e2442acf78b631e2216e7a9c0d658f1ed689e69e9033cfe1b851318d1c673.png)
 
 For return users, launch the Financial Connections authentication flow with a *Customer* (Customer objects represent customers of your business. They let you reuse payment methods and give you the ability to track multiple payments) that has an email address. See our [use case guide](https://docs.stripe.com/financial-connections/use-cases.md) for examples of how to do this for your specific use case.
 

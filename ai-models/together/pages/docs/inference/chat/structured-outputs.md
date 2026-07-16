@@ -12,7 +12,7 @@ Supported models can return JSON that conforms to any schema you supply, so you 
 
 ## Supported models
 
-For the current list of models that support structured outputs, see the [serverless](/docs/serverless/models) and [dedicated endpoint](/docs/dedicated-endpoints/models) model catalogs.
+For the current list of models that support structured outputs, see the [serverless](/docs/serverless/models) and [dedicated model inference](/docs/dedicated-endpoints/models) catalogs.
 
 ## Basic example
 

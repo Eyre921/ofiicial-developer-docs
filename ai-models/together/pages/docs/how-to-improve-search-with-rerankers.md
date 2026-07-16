@@ -15,7 +15,7 @@ We run a semantic search process to obtain a list of 15-25 candidate objects tha
 We will be using the [Mxbai Rerank](/docs/inference/embeddings/rerank) reranker model.
 
 <Tip>
-  Rerank models like `Mxbai-Rerank-Large-V2` are only available as [Dedicated Endpoints](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
+  Rerank models like `Mxbai-Rerank-Large-V2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
 <Frame>

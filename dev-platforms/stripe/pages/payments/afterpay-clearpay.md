@@ -186,11 +186,11 @@ You can use [Stripe Connect](https://docs.stripe.com/connect/how-connect-works.m
 
 Stripe and Afterpay rely on merchant category codes (MCC) to determine eligibility of the connected accounts against the Afterpay [prohibited business categories](https://docs.stripe.com/payments/afterpay-clearpay.md#prohibited-business-categories). Make sure that you set [correct MCCs](https://docs.stripe.com/connect/setting-mcc.md) for your connected accounts that use the Express Dashboard or a dashboard that isn’t hosted by Stripe.
 
-## Buyer country filtering
+## Customer country filtering
 
-Buyer country filtering applies when you enable a dynamic payment method on the Payment Element or Checkout Session. Afterpay only displays as a payment method option if the buyer’s country is supported.
+Customer country filtering applies when you enable a dynamic payment method on the Payment Element or Checkout Session. Afterpay only displays as a payment method option if the customer’s country is supported.
 
-We determine the buyer’s country in the following priority order:
+We determine the customer’s country in the following priority order:
 
 1. Shipping address country - The two-letter country code, not the full name of the country.
 2. Geocoded country - The country based on the client-side IP address.

@@ -10,6 +10,8 @@ path: docs/flux-tts/server-messages
 
 # Server Messages
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 The server replies to your [Client Messages](/docs/flux-tts/client-messages) with JSON text frames interleaved with binary audio frames. This page documents every server-to-client message and the error/warning code reference.
 
 **Early Access surface.** At EA the server emits the events below. Interruption reporting (`SpeechInterrupted`) and configuration responses (`ConfigureSuccess` / `ConfigureFailure`) are planned for GA alongside `Interrupt` and `Configure`.

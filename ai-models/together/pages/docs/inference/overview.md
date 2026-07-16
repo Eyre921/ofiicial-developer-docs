@@ -12,7 +12,7 @@ Together AI offers three ways to run inference:
 
 **[Provisioned throughput](/docs/inference/provisioned-throughput):** Reserved capacity for a selected stock model with a defined SLA covering committed throughput and reliability. Best for production workloads that need stronger guarantees than serverless.
 
-**[Dedicated endpoints](/docs/dedicated-endpoints/overview):** A single model running on GPUs reserved for you, billed per minute by hardware. Best for serving fine-tuned models, or workloads that need direct control over hardware, latency, and throughput.
+**[Dedicated model inference](/docs/dedicated-endpoints/overview):** A single model running on GPUs reserved for you, billed per minute by hardware. Best for apps with steady traffic, consistent latency, or for serving fine-tuned models.
 
 ## Get started
 
@@ -24,15 +24,11 @@ Together AI offers three ways to run inference:
   <Card title="Recommended models" icon="list" href="/docs/inference/recommended-models">
     Our picks for common inference use cases.
   </Card>
-
-  <Card title="Pricing" icon="credit-card" href="/docs/inference/pricing">
-    How Together AI bills for inference.
-  </Card>
 </CardGroup>
 
 ## Shared inference API
 
-Serverless, provisioned throughput, and dedicated endpoint workloads all use the same inference APIs for generating and retrieving model outputs. Apps work on any deployment mode without code changes; just swap the `model` parameter:
+Serverless, provisioned throughput, and dedicated model inference all use the same inference APIs for generating and retrieving model outputs. Apps work on any deployment mode without code changes; just swap the `model` parameter:
 
 <CodeGroup>
   ```python Python highlight={7,13} theme={null}
@@ -46,7 +42,7 @@ Serverless, provisioned throughput, and dedicated endpoint workloads all use the
       messages=[{"role": "user", "content": "Hello!"}],
   )
 
-  # Dedicated endpoint request
+  # Dedicated model inference request
   response = client.chat.completions.create(
       model="<ACCOUNT_NAME>/Qwen/Qwen3.5-9B-FP8-bb04c904",
       messages=[{"role": "user", "content": "Hello!"}],

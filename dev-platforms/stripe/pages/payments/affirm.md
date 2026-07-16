@@ -239,11 +239,11 @@ Stripe and Affirm rely on merchant category codes (MCC) to determine eligibility
 
 The [charge type](https://docs.stripe.com/connect/charges.md) of Connect payments might change the merchant name that appears on Affirm’s website or app during the redirect. The merchant of record determines the Stripe account authorized to create payments with a particular [PaymentMethod](https://docs.stripe.com/api/payment_methods/object.md).
 
-## Buyer country filtering
+## Customer country filtering
 
-Buyer country filtering applies when you enable a dynamic payment method on the Payment Element or Checkout Session. Affirm only displays as a payment method option if the buyer’s country is supported.
+Customer country filtering applies when you enable a dynamic payment method on the Payment Element or Checkout Session. Affirm only displays as a payment method option if the customer’s country is supported.
 
-We determine the buyer’s country in the following priority order:
+We determine the customer’s country in the following priority order:
 
 1. Shipping address country - The two-letter country code, not the full name of the country.
 2. Geocoded country - The country based on the client-side IP address.

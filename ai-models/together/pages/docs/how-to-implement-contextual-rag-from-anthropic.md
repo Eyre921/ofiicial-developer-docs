@@ -395,7 +395,7 @@ hybrid_top_k_docs = [contextual_chunks[index] for index in hybrid_top_k[1]]
 Now we add a retrieval quality improvement step here to make sure only the highest and most semantically similar chunks get sent to our LLM.
 
 <Tip>
-  Rerank models like `Mxbai-Rerank-Large-V2` are only available as [Dedicated Endpoints](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
+  Rerank models like `Mxbai-Rerank-Large-V2` are only available with [dedicated model inference](https://api.together.ai/endpoints/configure). You can bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
 ```py Python theme={null}

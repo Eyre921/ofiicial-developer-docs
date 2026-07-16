@@ -255,6 +255,10 @@ You can send up to 100 emails in a single API call using the batch endpoint. Eac
     }
   ]'
   ```
+
+  ```bash CLI theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails batch --file ./path/to/emails.json
+  ```
 </CodeGroup>
 
 ## Response format

@@ -47,12 +47,14 @@ A **project slug** is a short, URL-safe, human-readable identifier for a Project
 
 You choose a slug when creating a new Project, and you can copy any Project's slug from the Projects list in [**Organization Settings**](https://api.together.ai/settings/organization/~current).
 
+When you create an endpoint with [dedicated model inference](/docs/dedicated-endpoints/overview), the Project's slug becomes part of its endpoint string, `<project-slug>/<endpoint-name>`. You choose only the endpoint name; the slug prefix is added automatically and makes the endpoint string globally unique.
+
 ### Changing a Project Slug
 
 Project Admins can change an existing Project's slug from [**Project Settings**](https://api.together.ai/settings/projects/~current): find the **Project Slug** field and select **Change**. The new slug takes effect immediately.
 
 <Warning>
-  Changing a slug can break existing API requests, scripts, and integrations that reference resources by their slug-qualified path (for example, `<slug>/<endpoint-name>`). Update any references that rely on the old slug.
+  Changing a slug breaks existing API requests, scripts, and integrations that reference resources by their slug-qualified path (for example, `<slug>/<endpoint-name>`) — there is no redirect from the old slug. Update any references that rely on the old slug.
 </Warning>
 
 ## Managing Project Collaborators
@@ -118,7 +120,7 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | Code Interpreter           | ✅               | N/A        |
 | Container Inference        | ❌               | ❌          |
 | Storage                    | ❌               | ❌          |
-| Dedicated Endpoints        | ❌               | ❌          |
+| Dedicated model inference  | ❌               | ❌          |
 | Uploaded Models & Adapters | ❌               | ❌          |
 
 Here's what to expect when using a resource that isn't yet supported:

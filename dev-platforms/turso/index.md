@@ -1,6 +1,6 @@
 # dev-platforms/turso 文档索引
 
-> 共 275 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 278 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -282,6 +282,7 @@
 - `sql-reference/statements/create-domain` — [CREATE DOMAIN](pages/sql-reference/statements/create-domain.md) · [原文](https://docs.turso.tech/sql-reference/statements/create-domain)
 - `sql-reference/statements/create-index` — [CREATE INDEX](pages/sql-reference/statements/create-index.md) · [原文](https://docs.turso.tech/sql-reference/statements/create-index)
 - `sql-reference/statements/create-materialized-view` — [CREATE MATERIALIZED VIEW](pages/sql-reference/statements/create-materialized-view.md) · [原文](https://docs.turso.tech/sql-reference/statements/create-materialized-view)
+- `sql-reference/statements/create-sequence` — [CREATE SEQUENCE](pages/sql-reference/statements/create-sequence.md) · [原文](https://docs.turso.tech/sql-reference/statements/create-sequence)
 - `sql-reference/statements/create-table` — [CREATE TABLE](pages/sql-reference/statements/create-table.md) · [原文](https://docs.turso.tech/sql-reference/statements/create-table)
 - `sql-reference/statements/create-trigger` — [CREATE TRIGGER](pages/sql-reference/statements/create-trigger.md) · [原文](https://docs.turso.tech/sql-reference/statements/create-trigger)
 - `sql-reference/statements/create-type` — [CREATE TYPE](pages/sql-reference/statements/create-type.md) · [原文](https://docs.turso.tech/sql-reference/statements/create-type)
@@ -291,12 +292,14 @@
 - `sql-reference/statements/detach-database` — [DETACH DATABASE](pages/sql-reference/statements/detach-database.md) · [原文](https://docs.turso.tech/sql-reference/statements/detach-database)
 - `sql-reference/statements/drop-domain` — [DROP DOMAIN](pages/sql-reference/statements/drop-domain.md) · [原文](https://docs.turso.tech/sql-reference/statements/drop-domain)
 - `sql-reference/statements/drop-index` — [DROP INDEX](pages/sql-reference/statements/drop-index.md) · [原文](https://docs.turso.tech/sql-reference/statements/drop-index)
+- `sql-reference/statements/drop-sequence` — [DROP SEQUENCE](pages/sql-reference/statements/drop-sequence.md) · [原文](https://docs.turso.tech/sql-reference/statements/drop-sequence)
 - `sql-reference/statements/drop-table` — [DROP TABLE](pages/sql-reference/statements/drop-table.md) · [原文](https://docs.turso.tech/sql-reference/statements/drop-table)
 - `sql-reference/statements/drop-trigger` — [DROP TRIGGER](pages/sql-reference/statements/drop-trigger.md) · [原文](https://docs.turso.tech/sql-reference/statements/drop-trigger)
 - `sql-reference/statements/drop-type` — [DROP TYPE](pages/sql-reference/statements/drop-type.md) · [原文](https://docs.turso.tech/sql-reference/statements/drop-type)
 - `sql-reference/statements/drop-view` — [DROP VIEW](pages/sql-reference/statements/drop-view.md) · [原文](https://docs.turso.tech/sql-reference/statements/drop-view)
 - `sql-reference/statements/explain` — [EXPLAIN](pages/sql-reference/statements/explain.md) · [原文](https://docs.turso.tech/sql-reference/statements/explain)
 - `sql-reference/statements/insert` — [INSERT](pages/sql-reference/statements/insert.md) · [原文](https://docs.turso.tech/sql-reference/statements/insert)
+- `sql-reference/statements/reindex` — [REINDEX](pages/sql-reference/statements/reindex.md) · [原文](https://docs.turso.tech/sql-reference/statements/reindex)
 - `sql-reference/statements/replace` — [REPLACE](pages/sql-reference/statements/replace.md) · [原文](https://docs.turso.tech/sql-reference/statements/replace)
 - `sql-reference/statements/select` — [SELECT](pages/sql-reference/statements/select.md) · [原文](https://docs.turso.tech/sql-reference/statements/select)
 - `sql-reference/statements/transactions` — [Transactions](pages/sql-reference/statements/transactions.md) · [原文](https://docs.turso.tech/sql-reference/statements/transactions)

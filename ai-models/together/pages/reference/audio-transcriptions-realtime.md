@@ -64,7 +64,7 @@ To disable VAD at connection time, use `turn_detection=none` as a query paramete
 
 **VAD Parameters:**
 
-All parameters are optional. Omitted fields use their defaults.
+All parameters are Omitted fields use their defaults.
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|

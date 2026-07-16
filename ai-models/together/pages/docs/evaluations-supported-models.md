@@ -6,7 +6,7 @@ path: docs/evaluations-supported-models
 
 Supported models for Evaluations
 
-This page lists all supported model sources for the Evaluations API. You can use serverless models, dedicated endpoints, or external models from providers like OpenAI, Anthropic, and Google.
+This page lists all supported model sources for the Evaluations API. You can use serverless models, dedicated model inference, or external models from providers like OpenAI, Anthropic, and Google.
 
 ## Serverless models
 

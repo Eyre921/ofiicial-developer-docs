@@ -196,4 +196,13 @@ Here's how you can add custom headers to your emails:
     }
   }'
   ```
+
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --headers "X-Entity-Ref-ID=xxx_xxxx"
+  ```
 </CodeGroup>

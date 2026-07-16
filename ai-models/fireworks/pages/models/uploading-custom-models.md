@@ -65,9 +65,21 @@ You'll need standard Hugging Face model files: `config.json`, model weights (`.s
     * `tokenizer.model`
     * `tokenizer.json`
     * `tokenizer_config.json`
+  * **Vision / multimodal models** additionally require the image (and, where applicable, video) preprocessor configuration files that their architecture's processor loads, for example:
+
+    * `preprocessor_config.json` (image preprocessor)
+    * `video_preprocessor_config.json` (video preprocessor, for architectures that support video)
+
+    The exact set is architecture-specific. Provide the **complete and consistent** set that ships with a known-working checkpoint of the **same architecture**, and don't add extra processor config files the architecture doesn't use. For example, Qwen3-VL–family models load an image processor and a video processor and expect both `preprocessor_config.json` **and** `video_preprocessor_config.json`; a missing or mismatched set can cause deployment to fail during startup validation.
 
   If the requisite files are not present, model deployment may fail.
 </Accordion>
+
+<Note>
+  **Vision (multimodal) models run an image warmup at startup.** When you deploy a model that Fireworks detects as multimodal (from `config.json` — e.g. it has a `vision_config` and image token ids), startup validation automatically runs a sample image through the model. If the model's image/video preprocessor configuration files are missing or inconsistent with each other, this warmup fails and the deployment enters a `FAILED` state **even though the weights loaded and text generation works**.
+
+  If a multimodal upload fails to become `READY` (or serves text but fails on image inputs), verify that its preprocessor config files match those of a known-working checkpoint of the **same architecture** — the simplest fix is to re-export your checkpoint with the same non-weight files as a reference checkpoint and swap in only your weights.
+</Note>
 
 ### Customizing base model configuration
 

@@ -88,7 +88,7 @@ This is the smallest pipeline that's still recognizably RAG. Real systems chunk 
 A reranker is a second-stage model that re-scores the top results from your vector search using the query and document together. Rerank improves precision when the top of your similarity ranking is noisy or when you only have room for a few documents in the prompt. See the [Rerank guide](/docs/inference/embeddings/rerank) for details.
 
 <Note>
-  Rerank models like `mixedbread-ai/mxbai-rerank-large-v2` are only available on [dedicated endpoints](https://api.together.ai/endpoints/configure). Spin one up before running the snippet below, then point `RERANK_MODEL` at it.
+  Rerank models like `mixedbread-ai/mxbai-rerank-large-v2` are only available for [dedicated model inference](https://api.together.ai/endpoints/configure). Spin one up before running the snippet below, then point `RERANK_MODEL` at it.
 </Note>
 
 To slot reranking in, retrieve more candidates from the vector store than you plan to use, rerank them, and pass the top reranked documents into the chat completion.

@@ -45,10 +45,11 @@ These fields are shared by all users, including people and bots. Fields marked w
 
 User objects that represent people have the `type` property set to `"person"`. These objects also have the following properties:
 
-| Property       | Updatable    | Type     | Description                                                                                                               | Example value         |
-| :------------- | :----------- | :------- | :------------------------------------------------------------------------------------------------------------------------ | :-------------------- |
-| `person`       | Display-only | `object` | Properties only present for non-bot users.                                                                                |                       |
-| `person.email` | Display-only | `string` | Email address of person. This is only present if a connection has user capabilities that allow access to email addresses. | `"[email protected]"` |
+| Property                | Updatable    | Type      | Description                                                                                                               | Example value         |
+| :---------------------- | :----------- | :-------- | :------------------------------------------------------------------------------------------------------------------------ | :-------------------- |
+| `person`                | Display-only | `object`  | Properties only present for non-bot users.                                                                                |                       |
+| `person.email`          | Display-only | `string`  | Email address of person. This is only present if a connection has user capabilities that allow access to email addresses. | `"[email protected]"` |
+| `person.email_verified` | Display-only | `boolean` | Whether Notion has verified the person's email address. Returned under the same capability conditions as `person.email`.  | `true`                |
 
 ## Bots
 

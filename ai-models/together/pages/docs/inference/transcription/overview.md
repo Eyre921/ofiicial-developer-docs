@@ -113,7 +113,7 @@ The following speech-to-text models are available:
 | Deepgram     | Nova-3 Multilingual             | `deepgram/nova-3-multi`                  |      ❌     |     ✅     |
 | Deepgram     | Flux                            | `deepgram/flux`                          |      ❌     |     ✅     |
 
-See the [serverless catalog](/docs/serverless/models) and the [dedicated endpoint model catalog](/docs/dedicated-endpoints/models) for pricing and additional deployment options.
+See the [serverless catalog](/docs/serverless/models) and the [dedicated model inference catalog](/docs/dedicated-endpoints/models) for pricing and additional deployment options.
 
 ## Limits
 

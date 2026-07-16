@@ -10,6 +10,8 @@ path: docs/flux-tts/voices
 
 # Flux TTS Voices & Languages
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 Flux TTS voices use the model string format `flux-{voice}-{language}` (e.g. `flux-haley-en`). The same voice catalog is served on both `/v2/speak` transports — the [streaming WebSocket](/docs/flux-tts/quickstart) and [batch REST](/docs/flux-tts/batch).
 
 **Launch catalog.** These are the English voices available at launch. The catalog will expand, and multilingual voices (`flux-{voice}-multi`) are planned for a later release.

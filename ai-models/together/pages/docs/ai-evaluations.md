@@ -49,6 +49,19 @@ You can find example datasets at the following links:
 * CSV: [math\_dataset.csv](https://huggingface.co/datasets/togethercomputer/evaluation_examples/blob/main/math_dataset.csv)
 * JSONL: [math\_dataset.jsonl](https://huggingface.co/datasets/togethercomputer/evaluation_examples/blob/main/math_dataset.jsonl)
 
+#### Evaluating with images
+
+To evaluate vision-capable models, add an `image_data_urls` column to your dataset rows:
+
+```jsonl dataset.jsonl theme={null}
+{"question": "What does this chart show?", "image_data_urls": ["data:image/png;base64,iVBORw0KGgoAAAANSUhEUg..."]}
+```
+
+* Its value is a base64-encoded image [data URL](https://developer.mozilla.org/en-US/docs/Web/URI/Schemes/data#syntax) (or a list of them) and the images are attached to the model and judge requests alongside the rendered text prompt.
+* Only base64 data URLs (`data:image/...;base64,...`) are supported, not remote `http(s)` image links.
+* Images are automatically translated to each provider's native format: OpenAI-style `image_url` parts for Together [serverless](/docs/serverless/models), [dedicated endpoints](/docs/dedicated-endpoints/overview), and other OpenAI-compatible endpoints; inline image data for Google Gemini; and image blocks for Anthropic. The same dataset works across providers.
+* The model being evaluated (and the judge, if it should also see the image) must be [vision-capable](/docs/evaluations-supported-models#vision-capable-models).
+
 ### 2. Upload Your Dataset
 
 You can use our [UI](https://api.together.ai/evaluations), [API](https://docs.together.ai/reference/upload-file), or CLI.
@@ -1231,7 +1244,7 @@ This template demonstrates several best practices:
 
 ## Models and endpoints
 
-See what models are supported for evaluation by visiting our [supported models](/docs/evaluations-supported-models) and [dedicated endpoints](/docs/dedicated-endpoints).
+See what models are supported for evaluation by visiting our [supported models](/docs/evaluations-supported-models) and [dedicated model inference](/docs/dedicated-endpoints).
 
 ## Pricing
 

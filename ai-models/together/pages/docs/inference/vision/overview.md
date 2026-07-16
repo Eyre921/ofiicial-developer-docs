@@ -6,7 +6,7 @@ path: docs/inference/vision/overview
 
 Run vision-language models on Together: pass images alongside text and get structured replies, transcripts, comparisons, or extracted data.
 
-Vision-language models accept images alongside text and reply in natural language, structured JSON, or tool calls. For the current list of vision-capable models, see the [serverless catalog](/docs/serverless/models) or the [dedicated endpoint model catalog](/docs/dedicated-endpoints/models).
+Vision-language models accept images alongside text and reply in natural language, structured JSON, or tool calls. For the current list of vision-capable models, see the [serverless catalog](/docs/serverless/models) or the [dedicated model inference catalog](/docs/dedicated-endpoints/models).
 
 ## Basic example
 

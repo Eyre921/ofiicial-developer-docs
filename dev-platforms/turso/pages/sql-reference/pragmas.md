@@ -320,6 +320,31 @@ PRAGMA ignore_check_constraints = 1;   -- disable CHECK constraints
 PRAGMA ignore_check_constraints = 0;   -- enable CHECK constraints
 ```
 
+### data\_sync\_retry
+
+Controls whether Turso retries a disk sync (fsync) after a failure instead of treating it as fatal.
+
+```sql theme={null}
+PRAGMA data_sync_retry = 1;   -- retry on sync failure
+PRAGMA data_sync_retry = 0;   -- do not retry (default)
+```
+
+### require\_where
+
+<Info>
+  **Turso Extension**: a safety pragma with no SQLite equivalent.
+</Info>
+
+When enabled, Turso rejects any `UPDATE` or `DELETE` that does not include a `WHERE` clause, guarding against accidental full-table modifications. `i_am_a_dummy` is an alias that enables the same behavior.
+
+```sql theme={null}
+PRAGMA require_where = 1;
+DELETE FROM users;            -- rejected: no WHERE clause
+DELETE FROM users WHERE id = 1;  -- allowed
+
+PRAGMA i_am_a_dummy = 1;      -- equivalent to require_where = 1
+```
+
 ## Integrity Checks
 
 ### integrity\_check
@@ -354,6 +379,28 @@ PRAGMA wal_checkpoint;
 ```
 
 A checkpoint writes pages from the WAL file back to the database file.
+
+## MVCC Tuning
+
+<Info>
+  **Turso Extension**: these pragmas apply only when MVCC mode is enabled (`PRAGMA journal_mode = mvcc`).
+</Info>
+
+### mvcc\_checkpoint\_threshold
+
+Sets the amount of committed work that accumulates before Turso triggers an MVCC checkpoint.
+
+```sql theme={null}
+PRAGMA mvcc_checkpoint_threshold = 1000;
+```
+
+### mvcc\_gc\_threshold
+
+Sets the threshold that controls how aggressively Turso garbage-collects obsolete MVCC row versions.
+
+```sql theme={null}
+PRAGMA mvcc_gc_threshold = 1000;
+```
 
 ## Change Data Capture
 

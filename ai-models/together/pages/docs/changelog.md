@@ -4,6 +4,14 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
+<Update label="July 15, 2026">
+  ## Image inputs for evaluations
+
+  You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.
+
+  See [Prepare your dataset](/docs/ai-evaluations#1-prepare-your-dataset) for details.
+</Update>
+
 <Update label="July 10, 2026">
   ## Model deprecations
 
@@ -17,11 +25,33 @@ path: docs/changelog
 </Update>
 
 <Update label="July 9, 2026">
+  ## TorchTitan training health check
+
+  You can now run a TorchTitan training health check on your GPU clusters. It runs a short training benchmark on one or more nodes and measures steady-state model FLOPs utilization (MFU) to validate end-to-end training throughput. This feature is in preview and runs on demand on NVIDIA B200 (Blackwell) nodes.
+
+  See [Health checks](/docs/health-checks) for the available tests, thresholds, and results.
+</Update>
+
+<Update label="July 9, 2026">
   ## Storage performance health check
 
   You can now run a storage performance health check on your GPU clusters. It uses `fio` to validate data integrity and measure sequential read and write bandwidth on the cluster's storage volumes, and it also runs automatically during cluster acceptance testing.
 
   See [Health checks](/docs/health-checks) for the available tests, thresholds, and results.
+
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `LiquidAI/LFM2.5-8B-A1B`: 32,768 context length. Pricing: \$0.03 input / \$0.12 output (per 1M tokens).
+
+  ## Model deprecations
+
+  The following model has been deprecated and is no longer available on serverless:
+
+  * `LiquidAI/LFM2-24B-A2B`. Recommended replacement: `LiquidAI/LFM2.5-8B-A1B`.
+
+  See [Deprecations](/docs/deprecations) for migration options.
 </Update>
 
 <Update label="July 8, 2026">
@@ -30,6 +60,40 @@ path: docs/changelog
   [Provisioned throughput](/docs/inference/provisioned-throughput) is now available, allowing you to reserve inference capacity for frontier open models. Commit to a one-month-or-longer term, and Together commits to throughput and reliability targets for traffic within your purchased capacity.
 
   At launch, provisioned throughput is available for `MiniMaxAI/MiniMax-M3` and `zai-org/GLM-5.2`.
+
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `HappyHorse/HappyHorse-1.0-T2V` (text-to-video).
+
+  ## Reasoning API field
+
+  The `reasoning` field is now symmetric for input and output on reasoning models. Pass prior assistant reasoning back under `reasoning` for preserved thinking and multi-turn tool calling. The older `reasoning_content` key is still accepted on input for backward compatibility.
+
+  See [Reasoning](/docs/inference/chat/reasoning#handle-reasoning-tokens) for details.
+
+  ## Usage object shape
+
+  The `usage` object varies by model. Reasoning models nest cached and reasoning token counts under `prompt_tokens_details` and `completion_tokens_details`, while some non-reasoning models return `cached_tokens` at the top level. Read both shapes defensively so clients do not silently report zero.
+
+  See [OpenAI compatibility](/docs/inference/openai-compatibility#response-shape-differences) for examples.
+</Update>
+
+<Update label="July 7, 2026">
+  ## Project slug editing
+
+  Project Admins can now change a Project's slug from Project Settings. The new slug takes effect immediately. You can also copy any Project's slug from the Projects list in Organization Settings.
+
+  Changing a slug can break API requests, scripts, and integrations that reference resources by their slug-qualified path. Update any references that rely on the old slug.
+
+  See [Projects](/docs/projects#changing-a-project-slug) for details.
+
+  ## GPU cluster creation region selection
+
+  The create cluster flow now defaults the **Region** field to **Any region**. Together picks the region with the most available capacity for your GPU type at create time. Changing the GPU type resets the region to **Any region** and clears any selected shared volume.
+
+  See the [GPU Clusters quickstart](/docs/gpu-clusters-quickstart) for the full create flow.
 </Update>
 
 <Update label="July 6, 2026">
@@ -40,12 +104,6 @@ path: docs/changelog
   * `google/gemma-4-31B-it-VLM`.
 
   See [Supported models](/docs/fine-tuning/supported-models) for the full list.
-
-  ## GPU cluster creation region selection
-
-  The create cluster flow now defaults the **Region** field to **Any region**. Together picks the region with the most available capacity for your GPU type at create time. Changing the GPU type resets the region to **Any region** and clears any selected shared volume.
-
-  See the [GPU Clusters quickstart](/docs/gpu-clusters-quickstart) for the full create flow.
 </Update>
 
 <Update label="July 2, 2026">
@@ -159,7 +217,7 @@ path: docs/changelog
   * `together endpoints adapters list <endpoint_id>`
   * `together endpoints adapters remove <endpoint_id> <endpoint_name>:<adapter_model_name>`
 
-  This feature is in preview. See [Attach a LoRA adapter to an endpoint](/docs/dedicated-endpoints/lora-adapter).
+  This feature is in preview. See [Attach a LoRA adapter to an endpoint](/docs/dedicated-endpoints/v1/lora-adapter).
 </Update>
 
 <Update label="June 22, 2026">
@@ -728,7 +786,7 @@ path: docs/changelog
 </Update>
 
 <Update label="January 21, 2026">
-  ## Prompt caching now enabled by default for dedicated endpoints
+  ## Prompt caching now enabled by default for dedicated model inference
 
   Prompt caching is now **automatically enabled** for all newly created dedicated endpoints. This change improves performance and reduces costs by default.
 
@@ -986,12 +1044,12 @@ path: docs/changelog
 </Update>
 
 <Update label="September 8, 2025">
-  ## Serverless LoRA and dedicated endpoint support for evaluations
+  ## Serverless LoRA and dedicated model inference support for evaluations
 
   You can now run evaluations:
 
   * Using [Serverless LoRA](/docs/lora-inference#serverless-lora-inference) models, including supported LoRA fine-tuned models.
-  * Using [dedicated endpoints](/docs/dedicated-endpoints), including fine-tuned models deployed via dedicated endpoints.
+  * Using [dedicated model inference](/docs/dedicated-endpoints), including fine-tuned models deployed via dedicated endpoints.
 </Update>
 
 <Update label="September 5, 2025">

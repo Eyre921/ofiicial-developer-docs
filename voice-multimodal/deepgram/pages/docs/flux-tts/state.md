@@ -10,6 +10,8 @@ path: docs/flux-tts/state
 
 # The Speech Lifecycle and State Machine
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 Flux TTS reframes synthesis from a text-to-audio pipe into a **turn-based conversation**. You own turn boundaries (`Flush`) and content; the server handles streaming and lifecycle reporting. This page explains the state machine that connects your [Client Messages](/docs/flux-tts/client-messages) to the [Server Messages](/docs/flux-tts/server-messages) you receive.
 
 **Early Access.** This describes the EA lifecycle, where a turn ends with `Flush`. Barge-in (`Interrupt`, which cancels a turn mid-generation and reports what was heard) is planned for GA.

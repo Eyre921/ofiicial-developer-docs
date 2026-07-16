@@ -10,6 +10,8 @@ path: docs/flux-tts/voice-agent
 
 # Voice Agent Integration Patterns
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 Flux TTS is built to sit downstream of an LLM in a voice agent pipeline. This guide shows the common integration patterns, pairing Flux TTS's `/v2/speak` with a streaming STT (such as [Flux STT](/docs/flux/quickstart)) and an LLM. Each pattern is intentionally small — drop it into your pipeline and adapt.
 
 For the messages used here, see [Client Messages](/docs/flux-tts/client-messages) and [Server Messages](/docs/flux-tts/server-messages).

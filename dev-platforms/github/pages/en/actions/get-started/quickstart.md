@@ -16,7 +16,7 @@ This quickstart guide shows you how to use the user interface of GitHub to add a
 
 To get started with preconfigured workflows, browse through the list of templates in the [actions/starter-workflows](https://github.com/actions/starter-workflows) repository. For more information, see [Using workflow templates](/en/actions/how-tos/write-workflows/use-workflow-templates).
 
-For an overview of GitHub Actions workflows, see [Workflows](/en/actions/using-workflows/about-workflows). If you want to learn about the various components that make up GitHub Actions, see [Understanding GitHub Actions](/en/actions/learn-github-actions/understanding-github-actions).
+For an overview of GitHub Actions workflows, see [Workflows](/en/actions/concepts/workflows-and-actions/workflows). If you want to learn about the various components that make up GitHub Actions, see [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions).
 
 ## Using workflow templates
 
@@ -76,7 +76,7 @@ This guide assumes that:
          - run: echo "🍏 This job's status is ${{ job.status }}."
    ```
 
-   At this stage you don't need to understand the details of this workflow. For now, you can just copy and paste the contents into the file. After completing this quickstart guide, you can learn about the syntax of workflow files in [Workflows](/en/actions/using-workflows/about-workflows#understanding-the-workflow-file), and for an explanation of GitHub Actions contexts, such as `${{ github.actor }}` and `${{ github.event_name }}`, see [Contexts reference](/en/actions/learn-github-actions/contexts).
+   At this stage you don't need to understand the details of this workflow. For now, you can just copy and paste the contents into the file. After completing this quickstart guide, you can learn about the syntax of workflow files in [Workflows](/en/actions/concepts/workflows-and-actions/workflows), and for an explanation of GitHub Actions contexts, such as `${{ github.actor }}` and `${{ github.event_name }}`, see [Contexts reference](/en/actions/reference/workflows-and-actions/contexts).
 
 3. Click **Commit changes**.
 
@@ -114,7 +114,7 @@ If you chose to start a pull request, you can continue and create the pull reque
 
    ![Screenshot of the "List files in the repository" step expanded to show the log output. The output for the step is highlighted with an orange outline.](/assets/images/help/repository/actions-quickstart-log-detail.png)
 
-The example workflow you just added is triggered each time code is pushed to the branch, and shows you how GitHub Actions can work with the contents of your repository. For an in-depth tutorial, see [Understanding GitHub Actions](/en/actions/learn-github-actions/understanding-github-actions).
+The example workflow you just added is triggered each time code is pushed to the branch, and shows you how GitHub Actions can work with the contents of your repository. For an in-depth tutorial, see [Understanding GitHub Actions](/en/actions/get-started/understand-github-actions).
 
 ## Next steps
 

@@ -31,7 +31,7 @@ See [rate limits](https://docs.together.ai/docs/serverless/rate-limits) for more
 
 ## Supported models
 
-Most [serverless models](/docs/serverless/models) support batch processing through the `/v1/chat/completions` endpoint. Audio models like `openai/whisper-large-v3` run through `/v1/audio/transcriptions` and `/v1/audio/translations` — see [Run an audio transcription batch](/docs/inference/batch/tutorial#run-an-audio-transcription-batch) for the input format. Batch jobs can also run against [dedicated endpoints](/docs/dedicated-endpoints/overview), but the discount does not apply to dedicated endpoint usage.
+Most [serverless models](/docs/serverless/models) support batch processing through the `/v1/chat/completions` endpoint. Audio models like `openai/whisper-large-v3` run through `/v1/audio/transcriptions` and `/v1/audio/translations` — see [Run an audio transcription batch](/docs/inference/batch/tutorial#run-an-audio-transcription-batch) for the input format. Batch jobs can also run against [dedicated model inference](/docs/dedicated-endpoints/overview), but the discount does not apply to dedicated model inference usage.
 
 ### Discounted models
 

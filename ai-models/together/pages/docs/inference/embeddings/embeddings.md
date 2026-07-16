@@ -12,7 +12,7 @@ The embeddings API turns an input string into a vector of numbers. You can compa
 
 Common use cases include search, classification, recommendations, and retrieval-augmented generation (RAG). For long-term retrieval, store embeddings in a vector database and query by similarity.
 
-For the full parameter list, see the [Create embedding reference](/reference/embeddings). For available embedding models, see the [serverless](/docs/serverless/models) and [dedicated endpoint](/docs/dedicated-endpoints/models) model catalogs.
+For the full parameter list, see the [Create embedding reference](/reference/embeddings). For available embedding models, see the [serverless](/docs/serverless/models) and [dedicated model inference](/docs/dedicated-endpoints/models) catalogs.
 
 ## Generate an embedding
 

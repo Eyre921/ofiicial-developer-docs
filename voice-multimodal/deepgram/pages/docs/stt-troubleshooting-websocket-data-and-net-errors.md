@@ -114,6 +114,7 @@ Below are the most common WebSocket Close frame status codes and their descripti
 | `1008` | `DATA-0000` | The payload cannot be decoded as audio. The payload either is not audio data or is a codec unsupported by Deepgram.                                                                                                           |
 | `1011` | `NET-0000`  | The service has not transmitted a Text frame to the client within the timeout window. This may indicate an internal issue with Deepgram's systems, or Deepgram may have not received enough audio data to transcribe a frame. |
 | `1011` | `NET-0001`  | The service has not received a Binary or Text frame from the client within the timeout window. This may indicate an internal issue with Deepgram's systems, the client's systems, or the network connecting them.             |
+| `1011` | `NET-0002`  | No audio was received on the stream within the no-audio timeout window, and the stream was closed with a `no_audio_timeout` close reason. Send audio, or a `KeepAlive` message, to keep the stream open.                      |
 
 #### Troubleshooting `1008` - `DATA-0000`
 
@@ -139,5 +140,12 @@ Below are the most common WebSocket Close frame status codes and their descripti
 * Be sure to send a [Close Stream](/docs/close-stream) message when done.
 * Test your network with cURL and Deepgram-hosted audio. See [Generating Transcripts from the Terminal](/docs/generating-and-saving-transcripts-from-the-terminal) for more information.
 * Use a tool like [Wireshark](https://www.wireshark.org/) to confirm audio is leaving your network.
+
+#### Troubleshooting `1011` - `NET-0002`
+
+* The stream stopped receiving audio and was closed after the no-audio timeout. The close reason includes `no_audio_timeout` so clients can distinguish it from other `1011` closures.
+* Continue sending audio for as long as you want the stream open — silent audio also counts.
+* Unlike `NET-0001`, [KeepAlive](/docs/audio-keep-alive) messages *do* reset this timeout, so send periodic `KeepAlive` messages during expected gaps in audio.
+* Be sure to send a [Close Stream](/docs/close-stream) message when done instead of letting the stream time out.
 
 ***

@@ -226,9 +226,20 @@ When you don't set `lora_trainable_modules`, it defaults to `all-linear`, which 
 * **Smaller batch sizes:** Because full fine-tuning updates every weight, it carries a larger memory footprint, so the maximum batch size for a given model is generally smaller than the LoRA equivalent.
 * **Higher cost:** Full fine-tuning trains every parameter rather than the 0.1% to 1% a LoRA job touches, so it consumes more compute and costs more. See [pricing](/docs/fine-tuning/pricing) for details.
 
+To check a single model before submitting a job, read `supports_full_training` from the model limits endpoint. When it's `False`, the model is LoRA-only, and passing `lora=False` returns a validation error.
+
+```python theme={null}
+from together import Together
+
+client = Together()
+
+limits = client.fine_tuning.model_limits(model_name="<MODEL_ID>")
+print(limits.supports_full_training)
+```
+
 ## Serve your model
 
 How you deploy depends on the method:
 
-* **LoRA:** After the job completes, deploy the merged model on a dedicated endpoint, or upload just the adapter and serve it on a dedicated endpoint that runs it on top of the base model. See [deployment](/docs/fine-tuning/deployment) and [adapter upload](/docs/dedicated-endpoints/adapter).
+* **LoRA:** After the job completes, deploy the merged model on a dedicated endpoint. See [deployment](/docs/fine-tuning/deployment).
 * **Full fine-tuning:** The job produces a complete model rather than a compact adapter. Deploy it on a dedicated endpoint, or download the weights for local use. See [deployment](/docs/fine-tuning/deployment).

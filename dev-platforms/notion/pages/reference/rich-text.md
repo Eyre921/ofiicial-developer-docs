@@ -38,13 +38,13 @@ When blocks are retrieved from a page using the [Retrieve a block](/reference/re
 
 Each rich text object contains the following fields.
 
-| Field                             | Type                | Description                                                                                                                                           | Example value                                                      |
-| :-------------------------------- | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :----------------------------------------------------------------- |
-| `type`                            | `string` (enum)     | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`.                                                     | `"text"`                                                           |
-| `text` \| `mention` \| `equation` | `object`            | An object containing type-specific configuration.  <br /><br />Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples.    |
-| `annotations`                     | `object`            | The information used to style the rich text object. Refer to the annotation object section below for details.                                         | Refer to the annotation object section below for examples.         |
-| `plain_text`                      | `string`            | The plain text without annotations.                                                                                                                   | `"Some words "`                                                    |
-| `href`                            | `string` (optional) | The URL of any link or Notion mention in this text, if any.                                                                                           | `"https://www.notion.so/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
+| Field                             | Type                | Description                                                                                                                                           | Example value                                                         |
+| :-------------------------------- | :------------------ | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| `type`                            | `string` (enum)     | The type of this rich text object. Possible type values are: `"text"`, `"mention"`, `"equation"`.                                                     | `"text"`                                                              |
+| `text` \| `mention` \| `equation` | `object`            | An object containing type-specific configuration.  <br /><br />Refer to the rich text type objects section below for details on type-specific values. | Refer to the rich text type objects section below for examples.       |
+| `annotations`                     | `object`            | The information used to style the rich text object. Refer to the annotation object section below for details.                                         | Refer to the annotation object section below for examples.            |
+| `plain_text`                      | `string`            | The plain text without annotations.                                                                                                                   | `"Some words "`                                                       |
+| `href`                            | `string` (optional) | The URL of any link or Notion mention in this text, if any.                                                                                           | `"https://app.notion.com/p/Avocado-d093f1d200464ce78b36e58a3f0d8043"` |
 
 ## The annotation object
 
@@ -130,7 +130,7 @@ If a connection doesn’t have [access](/reference/capabilities) to the mentione
       "color": "default"
     },
     "plain_text": "Database with test things",
-    "href": "https://www.notion.so/a1d8501e1ac143e9a6bdea9fe6c8822b"
+    "href": "https://app.notion.com/p/a1d8501e1ac143e9a6bdea9fe6c8822b"
   }
   ```
 </CodeGroup>
@@ -223,7 +223,7 @@ If a connection doesn’t have [access](/reference/capabilities) to the mentione
       "color": "default"
     },
     "plain_text": "This is a test page",
-    "href": "https://www.notion.so/3c612f56fdd04a30a4d6bda7d7426309"
+    "href": "https://app.notion.com/p/3c612f56fdd04a30a4d6bda7d7426309"
   }
   ```
 </CodeGroup>

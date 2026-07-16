@@ -364,6 +364,27 @@ resend topics create --name "Product updates"
 resend topics list | get | update | delete
 ```
 
+## Suppressions
+
+<Warning>
+  Suppressions is a private beta feature, gated per account. The commands show
+  up in `--help`, but calls return an API error unless the suppression list is
+  enabled for your account. [Get in touch](https://resend.com/contact) to join
+  the beta.
+</Warning>
+
+Manage the suppression list — addresses that won't receive your emails. Each entry has an `origin`: `bounce` and `complaint` are added automatically, while `manual` entries are the ones you add. `get` and `delete` accept either a suppression ID or the email address.
+
+```bash theme={"theme":{"light":"github-light","dark":"vesper"}}
+resend suppressions list                              # List suppressed addresses (alias: ls)
+resend suppressions list --origin bounce              # Filter by origin: bounce | complaint | manual
+resend suppressions add spam@example.com              # Suppress a single address
+resend suppressions get spam@example.com              # Retrieve by ID or email
+resend suppressions delete spam@example.com --yes     # Remove by ID or email (alias: rm)
+resend suppressions batch add --file ./emails.json    # Suppress up to 100 from a JSON array of emails
+resend suppressions batch remove --file ./emails.json # Remove up to 100 (add --ids to treat entries as IDs)
+```
+
 ## Templates
 
 Create and manage email templates.

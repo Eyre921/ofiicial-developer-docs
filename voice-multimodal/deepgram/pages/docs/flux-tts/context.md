@@ -10,6 +10,8 @@ path: docs/flux-tts/context
 
 # Cross-Turn Context
 
+**Early Access.** Flux TTS and the `/v2/speak` API are in Early Access — the API surface and voice catalog may change before general availability.
+
 On `/v1/speak`, every request is independent: text goes in, audio comes out, and all state is discarded. Short responses like "Of course" lose the tone established earlier in the conversation, and prosody can shift at chunk boundaries. `/v2/speak` closes this gap at the model layer by **persisting conversational state across turns** — with **no new API parameters** to set or manage.
 
 This page explains the mechanism. The protocol provides the surface ([Client Messages](/docs/flux-tts/client-messages), [Server Messages](/docs/flux-tts/server-messages)); this is what happens underneath.

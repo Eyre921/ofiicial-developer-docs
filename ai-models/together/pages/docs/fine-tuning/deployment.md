@@ -16,7 +16,7 @@ Once a fine-tuning job completes, your model is available for inference in two w
 ## Deploy on a dedicated endpoint
 
 <Warning>
-  Dedicated endpoints bill per minute even when idle. Stop or delete the endpoint when you're done to avoid charges.
+  Dedicated model inference bills per minute even when idle. Stop or delete the endpoint when you're done to avoid charges.
 </Warning>
 
 <Tabs>
@@ -267,10 +267,6 @@ To download a specific checkpoint instead of the final one, pass `--checkpoint-s
 <CardGroup>
   <Card title="Upload a custom model" icon="upload" href="/docs/dedicated-endpoints/custom-models">
     Upload your own model weights from outside the Together catalog.
-  </Card>
-
-  <Card title="Upload a LoRA adapter" icon="stack-2" href="/docs/dedicated-endpoints/adapter">
-    Load a LoRA adapter onto a shared base instead of deploying a full model.
   </Card>
 
   <Card title="Manage endpoints" icon="settings" href="/docs/dedicated-endpoints/manage">

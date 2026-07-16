@@ -75,7 +75,7 @@ If you're seeing charges on your account without making API calls, you may be in
 
 1. **Fine-tuned Model Hosting**: Deployed fine-tuned models incur per-minute hosting fees regardless of API usage. These charges continue until you stop the endpoint.
 
-2. **Dedicated Endpoints**: These are charged based on hardware allocation, even without active requests. Charges accrue as long as the endpoint remains active.
+2. **Dedicated model inference**: This is charged based on hardware allocation, even without active requests. Charges accrue as long as the endpoint remains active.
 
 3. **Serverless Model Usage**: Charged based on actual token usage and model size - you only pay for what you use.
 

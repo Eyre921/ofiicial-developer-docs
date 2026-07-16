@@ -11,7 +11,7 @@ Understanding credits and billing basics on Together AI.
 Together credits are the unit used to measure and charge for usage of Together AI services on your account. Once purchased, credits can be used immediately for:
 
 * API requests
-* Dedicated endpoints
+* Dedicated model inference
 * Fine-tuning jobs
 * Evaluation jobs
 * All other Together AI services

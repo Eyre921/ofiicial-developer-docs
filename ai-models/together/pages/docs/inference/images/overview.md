@@ -141,7 +141,7 @@ with urllib.request.urlopen(req) as r:
 
 ## Supported models
 
-For the current list of image-generation models, see the [serverless catalog](/docs/serverless/models) or the [dedicated endpoint model catalog](/docs/dedicated-endpoints/models).
+For the current list of image-generation models, see the [serverless catalog](/docs/serverless/models) or the [dedicated model inference catalog](/docs/dedicated-endpoints/models).
 
 The table below shows the most commonly used serverless image models.
 

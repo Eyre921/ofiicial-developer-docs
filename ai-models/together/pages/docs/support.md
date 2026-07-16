@@ -10,7 +10,7 @@ How to reach the Together AI team when you have a question, encounter a bug, or 
 
 ## Support portal
 
-Start at [support.together.ai](https://support.together.ai). The portal hosts a searchable knowledge base with articles on getting started, fine-tuning, dedicated endpoints, payments and billing, and other common topics. If your question isn't answered there, select **Submit a Ticket** to file one directly with the Together AI team.
+Start at [support.together.ai](https://support.together.ai). The portal hosts a searchable knowledge base with articles on getting started, fine-tuning, dedicated model inference, payments and billing, and other common topics. If your question isn't answered there, select **Submit a Ticket** to file one directly with the Together AI team.
 
 ## Discord community
 

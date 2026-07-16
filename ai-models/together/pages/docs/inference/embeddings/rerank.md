@@ -22,7 +22,7 @@ Key features:
 ## Get started
 
 <Tip>
-  Rerank models like `mxbai-rerank-large-v2` are only available on [dedicated endpoints](https://api.together.ai/endpoints/configure). Bring up a dedicated endpoint to use reranking in your applications.
+  Rerank models like `mxbai-rerank-large-v2` are only available for [dedicated model inference](https://api.together.ai/endpoints/configure). Bring up a dedicated endpoint to use reranking in your applications.
 </Tip>
 
 ### Example with text
@@ -101,10 +101,10 @@ The example below uses the [rerank API endpoint](/reference/rerank-1) to reorder
   ```
 </CodeGroup>
 
-### Example with JSON data (dedicated endpoints only)
+### Example with JSON data (dedicated model inference only)
 
 <Note>
-  The following JSON data format with `rank_fields` is only supported on [dedicated endpoints](/docs/dedicated-endpoints/overview) running the `Salesforce/Llama-Rank-V1` model. All other rerank endpoints accept documents only as a list of strings.
+  The following JSON data format with `rank_fields` is only supported on [dedicated model inference](/docs/dedicated-endpoints/overview) running the `Salesforce/Llama-Rank-V1` model. All other rerank endpoints accept documents only as a list of strings.
 </Note>
 
 When using `Salesforce/Llama-Rank-V1`, pass a JSON object and specify the fields to rank over and the order to consider them in. If you don't pass `rank_fields`, the model defaults to the `text` key.

@@ -121,7 +121,7 @@ Role-based access control for Fine-Tuning, Endpoints, Serverless Inference, and 
 
 ## What's coming
 
-Together is actively rolling out RBAC across more services. Granular permissions for fine-tuning, dedicated endpoints, and serverless inference are coming soon.
+Together is actively rolling out RBAC across more services. Granular permissions for fine-tuning, dedicated model inference, and serverless inference are coming soon.
 
 <Note>
   Have a specific RBAC requirement? [Let us know](https://portal.usepylon.com/together-ai/forms/support-request). Customer feedback directly shapes our roadmap.

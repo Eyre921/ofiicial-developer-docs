@@ -455,6 +455,10 @@ Exchange the authorization code for access and refresh tokens:
     expires_in?: number
     refresh_token?: string
     scope?: string
+    // Identity fields, present on successful authorization-code exchanges
+    user_id?: string
+    workspace_id?: string
+    email_domain?: string
   }
 
   async function exchangeCodeForTokens(
@@ -504,6 +508,20 @@ Exchange the authorization code for access and refresh tokens:
   }
   ```
 </CodeGroup>
+
+<Note>
+  **Identity fields in the token response**
+
+  Successful authorization-code exchanges also return `user_id` and
+  `workspace_id`, the Notion IDs of the authorizing user and workspace, plus
+  `email_domain`, the lowercased domain of the authorizing user's email
+  address. Use them to associate the connection with a user and workspace
+  without an extra call. Refresh responses don't include these fields, so
+  store them from the initial exchange.
+
+  Notion may add fields to the token response over time. Parse it leniently
+  and [ignore fields you don't recognize](/reference/versioning#what-we-consider-backwards-compatible).
+</Note>
 
 <Warning>
   **Token storage security:**
@@ -595,10 +613,10 @@ Streamable HTTP first and automatically fall back to SSE if needed.
 
 ### Identify the connected workspace
 
-The OAuth token response intentionally omits workspace identity, and the public
-REST API's `GET /v1/users/me` does not accept MCP-audienced tokens. To label a
-connection with the workspace name and a stable ID after connecting, call the
-`fetch` tool with the special id `self`:
+The OAuth token response includes `user_id` and `workspace_id`, but not
+display names, and the public REST API's `GET /v1/users/me` does not accept
+MCP-audienced tokens. To label a connection with the workspace name after
+connecting, call the `fetch` tool with the special id `self`:
 
 <CodeGroup>
   ```typescript TypeScript theme={null}

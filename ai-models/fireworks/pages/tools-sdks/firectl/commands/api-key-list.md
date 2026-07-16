@@ -14,6 +14,7 @@ firectl api-key list [flags]
 
 ```
 firectl api-key list
+firectl api-key list --all-users
 ```
 
 ### Flags

@@ -128,7 +128,7 @@ When a job fails, the response includes an `error` object instead of `outputs`:
 
 ## Supported models
 
-For the current list of video models, including duration, resolution, FPS, and keyframe support per model, see the [serverless catalog](/docs/serverless/models) or the [dedicated endpoint model catalog](/docs/dedicated-endpoints/models).
+For the current list of video models, including duration, resolution, FPS, and keyframe support per model, see the [serverless catalog](/docs/serverless/models) or the [dedicated model inference catalog](/docs/dedicated-endpoints/models).
 
 ## Troubleshooting
 

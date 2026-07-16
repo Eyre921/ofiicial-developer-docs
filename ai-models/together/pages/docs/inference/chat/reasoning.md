@@ -31,7 +31,7 @@ The following models support reasoning on [serverless inference](/docs/serverles
 | GPT-OSS 120B               | `openai/gpt-oss-120b`               | Adjustable effort      | 128K           |
 | GPT-OSS 20B                | `openai/gpt-oss-20b`                | Adjustable effort      | 128K           |
 
-Additional reasoning models, including DeepSeek-R1 and its distillations, Qwen QwQ-32B, and DeepSeek V3.1 (hybrid), are available on [dedicated endpoints](/docs/dedicated-endpoints/models).
+Additional reasoning models, including DeepSeek-R1 and its distillations, Qwen QwQ-32B, and DeepSeek V3.1 (hybrid), are available for [dedicated model inference](/docs/dedicated-endpoints/models).
 
 ## Quickstart
 

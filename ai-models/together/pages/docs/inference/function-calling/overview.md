@@ -46,7 +46,7 @@ Function calling fits a handful of common shapes. Pick the one that matches what
 
 ## Supported models
 
-For the current list of models that support function calling, see the [serverless](/docs/serverless/models) and [dedicated endpoint](/docs/dedicated-endpoints/models) model catalogs.
+For the current list of models that support function calling, see the [serverless](/docs/serverless/models) and [dedicated model inference](/docs/dedicated-endpoints/models) catalogs.
 
 ## Next steps
 

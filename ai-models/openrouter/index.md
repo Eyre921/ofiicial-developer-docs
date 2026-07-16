@@ -1,6 +1,6 @@
 # ai-models/openrouter 文档索引
 
-> 共 294 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 295 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## docs
@@ -259,6 +259,7 @@
 - `docs/guides/features/structured-outputs` — [Structured Outputs](pages/docs/guides/features/structured-outputs.md) · [原文](https://openrouter.ai/docs/guides/features/structured-outputs.md)
 - `docs/guides/features/tool-calling` — [Tool & Function Calling](pages/docs/guides/features/tool-calling.md) · [原文](https://openrouter.ai/docs/guides/features/tool-calling.md)
 - `docs/guides/features/workspaces` — [Workspaces](pages/docs/guides/features/workspaces.md) · [原文](https://openrouter.ai/docs/guides/features/workspaces.md)
+- `docs/guides/features/workspaces/switching` — [Switching Workspaces](pages/docs/guides/features/workspaces/switching.md) · [原文](https://openrouter.ai/docs/guides/features/workspaces/switching.md)
 - `docs/guides/features/workspaces/workspace-budgets` — [Workspace Budgets](pages/docs/guides/features/workspaces/workspace-budgets.md) · [原文](https://openrouter.ai/docs/guides/features/workspaces/workspace-budgets.md)
 - `docs/guides/features/zdr` — [Zero Data Retention](pages/docs/guides/features/zdr.md) · [原文](https://openrouter.ai/docs/guides/features/zdr.md)
 - `docs/guides/features/zero-completion-insurance` — [Zero Completion Insurance](pages/docs/guides/features/zero-completion-insurance.md) · [原文](https://openrouter.ai/docs/guides/features/zero-completion-insurance.md)

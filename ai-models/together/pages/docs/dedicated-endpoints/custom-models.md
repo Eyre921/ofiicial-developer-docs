@@ -1,20 +1,24 @@
 ---
-title: "Upload a model"
+title: "Upload a fine-tuned model"
 source: https://docs.together.ai/docs/dedicated-endpoints/custom-models
 path: docs/dedicated-endpoints/custom-models
 ---
 
-Upload a custom or fine-tuned model from Hugging Face or S3 and serve it on a dedicated endpoint.
+Serve a fine-tuned model uploaded from your machine, Hugging Face, or S3.
 
-You can run inference on your own custom or fine-tuned models by uploading them to Together AI and deploying them on a [dedicated endpoint](/docs/dedicated-endpoints/overview). Models can come from the Hugging Face Hub or from an archive in S3.
+Run inference on your own fine-tuned models by uploading them to Together AI and deploying them for [dedicated model inference](/docs/dedicated-endpoints/overview). You can upload models from your local machine, import them from Hugging Face Hub, or upload from an S3 archive.
 
-## Prerequisites
+Uploads must be fine-tuned variants of a model architecture that Together AI already supports. You can change the weights, but the architecture must match [one of the supported models](/docs/dedicated-endpoints/models) we offer for dedicated inference.
 
-A model is eligible for upload if it meets all of the following:
+## Requirements
 
-* **Source:** Hugging Face Hub or an S3 presigned URL.
-* **Type:** text generation or embedding model.
-* **Scale:** fits on a single node. Multi-node models aren't supported.
+A model is eligible for upload if it meets these requirements:
+
+* **Source:** Your local machine, Hugging Face Hub, or an S3 presigned URL.
+* **Architecture:** A fine-tuned variant of a base model that Together AI supports for dedicated inference. See [Available models](/docs/dedicated-endpoints/models) for the list of supported models.
+* **Type:** Text generation model.
+
+Meeting these requirements is necessary but not sufficient. Together AI does not accept every model: an unsupported base model, layer type, or adapter rank is rejected with an error identifying the problem at create or upload time.
 
 The model files must be in standard Hugging Face repository format, compatible with `from_pretrained`. A valid model directory contains files like:
 
@@ -31,13 +35,11 @@ tokenizer.json
 tokenizer_config.json
 ```
 
-To upload a LoRA adapter instead of a full model, see [Deploy a fine-tuned adapter](/docs/dedicated-endpoints/adapter).
-
 ### S3 archive requirements
 
-If you're uploading from S3, package the files in a single archive (`.zip` or `.tar.gz`) with the model files at the root of the archive. Don't nest them inside an extra top-level directory.
+If you're uploading from S3, you must package the files in a single archive (`.zip` or `.tar.gz`) with the model files at the root of the archive. Don't nest them inside an extra top-level directory.
 
-Correct (files at root):
+**Correct:** The files are at the root of the archive.
 
 ```
 config.json
@@ -46,7 +48,7 @@ tokenizer.json
 ...
 ```
 
-Incorrect (files nested in a directory):
+**Incorrect:** The files are nested inside an extra top-level directory.
 
 ```
 my-model/
@@ -56,7 +58,7 @@ my-model/
   ...
 ```
 
-To create the archive from within the model directory:
+To create the archive from within a model directory, run:
 
 ```bash Shell theme={null}
 cd /path/to/your/model
@@ -65,229 +67,122 @@ tar -czvf ../model.tar.gz .
 
 The presigned URL must point to the archive file in S3 and have an expiration of at least 100 minutes.
 
+## Create the model
+
+Create the model record in your project before you upload its weights. Creating the record first gives you a model ID for the upload to attach its weights to. Every uploaded model must reference a [supported base model](/docs/dedicated-endpoints/models) via `baseModelId`. An upload can't introduce a new base architecture.
+
+Give the model a readable name (for example `gemma-4-31b-it`), rather than a Hugging Face repo ID.
+
+The base model is referenced by its `baseModelId` (`ml_...`). List the [supported models](/docs/dedicated-endpoints/models) with `tg beta models public --product dedicated` and copy the `baseModelId` of the architecture your fine-tune derives from (for example `ml_CbJNwQC2ZqCU2iFT3mrCh`). Don't use the architecture `id`, which starts with `arch_`:
+
+```bash CLI theme={null}
+tg beta models create gemma-4-31b-it \
+  --base-model ml_CbJNwQC2ZqCU2iFT3mrCh
+```
+
+<Note>
+  Uploaded models are Private by default, visible only to members of your project. Internal visibility makes a model visible to everyone in your organization, and Public makes it visible to anyone.
+</Note>
+
+Save the returned model `id` (for example `ml_abc123`). You pass this value to the upload command in the next step. Whether a record holds full weights or a LoRA adapter is fixed when you create it: `create` defaults `--type` to `model`, so a full model needs no type flag. To register a LoRA adapter instead, pass `--type adapter` on create, as described in [Upload a LoRA adapter](/docs/dedicated-endpoints/adapter).
+
+### Create request fields
+
+| Field           | Required | Description                                                                    |
+| --------------- | -------- | ------------------------------------------------------------------------------ |
+| `name`          | Yes      | Inference-addressable name for the uploaded model.                             |
+| `base_model_id` | Yes      | `baseModelId` (`ml_...`) of the supported base model your weights derive from. |
+| `description`   | No       | Description shown in your project catalog.                                     |
+
 ## Upload the model
 
-<Tabs>
-  <Tab title="CLI / SDK">
-    Upload from Hugging Face by passing the repo path as `model_source`. Include your Hugging Face token for private or gated repos.
+After creating the model record, upload its weights. Use a local upload when the files are on your machine, or a remote upload to stream them from Hugging Face or a presigned S3 URL. Pass the model `id` you saved in the previous step.
 
-    <CodeGroup>
-      ```shell Shell theme={null}
-      together models upload \
-        --model-name <MODEL_NAME> \
-        --model-source <HUGGING_FACE_REPO> \
-        --hf-token "$HUGGINGFACE_TOKEN"
-      ```
+### Upload from your machine
 
-      ```python Python theme={null}
-      from together import Together
+Point the CLI at your local model directory. The CLI handles the multipart upload for you:
 
-      client = Together()
+```bash CLI theme={null}
+tg beta models upload ml_abc123 ./path/to/model-dir
+```
 
-      response = client.models.upload(
-          model_name="<MODEL_NAME>",
-          model_source="<HUGGING_FACE_REPO>",
-          hf_token="<HUGGING_FACE_TOKEN>",
-      )
-      print(response.data.job_id)
-      ```
+### Upload from Hugging Face or S3
 
-      ```typescript TypeScript theme={null}
-      import Together from "together-ai";
+A remote upload streams the weights server-side, so you don't download them locally first. Pass the source URL as `--from` (use `--token` for gated or private Hugging Face repos). For S3, pass the presigned archive URL as `--from` (no token needed):
 
-      const client = new Together();
+```bash CLI theme={null}
+tg beta models remote-uploads create ml_abc123 \
+  --from https://huggingface.co/your-org/your-repo \
+  --token hf_your_token
+```
 
-      const response = await client.models.upload({
-        model_name: "<MODEL_NAME>",
-        model_source: "<HUGGING_FACE_REPO>",
-        hf_token: "<HUGGING_FACE_TOKEN>",
-      });
-      console.log(response.data.job_id);
-      ```
-    </CodeGroup>
+The response is the upload job object, with `id`, `modelId`, and `status` at the top level:
 
-    Upload from S3 by passing the presigned archive URL as `model_source`:
+```json theme={null}
+{
+  "id": "job_abc123",
+  "projectId": "proj_abc123",
+  "modelId": "ml_abc123",
+  "remoteUrl": "https://huggingface.co/your-org/your-repo",
+  "status": "REMOTE_UPLOAD_STATUS_PENDING",
+  "statusMessage": "",
+  "restartCount": 0,
+  "maxRestarts": 0,
+  "createdAt": "2026-07-02T20:00:00Z",
+  "updatedAt": "2026-07-02T20:00:00Z"
+}
+```
 
-    <CodeGroup>
-      ```shell Shell theme={null}
-      together models upload \
-        --model-name <MODEL_NAME> \
-        --model-source <S3_PRESIGNED_URL>
-      ```
+Save the job `id`. You use it to poll for upload status.
 
-      ```python Python theme={null}
-      from together import Together
-
-      client = Together()
-
-      response = client.models.upload(
-          model_name="<MODEL_NAME>",
-          model_source="<S3_PRESIGNED_URL>",
-      )
-      print(response.data.job_id)
-      ```
-
-      ```typescript TypeScript theme={null}
-      import Together from "together-ai";
-
-      const client = new Together();
-
-      const response = await client.models.upload({
-        model_name: "<MODEL_NAME>",
-        model_source: "<S3_PRESIGNED_URL>",
-      });
-      console.log(response.data.job_id);
-      ```
-    </CodeGroup>
-
-    The response includes a `job_id`. Use it to poll for upload status.
-
-    ### CLI options
-
-    | Option           | Required         | Description                                                   |
-    | ---------------- | ---------------- | ------------------------------------------------------------- |
-    | `--model-name`   | Yes              | The name to give the uploaded model.                          |
-    | `--model-source` | Yes              | A Hugging Face repo path or an S3 presigned URL.              |
-    | `--hf-token`     | For Hugging Face | Your Hugging Face token. Required for private or gated repos. |
-    | `--model-type`   | No               | `model` (default) or `adapter`.                               |
-    | `--description`  | No               | A description of the model.                                   |
-  </Tab>
-
-  <Tab title="UI">
-    <Steps>
-      <Step title="Open the upload form">
-        Sign in and go to [Models > Upload a model](https://api.together.ai/models/upload).
-      </Step>
-
-      <Step title="Enter the source">
-        In **Source URL**, enter your Hugging Face repo path (for example, `meta-llama/Llama-3.3-70B-Instruct`) or an S3 presigned URL pointing to your model archive.
-      </Step>
-
-      <Step title="Name and describe the model">
-        Enter a model name and an optional description. Both appear in your Together AI account once the upload completes.
-      </Step>
-
-      <Step title="Submit">
-        Select **Upload**. Together AI returns a job ID and starts the upload.
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+<Tip>
+  You can also upload a model from the dashboard. Sign in and go to [Models > Upload a model](https://api.together.ai/models/upload), enter your Hugging Face repo path or an S3 presigned URL as the source, name the model, and select **Upload**.
+</Tip>
 
 ## Check upload status
 
-Poll the upload job until its `status` field is `Complete`. The model is ready to deploy at that point.
+Poll the remote-upload job until `status` is `REMOTE_UPLOAD_STATUS_SUCCEEDED`. The model is ready to deploy at that point.
 
-<CodeGroup>
-  ```shell Shell theme={null}
-  curl -X GET "https://api.together.ai/v1/jobs/<JOB_ID>" \
-       -H "Authorization: Bearer $TOGETHER_API_KEY"
-  ```
+```bash CLI theme={null}
+# One upload job
+tg beta models remote-uploads retrieve job_abc123
 
-  ```python Python theme={null}
-  from together import Together
+# All upload jobs in the project
+tg beta models remote-uploads list
+```
 
-  client = Together()
+Once the job reaches `REMOTE_UPLOAD_STATUS_SUCCEEDED`, confirm the files landed:
 
-  response = client.models.uploads.status("<JOB_ID>")
-  print(response.status)
-  ```
-</CodeGroup>
+```bash CLI theme={null}
+tg beta models ls-files ml_abc123
+```
 
 You can also see uploaded models on the [My models](https://api.together.ai/models?category=my-models) page in the dashboard.
 
 ## Deploy the model
 
-Uploaded models deploy as dedicated endpoints, the same way as any other model.
+Once the upload completes, your model has an ID (`ml_...`) in your project. Deploy it the same way as a base model. First, find its ID by listing the models in your project:
 
-<Tabs>
-  <Tab title="CLI / SDK">
-    List hardware available for the uploaded model:
+```bash CLI theme={null}
+tg beta models list
+```
 
-    <CodeGroup>
-      ```shell Shell theme={null}
-      together endpoints hardware --model <MODEL_NAME>
-      ```
+Then deploy it. The CLI's `deploy` command creates the endpoint, attaches a deployment bound to your uploaded model and a [config](/docs/dedicated-endpoints/configs), and routes all traffic to it in one step:
 
-      ```python Python theme={null}
-      from together import Together
+```bash CLI theme={null}
+tg beta endpoints deploy ml_abc123 \
+  --endpoint my-custom-model \
+  --config cr_CbzGdmn14t3HYrXXitmKa
+```
 
-      client = Together()
+Once the deployment is ready, send a request to the endpoint string, as shown in the [quickstart](/docs/dedicated-endpoints/quickstart#step-2-send-a-request). See [Manage deployments](/docs/dedicated-endpoints/manage) for the individual lifecycle operations.
 
-      response = client.endpoints.list_hardware(model="<MODEL_NAME>")
-      for hw in response.data:
-          print(hw.id)
-      ```
+## Troubleshooting
 
-      ```typescript TypeScript theme={null}
-      import Together from "together-ai";
+**"Model not found" during upload:** Create the model record first with `tg beta models create`, and pass the returned `id` to the upload command.
 
-      const client = new Together();
+**`base_model_id is required` on create:** Every uploaded model must reference a supported base model. List [supported models](/docs/dedicated-endpoints/models) and set `--base-model` to the matching `baseModelId` (`ml_...`), not the architecture `id` (`arch_...`).
 
-      const response = await client.endpoints.listHardware({
-        model: "<MODEL_NAME>",
-      });
-      for (const hw of response.data) {
-        console.log(hw.id);
-      }
-      ```
-    </CodeGroup>
+**`tokenizer.chat_template is not set` during chat inference:** The uploaded tokenizer doesn't define a chat template. Add a compatible `chat_template` to `tokenizer_config.json` before uploading, or use the text completions API with the prompt format expected by the model.
 
-    Create the endpoint, using the hardware ID from the list:
-
-    <CodeGroup>
-      ```shell Shell theme={null}
-      together endpoints create \
-        --display-name <ENDPOINT_NAME> \
-        --model <MODEL_NAME> \
-        --hardware <HARDWARE_ID>
-      ```
-
-      ```python Python theme={null}
-      from together import Together
-
-      client = Together()
-
-      endpoint = client.endpoints.create(
-          model="<MODEL_NAME>",
-          hardware="<HARDWARE_ID>",
-          display_name="<ENDPOINT_NAME>",
-          autoscaling={"min_replicas": 1, "max_replicas": 1},
-      )
-      print(endpoint.id, endpoint.name)
-      ```
-
-      ```typescript TypeScript theme={null}
-      import Together from "together-ai";
-
-      const client = new Together();
-
-      const endpoint = await client.endpoints.create({
-        model: "<MODEL_NAME>",
-        hardware: "<HARDWARE_ID>",
-        display_name: "<ENDPOINT_NAME>",
-        autoscaling: { min_replicas: 1, max_replicas: 1 },
-      });
-      console.log(endpoint.id, endpoint.name);
-      ```
-    </CodeGroup>
-
-    See [Manage dedicated endpoints](/docs/dedicated-endpoints/manage) for the full endpoint lifecycle, including autoscaling, listing, and deletion.
-  </Tab>
-
-  <Tab title="UI">
-    <Steps>
-      <Step title="Open the model page">
-        Go to [My models](https://api.together.ai/models?category=my-models) and select your uploaded model to open its detail page.
-      </Step>
-
-      <Step title="Create the endpoint">
-        Select **Create dedicated endpoint** and pick the hardware and scaling configuration you want.
-      </Step>
-
-      <Step title="Deploy">
-        Confirm to deploy. Once the endpoint state is `STARTED`, call it from the playground or via the API.
-      </Step>
-    </Steps>
-  </Tab>
-</Tabs>
+**Model delete fails with `the model is referenced by a live deployment` (HTTP 400):** A deployment still references this model. [Stop the deployment](/docs/dedicated-endpoints/manage#stop-a-deployment), wait for `DEPLOYMENT_STATE_STOPPED`, [delete the deployment](/docs/dedicated-endpoints/manage#delete-resources), then delete the model with `tg beta models delete <model_id>`.

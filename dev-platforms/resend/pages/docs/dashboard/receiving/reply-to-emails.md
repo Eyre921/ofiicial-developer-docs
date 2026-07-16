@@ -228,6 +228,15 @@ Here's how you can reply in thread using each SDK:
   }'
   ```
 
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "Re: Sending this example" \
+    --html "<p>Thanks for your email!</p>" \
+    --headers "In-Reply-To=<111-222-333@email.example.com>"
+  ```
+
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}
   async fn example(
       State(state): State<Arc<AppState>>,
@@ -417,6 +426,16 @@ This helps email clients maintain the correct threading structure.
       "References": "<msg_id1@domain.com> <msg_id2@domain.com> <111-222-333@email.example.com>"
     }
   }'
+  ```
+
+  ```bash CLI {6-7} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "Re: Sending this example" \
+    --html "<p>Thanks for your email!</p>" \
+    --headers "In-Reply-To=<111-222-333@email.example.com>" \
+      "References=<msg_id1@domain.com> <msg_id2@domain.com> <111-222-333@email.example.com>"
   ```
 
   ```rust Rust theme={"theme":{"light":"github-light","dark":"vesper"}}

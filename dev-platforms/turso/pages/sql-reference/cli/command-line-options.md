@@ -141,26 +141,34 @@ These flags enable features that are still under development. They may change or
   Experimental features may have incomplete implementations or known limitations. Use them for testing and development only.
 </Warning>
 
-| Flag                          | Description                                                              |
-| ----------------------------- | ------------------------------------------------------------------------ |
-| `--experimental-views`        | Enable views (`CREATE VIEW` / `DROP VIEW`)                               |
-| `--experimental-custom-types` | Enable custom types (`CREATE TYPE` / `DROP TYPE`)                        |
-| `--experimental-encryption`   | Enable at-rest database encryption                                       |
-| `--experimental-index-method` | Enable custom index methods. Necessary for FTS and Sparse Vector indexes |
-| `--experimental-autovacuum`   | Enable automatic database vacuuming                                      |
-| `--experimental-vacuum`       | Enable in-place `VACUUM`                                                 |
-| `--experimental-triggers`     | Enable triggers (`CREATE TRIGGER` / `DROP TRIGGER`)                      |
-| `--experimental-attach`       | Enable `ATTACH DATABASE` / `DETACH DATABASE`                             |
+| Flag                                     | Description                                                                         |
+| ---------------------------------------- | ----------------------------------------------------------------------------------- |
+| `--experimental-views`                   | Enable views (`CREATE VIEW` / `CREATE MATERIALIZED VIEW`)                           |
+| `--experimental-custom-types`            | Enable custom types (`CREATE TYPE` / `DROP TYPE` / `CREATE DOMAIN` / `DROP DOMAIN`) |
+| `--experimental-encryption`              | Enable at-rest database encryption                                                  |
+| `--experimental-index-method`            | Enable custom index methods. Necessary for FTS and sparse vector indexes            |
+| `--experimental-autovacuum`              | Enable automatic database vacuuming                                                 |
+| `--experimental-vacuum`                  | Enable in-place `VACUUM`                                                            |
+| `--experimental-attach`                  | Enable `ATTACH DATABASE` / `DETACH DATABASE`                                        |
+| `--experimental-generated-columns`       | Enable virtual `GENERATED ALWAYS AS` columns                                        |
+| `--experimental-without-rowid`           | Enable `WITHOUT ROWID` tables                                                       |
+| `--experimental-multiprocess-wal`        | Enable sharing a database between processes via a shared WAL coordinator            |
+| `--experimental-mvcc-passive-checkpoint` | Enable passive checkpointing under MVCC (`journal_mode=mvcc`)                       |
+
+<Info>
+  Triggers (`CREATE TRIGGER` / `DROP TRIGGER`) are stable as of Turso 0.7 and no longer require a flag.
+</Info>
 
 ```bash theme={null}
-# Enable views, triggers, and in-place VACUUM
-tursodb --experimental-views --experimental-triggers --experimental-vacuum mydata.db
+# Enable views, custom types, and in-place VACUUM
+tursodb --experimental-views --experimental-custom-types --experimental-vacuum mydata.db
 ```
 
 ## Other Flags
 
-| Flag               | Description                                                   |
-| ------------------ | ------------------------------------------------------------- |
-| `--unsafe-testing` | Enable unsafe testing features (e.g., `sqlite_dbpage` writes) |
-| `-h, --help`       | Print usage help                                              |
-| `-V, --version`    | Print version information                                     |
+| Flag               | Description                                                               |
+| ------------------ | ------------------------------------------------------------------------- |
+| `--mvcc`           | Start the MVCC concurrent-transaction harness instead of the normal shell |
+| `--unsafe-testing` | Enable unsafe testing features (e.g., `sqlite_dbpage` writes)             |
+| `-h, --help`       | Print usage help                                                          |
+| `-V, --version`    | Print version information                                                 |

@@ -183,6 +183,15 @@ Idempotency keys are kept in the system for **24 hours**. This gives you an ampl
   }'
   ```
 
+  ```bash CLI {6} theme={"theme":{"light":"github-light","dark":"vesper"}}
+  resend emails send \
+    --from "Acme <onboarding@resend.dev>" \
+    --to delivered@resend.dev \
+    --subject "hello world" \
+    --html "<p>it works!</p>" \
+    --idempotency-key "welcome-user/123456789"
+  ```
+
   ```yaml SMTP {4} theme={"theme":{"light":"github-light","dark":"vesper"}}
   From: Acme <onboarding@resend.dev>
   To: delivered@resend.dev
