@@ -50,7 +50,7 @@ Sending a non-Anthropic model ID returns `400 model "<model-id>" is not availabl
 import Anthropic from '@anthropic-ai/sdk';
 
 const client = new Anthropic({
-  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  authToken: process.env.NEON_AI_GATEWAY_TOKEN,
   baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/anthropic`,
 });
 
@@ -70,7 +70,7 @@ import anthropic
 import os
 
 client = anthropic.Anthropic(
-    api_key=os.environ['NEON_AI_GATEWAY_TOKEN'],
+    auth_token=os.environ['NEON_AI_GATEWAY_TOKEN'],
     base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/anthropic",
 )
 
@@ -263,7 +263,7 @@ export NEON_AI_GATEWAY_TOKEN=nt_live_...
 For local development, `neon env pull` writes your AI Gateway credentials to your `.env` file automatically, with no manual copy-paste from the API response:
 
 ```bash
-neon env pull .env
+neon env pull --file .env
 ```
 
 This populates `NEON_AI_GATEWAY_TOKEN` and `NEON_AI_GATEWAY_BASE_URL` for the current branch alongside your database connection string. Running `neon config apply` or `neon deploy` also auto-pulls credentials after a successful apply. To check current credential status:
@@ -272,7 +272,7 @@ This populates `NEON_AI_GATEWAY_TOKEN` and `NEON_AI_GATEWAY_BASE_URL` for the cu
 neon config status
 ```
 
-For production deployments, use the [API-based workflow](https://neon.com/docs/ai-gateway/authentication#creating-a-credential) to create named credentials with optional expiry.
+For production deployments, use the [API-based workflow](https://neon.com/docs/ai-gateway/authentication#creating-a-credential) to create named credentials. `expires_at` is accepted but not currently enforced during the beta -- revoke credentials explicitly instead of relying on expiry.
 
 ## Using your credential
 
@@ -572,8 +572,10 @@ model: 'gpt-5-4'
 model: 'gemini-2-5-flash'
 
 // Alibaba
-model: 'databricks-qwen35-122b-a10b'
+model: 'qwen3-next-80b-a3b-instruct'
 ```
+
+For a few models, `message.content` comes back as an array of content blocks instead of a plain string. See [Content shape varies by model](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use) before swapping in a model you haven't used yet.
 
 See [Models](https://neon.com/docs/ai-gateway/models) for the full list.
 
@@ -609,14 +611,12 @@ When the upstream provider rate-limits a request, AI Gateway forwards the releva
 | `429 Too Many Requests`        | Upstream rate limited  | Upstream provider rate limit. Check the `Retry-After` and `X-Ratelimit-*` headers.                                                           |
 | `502 Bad Gateway`              | Upstream error         | Temporary issue with the upstream workspace. Retry the request.                                                                              |
 
-Error responses use the standard OpenAI error format:
+Error responses are a JSON object with an `error.message` field:
 
 ```json
 {
   "error": {
-    "message": "unknown model \"<model-id>\"",
-    "type": "invalid_request_error",
-    "code": "invalid_model"
+    "message": "unknown model \"<model-id>\""
   }
 }
 ```
@@ -677,15 +677,20 @@ Sending a non-Google model ID returns `400 model "<model-id>" is not available o
 
 ## Basic request
 
+**Note:** The `google-genai` SDK's `apiKey` option sends an `x-goog-api-key` header, but Neon AI Gateway expects `Authorization: Bearer <token>`. Set your credential as an explicit header instead, and pass any non-empty string as `apiKey` since the SDK requires the field even though the gateway ignores it.
+
 **TypeScript (google-genai)**
 
 ```typescript
 import { GoogleGenAI } from '@google/genai';
 
 const client = new GoogleGenAI({
-  apiKey: process.env.NEON_AI_GATEWAY_TOKEN,
+  apiKey: 'placeholder',
   httpOptions: {
     baseUrl: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/gemini`,
+    headers: {
+      Authorization: `Bearer ${process.env.NEON_AI_GATEWAY_TOKEN}`,
+    },
   },
 });
 
@@ -705,9 +710,10 @@ from google.genai import types
 import os
 
 client = genai.Client(
-    api_key=os.environ['NEON_AI_GATEWAY_TOKEN'],
+    api_key='placeholder',
     http_options=types.HttpOptions(
         base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/gemini",
+        headers={'Authorization': f"Bearer {os.environ['NEON_AI_GATEWAY_TOKEN']}"},
     ),
 )
 
@@ -1358,6 +1364,17 @@ All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GAT
 | Google Gemini             | `/v1/chat/completions` | Use `/ai-gateway/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK |
 | Google Gemma 3 12B        | `/v1/chat/completions` | Chat completions only. Doesn't support the Gemini SDK endpoint                           |
 | Meta, Databricks, Alibaba | `/v1/chat/completions` | Chat completions only                                                                    |
+
+**Warning: Content shape varies by model**
+
+For most models, `message.content` in a chat completions response is a plain string. For some models — confirmed on Gemini 3.x (`gemini-3-5-flash`, `gemini-3-1-pro`), `gpt-oss-120b`, and `qwen35-122b-a10b` — it's an array of typed content blocks instead (`{ type: 'reasoning', ... }`, `{ type: 'text', text: ... }`), matching how those models represent output natively. A low `max_tokens` value can also cut a response off before the `text` block appears, leaving only a `reasoning` block. Handle both shapes:
+
+```typescript
+const { content } = response.choices[0].message;
+const text = typeof content === 'string'
+  ? content
+  : content.find((block) => block.type === 'text')?.text ?? '';
+```
 
 ## Shorter /v1 paths
 
@@ -4193,7 +4210,7 @@ SHOW shared_preload_libraries;
 
 If the list already includes `lakebase_vector` and `lakebase_text`, skip to [Install the extensions](https://neon.com/docs/ai/lakebase-search-get-started#install-the-extensions). If not, you'll add them with the Neon API, using a [Neon API key](https://neon.com/docs/manage/api-keys) and your project ID.
 
-**Note:** The Neon CLI does not support enabling preloaded libraries. You must use the API steps below.
+**Note:** The `curl` examples below use a [Neon API key](https://neon.com/docs/manage/api-keys). If you'd rather not manage a key, the `neon api` command (an authenticated passthrough that reuses your existing CLI login) calls the same endpoints. For example, `neon api /projects/$PROJECT_ID/available_preload_libraries` replaces the first `curl` below; the `PATCH` and `restart` calls map the same way, passing the request body with `-d`.
 
 First, confirm the libraries are available to your project:
 
@@ -4208,7 +4225,7 @@ curl -sS \
 | jq '.libraries[] | select(.library_name | test("lakebase"))'
 ```
 
-If that returns the two libraries, enable them. The Neon API replaces the preload list rather than appending, so the command below reads your current libraries (plus the defaults) and re-sends them with the Lakebase Search libraries added, leaving your existing preloads in place:
+If that returns the two libraries, enable them. The Neon API replaces the preload list rather than appending, so the command below reads your current libraries (plus the defaults) and re-sends them with the Lakebase Search libraries added, leaving your existing preloads in place. The `split(",")` guards against a default `library_name` that packs several names into one comma-separated string. Note that experimental or beta libraries may remain in `enabled_libraries` without loading into `shared_preload_libraries`; confirm what actually loaded with `SHOW shared_preload_libraries` after the restart.
 
 ```bash
 AVAILABLE="$(curl -sS \
@@ -4223,7 +4240,7 @@ CURRENT="$(curl -sS \
 
 BODY="$(jq -n --argjson avail "$AVAILABLE" --argjson cur "$CURRENT" '
   { project: { settings: { preload_libraries: { enabled_libraries: (
-    [$avail.libraries[] | select(.is_default == true) | .library_name]
+    [$avail.libraries[] | select(.is_default == true) | .library_name | split(",")[]]
     + ($cur.project.settings.preload_libraries.enabled_libraries // [])
     + ["lakebase_vector", "lakebase_text"]
     | unique
@@ -4242,7 +4259,7 @@ For more on how Neon handles preloaded libraries, see [Extensions with preloaded
 
 ## Restart the compute
 
-The new `shared_preload_libraries` setting applies after the compute restarts, which drops current connections. Restart it with your `endpoint_id`, or let an idle compute pick up the change when it next wakes:
+The new `shared_preload_libraries` setting applies the next time the compute starts. If the compute is idle (suspended), you don't need to do anything: the next connection wakes it and picks up the change. If it's active, restart it to apply the setting, which drops current connections:
 
 ```bash
 export ENDPOINT_ID=...
@@ -4252,6 +4269,8 @@ curl -sS -X POST \
   -H "accept: application/json" \
   "https://console.neon.tech/api/v2/projects/$PROJECT_ID/endpoints/$ENDPOINT_ID/restart"
 ```
+
+**Note:** The restart call requires an **active** compute. On an idle compute it returns `endpoint is not active, could not restart`. That's expected; skip the restart and just connect, and the compute picks up the new setting when it wakes.
 
 ## Enable the extensions
 
@@ -20417,8 +20436,12 @@ Bundle with esbuild, zip the output, then POST to the deploy endpoint.
 **1. Bundle:**
 
 ```bash
-esbuild functions/hello.ts --bundle --platform=node --target=node24 --outfile=dist/index.mjs
+esbuild functions/hello.ts --bundle --platform=node --target=node24 --format=esm \
+  --banner:js="import{createRequire as ___cr}from'module';import{fileURLToPath as ___f}from'url';import{dirname as ___d}from'path';const require=___cr(import.meta.url);const __filename=___f(import.meta.url);const __dirname=___d(__filename);" \
+  --outfile=dist/index.mjs
 ```
+
+**Note:** `--format=esm` is required: esbuild doesn't infer ESM output from the `.mjs` extension alone, and without it the runtime fails with `module is not defined in ES module scope`. The `--banner` line restores `require`, `__filename`, and `__dirname` for bundled CommonJS dependencies that reference them internally (as `pg` does); without it, the runtime fails with `Dynamic require of "<module>" is not supported`. `buildFunctionBundle` below applies the same banner automatically.
 
 **2. Zip:**
 
@@ -30870,6 +30893,8 @@ CREATE INDEX ON items USING lakebase_ann (embedding vector_l2_ops) WITH (build_m
 
 Before tuning search, call `lakebase_ann_index_info(index_name)` to get the index's `lists`, `default_probes`, and `default_epsilon` values.
 
+**Note:** The `probes` and `epsilon` GUCs apply only once the index has built IVF lists, which happens above a corpus-size threshold. On a small dataset, `lakebase_ann` uses exact (flat) search instead: `lakebase_ann_index_info` returns empty `lists` and `default_probes`, `SET lakebase_ann.probes` fails with `usage: need 0 probes, but N provided`, and `epsilon` has no effect. This is expected, since the index is already returning exact results, so there is nothing to tune. These GUCs become relevant as your data grows and the index switches to IVF partitioning.
+
 Use the `lakebase_ann.probes` GUC to control how many IVF partitions are searched at query time. Higher values improve recall at the cost of speed.
 
 ```sql
@@ -30882,6 +30907,8 @@ SELECT * FROM items ORDER BY embedding <-> '[3,1,2]' LIMIT 10;
 ```sql
 SET lakebase_ann.epsilon TO '1.5';
 ```
+
+When you set these GUCs from application code, the `SET` and the query must run on the same session. With a connection pool or the [Neon serverless driver](https://neon.com/docs/serverless/serverless-driver), where each statement can use a different connection, issue both in a single transaction so the `SET` applies to the query.
 
 ### Concurrent index updates
 
@@ -30898,22 +30925,37 @@ REINDEX INDEX CONCURRENTLY items_embedding_ann;
 
 ### Operator classes
 
-`lakebase_ann` supports the following operator classes. The `<->`, `<#>`, and `<=>` operators are defined by `pgvector`. The `<<->>`, `<<#>>`, and `<<=>>` operators are defined by `lakebase_vector` for similarity filtering.
+`lakebase_ann` supports the following operator classes. Each class provides two operators:
 
-| Operator class       | Operator 1              | Operator 2                |
-| :------------------- | :---------------------- | :------------------------ |
-| `vector_l2_ops`      | `<->(vector, vector)`   | `<<->>(vector, vector)`   |
-| `vector_ip_ops`      | `<#>(vector, vector)`   | `<<#>>(vector, vector)`   |
-| `vector_cosine_ops`  | `<=>(vector, vector)`   | `<<=>>(vector, vector)`   |
-| `halfvec_l2_ops`     | `<->(halfvec, halfvec)` | `<<->>(halfvec, halfvec)` |
-| `halfvec_ip_ops`     | `<#>(halfvec, halfvec)` | `<<#>>(halfvec, halfvec)` |
-| `halfvec_cosine_ops` | `<=>(halfvec, halfvec)` | `<<=>>(halfvec, halfvec)` |
-| `rabitq8_l2_ops`     | `<->(rabitq8, rabitq8)` | `<<->>(rabitq8, rabitq8)` |
-| `rabitq8_ip_ops`     | `<#>(rabitq8, rabitq8)` | `<<#>>(rabitq8, rabitq8)` |
-| `rabitq8_cosine_ops` | `<=>(rabitq8, rabitq8)` | `<<=>>(rabitq8, rabitq8)` |
-| `rabitq4_l2_ops`     | `<->(rabitq4, rabitq4)` | `<<->>(rabitq4, rabitq4)` |
-| `rabitq4_ip_ops`     | `<#>(rabitq4, rabitq4)` | `<<#>>(rabitq4, rabitq4)` |
-| `rabitq4_cosine_ops` | `<=>(rabitq4, rabitq4)` | `<<=>>(rabitq4, rabitq4)` |
+- A **pgvector distance operator** (`<->`, `<#>`, `<=>`) that returns a distance and is used in `ORDER BY` for nearest-neighbor search.
+- A **`lakebase_vector` range operator** (`<<->>`, `<<#>>`, `<<=>>`) that takes a `sphere_*` value on its right side and returns a `boolean`: true when the vector falls within the sphere's radius. Use it in a `WHERE` clause to filter by similarity. Build the sphere with the `sphere(vector, radius)` function.
+
+| Operator class       | Distance operator (`ORDER BY`) | Range operator (`WHERE`)         |
+| :------------------- | :----------------------------- | :------------------------------- |
+| `vector_l2_ops`      | `<->(vector, vector)`          | `<<->>(vector, sphere_vector)`   |
+| `vector_ip_ops`      | `<#>(vector, vector)`          | `<<#>>(vector, sphere_vector)`   |
+| `vector_cosine_ops`  | `<=>(vector, vector)`          | `<<=>>(vector, sphere_vector)`   |
+| `halfvec_l2_ops`     | `<->(halfvec, halfvec)`        | `<<->>(halfvec, sphere_halfvec)` |
+| `halfvec_ip_ops`     | `<#>(halfvec, halfvec)`        | `<<#>>(halfvec, sphere_halfvec)` |
+| `halfvec_cosine_ops` | `<=>(halfvec, halfvec)`        | `<<=>>(halfvec, sphere_halfvec)` |
+| `rabitq8_l2_ops`     | `<->(rabitq8, rabitq8)`        | `<<->>(rabitq8, sphere_rabitq8)` |
+| `rabitq8_ip_ops`     | `<#>(rabitq8, rabitq8)`        | `<<#>>(rabitq8, sphere_rabitq8)` |
+| `rabitq8_cosine_ops` | `<=>(rabitq8, rabitq8)`        | `<<=>>(rabitq8, sphere_rabitq8)` |
+| `rabitq4_l2_ops`     | `<->(rabitq4, rabitq4)`        | `<<->>(rabitq4, sphere_rabitq4)` |
+| `rabitq4_ip_ops`     | `<#>(rabitq4, rabitq4)`        | `<<#>>(rabitq4, sphere_rabitq4)` |
+| `rabitq4_cosine_ops` | `<=>(rabitq4, rabitq4)`        | `<<=>>(rabitq4, sphere_rabitq4)` |
+
+To filter by similarity, wrap the query vector in `sphere(vector, radius)` and use the range operator in a `WHERE` clause. Rank the matches with the corresponding distance operator:
+
+```sql
+-- Rows within cosine radius 0.5 of the query vector, closest first
+SELECT * FROM items
+WHERE embedding <<=>> sphere('[3,1,2]'::vector, 0.5)
+ORDER BY embedding <=> '[3,1,2]'
+LIMIT 5;
+```
+
+The range operator returns a `boolean`, so it belongs in `WHERE`, not `ORDER BY`. Use the distance operator (`<=>` here) to order results.
 
 The `rabitq8` and `rabitq4` types are quantization types defined by `lakebase_vector`. They offer reduced memory footprint at the cost of some precision.
 
@@ -49917,11 +49959,11 @@ To optimize performance:
 
 Get started with Neon Functions, Object Storage, and AI Gateway
 
-The Neon backend for apps and agents is in beta.
-
 **Info: Beta**
 
-Functions, Object Storage, and AI Gateway are not yet recommended for production workloads. Build something and help us refine them by sharing your feedback in Discord.
+Functions, Object Storage, and the AI Gateway are in beta and not yet recommended for production workloads. They're available to every Neon account, no invite required, on new or existing projects in **AWS US East (Ohio) (`aws-us-east-2`)**.
+
+Functions and Object Storage are free on any plan during the beta, subject to usage limits. The AI Gateway requires a paid plan (Launch or Scale), with inference free during the beta. Build something and help us refine them by sharing your feedback in Discord.
 
 ## What's in the beta
 
@@ -49935,35 +49977,26 @@ You declare all of it in one `neon.ts` file, and it branches together: fork a br
 
 ## Check your access
 
-Beta access is open to every Neon account, no invite required. Services work in **AWS us-east-2** only, on new or existing projects in that region. Functions and Object Storage are free to use during the beta on any plan, subject to usage limits. AI Gateway requires a paid plan (Launch or Scale); inference is free for paid plans during the beta. See [AI Gateway pricing](https://neon.com/docs/ai-gateway/overview#pricing) for what to expect once billing begins.
+To confirm access, go to [console.neon.tech](https://console.neon.tech), open a project in **US East (Ohio)**, and check the left navigation for **Storage**, **Credentials**, **AI Gateway**, and **Functions**. For what AI Gateway costs once billing begins, see [AI Gateway pricing](https://neon.com/docs/ai-gateway/overview#pricing).
 
-To confirm access, go to [console.neon.tech](https://console.neon.tech), open a project in **US East (Ohio)** (`us-east-2`), and check the left navigation for **Storage**, **Credentials**, **AI Gateway**, and **Functions**. If a service is missing, post in [#neon-platform-private-preview](https://discord.com/channels/1176467419317940276/1514002115024916643) on Discord.
+Not seeing the services? The most common reason is region: the project isn't in `us-east-2`. Create a new project in **US East (Ohio)**, or switch to an existing one there. If AI Gateway is the only thing missing, check your plan, it requires Launch or Scale. If a service is still missing after that, post in [#neon-platform-beta](https://discord.com/channels/1176467419317940276/1525919714541437058) on Discord.
 
-![Neon app backend navigation](https://neon.com/docs/get-started/neon_app_backend.png)
+Using the CLI? Keep it current, the beta CLI updates frequently. Run `npm i -g neon@latest` before each session and before reporting a bug.
 
-## Get started
+## Start building
 
-There are three ways to get started. Pick the one that fits how you work.
+The fastest path is to hand the setup to your AI assistant. Open Cursor or Claude Code in any directory, copy this prompt, and paste it in. Your agent installs the CLI, sets up the project, installs the agent skills, and pulls your environment variables.
 
-### Option 1: AI agent (recommended)
+Hand this to your AI assistant to set up Neon: skills, project, and all capabilities. Then tell it what to build. [View prompt](https://neon.com/prompts/neon-backend.md)
 
-Open Cursor or Claude Code in any directory (an existing project or a new empty folder) and paste this prompt:
+For a guided path instead, pick the one that fits how you work:
 
-```text
-I'm using the Neon backend beta (Functions, Object Storage, AI Gateway). Please run and follow `npx neon@latest init --preview`
-```
+- [Tour the Neon backend](https://neon.com/docs/get-started/backend-overview): how Postgres, Object Storage, Functions, the AI Gateway, and Auth fit together in one `neon.ts`, with a copyable prompt to hand your AI assistant.
+- [Full backend quickstart](https://neon.com/docs/get-started/full-backend-quickstart): build a working Next.js backend end-to-end, wiring Postgres, Object Storage, and a Neon Function that calls the AI Gateway.
 
-Your agent will install the CLI, walk you through project setup, install agent skills, and pull your environment variables. You'll need to complete a browser OAuth step when prompted.
+### Bootstrap from a template
 
-### Option 2: Bootstrap from a template
-
-In an empty folder, run:
-
-```bash
-neon bootstrap
-```
-
-Pick a template from the interactive selector, or pass `--template <id>` to skip it:
+Run `neon bootstrap` in an empty folder to scaffold a ready-made app, then follow its README. Pick from the templates below, or browse them all at [github.com/neondatabase/examples](https://github.com/neondatabase/examples). See the [`bootstrap` reference](https://neon.com/docs/cli/bootstrap) for command options.
 
 | Template            | What it builds                                                                                                                                                                                                     |
 | ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -49977,121 +50010,15 @@ Pick a template from the interactive selector, or pass `--template <id>` to skip
 | `telegram-bot-http` | A Telegram webhook bot on Neon Functions: bot commands, inline keyboard buttons, and user profiles with command usage tracked in Postgres.                                                                         |
 | `whatsapp-bot-http` | A WhatsApp Cloud API webhook bot on Neon Functions: bot commands, interactive reply buttons, and user profiles with command usage tracked in Postgres.                                                             |
 
-Each template includes agent skills and a README. Follow the README steps, or tell your agent to follow them.
-
-Browse all bootstrap templates at [github.com/neondatabase/examples](https://github.com/neondatabase/examples).
-
-### Option 3: Manual setup
-
-For exploring the platform primitives directly, or to understand what the agent does under the hood.
-
-**1. Install agent skills**
-
-Agent skills give your agent built-in knowledge of Neon services. Install them for your editor:
-
-```bash
-bunx skills add neondatabase/agent-skills -a cursor
-```
-
-**2. Install the CLI**
-
-```bash
-npm install -g neon@latest
-```
-
-**3. Link your project**
-
-In your project directory:
-
-```bash
-neon link
-```
-
-Similar to `vercel link`, this connects the directory to a Neon project and creates a `.neon` state file that tracks your project and current branch. All CLI commands in this directory will automatically point to the linked project and branch.
-
-**4. Create a neon.ts file**
-
-`neon.ts` is the infrastructure-as-code config for your Neon project. Install the config package first:
-
-```bash
-npm install @neon/config
-```
-
-Then create `neon.ts` in your project root. This example enables the AI Gateway, creates a storage bucket, and declares a function:
-
-```ts filename="neon.ts"
-import { defineConfig } from "@neon/config/v1";
-
-export default defineConfig({
-  preview: {
-    aiGateway: true,
-    buckets: {
-      uploads: {},
-    },
-    functions: {
-      api: {
-        name: "API",
-        source: "./functions/api.ts",
-      },
-    },
-  },
-});
-```
-
-See the [neon.ts reference](https://neon.com/docs/reference/neon-ts) for the full config API.
-
-**5. Plan and apply**
-
-Preview what will change:
-
-```bash
-neon config plan
-```
-
-Apply it:
-
-```bash
-neon config apply
-```
-
-Once applied, environment variables for all your services are written to `.env.local` automatically: database URL, storage credentials, AI Gateway key, and more.
-
-## Key CLI commands
-
-The Neon CLI supports a full local development workflow for the platform. You link a directory to a project, declare your infrastructure in `neon.ts`, develop functions locally with hot reload, and deploy when you're ready. Branching is built into the workflow: `neon checkout` creates an isolated branch with its own database, storage, and functions, so you can develop and test without touching your main branch. Here are the commands that make up that workflow, each with a link to its full reference.
-
-| Command                                                        | What it does                                                                                                                                                   |
-| -------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [`neon link`](https://neon.com/docs/cli/link)                  | Bind the current directory to a Neon project. Writes a `.neon` context file so all subsequent commands target the right project and branch automatically.      |
-| [`neon checkout <branch>`](https://neon.com/docs/cli/checkout) | Switch the active branch in your local context. Creates the branch if it doesn't exist. Pulls updated env vars into `.env.local` after switching.              |
-| [`neon config plan`](https://neon.com/docs/cli/config)         | Dry run your `neon.ts` changes. Shows what will be created, updated, or removed without applying anything.                                                     |
-| [`neon config apply`](https://neon.com/docs/cli/config)        | Apply your `neon.ts` to the current branch and refresh env vars in `.env.local`.                                                                               |
-| [`neon deploy`](https://neon.com/docs/cli/deploy)              | Apply `neon.ts` and deploy your functions in one step. Use this instead of `config apply` when functions are in play.                                          |
-| [`neon dev`](https://neon.com/docs/cli/dev)                    | Run your functions locally with hot reload. Serves every function declared in `neon.ts`, each on its own dev server. Essential for local function development. |
-| [`neon env pull`](https://neon.com/docs/cli/env)               | Pull the current branch's environment variables into `.env.local`. Run this after switching branches if you skipped the automatic pull.                        |
-
-Keep the CLI up to date: run `npm i -g neon@latest` before each session and before reporting a bug. The beta CLI updates frequently.
-
-## Docs
-
-Docs are evolving daily during the beta. Use the Neon agent skills as your primary reference.
-
-- [Neon Functions](https://neon.com/docs/compute/functions/overview): overview, get started, neon.ts reference, runtime limits
-- [Neon Object Storage](https://neon.com/docs/storage/overview): buckets, objects, S3 compatibility
-- [Neon AI Gateway](https://neon.com/docs/ai-gateway/overview): get started, model catalog, SDK dialects
-- [Model catalog on models.dev](https://models.dev/providers/neon): every model ID the gateway serves
-
-For inspiration, see [Build on Neon](https://build-on-neon.vercel.app/): an index of demo apps built on the full platform stack.
+For per-service details, see [Neon Functions](https://neon.com/docs/compute/functions/overview), [Neon Object Storage](https://neon.com/docs/storage/overview), and [Neon AI Gateway](https://neon.com/docs/ai-gateway/overview). For inspiration, [Build on Neon](https://build-on-neon.vercel.app/) indexes demo apps built on the full platform stack.
 
 ## Known limitations
 
-- AWS us-east-2 only.
 - Functions: memory is fixed at 2048 MiB, not configurable during the beta.
-- AI Gateway requires a paid plan (Launch or Scale). Functions and Object Storage work on any plan.
 
 ## Feedback
 
-Post in [#neon-platform-private-preview](https://discord.com/channels/1176467419317940276/1514002115024916643) on Discord: bugs, confusion, docs gaps, feature requests, and what you build. We run office hours and user interviews throughout the beta. Details in the channel.
+Post in [#neon-platform-beta](https://discord.com/channels/1176467419317940276/1525919714541437058) on Discord: bugs, confusion, docs gaps, feature requests, and what you build. We run office hours and user interviews throughout the beta. Details in the channel.
 
 Tell us what you build. We'd love to feature it.
 
@@ -50129,7 +50056,7 @@ So when you see a `notes` table, an `attachments` bucket, or a `chat` function b
 
 **Info: Region and access requirements**
 
-Object Storage, Functions, and the AI Gateway are in beta and available only on **new projects in AWS US East (Ohio) (`aws-us-east-2`)**, so create your project there to use them. Postgres and Managed BetterAuth work in any region. The three new beta services are free to use during beta, subject to usage limits. The AI Gateway is only available on paid plans; the other two are on any plan.
+Object Storage, Functions, and the AI Gateway are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, on new or existing projects in that region, so use a project there to try them. Postgres and Managed Better Auth work in any region. The three new beta services are free to use during beta, subject to usage limits. The AI Gateway is only available on paid plans; the other two are on any plan.
 
 ## The shape of a Neon backend
 
@@ -50193,13 +50120,13 @@ Every capability follows the same three steps: **enable it in `neon.ts`, [`neon 
 - **`neon deploy` reconciles that file** against your branch, provisions each service, and writes its credentials to your env file.
 - **Branching forks the whole backend together.** A new branch gets its own database, bucket, and function, copy-on-write from the parent. See [Branch your whole backend](https://neon.com/docs/get-started/backend-overview#branch-your-whole-backend).
 
-| Capability             | Enable in `neon.ts`  | Injected env vars                                                                 | You use it with                                   |
-| ---------------------- | -------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------- |
-| **Postgres**           | on by default        | `DATABASE_URL`                                                                    | `@neondatabase/serverless`, or `pg` in a Function |
-| **Object Storage**     | `buckets: { ... }`   | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL_S3`, `AWS_REGION` | `files-sdk` (or any S3 client)                    |
-| **Functions**          | `functions: { ... }` | `DATABASE_URL` and more, inside the function                                      | Hono (any web framework)                          |
-| **AI Gateway**         | `aiGateway: true`    | `NEON_AI_GATEWAY_BASE_URL`, `NEON_AI_GATEWAY_TOKEN`                               | `@neon/ai-sdk-provider`                           |
-| **Managed BetterAuth** | `auth: true`         | `NEON_AUTH_BASE_URL`, `NEON_AUTH_JWKS_URL`                                        | `@neondatabase/auth`                              |
+| Capability              | Enable in `neon.ts`  | Injected env vars                                                                 | You use it with                                   |
+| ----------------------- | -------------------- | --------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **Postgres**            | on by default        | `DATABASE_URL`                                                                    | `@neondatabase/serverless`, or `pg` in a Function |
+| **Object Storage**      | `buckets: { ... }`   | `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_ENDPOINT_URL_S3`, `AWS_REGION` | `files-sdk` (or any S3 client)                    |
+| **Functions**           | `functions: { ... }` | `DATABASE_URL` and more, inside the function                                      | Hono (any web framework)                          |
+| **AI Gateway**          | `aiGateway: true`    | `NEON_AI_GATEWAY_BASE_URL`, `NEON_AI_GATEWAY_TOKEN`                               | `@neon/ai-sdk-provider`                           |
+| **Managed Better Auth** | `auth: true`         | `NEON_AUTH_BASE_URL`, `NEON_AUTH_JWKS_URL`                                        | `@neondatabase/auth`                              |
 
 **Note: Reading the snippets**
 
@@ -50315,7 +50242,7 @@ Right after `neon deploy` on a new branch, the first gateway call can return a `
 
 **Reference:** [AI Gateway get-started](https://neon.com/docs/ai-gateway/get-started) (streaming, troubleshooting) · [Model catalog](https://neon.com/docs/ai-gateway/models) (per-modality snippets) · [Overview](https://neon.com/docs/ai-gateway/overview)
 
-## Managed BetterAuth: per-user access
+## Managed Better Auth: per-user access
 
 **What it is:** authentication with per-user data, plus a way to secure your functions by verifying tokens in your own code. In the notes app, it makes notes private, so each user chats only with their own. **When to use it:** making the app multi-user. **When not:** a single-user tool or internal script, where you can skip the toggle and the per-row `user_id`.
 
@@ -50325,7 +50252,7 @@ Enable it and deploy; `neon deploy` injects the auth base URL and JWKS URL:
 auth: true,
 ```
 
-Managed BetterAuth needs a session cookie secret that you provide; it isn't injected. Generate one and add it as `NEON_AUTH_COOKIE_SECRET` in the same env file as your other credentials:
+Managed Better Auth needs a session cookie secret that you provide; it isn't injected. Generate one and add it as `NEON_AUTH_COOKIE_SECRET` in the same env file as your other credentials:
 
 ```bash
 openssl rand -base64 32   # paste the output as NEON_AUTH_COOKIE_SECRET
@@ -50980,7 +50907,7 @@ npm i -g neon
 
 **Important: Create your project in AWS US East (Ohio)**
 
-Object Storage, Functions, and the AI Gateway are in beta and available only on **new projects in AWS US East (Ohio) (`aws-us-east-2`)**, so create your project there to follow this guide. Postgres works in any region. The three beta services are free to use during beta, subject to usage limits. The AI Gateway requires a paid plan; Object Storage and Functions work on any plan.
+Object Storage, Functions, and the AI Gateway are in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, on new or existing projects in that region, so use a project there to follow this guide. Postgres works in any region. The three beta services are free to use during beta, subject to usage limits. The AI Gateway requires a paid plan; Object Storage and Functions work on any plan.
 
 ## Create a Neon project
 
@@ -51546,6 +51473,7 @@ Find detailed instructions for connecting to Neon from various ORMs
 - [SQLAlchemy](https://neon.com/docs/guides/sqlalchemy): Connect a SQLAlchemy application to Neon
 - [Tortoise ORM](https://neon.com/docs/guides/tortoise-orm): Connect a Tortoise ORM application to Neon
 - [TypeORM](https://neon.com/docs/guides/typeorm): Connect a TypeORM application to Neon
+- [Better Drizzle](https://neon.com/docs/guides/better-drizzle): Connect a Better Drizzle application to Neon
 
 --- [Document source](https://neon.com/docs/get-started/production-checklist.md) ---
 
@@ -52495,7 +52423,7 @@ Independent developers want to build without friction. They don't want to create
 
   **Tip: Useful links to get started**
 
-  Check out our [framework guides](https://neon.com/docs/get-started/frameworks), [templates](https://neon.com/templates), [code examples](https://github.com/neondatabase/examples), and join our [community Discord](https://discord.gg/92vNTzKDGp).
+  Check out our [framework guides](https://neon.com/docs/get-started/frameworks), [code examples](https://github.com/neondatabase/examples), and join our [community Discord](https://discord.gg/92vNTzKDGp).
 
 ### Startups: From dev to scale
 
@@ -58077,6 +58005,632 @@ If you encounter unexpected results during your benchmarking, consult the [Conne
 Benchmarking Neon requires understanding the unique characteristics of serverless Postgres. By separating cold and hot query measurements, testing from appropriate locations, and selecting the right connection methods, you'll obtain accurate performance metrics that reflect what your applications will experience in production.
 
 For further information on connection latency, see the [Neon Documentation](https://neon.com/docs/connect/connection-latency).
+
+--- [Document source](https://neon.com/docs/guides/better-drizzle.md) ---
+
+> Summary: Better Drizzle connection guide for Neon Postgres walks through setting up better-drizzle with node-postgres driver. Learn how to configure a Better Drizzle client, define schema relations, seed data, run CRUD queries, use plugins, and manage transactions with savepoints.
+
+# Connect from Better Drizzle to Neon
+
+Learn how to connect to Neon from Better Drizzle
+
+**What you will learn:**
+
+- How to set up better-drizzle with Neon Postgres
+- How to define schemas, seed, and query your database
+- How to use plugins, hooks, and transactions in better-drizzle
+
+**Related resources**
+
+- [better-drizzle documentation](https://better-drizzle.com/docs)
+- [better-drizzle GitHub](https://github.com/almeidazs/better-drizzle)
+- [Neon Drizzle setup guide](https://neon.com/docs/guides/drizzle)
+
+[better-drizzle](https://better-drizzle.com) is a thin wrapper around [Drizzle ORM](https://orm.drizzle.team) that gives every table a consistent, type-safe API without replacing Drizzle itself. If you are already using Drizzle with Neon, better-drizzle removes the repetitive query glue you would otherwise rewrite in every service while staying close to the metal.
+
+better-drizzle is **sponsored by Neon**, and is maintained by [Hiago Almeida](https://github.com/almeidazs).
+
+## What better-drizzle adds
+
+better-drizzle wraps your existing Drizzle client and generates one delegate per table. You get:
+
+- **Consistent CRUD**: `findMany`, `findFirst`, `findUnique`, `create`, `update`, `delete`, `upsert`, and `upsertMany` on every table
+- **Typed relation loading**: `include` and `select` with full type inference from your Drizzle schema
+- **Nested relation filters**: `some`, `every`, `none`, and `is` for filtering by related rows
+- **Unified pagination**: Offset and cursor pagination returning the same `{ data, pagination }` shape
+- **Lifecycle hooks**: Cross-cutting concerns like audit trails, tracing, and metrics without sprinkling them through every call
+- **First-class plugins**: Timestamps, soft delete, and custom behavior packaged as reusable plugins
+- **Transactions with savepoints**: Nested transactions, rollback, `afterCommit` callbacks, and automatic retries
+
+All of this compiles down to Drizzle queries. You still define your schema in Drizzle, choose your driver, and drop to raw SQL whenever you need to.
+
+To connect a TypeScript/Node.js project to Neon using better-drizzle, follow these steps:
+
+## Create a TypeScript/Node.js project
+
+Create a new directory for your project and navigate into it:
+
+```bash
+mkdir better-drizzle-demo
+cd better-drizzle-demo
+```
+
+Initialize a new Node.js project with a `package.json` file:
+
+```bash
+npm init -y
+```
+
+## Create a Neon project
+
+If you do not have one already, create a Neon project.
+
+1. Navigate to the [Projects](https://console.neon.tech/app/projects) page in the Neon Console.
+2. Click **New Project**.
+3. Specify your project settings and click **Create Project**.
+
+## Get your connection string
+
+Find your database connection string by clicking the **Connect** button on your **Project Dashboard** to open the **Connect to your database** modal. Select a branch, a user, and the database you want to connect to. A connection string is constructed for you.
+![Connection details modal](https://neon.com/docs/connect/connection_details.png)
+The connection string includes the user name, password, hostname, and database name.
+
+Create a `.env` file in your project's root directory and add the connection string to it. Your `.env` file should look like this:
+
+```text
+DATABASE_URL="postgresql://[user]:[password]@[neon_hostname]/[dbname]?sslmode=require&channel_binding=require"
+```
+
+## Install dependencies
+
+Install the dependencies:
+
+```bash
+npm install better-drizzle pg drizzle-orm
+npm install -D drizzle-kit@0.21.4 @types/pg @types/node dotenv
+```
+
+**Note: Drizzle Kit Compatibility**
+
+better-drizzle is compatible with `drizzle-kit@0.21.4` and Drizzle ORM versions up to `^0.30.0`.
+
+## Configure Drizzle Kit
+
+Drizzle Kit uses a configuration file to manage schema and migrations. Create a `drizzle.config.ts` file in your project root:
+
+```typescript filename="drizzle.config.ts"
+import 'dotenv/config';
+import { defineConfig } from 'drizzle-kit';
+
+if (!process.env.DATABASE_URL) {
+  throw new Error('DATABASE_URL is not set in the .env file');
+}
+
+export default defineConfig({
+  schema: './src/schema.ts',
+  out: './drizzle',
+  dialect: 'postgresql',
+  dbCredentials: {
+    url: process.env.DATABASE_URL,
+  },
+});
+```
+
+## Define your schema and relations
+
+better-drizzle reads your Drizzle schema (including relations) to generate each table's typed API. The relations you define power `include`, `select`, and nested relation filters.
+
+Create a `src/schema.ts` file with two tables: `users` and `posts`. Each user can have many posts, and each post belongs to one user.
+
+```typescript filename="src/schema.ts"
+import { relations } from 'drizzle-orm';
+import { boolean, integer, pgTable, serial, text } from 'drizzle-orm/pg-core';
+
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),
+  email: text('email').notNull().unique(),
+  name: text('name').notNull(),
+  active: boolean('active').notNull().default(true),
+});
+
+export const posts = pgTable('posts', {
+  id: serial('id').primaryKey(),
+  authorId: integer('author_id')
+    .notNull()
+    .references(() => users.id),
+  title: text('title').notNull(),
+  published: boolean('published').notNull().default(false),
+});
+
+export const usersRelations = relations(users, ({ many }) => ({
+  posts: many(posts),
+}));
+
+export const postsRelations = relations(posts, ({ one }) => ({
+  author: one(users, {
+    fields: [posts.authorId],
+    references: [users.id],
+  }),
+}));
+
+export const schema = {
+  users,
+  usersRelations,
+  posts,
+  postsRelations,
+};
+```
+
+## Initialize the Better Drizzle client
+
+Create a standard Drizzle client and wrap it with `better()` to get the Better client. Create a `src/db.ts` file:
+
+```typescript filename="src/db.ts"
+import { better } from 'better-drizzle';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { Pool } from 'pg';
+import { schema } from './schema';
+import 'dotenv/config';
+
+const pool = new Pool({ connectionString: process.env.DATABASE_URL! });
+const db = drizzle(pool, { schema });
+
+export const client = better(db, { schema });
+```
+
+## Generate migrations
+
+Generate your migration files using Drizzle Kit:
+
+```bash
+npx drizzle-kit generate
+```
+
+## Apply migrations
+
+Apply the generated SQL migrations to your Neon database:
+
+```bash
+npx drizzle-kit migrate
+```
+
+## Seed the database
+
+Create a `src/seed.ts` file to populate the database with some users and posts:
+
+```typescript filename="src/seed.ts"
+import { client } from './db';
+
+async function seed() {
+  await client.users.upsertMany({
+    data: [
+      { email: 'alice@example.com', name: 'Alice', active: true },
+      { email: 'bob@example.com', name: 'Bob', active: false },
+      { email: 'charlie@example.com', name: 'Charlie', active: true },
+    ],
+    target: ['email'],
+    update: ['name'],
+  });
+
+  const alice = await client.users.findUnique({
+    where: { email: 'alice@example.com' },
+  });
+
+  const bob = await client.users.findUnique({
+    where: { email: 'bob@example.com' },
+  });
+
+  await client.posts.createMany({
+    data: [
+      { authorId: alice!.id, title: 'Hello World', published: true },
+      { authorId: alice!.id, title: 'better-drizzle is great', published: true },
+      { authorId: alice!.id, title: 'Neon Postgres rocks', published: true },
+      { authorId: bob!.id, title: 'Secret draft', published: false },
+    ],
+  });
+
+  console.log('Seeded 3 users and 4 posts.');
+}
+
+seed();
+```
+
+Run the seed script:
+
+```bash
+npx tsx src/seed.ts
+```
+
+## Query with better-drizzle
+
+### Reads with typed relations
+
+Each table gets a delegate (`client.users`, `client.posts`) with methods that are fully typed against your schema.
+
+List active users with their three most recent published posts:
+
+```typescript
+const users = await client.users.findMany({
+  where: { active: true },
+  include: {
+    posts: {
+      where: { published: true },
+      select: { id: true, title: true },
+      orderBy: [{ id: 'desc' }],
+      take: 3,
+    },
+  },
+  orderBy: [{ id: 'desc' }],
+  take: 20,
+});
+```
+
+The query returns active users with their published posts nested under each user:
+
+```json title="Output"
+[
+  {
+    "id": 3,
+    "email": "charlie@example.com",
+    "name": "Charlie",
+    "active": true,
+    "posts": []
+  },
+  {
+    "id": 1,
+    "email": "alice@example.com",
+    "name": "Alice",
+    "active": true,
+    "posts": [
+      { "id": 3, "title": "Neon Postgres rocks" },
+      { "id": 2, "title": "better-drizzle is great" },
+      { "id": 1, "title": "Hello World" }
+    ]
+  }
+]
+```
+
+**Note: select vs include**
+
+By default, queries return all table columns.
+
+- Use **`include`** to return all columns _plus_ nested relations (e.g., `include: { posts: true }`).
+- Use **`select`** to return _only_ the specified columns and drop everything else (e.g., `select: { id: true, title: true }`).
+
+`select` and `include` are mutually exclusive at the same query level, but you can nest a `select` inside an `include` to narrow the fields of a related table (as shown in the active users query above).
+
+Find a single user by a unique field:
+
+```typescript
+const alice = await client.users.findUnique({
+  where: { email: 'alice@example.com' },
+});
+```
+
+Filter posts by conditions on their related author with nested relation filters:
+
+```typescript
+const posts = await client.posts.findMany({
+  where: {
+    published: true,
+    author: { is: { active: true } },
+  },
+  select: {
+    id: true,
+    title: true,
+    author: { select: { id: true, name: true } },
+  },
+  orderBy: [{ id: 'desc' }],
+  take: 20,
+});
+```
+
+> The `author: { is: { active: true } }` filter keeps only posts where the author is active, excluding Bob's posts since he is inactive:
+
+### Writes with skipDuplicates and upsertMany
+
+Create a new user, skipping if the email already exists
+
+```typescript
+const maybeCreated = await client.users.create({
+  data: {
+    email: 'better@example.com',
+    name: 'better',
+    active: true,
+  },
+  skipDuplicates: ['email'],
+});
+
+if (!maybeCreated) {
+  console.log('User already existed');
+}
+```
+
+Bulk upsert multiple users in a single batch operation:
+
+```typescript
+await client.users.upsertMany({
+  data: [
+    { email: 'alice@example.com', name: 'Alice Updated', active: true },
+    { email: 'bob@example.com', name: 'Bob Updated', active: true },
+  ],
+  target: ['email'],
+  update: ['name', 'active'],
+  select: { id: true, name: true },
+});
+```
+
+### Pagination: one shape for offset and cursor
+
+```typescript
+import { PaginationType } from 'better-drizzle';
+
+// Offset pagination
+const page1 = await client.users.paginate({
+  type: PaginationType.Offset,
+  where: { active: true },
+  select: { id: true, name: true },
+  orderBy: [{ id: 'desc' }],
+  skip: 0,
+  limit: 10,
+});
+```
+
+Both offset and cursor pagination return the same `{ data, pagination }` shape:
+
+```json title="Output"
+{
+  "data": [
+    { "id": 3, "name": "Charlie" },
+    { "id": 1, "name": "Alice" }
+  ],
+  "pagination": { "count": 2, "hasNext": false, "hasPrevious": false }
+}
+```
+
+Cursor pagination uses the last item's cursor to fetch the next page:
+
+```typescript
+const page2 = await client.users.paginate({
+  type: PaginationType.Cursor,
+  where: { active: true },
+  select: { id: true, name: true },
+  after: { id: page1.data[page1.data.length - 1]?.id },
+  limit: 10,
+  orderBy: [{ id: 'desc' }],
+});
+```
+
+### Count and exists
+
+```typescript
+const activeCount = await client.users.count({
+  where: { active: true },
+});
+
+const exists = await client.users.exists({
+  where: { id: 1 },
+});
+```
+
+## Use plugins for cross-cutting behavior
+
+Plugins can manage timestamps, soft deletes, and custom behavior.
+
+### Timestamps
+
+Auto-manage `createdAt` and `updatedAt` columns on every write:
+
+```bash
+npm install @better-drizzle/timestamps
+```
+
+```typescript filename="src/db.ts"
+import { timestamps } from '@better-drizzle/timestamps';
+
+const client = better(db, {
+  schema,
+  plugins: [
+    timestamps({
+      createdAt: 'createdAt',
+      updatedAt: 'updatedAt',
+    }),
+  ],
+});
+```
+
+**Important: Timestamps plugin**
+
+Use the column names defined in your Drizzle schema rather than the raw PostgreSQL column names. For example, if your schema specifies `createdAt` and `updatedAt`, those are the names you should reference in the plugin configuration - not the database's `created_at` and `updated_at`.
+
+The plugin automatically sets `createdAt` on row creation and updates `updatedAt` on every update. Ensure your schema has the `createdAt` and `updatedAt` columns defined as timestamps. For example:
+
+```typescript filename="src/schema.ts"
+import { relations } from "drizzle-orm";
+import { boolean, integer, pgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  name: text("name").notNull(),
+  active: boolean("active").notNull().default(true),
+  createdAt: timestamp("created_at"),
+  updatedAt: timestamp("updated_at"),
+});
+
+export const posts = pgTable("posts", {
+  id: serial("id").primaryKey(),
+  authorId: integer("author_id")
+    .notNull()
+    .references(() => users.id),
+  title: text("title").notNull(),
+  published: boolean("published").notNull().default(false),
+  createdAt: timestamp("created_at"),
+  updatedAt: timestamp("updated_at"),
+});
+```
+
+### Soft delete
+
+To use soft deletes, add a `deletedAt` column to your schema:
+
+```typescript filename="src/schema.ts"
+export const posts = pgTable('posts', {
+  id: serial('id').primaryKey(),
+  authorId: integer('author_id')
+    .notNull()
+    .references(() => users.id),
+  title: text('title').notNull(),
+  published: boolean('published').notNull().default(false),
+  deletedAt: timestamp('deleted_at'),
+});
+```
+
+Install and configure the `@better-drizzle/soft-delete` plugin:
+
+```bash
+npm install @better-drizzle/soft-delete
+```
+
+```typescript filename="src/db.ts"
+import { softDelete } from '@better-drizzle/soft-delete';
+
+const client = better(db, {
+  schema,
+  plugins: [
+    softDelete({
+      column: 'deletedAt',
+      defaults: { mode: 'soft', visibility: 'without' },
+    }),
+  ],
+});
+
+// Soft-deletes the row instead of removing it
+await client.posts.delete({ where: { id: 1 } });
+
+// Get only deleted posts
+await client.posts.findMany({ deleted: 'only' });
+
+// Restore a soft-deleted row
+await client.posts.restore({ where: { id: 1 } });
+```
+
+## Add lifecycle hooks
+
+Observe operations for auditing, metrics, or custom metadata:
+
+```typescript filename="db.ts"
+const client = better(db, {
+  schema,
+  hooks: {
+    beforeCreate(ctx) {
+      console.log('beforeCreate', ctx.action, ctx.table);
+    },
+    afterCreate(ctx) {
+      console.log('afterCreate', ctx.row);
+    },
+    beforeQuery(ctx) {
+      console.log('beforeQuery', ctx.action, ctx.args.where);
+    },
+    afterQuery(ctx) {
+      console.log('afterQuery', ctx.action, ctx.result);
+    },
+  },
+});
+```
+
+The example above shows create and query hooks, but Better Drizzle also supports `beforeUpdate` / `afterUpdate`, `beforeDelete` / `afterDelete`, transaction hooks (`beforeTransaction`, `afterTransactionCommit`, `afterTransactionRollback`, `onTransactionError`), raw SQL hooks (`beforeRaw`, `afterRaw`, `onRawError`), and a catch-all `onError`. See the [hooks docs](https://better-drizzle.com/docs/advanced/hooks) for details.
+
+Hook callbacks receive `ctx.meta`, ideal for logging request IDs, tenant IDs, or user context in a server environment.
+
+## Transactions with savepoints
+
+Transactions run on the client, with the callback receiving a Better client bound to the transaction context:
+
+```typescript
+const user = await client.transaction(async (tx) => {
+  const created = await tx.users.create({
+    data: { email: 'new@example.com', name: 'New User', active: true },
+  });
+
+  await tx.posts.create({
+    data: { authorId: created.id, title: 'Hello World', published: true },
+  });
+
+  tx.afterCommit(() => {
+    console.log('Committed user', created.email);
+  });
+
+  return created;
+});
+```
+
+Nested transactions use **savepoints** that roll back independently of the outer transaction:
+
+```typescript
+await client.transaction(async (tx) => {
+  await tx.users.create({
+    data: { email: 'a@test.com', name: 'Alice', active: true },
+  });
+
+  try {
+    await tx.transaction(async (nested) => {
+      await nested.users.create({
+        data: { email: 'b@test.com', name: 'Bob', active: true },
+      });
+      nested.rollback('duplicate email, rolling back nested savepoint');
+    });
+  } catch {
+    // Only the nested savepoint was rolled back
+  }
+
+  await tx.users.create({
+    data: { email: 'c@test.com', name: 'Charlie', active: true },
+  });
+});
+```
+
+### Automatic retries
+
+Opt into transaction retries for transient failures like deadlocks:
+
+```typescript
+await client.transaction(
+  async (tx) => {
+    await tx.users.create({
+      data: { email: 'retry@example.com', name: 'Retry', active: true },
+    });
+  },
+  {
+    retries: {
+      attempts: 3,
+      on: ['deadlock', 'serializationFailure'],
+      delayMs: (attempt) => attempt * 25,
+    },
+  },
+);
+```
+
+## Summary
+
+better-drizzle provides a type-safe, boilerplate-free API on top of Drizzle ORM, providing features like auto-pagination, soft deletes, lifecycle hooks, and nested transactions.
+
+## Other features
+
+To explore more advanced capabilities of better-drizzle, refer to the following topics in the official documentation:
+
+- **Querying & Reads**: [Reads & Filters](https://better-drizzle.com/docs/querying/filters), [Selecting fields](https://better-drizzle.com/docs/querying/selecting-fields), [Relations](https://better-drizzle.com/docs/querying/relations), and [Pagination](https://better-drizzle.com/docs/querying/pagination)
+- **Writing & CRUD**: [CRUD Operations](https://better-drizzle.com/docs/writing/crud) and [Throwing Results](https://better-drizzle.com/docs/writing/throwing-results)
+- **Core Concepts**: [Transactions](https://better-drizzle.com/docs/advanced/transactions), [Hooks](https://better-drizzle.com/docs/advanced/hooks), and [Error Handling](https://better-drizzle.com/docs/advanced/error-handling)
+- **Plugins**: [Plugins Overview](https://better-drizzle.com/docs/plugins/overview) and [Writing Custom Plugins](https://better-drizzle.com/docs/plugins/writing-plugins)
+- **Advanced Patterns**: [Service-layer Patterns](https://better-drizzle.com/docs/guides/service-patterns) and [Dynamic Repositories](https://better-drizzle.com/docs/guides/dynamic-repositories)
+
+## Resources
+
+- [better-drizzle documentation](https://better-drizzle.com/docs)
+- [better-drizzle GitHub repository](https://github.com/almeidazs/better-drizzle)
+- [Neon Drizzle setup guide](https://neon.com/docs/guides/drizzle)
+- [Schema migration with Neon and Drizzle](https://neon.com/docs/guides/drizzle-migrations)
 
 --- [Document source](https://neon.com/docs/guides/branch-archiving.md) ---
 
@@ -80190,15 +80744,18 @@ To configure Neon Private Networking, perform the following steps:
      - `com.amazonaws.vpce.us-east-1.vpce-svc-0de57c578b0e614a9`
      - `com.amazonaws.vpce.us-east-1.vpce-svc-0f37140e9710ee3af`
    - **us-east-2**: Create entries, one for each of the following:
+     - `com.amazonaws.vpce.us-east-2.vpce-svc-0056bdfba63cc6ea1`
      - `com.amazonaws.vpce.us-east-2.vpce-svc-010736480bcef5824`
      - `com.amazonaws.vpce.us-east-2.vpce-svc-0465c21ce8ba95fb2`
-     - `com.amazonaws.vpce.us-east-2.vpce-svc-0056bdfba63cc6ea1`
+     - `com.amazonaws.vpce.us-east-2.vpce-svc-0d421498ff01becac`
+     - `com.amazonaws.vpce.us-east-2.vpce-svc-0fcb5fccfc8573aa3`
    - **eu-central-1**: Create entries, one for each of the following:
      - `com.amazonaws.vpce.eu-central-1.vpce-svc-0260f9dcc9bf59e3e`
      - `com.amazonaws.vpce.eu-central-1.vpce-svc-04bac3120b20929cd`
      - `com.amazonaws.vpce.eu-central-1.vpce-svc-05554c35009a5eccb`
      - `com.amazonaws.vpce.eu-central-1.vpce-svc-05a252e6836f01cfd`
-   - **eu-west-2**:
+   - **eu-west-2**: Create entries, one for each of the following:
+     - `com.amazonaws.vpce.eu-west-2.vpce-svc-0375428488d22c05b`
      - `com.amazonaws.vpce.eu-west-2.vpce-svc-0c6fedbe99fced2cd`
    - **us-west-2**: Create entries, one for each of the following:
      - `com.amazonaws.vpce.us-west-2.vpce-svc-060e0d5f582365b8e`
@@ -80206,6 +80763,7 @@ To configure Neon Private Networking, perform the following steps:
      - `com.amazonaws.vpce.us-west-2.vpce-svc-045eebdf710e1066d`
    - **ap-southeast-1**: Create entries, one for each of the following:
      - `com.amazonaws.vpce.ap-southeast-1.vpce-svc-01c64edf7fe936ac7`
+     - `com.amazonaws.vpce.ap-southeast-1.vpce-svc-028cc7060eb23ff43`
      - `com.amazonaws.vpce.ap-southeast-1.vpce-svc-07c68d307f9f05687`
    - **ap-southeast-2**:
      - `com.amazonaws.vpce.ap-southeast-2.vpce-svc-031161490f5647f32`
@@ -101875,11 +102433,11 @@ If you are unsure of your project's region, see [Check which region your project
 | Region               | NAT Gateway IP Addresses                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | :------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `aws-us-east-1`      | 100.26.142.14, 100.30.82.73, 100.51.56.234, 13.219.161.141, 18.211.255.174, 18.215.104.21, 23.23.0.232, 3.213.105.99, 3.220.225.247, 3.222.32.110, 3.93.203.54, 32.193.167.21, 34.199.194.48, 34.202.217.219, 34.224.137.41, 34.233.170.231, 34.235.208.71, 34.239.66.10, 35.168.244.148, 44.195.6.75, 44.206.76.236, 44.209.63.35, 44.212.197.226, 52.203.31.78, 52.205.172.123, 52.205.179.214, 52.4.26.44, 52.6.163.215, 52.70.189.141, 52.73.235.120, 54.156.66.192, 54.160.39.37, 54.173.116.247, 54.197.227.141, 54.205.208.153, 54.86.178.17, 54.88.155.118, 98.88.203.121, 98.88.212.99 |
-| `aws-us-east-2`      | 16.58.110.124, 16.58.110.255, 16.58.110.55, 18.116.233.216, 18.117.39.4, 18.217.181.229, 3.128.125.142, 3.128.6.252, 3.129.145.179, 3.139.195.115, 3.139.7.20, 3.16.227.37, 52.15.165.218                                                                                                                                                                                                                                                                                                                                                                                                       |
+| `aws-us-east-2`      | 13.58.218.179, 16.58.110.124, 16.58.110.255, 16.58.110.55, 16.59.254.197, 16.59.67.63, 18.116.233.216, 18.117.23.33, 18.117.39.4, 18.118.172.16, 18.119.21.3, 18.217.181.229, 18.218.224.116, 18.220.57.29, 18.224.238.162, 3.128.125.142, 3.128.6.252, 3.129.145.179, 3.132.126.158, 3.133.42.168, 3.139.195.115, 3.139.7.20, 3.143.189.83, 3.150.57.42, 3.151.209.139, 3.151.57.14, 3.16.227.37, 52.14.237.223, 52.15.124.181, 52.15.165.218, 52.15.50.22                                                                                                                                     |
 | `aws-us-west-2`      | 34.213.87.149, 35.164.221.218, 35.83.202.11, 44.235.241.217, 44.236.56.140, 52.32.22.241, 52.37.48.254, 52.40.99.9, 54.186.210.201, 54.213.57.47                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 | `aws-eu-central-1`   | 18.156.24.144, 18.158.63.175, 18.194.181.241, 18.198.137.195, 3.123.76.138, 3.125.234.79, 3.125.57.42, 3.66.63.165, 52.58.17.95, 54.93.82.216, 63.181.53.159, 63.184.85.228                                                                                                                                                                                                                                                                                                                                                                                                                     |
-| `aws-eu-west-2`      | 18.133.205.39, 3.10.42.8, 52.56.191.86                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| `aws-ap-southeast-1` | 3.1.239.32, 47.131.90.115, 52.76.51.78, 54.254.50.26, 54.254.92.70, 54.255.161.23                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| `aws-eu-west-2`      | 16.60.68.174, 18.133.205.39, 18.134.194.79, 3.10.42.8, 35.178.12.220, 52.56.191.86                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| `aws-ap-southeast-1` | 13.251.199.154, 18.142.42.169, 3.1.149.186, 3.1.239.32, 47.131.90.115, 52.76.51.78, 54.254.50.26, 54.254.92.70, 54.255.161.23                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | `aws-ap-southeast-2` | 13.237.134.148, 13.55.152.144, 54.153.185.87                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | `aws-sa-east-1`      | 18.230.1.215, 52.67.202.176, 54.232.117.41                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 
@@ -117730,7 +118288,9 @@ curl -X POST "https://console.neon.tech/api/v2/projects/{project_id}/branches/{b
   -d '{"scopes": ["storage:read", "storage:write"], "principal_type": "user", "name": "my-app-credential"}'
 ```
 
-The `name` and `expires_at` fields are optional. Set `expires_at` to an ISO 8601 timestamp to create a short-lived credential.
+The `name` and `expires_at` fields are optional.
+
+**Warning:** `expires_at` is not currently enforced during the beta. A credential created with an `expires_at` value in the past still authenticates successfully. Don't rely on it for access control yet; revoke credentials explicitly instead. See [Revoking credentials](https://neon.com/docs/storage/authentication#revoking-credentials).
 
 The response includes these fields. Both secrets are returned once only, so store them immediately:
 
@@ -117815,7 +118375,7 @@ This populates `AWS_ENDPOINT_URL_S3`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KE
 neon config status
 ```
 
-For production deployments, use the [API-based workflow](https://neon.com/docs/storage/authentication#creating-a-credential) to create named, scoped credentials with optional expiry.
+For production deployments, use the [API-based workflow](https://neon.com/docs/storage/authentication#creating-a-credential) to create named, scoped credentials.
 
 ## Read vs write scopes
 
@@ -117840,7 +118400,7 @@ When your code runs inside Neon Functions, Neon injects storage credentials auto
 
 See [Environment variables](https://neon.com/docs/compute/functions/environment-variables) for the full list of variables Neon injects into a function.
 
-Credentials are branch-scoped and tied to the function's serving branch. User-supplied environment variables with the same name can't override the injected values (the injected secret access key always wins). Because the credentials use AWS-standard names, the AWS SDK picks them up automatically. Only `forcePathStyle` needs explicit configuration:
+Credentials are branch-scoped and tied to the function's serving branch. Injected values are defaults, not reserved names: a user-supplied environment variable with the same name (set via `--env` or in `neon.ts`) overrides the injected credential, same as any other Neon-injected variable. See [Environment variables](https://neon.com/docs/compute/functions/environment-variables#user-defined-variables). Because the credentials use AWS-standard names, the AWS SDK picks them up automatically when you don't override them. Only `forcePathStyle` needs explicit configuration:
 
 ```typescript
 import { S3Client } from '@aws-sdk/client-s3';
@@ -118076,10 +118636,10 @@ aws s3api delete-bucket \
 
 ## Bucket branching
 
-When you create a new branch, it inherits all buckets from its parent at the point of forking. No data is copied. From that point on:
+When you create a new branch, it inherits all buckets from its parent, including the objects already in them at the moment of forking — the same copy-on-write model Neon uses for branching Postgres data, so nothing is duplicated upfront. From that point on:
 
 - Creating or deleting a bucket on a child branch does not affect the parent.
-- Objects uploaded to a child branch are only visible on that branch and its descendants.
+- New uploads, overwrites, and deletes on a child branch are only visible on that branch and its descendants, even for objects that existed at fork time.
 - The parent branch continues to see its own state unchanged.
 
 This makes it safe to test bucket changes in a preview branch without affecting production.
@@ -118257,6 +118817,12 @@ export const client = new S3Client({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
   },
   forcePathStyle: true,
+  // Recent SDK versions default to embedding a checksum in presigned PUT
+  // URLs computed from an empty body (since no body exists at presign
+  // time), which rejects any upload with real content. This restores the
+  // upload/download behavior below and the presigned PUT URL in
+  // Objects (/docs/storage/objects#presigned-urls).
+  requestChecksumCalculation: 'WHEN_REQUIRED',
 });
 ```
 
@@ -118282,8 +118848,10 @@ client = boto3.client(
 
 ```bash
 # The AWS CLI reads AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_REGION
-# from the environment automatically. Set the endpoint explicitly:
-aws configure set endpoint_url "$AWS_ENDPOINT_URL_S3"
+# from the environment automatically. Pass --endpoint-url on each command
+# (shown below) rather than running `aws configure set endpoint_url`, which
+# would overwrite your default profile's endpoint for all AWS CLI usage,
+# not just Neon.
 ```
 
 **Note:** If you're using [Neon Functions](https://neon.com/docs/compute/functions/overview), the `AWS_*` credentials are injected automatically when a bucket is declared in `neon.ts`. No `.env` setup is needed inside a function.
@@ -118922,9 +119490,9 @@ print(url)
 
 ## Object branching
 
-Objects branch with your database. When you fork a branch, the child immediately inherits the parent's buckets and objects at that point in time. No data is copied. From that point:
+Objects branch with your database. When you fork a branch, the child can immediately read every object that existed in the parent's buckets at that point in time, using the same copy-on-write model Neon uses for branching Postgres data, so nothing is duplicated upfront. From that point:
 
-- Uploading a new object to a child branch is only visible on that branch and its descendants.
+- Uploading a new object to a child branch, or overwriting or deleting one that existed at fork time, is only visible on that branch and its descendants.
 - Deleting an object on a child branch does not affect the parent.
 - The parent's objects remain unchanged regardless of what happens on child branches.
 
@@ -119202,15 +119770,19 @@ The connection drops during a large object download.
 // Download in 10 MiB chunks
 const chunkSize = 10 * 1024 * 1024;
 let start = 0;
+let totalSize: number | undefined;
 
-while (true) {
+// ContentLength is the size of each chunk, not the whole object, so parse
+// the object's total size from Content-Range ("bytes start-end/total")
+// instead and stop once start reaches it.
+while (totalSize === undefined || start < totalSize) {
   const response = await client.send(new GetObjectCommand({
     Bucket: 'my-bucket',
     Key: 'large-file.zip',
     Range: `bytes=${start}-${start + chunkSize - 1}`,
   }));
   // process response.Body
-  if (response.ContentRange?.endsWith(response.ContentLength?.toString() ?? '')) break;
+  totalSize = Number(response.ContentRange?.split('/')[1]);
   start += chunkSize;
 }
 ```

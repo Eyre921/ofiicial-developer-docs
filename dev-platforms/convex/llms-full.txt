@@ -19817,11 +19817,11 @@ Metadata about the deployment this function is running on.
 
 #### Type declaration[​](#type-declaration-10 "Direct link to Type declaration")
 
-| Name     | Type                             | Description                                                                                                                                                           |
-| -------- | -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `name`   | `string`                         | The deployment name, e.g. `"tall-tiger-123"` for cloud deployments, `"local-my_team-my_project"` for local deployments, or `"anonymous-*"` for anonymous deployments. |
-| `region` | `string` \| `null`               | The deployment region, e.g. `"aws-us-east-1"`. `null` for local and self-hosted deployments.                                                                          |
-| `class`  | `"s16"` \| `"s256"` \| `"d1024"` | The deployment class, e.g. `"s16"`, `"s256"`, or `"d1024"`.                                                                                                           |
+| Name     | Type                                          | Description                                                                                                                                                           |
+| -------- | --------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `name`   | `string`                                      | The deployment name, e.g. `"tall-tiger-123"` for cloud deployments, `"local-my_team-my_project"` for local deployments, or `"anonymous-*"` for anonymous deployments. |
+| `region` | `string` \| `null`                            | The deployment region, e.g. `"aws-us-east-1"`. `null` for local and self-hosted deployments.                                                                          |
+| `class`  | `"s16"` \| `"s256"` \| `"d1024"` \| `"d2048"` | The deployment class, e.g. `"s16"`, `"s256"`, `"d1024"`, or `"d2048"`.                                                                                                |
 
 #### Defined in[​](#defined-in-54 "Direct link to Defined in")
 
@@ -37346,9 +37346,9 @@ The backup only contains the documents for your tables and files in file storage
 2. Pending scheduled functions. You can access pending scheduled functions in the [`_scheduled_functions`](/database/advanced/system-tables.md) system table.
 3. Environment variables. Environment variables can be copied from Settings in the Convex dashboard.
 
-### How do backups work on dedicated hardware like D1024?[​](#how-do-backups-work-on-dedicated-hardware-like-d1024 "Direct link to How do backups work on dedicated hardware like D1024?")
+### How do backups work on dedicated hardware like D1024 and D2048?[​](#how-do-backups-work-on-dedicated-hardware-like-d1024-and-d2048 "Direct link to How do backups work on dedicated hardware like D1024 and D2048?")
 
-In addition to the downloadable zip backups, dedicated deployments (D1024) have physical backups configured automatically for every 24 hours and accessible for up to 7 days. Physical backups are faster and cheaper due to the ability to leverage the dedicated database hardware, however restores require contacting Convex support. Physical backups cannot be downloaded. Cross-deployment restores are not supported into D1024s. Physical backups are included in the price of dedicated hardware.
+In addition to the downloadable zip backups, dedicated deployments (D1024 and D2048) have physical backups configured automatically for every 24 hours and accessible for up to 7 days. Physical backups are faster and cheaper due to the ability to leverage the dedicated database hardware, however restores require contacting Convex support. Physical backups cannot be downloaded. Cross-deployment restores are not supported into dedicated deployments. Physical backups are included in the price of dedicated hardware.
 
 
 ---
@@ -40414,7 +40414,7 @@ Call this endpoint repeatedly, passing the `pagination.nextCursor` from each res
 * `status`: `inProgress` while the export is still being assembled — the data returned so far is not yet a consistent view, so keep calling. Once it becomes `synced`, the values applied so far form a consistent snapshot of the deployment as of the returned `syncedTs` timestamp. You can keep calling to continue streaming later changes.
 * `pagination`: `nextCursor` to pass back on the next call (always present, since the sync is always resumable) and `hasMore`, which tells you whether more data is already available (`true`) or you've caught up to the latest commit (`false`).
 
-Persist the cursor and keep calling within the deployment's data retention window so the export can resume where it left off. This endpoint must be called at least once every 3 days; if too much time passes between calls the cursor falls outside the retention window and can no longer be resumed. When that happens the endpoint responds with a `400` (`DataSyncCursorExpired`), and you must restart the sync from scratch by calling again with no cursor.
+Persist the results and cursor to each page atomically. Continue calling the endpoint with the cursor to progress the data sync. This endpoint must be called at least once every 3 days, or the sync will expire and can no longer be resumed. When that happens the endpoint responds with a `400` (`DataSyncCursorExpired`), and you must restart the sync from scratch by calling again with no cursor.
 
 Each sync's progress is periodically recorded while the sync is in progress and can be monitored via `/data/list_active_syncs`, keyed by the `syncId` returned in every response.
 
@@ -40490,9 +40490,9 @@ Beta
 
 This endpoint is in beta. Its behavior and response shape may change.
 
-Get the current usage for each metric, in each in-progress window (the current day and calendar month), along with the status of the historical-usage backfill.
+Get the values for each usage metric for the current day and month (UTC)
 
-The reported usage is only guaranteed to reflect the full window once `seedStatus` is `complete`. A `pending` or `partial` status means the backfill is still in progress and the returned usage may understate actual usage, so retry later for an accurate total.
+The reported usage is only guaranteed to reflect the full window when `seedStatus` is `complete`. A `pending` or `partial` status means the backfill is still in progress and the returned usage may understate actual usage, so retry later for an accurate total.
 
 ## Responses[​](#responses "Direct link to Responses")
 
@@ -47944,7 +47944,7 @@ Convex offers the ability to emit transactional, durable logs to a S3 bucket in 
 
 Audit logging requires a Convex Enterprise plan.
 
-Audit logging requires a Convex Enterprise plan and is only available for D1024 deployments. [Learn more](https://www.convex.dev/enterprise/pricing) about our plans or [ask us](https://www.convex.dev/enterprise/contact) about Convex for Enterprise.
+Audit logging requires a Convex Enterprise plan and is only available for dedicated (D1024 and D2048) deployments. [Learn more](https://www.convex.dev/enterprise/pricing) about our plans or [ask us](https://www.convex.dev/enterprise/contact) about Convex for Enterprise.
 
 ## API[​](#api "Direct link to API")
 
@@ -48130,7 +48130,7 @@ The `custom_audit` topic is intended for testing. `custom_audit` logs sent throu
 
 ## Configuration[​](#configuration "Direct link to Configuration")
 
-Contact Convex Support to configure your S3 bucket for audit logging. Note that audit logging is only available for [D1024 deployments](https://docs.convex.dev/production/state/limits#deployment-classes).
+Contact Convex Support to configure your S3 bucket for audit logging. Note that audit logging is only available for [dedicated (D1024 and D2048) deployments](https://docs.convex.dev/production/state/limits#deployment-classes).
 
 If no S3 bucket or log stream is configured, no logs will be emitted, but the audit log size limits will still be enforced.
 
@@ -49871,7 +49871,7 @@ Applied per document and to any nested `Object` unless stated otherwise.
 
 ## Deployment Classes[​](#deployment-classes "Direct link to Deployment Classes")
 
-Convex has three deployment classes that each have different concurrency limits. These limits are meant to scale as your traffic grows.
+Convex has four deployment classes that each have different concurrency limits. These limits are meant to scale as your traffic grows.
 
 S stands for serverless and D stands for dedicated. Dedicated deployments run on their own exclusive database hardware.
 
@@ -49881,33 +49881,33 @@ Below are the deployment classes that each plan has access to:
 
 * Free/Starter: S16
 * Professional: S256
-* Business: S16, S256, or D1024
-* Enterprise: S16, S256, or D1024
+* Business: S16, S256, D1024, or D2048
+* Enterprise: S16, S256, D1024, or D2048
 
 Free, Starter, and Professional are limited to a single deployment class, while Business and Enterprise can choose their class on a per-deployment basis.
 
 ### Capabilities[​](#capabilities "Direct link to Capabilities")
 
-|                                | S16         | S256        | D1024               |
-| ------------------------------ | ----------- | ----------- | ------------------- |
-| Concurrent sessions            | 1,000       | 10,000      | 100,000             |
-| Query cache                    | 1 GB shared | 1 GB shared | 2 GB dedicated      |
-| Max dataset                    | 1 TB        | 1 TB        | 4 TB                |
-| Backup/restore                 | Logical     | Logical     | High-speed physical |
-| SLA (Business/Enterprise only) | 99.9%       | 99.9%       | 99.95%              |
+|                                | S16         | S256        | D1024               | D2048               |
+| ------------------------------ | ----------- | ----------- | ------------------- | ------------------- |
+| Concurrent sessions            | 1,000       | 10,000      | 100,000             | 200,000             |
+| Query cache                    | 1 GB shared | 1 GB shared | 2 GB dedicated      | 4 GB dedicated      |
+| Max dataset                    | 1 TB        | 1 TB        | 4 TB                | 4 TB                |
+| Backup/restore                 | Logical     | Logical     | High-speed physical | High-speed physical |
+| SLA (Business/Enterprise only) | 99.9%       | 99.9%       | 99.95%              | 99.95%              |
 
 ## Concurrent Function Executions[​](#concurrent-function-executions "Direct link to Concurrent Function Executions")
 
 Number of functions you can run at a time for each function type.
 
-|                                         | S16   | S256  | D1024\* |
-| --------------------------------------- | ----- | ----- | ------- |
-| Queries                                 | 16    | 256   | 1024    |
-| Mutations                               | 16    | 256   | 512     |
-| Mutation write throughput limit         | 4 MiB | 8 MiB | 32 MiB  |
-| Convex runtime actions and HTTP actions | 64    | 512   | 1024    |
-| Node actions                            | 64    | 256   | 1024    |
-| Scheduled jobs                          | 8     | 256   | 512     |
+|                                         | S16   | S256  | D1024\* | D2048\* |
+| --------------------------------------- | ----- | ----- | ------- | ------- |
+| Queries                                 | 16    | 256   | 1024    | 2048    |
+| Mutations                               | 16    | 256   | 512     | 1024    |
+| Mutation write throughput limit         | 4 MiB | 8 MiB | 32 MiB  | 64 MiB  |
+| Convex runtime actions and HTTP actions | 64    | 512   | 1024    | 2048    |
+| Node actions                            | 64    | 256   | 1024    | 2048    |
+| Scheduled jobs                          | 8     | 256   | 512     | 1024    |
 
 \* Limits can be increased for Business and Enterprise plan customers on a case-by-case basis. Send us a support message through the dashboard to discuss your needs. Usually this is only needed if your product has highly bursty traffic.
 

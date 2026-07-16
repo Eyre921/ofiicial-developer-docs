@@ -16,12 +16,12 @@ Managed Deep Agents support the normal Deep Agents `tools` configuration surface
 
 Managed Deep Agents can use two kinds of tools:
 
-| Tool source         | Where you configure it                                    | Runtime behavior                                                                   |
-| ------------------- | --------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Authored tools      | `agent.py` or `agent.ts` imports from your project source | MDA copies the source into the compiled build and passes the tools to Deep Agents. |
-| MCP connector tools | `connectors/mcp.py` or `connectors/mcp.ts`                | MDA loads remote MCP tools at runtime and appends them to authored tools.          |
+| Tool source         | Where you configure it                                    | Runtime behavior                                                                                   |
+| ------------------- | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Authored tools      | `agent.py` or `agent.ts` imports from your project source | Managed Deep Agents copies the source into the compiled build and passes the tools to Deep Agents. |
+| MCP connector tools | `connectors/mcp.py` or `connectors/mcp.ts`                | Managed Deep Agents loads remote MCP tools at runtime and appends them to authored tools.          |
 
-Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project. Use [MCP connectors](/langsmith/managed-deep-agents-mcp) when the tool surface is exposed by a remote MCP server.
+Use authored tools for business logic, private APIs, database access, and other code that belongs in your agent project. Use [MCP connectors](/langsmith/managed-deep-agents-connectors/mcp) when the tool surface is exposed by a remote MCP server.
 
 For more about LangChain tool definitions, see [Tools](/oss/python/langchain/tools).
 
@@ -99,7 +99,9 @@ Import the tools into the project-root agent entry and pass them in the `tools` 
 
 Tools can read deployment secrets from environment variables. Put local values in `.env` for `mda dev`; `mda deploy` forwards non-reserved `.env` values as hosted deployment secrets.
 
-For per-run values such as user IDs, tenant IDs, request metadata, or feature flags, use the normal LangChain runtime context patterns for tools. See [how to access context from within your tools](/oss/python/langchain/tools#access-context).
+When the project declares [identity](/langsmith/managed-deep-agents-identity), tools and middleware receive a frozen `runtime.identity` envelope for the authenticated caller. Prefer that over client-supplied configurable keys for actor or tenant ids.
+
+For other per-run values such as request metadata or feature flags, use the normal LangChain runtime context patterns for tools. See [how to access context from within your tools](/oss/python/langchain/tools#access-context).
 
 ## Test and deploy
 

@@ -1,0 +1,68 @@
+---
+title: "Connect tools and capabilities to Managed Deep Agents"
+source: https://docs.langchain.com/langsmith/managed-deep-agents-connectors/index
+path: langsmith/managed-deep-agents-connectors/index
+---
+
+Declare MCP servers and LangSmith capabilities with Managed Deep Agents connectors.
+
+Managed Deep Agents discovers connector modules under `connectors/`. Each file directly under that folder is a connector; you do not register connectors in the agent entry.
+
+<Note>
+  Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
+</Note>
+
+## Connector types
+
+| Connector                                                        | File                            | What it does                                                                                                                                                                           |
+| ---------------------------------------------------------------- | ------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [MCP](/langsmith/managed-deep-agents-connectors/mcp)             | `connectors/mcp.{py\|ts}`       | Loads tools from remote MCP servers at runtime and appends them to authored tools.                                                                                                     |
+| [LangSmith](/langsmith/managed-deep-agents-connectors/langsmith) | `connectors/langsmith.{py\|ts}` | Lets browsers and other untrusted callers invoke allowlisted LangSmith operations without receiving `LANGSMITH_API_KEY`. Requires [identity](/langsmith/managed-deep-agents-identity). |
+
+For the full project layout, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference).
+
+The current `mda` CLI does not include workspace MCP server management commands. Do not use older `deepagents mcp-servers ...` examples for Managed Deep Agents projects.
+
+## Combine connectors with authored tools
+
+Use [custom tools](/langsmith/managed-deep-agents-tools) for business logic, private APIs, database access, and other project-owned code. Use [custom middleware](/langsmith/managed-deep-agents-middleware) for cross-cutting behavior around model calls, tool calls, lifecycle hooks, retries, limits, and data handling.
+
+MCP connector tools are appended to the tools you define in the agent file. LangSmith capabilities are exposed on separate HTTP routes scoped by [identity](/langsmith/managed-deep-agents-identity).
+
+## Test and deploy
+
+Test the project locally with [`mda dev`](/langsmith/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
+
+Connector misconfiguration usually surfaces during local startup or first tool load. LangSmith capability calls return 401 without a resolved identity and 403 when ownership checks fail.
+
+## Next steps
+
+<CardGroup>
+  <Card title="MCP connector" icon="plug" href="/langsmith/managed-deep-agents-connectors/mcp">
+    Load tools from remote MCP servers.
+  </Card>
+
+  <Card title="LangSmith connector" icon="chart-line" href="/langsmith/managed-deep-agents-connectors/langsmith">
+    Expose constrained LangSmith capabilities to untrusted callers.
+  </Card>
+
+  <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">
+    Authenticate callers required by the LangSmith connector.
+  </Card>
+
+  <Card title="CLI reference" icon="terminal" href="/langsmith/managed-deep-agents-cli">
+    Look up connector project file rules.
+  </Card>
+</CardGroup>
+
+***
+
+<div>
+  <Callout icon="terminal-2">
+    [Connect these docs](/use-these-docs) to Claude, VSCode, and more via MCP for real-time answers.
+  </Callout>
+
+  <Callout icon="edit">
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-connectors/index.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+  </Callout>
+</div>

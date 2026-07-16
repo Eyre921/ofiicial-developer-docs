@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 385 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -55,6 +55,7 @@
 - `api-reference/generate-or-edit-image-using-flux-kontext` — [Generate or edit an image with FLUX.1 Kontext](pages/api-reference/generate-or-edit-image-using-flux-kontext.md) · [原文](https://docs.fireworks.ai/api-reference/generate-or-edit-image-using-flux-kontext)
 - `api-reference/get-account` — [Get Account](pages/api-reference/get-account.md) · [原文](https://docs.fireworks.ai/api-reference/get-account)
 - `api-reference/get-batch-inference-job` — [Get Batch Inference Job](pages/api-reference/get-batch-inference-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-batch-inference-job)
+- `api-reference/get-billing-summary` — [Get Billing Summary](pages/api-reference/get-billing-summary.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-summary)
 - `api-reference/get-billing-usage` — [Get Account Usage](pages/api-reference/get-billing-usage.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-usage)
 - `api-reference/get-dataset` — [Get Dataset](pages/api-reference/get-dataset.md) · [原文](https://docs.fireworks.ai/api-reference/get-dataset)
 - `api-reference/get-dataset-download-endpoint` — [Get Dataset Download Endpoint](pages/api-reference/get-dataset-download-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-dataset-download-endpoint)
@@ -250,6 +251,7 @@
 - `fine-tuning/training-api/reference/trainer-job-manager` — [TrainerJobManager (Compatibility)](pages/fine-tuning/training-api/reference/trainer-job-manager.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/trainer-job-manager)
 - `fine-tuning/training-api/reference/weight-syncer` — [WeightSyncer (Legacy)](pages/fine-tuning/training-api/reference/weight-syncer.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/reference/weight-syncer)
 - `fine-tuning/training-api/saving-and-loading` — [Saving and Loading](pages/fine-tuning/training-api/saving-and-loading.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/saving-and-loading)
+- `fine-tuning/training-api/serverless` — [Serverless Training](pages/fine-tuning/training-api/serverless.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/serverless)
 - `fine-tuning/training-api/training-and-sampling` — [Training and Sampling](pages/fine-tuning/training-api/training-and-sampling.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/training-and-sampling)
 - `fine-tuning/training-api/training-shapes` — [Training Shapes](pages/fine-tuning/training-api/training-shapes.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/training-shapes)
 - `fine-tuning/training-api/vision-inputs` — [Vision Inputs](pages/fine-tuning/training-api/vision-inputs.md) · [原文](https://docs.fireworks.ai/fine-tuning/training-api/vision-inputs)

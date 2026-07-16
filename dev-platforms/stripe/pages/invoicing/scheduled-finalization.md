@@ -24,11 +24,11 @@ For a draft invoice that you want to send for payment, you can specify a date in
 
 1. After you complete your invoice details, click **Review**. You’ll see an option to **Finalize and send** or **Finalize only**.
 
-2. If you’re sending the invoice to your buyer, you can toggle **Schedule send date** and pick a date in the future. If you only need to finalize the invoice without sending it automatically, you can toggle **Schedule finalization date**. After making your selection, click **Schedule invoice**.
+2. If you’re sending the invoice to your customer, you can toggle **Schedule send date** and pick a date in the future. If you only need to finalize the invoice without sending it automatically, you can toggle **Schedule finalization date**. After making your selection, click **Schedule invoice**.
 
 3. Your invoice is now scheduled, and you can can edit the draft or cancel it. Click **Edit draft** to edit it, or click **Unschedule** to cancel the scheduled finalization.
 
-For invoices where you charge the buyer automatically, the option to **Schedule charge date** is in the invoice editor.
+For invoices where you charge the customer automatically, the option to **Schedule charge date** is in the invoice editor.
 
 #### API
 

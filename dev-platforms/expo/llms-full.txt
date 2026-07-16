@@ -45140,7 +45140,7 @@ For more examples from real modules, you can refer to Expo modules that already 
 ---
 
 ---
-modificationDate: May 15, 2026
+modificationDate: July 16, 2026
 title: Inline modules reference
 description: A reference of Expo inline modules.
 ---
@@ -45195,6 +45195,26 @@ A directory in `watchedDirectories`:
 -   Cannot be the whole project directory, for example,`"./"`, nor an ancestor of it (for example `../`).
 -   Cannot be a subdirectory of the other directory in `watchedDirectories`. For example, `watchedDirectories` cannot be `["app", "app/nested/directory"]`, you can just set `watchedDirectories` to `["app"]`.
 -   Cannot contain special characters like `" ", "(", ")", "$"`. This means you cannot have `"app/(tabs)"` in the `watchedDirectories`, but you can have `"app"` and it should still use native files from `"app/(tabs)"` directory.
+
+### `expo.experiments.inlineModules.xcodeProjectTargets`
+
+Supported platforms: iOS.
+
+Configures which Xcode targets the inline module files are added to. When omitted, inline modules are added to your app's main target only.
+
+```json
+{
+  "expo": {
+    "experiments": {
+      "inlineModules": {
+        "xcodeProjectTargets": ["MyApp", "MyAppWidgets"]
+      }
+    }
+  }
+}
+```
+
+Each entry is the name of a target as it appears in your Xcode project (and in the `target` blocks of your **ios/Podfile**). Use the target name only — even when the target is nested inside an `abstract_target`, do not include the abstract target's name.
 
 > You need to run `npx expo prebuild` after changing the [app config](/workflow/configuration.md), for it to take effect.
 

@@ -8,125 +8,40 @@ path: docs/eleven-agents/customization/agent-testing
 
 # Agent Testing
 
-The agent testing framework enables you to move from slow, manual phone calls to a fast, automated, and repeatable testing process. Create comprehensive test suites that verify both conversational responses and tool usage, ensuring your agents behave exactly as intended before deploying to production.
+Agent testing lets you verify conversational responses, tool usage, and full multi-turn outcomes before you deploy. Create tests from scratch or from existing conversations, then run them from the dashboard, CLI, or API.
 
 ## Video Walkthrough
 
 ## Overview
 
-The framework consists of three complementary testing approaches:
+The framework includes three complementary test types:
 
-* **Scenario Testing (LLM Evaluation)** - Validates conversational abilities and response quality
-* **Tool Call Testing** - Ensures proper tool usage and parameter validation
-* **Simulation Testing** - Runs end-to-end, multi-turn conversations with a simulated user
+* **Simulation Testing** — Runs end-to-end, multi-turn conversations with a simulated user
+* **Next Reply (Scenario) Testing** — Validates the agent's next response against success criteria
+* **Tool Call Testing** — Ensures the agent calls the right tool with the right parameters
 
-Any of these test types can be created from scratch or directly from existing conversations, allowing you to quickly turn real-world interactions into repeatable test cases.
+### When to use which test
 
-## Scenario Testing (LLM Evaluation)
+| Test type                 | Use when you need to                                                        |
+| ------------------------- | --------------------------------------------------------------------------- |
+| **Simulation**            | Check that a full conversation reaches a defined outcome                    |
+| **Next Reply (Scenario)** | Check that the agent's next message meets quality, tone, or policy criteria |
+| **Tool Call**             | Check that the agent invokes a specific tool with expected parameters       |
 
-Scenario testing evaluates your agent's conversational abilities by simulating interactions and assessing responses against defined success criteria.
+## Creating tests from conversations
 
-### Creating a Scenario Test
-
-<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/62de63965584fd1b2368edfb204bd90495d03ba87fe137889a5f396859dc4dbc/assets/images/conversational-ai/agent-llm-eval-test.png" alt="Scenario Testing Interface" />
-
-Create context for the text. This can be multiple turns of interaction that sets up the specific scenario you want to evaluate. Our testing framework currently only supports evaluating a single next step in the conversation. For simulating entire conversations, see our [simulate conversation endpoint](/docs/api-reference/agents/simulate-conversation) and [conversation simulation guide](/docs/eleven-agents/guides/simulate-conversation).
-
-**Example scenario:**
-
-```
-User: "I'd like to cancel my subscription. I've been charged twice this month and I'm frustrated."
-```
-
-Describe in plain language what the agent's response should achieve. Be specific about the
-expected behavior, tone, and actions.
-
-**Example criteria:**
-
-* The agent should acknowledge the customer's frustration with empathy
-* The agent should offer to investigate the duplicate charge
-* The agent should provide clear next steps for cancellation or resolution
-* The agent should maintain a professional and helpful tone
-
-Supply both success and failure examples to help the evaluator understand the nuances of your
-criteria.
-
-**Success Example:**
-
-> "I understand how frustrating duplicate charges can be. Let me look into this right away for you. I can see there were indeed two charges this month - I'll process a refund for the duplicate charge immediately. Would you still like to proceed with cancellation, or would you prefer to continue once this is resolved?"
-
-**Failure Example:**
-
-> "You need to contact billing department for refund issues. Your subscription will be cancelled."
-
-Execute the test to simulate the conversation with your agent. An LLM evaluator compares the
-actual response against your success criteria and examples to determine pass/fail status.
-
-### Creating Tests from Conversations
-
-Transform real conversations into test cases with a single click. This powerful feature creates a feedback loop for continuous improvement based on actual performance.
+Transform real conversations into test cases when you find an interaction where the agent underperformed.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/7b0762965b7edb46ed6b693c126c00e9aa3e7c98dae7aa89a981b5465b949750/assets/images/conversational-ai/agent-test-from-conv.gif" alt="Creating test from conversation" />
 
-When reviewing call history, if you identify a conversation where the agent didn't perform well:
-
-1. Click "Create test from this conversation"
-2. The framework automatically populates the scenario with the actual conversation context
-3. Define what the correct behavior should have been
-4. Add the test to your suite to prevent similar issues in the future
-
-## Tool Call Testing
-
-Tool call testing verifies that your agent correctly uses tools and passes the right parameters in specific situations. This is critical for actions like call transfers, data lookups, or external integrations.
-
-### Creating a Tool Call Test
-
-<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/291c48ac70376efa1991014f7b3ff90eb9910c9adffe250f2bf521c707c5c755/assets/images/conversational-ai/agent-tool-call-test.png" alt="Tool Call Testing Interface" />
-
-Choose which tool you expect the agent to call in the given scenario (e.g.,
-`transfer_to_number`, `end_call`, `lookup_order`).
-
-Specify what data the agent should pass to the tool. You have three validation methods:
-
-**Exact Match**\
-The parameter must exactly match your specified value.
-
-```
-Transfer number: +447771117777
-```
-
-**Regex Pattern**
-The parameter must match a specific pattern.
-
-```
-Order ID: ^ORD-[0-9]{8}$
-```
-
-**LLM Evaluation**
-An LLM evaluates if the parameter is semantically correct based on context.
-
-```
-Message: "Should be a polite message mentioning the connection"
-```
-
-When testing in development, use dynamic variable values that match those that would be actual
-values in production. Example: `{{ customer_name }}` or `{{ order_id }}`
-
-Execute the test to ensure the agent calls the correct tool with proper parameters.
-
-### Critical Use Cases
-
-Tool call testing is essential for high-stakes scenarios:
-
-* **Emergency Transfers**: Ensure medical emergencies always route to the correct number
-* **Data Security**: Verify sensitive information is never passed to unauthorized tools
-* **Business Logic**: Confirm order lookups use valid formats and authentication
+1. Open the conversation in call history
+2. Click **Create test from this conversation**
+3. Review the prefilled context, then define the expected behavior
+4. Add the test to your suite to catch similar failures later
 
 ## Simulation Testing
 
-Simulation testing evaluates your agent across a full, multi-turn conversation with a simulated AI user. Unlike single-turn evaluations, this test type checks whether the complete interaction reaches your defined outcome.
-
-Simulation testing is currently in public alpha. Functionality and UI behavior may change.
+Simulation testing evaluates your agent across a full, multi-turn conversation with a simulated AI user. Unlike Next Reply tests, this type checks whether the complete interaction reaches your defined outcome.
 
 ### Creating a Simulation Test
 
@@ -185,23 +100,101 @@ If a mocked tool is called and no matching mock response is found, choose one of
 
 The fallback setting appears only when at least one tool is mocked.
 
-## Development Workflow
+## Next Reply (Scenario) Testing
 
-The framework supports an iterative development cycle that accelerates agent refinement:
+Next Reply (Scenario) testing evaluates only the agent's next message, not a full multi-turn outcome. Provide conversation history that leads up to the reply you want to evaluate, then score that reply against success criteria.
 
-Define the desired behavior by creating tests for new features or identified issues.
+For full multi-turn outcomes, use [Simulation Testing](#simulation-testing).
 
-Run tests instantly without saving changes. Watch them fail, then adjust your agent's prompts or
-configuration.
+### Creating a Next Reply Test
 
-Continue tweaking and re-running tests until all pass. The framework provides immediate feedback
-without requiring deployment.
+<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/62de63965584fd1b2368edfb204bd90495d03ba87fe137889a5f396859dc4dbc/assets/images/conversational-ai/agent-llm-eval-test.png" alt="Next Reply (Scenario) Testing Interface" />
 
-Once tests pass, save your changes knowing the agent behaves as intended.
+Provide the conversation history leading up to the reply you want to evaluate. This can be a
+single user message or multiple turns of context.
+
+**Example chat history:**
+
+```
+User: "I'd like to cancel my subscription. I've been charged twice this month and I'm frustrated."
+```
+
+Describe in plain language what the agent's response should achieve. Be specific about the
+expected behavior, tone, and actions.
+
+**Example success criteria:**
+
+* The agent should acknowledge the customer's frustration with empathy
+* The agent should offer to investigate the duplicate charge
+* The agent should provide clear next steps for cancellation or resolution
+* The agent should maintain a professional and helpful tone
+
+Supply both success and failure examples to help the evaluator understand the nuances of your
+criteria.
+
+**Success example:**
+
+> "I understand how frustrating duplicate charges can be. Let me look into this right away for you. I can see there were indeed two charges this month - I'll process a refund for the duplicate charge immediately. Would you still like to proceed with cancellation, or would you prefer to continue once this is resolved?"
+
+**Failure example:**
+
+> "You need to contact billing department for refund issues. Your subscription will be cancelled."
+
+Execute the test. An LLM evaluator compares the agent's next reply against your success
+criteria and examples to determine pass/fail status.
+
+## Tool Call Testing
+
+Tool call testing verifies that your agent correctly uses tools and passes the right parameters in specific situations. This is critical for actions like call transfers, data lookups, or external integrations.
+
+### Creating a Tool Call Test
+
+<img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/291c48ac70376efa1991014f7b3ff90eb9910c9adffe250f2bf521c707c5c755/assets/images/conversational-ai/agent-tool-call-test.png" alt="Tool Call Testing Interface" />
+
+Choose which tool you expect the agent to call in the given scenario (e.g.,
+`transfer_to_number`, `end_call`, `lookup_order`).
+
+Specify what data the agent should pass to the tool. You have three validation methods:
+
+**Exact Match**\
+The parameter must exactly match your specified value.
+
+```
+Transfer number: +447771117777
+```
+
+**Regex Pattern**
+The parameter must match a specific pattern.
+
+```
+Order ID: ^ORD-[0-9]{8}$
+```
+
+**LLM Evaluation**
+An LLM evaluates if the parameter is semantically correct based on context.
+
+```
+Message: "Should be a polite message mentioning the connection"
+```
+
+When testing in development, use dynamic variable values that match those that would be actual
+values in production. Example: `{{ customer_name }}` or `{{ order_id }}`
+
+Execute the test to ensure the agent calls the correct tool with proper parameters.
+
+### Critical Use Cases
+
+Tool call testing is essential for high-stakes scenarios:
+
+* **Emergency Transfers**: Ensure medical emergencies always route to the correct number
+* **Data Security**: Verify sensitive information is never passed to unauthorized tools
+* **Business Logic**: Confirm order lookups use valid formats and authentication
 
 ## Running Tests
 
-Navigate to the Tests tab in your agent's interface. From there, you can run individual tests or execute your entire test suite at once using the "Run All Tests" button.
+Write tests for new behavior or known failures, run them while you iterate on prompts and configuration, then save once they pass.
+
+Navigate to the Tests tab in your agent's interface. From there, you can run individual tests, select multiple tests from your library as a batch, or execute your entire suite with **Run All Tests**.
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/b1becf589a1373a780dad1109fd25e0e910d7aa821b09b047133553b1895914b/assets/images/conversational-ai/testrun.gif" alt="Running tests on an agent" />
 
@@ -216,6 +209,8 @@ This enables:
 * Automated testing on every code change
 * Prevention of regressions before deployment
 * Consistent agent behavior across environments
+
+Create tests with [Create test](/docs/api-reference/tests/create) and execute them with [Run tests on the agent](/docs/api-reference/tests/run-tests).
 
 ```python
 from elevenlabs import ElevenLabs
@@ -242,19 +237,19 @@ const invocation = await elevenlabs.conversationalAi.agents.runTests("agent_7101
 console.log(invocation);
 ```
 
-## Probabilistic Testing
+### Probabilistic testing
 
-Agent outputs can vary slightly between runs, just as people may answer the same question differently on different occasions. A single pass tells you the agent *can* get it right; it doesn't tell you how often it *will*. Probabilistic testing answers that question by running the same test multiple times in one click and reporting a pass rate instead of a binary result. This lets you focus on iterating on your agent and simulating the failure distributions you'd see in production, instead of scanning through tons of test run transcripts.
+Agent outputs can vary between runs. A single pass shows the agent *can* succeed; probabilistic testing shows how often it *will* by running the same test multiple times and reporting a pass rate.
 
-### Running a test multiple times
+#### Running a test multiple times
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/15d5a18c384bc193de794bf8cd7bd5803b9543c8a98acac6ecb2f518b9fd1679/assets/images/conversational-ai/agent-test-many-run.png" alt="Split-run control on a test letting you pick how many times to execute it" />
 
-When triggering a test from the dashboard, use the split-run control on the run button to choose how many times to execute it (for example 3×, 5×, or 15×). Each run is independent: the agent receives the same scenario, dynamic variables, and chat history, but its response is generated fresh every time.
+When triggering a test from the dashboard, use the split-run control on the run button to choose how many times to execute it (for example 3×, 5×, or 15×). Each run is independent: the agent receives the same chat history, dynamic variables, and other inputs, but its response is generated fresh every time.
 
-Multi-run works for individual tests, folders, and running the entire test suite attached to an agent. It's compatible with all three test types — Scenario, Tool Call, and Simulation — and is typically most useful for Simulation tests, where the larger surface area of a multi-turn conversation makes response variation more likely.
+Multi-run works for individual tests, folders, and running the entire test suite attached to an agent. It's compatible with all three test types — Simulation, Next Reply (Scenario), and Tool Call — and is typically most useful for Simulation tests, where the larger surface area of a multi-turn conversation makes response variation more likely.
 
-### Pass rates and result bucketing
+#### Pass rates and result bucketing
 
 <img src="https://files.buildwithfern.com/elevenlabs.docs.buildwithfern.com/17b73e8c8170162270519adad3c9d732dfabdafc820e47b4ab274ca5066fd7fc/assets/images/conversational-ai/agent-test-probabilistic-bucketing.png" alt="Multi-run results grouped into pass and failure buckets with a pass rate badge" />
 
@@ -266,15 +261,15 @@ After a multi-run finishes, results are summarized as a pass rate (for example, 
 
 Individual runs are then grouped by failure reason so you can see *how* the agent fails, not just *that* it fails. Instead of scrolling through five separate transcripts to spot what differed, you see clusters like *"Correctly routed to billing (4 runs)"* and *"Hallucinated a support number (1 run)"*, each expandable to the underlying transcripts and evaluation rationale.
 
-### When to use it
+#### When to use it
 
 * **Before shipping a change** — Re-run attached tests probabilistically to confirm reliability hasn't dropped (for example, from 95% to 60%).
 * **Diagnosing flaky behavior** — A single failure could be noise; a 1-in-5 failure with a clearly named failure bucket is a reproducible issue to fix.
 * **Tuning prompts and tools** — Iterate on configuration and compare pass rates side by side, rather than relying on one-off runs.
 
-### Running probabilistically via the API or SDK
+#### Running probabilistically via the API or SDK
 
-Pass `repeat_count` (between `2` and `20`) on the run-tests request to execute each test that many times. Setting `repeat_count` automatically enables failure bucketing on the response, so the returned invocation includes the per-bucket grouping and pass rate you'd see in the dashboard.
+Pass `repeat_count` (between `2` and `20`) on the [run-tests](/docs/api-reference/tests/run-tests) request to execute each test that many times. Setting `repeat_count` automatically enables failure bucketing on the response, so the returned invocation includes the per-bucket grouping and pass rate you'd see in the dashboard.
 
 ```python
 from elevenlabs import ElevenLabs
@@ -301,14 +296,6 @@ const invocation = await elevenlabs.conversationalAi.agents.runTests(
   },
 );
 ```
-
-## Batch Testing and CI/CD Integration
-
-Execute all tests at once to ensure comprehensive coverage:
-
-1. Select multiple tests from your test library
-2. Run as a batch to identify any regressions
-3. Review consolidated results showing pass/fail status for each test
 
 ## Best Practices
 

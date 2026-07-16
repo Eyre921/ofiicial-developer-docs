@@ -4,23 +4,23 @@ source: https://docs.fireworks.ai/accounts/exporting-usage-and-costs
 path: accounts/exporting-usage-and-costs
 ---
 
-Break down usage and rated costs by deployment, model, API key, or custom tags — via firectl or the billingUsage API
+Break down usage by deployment, model, API key, or custom tags, and read account-level rated costs — via firectl or the billingUsage API
 
 ## Overview
 
-Fireworks exposes the same usage-and-cost data through two equivalent surfaces:
+Fireworks reports billing along two dimensions:
 
-* **CLI** — [`firectl billing get-usage`](/tools-sdks/firectl/commands/billing-get-usage), best for ad-hoc queries, shell scripting, and one-off cost reviews.
-* **HTTP API** — [`GET /v1/accounts/{account_id}/billingUsage`](/api-reference/get-billing-usage), best for cron jobs, dashboards, and downstream cost-attribution pipelines.
+* **Usage** — metered quantities such as tokens, accelerator-seconds, and audio input seconds. You can break usage down by deployment, model, API key, or custom tags.
+* **Cost** — rated dollar amounts. Costs are reported at the account level: a range-wide total, or line items grouped by billing category (serverless, dedicated, training). They aren't broken down by the same dimensions as usage, so per-API-key or per-deployment dollar figures aren't returned today — to approximate them, multiply usage by the published [serverless prices](/serverless/pricing).
 
-Both return the same response shape and accept the same dimensions. Most examples below show the CLI form and the equivalent cURL side-by-side; filter examples are CLI-only because HTTP query-param filtering is not yet supported.
+Two tools expose this data:
 
-The output has two parts:
+* **CLI** — [`firectl billing get-usage`](/tools-sdks/firectl/commands/billing-get-usage) shows the account cost total alongside the usage breakdown. Best for ad-hoc queries and shell scripting.
+* **HTTP API** — [`GET /v1/accounts/{account_id}/billingUsage`](/api-reference/get-billing-usage) returns the usage breakdown, and its companion [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) returns rated costs. Best for cron jobs, dashboards, and reporting pipelines.
 
-* **Account costs** — rated dollar totals for the range (CLI: prints by default; API: companion `GetBillingSummary` endpoint).
-* **Usage** — metered quantities (tokens, accelerator-seconds, audio input seconds) grouped by your chosen dimensions.
+The CLI and `billingUsage` share the same usage response shape and dimensions. Most examples below show the CLI form and the equivalent cURL side by side; filter examples are CLI-only because HTTP query-param filtering isn't supported yet.
 
-This page complements [Exporting Billing Metrics](/accounts/exporting-billing-metrics): use `export-metrics` for a raw per-event CSV dump, and the workflows on this page for grouped, rated views.
+This page complements [Exporting Billing Metrics](/accounts/exporting-billing-metrics): use `export-metrics` for a raw per-event CSV dump, and the workflows here for grouped usage and rated views.
 
 <Note>
   CLI examples require `firectl` 1.7.21 or later. Run `firectl version`, then `firectl upgrade` if needed.
@@ -192,6 +192,8 @@ firectl billing get-usage \
 
 ### Account-level cost totals only
 
+Get just the rated costs, without the usage rows:
+
 <Tabs>
   <Tab title="firectl">
     ```bash theme={null}
@@ -202,7 +204,15 @@ firectl billing get-usage \
   </Tab>
 
   <Tab title="cURL">
-    Rated dollar totals come from a companion endpoint, `GetBillingSummary`. Use the CLI for this view today; we'll surface the same data through the API in a future release.
+    ```bash theme={null}
+    curl -sG "https://api.fireworks.ai/v1/accounts/${ACCOUNT_ID}/billing/summary" \
+      -H "Authorization: Bearer ${FIREWORKS_API_KEY}" \
+      --data-urlencode "startTime=2026-05-01T00:00:00Z" \
+      --data-urlencode "endTime=2026-06-01T00:00:00Z" \
+      --data-urlencode "granularity=DAILY"
+    ```
+
+    The companion [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) endpoint returns rated billing line items. Grouping comes from your billing configuration rather than a caller-supplied `groupBy` or `filter`, so line items follow billing categories (serverless, dedicated, training) instead of arbitrary dimensions. Each `lineItem` carries a `series` and its rated `totalCost`, and `granularity=DAILY` adds a per-day `usageBuckets` breakdown. These are rated line items, so they may differ from the final invoice once credits or adjustments are applied.
   </Tab>
 </Tabs>
 
@@ -364,5 +374,6 @@ done
 
 * [`firectl billing get-usage`](/tools-sdks/firectl/commands/billing-get-usage) - CLI command reference
 * [`GET /v1/accounts/{account_id}/billingUsage`](/api-reference/get-billing-usage) - HTTP API reference
+* [`GET /v1/accounts/{account_id}/billing/summary`](/api-reference/get-billing-summary) - Rated dollar costs by billing category, with optional daily breakdown
 * [Exporting Billing Metrics](/accounts/exporting-billing-metrics) - Raw per-event billing CSV export
 * [Account quotas](/guides/quotas_usage/account-quotas) - Spending tiers and budget controls

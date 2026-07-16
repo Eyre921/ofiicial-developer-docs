@@ -15,7 +15,7 @@ Terminal’s mobile readers work with iOS, Android, and React Native SDKs and us
 |  |
 | [Stripe Reader M2](https://docs.stripe.com/terminal/readers/stripe-m2.md) | Available in: US |
 | [BBPOS Chipper 2X BT](https://docs.stripe.com/terminal/readers/bbpos-chipper2xbt.md) | Available in: US |
-| [BBPOS WisePad 3](https://docs.stripe.com/terminal/readers/bbpos-wisepad3.md) | Available in: CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP, BG, HR, CY, EE, HU, LV, LI, LT, MT, RO, SK, SI, MX |
+| [BBPOS WisePad 3](https://docs.stripe.com/terminal/readers/bbpos-wisepad3.md) | Available in: CA, GB, IE, SG, AU, NZ, FR, DE, NL, BE, AT, ES, DK, SE, NO, CH, IT, LU, PT, FI, MY, CZ, PL, JP, BG, HR, CY, EE, HU, LV, LI, LT, MT, RO, SK, SI |
 
 ## Reader software updates
 

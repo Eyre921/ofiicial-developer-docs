@@ -118,7 +118,7 @@ For the best experience with usage-based billing, update your IDE, client, and C
 | ---------------------------- | --------------- |
 | VS Code                      | 1.120           |
 | Visual Studio 2022 (17.x)    | 17.14.33        |
-| Visual Studio 2025 (18.x)    | 18.6.0          |
+| Visual Studio 2026 (18.x)    | 18.6.0          |
 | SQL Server Management Studio | 22.6            |
 | JetBrains IDEs (plugin)      | 1.9.1           |
 | Eclipse (plugin)             | 0.18.0          |

@@ -3877,6 +3877,13 @@ customer during checkout.
 
 This value represents the number of minor currency units per one major unit. For example, in USD, where cents are the minor unit, the divisor is 100.  In JPY, which has no minor units, the divisor is 1.
 
+- `nameCollection`
+  Names collected from the customer. This value is `null` if [name_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-name_collection) is not configured on the Checkout Session.
+    - `individualName`
+      The customer's individual name.
+    - `businessName`
+      The customer's business name.
+
 - `phoneNumber`
   The Customer's phone number.
 
@@ -5311,6 +5318,13 @@ customer during checkout.
 
 This value represents the number of minor currency units per one major unit. For example, in USD, where cents are the minor unit, the divisor is 100.  In JPY, which has no minor units, the divisor is 1.
 
+- `nameCollection`
+  Names collected from the customer. This value is `null` if [name_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-name_collection) is not configured on the Checkout Session.
+    - `individualName`
+      The customer's individual name.
+    - `businessName`
+      The customer's business name.
+
 - `phoneNumber`
   The Customer's phone number.
 
@@ -5793,6 +5807,13 @@ customer during checkout.
   The factor used to convert between minor and major currency units.
 
 This value represents the number of minor currency units per one major unit. For example, in USD, where cents are the minor unit, the divisor is 100.  In JPY, which has no minor units, the divisor is 1.
+
+- `nameCollection`
+  Names collected from the customer. This value is `null` if [name_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-name_collection) is not configured on the Checkout Session.
+    - `individualName`
+      The customer's individual name.
+    - `businessName`
+      The customer's business name.
 
 - `phoneNumber`
   The Customer's phone number.
@@ -7261,6 +7282,13 @@ customer during checkout.
 
 This value represents the number of minor currency units per one major unit. For example, in USD, where cents are the minor unit, the divisor is 100.  In JPY, which has no minor units, the divisor is 1.
 
+- `nameCollection`
+  Names collected from the customer. This value is `null` if [name_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-name_collection) is not configured on the Checkout Session.
+    - `individualName`
+      The customer's individual name.
+    - `businessName`
+      The customer's business name.
+
 - `phoneNumber`
   The Customer's phone number.
 
@@ -7743,6 +7771,13 @@ customer during checkout.
   The factor used to convert between minor and major currency units.
 
 This value represents the number of minor currency units per one major unit. For example, in USD, where cents are the minor unit, the divisor is 100.  In JPY, which has no minor units, the divisor is 1.
+
+- `nameCollection`
+  Names collected from the customer. This value is `null` if [name_collection](https://docs.stripe.com/api/checkout/sessions/create.md#create_checkout_session-name_collection) is not configured on the Checkout Session.
+    - `individualName`
+      The customer's individual name.
+    - `businessName`
+      The customer's business name.
 
 - `phoneNumber`
   The Customer's phone number.

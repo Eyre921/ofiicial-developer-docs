@@ -187,6 +187,10 @@ Before you start, make sure you have:
     Understand compilation, the deploy lifecycle, and Context Hub.
   </Card>
 
+  <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">
+    Scope threads and memory to the authenticated caller.
+  </Card>
+
   <Card title="Custom tools" icon="tool" href="/langsmith/managed-deep-agents-tools">
     Add authored LangChain tools from your project source.
   </Card>
@@ -195,8 +199,8 @@ Before you start, make sure you have:
     Add built-in or custom middleware around model and tool calls.
   </Card>
 
-  <Card title="Connect MCP tools" icon="plug" href="/langsmith/managed-deep-agents-mcp">
-    Declare remote MCP servers with Managed Deep Agents connectors.
+  <Card title="Connectors" icon="plug" href="/langsmith/managed-deep-agents-connectors">
+    Attach remote MCP servers or constrained LangSmith capabilities.
   </Card>
 
   <Card title="Schedules" icon="calendar" href="/langsmith/managed-deep-agents-schedules">

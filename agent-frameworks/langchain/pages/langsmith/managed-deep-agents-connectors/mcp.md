@@ -1,22 +1,22 @@
 ---
 title: "Connect MCP tools to Managed Deep Agents"
-source: https://docs.langchain.com/langsmith/managed-deep-agents-mcp
-path: langsmith/managed-deep-agents-mcp
+source: https://docs.langchain.com/langsmith/managed-deep-agents-connectors/mcp
+path: langsmith/managed-deep-agents-connectors/mcp
 ---
 
 Declare remote MCP servers with Managed Deep Agents connectors.
 
-Managed Deep Agents use connectors to load tools from remote MCP servers. Declare the MCP servers in `connectors/mcp.ts` or `connectors/mcp.py`, export a named `mcp` declaration, and MDA loads those tools into the agent at runtime.
+Managed Deep Agents use MCP connectors to load tools from remote MCP servers. Declare the servers in `connectors/mcp.ts` or `connectors/mcp.py`, export a named `mcp` declaration, and Managed Deep Agents loads those tools into the agent at runtime.
 
 <Note>
   Managed Deep Agents is in **private [beta](/langsmith/release-stages)**, available on [LangSmith Cloud](/langsmith/cloud) in the US region only. [Join the waitlist](https://www.langchain.com/langsmith-managed-deep-agents-waitlist) to request access.
 </Note>
 
-The current `mda` CLI does not include workspace MCP server management commands. Do not use older `deepagents mcp-servers ...` examples for Managed Deep Agents projects. For MCP tools, use the `connectors/` project convention documented here.
+For other connector types, see [Connectors](/langsmith/managed-deep-agents-connectors).
 
-## Add a connector
+## Add an MCP connector
 
-Add `connectors/mcp.py` or `connectors/mcp.ts` next to your agent entry file. For the full project layout, see the [CLI project file reference](/langsmith/managed-deep-agents-cli#project-file-reference).
+Add `connectors/mcp.py` or `connectors/mcp.ts` next to your agent entry file.
 
 The connector module must export a named `mcp` declaration.
 
@@ -50,7 +50,7 @@ The connector module must export a named `mcp` declaration.
 
 You do not import `MultiServerMCPClient` or call `getTools()` / `get_tools()` yourself. `mda` discovers the connector module, injects the MCP adapter dependency into the compiled build, creates the client in the managed runtime, loads the tools, and appends them to the authored tools from `agent.ts` or `agent.py`.
 
-## Supported servers
+## Supported MCP servers
 
 Connectors support remote MCP servers only:
 
@@ -63,7 +63,7 @@ Stdio MCP servers are not supported in connectors. If a server needs local proce
 
 ## Configure server options
 
-Each server key is the logical server name MDA uses for validation, tracing metadata, and tool-name prefixing. Server configs can include static headers.
+Each server key is the logical server name Managed Deep Agents uses for validation, tracing metadata, and tool-name prefixing. Server configs can include static headers.
 
 Connectors do not run an OAuth authorization flow. If an MCP server requires OAuth, provide a pre-provisioned access token or another static credential through headers. Store the token in `.env` so `mda dev` can load it locally and `mda deploy` can forward it as a hosted deployment secret.
 
@@ -109,9 +109,9 @@ The connector module is normal project code, so read secrets as environment vari
   Do not commit MCP tokens, API keys, OAuth access tokens, or passwords. Put local values in `.env`; `mda dev` loads them for local development, and `mda deploy` forwards non-reserved `.env` values as hosted deployment secrets.
 </Warning>
 
-## Connector defaults
+## MCP connector defaults
 
-MDA applies managed defaults when it loads connector tools:
+Managed Deep Agents applies managed defaults when it loads connector tools:
 
 | Option                                                               | Default   | Description                                                                                                                  |
 | -------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------- |
@@ -120,27 +120,27 @@ MDA applies managed defaults when it loads connector tools:
 | `useStandardContentBlocks` / `use_standard_content_blocks`           | `true`    | Convert MCP tool outputs to standard LangChain content blocks. Python connectors currently require the default `true` value. |
 | `onConnectionError` / `on_connection_error`                          | `"throw"` | Fail when a server cannot be reached. `"throw"` is the only supported value.                                                 |
 
-Disable tool-name prefixing only when you know the MCP tool names do not collide. MDA validates duplicate MCP tool names when prefixing is disabled.
-
-## Combine connectors with authored tools
-
-Connector tools are appended to the tools you define in the agent file. Use [custom tools](/langsmith/managed-deep-agents-tools) for project-owned code and [custom middleware](/langsmith/managed-deep-agents-middleware) for cross-cutting behavior around model calls, tool calls, lifecycle hooks, retries, limits, and data handling.
+Disable tool-name prefixing only when you know the MCP tool names do not collide. Managed Deep Agents validates duplicate MCP tool names when prefixing is disabled.
 
 ## Test and deploy
 
 Test the project locally with [`mda dev`](/langsmith/managed-deep-agents-cli#develop-locally), then deploy it with [`mda deploy`](/langsmith/managed-deep-agents-deploy). Open deployment traces in LangSmith to inspect model calls, tool calls, errors, and latency.
 
-Connector misconfiguration surfaces during local startup or first tool load, depending on when the runtime reaches the MCP server.
+MCP misconfiguration surfaces during local startup or first tool load, depending on when the runtime reaches the MCP server.
 
 ## Next steps
 
 <CardGroup>
-  <Card title="Deploy an agent" icon="upload" href="/langsmith/managed-deep-agents-deploy">
-    Run and deploy the connector-enabled agent.
+  <Card title="Connectors" icon="plug" href="/langsmith/managed-deep-agents-connectors">
+    Compare MCP and LangSmith connector types.
   </Card>
 
-  <Card title="CLI reference" icon="terminal" href="/langsmith/managed-deep-agents-cli">
-    Look up `mda dev` and `mda deploy` flags.
+  <Card title="Custom tools" icon="tool" href="/langsmith/managed-deep-agents-tools">
+    Add authored tools alongside MCP connector tools.
+  </Card>
+
+  <Card title="Deploy an agent" icon="upload" href="/langsmith/managed-deep-agents-deploy">
+    Run and deploy the connector-enabled agent.
   </Card>
 </CardGroup>
 
@@ -152,6 +152,6 @@ Connector misconfiguration surfaces during local startup or first tool load, dep
   </Callout>
 
   <Callout icon="edit">
-    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-mcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
+    [Edit this page on GitHub](https://github.com/langchain-ai/docs/edit/main/src/langsmith/managed-deep-agents-connectors/mcp.mdx) or [file an issue](https://github.com/langchain-ai/docs/issues/new/choose).
   </Callout>
 </div>

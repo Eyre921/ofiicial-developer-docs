@@ -296,9 +296,59 @@ Update the active environment’s output file and replenish your credentials vau
 stripe projects env --pull
 ```
 
+### Manage project variables 
+
+Use project variables to store environment variables that don’t come from a provisioned provider resource, such as app URLs, feature flags, or API keys you manage yourself.
+
+Set a project variable and bind it to the active environment:
+
+```bash
+stripe projects variables set <name> --env-key <ENV_KEY> --value <value>
+```
+
+If you omit `--value` in interactive mode, the CLI prompts for the value securely.
+
+The variable name identifies the stored value in Stripe Projects. The `--env-key` value is the key written to the active environment’s output file. `variables set` syncs that output immediately.
+
+For example, you can use different stored values for development and production while writing the same environment key in each output file:
+
+```bash
+stripe projects env create development --output .env.dev
+stripe projects variables set api-url-dev --env-key API_URL --value https://dev.example.com
+
+stripe projects env create production --output .env.production
+stripe projects variables set api-url-prod --env-key API_URL --value https://api.example.com
+```
+
+List project variables and their local environment bindings:
+
+```bash
+stripe projects variables list
+```
+
+Delete a project variable and remove its local bindings:
+
+```bash
+stripe projects variables delete <name>
+```
+
+To bind an existing project variable to the active environment, use `env add`:
+
+```bash
+stripe projects env add <name> --variable --env-key <ENV_KEY>
+```
+
+To remove a project variable from the active environment without deleting the stored variable, use `env remove`:
+
+```bash
+stripe projects env remove <name> --variable
+```
+
+Stripe Projects preserves local environment keys that it doesn’t manage.
+
 ### When to run env --pull 
 
-`env --pull` runs automatically after you provision a service, rotate credentials, or upgrade a resource. You don’t need to run it manually in those cases.
+`env --pull` runs automatically after you provision a service, rotate credentials, upgrade a resource, or change environment membership. You don’t need to run it manually in those cases.
 
 Run `env --pull` manually when:
 
@@ -307,7 +357,7 @@ Run `env --pull` manually when:
 - Your `.env` was deleted or corrupted and you need to restore it.
 - You want to verify that your local credentials match the current project state.
 - You switched to another environment with `stripe projects env use` and need that environment’s credentials locally.
-- You changed environment membership with `stripe projects env add` or `stripe projects env remove`.
+- A project variable changed remotely and you want to update its local output file.
 
 ```bash
 stripe projects env --pull

@@ -1100,385 +1100,6 @@ asyncio.run(main())
 Remember that agents are most effective when configured according to their specific use case. Take time to understand your requirements and adjust these parameters accordingly.
 
 
-# Collaboration
-Source: https://docs.crewai.com/v1.15.2/en/concepts/collaboration
-
-How to enable agents to work together, delegate tasks, and communicate effectively within CrewAI teams.
-
-## Overview
-
-Collaboration in CrewAI enables agents to work together as a team by delegating tasks and asking questions to leverage each other's expertise. When `allow_delegation=True`, agents automatically gain access to powerful collaboration tools.
-
-## Quick Start: Enable Collaboration
-
-```python theme={null}
-from crewai import Agent, Crew, Task
-
-# Enable collaboration for agents
-researcher = Agent(
-    role="Research Specialist",
-    goal="Conduct thorough research on any topic",
-    backstory="Expert researcher with access to various sources",
-    allow_delegation=True,  # 🔑 Key setting for collaboration
-    verbose=True
-)
-
-writer = Agent(
-    role="Content Writer", 
-    goal="Create engaging content based on research",
-    backstory="Skilled writer who transforms research into compelling content",
-    allow_delegation=True,  # 🔑 Enables asking questions to other agents
-    verbose=True
-)
-
-# Agents can now collaborate automatically
-crew = Crew(
-    agents=[researcher, writer],
-    tasks=[...],
-    verbose=True
-)
-```
-
-## How Agent Collaboration Works
-
-When `allow_delegation=True`, CrewAI automatically provides agents with two powerful tools:
-
-### 1. **Delegate Work Tool**
-
-Allows agents to assign tasks to teammates with specific expertise.
-
-```python theme={null}
-# Agent automatically gets this tool:
-# Delegate work to coworker(task: str, context: str, coworker: str)
-```
-
-### 2. **Ask Question Tool**
-
-Enables agents to ask specific questions to gather information from colleagues.
-
-```python theme={null}
-# Agent automatically gets this tool:
-# Ask question to coworker(question: str, context: str, coworker: str)
-```
-
-## Collaboration in Action
-
-Here's a complete example showing agents collaborating on a content creation task:
-
-```python theme={null}
-from crewai import Agent, Crew, Task, Process
-
-# Create collaborative agents
-researcher = Agent(
-    role="Research Specialist",
-    goal="Find accurate, up-to-date information on any topic",
-    backstory="""You're a meticulous researcher with expertise in finding 
-    reliable sources and fact-checking information across various domains.""",
-    allow_delegation=True,
-    verbose=True
-)
-
-writer = Agent(
-    role="Content Writer",
-    goal="Create engaging, well-structured content",
-    backstory="""You're a skilled content writer who excels at transforming 
-    research into compelling, readable content for different audiences.""",
-    allow_delegation=True,
-    verbose=True
-)
-
-editor = Agent(
-    role="Content Editor",
-    goal="Ensure content quality and consistency",
-    backstory="""You're an experienced editor with an eye for detail, 
-    ensuring content meets high standards for clarity and accuracy.""",
-    allow_delegation=True,
-    verbose=True
-)
-
-# Create a task that encourages collaboration
-article_task = Task(
-    description="""Write a comprehensive 1000-word article about 'The Future of AI in Healthcare'.
-    
-    The article should include:
-    - Current AI applications in healthcare
-    - Emerging trends and technologies  
-    - Potential challenges and ethical considerations
-    - Expert predictions for the next 5 years
-    
-    Collaborate with your teammates to ensure accuracy and quality.""",
-    expected_output="A well-researched, engaging 1000-word article with proper structure and citations",
-    agent=writer  # Writer leads, but can delegate research to researcher
-)
-
-# Create collaborative crew
-crew = Crew(
-    agents=[researcher, writer, editor],
-    tasks=[article_task],
-    process=Process.sequential,
-    verbose=True
-)
-
-result = crew.kickoff()
-```
-
-## Collaboration Patterns
-
-### Pattern 1: Research → Write → Edit
-
-```python theme={null}
-research_task = Task(
-    description="Research the latest developments in quantum computing",
-    expected_output="Comprehensive research summary with key findings and sources",
-    agent=researcher
-)
-
-writing_task = Task(
-    description="Write an article based on the research findings",
-    expected_output="Engaging 800-word article about quantum computing",
-    agent=writer,
-    context=[research_task]  # Gets research output as context
-)
-
-editing_task = Task(
-    description="Edit and polish the article for publication",
-    expected_output="Publication-ready article with improved clarity and flow",
-    agent=editor,
-    context=[writing_task]  # Gets article draft as context
-)
-```
-
-### Pattern 2: Collaborative Single Task
-
-```python theme={null}
-collaborative_task = Task(
-    description="""Create a marketing strategy for a new AI product.
-    
-    Writer: Focus on messaging and content strategy
-    Researcher: Provide market analysis and competitor insights
-    
-    Work together to create a comprehensive strategy.""",
-    expected_output="Complete marketing strategy with research backing",
-    agent=writer  # Lead agent, but can delegate to researcher
-)
-```
-
-## Hierarchical Collaboration
-
-For complex projects, use a hierarchical process with a manager agent:
-
-```python theme={null}
-from crewai import Agent, Crew, Task, Process
-
-# Manager agent coordinates the team
-manager = Agent(
-    role="Project Manager",
-    goal="Coordinate team efforts and ensure project success",
-    backstory="Experienced project manager skilled at delegation and quality control",
-    allow_delegation=True,
-    verbose=True
-)
-
-# Specialist agents
-researcher = Agent(
-    role="Researcher",
-    goal="Provide accurate research and analysis",
-    backstory="Expert researcher with deep analytical skills",
-    allow_delegation=False,  # Specialists focus on their expertise
-    verbose=True
-)
-
-writer = Agent(
-    role="Writer", 
-    goal="Create compelling content",
-    backstory="Skilled writer who creates engaging content",
-    allow_delegation=False,
-    verbose=True
-)
-
-# Manager-led task
-project_task = Task(
-    description="Create a comprehensive market analysis report with recommendations",
-    expected_output="Executive summary, detailed analysis, and strategic recommendations",
-    agent=manager  # Manager will delegate to specialists
-)
-
-# Hierarchical crew
-crew = Crew(
-    agents=[manager, researcher, writer],
-    tasks=[project_task],
-    process=Process.hierarchical,  # Manager coordinates everything
-    manager_llm="gpt-4o",  # Specify LLM for manager
-    verbose=True
-)
-```
-
-## Best Practices for Collaboration
-
-### 1. **Clear Role Definition**
-
-```python theme={null}
-# ✅ Good: Specific, complementary roles
-researcher = Agent(role="Market Research Analyst", ...)
-writer = Agent(role="Technical Content Writer", ...)
-
-# ❌ Avoid: Overlapping or vague roles  
-agent1 = Agent(role="General Assistant", ...)
-agent2 = Agent(role="Helper", ...)
-```
-
-### 2. **Strategic Delegation Enabling**
-
-```python theme={null}
-# ✅ Enable delegation for coordinators and generalists
-lead_agent = Agent(
-    role="Content Lead",
-    allow_delegation=True,  # Can delegate to specialists
-    ...
-)
-
-# ✅ Disable for focused specialists (optional)
-specialist_agent = Agent(
-    role="Data Analyst", 
-    allow_delegation=False,  # Focuses on core expertise
-    ...
-)
-```
-
-### 3. **Context Sharing**
-
-```python theme={null}
-# ✅ Use context parameter for task dependencies
-writing_task = Task(
-    description="Write article based on research",
-    agent=writer,
-    context=[research_task],  # Shares research results
-    ...
-)
-```
-
-### 4. **Clear Task Descriptions**
-
-```python theme={null}
-# ✅ Specific, actionable descriptions
-Task(
-    description="""Research competitors in the AI chatbot space.
-    Focus on: pricing models, key features, target markets.
-    Provide data in a structured format.""",
-    ...
-)
-
-# ❌ Vague descriptions that don't guide collaboration
-Task(description="Do some research about chatbots", ...)
-```
-
-## Troubleshooting Collaboration
-
-### Issue: Agents Not Collaborating
-
-**Symptoms:** Agents work in isolation, no delegation occurs
-
-```python theme={null}
-# ✅ Solution: Ensure delegation is enabled
-agent = Agent(
-    role="...",
-    allow_delegation=True,  # This is required!
-    ...
-)
-```
-
-### Issue: Too Much Back-and-Forth
-
-**Symptoms:** Agents ask excessive questions, slow progress
-
-```python theme={null}
-# ✅ Solution: Provide better context and specific roles
-Task(
-    description="""Write a technical blog post about machine learning.
-    
-    Context: Target audience is software developers with basic ML knowledge.
-    Length: 1200 words
-    Include: code examples, practical applications, best practices
-    
-    If you need specific technical details, delegate research to the researcher.""",
-    ...
-)
-```
-
-### Issue: Delegation Loops
-
-**Symptoms:** Agents delegate back and forth indefinitely
-
-```python theme={null}
-# ✅ Solution: Clear hierarchy and responsibilities
-manager = Agent(role="Manager", allow_delegation=True)
-specialist1 = Agent(role="Specialist A", allow_delegation=False)  # No re-delegation
-specialist2 = Agent(role="Specialist B", allow_delegation=False)
-```
-
-## Advanced Collaboration Features
-
-### Custom Collaboration Rules
-
-```python theme={null}
-# Set specific collaboration guidelines in agent backstory
-agent = Agent(
-    role="Senior Developer",
-    backstory="""You lead development projects and coordinate with team members.
-    
-    Collaboration guidelines:
-    - Delegate research tasks to the Research Analyst
-    - Ask the Designer for UI/UX guidance  
-    - Consult the QA Engineer for testing strategies
-    - Only escalate blocking issues to the Project Manager""",
-    allow_delegation=True
-)
-```
-
-### Monitoring Collaboration
-
-```python theme={null}
-def track_collaboration(output):
-    """Track collaboration patterns"""
-    if "Delegate work to coworker" in output.raw:
-        print("🤝 Delegation occurred")
-    if "Ask question to coworker" in output.raw:
-        print("❓ Question asked")
-
-crew = Crew(
-    agents=[...],
-    tasks=[...],
-    step_callback=track_collaboration,  # Monitor collaboration
-    verbose=True
-)
-```
-
-## Memory and Learning
-
-Enable agents to remember past collaborations:
-
-```python theme={null}
-agent = Agent(
-    role="Content Lead",
-    memory=True,  # Remembers past interactions
-    allow_delegation=True,
-    verbose=True
-)
-```
-
-With memory enabled, agents learn from previous collaborations and improve their delegation decisions over time.
-
-## Next Steps
-
-* **Try the examples**: Start with the basic collaboration example
-* **Experiment with roles**: Test different agent role combinations
-* **Monitor interactions**: Use `verbose=True` to see collaboration in action
-* **Optimize task descriptions**: Clear tasks lead to better collaboration
-* **Scale up**: Try hierarchical processes for complex projects
-
-Collaboration transforms individual AI agents into powerful teams that can tackle complex, multi-faceted challenges together.
-
-
 # Crews
 Source: https://docs.crewai.com/v1.15.2/en/concepts/crews
 
@@ -6226,886 +5847,6 @@ Learn how to get the most out of your LLM configuration:
 </Tabs>
 
 
-# Memory
-Source: https://docs.crewai.com/v1.15.2/en/concepts/memory
-
-Leveraging the unified memory system in CrewAI to enhance agent capabilities.
-
-## Overview
-
-CrewAI provides a **unified memory system** -- a single `Memory` class that replaces separate short-term, long-term, entity, and external memory types with one intelligent API. Memory uses an LLM to analyze content when saving (inferring scope, categories, and importance) and supports adaptive-depth recall with composite scoring that blends semantic similarity, recency, and importance.
-
-You can use memory four ways: **standalone** (scripts, notebooks), **with Crews**, **with Agents**, or **inside Flows**.
-
-## Quick Start
-
-```python theme={null}
-from crewai import Memory
-
-memory = Memory()
-
-# Store -- the LLM infers scope, categories, and importance
-memory.remember("We decided to use PostgreSQL for the user database.")
-
-# Retrieve -- results ranked by composite score (semantic + recency + importance)
-matches = memory.recall("What database did we choose?")
-for m in matches:
-    print(f"[{m.score:.2f}] {m.record.content}")
-
-# Tune scoring for a fast-moving project
-memory = Memory(recency_weight=0.5, recency_half_life_days=7)
-
-# Forget
-memory.forget(scope="/project/old")
-
-# Explore the self-organized scope tree
-print(memory.tree())
-print(memory.info("/"))
-```
-
-## Four Ways to Use Memory
-
-### Standalone
-
-Use memory in scripts, notebooks, CLI tools, or as a standalone knowledge base -- no agents or crews required.
-
-```python theme={null}
-from crewai import Memory
-
-memory = Memory()
-
-# Build up knowledge
-memory.remember("The API rate limit is 1000 requests per minute.")
-memory.remember("Our staging environment uses port 8080.")
-memory.remember("The team agreed to use feature flags for all new releases.")
-
-# Later, recall what you need
-matches = memory.recall("What are our API limits?", limit=5)
-for m in matches:
-    print(f"[{m.score:.2f}] {m.record.content}")
-
-# Extract atomic facts from a longer text
-raw = """Meeting notes: We decided to migrate from MySQL to PostgreSQL
-next quarter. The budget is $50k. Sarah will lead the migration."""
-
-facts = memory.extract_memories(raw)
-# ["Migration from MySQL to PostgreSQL planned for next quarter",
-#  "Database migration budget is $50k",
-#  "Sarah will lead the database migration"]
-
-for fact in facts:
-    memory.remember(fact)
-```
-
-### With Crews
-
-Pass `memory=True` for default settings, or pass a configured `Memory` instance for custom behavior.
-
-```python theme={null}
-from crewai import Crew, Agent, Task, Process, Memory
-
-# Option 1: Default memory
-crew = Crew(
-    agents=[researcher, writer],
-    tasks=[research_task, writing_task],
-    process=Process.sequential,
-    memory=True,
-    verbose=True,
-)
-
-# Option 2: Custom memory with tuned scoring
-memory = Memory(
-    recency_weight=0.4,
-    semantic_weight=0.4,
-    importance_weight=0.2,
-    recency_half_life_days=14,
-)
-crew = Crew(
-    agents=[researcher, writer],
-    tasks=[research_task, writing_task],
-    memory=memory,
-)
-```
-
-When `memory=True`, the crew creates a default `Memory()` and passes the crew's `embedder` configuration through automatically. All agents in the crew share the crew's memory unless an agent has its own. Without a custom `embedder`, memory uses OpenAI `text-embedding-3-large` embeddings.
-
-After each task, the crew automatically extracts discrete facts from the task output and stores them. Before each task, the agent recalls relevant context from memory and injects it into the task prompt.
-
-### With Agents
-
-Agents can use the crew's shared memory (default) or receive a scoped view for private context.
-
-```python theme={null}
-from crewai import Agent, Memory
-
-memory = Memory()
-
-# Researcher gets a private scope -- only sees /agent/researcher
-researcher = Agent(
-    role="Researcher",
-    goal="Find and analyze information",
-    backstory="Expert researcher with attention to detail",
-    memory=memory.scope("/agent/researcher"),
-)
-
-# Writer uses crew shared memory (no agent-level memory set)
-writer = Agent(
-    role="Writer",
-    goal="Produce clear, well-structured content",
-    backstory="Experienced technical writer",
-    # memory not set -- uses crew._memory when crew has memory enabled
-)
-```
-
-This pattern gives the researcher private findings while the writer reads from the shared crew memory.
-
-### With Flows
-
-Every Flow has built-in memory. Use `self.remember()`, `self.recall()`, and `self.extract_memories()` inside any flow method.
-
-```python theme={null}
-from crewai.flow.flow import Flow, listen, start
-
-class ResearchFlow(Flow):
-    @start()
-    def gather_data(self):
-        findings = "PostgreSQL handles 10k concurrent connections. MySQL caps at 5k."
-        self.remember(findings, scope="/research/databases")
-        return findings
-
-    @listen(gather_data)
-    def write_report(self, findings):
-        # Recall past research to provide context
-        past = self.recall("database performance benchmarks")
-        context = "\n".join(f"- {m.record.content}" for m in past)
-        return f"Report:\nNew findings: {findings}\nPrevious context:\n{context}"
-```
-
-See the [Flows documentation](/concepts/flows) for more on memory in Flows.
-
-## Hierarchical Scopes
-
-### What Scopes Are
-
-Memories are organized into a hierarchical tree of scopes, similar to a filesystem. Each scope is a path like `/`, `/project/alpha`, or `/agent/researcher/findings`.
-
-```
-/
-  /company
-    /company/engineering
-    /company/product
-  /project
-    /project/alpha
-    /project/beta
-  /agent
-    /agent/researcher
-    /agent/writer
-```
-
-Scopes provide **context-dependent memory** -- when you recall within a scope, you only search that branch of the tree, which improves both precision and performance.
-
-### How Scope Inference Works
-
-When you call `remember()` without specifying a scope, the LLM analyzes the content and the existing scope tree, then suggests the best placement. If no existing scope fits, it creates a new one. Over time, the scope tree grows organically from the content itself -- you don't need to design a schema upfront.
-
-```python theme={null}
-memory = Memory()
-
-# LLM infers scope from content
-memory.remember("We chose PostgreSQL for the user database.")
-# -> might be placed under /project/decisions or /engineering/database
-
-# You can also specify scope explicitly
-memory.remember("Sprint velocity is 42 points", scope="/team/metrics")
-```
-
-### Visualizing the Scope Tree
-
-```python theme={null}
-print(memory.tree())
-# / (15 records)
-#   /project (8 records)
-#     /project/alpha (5 records)
-#     /project/beta (3 records)
-#   /agent (7 records)
-#     /agent/researcher (4 records)
-#     /agent/writer (3 records)
-
-print(memory.info("/project/alpha"))
-# ScopeInfo(path='/project/alpha', record_count=5,
-#           categories=['architecture', 'database'],
-#           oldest_record=datetime(...), newest_record=datetime(...),
-#           child_scopes=[])
-```
-
-### MemoryScope: Subtree Views
-
-A `MemoryScope` restricts all operations to a branch of the tree. The agent or code using it can only see and write within that subtree.
-
-```python theme={null}
-memory = Memory()
-
-# Create a scope for a specific agent
-agent_memory = memory.scope("/agent/researcher")
-
-# Everything is relative to /agent/researcher
-agent_memory.remember("Found three relevant papers on LLM memory.")
-# -> stored under /agent/researcher
-
-agent_memory.recall("relevant papers")
-# -> searches only under /agent/researcher
-
-# Narrow further with subscope
-project_memory = agent_memory.subscope("project-alpha")
-# -> /agent/researcher/project-alpha
-```
-
-### Best Practices for Scope Design
-
-* **Start flat, let the LLM organize.** Don't over-engineer your scope hierarchy upfront. Begin with `memory.remember(content)` and let the LLM's scope inference create structure as content accumulates.
-
-* **Use `/{entity_type}/{identifier}` patterns.** Natural hierarchies emerge from patterns like `/project/alpha`, `/agent/researcher`, `/company/engineering`, `/customer/acme-corp`.
-
-* **Scope by concern, not by data type.** Use `/project/alpha/decisions` rather than `/decisions/project/alpha`. This keeps related content together.
-
-* **Keep depth shallow (2-3 levels).** Deeply nested scopes become too sparse. `/project/alpha/architecture` is good; `/project/alpha/architecture/decisions/databases/postgresql` is too deep.
-
-* **Use explicit scopes when you know, let the LLM infer when you don't.** If you're storing a known project decision, pass `scope="/project/alpha/decisions"`. If you're storing freeform agent output, omit the scope and let the LLM figure it out.
-
-### Use Case Examples
-
-**Multi-project team:**
-
-```python theme={null}
-memory = Memory()
-# Each project gets its own branch
-memory.remember("Using microservices architecture", scope="/project/alpha/architecture")
-memory.remember("GraphQL API for client apps", scope="/project/beta/api")
-
-# Recall across all projects
-memory.recall("API design decisions")
-
-# Or within a specific project
-memory.recall("API design", scope="/project/beta")
-```
-
-**Per-agent private context with shared knowledge:**
-
-```python theme={null}
-memory = Memory()
-
-# Researcher has private findings
-researcher_memory = memory.scope("/agent/researcher")
-
-# Writer can read from both its own scope and shared company knowledge
-writer_view = memory.slice(
-    scopes=["/agent/writer", "/company/knowledge"],
-    read_only=True,
-)
-```
-
-**Customer support (per-customer context):**
-
-```python theme={null}
-memory = Memory()
-
-# Each customer gets isolated context
-memory.remember("Prefers email communication", scope="/customer/acme-corp")
-memory.remember("On enterprise plan, 50 seats", scope="/customer/acme-corp")
-
-# Shared product docs are accessible to all agents
-memory.remember("Rate limit is 1000 req/min on enterprise plan", scope="/product/docs")
-```
-
-## Memory Slices
-
-### What Slices Are
-
-A `MemorySlice` is a view across multiple, possibly disjoint scopes. Unlike a scope (which restricts to one subtree), a slice lets you recall from several branches simultaneously.
-
-### When to Use Slices vs Scopes
-
-* **Scope**: Use when an agent or code block should be restricted to a single subtree. Example: an agent that only sees `/agent/researcher`.
-* **Slice**: Use when you need to combine context from multiple branches. Example: an agent that reads from its own scope plus shared company knowledge.
-
-### Read-Only Slices
-
-The most common pattern: give an agent read access to multiple branches without letting it write to shared areas.
-
-```python theme={null}
-memory = Memory()
-
-# Agent can recall from its own scope AND company knowledge,
-# but cannot write to company knowledge
-agent_view = memory.slice(
-    scopes=["/agent/researcher", "/company/knowledge"],
-    read_only=True,
-)
-
-matches = agent_view.recall("company security policies", limit=5)
-# Searches both /agent/researcher and /company/knowledge, merges and ranks results
-
-agent_view.remember("new finding")  # Raises PermissionError (read-only)
-```
-
-### Read-Write Slices
-
-When read-only is disabled, you can write to any of the included scopes, but you must specify which scope explicitly.
-
-```python theme={null}
-view = memory.slice(scopes=["/team/alpha", "/team/beta"], read_only=False)
-
-# Must specify scope when writing
-view.remember("Cross-team decision", scope="/team/alpha", categories=["decisions"])
-```
-
-## Composite Scoring
-
-Recall results are ranked by a weighted combination of three signals:
-
-```
-composite = semantic_weight * similarity + recency_weight * decay + importance_weight * importance
-```
-
-Where:
-
-* **similarity** = `1 / (1 + distance)` from the vector index (0 to 1)
-* **decay** = `0.5^(age_days / half_life_days)` -- exponential decay (1.0 for today, 0.5 at half-life)
-* **importance** = the record's importance score (0 to 1), set at encoding time
-
-Configure these directly on the `Memory` constructor:
-
-```python theme={null}
-# Sprint retrospective: favor recent memories, short half-life
-memory = Memory(
-    recency_weight=0.5,
-    semantic_weight=0.3,
-    importance_weight=0.2,
-    recency_half_life_days=7,
-)
-
-# Architecture knowledge base: favor important memories, long half-life
-memory = Memory(
-    recency_weight=0.1,
-    semantic_weight=0.5,
-    importance_weight=0.4,
-    recency_half_life_days=180,
-)
-```
-
-Each `MemoryMatch` includes a `match_reasons` list so you can see why a result ranked where it did (e.g. `["semantic", "recency", "importance"]`).
-
-## LLM Analysis Layer
-
-Memory uses the LLM in three ways:
-
-1. **On save** -- When you omit scope, categories, or importance, the LLM analyzes the content and suggests scope, categories, importance, and metadata (entities, dates, topics).
-2. **On recall** -- For deep/auto recall, the LLM analyzes the query (keywords, time hints, suggested scopes, complexity) to guide retrieval.
-3. **Extract memories** -- `extract_memories(content)` breaks raw text (e.g. task output) into discrete memory statements. Agents use this before calling `remember()` on each statement so that atomic facts are stored instead of one large blob.
-
-All analysis degrades gracefully on LLM failure -- see [Failure Behavior](#failure-behavior).
-
-## Memory Consolidation
-
-When saving new content, the encoding pipeline automatically checks for similar existing records in storage. If the similarity is above `consolidation_threshold` (default 0.85), the LLM decides what to do:
-
-* **keep** -- The existing record is still accurate and not redundant.
-* **update** -- The existing record should be updated with new information (LLM provides the merged content).
-* **delete** -- The existing record is outdated, superseded, or contradicted.
-* **insert\_new** -- Whether the new content should also be inserted as a separate record.
-
-This prevents duplicates from accumulating. For example, if you save "CrewAI ensures reliable operation" three times, consolidation recognizes the duplicates and keeps only one record.
-
-### Intra-batch Dedup
-
-When using `remember_many()`, items within the same batch are compared against each other before hitting storage. If two items have cosine similarity >= `batch_dedup_threshold` (default 0.98), the later one is silently dropped. This catches exact or near-exact duplicates within a single batch without any LLM calls (pure vector math).
-
-```python theme={null}
-# Only 2 records are stored (the third is a near-duplicate of the first)
-memory.remember_many([
-    "CrewAI supports complex workflows.",
-    "Python is a great language.",
-    "CrewAI supports complex workflows.",  # dropped by intra-batch dedup
-])
-```
-
-## Non-blocking Saves
-
-`remember_many()` is **non-blocking** -- it submits the encoding pipeline to a background thread and returns immediately. This means the agent can continue to the next task while memories are being saved.
-
-```python theme={null}
-# Returns immediately -- save happens in background
-memory.remember_many(["Fact A.", "Fact B.", "Fact C."])
-
-# recall() automatically waits for pending saves before searching
-matches = memory.recall("facts")  # sees all 3 records
-```
-
-### Read Barrier
-
-Every `recall()` call automatically calls `drain_writes()` before searching, ensuring the query always sees the latest persisted records. This is transparent -- you never need to think about it.
-
-### Crew Shutdown
-
-When a crew finishes, `kickoff()` drains all pending memory saves in its `finally` block, so no saves are lost even if the crew completes while background saves are in flight.
-
-### Standalone Usage
-
-For scripts or notebooks where there's no crew lifecycle, call `drain_writes()` or `close()` explicitly:
-
-```python theme={null}
-memory = Memory()
-memory.remember_many(["Fact A.", "Fact B."])
-
-# Option 1: Wait for pending saves
-memory.drain_writes()
-
-# Option 2: Drain and shut down the background pool
-memory.close()
-```
-
-## Source and Privacy
-
-Every memory record can carry a `source` tag for provenance tracking and a `private` flag for access control.
-
-### Source Tracking
-
-The `source` parameter identifies where a memory came from:
-
-```python theme={null}
-# Tag memories with their origin
-memory.remember("User prefers dark mode", source="user:alice")
-memory.remember("System config updated", source="admin")
-memory.remember("Agent found a bug", source="agent:debugger")
-
-# Recall only memories from a specific source
-matches = memory.recall("user preferences", source="user:alice")
-```
-
-### Private Memories
-
-Private memories are only visible to recall when the `source` matches:
-
-```python theme={null}
-# Store a private memory
-memory.remember("Alice's API key is sk-...", source="user:alice", private=True)
-
-# This recall sees the private memory (source matches)
-matches = memory.recall("API key", source="user:alice")
-
-# This recall does NOT see it (different source)
-matches = memory.recall("API key", source="user:bob")
-
-# Admin access: see all private records regardless of source
-matches = memory.recall("API key", include_private=True)
-```
-
-This is particularly useful in multi-user or enterprise deployments where different users' memories should be isolated.
-
-## RecallFlow (Deep Recall)
-
-`recall()` supports two depths:
-
-* **`depth="shallow"`** -- Direct vector search with composite scoring. Fast (\~200ms), no LLM calls.
-* **`depth="deep"` (default)** -- Runs a multi-step RecallFlow: query analysis, scope selection, parallel vector search, confidence-based routing, and optional recursive exploration when confidence is low.
-
-**Smart LLM skip**: Queries shorter than `query_analysis_threshold` (default 200 characters) skip the LLM query analysis entirely, even in deep mode. Short queries like "What database do we use?" are already good search phrases -- the LLM analysis adds little value. This saves \~1-3s per recall for typical short queries. Only longer queries (e.g. full task descriptions) go through LLM distillation into targeted sub-queries.
-
-```python theme={null}
-# Shallow: pure vector search, no LLM
-matches = memory.recall("What did we decide?", limit=10, depth="shallow")
-
-# Deep (default): intelligent retrieval with LLM analysis for long queries
-matches = memory.recall(
-    "Summarize all architecture decisions from this quarter",
-    limit=10,
-    depth="deep",
-)
-```
-
-The confidence thresholds that control the RecallFlow router are configurable:
-
-```python theme={null}
-memory = Memory(
-    confidence_threshold_high=0.9,   # Only synthesize when very confident
-    confidence_threshold_low=0.4,    # Explore deeper more aggressively
-    exploration_budget=2,            # Allow up to 2 exploration rounds
-    query_analysis_threshold=200,    # Skip LLM for queries shorter than this
-)
-```
-
-## Embedder Configuration
-
-Memory needs an embedding model to convert text into vectors for semantic search. By default, `Memory()` uses OpenAI `text-embedding-3-large` embeddings, which produce 3072-dimensional vectors. Set `OPENAI_API_KEY` for the default path, or configure a custom embedder in one of three ways.
-
-<Warning>
-  Existing local memory stores created with 1536-dimensional embeddings, such as `text-embedding-3-small` or `text-embedding-ada-002`, may not be compatible with the `text-embedding-3-large` default. This applies to both the OpenAI and Azure OpenAI providers — Azure's default embedding model also changed from `text-embedding-ada-002` to `text-embedding-3-large`. If local testing fails with an embedding dimension mismatch, reset memory with `crewai reset-memories -m`, delete the local memory storage directory, or explicitly configure the older embedder model until you migrate.
-</Warning>
-
-### Passing to Memory Directly
-
-```python theme={null}
-from crewai import Memory
-
-# As a config dict
-memory = Memory(embedder={"provider": "openai", "config": {"model_name": "text-embedding-3-large"}})
-
-# As a pre-built callable
-from crewai.rag.embeddings.factory import build_embedder
-embedder = build_embedder({"provider": "ollama", "config": {"model_name": "mxbai-embed-large"}})
-memory = Memory(embedder=embedder)
-```
-
-### Via Crew Embedder Config
-
-When using `memory=True`, the crew's `embedder` config is passed through:
-
-```python theme={null}
-from crewai import Crew
-
-crew = Crew(
-    agents=[...],
-    tasks=[...],
-    memory=True,
-    embedder={"provider": "openai", "config": {"model_name": "text-embedding-3-large"}},
-)
-```
-
-### Provider Examples
-
-<AccordionGroup>
-  <Accordion title="OpenAI (default)">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "openai",
-        "config": {
-            "model_name": "text-embedding-3-large",
-            # "api_key": "sk-...",  # or set OPENAI_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="Ollama (local, private)">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "ollama",
-        "config": {
-            "model_name": "mxbai-embed-large",
-            "url": "http://localhost:11434/api/embeddings",
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="Azure OpenAI">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "azure",
-        "config": {
-            "deployment_id": "your-embedding-deployment",
-            "api_key": "your-azure-api-key",
-            "api_base": "https://your-resource.openai.azure.com",
-            "api_version": "2024-02-01",
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="Google AI">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "google-generativeai",
-        "config": {
-            "model_name": "gemini-embedding-001",
-            # "api_key": "...",  # or set GOOGLE_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="Google Vertex AI">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "google-vertex",
-        "config": {
-            "model_name": "gemini-embedding-001",
-            "project_id": "your-gcp-project-id",
-            "location": "us-central1",
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="Cohere">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "cohere",
-        "config": {
-            "model_name": "embed-english-v3.0",
-            # "api_key": "...",  # or set COHERE_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="VoyageAI">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "voyageai",
-        "config": {
-            "model": "voyage-3",
-            # "api_key": "...",  # or set VOYAGE_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="AWS Bedrock">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "amazon-bedrock",
-        "config": {
-            "model_name": "amazon.titan-embed-text-v1",
-            # Uses default AWS credentials (boto3 session)
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="Hugging Face">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "huggingface",
-        "config": {
-            "model_name": "sentence-transformers/all-MiniLM-L6-v2",
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="Jina">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "jina",
-        "config": {
-            "model_name": "jina-embeddings-v2-base-en",
-            # "api_key": "...",  # or set JINA_API_KEY env var
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="IBM WatsonX">
-    ```python theme={null}
-    memory = Memory(embedder={
-        "provider": "watsonx",
-        "config": {
-            "model_id": "ibm/slate-30m-english-rtrvr",
-            "api_key": "your-watsonx-api-key",
-            "project_id": "your-project-id",
-            "url": "https://us-south.ml.cloud.ibm.com",
-        },
-    })
-    ```
-  </Accordion>
-
-  <Accordion title="Custom Embedder">
-    ```python theme={null}
-    # Pass any callable that takes a list of strings and returns a list of vectors
-    def my_embedder(texts: list[str]) -> list[list[float]]:
-        # Your embedding logic here
-        return [[0.1, 0.2, ...] for _ in texts]
-
-    memory = Memory(embedder=my_embedder)
-    ```
-  </Accordion>
-</AccordionGroup>
-
-### Provider Reference
-
-| Provider             | Key                    | Typical Model                 | Notes                                    |
-| :------------------- | :--------------------- | :---------------------------- | :--------------------------------------- |
-| OpenAI               | `openai`               | `text-embedding-3-large`      | Default. Set `OPENAI_API_KEY`.           |
-| Ollama               | `ollama`               | `mxbai-embed-large`           | Local, no API key needed.                |
-| Azure OpenAI         | `azure`                | `text-embedding-3-large`      | Default model. Requires `deployment_id`. |
-| Google AI            | `google-generativeai`  | `gemini-embedding-001`        | Set `GOOGLE_API_KEY`.                    |
-| Google Vertex        | `google-vertex`        | `gemini-embedding-001`        | Requires `project_id`.                   |
-| Cohere               | `cohere`               | `embed-english-v3.0`          | Strong multilingual support.             |
-| VoyageAI             | `voyageai`             | `voyage-3`                    | Optimized for retrieval.                 |
-| AWS Bedrock          | `amazon-bedrock`       | `amazon.titan-embed-text-v1`  | Uses boto3 credentials.                  |
-| Hugging Face         | `huggingface`          | `all-MiniLM-L6-v2`            | Local sentence-transformers.             |
-| Jina                 | `jina`                 | `jina-embeddings-v2-base-en`  | Set `JINA_API_KEY`.                      |
-| IBM WatsonX          | `watsonx`              | `ibm/slate-30m-english-rtrvr` | Requires `project_id`.                   |
-| Sentence Transformer | `sentence-transformer` | `all-MiniLM-L6-v2`            | Local, no API key.                       |
-| Custom               | `custom`               | --                            | Requires `embedding_callable`.           |
-
-## LLM Configuration
-
-Memory uses an LLM for save analysis (scope, categories, importance inference), consolidation decisions, and deep recall query analysis. You can configure which model to use.
-
-```python theme={null}
-from crewai import Memory, LLM
-
-# Default: gpt-4o-mini
-memory = Memory()
-
-# Use a different OpenAI model
-memory = Memory(llm="gpt-4o")
-
-# Use Anthropic
-memory = Memory(llm="anthropic/claude-3-haiku-20240307")
-
-# Use Ollama for fully local/private analysis
-memory = Memory(llm="ollama/llama3.2")
-
-# Use Google Gemini
-memory = Memory(llm="gemini/gemini-2.0-flash")
-
-# Pass a pre-configured LLM instance with custom settings
-llm = LLM(model="gpt-4o", temperature=0)
-memory = Memory(llm=llm)
-```
-
-The LLM is initialized **lazily** -- it's only created when first needed. This means `Memory()` never fails at construction time, even if API keys aren't set. Errors only surface when the LLM is actually called (e.g. when saving without explicit scope/categories, or during deep recall).
-
-For fully offline/private operation, use a local model for both the LLM and embedder:
-
-```python theme={null}
-memory = Memory(
-    llm="ollama/llama3.2",
-    embedder={"provider": "ollama", "config": {"model_name": "mxbai-embed-large"}},
-)
-```
-
-## Storage Backend
-
-* **Default**: LanceDB, stored under `./.crewai/memory` (or `$CREWAI_STORAGE_DIR/memory` if the env var is set, or the path you pass as `storage="path/to/dir"`).
-* **Custom backend**: Implement the `StorageBackend` protocol (see `crewai.memory.storage.backend`) and pass an instance to `Memory(storage=your_backend)`.
-
-## Discovery
-
-Inspect the scope hierarchy, categories, and records:
-
-```python theme={null}
-memory.tree()                        # Formatted tree of scopes and record counts
-memory.tree("/project", max_depth=2) # Subtree view
-memory.info("/project")              # ScopeInfo: record_count, categories, oldest/newest
-memory.list_scopes("/")              # Immediate child scopes
-memory.list_categories()             # Category names and counts
-memory.list_records(scope="/project/alpha", limit=20)  # Records in a scope, newest first
-```
-
-## Failure Behavior
-
-If the LLM fails during analysis (network error, rate limit, invalid response), memory degrades gracefully:
-
-* **Save analysis** -- A warning is logged and the memory is still stored with default scope `/`, empty categories, and importance `0.5`.
-* **Extract memories** -- The full content is stored as a single memory so nothing is dropped.
-* **Query analysis** -- Recall falls back to simple scope selection and vector search so you still get results.
-
-No exception is raised for these analysis failures; only storage or embedder failures will raise.
-
-## Privacy Note
-
-Memory content is sent to the configured LLM for analysis (scope/categories/importance on save, query analysis and optional deep recall). For sensitive data, use a local LLM (e.g. Ollama) or ensure your provider meets your compliance requirements.
-
-## Memory Events
-
-All memory operations emit events with `source_type="unified_memory"`. You can listen for timing, errors, and content.
-
-| Event                             | Description            | Key Properties                                   |
-| :-------------------------------- | :--------------------- | :----------------------------------------------- |
-| **MemoryQueryStartedEvent**       | Query begins           | `query`, `limit`                                 |
-| **MemoryQueryCompletedEvent**     | Query succeeds         | `query`, `results`, `query_time_ms`              |
-| **MemoryQueryFailedEvent**        | Query fails            | `query`, `error`                                 |
-| **MemorySaveStartedEvent**        | Save begins            | `value`, `metadata`                              |
-| **MemorySaveCompletedEvent**      | Save succeeds          | `value`, `save_time_ms`                          |
-| **MemorySaveFailedEvent**         | Save fails             | `value`, `error`                                 |
-| **MemoryRetrievalStartedEvent**   | Agent retrieval starts | `task_id`                                        |
-| **MemoryRetrievalCompletedEvent** | Agent retrieval done   | `task_id`, `memory_content`, `retrieval_time_ms` |
-
-Example: monitor query time:
-
-```python theme={null}
-from crewai.events import BaseEventListener, MemoryQueryCompletedEvent
-
-class MemoryMonitor(BaseEventListener):
-    def setup_listeners(self, crewai_event_bus):
-        @crewai_event_bus.on(MemoryQueryCompletedEvent)
-        def on_done(source, event):
-            if getattr(event, "source_type", None) == "unified_memory":
-                print(f"Query '{event.query}' completed in {event.query_time_ms:.0f}ms")
-```
-
-## Troubleshooting
-
-**Memory not persisting?**
-
-* Ensure the storage path is writable (default `./.crewai/memory`). Pass `storage="./your_path"` to use a different directory, or set the `CREWAI_STORAGE_DIR` environment variable.
-* When using a crew, confirm `memory=True` or `memory=Memory(...)` is set.
-
-**Slow recall?**
-
-* Use `depth="shallow"` for routine agent context. Reserve `depth="deep"` for complex queries.
-* Increase `query_analysis_threshold` to skip LLM analysis for more queries.
-
-**LLM analysis errors in logs?**
-
-* Memory still saves/recalls with safe defaults. Check API keys, rate limits, and model availability if you want full LLM analysis.
-
-**Background save errors in logs?**
-
-* Memory saves run in a background thread. Errors are emitted as `MemorySaveFailedEvent` but don't crash the agent. Check logs for the root cause (usually LLM or embedder connection issues).
-
-**Embedding dimension mismatch?**
-
-* Existing local memory stores may have been created with a different embedding model. The default OpenAI memory embedder is now `text-embedding-3-large` (3072 dimensions), while older stores commonly used 1536-dimensional embeddings. For local testing, run `crewai reset-memories -m`, delete the local memory storage directory, or configure the previous embedder model explicitly.
-
-**Concurrent write conflicts?**
-
-* LanceDB operations are serialized with a shared lock and retried automatically on conflict. This handles multiple `Memory` instances pointing at the same database (e.g. agent memory + crew memory). No action needed.
-
-**Browse memory from the terminal:**
-
-```bash theme={null}
-crewai memory                              # Opens the TUI browser
-crewai memory --storage-path ./my_memory   # Point to a specific directory
-```
-
-**Reset memory (e.g. for tests):**
-
-```python theme={null}
-crew.reset_memories(command_type="memory")  # Resets unified memory
-# Or on a Memory instance:
-memory.reset()                    # All scopes
-memory.reset(scope="/project/old")  # Only that subtree
-```
-
-## Configuration Reference
-
-All configuration is passed as keyword arguments to `Memory(...)`. Every parameter has a sensible default.
-
-| Parameter                   | Default                                  | Description                                                                         |
-| :-------------------------- | :--------------------------------------- | :---------------------------------------------------------------------------------- |
-| `llm`                       | `"gpt-4o-mini"`                          | LLM for analysis (model name or `BaseLLM` instance).                                |
-| `storage`                   | `"lancedb"`                              | Storage backend (`"lancedb"`, a path string, or a `StorageBackend` instance).       |
-| `embedder`                  | `None` (OpenAI `text-embedding-3-large`) | Embedder (config dict, callable, or `None` for default OpenAI).                     |
-| `recency_weight`            | `0.3`                                    | Weight for recency in composite score.                                              |
-| `semantic_weight`           | `0.5`                                    | Weight for semantic similarity in composite score.                                  |
-| `importance_weight`         | `0.2`                                    | Weight for importance in composite score.                                           |
-| `recency_half_life_days`    | `30`                                     | Days for recency score to halve (exponential decay).                                |
-| `consolidation_threshold`   | `0.85`                                   | Similarity above which consolidation is triggered on save. Set to `1.0` to disable. |
-| `consolidation_limit`       | `5`                                      | Max existing records to compare during consolidation.                               |
-| `default_importance`        | `0.5`                                    | Importance assigned when not provided and LLM analysis is skipped.                  |
-| `batch_dedup_threshold`     | `0.98`                                   | Cosine similarity for dropping near-duplicates within a `remember_many()` batch.    |
-| `confidence_threshold_high` | `0.8`                                    | Recall confidence above which results are returned directly.                        |
-| `confidence_threshold_low`  | `0.5`                                    | Recall confidence below which deeper exploration is triggered.                      |
-| `complex_query_threshold`   | `0.7`                                    | For complex queries, explore deeper below this confidence.                          |
-| `exploration_budget`        | `1`                                      | Number of LLM-driven exploration rounds during deep recall.                         |
-| `query_analysis_threshold`  | `200`                                    | Queries shorter than this (in characters) skip LLM analysis during deep recall.     |
-
-
 # Processes
 Source: https://docs.crewai.com/v1.15.2/en/concepts/processes
 
@@ -8815,208 +7556,6 @@ Tasks are the driving force behind the actions of agents in CrewAI.
 By properly defining tasks and their outcomes, you set the stage for your AI agents to work effectively, either independently or as a collaborative unit.
 Equipping tasks with appropriate tools, understanding the execution process, and following robust validation practices are crucial for maximizing CrewAI's potential,
 ensuring agents are effectively prepared for their assignments and that tasks are executed as intended.
-
-
-# Training
-Source: https://docs.crewai.com/v1.15.2/en/concepts/training
-
-Learn how to train your CrewAI agents by giving them feedback early on and get consistent results.
-
-## Overview
-
-The training feature in CrewAI allows you to train your AI agents using the command-line interface (CLI).
-By running the command `crewai train -n <n_iterations>`, you can specify the number of iterations for the training process.
-
-During training, CrewAI utilizes techniques to optimize the performance of your agents along with human feedback.
-This helps the agents improve their understanding, decision-making, and problem-solving abilities.
-
-### Training Your Crew Using the CLI
-
-To use the training feature, follow these steps:
-
-1. Open your terminal or command prompt.
-2. Navigate to the directory where your CrewAI project is located.
-3. Run the following command:
-
-```shell theme={null}
-crewai train -n <n_iterations> -f <filename.pkl>
-```
-
-<Tip>
-  Replace `<n_iterations>` with the desired number of training iterations and `<filename>` with the appropriate filename ending with `.pkl`.
-</Tip>
-
-<Note>
-  If you omit `-f`, the output defaults to `trained_agents_data.pkl` in the current working directory. You can pass an absolute path to control where the file is written.
-</Note>
-
-### Training your Crew programmatically
-
-To train your crew programmatically, use the following steps:
-
-1. Define the number of iterations for training.
-2. Specify the input parameters for the training process.
-3. Execute the training command within a try-except block to handle potential errors.
-
-```python Code theme={null}
-n_iterations = 2
-inputs = {"topic": "CrewAI Training"}
-filename = "your_model.pkl"
-
-try:
-    YourCrewName_Crew().crew().train(
-      n_iterations=n_iterations,
-      inputs=inputs,
-      filename=filename
-    )
-
-except Exception as e:
-    raise Exception(f"An error occurred while training the crew: {e}")
-```
-
-## How trained data is used by agents
-
-CrewAI uses the training artifacts in two ways: during training to incorporate your human feedback, and after training to guide agents with consolidated suggestions.
-
-### Training data flow
-
-```mermaid theme={null}
-flowchart TD
-  A["Start training<br/>CLI: crewai train -n -f<br/>or Python: crew.train(...)"] --> B["Setup training mode<br/>- task.human_input = true<br/>- disable delegation<br/>- init training_data.pkl + trained file"]
-
-  subgraph "Iterations"
-    direction LR
-    C["Iteration i<br/>initial_output"] --> D["User human_feedback"]
-    D --> E["improved_output"]
-    E --> F["Append to training_data.pkl<br/>by agent_id and iteration"]
-  end
-
-  B --> C
-  F --> G{"More iterations?"}
-  G -- "Yes" --> C
-  G -- "No" --> H["Evaluate per agent<br/>aggregate iterations"]
-
-  H --> I["Consolidate<br/>suggestions[] + quality + final_summary"]
-  I --> J["Save by agent role to trained file<br/>(default: trained_agents_data.pkl)"]
-
-  J --> K["Normal (non-training) runs"]
-  K --> L["Auto-load suggestions<br/>from trained_agents_data.pkl"]
-  L --> M["Append to prompt<br/>for consistent improvements"]
-```
-
-### During training runs
-
-* On each iteration, the system records for every agent:
-  * `initial_output`: the agent’s first answer
-  * `human_feedback`: your inline feedback when prompted
-  * `improved_output`: the agent’s follow-up answer after feedback
-* This data is stored in a working file named `training_data.pkl` keyed by the agent’s internal ID and iteration.
-* While training is active, the agent automatically appends your prior human feedback to its prompt to enforce those instructions on subsequent attempts within the training session.
-  Training is interactive: tasks set `human_input = true`, so running in a non-interactive environment will block on user input.
-
-### After training completes
-
-* When `train(...)` finishes, CrewAI evaluates the collected training data per agent and produces a consolidated result containing:
-  * `suggestions`: clear, actionable instructions distilled from your feedback and the difference between initial/improved outputs
-  * `quality`: a 0–10 score capturing improvement
-  * `final_summary`: a step-by-step set of action items for future tasks
-* These consolidated results are saved to the filename you pass to `train(...)` (default via CLI is `trained_agents_data.pkl`). Entries are keyed by the agent’s `role` so they can be applied across sessions.
-* During normal (non-training) execution, each agent automatically loads its consolidated `suggestions` and appends them to the task prompt as mandatory instructions. This gives you consistent improvements without changing your agent definitions.
-
-### File summary
-
-* `training_data.pkl` (ephemeral, per-session):
-  * Structure: `agent_id -> { iteration_number: { initial_output, human_feedback, improved_output } }`
-  * Purpose: capture raw data and human feedback during training
-  * Location: saved in the current working directory (CWD)
-* `trained_agents_data.pkl` (or your custom filename):
-  * Structure: `agent_role -> { suggestions: string[], quality: number, final_summary: string }`
-  * Purpose: persist consolidated guidance for future runs
-  * Location: written to the CWD by default; use `-f` to set a custom (including absolute) path
-
-## Small Language Model Considerations
-
-<Warning>
-  When using smaller language models (≤7B parameters) for training data evaluation, be aware that they may face challenges with generating structured outputs and following complex instructions.
-</Warning>
-
-### Limitations of Small Models in Training Evaluation
-
-<CardGroup>
-  <Card title="JSON Output Accuracy" icon="triangle-exclamation">
-    Smaller models often struggle with producing valid JSON responses needed for structured training evaluations, leading to parsing errors and incomplete data.
-  </Card>
-
-  <Card title="Evaluation Quality" icon="chart-line">
-    Models under 7B parameters may provide less nuanced evaluations with limited reasoning depth compared to larger models.
-  </Card>
-
-  <Card title="Instruction Following" icon="list-check">
-    Complex training evaluation criteria may not be fully followed or considered by smaller models.
-  </Card>
-
-  <Card title="Consistency" icon="rotate">
-    Evaluations across multiple training iterations may lack consistency with smaller models.
-  </Card>
-</CardGroup>
-
-### Recommendations for Training
-
-<Tabs>
-  <Tab title="Best Practice">
-    For optimal training quality and reliable evaluations, we strongly recommend using models with at least 7B parameters or larger:
-
-    ```python theme={null}
-    from crewai import Agent, Crew, Task, LLM
-
-    # Recommended minimum for training evaluation
-    llm = LLM(model="mistral/open-mistral-7b")
-
-    # Better options for reliable training evaluation
-    llm = LLM(model="anthropic/claude-3-sonnet-20240229-v1:0")
-    llm = LLM(model="gpt-4o")
-
-    # Use this LLM with your agents
-    agent = Agent(
-        role="Training Evaluator",
-        goal="Provide accurate training feedback",
-        llm=llm
-    )
-    ```
-
-    <Tip>
-      More powerful models provide higher quality feedback with better reasoning, leading to more effective training iterations.
-    </Tip>
-  </Tab>
-
-  <Tab title="Small Model Usage">
-    If you must use smaller models for training evaluation, be aware of these constraints:
-
-    ```python theme={null}
-    # Using a smaller model (expect some limitations)
-    llm = LLM(model="huggingface/microsoft/Phi-3-mini-4k-instruct")
-    ```
-
-    <Warning>
-      While CrewAI includes optimizations for small models, expect less reliable and less nuanced evaluation results that may require more human intervention during training.
-    </Warning>
-  </Tab>
-</Tabs>
-
-### Key Points to Note
-
-* **Positive Integer Requirement:** Ensure that the number of iterations (`n_iterations`) is a positive integer. The code will raise a `ValueError` if this condition is not met.
-* **Filename Requirement:** Ensure that the filename ends with `.pkl`. The code will raise a `ValueError` if this condition is not met.
-* **Error Handling:** The code handles subprocess errors and unexpected exceptions, providing error messages to the user.
-* Trained guidance is applied at prompt time; it does not modify your Python/YAML agent configuration.
-* Agents automatically load trained suggestions from a file named `trained_agents_data.pkl` located in the current working directory. If you trained to a different filename, pass that path with `Crew(trained_agents_file="my_custom_trained.pkl")`, set `CREWAI_TRAINED_AGENTS_FILE`, or use `crewai run -f my_custom_trained.pkl`.
-* You can change the output filename when calling `crewai train` with `-f/--filename`. Absolute paths are supported if you want to save outside the CWD.
-
-It is important to note that the training process may take some time, depending on the complexity of your agents and will also require your feedback on each iteration.
-
-Once the training is complete, your agents will be equipped with enhanced capabilities and knowledge, ready to tackle complex tasks and provide more consistent and valuable insights.
-
-Remember to regularly update and retrain your agents to ensure they stay up-to-date with the latest information and advancements in the field.
 
 
 # Customizing Prompts
@@ -15703,6 +14242,385 @@ Trace collection is controlled by checking three settings in priority order:
 </Note>
 
 
+# Collaboration
+Source: https://docs.crewai.com/v1.15.2/en/concepts/collaboration
+
+How to enable agents to work together, delegate tasks, and communicate effectively within CrewAI teams.
+
+## Overview
+
+Collaboration in CrewAI enables agents to work together as a team by delegating tasks and asking questions to leverage each other's expertise. When `allow_delegation=True`, agents automatically gain access to powerful collaboration tools.
+
+## Quick Start: Enable Collaboration
+
+```python theme={null}
+from crewai import Agent, Crew, Task
+
+# Enable collaboration for agents
+researcher = Agent(
+    role="Research Specialist",
+    goal="Conduct thorough research on any topic",
+    backstory="Expert researcher with access to various sources",
+    allow_delegation=True,  # 🔑 Key setting for collaboration
+    verbose=True
+)
+
+writer = Agent(
+    role="Content Writer", 
+    goal="Create engaging content based on research",
+    backstory="Skilled writer who transforms research into compelling content",
+    allow_delegation=True,  # 🔑 Enables asking questions to other agents
+    verbose=True
+)
+
+# Agents can now collaborate automatically
+crew = Crew(
+    agents=[researcher, writer],
+    tasks=[...],
+    verbose=True
+)
+```
+
+## How Agent Collaboration Works
+
+When `allow_delegation=True`, CrewAI automatically provides agents with two powerful tools:
+
+### 1. **Delegate Work Tool**
+
+Allows agents to assign tasks to teammates with specific expertise.
+
+```python theme={null}
+# Agent automatically gets this tool:
+# Delegate work to coworker(task: str, context: str, coworker: str)
+```
+
+### 2. **Ask Question Tool**
+
+Enables agents to ask specific questions to gather information from colleagues.
+
+```python theme={null}
+# Agent automatically gets this tool:
+# Ask question to coworker(question: str, context: str, coworker: str)
+```
+
+## Collaboration in Action
+
+Here's a complete example showing agents collaborating on a content creation task:
+
+```python theme={null}
+from crewai import Agent, Crew, Task, Process
+
+# Create collaborative agents
+researcher = Agent(
+    role="Research Specialist",
+    goal="Find accurate, up-to-date information on any topic",
+    backstory="""You're a meticulous researcher with expertise in finding 
+    reliable sources and fact-checking information across various domains.""",
+    allow_delegation=True,
+    verbose=True
+)
+
+writer = Agent(
+    role="Content Writer",
+    goal="Create engaging, well-structured content",
+    backstory="""You're a skilled content writer who excels at transforming 
+    research into compelling, readable content for different audiences.""",
+    allow_delegation=True,
+    verbose=True
+)
+
+editor = Agent(
+    role="Content Editor",
+    goal="Ensure content quality and consistency",
+    backstory="""You're an experienced editor with an eye for detail, 
+    ensuring content meets high standards for clarity and accuracy.""",
+    allow_delegation=True,
+    verbose=True
+)
+
+# Create a task that encourages collaboration
+article_task = Task(
+    description="""Write a comprehensive 1000-word article about 'The Future of AI in Healthcare'.
+    
+    The article should include:
+    - Current AI applications in healthcare
+    - Emerging trends and technologies  
+    - Potential challenges and ethical considerations
+    - Expert predictions for the next 5 years
+    
+    Collaborate with your teammates to ensure accuracy and quality.""",
+    expected_output="A well-researched, engaging 1000-word article with proper structure and citations",
+    agent=writer  # Writer leads, but can delegate research to researcher
+)
+
+# Create collaborative crew
+crew = Crew(
+    agents=[researcher, writer, editor],
+    tasks=[article_task],
+    process=Process.sequential,
+    verbose=True
+)
+
+result = crew.kickoff()
+```
+
+## Collaboration Patterns
+
+### Pattern 1: Research → Write → Edit
+
+```python theme={null}
+research_task = Task(
+    description="Research the latest developments in quantum computing",
+    expected_output="Comprehensive research summary with key findings and sources",
+    agent=researcher
+)
+
+writing_task = Task(
+    description="Write an article based on the research findings",
+    expected_output="Engaging 800-word article about quantum computing",
+    agent=writer,
+    context=[research_task]  # Gets research output as context
+)
+
+editing_task = Task(
+    description="Edit and polish the article for publication",
+    expected_output="Publication-ready article with improved clarity and flow",
+    agent=editor,
+    context=[writing_task]  # Gets article draft as context
+)
+```
+
+### Pattern 2: Collaborative Single Task
+
+```python theme={null}
+collaborative_task = Task(
+    description="""Create a marketing strategy for a new AI product.
+    
+    Writer: Focus on messaging and content strategy
+    Researcher: Provide market analysis and competitor insights
+    
+    Work together to create a comprehensive strategy.""",
+    expected_output="Complete marketing strategy with research backing",
+    agent=writer  # Lead agent, but can delegate to researcher
+)
+```
+
+## Hierarchical Collaboration
+
+For complex projects, use a hierarchical process with a manager agent:
+
+```python theme={null}
+from crewai import Agent, Crew, Task, Process
+
+# Manager agent coordinates the team
+manager = Agent(
+    role="Project Manager",
+    goal="Coordinate team efforts and ensure project success",
+    backstory="Experienced project manager skilled at delegation and quality control",
+    allow_delegation=True,
+    verbose=True
+)
+
+# Specialist agents
+researcher = Agent(
+    role="Researcher",
+    goal="Provide accurate research and analysis",
+    backstory="Expert researcher with deep analytical skills",
+    allow_delegation=False,  # Specialists focus on their expertise
+    verbose=True
+)
+
+writer = Agent(
+    role="Writer", 
+    goal="Create compelling content",
+    backstory="Skilled writer who creates engaging content",
+    allow_delegation=False,
+    verbose=True
+)
+
+# Manager-led task
+project_task = Task(
+    description="Create a comprehensive market analysis report with recommendations",
+    expected_output="Executive summary, detailed analysis, and strategic recommendations",
+    agent=manager  # Manager will delegate to specialists
+)
+
+# Hierarchical crew
+crew = Crew(
+    agents=[manager, researcher, writer],
+    tasks=[project_task],
+    process=Process.hierarchical,  # Manager coordinates everything
+    manager_llm="gpt-4o",  # Specify LLM for manager
+    verbose=True
+)
+```
+
+## Best Practices for Collaboration
+
+### 1. **Clear Role Definition**
+
+```python theme={null}
+# ✅ Good: Specific, complementary roles
+researcher = Agent(role="Market Research Analyst", ...)
+writer = Agent(role="Technical Content Writer", ...)
+
+# ❌ Avoid: Overlapping or vague roles  
+agent1 = Agent(role="General Assistant", ...)
+agent2 = Agent(role="Helper", ...)
+```
+
+### 2. **Strategic Delegation Enabling**
+
+```python theme={null}
+# ✅ Enable delegation for coordinators and generalists
+lead_agent = Agent(
+    role="Content Lead",
+    allow_delegation=True,  # Can delegate to specialists
+    ...
+)
+
+# ✅ Disable for focused specialists (optional)
+specialist_agent = Agent(
+    role="Data Analyst", 
+    allow_delegation=False,  # Focuses on core expertise
+    ...
+)
+```
+
+### 3. **Context Sharing**
+
+```python theme={null}
+# ✅ Use context parameter for task dependencies
+writing_task = Task(
+    description="Write article based on research",
+    agent=writer,
+    context=[research_task],  # Shares research results
+    ...
+)
+```
+
+### 4. **Clear Task Descriptions**
+
+```python theme={null}
+# ✅ Specific, actionable descriptions
+Task(
+    description="""Research competitors in the AI chatbot space.
+    Focus on: pricing models, key features, target markets.
+    Provide data in a structured format.""",
+    ...
+)
+
+# ❌ Vague descriptions that don't guide collaboration
+Task(description="Do some research about chatbots", ...)
+```
+
+## Troubleshooting Collaboration
+
+### Issue: Agents Not Collaborating
+
+**Symptoms:** Agents work in isolation, no delegation occurs
+
+```python theme={null}
+# ✅ Solution: Ensure delegation is enabled
+agent = Agent(
+    role="...",
+    allow_delegation=True,  # This is required!
+    ...
+)
+```
+
+### Issue: Too Much Back-and-Forth
+
+**Symptoms:** Agents ask excessive questions, slow progress
+
+```python theme={null}
+# ✅ Solution: Provide better context and specific roles
+Task(
+    description="""Write a technical blog post about machine learning.
+    
+    Context: Target audience is software developers with basic ML knowledge.
+    Length: 1200 words
+    Include: code examples, practical applications, best practices
+    
+    If you need specific technical details, delegate research to the researcher.""",
+    ...
+)
+```
+
+### Issue: Delegation Loops
+
+**Symptoms:** Agents delegate back and forth indefinitely
+
+```python theme={null}
+# ✅ Solution: Clear hierarchy and responsibilities
+manager = Agent(role="Manager", allow_delegation=True)
+specialist1 = Agent(role="Specialist A", allow_delegation=False)  # No re-delegation
+specialist2 = Agent(role="Specialist B", allow_delegation=False)
+```
+
+## Advanced Collaboration Features
+
+### Custom Collaboration Rules
+
+```python theme={null}
+# Set specific collaboration guidelines in agent backstory
+agent = Agent(
+    role="Senior Developer",
+    backstory="""You lead development projects and coordinate with team members.
+    
+    Collaboration guidelines:
+    - Delegate research tasks to the Research Analyst
+    - Ask the Designer for UI/UX guidance  
+    - Consult the QA Engineer for testing strategies
+    - Only escalate blocking issues to the Project Manager""",
+    allow_delegation=True
+)
+```
+
+### Monitoring Collaboration
+
+```python theme={null}
+def track_collaboration(output):
+    """Track collaboration patterns"""
+    if "Delegate work to coworker" in output.raw:
+        print("🤝 Delegation occurred")
+    if "Ask question to coworker" in output.raw:
+        print("❓ Question asked")
+
+crew = Crew(
+    agents=[...],
+    tasks=[...],
+    step_callback=track_collaboration,  # Monitor collaboration
+    verbose=True
+)
+```
+
+## Memory and Learning
+
+Enable agents to remember past collaborations:
+
+```python theme={null}
+agent = Agent(
+    role="Content Lead",
+    memory=True,  # Remembers past interactions
+    allow_delegation=True,
+    verbose=True
+)
+```
+
+With memory enabled, agents learn from previous collaborations and improve their delegation decisions over time.
+
+## Next Steps
+
+* **Try the examples**: Start with the basic collaboration example
+* **Experiment with roles**: Test different agent role combinations
+* **Monitor interactions**: Use `verbose=True` to see collaboration in action
+* **Optimize task descriptions**: Clear tasks lead to better collaboration
+* **Scale up**: Try hierarchical processes for complex projects
+
+Collaboration transforms individual AI agents into powerful teams that can tackle complex, multi-faceted challenges together.
+
+
 # Event Listeners
 Source: https://docs.crewai.com/v1.15.2/en/concepts/event-listener
 
@@ -16115,6 +15033,886 @@ Event listeners can be used for a variety of purposes:
 5. **Testing**: Test your event listeners in isolation to ensure they behave as expected
 
 By leveraging CrewAI's event system, you can extend its functionality and integrate it seamlessly with your existing infrastructure.
+
+
+# Memory
+Source: https://docs.crewai.com/v1.15.2/en/concepts/memory
+
+Leveraging the unified memory system in CrewAI to enhance agent capabilities.
+
+## Overview
+
+CrewAI provides a **unified memory system** -- a single `Memory` class that replaces separate short-term, long-term, entity, and external memory types with one intelligent API. Memory uses an LLM to analyze content when saving (inferring scope, categories, and importance) and supports adaptive-depth recall with composite scoring that blends semantic similarity, recency, and importance.
+
+You can use memory four ways: **standalone** (scripts, notebooks), **with Crews**, **with Agents**, or **inside Flows**.
+
+## Quick Start
+
+```python theme={null}
+from crewai import Memory
+
+memory = Memory()
+
+# Store -- the LLM infers scope, categories, and importance
+memory.remember("We decided to use PostgreSQL for the user database.")
+
+# Retrieve -- results ranked by composite score (semantic + recency + importance)
+matches = memory.recall("What database did we choose?")
+for m in matches:
+    print(f"[{m.score:.2f}] {m.record.content}")
+
+# Tune scoring for a fast-moving project
+memory = Memory(recency_weight=0.5, recency_half_life_days=7)
+
+# Forget
+memory.forget(scope="/project/old")
+
+# Explore the self-organized scope tree
+print(memory.tree())
+print(memory.info("/"))
+```
+
+## Four Ways to Use Memory
+
+### Standalone
+
+Use memory in scripts, notebooks, CLI tools, or as a standalone knowledge base -- no agents or crews required.
+
+```python theme={null}
+from crewai import Memory
+
+memory = Memory()
+
+# Build up knowledge
+memory.remember("The API rate limit is 1000 requests per minute.")
+memory.remember("Our staging environment uses port 8080.")
+memory.remember("The team agreed to use feature flags for all new releases.")
+
+# Later, recall what you need
+matches = memory.recall("What are our API limits?", limit=5)
+for m in matches:
+    print(f"[{m.score:.2f}] {m.record.content}")
+
+# Extract atomic facts from a longer text
+raw = """Meeting notes: We decided to migrate from MySQL to PostgreSQL
+next quarter. The budget is $50k. Sarah will lead the migration."""
+
+facts = memory.extract_memories(raw)
+# ["Migration from MySQL to PostgreSQL planned for next quarter",
+#  "Database migration budget is $50k",
+#  "Sarah will lead the database migration"]
+
+for fact in facts:
+    memory.remember(fact)
+```
+
+### With Crews
+
+Pass `memory=True` for default settings, or pass a configured `Memory` instance for custom behavior.
+
+```python theme={null}
+from crewai import Crew, Agent, Task, Process, Memory
+
+# Option 1: Default memory
+crew = Crew(
+    agents=[researcher, writer],
+    tasks=[research_task, writing_task],
+    process=Process.sequential,
+    memory=True,
+    verbose=True,
+)
+
+# Option 2: Custom memory with tuned scoring
+memory = Memory(
+    recency_weight=0.4,
+    semantic_weight=0.4,
+    importance_weight=0.2,
+    recency_half_life_days=14,
+)
+crew = Crew(
+    agents=[researcher, writer],
+    tasks=[research_task, writing_task],
+    memory=memory,
+)
+```
+
+When `memory=True`, the crew creates a default `Memory()` and passes the crew's `embedder` configuration through automatically. All agents in the crew share the crew's memory unless an agent has its own. Without a custom `embedder`, memory uses OpenAI `text-embedding-3-large` embeddings.
+
+After each task, the crew automatically extracts discrete facts from the task output and stores them. Before each task, the agent recalls relevant context from memory and injects it into the task prompt.
+
+### With Agents
+
+Agents can use the crew's shared memory (default) or receive a scoped view for private context.
+
+```python theme={null}
+from crewai import Agent, Memory
+
+memory = Memory()
+
+# Researcher gets a private scope -- only sees /agent/researcher
+researcher = Agent(
+    role="Researcher",
+    goal="Find and analyze information",
+    backstory="Expert researcher with attention to detail",
+    memory=memory.scope("/agent/researcher"),
+)
+
+# Writer uses crew shared memory (no agent-level memory set)
+writer = Agent(
+    role="Writer",
+    goal="Produce clear, well-structured content",
+    backstory="Experienced technical writer",
+    # memory not set -- uses crew._memory when crew has memory enabled
+)
+```
+
+This pattern gives the researcher private findings while the writer reads from the shared crew memory.
+
+### With Flows
+
+Every Flow has built-in memory. Use `self.remember()`, `self.recall()`, and `self.extract_memories()` inside any flow method.
+
+```python theme={null}
+from crewai.flow.flow import Flow, listen, start
+
+class ResearchFlow(Flow):
+    @start()
+    def gather_data(self):
+        findings = "PostgreSQL handles 10k concurrent connections. MySQL caps at 5k."
+        self.remember(findings, scope="/research/databases")
+        return findings
+
+    @listen(gather_data)
+    def write_report(self, findings):
+        # Recall past research to provide context
+        past = self.recall("database performance benchmarks")
+        context = "\n".join(f"- {m.record.content}" for m in past)
+        return f"Report:\nNew findings: {findings}\nPrevious context:\n{context}"
+```
+
+See the [Flows documentation](/concepts/flows) for more on memory in Flows.
+
+## Hierarchical Scopes
+
+### What Scopes Are
+
+Memories are organized into a hierarchical tree of scopes, similar to a filesystem. Each scope is a path like `/`, `/project/alpha`, or `/agent/researcher/findings`.
+
+```
+/
+  /company
+    /company/engineering
+    /company/product
+  /project
+    /project/alpha
+    /project/beta
+  /agent
+    /agent/researcher
+    /agent/writer
+```
+
+Scopes provide **context-dependent memory** -- when you recall within a scope, you only search that branch of the tree, which improves both precision and performance.
+
+### How Scope Inference Works
+
+When you call `remember()` without specifying a scope, the LLM analyzes the content and the existing scope tree, then suggests the best placement. If no existing scope fits, it creates a new one. Over time, the scope tree grows organically from the content itself -- you don't need to design a schema upfront.
+
+```python theme={null}
+memory = Memory()
+
+# LLM infers scope from content
+memory.remember("We chose PostgreSQL for the user database.")
+# -> might be placed under /project/decisions or /engineering/database
+
+# You can also specify scope explicitly
+memory.remember("Sprint velocity is 42 points", scope="/team/metrics")
+```
+
+### Visualizing the Scope Tree
+
+```python theme={null}
+print(memory.tree())
+# / (15 records)
+#   /project (8 records)
+#     /project/alpha (5 records)
+#     /project/beta (3 records)
+#   /agent (7 records)
+#     /agent/researcher (4 records)
+#     /agent/writer (3 records)
+
+print(memory.info("/project/alpha"))
+# ScopeInfo(path='/project/alpha', record_count=5,
+#           categories=['architecture', 'database'],
+#           oldest_record=datetime(...), newest_record=datetime(...),
+#           child_scopes=[])
+```
+
+### MemoryScope: Subtree Views
+
+A `MemoryScope` restricts all operations to a branch of the tree. The agent or code using it can only see and write within that subtree.
+
+```python theme={null}
+memory = Memory()
+
+# Create a scope for a specific agent
+agent_memory = memory.scope("/agent/researcher")
+
+# Everything is relative to /agent/researcher
+agent_memory.remember("Found three relevant papers on LLM memory.")
+# -> stored under /agent/researcher
+
+agent_memory.recall("relevant papers")
+# -> searches only under /agent/researcher
+
+# Narrow further with subscope
+project_memory = agent_memory.subscope("project-alpha")
+# -> /agent/researcher/project-alpha
+```
+
+### Best Practices for Scope Design
+
+* **Start flat, let the LLM organize.** Don't over-engineer your scope hierarchy upfront. Begin with `memory.remember(content)` and let the LLM's scope inference create structure as content accumulates.
+
+* **Use `/{entity_type}/{identifier}` patterns.** Natural hierarchies emerge from patterns like `/project/alpha`, `/agent/researcher`, `/company/engineering`, `/customer/acme-corp`.
+
+* **Scope by concern, not by data type.** Use `/project/alpha/decisions` rather than `/decisions/project/alpha`. This keeps related content together.
+
+* **Keep depth shallow (2-3 levels).** Deeply nested scopes become too sparse. `/project/alpha/architecture` is good; `/project/alpha/architecture/decisions/databases/postgresql` is too deep.
+
+* **Use explicit scopes when you know, let the LLM infer when you don't.** If you're storing a known project decision, pass `scope="/project/alpha/decisions"`. If you're storing freeform agent output, omit the scope and let the LLM figure it out.
+
+### Use Case Examples
+
+**Multi-project team:**
+
+```python theme={null}
+memory = Memory()
+# Each project gets its own branch
+memory.remember("Using microservices architecture", scope="/project/alpha/architecture")
+memory.remember("GraphQL API for client apps", scope="/project/beta/api")
+
+# Recall across all projects
+memory.recall("API design decisions")
+
+# Or within a specific project
+memory.recall("API design", scope="/project/beta")
+```
+
+**Per-agent private context with shared knowledge:**
+
+```python theme={null}
+memory = Memory()
+
+# Researcher has private findings
+researcher_memory = memory.scope("/agent/researcher")
+
+# Writer can read from both its own scope and shared company knowledge
+writer_view = memory.slice(
+    scopes=["/agent/writer", "/company/knowledge"],
+    read_only=True,
+)
+```
+
+**Customer support (per-customer context):**
+
+```python theme={null}
+memory = Memory()
+
+# Each customer gets isolated context
+memory.remember("Prefers email communication", scope="/customer/acme-corp")
+memory.remember("On enterprise plan, 50 seats", scope="/customer/acme-corp")
+
+# Shared product docs are accessible to all agents
+memory.remember("Rate limit is 1000 req/min on enterprise plan", scope="/product/docs")
+```
+
+## Memory Slices
+
+### What Slices Are
+
+A `MemorySlice` is a view across multiple, possibly disjoint scopes. Unlike a scope (which restricts to one subtree), a slice lets you recall from several branches simultaneously.
+
+### When to Use Slices vs Scopes
+
+* **Scope**: Use when an agent or code block should be restricted to a single subtree. Example: an agent that only sees `/agent/researcher`.
+* **Slice**: Use when you need to combine context from multiple branches. Example: an agent that reads from its own scope plus shared company knowledge.
+
+### Read-Only Slices
+
+The most common pattern: give an agent read access to multiple branches without letting it write to shared areas.
+
+```python theme={null}
+memory = Memory()
+
+# Agent can recall from its own scope AND company knowledge,
+# but cannot write to company knowledge
+agent_view = memory.slice(
+    scopes=["/agent/researcher", "/company/knowledge"],
+    read_only=True,
+)
+
+matches = agent_view.recall("company security policies", limit=5)
+# Searches both /agent/researcher and /company/knowledge, merges and ranks results
+
+agent_view.remember("new finding")  # Raises PermissionError (read-only)
+```
+
+### Read-Write Slices
+
+When read-only is disabled, you can write to any of the included scopes, but you must specify which scope explicitly.
+
+```python theme={null}
+view = memory.slice(scopes=["/team/alpha", "/team/beta"], read_only=False)
+
+# Must specify scope when writing
+view.remember("Cross-team decision", scope="/team/alpha", categories=["decisions"])
+```
+
+## Composite Scoring
+
+Recall results are ranked by a weighted combination of three signals:
+
+```
+composite = semantic_weight * similarity + recency_weight * decay + importance_weight * importance
+```
+
+Where:
+
+* **similarity** = `1 / (1 + distance)` from the vector index (0 to 1)
+* **decay** = `0.5^(age_days / half_life_days)` -- exponential decay (1.0 for today, 0.5 at half-life)
+* **importance** = the record's importance score (0 to 1), set at encoding time
+
+Configure these directly on the `Memory` constructor:
+
+```python theme={null}
+# Sprint retrospective: favor recent memories, short half-life
+memory = Memory(
+    recency_weight=0.5,
+    semantic_weight=0.3,
+    importance_weight=0.2,
+    recency_half_life_days=7,
+)
+
+# Architecture knowledge base: favor important memories, long half-life
+memory = Memory(
+    recency_weight=0.1,
+    semantic_weight=0.5,
+    importance_weight=0.4,
+    recency_half_life_days=180,
+)
+```
+
+Each `MemoryMatch` includes a `match_reasons` list so you can see why a result ranked where it did (e.g. `["semantic", "recency", "importance"]`).
+
+## LLM Analysis Layer
+
+Memory uses the LLM in three ways:
+
+1. **On save** -- When you omit scope, categories, or importance, the LLM analyzes the content and suggests scope, categories, importance, and metadata (entities, dates, topics).
+2. **On recall** -- For deep/auto recall, the LLM analyzes the query (keywords, time hints, suggested scopes, complexity) to guide retrieval.
+3. **Extract memories** -- `extract_memories(content)` breaks raw text (e.g. task output) into discrete memory statements. Agents use this before calling `remember()` on each statement so that atomic facts are stored instead of one large blob.
+
+All analysis degrades gracefully on LLM failure -- see [Failure Behavior](#failure-behavior).
+
+## Memory Consolidation
+
+When saving new content, the encoding pipeline automatically checks for similar existing records in storage. If the similarity is above `consolidation_threshold` (default 0.85), the LLM decides what to do:
+
+* **keep** -- The existing record is still accurate and not redundant.
+* **update** -- The existing record should be updated with new information (LLM provides the merged content).
+* **delete** -- The existing record is outdated, superseded, or contradicted.
+* **insert\_new** -- Whether the new content should also be inserted as a separate record.
+
+This prevents duplicates from accumulating. For example, if you save "CrewAI ensures reliable operation" three times, consolidation recognizes the duplicates and keeps only one record.
+
+### Intra-batch Dedup
+
+When using `remember_many()`, items within the same batch are compared against each other before hitting storage. If two items have cosine similarity >= `batch_dedup_threshold` (default 0.98), the later one is silently dropped. This catches exact or near-exact duplicates within a single batch without any LLM calls (pure vector math).
+
+```python theme={null}
+# Only 2 records are stored (the third is a near-duplicate of the first)
+memory.remember_many([
+    "CrewAI supports complex workflows.",
+    "Python is a great language.",
+    "CrewAI supports complex workflows.",  # dropped by intra-batch dedup
+])
+```
+
+## Non-blocking Saves
+
+`remember_many()` is **non-blocking** -- it submits the encoding pipeline to a background thread and returns immediately. This means the agent can continue to the next task while memories are being saved.
+
+```python theme={null}
+# Returns immediately -- save happens in background
+memory.remember_many(["Fact A.", "Fact B.", "Fact C."])
+
+# recall() automatically waits for pending saves before searching
+matches = memory.recall("facts")  # sees all 3 records
+```
+
+### Read Barrier
+
+Every `recall()` call automatically calls `drain_writes()` before searching, ensuring the query always sees the latest persisted records. This is transparent -- you never need to think about it.
+
+### Crew Shutdown
+
+When a crew finishes, `kickoff()` drains all pending memory saves in its `finally` block, so no saves are lost even if the crew completes while background saves are in flight.
+
+### Standalone Usage
+
+For scripts or notebooks where there's no crew lifecycle, call `drain_writes()` or `close()` explicitly:
+
+```python theme={null}
+memory = Memory()
+memory.remember_many(["Fact A.", "Fact B."])
+
+# Option 1: Wait for pending saves
+memory.drain_writes()
+
+# Option 2: Drain and shut down the background pool
+memory.close()
+```
+
+## Source and Privacy
+
+Every memory record can carry a `source` tag for provenance tracking and a `private` flag for access control.
+
+### Source Tracking
+
+The `source` parameter identifies where a memory came from:
+
+```python theme={null}
+# Tag memories with their origin
+memory.remember("User prefers dark mode", source="user:alice")
+memory.remember("System config updated", source="admin")
+memory.remember("Agent found a bug", source="agent:debugger")
+
+# Recall only memories from a specific source
+matches = memory.recall("user preferences", source="user:alice")
+```
+
+### Private Memories
+
+Private memories are only visible to recall when the `source` matches:
+
+```python theme={null}
+# Store a private memory
+memory.remember("Alice's API key is sk-...", source="user:alice", private=True)
+
+# This recall sees the private memory (source matches)
+matches = memory.recall("API key", source="user:alice")
+
+# This recall does NOT see it (different source)
+matches = memory.recall("API key", source="user:bob")
+
+# Admin access: see all private records regardless of source
+matches = memory.recall("API key", include_private=True)
+```
+
+This is particularly useful in multi-user or enterprise deployments where different users' memories should be isolated.
+
+## RecallFlow (Deep Recall)
+
+`recall()` supports two depths:
+
+* **`depth="shallow"`** -- Direct vector search with composite scoring. Fast (\~200ms), no LLM calls.
+* **`depth="deep"` (default)** -- Runs a multi-step RecallFlow: query analysis, scope selection, parallel vector search, confidence-based routing, and optional recursive exploration when confidence is low.
+
+**Smart LLM skip**: Queries shorter than `query_analysis_threshold` (default 200 characters) skip the LLM query analysis entirely, even in deep mode. Short queries like "What database do we use?" are already good search phrases -- the LLM analysis adds little value. This saves \~1-3s per recall for typical short queries. Only longer queries (e.g. full task descriptions) go through LLM distillation into targeted sub-queries.
+
+```python theme={null}
+# Shallow: pure vector search, no LLM
+matches = memory.recall("What did we decide?", limit=10, depth="shallow")
+
+# Deep (default): intelligent retrieval with LLM analysis for long queries
+matches = memory.recall(
+    "Summarize all architecture decisions from this quarter",
+    limit=10,
+    depth="deep",
+)
+```
+
+The confidence thresholds that control the RecallFlow router are configurable:
+
+```python theme={null}
+memory = Memory(
+    confidence_threshold_high=0.9,   # Only synthesize when very confident
+    confidence_threshold_low=0.4,    # Explore deeper more aggressively
+    exploration_budget=2,            # Allow up to 2 exploration rounds
+    query_analysis_threshold=200,    # Skip LLM for queries shorter than this
+)
+```
+
+## Embedder Configuration
+
+Memory needs an embedding model to convert text into vectors for semantic search. By default, `Memory()` uses OpenAI `text-embedding-3-large` embeddings, which produce 3072-dimensional vectors. Set `OPENAI_API_KEY` for the default path, or configure a custom embedder in one of three ways.
+
+<Warning>
+  Existing local memory stores created with 1536-dimensional embeddings, such as `text-embedding-3-small` or `text-embedding-ada-002`, may not be compatible with the `text-embedding-3-large` default. This applies to both the OpenAI and Azure OpenAI providers — Azure's default embedding model also changed from `text-embedding-ada-002` to `text-embedding-3-large`. If local testing fails with an embedding dimension mismatch, reset memory with `crewai reset-memories -m`, delete the local memory storage directory, or explicitly configure the older embedder model until you migrate.
+</Warning>
+
+### Passing to Memory Directly
+
+```python theme={null}
+from crewai import Memory
+
+# As a config dict
+memory = Memory(embedder={"provider": "openai", "config": {"model_name": "text-embedding-3-large"}})
+
+# As a pre-built callable
+from crewai.rag.embeddings.factory import build_embedder
+embedder = build_embedder({"provider": "ollama", "config": {"model_name": "mxbai-embed-large"}})
+memory = Memory(embedder=embedder)
+```
+
+### Via Crew Embedder Config
+
+When using `memory=True`, the crew's `embedder` config is passed through:
+
+```python theme={null}
+from crewai import Crew
+
+crew = Crew(
+    agents=[...],
+    tasks=[...],
+    memory=True,
+    embedder={"provider": "openai", "config": {"model_name": "text-embedding-3-large"}},
+)
+```
+
+### Provider Examples
+
+<AccordionGroup>
+  <Accordion title="OpenAI (default)">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "openai",
+        "config": {
+            "model_name": "text-embedding-3-large",
+            # "api_key": "sk-...",  # or set OPENAI_API_KEY env var
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="Ollama (local, private)">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "ollama",
+        "config": {
+            "model_name": "mxbai-embed-large",
+            "url": "http://localhost:11434/api/embeddings",
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="Azure OpenAI">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "azure",
+        "config": {
+            "deployment_id": "your-embedding-deployment",
+            "api_key": "your-azure-api-key",
+            "api_base": "https://your-resource.openai.azure.com",
+            "api_version": "2024-02-01",
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="Google AI">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "google-generativeai",
+        "config": {
+            "model_name": "gemini-embedding-001",
+            # "api_key": "...",  # or set GOOGLE_API_KEY env var
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="Google Vertex AI">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "google-vertex",
+        "config": {
+            "model_name": "gemini-embedding-001",
+            "project_id": "your-gcp-project-id",
+            "location": "us-central1",
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="Cohere">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "cohere",
+        "config": {
+            "model_name": "embed-english-v3.0",
+            # "api_key": "...",  # or set COHERE_API_KEY env var
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="VoyageAI">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "voyageai",
+        "config": {
+            "model": "voyage-3",
+            # "api_key": "...",  # or set VOYAGE_API_KEY env var
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="AWS Bedrock">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "amazon-bedrock",
+        "config": {
+            "model_name": "amazon.titan-embed-text-v1",
+            # Uses default AWS credentials (boto3 session)
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="Hugging Face">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "huggingface",
+        "config": {
+            "model_name": "sentence-transformers/all-MiniLM-L6-v2",
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="Jina">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "jina",
+        "config": {
+            "model_name": "jina-embeddings-v2-base-en",
+            # "api_key": "...",  # or set JINA_API_KEY env var
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="IBM WatsonX">
+    ```python theme={null}
+    memory = Memory(embedder={
+        "provider": "watsonx",
+        "config": {
+            "model_id": "ibm/slate-30m-english-rtrvr",
+            "api_key": "your-watsonx-api-key",
+            "project_id": "your-project-id",
+            "url": "https://us-south.ml.cloud.ibm.com",
+        },
+    })
+    ```
+  </Accordion>
+
+  <Accordion title="Custom Embedder">
+    ```python theme={null}
+    # Pass any callable that takes a list of strings and returns a list of vectors
+    def my_embedder(texts: list[str]) -> list[list[float]]:
+        # Your embedding logic here
+        return [[0.1, 0.2, ...] for _ in texts]
+
+    memory = Memory(embedder=my_embedder)
+    ```
+  </Accordion>
+</AccordionGroup>
+
+### Provider Reference
+
+| Provider             | Key                    | Typical Model                 | Notes                                    |
+| :------------------- | :--------------------- | :---------------------------- | :--------------------------------------- |
+| OpenAI               | `openai`               | `text-embedding-3-large`      | Default. Set `OPENAI_API_KEY`.           |
+| Ollama               | `ollama`               | `mxbai-embed-large`           | Local, no API key needed.                |
+| Azure OpenAI         | `azure`                | `text-embedding-3-large`      | Default model. Requires `deployment_id`. |
+| Google AI            | `google-generativeai`  | `gemini-embedding-001`        | Set `GOOGLE_API_KEY`.                    |
+| Google Vertex        | `google-vertex`        | `gemini-embedding-001`        | Requires `project_id`.                   |
+| Cohere               | `cohere`               | `embed-english-v3.0`          | Strong multilingual support.             |
+| VoyageAI             | `voyageai`             | `voyage-3`                    | Optimized for retrieval.                 |
+| AWS Bedrock          | `amazon-bedrock`       | `amazon.titan-embed-text-v1`  | Uses boto3 credentials.                  |
+| Hugging Face         | `huggingface`          | `all-MiniLM-L6-v2`            | Local sentence-transformers.             |
+| Jina                 | `jina`                 | `jina-embeddings-v2-base-en`  | Set `JINA_API_KEY`.                      |
+| IBM WatsonX          | `watsonx`              | `ibm/slate-30m-english-rtrvr` | Requires `project_id`.                   |
+| Sentence Transformer | `sentence-transformer` | `all-MiniLM-L6-v2`            | Local, no API key.                       |
+| Custom               | `custom`               | --                            | Requires `embedding_callable`.           |
+
+## LLM Configuration
+
+Memory uses an LLM for save analysis (scope, categories, importance inference), consolidation decisions, and deep recall query analysis. You can configure which model to use.
+
+```python theme={null}
+from crewai import Memory, LLM
+
+# Default: gpt-4o-mini
+memory = Memory()
+
+# Use a different OpenAI model
+memory = Memory(llm="gpt-4o")
+
+# Use Anthropic
+memory = Memory(llm="anthropic/claude-3-haiku-20240307")
+
+# Use Ollama for fully local/private analysis
+memory = Memory(llm="ollama/llama3.2")
+
+# Use Google Gemini
+memory = Memory(llm="gemini/gemini-2.0-flash")
+
+# Pass a pre-configured LLM instance with custom settings
+llm = LLM(model="gpt-4o", temperature=0)
+memory = Memory(llm=llm)
+```
+
+The LLM is initialized **lazily** -- it's only created when first needed. This means `Memory()` never fails at construction time, even if API keys aren't set. Errors only surface when the LLM is actually called (e.g. when saving without explicit scope/categories, or during deep recall).
+
+For fully offline/private operation, use a local model for both the LLM and embedder:
+
+```python theme={null}
+memory = Memory(
+    llm="ollama/llama3.2",
+    embedder={"provider": "ollama", "config": {"model_name": "mxbai-embed-large"}},
+)
+```
+
+## Storage Backend
+
+* **Default**: LanceDB, stored under `./.crewai/memory` (or `$CREWAI_STORAGE_DIR/memory` if the env var is set, or the path you pass as `storage="path/to/dir"`).
+* **Custom backend**: Implement the `StorageBackend` protocol (see `crewai.memory.storage.backend`) and pass an instance to `Memory(storage=your_backend)`.
+
+## Discovery
+
+Inspect the scope hierarchy, categories, and records:
+
+```python theme={null}
+memory.tree()                        # Formatted tree of scopes and record counts
+memory.tree("/project", max_depth=2) # Subtree view
+memory.info("/project")              # ScopeInfo: record_count, categories, oldest/newest
+memory.list_scopes("/")              # Immediate child scopes
+memory.list_categories()             # Category names and counts
+memory.list_records(scope="/project/alpha", limit=20)  # Records in a scope, newest first
+```
+
+## Failure Behavior
+
+If the LLM fails during analysis (network error, rate limit, invalid response), memory degrades gracefully:
+
+* **Save analysis** -- A warning is logged and the memory is still stored with default scope `/`, empty categories, and importance `0.5`.
+* **Extract memories** -- The full content is stored as a single memory so nothing is dropped.
+* **Query analysis** -- Recall falls back to simple scope selection and vector search so you still get results.
+
+No exception is raised for these analysis failures; only storage or embedder failures will raise.
+
+## Privacy Note
+
+Memory content is sent to the configured LLM for analysis (scope/categories/importance on save, query analysis and optional deep recall). For sensitive data, use a local LLM (e.g. Ollama) or ensure your provider meets your compliance requirements.
+
+## Memory Events
+
+All memory operations emit events with `source_type="unified_memory"`. You can listen for timing, errors, and content.
+
+| Event                             | Description            | Key Properties                                   |
+| :-------------------------------- | :--------------------- | :----------------------------------------------- |
+| **MemoryQueryStartedEvent**       | Query begins           | `query`, `limit`                                 |
+| **MemoryQueryCompletedEvent**     | Query succeeds         | `query`, `results`, `query_time_ms`              |
+| **MemoryQueryFailedEvent**        | Query fails            | `query`, `error`                                 |
+| **MemorySaveStartedEvent**        | Save begins            | `value`, `metadata`                              |
+| **MemorySaveCompletedEvent**      | Save succeeds          | `value`, `save_time_ms`                          |
+| **MemorySaveFailedEvent**         | Save fails             | `value`, `error`                                 |
+| **MemoryRetrievalStartedEvent**   | Agent retrieval starts | `task_id`                                        |
+| **MemoryRetrievalCompletedEvent** | Agent retrieval done   | `task_id`, `memory_content`, `retrieval_time_ms` |
+
+Example: monitor query time:
+
+```python theme={null}
+from crewai.events import BaseEventListener, MemoryQueryCompletedEvent
+
+class MemoryMonitor(BaseEventListener):
+    def setup_listeners(self, crewai_event_bus):
+        @crewai_event_bus.on(MemoryQueryCompletedEvent)
+        def on_done(source, event):
+            if getattr(event, "source_type", None) == "unified_memory":
+                print(f"Query '{event.query}' completed in {event.query_time_ms:.0f}ms")
+```
+
+## Troubleshooting
+
+**Memory not persisting?**
+
+* Ensure the storage path is writable (default `./.crewai/memory`). Pass `storage="./your_path"` to use a different directory, or set the `CREWAI_STORAGE_DIR` environment variable.
+* When using a crew, confirm `memory=True` or `memory=Memory(...)` is set.
+
+**Slow recall?**
+
+* Use `depth="shallow"` for routine agent context. Reserve `depth="deep"` for complex queries.
+* Increase `query_analysis_threshold` to skip LLM analysis for more queries.
+
+**LLM analysis errors in logs?**
+
+* Memory still saves/recalls with safe defaults. Check API keys, rate limits, and model availability if you want full LLM analysis.
+
+**Background save errors in logs?**
+
+* Memory saves run in a background thread. Errors are emitted as `MemorySaveFailedEvent` but don't crash the agent. Check logs for the root cause (usually LLM or embedder connection issues).
+
+**Embedding dimension mismatch?**
+
+* Existing local memory stores may have been created with a different embedding model. The default OpenAI memory embedder is now `text-embedding-3-large` (3072 dimensions), while older stores commonly used 1536-dimensional embeddings. For local testing, run `crewai reset-memories -m`, delete the local memory storage directory, or configure the previous embedder model explicitly.
+
+**Concurrent write conflicts?**
+
+* LanceDB operations are serialized with a shared lock and retried automatically on conflict. This handles multiple `Memory` instances pointing at the same database (e.g. agent memory + crew memory). No action needed.
+
+**Browse memory from the terminal:**
+
+```bash theme={null}
+crewai memory                              # Opens the TUI browser
+crewai memory --storage-path ./my_memory   # Point to a specific directory
+```
+
+**Reset memory (e.g. for tests):**
+
+```python theme={null}
+crew.reset_memories(command_type="memory")  # Resets unified memory
+# Or on a Memory instance:
+memory.reset()                    # All scopes
+memory.reset(scope="/project/old")  # Only that subtree
+```
+
+## Configuration Reference
+
+All configuration is passed as keyword arguments to `Memory(...)`. Every parameter has a sensible default.
+
+| Parameter                   | Default                                  | Description                                                                         |
+| :-------------------------- | :--------------------------------------- | :---------------------------------------------------------------------------------- |
+| `llm`                       | `"gpt-4o-mini"`                          | LLM for analysis (model name or `BaseLLM` instance).                                |
+| `storage`                   | `"lancedb"`                              | Storage backend (`"lancedb"`, a path string, or a `StorageBackend` instance).       |
+| `embedder`                  | `None` (OpenAI `text-embedding-3-large`) | Embedder (config dict, callable, or `None` for default OpenAI).                     |
+| `recency_weight`            | `0.3`                                    | Weight for recency in composite score.                                              |
+| `semantic_weight`           | `0.5`                                    | Weight for semantic similarity in composite score.                                  |
+| `importance_weight`         | `0.2`                                    | Weight for importance in composite score.                                           |
+| `recency_half_life_days`    | `30`                                     | Days for recency score to halve (exponential decay).                                |
+| `consolidation_threshold`   | `0.85`                                   | Similarity above which consolidation is triggered on save. Set to `1.0` to disable. |
+| `consolidation_limit`       | `5`                                      | Max existing records to compare during consolidation.                               |
+| `default_importance`        | `0.5`                                    | Importance assigned when not provided and LLM analysis is skipped.                  |
+| `batch_dedup_threshold`     | `0.98`                                   | Cosine similarity for dropping near-duplicates within a `remember_many()` batch.    |
+| `confidence_threshold_high` | `0.8`                                    | Recall confidence above which results are returned directly.                        |
+| `confidence_threshold_low`  | `0.5`                                    | Recall confidence below which deeper exploration is triggered.                      |
+| `complex_query_threshold`   | `0.7`                                    | For complex queries, explore deeper below this confidence.                          |
+| `exploration_budget`        | `1`                                      | Number of LLM-driven exploration rounds during deep recall.                         |
+| `query_analysis_threshold`  | `200`                                    | Queries shorter than this (in characters) skip LLM analysis during deep recall.     |
 
 
 # Planning
@@ -16808,6 +16606,208 @@ writer1 = Agent(
 Tools are pivotal in extending the capabilities of CrewAI agents, enabling them to undertake a broad spectrum of tasks and collaborate effectively.
 When building solutions with CrewAI, leverage both custom and existing tools to empower your agents and enhance the AI ecosystem. Consider utilizing error handling,
 caching mechanisms, and the flexibility of tool arguments to optimize your agents' performance and capabilities.
+
+
+# Training
+Source: https://docs.crewai.com/v1.15.2/en/concepts/training
+
+Learn how to train your CrewAI agents by giving them feedback early on and get consistent results.
+
+## Overview
+
+The training feature in CrewAI allows you to train your AI agents using the command-line interface (CLI).
+By running the command `crewai train -n <n_iterations>`, you can specify the number of iterations for the training process.
+
+During training, CrewAI utilizes techniques to optimize the performance of your agents along with human feedback.
+This helps the agents improve their understanding, decision-making, and problem-solving abilities.
+
+### Training Your Crew Using the CLI
+
+To use the training feature, follow these steps:
+
+1. Open your terminal or command prompt.
+2. Navigate to the directory where your CrewAI project is located.
+3. Run the following command:
+
+```shell theme={null}
+crewai train -n <n_iterations> -f <filename.pkl>
+```
+
+<Tip>
+  Replace `<n_iterations>` with the desired number of training iterations and `<filename>` with the appropriate filename ending with `.pkl`.
+</Tip>
+
+<Note>
+  If you omit `-f`, the output defaults to `trained_agents_data.pkl` in the current working directory. You can pass an absolute path to control where the file is written.
+</Note>
+
+### Training your Crew programmatically
+
+To train your crew programmatically, use the following steps:
+
+1. Define the number of iterations for training.
+2. Specify the input parameters for the training process.
+3. Execute the training command within a try-except block to handle potential errors.
+
+```python Code theme={null}
+n_iterations = 2
+inputs = {"topic": "CrewAI Training"}
+filename = "your_model.pkl"
+
+try:
+    YourCrewName_Crew().crew().train(
+      n_iterations=n_iterations,
+      inputs=inputs,
+      filename=filename
+    )
+
+except Exception as e:
+    raise Exception(f"An error occurred while training the crew: {e}")
+```
+
+## How trained data is used by agents
+
+CrewAI uses the training artifacts in two ways: during training to incorporate your human feedback, and after training to guide agents with consolidated suggestions.
+
+### Training data flow
+
+```mermaid theme={null}
+flowchart TD
+  A["Start training<br/>CLI: crewai train -n -f<br/>or Python: crew.train(...)"] --> B["Setup training mode<br/>- task.human_input = true<br/>- disable delegation<br/>- init training_data.pkl + trained file"]
+
+  subgraph "Iterations"
+    direction LR
+    C["Iteration i<br/>initial_output"] --> D["User human_feedback"]
+    D --> E["improved_output"]
+    E --> F["Append to training_data.pkl<br/>by agent_id and iteration"]
+  end
+
+  B --> C
+  F --> G{"More iterations?"}
+  G -- "Yes" --> C
+  G -- "No" --> H["Evaluate per agent<br/>aggregate iterations"]
+
+  H --> I["Consolidate<br/>suggestions[] + quality + final_summary"]
+  I --> J["Save by agent role to trained file<br/>(default: trained_agents_data.pkl)"]
+
+  J --> K["Normal (non-training) runs"]
+  K --> L["Auto-load suggestions<br/>from trained_agents_data.pkl"]
+  L --> M["Append to prompt<br/>for consistent improvements"]
+```
+
+### During training runs
+
+* On each iteration, the system records for every agent:
+  * `initial_output`: the agent’s first answer
+  * `human_feedback`: your inline feedback when prompted
+  * `improved_output`: the agent’s follow-up answer after feedback
+* This data is stored in a working file named `training_data.pkl` keyed by the agent’s internal ID and iteration.
+* While training is active, the agent automatically appends your prior human feedback to its prompt to enforce those instructions on subsequent attempts within the training session.
+  Training is interactive: tasks set `human_input = true`, so running in a non-interactive environment will block on user input.
+
+### After training completes
+
+* When `train(...)` finishes, CrewAI evaluates the collected training data per agent and produces a consolidated result containing:
+  * `suggestions`: clear, actionable instructions distilled from your feedback and the difference between initial/improved outputs
+  * `quality`: a 0–10 score capturing improvement
+  * `final_summary`: a step-by-step set of action items for future tasks
+* These consolidated results are saved to the filename you pass to `train(...)` (default via CLI is `trained_agents_data.pkl`). Entries are keyed by the agent’s `role` so they can be applied across sessions.
+* During normal (non-training) execution, each agent automatically loads its consolidated `suggestions` and appends them to the task prompt as mandatory instructions. This gives you consistent improvements without changing your agent definitions.
+
+### File summary
+
+* `training_data.pkl` (ephemeral, per-session):
+  * Structure: `agent_id -> { iteration_number: { initial_output, human_feedback, improved_output } }`
+  * Purpose: capture raw data and human feedback during training
+  * Location: saved in the current working directory (CWD)
+* `trained_agents_data.pkl` (or your custom filename):
+  * Structure: `agent_role -> { suggestions: string[], quality: number, final_summary: string }`
+  * Purpose: persist consolidated guidance for future runs
+  * Location: written to the CWD by default; use `-f` to set a custom (including absolute) path
+
+## Small Language Model Considerations
+
+<Warning>
+  When using smaller language models (≤7B parameters) for training data evaluation, be aware that they may face challenges with generating structured outputs and following complex instructions.
+</Warning>
+
+### Limitations of Small Models in Training Evaluation
+
+<CardGroup>
+  <Card title="JSON Output Accuracy" icon="triangle-exclamation">
+    Smaller models often struggle with producing valid JSON responses needed for structured training evaluations, leading to parsing errors and incomplete data.
+  </Card>
+
+  <Card title="Evaluation Quality" icon="chart-line">
+    Models under 7B parameters may provide less nuanced evaluations with limited reasoning depth compared to larger models.
+  </Card>
+
+  <Card title="Instruction Following" icon="list-check">
+    Complex training evaluation criteria may not be fully followed or considered by smaller models.
+  </Card>
+
+  <Card title="Consistency" icon="rotate">
+    Evaluations across multiple training iterations may lack consistency with smaller models.
+  </Card>
+</CardGroup>
+
+### Recommendations for Training
+
+<Tabs>
+  <Tab title="Best Practice">
+    For optimal training quality and reliable evaluations, we strongly recommend using models with at least 7B parameters or larger:
+
+    ```python theme={null}
+    from crewai import Agent, Crew, Task, LLM
+
+    # Recommended minimum for training evaluation
+    llm = LLM(model="mistral/open-mistral-7b")
+
+    # Better options for reliable training evaluation
+    llm = LLM(model="anthropic/claude-3-sonnet-20240229-v1:0")
+    llm = LLM(model="gpt-4o")
+
+    # Use this LLM with your agents
+    agent = Agent(
+        role="Training Evaluator",
+        goal="Provide accurate training feedback",
+        llm=llm
+    )
+    ```
+
+    <Tip>
+      More powerful models provide higher quality feedback with better reasoning, leading to more effective training iterations.
+    </Tip>
+  </Tab>
+
+  <Tab title="Small Model Usage">
+    If you must use smaller models for training evaluation, be aware of these constraints:
+
+    ```python theme={null}
+    # Using a smaller model (expect some limitations)
+    llm = LLM(model="huggingface/microsoft/Phi-3-mini-4k-instruct")
+    ```
+
+    <Warning>
+      While CrewAI includes optimizations for small models, expect less reliable and less nuanced evaluation results that may require more human intervention during training.
+    </Warning>
+  </Tab>
+</Tabs>
+
+### Key Points to Note
+
+* **Positive Integer Requirement:** Ensure that the number of iterations (`n_iterations`) is a positive integer. The code will raise a `ValueError` if this condition is not met.
+* **Filename Requirement:** Ensure that the filename ends with `.pkl`. The code will raise a `ValueError` if this condition is not met.
+* **Error Handling:** The code handles subprocess errors and unexpected exceptions, providing error messages to the user.
+* Trained guidance is applied at prompt time; it does not modify your Python/YAML agent configuration.
+* Agents automatically load trained suggestions from a file named `trained_agents_data.pkl` located in the current working directory. If you trained to a different filename, pass that path with `Crew(trained_agents_file="my_custom_trained.pkl")`, set `CREWAI_TRAINED_AGENTS_FILE`, or use `crewai run -f my_custom_trained.pkl`.
+* You can change the output filename when calling `crewai train` with `-f/--filename`. Absolute paths are supported if you want to save outside the CWD.
+
+It is important to note that the training process may take some time, depending on the complexity of your agents and will also require your feedback on each iteration.
+
+Once the training is complete, your agents will be equipped with enhanced capabilities and knowledge, ready to tackle complex tasks and provide more consistent and valuable insights.
+
+Remember to regularly update and retrain your agents to ensure they stay up-to-date with the latest information and advancements in the field.
 
 
 # MCP DSL Integration
@@ -18659,469 +18659,6 @@ Log into your Phoenix Cloud account and navigate to the project you specified in
 * [CrewAI Documentation](https://docs.crewai.com/) - Overview of the CrewAI framework.
 * [OpenTelemetry Docs](https://opentelemetry.io/docs/) - OpenTelemetry guide
 * [OpenInference GitHub](https://github.com/openinference/openinference) - Source code for OpenInference SDK.
-
-
-# Braintrust
-Source: https://docs.crewai.com/v1.15.2/en/observability/braintrust
-
-Braintrust integration for CrewAI with OpenTelemetry tracing and evaluation
-
-# Braintrust Integration
-
-This guide demonstrates how to integrate **Braintrust** with **CrewAI** using OpenTelemetry for comprehensive tracing and evaluation. By the end of this guide, you will be able to trace your CrewAI agents, monitor their performance, and evaluate their outputs using Braintrust's powerful observability platform.
-
-> **What is Braintrust?** [Braintrust](https://www.braintrust.dev) is an AI evaluation and observability platform that provides comprehensive tracing, evaluation, and monitoring for AI applications with built-in experiment tracking and performance analytics.
-
-## Get Started
-
-We'll walk through a simple example of using CrewAI and integrating it with Braintrust via OpenTelemetry for comprehensive observability and evaluation.
-
-### Step 1: Install Dependencies
-
-```bash theme={null}
-uv add braintrust[otel] crewai crewai-tools opentelemetry-instrumentation-openai opentelemetry-instrumentation-crewai python-dotenv
-```
-
-### Step 2: Set Up Environment Variables
-
-Setup Braintrust API keys and configure OpenTelemetry to send traces to Braintrust. You'll need a Braintrust API key and your OpenAI API key.
-
-```python theme={null}
-import os
-from getpass import getpass
-
-# Get your Braintrust credentials
-BRAINTRUST_API_KEY = getpass("🔑 Enter your Braintrust API Key: ")
-
-# Get API keys for services
-OPENAI_API_KEY = getpass("🔑 Enter your OpenAI API key: ")
-
-# Set environment variables
-os.environ["BRAINTRUST_API_KEY"] = BRAINTRUST_API_KEY
-os.environ["BRAINTRUST_PARENT"] = "project_name:crewai-demo"
-os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
-```
-
-### Step 3: Initialize OpenTelemetry with Braintrust
-
-Initialize the Braintrust OpenTelemetry instrumentation to start capturing traces and send them to Braintrust.
-
-```python theme={null}
-import os
-from typing import Any, Dict
-
-from braintrust.otel import BraintrustSpanProcessor
-from crewai import Agent, Crew, Task
-from crewai.llm import LLM
-from opentelemetry import trace
-from opentelemetry.instrumentation.crewai import CrewAIInstrumentor
-from opentelemetry.instrumentation.openai import OpenAIInstrumentor
-from opentelemetry.sdk.trace import TracerProvider
-
-def setup_tracing() -> None:
-    """Setup OpenTelemetry tracing with Braintrust."""
-    current_provider = trace.get_tracer_provider()
-    if isinstance(current_provider, TracerProvider):
-        provider = current_provider
-    else:
-        provider = TracerProvider()
-        trace.set_tracer_provider(provider)
-
-    provider.add_span_processor(BraintrustSpanProcessor())
-    CrewAIInstrumentor().instrument(tracer_provider=provider)
-    OpenAIInstrumentor().instrument(tracer_provider=provider)
-
-
-setup_tracing()
-```
-
-### Step 4: Create a CrewAI Application
-
-We'll create a CrewAI application where two agents collaborate to research and write a blog post about AI advancements, with comprehensive tracing enabled.
-
-```python theme={null}
-from crewai import Agent, Crew, Process, Task
-from crewai_tools import SerperDevTool
-
-def create_crew() -> Crew:
-    """Create a crew with multiple agents for comprehensive tracing."""
-    llm = LLM(model="gpt-4o-mini")
-    search_tool = SerperDevTool()
-
-    # Define agents with specific roles
-    researcher = Agent(
-        role="Senior Research Analyst",
-        goal="Uncover cutting-edge developments in AI and data science",
-        backstory="""You work at a leading tech think tank.
-        Your expertise lies in identifying emerging trends.
-        You have a knack for dissecting complex data and presenting actionable insights.""",
-        verbose=True,
-        allow_delegation=False,
-        llm=llm,
-        tools=[search_tool],
-    )
-
-    writer = Agent(
-        role="Tech Content Strategist",
-        goal="Craft compelling content on tech advancements",
-        backstory="""You are a renowned Content Strategist, known for your insightful and engaging articles.
-        You transform complex concepts into compelling narratives.""",
-        verbose=True,
-        allow_delegation=True,
-        llm=llm,
-    )
-
-    # Create tasks for your agents
-    research_task = Task(
-        description="""Conduct a comprehensive analysis of the latest advancements in {topic}.
-        Identify key trends, breakthrough technologies, and potential industry impacts.""",
-        expected_output="Full analysis report in bullet points",
-        agent=researcher,
-    )
-
-    writing_task = Task(
-        description="""Using the insights provided, develop an engaging blog
-        post that highlights the most significant {topic} advancements.
-        Your post should be informative yet accessible, catering to a tech-savvy audience.
-        Make it sound cool, avoid complex words so it doesn't sound like AI.""",
-        expected_output="Full blog post of at least 4 paragraphs",
-        agent=writer,
-        context=[research_task],
-    )
-
-    # Instantiate your crew with a sequential process
-    crew = Crew(
-        agents=[researcher, writer], 
-        tasks=[research_task, writing_task], 
-        verbose=True, 
-        process=Process.sequential
-    )
-
-    return crew
-
-def run_crew():
-    """Run the crew and return results."""
-    crew = create_crew()
-    result = crew.kickoff(inputs={"topic": "AI developments"})
-    return result
-
-# Run your crew
-if __name__ == "__main__":
-    # Instrumentation is already initialized above in this module
-    result = run_crew()
-    print(result)
-```
-
-### Step 5: View Traces in Braintrust
-
-After running your crew, you can view comprehensive traces in Braintrust through different perspectives:
-
-<Tabs>
-  <Tab title="Trace">
-    <Frame>
-      <img alt="Braintrust Trace View" />
-    </Frame>
-  </Tab>
-
-  <Tab title="Timeline">
-    <Frame>
-      <img alt="Braintrust Timeline View" />
-    </Frame>
-  </Tab>
-
-  <Tab title="Thread">
-    <Frame>
-      <img alt="Braintrust Thread View" />
-    </Frame>
-  </Tab>
-</Tabs>
-
-### Step 6: Evaluate via SDK (Experiments)
-
-You can also run evaluations using Braintrust's Eval SDK. This is useful for comparing versions or scoring outputs offline. Below is a Python example using the `Eval` class with the crew we created above:
-
-```python theme={null}
-# eval_crew.py
-from braintrust import Eval
-from autoevals import Levenshtein
-
-def evaluate_crew_task(input_data):
-    """Task function that wraps our crew for evaluation."""
-    crew = create_crew()
-    result = crew.kickoff(inputs={"topic": input_data["topic"]})
-    return str(result)
-
-Eval(
-    "AI Research Crew",  # Project name
-    {
-        "data": lambda: [
-            {"topic": "artificial intelligence trends 2024"},
-            {"topic": "machine learning breakthroughs"},
-            {"topic": "AI ethics and governance"},
-        ],
-        "task": evaluate_crew_task,
-        "scores": [Levenshtein],
-    },
-)
-```
-
-Setup your API key and run:
-
-```bash theme={null}
-export BRAINTRUST_API_KEY="YOUR_API_KEY"
-braintrust eval eval_crew.py
-```
-
-See the [Braintrust Eval SDK guide](https://www.braintrust.dev/docs/start/eval-sdk) for more details.
-
-### Key Features of Braintrust Integration
-
-* **Comprehensive Tracing**: Track all agent interactions, tool usage, and LLM calls
-* **Performance Monitoring**: Monitor execution times, token usage, and success rates
-* **Experiment Tracking**: Compare different crew configurations and models
-* **Automated Evaluation**: Set up custom evaluation metrics for crew outputs
-* **Error Tracking**: Monitor and debug failures across your crew executions
-* **Cost Analysis**: Track token usage and associated costs
-
-### Version Compatibility Information
-
-* Python 3.8+
-* CrewAI >= 0.86.0
-* Braintrust >= 0.1.0
-* OpenTelemetry SDK >= 1.31.0
-
-### References
-
-* [Braintrust Documentation](https://www.braintrust.dev/docs) - Overview of the Braintrust platform
-* [Braintrust CrewAI Integration](https://www.braintrust.dev/docs/integrations/crew-ai) - Official CrewAI integration guide
-* [Braintrust Eval SDK](https://www.braintrust.dev/docs/start/eval-sdk) - Run experiments via the SDK
-* [CrewAI Documentation](https://docs.crewai.com/) - Overview of the CrewAI framework
-* [OpenTelemetry Docs](https://opentelemetry.io/docs/) - OpenTelemetry guide
-* [Braintrust GitHub](https://github.com/braintrustdata/braintrust) - Source code for Braintrust SDK
-
-
-# Datadog Integration
-Source: https://docs.crewai.com/v1.15.2/en/observability/datadog
-
-Learn how to integrate Datadog with CrewAI to submit LLM Observability traces to Datadog.
-
-# Integrate Datadog with CrewAI
-
-This guide will demonstrate how to integrate **[Datadog LLM Observability](https://docs.datadoghq.com/llm_observability/)** with **CrewAI** using [Datadog auto-instrumentation](https://docs.datadoghq.com/llm_observability/instrumentation/auto_instrumentation?tab=python). By the end of this guide, you will be able to submit LLM Observability traces to Datadog and view your CrewAI agent runs in Datadog LLM Observability's [Agentic Execution View](https://docs.datadoghq.com/llm_observability/monitoring/agent_monitoring).
-
-## What is Datadog LLM Observability?
-
-[Datadog LLM Observability](https://www.datadoghq.com/product/llm-observability/) helps AI engineers, data scientists, and application developers quickly develop, evaluate, and monitor LLM applications. Confidently improve output quality, performance, costs, and overall risk with structured experiments, end-to-end tracing across AI agents, and evaluations.
-
-## Getting Started
-
-### Install Dependencies
-
-```shell theme={null}
-pip install ddtrace crewai crewai-tools
-```
-
-### Set Environment Variables
-
-If you do not have a Datadog API key, you can [create an account](https://www.datadoghq.com/) and [get your API key](https://docs.datadoghq.com/account_management/api-app-keys/#api-keys).
-
-You will also need to specify an ML Application name in the following environment variables. An ML Application is a grouping of LLM Observability traces associated with a specific LLM-based application. See [ML Application Naming Guidelines](https://docs.datadoghq.com/llm_observability/instrumentation/sdk?tab=python#application-naming-guidelines) for more information on limitations with ML Application names.
-
-```shell theme={null}
-export DD_API_KEY=<YOUR_DD_API_KEY>
-export DD_SITE=<YOUR_DD_SITE>
-export DD_LLMOBS_ENABLED=true
-export DD_LLMOBS_ML_APP=<YOUR_ML_APP_NAME>
-export DD_LLMOBS_AGENTLESS_ENABLED=true
-export DD_APM_TRACING_ENABLED=false
-```
-
-Additionally, configure any LLM provider API keys
-
-```shell theme={null}
-export OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
-export ANTHROPIC_API_KEY=<YOUR_ANTHROPIC_API_KEY>
-export GEMINI_API_KEY=<YOUR_GEMINI_API_KEY>
-...
-```
-
-### Create a CrewAI Agent Application
-
-```python theme={null}
-# crewai_agent.py
-from crewai import Agent, Task, Crew
-
-from crewai_tools import (
-    WebsiteSearchTool
-)
-
-web_rag_tool = WebsiteSearchTool()
-
-writer = Agent(
-    role="Writer",
-    goal="You make math engaging and understandable for young children through poetry",
-    backstory="You're an expert in writing haikus but you know nothing of math.",
-    tools=[web_rag_tool],
-)
-
-task = Task(
-    description=("What is {multiplication}?"),
-    expected_output=("Compose a haiku that includes the answer."),
-    agent=writer
-)
-
-crew = Crew(
-    agents=[writer],
-    tasks=[task],
-    share_crew=False
-)
-
-output = crew.kickoff(dict(multiplication="2 * 2"))
-```
-
-### Run the Application with Datadog Auto-Instrumentation
-
-With the [environment variables](#set-environment-variables) set, you can now run the application with Datadog auto-instrumentation.
-
-```shell theme={null}
-ddtrace-run python crewai_agent.py
-```
-
-### View the Traces in Datadog
-
-After running the application, you can view the traces in [Datadog LLM Observability's Traces View](https://app.datadoghq.com/llm/traces), selecting the ML Application name you chose from the top-left dropdown.
-
-Clicking on a trace will show you the details of the trace, including total tokens used, number of LLM calls, models used, and estimated cost. Clicking into a specific span will narrow down these details, and show related input, output, and metadata.
-
-<Frame>
-  <img alt="Datadog LLM Observability Trace View" />
-</Frame>
-
-Additionally, you can view the execution graph view of the trace, which shows the control and data flow of the trace, which will scale with larger agents to show handoffs and relationships between LLM calls, tool calls, and agent interactions.
-
-<Frame>
-  <img alt="Datadog LLM Observability Agent Execution Flow View" />
-</Frame>
-
-## References
-
-* [Datadog LLM Observability](https://www.datadoghq.com/product/llm-observability/)
-* [Datadog LLM Observability CrewAI Auto-Instrumentation](https://docs.datadoghq.com/llm_observability/instrumentation/auto_instrumentation?tab=python#crew-ai)
-
-
-# Galileo
-Source: https://docs.crewai.com/v1.15.2/en/observability/galileo
-
-Galileo integration for CrewAI tracing and evaluation
-
-## Overview
-
-This guide demonstrates how to integrate **Galileo** with **CrewAI**
-for comprehensive tracing and Evaluation Engineering.
-By the end of this guide, you will be able to trace your CrewAI agents,
-monitor their performance, and evaluate their behaviour with
-Galileo's powerful observability platform.
-
-> **What is Galileo?** [Galileo](https://galileo.ai) is AI evaluation and observability
-> platform that delivers end-to-end tracing, evaluation,
-> and monitoring for AI applications. It enables teams to capture ground truth,
-> create robust guardrails, and run systematic experiments with
-> built-in experiment tracking and performance analytics—ensuring reliability,
-> transparency, and continuous improvement across the AI lifecycle.
-
-## Getting started
-
-This tutorial follows the [CrewAI quickstart](/en/quickstart) and shows how to add
-Galileo's [CrewAIEventListener](https://v2docs.galileo.ai/sdk-api/python/reference/handlers/crewai/handler),
-an event handler.
-For more information, see Galileo’s
-[Add Galileo to a CrewAI Application](https://v2docs.galileo.ai/how-to-guides/third-party-integrations/add-galileo-to-crewai/add-galileo-to-crewai)
-how-to guide.
-
-> **Note** This tutorial assumes you have completed the [CrewAI quickstart](/en/quickstart).
-> If you want a completed comprehensive example, see the Galileo
-> [CrewAI sdk-example repo](https://github.com/rungalileo/sdk-examples/tree/main/python/agent/crew-ai).
-
-### Step 1: Install dependencies
-
-Install the required dependencies for your app.
-Create a virtual environment using your preferred method,
-then install dependencies inside that environment using your
-preferred tool:
-
-```bash theme={null}
-uv add galileo 
-```
-
-### Step 2: Add to the .env file from the [CrewAI quickstart](/en/quickstart)
-
-```bash theme={null}
-# Your Galileo API key
-GALILEO_API_KEY="your-galileo-api-key"
-
-# Your Galileo project name
-GALILEO_PROJECT="your-galileo-project-name"
-
-# The name of the Log stream you want to use for logging
-GALILEO_LOG_STREAM="your-galileo-log-stream "
-```
-
-### Step 3: Add the Galileo event listener
-
-To enable logging with Galileo, you need to create an instance of the `CrewAIEventListener`.
-Import the Galileo CrewAI handler package by
-adding the following code at the top of your main.py file:
-
-```python theme={null}
-from galileo.handlers.crewai.handler import CrewAIEventListener
-```
-
-At the start of your run function, create the event listener:
-
-```python theme={null}
-def run():
-    # Create the event listener
-    CrewAIEventListener()
-    # The rest of your existing code goes here
-```
-
-When you create the listener instance, it is automatically
-registered with CrewAI.
-
-### Step 4: Run your crew
-
-Run your crew with the CrewAI CLI:
-
-```bash theme={null}
-crewai run
-```
-
-### Step 5: View the traces in Galileo
-
-Once your crew has finished, the traces will be flushed and appear in Galileo.
-
-<img alt="Galileo trace view" />
-
-## Understanding the Galileo Integration
-
-Galileo integrates with CrewAI by registering an event listener
-that captures Crew execution events (e.g., agent actions, tool calls, model responses)
-and forwards them to Galileo for observability and evaluation.
-
-### Understanding the event listener
-
-Creating a `CrewAIEventListener()` instance is all that’s
-required to enable Galileo for a CrewAI run. When instantiated, the listener:
-
-* Automatically registers itself with CrewAI
-* Reads Galileo configuration from environment variables
-* Logs all run data to the Galileo project and log stream specified by
-  `GALILEO_PROJECT` and `GALILEO_LOG_STREAM`
-
-No additional configuration or code changes are required.
-All data from this run is logged to the Galileo project and
-log stream specified by your environment configuration
-(for example, GALILEO\_PROJECT and GALILEO\_LOG\_STREAM).
 
 
 # Overview
@@ -35902,139 +35439,6 @@ Track history and performance of triggered runs with the **Executions** list in 
 * Remember: use `crewai triggers run` (not `crewai run`) to simulate trigger execution
 
 
-# Microsoft Teams Trigger
-Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/microsoft-teams-trigger
-
-Kick off crews from Microsoft Teams chat activity
-
-## Overview
-
-Use the Microsoft Teams trigger to start automations whenever a new chat is created. Common patterns include summarizing inbound requests, routing urgent messages to support teams, or creating follow-up tasks in other systems.
-
-<Tip>
-  Confirm Microsoft Teams is connected under **Tools & Integrations** and
-  enabled in the **Triggers** tab for your deployment.
-</Tip>
-
-## Enabling the Microsoft Teams Trigger
-
-1. Open your deployment in CrewAI AMP
-2. Go to the **Triggers** tab
-3. Locate **Microsoft Teams** and switch the toggle to enable
-
-<Frame>
-  <img alt="Enable or disable triggers with toggle" />
-</Frame>
-
-## Example: Summarize a new chat thread
-
-```python theme={null}
-from teams_chat_created_crew import MicrosoftTeamsChatTrigger
-
-crew = MicrosoftTeamsChatTrigger().crew()
-result = crew.kickoff({
-    "crewai_trigger_payload": teams_payload,
-})
-print(result.raw)
-```
-
-The crew parses thread metadata (subject, created time, roster) and generates an action plan for the receiving team.
-
-## Testing Locally
-
-Test your Microsoft Teams trigger integration locally using the CrewAI CLI:
-
-```bash theme={null}
-# View all available triggers
-crewai triggers list
-
-# Simulate a Microsoft Teams trigger with realistic payload
-crewai triggers run microsoft_teams/teams_message_created
-```
-
-The `crewai triggers run` command will execute your crew with a complete Teams payload, allowing you to test your parsing logic before deployment.
-
-<Warning>
-  Use `crewai triggers run microsoft_teams/teams_message_created` (not `crewai
-      run`) to simulate trigger execution during development. After deployment, your
-  crew will automatically receive the trigger payload.
-</Warning>
-
-## Troubleshooting
-
-* Ensure the Teams connection is active; it must be refreshed if the tenant revokes permissions
-* Test locally with `crewai triggers run microsoft_teams/teams_message_created` to see the exact payload structure
-* Confirm the webhook subscription in Microsoft 365 is still valid if payloads stop arriving
-* Review execution logs for payload shape mismatches—Graph notifications may omit fields when a chat is private or restricted
-* Remember: use `crewai triggers run` (not `crewai run`) to simulate trigger execution
-
-
-# OneDrive Trigger
-Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/onedrive-trigger
-
-Automate responses to OneDrive file activity
-
-## Overview
-
-Start automations when files change inside OneDrive. You can generate audit summaries, notify security teams about external sharing, or update downstream line-of-business systems with new document metadata.
-
-<Tip>
-  Connect OneDrive in **Tools & Integrations** and toggle the trigger on for
-  your deployment.
-</Tip>
-
-## Enabling the OneDrive Trigger
-
-1. Open your deployment in CrewAI AMP
-2. Go to the **Triggers** tab
-3. Locate **OneDrive** and switch the toggle to enable
-
-<Frame>
-  <img alt="Enable or disable triggers with toggle" />
-</Frame>
-
-## Example: Audit file permissions
-
-```python theme={null}
-from onedrive_file_crew import OneDriveFileTrigger
-
-crew = OneDriveFileTrigger().crew()
-crew.kickoff({
-    "crewai_trigger_payload": onedrive_payload,
-})
-```
-
-The crew inspects file metadata, user activity, and permission changes to produce a compliance-friendly summary.
-
-## Testing Locally
-
-Test your OneDrive trigger integration locally using the CrewAI CLI:
-
-```bash theme={null}
-# View all available triggers
-crewai triggers list
-
-# Simulate a OneDrive trigger with realistic payload
-crewai triggers run microsoft_onedrive/file_changed
-```
-
-The `crewai triggers run` command will execute your crew with a complete OneDrive payload, allowing you to test your parsing logic before deployment.
-
-<Warning>
-  Use `crewai triggers run microsoft_onedrive/file_changed` (not `crewai run`)
-  to simulate trigger execution during development. After deployment, your crew
-  will automatically receive the trigger payload.
-</Warning>
-
-## Troubleshooting
-
-* Ensure the connected account has permission to read the file metadata included in the webhook
-* Test locally with `crewai triggers run microsoft_onedrive/file_changed` to see the exact payload structure
-* If the trigger fires but the payload is missing `permissions`, confirm the site-level sharing settings allow Graph to return this field
-* For large tenants, filter notifications upstream so the crew only runs on relevant directories
-* Remember: use `crewai triggers run` (not `crewai run`) to simulate trigger execution
-
-
 # Outlook Trigger
 Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/outlook-trigger
 
@@ -36099,71 +35503,6 @@ The `crewai triggers run` command will execute your crew with a complete Outlook
 * If attachments are missing, confirm the webhook subscription includes the `includeResourceData` flag
 * Review execution logs when events fail to match—cancellation payloads lack attendee lists by design and the crew should account for that
 * Remember: use `crewai triggers run` (not `crewai run`) to simulate trigger execution
-
-
-# Slack Trigger
-Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/slack-trigger
-
-Trigger CrewAI crews directly from Slack using slash commands
-
-This guide explains how to start a crew directly from Slack using CrewAI triggers.
-
-## Prerequisites
-
-* CrewAI Slack trigger installed and connected to your Slack workspace
-* At least one crew configured in CrewAI
-
-## Setup Steps
-
-<Steps>
-  <Step title="Ensure the CrewAI Slack trigger is set up">
-    In the CrewAI dashboard, navigate to the **Triggers** section.
-
-    <Frame>
-      <img alt="CrewAI Slack Integration" />
-    </Frame>
-
-    Verify that Slack is listed and is connected.
-  </Step>
-
-  <Step title="Open your Slack channel">
-    * Navigate to the channel where you want to kickoff the crew.
-    * Type the slash command "**/kickoff**" to initiate the crew kickoff process.
-    * You should see a  "**Kickoff crew**" appear as you type:
-      <Frame>
-        <img alt="Kickoff crew" />
-      </Frame>
-    * Press Enter or select the "**Kickoff crew**" option. A dialog box titled "**Kickoff an AI Crew**" will appear.
-  </Step>
-
-  <Step title="Select the crew you want to start">
-    * In the dropdown menu labeled "**Select of the crews online:**", choose the crew you want to start.
-    * In the example below, "**prep-for-meeting**" is selected:
-      <Frame>
-        <img alt="Kickoff crew dropdown" />
-      </Frame>
-    * If your crew requires any inputs, click the "**Add Inputs**" button to provide them.
-      <Note>
-        The "**Add Inputs**" button is shown in the example above but is not yet clicked.
-      </Note>
-  </Step>
-
-  <Step title="Click Kickoff and wait for the crew to complete">
-    * Once you've selected the crew and added any necessary inputs, click "**Kickoff**" to start the crew.
-      <Frame>
-        <img alt="Kickoff crew" />
-      </Frame>
-    * The crew will start executing and you will see the results in the Slack channel.
-      <Frame>
-        <img alt="Kickoff crew results" />
-      </Frame>
-  </Step>
-</Steps>
-
-## Tips
-
-* Make sure you have the necessary permissions to use the `/kickoff` command in your Slack workspace.
-* If you don't see your desired crew in the dropdown, ensure it's properly configured and online in CrewAI.
 
 
 # Asana Integration
@@ -53568,6 +52907,469 @@ Note how the `llm` and `tools` in the YAML file correspond to the methods decora
 By following these guidelines and properly using annotations, you can maintain classic Python/YAML crews cleanly. For new crews, prefer the JSON-first structure covered in [Crews](/en/concepts/crews).
 
 
+# Braintrust
+Source: https://docs.crewai.com/v1.15.2/en/observability/braintrust
+
+Braintrust integration for CrewAI with OpenTelemetry tracing and evaluation
+
+# Braintrust Integration
+
+This guide demonstrates how to integrate **Braintrust** with **CrewAI** using OpenTelemetry for comprehensive tracing and evaluation. By the end of this guide, you will be able to trace your CrewAI agents, monitor their performance, and evaluate their outputs using Braintrust's powerful observability platform.
+
+> **What is Braintrust?** [Braintrust](https://www.braintrust.dev) is an AI evaluation and observability platform that provides comprehensive tracing, evaluation, and monitoring for AI applications with built-in experiment tracking and performance analytics.
+
+## Get Started
+
+We'll walk through a simple example of using CrewAI and integrating it with Braintrust via OpenTelemetry for comprehensive observability and evaluation.
+
+### Step 1: Install Dependencies
+
+```bash theme={null}
+uv add braintrust[otel] crewai crewai-tools opentelemetry-instrumentation-openai opentelemetry-instrumentation-crewai python-dotenv
+```
+
+### Step 2: Set Up Environment Variables
+
+Setup Braintrust API keys and configure OpenTelemetry to send traces to Braintrust. You'll need a Braintrust API key and your OpenAI API key.
+
+```python theme={null}
+import os
+from getpass import getpass
+
+# Get your Braintrust credentials
+BRAINTRUST_API_KEY = getpass("🔑 Enter your Braintrust API Key: ")
+
+# Get API keys for services
+OPENAI_API_KEY = getpass("🔑 Enter your OpenAI API key: ")
+
+# Set environment variables
+os.environ["BRAINTRUST_API_KEY"] = BRAINTRUST_API_KEY
+os.environ["BRAINTRUST_PARENT"] = "project_name:crewai-demo"
+os.environ["OPENAI_API_KEY"] = OPENAI_API_KEY
+```
+
+### Step 3: Initialize OpenTelemetry with Braintrust
+
+Initialize the Braintrust OpenTelemetry instrumentation to start capturing traces and send them to Braintrust.
+
+```python theme={null}
+import os
+from typing import Any, Dict
+
+from braintrust.otel import BraintrustSpanProcessor
+from crewai import Agent, Crew, Task
+from crewai.llm import LLM
+from opentelemetry import trace
+from opentelemetry.instrumentation.crewai import CrewAIInstrumentor
+from opentelemetry.instrumentation.openai import OpenAIInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+
+def setup_tracing() -> None:
+    """Setup OpenTelemetry tracing with Braintrust."""
+    current_provider = trace.get_tracer_provider()
+    if isinstance(current_provider, TracerProvider):
+        provider = current_provider
+    else:
+        provider = TracerProvider()
+        trace.set_tracer_provider(provider)
+
+    provider.add_span_processor(BraintrustSpanProcessor())
+    CrewAIInstrumentor().instrument(tracer_provider=provider)
+    OpenAIInstrumentor().instrument(tracer_provider=provider)
+
+
+setup_tracing()
+```
+
+### Step 4: Create a CrewAI Application
+
+We'll create a CrewAI application where two agents collaborate to research and write a blog post about AI advancements, with comprehensive tracing enabled.
+
+```python theme={null}
+from crewai import Agent, Crew, Process, Task
+from crewai_tools import SerperDevTool
+
+def create_crew() -> Crew:
+    """Create a crew with multiple agents for comprehensive tracing."""
+    llm = LLM(model="gpt-4o-mini")
+    search_tool = SerperDevTool()
+
+    # Define agents with specific roles
+    researcher = Agent(
+        role="Senior Research Analyst",
+        goal="Uncover cutting-edge developments in AI and data science",
+        backstory="""You work at a leading tech think tank.
+        Your expertise lies in identifying emerging trends.
+        You have a knack for dissecting complex data and presenting actionable insights.""",
+        verbose=True,
+        allow_delegation=False,
+        llm=llm,
+        tools=[search_tool],
+    )
+
+    writer = Agent(
+        role="Tech Content Strategist",
+        goal="Craft compelling content on tech advancements",
+        backstory="""You are a renowned Content Strategist, known for your insightful and engaging articles.
+        You transform complex concepts into compelling narratives.""",
+        verbose=True,
+        allow_delegation=True,
+        llm=llm,
+    )
+
+    # Create tasks for your agents
+    research_task = Task(
+        description="""Conduct a comprehensive analysis of the latest advancements in {topic}.
+        Identify key trends, breakthrough technologies, and potential industry impacts.""",
+        expected_output="Full analysis report in bullet points",
+        agent=researcher,
+    )
+
+    writing_task = Task(
+        description="""Using the insights provided, develop an engaging blog
+        post that highlights the most significant {topic} advancements.
+        Your post should be informative yet accessible, catering to a tech-savvy audience.
+        Make it sound cool, avoid complex words so it doesn't sound like AI.""",
+        expected_output="Full blog post of at least 4 paragraphs",
+        agent=writer,
+        context=[research_task],
+    )
+
+    # Instantiate your crew with a sequential process
+    crew = Crew(
+        agents=[researcher, writer], 
+        tasks=[research_task, writing_task], 
+        verbose=True, 
+        process=Process.sequential
+    )
+
+    return crew
+
+def run_crew():
+    """Run the crew and return results."""
+    crew = create_crew()
+    result = crew.kickoff(inputs={"topic": "AI developments"})
+    return result
+
+# Run your crew
+if __name__ == "__main__":
+    # Instrumentation is already initialized above in this module
+    result = run_crew()
+    print(result)
+```
+
+### Step 5: View Traces in Braintrust
+
+After running your crew, you can view comprehensive traces in Braintrust through different perspectives:
+
+<Tabs>
+  <Tab title="Trace">
+    <Frame>
+      <img alt="Braintrust Trace View" />
+    </Frame>
+  </Tab>
+
+  <Tab title="Timeline">
+    <Frame>
+      <img alt="Braintrust Timeline View" />
+    </Frame>
+  </Tab>
+
+  <Tab title="Thread">
+    <Frame>
+      <img alt="Braintrust Thread View" />
+    </Frame>
+  </Tab>
+</Tabs>
+
+### Step 6: Evaluate via SDK (Experiments)
+
+You can also run evaluations using Braintrust's Eval SDK. This is useful for comparing versions or scoring outputs offline. Below is a Python example using the `Eval` class with the crew we created above:
+
+```python theme={null}
+# eval_crew.py
+from braintrust import Eval
+from autoevals import Levenshtein
+
+def evaluate_crew_task(input_data):
+    """Task function that wraps our crew for evaluation."""
+    crew = create_crew()
+    result = crew.kickoff(inputs={"topic": input_data["topic"]})
+    return str(result)
+
+Eval(
+    "AI Research Crew",  # Project name
+    {
+        "data": lambda: [
+            {"topic": "artificial intelligence trends 2024"},
+            {"topic": "machine learning breakthroughs"},
+            {"topic": "AI ethics and governance"},
+        ],
+        "task": evaluate_crew_task,
+        "scores": [Levenshtein],
+    },
+)
+```
+
+Setup your API key and run:
+
+```bash theme={null}
+export BRAINTRUST_API_KEY="YOUR_API_KEY"
+braintrust eval eval_crew.py
+```
+
+See the [Braintrust Eval SDK guide](https://www.braintrust.dev/docs/start/eval-sdk) for more details.
+
+### Key Features of Braintrust Integration
+
+* **Comprehensive Tracing**: Track all agent interactions, tool usage, and LLM calls
+* **Performance Monitoring**: Monitor execution times, token usage, and success rates
+* **Experiment Tracking**: Compare different crew configurations and models
+* **Automated Evaluation**: Set up custom evaluation metrics for crew outputs
+* **Error Tracking**: Monitor and debug failures across your crew executions
+* **Cost Analysis**: Track token usage and associated costs
+
+### Version Compatibility Information
+
+* Python 3.8+
+* CrewAI >= 0.86.0
+* Braintrust >= 0.1.0
+* OpenTelemetry SDK >= 1.31.0
+
+### References
+
+* [Braintrust Documentation](https://www.braintrust.dev/docs) - Overview of the Braintrust platform
+* [Braintrust CrewAI Integration](https://www.braintrust.dev/docs/integrations/crew-ai) - Official CrewAI integration guide
+* [Braintrust Eval SDK](https://www.braintrust.dev/docs/start/eval-sdk) - Run experiments via the SDK
+* [CrewAI Documentation](https://docs.crewai.com/) - Overview of the CrewAI framework
+* [OpenTelemetry Docs](https://opentelemetry.io/docs/) - OpenTelemetry guide
+* [Braintrust GitHub](https://github.com/braintrustdata/braintrust) - Source code for Braintrust SDK
+
+
+# Datadog Integration
+Source: https://docs.crewai.com/v1.15.2/en/observability/datadog
+
+Learn how to integrate Datadog with CrewAI to submit LLM Observability traces to Datadog.
+
+# Integrate Datadog with CrewAI
+
+This guide will demonstrate how to integrate **[Datadog LLM Observability](https://docs.datadoghq.com/llm_observability/)** with **CrewAI** using [Datadog auto-instrumentation](https://docs.datadoghq.com/llm_observability/instrumentation/auto_instrumentation?tab=python). By the end of this guide, you will be able to submit LLM Observability traces to Datadog and view your CrewAI agent runs in Datadog LLM Observability's [Agentic Execution View](https://docs.datadoghq.com/llm_observability/monitoring/agent_monitoring).
+
+## What is Datadog LLM Observability?
+
+[Datadog LLM Observability](https://www.datadoghq.com/product/llm-observability/) helps AI engineers, data scientists, and application developers quickly develop, evaluate, and monitor LLM applications. Confidently improve output quality, performance, costs, and overall risk with structured experiments, end-to-end tracing across AI agents, and evaluations.
+
+## Getting Started
+
+### Install Dependencies
+
+```shell theme={null}
+pip install ddtrace crewai crewai-tools
+```
+
+### Set Environment Variables
+
+If you do not have a Datadog API key, you can [create an account](https://www.datadoghq.com/) and [get your API key](https://docs.datadoghq.com/account_management/api-app-keys/#api-keys).
+
+You will also need to specify an ML Application name in the following environment variables. An ML Application is a grouping of LLM Observability traces associated with a specific LLM-based application. See [ML Application Naming Guidelines](https://docs.datadoghq.com/llm_observability/instrumentation/sdk?tab=python#application-naming-guidelines) for more information on limitations with ML Application names.
+
+```shell theme={null}
+export DD_API_KEY=<YOUR_DD_API_KEY>
+export DD_SITE=<YOUR_DD_SITE>
+export DD_LLMOBS_ENABLED=true
+export DD_LLMOBS_ML_APP=<YOUR_ML_APP_NAME>
+export DD_LLMOBS_AGENTLESS_ENABLED=true
+export DD_APM_TRACING_ENABLED=false
+```
+
+Additionally, configure any LLM provider API keys
+
+```shell theme={null}
+export OPENAI_API_KEY=<YOUR_OPENAI_API_KEY>
+export ANTHROPIC_API_KEY=<YOUR_ANTHROPIC_API_KEY>
+export GEMINI_API_KEY=<YOUR_GEMINI_API_KEY>
+...
+```
+
+### Create a CrewAI Agent Application
+
+```python theme={null}
+# crewai_agent.py
+from crewai import Agent, Task, Crew
+
+from crewai_tools import (
+    WebsiteSearchTool
+)
+
+web_rag_tool = WebsiteSearchTool()
+
+writer = Agent(
+    role="Writer",
+    goal="You make math engaging and understandable for young children through poetry",
+    backstory="You're an expert in writing haikus but you know nothing of math.",
+    tools=[web_rag_tool],
+)
+
+task = Task(
+    description=("What is {multiplication}?"),
+    expected_output=("Compose a haiku that includes the answer."),
+    agent=writer
+)
+
+crew = Crew(
+    agents=[writer],
+    tasks=[task],
+    share_crew=False
+)
+
+output = crew.kickoff(dict(multiplication="2 * 2"))
+```
+
+### Run the Application with Datadog Auto-Instrumentation
+
+With the [environment variables](#set-environment-variables) set, you can now run the application with Datadog auto-instrumentation.
+
+```shell theme={null}
+ddtrace-run python crewai_agent.py
+```
+
+### View the Traces in Datadog
+
+After running the application, you can view the traces in [Datadog LLM Observability's Traces View](https://app.datadoghq.com/llm/traces), selecting the ML Application name you chose from the top-left dropdown.
+
+Clicking on a trace will show you the details of the trace, including total tokens used, number of LLM calls, models used, and estimated cost. Clicking into a specific span will narrow down these details, and show related input, output, and metadata.
+
+<Frame>
+  <img alt="Datadog LLM Observability Trace View" />
+</Frame>
+
+Additionally, you can view the execution graph view of the trace, which shows the control and data flow of the trace, which will scale with larger agents to show handoffs and relationships between LLM calls, tool calls, and agent interactions.
+
+<Frame>
+  <img alt="Datadog LLM Observability Agent Execution Flow View" />
+</Frame>
+
+## References
+
+* [Datadog LLM Observability](https://www.datadoghq.com/product/llm-observability/)
+* [Datadog LLM Observability CrewAI Auto-Instrumentation](https://docs.datadoghq.com/llm_observability/instrumentation/auto_instrumentation?tab=python#crew-ai)
+
+
+# Galileo
+Source: https://docs.crewai.com/v1.15.2/en/observability/galileo
+
+Galileo integration for CrewAI tracing and evaluation
+
+## Overview
+
+This guide demonstrates how to integrate **Galileo** with **CrewAI**
+for comprehensive tracing and Evaluation Engineering.
+By the end of this guide, you will be able to trace your CrewAI agents,
+monitor their performance, and evaluate their behaviour with
+Galileo's powerful observability platform.
+
+> **What is Galileo?** [Galileo](https://galileo.ai) is AI evaluation and observability
+> platform that delivers end-to-end tracing, evaluation,
+> and monitoring for AI applications. It enables teams to capture ground truth,
+> create robust guardrails, and run systematic experiments with
+> built-in experiment tracking and performance analytics—ensuring reliability,
+> transparency, and continuous improvement across the AI lifecycle.
+
+## Getting started
+
+This tutorial follows the [CrewAI quickstart](/en/quickstart) and shows how to add
+Galileo's [CrewAIEventListener](https://v2docs.galileo.ai/sdk-api/python/reference/handlers/crewai/handler),
+an event handler.
+For more information, see Galileo’s
+[Add Galileo to a CrewAI Application](https://v2docs.galileo.ai/how-to-guides/third-party-integrations/add-galileo-to-crewai/add-galileo-to-crewai)
+how-to guide.
+
+> **Note** This tutorial assumes you have completed the [CrewAI quickstart](/en/quickstart).
+> If you want a completed comprehensive example, see the Galileo
+> [CrewAI sdk-example repo](https://github.com/rungalileo/sdk-examples/tree/main/python/agent/crew-ai).
+
+### Step 1: Install dependencies
+
+Install the required dependencies for your app.
+Create a virtual environment using your preferred method,
+then install dependencies inside that environment using your
+preferred tool:
+
+```bash theme={null}
+uv add galileo 
+```
+
+### Step 2: Add to the .env file from the [CrewAI quickstart](/en/quickstart)
+
+```bash theme={null}
+# Your Galileo API key
+GALILEO_API_KEY="your-galileo-api-key"
+
+# Your Galileo project name
+GALILEO_PROJECT="your-galileo-project-name"
+
+# The name of the Log stream you want to use for logging
+GALILEO_LOG_STREAM="your-galileo-log-stream "
+```
+
+### Step 3: Add the Galileo event listener
+
+To enable logging with Galileo, you need to create an instance of the `CrewAIEventListener`.
+Import the Galileo CrewAI handler package by
+adding the following code at the top of your main.py file:
+
+```python theme={null}
+from galileo.handlers.crewai.handler import CrewAIEventListener
+```
+
+At the start of your run function, create the event listener:
+
+```python theme={null}
+def run():
+    # Create the event listener
+    CrewAIEventListener()
+    # The rest of your existing code goes here
+```
+
+When you create the listener instance, it is automatically
+registered with CrewAI.
+
+### Step 4: Run your crew
+
+Run your crew with the CrewAI CLI:
+
+```bash theme={null}
+crewai run
+```
+
+### Step 5: View the traces in Galileo
+
+Once your crew has finished, the traces will be flushed and appear in Galileo.
+
+<img alt="Galileo trace view" />
+
+## Understanding the Galileo Integration
+
+Galileo integrates with CrewAI by registering an event listener
+that captures Crew execution events (e.g., agent actions, tool calls, model responses)
+and forwards them to Galileo for observability and evaluation.
+
+### Understanding the event listener
+
+Creating a `CrewAIEventListener()` instance is all that’s
+required to enable Galileo for a CrewAI run. When instantiated, the listener:
+
+* Automatically registers itself with CrewAI
+* Reads Galileo configuration from environment variables
+* Logs all run data to the Galileo project and log stream specified by
+  `GALILEO_PROJECT` and `GALILEO_LOG_STREAM`
+
+No additional configuration or code changes are required.
+All data from this run is logged to the Galileo project and
+log stream specified by your environment configuration
+(for example, GALILEO\_PROJECT and GALILEO\_LOG\_STREAM).
+
+
 # LangDB Integration
 Source: https://docs.crewai.com/v1.15.2/en/observability/langdb
 
@@ -62991,6 +62793,73 @@ If an execution fails:
 </Card>
 
 
+# Microsoft Teams Trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/microsoft-teams-trigger
+
+Kick off crews from Microsoft Teams chat activity
+
+## Overview
+
+Use the Microsoft Teams trigger to start automations whenever a new chat is created. Common patterns include summarizing inbound requests, routing urgent messages to support teams, or creating follow-up tasks in other systems.
+
+<Tip>
+  Confirm Microsoft Teams is connected under **Tools & Integrations** and
+  enabled in the **Triggers** tab for your deployment.
+</Tip>
+
+## Enabling the Microsoft Teams Trigger
+
+1. Open your deployment in CrewAI AMP
+2. Go to the **Triggers** tab
+3. Locate **Microsoft Teams** and switch the toggle to enable
+
+<Frame>
+  <img alt="Enable or disable triggers with toggle" />
+</Frame>
+
+## Example: Summarize a new chat thread
+
+```python theme={null}
+from teams_chat_created_crew import MicrosoftTeamsChatTrigger
+
+crew = MicrosoftTeamsChatTrigger().crew()
+result = crew.kickoff({
+    "crewai_trigger_payload": teams_payload,
+})
+print(result.raw)
+```
+
+The crew parses thread metadata (subject, created time, roster) and generates an action plan for the receiving team.
+
+## Testing Locally
+
+Test your Microsoft Teams trigger integration locally using the CrewAI CLI:
+
+```bash theme={null}
+# View all available triggers
+crewai triggers list
+
+# Simulate a Microsoft Teams trigger with realistic payload
+crewai triggers run microsoft_teams/teams_message_created
+```
+
+The `crewai triggers run` command will execute your crew with a complete Teams payload, allowing you to test your parsing logic before deployment.
+
+<Warning>
+  Use `crewai triggers run microsoft_teams/teams_message_created` (not `crewai
+      run`) to simulate trigger execution during development. After deployment, your
+  crew will automatically receive the trigger payload.
+</Warning>
+
+## Troubleshooting
+
+* Ensure the Teams connection is active; it must be refreshed if the tenant revokes permissions
+* Test locally with `crewai triggers run microsoft_teams/teams_message_created` to see the exact payload structure
+* Confirm the webhook subscription in Microsoft 365 is still valid if payloads stop arriving
+* Review execution logs for payload shape mismatches—Graph notifications may omit fields when a chat is private or restricted
+* Remember: use `crewai triggers run` (not `crewai run`) to simulate trigger execution
+
+
 # Monorepo Deployments
 Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/monorepo-deployments
 
@@ -63218,6 +63087,72 @@ or trigger redeployments from CI/CD with the AMP API instead.
   Continue with the deployment guide after choosing your monorepo working
   directory.
 </Card>
+
+
+# OneDrive Trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/onedrive-trigger
+
+Automate responses to OneDrive file activity
+
+## Overview
+
+Start automations when files change inside OneDrive. You can generate audit summaries, notify security teams about external sharing, or update downstream line-of-business systems with new document metadata.
+
+<Tip>
+  Connect OneDrive in **Tools & Integrations** and toggle the trigger on for
+  your deployment.
+</Tip>
+
+## Enabling the OneDrive Trigger
+
+1. Open your deployment in CrewAI AMP
+2. Go to the **Triggers** tab
+3. Locate **OneDrive** and switch the toggle to enable
+
+<Frame>
+  <img alt="Enable or disable triggers with toggle" />
+</Frame>
+
+## Example: Audit file permissions
+
+```python theme={null}
+from onedrive_file_crew import OneDriveFileTrigger
+
+crew = OneDriveFileTrigger().crew()
+crew.kickoff({
+    "crewai_trigger_payload": onedrive_payload,
+})
+```
+
+The crew inspects file metadata, user activity, and permission changes to produce a compliance-friendly summary.
+
+## Testing Locally
+
+Test your OneDrive trigger integration locally using the CrewAI CLI:
+
+```bash theme={null}
+# View all available triggers
+crewai triggers list
+
+# Simulate a OneDrive trigger with realistic payload
+crewai triggers run microsoft_onedrive/file_changed
+```
+
+The `crewai triggers run` command will execute your crew with a complete OneDrive payload, allowing you to test your parsing logic before deployment.
+
+<Warning>
+  Use `crewai triggers run microsoft_onedrive/file_changed` (not `crewai run`)
+  to simulate trigger execution during development. After deployment, your crew
+  will automatically receive the trigger payload.
+</Warning>
+
+## Troubleshooting
+
+* Ensure the connected account has permission to read the file metadata included in the webhook
+* Test locally with `crewai triggers run microsoft_onedrive/file_changed` to see the exact payload structure
+* If the trigger fires but the payload is missing `permissions`, confirm the site-level sharing settings allow Graph to return this field
+* For large tenants, filter notifications upstream so the crew only runs on relevant directories
+* Remember: use `crewai triggers run` (not `crewai run`) to simulate trigger execution
 
 
 # Prepare for Deployment
@@ -63991,6 +63926,71 @@ Common Salesforce + CrewAI trigger scenarios include:
 ## Next Steps
 
 For detailed setup instructions and advanced configuration options, please contact CrewAI AMP support who can provide tailored guidance for your specific Salesforce environment and business needs.
+
+
+# Slack Trigger
+Source: https://docs.crewai.com/v1.15.2/en/enterprise/guides/slack-trigger
+
+Trigger CrewAI crews directly from Slack using slash commands
+
+This guide explains how to start a crew directly from Slack using CrewAI triggers.
+
+## Prerequisites
+
+* CrewAI Slack trigger installed and connected to your Slack workspace
+* At least one crew configured in CrewAI
+
+## Setup Steps
+
+<Steps>
+  <Step title="Ensure the CrewAI Slack trigger is set up">
+    In the CrewAI dashboard, navigate to the **Triggers** section.
+
+    <Frame>
+      <img alt="CrewAI Slack Integration" />
+    </Frame>
+
+    Verify that Slack is listed and is connected.
+  </Step>
+
+  <Step title="Open your Slack channel">
+    * Navigate to the channel where you want to kickoff the crew.
+    * Type the slash command "**/kickoff**" to initiate the crew kickoff process.
+    * You should see a  "**Kickoff crew**" appear as you type:
+      <Frame>
+        <img alt="Kickoff crew" />
+      </Frame>
+    * Press Enter or select the "**Kickoff crew**" option. A dialog box titled "**Kickoff an AI Crew**" will appear.
+  </Step>
+
+  <Step title="Select the crew you want to start">
+    * In the dropdown menu labeled "**Select of the crews online:**", choose the crew you want to start.
+    * In the example below, "**prep-for-meeting**" is selected:
+      <Frame>
+        <img alt="Kickoff crew dropdown" />
+      </Frame>
+    * If your crew requires any inputs, click the "**Add Inputs**" button to provide them.
+      <Note>
+        The "**Add Inputs**" button is shown in the example above but is not yet clicked.
+      </Note>
+  </Step>
+
+  <Step title="Click Kickoff and wait for the crew to complete">
+    * Once you've selected the crew and added any necessary inputs, click "**Kickoff**" to start the crew.
+      <Frame>
+        <img alt="Kickoff crew" />
+      </Frame>
+    * The crew will start executing and you will see the results in the Slack channel.
+      <Frame>
+        <img alt="Kickoff crew results" />
+      </Frame>
+  </Step>
+</Steps>
+
+## Tips
+
+* Make sure you have the necessary permissions to use the `/kickoff` command in your Slack workspace.
+* If you don't see your desired crew in the dropdown, ensure it's properly configured and online in CrewAI.
 
 
 # Team Management

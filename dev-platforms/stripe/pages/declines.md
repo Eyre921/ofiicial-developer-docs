@@ -10,6 +10,8 @@ Learn about payment declines and how to lower your decline rate.
 
 Track your decline rate over time to identify potential fraud or integration issues. For a clearer overview of your authorization rates, analyze unique declines and exclude failed retries from your analysis.
 
+You need to handle each type of payment failure differently. For every failure, you can use the [Dashboard](https://dashboard.stripe.com/payments) or API to review a payment’s details. When using the API, look at the `Charge` object’s [outcome](https://docs.stripe.com/api/charges/object.md#charge_object-outcome). This attribute covers the payment failure type and provides information about its cause.
+
 Payments can fail for a variety of reasons, including some that help prevent fraudulent transactions. Stripe works to reduce decline rates across all supported payment methods. We work with issuers and networks to improve acceptance rates, often without affecting your integration.
 
 There are three reasons why a payment might fail:
@@ -18,15 +20,15 @@ There are three reasons why a payment might fail:
 - [Blocked payments](https://docs.stripe.com/declines.md#blocked-payments)
 - [Invalid API calls](https://docs.stripe.com/declines.md#invalid-api-calls)
 
-You need to handle each type of payment failure differently. For every failure, you can use the [Dashboard](https://dashboard.stripe.com/payments) or API to review a payment’s details. When using the API, look at the `Charge` object’s [outcome](https://docs.stripe.com/api/charges/object.md#charge_object-outcome). This attribute covers the payment failure type and provides information about its cause.
-
-Stripe handles non-card payment method declines similarly to card declines. Stripe sends you a response code that includes information about the decline, for example, if it’s due to insufficient funds, a lost or stolen card, or another reason.
-
 ## Issuer declines 
 
 When your customer’s card issuer or payment provider receives a charge, their automated systems and models decide whether to authorize it. These tools analyze signals such as spending habits, account balance, and card data (expiration date, address information, and CVC).
 
-If the card issuer or payment provider declines a payment, Stripe shares with you the decline information we receive through [Stripe decline codes](https://docs.stripe.com/declines/codes.md). This information is available in the Dashboard and through the API. When issuers provide specific explanations, such as an incorrect card number or low funds, these explanations return to Stripe as [network decline codes](https://docs.stripe.com/declines/network-codes.md).
+Stripe handles non-card payment method declines similarly to [card declines](https://docs.stripe.com/declines/card.md). Stripe sends you a response code that includes information about the decline, for example, if it’s due to insufficient funds, a lost or stolen card, or another reason.
+
+If the card issuer or payment provider declines a payment, Stripe shares with you the decline information we receive through [Stripe decline codes](https://docs.stripe.com/declines/codes.md). This information is available in the Dashboard and through the API.
+
+When issuers provide specific explanations, such as an incorrect card number or low funds, these explanations return to Stripe as [network decline codes](https://docs.stripe.com/declines/network-codes.md).
 
 ## Blocked payments 
 

@@ -180,16 +180,16 @@ For a complete project that uses every primitive, see the [example project](/lan
     Add logging, retries, limits, and guardrails around model and tool calls.
   </Card>
 
-  <Card title="Connect MCP tools" icon="plug" href="/langsmith/managed-deep-agents-mcp">
-    Load tools from remote MCP servers.
+  <Card title="Identity" icon="fingerprint" href="/langsmith/managed-deep-agents-identity">
+    Scope threads and memory to the authenticated caller.
+  </Card>
+
+  <Card title="Connectors" icon="plug" href="/langsmith/managed-deep-agents-connectors">
+    Load MCP tools or constrained LangSmith capabilities.
   </Card>
 
   <Card title="Example project" icon="apps" href="/langsmith/managed-deep-agents-examples">
     See a complete project that uses every primitive.
-  </Card>
-
-  <Card title="How it works" icon="settings" href="/langsmith/managed-deep-agents-how-it-works">
-    Understand compilation, the deploy lifecycle, and Context Hub.
   </Card>
 </CardGroup>
 

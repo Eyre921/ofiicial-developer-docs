@@ -13,6 +13,7 @@ If you’re a *Connect* (Connect is Stripe's solution for multi-party businesses
 ### Available in
 
 - AU
+- CA
 - DE
 - FR
 - GB
@@ -551,4 +552,102 @@ As you pay your financing, we automatically evaluate your business for a new off
 Tax reporting is often dependent on your specific situation, so we recommend that you contact a tax advisor to ensure appropriate accounting.
 
 Financing is provided by Fundbox, an external finance provider, with payments facilitated by Stripe. Funding amounts, rates, and terms are based on review and approval of a completed application, and are subject to change. Financing offers might require additional documentation.
+
+#### CA
+
+Stripe Capital offers financing for eligible Canadian businesses processing payments through Stripe. We don’t charge early repayment fees or late fees. Instead, the total amount you owe is your loan amount plus a fixed fee. Your payments are a percentage of your sales and adjust to your processing volume on Stripe. Stripe has a referral arrangement with Fundbox, an external finance provider.
+
+## Eligibility
+
+Stripe, together with our financial partner, uses a combination of factors, including overall processing volume and history on Stripe to determine eligibility for a financing offer. Eligible Canadian businesses with at least 3 months of processing history receive an email and Dashboard notification if they have an offer available. Stripe partners with Fundbox to evaluate applications.
+
+We evaluate your business regularly for eligibility, which includes how we calculate your fixed fee pricing, based on your processing volume and history on Stripe. While many traditional financial products have hidden fees or compounding interest, Stripe Capital financing has a single fixed fee that you pay back over the length of the loan. You don’t pay interest over time, and we don’t charge early payment fees or late fees. Paying off your active loan doesn’t automatically qualify you for a new offer.
+
+When you’re eligible for a new Stripe Capital offer, it appears automatically in your [Dashboard](https://dashboard.stripe.com/capital). Eligibility for additional offers takes several factors into account. Typically, eligibility for additional funding is linked to businesses that maintain consistent repayments and have repaid a significant portion of their existing funding. We assess every business regularly, even those actively paying a loan. Even if you aren’t eligible for a new offer today, you might be eligible in the future.
+
+For questions regarding eligibility, [email our partner, Fundbox](mailto:stripe-capital-ca@fundbox.com). To receive emails regarding new offers, update [your email settings](https://go.stripe.global/subscribe?tmp_source=none) to opt into receiving Stripe Capital emails.
+
+You might see a banner in the Stripe Dashboard that indicates that you could be eligible for a future offer. This isn’t a guarantee of a future offer, or a promise of specific terms, and it doesn’t reflect a credit decision or evaluation.
+
+If your business has multiple Stripe accounts, we might generate a financing offer based on the combined information from those accounts. Changes to one account without corresponding updates to others might affect your financing eligibility. This includes changes to your business name, business identification number, and business address.
+
+### Minimum eligibility requirements
+
+To qualify for an offer through Stripe Capital, your business must:
+
+- Be located or incorporated in Canada. We don’t serve sole proprietors based in Quebec at this time.
+- Have processed payments on Stripe for at least 3 months.
+- Have an average processing volume of 1,000 CAD for the last 3 months.
+- Don’t operate as a fisherperson, farmer, feedlot or ranch operator.
+- Be in good standing with Stripe Capital. If your business previously applied for a Capital offer that we rejected, you’re ineligible to receive a new offer for 90 days.
+
+Additionally, the person applying for and guaranteeing the offer must:
+
+- Be a representative, controller, or director with significant ownership (at least 25%)
+- Be at least 18 years old on the date of the application
+- Be able to provide an address in Canada
+
+Meeting the minimum eligibility requirements doesn’t guarantee that your business qualifies for a Stripe Capital offer.
+
+In addition to the minimum requirements, Stripe, along with our partner, Fundbox, evaluates many other characteristics of your business to determine eligibility. We’ve highlighted some key considerations:
+
+- **A growing business**: How much you process through Stripe influences the size of your funding offer. Businesses with positive growth trajectories are more likely to be eligible for an offer.
+- **A steady processing record**: A consistent, steady processing record with limited periods of low or zero volume shows stability in your business and increases your likelihood of qualifying for an offer.
+- **A large customer base**: Businesses with more customers are more likely to be eligible for an offer.
+- **A low dispute rate**: Businesses with low rates of unresolved chargebacks are more likely to qualify for funding.
+
+[Learn more about how Stripe uses and protects the data associated with your business](https://stripe.com/ca/privacy-center/legal#stripe-capital).
+
+### Additional steps you can take
+
+The more information we can see about the health of your business, the better we can evaluate your eligibility for Stripe financing.
+
+We base our underwriting model on the payment volume that you process on Stripe. Shifting transaction volume from other payment sources onto Stripe increases your overall Stripe processing volume and improves your likelihood of receiving an offer.
+
+### Get feedback on your eligibility
+
+If you have any questions regarding your offer eligibility, [contact us directly](mailto:capital@stripe.com). See our [Privacy Center](https://stripe.com/ca/legal/privacy-center/legal#stripe-capital) for more information. All financing requests are subject to final review before approval. Financing is provided by Fundbox.
+
+## Review your offer
+
+When you log into the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard, you can use a slider to choose a custom amount (up to the maximum offer amount). The financing fee and payment percentage adjust based on the amount you choose.
+
+Your offer is available for 30 days. After 30 days, we automatically re-evaluate your business to see if you’re eligible for an additional offer. If you’re seeking financing at a later time, check the [Capital tab](https://dashboard.stripe.com/capital) of your Dashboard to see if you have another offer. We’ll also send you an email if you have an offer.
+
+## Apply for financing
+
+After you accept an offer, we and our financing partner review your application. If you’re approved, the funds are transferred to your linked bank account, typically within 1 business day. To make sure you receive the funds, you must set a valid bank account as your primary payout method.
+
+If you’re a director or a beneficial owner of the business, you must provide a personal guarantee as part of the application for financing.
+
+## Loan payment
+
+The total amount you owe is your financing amount plus a fixed fee, that you pay throughout the course of the financing. You won’t pay any interest, early payment fees or origination fees. You’ll automatically pay both the financing and the fixed fee through a percentage of your sales until you pay the total amount you owe. This means you pay more when business is busy, and less if things slow down.
+
+You generally pay Stripe Capital financing through withholding from payment processing receivables at the rate specified in your financing agreement. You have periodic minimum payment requirements and a finite term that mandates that you repay a minimum amount toward your loan every payment period. Amounts withheld as a percentage of your sales at the payment rate count toward your minimum payment requirement. Withholdings won’t continue beyond this minimum unless you have an overdue amount owed from prior payment periods. However, if the total amount you repay through sales doesn’t meet the minimum payment requirement, you must pay the remaining amount at the end of the period. Stripe automatically debits the balance needed to meet your minimum payment requirement from your Stripe account balance or bank account.
+
+You can also make manual payments toward your minimum through your Dashboard. You can view your minimum in the **Capital** tab of your Dashboard or in your loan agreement. If you can’t meet your minimum for one or more periods, contact our financing partner, Fundbox, at [stripe-capital-ca@fundbox.com](mailto:stripe-capital-ca@fundbox.com) and they can work with you to get back in good standing and meet your loan obligations. If you continue to miss your minimums, we might take additional action, as detailed in your loan agreement.
+
+The following example scenarios demonstrate how the minimum payment process works for loans.
+
+| Example scenario | Minimum payment process |
+| --- | --- |
+| You successfully meet your minimum through daily sales deductions. | - Your minimum amount is 2,000 CAD for the 30-day period ending on March 1.
+- In that period, you repaid 2,000 CAD of your loan balance through Stripe deducting a fixed percentage of your sales volume (the repayment rate).
+- You’ve met your minimum for this payment period. Withholdings won’t continue beyond this minimum unless you have an overdue amount owed from prior payment periods.
+- In the next 30-day period, you still must meet the 2,000 CAD minimum. |
+| You don’t meet your minimum through daily sales deductions. | - Your minimum is 2,000 CAD for the 30-day period ending on March 1.
+- In that period, you repaid 1,500 CAD of your loan balance through Stripe deducting a fixed percentage of your sales volume (the repayment rate).
+- On March 1, you still owe 500 CAD toward your minimum (2,000 CAD minus 1,500 CAD). You must pay the remaining balance of your minimum.
+- On March 1, Stripe automatically debits 500 CAD from your bank account or account balance to meet your minimum. |
+
+## Additional financing
+
+As you pay your financing, we automatically evaluate your business for a new offer. Paying your financing early doesn’t automatically qualify you for a new offer. When you’re eligible for a new offer, it automatically displays in your Dashboard. If you’re approved for additional financing offers before you pay off your current financing, the proceeds of your subsequent financing pay off the outstanding balance of your current financing, and you receive the net amount of the offer.
+
+## Taxes
+
+Tax reporting is often dependent on your specific situation, so we recommend that you contact a tax advisor to ensure appropriate accounting.
+
+*Financing is provided by Fundbox, an external third-party provider, with payments facilitated by Stripe. Funding amounts, rates, and terms are based on review and approval of a completed application, and are subject to change. You might be required to provide additional documentation. Stripe receives a fee from Fundbox in connection with financing provided through this program.*
 

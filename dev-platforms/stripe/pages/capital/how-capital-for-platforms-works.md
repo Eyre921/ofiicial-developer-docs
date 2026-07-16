@@ -159,6 +159,18 @@ The following table compares these financing options:
 
 With a line of credit, a connected account has a prequalified credit limit and can apply to draw the exact amount they need. For example, if a connected account has a 50,000 USD credit limit and draws 20,000 USD, they repay the 20,000 USD principal plus a fixed fee in nine monthly payments. As they make repayments, their available credit replenishes, which allows the account to request additional draws up to their available limit. Each draw is a separate loan subject to review and approval.
 
+### Interested in offering line of credit financing to your connected accounts?
+
+Enter your email to request access.
+
+```bash
+curl https://docs.stripe.com/preview/register \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -H "Referer: https://docs.stripe.com/capital/how-capital-for-platforms-works" \
+  -d '{"email": "EMAIL", "preview": "capital_review_preview"}'
+```
+
 *Stripe Capital offers financing types that include loans and merchant cash advances. All financing applications are subject to review prior to approval. In the US, Stripe Capital loans are issued by Celtic Bank, and YouLend provides Stripe Capital merchant cash advances.*
 
 #### AU

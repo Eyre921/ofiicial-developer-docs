@@ -39,13 +39,13 @@ Sentry captures data by using an SDK within your application's runtime. These ar
 Install the **NuGet** package to add the Sentry dependency:
 
 ```shell
-dotnet add package Sentry -v 6.6.0
+dotnet add package Sentry -v 6.7.0
 ```
 
 *Other available variations of the above snippet: Package Manager*
 
 ```shell
-dotnet add package Sentry.Profiling -v 6.6.0
+dotnet add package Sentry.Profiling -v 6.7.0
 ```
 
 *Other available variations of the above snippet: Package Manager*

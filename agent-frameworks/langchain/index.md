@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1483 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1486 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -350,10 +350,13 @@
 - `langsmith/manage-with-terraform` — [Manage LangSmith with Terraform](pages/langsmith/manage-with-terraform.md) · [原文](https://docs.langchain.com/langsmith/manage-with-terraform)
 - `langsmith/managed-deep-agents` — [Managed Deep Agents](pages/langsmith/managed-deep-agents.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents)
 - `langsmith/managed-deep-agents-cli` — [Managed Deep Agents CLI reference](pages/langsmith/managed-deep-agents-cli.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-cli)
+- `langsmith/managed-deep-agents-connectors/index` — [Connect tools and capabilities to Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/index.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/index)
+- `langsmith/managed-deep-agents-connectors/langsmith` — [Expose LangSmith capabilities with Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/langsmith.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/langsmith)
+- `langsmith/managed-deep-agents-connectors/mcp` — [Connect MCP tools to Managed Deep Agents](pages/langsmith/managed-deep-agents-connectors/mcp.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-connectors/mcp)
 - `langsmith/managed-deep-agents-deploy` — [Deploy a Managed Deep Agent](pages/langsmith/managed-deep-agents-deploy.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-deploy)
 - `langsmith/managed-deep-agents-examples` — [Managed Deep Agents example project](pages/langsmith/managed-deep-agents-examples.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-examples)
 - `langsmith/managed-deep-agents-how-it-works` — [How Managed Deep Agents work](pages/langsmith/managed-deep-agents-how-it-works.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-how-it-works)
-- `langsmith/managed-deep-agents-mcp` — [Connect MCP tools to Managed Deep Agents](pages/langsmith/managed-deep-agents-mcp.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-mcp)
+- `langsmith/managed-deep-agents-identity` — [Add identity to Managed Deep Agents](pages/langsmith/managed-deep-agents-identity.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-identity)
 - `langsmith/managed-deep-agents-middleware` — [Add custom middleware to Managed Deep Agents](pages/langsmith/managed-deep-agents-middleware.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-middleware)
 - `langsmith/managed-deep-agents-overview` — [Managed Deep Agents](pages/langsmith/managed-deep-agents-overview.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-overview)
 - `langsmith/managed-deep-agents-quickstart` — [Managed Deep Agents quickstart](pages/langsmith/managed-deep-agents-quickstart.md) · [原文](https://docs.langchain.com/langsmith/managed-deep-agents-quickstart)

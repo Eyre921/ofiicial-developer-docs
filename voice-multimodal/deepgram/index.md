@@ -1,11 +1,12 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 371 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 372 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
 
 - `ask-ai` — [Ask AI](pages/ask-ai.md) · [原文](https://developers.deepgram.com/ask-ai.md)
+- `asyncapi.json` — [AsyncAPI JSON](pages/asyncapi.json.md) · [原文](https://developers.deepgram.com/asyncapi.json)
 - `asyncapi.yaml` — [AsyncAPI YAML](pages/asyncapi.yaml.md) · [原文](https://developers.deepgram.com/asyncapi.yaml)
 - `home` — [Welcome to Deepgram's Docs!](pages/home.md) · [原文](https://developers.deepgram.com/home.md)
 - `openapi.json` — [OpenAPI JSON](pages/openapi.json.md) · [原文](https://developers.deepgram.com/openapi.json)

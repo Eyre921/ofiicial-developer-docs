@@ -43,6 +43,8 @@ Deepgram provides a variety of components available for a self-hosted deployment
 
 If you aren't certain which components your contract includes, please consult your Deepgram Account Representative.
 
+The components and architecture below describe Docker/Podman and Kubernetes deployments. [Amazon SageMaker](/docs/amazon-sagemaker) packages the API, Engine, and licensing into a single managed endpoint that scales horizontally as one unit — you don't provision or scale API, Engine, and the License Proxy separately. A SageMaker deployment also runs fully airgapped: the container is network-isolated and makes no connection to the Deepgram Cloud.
+
 ![](https://files.buildwithfern.com/https://deepgram.docs.buildwithfern.com/9c8beab8a02fc149c898dcadcbabd1701dbd872d4c105d919164ffa401311f95/images/f551a1e5784007e643d90a54ce3f77ab55da484804240deeb1cf741ff6cdcddc-deepgram_architecture.png)
 
 ### Deepgram API
@@ -59,7 +61,22 @@ Deepgram components register with the Deepgram License Server, represented above
 
 ## Prerequisites
 
-To take advantage of our self-hosted product offering, you will need to enroll in a [Deepgram Enterprise Plan](https://deepgram.com/pricing). If you're interested, please [contact us](https://deepgram.com/contact-us/)! You'll be promptly connected with a Deepgram Account Representative who will help you every step of the way, from proof-of-concept to a full production environment.
+Prerequisites depend on how you deploy. [Amazon SageMaker](/docs/amazon-sagemaker) is the fastest path and requires only an AWS account, while deploying with Docker/Podman or Kubernetes requires a Deepgram Enterprise Plan.
+
+### Amazon SageMaker
+
+To deploy through SageMaker, you only need:
+
+* an AWS account
+* AWS IAM permissions for SageMaker and the AWS Marketplace (the [AmazonSageMakerFullAccess](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonSageMakerFullAccess.html) and [AWSMarketplaceManageSubscriptions](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSMarketplaceManageSubscriptions.html) managed policies)
+
+You subscribe to a Deepgram product on the AWS Marketplace and are billed through your existing AWS account — see [Pricing](/docs/amazon-sagemaker#pricing) for details. See [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) to get started.
+
+For larger or longer-term deployments, [AWS Marketplace Private Offers](/docs/amazon-sagemaker#private-offers) are available with negotiated unit economics and committed-use terms. Contact your [AWS account team](https://aws.amazon.com/contact-us/sales-support/) or [Deepgram representative](https://deepgram.com/contact-us) to start a Private Offer.
+
+### Docker, Podman, and Kubernetes
+
+To self-host Deepgram with Docker/Podman or Kubernetes, you will need to enroll in a [Deepgram Enterprise Plan](https://deepgram.com/pricing). If you're interested, please [contact us](https://deepgram.com/contact-us/)! You'll be promptly connected with a Deepgram Account Representative who will help you every step of the way, from proof-of-concept to a full production environment.
 
 Your Deepgram Account Representative will guide you through the process of setting up:
 

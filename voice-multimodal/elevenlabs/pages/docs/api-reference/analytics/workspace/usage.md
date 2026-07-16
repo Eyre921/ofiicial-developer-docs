@@ -89,6 +89,9 @@ components:
         - voice_multiplier
         - hashed_xi_api_key
         - billing_group_id
+        - modality
+        - surface
+        - actor
       title: >-
         BodyGetWorkspaceUsageV1WorkspaceAnalyticsQueryUsageByProductOverTimePostGroupByItems
     ColumnFilterOperation:
@@ -316,18 +319,18 @@ components:
   "rows": [
     [
       "2024-04-01T00:00:00Z",
-      "text_to_speech",
+      "text-to-speech",
       "125.5"
     ],
     [
       "2024-04-01T01:00:00Z",
-      "voice_cloning",
-      "75.25"
+      "voice-cloning",
+      "75.0"
     ],
     [
       "2024-04-01T02:00:00Z",
-      "text_to_speech",
-      "98.75"
+      "text-to-speech",
+      "98.3"
     ]
   ],
   "column_units": [

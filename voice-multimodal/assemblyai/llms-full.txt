@@ -78,11 +78,9 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Retrieve an agent](#retrieve-an-agent-docs-api-reference-voice-agent-api-get-agent-mdx)
 - [Update an agent](#update-an-agent-docs-api-reference-voice-agent-api-update-agent-mdx)
 - [Delete an agent](#delete-an-agent-docs-api-reference-voice-agent-api-delete-agent-mdx)
-- [Create a webhook subscription](#create-a-webhook-subscription-docs-api-reference-voice-agent-api-create-webhook-subscription-mdx)
-- [List webhook subscriptions](#list-webhook-subscriptions-docs-api-reference-voice-agent-api-list-webhook-subscriptions-mdx)
-- [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-api-reference-voice-agent-api-get-webhook-subscription-mdx)
-- [Update a webhook subscription](#update-a-webhook-subscription-docs-api-reference-voice-agent-api-update-webhook-subscription-mdx)
-- [Delete a webhook subscription](#delete-a-webhook-subscription-docs-api-reference-voice-agent-api-delete-webhook-subscription-mdx)
+- [List sessions](#list-sessions-docs-api-reference-voice-agent-api-list-sessions-mdx)
+- [Retrieve a session](#retrieve-a-session-docs-api-reference-voice-agent-api-get-session-mdx)
+- [Delete a session](#delete-a-session-docs-api-reference-voice-agent-api-delete-session-mdx)
 - [Quickstart](#quickstart-docs-pre-recorded-audio-getting-started-transcribe-an-audio-file-mdx)
 - [Model selection](#model-selection-docs-pre-recorded-audio-select-the-speech-model-mdx)
 - [Prompting and Keyterms](#prompting-and-keyterms-docs-pre-recorded-audio-universal-3-5-pro-prompting-mdx)
@@ -223,8 +221,8 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Connect to Twilio](#connect-to-twilio-docs-voice-agents-voice-agent-api-connect-to-twilio-mdx)
 - [Audio format](#audio-format-docs-voice-agents-voice-agent-api-audio-format-mdx)
 - [Audio encoding](#audio-encoding-docs-voice-agents-voice-agent-api-encoding-mdx)
+- [Recordings & transcripts](#recordings-transcripts-docs-voice-agents-voice-agent-api-session-history-mdx)
 - [Inline session configuration](#inline-session-configuration-docs-voice-agents-voice-agent-api-session-configuration-mdx)
-- [Webhooks](#webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx)
 - [Events reference](#events-reference-docs-voice-agents-voice-agent-api-events-reference-mdx)
 - [Troubleshooting](#troubleshooting-docs-voice-agents-voice-agent-api-troubleshooting-mdx)
 - [Message Sequence](#message-sequence-docs-voice-agents-voice-agent-api-message-sequence-mdx)
@@ -235,11 +233,9 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Retrieve an agent](#retrieve-an-agent-docs-voice-agents-voice-agent-api-api-spec-get-agent-mdx)
 - [Update an agent](#update-an-agent-docs-voice-agents-voice-agent-api-api-spec-update-agent-mdx)
 - [Delete an agent](#delete-an-agent-docs-voice-agents-voice-agent-api-api-spec-delete-agent-mdx)
-- [Create a webhook subscription](#create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx)
-- [List webhook subscriptions](#list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx)
-- [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx)
-- [Update a webhook subscription](#update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx)
-- [Delete a webhook subscription](#delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx)
+- [List sessions](#list-sessions-docs-voice-agents-voice-agent-api-api-spec-list-sessions-mdx)
+- [Retrieve a session](#retrieve-a-session-docs-voice-agents-voice-agent-api-api-spec-get-session-mdx)
+- [Delete a session](#delete-a-session-docs-voice-agents-voice-agent-api-api-spec-delete-session-mdx)
 - [Speech Understanding](#speech-understanding-docs-speech-understanding-getting-started-mdx)
 - [Action Items](#action-items-docs-speech-understanding-action-items-mdx)
 - [Rate limits](#rate-limits-docs-speech-understanding-rate-limits-mdx)
@@ -385,6 +381,11 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [What is your API Uptime SLA?](#what-is-your-api-uptime-sla-docs-faq-what-is-your-api-uptime-sla-mdx)
 - [Where can I find AssemblyAI's product roadmap?](#where-can-i-find-assemblyai-s-product-roadmap-docs-faq-where-can-i-find-assemblyais-product-roadmap-mdx)
 - [AssemblyAI integration prompt for AI coding agents](#assemblyai-integration-prompt-for-ai-coding-agents-docs-agent-instructions-mdx)
+- [Create a webhook subscription](#create-a-webhook-subscription-docs-api-reference-voice-agent-api-create-webhook-subscription-mdx)
+- [Delete a webhook subscription](#delete-a-webhook-subscription-docs-api-reference-voice-agent-api-delete-webhook-subscription-mdx)
+- [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-api-reference-voice-agent-api-get-webhook-subscription-mdx)
+- [List webhook subscriptions](#list-webhook-subscriptions-docs-api-reference-voice-agent-api-list-webhook-subscriptions-mdx)
+- [Update a webhook subscription](#update-a-webhook-subscription-docs-api-reference-voice-agent-api-update-webhook-subscription-mdx)
 - [CLI](#cli-docs-concepts-cli-mdx)
 - [Frequently asked questions](#frequently-asked-questions-docs-concepts-faq-mdx)
 - [Deployment](#deployment-docs-deployment-mdx)
@@ -396,6 +397,12 @@ Generated from the local Mintlify documentation source. Content inside `<llms-ig
 - [Tracking customer transcription usage](#tracking-customer-transcription-usage-docs-tracking-your-customers-usage-mdx)
 - [Use case guides](#use-case-guides-docs-use-cases-mdx)
 - [Universal-3.5 Pro Streaming API](#universal-3-5-pro-streaming-api-docs-voice-agents-u3-pro-streaming-api-mdx)
+- [Create a webhook subscription](#create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx)
+- [Delete a webhook subscription](#delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx)
+- [Retrieve a webhook subscription](#retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx)
+- [List webhook subscriptions](#list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx)
+- [Update a webhook subscription](#update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx)
+- [Webhooks](#webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx)
 - [API specs](#api-specs)
 
 ---
@@ -7682,7 +7689,7 @@ These are the key parameters to tune for LiveKit when using **Universal 3.5 Pro 
   [Conversation context](#conversation-context).
 
   How many prior conversation entries are carried forward automatically. Range
-  `0`–`100`; `0` disables carryover. Leave unset for the server default (3).
+  `0`–`100`; `0` disables carryover. Leave unset for the server default (5).
   Connect-time only — cannot be changed with `update_options`. Universal-3.5 Pro
   only.
 
@@ -8071,7 +8078,7 @@ With the agent's question in context, the model can anticipate the answer, sharp
 | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `agent_context_carryover`  | boolean | When `true`, the plugin automatically forwards your agent's replies to the STT model as `agent_context` after each turn — no event wiring required. Requires `livekit-agents` **1.6.5+**. Defaults to `false`.       |
 | `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to ~1500 characters. Set it at construction time to seed an opening greeting, and update it after each agent reply via `update_options()`.       |
-| `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (3).                                          |
+| `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (5).                                          |
 
   `agent_context_carryover`, `agent_context`, and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
 
@@ -8707,7 +8714,7 @@ These are the key parameters to tune. Set them inside `AssemblyAISTTService.Sett
   How many prior conversation entries are carried forward automatically. Range
   `0`–`100`; `0` disables carryover entirely (including the automatic
   `agent_context` feed). Construction-time only; leave unset for the server
-  default (`3`). U3 Pro family only.
+  default (`5` on `universal-3-5-pro`; `3` on older `u3-rt-pro`). U3 Pro family only.
 
   Milliseconds of silence before a speculative end-of-turn check. When the check
   fires, the model looks for terminal punctuation (`.` `?` `!`) to decide whether
@@ -8989,7 +8996,7 @@ With the agent's question in context, the model can anticipate the answer, sharp
 | Parameter                  | Type | Description                                                                                                                                                              |
 | -------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `agent_context`            | str  | Your agent's most recent spoken reply, up to ~1500 characters. Set it at construction time to seed an opening greeting; subsequent replies are fed automatically.        |
-| `previous_context_n_turns` | int  | How many prior conversation entries are carried forward automatically. Range `0`–`100`; `0` disables carryover entirely. Construction-time only; server default is `3`. |
+| `previous_context_n_turns` | int  | How many prior conversation entries are carried forward automatically. Range `0`–`100`; `0` disables carryover entirely. Construction-time only; server default is `5` on `universal-3-5-pro` (`3` on older `u3-rt-pro`). |
 
 #### Seeding the opening greeting
 
@@ -9002,7 +9009,7 @@ stt = AssemblyAISTTService(
         model="universal-3-5-pro",
         # Seed the opening line; later turns are fed automatically by the aggregator.
         agent_context="Hi! Thanks for calling Acme. What's the email on your account?",
-        # previous_context_n_turns=3,  # Default. Set 0 to disable carryover entirely.
+        # previous_context_n_turns=5,  # Default on universal-3-5-pro. Set 0 to disable carryover entirely.
     ),
 )
 ```
@@ -13727,73 +13734,45 @@ Metadata:
 
 ---
 
-<a id="create-a-webhook-subscription-docs-api-reference-voice-agent-api-create-webhook-subscription-mdx"></a>
+<a id="list-sessions-docs-api-reference-voice-agent-api-list-sessions-mdx"></a>
 
-# Create a webhook subscription
+# List sessions
 
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/create-webhook-subscription
-Source: docs/api-reference/voice-agent-api/create-webhook-subscription.mdx
-Navigation: API Reference > Voice Agent API > Webhooks
-Description: Create a webhook subscription documentation.
+URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/list-sessions
+Source: docs/api-reference/voice-agent-api/list-sessions.mdx
+Navigation: API Reference > Voice Agent API > Sessions
+Description: List your voice agent sessions, newest first.
 
 Metadata:
-- openapi: ../../specs/webhooks.yaml POST /v1/webhook-subscriptions
+- openapi: ../../specs/agents.yaml GET /v1/sessions
 
 ---
 
-<a id="list-webhook-subscriptions-docs-api-reference-voice-agent-api-list-webhook-subscriptions-mdx"></a>
+<a id="retrieve-a-session-docs-api-reference-voice-agent-api-get-session-mdx"></a>
 
-# List webhook subscriptions
+# Retrieve a session
 
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/list-webhook-subscriptions
-Source: docs/api-reference/voice-agent-api/list-webhook-subscriptions.mdx
-Navigation: API Reference > Voice Agent API > Webhooks
-Description: List webhook subscriptions documentation.
+URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/get-session
+Source: docs/api-reference/voice-agent-api/get-session.mdx
+Navigation: API Reference > Voice Agent API > Sessions
+Description: Retrieve a voice agent session by ID, including its recording, timeline, and metadata artifacts.
 
 Metadata:
-- openapi: ../../specs/webhooks.yaml GET /v1/webhook-subscriptions
+- openapi: ../../specs/agents.yaml GET /v1/sessions/{session_id}
 
 ---
 
-<a id="retrieve-a-webhook-subscription-docs-api-reference-voice-agent-api-get-webhook-subscription-mdx"></a>
+<a id="delete-a-session-docs-api-reference-voice-agent-api-delete-session-mdx"></a>
 
-# Retrieve a webhook subscription
+# Delete a session
 
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/get-webhook-subscription
-Source: docs/api-reference/voice-agent-api/get-webhook-subscription.mdx
-Navigation: API Reference > Voice Agent API > Webhooks
-Description: Retrieve a webhook subscription documentation.
-
-Metadata:
-- openapi: ../../specs/webhooks.yaml GET /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="update-a-webhook-subscription-docs-api-reference-voice-agent-api-update-webhook-subscription-mdx"></a>
-
-# Update a webhook subscription
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/update-webhook-subscription
-Source: docs/api-reference/voice-agent-api/update-webhook-subscription.mdx
-Navigation: API Reference > Voice Agent API > Webhooks
-Description: Update a webhook subscription documentation.
+URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/delete-session
+Source: docs/api-reference/voice-agent-api/delete-session.mdx
+Navigation: API Reference > Voice Agent API > Sessions
+Description: Soft-delete a voice agent session.
 
 Metadata:
-- openapi: ../../specs/webhooks.yaml PATCH /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="delete-a-webhook-subscription-docs-api-reference-voice-agent-api-delete-webhook-subscription-mdx"></a>
-
-# Delete a webhook subscription
-
-URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/delete-webhook-subscription
-Source: docs/api-reference/voice-agent-api/delete-webhook-subscription.mdx
-Navigation: API Reference > Voice Agent API > Webhooks
-Description: Delete a webhook subscription documentation.
-
-Metadata:
-- openapi: ../../specs/webhooks.yaml DELETE /v1/webhook-subscriptions/{subscription_id}
+- openapi: ../../specs/agents.yaml DELETE /v1/sessions/{session_id}
 
 ---
 
@@ -31570,10 +31549,12 @@ This means:
 | Behavior | Default |
 | --- | --- |
 | Auto-carry of prior user turns | Enabled |
-| Number of prior entries carried | 3 |
+| Number of prior entries carried | 5 |
 | Maximum context size | 1750 characters |
 
 Older entries are dropped first as new ones come in, so the most recent conversation is always preserved.
+
+  The number of prior entries carried is the current default for `universal-3-5-pro`. Earlier `u3-rt-pro` sessions carry 3.
 
 ## Passing your agent's reply as context
 
@@ -36218,7 +36199,7 @@ These are the key parameters to tune for LiveKit when using **Universal 3.5 Pro 
   [Conversation context](#conversation-context).
 
   How many prior conversation entries are carried forward automatically. Range
-  `0`–`100`; `0` disables carryover. Leave unset for the server default (3).
+  `0`–`100`; `0` disables carryover. Leave unset for the server default (5).
   Connect-time only — cannot be changed with `update_options`. Universal-3.5 Pro
   only.
 
@@ -36607,7 +36588,7 @@ With the agent's question in context, the model can anticipate the answer, sharp
 | -------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `agent_context_carryover`  | boolean | When `true`, the plugin automatically forwards your agent's replies to the STT model as `agent_context` after each turn — no event wiring required. Requires `livekit-agents` **1.6.5+**. Defaults to `false`.       |
 | `agent_context`            | string  | Your agent's most recent spoken reply (what your TTS just said), up to ~1500 characters. Set it at construction time to seed an opening greeting, and update it after each agent reply via `update_options()`.       |
-| `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (3).                                          |
+| `previous_context_n_turns` | integer | How many prior conversation entries are carried forward automatically. Connect-time only. Range `0`–`100`; `0` disables carryover; leave unset for the server default (5).                                          |
 
   `agent_context_carryover`, `agent_context`, and `previous_context_n_turns` are supported only on Universal-3.5 Pro (`universal-3-5-pro`). `previous_context_n_turns` is set at construction time and cannot be changed with `update_options()`.
 
@@ -37243,7 +37224,7 @@ These are the key parameters to tune. Set them inside `AssemblyAISTTService.Sett
   How many prior conversation entries are carried forward automatically. Range
   `0`–`100`; `0` disables carryover entirely (including the automatic
   `agent_context` feed). Construction-time only; leave unset for the server
-  default (`3`). U3 Pro family only.
+  default (`5` on `universal-3-5-pro`; `3` on older `u3-rt-pro`). U3 Pro family only.
 
   Milliseconds of silence before a speculative end-of-turn check. When the check
   fires, the model looks for terminal punctuation (`.` `?` `!`) to decide whether
@@ -37525,7 +37506,7 @@ With the agent's question in context, the model can anticipate the answer, sharp
 | Parameter                  | Type | Description                                                                                                                                                              |
 | -------------------------- | ---- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `agent_context`            | str  | Your agent's most recent spoken reply, up to ~1500 characters. Set it at construction time to seed an opening greeting; subsequent replies are fed automatically.        |
-| `previous_context_n_turns` | int  | How many prior conversation entries are carried forward automatically. Range `0`–`100`; `0` disables carryover entirely. Construction-time only; server default is `3`. |
+| `previous_context_n_turns` | int  | How many prior conversation entries are carried forward automatically. Range `0`–`100`; `0` disables carryover entirely. Construction-time only; server default is `5` on `universal-3-5-pro` (`3` on older `u3-rt-pro`). |
 
 #### Seeding the opening greeting
 
@@ -37538,7 +37519,7 @@ stt = AssemblyAISTTService(
         model="universal-3-5-pro",
         # Seed the opening line; later turns are fed automatically by the aggregator.
         agent_context="Hi! Thanks for calling Acme. What's the email on your account?",
-        # previous_context_n_turns=3,  # Default. Set 0 to disable carryover entirely.
+        # previous_context_n_turns=5,  # Default on universal-3-5-pro. Set 0 to disable carryover entirely.
     ),
 )
 ```
@@ -57286,6 +57267,468 @@ Set the volume separately — see [Volume](/voice-agents/voice-agent-api/volume)
 
 ---
 
+<a id="recordings-transcripts-docs-voice-agents-voice-agent-api-session-history-mdx"></a>
+
+# Recordings & transcripts
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/session-history
+Source: docs/voice-agents/voice-agent-api/session-history.mdx
+Navigation: Voice Agent API > After a session
+Description: List voice agent sessions and retrieve each one's recording, conversation timeline, and metadata, with examples for parsing transcripts and playing back audio.
+
+Every connection to a voice agent is recorded as a **session**. The Sessions API lists past sessions, retrieves any one with its recording and full conversation timeline, and deletes them. It is what you build a call-history view, transcript review, QA workflow, or usage dashboard on.
+
+Send your API key in the `Authorization` header (a `Bearer ` prefix is accepted and stripped). The base URL is `https://agents.assemblyai.com`. For the field-level schema of each endpoint, see the [Sessions API reference](/api-reference/voice-agent-api/list-sessions).
+
+## Find completed sessions
+
+Poll `GET /v1/sessions` and process the ones whose `status` is `completed`, fetching each and downloading its artifacts. Keep the last `session_id` you handled (or the newest `created_at`) so each poll only picks up new sessions.
+
+You also know a session's `session_id` the moment it connects, since it arrives over the WebSocket in `session.ready`. Store it live and pull the recording and transcript once the session ends.
+
+## List sessions
+
+`GET /v1/sessions` returns a page of sessions, newest first, without artifacts. Narrow the results with `status` and `agent_id`, size the page with `limit` (1 to 200, default 50), and page forward with `cursor`.
+
+```bash cURL
+curl "https://agents.assemblyai.com/v1/sessions?limit=50&agent_id=$AGENT_ID" \
+  -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+```python Python
+# pip install requests
+import os
+import requests
+
+resp = requests.get(
+    "https://agents.assemblyai.com/v1/sessions",
+    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+    params={"limit": 50, "agent_id": os.environ["AGENT_ID"]},
+)
+resp.raise_for_status()
+print(resp.json()["sessions"])
+```
+
+```javascript Node.js
+// Node 18+ has fetch built in
+const url = new URL("https://agents.assemblyai.com/v1/sessions");
+url.searchParams.set("limit", "50");
+url.searchParams.set("agent_id", process.env.AGENT_ID);
+
+const res = await fetch(url, {
+  headers: { Authorization: process.env.ASSEMBLYAI_API_KEY },
+});
+const data = await res.json();
+console.log(data.sessions);
+```
+
+```json
+{
+  "sessions": [
+    {
+      "id": "sess_9a648a2ab75747a9a597ba046ced3e13",
+      "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+      "status": "completed",
+      "public_close_reason": "client_end",
+      "duration_seconds": 42.6,
+      "created_at": "2026-07-14T18:04:27.607110Z",
+      "ended_at": "2026-07-14T18:05:10.204981Z"
+    }
+  ],
+  "has_more": true,
+  "response_metadata": { "next_cursor": "c2Vzc185YTY0OGEyYWI3NTc0N2E5" }
+}
+```
+
+To pull the full history, keep passing `next_cursor` back as `cursor` until `has_more` is `false`:
+
+```python Python
+import os
+import requests
+
+BASE = "https://agents.assemblyai.com"
+HEADERS = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
+
+def all_sessions(**filters):
+    cursor = None
+    while True:
+        resp = requests.get(
+            f"{BASE}/v1/sessions",
+            headers=HEADERS,
+            params={"limit": 200, "cursor": cursor, **filters},
+        )
+        resp.raise_for_status()
+        page = resp.json()
+        yield from page["sessions"]
+        cursor = page["response_metadata"]["next_cursor"]
+        if not page["has_more"] or not cursor:
+            break
+
+for session in all_sessions(agent_id=os.environ["AGENT_ID"]):
+    print(session["id"], session["status"], session["duration_seconds"])
+```
+
+```javascript Node.js
+const BASE = "https://agents.assemblyai.com";
+const HEADERS = { Authorization: process.env.ASSEMBLYAI_API_KEY };
+
+async function* allSessions(filters = {}) {
+  let cursor = "";
+  do {
+    const url = new URL(`${BASE}/v1/sessions`);
+    url.searchParams.set("limit", "200");
+    if (cursor) url.searchParams.set("cursor", cursor);
+    for (const [k, v] of Object.entries(filters)) url.searchParams.set(k, v);
+
+    const res = await fetch(url, { headers: HEADERS });
+    const page = await res.json();
+    yield* page.sessions;
+    cursor = page.response_metadata.next_cursor;
+    if (!page.has_more || !cursor) break;
+  } while (true);
+}
+
+for await (const s of allSessions({ agent_id: process.env.AGENT_ID })) {
+  console.log(s.id, s.status, s.duration_seconds);
+}
+```
+
+## Retrieve a session
+
+`GET /v1/sessions/{id}` returns the full session. On top of the list metadata it adds two things: `config`, the session's configuration as it ran (system prompt, input/output, tools, LLM), and `artifacts`, each a short-lived **pre-signed download URL**.
+
+```bash cURL
+curl "https://agents.assemblyai.com/v1/sessions/$SESSION_ID" \
+  -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+```python Python
+import os
+import requests
+
+resp = requests.get(
+    f"https://agents.assemblyai.com/v1/sessions/{os.environ['SESSION_ID']}",
+    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+)
+resp.raise_for_status()
+session = resp.json()
+print(session["status"], session["artifacts"])
+```
+
+```javascript Node.js
+const res = await fetch(
+  `https://agents.assemblyai.com/v1/sessions/${process.env.SESSION_ID}`,
+  { headers: { Authorization: process.env.ASSEMBLYAI_API_KEY } },
+);
+const session = await res.json();
+console.log(session.status, session.artifacts);
+```
+
+```json expandable
+{
+  "id": "sess_9a648a2ab75747a9a597ba046ced3e13",
+  "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+  "status": "completed",
+  "public_close_reason": "client_end",
+  "duration_seconds": 42.6,
+  "config": {
+    "system_prompt": "You are a friendly support agent.",
+    "greeting": "Hi, how can I help?",
+    "input": { "type": "audio", "format": { "encoding": "audio/pcm", "sample_rate": 24000 }, "keyterms": [], "turn_detection": null },
+    "output": { "type": "audio", "voice": "ivy", "format": { "encoding": "audio/pcm", "sample_rate": 24000 } },
+    "tools": [],
+    "llm": []
+  },
+  "created_at": "2026-07-14T18:04:27.607110Z",
+  "ended_at": "2026-07-14T18:05:10.204981Z",
+  "artifacts": [
+    { "type": "audio", "url": "https://s3.amazonaws.com/.../audio.ogg?X-Amz-Signature=...", "content_type": "audio/ogg" },
+    { "type": "timeline", "url": "https://s3.amazonaws.com/.../timeline.json?X-Amz-Signature=...", "content_type": "application/json" },
+    { "type": "metadata", "url": "https://s3.amazonaws.com/.../metadata.json?X-Amz-Signature=...", "content_type": "application/json" }
+  ]
+}
+```
+
+The three artifacts appear once the session completes; the array is empty while it is still active. They are the **audio** recording (OGG/Opus), the **timeline** (the conversation as JSON), and **metadata** (recording details). Download each straight from its `url` with no `Authorization` header, since the signature already authorizes the request.
+
+Artifact URLs expire after a short TTL. Store the `session_id`, not the URL, and re-fetch the session for fresh links right before you download.
+
+## Parse the conversation timeline
+
+The `timeline` artifact is the whole conversation, turn by turn:
+
+```json expandable
+{
+  "session_id": "sess_9a648a2ab75747a9a597ba046ced3e13",
+  "started_at_unix_ms": 1768413867285,
+  "turns": [
+    {
+      "turn_id": "resp_c5f07b9645b649fdb31bfbdc790d224b",
+      "item_id": "msg_7ff94d121e0a473f9bfb53216294538a",
+      "status": "completed",
+      "trigger": "greeting",
+      "user_transcript": null,
+      "agent_text": "Hi, how can I help?",
+      "agent_reply_started_at_ms": 1768413868332,
+      "agent_reply_ended_at_ms": 1768413871652,
+      "time_to_first_audio_ms": 1013
+    },
+    {
+      "turn_id": "resp_86122ef6e8264c1e94e1bd88ed1f9fbc",
+      "item_id": "msg_66d56698eb0e4b3a96ec9bd494db44b8",
+      "status": "completed",
+      "trigger": "user_speech",
+      "user_transcript": "What's the weather in Paris?",
+      "user_confidence": 0.98,
+      "agent_text": "It's 22 degrees and sunny in Paris.",
+      "agent_reply_started_at_ms": 1768413878530,
+      "time_to_first_audio_ms": 1457,
+      "tool_calls": [
+        {
+          "call_id": "call_abc",
+          "name": "get_weather",
+          "arguments": { "latitude": 48.85, "longitude": 2.35 },
+          "result": "{\"temp_c\": 22, \"condition\": \"sunny\"}",
+          "dispatched_at_ms": 1768413876500,
+          "result_received_at_ms": 1768413876920,
+          "duration_ms": 420,
+          "is_error": false
+        }
+      ]
+    }
+  ]
+}
+```
+
+Each turn pairs what the user said (`user_transcript`, `null` on agent-initiated turns like the greeting) with what the agent replied (`agent_text`), and carries a `tool_calls` array **only on turns where a tool actually fired**. `turn_id` is the model response ID and `status` is the turn outcome (`completed` or `interrupted`). Timestamps ending `_at_ms` are absolute Unix epoch milliseconds; durations ending `_ms` (like `time_to_first_audio_ms` and `duration_ms`) are relative spans.
+
+A turn can also have **no** `user_transcript` and **no** `agent_text`: an interruption before the agent spoke, or a brief noise that opened a turn without a resolved transcript. Skip those when you build a transcript rather than assuming every turn has text (the code below does).
+
+Empty arrays are dropped from the JSON: a session where no one spoke has **no** `turns` key at all, and a turn with no tools has **no** `tool_calls`. Default them when you read: `timeline.get("turns", [])` in Python, `timeline.turns ?? []` in JS.
+
+To render or store the conversation, download the timeline and flatten its turns into an ordered list of messages:
+
+```python Python
+import os
+import requests
+
+BASE = "https://agents.assemblyai.com"
+HEADERS = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
+
+def artifact_url(session, kind):
+    return next((a["url"] for a in session["artifacts"] if a["type"] == kind), None)
+
+def load_transcript(session_id):
+    session = requests.get(
+        f"{BASE}/v1/sessions/{session_id}", headers=HEADERS
+    ).json()
+
+    url = artifact_url(session, "timeline")
+    if url is None:
+        return []  # session still active, or no recording
+
+    timeline = requests.get(url).json()  # pre-signed URL: no auth header
+
+    messages = []
+    for turn in timeline.get("turns", []):  # `turns` is omitted when empty
+        if turn.get("user_transcript"):
+            messages.append({"role": "user", "text": turn["user_transcript"]})
+        for call in turn.get("tool_calls", []):
+            messages.append({
+                "role": "tool",
+                "name": call["name"],
+                "arguments": call.get("arguments"),
+                "result": call.get("result"),
+                "error": call["is_error"] or call.get("timed_out", False),
+            })
+        if turn.get("agent_text"):
+            messages.append({"role": "agent", "text": turn["agent_text"]})
+    return messages
+
+for m in load_transcript(os.environ["SESSION_ID"]):
+    if m["role"] == "tool":
+        flag = " (error)" if m["error"] else ""
+        print(f"  ↳ {m['name']}({m['arguments']}) → {m['result']}{flag}")
+    else:
+        print(f"{m['role']}: {m['text']}")
+```
+
+```javascript Node.js
+const BASE = "https://agents.assemblyai.com";
+const HEADERS = { Authorization: process.env.ASSEMBLYAI_API_KEY };
+
+const artifactUrl = (session, kind) =>
+  session.artifacts.find((a) => a.type === kind)?.url ?? null;
+
+async function loadTranscript(sessionId) {
+  const session = await (
+    await fetch(`${BASE}/v1/sessions/${sessionId}`, { headers: HEADERS })
+  ).json();
+
+  const url = artifactUrl(session, "timeline");
+  if (!url) return []; // session still active, or no recording
+
+  const timeline = await (await fetch(url)).json(); // pre-signed: no auth header
+
+  const messages = [];
+  for (const turn of timeline.turns ?? []) {  // `turns` is omitted when empty
+    if (turn.user_transcript)
+      messages.push({ role: "user", text: turn.user_transcript });
+    for (const call of turn.tool_calls ?? []) {
+      messages.push({
+        role: "tool",
+        name: call.name,
+        arguments: call.arguments,
+        result: call.result,
+        error: call.is_error || call.timed_out,
+      });
+    }
+    if (turn.agent_text)
+      messages.push({ role: "agent", text: turn.agent_text });
+  }
+  return messages;
+}
+
+for (const m of await loadTranscript(process.env.SESSION_ID)) {
+  if (m.role === "tool") {
+    console.log(
+      `  ↳ ${m.name}(${JSON.stringify(m.arguments)}) → ${m.result}` +
+        (m.error ? " (error)" : ""),
+    );
+  } else {
+    console.log(`${m.role}: ${m.text}`);
+  }
+}
+```
+
+```text
+agent: Hi, how can I help?
+user: What's the weather in Paris?
+  ↳ get_weather({"latitude": 48.85, "longitude": 2.35}) → {"temp_c": 22, "condition": "sunny"}
+agent: It's 22 degrees and sunny in Paris.
+```
+
+## Work with the recording
+
+The `audio` artifact is an OGG/Opus file; the `metadata` artifact describes it:
+
+```json
+{
+  "session_id": "sess_9a648a2ab75747a9a597ba046ced3e13",
+  "started_at": "2026-07-14T18:04:27.607110Z",
+  "ended_at": "2026-07-14T18:05:10.204981Z",
+  "format": "ogg/opus",
+  "channels": 2,
+  "channel_layout": "stereo (left=user, right=agent)",
+  "sample_rate": 24000,
+  "file": "sess_9a648a2ab75747a9a597ba046ced3e13/recording/audio.ogg"
+}
+```
+
+The recording is stereo with the **user on the left channel and the agent on the right**, so you can split channels for diarized playback or per-speaker analysis. To save it locally:
+
+```python Python
+import os
+import requests
+
+BASE = "https://agents.assemblyai.com"
+HEADERS = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
+
+session = requests.get(
+    f"{BASE}/v1/sessions/{os.environ['SESSION_ID']}", headers=HEADERS
+).json()
+
+audio = next(a for a in session["artifacts"] if a["type"] == "audio")
+meta = next(a for a in session["artifacts"] if a["type"] == "metadata")
+
+with requests.get(audio["url"], stream=True) as r:  # pre-signed: no auth header
+    r.raise_for_status()
+    with open("recording.ogg", "wb") as f:
+        for chunk in r.iter_content(chunk_size=8192):
+            f.write(chunk)
+
+print(requests.get(meta["url"]).json())
+```
+
+```javascript Node.js
+import { writeFile } from "node:fs/promises";
+
+const BASE = "https://agents.assemblyai.com";
+const HEADERS = { Authorization: process.env.ASSEMBLYAI_API_KEY };
+
+const session = await (
+  await fetch(`${BASE}/v1/sessions/${process.env.SESSION_ID}`, {
+    headers: HEADERS,
+  })
+).json();
+
+const audio = session.artifacts.find((a) => a.type === "audio");
+const meta = session.artifacts.find((a) => a.type === "metadata");
+
+const buf = Buffer.from(await (await fetch(audio.url)).arrayBuffer());
+await writeFile("recording.ogg", buf);
+
+console.log(await (await fetch(meta.url)).json());
+```
+
+To play it back in your app, keep the API key server-side: expose a small endpoint that returns a fresh audio URL, then point an `<audio>` element at it.
+
+```javascript Server (Express)
+import express from "express";
+
+const app = express();
+
+app.get("/api/sessions/:id/audio", async (req, res) => {
+  const r = await fetch(
+    `https://agents.assemblyai.com/v1/sessions/${req.params.id}`,
+    { headers: { Authorization: process.env.ASSEMBLYAI_API_KEY } },
+  );
+  if (!r.ok) return res.status(r.status).end();
+
+  const session = await r.json();
+  const audio = session.artifacts.find((a) => a.type === "audio");
+  // The URL is short-lived, so the client requests it right before playback.
+  res.json({ url: audio?.url ?? null });
+});
+
+app.listen(3000);
+```
+
+```tsx React
+import { useEffect, useState } from "react";
+
+export function SessionRecording({ sessionId }: { sessionId: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/sessions/${sessionId}/audio`)
+      .then((r) => r.json())
+      .then((d) => setUrl(d.url));
+  }, [sessionId]);
+
+  if (!url) return <p>Loading recording…</p>;
+
+  return (
+    <audio controls preload="metadata" src={url}>
+      Your browser does not support the audio element.
+    </audio>
+  );
+}
+```
+
+OGG/Opus plays natively in Chrome, Firefox, and Edge; Safari support is limited. To support Safari, transcode server-side first, for example `ffmpeg -i recording.ogg recording.m4a`.
+
+## Delete a session
+
+`DELETE /v1/sessions/{id}` soft-deletes a session and returns `204`. It stops appearing in `GET /v1/sessions` and its artifacts become inaccessible.
+
+```bash cURL
+curl -X DELETE "https://agents.assemblyai.com/v1/sessions/$SESSION_ID" \
+  -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+---
+
 <a id="inline-session-configuration-docs-voice-agents-voice-agent-api-session-configuration-mdx"></a>
 
 # Inline session configuration
@@ -57361,300 +57804,6 @@ The `session` object carries the same fields as a stored agent. Each has a dedic
 - **`input.keyterms`** — up to 100 transcription-bias terms. Updatable mid-session. See [Key terms](/voice-agents/voice-agent-api/keyterms).
 - **`input.turn_detection`** — VAD tuning and barge-in. Updatable mid-session. See [Turn detection and interruptions](/voice-agents/voice-agent-api/turn-detection-and-interruptions).
 - **`tools`** — actions the agent can call. See [Add tools](/voice-agents/voice-agent-api/tools/overview).
-
----
-
-<a id="webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx"></a>
-
-# Webhooks
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/webhooks
-Source: docs/voice-agents/voice-agent-api/webhooks.mdx
-Navigation: Voice Agent API > Reference
-Description: Subscribe to session and call lifecycle events for your agents. AssemblyAI POSTs a signed JSON payload to your URL when each event fires.
-
-Webhooks let your backend react to what your agents do without polling. Register a URL and the events you care about, and AssemblyAI sends a signed `POST` to that URL whenever one fires (when a call connects, a session ends, and so on). This is how you log calls, kick off post-call processing, or update your own systems for agents you created over [REST](/voice-agents/voice-agent-api/manage-agents).
-
-**Base URL:** `https://agents.assemblyai.com`. Manage subscriptions with your API key in the `Authorization` header, same as the rest of the API.
-
-## Events
-
-| Event              | Fires when |
-| ------------------ | ---------- |
-| `session.started`  | A voice agent session begins. |
-| `session.completed`| A session ends (delivered with final duration and close reason). |
-| `call.connected`   | An inbound phone call connects to an agent. |
-| `call.ended`       | A call ends. |
-| `call.failed`      | A call fails to connect or errors out. |
-
-## Create a subscription
-
-`POST /v1/webhook-subscriptions`. Subscribe to one or more events; scope to a single agent with `agent_id`, or omit it to receive events for **all** your agents.
-
-```bash cURL
-curl -X POST https://agents.assemblyai.com/v1/webhook-subscriptions \
-  -H "Authorization: $ASSEMBLYAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "url": "https://your-app.com/webhooks/assemblyai",
-    "events": ["session.completed", "call.ended"],
-    "secret": "a-long-random-signing-secret-at-least-32-chars",
-    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9"
-  }'
-```
-
-```python Python
-# pip install requests
-import os
-import requests
-
-resp = requests.post(
-    "https://agents.assemblyai.com/v1/webhook-subscriptions",
-    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
-    json={
-        "url": "https://your-app.com/webhooks/assemblyai",
-        "events": ["session.completed", "call.ended"],
-        "secret": "a-long-random-signing-secret-at-least-32-chars",
-        "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
-    },
-)
-resp.raise_for_status()
-print(resp.json()["id"])
-```
-
-```javascript Node.js
-// Node 18+ has fetch built in
-const res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions", {
-  method: "POST",
-  headers: {
-    Authorization: process.env.ASSEMBLYAI_API_KEY,
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify({
-    url: "https://your-app.com/webhooks/assemblyai",
-    events: ["session.completed", "call.ended"],
-    secret: "a-long-random-signing-secret-at-least-32-chars",
-    agent_id: "7ad24396-b822-4dca-871a-be9cc4781cf9",
-  }),
-});
-const data = await res.json();
-console.log(data);
-```
-
-```json
-{
-  "id": "0d75ebd7-937c-495c-b638-ba582ec05b39",
-  "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
-  "url": "https://your-app.com/webhooks/assemblyai",
-  "events": ["session.completed", "call.ended"],
-  "enabled": true,
-  "secret_version": 1,
-  "created_at": "2026-06-10T14:16:59Z",
-  "updated_at": "2026-06-10T14:16:59Z"
-}
-```
-
-| Field      | Required | Notes |
-| ---------- | -------- | ----- |
-| `url`      | Yes      | Where deliveries are POSTed. Must be `https` and a public host. |
-| `events`   | Yes      | One or more of the [events](#events) above. No duplicates. |
-| `secret`   | Yes      | Your signing secret, 32-256 printable ASCII chars (no whitespace). Used to sign every delivery; store it, since it's **never returned**. |
-| `agent_id` | No       | Scope to one agent. Omit for account-wide events. |
-| `enabled`  | No       | Defaults to `true`. Set `false` to pause deliveries. |
-
-The response returns a `secret_version` (an integer that increments when you rotate the secret), never the secret itself. Keep your own copy of the secret to verify signatures.
-
-## Receiving a delivery
-
-When an event fires, AssemblyAI sends a `POST` to your `url` with these headers:
-
-| Header             | Value |
-| ------------------ | ----- |
-| `X-AAI-Event`      | The event type, e.g. `session.completed`. |
-| `X-AAI-Signature`  | `sha256=<hex HMAC-SHA256 of the raw body, keyed by your secret>`. |
-| `X-AAI-Delivery-Id`| Unique per delivery attempt; use it to dedupe. |
-
-**Session events** carry a `session` object:
-
-```json
-{
-  "event_id": "f1d2...",
-  "event": "session.completed",
-  "timestamp": "2026-06-10T14:20:31Z",
-  "session": {
-    "session_id": "sess_abc123",
-    "account_id": 325374,
-    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
-    "status": "completed",
-    "duration_seconds": 142.6,
-    "public_close_reason": "client_ended",
-    "s3_prefix": "…",
-    "created_at": "2026-06-10T14:18:08Z",
-    "ended_at": "2026-06-10T14:20:31Z"
-  }
-}
-```
-
-**Call events** carry a `call` object (with recording/transcript links where available):
-
-```json
-{
-  "event_id": "a93c...",
-  "event": "call.ended",
-  "timestamp": "2026-06-10T14:20:32Z",
-  "call": {
-    "call_id": "call_8b2b1e8c...",
-    "account_id": 325374,
-    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
-    "status": "completed",
-    "direction": "inbound",
-    "from_number": "+14155550123",
-    "to_number": "+19016659697",
-    "session_id": "sess_abc123",
-    "recording_url": "https://…",
-    "transcript_url": "https://…",
-    "created_at": "2026-06-10T14:18:05Z",
-    "ended_at": "2026-06-10T14:20:32Z"
-  }
-}
-```
-
-Respond with a `2xx` status promptly. Failed deliveries are retried with backoff, so make your handler **idempotent**: dedupe on `event_id` (or `X-AAI-Delivery-Id`).
-
-## Verify the signature
-
-Always verify `X-AAI-Signature` before trusting a delivery. Compute `HMAC-SHA256` over the **exact raw request body** (don't re-serialize the JSON) using your subscription secret, and compare in constant time:
-
-```python Python
-import hashlib, hmac
-
-def verify(raw_body: bytes, signature_header: str, secret: str) -> bool:
-    expected = "sha256=" + hmac.new(secret.encode(), raw_body, hashlib.sha256).hexdigest()
-    return hmac.compare_digest(expected, signature_header or "")
-
-# Flask example
-@app.post("/webhooks/assemblyai")
-def handle():
-    if not verify(request.get_data(), request.headers.get("X-AAI-Signature"), SECRET):
-        return "", 401
-    event = request.get_json()
-    # ... handle event["event"], event["session"] / event["call"]
-    return "", 200
-```
-
-```javascript Node
-import crypto from "node:crypto";
-
-function verify(rawBody, signatureHeader, secret) {
-  const expected = "sha256=" + crypto.createHmac("sha256", secret).update(rawBody).digest("hex");
-  const a = Buffer.from(expected), b = Buffer.from(signatureHeader || "");
-  return a.length === b.length && crypto.timingSafeEqual(a, b);
-}
-
-// Express: capture the raw body for verification
-app.post("/webhooks/assemblyai",
-  express.raw({ type: "application/json" }),
-  (req, res) => {
-    if (!verify(req.body, req.get("X-AAI-Signature"), SECRET)) return res.sendStatus(401);
-    const event = JSON.parse(req.body.toString());
-    // ... handle event
-    res.sendStatus(200);
-  });
-```
-
-## Manage subscriptions
-
-```bash cURL expandable
-# List (paginated, newest first)
-curl https://agents.assemblyai.com/v1/webhook-subscriptions -H "Authorization: $ASSEMBLYAI_API_KEY"
-
-# Retrieve one
-curl https://agents.assemblyai.com/v1/webhook-subscriptions/{id} -H "Authorization: $ASSEMBLYAI_API_KEY"
-
-# Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
-curl -X PATCH https://agents.assemblyai.com/v1/webhook-subscriptions/{id} \
-  -H "Authorization: $ASSEMBLYAI_API_KEY" -H "Content-Type: application/json" \
-  -d '{ "enabled": false }'
-
-# Delete
-curl -X DELETE https://agents.assemblyai.com/v1/webhook-subscriptions/{id} -H "Authorization: $ASSEMBLYAI_API_KEY"
-```
-
-```python Python expandable
-# pip install requests
-import os
-import requests
-
-headers = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
-
-# List (paginated, newest first)
-resp = requests.get("https://agents.assemblyai.com/v1/webhook-subscriptions", headers=headers)
-resp.raise_for_status()
-print(resp.json())
-
-# Retrieve one
-resp = requests.get("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", headers=headers)
-resp.raise_for_status()
-print(resp.json())
-
-# Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
-resp = requests.patch(
-    "https://agents.assemblyai.com/v1/webhook-subscriptions/{id}",
-    headers=headers,
-    json={"enabled": False},
-)
-resp.raise_for_status()
-print(resp.json())
-
-# Delete
-resp = requests.delete("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", headers=headers)
-resp.raise_for_status()
-```
-
-```javascript Node.js expandable
-// Node 18+ has fetch built in
-const auth = { Authorization: process.env.ASSEMBLYAI_API_KEY };
-
-// List (paginated, newest first)
-let res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions", {
-  method: "GET",
-  headers: auth,
-});
-console.log(await res.json());
-
-// Retrieve one
-res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
-  method: "GET",
-  headers: auth,
-});
-console.log(await res.json());
-
-// Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
-res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
-  method: "PATCH",
-  headers: { ...auth, "Content-Type": "application/json" },
-  body: JSON.stringify({ enabled: false }),
-});
-console.log(await res.json());
-
-// Delete
-res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
-  method: "DELETE",
-  headers: auth,
-});
-```
-
-`PATCH` accepts any of `url`, `events`, `secret`, `enabled`. Sending a new `secret` rotates it and increments `secret_version`.
-
-## Endpoint summary
-
-| Method   | Path                                  | Description |
-| -------- | ------------------------------------- | ----------- |
-| `POST`   | `/v1/webhook-subscriptions`           | Create a subscription. |
-| `GET`    | `/v1/webhook-subscriptions`           | List your subscriptions. |
-| `GET`    | `/v1/webhook-subscriptions/{id}`      | Retrieve one. |
-| `PATCH`  | `/v1/webhook-subscriptions/{id}`      | Update (url, events, secret, enabled). |
-| `DELETE` | `/v1/webhook-subscriptions/{id}`      | Delete. |
 
 ---
 
@@ -58636,73 +58785,45 @@ Metadata:
 
 ---
 
-<a id="create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx"></a>
+<a id="list-sessions-docs-voice-agents-voice-agent-api-api-spec-list-sessions-mdx"></a>
 
-# Create a webhook subscription
+# List sessions
 
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription
-Source: docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription.mdx
-Navigation: Voice Agent API > API reference > Webhooks
-Description: Create a webhook subscription for Voice Agent API events.
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/list-sessions
+Source: docs/voice-agents/voice-agent-api/api-spec/list-sessions.mdx
+Navigation: Voice Agent API > API reference > Sessions
+Description: List your voice agent sessions, newest first.
 
 Metadata:
-- openapi: /api-reference/specs/webhooks.yaml POST /v1/webhook-subscriptions
+- openapi: /api-reference/specs/agents.yaml GET /v1/sessions
 
 ---
 
-<a id="list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx"></a>
+<a id="retrieve-a-session-docs-voice-agents-voice-agent-api-api-spec-get-session-mdx"></a>
 
-# List webhook subscriptions
+# Retrieve a session
 
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions
-Source: docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions.mdx
-Navigation: Voice Agent API > API reference > Webhooks
-Description: List all webhook subscriptions in your account.
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/get-session
+Source: docs/voice-agents/voice-agent-api/api-spec/get-session.mdx
+Navigation: Voice Agent API > API reference > Sessions
+Description: Retrieve a voice agent session by ID, including its recording, timeline, and metadata artifacts.
 
 Metadata:
-- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions
+- openapi: /api-reference/specs/agents.yaml GET /v1/sessions/{session_id}
 
 ---
 
-<a id="retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx"></a>
+<a id="delete-a-session-docs-voice-agents-voice-agent-api-api-spec-delete-session-mdx"></a>
 
-# Retrieve a webhook subscription
+# Delete a session
 
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription
-Source: docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription.mdx
-Navigation: Voice Agent API > API reference > Webhooks
-Description: Retrieve a webhook subscription by ID.
-
-Metadata:
-- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx"></a>
-
-# Update a webhook subscription
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription
-Source: docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription.mdx
-Navigation: Voice Agent API > API reference > Webhooks
-Description: Update a webhook subscription.
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/delete-session
+Source: docs/voice-agents/voice-agent-api/api-spec/delete-session.mdx
+Navigation: Voice Agent API > API reference > Sessions
+Description: Soft-delete a voice agent session.
 
 Metadata:
-- openapi: /api-reference/specs/webhooks.yaml PATCH /v1/webhook-subscriptions/{subscription_id}
-
----
-
-<a id="delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx"></a>
-
-# Delete a webhook subscription
-
-URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription
-Source: docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription.mdx
-Navigation: Voice Agent API > API reference > Webhooks
-Description: Delete a webhook subscription.
-
-Metadata:
-- openapi: /api-reference/specs/webhooks.yaml DELETE /v1/webhook-subscriptions/{subscription_id}
+- openapi: /api-reference/specs/agents.yaml DELETE /v1/sessions/{session_id}
 
 ---
 
@@ -80491,6 +80612,76 @@ If a developer asks for any of these, say so directly and propose the closest su
 
 ---
 
+<a id="create-a-webhook-subscription-docs-api-reference-voice-agent-api-create-webhook-subscription-mdx"></a>
+
+# Create a webhook subscription
+
+URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/create-webhook-subscription
+Source: docs/api-reference/voice-agent-api/create-webhook-subscription.mdx
+Navigation: Additional pages
+Description: Create a webhook subscription documentation.
+
+Metadata:
+- openapi: ../../specs/webhooks.yaml POST /v1/webhook-subscriptions
+
+---
+
+<a id="delete-a-webhook-subscription-docs-api-reference-voice-agent-api-delete-webhook-subscription-mdx"></a>
+
+# Delete a webhook subscription
+
+URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/delete-webhook-subscription
+Source: docs/api-reference/voice-agent-api/delete-webhook-subscription.mdx
+Navigation: Additional pages
+Description: Delete a webhook subscription documentation.
+
+Metadata:
+- openapi: ../../specs/webhooks.yaml DELETE /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="retrieve-a-webhook-subscription-docs-api-reference-voice-agent-api-get-webhook-subscription-mdx"></a>
+
+# Retrieve a webhook subscription
+
+URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/get-webhook-subscription
+Source: docs/api-reference/voice-agent-api/get-webhook-subscription.mdx
+Navigation: Additional pages
+Description: Retrieve a webhook subscription documentation.
+
+Metadata:
+- openapi: ../../specs/webhooks.yaml GET /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="list-webhook-subscriptions-docs-api-reference-voice-agent-api-list-webhook-subscriptions-mdx"></a>
+
+# List webhook subscriptions
+
+URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/list-webhook-subscriptions
+Source: docs/api-reference/voice-agent-api/list-webhook-subscriptions.mdx
+Navigation: Additional pages
+Description: List webhook subscriptions documentation.
+
+Metadata:
+- openapi: ../../specs/webhooks.yaml GET /v1/webhook-subscriptions
+
+---
+
+<a id="update-a-webhook-subscription-docs-api-reference-voice-agent-api-update-webhook-subscription-mdx"></a>
+
+# Update a webhook subscription
+
+URL: https://www.assemblyai.com/docs/api-reference/voice-agent-api/update-webhook-subscription
+Source: docs/api-reference/voice-agent-api/update-webhook-subscription.mdx
+Navigation: Additional pages
+Description: Update a webhook subscription documentation.
+
+Metadata:
+- openapi: ../../specs/webhooks.yaml PATCH /v1/webhook-subscriptions/{subscription_id}
+
+---
+
 <a id="cli-docs-concepts-cli-mdx"></a>
 
 # CLI
@@ -83028,6 +83219,370 @@ For cross-cutting topics like dynamic configuration updates, scaling, latency bu
 - [LiveKit integration](/voice-agents/livekit-u3-rt-pro)
 - [Pipecat integration](/voice-agents/u3pro-pipecat)
 - [Voice agent best practices](/voice-agents/best-practices)
+
+---
+
+<a id="create-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-create-webhook-subscription-mdx"></a>
+
+# Create a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/create-webhook-subscription.mdx
+Navigation: Additional pages
+Description: Create a webhook subscription for Voice Agent API events.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml POST /v1/webhook-subscriptions
+
+---
+
+<a id="delete-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-delete-webhook-subscription-mdx"></a>
+
+# Delete a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/delete-webhook-subscription.mdx
+Navigation: Additional pages
+Description: Delete a webhook subscription.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml DELETE /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="retrieve-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-get-webhook-subscription-mdx"></a>
+
+# Retrieve a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/get-webhook-subscription.mdx
+Navigation: Additional pages
+Description: Retrieve a webhook subscription by ID.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="list-webhook-subscriptions-docs-voice-agents-voice-agent-api-api-spec-list-webhook-subscriptions-mdx"></a>
+
+# List webhook subscriptions
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions
+Source: docs/voice-agents/voice-agent-api/api-spec/list-webhook-subscriptions.mdx
+Navigation: Additional pages
+Description: List all webhook subscriptions in your account.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml GET /v1/webhook-subscriptions
+
+---
+
+<a id="update-a-webhook-subscription-docs-voice-agents-voice-agent-api-api-spec-update-webhook-subscription-mdx"></a>
+
+# Update a webhook subscription
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription
+Source: docs/voice-agents/voice-agent-api/api-spec/update-webhook-subscription.mdx
+Navigation: Additional pages
+Description: Update a webhook subscription.
+
+Metadata:
+- openapi: /api-reference/specs/webhooks.yaml PATCH /v1/webhook-subscriptions/{subscription_id}
+
+---
+
+<a id="webhooks-docs-voice-agents-voice-agent-api-webhooks-mdx"></a>
+
+# Webhooks
+
+URL: https://www.assemblyai.com/docs/voice-agents/voice-agent-api/webhooks
+Source: docs/voice-agents/voice-agent-api/webhooks.mdx
+Navigation: Additional pages
+Description: Subscribe to session and call lifecycle events for your agents. AssemblyAI POSTs a signed JSON payload to your URL when each event fires.
+
+Webhooks let your backend react to what your agents do without polling. Register a URL and the events you care about, and AssemblyAI sends a signed `POST` to that URL whenever one fires (when a call connects, a session ends, and so on). This is how you log calls, kick off post-call processing, or update your own systems for agents you created over [REST](/voice-agents/voice-agent-api/manage-agents).
+
+**Base URL:** `https://agents.assemblyai.com`. Manage subscriptions with your API key in the `Authorization` header, same as the rest of the API.
+
+## Events
+
+| Event              | Fires when |
+| ------------------ | ---------- |
+| `session.started`  | A voice agent session begins. |
+| `session.completed`| A session ends (delivered with final duration and close reason). |
+| `call.connected`   | An inbound phone call connects to an agent. |
+| `call.ended`       | A call ends. |
+| `call.failed`      | A call fails to connect or errors out. |
+
+## Create a subscription
+
+`POST /v1/webhook-subscriptions`. Subscribe to one or more events; scope to a single agent with `agent_id`, or omit it to receive events for **all** your agents.
+
+```bash cURL
+curl -X POST https://agents.assemblyai.com/v1/webhook-subscriptions \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "url": "https://your-app.com/webhooks/assemblyai",
+    "events": ["session.completed", "call.ended"],
+    "secret": "a-long-random-signing-secret-at-least-32-chars",
+    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9"
+  }'
+```
+
+```python Python
+# pip install requests
+import os
+import requests
+
+resp = requests.post(
+    "https://agents.assemblyai.com/v1/webhook-subscriptions",
+    headers={"Authorization": os.environ["ASSEMBLYAI_API_KEY"]},
+    json={
+        "url": "https://your-app.com/webhooks/assemblyai",
+        "events": ["session.completed", "call.ended"],
+        "secret": "a-long-random-signing-secret-at-least-32-chars",
+        "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+    },
+)
+resp.raise_for_status()
+print(resp.json()["id"])
+```
+
+```javascript Node.js
+// Node 18+ has fetch built in
+const res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions", {
+  method: "POST",
+  headers: {
+    Authorization: process.env.ASSEMBLYAI_API_KEY,
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    url: "https://your-app.com/webhooks/assemblyai",
+    events: ["session.completed", "call.ended"],
+    secret: "a-long-random-signing-secret-at-least-32-chars",
+    agent_id: "7ad24396-b822-4dca-871a-be9cc4781cf9",
+  }),
+});
+const data = await res.json();
+console.log(data);
+```
+
+```json
+{
+  "id": "0d75ebd7-937c-495c-b638-ba582ec05b39",
+  "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+  "url": "https://your-app.com/webhooks/assemblyai",
+  "events": ["session.completed", "call.ended"],
+  "enabled": true,
+  "secret_version": 1,
+  "created_at": "2026-06-10T14:16:59Z",
+  "updated_at": "2026-06-10T14:16:59Z"
+}
+```
+
+| Field      | Required | Notes |
+| ---------- | -------- | ----- |
+| `url`      | Yes      | Where deliveries are POSTed. Must be `https` and a public host. |
+| `events`   | Yes      | One or more of the [events](#events) above. No duplicates. |
+| `secret`   | Yes      | Your signing secret, 32-256 printable ASCII chars (no whitespace). Used to sign every delivery; store it, since it's **never returned**. |
+| `agent_id` | No       | Scope to one agent. Omit for account-wide events. |
+| `enabled`  | No       | Defaults to `true`. Set `false` to pause deliveries. |
+
+The response returns a `secret_version` (an integer that increments when you rotate the secret), never the secret itself. Keep your own copy of the secret to verify signatures.
+
+## Receiving a delivery
+
+When an event fires, AssemblyAI sends a `POST` to your `url` with these headers:
+
+| Header             | Value |
+| ------------------ | ----- |
+| `X-AAI-Event`      | The event type, e.g. `session.completed`. |
+| `X-AAI-Signature`  | `sha256=<hex HMAC-SHA256 of the raw body, keyed by your secret>`. |
+| `X-AAI-Delivery-Id`| Unique per delivery attempt; use it to dedupe. |
+
+**Session events** carry a `session` object:
+
+```json
+{
+  "event_id": "f1d2...",
+  "event": "session.completed",
+  "timestamp": "2026-06-10T14:20:31Z",
+  "session": {
+    "session_id": "sess_abc123",
+    "account_id": 325374,
+    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+    "status": "completed",
+    "duration_seconds": 142.6,
+    "public_close_reason": "client_ended",
+    "s3_prefix": "…",
+    "created_at": "2026-06-10T14:18:08Z",
+    "ended_at": "2026-06-10T14:20:31Z"
+  }
+}
+```
+
+**Call events** carry a `call` object (with recording/transcript links where available):
+
+```json
+{
+  "event_id": "a93c...",
+  "event": "call.ended",
+  "timestamp": "2026-06-10T14:20:32Z",
+  "call": {
+    "call_id": "call_8b2b1e8c...",
+    "account_id": 325374,
+    "agent_id": "7ad24396-b822-4dca-871a-be9cc4781cf9",
+    "status": "completed",
+    "direction": "inbound",
+    "from_number": "+14155550123",
+    "to_number": "+19016659697",
+    "session_id": "sess_abc123",
+    "recording_url": "https://…",
+    "transcript_url": "https://…",
+    "created_at": "2026-06-10T14:18:05Z",
+    "ended_at": "2026-06-10T14:20:32Z"
+  }
+}
+```
+
+Respond with a `2xx` status promptly. Failed deliveries are retried with backoff, so make your handler **idempotent**: dedupe on `event_id` (or `X-AAI-Delivery-Id`).
+
+## Verify the signature
+
+Always verify `X-AAI-Signature` before trusting a delivery. Compute `HMAC-SHA256` over the **exact raw request body** (don't re-serialize the JSON) using your subscription secret, and compare in constant time:
+
+```python Python
+import hashlib, hmac
+
+def verify(raw_body: bytes, signature_header: str, secret: str) -> bool:
+    expected = "sha256=" + hmac.new(secret.encode(), raw_body, hashlib.sha256).hexdigest()
+    return hmac.compare_digest(expected, signature_header or "")
+
+# Flask example
+@app.post("/webhooks/assemblyai")
+def handle():
+    if not verify(request.get_data(), request.headers.get("X-AAI-Signature"), SECRET):
+        return "", 401
+    event = request.get_json()
+    # ... handle event["event"], event["session"] / event["call"]
+    return "", 200
+```
+
+```javascript Node
+import crypto from "node:crypto";
+
+function verify(rawBody, signatureHeader, secret) {
+  const expected = "sha256=" + crypto.createHmac("sha256", secret).update(rawBody).digest("hex");
+  const a = Buffer.from(expected), b = Buffer.from(signatureHeader || "");
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
+}
+
+// Express: capture the raw body for verification
+app.post("/webhooks/assemblyai",
+  express.raw({ type: "application/json" }),
+  (req, res) => {
+    if (!verify(req.body, req.get("X-AAI-Signature"), SECRET)) return res.sendStatus(401);
+    const event = JSON.parse(req.body.toString());
+    // ... handle event
+    res.sendStatus(200);
+  });
+```
+
+## Manage subscriptions
+
+```bash cURL expandable
+# List (paginated, newest first)
+curl https://agents.assemblyai.com/v1/webhook-subscriptions -H "Authorization: $ASSEMBLYAI_API_KEY"
+
+# Retrieve one
+curl https://agents.assemblyai.com/v1/webhook-subscriptions/{id} -H "Authorization: $ASSEMBLYAI_API_KEY"
+
+# Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
+curl -X PATCH https://agents.assemblyai.com/v1/webhook-subscriptions/{id} \
+  -H "Authorization: $ASSEMBLYAI_API_KEY" -H "Content-Type: application/json" \
+  -d '{ "enabled": false }'
+
+# Delete
+curl -X DELETE https://agents.assemblyai.com/v1/webhook-subscriptions/{id} -H "Authorization: $ASSEMBLYAI_API_KEY"
+```
+
+```python Python expandable
+# pip install requests
+import os
+import requests
+
+headers = {"Authorization": os.environ["ASSEMBLYAI_API_KEY"]}
+
+# List (paginated, newest first)
+resp = requests.get("https://agents.assemblyai.com/v1/webhook-subscriptions", headers=headers)
+resp.raise_for_status()
+print(resp.json())
+
+# Retrieve one
+resp = requests.get("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", headers=headers)
+resp.raise_for_status()
+print(resp.json())
+
+# Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
+resp = requests.patch(
+    "https://agents.assemblyai.com/v1/webhook-subscriptions/{id}",
+    headers=headers,
+    json={"enabled": False},
+)
+resp.raise_for_status()
+print(resp.json())
+
+# Delete
+resp = requests.delete("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", headers=headers)
+resp.raise_for_status()
+```
+
+```javascript Node.js expandable
+// Node 18+ has fetch built in
+const auth = { Authorization: process.env.ASSEMBLYAI_API_KEY };
+
+// List (paginated, newest first)
+let res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions", {
+  method: "GET",
+  headers: auth,
+});
+console.log(await res.json());
+
+// Retrieve one
+res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
+  method: "GET",
+  headers: auth,
+});
+console.log(await res.json());
+
+// Update: change the URL/events, pause, or rotate the secret (bumps secret_version)
+res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
+  method: "PATCH",
+  headers: { ...auth, "Content-Type": "application/json" },
+  body: JSON.stringify({ enabled: false }),
+});
+console.log(await res.json());
+
+// Delete
+res = await fetch("https://agents.assemblyai.com/v1/webhook-subscriptions/{id}", {
+  method: "DELETE",
+  headers: auth,
+});
+```
+
+`PATCH` accepts any of `url`, `events`, `secret`, `enabled`. Sending a new `secret` rotates it and increments `secret_version`.
+
+## Endpoint summary
+
+| Method   | Path                                  | Description |
+| -------- | ------------------------------------- | ----------- |
+| `POST`   | `/v1/webhook-subscriptions`           | Create a subscription. |
+| `GET`    | `/v1/webhook-subscriptions`           | List your subscriptions. |
+| `GET`    | `/v1/webhook-subscriptions/{id}`      | Retrieve one. |
+| `PATCH`  | `/v1/webhook-subscriptions/{id}`      | Update (url, events, secret, enabled). |
+| `DELETE` | `/v1/webhook-subscriptions/{id}`      | Delete. |
 
 ---
 
@@ -90034,6 +90589,97 @@ paths:
         "404":
           $ref: "#/components/responses/NotFound"
 
+  /v1/sessions:
+    get:
+      summary: List sessions
+      description: |
+        List sessions for the authenticated account, newest first. Page forward by
+        passing the previous response's `response_metadata.next_cursor` back as `cursor`.
+      operationId: listSessions
+      x-fern-sdk-group-name: Voice Agent API
+      x-fern-sdk-method-name: listSessions
+      security:
+        - apiKey: []
+      parameters:
+        - name: limit
+          in: query
+          description: Maximum sessions per page.
+          schema:
+            type: integer
+            default: 50
+            minimum: 1
+            maximum: 200
+        - name: cursor
+          in: query
+          description: Pagination cursor from the previous response's `response_metadata.next_cursor`.
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Return only sessions with this status.
+          schema:
+            type: string
+        - name: agent_id
+          in: query
+          description: Return only sessions for this agent.
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A page of sessions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /v1/sessions/{session_id}:
+    parameters:
+      - name: session_id
+        in: path
+        required: true
+        description: The session's unique ID.
+        schema:
+          type: string
+          example: "sess_9a648a2ab75747a9a597ba046ced3e13"
+    get:
+      summary: Retrieve a session
+      description: |
+        Retrieve a single session by ID, including its artifacts (recording, conversation
+        timeline, and metadata) as short-lived pre-signed download URLs.
+      operationId: getSession
+      x-fern-sdk-group-name: Voice Agent API
+      x-fern-sdk-method-name: getSession
+      security:
+        - apiKey: []
+      responses:
+        "200":
+          description: The session record with artifacts.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SessionResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    delete:
+      summary: Delete a session
+      description: Soft-delete a session. Returns `204` with no body.
+      operationId: deleteSession
+      x-fern-sdk-group-name: Voice Agent API
+      x-fern-sdk-method-name: deleteSession
+      security:
+        - apiKey: []
+      responses:
+        "204":
+          description: Session deleted.
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
 components:
   securitySchemes:
     apiKey:
@@ -90408,6 +91054,131 @@ components:
           type: string
           description: Error message describing what went wrong.
           example: "Unauthorized"
+
+    SessionListResponse:
+      type: object
+      required: [sessions]
+      properties:
+        sessions:
+          type: array
+          description: Page of sessions, newest first.
+          items:
+            $ref: "#/components/schemas/SessionListItem"
+        has_more:
+          type: boolean
+          description: True when more results may be available; fetch the next page with `response_metadata.next_cursor`.
+          example: true
+        response_metadata:
+          $ref: "#/components/schemas/ResponseMetadata"
+
+    ResponseMetadata:
+      type: object
+      properties:
+        next_cursor:
+          type: string
+          description: Cursor for the next page; pass it back as the `cursor` query parameter. Empty string when there are no further results.
+          example: "c2Vzc185YTY0OGEyYWI3NTc0N2E5"
+
+    SessionListItem:
+      type: object
+      required: [id, status]
+      properties:
+        id:
+          type: string
+          description: Unique ID of the session.
+          example: "sess_9a648a2ab75747a9a597ba046ced3e13"
+        agent_id:
+          type: string
+          nullable: true
+          description: Agent the session ran with. Null when no stored agent was used.
+          example: "7ad24396-b822-4dca-871a-be9cc4781cf9"
+        status:
+          type: string
+          description: Lifecycle status of the session, e.g. `completed`.
+          example: "completed"
+        public_close_reason:
+          type: string
+          nullable: true
+          description: Why the session ended, when known.
+          example: "client_end"
+        duration_seconds:
+          type: number
+          nullable: true
+          description: Session length in seconds. Null while the session is active.
+          example: 42.6
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the session was created.
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the session ended. Null while the session is active.
+
+    SessionResponse:
+      type: object
+      required: [id, status]
+      properties:
+        id:
+          type: string
+          description: Unique ID of the session.
+          example: "sess_9a648a2ab75747a9a597ba046ced3e13"
+        agent_id:
+          type: string
+          nullable: true
+          description: Agent the session ran with. Null when no stored agent was used.
+        status:
+          type: string
+          description: Lifecycle status of the session, e.g. `completed`.
+          example: "completed"
+        public_close_reason:
+          type: string
+          nullable: true
+          description: Why the session ended, when known.
+          example: "client_end"
+        duration_seconds:
+          type: number
+          nullable: true
+          description: Session length in seconds. Null while the session is active.
+          example: 42.6
+        config:
+          type: object
+          nullable: true
+          description: Session configuration captured when the session started.
+          additionalProperties: true
+        created_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the session was created.
+        ended_at:
+          type: string
+          format: date-time
+          nullable: true
+          description: When the session ended. Null while the session is active.
+        artifacts:
+          type: array
+          description: Recording, timeline, and metadata produced by the session. Empty until the session completes.
+          items:
+            $ref: "#/components/schemas/SessionArtifact"
+
+    SessionArtifact:
+      type: object
+      required: [type, url, content_type]
+      properties:
+        type:
+          type: string
+          description: Artifact kind.
+          enum: [audio, timeline, metadata]
+        url:
+          type: string
+          description: Pre-signed download URL. Expires after a short TTL; re-fetch the session for a fresh link.
+        content_type:
+          type: string
+          description: MIME type of the artifact.
+          example: "audio/ogg"
 ```
 
 ## docs/api-reference/specs/webhooks.yaml

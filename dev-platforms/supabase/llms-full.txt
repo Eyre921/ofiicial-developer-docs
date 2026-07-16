@@ -77982,6 +77982,8 @@ alter default privileges for role postgres in schema public
   revoke execute on functions from public;
 ```
 
+Tip: These default privileges pose no direct security risk. They appear in [pg\_default\_acl](https://www.postgresql.org/docs/current/catalog-pg-default-acl.html), granted by [supabase\_admin](https://supabase.com/docs/guides/database/postgres/roles#supabaseadmin) to `anon`, `authenticated`, and `service_role`. The default privileges are intentional and part of Supabase's standard permission model. The `supabase_admin` role is an internal management role that can't authenticate through the Data API.
+
 ## Use a dedicated API schema
 
 If you want an extra boundary around your Data API, lock down the `public` schema and expose a dedicated schema, such as `api`, instead. You can control access with grants in any schema, but this can make the surface easier to reason about: objects in `api` represent your Data API, while internal tables and helper functions stay in schemas that are not exposed. See [Using Custom Schemas](https://supabase.com/docs/guides/api/using-custom-schemas) for setup steps.
@@ -127792,9 +127794,11 @@ need to manually restart it by running `supabase functions serve`.
 
 Resources for getting started with Supabase.
 
-- **[Build with AI tools](https://supabase.com/docs/guides/ai-tools):** Develop with Supabase AI-first using plugins, MCP, and skills.
-- **[API Keys](https://supabase.com/docs/guides/getting-started/api-keys):** Learn about the different API keys in Supabase and how to use them.
-- **[Local Development](https://supabase.com/docs/guides/local-development):** Use the Supabase CLI to develop locally and collaborate between teams.
+[Build with AI tools: Develop with Supabase AI-first using plugins, MCP, and skills.](/docs/guides/ai-tools)
+
+[API Keys: Learn about the different API keys in Supabase and how to use them.](/docs/guides/getting-started/api-keys)
+
+[Local Development: Use the Supabase CLI to develop locally and collaborate between teams.](/docs/guides/local-development)
 
 ### Use cases
 
