@@ -16,7 +16,7 @@ path: docs/numerals
 
 &#x20;Streaming:Nova
 
-Streaming: Flux
+Streaming:Flux
 
 &#x20;Specific languages only
 
@@ -41,6 +41,19 @@ Supported languages include:
 * Romanian: `ro`
 
 When using Nova-3 Multilingual (`model=nova-3`, `language=multi`), numeral formatting is supported for: English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
+
+### Flux support
+
+Numerals are supported on both Flux models:
+
+* **Flux English** (`model=flux-general-en`) — full numeral formatting.
+* **Flux Multilingual** (`model=flux-general-multi`) — numeral formatting for English, Spanish, French, German, Russian, Portuguese, Italian, and Dutch. Numeral formatting is not currently supported for Hindi or Japanese.
+
+On Flux, set `numerals` as a query parameter when you open the connection. Flux does not support toggling `numerals` mid-stream through the `Configure` message.
+
+```text Direct WebSocket
+wss://api.deepgram.com/v2/listen?model=flux-general-en&numerals=true&encoding=linear16&sample_rate=16000
+```
 
 ## Enable Feature
 
@@ -75,6 +88,8 @@ In addition to the query string parameter, if you're sending real-time streaming
 ```
 
 Numerals can be turned on and off multiple times during a stream if desired.
+
+Mid-stream toggling applies to the streaming API (`/v1/listen`). On Flux (`/v2/listen`), set `numerals` only as a connection-time query parameter. Including it in a `Configure` message returns an `UNPARSABLE_CLIENT_MESSAGE` error and closes the connection.
 
 ## Results
 

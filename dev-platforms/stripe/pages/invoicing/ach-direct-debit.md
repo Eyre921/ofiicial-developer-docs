@@ -21,26 +21,12 @@ This guide provides step-by-step instructions on how to configure, create, and p
 
 You can either set ACH Direct Debit as a default payment method, or add it when you [create an invoice](https://docs.stripe.com/invoicing/dashboard.md#create-invoice).
 
-#### Dashboard
-
 To set ACH Direct Debit as a default payment method type:
 
 1. On the [Billing settings](https://dashboard.stripe.com/settings/billing/invoice) page, under **Invoicing settings** > **Default payment methods**, click **Edit payment methods**.
 2. On the **Billing Payments** page, under **Bank debits**, click **Turn on** to enable **ACH Direct Debit** as a default payment method.
 
 Your customers can pay an invoice by using the [Hosted Invoice Page](https://docs.stripe.com/invoicing/hosted-invoice-page.md) to enter their bank account information or select the default payment method. If there isn’t a default payment method, the invoice includes all available payment methods.
-
-#### API
-
-To set ACH Direct Debit as the default payment method type, add `us_bank_account` to the `payment_method_types` array under the optional [payment_settings](https://docs.stripe.com/api/invoices/object.md#invoice_object-payment_settings-payment_method_types) parameter. This results in an invoice that a customer can only pay by using ACH Direct Debit—regardless of the other available default payment methods. If you want to include additional payment methods, add them to the `payment_method_types` array.
-
-Your customer can then use ACH Direct Debit along with the other added payment methods. For [payment method options](https://docs.stripe.com/api/invoices/object.md#invoice_object-payment_settings-payment_method_options-us_bank_account), such as requesting additional linked account data, see the [ACH guide](https://docs.stripe.com/payments/ach-direct-debit.md).
-
-```missingLanguage
-payment_settings: {
-  payment_method_types:[`us_bank_account`]
-},
-```
 
 ## Pre-collected bank information 
 

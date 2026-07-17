@@ -1,6 +1,6 @@
 # ai-models/anthropic-claude-code 文档索引
 
-> 共 167 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 168 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -38,6 +38,7 @@
 - `communications-kit` — [Communications kit](pages/communications-kit.md) · [原文](https://code.claude.com/docs/en/communications-kit)
 - `computer-use` — [Let Claude use your computer from the CLI](pages/computer-use.md) · [原文](https://code.claude.com/docs/en/computer-use)
 - `context-window` — [Explore the context window](pages/context-window.md) · [原文](https://code.claude.com/docs/en/context-window)
+- `corporate-launcher` — [Run Claude Code behind a corporate launcher](pages/corporate-launcher.md) · [原文](https://code.claude.com/docs/en/corporate-launcher)
 - `costs` — [Manage costs effectively](pages/costs.md) · [原文](https://code.claude.com/docs/en/costs)
 - `data-usage` — [Data usage](pages/data-usage.md) · [原文](https://code.claude.com/docs/en/data-usage)
 - `debug-your-config` — [Debug your configuration](pages/debug-your-config.md) · [原文](https://code.claude.com/docs/en/debug-your-config)

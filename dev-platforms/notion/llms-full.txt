@@ -1364,6 +1364,8 @@ Events are split into the following categories:
 * **Ability for managed users to edit their profile information updated**: That the ability for managed users to edit their profile information was updated for an organization.
 * **Ability for managed users to grant support access updated**: That the ability for managed users to grant support access was updated for an organization.
 * **Ability for managed users to join external workspaces updated**: That the ability for managed users to join external workspaces was updated for an organization.
+* **Admin role assigned**: That an admin role was assigned to a member.
+* **Admin role revoked**: That an admin role was revoked from a member.
 * **AI provider credential created**: That an AI provider credential was created for an organization.
 * **AI provider credential deleted**: That an AI provider credential was deleted for an organization.
 * **AI provider credential rotated**: That an AI provider credential was rotated for an organization.
@@ -1371,10 +1373,8 @@ Events are split into the following categories:
 * **All managed users logged out**: That an admin has logged out every managed user account in the organization.
 * **All managed users’ passwords cleared**: That an admin has cleared all managed user accounts' passwords in the organization.
 * **Auto-create accounts on sign-in toggled**: That automatic account creation on sign-in was toggled for an organization.
-* **Custom admin role assigned**: That a custom admin role was assigned to a member.
 * **Custom admin role created**: That a custom admin role was created.
 * **Custom admin role deleted**: That a custom admin role was deleted.
-* **Custom admin role revoked**: That a custom admin role was revoked from a member.
 * **Custom admin role updated**: That a custom admin role was edited.
 * **Default new workspace region updated**: That the workspace region was updated for managed users.
 * **Disable duplicating pages to other workspaces toggled for the organization**: That the disable duplicating pages to other workspaces setting was toggled for an organization.
@@ -1836,7 +1836,7 @@ The API response includes a similar set of information as the Notion app display
 
 Aside from this API endpoint, templates are regular [pages](/reference/page) in Notion, so you can also get the template ID by opening the template, copying the URL, and extracting the ID from it.
 
-For example, if the template looks like `https://notion.so/notion/New-Hire-Onboarding-a07589e357414b3285a8d02beb8fd9dd`, the template `id` is `a07589e357414b3285a8d02beb8fd9dd`.
+For example, if the template looks like `https://notion.com/notion/New-Hire-Onboarding-a07589e357414b3285a8d02beb8fd9dd`, the template `id` is `a07589e357414b3285a8d02beb8fd9dd`.
 
 Determining the ID of a template will be useful in the next step, where we'll create pages using templates.
 
@@ -3140,7 +3140,7 @@ Learn how to add and retrieve comments with the Notion API.
 
 ## Overview
 
-Notion offers the ability for developers to add [comments](https://www.notion.so/help/comments-mentions-and-reminders) to pages and page content (i.e. [blocks](/guides/data-apis/working-with-page-content#modeling-content-as-blocks)) within a workspace. Users may add comments:
+Notion offers the ability for developers to add [comments](https://www.notion.com/help/comments-mentions-and-reminders) to pages and page content (i.e. [blocks](/guides/data-apis/working-with-page-content#modeling-content-as-blocks)) within a workspace. Users may add comments:
 
 * To the top of a page.
 * Inline to text or other [blocks](/guides/data-apis/working-with-page-content#modeling-content-as-blocks) within a page.
@@ -3153,11 +3153,11 @@ Notion offers the ability for developers to add [comments](https://www.notion.so
   <img />
 </Frame>
 
-This guide will review how to use the public REST API to add and retrieve comments on a page. It will also look at considerations specific to [connections](https://www.notion.so/help/add-and-manage-connections-with-the-api) when retrieving or adding comments.
+This guide will review how to use the public REST API to add and retrieve comments on a page. It will also look at considerations specific to [connections](https://www.notion.com/help/add-and-manage-connections-with-the-api) when retrieving or adding comments.
 
 ### Permissions
 
-Before discussing how to use the public REST API to interact with comments, let’s first review who can comment on a page. Notion relies on a tiered system for [page permissions](https://www.notion.so/help/sharing-and-permissions#permission-levels), which can vary between:
+Before discussing how to use the public REST API to interact with comments, let’s first review who can comment on a page. Notion relies on a tiered system for [page permissions](https://www.notion.com/help/sharing-and-permissions#permission-levels), which can vary between:
 
 * `Can view`
 * `Can comment`
@@ -3496,7 +3496,7 @@ There are two possible ways to get the `discussion_id` for a discussion thread.
 This will give you a URL like:
 
 ```bash theme={null}
-https://notion.so/Something-something-a8d5215b89ae464b821ae2e2916ab9ce?d=5e73b63447c2428fa899e906b1f1d20e#b3e87b2b5e114cbd99f96288c22bacce
+https://notion.com/Something-something-a8d5215b89ae464b821ae2e2916ab9ce?d=5e73b63447c2428fa899e906b1f1d20e#b3e87b2b5e114cbd99f96288c22bacce
 ```
 
 The value of the `d` query parameter is the `discussion_id`.
@@ -3580,7 +3580,7 @@ Learn about database schemas, querying databases, and more.
 
 ## Overview
 
-[Databases](https://www.notion.so/help/intro-to-databases) are collections of [pages](/reference/page) in a Notion workspace that can be filtered, sorted, and organized as needed. They allow users to create and manipulate structured data in Notion.
+[Databases](https://www.notion.com/help/intro-to-databases) are collections of [pages](/reference/page) in a Notion workspace that can be filtered, sorted, and organized as needed. They allow users to create and manipulate structured data in Notion.
 
 Connections can be used to help users sync databases with external systems or build workflows around Notion databases.
 
@@ -3600,7 +3600,7 @@ In addition to regular Notion databases, there are two other types of databases 
 
 #### Linked databases
 
-Notion offers [linked databases](https://www.notion.so/help/guides/using-linked-databases) as a way of showing databases in multiple places. You can identify them by a ↗ next to the database title which, when clicked, takes you to the source database.
+Notion offers [linked databases](https://www.notion.com/help/guides/using-linked-databases) as a way of showing databases in multiple places. You can identify them by a ↗ next to the database title which, when clicked, takes you to the source database.
 
 <Frame>
   <img />
@@ -3612,18 +3612,18 @@ Notion offers [linked databases](https://www.notion.so/help/guides/using-linked-
 
 #### Wiki databases
 
-Wiki databases are a special category of databases that allow [Workspace Owners](https://www.notion.so/help/add-members-admins-guests-and-groups) to organize child pages and databases with a homepage view. Wiki database pages can be verified by the Workspace Owner with an optional expiration date for the verification.
+Wiki databases are a special category of databases that allow [Workspace Owners](https://www.notion.com/help/add-members-admins-guests-and-groups) to organize child pages and databases with a homepage view. Wiki database pages can be verified by the Workspace Owner with an optional expiration date for the verification.
 
-Pages in a wiki database will have a [`verification`](/reference/page-property-values#verification) property that can be set through your Notion workspace. See directions for [creating wikis](https://www.notion.so/help/wikis-and-verified-pages#create-a-wiki) and [verifying pages](https://www.notion.so/help/wikis-and-verified-pages#verifying-pages) in our Help Center.
+Pages in a wiki database will have a [`verification`](/reference/page-property-values#verification) property that can be set through your Notion workspace. See directions for [creating wikis](https://www.notion.com/help/wikis-and-verified-pages#create-a-wiki) and [verifying pages](https://www.notion.com/help/wikis-and-verified-pages#verifying-pages) in our Help Center.
 
 Wiki databases can currently only be created through your Notion workspace directly (i.e., not Notion's API). Ability to retrieve wiki databases in the API may be limited, and you can't add multiple data sources to a wiki database.
 
 To learn more about creating and working with wiki databases, see the following Help Center articles:
 
 <CardGroup>
-  <Card title="Wikis and verified pages" href="https://www.notion.so/help/wikis-and-verified-pages" icon="angles-right" />
+  <Card title="Wikis and verified pages" href="https://www.notion.com/help/wikis-and-verified-pages" icon="angles-right" />
 
-  <Card title="Wiki guides" href="https://www.notion.so/help/guides/category/wiki" icon="angles-right" />
+  <Card title="Wiki guides" href="https://www.notion.com/help/guides/category/wiki" icon="angles-right" />
 </CardGroup>
 
 ## Structure
@@ -3661,7 +3661,7 @@ Databases contain a list of data sources (IDs and names). In turn, each data sou
         "name": "Grocery list"
       }
     ],
-    "url": "https://www.notion.so/example/248104cd477e80fdb757e945d38000bd",
+    "url": "https://www.notion.com/example/248104cd477e80fdb757e945d38000bd",
     "icon": null,
     "cover": {
       "type": "external",
@@ -3849,7 +3849,7 @@ When adding a page to a database, the `parent` parameter must be a [database par
   * Now paste the link in your text editor so you can take a closer look. The URL uses the following format:
 
   ```bash theme={null}
-  https://www.notion.so/{workspace_name}/{database_id}?v={view_id}
+  https://www.notion.com/{workspace_name}/{database_id}?v={view_id}
   ```
 
   * Find the part that corresponds to `{database_id}` in the URL you pasted. It is a 36 character long string. This value is your **database ID**.
@@ -4450,7 +4450,7 @@ In both cases:
 {
   "object": "page_markdown",
   "id": "page-uuid",
-  "markdown": "# Large Document\nFirst section content...\n<unknown url=\"https://notion.so/abc123#def456\"/>",
+  "markdown": "# Large Document\nFirst section content...\n<unknown url=\"https://notion.com/abc123#def456\"/>",
   "truncated": true,
   "unknown_block_ids": ["def456-with-dashes-uuid"]
 }
@@ -5006,7 +5006,7 @@ Learn about page content and how to add or retrieve it with the Notion API.
 
 ## Overview
 
-[Pages](https://www.notion.so/help/category/write-edit-and-customize) are where users write everything from quick notes, to shared documents, to curated landing pages in Notion. Connections can help users turn Notion into the single source of truth by syndicating content or help users gather, connect, and visualize content inside Notion.
+[Pages](https://www.notion.com/help/category/write-edit-and-customize) are where users write everything from quick notes, to shared documents, to curated landing pages in Notion. Connections can help users turn Notion into the single source of truth by syndicating content or help users gather, connect, and visualize content inside Notion.
 
 In this guide, you'll learn about how the building blocks of page content are represented in the API and what you can do with them. By the end, you'll be able to create new pages with content, read content from other pages, and add blocks to existing pages.
 
@@ -5591,7 +5591,7 @@ Learn how to set up and manage database views using the Notion API.
 
 ## Overview
 
-[Database views](https://www.notion.so/help/views-filters-and-sorts) let users see the same data in different ways — for example, as a table, board, calendar, timeline, gallery, list, form, chart, map, or dashboard. Each view can have its own filters, sorts, and layout configuration, so a single database can serve many different workflows.
+[Database views](https://www.notion.com/help/views-filters-and-sorts) let users see the same data in different ways — for example, as a table, board, calendar, timeline, gallery, list, form, chart, map, or dashboard. Each view can have its own filters, sorts, and layout configuration, so a single database can serve many different workflows.
 
 The Notion API exposes views as first-class resources. This means connections can programmatically manage the same view presets that users create in the UI, enabling use cases like workspace bootstrapping, migration tooling, and automated view setup.
 
@@ -5673,7 +5673,7 @@ The view object looks like this:
       "object": "user",
       "id": "e7f3a4b2-1234-5678-9abc-def012345678"
     },
-    "url": "https://www.notion.so/example/248104cd477e80fdb757e945d38000bd?v=a3f1b2c45678"
+    "url": "https://www.notion.com/example/248104cd477e80fdb757e945d38000bd?v=a3f1b2c45678"
   }
   ```
 </CodeGroup>
@@ -7269,7 +7269,7 @@ Any time your connection interacts with your workspace, include the installation
   ```
 </Note>
 
-If you receive an error response from the API, check if the connection has been properly [added to the page](https://www.notion.so/help/add-and-manage-connections-with-the-api#manage-connections-in-your-workspace). If this does not solve the problem, refer to our [Status codes](/reference/status-codes) page for more information.
+If you receive an error response from the API, check if the connection has been properly [added to the page](https://www.notion.com/help/add-and-manage-connections-with-the-api#manage-connections-in-your-workspace). If this does not solve the problem, refer to our [Status codes](/reference/status-codes) page for more information.
 
 ## Personal access token auth flow set-up
 
@@ -7396,7 +7396,7 @@ You can use this `error`query parameter to conditionally update your app’s sta
 If the user opts to `Select pages`, then a page picker interface opens. A user can search for and select pages and databases to share with the connection from the page picker.
 
 <Note>
-  The page picker only displays pages or databases to which a user has [full access](https://www.notion.so/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
+  The page picker only displays pages or databases to which a user has [full access](https://www.notion.com/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
 </Note>
 
 <Frame>
@@ -7799,7 +7799,7 @@ This is one of the biggest differences from [public connections](/guides/get-sta
 
 ## Creating an internal connection
 
-You must be a [Workspace Owner](https://www.notion.so/help/add-members-admins-guests-and-groups) to create a connection.
+You must be a [Workspace Owner](https://www.notion.com/help/add-members-admins-guests-and-groups) to create a connection.
 
 <Steps>
   <Step>
@@ -7932,7 +7932,7 @@ Source: https://developers.notion.com/guides/get-started/marketplace-listing
 
 Learn how to list your public connection on the Notion Marketplace.
 
-The [Notion Marketplace](https://www.notion.so/integrations/all) is how Notion users discover and connect public connections. Listing your connection there puts it in front of every Notion user — and it's a separate step from building the connection itself, so you can ship whenever you're ready.
+The [Notion Marketplace](https://www.notion.com/integrations/all) is how Notion users discover and connect public connections. Listing your connection there puts it in front of every Notion user — and it's a separate step from building the connection itself, so you can ship whenever you're ready.
 
 This guide assumes you already have a public connection. If you haven't created one yet, see the [Public connections](/guides/get-started/public-connections) guide first.
 
@@ -7999,11 +7999,11 @@ After submission, your listing moves to the **Submitted** section where you can 
 
 The Notion team reviews every listing submission. Track the status of your submission from the **Listings > Connections** page in the Marketplace listing dashboard. See the [FAQ](#frequently-asked-questions) below for review timelines.
 
-If approved, the listing appears in the [Notion Marketplace](https://www.notion.so/integrations/all). If changes are required, the Notion team sends feedback and you can resubmit after making updates.
+If approved, the listing appears in the [Notion Marketplace](https://www.notion.com/integrations/all). If changes are required, the Notion team sends feedback and you can resubmit after making updates.
 
 ## Connection gallery best practices
 
-For guidance on the review process and best practices to get your connection approved, check out the [Notion Connection Gallery Best Practices](https://www.notion.so/notiondevs/Notion-Integration-Gallery-Best-Practices-997825927fd6473e89617ce0c329145c?pvs=4) guide.
+For guidance on the review process and best practices to get your connection approved, check out the [Notion Connection Gallery Best Practices](https://www.notion.com/notiondevs/Notion-Integration-Gallery-Best-Practices-997825927fd6473e89617ce0c329145c?pvs=4) guide.
 
 ## Frequently asked questions
 
@@ -8030,7 +8030,7 @@ For guidance on the review process and best practices to get your connection app
 
       <Card title="Overview" icon="angles-right" href="/guides/get-started/overview" />
 
-      <Card title="Create connections with the Notion API" icon="angles-right" href="https://www.notion.so/help/create-integrations-with-the-notion-api" />
+      <Card title="Create connections with the Notion API" icon="angles-right" href="https://www.notion.com/help/create-integrations-with-the-notion-api" />
 
       <Card title="Authorization guide" icon="angles-right" href="/guides/get-started/authorization" />
     </CardGroup>
@@ -8051,7 +8051,7 @@ When you create a connection, you define what it can do: which API endpoints it 
 
 ## What is a Notion connection?
 
-A Notion [connection](https://www.notion.so/help/add-and-manage-connections-with-the-api) — sometimes called an integration — connects your workspace to external apps and tools. That could be a SaaS product, an automation script, or a custom tool you've built.
+A Notion [connection](https://www.notion.com/help/add-and-manage-connections-with-the-api) — sometimes called an integration — connects your workspace to external apps and tools. That could be a SaaS product, an automation script, or a custom tool you've built.
 
 Connections are added to Notion workspaces and require **explicit permission** from users to access Notion pages and databases.
 
@@ -8059,7 +8059,7 @@ Connections are added to Notion workspaces and require **explicit permission** f
   <img />
 </Frame>
 
-Notion already has a [library](https://www.notion.so/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
+Notion already has a [library](https://www.notion.com/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
 
 ## Connection types
 
@@ -8089,9 +8089,9 @@ Notion supports three authentication models:
   Enterprise identity management (user provisioning, group management, and Single Sign-On) is covered in Notion's Help Center, not in these API docs.
 
   <CardGroup>
-    <Card title="Provision users and groups with SCIM" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.so/help/provision-users-and-groups-with-scim" />
+    <Card title="Provision users and groups with SCIM" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.com/help/provision-users-and-groups-with-scim" />
 
-    <Card title="SAML SSO configuration" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.so/help/saml-sso-configuration" />
+    <Card title="SAML SSO configuration" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.com/help/saml-sso-configuration" />
   </CardGroup>
 </Info>
 
@@ -8996,7 +8996,7 @@ A successful response returns a page object:
       "title": [{ "plain_text": "Hello from the API" }]
     }
   },
-  "url": "https://www.notion.so/Hello-from-the-API-a1b2c3d4e5f67890abcdef1234567890",
+  "url": "https://www.notion.com/Hello-from-the-API-a1b2c3d4e5f67890abcdef1234567890",
   "public_url": null
 }
 ```
@@ -10288,13 +10288,13 @@ Link Previews are similar, but they display authenticated, structured content fr
 Since Link preview connections require [OAuth 2.0](https://www.oauth.com/) authentication, unfurled link content will update as the data being shared updates. For example, if a GitHub pull request is shared as a Link Preview, the data displayed in the preview will update as the pull request updates (e.g. when it is merged).
 
 <Info>
-  To learn more about Embed blocks, read our [reference docs](/reference/block#embed) and [Help Centre guide](https://www.notion.so/help/embed-and-connect-other-apps).
+  To learn more about Embed blocks, read our [reference docs](/reference/block#embed) and [Help Centre guide](https://www.notion.com/help/embed-and-connect-other-apps).
 </Info>
 
 To learn more about Link Previews, see the following resources:
 
 * [API reference docs for the Link Preview unfurl attribute object](/reference/unfurl-attribute-object)
-* [Help Centre](https://www.notion.so/help/guides/notion-api-link-previews-feature) guide
+* [Help Centre](https://www.notion.com/help/guides/notion-api-link-previews-feature) guide
 
 
 # Integrating your own MCP client
@@ -10929,13 +10929,20 @@ connecting, call the `fetch` tool with the special id `self`:
     throw new Error("Expected a text content block from notion-fetch")
   }
 
-  const { workspace, user } = JSON.parse(block.text).self
+  const { workspace, user, current_tool_access } = JSON.parse(block.text).self
   console.log(`Connected to ${workspace.name} (${workspace.id}) as ${user.name}`)
-  // workspace: { id, name }
-  // user:      { id, name, type, email }
+  // workspace:           { id, name }
+  // user:                { id, name, type, email }
+  // current_tool_access: { [toolName]: { status, upgrade_url? } }
   ```
 </CodeGroup>
 
+The `self` payload also carries a `current_tool_access` map, so an MCP client
+can tell up front which tools will actually run on the connected workspace's
+plan and which would only return an upgrade prompt. Each entry's `status` is
+`available`, `limited_free_trial` (calls succeed via a free or metered trial
+allowance), `upgrade_required` (calls return an upgrade prompt, and the entry
+includes an `upgrade_url` into the workspace's upgrade flow), or `not_enabled`.
 See [Supported tools](/guides/mcp/mcp-supported-tools) for details.
 
 ## Step 8: Handle token refresh
@@ -11872,9 +11879,11 @@ These tools work seamlessly together through prompts, and their real power comes
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
+    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `limited_free_trial` (calls succeed via a free or metered trial allowance), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+
     **Example prompts:**
 
-    * "What product requirements still need to be implemented from this ticket `https://notion.so/page-url`?"
+    * "What product requirements still need to be implemented from this ticket `https://notion.com/page-url`?"
     * "Fetch the data source `collection://f336d0bc-b841-465b-8045-024475c079dd` to see its schema"
     * "Fetch the bug tracking database so I can see the available templates"
     * "Fetch `self` to see which workspace and user this connection is for"
@@ -11987,7 +11996,7 @@ These tools work seamlessly together through prompts, and their real power comes
     Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
 
     <Note>
-      Available on all plans. Querying a single data source or a view requires a Business plan or higher with Notion AI; querying across multiple data sources in one query requires an Enterprise plan with Notion AI. On other plans the tool returns an upgrade prompt.
+      Single-data-source SQL queries have an hourly rate limit on Free and Plus plans. Queries across multiple data sources require an Enterprise plan with Notion AI.
     </Note>
 
     **Example prompts:**
@@ -12000,10 +12009,6 @@ These tools work seamlessly together through prompts, and their real power comes
     `notion-query-database-view`
 
     Query data from a Notion database using a pre-defined [view's filters and sorts](https://www.notion.com/help/views-filters-and-sorts).
-
-    <Note>
-      Available on all plans, but using it requires a Business plan or higher with Notion AI. On other plans the tool returns an upgrade prompt.
-    </Note>
 
     **Example prompts:**
 
@@ -16384,6 +16389,12 @@ Source: https://developers.notion.com/page/changelog
 
 
 
+<Update label="July 17, 2026">
+  ### Per-tool access map in `notion-fetch` `self`
+
+  The [`notion-fetch`](/guides/mcp/mcp-supported-tools) MCP tool's `self` response now includes a `current_tool_access` map, so clients can tell before making a call which tools will actually run on the connected workspace's plan and which would only return an upgrade prompt. Each entry's `status` is `available`, `limited_free_trial` (calls succeed via a free or metered trial allowance), `upgrade_required` (the entry also carries an `upgrade_url` into the workspace's upgrade flow), or `not_enabled`. See [Integrating your own MCP client](/guides/mcp/build-mcp-client#identify-the-connected-workspace).
+</Update>
+
 <Update label="July 15, 2026">
   ### New identity fields in OAuth token responses
 
@@ -17037,6 +17048,17 @@ Retrieve a legal hold.
 The organization bot token must have the following scopes:
 
 * `legal-hold:read`
+
+
+# Get workspace export status
+Source: https://developers.notion.com/reference/admin/get-space-export-status
+
+openapi-adminApi.json GET /v1/exports/{export_job_id}
+Get workspace export status.
+
+The organization bot token must have the following scopes:
+
+* `workspace:export`
 
 
 # Introduction
@@ -18507,7 +18529,7 @@ Only `paragraph` blocks can be direct children of a tab block. When creating tab
   As of March 27, 2023 creation of template blocks will no longer be supported.
 </Danger>
 
-Template blocks represent [template buttons](https://www.notion.so/help/template-buttons) in the Notion UI.
+Template blocks represent [template buttons](https://www.notion.com/help/template-buttons) in the Notion UI.
 
 Template block objects contain the following information within the `template` property:
 
@@ -19092,7 +19114,7 @@ post /v1/databases
   * [Create a data source](/reference/create-a-data-source)
 </Danger>
 
-Creates a database as a subpage in the specified parent page, with the specified `properties` schema. Currently, the parent of a new database must be a Notion page or a [wiki database](https://www.notion.so/help/wikis-and-verified-pages).
+Creates a database as a subpage in the specified parent page, with the specified `properties` schema. Currently, the parent of a new database must be a Notion page or a [wiki database](https://www.notion.com/help/wikis-and-verified-pages).
 
 <Info>
   **Connection capabilities**
@@ -19145,7 +19167,7 @@ Source: https://developers.notion.com/reference/create-database
 post /v1/databases
 Create a database and its initial data source.
 
-Creates a database as a subpage in the specified parent page, or as a private page at the workspace level, with the specified `properties` schema set on its `initial_data_source`. Currently, the `parent` of a new database must be a Notion page (`page_id` type) or a [wiki database](https://www.notion.so/help/wikis-and-verified-pages).
+Creates a database as a subpage in the specified parent page, or as a private page at the workspace level, with the specified `properties` schema set on its `initial_data_source`. Currently, the `parent` of a new database must be a Notion page (`page_id` type) or a [wiki database](https://www.notion.com/help/wikis-and-verified-pages).
 
 Use this endpoint to create a database, its first [data source](/reference/data-source), and its first table view, all in one API call. Then, if you want to add a second data source, use the [Create a data source](/reference/create-a-data-source) API with a version of at least `2025-09-03`, and provide the `database_id` as the `id` returned by the database create response.
 
@@ -20029,7 +20051,7 @@ Each `filter` object contains the following fields:
 </CodeGroup>
 
 <Check>
-  The filter object mimics the data source [filter option in the Notion UI](https://www.notion.so/help/views-filters-and-sorts).
+  The filter object mimics the data source [filter option in the Notion UI](https://www.notion.com/help/views-filters-and-sorts).
 </Check>
 
 ## Type-specific filter conditions
@@ -22400,7 +22422,7 @@ The verification status of a page in a wiki database. Pages can be verified, unv
 You can set or update the verification status via the [Create page](/reference/post-page) and [Update page](/reference/patch-page) endpoints. The `verified_by` field is read-only and is automatically set to the acting connection.
 
 <Info>
-  The `verification` property is only available for pages that are part of a [wiki database](/guides/data-apis/working-with-databases#wiki-databases). To learn more about wiki databases and verifying pages, see our [Help Center article](https://www.notion.so/help/wikis-and-verified-pages#verifying-pages).
+  The `verification` property is only available for pages that are part of a [wiki database](/guides/data-apis/working-with-databases#wiki-databases). To learn more about wiki databases and verifying pages, see our [Help Center article](https://www.notion.com/help/wikis-and-verified-pages#verifying-pages).
 </Info>
 
 | Field         | Type                                     | Description                                                                                                                                                                                                                                                     | Example value                                |
@@ -22852,10 +22874,10 @@ post /v1/databases/{database_id}/query
 Gets a list of [Pages](/reference/page) and/or [Databases](/reference/database) contained in the database, filtered and ordered according to the filter conditions and sort criteria provided in the request. The response may contain fewer than `page_size` of results. If the response includes a `next_cursor` value, refer to the [pagination reference](/reference/intro#pagination) for details about how to use a cursor to iterate through the list.
 
 <Info>
-  [Wiki](https://www.notion.so/help/wikis-and-verified-pages) databases can contain both pages and databases as children.
+  [Wiki](https://www.notion.com/help/wikis-and-verified-pages) databases can contain both pages and databases as children.
 </Info>
 
-[**Filters**](/reference/post-database-query-filter) are similar to the [filters provided in the Notion UI](https://www.notion.so/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
+[**Filters**](/reference/post-database-query-filter) are similar to the [filters provided in the Notion UI](https://www.notion.com/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
 Filters operate on database properties and can be combined. If no filter is provided, non-archived pages in the database will be returned with pagination.
 
 <Frame>
@@ -22898,7 +22920,7 @@ In addition to chained filters, databases can be queried with single filters.
  }
 ```
 
-[**Sorts**](/reference/post-database-query-sort) are similar to the [sorts provided in the Notion UI](https://notion.so/notion/Intro-to-databases-fd8cd2d212f74c50954c11086d85997e#0eb303043b1742468e5aff2f3f670505). Sorts operate on database properties or page timestamps and can be combined. The order of the sorts in the request matter, with earlier sorts taking precedence over later ones.
+[**Sorts**](/reference/post-database-query-sort) are similar to the [sorts provided in the Notion UI](https://notion.com/notion/Intro-to-databases-fd8cd2d212f74c50954c11086d85997e#0eb303043b1742468e5aff2f3f670505). Sorts operate on database properties or page timestamps and can be combined. The order of the sorts in the request matter, with earlier sorts taking precedence over later ones.
 
 The properties of the database schema returned in the response body can be filtered with the `filter_properties` query parameter.
 
@@ -23071,7 +23093,7 @@ Each `filter` object contains the following fields:
 </CodeGroup>
 
 <Check>
-  The filter object mimics the database [filter option in the Notion UI](https://www.notion.so/help/views-filters-and-sorts).
+  The filter object mimics the database [filter option in the Notion UI](https://www.notion.com/help/views-filters-and-sorts).
 </Check>
 
 ## Type-specific filter conditions
@@ -24330,7 +24352,7 @@ URL property value objects contain a non-empty string within the `url` property.
       "object": "property_item",
       "id": "KpQq",
       "type": "url",
-      "url": "https://notion.so/notiondevs"
+      "url": "https://notion.com/notiondevs"
     }
   }
   ```
@@ -24723,9 +24745,9 @@ Contains files uploaded to Notion or external links. The `files` type object is 
 
 Contains values derived from a provided expression. The `formula` type object has:
 
-| Field        | Type     | Description                                                                                                            | Example value           |
-| :----------- | :------- | :--------------------------------------------------------------------------------------------------------------------- | :---------------------- |
-| `expression` | `string` | The formula used to compute values. Refer to the [Notion help center](https://www.notion.so/help/formulas) for syntax. | `"prop(\"Price\") / 2"` |
+| Field        | Type     | Description                                                                                                             | Example value           |
+| :----------- | :------- | :---------------------------------------------------------------------------------------------------------------------- | :---------------------- |
+| `expression` | `string` | The formula used to compute values. Refer to the [Notion help center](https://www.notion.com/help/formulas) for syntax. | `"prop(\"Price\") / 2"` |
 
 <Tabs>
   <Tab title="Property">
@@ -25044,7 +25066,7 @@ Contains location values. Can be used with the Map view. The `place` type object
 
 ## Relation
 
-Contains [relations](https://www.notion.so/help/relations-and-rollups) — references to pages in another data source.
+Contains [relations](https://www.notion.com/help/relations-and-rollups) — references to pages in another data source.
 
 The `relation` type object has:
 
@@ -25137,7 +25159,7 @@ Contains text values. The `rich_text` type object is empty.
 
 ## Rollup
 
-Contains values pulled from a related data source via a [rollup](https://www.notion.so/help/relations-and-rollups).
+Contains values pulled from a related data source via a [rollup](https://www.notion.com/help/relations-and-rollups).
 
 The `rollup` type object has:
 
@@ -25375,9 +25397,9 @@ Automatically incremented, unique across all pages in a data source. Useful for 
 
 The `unique_id` type object has an optional `prefix`:
 
-| Field    | Type               | Description                                                                                  | Example value |
-| :------- | :----------------- | :------------------------------------------------------------------------------------------- | :------------ |
-| `prefix` | `string` or `null` | A common prefix assigned to pages. When set, enables lookup URLs like `notion.so/TASK-1234`. | `"TASK"`      |
+| Field    | Type               | Description                                                                                   | Example value |
+| :------- | :----------------- | :-------------------------------------------------------------------------------------------- | :------------ |
+| `prefix` | `string` or `null` | A common prefix assigned to pages. When set, enables lookup URLs like `notion.com/TASK-1234`. | `"TASK"`      |
 
 <Tabs>
   <Tab title="Property">
@@ -25459,7 +25481,7 @@ Gets a list of [pages](/reference/page) contained in the data source, filtered a
 <Info>
   **Databases, data sources, and wikis**
 
-  [Wiki](https://www.notion.so/help/wikis-and-verified-pages) data sources can contain either pages or databases as children. In all other cases, the children can only be pages.
+  [Wiki](https://www.notion.com/help/wikis-and-verified-pages) data sources can contain either pages or databases as children. In all other cases, the children can only be pages.
 
   For wikis, instead of directly returning any [database](/reference/database) results, this API returns all [data sources](/reference/data-source) that are children of *that* database. Surfacing the data source instead of the direct database child helps make it easier to craft your next API request (for example, retrieving the data source or listing its children.)
 
@@ -25468,7 +25490,7 @@ Gets a list of [pages](/reference/page) contained in the data source, filtered a
 
 ### Filtering
 
-[**Filters**](/reference/filter-data-source-entries) are similar to the [filters provided in the Notion UI](https://www.notion.so/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
+[**Filters**](/reference/filter-data-source-entries) are similar to the [filters provided in the Notion UI](https://www.notion.com/help/views-filters-and-sorts) where the set of filters and filter groups chained by "And" in the UI is equivalent to having each filter in the array of the compound `"and"` filter. Similar a set of filters chained by "Or" in the UI would be represented as filters in the array of the `"or"` compound filter.
 Filters operate on data source properties and can be combined. If no filter is provided, non-archived pages in the data source are returned with pagination.
 
 <Frame>
@@ -25527,7 +25549,7 @@ Set `is_archived` to `false`, or omit it, to query non-archived pages. The archi
 
 ### Sorting
 
-[**Sorts**](/reference/sort-data-source-entries) are similar to the [sorts provided in the Notion UI](https://notion.so/notion/Intro-to-databases-fd8cd2d212f74c50954c11086d85997e#0eb303043b1742468e5aff2f3f670505). Sorts operate on database properties or page timestamps and can be combined. The order of the sorts in the request matter, with earlier sorts taking precedence over later ones.
+[**Sorts**](/reference/sort-data-source-entries) are similar to the [sorts provided in the Notion UI](https://notion.com/notion/Intro-to-databases-fd8cd2d212f74c50954c11086d85997e#0eb303043b1742468e5aff2f3f670505). Sorts operate on database properties or page timestamps and can be combined. The order of the sorts in the request matter, with earlier sorts taking precedence over later ones.
 
 Notion doesn't guarantee any particular sort order when no sort parameters are provided.
 
@@ -25945,13 +25967,13 @@ Each Public API endpoint can return several possible error codes. See the [Error
 <Info>
   **Data source relations must be shared with your connection**
 
-  To retrieve data source properties from [database relations](https://www.notion.so/help/relations-and-rollups#what-is-a-database-relation), the related database must be shared with your connection in addition to the database being retrieved. If the related database is not shared, properties based on relations will not be included in the API response.
+  To retrieve data source properties from [database relations](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation), the related database must be shared with your connection in addition to the database being retrieved. If the related database is not shared, properties based on relations will not be included in the API response.
 </Info>
 
 <Warning>
   **The Notion API does not support retrieving linked data sources**
 
-  To fetch the information in a [linked data source](https://www.notion.so/help/guides/using-linked-databases), share the original source database with your Notion connection.
+  To fetch the information in a [linked data source](https://www.notion.com/help/guides/using-linked-databases), share the original source database with your Notion connection.
 </Warning>
 
 
@@ -25997,13 +26019,13 @@ Each Public API endpoint can return several possible error codes. See the [Error
 <Info>
   **Database relations must be shared with your connection**
 
-  To retrieve database properties from [database relations](https://www.notion.so/help/relations-and-rollups#what-is-a-database-relation), the related database must be shared with your connection in addition to the database being retrieved. If the related database is not shared, properties based on relations will not be included in the API response.
+  To retrieve database properties from [database relations](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation), the related database must be shared with your connection in addition to the database being retrieved. If the related database is not shared, properties based on relations will not be included in the API response.
 </Info>
 
 <Warning>
   **The Notion API does not support retrieving linked databases.**
 
-  To fetch the information in a [linked database](https://www.notion.so/help/guides/using-linked-databases), share the original source database with your Notion connection.
+  To fetch the information in a [linked database](https://www.notion.com/help/guides/using-linked-databases), share the original source database with your Notion connection.
 </Warning>
 
 
@@ -26091,7 +26113,7 @@ Refer to the [pagination reference](/reference/intro#pagination) for details on 
 ### Rollup Properties
 
 <Check>
-  Learn more about rollup properties on the [Page properties page](/reference/page-property-values#rollup) or in Notion’s [Help Center](https://www.notion.so/help/relations-and-rollups).
+  Learn more about rollup properties on the [Page properties page](/reference/page-property-values#rollup) or in Notion’s [Help Center](https://www.notion.com/help/relations-and-rollups).
 </Check>
 
 For regular "Show original" rollups, the endpoint returns a flattened list of all the property items in the rollup.
@@ -26623,7 +26645,7 @@ If a connection doesn’t have [access](/reference/capabilities) to the mentione
 
 #### Template mention type object
 
-The content inside a [template button](https://www.notion.so/help/template-buttons) in the Notion UI can include placeholder date and user mentions that populate when a template is duplicated. Template mention type objects contain these populated values.
+The content inside a [template button](https://www.notion.com/help/template-buttons) in the Notion UI can include placeholder date and user mentions that populate when a template is duplicated. Template mention type objects contain these populated values.
 
 Template mention rich text objects contain a `template_mention` object with a nested `type` key that is either `"template_mention_date"` or `"template_mention_user"`.
 
@@ -26941,7 +26963,7 @@ Error responses contain more detail about the error in the response body, in the
 | 404              | `"object_not_found"`                | Given the bearer token used, the resource does not exist. This error can also indicate that the resource has not been shared with owner of the bearer token. If the connection name is available, it will be included in the error message.                                                                                                                            | `"Could not find database with ID: be907abe-510e-4116-a3d1-7ea71018c06f. Make sure the relevant pages and databases are shared with your connection \"My Connection\"."` |
 | 409              | `"conflict_error"`                  | The transaction could not be completed, potentially due to a data collision. Make sure the parameters are up to date and try again.      We also use this HTTP status code in rare cases when our [File Upload](/reference/file-upload) third-party data storage provider has downtime and sending file contents failed. In this case, please retry the request later. | `"Conflict occurred while saving. Please try again."`                                                                                                                    |
 | 429              | `"rate_limited"`                    | This request exceeds the number of requests allowed. Slow down and try again. [More details on rate limits](/reference/request-limits).                                                                                                                                                                                                                                | `"You have been rate limited. Please try again in a few minutes."`                                                                                                       |
-| 500              | `"internal_server_error"`           | An unexpected error occurred. Reach out to [Notion support](https://www.notion.so/help).                                                                                                                                                                                                                                                                               | `"Unexpected error occurred."`                                                                                                                                           |
+| 500              | `"internal_server_error"`           | An unexpected error occurred. Reach out to [Notion support](https://www.notion.com/help).                                                                                                                                                                                                                                                                              | `"Unexpected error occurred."`                                                                                                                                           |
 | 502              | `"bad_gateway"`                     | Notion encountered an issue while attempting to complete this request (e.g., failed to establish a connection with an upstream server). Please try again.                                                                                                                                                                                                              | `"Bad Gateway"`                                                                                                                                                          |
 | 503              | `"service_unavailable"`             | Notion is unavailable. This can occur when the time to respond to a request takes longer than 60 seconds, the maximum request timeout. Please try again later.                                                                                                                                                                                                         | `"Notion is unavailable, please try again later."`                                                                                                                       |
 | 503              | `"database_connection_unavailable"` | Notion's database is unavailable or is not in a state that can be queried. Please try again later.                                                                                                                                                                                                                                                                     | `"Notion is unavailable, please try again later."`                                                                                                                       |
@@ -27071,7 +27093,7 @@ If successful, the API responds with a `200` HTTP status code and the trashed pa
               ]
           }
       },
-      "url": "https://www.notion.so/Bug-bash-be633bf1dfa0436db259571129a590e5"
+      "url": "https://www.notion.com/Bug-bash-be633bf1dfa0436db259571129a590e5"
   }
   ```
 </CodeGroup>
@@ -27496,14 +27518,14 @@ Each Public API endpoint can return several possible error codes. See the [Error
   **The following data source properties cannot be updated via the API:**
 
   * `formula`
-  * [Synced content](https://www.notion.so/help/guides/synced-databases-bridge-different-tools)
+  * [Synced content](https://www.notion.com/help/guides/synced-databases-bridge-different-tools)
   * `place`
 </Warning>
 
 <Info>
   **Data source relations must be shared with your connection**
 
-  To update a data source [relation](https://www.notion.so/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
+  To update a data source [relation](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
 </Info>
 
 
@@ -27566,14 +27588,14 @@ Each Public API endpoint can return several possible error codes. See the [Error
 
   * `formula`
   * `select`
-  * [Synced content](https://www.notion.so/help/guides/synced-databases-bridge-different-tools)
+  * [Synced content](https://www.notion.com/help/guides/synced-databases-bridge-different-tools)
   * A `multi_select` database property’s options values. An option can be removed, but not updated.
 </Warning>
 
 <Info>
   **Database relations must be shared with your connection**
 
-  To update a database [relation](https://www.notion.so/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
+  To update a database [relation](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
 </Info>
 
 
@@ -28018,17 +28040,17 @@ The maximum allowed length of a file name is 900 bytes, including any file exten
 # User
 Source: https://developers.notion.com/reference/user
 
-The User object represents a user in a Notion workspace. Users include full workspace members, guests, and connections. You can find more information about members and guests in [this guide](https://www.notion.so/help/add-members-admins-guests-and-groups).
+The User object represents a user in a Notion workspace. Users include full workspace members, guests, and connections. You can find more information about members and guests in [this guide](https://www.notion.com/help/add-members-admins-guests-and-groups).
 
 <Info>
   **Provisioning users and groups using SCIM**
 
-  The SCIM API is available for workspaces in Notion's Enterprise Plan. Learn more about [using SCIM with Notion](https://www.notion.so/help/provision-users-and-groups-with-scim).
+  The SCIM API is available for workspaces in Notion's Enterprise Plan. Learn more about [using SCIM with Notion](https://www.notion.com/help/provision-users-and-groups-with-scim).
 </Info>
 
 <Info>
   **Setting up single sign-on (SSO) with Notion**
-  Single sign-on (SSO) can be configured for workspaces in Notion's Enterprise Plan. [Learn more about SSO with Notion](https://www.notion.so/help/saml-sso-configuration).
+  Single sign-on (SSO) can be configured for workspaces in Notion's Enterprise Plan. [Learn more about SSO with Notion](https://www.notion.com/help/saml-sso-configuration).
 </Info>
 
 ## Where user objects appear in the API
@@ -31716,7 +31738,7 @@ The `execute` function receives an array of `WebhookEvent` objects. The array cu
 Webhook URLs include a unique ID that acts as a shared secret:
 
 ```text theme={null}
-https://www.notion.so/webhooks/worker/{spaceId}/{workerId}/{uniqueWebhookId}/{webhookName}
+https://www.notion.com/webhooks/worker/{spaceId}/{workerId}/{uniqueWebhookId}/{webhookName}
 ```
 
 Use the CLI to print the URLs for a deployed worker:

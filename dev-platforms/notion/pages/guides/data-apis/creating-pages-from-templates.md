@@ -92,7 +92,7 @@ The API response includes a similar set of information as the Notion app display
 
 Aside from this API endpoint, templates are regular [pages](/reference/page) in Notion, so you can also get the template ID by opening the template, copying the URL, and extracting the ID from it.
 
-For example, if the template looks like `https://notion.so/notion/New-Hire-Onboarding-a07589e357414b3285a8d02beb8fd9dd`, the template `id` is `a07589e357414b3285a8d02beb8fd9dd`.
+For example, if the template looks like `https://notion.com/notion/New-Hire-Onboarding-a07589e357414b3285a8d02beb8fd9dd`, the template `id` is `a07589e357414b3285a8d02beb8fd9dd`.
 
 Determining the ID of a template will be useful in the next step, where we'll create pages using templates.
 

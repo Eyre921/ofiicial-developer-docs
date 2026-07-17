@@ -245,7 +245,7 @@ Depending on the customer’s currency and the transaction amount, Klarna can pr
   - DKK: 10-50,000
   - EUR:
     - Austria, Germany: 1-5,000
-    - France, Ireland, Italy, Spain: 1-1,500
+    - France, Ireland, Italy, Spain: 1-3,000
     - Netherlands: 25-5,000
     - Greece, Portugal: 1-1,000
   - GBP: 1-2,000

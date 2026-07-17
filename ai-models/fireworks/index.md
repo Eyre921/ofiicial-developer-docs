@@ -1,6 +1,6 @@
 # ai-models/fireworks 文档索引
 
-> 共 387 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 386 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -50,12 +50,12 @@
 - `api-reference/delete-router` — [Delete Router](pages/api-reference/delete-router.md) · [原文](https://docs.fireworks.ai/api-reference/delete-router)
 - `api-reference/delete-secret` — [Delete secret](pages/api-reference/delete-secret.md) · [原文](https://docs.fireworks.ai/api-reference/delete-secret)
 - `api-reference/delete-supervised-fine-tuning-job` — [Delete Supervised Fine-tuning Job](pages/api-reference/delete-supervised-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/delete-supervised-fine-tuning-job)
-- `api-reference/execute-reinforcement-fine-tuning-step` — [Execute one training step for keep-alive Reinforcement Fine-tuning Step](pages/api-reference/execute-reinforcement-fine-tuning-step.md) · [原文](https://docs.fireworks.ai/api-reference/execute-reinforcement-fine-tuning-step)
+- `api-reference/execute-reinforcement-fine-tuning-step` — [Execute reinforcement fine tuning step](pages/api-reference/execute-reinforcement-fine-tuning-step.md) · [原文](https://docs.fireworks.ai/api-reference/execute-reinforcement-fine-tuning-step)
 - `api-reference/generate-a-new-image-from-a-text-prompt` — [Generate an image with FLUX.1 [schnell] FP8](pages/api-reference/generate-a-new-image-from-a-text-prompt.md) · [原文](https://docs.fireworks.ai/api-reference/generate-a-new-image-from-a-text-prompt)
 - `api-reference/generate-or-edit-image-using-flux-kontext` — [Generate or edit an image with FLUX.1 Kontext](pages/api-reference/generate-or-edit-image-using-flux-kontext.md) · [原文](https://docs.fireworks.ai/api-reference/generate-or-edit-image-using-flux-kontext)
 - `api-reference/get-account` — [Get Account](pages/api-reference/get-account.md) · [原文](https://docs.fireworks.ai/api-reference/get-account)
 - `api-reference/get-batch-inference-job` — [Get Batch Inference Job](pages/api-reference/get-batch-inference-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-batch-inference-job)
-- `api-reference/get-billing-summary` — [Get Billing Summary](pages/api-reference/get-billing-summary.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-summary)
+- `api-reference/get-billing-summary` — [Get billing summary information for an account](pages/api-reference/get-billing-summary.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-summary)
 - `api-reference/get-billing-usage` — [Get Account Usage](pages/api-reference/get-billing-usage.md) · [原文](https://docs.fireworks.ai/api-reference/get-billing-usage)
 - `api-reference/get-dataset` — [Get Dataset](pages/api-reference/get-dataset.md) · [原文](https://docs.fireworks.ai/api-reference/get-dataset)
 - `api-reference/get-dataset-download-endpoint` — [Get Dataset Download Endpoint](pages/api-reference/get-dataset-download-endpoint.md) · [原文](https://docs.fireworks.ai/api-reference/get-dataset-download-endpoint)
@@ -80,7 +80,6 @@
 - `api-reference/get-reinforcement-fine-tuning-job` — [Get Reinforcement Fine-tuning Job](pages/api-reference/get-reinforcement-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-reinforcement-fine-tuning-job)
 - `api-reference/get-reinforcement-fine-tuning-step` — [Get Reinforcement Fine-tuning Step](pages/api-reference/get-reinforcement-fine-tuning-step.md) · [原文](https://docs.fireworks.ai/api-reference/get-reinforcement-fine-tuning-step)
 - `api-reference/get-response` — [Get Response](pages/api-reference/get-response.md) · [原文](https://docs.fireworks.ai/api-reference/get-response)
-- `api-reference/get-router` — [Get Router](pages/api-reference/get-router.md) · [原文](https://docs.fireworks.ai/api-reference/get-router)
 - `api-reference/get-secret` — [Get Secret](pages/api-reference/get-secret.md) · [原文](https://docs.fireworks.ai/api-reference/get-secret)
 - `api-reference/get-supervised-fine-tuning-job` — [Get Supervised Fine-tuning Job](pages/api-reference/get-supervised-fine-tuning-job.md) · [原文](https://docs.fireworks.ai/api-reference/get-supervised-fine-tuning-job)
 - `api-reference/get-user` — [Get User](pages/api-reference/get-user.md) · [原文](https://docs.fireworks.ai/api-reference/get-user)

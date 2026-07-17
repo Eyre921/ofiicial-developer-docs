@@ -80,7 +80,7 @@ Any time your connection interacts with your workspace, include the installation
   ```
 </Note>
 
-If you receive an error response from the API, check if the connection has been properly [added to the page](https://www.notion.so/help/add-and-manage-connections-with-the-api#manage-connections-in-your-workspace). If this does not solve the problem, refer to our [Status codes](/reference/status-codes) page for more information.
+If you receive an error response from the API, check if the connection has been properly [added to the page](https://www.notion.com/help/add-and-manage-connections-with-the-api#manage-connections-in-your-workspace). If this does not solve the problem, refer to our [Status codes](/reference/status-codes) page for more information.
 
 ## Personal access token auth flow set-up
 
@@ -207,7 +207,7 @@ You can use this `error`query parameter to conditionally update your app’s sta
 If the user opts to `Select pages`, then a page picker interface opens. A user can search for and select pages and databases to share with the connection from the page picker.
 
 <Note>
-  The page picker only displays pages or databases to which a user has [full access](https://www.notion.so/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
+  The page picker only displays pages or databases to which a user has [full access](https://www.notion.com/help/sharing-and-permissions), because a user needs full access to a resource in order to be able to share it with a connection.
 </Note>
 
 <Frame>

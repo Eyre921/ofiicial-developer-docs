@@ -8,7 +8,7 @@ Learn about database schemas, querying databases, and more.
 
 ## Overview
 
-[Databases](https://www.notion.so/help/intro-to-databases) are collections of [pages](/reference/page) in a Notion workspace that can be filtered, sorted, and organized as needed. They allow users to create and manipulate structured data in Notion.
+[Databases](https://www.notion.com/help/intro-to-databases) are collections of [pages](/reference/page) in a Notion workspace that can be filtered, sorted, and organized as needed. They allow users to create and manipulate structured data in Notion.
 
 Connections can be used to help users sync databases with external systems or build workflows around Notion databases.
 
@@ -28,7 +28,7 @@ In addition to regular Notion databases, there are two other types of databases 
 
 #### Linked databases
 
-Notion offers [linked databases](https://www.notion.so/help/guides/using-linked-databases) as a way of showing databases in multiple places. You can identify them by a ↗ next to the database title which, when clicked, takes you to the source database.
+Notion offers [linked databases](https://www.notion.com/help/guides/using-linked-databases) as a way of showing databases in multiple places. You can identify them by a ↗ next to the database title which, when clicked, takes you to the source database.
 
 <Frame>
   <img />
@@ -40,18 +40,18 @@ Notion offers [linked databases](https://www.notion.so/help/guides/using-linked-
 
 #### Wiki databases
 
-Wiki databases are a special category of databases that allow [Workspace Owners](https://www.notion.so/help/add-members-admins-guests-and-groups) to organize child pages and databases with a homepage view. Wiki database pages can be verified by the Workspace Owner with an optional expiration date for the verification.
+Wiki databases are a special category of databases that allow [Workspace Owners](https://www.notion.com/help/add-members-admins-guests-and-groups) to organize child pages and databases with a homepage view. Wiki database pages can be verified by the Workspace Owner with an optional expiration date for the verification.
 
-Pages in a wiki database will have a [`verification`](/reference/page-property-values#verification) property that can be set through your Notion workspace. See directions for [creating wikis](https://www.notion.so/help/wikis-and-verified-pages#create-a-wiki) and [verifying pages](https://www.notion.so/help/wikis-and-verified-pages#verifying-pages) in our Help Center.
+Pages in a wiki database will have a [`verification`](/reference/page-property-values#verification) property that can be set through your Notion workspace. See directions for [creating wikis](https://www.notion.com/help/wikis-and-verified-pages#create-a-wiki) and [verifying pages](https://www.notion.com/help/wikis-and-verified-pages#verifying-pages) in our Help Center.
 
 Wiki databases can currently only be created through your Notion workspace directly (i.e., not Notion's API). Ability to retrieve wiki databases in the API may be limited, and you can't add multiple data sources to a wiki database.
 
 To learn more about creating and working with wiki databases, see the following Help Center articles:
 
 <CardGroup>
-  <Card title="Wikis and verified pages" href="https://www.notion.so/help/wikis-and-verified-pages" icon="angles-right" />
+  <Card title="Wikis and verified pages" href="https://www.notion.com/help/wikis-and-verified-pages" icon="angles-right" />
 
-  <Card title="Wiki guides" href="https://www.notion.so/help/guides/category/wiki" icon="angles-right" />
+  <Card title="Wiki guides" href="https://www.notion.com/help/guides/category/wiki" icon="angles-right" />
 </CardGroup>
 
 ## Structure
@@ -89,7 +89,7 @@ Databases contain a list of data sources (IDs and names). In turn, each data sou
         "name": "Grocery list"
       }
     ],
-    "url": "https://www.notion.so/example/248104cd477e80fdb757e945d38000bd",
+    "url": "https://www.notion.com/example/248104cd477e80fdb757e945d38000bd",
     "icon": null,
     "cover": {
       "type": "external",
@@ -277,7 +277,7 @@ When adding a page to a database, the `parent` parameter must be a [database par
   * Now paste the link in your text editor so you can take a closer look. The URL uses the following format:
 
   ```bash theme={null}
-  https://www.notion.so/{workspace_name}/{database_id}?v={view_id}
+  https://www.notion.com/{workspace_name}/{database_id}?v={view_id}
   ```
 
   * Find the part that corresponds to `{database_id}` in the URL you pasted. It is a 36 character long string. This value is your **database ID**.

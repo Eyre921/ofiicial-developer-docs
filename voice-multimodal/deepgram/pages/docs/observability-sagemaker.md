@@ -14,6 +14,8 @@ path: docs/observability-sagemaker
 
 Amazon SageMaker publishes endpoint metrics and container logs to Amazon CloudWatch automatically. This page explains which metrics matter most for Deepgram workloads, how to monitor latency for streaming and pre-recorded traffic, how to enable per-instance enhanced metrics, how to access Deepgram container logs, and how to configure alarms that alert you before performance degrades.
 
+Two companion pages cover additional metric streams: [Prometheus & OpenTelemetry Metrics](/docs/prometheus-otel-sagemaker) for per-GPU, host, and container Prometheus metrics via SageMaker detailed observability, and [Deepgram Enhanced Metrics](/docs/enhanced-metrics-sagemaker) for the usage and billing metrics the Deepgram container publishes to CloudWatch on its own.
+
 Before configuring observability, you must have a Deepgram SageMaker Endpoint deployed and running with status `InService`. See [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker) for setup instructions.
 
 ## CloudWatch metrics
@@ -548,6 +550,8 @@ After creating the dashboard, view it in the [CloudWatch console](https://consol
 
 ## Related resources
 
+* [Prometheus & OpenTelemetry Metrics](/docs/prometheus-otel-sagemaker)
+* [Deepgram Enhanced Metrics](/docs/enhanced-metrics-sagemaker)
 * [Deploy Deepgram on Amazon SageMaker](/docs/deploy-amazon-sagemaker)
 * [Auto-Scaling SageMaker Endpoints](/docs/auto-scaling-sagemaker-streaming)
 * [Configure Amazon SageMaker Deployments](/docs/configure-sagemaker-deployments)

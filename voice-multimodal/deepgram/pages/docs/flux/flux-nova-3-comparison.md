@@ -59,6 +59,7 @@ It's important to understand the differences between [Flux](/docs/models-languag
 | ------------------------ | ------------------------ | ------ |
 | Word Times               | ✅                        | ✅      |
 | Smart Formatting         | 🚫                       | ✅      |
+| Numerals                 | ✅                        | ✅      |
 | Speaker Diarization      | 🚫                       | ✅      |
 | Filler Words             | ✅ Transcribed by default | 🚫     |
 | Profanity Filtering      | 🚫                       | ✅      |

@@ -477,7 +477,7 @@ URL property value objects contain a non-empty string within the `url` property.
       "object": "property_item",
       "id": "KpQq",
       "type": "url",
-      "url": "https://notion.so/notiondevs"
+      "url": "https://notion.com/notiondevs"
     }
   }
   ```

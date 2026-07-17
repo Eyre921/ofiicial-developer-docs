@@ -2889,6 +2889,52 @@ components:
         - data
         - meta
       type: object
+    AutoBetaRouterPlugin:
+      example:
+        allowed_models:
+          - anthropic/*
+          - openai/gpt-4o
+        cost_quality_tradeoff: 7
+        enabled: true
+        id: auto-beta-router
+      properties:
+        allowed_models:
+          description: >-
+            List of model patterns to filter which models the auto-beta-router
+            can route between. Supports wildcards (e.g., "anthropic/*" matches
+            all Anthropic models). When not specified, uses the default
+            supported models list.
+          example:
+            - anthropic/*
+            - openai/gpt-4o
+            - google/*
+          items:
+            type: string
+          type: array
+        cost_quality_tradeoff:
+          description: >-
+            Balances routing between cost and quality on a 0-10 scale. The
+            auto-beta-router ranks models for the classified task type by
+            community spend share, then filters candidates by their average cost
+            per generation for that task. Higher values favor cheaper models: 10
+            keeps only models around the cheapest 10th percentile, while 0
+            permits models up to the 90th percentile for cost. Defaults to 7.
+          example: 7
+          maximum: 10
+          minimum: 0
+          type: integer
+        enabled:
+          description: >-
+            Set to false to disable the auto-beta-router plugin for this
+            request. Defaults to true.
+          type: boolean
+        id:
+          enum:
+            - auto-beta-router
+          type: string
+      required:
+        - id
+      type: object
     AutoRouterPlugin:
       example:
         allowed_models:
@@ -3818,6 +3864,8 @@ components:
           type:
             - string
             - 'null'
+        prompt_cache_options:
+          $ref: '#/components/schemas/PromptCacheOptions'
         reasoning:
           $ref: '#/components/schemas/BaseReasoningConfig'
         safety_identifier:
@@ -4391,6 +4439,7 @@ components:
         - digitalocean
         - featherless
         - fireworks
+        - fish-audio
         - friendli
         - gmicloud
         - google-ai-studio
@@ -5208,6 +5257,7 @@ components:
           items:
             discriminator:
               mapping:
+                auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
@@ -5220,6 +5270,7 @@ components:
               propertyName: id
             oneOf:
               - $ref: '#/components/schemas/AutoRouterPlugin'
+              - $ref: '#/components/schemas/AutoBetaRouterPlugin'
               - $ref: '#/components/schemas/ModerationPlugin'
               - $ref: '#/components/schemas/WebSearchPlugin'
               - $ref: '#/components/schemas/WebFetchPlugin'
@@ -6451,6 +6502,7 @@ components:
       enum:
         - redact
         - block
+        - flag
       example: block
       type: string
     ContentFilterBuiltinAction:
@@ -6956,10 +7008,8 @@ components:
             - 'null'
         content_filter_builtins:
           description: >-
-            Builtin content filters to apply. The "flag" action is only
-            supported for "regex-prompt-injection"; PII slugs (email, phone,
-            ssn, credit-card, ip-address, person-name, address) accept "block"
-            or "redact" only.
+            Builtin content filters to apply. Every builtin slug supports
+            "block", "redact", and the detect-only "flag" action.
           example:
             - action: block
               slug: regex-prompt-injection
@@ -13064,6 +13114,7 @@ components:
           items:
             discriminator:
               mapping:
+                auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
@@ -13076,6 +13127,7 @@ components:
               propertyName: id
             oneOf:
               - $ref: '#/components/schemas/AutoRouterPlugin'
+              - $ref: '#/components/schemas/AutoBetaRouterPlugin'
               - $ref: '#/components/schemas/ModerationPlugin'
               - $ref: '#/components/schemas/WebSearchPlugin'
               - $ref: '#/components/schemas/WebFetchPlugin'
@@ -13599,6 +13651,7 @@ components:
                 - DigitalOcean
                 - Featherless
                 - Fireworks
+                - Fish Audio
                 - Friendli
                 - GMICloud
                 - Google
@@ -19591,6 +19644,7 @@ components:
         - DigitalOcean
         - Featherless
         - Fireworks
+        - Fish Audio
         - Friendli
         - GMICloud
         - Google
@@ -19783,6 +19837,9 @@ components:
           additionalProperties: {}
           type: object
         fireworks:
+          additionalProperties: {}
+          type: object
+        fish-audio:
           additionalProperties: {}
           type: object
         friendli:
@@ -20328,6 +20385,7 @@ components:
             - DigitalOcean
             - Featherless
             - Fireworks
+            - Fish Audio
             - Friendli
             - GMICloud
             - Google
@@ -21511,6 +21569,7 @@ components:
           items:
             discriminator:
               mapping:
+                auto-beta-router: '#/components/schemas/AutoBetaRouterPlugin'
                 auto-router: '#/components/schemas/AutoRouterPlugin'
                 context-compression: '#/components/schemas/ContextCompressionPlugin'
                 file-parser: '#/components/schemas/FileParserPlugin'
@@ -21523,6 +21582,7 @@ components:
               propertyName: id
             oneOf:
               - $ref: '#/components/schemas/AutoRouterPlugin'
+              - $ref: '#/components/schemas/AutoBetaRouterPlugin'
               - $ref: '#/components/schemas/ModerationPlugin'
               - $ref: '#/components/schemas/WebSearchPlugin'
               - $ref: '#/components/schemas/WebFetchPlugin'
@@ -23891,10 +23951,9 @@ components:
             - 'null'
         content_filter_builtins:
           description: >-
-            Builtin content filters to apply. Set to null to remove. The "flag"
-            action is only supported for "regex-prompt-injection"; PII slugs
-            (email, phone, ssn, credit-card, ip-address, person-name, address)
-            accept "block" or "redact" only.
+            Builtin content filters to apply. Set to null to remove. Every
+            builtin slug supports "block", "redact", and the detect-only "flag"
+            action.
           example:
             - action: block
               slug: regex-prompt-injection
@@ -25951,7 +26010,10 @@ paths:
                         - desc
                       type: string
                     field:
-                      description: Field to order by
+                      description: >-
+                        Field to order by: a metric included in `metrics` (or
+                        "request_count", which may be ordered by without being
+                        requested), a requested dimension, or "date".
                       example: request_count
                       type: string
                   required:
@@ -26952,6 +27014,7 @@ paths:
               - digitalocean
               - featherless
               - fireworks
+              - fish-audio
               - friendli
               - gmicloud
               - google-ai-studio

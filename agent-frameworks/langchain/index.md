@@ -1,6 +1,6 @@
 # agent-frameworks/langchain 文档索引
 
-> 共 1490 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 1493 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -38,6 +38,7 @@
 - `api-reference/deployments-v2/delete-deployment` — [Delete Deployment](pages/api-reference/deployments-v2/delete-deployment.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/delete-deployment)
 - `api-reference/deployments-v2/delete-deployments` — [Delete Deployments](pages/api-reference/deployments-v2/delete-deployments.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/delete-deployments)
 - `api-reference/deployments-v2/get-deployment` — [Get Deployment](pages/api-reference/deployments-v2/get-deployment.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/get-deployment)
+- `api-reference/deployments-v2/get-free-deployment-count` — [Get Free Deployment Count](pages/api-reference/deployments-v2/get-free-deployment-count.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/get-free-deployment-count)
 - `api-reference/deployments-v2/get-revision` — [Get Revision](pages/api-reference/deployments-v2/get-revision.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/get-revision)
 - `api-reference/deployments-v2/list-deployments` — [List Deployments](pages/api-reference/deployments-v2/list-deployments.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-deployments)
 - `api-reference/deployments-v2/list-revisions` — [List Revisions](pages/api-reference/deployments-v2/list-revisions.md) · [原文](https://docs.langchain.com/api-reference/deployments-v2/list-revisions)
@@ -1120,6 +1121,7 @@
 - `oss/javascript/deepagents/code/mcp-tools` — [MCP tools](pages/oss/javascript/deepagents/code/mcp-tools.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/mcp-tools)
 - `oss/javascript/deepagents/code/memory-and-skills` — [Memory and Skills](pages/oss/javascript/deepagents/code/memory-and-skills.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/memory-and-skills)
 - `oss/javascript/deepagents/code/overview` — [Deep Agents Code](pages/oss/javascript/deepagents/code/overview.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/overview)
+- `oss/javascript/deepagents/code/plugins` — [Plugins and marketplaces](pages/oss/javascript/deepagents/code/plugins.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/plugins)
 - `oss/javascript/deepagents/code/providers` — [Model providers](pages/oss/javascript/deepagents/code/providers.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/providers)
 - `oss/javascript/deepagents/code/quickstart` — [Quickstart](pages/oss/javascript/deepagents/code/quickstart.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/quickstart)
 - `oss/javascript/deepagents/code/remote-sandboxes` — [Use remote sandboxes](pages/oss/javascript/deepagents/code/remote-sandboxes.md) · [原文](https://docs.langchain.com/oss/javascript/deepagents/code/remote-sandboxes)
@@ -1329,6 +1331,7 @@
 - `oss/python/deepagents/code/mcp-tools` — [MCP tools](pages/oss/python/deepagents/code/mcp-tools.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/mcp-tools)
 - `oss/python/deepagents/code/memory-and-skills` — [Memory and Skills](pages/oss/python/deepagents/code/memory-and-skills.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/memory-and-skills)
 - `oss/python/deepagents/code/overview` — [Deep Agents Code](pages/oss/python/deepagents/code/overview.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/overview)
+- `oss/python/deepagents/code/plugins` — [Plugins and marketplaces](pages/oss/python/deepagents/code/plugins.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/plugins)
 - `oss/python/deepagents/code/providers` — [Model providers](pages/oss/python/deepagents/code/providers.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/providers)
 - `oss/python/deepagents/code/quickstart` — [Quickstart](pages/oss/python/deepagents/code/quickstart.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/quickstart)
 - `oss/python/deepagents/code/remote-sandboxes` — [Use remote sandboxes](pages/oss/python/deepagents/code/remote-sandboxes.md) · [原文](https://docs.langchain.com/oss/python/deepagents/code/remote-sandboxes)

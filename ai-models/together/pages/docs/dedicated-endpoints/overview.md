@@ -62,7 +62,9 @@ To learn more about the underlying resources, see [Concepts](/docs/dedicated-end
 
 ## Project scope
 
-The `tg beta` commands, and the management API, operate within a [Together AI project](/docs/projects). The CLI reads the project from the `TOGETHER_PROJECT_ID` environment variable, or you can pass `--project` on any command. If neither is set, it uses the project associated with your API key.
+The `tg beta` commands, the management API, and the Python SDK's `client.beta.*` methods operate within a [Together AI project](/docs/projects). The CLI reads the project from the `TOGETHER_PROJECT_ID` environment variable, or you can pass `--project` on any command. If neither is set, it uses the project associated with your API key.
+
+In the Python SDK, pass `project_id` to `Together()` or set `TOGETHER_PROJECT_ID`. Otherwise, call `client.whoami().project_id` before project-scoped API calls.
 
 ```bash theme={null}
 export TOGETHER_PROJECT_ID=your_project_id

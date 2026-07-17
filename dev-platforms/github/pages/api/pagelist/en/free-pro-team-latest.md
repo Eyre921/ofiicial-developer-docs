@@ -2927,6 +2927,7 @@ path: api/pagelist/en/free-pro-team-latest
 /en/communities/moderating-comments-and-conversations
 /en/communities/moderating-comments-and-conversations/managing-disruptive-comments
 /en/communities/moderating-comments-and-conversations/locking-conversations
+/en/communities/moderating-comments-and-conversations/archive-pull-requests
 /en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-repository
 /en/communities/moderating-comments-and-conversations/limiting-interactions-for-your-personal-account
 /en/communities/moderating-comments-and-conversations/limiting-interactions-in-your-organization

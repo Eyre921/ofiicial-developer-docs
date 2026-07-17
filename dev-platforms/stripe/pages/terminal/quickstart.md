@@ -14,9 +14,9 @@ When you’re ready to use a physical reader, you only need to update the [reade
 
 > #### Verifone reader support
 > 
-> Verifone reader support is in **public preview** for the United States, Canada, Belgium, Italy, the Netherlands, Norway, Spain, and Sweden and **private preview** for Ireland and the United Kingdom (V660p, UX700, P630), France (V660p, UX700, P630), Singapore (V660p, P630), and Australia (V660p, UX700, P630).
+> Verifone P630 and UX700 are **generally available** in the United States. Verifone V660p and M425 are in **public preview** for the United States and Canada, with P630 and UX700 also in **public preview** for Canada, Belgium, Italy, the Netherlands, Norway, Spain, and Sweden. V660p, UX700, and P630 are in **private preview** for Ireland and the United Kingdom, France, Singapore (V660p, P630), and Australia.
 > 
-> To join either preview, you must [contact the Sales team to order the applicable reader](https://stripe.com/contact/sales).
+> To order a Verifone reader or join a preview, you must [contact the Sales team](https://stripe.com/contact/sales).
 
 ### Install the Stripe Node library
 

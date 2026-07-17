@@ -1,6 +1,6 @@
 # dev-platforms/notion 文档索引
 
-> 共 194 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 195 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## cli
@@ -70,6 +70,7 @@
 - `reference/admin/enqueue-space-export` — [Enqueue a workspace export](pages/reference/admin/enqueue-space-export.md) · [原文](https://developers.notion.com/reference/admin/enqueue-space-export)
 - `reference/admin/export-legal-hold` — [Export a legal hold](pages/reference/admin/export-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/export-legal-hold)
 - `reference/admin/get-legal-hold` — [Retrieve a legal hold](pages/reference/admin/get-legal-hold.md) · [原文](https://developers.notion.com/reference/admin/get-legal-hold)
+- `reference/admin/get-space-export-status` — [Get workspace export status](pages/reference/admin/get-space-export-status.md) · [原文](https://developers.notion.com/reference/admin/get-space-export-status)
 - `reference/admin/intro` — [Introduction](pages/reference/admin/intro.md) · [原文](https://developers.notion.com/reference/admin/intro)
 - `reference/admin/list-legal-hold-pages` — [List pages on a legal hold](pages/reference/admin/list-legal-hold-pages.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-pages)
 - `reference/admin/list-legal-hold-users` — [List users on a legal hold](pages/reference/admin/list-legal-hold-users.md) · [原文](https://developers.notion.com/reference/admin/list-legal-hold-users)

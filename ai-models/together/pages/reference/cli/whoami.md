@@ -34,8 +34,11 @@ $ tg whoami --json
   "organization_name": "Acme, Inc.",
   "project_id": "proj_xxxxxxxxxxxxxxxx",
   "project_name": "My Project",
-  "project_slug": "my-project"
+  "project_slug": "my-project",
+  "user_id": "user_xxxxxxxxxxxxxxxx"
 }
 ```
 
 The `project_slug` is the DNS-friendly project identifier used when constructing the `model` value (`<project_slug>/<endpoint_slug>`) for dedicated endpoint inference calls.
+
+`user_id` is present when the API key is tied to an authenticated user account. It is omitted for service or organization-default keys.

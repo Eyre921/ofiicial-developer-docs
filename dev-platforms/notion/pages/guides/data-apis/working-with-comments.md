@@ -8,7 +8,7 @@ Learn how to add and retrieve comments with the Notion API.
 
 ## Overview
 
-Notion offers the ability for developers to add [comments](https://www.notion.so/help/comments-mentions-and-reminders) to pages and page content (i.e. [blocks](/guides/data-apis/working-with-page-content#modeling-content-as-blocks)) within a workspace. Users may add comments:
+Notion offers the ability for developers to add [comments](https://www.notion.com/help/comments-mentions-and-reminders) to pages and page content (i.e. [blocks](/guides/data-apis/working-with-page-content#modeling-content-as-blocks)) within a workspace. Users may add comments:
 
 * To the top of a page.
 * Inline to text or other [blocks](/guides/data-apis/working-with-page-content#modeling-content-as-blocks) within a page.
@@ -21,11 +21,11 @@ Notion offers the ability for developers to add [comments](https://www.notion.so
   <img />
 </Frame>
 
-This guide will review how to use the public REST API to add and retrieve comments on a page. It will also look at considerations specific to [connections](https://www.notion.so/help/add-and-manage-connections-with-the-api) when retrieving or adding comments.
+This guide will review how to use the public REST API to add and retrieve comments on a page. It will also look at considerations specific to [connections](https://www.notion.com/help/add-and-manage-connections-with-the-api) when retrieving or adding comments.
 
 ### Permissions
 
-Before discussing how to use the public REST API to interact with comments, let’s first review who can comment on a page. Notion relies on a tiered system for [page permissions](https://www.notion.so/help/sharing-and-permissions#permission-levels), which can vary between:
+Before discussing how to use the public REST API to interact with comments, let’s first review who can comment on a page. Notion relies on a tiered system for [page permissions](https://www.notion.com/help/sharing-and-permissions#permission-levels), which can vary between:
 
 * `Can view`
 * `Can comment`
@@ -364,7 +364,7 @@ There are two possible ways to get the `discussion_id` for a discussion thread.
 This will give you a URL like:
 
 ```bash theme={null}
-https://notion.so/Something-something-a8d5215b89ae464b821ae2e2916ab9ce?d=5e73b63447c2428fa899e906b1f1d20e#b3e87b2b5e114cbd99f96288c22bacce
+https://notion.com/Something-something-a8d5215b89ae464b821ae2e2916ab9ce?d=5e73b63447c2428fa899e906b1f1d20e#b3e87b2b5e114cbd99f96288c22bacce
 ```
 
 The value of the `d` query parameter is the `discussion_id`.

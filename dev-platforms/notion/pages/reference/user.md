@@ -4,17 +4,17 @@ source: https://developers.notion.com/reference/user
 path: reference/user
 ---
 
-The User object represents a user in a Notion workspace. Users include full workspace members, guests, and connections. You can find more information about members and guests in [this guide](https://www.notion.so/help/add-members-admins-guests-and-groups).
+The User object represents a user in a Notion workspace. Users include full workspace members, guests, and connections. You can find more information about members and guests in [this guide](https://www.notion.com/help/add-members-admins-guests-and-groups).
 
 <Info>
   **Provisioning users and groups using SCIM**
 
-  The SCIM API is available for workspaces in Notion's Enterprise Plan. Learn more about [using SCIM with Notion](https://www.notion.so/help/provision-users-and-groups-with-scim).
+  The SCIM API is available for workspaces in Notion's Enterprise Plan. Learn more about [using SCIM with Notion](https://www.notion.com/help/provision-users-and-groups-with-scim).
 </Info>
 
 <Info>
   **Setting up single sign-on (SSO) with Notion**
-  Single sign-on (SSO) can be configured for workspaces in Notion's Enterprise Plan. [Learn more about SSO with Notion](https://www.notion.so/help/saml-sso-configuration).
+  Single sign-on (SSO) can be configured for workspaces in Notion's Enterprise Plan. [Learn more about SSO with Notion](https://www.notion.com/help/saml-sso-configuration).
 </Info>
 
 ## Where user objects appear in the API

@@ -717,7 +717,7 @@ The 40 KB filterable metadata limit does not apply to `full_text_search` text fi
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 ### Query limits
 

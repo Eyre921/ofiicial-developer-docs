@@ -2506,7 +2506,7 @@ argent remove
 ---
 
 ---
-modificationDate: July 01, 2026
+modificationDate: July 17, 2026
 title: Documentation for AI agents and LLMs
 description: Efficient ways for AI agents and LLMs to access and consume Expo documentation.
 ---
@@ -2534,8 +2534,8 @@ Pick the method that matches your tool:
 Every documentation page has a lightweight markdown version accessible by appending either `/index.md` or `.md` to the page URL. Both URLs serve the same file. For example:
 
 ```text
-https://docs.expo.dev/develop/development-builds/create-a-build/index.md
-https://docs.expo.dev/develop/development-builds/create-a-build.md
+https://docs.expo.dev/develop/development-builds/introduction/index.md
+https://docs.expo.dev/develop/development-builds/introduction.md
 ```
 
 The above method is useful when you want to give an AI agent context about a specific topic or page without overwhelming it with the full HTML of that page.
@@ -3238,7 +3238,7 @@ To control the `NavigationBar` visibility, you can use the [`hidden`](/versions/
 ---
 
 ---
-modificationDate: June 29, 2026
+modificationDate: July 17, 2026
 title: Fonts
 description: Learn how to integrate custom fonts in your app using local files or Google Font packages
 ---
@@ -3297,7 +3297,7 @@ This is the recommended method for adding fonts to your app due to its benefits:
 
 However, this method also has some limitations:
 
--   Doesn't work with Expo Go since this method requires [creating a development build](/develop/development-builds/create-a-build.md).
+-   Doesn't work with Expo Go since this method requires [creating a development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build).
 
 To embed a font in a project, follow the steps below:
 
@@ -3365,7 +3365,7 @@ If you want to refer to fonts using a combination of `fontFamily`, `weight`, and
 }
 ```
 
-After embedding the font with the config plugin, create a [new development build](/develop/development-builds/create-a-build.md) and install it on your device or Android Emulator or iOS Simulator.
+After embedding the font with the config plugin, create a [new development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build) and install it on your device or Android Emulator or iOS Simulator.
 
 You can use the font with `<Text>` by specifying the `fontFamily` style prop. The examples below correspond to the fonts defined in the configuration above.
 
@@ -3499,7 +3499,7 @@ Add the config plugin to your [app config](/versions/latest/config/app.md#plugin
 }
 ```
 
-After embedding the font with the config plugin, create a [new development build](/develop/development-builds/create-a-build.md) and install it on your device or Android Emulator or iOS Simulator.
+After embedding the font with the config plugin, create a [new development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build) and install it on your device or Android Emulator or iOS Simulator.
 
 On Android, you can use the font file name. For example, `Inter_900Black`. On iOS, use the font and its weight name ([PostScript name](/develop/user-interface/fonts.md#what-is-postscript-name-of-a-font)). The example below demonstrates how to use [`Platform`](https://reactnative.dev/docs/platform-specific-code#platform-module) to select the correct font family name for each platform:
 
@@ -3677,7 +3677,7 @@ const styles = StyleSheet.create({
 ---
 
 ---
-modificationDate: June 29, 2026
+modificationDate: July 17, 2026
 title: Assets
 description: Learn about using static assets in your project, including images, videos, sounds, database files, and fonts.
 ---
@@ -3749,7 +3749,7 @@ The path to each asset file must be relative to your project's root since the ap
 }
 ```
 
-After embedding the asset with the config plugin, [create a new development build](/develop/development-builds/create-a-build.md). Now, you can import and use the asset in your project without using a `require` or an `import` statement.
+After embedding the asset with the config plugin, [create a new development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build). Now, you can import and use the asset in your project without using a `require` or an `import` statement.
 
 For example, the **example.png** is linked by the above config plugin. You can directly import it into your component and use its resource name as the URI. Note that when rendering assets without using `require`, you need to explicitly provide a width / height.
 
@@ -4202,413 +4202,226 @@ A list of useful resources to learn more about implementing navigation and UI in
 ---
 
 ---
-modificationDate: May 23, 2026
+modificationDate: July 17, 2026
 title: Introduction to development builds
-description: Why use development builds and how to get started.
+description: Learn how to create a development build in your Expo project and why use a development build instead of Expo Go.
 ---
 
+> TL;DR for agents: a development build is the app compiled with the expo-dev-client library included. First run `npx expo install expo-dev-client` in the project. Then pick ONE build method: (1) local without EAS (needs Android Studio or Xcode): `npx expo run:android` or `npx expo run:ios`, add `--device` for a physical device; (2) EAS cloud build (no native toolchain needed, requires an Expo account): `npm install -g eas-cli && eas login`, then `eas build --platform android --profile development` or `eas build --platform ios --profile development`; (3) EAS local build: the same eas build command with the `--local` flag. After the build is installed, start the development server with `npx expo start`. Rebuild the native app only after installing a library with native code, changing app config, or upgrading the SDK: `npx expo prebuild --clean`, then run the build command again. Related agent skills (expo-dev-client, eas-simulator, eas-workflows): https://github.com/expo/skills.
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
 # Introduction to development builds
 
-Why use development builds and how to get started.
+Learn how to create a development build in your Expo project and why use a development build instead of Expo Go.
 
-**Development build** is the term that we use for a "Debug" build of an app that includes the [`expo-dev-client`](/versions/latest/sdk/dev-client.md) library. This library augments the built-in React Native development tooling with additional capabilities, such as support for inspecting network requests and a "launcher" UI that lets you switch between different development servers (such as between a server running on your machine or a teammate's machine) and deployments of your app (such as published updates with EAS Update).
+When you create a new Expo app with [`create-expo-app`](/get-started/create-a-project.md), you start with a project where you update TypeScript/JavaScript code on your local machine and view the changes in the Expo Go app. A **development build** is essentially **your own version of Expo Go** where you are free to use any native libraries and change any native configuration.
 
-#### Difference between Expo Go and development builds
+A **development build is recommended when you want to create your own app and release to app stores**. It includes the [`expo-dev-client`](/versions/latest/sdk/dev-client.md) library, which augments the built-in React Native development tooling. The tooling also includes support for inspecting network requests and a ["launcher" UI](/develop/development-builds/use-development-builds.md#the-launcher-screen) that lets you switch between different development servers (such as between a server running on your machine or a teammate's machine) and deployments of your app (such as published updates with [EAS Update](/eas-update/introduction.md)).
 
-[Expo Go](https://expo.dev/go) is a playground app for students and learners to get started quickly. It comes with a fixed set of native libraries built in, so you can write JavaScript code and see changes instantly without building a native app yourself. A development build is a fully featured development environment for working on your production-grade Expo apps.
+[Expo Go & Development Builds: which should you use?](https://www.youtube.com/watch?v=FdjczjkwQKE) — In this tutorial video, Beto explains what each of them is and when to choose a development build.
 
-#### Native app and JavaScript bundle
+## How would you like to build your development build?
 
-The **native app** is what you install on your device. Expo Go is a pre-built native app that works like a playground — it can't be changed after you install it. To add new native libraries or change things like your app name and icon, you need to build your own native app (a development build).
+All three methods produce the same development build. They differ in where the app compiles and what you need to have installed on your machine.
 
-The **JavaScript bundle (`npx expo start`)** is where your app's UI code and business logic are. In production apps, there is one **main.js** bundle that is shipped with the app itself. In development, this JS bundle is live reloaded from your local machine. The main role of React Native is to provide a way for the JavaScript code to access the native APIs (Image, Camera, Notifications, and more). However, only APIs and libraries that were bundled in the **native app** can be used.
+## Build locally
 
-[Expo Go & Development Builds: which should you use?](https://www.youtube.com/watch?v=FdjczjkwQKE) — In this tutorial video Beto explains what each of them is, and when to choose a development build.
+### Build locally
 
-## Why use a development build (a.k.a what _can't_ you do in Expo Go and why)
+Compile the app yourself with [Expo CLI](/more/expo-cli.md) and your native toolchain. No Expo account is required and this is the only way to install a development build on an iPhone without a paid Apple Developer account.
 
-Expo Go is a playground for students and learners to understand the basics of React Native. It's limited and not useful for building production-grade projects, so most apps will convert to using development builds. It helps to know exactly what is _impossible_ in Expo Go and _why_, so you can make an informed decision on when and why to make this move.
+#### Host platform support
 
-#### Use libraries with native code that aren't in Expo Go
+|             | Android    | iOS Simulator | iPhone device |
+| ----------- | ---------- | ------------- | ------------- |
+| **macOS**   |  |     |     |
+| **Windows** |  |     |     |
+| **Linux**   |  |     |     |
 
-Consider [`react-native-webview`](/versions/latest/sdk/webview.md) as an example, a library that contains native code, but [is included in Expo Go](https://github.com/expo/expo/blob/main/apps/expo-go/package.json#L23). When you run `npx expo install react-native-webview` command in your project, it will install the library in your **node_modules** directory, which includes both the JS code and the native code. But the JS bundle you are building _only_ uses the JS code. Then, your JS bundle gets uploaded to Expo Go, and it interacts with the native code that was already bundled with the app.
+  
+    Set up your development environment for the platforms you build for: [Android Studio and
+    Emulator](/workflow/android-studio-emulator/) for Android, [Xcode and iOS
+    Simulator](/workflow/ios-simulator/) for iOS.
+  
 
-Instead, when you try to use a library that is not included, for example, [`react-native-firebase`](/guides/using-firebase.md#using-react-native-firebase), then you can use the JS code and hot reload the new bundle into Expo Go but it will immediately error because the JS code tries to call the native code from the React Native Firebase package that does not exist in Expo Go. There is no way to get the native code into the Expo Go app unless it was already included in the bundle that was uploaded to the app stores.
+#### Install expo-dev-client
 
-#### Test changes in app icon, name, splash screen
-
-If you're developing your app in Expo Go only, you can build a store version that will use your provided values and images; it just won't be possible to test it in Expo Go.
-
-These native assets are shipped with the native bundle and are immutable once the app is installed. The Expo Go app does show a splash screen, which is your app icon on a solid color background. This is a dev-only emulation to view how the splash screen will probably look. However, it is limited, for example, you cannot test `SplashScreen.setOptions` to animate the splash screen.
-
-#### Remote push notifications
-
-While [in-app notifications](/versions/latest/sdk/notifications.md) are available in Expo Go, remote push notifications (that is, sending a push notification from a server to the app) are not. This is because a push notification service should be tied to your own push notification certificates, and while it is possible to make it work in Expo Go, it often causes confusion for production builds. It is recommended to test remote push notifications in development builds so you can ensure parity in behavior between development and production.
-
-#### Implementing App/Universal links
-
-Both [Android App Links](/linking/android-app-links.md) and [iOS Universal Links](/linking/ios-universal-links.md) require a two-way association between the native app and the website. In particular, it requires the native app to include the linked website's URL. This is impossible with Expo Go due to the aforementioned native code immutability.
-
-#### Open projects using older SDKs (iOS device only)
-
-Expo Go can only support one SDK version at a time. When a new SDK version is released, Expo Go is updated to support the newer version, and this will be the only version of Expo Go available to install from the stores.
-
-If you're developing on an Android Device, Android Emulator, or iOS Simulator, a compatible version of Expo Go can be [downloaded and installed](https://expo.dev/go). The only platform where this is impossible is iPhone devices because Apple does not support side-loading older versions of apps.
-
-[Expo Go to development build](/develop/development-builds/expo-go-to-dev-build.md) — Learn how to migrate an existing Expo Go project to using development builds.
-
-[Local app development](/guides/local-app-development.md) — How to build a development client on your local machine.
-
-[Development builds on EAS](/develop/development-builds/create-a-build.md) — How to build a development client on EAS.
-
----
-
----
-modificationDate: June 03, 2026
-title: Switch from Expo Go to a development build
-description: How to switch from your Expo Go project to use development builds.
----
-
-This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
-
-# Switch from Expo Go to a development build
-
-How to switch from your Expo Go project to use development builds.
-
-To switch from Expo Go to a development build, you'll need to follow the steps below:
-
-## Install the `expo-dev-client`
-
-The Expo Dev Client library includes the launcher UI (shown in the screenshots below), dev menu, extensions to test over-the-air updates, and more. The Expo Go app has the dev menu built in, and that's why you need to install it separately for a development build.
+Run the following command in your project's root directory:
 
 ```sh
-# npm
 npx expo install expo-dev-client
-
-# yarn
 yarn expo install expo-dev-client
-
-# pnpm
 pnpm expo install expo-dev-client
-
-# bun
 bun expo install expo-dev-client
 ```
 
-When you run a development build it will look like this, only with your app name and icon included rather than "Microfoam". The launcher UI is pictured in iOS on the left and Android on the right. In between, you can see an app running inside of the development build, with the customizable developer menu open.
+**Are you using this library in an existing React Native project?**
 
-> We recommend using the `expo-dev-client` for the best development experience, but it is possible to use development builds without installing this library. If not using the dev client, in [Step 3](/develop/development-builds/expo-go-to-dev-build.md#start-the-dev-client), start the bundler with `--dev-client`. Otherwise, it will default to opening in Expo Go.
+Apps that don't use [Continuous Native Generation](/workflow/continuous-native-generation.md) or are created with `npx react-native`, require further configuration after installing this library. See steps 1 and 2 from [Install `expo-dev-client` in an existing React Native project](/bare/install-dev-builds-in-bare.md).
 
-## Build your native app
+**What does a development build look like?**
 
-With Expo Go, you only needed to build the JavaScript bundle, but with development builds you also need to compile the native app. With Expo, there are two parts to building your native app:
+> It is possible to use development builds without the `expo-dev-client` library. In that case, start the development server with `npx expo start --dev-client` to target your development build instead of Expo Go.
 
-1.  Generate the native **android** and/or **ios** directories ([read more](/develop/development-builds/expo-go-to-dev-build.md#prebuild) on when and how you'll need to do this)
-2.  Use native build tools to compile the native app(s)
+#### Build and run the app
 
-Once you've built your native app, you won't need to build it again unless you add or update a library with native code, or change any native code or configuration, such as the app name.
-
-> The **android** and **ios** directories are automatically added to **.gitignore** when you create a new project, so they won't be checked into Git. This ensures you can always regenerate the code locally or on CI with [CNG](/workflow/continuous-native-generation.md) when needed and never have to edit native code manually.
-
-### Option 1: Build on your local machine
-
-To build a native app on your local machine, follow the setup your environment guides for [Android](/workflow/android-studio-emulator.md) and [iOS](/workflow/ios-simulator.md) platforms. This involves setting up and configuring native build tools like Android Studio for Android and Xcode for iOS.
-
-Once you have everything set up, run the following command:
-
-#### Build for Android
+##### Android
 
 ```sh
-# npm
 npx expo run:android
-
-# yarn
 yarn expo run:android
-
-# pnpm
 pnpm expo run:android
-
-# bun
 bun expo run:android
 ```
 
-#### Build for iOS
+By default the app installs on a running Android Emulator. For a physical device, plug it in via USB, allow **USB debugging** when prompted, and add the `--device` flag.
+
+##### iOS
 
 ```sh
-# npm
 npx expo run:ios
-
-# yarn
 yarn expo run:ios
-
-# pnpm
 pnpm expo run:ios
-
-# bun
 bun expo run:ios
 ```
 
-By default, this will build and install the app on an Android Emulator/iOS Simulator. If you need to run the build on your phone, plug it into your computer (on Android, select trust device and allow USB debugging if prompted, and on iOS, enable [developer mode](/get-started/set-up-your-environment.md?mode=development-build&buildEnv=local&platform=ios&device=physical#plug-in-your-device-via-usb-and-enable-developer-mode)) and run the above commands with the `--device` flag.
+By default the app installs on the iOS Simulator. For an iPhone, plug it in, enable [developer mode](/guides/ios-developer-mode.md), make sure your app config has a unique `ios.bundleIdentifier`, and add the `--device` flag.
 
-### Option 2: Build on EAS
+This command runs [prebuild](/workflow/continuous-native-generation.md#prebuild) to generate the native **android** and **ios** directories if they don't exist, then compiles the app, installs it, and starts the development server.
 
-Building on EAS servers is useful when:
+#### Rebuild when native code changes
 
--   You can't or don't want to set up your local development environment
--   You want to build an iOS app but don't own a Mac
--   You want to share the development builds with your team
-
-[Build on EAS](/develop/development-builds/create-a-build.md) — How to create your Development Build on EAS.
-
-## Start the bundler
-
-After building locally, `npx expo run:android|ios` will start the bundler automatically. But if you closed the bundler or are working on a dev client you built earlier, (re)start the Metro bundler with:
+The `expo run:android|ios` command reuses the native **android** and **ios** directories on later runs. When you only change your app's TypeScript/JavaScript code, there is no need to rebuild the native app. Instead, start the development server with:
 
 ```sh
-# npm
 npx expo start
-
-# yarn
 yarn expo start
-
-# pnpm
 pnpm expo start
-
-# bun
 bun expo start
 ```
 
-When your project has `expo-dev-client` installed, the bundler will print out **Using development build**, and the QR code it shows will link into the development build you created instead of Expo Go.
+You only need to regenerate the native directories (**android** and **ios**) when:
 
-## Prebuild
+- Installing or updating a [library containing native code](/workflow/using-libraries.md#determining-third-party-library-compatibility)
+- Changing your [app config](/workflow/configuration.md) (**app.json**)
+- Upgrading your Expo SDK version
 
-[**Prebuild**](/workflow/continuous-native-generation.md#prebuild) is a concept unique to Expo projects. It refers to the process of generating the **android** and **ios** directories based on your local configuration and properties.
-
-### When should you run prebuild
-
-You will need to run prebuild locally if you are building via `npx expo run:android|ios`, and change any native dependencies or configuration, such as:
-
--   Installing or updating a library containing native code
--   Changing [app config](/workflow/configuration.md)(`app.json`)
--   Upgrading your Expo SDK version
-
-In these cases, you'll want to rebuild the native directories with:
+In these cases, regenerate the native directories with:
 
 ```sh
-# npm
 npx expo prebuild --clean
-
-# yarn
 yarn expo prebuild --clean
-
-# pnpm
 pnpm expo prebuild --clean
-
-# bun
 bun expo prebuild --clean
 ```
 
 Then, rebuild your app with the updated native code, with:
 
-#### Build for Android
+##### Build for Android
 
 ```sh
-# npm
 npx expo run:android
-
-# yarn
 yarn expo run:android
-
-# pnpm
 pnpm expo run:android
-
-# bun
 bun expo run:android
 ```
 
-#### Build for iOS
+##### Build for iOS
 
 ```sh
-# npm
 npx expo run:ios
-
-# yarn
 yarn expo run:ios
-
-# pnpm
 pnpm expo run:ios
-
-# bun
 bun expo run:ios
 ```
 
-### When you don't need to run prebuild
-
-All Expo build tools (`npx expo run:android|ios` and `eas build`) will **prebuild** automatically if no existing native folders are found. This means that there is no need to run prebuild manually when you're running `npx expo run:android|ios` for the first time or `eas build`.
-
-[Continuous Native Generation (CNG)](/workflow/continuous-native-generation.md) — Learn about the philosophy and benefits of Continuous Native Generation (CNG) and Prebuild.
+> All Expo build tools (`npx expo run:android|ios` and `eas build`) run prebuild automatically if no native directories exist, so you don't need to run it manually the first time. Learn more about [Continuous Native Generation (CNG)](/workflow/continuous-native-generation.md).
 
 ---
 
----
-modificationDate: June 29, 2026
-title: Create a development build on EAS
-description: Learn how to create development builds for a project.
----
+## Create a development build with EAS
 
-This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
+### Create a development build with EAS
 
-# Create a development build on EAS
+The easiest way to build your native app is to use [EAS Build](/eas/build/introduction.md). The app compilation happens on EAS servers and produces a build that you can install on your device or Android Emulator/iOS Simulator.
 
-Learn how to create development builds for a project.
+EAS Build also makes it possible to trigger iOS builds from non-macOS platforms.
 
-When you create a new Expo app with `npx create-expo-app`, you start off with a project where you update the JavaScript code on your local machine and view the changes in the Expo Go app. A **development build** is essentially **your own version of Expo Go** where you are free to use any native libraries and change any native config. In this guide, you will learn how to convert your project that runs on Expo Go into a development build, which will make the native side of your app fully customizable.
+#### Host platform support
 
-[How to create a development build](https://www.youtube.com/watch?v=uQCE9zl3dXU) — Configure and create a development build for your Expo project using EAS Build.
+|             | Android    | iOS Simulator | iPhone device   |
+| ----------- | ---------- | ------------- | --------------- |
+| **macOS**   |  |     |  (\*) |
+| **Windows** |  |     |  (\*) |
+| **Linux**   |  |     |  (\*) |
 
-## Prerequisites
+> (\*) All builds that run on an iPhone device require a paid [Apple Developer](https://developer.apple.com) account for build signing.
 
-The instructions assume you already have an existing Expo project that runs on Expo Go.
-
-The requirements for building the native app depend on which platform you are using, which platform you are building for, and whether you want to build on EAS or on your local machine.
-
-#### Build on EAS
-
-This is the easiest way to build your native app, as it requires no native build tools on your side. The builds happen on the EAS servers, which makes it possible to trigger iOS builds from non-macOS platforms.
-
-|  | Android | iOS Simulator | iPhone device |
-| --- | --- | --- | --- |
-| **macOS** | ✓ | ✓ | ✓ (\*) |
-| **Windows** | ✓ | ✓ | ✓ (\*) |
-| **Linux** | ✓ | ✓ | ✓ (\*) |
-
-(\*) All builds that run on an iPhone device require a paid [Apple Developer](https://developer.apple.com) account for build signing.
-
-#### Build locally using the EAS CLI
-
-Any EAS CLI command can be built on your local machine with the `--local` flag. This requires your local [development environment](https://reactnative.dev/docs/set-up-your-environment?os=macos&platform=ios) to be set up with native build tools. Read more about [local app development](/build-reference/local-builds.md).
-
-|  | Android | iOS Simulator | iPhone device |
-| --- | --- | --- | --- |
-| **macOS** | ✓ | ✓ | ✓ (\*) |
-| **Windows** | ✓ (\*\*) | ✗ | ✗ |
-| **Linux** | ✓ | ✗ | ✗ |
-
-(\*) All builds that run on an iPhone device require a paid [Apple Developer](https://developer.apple.com) account for build signing.
-
-(\*\*) No first-class support, but possible with [WSL](https://expo.fyi/wsl.md).
-
-#### Build locally without EAS
-
-To build locally without EAS requires your local [development environment](https://reactnative.dev/docs/set-up-your-environment?os=macos&platform=ios) to be set up with native build tools. This is the only way to test your iOS build on an iPhone device without a paid Apple Developer Account (only possible on macOS). Read more about [local app compilation](/guides/local-app-development.md#local-app-compilation) and see the [Expo Go to Development Build](/develop/development-builds/expo-go-to-dev-build.md) guide.
-
-|  | Android | iOS Simulator | iPhone device |
-| --- | --- | --- | --- |
-| **macOS** | ✓ | ✓ | ✓ |
-| **Windows** | ✓ | ✗ | ✗ |
-| **Linux** | ✓ | ✗ | ✗ |
-
-## Get started
-
-For detailed, step-by-step instructions, see our [EAS Tutorial](/tutorial/eas/introduction.md). Available also as a [tutorial series](https://www.youtube.com/playlist?list=PLsXDmrmFV_AS14tZCBin6m9NIS_VCUKe2) on YouTube.
-
-### Install expo-dev-client
-
+  
+    Sign up for an [Expo](https://expo.dev/signup) account, if you haven't already.
+  
+  
+    The [EAS CLI](/build/setup.md#install-the-latest-eas-cli) installed and logged in.
+    
 ```sh
-# npm
-npx expo install expo-dev-client
-
-# yarn
-yarn expo install expo-dev-client
-
-# pnpm
-pnpm expo install expo-dev-client
-
-# bun
-bun expo install expo-dev-client
-```
-
-#### Are you using this library in an existing React Native project?
-
-Apps that don't use [Continuous Native Generation](/workflow/continuous-native-generation.md) or are created with `npx react-native`, require further configuration after installing this library. See steps 1 and 2 from [Install `expo-dev-client` in an existing React Native project](/bare/install-dev-builds-in-bare.md).
-
-### Build the native app (Android)
-
-#### Prerequisites
-
-##### Expo account
-
-Sign up for an [Expo](https://expo.dev/signup) account, if you haven't already.
-
-##### EAS CLI
-
-The [EAS CLI](/build/setup.md#install-the-latest-eas-cli) installed and logged in.
-
-```sh
-# npm
 npm install --global eas-cli && eas login
-
-# yarn
 yarn global add eas-cli && eas login
-
-# pnpm
 pnpm add --global eas-cli && eas login
-
-# bun
 bun add --global eas-cli && eas login
 ```
 
-##### An Android Emulator (optional)
+  
 
-An [Android Emulator](/workflow/android-studio-emulator.md) is optional if you want to test your app on an emulator.
+#### Install expo-dev-client
+
+Run the following command in your project's root directory:
+
+```sh
+npx expo install expo-dev-client
+yarn expo install expo-dev-client
+pnpm expo install expo-dev-client
+bun expo install expo-dev-client
+```
+
+**Are you using this library in an existing React Native project?**
+
+Apps that don't use [Continuous Native Generation](/workflow/continuous-native-generation.md) or are created with `npx react-native`, require further configuration after installing this library. See steps 1 and 2 from [Install `expo-dev-client` in an existing React Native project](/bare/install-dev-builds-in-bare.md).
+
+**What does a development build look like?**
+
+#### Build the native app
+
+If your project doesn't have an **eas.json** yet, the EAS CLI will prompt you to create one with a default `development` profile.
+
+##### Android
+
+  
+    An [Android Emulator](/workflow/android-studio-emulator.md) is optional if you want to test your
+    app on an emulator.
+  
 
 ```sh
 eas build --platform android --profile development
 ```
 
-Read more about [Android builds on EAS](/tutorial/eas/android-development-build.md).
+##### iOS Simulator
 
-### Build the native app (iOS Simulator)
+  
+    iOS Simulators are available only on macOS. Make sure you have the [iOS
+    Simulator](/workflow/ios-simulator/) installed.
+  
 
-#### Prerequisites
+Edit the `development` profile in **eas.json** and set the [`simulator`](/eas/json.md#simulator) option to `true` (you have to create a separate profile for simulator builds if you also want to create iOS device builds for this project).
 
-##### Expo account
-
-Sign up for an [Expo](https://expo.dev/signup) account, if you haven't already.
-
-##### EAS CLI
-
-The [EAS CLI](/build/setup.md#install-the-latest-eas-cli) installed and logged in.
-
-```sh
-# npm
-npm install --global eas-cli && eas login
-
-# yarn
-yarn global add eas-cli && eas login
-
-# pnpm
-pnpm add --global eas-cli && eas login
-
-# bun
-bun add --global eas-cli && eas login
-```
-
-##### macOS with iOS Simulator installed
-
-iOS Simulators are available only on macOS. Make sure you have the [iOS Simulator](/workflow/ios-simulator.md) installed.
-
-Edit `development` profile in **eas.json** and set the [`simulator`](/eas/json.md#simulator) option to `true` (you have to create a separate profile for simulator builds if you also want to create iOS device builds for this project).
-
-```json
+```json eas.json
 {
   "build": {
     "development": {
+      /* @info */
       "ios": {
         "simulator": true
       }
+      /* @end */
     }
   }
 }
@@ -4620,90 +4433,142 @@ eas build --platform ios --profile development
 
 iOS Simulator builds can only be installed on simulators and not on real devices.
 
-Read more about [iOS Simulator builds on EAS](/tutorial/eas/ios-development-build-for-simulators.md).
+##### iOS device
 
-### Build the native app (iOS device)
-
-#### Prerequisites
-
-##### Expo account
-
-Sign up for an [Expo](https://expo.dev/signup) account, if you haven't already.
-
-##### EAS CLI
-
-The [EAS CLI](/build/setup.md#install-the-latest-eas-cli) installed and logged in.
-
-```sh
-# npm
-npm install --global eas-cli && eas login
-
-# yarn
-yarn global add eas-cli && eas login
-
-# pnpm
-pnpm add --global eas-cli && eas login
-
-# bun
-bun add --global eas-cli && eas login
-```
-
-##### Apple Developer account
-
-A paid [Apple Developer](https://developer.apple.com/) account for creating [signing credentials](/app-signing/managed-credentials.md#generating-app-signing-credentials) so the app could be installed on an iOS device.
+  
+    A paid [Apple Developer](https://developer.apple.com/) account for creating [signing
+    credentials](/app-signing/managed-credentials/#generating-app-signing-credentials) so the app
+    could be installed on an iOS device.
+  
 
 ```sh
 eas build --platform ios --profile development
 ```
 
-iOS device builds can only be installed on iPhone devices and not on iOS Simulators.
+iOS device builds can only be installed on iPhone devices and not on iOS Simulators. After installing the build, enable [iOS developer mode](/guides/ios-developer-mode.md) on your device to run it.
 
-Read more about [iOS device builds on EAS](/tutorial/eas/ios-development-build-for-devices.md).
+#### Install the app
 
-### Install the app
+After the build completes, the CLI will prompt you to install the app: press <kbd>Y</kbd> to install it on Android Emulator or iOS Simulator, or scan the QR code with your device. You can also install any build from the [expo.dev](https://expo.dev/) dashboard or with [Expo Orbit](https://expo.dev/orbit).
 
-You'll need to install the native app on your device, emulator, or simulator.
-
-#### When building on EAS
-
-If you create your development build on EAS, the CLI will prompt you to install the app after the build is finished. You can also install previous builds from the [expo.dev](https://expo.dev/) dashboard or using [Expo Orbit](https://expo.dev/orbit).
-
-#### When building locally using EAS CLI
-
-When building locally the output of the build will be an archive. You may drag and drop this on your Android Emulator/iOS Simulator to install it, or use [Expo Orbit](https://expo.dev/orbit) to install a build from your local machine.
-
-### Start the bundler
-
-The development client built in **step 2** is the native side of your app (basically your own version of Expo Go). To continue developing, you'll also want to start the JavaScript bundler.
-
-Depending on how you built the app, this may already be running, but if you close the process for any reason, there is no need to rebuild your development client. Simply restart the JavaScript bundler with:
+#### Start the JavaScript bundler
 
 ```sh
-# npm
 npx expo start
-
-# yarn
 yarn expo start
-
-# pnpm
 pnpm expo start
-
-# bun
 bun expo start
 ```
 
-This is the same command you would have used with Expo Go. It detects whether your project has `expo-dev-client` installed, in which case it will default to targeting your development build instead of Expo Go.
+Since your project has `expo-dev-client` installed, this command targets your development build instead of Expo Go.
 
-## Video walkthroughs
+---
 
-["EAS Tutorial Series"](https://www.youtube.com/playlist?list=PLsXDmrmFV_AS14tZCBin6m9NIS_VCUKe2) — A course on YouTube: learn how to speed up your development with Expo Application Services.
+## Create a development build locally with EAS CLI
 
-["Async Office Hours: How to make a development build with EAS Build"](https://www.youtube.com/watch?v=LUFHXsBcW6w) — Learn how to make a development build with EAS Build in this video tutorial hosted by Developer Success Engineer: Keith Kurak.
+### Create a development build locally with EAS CLI
+
+Any EAS Build can run on your own machine by adding the `--local` flag: EAS provides credentials, signing, and build profiles, while compilation happens on your computer with your native toolchain.
+
+This requires your local development environment to be set up with the necessary native build tools. Read more about [running EAS Build locally](/build-reference/local-builds.md).
+
+#### Host platform support
+
+|             | Android           | iOS Simulator | iPhone device   |
+| ----------- | ----------------- | ------------- | --------------- |
+| **macOS**   |         |     |  (\*) |
+| **Windows** |  (\*\*) |     |       |
+| **Linux**   |         |     |       |
+
+> (\*) All builds that run on an iPhone device require a paid [Apple Developer](https://developer.apple.com) account for build signing. <br />
+> (\*\*) No first-class support, but possible with [WSL](https://expo.fyi/wsl.md).
+
+  
+    Sign up for an [Expo](https://expo.dev/signup) account, if you haven't already.
+  
+  
+    The [EAS CLI](/build/setup.md#install-the-latest-eas-cli) installed and logged in.
+    
+```sh
+npm install --global eas-cli && eas login
+yarn global add eas-cli && eas login
+pnpm add --global eas-cli && eas login
+bun add --global eas-cli && eas login
+```
+
+  
+  
+    Local compilation needs your development environment set up: [Android
+    Studio](/workflow/android-studio-emulator/) for Android builds,
+    [Xcode](/workflow/ios-simulator.md) for iOS builds.
+  
+
+#### Install expo-dev-client
+
+Run the following command in your project's root directory:
+
+```sh
+npx expo install expo-dev-client
+yarn expo install expo-dev-client
+pnpm expo install expo-dev-client
+bun expo install expo-dev-client
+```
+
+**Are you using this library in an existing React Native project?**
+
+Apps that don't use [Continuous Native Generation](/workflow/continuous-native-generation.md) or are created with `npx react-native`, require further configuration after installing this library. See steps 1 and 2 from [Install `expo-dev-client` in an existing React Native project](/bare/install-dev-builds-in-bare.md).
+
+**What does a development build look like?**
+
+#### Build the native app on your machine
+
+If your project doesn't have an **eas.json** yet, the EAS CLI will prompt you to create one with a default `development` profile.
+
+##### Android
+
+```sh
+eas build --platform android --profile development --local
+```
+
+##### iOS
+
+```sh
+eas build --platform ios --profile development --local
+```
+
+For a simulator build, set the [`simulator`](/eas/json.md#simulator) option to `true` in the `development` profile in **eas.json** first.
+
+#### Install the app
+
+The output of a local build is an archive (**.apk** for Android, or an **.app**/**.ipa** for iOS). Drag and drop it onto your Android Emulator or iOS Simulator to install it, or use [Expo Orbit](https://expo.dev/orbit) to install it from your machine to any device.
+
+#### Start the JavaScript bundler
+
+```sh
+npx expo start
+yarn expo start
+pnpm expo start
+bun expo start
+```
+
+Since your project has `expo-dev-client` installed, this command targets your development build instead of Expo Go.
+
+## After you install the development build
+
+Launch the development build from your device's Home screen and connect to a development server from the launcher screen to start working on your app. To learn how to use your new build, including the launcher screen, rebuilding, and debugging, see [Use a development build](/develop/development-builds/use-development-builds.md). For common questions about development builds and Expo Go, including what you can't do in Expo Go and why, see the [FAQ](/develop/development-builds/faq.md).
+
+### Related Expo Skills
+
+If you use an AI agent, install [Expo Skills](/skills.md) to teach it the workflows on this page. The following skills are related to development builds:
+
+[expo-dev-client](https://github.com/expo/skills/blob/main/plugins/expo/skills/expo-dev-client/SKILL.md) — Build and distribute Expo development clients locally or via TestFlight for internal testing.
+
+[eas-simulator](https://github.com/expo/skills/blob/main/plugins/expo/skills/eas-simulator/SKILL.md) — Run and control a user's app on a remote iOS/Android simulator hosted on EAS cloud.
 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 17, 2026
 title: Use a development build
 description: Learn how to use development builds for a project.
 ---
@@ -4958,26 +4823,88 @@ To enforce an API contract between the JavaScript and native layers of your app,
 ---
 
 ---
-modificationDate: July 01, 2024
-title: Next steps
-description: A list of useful resources to learn more about development builds and EAS Build.
+modificationDate: July 17, 2026
+title: Development builds FAQ
+description: A collection of common questions about development builds, Expo Go, and EAS Build.
 ---
 
 This documentation is available as Markdown for AI agents and LLMs. See the [full Markdown index](/llms.txt) or append .md to any documentation URL.
 
-# Next steps
+# Development builds FAQ
 
-A list of useful resources to learn more about development builds and EAS Build.
+A collection of common questions about development builds, Expo Go, and EAS Build.
 
-[Configuring EAS Build with eas.json](/build/eas-json.md) — Learn how a project using EAS services is configured with eas.json.
+This page answers common questions about development builds, how they compare to Expo Go, and where to learn more about EAS Build.
 
-[Environment variables](/guides/environment-variables.md) — Learn about different ways to use environment variables in an Expo project.
+## Learn more about development builds and Expo Go
 
-[Android build process](/build-reference/android-builds.md) — Learn how an Android project is built on EAS Build.
+#### Difference between Expo Go and development builds
 
-[iOS build process](/build-reference/ios-builds.md) — Learn how an iOS project is built on EAS Build.
+[Expo Go](https://expo.dev/go) is a playground app for students and learners to get started quickly. It comes with a fixed set of native libraries built in, so you can write JavaScript code and see changes instantly without building a native app yourself. A development build is a fully featured development environment for working on your production-grade Expo apps.
 
-[Set up EAS Build with a monorepo](/build-reference/build-with-monorepos.md) — Learn how to set up EAS Build with a monorepo.
+#### Native app and JavaScript bundle
+
+The **native app** is what you install on your device. Expo Go is a pre-built native app that works like a playground — it can't be changed after you install it. To add new native libraries or change things like your app name and icon, you need to build your own native app (a development build).
+
+The **JavaScript bundler (`expo start`)** is where your app's UI code and business logic are. In production apps, there is one **main.js** bundle that is shipped with the app itself. In development, this JS bundle is live reloaded from your local machine. The main role of React Native is to provide a way for the JavaScript code to access the native APIs (Image, Camera, Notifications, and more). However, only APIs and libraries that were bundled in the **native app** can be used.
+
+## Why use a development build (a.k.a what _can't_ you do in Expo Go and why)
+
+Expo Go is a playground for students and learners to understand the basics of React Native. It's limited and not useful for building production-grade projects, so most apps will convert to using development builds. It helps to know exactly what is _impossible_ in Expo Go and _why_, so you can make an informed decision on when and why to make this move.
+
+#### Use libraries with native code that aren't in Expo Go
+
+Consider [`react-native-webview`](/versions/latest/sdk/webview.md) as an example, a library that contains native code, but [is included in Expo Go](https://github.com/expo/expo/blob/main/apps/expo-go/package.json#L23). When you run `npx expo install react-native-webview` command in your project, it will install the library in your **node_modules** directory, which includes both the JS code and the native code. But the JS bundle you are building _only_ uses the JS code. Then, your JS bundle gets uploaded to Expo Go, and it interacts with the native code that was already bundled with the app.
+
+Instead, when you try to use a library that is not included, for example, [`react-native-firebase`](/guides/using-firebase.md#using-react-native-firebase), then you can use the JS code and hot reload the new bundle into Expo Go but it will immediately error because the JS code tries to call the native code from the React Native Firebase package that does not exist in Expo Go. There is no way to get the native code into the Expo Go app unless it was already included in the bundle that was uploaded to the app stores.
+
+#### Test changes in app icon, name, splash screen
+
+If you're developing your app in Expo Go only, you can build a store version that will use your provided values and images; it just won't be possible to test it in Expo Go.
+
+These native assets are shipped with the native bundle and are immutable once the app is installed. The Expo Go app does show a splash screen, which is your app icon on a solid color background. This is a dev-only emulation to view how the splash screen will probably look. However, it is limited, for example, you cannot test `SplashScreen.setOptions` to animate the splash screen.
+
+#### Remote push notifications
+
+While [in-app notifications](/versions/latest/sdk/notifications.md) are available in Expo Go, remote push notifications (that is, sending a push notification from a server to the app) are not. This is because a push notification service should be tied to your own push notification certificates, and while it is possible to make it work in Expo Go, it often causes confusion for production builds. It is recommended to test remote push notifications in development builds so you can ensure parity in behavior between development and production.
+
+#### Implementing App/Universal links
+
+Both [Android App Links](/linking/android-app-links.md) and [iOS Universal Links](/linking/ios-universal-links.md) require a two-way association between the native app and the website. In particular, it requires the native app to include the linked website's URL. This is impossible with Expo Go due to the aforementioned native code immutability.
+
+#### Open projects using other SDK versions (iOS device only)
+
+Expo Go can only support one SDK version at a time, and only that version is available to install from the app stores. The store version of Expo Go currently supports SDK 54.
+
+If you're developing on an Android device, Android Emulator, or iOS Simulator, a compatible version of Expo Go can be [downloaded and installed](https://expo.dev/go). You can also use the [`expo-go` CLI](/develop/tools.md#expo-go-cli) to download a specific version. The only platform where this is impossible is iPhone devices because Apple does not support side-loading other versions of apps.
+
+## Learn more about EAS Build
+
+#### How do I configure EAS Build with eas.json?
+
+See [Configuring EAS Build with eas.json](/build/eas-json.md) to learn how a project using EAS services is configured.
+
+#### How do I use environment variables in my project?
+
+See [Environment variables](/guides/environment-variables.md) to learn about different ways to use environment variables in an Expo project.
+
+#### How is an Android project built on EAS Build?
+
+See [Android build process](/build-reference/android-builds.md) to learn how an Android project is built on EAS Build.
+
+#### How is an iOS project built on EAS Build?
+
+See [iOS build process](/build-reference/ios-builds.md) to learn how an iOS project is built on EAS Build.
+
+#### How do I set up EAS Build with a monorepo?
+
+See [Set up EAS Build with a monorepo](/build-reference/build-with-monorepos.md) for a step-by-step guide.
+
+## Video walkthroughs
+
+[EAS Tutorial Series](https://www.youtube.com/playlist?list=PLsXDmrmFV_AS14tZCBin6m9NIS_VCUKe2) — A course on YouTube: learn how to speed up your development with Expo Application Services.
+
+[Async Office Hours: How to make a development build with EAS Build](https://www.youtube.com/watch?v=LUFHXsBcW6w) — Learn how to make a development build with EAS Build in this video tutorial hosted by Developer Success Engineer: Keith Kurak.
 
 ---
 
@@ -9302,7 +9229,7 @@ Expo supports adding custom native code and customizing that native code (Androi
 
 ## Can I use Expo in the app that is created with React Native CLI?
 
-Yes! All Expo tools and services work great in any React Native app. For example, you can use any part of the [Expo SDK](/versions/latest.md), [`expo-dev-client`](/develop/development-builds/create-a-build.md) and EAS Build, Submit, and Update — they work great! Learn more about [installing `expo` in your project](/bare/installing-expo-modules.md), [adopting prebuild](/guides/adopting-prebuild.md), and [setting up EAS Build](/build/introduction.md).
+Yes! All Expo tools and services work great in any React Native app. For example, you can use any part of the [Expo SDK](/versions/latest.md), [`expo-dev-client`](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build) and EAS Build, Submit, and Update — they work great! Learn more about [installing `expo` in your project](/bare/installing-expo-modules.md), [adopting prebuild](/guides/adopting-prebuild.md), and [setting up EAS Build](/build/introduction.md).
 
 ## How do I share my Expo project? Can I submit it to the app stores?
 
@@ -16764,7 +16691,7 @@ However, **Expo Go is a limited playground and not useful for building productio
 
 #### Development builds
 
-A development build is a debug build of your app that contains `expo-dev-client` library. It helps you iterate as quickly as possible and provides a more flexible, reliable, and complete development environment than Expo Go. You can install any native library and configure or apply changes to a [native project](/workflow/overview.md#android-and-ios-native-projects) using [app config](/workflow/configuration.md) or by creating a [config plugin](/config-plugins/introduction.md). You can create a development build [locally](/guides/local-app-development.md#local-builds-with-expo-dev-client) or use [EAS Build](/develop/development-builds/create-a-build.md) to create a build in the cloud.
+A development build is a debug build of your app that contains `expo-dev-client` library. It helps you iterate as quickly as possible and provides a more flexible, reliable, and complete development environment than Expo Go. You can install any native library and configure or apply changes to a [native project](/workflow/overview.md#android-and-ios-native-projects) using [app config](/workflow/configuration.md) or by creating a [config plugin](/config-plugins/introduction.md). You can create a development build [locally](/guides/local-app-development.md#local-builds-with-expo-dev-client) or use [EAS Build](/develop/development-builds/introduction.md?buildenv=build-with-eas#create-a-development-build-with-eas) to create a build in the cloud.
 
 #### Android and iOS native projects
 
@@ -16848,7 +16775,7 @@ The easiest way to [create a new project is with `create-expo-app`](/get-started
 
 In most cases, you will create and use a development build of your project. You will install the [`expo-dev-client`](/develop/development-builds/introduction.md#what-is-expo-dev-client) library. Development builds can be created with EAS Build or locally on your machine:
 
-[Create a development build using EAS](/develop/development-builds/create-a-build.md) — Learn how to a create development build for your project using EAS.
+[Create a development build using EAS](/develop/development-builds/introduction.md?buildenv=build-with-eas#create-a-development-build-with-eas) — Learn how to a create development build for your project using EAS.
 
 [Create a development build locally](/guides/local-app-development.md#local-builds-with-expo-dev-client) — Learn how to compile your app locally using your own machine, Android Studio and Xcode.
 
@@ -18236,7 +18163,7 @@ The `<A>` component renders an `<a>` on the web and an interactive `<Text>`that 
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 17, 2026
 title: Linking into your app
 description: Learn how to handle an incoming URL in your React Native and Expo app by creating a deep link.
 ---
@@ -18263,7 +18190,7 @@ To provide a link to your app, add a custom string to the [`scheme`](/versions/l
 }
 ```
 
-After adding a custom scheme to your app, you need to [create a new development build](/develop/development-builds/create-a-build.md). Once the app is installed on a device, you can open links within your app using `myapp://`.
+After adding a custom scheme to your app, you need to [create a new development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build). Once the app is installed on a device, you can open links within your app using `myapp://`.
 
 If the **custom scheme is not defined**, the app will use `android.package` and `ios.bundleIdentifier` as the default schemes in both development and production builds. This is because [Expo Prebuild](/more/glossary-of-terms.md#prebuild) automatically adds these properties as custom schemes for Android and iOS.
 
@@ -18797,7 +18724,7 @@ Here are some common tips to help you troubleshoot when implementing iOS Univers
 ---
 
 ---
-modificationDate: June 29, 2026
+modificationDate: July 17, 2026
 title: Add custom native code
 description: Learn how to add custom native code to your Expo project.
 ---
@@ -18827,7 +18754,7 @@ When using [development builds](/develop/development-builds/introduction.md), us
 
 -   Install the library with npm, for example: `npx expo install react-native-localize`
 -   If the library includes a [config plugin](/config-plugins/introduction.md), you can specify your preferred configuration in your app config.
--   Create a new development build (either [locally](/guides/local-app-development.md) or with [EAS](/develop/development-builds/create-a-build.md)).
+-   Create a new development build (either [locally](/guides/local-app-development.md) or with [EAS](/develop/development-builds/introduction.md?buildenv=build-with-eas#create-a-development-build-with-eas)).
 
 You can now use the library in your application code.
 
@@ -23871,7 +23798,7 @@ Using Xcode, add **Expo.plist** file to **ios/your-project/Supporting** with the
 ---
 
 ---
-modificationDate: June 03, 2026
+modificationDate: July 17, 2026
 title: Install expo-dev-client in an existing React Native project
 description: Learn how to install and configure expo-dev-client in your existing React Native project.
 ---
@@ -23904,7 +23831,7 @@ bun create expo -e with-dev-client
 
 #### Do you use Continuous Native Generation (CNG) in your project?
 
-To use `expo-dev-client` in a project that uses [CNG](/workflow/continuous-native-generation.md), see [Create a development build](/develop/development-builds/create-a-build.md).
+To use `expo-dev-client` in a project that uses [CNG](/workflow/continuous-native-generation.md), see [Create a development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build).
 
 #### Prerequisites
 
@@ -23976,7 +23903,7 @@ For more information, see the [`uri-scheme` library](https://www.npmjs.com/packa
 
 ## Build and install the app
 
-Create a debug build of your app using the tools of your choice. For example, you can do this [locally with Expo CLI](/guides/local-app-development.md) or [in the cloud with EAS Build](/develop/development-builds/create-a-build.md).
+Create a debug build of your app using the tools of your choice. For example, you can do this [locally with Expo CLI](/guides/local-app-development.md) or [in the cloud with EAS Build](/develop/development-builds/introduction.md?buildenv=build-with-eas#create-a-development-build-with-eas).
 
 ---
 
@@ -27887,7 +27814,7 @@ export default function Layout() {
 ---
 
 ---
-modificationDate: May 21, 2026
+modificationDate: July 17, 2026
 title: Stack
 description: Learn how to use the Stack navigator in Expo Router.
 ---
@@ -28550,7 +28477,7 @@ Starting from iOS 26, navigation headers adopt the system's "Liquid Glass" effec
 
 > **Note**: Not supported in Expo Go.This method is a temporary workaround. From iOS 27, this option will be removed by Apple and you cannot opt out of the Liquid Glass effect.
 
-Create a [development build](/develop/development-builds/create-a-build.md#prerequisites) and set the [`UIDesignRequiresCompatibility`](https://developer.apple.com/documentation/BundleResources/Information-Property-List/UIDesignRequiresCompatibility) property to `true` in [app config](/workflow/configuration.md):
+Create a [development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build) and set the [`UIDesignRequiresCompatibility`](https://developer.apple.com/documentation/BundleResources/Information-Property-List/UIDesignRequiresCompatibility) property to `true` in [app config](/workflow/configuration.md):
 
 ```json
 {
@@ -47890,7 +47817,7 @@ This is a non-exhaustive list of official resources for push notifications on An
 ---
 
 ---
-modificationDate: June 11, 2026
+modificationDate: July 17, 2026
 title: Expo push notifications setup
 description: Learn how to set up push notifications, get credentials for development and production, and send a testing push notification.
 ---
@@ -48117,7 +48044,7 @@ Follow the steps in [Add Android FCM V1 credentials](/push-notifications/fcm-cre
 
 > A paid Apple Developer Account is required to generate credentials.
 
-For iOS, make sure you have [registered your iOS device](/develop/development-builds/create-a-build.md#create-a-development-build-for-the-device) on which you want to test before running the `eas build` command for the first time.
+For iOS, make sure you have [registered your iOS device](/develop/development-builds/introduction.md?buildenv=build-with-eas#create-a-development-build-with-eas) on which you want to test before running the `eas build` command for the first time.
 
 If you create a development build for the first time, you'll be asked to enable push notifications. Answer yes to the following questions when prompted by the EAS CLI:
 
@@ -51406,7 +51333,7 @@ If you remove the link with `eas integrations:convex:project:delete` or `eas int
 ---
 
 ---
-modificationDate: June 26, 2026
+modificationDate: July 17, 2026
 title: Using Firebase
 description: A guide on getting started and using Firebase JS SDK and React Native Firebase library.
 ---
@@ -51554,7 +51481,7 @@ React Native Firebase requires [custom native code and cannot be used with Expo 
 
 Since React Native Firebase requires custom native code, you need to install the `expo-dev-client` library in your project. It allows configuring any native code required by React Native Firebase using [Config plugins](/config-plugins/introduction.md) without writing native code yourself.
 
-To install [`expo-dev-client`](/develop/development-builds/create-a-build.md), run the following command in your project:
+To install [`expo-dev-client`](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build), run the following command in your project:
 
 ```sh
 # npm
@@ -51594,7 +51521,7 @@ Once you have configured the React Native Firebase library in your project, come
 
 #### Run the project
 
-If you are using **[EAS Build](/build/introduction.md), you can create and install a development build** on your devices. You do not need to run the project locally before creating a development build. For more information on creating a development build, see the section on [installing a development build](/develop/development-builds/create-a-build.md).
+If you are using **[EAS Build](/build/introduction.md), you can create and install a development build** on your devices. You do not need to run the project locally before creating a development build. For more information on creating a development build, see the section on [installing a development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build).
 
 #### Run project locally?
 
@@ -56023,7 +55950,7 @@ The following list, far from being comprehensive, provides other tools that have
 ---
 
 ---
-modificationDate: April 28, 2026
+modificationDate: July 17, 2026
 title: Keyboard handling
 description: A guide for handling common keyboard interactions on an Android or iOS device.
 ---
@@ -56143,7 +56070,7 @@ For more complex keyboard interactions, such as larger scrollable entry forms wi
 
 ##### A development build
 
-The Keyboard Controller library is not included in Expo Go. See [Create a development build](/develop/development-builds/create-a-build.md) for more information.
+The Keyboard Controller library is not included in Expo Go. See [Create a development build](/develop/development-builds/introduction.md#how-would-you-like-to-build-your-development-build) for more information.
 
 ##### react-native-reanimated installed
 

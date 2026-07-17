@@ -174,7 +174,7 @@ A successful response returns a page object:
       "title": [{ "plain_text": "Hello from the API" }]
     }
   },
-  "url": "https://www.notion.so/Hello-from-the-API-a1b2c3d4e5f67890abcdef1234567890",
+  "url": "https://www.notion.com/Hello-from-the-API-a1b2c3d4e5f67890abcdef1234567890",
   "public_url": null
 }
 ```

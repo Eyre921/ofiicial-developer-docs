@@ -192,7 +192,7 @@ In both cases:
 {
   "object": "page_markdown",
   "id": "page-uuid",
-  "markdown": "# Large Document\nFirst section content...\n<unknown url=\"https://notion.so/abc123#def456\"/>",
+  "markdown": "# Large Document\nFirst section content...\n<unknown url=\"https://notion.com/abc123#def456\"/>",
   "truncated": true,
   "unknown_block_ids": ["def456-with-dashes-uuid"]
 }

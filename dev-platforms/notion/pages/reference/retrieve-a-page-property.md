@@ -36,7 +36,7 @@ Refer to the [pagination reference](/reference/intro#pagination) for details on 
 ### Rollup Properties
 
 <Check>
-  Learn more about rollup properties on the [Page properties page](/reference/page-property-values#rollup) or in Notion’s [Help Center](https://www.notion.so/help/relations-and-rollups).
+  Learn more about rollup properties on the [Page properties page](/reference/page-property-values#rollup) or in Notion’s [Help Center](https://www.notion.com/help/relations-and-rollups).
 </Check>
 
 For regular "Show original" rollups, the endpoint returns a flattened list of all the property items in the rollup.

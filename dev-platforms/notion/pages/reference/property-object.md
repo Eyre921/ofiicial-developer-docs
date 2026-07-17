@@ -248,9 +248,9 @@ Contains files uploaded to Notion or external links. The `files` type object is 
 
 Contains values derived from a provided expression. The `formula` type object has:
 
-| Field        | Type     | Description                                                                                                            | Example value           |
-| :----------- | :------- | :--------------------------------------------------------------------------------------------------------------------- | :---------------------- |
-| `expression` | `string` | The formula used to compute values. Refer to the [Notion help center](https://www.notion.so/help/formulas) for syntax. | `"prop(\"Price\") / 2"` |
+| Field        | Type     | Description                                                                                                             | Example value           |
+| :----------- | :------- | :---------------------------------------------------------------------------------------------------------------------- | :---------------------- |
+| `expression` | `string` | The formula used to compute values. Refer to the [Notion help center](https://www.notion.com/help/formulas) for syntax. | `"prop(\"Price\") / 2"` |
 
 <Tabs>
   <Tab title="Property">
@@ -569,7 +569,7 @@ Contains location values. Can be used with the Map view. The `place` type object
 
 ## Relation
 
-Contains [relations](https://www.notion.so/help/relations-and-rollups) — references to pages in another data source.
+Contains [relations](https://www.notion.com/help/relations-and-rollups) — references to pages in another data source.
 
 The `relation` type object has:
 
@@ -662,7 +662,7 @@ Contains text values. The `rich_text` type object is empty.
 
 ## Rollup
 
-Contains values pulled from a related data source via a [rollup](https://www.notion.so/help/relations-and-rollups).
+Contains values pulled from a related data source via a [rollup](https://www.notion.com/help/relations-and-rollups).
 
 The `rollup` type object has:
 
@@ -900,9 +900,9 @@ Automatically incremented, unique across all pages in a data source. Useful for 
 
 The `unique_id` type object has an optional `prefix`:
 
-| Field    | Type               | Description                                                                                  | Example value |
-| :------- | :----------------- | :------------------------------------------------------------------------------------------- | :------------ |
-| `prefix` | `string` or `null` | A common prefix assigned to pages. When set, enables lookup URLs like `notion.so/TASK-1234`. | `"TASK"`      |
+| Field    | Type               | Description                                                                                   | Example value |
+| :------- | :----------------- | :-------------------------------------------------------------------------------------------- | :------------ |
+| `prefix` | `string` or `null` | A common prefix assigned to pages. When set, enables lookup URLs like `notion.com/TASK-1234`. | `"TASK"`      |
 
 <Tabs>
   <Tab title="Property">

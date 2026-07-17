@@ -110,7 +110,7 @@ Each `filter` object contains the following fields:
 </CodeGroup>
 
 <Check>
-  The filter object mimics the database [filter option in the Notion UI](https://www.notion.so/help/views-filters-and-sorts).
+  The filter object mimics the database [filter option in the Notion UI](https://www.notion.com/help/views-filters-and-sorts).
 </Check>
 
 ## Type-specific filter conditions

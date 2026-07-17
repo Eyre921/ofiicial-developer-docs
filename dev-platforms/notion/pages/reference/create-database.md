@@ -7,7 +7,7 @@ path: reference/create-database
 post /v1/databases
 Create a database and its initial data source.
 
-Creates a database as a subpage in the specified parent page, or as a private page at the workspace level, with the specified `properties` schema set on its `initial_data_source`. Currently, the `parent` of a new database must be a Notion page (`page_id` type) or a [wiki database](https://www.notion.so/help/wikis-and-verified-pages).
+Creates a database as a subpage in the specified parent page, or as a private page at the workspace level, with the specified `properties` schema set on its `initial_data_source`. Currently, the `parent` of a new database must be a Notion page (`page_id` type) or a [wiki database](https://www.notion.com/help/wikis-and-verified-pages).
 
 Use this endpoint to create a database, its first [data source](/reference/data-source), and its first table view, all in one API call. Then, if you want to add a second data source, use the [Create a data source](/reference/create-a-data-source) API with a version of at least `2025-09-03`, and provide the `database_id` as the `id` returned by the database create response.
 

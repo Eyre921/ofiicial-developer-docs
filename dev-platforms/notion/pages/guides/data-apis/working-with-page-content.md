@@ -8,7 +8,7 @@ Learn about page content and how to add or retrieve it with the Notion API.
 
 ## Overview
 
-[Pages](https://www.notion.so/help/category/write-edit-and-customize) are where users write everything from quick notes, to shared documents, to curated landing pages in Notion. Connections can help users turn Notion into the single source of truth by syndicating content or help users gather, connect, and visualize content inside Notion.
+[Pages](https://www.notion.com/help/category/write-edit-and-customize) are where users write everything from quick notes, to shared documents, to curated landing pages in Notion. Connections can help users turn Notion into the single source of truth by syndicating content or help users gather, connect, and visualize content inside Notion.
 
 In this guide, you'll learn about how the building blocks of page content are represented in the API and what you can do with them. By the end, you'll be able to create new pages with content, read content from other pages, and add blocks to existing pages.
 

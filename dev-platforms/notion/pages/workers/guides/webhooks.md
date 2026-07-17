@@ -61,7 +61,7 @@ The `execute` function receives an array of `WebhookEvent` objects. The array cu
 Webhook URLs include a unique ID that acts as a shared secret:
 
 ```text theme={null}
-https://www.notion.so/webhooks/worker/{spaceId}/{workerId}/{uniqueWebhookId}/{webhookName}
+https://www.notion.com/webhooks/worker/{spaceId}/{workerId}/{uniqueWebhookId}/{webhookName}
 ```
 
 Use the CLI to print the URLs for a deployed worker:

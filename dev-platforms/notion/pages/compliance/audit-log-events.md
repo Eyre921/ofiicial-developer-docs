@@ -294,6 +294,8 @@ Events are split into the following categories:
 * **Ability for managed users to edit their profile information updated**: That the ability for managed users to edit their profile information was updated for an organization.
 * **Ability for managed users to grant support access updated**: That the ability for managed users to grant support access was updated for an organization.
 * **Ability for managed users to join external workspaces updated**: That the ability for managed users to join external workspaces was updated for an organization.
+* **Admin role assigned**: That an admin role was assigned to a member.
+* **Admin role revoked**: That an admin role was revoked from a member.
 * **AI provider credential created**: That an AI provider credential was created for an organization.
 * **AI provider credential deleted**: That an AI provider credential was deleted for an organization.
 * **AI provider credential rotated**: That an AI provider credential was rotated for an organization.
@@ -301,10 +303,8 @@ Events are split into the following categories:
 * **All managed users logged out**: That an admin has logged out every managed user account in the organization.
 * **All managed users’ passwords cleared**: That an admin has cleared all managed user accounts' passwords in the organization.
 * **Auto-create accounts on sign-in toggled**: That automatic account creation on sign-in was toggled for an organization.
-* **Custom admin role assigned**: That a custom admin role was assigned to a member.
 * **Custom admin role created**: That a custom admin role was created.
 * **Custom admin role deleted**: That a custom admin role was deleted.
-* **Custom admin role revoked**: That a custom admin role was revoked from a member.
 * **Custom admin role updated**: That a custom admin role was edited.
 * **Default new workspace region updated**: That the workspace region was updated for managed users.
 * **Disable duplicating pages to other workspaces toggled for the organization**: That the disable duplicating pages to other workspaces setting was toggled for an organization.

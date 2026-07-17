@@ -6920,7 +6920,7 @@ To import records from a public data source, a storage integration is not requir
 </Warning>
 
 <Note>
-  Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes. To load data into an index with a document schema, use the documents upsert API instead.
+  This guide covers importing Parquet files into indexes **without** a schema definition. Indexes with document schemas import [JSONL files](/guides/search/full-text-search#bulk-import) instead. Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 </Note>
 
 Use the [`start_import`](/reference/api/latest/data-plane/start_import) operation to start an asynchronous import of vectors from object storage into an index.
@@ -7488,7 +7488,7 @@ The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation 
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 Also:
 
@@ -28569,8 +28569,6 @@ The schema is required at index creation and declares the fields that drive rank
 
 <Note>
   In public preview, indexes with document schemas do not support integrated inference fields such as `semantic_text`. To use dense or sparse vector ranking in an index with a document schema, declare a `dense_vector` or `sparse_vector` field and provide vector values at upsert time.
-
-  **Coming from integrated embedding?** If you upsert raw text today and rely on Pinecone to vectorize it, those workflows continue to be fully supported on existing indexes with dense or sparse vectors (records API). The two index shapes are independent. You can keep an integrated-embedding records index and stand up a separate document-schema index for full-text or multi-field workloads.
 </Note>
 
 <Note>
@@ -29603,6 +29601,205 @@ pip install --upgrade pinecone
   </Accordion>
 </AccordionGroup>
 
+## Bulk import
+
+Bulk import loads large numbers of documents into an index from object storage (Amazon S3, Google Cloud Storage, or Azure Blob Storage) in a single asynchronous job. It is the most efficient way to populate an index with many documents at once. For small or ongoing writes, use [`documents.upsert`](#data-plane-operations) instead.
+
+For indexes with document schemas, import files are [JSON Lines](https://jsonlines.org/) (`.jsonl`), optionally gzip-compressed (`.jsonl.gz`). This is the equivalent of the Parquet-based [Import records](/guides/index-data/import-data) flow used by indexes without a schema definition: the `start_import`, `describe_import`, `list_imports`, and `cancel_import` operations are identical, and Pinecone selects the file format automatically from the index type.
+
+<Note>
+  Bulk import is supported for indexes with document schemas in which every field is caller-supplied — full-text `string`, `dense_vector`, `sparse_vector`, and auto-indexed metadata. Semantic-text (auto-embedded) fields are not yet supported in schema.
+</Note>
+
+### File format
+
+Each line of a `.jsonl` (or `.jsonl.gz`) file is one JSON document, identical in shape to a document you would pass to [`documents.upsert`](#data-plane-operations). Import validates every document through the same code path as a live upsert, so any document that upserts cleanly imports cleanly.
+
+For example, consider an index whose schema declares one full-text field and one dense vector field:
+
+```json theme={null}
+{
+  "schema": {
+    "fields": {
+      "body": {
+        "type": "string",
+        "full_text_search": { "language": "en" }
+      },
+      "embedding": {
+        "type": "dense_vector",
+        "dimension": 3,
+        "metric": "cosine"
+      }
+    }
+  }
+}
+```
+
+Each line supplies `_id`, the schema-declared fields, and any additional fields you want stored as filterable metadata (`category` and `year` here):
+
+```jsonl theme={null}
+{"_id": "doc1", "body": "Machine learning models are revolutionizing natural language processing", "embedding": [0.12, 0.34, 0.56], "category": "technology", "year": 2024}
+{"_id": "doc2", "body": "Vector databases enable fast similarity search across embeddings", "embedding": [0.91, 0.05, 0.44], "category": "technology", "year": 2023}
+```
+
+Each document follows these rules:
+
+* `_id` is required in every document: a non-empty string, unique within the namespace.
+* Searchable fields declared in the schema are encoded by type:
+  * A `dense_vector` field (`embedding` above) is a JSON array of floats whose length equals the schema's declared `dimension`. When the schema declares a dense vector field, every document must include it.
+  * A `sparse_vector` field is an object `{"indices": [...], "values": [...]}`.
+  * A full-text `string` field (`body` above) is a JSON string.
+* Any other field (`category` and `year` above) is stored on the document and [auto-indexed as filterable metadata](#metadata-fields): a string, number, boolean, or array of strings. An array of numbers in an undeclared field is rejected rather than stored as metadata.
+* Field names must not start with `_` (reserved for system fields like `_id`) or `$` (reserved for filter operators).
+
+The same per-document size limits as [upsert](#data-plane-operations) apply.
+
+### Directory layout
+
+Lay files out by namespace, exactly as for [Parquet imports](/guides/index-data/import-data#prepare-your-data): under a common dataset prefix in your bucket or container, create one subdirectory per namespace and place that namespace's `.jsonl` / `.jsonl.gz` files inside it.
+
+```
+<BUCKET_OR_CONTAINER_NAME>/
+└── <DATASET_PREFIX>/
+    ├── namespace1/
+    │   ├── 0.jsonl
+    │   └── 1.jsonl.gz
+    └── namespace2/
+        └── 0.jsonl
+```
+
+* Each namespace must **not already exist** in the index — imports only create new namespaces.
+* A namespace subdirectory can mix plain `.jsonl` and gzip-compressed `.jsonl.gz` files.
+
+### Prepare a file
+
+Generate a schema-conformant `.jsonl` (or `.jsonl.gz`) file from your documents, then upload it to a namespace subdirectory in object storage.
+
+```python Python theme={null}
+import gzip
+import json
+
+documents = [
+    {
+        "_id": "doc1",
+        "body": "Machine learning models are revolutionizing natural language processing",
+        "embedding": [0.12, 0.34, 0.56],   # must match the schema dimension
+        "category": "technology",
+        "year": 2024,
+    },
+    {
+        "_id": "doc2",
+        "body": "Vector databases enable fast similarity search across embeddings",
+        "embedding": [0.91, 0.05, 0.44],
+        "category": "technology",
+        "year": 2023,
+    },
+]
+
+# Plain JSONL: one compact JSON document per line.
+with open("0.jsonl", "w") as f:
+    for doc in documents:
+        f.write(json.dumps(doc) + "\n")
+
+# Or gzip-compressed (.jsonl.gz) to cut storage and transfer.
+with gzip.open("0.jsonl.gz", "wt") as f:
+    for doc in documents:
+        f.write(json.dumps(doc) + "\n")
+```
+
+Upload the file to the relevant namespace subdirectory in your bucket or container, e.g. `<DATASET_PREFIX>/namespace1/0.jsonl`.
+
+#### Convert Parquet files to JSONL
+
+If your data is already stored as Parquet in the [vector import format](/guides/index-data/import-data#prepare-your-data) (`id`, `values`, `sparse_values`, `metadata` columns), convert each file to JSONL for the document schema. Map `id` to `_id`, the vector columns to your schema's field names, and spread the `metadata` JSON string into top-level fields:
+
+```python Python theme={null}
+import gzip
+import json
+
+import pyarrow.parquet as pq
+
+# Your schema's field names
+DENSE_FIELD = "embedding"          # dense_vector field
+SPARSE_FIELD = "sparse_embedding"  # sparse_vector field
+
+table = pq.read_table("0.parquet")
+
+with gzip.open("0.jsonl.gz", "wt") as f:
+    for row in table.to_pylist():
+        doc = {"_id": row["id"]}
+        if row.get("values") is not None:
+            doc[DENSE_FIELD] = row["values"]
+        if row.get("sparse_values") is not None:
+            doc[SPARSE_FIELD] = {
+                "indices": row["sparse_values"]["indices"],
+                "values": row["sparse_values"]["values"],
+            }
+        if row.get("metadata"):
+            # Metadata keys become top-level fields. Keys that match a
+            # schema-declared field (e.g. a full-text "body" field) are
+            # validated against the schema; the rest are auto-indexed metadata.
+            doc.update(json.loads(row["metadata"]))
+        f.write(json.dumps(doc) + "\n")
+```
+
+### Start an import
+
+To import from a secure data source, you first need a [storage integration](/guides/operations/integrations/manage-storage-integrations) that gives Pinecone access to your object storage. An integration is not required for public data sources.
+
+Start the import against the index host with the [`start_import`](/reference/api/latest/data-plane/start_import) operation (`POST /bulk/imports`) — the same endpoint, parameters, and behavior as for [Parquet imports](/guides/index-data/import-data#import-records-into-an-index). Pinecone detects from the index's document schema that the files are JSONL. For `uri`, specify the bucket or container in your storage provider's URI format, plus the dataset prefix — not a path to a single file or a namespace subdirectory.
+
+<Note>
+  Bulk import is not yet supported in any Pinecone SDK. Use the REST API to start and manage imports.
+</Note>
+
+```bash curl theme={null}
+# To get the unique host for an index, see
+# https://docs.pinecone.io/guides/manage-data/target-an-index
+PINECONE_API_KEY="YOUR_API_KEY"
+INDEX_HOST="INDEX_HOST"
+
+curl "https://$INDEX_HOST/bulk/imports" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "Content-Type: application/json" \
+  -H "X-Pinecone-Api-Version: 2026-01.alpha" \
+  -d '{
+    "integrationId": "a12b3d4c-47d2-492c-a97a-dd98c8dbefde",
+    "uri": "STORAGE_URI/DATASET_PREFIX",
+    "errorMode": { "onError": "continue" }
+  }'
+```
+
+The response contains an `id` you can use to track the import with the [`describe_import`](/reference/api/latest/data-plane/describe_import) operation:
+
+```json Response theme={null}
+{
+  "id": "1"
+}
+```
+
+Imported documents are indexed asynchronously and may not be searchable immediately after the import reports complete.
+
+### Track and manage an import
+
+The [`describe_import`](/reference/api/latest/data-plane/describe_import), [`list_imports`](/reference/api/latest/data-plane/list_imports), and [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operations behave the same for document and vector indexes. See [Import records](/guides/index-data/import-data#track-import-progress) for the full request and response shapes and troubleshooting.
+
+```bash curl theme={null}
+curl -X GET "https://$INDEX_HOST/bulk/imports/1" \
+  -H "Api-Key: $PINECONE_API_KEY" \
+  -H "X-Pinecone-Api-Version: 2026-01.alpha"
+```
+
+Per-document errors identify the file name, row number, and document `_id`. With `errorMode.onError` set to `continue`, invalid documents are skipped and the rest import — use `records_imported` to see how many loaded; with `abort`, the import stops on the first invalid document.
+
+A namespace subdirectory that contains no `.jsonl` / `.jsonl.gz` files is skipped — no namespace is created for it. An import that finds no importable files anywhere under the dataset prefix fails.
+
+### Import limits
+
+Document imports share the [import limits](/guides/index-data/import-data#import-limits): up to 10,000 namespaces and 100,000 files per import, up to 10 GB per file, and — for on-demand indexes — up to 1 TB total input data per import.
+
+For `.jsonl.gz` files, size limits are checked against an estimated uncompressed size of 10× the compressed file size, so plan for roughly 1 GB per compressed file.
+
 ## Tokens and analyzers
 
 The word "token" appears in every scoring method, but it means different things in each. Knowing what counts as a token in your chosen method is essential to writing queries that match what you expect.
@@ -29952,7 +30149,7 @@ Full-text search is in public preview under API version `2026-01.alpha`. The fea
 * **No partial / per-field updates**: `POST /namespaces/{namespace}/documents/upsert` always replaces the entire document for a given `_id`. There is no `PATCH` endpoint and no field-level merge in `2026-01.alpha`. To update a single field, fetch the document by ID (`POST /namespaces/{namespace}/documents/fetch`), modify the field client-side, and upsert the full document back under the same `_id`. Field-level merge is on the roadmap for a post-public-preview release.
 * **Schemas are fixed at index creation.** Adding, removing, or retyping fields after creation is not yet supported. Existing pre-public-preview indexes cannot be backfilled with a schema — to use FTS, dense + FTS, or any document API query in `2026-01.alpha`, create a new index with the desired schema and reindex documents.
 * **Metadata is auto-indexed**: any field on an upserted document that is not declared in the schema is automatically indexed for filtering. The schema declares only ranking fields (FTS-enabled `string`, `dense_vector`, `sparse_vector`); declaring metadata-only fields (`string` without `full_text_search`, `string_list`, `float`, `boolean`) is rejected at index creation. Track metadata field names and types in your application — Pinecone infers the type from the values you upsert.
-* **Bulk import** (S3 import job) is not yet supported for indexes with document schemas; load documents through `POST /namespaces/{namespace}/documents/upsert`.
+* **Bulk import** from object storage is supported for indexes with document schemas via JSONL files — see [Bulk import](#bulk-import). Semantic-text (auto-embedded) fields are not yet supported in schemas.
 * **Maximum results per query**: `top_k` is capped at **10,000**. Full-text search is optimized for ranked retrieval; for aggregation- or count-style queries (e.g., "how many documents contain term X"), faceting is on the roadmap for a future release.
 * Indexes cannot be created in CMEK-enabled projects.
 * Backup and restore are not yet supported.
@@ -35596,7 +35793,7 @@ The 40 KB filterable metadata limit does not apply to `full_text_search` text fi
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 ### Query limits
 
@@ -39826,7 +40023,7 @@ The 40 KB filterable metadata limit does not apply to `full_text_search` text fi
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 ### Query limits
 
@@ -47028,7 +47225,7 @@ The 40 KB filterable metadata limit does not apply to `full_text_search` text fi
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 ### Query limits
 
@@ -53166,7 +53363,7 @@ The 40 KB filterable metadata limit does not apply to `full_text_search` text fi
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 ### Query limits
 
@@ -59304,7 +59501,7 @@ The 40 KB filterable metadata limit does not apply to `full_text_search` text fi
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 ### Query limits
 
@@ -70249,7 +70446,7 @@ The 40 KB filterable metadata limit does not apply to `full_text_search` text fi
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 ### Query limits
 

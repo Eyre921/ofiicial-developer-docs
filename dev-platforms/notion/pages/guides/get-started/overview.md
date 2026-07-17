@@ -14,7 +14,7 @@ When you create a connection, you define what it can do: which API endpoints it 
 
 ## What is a Notion connection?
 
-A Notion [connection](https://www.notion.so/help/add-and-manage-connections-with-the-api) — sometimes called an integration — connects your workspace to external apps and tools. That could be a SaaS product, an automation script, or a custom tool you've built.
+A Notion [connection](https://www.notion.com/help/add-and-manage-connections-with-the-api) — sometimes called an integration — connects your workspace to external apps and tools. That could be a SaaS product, an automation script, or a custom tool you've built.
 
 Connections are added to Notion workspaces and require **explicit permission** from users to access Notion pages and databases.
 
@@ -22,7 +22,7 @@ Connections are added to Notion workspaces and require **explicit permission** f
   <img />
 </Frame>
 
-Notion already has a [library](https://www.notion.so/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
+Notion already has a [library](https://www.notion.com/integrations/all) of connections you can browse. For developers who want to build their own, Notion supports internal connections, public connections, and personal access tokens — all powered by the same REST API.
 
 ## Connection types
 
@@ -52,9 +52,9 @@ Notion supports three authentication models:
   Enterprise identity management (user provisioning, group management, and Single Sign-On) is covered in Notion's Help Center, not in these API docs.
 
   <CardGroup>
-    <Card title="Provision users and groups with SCIM" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.so/help/provision-users-and-groups-with-scim" />
+    <Card title="Provision users and groups with SCIM" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.com/help/provision-users-and-groups-with-scim" />
 
-    <Card title="SAML SSO configuration" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.so/help/saml-sso-configuration" />
+    <Card title="SAML SSO configuration" icon="https://mintcdn.com/notion-demo/yKfkO8UsVZTLLPNp/icons/nds/arrowChevronDoubleForward.svg?fit=max&auto=format&n=yKfkO8UsVZTLLPNp&q=85&s=e9dad4152e1d3bf11e6a8404d9504665" href="https://www.notion.com/help/saml-sso-configuration" />
   </CardGroup>
 </Info>
 

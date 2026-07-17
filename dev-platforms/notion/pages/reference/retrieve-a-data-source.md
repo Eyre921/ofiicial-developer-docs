@@ -42,11 +42,11 @@ Each Public API endpoint can return several possible error codes. See the [Error
 <Info>
   **Data source relations must be shared with your connection**
 
-  To retrieve data source properties from [database relations](https://www.notion.so/help/relations-and-rollups#what-is-a-database-relation), the related database must be shared with your connection in addition to the database being retrieved. If the related database is not shared, properties based on relations will not be included in the API response.
+  To retrieve data source properties from [database relations](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation), the related database must be shared with your connection in addition to the database being retrieved. If the related database is not shared, properties based on relations will not be included in the API response.
 </Info>
 
 <Warning>
   **The Notion API does not support retrieving linked data sources**
 
-  To fetch the information in a [linked data source](https://www.notion.so/help/guides/using-linked-databases), share the original source database with your Notion connection.
+  To fetch the information in a [linked data source](https://www.notion.com/help/guides/using-linked-databases), share the original source database with your Notion connection.
 </Warning>

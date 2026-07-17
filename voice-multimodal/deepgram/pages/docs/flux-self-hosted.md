@@ -14,11 +14,14 @@ path: docs/flux-self-hosted
 
 Please familiarize yourself with these general requirements before attempting to deploy Flux to your self-hosted Deepgram instances.
 
+* Flux requires a newer NVIDIA GPU (Ampere generation or later). Older GPUs such as the NVIDIA T4 are not supported.
 * The Flux model must be hosted on a separate instance from other Deepgram speech-to-text (STT) and text-to-speech (TTS) models.
 * Your Deepgram API and Engine TOML files must explicitly enable Flux
 * Flux doesn't require and is not compatible with any other models (e.g. diarizer, entity detector)
 * You must use Deepgram container images from October 2025 or later (`release-251015`)
 * The Flux model file must be added to your `engine` models directory
+
+Flux is not supported on the NVIDIA T4 or similar older GPUs due to their compute capabilities. Run Flux on a newer NVIDIA GPU (Ampere generation or later) such as the NVIDIA A10, L4, L40S, A100, or H100.
 
 Unlike the Nova family of models, Flux **cannot co-exist with other STT models on the same Engine node**. This means you must provision a dedicated server specifically for handling Flux requests. For optimal streaming performance, we also recommend provisioning a **separate API node** to route Flux requests to your Flux-configured Engine node.
 

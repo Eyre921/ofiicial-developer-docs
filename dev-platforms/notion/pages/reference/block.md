@@ -1260,7 +1260,7 @@ Only `paragraph` blocks can be direct children of a tab block. When creating tab
   As of March 27, 2023 creation of template blocks will no longer be supported.
 </Danger>
 
-Template blocks represent [template buttons](https://www.notion.so/help/template-buttons) in the Notion UI.
+Template blocks represent [template buttons](https://www.notion.com/help/template-buttons) in the Notion UI.
 
 Template block objects contain the following information within the `template` property:
 

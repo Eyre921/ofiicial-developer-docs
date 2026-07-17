@@ -17,7 +17,7 @@ post /v1/databases
   * [Create a data source](/reference/create-a-data-source)
 </Danger>
 
-Creates a database as a subpage in the specified parent page, with the specified `properties` schema. Currently, the parent of a new database must be a Notion page or a [wiki database](https://www.notion.so/help/wikis-and-verified-pages).
+Creates a database as a subpage in the specified parent page, with the specified `properties` schema. Currently, the parent of a new database must be a Notion page or a [wiki database](https://www.notion.com/help/wikis-and-verified-pages).
 
 <Info>
   **Connection capabilities**

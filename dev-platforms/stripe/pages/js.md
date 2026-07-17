@@ -3572,6 +3572,10 @@ Update the selected shipping option
 
 Use this method to validate all mounted Elements without confirming the Checkout Session. This is useful for multi-step checkout flows where you want to validate user input before advancing to the next step.
 
+This method doesn't verify that the Checkout Session can be confirmed.
+To check whether all required fields are present, use the
+[Session's `canConfirm` field](https://docs.stripe.com/js/custom_checkout/session_object.md#custom_checkout_session_object-canConfirm).
+
 ### Example
 
 ```title
@@ -6379,6 +6383,10 @@ Confirm the Checkout Session
 `validateElements()`
 
 Use this method to validate all mounted Elements without confirming the Checkout Session. This is useful for multi-step checkout flows where you want to validate user input before advancing to the next step.
+
+This method doesn't verify that the Checkout Session can be confirmed.
+To check whether all required fields are present, use the
+[Session's `canConfirm` field](https://docs.stripe.com/js/custom_checkout/session_object.md#custom_checkout_session_object-canConfirm).
 
 ### Example
 

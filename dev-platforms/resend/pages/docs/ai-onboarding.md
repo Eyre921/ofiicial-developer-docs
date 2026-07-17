@@ -132,7 +132,7 @@ The documentation includes quick start guides for common tasks with Resend. They
   **Choose batch when:**
 
   * Sending 2+ distinct emails at once
-  * Reducing API calls is important (by default, rate limit is 2 requests per second)
+  * Reducing API calls is important (by default, rate limit is 10 requests per second)
   * No attachments or scheduling needed
 
   **Choose single when:**
@@ -168,13 +168,13 @@ The documentation includes quick start guides for common tasks with Resend. They
 
   ### Error Handling
 
-  | Code     | Action                                                                                      |
-  | -------- | ------------------------------------------------------------------------------------------- |
-  | 400, 422 | Fix request parameters, don't retry                                                         |
-  | 401, 403 | Check API key / verify domain, don't retry                                                  |
-  | 409      | Idempotency conflict - use new key or fix payload                                           |
-  | 429      | Rate limited - retry with exponential backoff (by default, rate limit is 2 requests/second) |
-  | 500      | Server error - retry with exponential backoff                                               |
+  | Code     | Action                                                                                       |
+  | -------- | -------------------------------------------------------------------------------------------- |
+  | 400, 422 | Fix request parameters, don't retry                                                          |
+  | 401, 403 | Check API key / verify domain, don't retry                                                   |
+  | 409      | Idempotency conflict - use new key or fix payload                                            |
+  | 429      | Rate limited - retry with exponential backoff (by default, rate limit is 10 requests/second) |
+  | 500      | Server error - retry with exponential backoff                                                |
 
   ### Retry Strategy
 

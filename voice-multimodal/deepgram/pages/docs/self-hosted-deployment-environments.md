@@ -22,7 +22,19 @@ Learn more about provisioning a deployment environment with your container manag
 
 * Models and configuration files delivered by Deepgram as appropriate for your use case
 
+## Model and GPU Compatibility
+
 Deepgram only supports NVIDIA GPUs at this time. We recommend modern NVIDIA GPUs that are compatible with recent NVIDIA drivers and the NVIDIA Container Toolkit. Deepgram requires dedicated GPUs; Multi-Instance GPU (MIG) or partial (aka. fractional) GPUs are not supported.
+
+The table below shows which models are supported on commonly used NVIDIA GPUs.
+
+| Model              |  T4 | A10 / A10G |  L4 | L40S | A100 | H100 |
+| ------------------ | :-: | :--------: | :-: | :--: | :--: | :--: |
+| Nova-3, Nova-2 STT |  ✅  |      ✅     |  ✅  |   ✅  |   ✅  |   ✅  |
+| Aura-1, Aura-2 TTS |  ✅  |      ✅     |  ✅  |   ✅  |   ✅  |   ✅  |
+| Flux STT           |  ❌  |      ✅     |  ✅  |   ✅  |   ✅  |   ✅  |
+
+For Flux STT, use a GPU from the Ampere generation or newer, such as the NVIDIA A10, L4, L40S, A100, or H100. GPUs like the NVIDIA T4 are incompatible with Flux.
 
 ## Amazon SageMaker
 
@@ -68,7 +80,7 @@ For each machine running an STT Engine container, we recommend a machine with th
     * **AWS** - `g6.2xlarge` instances
     * **GCP** - `g2-standard-8` instances
 
-  * Other commonly used cloud GPUs: NVIDIA T4, NVIDIA A10
+  * Other commonly used cloud GPUs: NVIDIA A10, NVIDIA L40S
     * **Azure** - Standard\_NV36ads\_A10\_v5 instances (NVIDIA A10)
 
 * 4 CPU cores

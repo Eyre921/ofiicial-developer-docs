@@ -157,7 +157,7 @@ To import records from a public data source, a storage integration is not requir
 </Warning>
 
 <Note>
-  Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes. To load data into an index with a document schema, use the documents upsert API instead.
+  This guide covers importing Parquet files into indexes **without** a schema definition. Indexes with document schemas import [JSONL files](/guides/search/full-text-search#bulk-import) instead. Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 </Note>
 
 Use the [`start_import`](/reference/api/latest/data-plane/start_import) operation to start an asynchronous import of vectors from object storage into an index.
@@ -725,7 +725,7 @@ The [`cancel_import`](/reference/api/latest/data-plane/cancel_import) operation 
 
 The total input data size limit does not apply to indexes with [dedicated read nodes](/guides/index-data/dedicated-read-nodes).
 
-Bulk import is supported only for indexes without a schema definition. It is not supported for indexes with schemas, including full-text search indexes with document schemas and semantic-text-only integrated embedding indexes.
+Bulk import supports indexes without a schema definition (Parquet files) and indexes with document schemas ([JSONL files](/guides/search/full-text-search#bulk-import)). Semantic-text (auto-embedded) fields are not yet supported in document schemas.
 
 Also:
 

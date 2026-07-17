@@ -1,6 +1,6 @@
 # voice-multimodal/deepgram 文档索引
 
-> 共 372 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
+> 共 374 篇，目录严格镜像官方 URL 路径。完整合并版见 [`llms-full.txt`](./llms-full.txt)。
 
 
 ## (根目录)
@@ -86,6 +86,7 @@
 - `docs/drivers-and-containerization-platforms` — [Drivers and Container Orchestration Tools](pages/docs/drivers-and-containerization-platforms.md) · [原文](https://developers.deepgram.com/docs/drivers-and-containerization-platforms.md)
 - `docs/encoding` — [Encoding](pages/docs/encoding.md) · [原文](https://developers.deepgram.com/docs/encoding.md)
 - `docs/endpointing` — [Endpointing](pages/docs/endpointing.md) · [原文](https://developers.deepgram.com/docs/endpointing.md)
+- `docs/enhanced-metrics-sagemaker` — [Deepgram Enhanced Metrics](pages/docs/enhanced-metrics-sagemaker.md) · [原文](https://developers.deepgram.com/docs/enhanced-metrics-sagemaker.md)
 - `docs/errors` — [Errors](pages/docs/errors.md) · [原文](https://developers.deepgram.com/docs/errors.md)
 - `docs/extra-metadata` — [Extra Metadata](pages/docs/extra-metadata.md) · [原文](https://developers.deepgram.com/docs/extra-metadata.md)
 - `docs/filler-words` — [Filler Words](pages/docs/filler-words.md) · [原文](https://developers.deepgram.com/docs/filler-words.md)
@@ -173,6 +174,7 @@
 - `docs/pre-recorded-audio` — [Getting Started](pages/docs/pre-recorded-audio.md) · [原文](https://developers.deepgram.com/docs/pre-recorded-audio.md)
 - `docs/profanity-filter` — [Profanity Filtering](pages/docs/profanity-filter.md) · [原文](https://developers.deepgram.com/docs/profanity-filter.md)
 - `docs/prometheus-integration` — [Prometheus Integration](pages/docs/prometheus-integration.md) · [原文](https://developers.deepgram.com/docs/prometheus-integration.md)
+- `docs/prometheus-otel-sagemaker` — [Prometheus & OpenTelemetry Metrics](pages/docs/prometheus-otel-sagemaker.md) · [原文](https://developers.deepgram.com/docs/prometheus-otel-sagemaker.md)
 - `docs/prompting-voice-agents` — [Prompting Voice Agents](pages/docs/prompting-voice-agents.md) · [原文](https://developers.deepgram.com/docs/prompting-voice-agents.md)
 - `docs/punctuation` — [Punctuation](pages/docs/punctuation.md) · [原文](https://developers.deepgram.com/docs/punctuation.md)
 - `docs/recovering-from-connection-errors-and-timeouts-when-live-streaming-audio` — [Recovering From Connection Errors & Timeouts When Live Streaming](pages/docs/recovering-from-connection-errors-and-timeouts-when-live-streaming-audio.md) · [原文](https://developers.deepgram.com/docs/recovering-from-connection-errors-and-timeouts-when-live-streaming-audio.md)

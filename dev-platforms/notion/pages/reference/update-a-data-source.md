@@ -48,12 +48,12 @@ Each Public API endpoint can return several possible error codes. See the [Error
   **The following data source properties cannot be updated via the API:**
 
   * `formula`
-  * [Synced content](https://www.notion.so/help/guides/synced-databases-bridge-different-tools)
+  * [Synced content](https://www.notion.com/help/guides/synced-databases-bridge-different-tools)
   * `place`
 </Warning>
 
 <Info>
   **Data source relations must be shared with your connection**
 
-  To update a data source [relation](https://www.notion.so/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
+  To update a data source [relation](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
 </Info>

@@ -230,7 +230,7 @@ If a connection doesn’t have [access](/reference/capabilities) to the mentione
 
 #### Template mention type object
 
-The content inside a [template button](https://www.notion.so/help/template-buttons) in the Notion UI can include placeholder date and user mentions that populate when a template is duplicated. Template mention type objects contain these populated values.
+The content inside a [template button](https://www.notion.com/help/template-buttons) in the Notion UI can include placeholder date and user mentions that populate when a template is duplicated. Template mention type objects contain these populated values.
 
 Template mention rich text objects contain a `template_mention` object with a nested `type` key that is either `"template_mention_date"` or `"template_mention_user"`.
 

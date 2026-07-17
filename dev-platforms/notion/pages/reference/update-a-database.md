@@ -60,12 +60,12 @@ Each Public API endpoint can return several possible error codes. See the [Error
 
   * `formula`
   * `select`
-  * [Synced content](https://www.notion.so/help/guides/synced-databases-bridge-different-tools)
+  * [Synced content](https://www.notion.com/help/guides/synced-databases-bridge-different-tools)
   * A `multi_select` database property’s options values. An option can be removed, but not updated.
 </Warning>
 
 <Info>
   **Database relations must be shared with your connection**
 
-  To update a database [relation](https://www.notion.so/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
+  To update a database [relation](https://www.notion.com/help/relations-and-rollups#what-is-a-database-relation) property, the related database must also be shared with your connection.
 </Info>

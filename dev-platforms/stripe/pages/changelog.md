@@ -190,6 +190,7 @@ Keep track of changes and upgrades to the Stripe API.
 | [Adds validation errors property to the Redaction Job object](https://docs.stripe.com/changelog/dahlia/2026-04-22/redaction-job-validation-errors-property.md) | All products | Non-breaking | api |
 | [Adds programmatic access to account activity logs](https://docs.stripe.com/changelog/dahlia/2026-04-22/programmatic-access-to-activity-logs.md) | All products | Non-breaking | api |
 | [Makes Accounts v2 available to all Stripe users for managing customers](https://docs.stripe.com/changelog/dahlia/2026-04-22/accounts-v2-expanded-availability.md) | Billing, Connect, Payments | Non-breaking | api |
+| [Adds an amount confirmation parameter to the Payment Intent API](https://docs.stripe.com/changelog/dahlia/2026-04-22/amount-confirmation-parameter-to-paymentintent.md) | Payments | Non-breaking | api |
 | [Adds new tax registration types and product tax details for Stripe Tax for tickets](https://docs.stripe.com/changelog/dahlia/2026-04-22/stripe-tax-for-tickets-new-tax-registration-types.md) | Tax | Non-breaking | api |
 | [Adds the Reporting Query Runs API v2](https://docs.stripe.com/changelog/dahlia/2026-04-22/reporting-query-runs-api-v2.md) | Sigma | Non-breaking | api |
 
@@ -203,7 +204,6 @@ Keep track of changes and upgrades to the Stripe API.
 | [Adds support for Pix recurring payments](https://docs.stripe.com/changelog/dahlia/2026-04-22/pix-recurring-payments-support.md) | Payments | Non-breaking | api |
 | [Adds the moto property to Setup Attempt payment method details for cards](https://docs.stripe.com/changelog/dahlia/2026-04-22/setup-attempt-payment-method-details-for-cards-moto.md) | Payments | Non-breaking | api |
 | [Adds QR code support for Klarna payments with Terminal readers](https://docs.stripe.com/changelog/dahlia/2026-04-22/klarna-payments-with-terminal-readers-qr-code-support.md) | All products | Non-breaking | api |
-| [Adds an amount confirmation parameter to the Payment Intent API](https://docs.stripe.com/changelog/dahlia/2026-04-22/amount-confirmation-parameter-to-paymentintent.md) | Payments | Non-breaking | api |
 | [Adds support for Managed Payments, Stripe’s merchant of record solution](https://docs.stripe.com/changelog/dahlia/2026-04-22/managed-payments.md) | Checkout, Paymentlinks, Payments | Non-breaking | api |
 
 ### Tax

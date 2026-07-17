@@ -12,7 +12,7 @@ Learn how to set up and manage database views using the Notion API.
 
 ## Overview
 
-[Database views](https://www.notion.so/help/views-filters-and-sorts) let users see the same data in different ways — for example, as a table, board, calendar, timeline, gallery, list, form, chart, map, or dashboard. Each view can have its own filters, sorts, and layout configuration, so a single database can serve many different workflows.
+[Database views](https://www.notion.com/help/views-filters-and-sorts) let users see the same data in different ways — for example, as a table, board, calendar, timeline, gallery, list, form, chart, map, or dashboard. Each view can have its own filters, sorts, and layout configuration, so a single database can serve many different workflows.
 
 The Notion API exposes views as first-class resources. This means connections can programmatically manage the same view presets that users create in the UI, enabling use cases like workspace bootstrapping, migration tooling, and automated view setup.
 
@@ -94,7 +94,7 @@ The view object looks like this:
       "object": "user",
       "id": "e7f3a4b2-1234-5678-9abc-def012345678"
     },
-    "url": "https://www.notion.so/example/248104cd477e80fdb757e945d38000bd?v=a3f1b2c45678"
+    "url": "https://www.notion.com/example/248104cd477e80fdb757e945d38000bd?v=a3f1b2c45678"
   }
   ```
 </CodeGroup>

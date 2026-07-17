@@ -22,7 +22,7 @@ In other markets, funds are added using a wire transfer, which follows slightly 
 
 ## Payments balance
 
-In the US, UK, and JP, you can add funds directly to the payments balance. We recommend this option for most businesses because it avoids transiting funds through a separate balance.
+In the UK and JP, you can add funds directly to the payments balance. We recommend this option for most businesses because it avoids transiting funds through a separate balance.
 
 For businesses using automatic payouts, funds added to the payments balance in excess of the [minimum balance](https://docs.stripe.com/payouts/minimum-balances-for-automatic-payouts.md) are paid out in the next payout. You can configure your payout schedule and minimum balance settings in your [Payout settings](https://dashboard.stripe.com/settings/payouts).
 

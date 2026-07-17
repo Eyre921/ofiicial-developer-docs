@@ -17,11 +17,18 @@ Before you begin, make sure you have:
 * Installed the Together CLI:
 
 ```bash theme={null}
+# Install
 uv tool install "together[cli]"
+
+# Upgrade
+uv tool upgrade "together[cli]"
+
+# List commands
+tg --help
 ```
 
 <Note>
-  The dedicated model inference commands require Together CLI version `2.24.0` or later. Check your version with `tg --version`, and upgrade with `uv tool upgrade together`.
+  The dedicated model inference commands require Together CLI version `2.24.0` or later. Check your version with `tg --version`.
 </Note>
 
 <Note>

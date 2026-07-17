@@ -40,10 +40,10 @@ Link Previews are similar, but they display authenticated, structured content fr
 Since Link preview connections require [OAuth 2.0](https://www.oauth.com/) authentication, unfurled link content will update as the data being shared updates. For example, if a GitHub pull request is shared as a Link Preview, the data displayed in the preview will update as the pull request updates (e.g. when it is merged).
 
 <Info>
-  To learn more about Embed blocks, read our [reference docs](/reference/block#embed) and [Help Centre guide](https://www.notion.so/help/embed-and-connect-other-apps).
+  To learn more about Embed blocks, read our [reference docs](/reference/block#embed) and [Help Centre guide](https://www.notion.com/help/embed-and-connect-other-apps).
 </Info>
 
 To learn more about Link Previews, see the following resources:
 
 * [API reference docs for the Link Preview unfurl attribute object](/reference/unfurl-attribute-object)
-* [Help Centre](https://www.notion.so/help/guides/notion-api-link-previews-feature) guide
+* [Help Centre](https://www.notion.com/help/guides/notion-api-link-previews-feature) guide

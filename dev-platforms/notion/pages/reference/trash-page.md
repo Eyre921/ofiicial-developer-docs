@@ -121,7 +121,7 @@ If successful, the API responds with a `200` HTTP status code and the trashed pa
               ]
           }
       },
-      "url": "https://www.notion.so/Bug-bash-be633bf1dfa0436db259571129a590e5"
+      "url": "https://www.notion.com/Bug-bash-be633bf1dfa0436db259571129a590e5"
   }
   ```
 </CodeGroup>

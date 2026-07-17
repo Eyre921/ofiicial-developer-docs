@@ -156,7 +156,16 @@ processed.
 
 While the bot is generating a response, it adds a `:eyes:` reaction to the user's triggering message and removes it once the reply is posted.
 
-The bot ignores its own messages, messages authored by other bot users, edited messages (`message_changed`), and deleted messages (`message_deleted`). It handles `message` and `app_mention` events and works in both public and private channels.
+The **Respond to messages from** setting on the Channel Message trigger controls who can trigger the agent:
+
+* **Only humans** (default): messages from other bots and from Slack workflows are ignored. This is the safe default and preserves the behavior of existing triggers.
+* **Humans and bots**: messages from other bots and workflow-posted messages (including legacy `bot_message` events) also trigger the agent.
+
+The bot always ignores its own messages — using the bot-user and app identity in Slack's signed webhook — under either setting, so it never replies to itself even when self-mentioned. It also continues to ignore edited messages (`message_changed`) and deleted messages (`message_deleted`). It handles `message` and `app_mention` events and works in both public and private channels.
+
+Legacy bot events that contain only a `bot_id` identify the sender but not the receiving app. They
+are treated as messages from another bot; self-loop detection for this Slack app uses the bot-user
+or app identity included in modern Slack event payloads.
 
 If your Slack app subscribes to both `app_mention` and `message.channels` / `message.groups`, a
 single `@`-mention can trigger two agent responses. Subscribe to one mode or the other.
@@ -168,7 +177,7 @@ The conversation ID is deterministic per `(agent_id, channel_id, thread_ts)`:
 * A new Slack thread maps to a new ElevenLabs conversation.
 * Continuing the same thread continues the same conversation, including transcript history and dynamic variables.
 
-When constructing chat history, the bot reads the Slack thread directly. Messages from other Slack users are treated as user turns and the bot's own messages as agent turns. Mentions of the bot user (`<@BOT_USER_ID>`) are rewritten to `@<agent_name>` before the agent processes them.
+When constructing chat history, the bot reads the Slack thread directly. Messages from Slack members and other bots are treated as user turns, while the bot's own messages are treated as agent turns. Mentions of the bot user (`<@BOT_USER_ID>`) are rewritten to `@<agent_name>` before the agent processes them.
 
 ### Dynamic variables
 
@@ -178,7 +187,7 @@ When an agent runs from Slack, the following dynamic variables are available in 
 | --------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `integration__slack_channel_id`         | Slack channel ID.                                                                            |
 | `integration__slack_thread_ts`          | Slack thread timestamp.                                                                      |
-| `integration__slack_user_id`            | Slack user ID of the member whose message triggered this turn.                               |
+| `integration__slack_user_id`            | Slack sender ID. This is a user ID, or a bot ID for legacy bot events without a user.        |
 | `integration__slack_team_id`            | Slack workspace (team) ID.                                                                   |
 | `integration__slack_connection_id`      | ElevenLabs integration connection ID.                                                        |
 | `integration__slack_trigger_message_ts` | Slack `ts` of the message that triggered this agent turn (unique message ID in the channel). |

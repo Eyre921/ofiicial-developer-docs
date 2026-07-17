@@ -20,6 +20,9 @@ Run the following command to install the CLI:
 # Install
 uv tool install "together[cli]"
 
+# Upgrade
+uv tool upgrade "together[cli]"
+
 # List commands
 tg --help
 ```
@@ -38,16 +41,6 @@ The CLI is also installed as `together`, an alias of `tg` that's identical in be
   3. Reinstall: `uv tool install "together[cli]"`.
   4. Confirm the version: `tg --version`.
 </Warning>
-
-## Update the CLI
-
-```bash theme={null}
-# Upgrade
-uv tool upgrade "together[cli]"
-
-# Run
-tg --help
-```
 
 ## Authenticate
 
@@ -190,13 +183,14 @@ Several commands and subcommands have shorthand aliases for faster typing:
 
 The following parameters are available on every command:
 
-| Flag                     | Description                                                                       |
-| ------------------------ | --------------------------------------------------------------------------------- |
-| `--help`                 | Print help for the prefixed command.                                              |
-| `--json`                 | Return the response as JSON. Useful for scripting.                                |
-| `--non-interactive`      | Disable interactive prompts and manual input.                                     |
-| `--api-key [string]`     | Your Together API key. Falls back to the `TOGETHER_API_KEY` environment variable. |
-| `--timeout [number]`     | Request timeout, in seconds.                                                      |
-| `--max-retries [number]` | Maximum number of HTTP retries.                                                   |
-| `--version`              | Print the CLI version.                                                            |
-| `--debug`                | Enable debug logging.                                                             |
+| Flag                     | Description                                                                                                                                                                                                                                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--help`                 | Print help for the prefixed command.                                                                                                                                                                                                                                                                                |
+| `--json`                 | Return the response as JSON. Useful for scripting.                                                                                                                                                                                                                                                                  |
+| `--non-interactive`      | Disable interactive prompts and manual input.                                                                                                                                                                                                                                                                       |
+| `--api-key [string]`     | Your Together API key. Falls back to the `TOGETHER_API_KEY` environment variable.                                                                                                                                                                                                                                   |
+| `--project [string]`     | Together project ID for project-scoped commands. Falls back to the `TOGETHER_PROJECT_ID` environment variable. When omitted, read-only commands use the project associated with your API key; mutating commands may prompt for confirmation or require an explicit project in `--json` or `--non-interactive` mode. |
+| `--timeout [number]`     | Request timeout, in seconds.                                                                                                                                                                                                                                                                                        |
+| `--max-retries [number]` | Maximum number of HTTP retries.                                                                                                                                                                                                                                                                                     |
+| `--version`              | Print the CLI version.                                                                                                                                                                                                                                                                                              |
+| `--debug`                | Enable debug logging.                                                                                                                                                                                                                                                                                               |

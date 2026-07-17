@@ -66,6 +66,10 @@ For Organizations that need to separate resources by team, environment, or workl
 
 For full details on creating and managing Projects, see [Projects](/docs/projects).
 
+## Privacy
+
+Privacy toggles for prompt history, training opt-in, and passthrough models are on the main [Organization Settings](https://api.together.ai/settings/organization/~current) page. Only organization admins can change them. See [Privacy and security](/docs/privacy-and-security) for what each toggle controls.
+
 ## Billing
 
 [Billing](https://api.together.ai/settings/organization/~current/billing) is consolidated at the Organization level. All usage across all Projects and Members rolls up to a single bill. Individual Members are not billed separately.

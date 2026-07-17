@@ -6,7 +6,7 @@ path: guides/get-started/marketplace-listing
 
 Learn how to list your public connection on the Notion Marketplace.
 
-The [Notion Marketplace](https://www.notion.so/integrations/all) is how Notion users discover and connect public connections. Listing your connection there puts it in front of every Notion user — and it's a separate step from building the connection itself, so you can ship whenever you're ready.
+The [Notion Marketplace](https://www.notion.com/integrations/all) is how Notion users discover and connect public connections. Listing your connection there puts it in front of every Notion user — and it's a separate step from building the connection itself, so you can ship whenever you're ready.
 
 This guide assumes you already have a public connection. If you haven't created one yet, see the [Public connections](/guides/get-started/public-connections) guide first.
 
@@ -73,11 +73,11 @@ After submission, your listing moves to the **Submitted** section where you can 
 
 The Notion team reviews every listing submission. Track the status of your submission from the **Listings > Connections** page in the Marketplace listing dashboard. See the [FAQ](#frequently-asked-questions) below for review timelines.
 
-If approved, the listing appears in the [Notion Marketplace](https://www.notion.so/integrations/all). If changes are required, the Notion team sends feedback and you can resubmit after making updates.
+If approved, the listing appears in the [Notion Marketplace](https://www.notion.com/integrations/all). If changes are required, the Notion team sends feedback and you can resubmit after making updates.
 
 ## Connection gallery best practices
 
-For guidance on the review process and best practices to get your connection approved, check out the [Notion Connection Gallery Best Practices](https://www.notion.so/notiondevs/Notion-Integration-Gallery-Best-Practices-997825927fd6473e89617ce0c329145c?pvs=4) guide.
+For guidance on the review process and best practices to get your connection approved, check out the [Notion Connection Gallery Best Practices](https://www.notion.com/notiondevs/Notion-Integration-Gallery-Best-Practices-997825927fd6473e89617ce0c329145c?pvs=4) guide.
 
 ## Frequently asked questions
 
@@ -104,7 +104,7 @@ For guidance on the review process and best practices to get your connection app
 
       <Card title="Overview" icon="angles-right" href="/guides/get-started/overview" />
 
-      <Card title="Create connections with the Notion API" icon="angles-right" href="https://www.notion.so/help/create-integrations-with-the-notion-api" />
+      <Card title="Create connections with the Notion API" icon="angles-right" href="https://www.notion.com/help/create-integrations-with-the-notion-api" />
 
       <Card title="Authorization guide" icon="angles-right" href="/guides/get-started/authorization" />
     </CardGroup>

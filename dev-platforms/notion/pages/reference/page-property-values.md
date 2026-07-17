@@ -1153,7 +1153,7 @@ The verification status of a page in a wiki database. Pages can be verified, unv
 You can set or update the verification status via the [Create page](/reference/post-page) and [Update page](/reference/patch-page) endpoints. The `verified_by` field is read-only and is automatically set to the acting connection.
 
 <Info>
-  The `verification` property is only available for pages that are part of a [wiki database](/guides/data-apis/working-with-databases#wiki-databases). To learn more about wiki databases and verifying pages, see our [Help Center article](https://www.notion.so/help/wikis-and-verified-pages#verifying-pages).
+  The `verification` property is only available for pages that are part of a [wiki database](/guides/data-apis/working-with-databases#wiki-databases). To learn more about wiki databases and verifying pages, see our [Help Center article](https://www.notion.com/help/wikis-and-verified-pages#verifying-pages).
 </Info>
 
 | Field         | Type                                     | Description                                                                                                                                                                                                                                                     | Example value                                |

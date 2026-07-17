@@ -3,220 +3,6 @@
 > Neon is the backend for apps and agents. Services include Neon Postgres, Neon Auth, Data API, Neon Functions, Object Storage, and AI Gateway. Every service is agent-ready: instant, branchable, and serverless. Neon Postgres includes autoscaling, instant restore, and scale-to-zero, and is fully compatible with any language, framework, or ORM that supports Postgres.
 > This file contains the full Neon documentation. For a table of contents, see https://neon.com/docs/llms.txt
 
---- [Document source](https://neon.com/docs/ai-gateway/anthropic-messages.md) ---
-
-> Summary: The Anthropic Messages endpoint lets you use the Anthropic SDK with Neon AI Gateway by changing only the base URL. Supports streaming, prompt caching, and extended thinking on Claude models.
-
-# Anthropic Messages API
-
-Use the Anthropic SDK with Neon AI Gateway
-
-**Note: Beta**
-
-The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
-
-The Anthropic Messages endpoint exposes the [Anthropic Messages API](https://docs.anthropic.com/en/api/messages) through Neon AI Gateway. Use it when you need extended thinking or prompt caching, which require the native Anthropic SDK. For standard completions, the [chat completions](https://neon.com/docs/ai-gateway/chat-completions) endpoint works with all Anthropic models and doesn't require the Anthropic SDK.
-
-**Base URL:** `https://<branch-host>/ai-gateway/anthropic`
-
-**Note:** The Anthropic SDK appends `/v1/messages` to the base URL automatically. Set the base URL to `/ai-gateway/anthropic` (without `/v1`).
-
-This endpoint is also reachable at the shorter `/anthropic/v1/messages` path (no `/ai-gateway` prefix). Both behave identically. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full list of aliases.
-
-## Setup
-
-Set these environment variables. See [Get started](https://neon.com/docs/ai-gateway/get-started) for how to obtain them.
-
-```bash
-NEON_AI_GATEWAY_TOKEN=nt_live_...
-NEON_AI_GATEWAY_BASE_URL=https://br-winter-pond-aptw82ef-api.ai.c-2.us-east-2.aws.neon.tech
-```
-
-## Supported models
-
-This endpoint accepts Anthropic models only. See the [AI Gateway catalog](https://neon.com/docs/ai-gateway/models) for the full list. Supported models:
-
-- `claude-opus-4-8`, `claude-opus-4-7`, `claude-opus-4-6`, `claude-opus-4-5`, `claude-opus-4-1`
-- `claude-sonnet-4-6`, `claude-sonnet-4-5`, `claude-sonnet-4`
-- `claude-haiku-4-5`
-
-Sending a non-Anthropic model ID returns `400 model "<model-id>" is not available on the anthropic_messages endpoint`, naming whichever model you sent. Use the [chat completions endpoint](https://neon.com/docs/ai-gateway/chat-completions) if you need to call multiple providers from the same code.
-
-## Basic request
-
-**TypeScript (Anthropic SDK)**
-
-```typescript
-import Anthropic from '@anthropic-ai/sdk';
-
-const client = new Anthropic({
-  authToken: process.env.NEON_AI_GATEWAY_TOKEN,
-  baseURL: `${process.env.NEON_AI_GATEWAY_BASE_URL}/ai-gateway/anthropic`,
-});
-
-const message = await client.messages.create({
-  model: 'claude-sonnet-4-6',
-  max_tokens: 1024,
-  messages: [{ role: 'user', content: 'What is Neon?' }],
-});
-
-console.log(message.content[0].text);
-```
-
-**Python (Anthropic SDK)**
-
-```python
-import anthropic
-import os
-
-client = anthropic.Anthropic(
-    auth_token=os.environ['NEON_AI_GATEWAY_TOKEN'],
-    base_url=f"{os.environ['NEON_AI_GATEWAY_BASE_URL']}/ai-gateway/anthropic",
-)
-
-message = client.messages.create(
-    model='claude-sonnet-4-6',
-    max_tokens=1024,
-    messages=[{'role': 'user', 'content': 'What is Neon?'}],
-)
-
-print(message.content[0].text)
-```
-
-**cURL**
-
-```bash
-curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/anthropic/v1/messages" \
-  -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
-  -H "Content-Type: application/json" \
-  -H "anthropic-version: 2023-06-01" \
-  -d '{
-    "model": "claude-sonnet-4-6",
-    "max_tokens": 1024,
-    "messages": [{"role": "user", "content": "What is Neon?"}]
-  }'
-```
-
-## Streaming
-
-Streaming works the same as with the Anthropic SDK directly. Use `client.messages.stream()` or pass `"stream": true` in a cURL request. The only change from standard usage is `base_url`.
-
-## Prompt caching
-
-The gateway forwards the `cache_control` field to Anthropic unchanged. Prompt caching works exactly as described in the [Anthropic prompt caching docs](https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching).
-
-**TypeScript (Anthropic SDK)**
-
-```typescript
-const message = await client.messages.create({
-  model: 'claude-sonnet-4-6',
-  max_tokens: 1024,
-  system: [
-    { type: 'text', text: 'You are a helpful assistant.' },
-    {
-      type: 'text',
-      text: longDocumentContent,
-      cache_control: { type: 'ephemeral' },
-    },
-  ],
-  messages: [{ role: 'user', content: 'Summarize the key points.' }],
-});
-
-console.log(message.usage);
-// { input_tokens: 50, output_tokens: 200,
-//   cache_creation_input_tokens: 10000, cache_read_input_tokens: 0 }
-```
-
-**Python (Anthropic SDK)**
-
-```python
-message = client.messages.create(
-    model='claude-sonnet-4-6',
-    max_tokens=1024,
-    system=[
-        {'type': 'text', 'text': 'You are a helpful assistant.'},
-        {
-            'type': 'text',
-            'text': long_document_content,
-            'cache_control': {'type': 'ephemeral'},
-        },
-    ],
-    messages=[{'role': 'user', 'content': 'Summarize the key points.'}],
-)
-
-print(message.usage)
-# input_tokens=50, output_tokens=200,
-# cache_creation_input_tokens=10000, cache_read_input_tokens=0
-```
-
-## Extended thinking
-
-The gateway forwards the `thinking` parameter to Anthropic unchanged. Set `budget_tokens` to control how many tokens Claude can use for thinking. `max_tokens` must be greater than `budget_tokens`.
-
-**TypeScript (Anthropic SDK)**
-
-```typescript
-const message = await client.messages.create({
-  model: 'claude-sonnet-4-6',
-  max_tokens: 16000,
-  thinking: {
-    type: 'enabled',
-    budget_tokens: 10000,
-  },
-  messages: [{ role: 'user', content: 'Design a database schema for a multi-tenant SaaS app.' }],
-});
-
-for (const block of message.content) {
-  if (block.type === 'thinking') {
-    console.log('Thinking:', block.thinking);
-  } else if (block.type === 'text') {
-    console.log(block.text);
-  }
-}
-```
-
-**Python (Anthropic SDK)**
-
-```python
-message = client.messages.create(
-    model='claude-sonnet-4-6',
-    max_tokens=16000,
-    thinking={
-        'type': 'enabled',
-        'budget_tokens': 10000,
-    },
-    messages=[{'role': 'user', 'content': 'Design a database schema for a multi-tenant SaaS app.'}],
-)
-
-for block in message.content:
-    if block.type == 'thinking':
-        print('Thinking:', block.thinking)
-    elif block.type == 'text':
-        print(block.text)
-```
-
-## Forwarded headers
-
-The gateway forwards these request headers to the upstream provider:
-`Accept`, `Anthropic-Beta`, `Anthropic-Version`, `Content-Type`, `User-Agent`.
-
-All other headers are stripped. The `Authorization` header is replaced with the workspace credential before forwarding. Your `NEON_AI_GATEWAY_TOKEN` is never sent to Anthropic directly.
-
-## Error handling
-
-| Status            | Message                                                                  | Cause                                     |
-| ----------------- | ------------------------------------------------------------------------ | ----------------------------------------- |
-| `400 Bad Request` | `unknown model "<model-id>"`                                             | Model ID not in the catalog               |
-| `400 Bad Request` | `model "<model-id>" is not available on the anthropic_messages endpoint` | Non-Anthropic model sent to this endpoint |
-
-For authentication, quota, and upstream errors, see [Troubleshooting](https://neon.com/docs/ai-gateway/troubleshooting).
-
-## Next steps
-
-- [Models](https://neon.com/docs/ai-gateway/models): full model catalog
-- [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): use any model including Anthropic via the unified endpoint
-- [Authentication](https://neon.com/docs/ai-gateway/authentication): credential scopes and branch binding
-
 --- [Document source](https://neon.com/docs/ai-gateway/authentication.md) ---
 
 > Summary: AI Gateway uses Neon bearer credentials with the ai_gateway:invoke scope. Credentials are scoped to a branch and its descendants, so a credential created on your main branch works in all preview branches. No provider API keys are required.
@@ -321,11 +107,10 @@ Append the dialect path for the endpoint you need:
 ```
 NEON_AI_GATEWAY_BASE_URL + /ai-gateway/mlflow/v1   → chat completions (all providers)
 NEON_AI_GATEWAY_BASE_URL + /ai-gateway/openai/v1   → OpenAI Responses API
-NEON_AI_GATEWAY_BASE_URL + /ai-gateway/anthropic   → Anthropic Messages API
 NEON_AI_GATEWAY_BASE_URL + /ai-gateway/gemini      → Gemini generateContent API
 ```
 
-Most dialects are also reachable at a shorter top-level path with no `/ai-gateway/<dialect>` prefix: `/v1/chat/completions` for chat completions, `/openai/v1/responses` for OpenAI Responses, and `/anthropic/v1/messages` for Anthropic Messages. Gemini's shorter alias keeps the `gemini` segment: `/v1/gemini/v1beta/models/{model}:generateContent`. `GET /v1/models` lists the catalog in an OpenRouter-shaped response. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full mapping.
+Most dialects are also reachable at a shorter top-level path with no `/ai-gateway/<dialect>` prefix: `/v1/chat/completions` for chat completions and `/openai/v1/responses` for OpenAI Responses. Gemini's shorter alias keeps the `gemini` segment: `/v1/gemini/v1beta/models/{model}:generateContent`. `GET /v1/models` lists the catalog in an OpenRouter-shaped response. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths) for the full mapping.
 
 To use an OpenAI SDK, set its `apiKey` and `baseURL` from these variables (see the examples below).
 
@@ -449,7 +234,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: 'claude-sonnet-4-6',
+  model: 'gpt-5-mini',
   messages: [
     { role: 'system', content: 'You are a helpful assistant.' },
     { role: 'user', content: 'What is Neon?' },
@@ -472,7 +257,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="claude-sonnet-4-6",
+    model="gpt-5-mini",
     messages=[
         {"role": "system", "content": "You are a helpful assistant."},
         {"role": "user", "content": "What is Neon?"},
@@ -490,7 +275,7 @@ curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-6",
+    "model": "gpt-5-mini",
     "messages": [
       {"role": "system", "content": "You are a helpful assistant."},
       {"role": "user", "content": "What is Neon?"}
@@ -514,7 +299,7 @@ const client = new OpenAI({
 });
 
 const stream = await client.chat.completions.create({
-  model: 'claude-sonnet-4-6',
+  model: 'gpt-5-mini',
   messages: [{ role: 'user', content: 'Explain branching in Postgres.' }],
   stream: true,
 });
@@ -536,7 +321,7 @@ client = OpenAI(
 )
 
 with client.chat.completions.create(
-    model="claude-sonnet-4-6",
+    model="gpt-5-mini",
     messages=[{"role": "user", "content": "Explain branching in Postgres."}],
     stream=True,
 ) as stream:
@@ -551,7 +336,7 @@ curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-6",
+    "model": "gpt-5-mini",
     "messages": [{"role": "user", "content": "Explain branching in Postgres."}],
     "stream": true
   }'
@@ -562,9 +347,6 @@ curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
 Change the `model` field to use a different provider. Everything else stays the same.
 
 ```typescript
-// Anthropic
-model: 'claude-sonnet-4-6'
-
 // OpenAI
 model: 'gpt-5-4'
 
@@ -597,7 +379,6 @@ When the upstream provider rate-limits a request, AI Gateway forwards the releva
 | `X-Ratelimit-Limit-Tokens`       | Token limit                                |
 | `X-Ratelimit-Remaining-Tokens`   | Remaining tokens                           |
 | `X-Ratelimit-Reset-Tokens`       | Time until token limit resets              |
-| `Anthropic-Ratelimit-*`          | Anthropic-specific rate limit headers      |
 
 ## Error handling
 
@@ -624,7 +405,6 @@ Error responses are a JSON object with an `error.message` field:
 ## Next steps
 
 - [Models](https://neon.com/docs/ai-gateway/models): full model catalog
-- [Anthropic Messages API](https://neon.com/docs/ai-gateway/anthropic-messages): native Anthropic features
 - [OpenAI Responses API](https://neon.com/docs/ai-gateway/openai-responses): Responses API endpoint
 - [Authentication](https://neon.com/docs/ai-gateway/authentication): credential scopes and branch binding
 
@@ -857,7 +637,7 @@ This is different from your database connection string.
 
 ## Install dependencies
 
-The quickstart uses the OpenAI SDK because the chat completions endpoint is OpenAI-compatible. It works with any model in the catalog, including Claude and Gemini.
+The quickstart uses the OpenAI SDK because the chat completions endpoint is OpenAI-compatible. It works with any model in the catalog, including GPT and Gemini.
 
 **npm**
 
@@ -899,7 +679,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-  model: 'claude-sonnet-4-6',
+  model: 'gpt-5-mini',
   messages: [{ role: 'user', content: 'Hello!' }],
 });
 
@@ -921,7 +701,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="claude-sonnet-4-6",
+    model="gpt-5-mini",
     messages=[{"role": "user", "content": "Hello!"}],
 )
 
@@ -935,7 +715,7 @@ curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-6",
+    "model": "gpt-5-mini",
     "messages": [{"role": "user", "content": "Hello!"}]
   }'
 ```
@@ -956,7 +736,7 @@ const client = new OpenAI({
 });
 
 const stream = await client.chat.completions.create({
-  model: 'claude-sonnet-4-6',
+  model: 'gpt-5-mini',
   messages: [{ role: 'user', content: 'Write a haiku about serverless databases.' }],
   stream: true,
 });
@@ -981,7 +761,7 @@ client = OpenAI(
 )
 
 with client.chat.completions.create(
-    model="claude-sonnet-4-6",
+    model="gpt-5-mini",
     messages=[{"role": "user", "content": "Write a haiku about serverless databases."}],
     stream=True,
 ) as stream:
@@ -996,7 +776,7 @@ curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
   -H "Authorization: Bearer $NEON_AI_GATEWAY_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-6",
+    "model": "gpt-5-mini",
     "messages": [{"role": "user", "content": "Write a haiku about serverless databases."}],
     "stream": true
   }'
@@ -1007,14 +787,14 @@ curl -X POST "$NEON_AI_GATEWAY_BASE_URL/ai-gateway/mlflow/v1/chat/completions" \
 Change the `model` field to use a different provider. No other code changes required.
 
 ```typescript
-// Anthropic
-model: 'claude-sonnet-4-6'
-
 // OpenAI
-model: 'gpt-5-4'
+model: 'gpt-5-mini'
 
 // Google
 model: 'gemini-2-5-flash'
+
+// Alibaba
+model: 'qwen3-next-80b-a3b-instruct'
 ```
 
 See [Models](https://neon.com/docs/ai-gateway/models) for the full list of available model IDs.
@@ -1027,12 +807,11 @@ For TypeScript apps and agents, use [`@neon/ai-sdk-provider`](https://www.npmjs.
 
 - [Models](https://neon.com/docs/ai-gateway/models): full model catalog and which endpoint to use per provider
 - [Chat completions](https://neon.com/docs/ai-gateway/chat-completions): detailed reference for the unified endpoint
-- [Anthropic Messages API](https://neon.com/docs/ai-gateway/anthropic-messages): native Anthropic features including extended thinking and prompt caching
 - [Authentication](https://neon.com/docs/ai-gateway/authentication): credential scopes, branch binding, and rotation
 
 --- [Document source](https://neon.com/docs/ai-gateway/models.md) ---
 
-> Summary: Neon AI Gateway serves Databricks-hosted foundation models from Anthropic, OpenAI, Google, Meta, Databricks, and Alibaba. Use short model IDs like claude-sonnet-4-6 or gpt-5-mini. The databricks- prefix is also accepted.
+> Summary: Neon AI Gateway serves Databricks-hosted foundation models from OpenAI, Google, Meta, Databricks, and Alibaba. Use short model IDs like gpt-5-mini or gemini-2-5-flash. The databricks- prefix is also accepted.
 
 # AI Gateway models
 
@@ -1042,7 +821,7 @@ Available models and how to specify them
 
 The **Neon AI Gateway** is in Beta. Share your feedback on [Discord](https://discord.gg/92vNTzKDGp) or via the [Neon Console](https://console.neon.tech/app/projects?modal=feedback).
 
-Neon AI Gateway serves models hosted by Databricks. Use short model IDs in the `model` field, for example `claude-sonnet-4-6`, `gpt-5-mini`, or `gemini-2-5-flash`. The `databricks-` prefixed form is also accepted. The Neon Console and most examples use the short form.
+Neon AI Gateway serves models hosted by Databricks. Use short model IDs in the `model` field, for example `gpt-5-mini` or `gemini-2-5-flash`. The `databricks-` prefixed form is also accepted. The Neon Console and most examples use the short form.
 
 **Important:** Models are hosted by Databricks and served through Neon AI Gateway. By using these models, you are responsible for complying with each provider's applicable terms of use. See [Provider terms](https://neon.com/docs/ai-gateway/models#provider-terms) below.
 
@@ -1052,29 +831,15 @@ The full catalog is published as the [`neon` provider on models.dev](https://mod
 
 ## Model access
 
-Neon AI Gateway serves frontier models like Claude (`claude-sonnet-4-6`), GPT (`gpt-5`), and Gemini (`gemini-2-5-flash`) alongside open-weight models like Qwen and gpt-oss. See the full list in the [catalog](https://neon.com/docs/ai-gateway/models#available-models) below.
+Neon AI Gateway serves frontier models like GPT (`gpt-5`) and Gemini (`gemini-2-5-flash`) alongside open-weight models like Qwen and gpt-oss. See the full list in the [catalog](https://neon.com/docs/ai-gateway/models#available-models) below.
 
-Open-weight models are available to every project right away. Frontier models from Anthropic, OpenAI, and Google are rolling out gradually. Don't see them in your project yet? [Request early access](https://neon.com/docs/ai-gateway/overview#foundation-model-access).
+Open-weight models are available to every project right away. Frontier models from OpenAI and Google are rolling out gradually. Don't see them in your project yet? [Request early access](https://neon.com/docs/ai-gateway/overview#foundation-model-access).
 
 ## Available models
 
 Browse the full catalog below. Switch between the **Text** and **Image** tabs, filter by provider or open weights, sort any column, and click a model for a copy-paste quickstart (AI SDK, Mastra, Python, TypeScript, or cURL). The endpoint each snippet targets is baked into its base URL: `/v1` for chat completions, `/openai/v1` for the Responses API (image generation).
 
 ### Text models
-
-#### Anthropic
-
-| Model                      | Model ID            | Inputs           | Context | Reasoning | Input /M | Output /M | Endpoints                             | License     |
-| -------------------------- | ------------------- | ---------------- | ------- | --------- | -------- | --------- | ------------------------------------- | ----------- |
-| Claude Opus 4.8            | `claude-opus-4-8`   | text, image, pdf | 1M      | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
-| Claude Opus 4.7            | `claude-opus-4-7`   | text, image, pdf | 1M      | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
-| Claude Sonnet 4.6          | `claude-sonnet-4-6` | text, image, pdf | 1M      | Yes       | $3       | $15       | chat/completions · anthropic/messages | Proprietary |
-| Claude Opus 4.6            | `claude-opus-4-6`   | text, image, pdf | 1M      | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
-| Claude Opus 4.5 (latest)   | `claude-opus-4-5`   | text, image, pdf | 200K    | Yes       | $5       | $25       | chat/completions · anthropic/messages | Proprietary |
-| Claude Haiku 4.5 (latest)  | `claude-haiku-4-5`  | text, image, pdf | 200K    | Yes       | $1       | $5        | chat/completions · anthropic/messages | Proprietary |
-| Claude Sonnet 4.5          | `claude-sonnet-4`   | text, image, pdf | 200K    | Yes       | $3       | $15       | chat/completions · anthropic/messages | Proprietary |
-| Claude Sonnet 4.5 (latest) | `claude-sonnet-4-5` | text, image, pdf | 200K    | Yes       | $3       | $15       | chat/completions · anthropic/messages | Proprietary |
-| Claude Opus 4.1 (latest)   | `claude-opus-4-1`   | text, image, pdf | 200K    | Yes       | $15      | $75       | chat/completions · anthropic/messages | Proprietary |
 
 #### OpenAI
 
@@ -1344,7 +1109,6 @@ All paths below are appended to your branch's bare AI Gateway host (`NEON_AI_GAT
 
 | Provider                  | Recommended endpoint   | Notes                                                                                    |
 | ------------------------- | ---------------------- | ---------------------------------------------------------------------------------------- |
-| Anthropic                 | `/v1/chat/completions` | Use `/anthropic/v1/messages` for extended thinking and prompt caching                    |
 | OpenAI (most models)      | `/v1/chat/completions` | Use `/openai/v1/responses` for Responses API features                                    |
 | OpenAI (codex variants)   | `/openai/v1/responses` | These models require the Responses API and don't work with chat/completions              |
 | Google Gemini             | `/v1/chat/completions` | Use `/ai-gateway/gemini/v1beta/models/{model}:generateContent` with the google-genai SDK |
@@ -1364,7 +1128,7 @@ const text = typeof content === 'string'
 
 ## Shorter /v1 paths
 
-Most dialects above are also reachable at a shorter path with no `/ai-gateway/<dialect>` prefix. These are additive aliases: the `/ai-gateway/...` paths documented throughout this page keep working and aren't deprecated. Both forms use the same branch host, bearer token, request body, response body, model routing, rate limits, and quota behavior. Only chat completions and Gemini use a top-level `/v1/...` prefix; OpenAI Responses and Anthropic Messages have their own shorter prefixes instead of a bare `/v1/`.
+Most dialects above are also reachable at a shorter path with no `/ai-gateway/<dialect>` prefix. These are additive aliases: the `/ai-gateway/...` paths documented throughout this page keep working and aren't deprecated. Both forms use the same branch host, bearer token, request body, response body, model routing, rate limits, and quota behavior. Only chat completions and Gemini use a top-level `/v1/...` prefix; OpenAI Responses has its own shorter prefix instead of a bare `/v1/`.
 
 Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-gateway/...` paths when a framework or existing Neon example expects the older dialect-specific route.
 
@@ -1372,7 +1136,6 @@ Use the shorter paths when you want OpenAI/OpenRouter-style URLs. Use the `/ai-g
 | ------------------------------------------------------- | ---------------------------------------------------------- |
 | `POST /v1/chat/completions`                             | `/ai-gateway/mlflow/v1/chat/completions`                   |
 | `POST /openai/v1/responses`                             | `/ai-gateway/openai/v1/responses`                          |
-| `POST /anthropic/v1/messages`                           | `/ai-gateway/anthropic/v1/messages`                        |
 | `POST /v1/gemini/v1beta/models/{model}:generateContent` | `/ai-gateway/gemini/v1beta/models/{model}:generateContent` |
 
 ### List available models
@@ -1389,8 +1152,8 @@ curl "$NEON_AI_GATEWAY_BASE_URL/v1/models" \
   "object": "list",
   "data": [
     {
-      "id": "claude-sonnet-4-6",
-      "canonical_slug": "claude-sonnet-4-6",
+      "id": "gpt-5-mini",
+      "canonical_slug": "gpt-5-mini",
       "pricing": null,
       "per_request_limits": null,
       "context_length": null
@@ -1407,7 +1170,6 @@ Models are hosted by Databricks and served through Neon AI Gateway. You are resp
 
 | Provider      | Terms                                                                                                                                                                               |
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Anthropic     | [Anthropic Usage Policy](https://www.anthropic.com/legal/aup)                                                                                                                       |
 | OpenAI        | [OpenAI Usage Policies](https://openai.com/policies/usage-policies)                                                                                                                 |
 | Google Gemini | [Google Cloud Acceptable Use Policy](https://cloud.google.com/terms/aup) · [Google Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy) |
 | Google Gemma  | [Gemma Terms of Use](https://ai.google.dev/gemma/terms) · [Gemma Prohibited Use Policy](https://ai.google.dev/gemma/prohibited_use_policy)                                          |
@@ -1607,15 +1369,15 @@ For authentication, quota, and upstream errors, see [Troubleshooting](https://ne
 
 # Neon AI Gateway
 
-One API for frontier and open-source models from Anthropic, OpenAI, Google, and more. Built into your Neon project.
+One API for frontier and open-source models from OpenAI, Google, and more. Built into your Neon project.
 
 ## Foundation model access
 
-Neon AI Gateway serves frontier models like Claude (`claude-sonnet-4-6`), GPT (`gpt-5`), and Gemini (`gemini-2-5-flash`) alongside open-weight models like Qwen and gpt-oss.
+Neon AI Gateway serves frontier models like GPT (`gpt-5`) and Gemini (`gemini-2-5-flash`) alongside open-weight models like Qwen and gpt-oss.
 
 **See every supported model in the [model catalog](https://neon.com/docs/ai-gateway/models#available-models).**
 
-Open-weight models are available to every project right away. Frontier models from Anthropic, OpenAI, and Google are rolling out gradually. Don't see them in your project yet? Request early access below.
+Open-weight models are available to every project right away. Frontier models from OpenAI and Google are rolling out gradually. Don't see them in your project yet? Request early access below.
 
 ## Get started
 
@@ -1626,17 +1388,17 @@ Open-weight models are available to every project right away. Frontier models fr
 
 ## Overview
 
-Neon AI Gateway is the LLM inference layer built into the Neon backend. It lets you call models from Anthropic, OpenAI, Google, and other providers using your Neon credential, without setting up separate provider accounts. Your existing OpenAI or Anthropic SDK works without code changes. Just point it at your branch endpoint.
+Neon AI Gateway is the LLM inference layer built into the Neon backend. It lets you call models from OpenAI, Google, and other providers using your Neon credential, without setting up separate provider accounts. Your existing OpenAI SDK works without code changes. Just point it at your branch endpoint.
 
 > AI Gateway is in beta and available only in **AWS US East (Ohio) (`aws-us-east-2`)**, so create your project there to use it. It requires a paid Neon plan. Inference is free for paid plans during beta. See [Pricing](https://neon.com/docs/ai-gateway/overview#pricing) for what to expect when billing begins.
 
 **Important:** Participation in this Beta is subject to our Terms of Service. Access is not available to users, organizations, or entities located in or operating from regions restricted by Anthropic's [Supported Regions Policy](https://www.anthropic.com/supported-countries). This restriction also applies to entities that are majority owned, directly or indirectly, by companies headquartered in unsupported regions.
 
-- **One credential for all providers.** A single Neon credential gives you access to models from Anthropic, OpenAI, Google, Meta, Databricks, and Alibaba. No separate provider accounts needed.
-- **Standard SDKs, one URL change.** OpenAI SDK, Anthropic SDK, and google-genai all work out of the box.
+- **One credential for all providers.** A single Neon credential gives you access to models from OpenAI, Google, Meta, Databricks, and Alibaba. No separate provider accounts needed.
+- **Standard SDKs, one URL change.** OpenAI SDK and google-genai both work out of the box.
 - **AI follows your branches.** Each branch has its own gateway endpoint. If you use Neon branches for preview deployments, AI requests from a feature branch are scoped to that branch. It's the same isolation your database already gets.
 - **Streaming support.** Server-sent events work on all endpoints with no extra configuration.
-- **Shorter, OpenRouter-style paths.** Chat completions and Gemini are reachable at a shorter top-level `/v1/...` path; OpenAI Responses and Anthropic Messages have their own shorter aliases (`/openai/v1/...`, `/anthropic/v1/...`). `GET /v1/models` lists the catalog. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths).
+- **Shorter, OpenRouter-style paths.** Chat completions and Gemini are reachable at a shorter top-level `/v1/...` path; OpenAI Responses has its own shorter alias (`/openai/v1/...`). `GET /v1/models` lists the catalog. See [Shorter paths](https://neon.com/docs/ai-gateway/models#shorter-v1-paths).
 
 ## Pricing
 
@@ -1710,17 +1472,16 @@ The credential store or branch resolver is temporarily unavailable.
 
 The `model` field in the request body does not match any entry in the AI Gateway catalog. The error message includes the model ID you sent.
 
-**Fix:** Check the model ID against the [full model catalog](https://neon.com/docs/ai-gateway/models). Use the short form (e.g., `claude-sonnet-4-6`) or the `databricks-` prefixed form (`databricks-claude-sonnet-4-6`) — both are accepted.
+**Fix:** Check the model ID against the [full model catalog](https://neon.com/docs/ai-gateway/models). Use the short form (e.g., `gpt-5-mini`) or the `databricks-` prefixed form (`databricks-gpt-5-mini`) — both are accepted.
 
 ### `400 model "<model-id>" is not available on the <endpoint> endpoint`
 
-The model exists in the catalog but doesn't work with the endpoint you're calling. The error message names both the model and the endpoint dialect it was sent to (for example, `anthropic_messages`, `openai_responses`, `gemini_generate_content`, or `chat_completions`).
+The model exists in the catalog but doesn't work with the endpoint you're calling. The error message names both the model and the endpoint dialect it was sent to (for example, `openai_responses`, `gemini_generate_content`, or `chat_completions`).
 
 **Fix:** Check which endpoint the model requires:
 
-- Anthropic models (`claude-*`) on `/openai/v1/responses` → use `/anthropic/v1/messages` or `/mlflow/v1/chat/completions`
 - OpenAI codex models on `/mlflow/v1/chat/completions` → use `/openai/v1/responses`
-- Google models on `/anthropic/v1/messages` → use `/ai-gateway/gemini/v1beta/...` or `/mlflow/v1/chat/completions`
+- Google models on `/openai/v1/responses` → use `/ai-gateway/gemini/v1beta/...` or `/mlflow/v1/chat/completions`
 
 See [Which endpoint to use](https://neon.com/docs/ai-gateway/models#which-endpoint-to-use).
 
@@ -1770,7 +1531,7 @@ The request host does not match the expected format or region.
 
 The request hit the upstream Databricks/provider rate limit.
 
-**Fix:** Implement exponential backoff. The response includes a `Retry-After` header and provider-specific rate limit headers (`X-Ratelimit-*`, `Anthropic-Ratelimit-*`). See [Rate limiting](https://neon.com/docs/ai-gateway/chat-completions#rate-limiting).
+**Fix:** Implement exponential backoff. The response includes a `Retry-After` header and provider-specific rate limit headers (`X-Ratelimit-*`). See [Rate limiting](https://neon.com/docs/ai-gateway/chat-completions#rate-limiting).
 
 ### `429`: account quota exceeded
 
@@ -12457,6 +12218,22 @@ Deprecated: use `neonctl link`. Set the .neon context (raw write).
 
 Usage: `neon set-context [options]`
 
+### snapshots (alias: `snapshot`)
+
+Manage snapshots.
+
+| Subcommand                         | Description                                                         |
+| ---------------------------------- | ------------------------------------------------------------------- |
+| `neon snapshots create`            | Create a snapshot from a branch                                     |
+| `neon snapshots delete <id>`       | Delete a snapshot by id or name                                     |
+| `neon snapshots finalize <branch>` | Finalize a previewed snapshot restore (swap the restored branch in) |
+| `neon snapshots get <id>`          | Get a snapshot by id or name                                        |
+| `neon snapshots list`              | List snapshots in the project                                       |
+| `neon snapshots restore <id>`      | Restore a snapshot into a branch                                    |
+| `neon snapshots schedule get`      | Get a branch's automatic snapshot schedule                          |
+| `neon snapshots schedule set`      | Set a branch's automatic snapshot schedule                          |
+| `neon snapshots update <id>`       | Update a snapshot's name or expiration                              |
+
 ### status
 
 Show the branch's live Neon state (alias of `config status`).
@@ -16772,6 +16549,256 @@ The first time a `.neon` file is created in a directory, the CLI adds `.neon` to
 This keeps local project settings out of git by default. If you want to commit `.neon` and share context with your team, remove the entry from `.gitignore`. The CLI will not re-add it when updating an existing `.neon` file.
 
 **Note:** Neon does not save any confidential information to the context file (for example, auth tokens). You can safely commit this file to your repository or share with others.
+
+--- [Document source](https://neon.com/docs/cli/snapshots.md) ---
+
+> Summary: The Neon CLI `snapshots` command provides subcommands (create, list, get, update, delete, restore, finalize, schedule) to manage point-in-time snapshots of your Neon branches. Use this reference for exact flags and syntax: snapshot a branch at an LSN or timestamp, set an expiration, restore a snapshot into a new or existing branch, and configure an automatic backup schedule.
+
+# Neon CLI command: snapshots
+
+Create, list, restore, and schedule branch snapshots from the terminal
+
+The `snapshots` command creates, lists, updates, deletes, and restores snapshots of your Neon branches, and manages the automatic backup schedule of a branch. A snapshot captures the state of a branch at a point in time, so you can restore it later. For background on the feature, plans, and limits, see [Backup and restore](https://neon.com/docs/guides/backup-restore).
+
+If `--project-id` is omitted, the CLI resolves it from your [context file](https://neon.com/docs/cli/set-context), auto-selects when your account has only one project, and prompts otherwise.
+
+Subcommands: [create](https://neon.com/docs/cli/snapshots#create), [delete](https://neon.com/docs/cli/snapshots#delete), [finalize](https://neon.com/docs/cli/snapshots#finalize), [get](https://neon.com/docs/cli/snapshots#get), [list](https://neon.com/docs/cli/snapshots#list), [restore](https://neon.com/docs/cli/snapshots#restore), [schedule](https://neon.com/docs/cli/snapshots#schedule), [update](https://neon.com/docs/cli/snapshots#update)
+
+## neon snapshots create
+
+Creates a snapshot from a branch. By default, it snapshots the head of the branch from your context or the project's default branch. Use `--lsn` or `--timestamp` to capture an earlier point within the branch's [restore window](https://neon.com/docs/introduction/history-window); the two options are mutually exclusive.
+
+```bash
+neon snapshots create [options]
+```
+
+| Option           | Description                                                                                                                                                 | Type   | Default | Required |
+| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--branch`, `-b` | Branch id or name to snapshot. Defaults to the branch in your context, or the project's default branch.                                                     | string | —       |    No    |
+| `--expires-at`   | When the snapshot is automatically deleted (RFC 3339, e.g. 2025-12-31T23:59:59Z). Omit to keep it indefinitely.                                             | string | —       |    No    |
+| `--lsn`          | Take the snapshot at this LSN (e.g. 0/1F3C8A0). Must fall within the branch's restore window. Mutually exclusive with --timestamp.                          | string | —       |    No    |
+| `--name`         | A name for the snapshot                                                                                                                                     | string | —       |    No    |
+| `--timestamp`    | Take the snapshot at this point in time (RFC 3339, e.g. 2025-01-01T00:00:00Z). Must fall within the branch's restore window. Mutually exclusive with --lsn. | string | —       |    No    |
+| `--project-id`   | Project ID                                                                                                                                                  | string | —       |    No    |
+
+Snapshot the head of a branch with a name:
+
+```bash
+neon snapshots create --branch main --name pre-migration
+```
+
+Snapshot a branch at a specific LSN and set an expiration:
+
+```bash
+neon snapshots create --branch main --lsn 0/1F3C8A0 --expires-at 2025-12-31T23:59:59Z
+```
+
+Snapshot a branch at a point in time:
+
+```bash
+neon snapshots create --branch main --timestamp 2025-01-01T00:00:00Z
+```
+
+Timestamps and expiration times use RFC 3339 format. Omit `--expires-at` to keep the snapshot indefinitely.
+
+## neon snapshots list
+
+Lists the snapshots in a project.
+
+```bash
+neon snapshots list [options]
+```
+
+| Option         | Description | Type   | Default | Required |
+| -------------- | ----------- | ------ | ------- | :------: |
+| `--project-id` | Project ID  | string | —       |    No    |
+
+```bash
+neon snapshots list
+```
+
+## neon snapshots get
+
+Retrieves a snapshot by ID or name.
+
+```bash
+neon snapshots get <id> [options]
+```
+
+| Option         | Description | Type   | Default | Required |
+| -------------- | ----------- | ------ | ------- | :------: |
+| `--project-id` | Project ID  | string | —       |    No    |
+
+```bash
+neon snapshots get snap-1234
+```
+
+## neon snapshots update
+
+Renames a snapshot or changes its expiration. Use `--clear-expiration` to keep a snapshot indefinitely; it's mutually exclusive with `--expires-at`.
+
+```bash
+neon snapshots update <id> [options]
+```
+
+| Option               | Description                                                                           | Type    | Default | Required |
+| -------------------- | ------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--clear-expiration` | Clear the expiration so the snapshot is kept indefinitely.                            | boolean | —       |    No    |
+| `--expires-at`       | Set when the snapshot expires (RFC 3339). Mutually exclusive with --clear-expiration. | string  | —       |    No    |
+| `--name`             | Rename the snapshot                                                                   | string  | —       |    No    |
+| `--project-id`       | Project ID                                                                            | string  | —       |    No    |
+
+Rename a snapshot:
+
+```bash
+neon snapshots update snap-1234 --name pre-migration
+```
+
+Clear a snapshot's expiration:
+
+```bash
+neon snapshots update snap-1234 --clear-expiration
+```
+
+## neon snapshots delete
+
+Deletes a snapshot by ID or name.
+
+```bash
+neon snapshots delete <id> [options]
+```
+
+| Option         | Description | Type   | Default | Required |
+| -------------- | ----------- | ------ | ------- | :------: |
+| `--project-id` | Project ID  | string | —       |    No    |
+
+```bash
+neon snapshots delete snap-1234
+```
+
+## neon snapshots restore
+
+Restores a snapshot into a branch. By default, the restore is left un-finalized so you can inspect the restored branch first, then swap it in with [snapshots finalize](https://neon.com/docs/cli/snapshots#finalize). Pass `--finalize` to move computes onto the restored branch and swap it in for the target immediately.
+
+```bash
+neon snapshots restore <id> [options]
+```
+
+| Option            | Description                                                                                                                                                                                                                 | Type    | Default | Required |
+| ----------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- | ------- | :------: |
+| `--finalize`      | Finalize the restore immediately: move computes onto the restored branch and swap it in for the target. Without this, the restore is left un-finalized so you can inspect it first, then run `snapshots finalize <branch>`. | boolean | `false` |    No    |
+| `--name`          | Name for the newly restored branch. Auto-generated when omitted.                                                                                                                                                            | string  | —       |    No    |
+| `--target-branch` | Branch id or name to restore the snapshot onto. Defaults to the snapshot's source branch. Recommended when you intend to finalize (replace an existing branch).                                                             | string  | —       |    No    |
+| `--project-id`    | Project ID                                                                                                                                                                                                                  | string  | —       |    No    |
+
+Restore a snapshot to a new branch:
+
+```bash
+neon snapshots restore snap-1234 --name recovered
+```
+
+Restore onto an existing branch un-finalized to preview, then finalize:
+
+```bash
+neon snapshots restore snap-1234 --target-branch main
+```
+
+Restore onto a branch and swap it in immediately:
+
+```bash
+neon snapshots restore snap-1234 --target-branch main --finalize
+```
+
+## neon snapshots finalize
+
+Finalizes a previewed snapshot restore, swapping the restored branch in for the target. Use this after running `snapshots restore` without `--finalize`. The argument is the ID of the restored branch that `snapshots restore` created, not the target branch. The `restore` command prints the exact `finalize` command to run.
+
+```bash
+neon snapshots finalize <branch> [options]
+```
+
+| Option         | Description                                                          | Type   | Default | Required |
+| -------------- | -------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--name`       | Name to give the replaced (old) branch. Auto-generated when omitted. | string | —       |    No    |
+| `--project-id` | Project ID                                                           | string | —       |    No    |
+
+```bash
+neon snapshots finalize br-summer-water-au2msxjn
+```
+
+The replaced (old) branch is kept under an auto-generated name unless you set one with `--name`.
+
+## Snapshot schedule
+
+The `snapshots schedule` subcommands get and set the automatic snapshot (backup) schedule of a branch.
+
+Subcommands: [get](https://neon.com/docs/cli/snapshots#schedule-get), [set](https://neon.com/docs/cli/snapshots#schedule-set)
+
+### neon snapshots schedule get
+
+Gets a branch's automatic snapshot schedule.
+
+```bash
+neon snapshots schedule get [options]
+```
+
+| Option           | Description                                                                                 | Type   | Default | Required |
+| ---------------- | ------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--branch`, `-b` | Branch id or name. Defaults to the branch in your context, or the project's default branch. | string | —       |    No    |
+| `--project-id`   | Project ID                                                                                  | string | —       |    No    |
+
+```bash
+neon snapshots schedule get --branch main
+```
+
+### neon snapshots schedule set
+
+Sets a branch's automatic snapshot schedule. Build a single-entry schedule with `--frequency` and its companion flags, or pass a full JSON schedule with `--schedule` for a multi-entry schedule (this overrides the single-entry flags).
+
+Pick one `--frequency`; that choice determines which of `--day` and `--hour` you must also set. The supported frequencies are:
+
+| `--frequency` | Also required     | `--day` range       |
+| ------------- | ----------------- | ------------------- |
+| `daily`       | `--hour` (0-23)   | not used            |
+| `weekly`      | `--day`, `--hour` | 1-7 (Monday-Sunday) |
+| `monthly`     | `--day`, `--hour` | 1-31                |
+
+Use `--retention` with any frequency to set how long each snapshot is kept.
+
+```bash
+neon snapshots schedule set [options]
+```
+
+| Option           | Description                                                                                                                                                | Type   | Default | Required |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------- | :------: |
+| `--branch`, `-b` | Branch id or name. Defaults to the branch in your context, or the project's default branch.                                                                | string | —       |    No    |
+| `--day`          | Day of the week/month (1-31) to take the snapshot (used with --frequency).                                                                                 | number | —       |    No    |
+| `--frequency`    | How often to take snapshots. Combine with --hour, --day, and --retention to build a single-entry schedule. Possible values: `daily`, `weekly`, `monthly`   | string | —       |    No    |
+| `--hour`         | Hour of the day (0-23) to take the snapshot (used with --frequency).                                                                                       | number | —       |    No    |
+| `--month`        | Month of the year (1-12) to take the snapshot (used with --frequency).                                                                                     | number | —       |    No    |
+| `--retention`    | How long to keep each snapshot, in seconds (min 3600). Omit to keep indefinitely.                                                                          | number | —       |    No    |
+| `--schedule`     | Full schedule as JSON, for multi-entry schedules, e.g. '\[\{"frequency":"daily","hour":3,"retention\_seconds":604800}]'. Overrides the single-entry flags. | string | —       |    No    |
+| `--project-id`   | Project ID                                                                                                                                                 | string | —       |    No    |
+
+Set a daily 03:00 snapshot kept for 7 days (604800 seconds):
+
+```bash
+neon snapshots schedule set --branch main --frequency daily --hour 3 --retention 604800
+```
+
+Set a weekly snapshot on Mondays at 04:00:
+
+```bash
+neon snapshots schedule set --branch main --frequency weekly --day 1 --hour 4
+```
+
+Set a multi-entry schedule with JSON:
+
+```bash
+neon snapshots schedule set --branch main --schedule '[{"frequency":"daily","hour":3},{"frequency":"weekly","day":1,"hour":4}]'
+```
+
+Retention is set in seconds (minimum 3600). Omit `--retention` to keep snapshots indefinitely.
 
 --- [Document source](https://neon.com/docs/cli/status.md) ---
 

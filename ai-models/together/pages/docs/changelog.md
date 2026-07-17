@@ -4,7 +4,28 @@ source: https://docs.together.ai/docs/changelog
 path: docs/changelog
 ---
 
-<Update label="July 15, 2026">
+<Update label="July 16, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `thinkingmachines/Inkling`: 552.8B parameters, 524,288 context length, NVFP4 quantization. Pricing: \$1.00 input / \$4.05 output / \$0.17 cached input (per 1M tokens).
+
+  ## Dedicated model inference
+
+  [Dedicated model inference](/docs/dedicated-endpoints/overview) (DMI) serves a model on reserved GPUs, giving you higher throughput, lower latency, and predictable performance with no hard rate limits. It uses the same [inference APIs](/docs/inference/overview#shared-inference-api) as serverless, so you can prototype on serverless and deploy on dedicated hardware without changing your application code.
+
+  **What's new:**
+
+  * **Deploy in one command:** `tg beta endpoints deploy` creates an endpoint, attaches a deployment, and routes all traffic to it.
+  * **New resource model:** Compose models, configs, endpoints, deployments, and traffic splits to control how your model is served. See [Concepts](/docs/dedicated-endpoints/concepts).
+  * **A/B tests and shadow experiments:** [Split live traffic across variants](/docs/dedicated-endpoints/ab-tests), or [mirror traffic to a new deployment](/docs/dedicated-endpoints/shadow-experiments) without serving its responses.
+  * **Autoscaling and serving controls:** Scale on request or GPU metrics, scale to zero on idle, and tune serving behavior per deployment. See [Configure autoscaling](/docs/dedicated-endpoints/scaling).
+
+  <Note>
+    If you're already using dedicated endpoints, you can migrate to the v2 API by following the [migration guide](/docs/dedicated-endpoints/migrate-from-v1).
+  </Note>
+
   ## Image inputs for evaluations
 
   You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.

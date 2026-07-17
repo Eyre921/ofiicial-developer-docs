@@ -12,16 +12,26 @@ Together does not store inputs or outputs by default, i.e. it supports zero data
 
 ## Training opt-in
 
-Data sharing for training other models is **opt-in and not enabled by default**. Check or change this setting under **Privacy & Security** at [api.together.ai/settings/profile](https://api.together.ai/settings/profile). See the [privacy policy](https://www.together.ai/privacy) for the full legal picture.
+Data sharing for training other models is **opt-in and not enabled by default**. Check or change this setting in the **Privacy** section of [Organization Settings](https://api.together.ai/settings/organization/~current). See the [privacy policy](https://www.together.ai/privacy) for the full legal picture.
 
-### Account vs. organization settings
+## Organization privacy settings
+
+Organization-level privacy toggles live on the main [Organization Settings](https://api.together.ai/settings/organization/~current) page under **Privacy**. Only organization admins can change them:
+
+* **Store prompts and model responses**: opt in to storing prompts and outputs for product improvements. Required before you can enable passthrough models.
+* **Allow organization's data for training**: opt in to using your organization's data for training models released by Together AI and partners.
+* **Allow passthrough models**: opt in to models that forward prompts and responses to third-party providers (see below).
+
+If your organization is on the Limited tier, add a payment method before updating these settings.
+
+## Account vs. organization settings
 
 You may see a privacy toggle on both your personal account profile and your organization settings. These control different scopes:
 
-* The **account** setting only applies to traffic you send under your personal account when it's not attached to an organization.
-* The **organization** setting governs all traffic made under that organization's projects and API keys, regardless of which member sends the request.
+* The **account** setting applies only to traffic you send under your personal account when it isn't attached to an organization.
+* The **organization** setting governs all traffic sent under that organization's projects and API keys, regardless of which member makes the request.
 
-When a request is made with an organization's API key, the **organization setting is what applies**. To turn data sharing off for your team, change it in the organization's settings (not just on your personal profile).
+When a request uses an organization's API key, the **organization setting is what applies**. To turn data sharing off for your team, change it in organization settings, not just on your personal profile.
 
 ## Passthrough third-party models
 

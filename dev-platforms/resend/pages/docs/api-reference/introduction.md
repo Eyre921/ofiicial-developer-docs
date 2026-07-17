@@ -68,7 +68,7 @@ In general, `2xx` HTTP codes correspond to success, `4xx` codes are for user-rel
 
 ## Rate limit
 
-The default maximum rate limit is **5 requests per second per team**. This limit applies across all API keys associated with your team. This number can be increased for trusted senders by request. You can view your team's current rate limit on the [Settings Usage page](https://resend.com/settings/usage). After that, you'll hit the rate limit and receive a `429` response error code.
+The default maximum rate limit is **10 requests per second per team**. This limit applies across all API keys associated with your team. This number can be increased for trusted senders by request. You can view your team's current rate limit on the [Settings Usage page](https://resend.com/settings/usage). After that, you'll hit the rate limit and receive a `429` response error code.
 
 Learn more about our [rate limits](/docs/api-reference/rate-limit).
 

@@ -633,13 +633,20 @@ connecting, call the `fetch` tool with the special id `self`:
     throw new Error("Expected a text content block from notion-fetch")
   }
 
-  const { workspace, user } = JSON.parse(block.text).self
+  const { workspace, user, current_tool_access } = JSON.parse(block.text).self
   console.log(`Connected to ${workspace.name} (${workspace.id}) as ${user.name}`)
-  // workspace: { id, name }
-  // user:      { id, name, type, email }
+  // workspace:           { id, name }
+  // user:                { id, name, type, email }
+  // current_tool_access: { [toolName]: { status, upgrade_url? } }
   ```
 </CodeGroup>
 
+The `self` payload also carries a `current_tool_access` map, so an MCP client
+can tell up front which tools will actually run on the connected workspace's
+plan and which would only return an upgrade prompt. Each entry's `status` is
+`available`, `limited_free_trial` (calls succeed via a free or metered trial
+allowance), `upgrade_required` (calls return an upgrade prompt, and the entry
+includes an `upgrade_url` into the workspace's upgrade flow), or `not_enabled`.
 See [Supported tools](/guides/mcp/mcp-supported-tools) for details.
 
 ## Step 8: Handle token refresh

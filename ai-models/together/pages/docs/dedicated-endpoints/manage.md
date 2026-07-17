@@ -79,6 +79,8 @@ List and retrieve responses return a flat deployment object whose `model` and `c
 }
 ```
 
+The `hardware` field reports the deployment's instance type in `<count>x<accelerator-type>` form (for example `1xnvidia-h100-80gb`). It may be empty when the config has no fixed instance type (for example disaggregated serving).
+
 After you've created a deployment, you'll need to [route traffic](/docs/dedicated-endpoints/route-traffic) to it before it can serve requests.
 
 ### Create request flags
@@ -103,7 +105,7 @@ For the full flag list, including placement, the autoscaling windows, and the sc
 
 ## Poll deployment status
 
-To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists each deployment's `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
+To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
 
 ```bash CLI theme={null}
 # Show the endpoint with each deployment's state and replica counts
@@ -186,9 +188,11 @@ List and get endpoints with the CLI:
 # All endpoints in the project
 tg beta endpoints ls
 
-# One endpoint (includes each deployment's state and replica counts)
+# One endpoint (includes up to the 10 newest deployments' state and replica counts)
 tg beta endpoints get ep_abc123
 ```
+
+Endpoint get and list responses embed lightweight deployment summaries in each endpoint's `deployments` array. The array includes at most the 10 newest deployments per endpoint (ordered by `createdAt`, descending). To list every deployment on an endpoint, use the [SDK or API](/reference/dmi/deployments-list).
 
 ### List flags
 

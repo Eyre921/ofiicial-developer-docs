@@ -4,6 +4,12 @@ source: https://developers.notion.com/page/changelog
 path: page/changelog
 ---
 
+<Update label="July 17, 2026">
+  ### Per-tool access map in `notion-fetch` `self`
+
+  The [`notion-fetch`](/guides/mcp/mcp-supported-tools) MCP tool's `self` response now includes a `current_tool_access` map, so clients can tell before making a call which tools will actually run on the connected workspace's plan and which would only return an upgrade prompt. Each entry's `status` is `available`, `limited_free_trial` (calls succeed via a free or metered trial allowance), `upgrade_required` (the entry also carries an `upgrade_url` into the workspace's upgrade flow), or `not_enabled`. See [Integrating your own MCP client](/guides/mcp/build-mcp-client#identify-the-connected-workspace).
+</Update>
+
 <Update label="July 15, 2026">
   ### New identity fields in OAuth token responses
 

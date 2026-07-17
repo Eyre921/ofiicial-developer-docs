@@ -8,9 +8,11 @@ Move a dedicated endpoint from the v1 API to the v2 dedicated model inference re
 
 This guide is for existing [dedicated endpoints (v1)](/docs/dedicated-endpoints/v1/overview) users moving to the current platform (v2). It explains what changed, what stays the same, and how to recreate a v1 endpoint under the [v2 resource model](/docs/dedicated-endpoints/concepts).
 
-<Tip>
-  You don't have to migrate today. v1 endpoints will keep running and stay supported until the end of 2026. Migrate when you're ready to adopt the v2 workflow or want a v2-only capability such as [traffic splitting](/docs/dedicated-endpoints/split-traffic) or [A/B tests](/docs/dedicated-endpoints/ab-tests).
-</Tip>
+<Warning>
+  Creating a new v1 endpoint and restarting a stopped or paused one are no longer available. These operations now return `endpoints_v1_create_access_disabled` (HTTP 403) through the API (`POST /v1/endpoints`), SDK (`client.endpoints.create(...)`), CLI (`tg endpoints create`), and web UI. To create a new endpoint or bring a stopped v1 endpoint back online, deploy the model on v2 using the [steps below](#migrate-an-endpoint). If you're troubleshooting one of these errors, jump to [Troubleshooting](#troubleshooting).
+</Warning>
+
+Endpoints that are already running on v1 keep serving and stay supported until further notice, so you can migrate those on your own schedule. Once a running v1 endpoint stops, it can't be restarted on v1, so you'll need to redeploy it as a new v2 endpoint. Migrating also unlocks v2-only capabilities such as traffic splitting, A/B tests, shadow experiments, metric-based autoscaling, and monitoring dashboards. See [v2 capabilities](#v2-capabilities) below.
 
 ## What stays the same
 
@@ -90,6 +92,28 @@ Uploaded models carry over, but you must re-upload them into the v2 model catalo
 
 Note the eligibility change: in v1 you could upload arbitrary models, but a v2 upload must be a fine-tuned variant of a base model architecture that Together AI already serves.
 
+## Troubleshooting
+
+Most migration errors have one cause: v1 create and restart are retired. This is not a permissions problem. Your models, fine-tuned checkpoints, hardware, and API key still work, so there is nothing to enable or restore. The fix is always the same: deploy the model on v2 using the [steps above](#migrate-an-endpoint).
+
+| Error or symptom                                                                                         | What to do                                                                                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `endpoints_v1_create_access_disabled` (HTTP 403) when creating an endpoint through the API, SDK, or CLI. | Create the endpoint on v2 instead, through the [UI](https://api.together.ai/endpoints/configure), the [SDK or API](/reference/dmi/endpoints-create), or `tg beta endpoints deploy`.                                                    |
+| A stopped or paused v1 endpoint won't start again.                                                       | Stopped v1 endpoints can't be restarted. Redeploy the same model as a new v2 endpoint; fine-tuned models don't need retraining (see [Migrate fine-tuned models](#migrate-fine-tuned-models)).                                          |
+| Create still fails after changing replica bounds, autoscaling, or start settings.                        | Those settings don't affect the v1 create restriction. Deploy the model on v2.                                                                                                                                                         |
+| The SDK still calls the v1 endpoints API.                                                                | Upgrade to `together>=2.24.0` ([release notes](https://github.com/togethercomputer/together-py/releases/tag/v2.24.0)), which introduces the v2 endpoint flow, and follow the [v2 endpoint reference](/reference/dmi/endpoints-create). |
+| The CLI still calls v1 (`tg endpoints ...`).                                                             | Install or upgrade the CLI (below), then use the `tg beta models` and `tg beta endpoints` commands.                                                                                                                                    |
+| You can't find a `/v2/endpoints` route in the docs or SDK.                                               | The v2 management API is served under `https://api.together.ai`. See the [endpoint reference](/reference/dmi/endpoints-create) and [CLI reference](/reference/cli/endpoints-beta).                                                     |
+
+To move the CLI to the v2 commands, install or upgrade it:
+
+```bash theme={null}
+uv tool install "together[cli]"
+uv tool upgrade "together[cli]"
+```
+
+See the [models](/reference/cli/models-beta) and [endpoints](/reference/cli/endpoints-beta) CLI reference for the full command set.
+
 ## v2 capabilities
 
 Migrating your endpoint to v2 gives you access to several new capabilities:
@@ -102,7 +126,7 @@ Migrating your endpoint to v2 gives you access to several new capabilities:
 
 ## Timeline and support
 
-Existing v1 endpoints will keep running through the end-of-2026, so you can migrate on your own schedule. New deployments should target v2.
+Existing v1 endpoints keep running until further notice, so you can migrate on your own schedule. Create all new endpoints and redeploy v1 endpoints that have stopped on v2.
 
 ## Next steps
 

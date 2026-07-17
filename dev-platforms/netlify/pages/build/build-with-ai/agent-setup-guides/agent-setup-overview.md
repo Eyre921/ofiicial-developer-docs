@@ -46,6 +46,7 @@ If you would like to use your agent's own official setup command, check out the 
 - [Claude Desktop](/build/build-with-ai/agent-setup-guides/set-up-claude-desktop-for-netlify/#connect-to-the-netlify-connector) via Claude's Netlify Connector
 - [ChatGPT](/build/build-with-ai/agent-setup-guides/use-netlify-with-chatgpt/#find-netlify-in-chatgpt-apps) via ChatGPT's Netlify App
 - [Antigravity](/build/build-with-ai/agent-setup-guides/set-up-antigravity-for-netlify/#connect-to-the-netlify-mcp-server)
+- [Antigravity CLI](/build/build-with-ai/agent-setup-guides/set-up-antigravity-cli-for-netlify/#connect-to-the-netlify-mcp-server)
 
 The following editors allow one-click install of our MCP with the following links
 

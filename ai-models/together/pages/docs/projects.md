@@ -113,6 +113,7 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | GPU Clusters               | ✅               | ✅          |
 | API Keys                   | ✅               | ✅          |
 | Serverless inference       | ✅               | ✅          |
+| Dedicated model inference  | ✅               | ✅          |
 | Fine-tuning                | ✅               | ❌          |
 | Files                      | ✅               | ❌          |
 | Evaluations                | ✅               | ❌          |
@@ -120,7 +121,6 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | Code Interpreter           | ✅               | N/A        |
 | Container Inference        | ❌               | ❌          |
 | Storage                    | ❌               | ❌          |
-| Dedicated model inference  | ❌               | ❌          |
 | Uploaded Models & Adapters | ❌               | ❌          |
 
 Here's what to expect when using a resource that isn't yet supported:

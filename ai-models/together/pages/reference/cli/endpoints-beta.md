@@ -69,6 +69,8 @@ tg beta endpoints ls
 
 Print details for an endpoint or deployment. Pass an endpoint ID (`ep_...`) to see its deployments and traffic split, or pass a deployment ID (`dep_...`) to inspect that deployment directly.
 
+Endpoint responses include at most the 10 newest deployment summaries per endpoint. To list every deployment, use the [deployments list API](/docs/dedicated-endpoints/manage#list-resources).
+
 ```bash Shell theme={null}
 tg beta endpoints get ep_abc123
 tg beta endpoints get dep_abc123

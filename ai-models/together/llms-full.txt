@@ -3074,6 +3074,8 @@ List and retrieve responses return a flat deployment object whose `model` and `c
 }
 ```
 
+The `hardware` field reports the deployment's instance type in `<count>x<accelerator-type>` form (for example `1xnvidia-h100-80gb`). It may be empty when the config has no fixed instance type (for example disaggregated serving).
+
 After you've created a deployment, you'll need to [route traffic](/docs/dedicated-endpoints/route-traffic) to it before it can serve requests.
 
 ### Create request flags
@@ -3098,7 +3100,7 @@ For the full flag list, including placement, the autoscaling windows, and the sc
 
 ## Poll deployment status
 
-To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists each deployment's `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
+To check a deployment's status, run `tg beta endpoints get` on its endpoint. The output lists up to the 10 newest deployments' `state` and ready/desired replica counts, so re-run it to watch a specific deployment come up:
 
 ```bash CLI theme={null}
 # Show the endpoint with each deployment's state and replica counts
@@ -3181,9 +3183,11 @@ List and get endpoints with the CLI:
 # All endpoints in the project
 tg beta endpoints ls
 
-# One endpoint (includes each deployment's state and replica counts)
+# One endpoint (includes up to the 10 newest deployments' state and replica counts)
 tg beta endpoints get ep_abc123
 ```
+
+Endpoint get and list responses embed lightweight deployment summaries in each endpoint's `deployments` array. The array includes at most the 10 newest deployments per endpoint (ordered by `createdAt`, descending). To list every deployment on an endpoint, use the [SDK or API](/reference/dmi/deployments-list).
 
 ### List flags
 
@@ -3258,9 +3262,11 @@ Move a dedicated endpoint from the v1 API to the v2 dedicated model inference re
 
 This guide is for existing [dedicated endpoints (v1)](/docs/dedicated-endpoints/v1/overview) users moving to the current platform (v2). It explains what changed, what stays the same, and how to recreate a v1 endpoint under the [v2 resource model](/docs/dedicated-endpoints/concepts).
 
-<Tip>
-  You don't have to migrate today. v1 endpoints will keep running and stay supported until the end of 2026. Migrate when you're ready to adopt the v2 workflow or want a v2-only capability such as [traffic splitting](/docs/dedicated-endpoints/split-traffic) or [A/B tests](/docs/dedicated-endpoints/ab-tests).
-</Tip>
+<Warning>
+  Creating a new v1 endpoint and restarting a stopped or paused one are no longer available. These operations now return `endpoints_v1_create_access_disabled` (HTTP 403) through the API (`POST /v1/endpoints`), SDK (`client.endpoints.create(...)`), CLI (`tg endpoints create`), and web UI. To create a new endpoint or bring a stopped v1 endpoint back online, deploy the model on v2 using the [steps below](#migrate-an-endpoint). If you're troubleshooting one of these errors, jump to [Troubleshooting](#troubleshooting).
+</Warning>
+
+Endpoints that are already running on v1 keep serving and stay supported until further notice, so you can migrate those on your own schedule. Once a running v1 endpoint stops, it can't be restarted on v1, so you'll need to redeploy it as a new v2 endpoint. Migrating also unlocks v2-only capabilities such as traffic splitting, A/B tests, shadow experiments, metric-based autoscaling, and monitoring dashboards. See [v2 capabilities](#v2-capabilities) below.
 
 ## What stays the same
 
@@ -3340,6 +3346,28 @@ Uploaded models carry over, but you must re-upload them into the v2 model catalo
 
 Note the eligibility change: in v1 you could upload arbitrary models, but a v2 upload must be a fine-tuned variant of a base model architecture that Together AI already serves.
 
+## Troubleshooting
+
+Most migration errors have one cause: v1 create and restart are retired. This is not a permissions problem. Your models, fine-tuned checkpoints, hardware, and API key still work, so there is nothing to enable or restore. The fix is always the same: deploy the model on v2 using the [steps above](#migrate-an-endpoint).
+
+| Error or symptom                                                                                         | What to do                                                                                                                                                                                                                             |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `endpoints_v1_create_access_disabled` (HTTP 403) when creating an endpoint through the API, SDK, or CLI. | Create the endpoint on v2 instead, through the [UI](https://api.together.ai/endpoints/configure), the [SDK or API](/reference/dmi/endpoints-create), or `tg beta endpoints deploy`.                                                    |
+| A stopped or paused v1 endpoint won't start again.                                                       | Stopped v1 endpoints can't be restarted. Redeploy the same model as a new v2 endpoint; fine-tuned models don't need retraining (see [Migrate fine-tuned models](#migrate-fine-tuned-models)).                                          |
+| Create still fails after changing replica bounds, autoscaling, or start settings.                        | Those settings don't affect the v1 create restriction. Deploy the model on v2.                                                                                                                                                         |
+| The SDK still calls the v1 endpoints API.                                                                | Upgrade to `together>=2.24.0` ([release notes](https://github.com/togethercomputer/together-py/releases/tag/v2.24.0)), which introduces the v2 endpoint flow, and follow the [v2 endpoint reference](/reference/dmi/endpoints-create). |
+| The CLI still calls v1 (`tg endpoints ...`).                                                             | Install or upgrade the CLI (below), then use the `tg beta models` and `tg beta endpoints` commands.                                                                                                                                    |
+| You can't find a `/v2/endpoints` route in the docs or SDK.                                               | The v2 management API is served under `https://api.together.ai`. See the [endpoint reference](/reference/dmi/endpoints-create) and [CLI reference](/reference/cli/endpoints-beta).                                                     |
+
+To move the CLI to the v2 commands, install or upgrade it:
+
+```bash theme={null}
+uv tool install "together[cli]"
+uv tool upgrade "together[cli]"
+```
+
+See the [models](/reference/cli/models-beta) and [endpoints](/reference/cli/endpoints-beta) CLI reference for the full command set.
+
 ## v2 capabilities
 
 Migrating your endpoint to v2 gives you access to several new capabilities:
@@ -3352,7 +3380,7 @@ Migrating your endpoint to v2 gives you access to several new capabilities:
 
 ## Timeline and support
 
-Existing v1 endpoints will keep running through the end-of-2026, so you can migrate on your own schedule. New deployments should target v2.
+Existing v1 endpoints keep running until further notice, so you can migrate on your own schedule. Create all new endpoints and redeploy v1 endpoints that have stopped on v2.
 
 ## Next steps
 
@@ -3695,7 +3723,9 @@ To learn more about the underlying resources, see [Concepts](/docs/dedicated-end
 
 ## Project scope
 
-The `tg beta` commands, and the management API, operate within a [Together AI project](/docs/projects). The CLI reads the project from the `TOGETHER_PROJECT_ID` environment variable, or you can pass `--project` on any command. If neither is set, it uses the project associated with your API key.
+The `tg beta` commands, the management API, and the Python SDK's `client.beta.*` methods operate within a [Together AI project](/docs/projects). The CLI reads the project from the `TOGETHER_PROJECT_ID` environment variable, or you can pass `--project` on any command. If neither is set, it uses the project associated with your API key.
+
+In the Python SDK, pass `project_id` to `Together()` or set `TOGETHER_PROJECT_ID`. Otherwise, call `client.whoami().project_id` before project-scoped API calls.
 
 ```bash theme={null}
 export TOGETHER_PROJECT_ID=your_project_id
@@ -3860,11 +3890,18 @@ Before you begin, make sure you have:
 * Installed the Together CLI:
 
 ```bash theme={null}
+# Install
 uv tool install "together[cli]"
+
+# Upgrade
+uv tool upgrade "together[cli]"
+
+# List commands
+tg --help
 ```
 
 <Note>
-  The dedicated model inference commands require Together CLI version `2.24.0` or later. Check your version with `tg --version`, and upgrade with `uv tool upgrade together`.
+  The dedicated model inference commands require Together CLI version `2.24.0` or later. Check your version with `tg --version`.
 </Note>
 
 <Note>
@@ -9005,7 +9042,7 @@ When you select **OIDC**, expand **Set up CLI** next to the head node command to
 uv tool install "together[cli]"
 ```
 
-OIDC SSH requires Together CLI 2.20+ and [Python 3.10+](https://www.python.org/). If you previously installed the CLI with `pip`, follow the migration steps in [Get started](/reference/cli/getting-started#install-the-together-cli) to move to the `uv`-managed install before connecting.
+OIDC SSH requires Together CLI 2.23+ and [Python 3.10+](https://www.python.org/). If you previously installed the CLI with `pip`, follow the migration steps in [Get started](/reference/cli/getting-started#install-the-together-cli) to move to the `uv`-managed install before connecting.
 
 ### SSH to GPU worker nodes (in Kubernetes) and Slurm compute nodes (Slurm)
 
@@ -21726,28 +21763,29 @@ For rate limits and pricing, see the [Serverless overview](/docs/serverless/over
 
 ## Chat models
 
-| Organization | Model name                   | API model string                        | Context length | Input pricing (per 1M tokens) | Cached input pricing (per 1M tokens) | Output pricing (per 1M tokens) | Quantization | Function calling | Structured outputs |
-| :----------- | :--------------------------- | :-------------------------------------- | :------------- | :---------------------------- | :----------------------------------- | :----------------------------- | :----------- | :--------------- | :----------------- |
-| Minimax      | Minimax M3                   | MiniMaxAI/MiniMax-M3                    | 524288         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
-| Minimax      | Minimax M2.7                 | MiniMaxAI/MiniMax-M2.7                  | 202752         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
-| Qwen         | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$1.25                        | -                                    | \$3.75                         | -            | -                | -                  |
-| Qwen         | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
-| Qwen         | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
-| Moonshot     | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
-| Moonshot     | Kimi K2.6                    | moonshotai/Kimi-K2.6                    | 262144         | \$1.20                        | \$0.20                               | \$4.50                         | FP4          | Yes              | Yes                |
-| Z.ai         | GLM-5.2                      | zai-org/GLM-5.2                         | 262144         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
-| OpenAI       | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
-| OpenAI       | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
-| DeepSeek     | DeepSeek-V4-Pro              | deepseek-ai/DeepSeek-V4-Pro             | 512000         | \$1.74                        | \$0.20                               | \$3.48                         | FP4          | Yes              | Yes                |
-| NVIDIA       | Nemotron 3 Ultra 550B A55B   | nvidia/nemotron-3-ultra-550b-a55b       | 512300         | \$0.60                        | \$0.20                               | \$3.60                         | NVFP4        | Yes              | Yes                |
-| Meta         | Llama 3.3 70B Instruct Turbo | meta-llama/Llama-3.3-70B-Instruct-Turbo | 131072         | \$1.04                        | -                                    | \$1.04                         | FP8          | Yes              | Yes                |
-| Qwen         | Qwen 2.5 7B Instruct Turbo   | Qwen/Qwen2.5-7B-Instruct-Turbo          | 32768          | \$0.30                        | -                                    | \$0.30                         | FP8          | Yes              | Yes                |
-| Google       | Gemma 4 31B Instruct         | google/gemma-4-31B-it                   | 262144         | \$0.39                        | -                                    | \$0.97                         | FP8          | Yes              | Yes                |
-| Pearl AI     | Gemma 4 31B Instruct         | pearl-ai/gemma-4-31b-it                 | 32000          | \$0.28                        | -                                    | \$0.86                         | INT8         | -                | -                  |
-| Deepcogito   | Cogito v2.1 671B             | deepcogito/cogito-v2-1-671b             | 163840         | \$1.25                        | -                                    | \$1.25                         | -            | -                | -                  |
-| Qwen         | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
-| Google       | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
-| LiquidAI     | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
+| Organization      | Model name                   | API model string                        | Context length | Input pricing (per 1M tokens) | Cached input pricing (per 1M tokens) | Output pricing (per 1M tokens) | Quantization | Function calling | Structured outputs |
+| :---------------- | :--------------------------- | :-------------------------------------- | :------------- | :---------------------------- | :----------------------------------- | :----------------------------- | :----------- | :--------------- | :----------------- |
+| Thinking Machines | Inkling                      | thinkingmachines/Inkling                | 524288         | \$1.00                        | \$0.17                               | \$4.05                         | NVFP4        | Yes              | Yes                |
+| Minimax           | Minimax M3                   | MiniMaxAI/MiniMax-M3                    | 524288         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
+| Minimax           | Minimax M2.7                 | MiniMaxAI/MiniMax-M2.7                  | 202752         | \$0.30                        | \$0.06                               | \$1.20                         | FP4          | Yes              | Yes                |
+| Qwen              | Qwen3.7 Max                  | Qwen/Qwen3.7-Max                        | -              | \$1.25                        | -                                    | \$3.75                         | -            | -                | -                  |
+| Qwen              | Qwen3.6 Plus                 | Qwen/Qwen3.6-Plus                       | 1000000        | \$0.50                        | -                                    | \$3.00                         | -            | -                | -                  |
+| Qwen              | Qwen3.5 9B                   | Qwen/Qwen3.5-9B                         | 262144         | \$0.17                        | -                                    | \$0.25                         | FP8          | Yes              | Yes                |
+| Moonshot          | Kimi K2.7 Code               | moonshotai/Kimi-K2.7-Code               | 262144         | \$0.95                        | \$0.19                               | \$4.00                         | FP4          | Yes              | Yes                |
+| Moonshot          | Kimi K2.6                    | moonshotai/Kimi-K2.6                    | 262144         | \$1.20                        | \$0.20                               | \$4.50                         | FP4          | Yes              | Yes                |
+| Z.ai              | GLM-5.2                      | zai-org/GLM-5.2                         | 262144         | \$1.40                        | \$0.26                               | \$4.40                         | FP4          | Yes              | Yes                |
+| OpenAI            | GPT-OSS 120B                 | openai/gpt-oss-120b                     | 128000         | \$0.15                        | -                                    | \$0.60                         | MXFP4        | Yes              | Yes                |
+| OpenAI            | GPT-OSS 20B                  | openai/gpt-oss-20b                      | 128000         | \$0.05                        | -                                    | \$0.20                         | MXFP4        | Yes              | Yes                |
+| DeepSeek          | DeepSeek-V4-Pro              | deepseek-ai/DeepSeek-V4-Pro             | 512000         | \$1.74                        | \$0.20                               | \$3.48                         | FP4          | Yes              | Yes                |
+| NVIDIA            | Nemotron 3 Ultra 550B A55B   | nvidia/nemotron-3-ultra-550b-a55b       | 512300         | \$0.60                        | \$0.20                               | \$3.60                         | NVFP4        | Yes              | Yes                |
+| Meta              | Llama 3.3 70B Instruct Turbo | meta-llama/Llama-3.3-70B-Instruct-Turbo | 131072         | \$1.04                        | -                                    | \$1.04                         | FP8          | Yes              | Yes                |
+| Qwen              | Qwen 2.5 7B Instruct Turbo   | Qwen/Qwen2.5-7B-Instruct-Turbo          | 32768          | \$0.30                        | -                                    | \$0.30                         | FP8          | Yes              | Yes                |
+| Google            | Gemma 4 31B Instruct         | google/gemma-4-31B-it                   | 262144         | \$0.39                        | -                                    | \$0.97                         | FP8          | Yes              | Yes                |
+| Pearl AI          | Gemma 4 31B Instruct         | pearl-ai/gemma-4-31b-it                 | 32000          | \$0.28                        | -                                    | \$0.86                         | INT8         | -                | -                  |
+| Deepcogito        | Cogito v2.1 671B             | deepcogito/cogito-v2-1-671b             | 163840         | \$1.25                        | -                                    | \$1.25                         | -            | -                | -                  |
+| Qwen              | Qwen3.7 Plus                 | Qwen/Qwen3.7-Plus                       | 1000000        | \$0.32                        | -                                    | \$1.28                         | -            | -                | -                  |
+| Google            | Gemma 3N E4B Instruct        | google/gemma-3n-E4B-it                  | 32768          | \$0.06                        | -                                    | \$0.12                         | -            | -                | -                  |
+| LiquidAI          | LFM2.5-8B-A1B                | LiquidAI/LFM2.5-8B-A1B                  | 32768          | \$0.03                        | -                                    | \$0.12                         | -            | -                | -                  |
 
 **Chat model examples**
 
@@ -36359,6 +36397,10 @@ For Organizations that need to separate resources by team, environment, or workl
 
 For full details on creating and managing Projects, see [Projects](/docs/projects).
 
+## Privacy
+
+Privacy toggles for prompt history, training opt-in, and passthrough models are on the main [Organization Settings](https://api.together.ai/settings/organization/~current) page. Only organization admins can change them. See [Privacy and security](/docs/privacy-and-security) for what each toggle controls.
+
 ## Billing
 
 [Billing](https://api.together.ai/settings/organization/~current/billing) is consolidated at the Organization level. All usage across all Projects and Members rolls up to a single bill. Individual Members are not billed separately.
@@ -37049,16 +37091,26 @@ Together does not store inputs or outputs by default, i.e. it supports zero data
 
 ## Training opt-in
 
-Data sharing for training other models is **opt-in and not enabled by default**. Check or change this setting under **Privacy & Security** at [api.together.ai/settings/profile](https://api.together.ai/settings/profile). See the [privacy policy](https://www.together.ai/privacy) for the full legal picture.
+Data sharing for training other models is **opt-in and not enabled by default**. Check or change this setting in the **Privacy** section of [Organization Settings](https://api.together.ai/settings/organization/~current). See the [privacy policy](https://www.together.ai/privacy) for the full legal picture.
 
-### Account vs. organization settings
+## Organization privacy settings
+
+Organization-level privacy toggles live on the main [Organization Settings](https://api.together.ai/settings/organization/~current) page under **Privacy**. Only organization admins can change them:
+
+* **Store prompts and model responses**: opt in to storing prompts and outputs for product improvements. Required before you can enable passthrough models.
+* **Allow organization's data for training**: opt in to using your organization's data for training models released by Together AI and partners.
+* **Allow passthrough models**: opt in to models that forward prompts and responses to third-party providers (see below).
+
+If your organization is on the Limited tier, add a payment method before updating these settings.
+
+## Account vs. organization settings
 
 You may see a privacy toggle on both your personal account profile and your organization settings. These control different scopes:
 
-* The **account** setting only applies to traffic you send under your personal account when it's not attached to an organization.
-* The **organization** setting governs all traffic made under that organization's projects and API keys, regardless of which member sends the request.
+* The **account** setting applies only to traffic you send under your personal account when it isn't attached to an organization.
+* The **organization** setting governs all traffic sent under that organization's projects and API keys, regardless of which member makes the request.
 
-When a request is made with an organization's API key, the **organization setting is what applies**. To turn data sharing off for your team, change it in the organization's settings (not just on your personal profile).
+When a request uses an organization's API key, the **organization setting is what applies**. To turn data sharing off for your team, change it in organization settings, not just on your personal profile.
 
 ## Passthrough third-party models
 
@@ -37189,6 +37241,7 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | GPU Clusters               | ✅               | ✅          |
 | API Keys                   | ✅               | ✅          |
 | Serverless inference       | ✅               | ✅          |
+| Dedicated model inference  | ✅               | ✅          |
 | Fine-tuning                | ✅               | ❌          |
 | Files                      | ✅               | ❌          |
 | Evaluations                | ✅               | ❌          |
@@ -37196,7 +37249,6 @@ Project scoping is rolling out incrementally. API key support is ahead of UI sup
 | Code Interpreter           | ✅               | N/A        |
 | Container Inference        | ❌               | ❌          |
 | Storage                    | ❌               | ❌          |
-| Dedicated model inference  | ❌               | ❌          |
 | Uploaded Models & Adapters | ❌               | ❌          |
 
 Here's what to expect when using a resource that isn't yet supported:
@@ -44037,7 +44089,28 @@ Source: https://docs.together.ai/docs/changelog
 
 
 
-<Update label="July 15, 2026">
+<Update label="July 16, 2026">
+  ## New serverless models
+
+  The following models are now available on [serverless](/docs/serverless/models):
+
+  * `thinkingmachines/Inkling`: 552.8B parameters, 524,288 context length, NVFP4 quantization. Pricing: \$1.00 input / \$4.05 output / \$0.17 cached input (per 1M tokens).
+
+  ## Dedicated model inference
+
+  [Dedicated model inference](/docs/dedicated-endpoints/overview) (DMI) serves a model on reserved GPUs, giving you higher throughput, lower latency, and predictable performance with no hard rate limits. It uses the same [inference APIs](/docs/inference/overview#shared-inference-api) as serverless, so you can prototype on serverless and deploy on dedicated hardware without changing your application code.
+
+  **What's new:**
+
+  * **Deploy in one command:** `tg beta endpoints deploy` creates an endpoint, attaches a deployment, and routes all traffic to it.
+  * **New resource model:** Compose models, configs, endpoints, deployments, and traffic splits to control how your model is served. See [Concepts](/docs/dedicated-endpoints/concepts).
+  * **A/B tests and shadow experiments:** [Split live traffic across variants](/docs/dedicated-endpoints/ab-tests), or [mirror traffic to a new deployment](/docs/dedicated-endpoints/shadow-experiments) without serving its responses.
+  * **Autoscaling and serving controls:** Scale on request or GPU metrics, scale to zero on idle, and tune serving behavior per deployment. See [Configure autoscaling](/docs/dedicated-endpoints/scaling).
+
+  <Note>
+    If you're already using dedicated endpoints, you can migrate to the v2 API by following the [migration guide](/docs/dedicated-endpoints/migrate-from-v1).
+  </Note>
+
   ## Image inputs for evaluations
 
   You can now evaluate vision-capable models on image datasets. Add an `image_data_urls` column to your evaluation dataset — a base64 image data URL, or a list of them — and the images are attached to the model and judge requests alongside the text prompt.
@@ -46060,6 +46133,8 @@ tg beta endpoints ls
 
 Print details for an endpoint or deployment. Pass an endpoint ID (`ep_...`) to see its deployments and traffic split, or pass a deployment ID (`dep_...`) to inspect that deployment directly.
 
+Endpoint responses include at most the 10 newest deployment summaries per endpoint. To list every deployment, use the [deployments list API](/docs/dedicated-endpoints/manage#list-resources).
+
 ```bash Shell theme={null}
 tg beta endpoints get ep_abc123
 tg beta endpoints get dep_abc123
@@ -46629,6 +46704,9 @@ Run the following command to install the CLI:
 # Install
 uv tool install "together[cli]"
 
+# Upgrade
+uv tool upgrade "together[cli]"
+
 # List commands
 tg --help
 ```
@@ -46647,16 +46725,6 @@ The CLI is also installed as `together`, an alias of `tg` that's identical in be
   3. Reinstall: `uv tool install "together[cli]"`.
   4. Confirm the version: `tg --version`.
 </Warning>
-
-## Update the CLI
-
-```bash theme={null}
-# Upgrade
-uv tool upgrade "together[cli]"
-
-# Run
-tg --help
-```
 
 ## Authenticate
 
@@ -46799,16 +46867,17 @@ Several commands and subcommands have shorthand aliases for faster typing:
 
 The following parameters are available on every command:
 
-| Flag                     | Description                                                                       |
-| ------------------------ | --------------------------------------------------------------------------------- |
-| `--help`                 | Print help for the prefixed command.                                              |
-| `--json`                 | Return the response as JSON. Useful for scripting.                                |
-| `--non-interactive`      | Disable interactive prompts and manual input.                                     |
-| `--api-key [string]`     | Your Together API key. Falls back to the `TOGETHER_API_KEY` environment variable. |
-| `--timeout [number]`     | Request timeout, in seconds.                                                      |
-| `--max-retries [number]` | Maximum number of HTTP retries.                                                   |
-| `--version`              | Print the CLI version.                                                            |
-| `--debug`                | Enable debug logging.                                                             |
+| Flag                     | Description                                                                                                                                                                                                                                                                                                         |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--help`                 | Print help for the prefixed command.                                                                                                                                                                                                                                                                                |
+| `--json`                 | Return the response as JSON. Useful for scripting.                                                                                                                                                                                                                                                                  |
+| `--non-interactive`      | Disable interactive prompts and manual input.                                                                                                                                                                                                                                                                       |
+| `--api-key [string]`     | Your Together API key. Falls back to the `TOGETHER_API_KEY` environment variable.                                                                                                                                                                                                                                   |
+| `--project [string]`     | Together project ID for project-scoped commands. Falls back to the `TOGETHER_PROJECT_ID` environment variable. When omitted, read-only commands use the project associated with your API key; mutating commands may prompt for confirmation or require an explicit project in `--json` or `--non-interactive` mode. |
+| `--timeout [number]`     | Request timeout, in seconds.                                                                                                                                                                                                                                                                                        |
+| `--max-retries [number]` | Maximum number of HTTP retries.                                                                                                                                                                                                                                                                                     |
+| `--version`              | Print the CLI version.                                                                                                                                                                                                                                                                                              |
+| `--debug`                | Enable debug logging.                                                                                                                                                                                                                                                                                               |
 
 
 # Jig CLI reference
@@ -47881,11 +47950,14 @@ $ tg whoami --json
   "organization_name": "Acme, Inc.",
   "project_id": "proj_xxxxxxxxxxxxxxxx",
   "project_name": "My Project",
-  "project_slug": "my-project"
+  "project_slug": "my-project",
+  "user_id": "user_xxxxxxxxxxxxxxxx"
 }
 ```
 
 The `project_slug` is the DNS-friendly project identifier used when constructing the `model` value (`<project_slug>/<endpoint_slug>`) for dedicated endpoint inference calls.
+
+`user_id` is present when the API key is tied to an authenticated user account. It is omitted for service or organization-default keys.
 
 
 # Get a model configuration

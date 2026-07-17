@@ -26,9 +26,10 @@ path: docs/flux/feature-overview
 
 ## Formatting
 
-| Feature                                    | Language(s)                       |
-| ------------------------------------------ | --------------------------------- |
-| [Profanity Filter](/docs/profanity-filter) | [All available](/docs/model#flux) |
+| Feature                                    | Language(s)                                        |
+| ------------------------------------------ | -------------------------------------------------- |
+| [Profanity Filter](/docs/profanity-filter) | [All available](/docs/model#flux)                  |
+| [Numerals](/docs/numerals)                 | English + Multilingual (excludes Hindi & Japanese) |
 
 ## Transcription
 

@@ -17,9 +17,9 @@ Prefer watching a video? Check out our video walkthrough below.
 
 <YouTube />
 
-## SMTP Credentials
+## SMTP Settings
 
-When configuring your SMTP integration, you'll need to use the following credentials:
+When configuring your SMTP integration, use the following settings:
 
 * **Host**: `smtp.resend.com`
 * **Port**: `25`, `465`, `587`, `2465`, or `2587`

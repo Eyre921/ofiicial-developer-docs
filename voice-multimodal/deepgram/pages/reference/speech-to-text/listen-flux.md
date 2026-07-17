@@ -59,6 +59,9 @@ channels:
             profanity_filter:
               $ref: '#/components/schemas/ListenV2ProfanityFilter'
               default: 'false'
+            numerals:
+              $ref: '#/components/schemas/ListenV2Numerals'
+              default: 'false'
             mip_opt_out:
               $ref: '#/components/schemas/ListenV2MipOptOut'
             tag:
@@ -235,6 +238,14 @@ components:
         nearest recognized non-profane word or removes it from the transcript
         completely.
       title: ListenV2ProfanityFilter
+    ListenV2Numerals:
+      type: string
+      enum:
+        - 'true'
+        - 'false'
+      default: 'false'
+      description: Numerals converts numbers from written format to numerical format
+      title: ListenV2Numerals
     ListenV2MipOptOut:
       description: Any type
       title: ListenV2MipOptOut

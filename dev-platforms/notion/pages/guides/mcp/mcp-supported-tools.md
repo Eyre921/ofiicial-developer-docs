@@ -37,9 +37,11 @@ These tools work seamlessly together through prompts, and their real power comes
 
     Pass the special id `self` to retrieve the connected workspace and user identity instead of an entity. The response includes a `self` object with the workspace's ID and name, and the authenticated user's ID, name, type, and email — useful for labeling a connection after OAuth.
 
+    The `self` object also includes `current_tool_access`, a map of tool names to their access state on this workspace's plan: `available`, `limited_free_trial` (calls succeed via a free or metered trial allowance), `upgrade_required` (calls return an upgrade prompt, and the map entry carries an `upgrade_url`), or `not_enabled`. Tools are listed on every plan, so consult this map to route away from tools that would only return an upgrade prompt. Keys are the tools' base names; when tools appear with a `notion-` prefix and hyphens (e.g. `notion-query-data-sources`), they correspond to the map key with the prefix dropped and hyphens as underscores (`query_data_sources`).
+
     **Example prompts:**
 
-    * "What product requirements still need to be implemented from this ticket `https://notion.so/page-url`?"
+    * "What product requirements still need to be implemented from this ticket `https://notion.com/page-url`?"
     * "Fetch the data source `collection://f336d0bc-b841-465b-8045-024475c079dd` to see its schema"
     * "Fetch the bug tracking database so I can see the available templates"
     * "Fetch `self` to see which workspace and user this connection is for"
@@ -152,7 +154,7 @@ These tools work seamlessly together through prompts, and their real power comes
     Query Notion data sources with SQL, or run an existing view, with structured summaries, grouping, and filters. Returns organized results with counts and rollups for quick scanning.
 
     <Note>
-      Available on all plans. Querying a single data source or a view requires a Business plan or higher with Notion AI; querying across multiple data sources in one query requires an Enterprise plan with Notion AI. On other plans the tool returns an upgrade prompt.
+      Single-data-source SQL queries have an hourly rate limit on Free and Plus plans. Queries across multiple data sources require an Enterprise plan with Notion AI.
     </Note>
 
     **Example prompts:**
@@ -165,10 +167,6 @@ These tools work seamlessly together through prompts, and their real power comes
     `notion-query-database-view`
 
     Query data from a Notion database using a pre-defined [view's filters and sorts](https://www.notion.com/help/views-filters-and-sorts).
-
-    <Note>
-      Available on all plans, but using it requires a Business plan or higher with Notion AI. On other plans the tool returns an upgrade prompt.
-    </Note>
 
     **Example prompts:**
 

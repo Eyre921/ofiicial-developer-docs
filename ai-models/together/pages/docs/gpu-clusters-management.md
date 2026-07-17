@@ -288,7 +288,7 @@ When you select **OIDC**, expand **Set up CLI** next to the head node command to
 uv tool install "together[cli]"
 ```
 
-OIDC SSH requires Together CLI 2.20+ and [Python 3.10+](https://www.python.org/). If you previously installed the CLI with `pip`, follow the migration steps in [Get started](/reference/cli/getting-started#install-the-together-cli) to move to the `uv`-managed install before connecting.
+OIDC SSH requires Together CLI 2.23+ and [Python 3.10+](https://www.python.org/). If you previously installed the CLI with `pip`, follow the migration steps in [Get started](/reference/cli/getting-started#install-the-together-cli) to move to the `uv`-managed install before connecting.
 
 ### SSH to GPU worker nodes (in Kubernetes) and Slurm compute nodes (Slurm)
 

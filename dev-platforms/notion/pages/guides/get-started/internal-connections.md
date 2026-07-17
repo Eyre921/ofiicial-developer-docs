@@ -33,7 +33,7 @@ This is one of the biggest differences from [public connections](/guides/get-sta
 
 ## Creating an internal connection
 
-You must be a [Workspace Owner](https://www.notion.so/help/add-members-admins-guests-and-groups) to create a connection.
+You must be a [Workspace Owner](https://www.notion.com/help/add-members-admins-guests-and-groups) to create a connection.
 
 <Steps>
   <Step>
